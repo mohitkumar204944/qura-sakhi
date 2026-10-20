@@ -11,7 +11,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 - `android/`: WebView wrapper. `build-apk.sh` builds `QuraSakhi-prototype.apk` from `web/`.
 - `server/`: the accounts server, a Supabase Edge Function (`supabase/functions/sakhi-api`) with its migration and tests.
   - The spec is `server/SERVER_SPEC.md`; the deploy steps are `server/DEPLOY.md`.
-  - It's built but not deployed yet. Until then the app runs a stand-in server whose code is always 123456.
+  - It's live on Sakhi's own free Supabase project `qura-sakhi` (ref `jovplellzaxebcdekpax`). It sends real codes by
+    WhatsApp and SMS through Qura's accounts; the keys are set with `server/scripts/set-qura-keys.sh`.
+  - An APK built without `SAKHI_API` still runs the stand-in server, whose code is always 123456.
 - `docs/history.md`: build log for 18–20 Oct 2026. It's long; read it only when the history matters.
 - Outside the repo (business files, not in git): `../2 - Screenshots`, `../3 - Research and planning` (product vision,
   research, audits, internal-only Flo reference screenshots), `../4 - Learn library`, the .docx files, and the latest APK copy.
@@ -19,12 +21,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 ## Commands (run tests from `web/`)
 - Tests:
   - `node test/signup.mjs`
+  - `node test/tours.mjs`
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`
   - Server, from the repo root: `npm run test:server`. `npm test` runs everything.
-- APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`. Add `SAKHI_API=<server>` once the server exists.
-  It installs on the phone if one is on adb. Copy the result to `../QuraSakhi-prototype.apk`.
+- APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`.
+  - For the live server, add `SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api`. Every signup on
+    such a build sends a real code.
+  - It installs on the phone if one is on adb.
+  - Copy the result to `../QuraSakhi-prototype.apk`.
 - Preview: `../Open prototype.command`, or "Sakhi web" in `.claude/launch.json`.
 - Web prototype (a private Claude artifact): https://claude.ai/artifact/25aocCU68U1DHebpjTmne6. To republish, copy
   `web/index.html` and the changed files to the session scratchpad and publish to that URL.

@@ -38,7 +38,7 @@ export function memoryStore() {
     async createAccount(f) {
       const found = await store.findAccountByPhone(f.phone);
       if (found) return found;
-      const a = { id: 'acc-' + (++seq), phone: f.phone, birth_year: f.birth_year, name: null, pincode: null, district: null, state: null, heard: null, upd_sms: false, upd_wa: false,
+      const a = { id: 'acc-' + (++seq), phone: f.phone, birth_year: f.birth_year, name: null, pincode: null, district: null, state: null, email: null, heard: null, upd_sms: false, upd_wa: false,
         lang: f.lang, platform: f.platform, app_version: f.app_version, last_active_on: null };
       db.accounts.set(a.id, a);
       return copy(a);
@@ -61,7 +61,7 @@ export function memoryStore() {
     },
     async updateAccount(id, fields) {
       const a = db.accounts.get(id);
-      for (const k of ['name', 'pincode', 'district', 'state', 'heard', 'upd_sms', 'upd_wa', 'lang']) if (fields[k] !== undefined) a[k] = fields[k];
+      for (const k of ['name', 'pincode', 'district', 'state', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang']) if (fields[k] !== undefined) a[k] = fields[k];
       return copy(a);
     },
     async lookupPincode(pin) { return copy(db.pincodes.get(pin)); },

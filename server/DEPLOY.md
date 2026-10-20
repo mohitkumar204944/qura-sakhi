@@ -1,7 +1,11 @@
 # Deploying Sakhi's server
 
 The server is built and tested on this Mac (`npm run test:server`). These steps put it on Sakhi's own free Supabase
-project. Steps 1–3 involve your accounts and keys, so you run them. It takes about 20 minutes and costs ₹0.
+project. It costs ₹0.
+
+**Where it stands (20 Oct 2026):** steps 1 to 5 are done. WhatsApp and SMS codes both reached a staff phone. The project
+is `qura-sakhi` (ref `jovplellzaxebcdekpax`, Mumbai), in the free "Qura Sakhi" organisation. What's left is the
+staff-phone test with 0.22-demo (step 6). That APK is built and points at this server.
 
 ## 1. Create the free project (Supabase dashboard)
 
@@ -26,7 +30,7 @@ supabase login
 ```
 
 ```bash
-supabase link --project-ref <your-project-ref>
+supabase link --project-ref jovplellzaxebcdekpax
 ```
 
 ```bash
@@ -37,58 +41,70 @@ supabase db push
 
 ## 3. Set the secrets
 
-1. Create `server/.env.sakhi`. Git ignores it, so it is never committed. Fill it in like this:
-
-   ```
-   SAKHI_OTP_PEPPER=<output of: openssl rand -hex 32>
-   SAKHI_IP_SALT_SEED=<output of: openssl rand -hex 32>
-   SAKHI_META_TOKEN=<Qura's META_WA_ACCESS_TOKEN>
-   SAKHI_WA_PHONE_ID=<Qura's META_WA_PHONE_NUMBER_ID>
-   SAKHI_AUTHKEY_KEY=<Qura's AUTHKEY_API_KEY>
-   SAKHI_AUTHKEY_OTP_SID=<Qura's AUTHKEY_OTP_SID>
-   ```
-
-   - The four Qura values are in Vercel, under the production environment variables.
-   - If Qura sets `META_GRAPH_VERSION`, also add `SAKHI_META_GRAPH_VERSION=<the same value>`. Without it the server uses
-     `v21.0`, the same default as Qura's code.
-
-2. Load the secrets into the project:
+1. The server's own two keys. They are made up on the spot and nobody needs to know them:
 
    ```bash
-   supabase secrets set --env-file .env.sakhi
+   supabase secrets set SAKHI_OTP_PEPPER="$(openssl rand -hex 32)" SAKHI_IP_SALT_SEED="$(openssl rand -hex 32)"
    ```
 
-3. Move `.env.sakhi` into your password manager and delete it from disk.
-4. **When Qura rotates its Meta token or AuthKey key, update them here too.**
+   Changing them later is harmless. It only cancels codes sent in the last 10 minutes and restarts today's per-IP counts.
+
+2. Qura's four sending keys. Open Vercel (Qura's production project → Settings → Environment Variables), then run:
+
+   ```bash
+   ~/Desktop/QuraSakhi/sakhi/server/scripts/set-qura-keys.sh
+   ```
+
+   - It asks for `META_WA_ACCESS_TOKEN`, `META_WA_PHONE_NUMBER_ID`, `AUTHKEY_API_KEY` and `AUTHKEY_OTP_SID`, plus
+     `META_GRAPH_VERSION` if Qura has one.
+   - It checks the Meta pair with Meta, then saves them as `SAKHI_META_TOKEN`, `SAKHI_WA_PHONE_ID`, `SAKHI_AUTHKEY_KEY`
+     and `SAKHI_AUTHKEY_OTP_SID`. Nothing is written to disk.
+   - It never prints a key. It refuses a token that isn't letters and digits, or that Meta calls broken (error 190).
+   - If the app's Terminal panel answers "Operation not permitted", macOS is keeping the panel out of Desktop folders. Run
+     it from the Mac's Terminal app instead, or from a copy outside Desktop.
+   - Without a graph version the server uses `v21.0`, the same default as Qura's code.
+
+3. **When Qura rotates its Meta token or AuthKey key, run the script again.**
 
 ## 4. Deploy the function
-
-Docker must be running; the CLI uses it to bundle the function.
 
 ```bash
 supabase functions deploy sakhi-api --no-verify-jwt
 ```
 
-The address is `https://<your-project-ref>.supabase.co/functions/v1/sakhi-api`.
+Docker isn't needed. Without it, the CLI uploads the files and Supabase bundles them. The address is
+`https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api`.
 
 ## 5. Check it
 
 The first command should answer `204` with `access-control-allow-origin: *`:
 
 ```bash
-curl -i -X OPTIONS https://<your-project-ref>.supabase.co/functions/v1/sakhi-api/v1/me
+curl -i -X OPTIONS https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/me
 ```
 
-The second sends a real WhatsApp code to that number. Use a staff number only:
+The second uses a made-up session, so it should answer `401`. A `500` means the function can't reach its database:
 
 ```bash
-curl -s -X POST https://<your-project-ref>.supabase.co/functions/v1/sakhi-api/v1/otp/start -H 'content-type: application/json' -d '{"phone":"+91XXXXXXXXXX"}'
+curl -s -w ' [%{http_code}]\n' https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/me -H "authorization: Bearer $(openssl rand -hex 32)"
 ```
+
+The third sends a real WhatsApp code to that number. Use a staff number only:
+
+```bash
+curl -s -X POST https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/otp/start -H 'content-type: application/json' -d '{"phone":"+91XXXXXXXXXX"}'
+```
+
+What it answers:
+
+- `"channel":"whatsapp"`: WhatsApp worked.
+- `"channel":"sms"`: WhatsApp failed and the SMS went instead. The logs say why (`whatsapp_failed`).
+- `send_failed`: both failed.
 
 ## 6. Point the app at it and test with staff phones
 
 ```bash
-cd ~/Desktop/QuraSakhi/sakhi/android && SAKHI_API=https://<your-project-ref>.supabase.co/functions/v1/sakhi-api VERSION_CODE=22 VERSION_NAME=0.22-demo ./build-apk.sh
+cd ~/Desktop/QuraSakhi/sakhi/android && SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=22 VERSION_NAME=0.22-demo ./build-apk.sh
 ```
 
 1. On a staff phone, sign up, edit your details, log out, sign back in with "Send by SMS", then delete the account.

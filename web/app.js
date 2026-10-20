@@ -117,8 +117,8 @@
       ob_lang_h: 'Choose your language', ob_phone: 'Phone language', ob_partly: 'Partly translated', ob_hear: 'Tap the speaker at the top to hear any screen.',
       ob_hello_h: 'Your period diary, in your language', ob_p1: 'Your diary stays on this phone.', ob_p2: 'Plain answers based on official health guidance.', ob_p3: 'Free. No ads.',
       ob_read: 'Just read', ob_notice_link: 'How Sakhi keeps your data', w_restore: 'Moving from another phone? Restore your diary',
-      su_phone_h: 'Your mobile number', su_phone_p: 'We send a code to check the number is yours. Your diary stays on this phone: Qura gets only your account details.', su_phone_l: 'Mobile number', su_year_l: 'Year you were born', su_year_u18: 'Under 18', su_choose: 'Choose', su_phone_bad: 'Enter a 10-digit mobile number.', su_year_bad: 'Choose the year you were born.', su_send: 'Send code', su_agree: 'By continuing, you agree to this:', su_code_h: 'Enter the code', su_code_p: 'We sent a 6-digit code to {p}.', su_code_wa: 'We sent a 6-digit code on WhatsApp to {p}.', su_code_sms: 'We sent a 6-digit code by SMS to {p}.', su_sms_instead: 'Not on WhatsApp? Send by SMS', su_code_l: '6-digit code', su_change: 'Change number', su_resend: 'Send a new code', su_resend_in: 'New code in {n}', su_verify: 'Verify', su_wrong: 'That code didn’t match. Check the SMS and try again.', su_expired: 'That code has expired. Ask for a new one.', su_locked: 'Too many tries. Please wait a little and try again.', su_net: 'Couldn’t reach Qura. Check your internet and try again.', su_later: 'Continue for now', su_later_p: 'You can sign up later from Home or the Me page. Your diary works without it.', su_demo: 'Prototype: no message is sent. The code is 123456.', su_about_h: 'Almost done', su_about_p: 'All optional. This helps Qura reach more women; your diary is never part of it.', su_name_l: 'First name (optional)', su_pin_l: 'PIN code (optional)', su_pin_d: 'So Qura knows which areas Sakhi reaches.', su_pin_bad: 'A PIN code has 6 numbers.', su_heard_l: 'How did you hear about Sakhi?', su_h_doc: 'Doctor or ASHA', su_h_fam: 'Friend or family', su_h_wa: 'WhatsApp', su_h_social: 'Instagram or YouTube', su_h_qura: 'Qura', su_h_other: 'Somewhere else', su_upd_h: 'Updates from Sakhi', su_upd_sms: 'Send me updates by SMS', su_upd_wa: 'Send me updates on WhatsApp', su_upd_d: 'New guides and health programme news. Never anything about your own health.', su_skip: 'Skip', su_ok: 'You’re signed up.',
-      acc_h: 'Your Sakhi account', acc_none: 'You haven’t signed up yet. It takes a minute: your number and a code.', acc_signup: 'Sign up', acc_num: 'Mobile number', acc_name: 'Name', acc_pin: 'PIN code', acc_heard: 'Heard about Sakhi from', acc_upd: 'Updates', acc_sms: 'SMS', acc_on: 'on', acc_off: 'off', acc_edit: 'Edit details', acc_logout: 'Log out', acc_del: 'Delete my account', acc_del_sure: 'Delete your Sakhi account? Qura deletes your number and details. Your diary on this phone stays; to remove it too, use Delete everything.', acc_del_yes: 'Yes, delete it', acc_del_done: 'Your account is deleted.', acc_out_done: 'You’re logged out. Your diary is still here.', acc_saved: 'Saved.', acc_pending: 'Not sent yet. Sakhi will try again when you’re online.', acc_card_h: 'Finish signing up', acc_card_p: 'Add your mobile number to keep your Sakhi account. Your diary stays on this phone.', acc_keeps: 'Qura keeps only these details. Your diary stays on this phone.', ob_notice_5: 'Your Sakhi account: Qura keeps your mobile number and birth year, and anything you add (first name, PIN code, how you heard of Sakhi, whether you want updates). It also notes the last day you opened Sakhi and the app version. Nothing from your diary.',
+      su_phone_h: 'Your mobile number', su_phone_p: 'We send a code to check the number is yours. Your diary stays on this phone: Qura gets only your account details.', su_phone_l: 'Mobile number', su_year_l: 'Year you were born', su_year_u18: 'Under 18', su_choose: 'Choose', su_phone_bad: 'Enter a 10-digit mobile number.', su_year_bad: 'Choose the year you were born.', su_send: 'Send code', su_agree: 'By continuing, you agree to this:', su_code_h: 'Enter the code', su_code_p: 'We sent a 6-digit code to {p}.', su_code_wa: 'We sent a 6-digit code on WhatsApp to {p}.', su_code_sms: 'We sent a 6-digit code by SMS to {p}.', su_sms_instead: 'Not on WhatsApp? Send by SMS', su_code_l: '6-digit code', su_change: 'Change number', su_resend: 'Send a new code', su_resend_in: 'New code in {n}', su_verify: 'Verify', su_wrong: 'That code didn’t match. Check the SMS and try again.', su_expired: 'That code has expired. Ask for a new one.', su_locked: 'Too many tries. Please wait a little and try again.', su_net: 'Couldn’t reach Qura. Check your internet and try again.', su_later: 'Continue for now', su_later_p: 'You can sign up later from Home or the Me page. Your diary works without it.', su_demo: 'Prototype: no message is sent. The code is 123456.', su_about_h: 'Almost done', su_about_p: 'Your first name and PIN code are needed; the rest is up to you. This helps Qura reach more women; your diary is never part of it.', su_name_l: 'First name', su_name_bad: 'Enter your first name.', su_pin_l: 'PIN code', su_pin_d: 'So Qura knows which areas Sakhi reaches.', su_pin_bad: 'Enter your 6-digit PIN code.', su_email_l: 'Email (optional)', su_email_d: 'Only for Qura to reach you about your account.', su_email_bad: 'That email doesn’t look right.', su_heard_l: 'How did you hear about Sakhi?', su_h_doc: 'Doctor or ASHA', su_h_fam: 'Friend or family', su_h_wa: 'WhatsApp', su_h_social: 'Instagram or YouTube', su_h_qura: 'Qura', su_h_other: 'Somewhere else', su_upd_h: 'Updates from Sakhi', su_upd_sms: 'Send me updates by SMS', su_upd_wa: 'Send me updates on WhatsApp', su_upd_d: 'New guides and health programme news. Never anything about your own health.', su_ok: 'You’re signed up.',
+      acc_h: 'Your Sakhi account', acc_none: 'You haven’t signed up yet. It takes a minute: your number and a code.', acc_signup: 'Sign up', acc_num: 'Mobile number', acc_name: 'Name', acc_pin: 'PIN code', acc_email: 'Email', acc_heard: 'Heard about Sakhi from', acc_upd: 'Updates', acc_sms: 'SMS', acc_on: 'on', acc_off: 'off', acc_edit: 'Edit details', acc_logout: 'Log out', acc_del: 'Delete my account', acc_del_sure: 'Delete your Sakhi account? Qura deletes your number and details. Your diary on this phone stays; to remove it too, use Delete everything.', acc_del_yes: 'Yes, delete it', acc_del_done: 'Your account is deleted.', acc_out_done: 'You’re logged out. Your diary is still here.', acc_saved: 'Saved.', acc_pending: 'Not sent yet. Sakhi will try again when you’re online.', acc_card_h: 'Finish signing up', acc_card_p: 'Add your mobile number to keep your Sakhi account. Your diary stays on this phone.', acc_keeps: 'Qura keeps only these details. Your diary stays on this phone.', ob_notice_5: 'Your Sakhi account: Qura keeps your mobile number, birth year, first name and PIN code, and anything else you add (email, how you heard of Sakhi, whether you want updates). It also notes the last day you opened Sakhi and the app version. Nothing from your diary.',
       ob_notice_1: 'What you note (dates, symptoms, notes) is saved only on this phone.', ob_notice_2: 'Your diary never goes to Qura or anyone else unless you choose to share it, for example with your doctor before a call. Sakhi asks each time and shows what would be shared.', ob_notice_3: 'No ads and no ad companies. Your entries are never sold.', ob_notice_4: 'Delete your diary any time from the Me page, and your account too.',
       ob_age_h: 'What year were you born?', ob_age_p: 'The diary is for women 18 and over. Qura keeps only the year, with your account.', ob_before: 'Before 1950', ob_after: '2010 or later', ob_month_h: 'And the month?', ob_u18: 'Under 18? You can still read every help page.',
       ob_stage_h: 'What’s happening for you now?', ob_stage_p: 'Pick one. You can change it any time.', ob_st_cycle: 'My periods', ob_st_ttc: 'Trying for a baby', ob_st_preg: 'I’m pregnant', ob_st_post: 'I had a baby', ob_st_meno: 'Periods changing after 40', ob_st_learn: 'Just learning',
@@ -139,6 +139,7 @@
       qa_pmsigns: 'Signs to notice', qa_pmtests: 'Which tests and why', qa_pmfood: 'Food for hormones',
       tour_home: 'Your Home', tour_diary: 'Your diary', tour_care: 'Care and the doctor', tour_help: 'Help in an emergency', tour_me: 'Privacy on a shared phone', tour_steps: '{n} short steps', tour_seen: 'seen',
       tour_listen: 'Listen', tour_close: 'Close', tour_later: 'Not now', tour_back: 'Back', tour_next: 'Next', tour_done: 'Done', tour_great: 'That’s it. You’ve got it.',
+      tour_to: 'Next: {s}', tour_full: 'The full tour', tour_full_d: '{n} screens, one after another', tour_full_done: 'That’s the whole tour. Replay it any time from How to use Sakhi in Me.',
       howto_h: 'How to use Sakhi', howto_p: 'Short tours you can replay any time.', tours_auto: 'Show a tour on new screens', tours_auto_d: 'A short tour the first time you open a screen', tour_voice: 'Read tours aloud', tour_voice_d: 'Sakhi reads each step. Off at first, for shared phones.', tours_again: 'Show the tours again', tours_again_done: 'The tours will show again.',
       tw1_h: 'Your week', tw1_p: 'Each circle is a day. Tap a day to note what happened.', tw2_h: 'One tap to note', tw2_p: 'These buttons save today in one tap. You can always undo.', tw3_h: 'Ask anything', tw3_p: 'Type a question in Hindi or English. Try it now: tap the box.', tw3_pm: 'Type a question, or tap the mic and speak in Hindi. Try it now.',
       td1_h: 'Your calendar', td1_p: 'Tap any day to fill it in or fix a date. Dots show what you noted.', td1_pd: 'Tap any day to add or change a note.', td2_h: 'Trends', td2_p: 'Your gaps between periods and what you noted most, over the months.', td2_pd: 'Your notes over the months.', td3_h: 'Add for today', td3_p: 'Tap + for today’s period, symptoms, mood or a note. Try it now.', td3_pd: 'Tap + to add a note for today. Try it now.',
@@ -291,8 +292,8 @@
       ob_lang_h: 'अपनी भाषा चुनें', ob_phone: 'फ़ोन की भाषा', ob_partly: 'थोड़ा अनुवाद', ob_hear: 'कोई भी स्क्रीन सुनने के लिए ऊपर स्पीकर दबाएँ।',
       ob_hello_h: 'आपकी पीरियड डायरी, आपकी भाषा में', ob_p1: 'आपकी डायरी इसी फ़ोन पर रहती है।', ob_p2: 'सीधे-सादे जवाब, सरकारी और डॉक्टरी गाइडलाइन के आधार पर।', ob_p3: 'मुफ़्त। कोई विज्ञापन नहीं।',
       ob_read: 'सिर्फ़ पढ़ना है', ob_notice_link: 'Sakhi आपका डेटा कैसे रखती है', w_restore: 'दूसरे फ़ोन से आ रही हैं? अपनी डायरी वापस लाएँ',
-      su_phone_h: 'आपका मोबाइल नंबर', su_phone_p: 'नंबर आपका ही है, यह जाँचने के लिए हम एक कोड भेजते हैं। आपकी डायरी इसी फ़ोन पर रहती है: Qura को सिर्फ़ आपके अकाउंट की जानकारी मिलती है।', su_phone_l: 'मोबाइल नंबर', su_year_l: 'आपका जन्म किस साल हुआ', su_year_u18: '18 से कम', su_choose: 'चुनें', su_phone_bad: '10 अंकों का मोबाइल नंबर डालें।', su_year_bad: 'अपने जन्म का साल चुनें।', su_send: 'कोड भेजें', su_agree: 'आगे बढ़कर आप इससे सहमत हैं:', su_code_h: 'कोड डालें', su_code_p: 'हमने {p} पर 6 अंकों का कोड भेजा है।', su_code_wa: 'हमने {p} पर WhatsApp से 6 अंकों का कोड भेजा है।', su_code_sms: 'हमने {p} पर SMS से 6 अंकों का कोड भेजा है।', su_sms_instead: 'WhatsApp नहीं है? SMS से भेजें', su_code_l: '6 अंकों का कोड', su_change: 'नंबर बदलें', su_resend: 'नया कोड भेजें', su_resend_in: 'नया कोड {n} में', su_verify: 'जाँचें', su_wrong: 'कोड मेल नहीं खाया। SMS देखकर फिर से डालें।', su_expired: 'इस कोड का समय ख़त्म हो गया। नया कोड मँगाएँ।', su_locked: 'बहुत बार कोशिश हो गई। थोड़ी देर रुककर फिर कोशिश करें।', su_net: 'Qura तक नहीं पहुँच पाए। इंटरनेट देखकर फिर कोशिश करें।', su_later: 'अभी आगे बढ़ें', su_later_p: 'साइन-अप बाद में होम या "मैं" पेज से कर सकती हैं। डायरी उसके बिना भी चलती है।', su_demo: 'Prototype: कोई message नहीं भेजा जाता। कोड 123456 है।', su_about_h: 'बस हो गया', su_about_p: 'सब वैकल्पिक है। इससे Qura ज़्यादा महिलाओं तक पहुँच पाता है; आपकी डायरी इसमें कभी शामिल नहीं होती।', su_name_l: 'पहला नाम (वैकल्पिक)', su_pin_l: 'पिन कोड (वैकल्पिक)', su_pin_d: 'ताकि Qura जान सके कि Sakhi किन इलाक़ों तक पहुँच रही है।', su_pin_bad: 'पिन कोड में 6 अंक होते हैं।', su_heard_l: 'आपको Sakhi के बारे में कहाँ से पता चला?', su_h_doc: 'डॉक्टर या आशा दीदी', su_h_fam: 'दोस्त या परिवार', su_h_wa: 'WhatsApp', su_h_social: 'Instagram या YouTube', su_h_qura: 'Qura', su_h_other: 'कहीं और', su_upd_h: 'Sakhi से अपडेट', su_upd_sms: 'मुझे SMS से अपडेट भेजें', su_upd_wa: 'मुझे WhatsApp पर अपडेट भेजें', su_upd_d: 'नई गाइड और सरकारी स्वास्थ्य योजनाओं की ख़बरें। आपकी अपनी सेहत के बारे में कभी कुछ नहीं।', su_skip: 'छोड़ें', su_ok: 'आपका साइन-अप हो गया।',
-      acc_h: 'आपका Sakhi अकाउंट', acc_none: 'आपने अभी साइन-अप नहीं किया है। एक मिनट लगता है: आपका नंबर और एक कोड।', acc_signup: 'साइन-अप करें', acc_num: 'मोबाइल नंबर', acc_name: 'नाम', acc_pin: 'पिन कोड', acc_heard: 'Sakhi के बारे में पता चला', acc_upd: 'अपडेट', acc_sms: 'SMS', acc_on: 'चालू', acc_off: 'बंद', acc_edit: 'जानकारी बदलें', acc_logout: 'लॉग-आउट', acc_del: 'मेरा अकाउंट मिटाएँ', acc_del_sure: 'अपना Sakhi अकाउंट मिटाएँ? Qura आपका नंबर और जानकारी मिटा देगा। इस फ़ोन पर आपकी डायरी बनी रहेगी; उसे भी हटाना हो तो "सब कुछ delete करें" दबाएँ।', acc_del_yes: 'हाँ, मिटाएँ', acc_del_done: 'आपका अकाउंट मिटा दिया गया।', acc_out_done: 'आप लॉग-आउट हो गईं। आपकी डायरी यहीं है।', acc_saved: 'सेव हो गया।', acc_pending: 'अभी भेजा नहीं गया। इंटरनेट मिलने पर Sakhi फिर कोशिश करेगी।', acc_card_h: 'साइन-अप पूरा करें', acc_card_p: 'अपना Sakhi अकाउंट रखने के लिए मोबाइल नंबर जोड़ें। आपकी डायरी इसी फ़ोन पर रहती है।', acc_keeps: 'Qura सिर्फ़ यही जानकारी रखता है। आपकी डायरी इसी फ़ोन पर रहती है।', ob_notice_5: 'आपका Sakhi अकाउंट: Qura आपका मोबाइल नंबर और जन्म का साल रखता है, और जो आप ख़ुद जोड़ें (पहला नाम, पिन कोड, Sakhi के बारे में कहाँ से पता चला, अपडेट चाहिए या नहीं)। साथ में आख़िरी बार Sakhi कब खोली और ऐप का version। आपकी डायरी से कुछ नहीं।',
+      su_phone_h: 'आपका मोबाइल नंबर', su_phone_p: 'नंबर आपका ही है, यह जाँचने के लिए हम एक कोड भेजते हैं। आपकी डायरी इसी फ़ोन पर रहती है: Qura को सिर्फ़ आपके अकाउंट की जानकारी मिलती है।', su_phone_l: 'मोबाइल नंबर', su_year_l: 'आपका जन्म किस साल हुआ', su_year_u18: '18 से कम', su_choose: 'चुनें', su_phone_bad: '10 अंकों का मोबाइल नंबर डालें।', su_year_bad: 'अपने जन्म का साल चुनें।', su_send: 'कोड भेजें', su_agree: 'आगे बढ़कर आप इससे सहमत हैं:', su_code_h: 'कोड डालें', su_code_p: 'हमने {p} पर 6 अंकों का कोड भेजा है।', su_code_wa: 'हमने {p} पर WhatsApp से 6 अंकों का कोड भेजा है।', su_code_sms: 'हमने {p} पर SMS से 6 अंकों का कोड भेजा है।', su_sms_instead: 'WhatsApp नहीं है? SMS से भेजें', su_code_l: '6 अंकों का कोड', su_change: 'नंबर बदलें', su_resend: 'नया कोड भेजें', su_resend_in: 'नया कोड {n} में', su_verify: 'जाँचें', su_wrong: 'कोड मेल नहीं खाया। SMS देखकर फिर से डालें।', su_expired: 'इस कोड का समय ख़त्म हो गया। नया कोड मँगाएँ।', su_locked: 'बहुत बार कोशिश हो गई। थोड़ी देर रुककर फिर कोशिश करें।', su_net: 'Qura तक नहीं पहुँच पाए। इंटरनेट देखकर फिर कोशिश करें।', su_later: 'अभी आगे बढ़ें', su_later_p: 'साइन-अप बाद में होम या "मैं" पेज से कर सकती हैं। डायरी उसके बिना भी चलती है।', su_demo: 'Prototype: कोई message नहीं भेजा जाता। कोड 123456 है।', su_about_h: 'बस हो गया', su_about_p: 'पहला नाम और पिन कोड ज़रूरी हैं; बाक़ी आपकी मर्ज़ी। इससे Qura ज़्यादा महिलाओं तक पहुँच पाता है; आपकी डायरी इसमें कभी शामिल नहीं होती।', su_name_l: 'पहला नाम', su_name_bad: 'अपना पहला नाम डालें।', su_pin_l: 'पिन कोड', su_pin_d: 'ताकि Qura जान सके कि Sakhi किन इलाक़ों तक पहुँच रही है।', su_pin_bad: 'अपना 6 अंकों का पिन कोड डालें।', su_email_l: 'ईमेल (वैकल्पिक)', su_email_d: 'सिर्फ़ इसलिए कि Qura आपके अकाउंट के बारे में आपसे संपर्क कर सके।', su_email_bad: 'यह ईमेल सही नहीं लग रहा।', su_heard_l: 'आपको Sakhi के बारे में कहाँ से पता चला?', su_h_doc: 'डॉक्टर या आशा दीदी', su_h_fam: 'दोस्त या परिवार', su_h_wa: 'WhatsApp', su_h_social: 'Instagram या YouTube', su_h_qura: 'Qura', su_h_other: 'कहीं और', su_upd_h: 'Sakhi से अपडेट', su_upd_sms: 'मुझे SMS से अपडेट भेजें', su_upd_wa: 'मुझे WhatsApp पर अपडेट भेजें', su_upd_d: 'नई गाइड और सरकारी स्वास्थ्य योजनाओं की ख़बरें। आपकी अपनी सेहत के बारे में कभी कुछ नहीं।', su_ok: 'आपका साइन-अप हो गया।',
+      acc_h: 'आपका Sakhi अकाउंट', acc_none: 'आपने अभी साइन-अप नहीं किया है। एक मिनट लगता है: आपका नंबर और एक कोड।', acc_signup: 'साइन-अप करें', acc_num: 'मोबाइल नंबर', acc_name: 'नाम', acc_pin: 'पिन कोड', acc_email: 'ईमेल', acc_heard: 'Sakhi के बारे में पता चला', acc_upd: 'अपडेट', acc_sms: 'SMS', acc_on: 'चालू', acc_off: 'बंद', acc_edit: 'जानकारी बदलें', acc_logout: 'लॉग-आउट', acc_del: 'मेरा अकाउंट मिटाएँ', acc_del_sure: 'अपना Sakhi अकाउंट मिटाएँ? Qura आपका नंबर और जानकारी मिटा देगा। इस फ़ोन पर आपकी डायरी बनी रहेगी; उसे भी हटाना हो तो "सब कुछ delete करें" दबाएँ।', acc_del_yes: 'हाँ, मिटाएँ', acc_del_done: 'आपका अकाउंट मिटा दिया गया।', acc_out_done: 'आप लॉग-आउट हो गईं। आपकी डायरी यहीं है।', acc_saved: 'सेव हो गया।', acc_pending: 'अभी भेजा नहीं गया। इंटरनेट मिलने पर Sakhi फिर कोशिश करेगी।', acc_card_h: 'साइन-अप पूरा करें', acc_card_p: 'अपना Sakhi अकाउंट रखने के लिए मोबाइल नंबर जोड़ें। आपकी डायरी इसी फ़ोन पर रहती है।', acc_keeps: 'Qura सिर्फ़ यही जानकारी रखता है। आपकी डायरी इसी फ़ोन पर रहती है।', ob_notice_5: 'आपका Sakhi अकाउंट: Qura आपका मोबाइल नंबर, जन्म का साल, पहला नाम और पिन कोड रखता है, और जो कुछ आप ख़ुद जोड़ें (ईमेल, Sakhi के बारे में कहाँ से पता चला, अपडेट चाहिए या नहीं)। साथ में आख़िरी बार Sakhi कब खोली और ऐप का version। आपकी डायरी से कुछ नहीं।',
       ob_notice_1: 'आप जो भी नोट करती हैं (तारीख़ें, लक्षण, नोट), वह सिर्फ़ इसी फ़ोन पर सेव होता है।', ob_notice_2: 'जब तक आप ख़ुद शेयर न करें, आपकी डायरी कभी Qura या किसी और के पास नहीं जाती, जैसे कॉल से पहले अपनी डॉक्टर को दिखाना। Sakhi हर बार पूछती है और बताती है कि क्या शेयर होगा।', ob_notice_3: 'कोई विज्ञापन नहीं, कोई विज्ञापन कंपनी नहीं। आपकी entries कभी बेची नहीं जातीं।', ob_notice_4: 'अपनी डायरी कभी भी "मैं" पेज से मिटा सकती हैं, और अपना अकाउंट भी।',
       ob_age_h: 'आपका जन्म किस साल हुआ?', ob_age_p: 'डायरी 18 साल और उससे बड़ी महिलाओं के लिए है। Qura आपके अकाउंट के साथ सिर्फ़ साल रखता है।', ob_before: '1950 से पहले', ob_after: '2010 या बाद में', ob_month_h: 'और महीना?', ob_u18: '18 से कम? मदद के सारे पन्ने फिर भी पढ़ सकती हैं।',
       ob_stage_h: 'अभी आपके साथ क्या चल रहा है?', ob_stage_p: 'एक चुनें। बाद में कभी भी बदल सकती हैं।', ob_st_cycle: 'मेरे पीरियड', ob_st_ttc: 'बच्चे की कोशिश', ob_st_preg: 'मैं गर्भवती हूँ', ob_st_post: 'मेरा बच्चा हुआ है', ob_st_meno: '40 के बाद बदलते पीरियड', ob_st_learn: 'बस जानना है',
@@ -313,6 +314,7 @@
       qa_pmsigns: 'ध्यान देने वाले लक्षण', qa_pmtests: 'कौन-सी जाँच और क्यों', qa_pmfood: 'हार्मोन के लिए खाना',
       tour_home: 'आपका होम', tour_diary: 'आपकी डायरी', tour_care: 'देखभाल और डॉक्टर', tour_help: 'इमरजेंसी में मदद', tour_me: 'शेयर्ड फ़ोन पर निजता', tour_steps: '{n} छोटे क़दम', tour_seen: 'देख लिया',
       tour_listen: 'सुनें', tour_close: 'बंद करें', tour_later: 'अभी नहीं', tour_back: 'पीछे', tour_next: 'आगे', tour_done: 'हो गया', tour_great: 'बस इतना ही। आप सीख गईं।',
+      tour_to: 'आगे: {s}', tour_full: 'पूरा टूर', tour_full_d: '{n} स्क्रीन, एक के बाद एक', tour_full_done: 'पूरा टूर हो गया। "मैं" में "Sakhi कैसे इस्तेमाल करें" से इसे कभी भी फिर देख सकती हैं।',
       howto_h: 'Sakhi कैसे इस्तेमाल करें', howto_p: 'छोटे टूर, जिन्हें कभी भी फिर देख सकती हैं।', tours_auto: 'नई स्क्रीन पर टूर दिखाएँ', tours_auto_d: 'किसी स्क्रीन को पहली बार खोलने पर एक छोटा टूर', tour_voice: 'टूर पढ़कर सुनाएँ', tour_voice_d: 'Sakhi हर क़दम पढ़कर सुनाती है। शेयर्ड फ़ोन के लिए यह शुरू में बंद रहता है।', tours_again: 'टूर फिर से दिखाएँ', tours_again_done: 'टूर फिर से दिखेंगे।',
       tw1_h: 'आपका हफ़्ता', tw1_p: 'हर गोला एक दिन है। जो हुआ, नोट करने के लिए दिन पर टैप करें।', tw2_h: 'एक टैप में नोट', tw2_p: 'ये बटन आज का हाल एक टैप में सेव करते हैं। ग़लती हो तो वापस ले सकती हैं।', tw3_h: 'कुछ भी पूछें', tw3_p: 'हिंदी या अंग्रेज़ी में सवाल लिखें। अभी आज़माएँ: बॉक्स पर टैप करें।', tw3_pm: 'सवाल लिखें, या माइक दबाकर हिंदी में बोलें। अभी आज़माएँ।',
       td1_h: 'आपका कैलेंडर', td1_p: 'किसी भी दिन को भरने या तारीख़ ठीक करने के लिए उस पर टैप करें। बिंदु बताते हैं कि आपने क्या नोट किया।', td1_pd: 'नोट जोड़ने या बदलने के लिए किसी भी दिन पर टैप करें।', td2_h: 'ट्रेंड्स', td2_p: 'पीरियड के बीच के अंतर और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ।', td2_pd: 'महीनों के साथ आपके नोट।', td3_h: 'आज के लिए जोड़ें', td3_p: 'आज का पीरियड, लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', td3_pd: 'आज के लिए नोट जोड़ने को + दबाएँ। अभी आज़माएँ।',
@@ -699,7 +701,7 @@
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
     if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; if (curRoute === 'ask') mem.askDraft = null; }   /* a sheet never follows her to another screen */
-    const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced } : null; renderFab(null); clearTour();
+    const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced, chain: tour.chain } : null; renderFab(null); clearTour();
     renderTopbar(); renderTabbar();
     const v = view(); v.innerHTML = '';
     if (mem.locked && state.settings.pinHash) { renderLock(v); curRoute = null; window.scrollTo(0, 0); return; }
@@ -722,7 +724,7 @@
     const y = r === curRoute ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0);
     curRoute = r; window.scrollTo(0, y);
     renderFab(r);
-    if (keepTour) setTimeout(() => { const def = tourDef(keepTour.id); if (!def || route() !== r) return; const steps = def.steps.filter((x) => document.querySelector(x.sel)); if (!steps.length) return; tour = { def: def, steps: steps, i: Math.min(keepTour.i, steps.length - 1), forced: keepTour.forced, el: null }; showTourStep(false); }, 120);
+    if (keepTour) setTimeout(() => { const def = tourDef(keepTour.id); if (!def || route() !== r) return; const steps = def.steps.filter((x) => document.querySelector(x.sel)); if (!steps.length) return; tour = { def: def, steps: steps, i: Math.min(keepTour.i, steps.length - 1), forced: keepTour.forced, chain: keepTour.chain || null, el: null }; showTourStep(false); }, 120);
     else queueTour(r);
   }
 
@@ -1023,19 +1025,19 @@
      server's side is server/SERVER_SPEC.md. With no server address (window.SAKHI_CONFIG.api) a stand-in server runs on the phone
      and sends nothing: its code is always 123456, and the code screen says so. */
   const ACC_KEY = 'qura-sakhi-account-v1';
-  const NOTICE_V = '2026-10-20';
+  const NOTICE_V = '2026-10-20.2';   /* .2: the account also holds an email, and the first name and PIN code are needed */
   const CFG = Object.assign({ api: '', app: '0.20', platform: window.SakhiAndroid ? 'android' : 'web' }, window.SAKHI_CONFIG || {});
   const DEMO_CODE = '123456';
   const HEARD = ['doc', 'fam', 'wa', 'social', 'qura', 'other'];
   const SEND = {
     'POST otp/start': ['phone', 'channel', 'lang', 'app', 'platform'],
     'POST otp/verify': ['challenge', 'code', 'birth_year', 'notice', 'lang', 'app', 'platform'],
-    'PATCH me': ['name', 'pincode', 'heard', 'upd_sms', 'upd_wa', 'lang'],
+    'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
     'POST me/active': ['app', 'lang'],
     'POST session/logout': [],
     'DELETE me': []
   };
-  const ACC_FIELDS = ['id', 'phone', 'birth_year', 'name', 'pincode', 'heard', 'upd_sms', 'upd_wa'];
+  const ACC_FIELDS = ['id', 'phone', 'birth_year', 'name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa'];
   let acct = {};
   const loadAcct = () => { try { const a = JSON.parse(localStorage.getItem(ACC_KEY) || 'null'); acct = a && typeof a === 'object' && a.token ? a : {}; } catch (e) { acct = {}; } };
   const saveAcct = () => { try { if (acct.token) localStorage.setItem(ACC_KEY, JSON.stringify(acct)); else localStorage.removeItem(ACC_KEY); } catch (e) { /* storage blocked: she signs in again next visit */ } };
@@ -1043,9 +1045,11 @@
   const acctPublic = () => { const o = {}; ACC_FIELDS.forEach((k) => { if (acct[k] !== undefined) o[k] = acct[k]; }); return o; };
   const signedIn = () => !!acct.token;
   /* Everyone signs up except a girl under 18 (no account, nothing saved), the sample women and the first-run screens.
-     After the code, her optional details screen stays up until she continues or skips. */
+     After the code comes her details screen: her first name and PIN code are needed, so it stays up until they are in. It
+     comes back if she closed Sakhi on it, or if an older account never had them. */
   const needsSignup = () => !signedIn() && !mem.teen && !mem.under18 && !state.sample && (state.stage === 'app' || state.stage === 'browse');
-  const signupGate = (r) => r !== 'help' && ((needsSignup() && !mem.suLater) || !!(mem.su && mem.su.step === 'about' && signedIn()));
+  const needsDetails = () => signedIn() && !state.sample && (!acct.name || !acct.pincode);
+  const signupGate = (r) => r !== 'help' && ((needsSignup() && !mem.suLater) || needsDetails() || !!(mem.su && mem.su.step === 'about' && signedIn()));
   const natPhone = (p) => String(p || '').replace(/^\+91/, '');
   const showPhone = (p) => { const n = natPhone(p); return n.length === 10 ? '+91\u00a0' + n.slice(0, 5) + '\u00a0' + n.slice(5) : String(p || ''); };   /* no-break spaces: the number never splits across lines */
   const maskPhone = (p) => { const n = natPhone(p); return n.length === 10 ? '+91\u00a0•••••\u00a0•' + n.slice(6) : '—'; };
@@ -1073,26 +1077,38 @@
       if (key === 'POST otp/start') { if (!/^\+91[6-9]\d{9}$/.test(b.phone || '')) { no(netErr('phone_bad')); return; } demo.phone = b.phone; demo.tries = 0; ok({ challenge: 'demo-' + Date.now().toString(36), channel: b.channel === 'sms' ? 'sms' : 'whatsapp', resend_after: 30, expires_in: 600 }); return; }
       if (key === 'POST otp/verify') {
         if (b.code !== DEMO_CODE) { demo.tries += 1; no(netErr(demo.tries >= 5 ? 'too_many' : 'code_wrong', { tries_left: Math.max(0, 5 - demo.tries) })); return; }
-        ok({ token: 'demo.' + Math.random().toString(36).slice(2), is_new: true, account: { id: 'demo', phone: demo.phone, birth_year: b.birth_year || null, name: null, pincode: null, heard: null, upd_sms: false, upd_wa: false } }); return;
+        ok({ token: 'demo.' + Math.random().toString(36).slice(2), is_new: true, account: { id: 'demo', phone: demo.phone, birth_year: b.birth_year || null, name: null, pincode: null, email: null, heard: null, upd_sms: false, upd_wa: false } }); return;
       }
       if (key === 'PATCH me') { ok({ account: Object.assign(acctPublic(), b) }); return; }
       ok({});
     }, 250));
   }
-  const profileOf = (a) => ({ name: String(a.name || '').trim().slice(0, 40), pincode: String(a.pin || '').trim(), heard: a.heard || '', upd_sms: !!a.sms, upd_wa: !!a.wa });
-  const pinCodeOk = (s) => !s || /^[1-9]\d{5}$/.test(s);
+  const profileOf = (a) => ({ name: String(a.name || '').trim().slice(0, 40), pincode: String(a.pin || '').trim(), email: String(a.email || '').trim().toLowerCase().slice(0, 254), heard: a.heard || '', upd_sms: !!a.sms, upd_wa: !!a.wa });
+  const aboutOf = () => ({ name: acct.name || '', pin: acct.pincode || '', email: acct.email || '', heard: acct.heard || '', sms: !!acct.upd_sms, wa: !!acct.upd_wa });
+  /* The same rules as the server (SERVER_SPEC 5.3): a first name with a letter in it, a 6-digit PIN code, and an email only if
+     it looks like one. */
+  const nameOk = (s) => { const n = String(s || '').trim(); return n.length >= 2 && n.length <= 40 && /\p{L}/u.test(n); };
+  const pinCodeOk = (s) => /^[1-9]\d{5}$/.test(String(s || '').trim());
+  const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+  const emailOk = (s) => { const e = String(s || '').trim(); return !e || (e.length <= 254 && EMAIL_RE.test(e)); };
+  /* the first thing to fix on the details form, and the field to put her in */
+  const aboutErr = (a) => (!nameOk(a.name) ? ['su_name_bad', 'name'] : !pinCodeOk(a.pin) ? ['su_pin_bad', 'pin'] : !emailOk(a.email) ? ['su_email_bad', 'email'] : null);
   /* Her details go now, or wait in acct.pending and go the next time she is online. A refusal (not a lost connection) drops them. */
   const dropPending = (e) => { if (e.code !== 'offline' && !/^http_5/.test(e.code || '')) { delete acct.pending; saveAcct(); } };
+  /* While this save is on its way, acctSync leaves her pending details alone: sending them twice at once made the server
+     record each update choice twice (seen on the live server, 20 Oct). */
+  let saving = false;
   function saveProfile(p, done) {
     Object.assign(acct, p); acct.pending = Object.assign(acct.pending || {}, p); saveAcct();
-    net('PATCH', 'me', Object.assign({ lang: state.lang }, acct.pending)).then((j) => { takeAcct(j.account); delete acct.pending; saveAcct(); if (done) done(true); }, (e) => { dropPending(e); if (done) done(false); });
+    saving = true;
+    net('PATCH', 'me', Object.assign({ lang: state.lang }, acct.pending)).then((j) => { saving = false; takeAcct(j.account); delete acct.pending; saveAcct(); if (done) done(true); }, (e) => { saving = false; dropPending(e); if (done) done(false); });
   }
   /* Once a day while she is signed in: "last active" and the app version (the only usage Qura sees per person), plus any
      details she saved while offline. Never for the sample women. */
   let syncing = false;
   function acctSync() {
     if (!signedIn() || state.sample || syncing) return; const day = toISO(today()); const jobs = [];
-    if (acct.pending) jobs.push(() => (signedIn() ? net('PATCH', 'me', Object.assign({ lang: state.lang }, acct.pending)).then((j) => { takeAcct(j.account); delete acct.pending; saveAcct(); }, dropPending) : null));
+    if (acct.pending && !saving) jobs.push(() => (signedIn() && !saving && acct.pending ? net('PATCH', 'me', Object.assign({ lang: state.lang }, acct.pending)).then((j) => { takeAcct(j.account); delete acct.pending; saveAcct(); }, dropPending) : null));
     if (acct.activeOn !== day) jobs.push(() => (signedIn() ? net('POST', 'me/active', { app: CFG.app, lang: state.lang }).then(() => { if (signedIn()) { acct.activeOn = day; saveAcct(); } }, () => { }) : null));
     if (!jobs.length) return; syncing = true;
     jobs.reduce((p, f) => p.then(f), Promise.resolve()).then(() => { syncing = false; }, () => { syncing = false; });
@@ -1100,24 +1116,27 @@
 
   /* The signup screen. It stands in for every screen but Help until she signs up. When Qura can't be reached, "Continue for
      now" lets her through for this visit and Home keeps a reminder. Steps: number (and birth year if Sakhi never asked it),
-     the SMS code, then optional details. */
+     the SMS code, then her details (first name and PIN code needed, the rest optional). */
   const suErr = (e) => { const su = mem.su; if (!su) return; const c = (e && e.code) || ''; su.offline = c === 'offline' || /^http_5/.test(c); su.err = su.offline ? 'su_net' : ({ phone_bad: 'su_phone_bad', code_wrong: 'su_wrong', code_expired: 'su_expired', challenge_bad: 'su_expired', too_many: 'su_locked' }[c] || 'su_net'); };
   const clock = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
   const resendLeft = () => Math.max(0, Math.ceil((((mem.su && mem.su.resendAt) || 0) - Date.now()) / 1000));
   function aboutFields(a, p) {
-    return '<label for="' + p + '-name">' + esc(t('su_name_l')) + '</label><input id="' + p + '-name" autocomplete="given-name" maxlength="40" value="' + esc(a.name || '') + '">' +
-      '<label for="' + p + '-pin">' + esc(t('su_pin_l')) + '</label><input id="' + p + '-pin" class="num" inputmode="numeric" autocomplete="postal-code" maxlength="6" value="' + esc(a.pin || '') + '"><p class="small">' + esc(t('su_pin_d')) + '</p>' +
+    return '<label for="' + p + '-name">' + esc(t('su_name_l')) + '</label><input id="' + p + '-name" autocomplete="given-name" maxlength="40" aria-required="true" value="' + esc(a.name || '') + '">' +
+      '<label for="' + p + '-pin">' + esc(t('su_pin_l')) + '</label><input id="' + p + '-pin" class="num" inputmode="numeric" autocomplete="postal-code" maxlength="6" aria-required="true" value="' + esc(a.pin || '') + '"><p class="small">' + esc(t('su_pin_d')) + '</p>' +
+      '<label for="' + p + '-email">' + esc(t('su_email_l')) + '</label><input id="' + p + '-email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" value="' + esc(a.email || '') + '"><p class="small">' + esc(t('su_email_d')) + '</p>' +
       '<h2 class="ob-h2">' + esc(t('su_heard_l')) + '</h2><div class="chips" role="group" aria-label="' + esc(t('su_heard_l')) + '">' + HEARD.map((k) => '<button type="button" class="chip' + (a.heard === k ? ' on' : '') + '" data-heard="' + k + '" aria-pressed="' + (a.heard === k) + '">' + esc(t('su_h_' + k)) + '</button>').join('') + '</div>' +
       '<h2 class="ob-h2">' + esc(t('su_upd_h')) + '</h2><div class="list"><label class="item"><span class="body"><strong>' + esc(t('su_upd_sms')) + '</strong></span><input type="checkbox" id="' + p + '-sms"' + (a.sms ? ' checked' : '') + '></label><label class="item"><span class="body"><strong>' + esc(t('su_upd_wa')) + '</strong></span><input type="checkbox" id="' + p + '-wa"' + (a.wa ? ' checked' : '') + '></label></div><p class="small">' + esc(t('su_upd_d')) + '</p>';
   }
   function wireAbout(root, a, p) {
     $('#' + p + '-name', root).addEventListener('input', (e) => { a.name = e.target.value; });
     $('#' + p + '-pin', root).addEventListener('input', (e) => { a.pin = e.target.value.replace(/\D/g, '').slice(0, 6); if (e.target.value !== a.pin) e.target.value = a.pin; });
+    $('#' + p + '-email', root).addEventListener('input', (e) => { a.email = e.target.value; });
     root.querySelectorAll('[data-heard]').forEach((b) => b.addEventListener('click', () => { a.heard = a.heard === b.dataset.heard ? '' : b.dataset.heard; root.querySelectorAll('[data-heard]').forEach((x) => { const on = x.dataset.heard === a.heard; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); }); }));
     $('#' + p + '-sms', root).addEventListener('change', (e) => { a.sms = e.target.checked; });
     $('#' + p + '-wa', root).addEventListener('change', (e) => { a.wa = e.target.checked; });
   }
   function renderSignup(v) {
+    if (signedIn() && (!mem.su || mem.su.step !== 'about')) mem.su = { step: 'about', about: aboutOf() };   /* signed in: only her details are missing */
     const su = mem.su || (mem.su = { step: 'phone', num: '' });
     const err = su.err ? '<div class="flag" role="alert">' + esc(t(su.err)) + '</div>' : '';
     const later = su.offline ? '<div class="card soft"><p class="small" style="color:var(--fg)">' + esc(t('su_later_p')) + '</p><button type="button" class="btn block" id="su-later">' + esc(t('su_later')) + '</button></div>' : '';
@@ -1146,12 +1165,15 @@
       return;
     }
     if (su.step === 'about') {
-      const a = su.about || (su.about = {});
+      const a = su.about || (su.about = aboutOf());
       v.innerHTML = '<div class="stack ob su" style="gap:12px">' + av + '<h1>' + esc(t('su_about_h')) + '</h1><p>' + esc(t('su_about_p')) + '</p>' + aboutFields(a, 'su') + err +
-        '<button type="button" class="btn primary block" id="su-done">' + esc(t('continue')) + '</button><button type="button" class="btn ghost block" id="su-skip">' + esc(t('su_skip')) + '</button></div>';
+        '<button type="button" class="btn primary block" id="su-done">' + esc(t('continue')) + '</button></div>';
       wireAbout(v, a, 'su');
-      $('#su-done', v).addEventListener('click', () => { if (!pinCodeOk(a.pin)) { su.err = 'su_pin_bad'; render(); return; } saveProfile(profileOf(a), (ok) => { if (!ok) toast(t('acc_pending')); }); suFinish(); });
-      $('#su-skip', v).addEventListener('click', suFinish);
+      if (su.errAt) { const f = $('#su-' + su.errAt, v); su.errAt = null; if (f) safe(() => f.focus()); }
+      $('#su-done', v).addEventListener('click', () => {
+        const bad = aboutErr(a); if (bad) { su.err = bad[0]; su.errAt = bad[1]; render(); return; }
+        saveProfile(profileOf(a), (ok) => { if (!ok) toast(t('acc_pending')); }); suFinish();
+      });
       return;
     }
     const y18 = today().getFullYear() - 18;
@@ -1196,8 +1218,8 @@
       if (su.dob && !state.dob) { state.dob = su.dob; save(); }
       acct = { token: String(j.token), since: toISO(today()) }; takeAcct(j.account); if (!acct.phone) acct.phone = su.phone; saveAcct();
       su.busy = false; su.code = '';
-      if (j.is_new === false) { suFinish(); return; }   /* back on a new phone: her details are already with Qura */
-      su.step = 'about'; su.about = { name: acct.name || '', pin: acct.pincode || '', heard: acct.heard || '', sms: !!acct.upd_sms, wa: !!acct.upd_wa }; render(); acctSync();
+      if (j.is_new === false && !needsDetails()) { suFinish(); return; }   /* back on a new phone: her details are already with Qura */
+      su.step = 'about'; su.about = aboutOf(); render(); acctSync();
     }).catch((e) => { if (mem.su !== su) return; su.busy = false; su.code = ''; suErr(e); render(); });
   }
   function suFinish() { clearInterval(mem.suTick); mem.su = null; mem.suLater = false; toast(t('su_ok')); render(); acctSync(); }
@@ -1212,7 +1234,7 @@
     if (!signedIn()) { v.innerHTML = head + '<div class="card soft"><p>' + esc(t('acc_none')) + '</p><button type="button" class="btn primary" style="align-self:flex-start" data-su-go>' + esc(t('acc_signup')) + '</button></div>'; wire(v); return; }
     const row = (k, val) => '<div class="item quiet"><span class="body"><strong>' + esc(t(k)) + '</strong><span>' + esc(val || '—') + '</span></span></div>';
     const upd = t('acc_sms') + ': ' + t(acct.upd_sms ? 'acc_on' : 'acc_off') + ' · WhatsApp: ' + t(acct.upd_wa ? 'acc_on' : 'acc_off');
-    v.innerHTML = head + '<p class="small">' + esc(t('acc_keeps')) + '</p><div class="list" id="acc-list">' + row('acc_num', maskPhone(acct.phone)) + row('acc_name', acct.name) + row('acc_pin', acct.pincode) + row('acc_heard', acct.heard ? t('su_h_' + acct.heard) : '') + row('acc_upd', upd) + '</div>' +
+    v.innerHTML = head + '<p class="small">' + esc(t('acc_keeps')) + '</p><div class="list" id="acc-list">' + row('acc_num', maskPhone(acct.phone)) + row('acc_name', acct.name) + row('acc_pin', acct.pincode) + row('acc_email', acct.email) + row('acc_heard', acct.heard ? t('su_h_' + acct.heard) : '') + row('acc_upd', upd) + '</div>' +
       (acct.pending ? '<p class="small">' + esc(t('acc_pending')) + '</p>' : '') +
       '<div class="grid2"><button type="button" class="btn" id="acc-edit">' + esc(t('acc_edit')) + '</button><button type="button" class="btn" id="acc-out">' + esc(t('acc_logout')) + '</button></div><button type="button" class="btn danger block" id="acc-del">' + esc(t('acc_del')) + '</button><div id="acc-box"></div>';
     wire(v);
@@ -1231,12 +1253,12 @@
     });
   }
   function openAcctEdit() {
-    const a = { name: acct.name || '', pin: acct.pincode || '', heard: acct.heard || '', sms: !!acct.upd_sms, wa: !!acct.upd_wa };
+    const a = aboutOf();
     sheet('<h2>' + esc(t('acc_edit')) + '</h2><div class="stack" style="gap:10px">' + aboutFields(a, 'ae') + '</div><div id="ae-err"></div><div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="ae-no">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="ae-go">' + esc(t('save')) + '</button></div></div>', (sh) => {
       wireAbout(sh, a, 'ae');
       $('#ae-no', sh).addEventListener('click', () => closeSheet(true));
       $('#ae-go', sh).addEventListener('click', () => {
-        if (!pinCodeOk(a.pin)) { $('#ae-err', sh).innerHTML = '<div class="flag" role="alert">' + esc(t('su_pin_bad')) + '</div>'; return; }
+        const bad = aboutErr(a); if (bad) { $('#ae-err', sh).innerHTML = '<div class="flag" role="alert">' + esc(t(bad[0])) + '</div>'; const f = $('#ae-' + bad[1], sh); if (f) safe(() => f.focus()); return; }
         closeSheet(true); saveProfile(profileOf(a), (ok) => { toast(t(ok ? 'acc_saved' : 'acc_pending')); render(); });
       });
     });
@@ -1738,23 +1760,66 @@
   function clearTour() { clearTimeout(tourTm); if (tour && tour.el) tour.el.removeEventListener('click', onTourTarget, true); tour = null; const r = document.getElementById('tour-root'); if (r) r.innerHTML = ''; }
   /* done: she finished or used the feature. later: comes back once, on her next visit; a second "later" turns it off. */
   function endTour(how) {
-    if (!tour) return; const id = tour.def.id; const forced = tour.forced; clearTour(); tourEnded = Date.now();
+    if (!tour) return; const id = tour.def.id; const forced = tour.forced; const chain = tour.chain; clearTour(); tourEnded = Date.now();
     state.tours = state.tours || {}; const prev = state.tours[id];
     if (how === 'done') state.tours[id] = { st: 'done', d: toISO(today()) };
     else if (!forced || !prev || prev.st !== 'done') state.tours[id] = { st: prev && prev.st === 'later' ? 'off' : 'later', d: toISO(today()) };
     save();
+    if (chain && how !== 'done') fullEnd('stopped');   /* Not now, Close, a tap outside or back stops the whole full tour */
   }
+  /* she used the lit feature: that tour is done, and a full tour stops there rather than take her away from it */
   function onTourTarget() {
-    if (!tour) return; const s = tour.steps[tour.i];
-    endTour('done'); if (s.tryIt) setTimeout(() => toast(t('tour_great')), 300);
+    if (!tour) return; const s = tour.steps[tour.i]; const chain = tour.chain;
+    endTour('done'); if (chain) fullEnd('stopped');
+    if (s.tryIt) setTimeout(() => toast(t('tour_great')), 300);
   }
-  /* auto: the first eligible tour for this screen, in order (her stage's Home first). force: a replay from "How to use Sakhi". */
+
+  /* The full tour (Mohit, 20 Oct: "full tour should run for a new user"). The first time she reaches Home on a Sakhi that has
+     it (a new woman, or one who has used Sakhi before and never had it), one tour takes her through every main screen in
+     turn: her stage's Home, Diary, Care, Help and Me. The last step on each screen says "Next: <screen>" and goes there; the
+     step count names the screen. Not now (or Close, a tap outside, back) stops it, and the screens she hasn't seen keep their
+     own first-visit tours. Using a lit feature stops it too. Help is in it because the tour takes her there; Help still never
+     starts a tour on its own. It runs once (state.fullTour), and "How to use Sakhi" replays it. */
+  const FULL = ['home', 'diary', 'care', 'help', 'me'];
+  const screenName = (r) => (r === 'diary' && state.settings.discreet ? t('notes') : t(r));
+  /* each screen's first tour that fits her stage (reading-only women get Care and Help) */
+  const fullLegs = () => FULL.map((r) => TOURS.filter((d) => d.route === r && (d.kind || 'screen') === 'screen' && tourFits(d)).sort((x, y) => (x.order || 50) - (y.order || 50))[0]).filter(Boolean).map((d) => d.id);
+  const fullTourDue = () => state.stage === 'app' && !state.fullTour;
+  function startFullTour(forced, legs) {
+    const ids = legs || fullLegs(); if (!ids.length) return;
+    state.fullTour = { st: 'on', d: toISO(today()) }; save();
+    goLeg({ legs: ids, i: 0, forced: !!forced });
+  }
+  /* one screen of the full tour: go there first (queueTour picks it up), then run it; a screen with nothing to light is skipped */
+  function goLeg(chain) {
+    const def = tourDef(chain.legs[chain.i]); if (!def) { fullEnd('done'); return; }
+    if (route() !== def.route) { mem.tourForce = { id: def.id, route: def.route, chain: chain }; nav.stack = []; setHash(def.route); return; }
+    if ($('#sheet-root').innerHTML) closeSheet(); if (fabOpen) closeFab();
+    if (!runTour(def, chain.forced, chain)) nextLeg(chain);
+  }
+  function nextLeg(chain) {
+    if (chain.i + 1 >= chain.legs.length) { fullEnd('done'); return; }
+    goLeg({ legs: chain.legs, i: chain.i + 1, forced: chain.forced });
+  }
+  function fullEnd(how) {
+    state.fullTour = { st: how, d: toISO(today()) }; save();
+    if (how === 'done') setTimeout(() => toast(t('tour_full_done')), 300);
+  }
+  /* auto: the first eligible tour for this screen, in order (her stage's Home first). force: a replay from "How to use Sakhi",
+     or the next screen of the full tour. */
   function queueTour(r) {
     clearTimeout(tourTm);
-    const force = mem.tourForce && mem.tourForce.route === r ? mem.tourForce.id : null;
+    const force = mem.tourForce && mem.tourForce.route === r ? mem.tourForce : null;
     tourTm = setTimeout(() => {
-      if (force) { mem.tourForce = null; startTour(force, true); return; }
-      if (!autoGate() || fabOpen || $('#sheet-root').innerHTML || route() !== r || document.querySelector(URGENT)) return;
+      if (force) { mem.tourForce = null; if (force.chain) goLeg(force.chain); else startTour(force.id, true); return; }
+      if (fabOpen || $('#sheet-root').innerHTML || route() !== r || document.querySelector(URGENT)) return;
+      /* Her first Home since Sakhi had the full tour: it runs instead of Home's own (and begins with it). It is her welcome, so
+         the day's three-tour limit doesn't hold it back; switching tours off, a sample, the lock and a tour just ended still do. */
+      if (r === 'home' && fullTourDue() && state.settings.toursAuto !== false && !state.sample && !mem.locked && Date.now() - tourEnded >= 60000) {
+        const legs = fullLegs(); const first = legs.length ? tourDef(legs[0]) : null;
+        if (first && first.route === 'home' && hasTarget(first)) { countTour(); startFullTour(false, legs); return; }
+      }
+      if (!autoGate()) return;
       const def = TOURS.filter((x) => x.route === r && autoOk(x) && tourFits(x) && unseen(x)).sort((x, y) => (x.order || 50) - (y.order || 50)).find(hasTarget);
       if (def) { countTour(); startTour(def.id, false); }
     }, force ? 250 : 650);
@@ -1783,9 +1848,9 @@
     if ($('#sheet-root').innerHTML) closeSheet(); if (fabOpen) closeFab();
     runTour(def, forced);
   }
-  function runTour(def, forced) {
-    const steps = def.steps.filter((x) => stepOk(x) && document.querySelector(x.sel)); if (!steps.length) return;
-    clearTour(); tour = { def: def, steps: steps, i: 0, forced: !!forced, el: null }; showTourStep(true);
+  function runTour(def, forced, chain) {
+    const steps = def.steps.filter((x) => stepOk(x) && document.querySelector(x.sel)); if (!steps.length) return false;
+    clearTour(); tour = { def: def, steps: steps, i: 0, forced: !!forced, chain: chain || null, el: null }; showTourStep(true); return true;
   }
   function showTourStep(scroll) {
     if (!tour) return;
@@ -1808,19 +1873,23 @@
     }
     const body = stepText(s);
     const n = tour.steps.length, i = tour.i, last = i === n - 1;
+    /* in the full tour: the count names the screen, and the last step goes on to the next screen */
+    const ch = tour.chain; const nextDef = ch && ch.i < ch.legs.length - 1 ? tourDef(ch.legs[ch.i + 1]) : null;
+    const count = (ch ? screenName(tour.def.route) + ' · ' : '') + tf('hint_n', { i: i + 1, n: n });
+    const go = last ? (nextDef ? tf('tour_to', { s: screenName(nextDef.route) }) : t('tour_done')) : t('tour_next');
     const root = tourRoot();
     root.innerHTML = ['t', 'b', 'l', 'r'].map((k) => '<div class="tour-dim" data-dim="' + k + '"></div>').join('') + '<div class="tour-ring' + (s.tryIt ? ' try' : '') + '"></div>' +
       '<div class="tour-pop" role="dialog" aria-modal="false" aria-labelledby="tour-h" aria-describedby="tour-body" tabindex="-1"><div class="tour-top">' + (api.art ? api.art.sakhi({ pose: 'hi', look: state.settings.look }) : '') + '<strong id="tour-h">' + esc(t(kv(s.h))) + '</strong>' +
       (api.readAloud ? '<button type="button" class="iconbtn tour-say" id="tour-say" aria-label="' + esc(t('tour_listen')) + '">' + I.speaker + '</button>' : '') + '<button type="button" class="iconbtn tour-x" id="tour-x" aria-label="' + esc(t('tour_close')) + '">' + I.back.replace('M15 5l-7 7 7 7', 'M6 6l12 12M18 6L6 18') + '</button></div>' +
-      '<p class="tour-body" id="tour-body">' + esc(body) + '</p><div class="tour-foot"><span class="tour-n">' + esc(tf('hint_n', { i: i + 1, n: n })) + '</span><span class="tour-btns">' +
+      '<p class="tour-body" id="tour-body">' + esc(body) + '</p><div class="tour-foot"><span class="tour-n">' + esc(count) + '</span><span class="tour-btns">' +
       (i === 0 ? '<button type="button" class="btn sm" id="tour-later">' + esc(t('tour_later')) + '</button>' : '<button type="button" class="btn sm" id="tour-back">' + esc(t('tour_back')) + '</button>') +
-      '<button type="button" class="btn sm primary" id="tour-next">' + esc(t(last ? 'tour_done' : 'tour_next')) + '</button></span></div></div>';
+      '<button type="button" class="btn sm primary" id="tour-next">' + esc(go) + '</button></span></div></div>';
     placeTour();
     root.querySelectorAll('.tour-dim').forEach((d) => d.addEventListener('click', () => endTour('later')));
     $('#tour-x', root).addEventListener('click', () => endTour('later'));
     const lt = $('#tour-later', root); if (lt) lt.addEventListener('click', () => endTour('later'));
     const bk = $('#tour-back', root); if (bk) bk.addEventListener('click', () => { tour.i = Math.max(0, tour.i - 1); showTourStep(true); });
-    $('#tour-next', root).addEventListener('click', () => { if (last) endTour('done'); else { tour.i++; showTourStep(true); } });
+    $('#tour-next', root).addEventListener('click', () => { if (last) { const c = tour.chain; endTour('done'); if (c) nextLeg(c); } else { tour.i++; showTourStep(true); } });
     const sy = $('#tour-say', root); if (sy) sy.addEventListener('click', () => api.readAloud($('.tour-pop', root)));
     safe(() => $('.tour-pop', root).focus({ preventScroll: true }));
     if (state.settings.tourVoice && api.readAloud) setTimeout(() => { if (tour) api.readAloud($('.tour-pop', root)); }, 300);
@@ -1863,9 +1932,14 @@
     const list = TOURS.filter((d) => d.menu !== false && tourFits(d));
     const row = (d) => { const st = tourSt(d.id); const n = d.steps.filter(stepOk).length; return '<button type="button" class="item" data-tour-run="' + d.id + '"><span class="ico-sm hue hue-' + d.hue + '">' + I.play + '</span><span class="body"><strong>' + esc(t(state.settings.discreet && d.titleD ? d.titleD : d.title)) + '</strong><span>' + esc(n === 1 ? t('tour_step1') : tf('tour_steps', { n: n })) + (st && st.st === 'done' ? ' · ' + esc(t('tour_seen')) : '') + '</span></span><span class="chev">' + I.chev + '</span></button>'; };
     const grp = (k, h) => { const xs = list.filter((d) => (d.kind || 'screen') === k); return xs.length ? '<h3 class="tour-grp">' + esc(t(h)) + '</h3><div class="list tour-menu">' + xs.map(row).join('') + '</div>' : ''; };
-    return '<h2>' + esc(t('howto_h')) + '</h2><p class="small">' + esc(t('howto_p')) + '</p>' + grp('screen', 'tour_g_screens') + grp('feature', 'tour_g_features');
+    const legs = fullLegs(); const ft = state.fullTour;
+    const full = legs.length > 1 ? '<div class="list tour-menu"><button type="button" class="item" data-tour-full><span class="ico-sm hue hue-rose">' + I.play + '</span><span class="body"><strong>' + esc(t('tour_full')) + '</strong><span>' + esc(tf('tour_full_d', { n: legs.length })) + (ft && ft.st === 'done' ? ' · ' + esc(t('tour_seen')) : '') + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '';
+    return '<h2>' + esc(t('howto_h')) + '</h2><p class="small">' + esc(t('howto_p')) + '</p>' + full + grp('screen', 'tour_g_screens') + grp('feature', 'tour_g_features');
   }
-  const wireTourMenu = (v) => v.querySelectorAll('[data-tour-run]').forEach((b) => b.addEventListener('click', () => startTour(b.dataset.tourRun, true)));
+  function wireTourMenu(v) {
+    v.querySelectorAll('[data-tour-run]').forEach((b) => b.addEventListener('click', () => startTour(b.dataset.tourRun, true)));
+    const fb = v.querySelector('[data-tour-full]'); if (fb) fb.addEventListener('click', () => startFullTour(true));
+  }
 
   /* ---------- log sheet ---------- */
   function openLog(type, dateStr, existing) {
@@ -2230,7 +2304,7 @@
     const ntt = $('#me-notif-test', v); if (ntt) ntt.addEventListener('click', () => whenAllowed(() => { safe(() => B.testNotify(notifBrand(), state.settings.discreet ? t('d_reminder') : t('notif_test'))); toast(t('notif_test_sent')); }));
     v.querySelectorAll('[data-theme-pick]').forEach((b) => b.addEventListener('click', () => { state.settings.theme = b.dataset.themePick; save(); render(); }));
     v.querySelectorAll('[data-look]').forEach((b) => b.addEventListener('click', () => { state.settings.look = +b.dataset.look; save(); render(); }));
-    $('#me-tips', v).addEventListener('click', () => { state.tours = {}; state.tourDay = null; save(); toast(t('tours_again_done')); render(); });
+    $('#me-tips', v).addEventListener('click', () => { state.tours = {}; state.tourDay = null; state.fullTour = null; save(); toast(t('tours_again_done')); render(); });
     wireTourMenu(v);
     v.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => { const keep = Object.assign({}, state.settings); loadSample(b.dataset.demo); state.settings = Object.assign(state.settings, keep); save(); toast(t('sample_note')); setHash('home'); }));
     const dw = $('#demo-welcome', v); if (dw) dw.addEventListener('click', wipeAll);
@@ -2446,7 +2520,7 @@
     data: data, reminders: reminders, canSave: canSave, needDiary: needDiary, ask: ask, goBack: goBack, backBtn: backBtn,
     cycle: { starts: starts, gapsAll: gapsAll, usable: usable, lastStart: lastStart, cycleDay: cycleDay, bleedingDays: bleedingDays, rangeInfo: rangeInfo, bandHi: bandHi, isPregnant: isPregnant, countsOff: countsOff, afterBirth: afterBirthNow, ageYears: ageYears, lastCheckins: lastCheckins, fertileInfo: fertileInfo, midlifeStage: midlifeStage, excludedWhy: excludedWhy, isMidlife: isMidlife, approxStarts: approxStarts, periodLen: periodLen, rawStarts: () => liveStartEvents().map((e) => e.d).sort() },
     preg: { info: pregInfo },
-    openAnswer: openAnswer, stageNow: stageNow, openDay: openDay, kinds: KINDS, openStage: openStage, startTour: (id) => startTour(id, true), tours: () => TOURS.map((x) => x.id), tourMoment: tourMoment,
+    openAnswer: openAnswer, stageNow: stageNow, openDay: openDay, kinds: KINDS, openStage: openStage, startTour: (id) => startTour(id, true), startFullTour: () => startFullTour(true), tours: () => TOURS.map((x) => x.id), tourMoment: tourMoment,
     langs: LANGS, langMeta: langMeta, modules: MODS, sections: SECTIONS, tiles: () => CORE_TILES.concat(TILES), routes: () => Object.keys(ROUTES), routeOwner: (r) => { const m = modRoute(r); return m ? m.mod : null; },   /* exact routes and prefix routes (relief-hot, journey-iron) */
     coreSummary: coreSummary, summaries: () => HOOKS.summary.map((h) => ({ mod: h.mod, sections: safe(() => h.fn(api), []) || [] })),
     loadSample: loadSample, sampleIds: () => Object.keys(samples), strings: STR,
@@ -2460,7 +2534,7 @@
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),
-    _testSignIn: (o) => { acct = Object.assign({ token: 'test', id: 'test', phone: '+919800000000', activeOn: toISO(today()) }, o || {}); saveAcct(); },
+    _testSignIn: (o) => { acct = Object.assign({ token: 'test', id: 'test', phone: '+919800000000', name: 'Test', pincode: '560001', activeOn: toISO(today()) }, o || {}); saveAcct(); },
     _testSignOut: () => { acct = {}; saveAcct(); mem.su = null; mem.suLater = false; }
   };
 

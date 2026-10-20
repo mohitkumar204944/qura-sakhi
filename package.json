@@ -5,10 +5,11 @@
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
   "type": "module",
   "scripts": {
-    "test": "cd web && node test/signup.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server",
+    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server",
     "test:signup": "cd web && node test/signup.mjs",
     "apk": "cd android && ./build-apk.sh",
-    "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs"
+    "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs && node server/test/set-qura-keys.test.mjs",
+    "test:tours": "cd web && node test/tours.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",

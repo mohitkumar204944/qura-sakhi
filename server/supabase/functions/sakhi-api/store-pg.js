@@ -3,8 +3,8 @@
 // in dynamic SQL only ever come from the fixed lists below; every value is a parameter.
 
 const STATS = new Set(['signups', 'active', 'wa_sent', 'sms_sent']);
-const EDITABLE = new Set(['name', 'pincode', 'district', 'state', 'heard', 'upd_sms', 'upd_wa', 'lang']);
-const COLS = ['id::text', 'phone', 'birth_year', 'name', 'pincode', 'district', 'state', 'heard', 'upd_sms', 'upd_wa', 'lang', 'platform', 'app_version', 'last_active_on::text'];
+const EDITABLE = new Set(['name', 'pincode', 'district', 'state', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang']);
+const COLS = ['id::text', 'phone', 'birth_year', 'name', 'pincode', 'district', 'state', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang', 'platform', 'app_version', 'last_active_on::text'];
 const ACCOUNT = COLS.join(', ');
 const ACCOUNT_A = COLS.map((c) => (c.includes('::') ? 'a.' + c + ' as ' + c.split('::')[0] : 'a.' + c)).join(', ');
 

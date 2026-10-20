@@ -37,7 +37,7 @@ async function stats(ctx, day = DAY) {
 }
 async function account(ctx, phone) {
   if (ctx.kind === 'memory') { for (const a of ctx.store.db.accounts.values()) if (a.phone === phone) return a; return null; }
-  return (await ctx.db.query('select id::text, phone, birth_year, name, pincode, district, state, heard, upd_sms, upd_wa, lang, app_version, last_active_on::text from sakhi.accounts where phone = $1', [phone])).rows[0] || null;
+  return (await ctx.db.query('select id::text, phone, birth_year, name, pincode, district, state, email, heard, upd_sms, upd_wa, lang, app_version, last_active_on::text from sakhi.accounts where phone = $1', [phone])).rows[0] || null;
 }
 async function consents(ctx, id) {
   if (ctx.kind === 'memory') return ctx.store.db.consents.filter((c) => c.account_id === id).map((c) => ({ kind: c.kind, granted: c.granted, notice_version: c.notice_version }));
@@ -150,7 +150,7 @@ for (const kind of ['memory', 'pglite']) {
     const ok = await call(ctx.api, 'POST', 'otp/verify', { challenge: s3.json.challenge, code: c3, birth_year: 1994, notice: '2026-10-20', lang: 'hi', app: '0.21-demo', platform: 'android' });
     check('those refusals left the code usable; sign-up succeeds', ok.status === 200 && ok.json.is_new === true && B64URL_TOKEN.test(ok.json.token), ok.json);
     check('the account comes back in the app\'s shape and nothing more',
-      JSON.stringify(Object.keys(ok.json.account).sort()) === JSON.stringify(['birth_year', 'heard', 'id', 'name', 'phone', 'pincode', 'upd_sms', 'upd_wa']) && ok.json.account.phone === '+919876543210' && ok.json.account.birth_year === 1994 && ok.json.account.upd_sms === false, ok.json.account);
+      JSON.stringify(Object.keys(ok.json.account).sort()) === JSON.stringify(['birth_year', 'email', 'heard', 'id', 'name', 'phone', 'pincode', 'upd_sms', 'upd_wa']) && ok.json.account.phone === '+919876543210' && ok.json.account.birth_year === 1994 && ok.json.account.upd_sms === false, ok.json.account);
     const row = await account(ctx, '+919876543210');
     check('the account row keeps language, platform and app version', row && row.lang === 'hi' && row.app_version === '0.21-demo', row);
     check('a terms consent is recorded with the notice version', JSON.stringify(await consents(ctx, row.id)) === JSON.stringify([{ kind: 'terms', granted: true, notice_version: '2026-10-20' }]));
@@ -196,7 +196,15 @@ for (const kind of ['memory', 'pglite']) {
     check('the same choice again adds no consent row', (await consents(ctx, id)).filter((c) => c.kind === 'upd_sms').length === 1);
     await call(ctx.api, 'PATCH', 'me', { upd_sms: false }, { token: me.token });
     check('turning it off records that too', (await consents(ctx, id)).filter((c) => c.kind === 'upd_sms').map((c) => c.granted).join() === 'true,false');
-    for (const [b, code] of [[{ name: 'x'.repeat(41) }, 'name_bad'], [{ pincode: '012345' }, 'pincode_bad'], [{ heard: 'tv' }, 'heard_bad'], [{ upd_wa: 'yes' }, 'upd_wa_bad'], [{ lang: 'Hindi' }, 'lang_bad']]) {
+    const em = await call(ctx.api, 'PATCH', 'me', { email: '  Asha.R@Example.IN ' }, { token: me.token });
+    check('an email is saved trimmed and lower-case', em.status === 200 && em.json.account.email === 'asha.r@example.in' && (await account(ctx, '+919876543210')).email === 'asha.r@example.in', em.json);
+    const hindiName = await call(ctx.api, 'PATCH', 'me', { name: 'आशा' }, { token: me.token });
+    check('a name in Devanagari is a name', hindiName.status === 200 && hindiName.json.account.name === 'आशा', hindiName.json);
+    await call(ctx.api, 'PATCH', 'me', { name: 'Asha' }, { token: me.token });
+    for (const [b, code] of [[{ name: 'x'.repeat(41) }, 'name_bad'], [{ name: '' }, 'name_bad'], [{ name: ' A ' }, 'name_bad'], [{ name: '1234' }, 'name_bad'], [{ name: null }, 'name_bad'],
+      [{ pincode: '012345' }, 'pincode_bad'], [{ pincode: '' }, 'pincode_bad'], [{ email: 'asha@' }, 'email_bad'], [{ email: 'asha@example' }, 'email_bad'], [{ email: 'a b@example.in' }, 'email_bad'],
+      [{ email: 'asha@exa..mple.in' }, 'email_bad'], [{ email: 'asha\u0000@example.in' }, 'email_bad'], [{ email: 'a'.repeat(250) + '@x.in' }, 'email_bad'], [{ email: 42 }, 'email_bad'],
+      [{ heard: 'tv' }, 'heard_bad'], [{ upd_wa: 'yes' }, 'upd_wa_bad'], [{ lang: 'Hindi' }, 'lang_bad']]) {
       const r = await call(ctx.api, 'PATCH', 'me', b, { token: me.token });
       check('PATCH ' + JSON.stringify(b).slice(0, 40) + ' is 400 ' + code, r.status === 400 && r.json.error === code, r.json);
     }
@@ -204,8 +212,11 @@ for (const kind of ['memory', 'pglite']) {
     check('a refused PATCH changed nothing', (await account(ctx, '+919876543210')).name === 'Asha');
     const unknownPin = await call(ctx.api, 'PATCH', 'me', { pincode: '999999' }, { token: me.token });
     check('an unknown PIN code is kept, district left empty', unknownPin.status === 200 && (await account(ctx, '+919876543210')).district === null);
-    const cleared = await call(ctx.api, 'PATCH', 'me', { name: '', pincode: '', heard: '' }, { token: me.token });
-    check('empty strings clear name, PIN code and heard', cleared.json.account.name === null && cleared.json.account.pincode === null && cleared.json.account.heard === null, cleared.json);
+    const kept = await account(ctx, '+919876543210');
+    check('refusals left her name, PIN code and email as they were', kept.name === 'Asha' && kept.pincode === '999999' && kept.email === 'asha.r@example.in', kept);
+    const cleared = await call(ctx.api, 'PATCH', 'me', { email: '', heard: '' }, { token: me.token });
+    check('empty strings clear the email and heard, never the name or PIN code', cleared.json.account.email === null && cleared.json.account.heard === null
+      && cleared.json.account.name === 'Asha' && cleared.json.account.pincode === '999999', cleared.json);
 
     const a1 = await call(ctx.api, 'POST', 'me/active', { app: '0.21-demo', lang: 'hi' }, { token: me.token });
     check('me/active is 204 and sets today', a1.status === 204 && (await account(ctx, '+919876543210')).last_active_on === DAY);
@@ -288,7 +299,14 @@ prefix = '';
     template: { name: 'otp', language: { code: 'en' }, components: [{ type: 'body', parameters: [{ type: 'text', text: '424242' }] }, { type: 'button', sub_type: 'url', index: '0', parameters: [{ type: 'text', text: '424242' }] }] } }), wab);
   const bad = makeSender(env, async () => new Response('{"error":{"message":"Recipient not on WhatsApp"}}', { status: 400 }));
   let threw = ''; try { await bad.whatsapp('+919876543210', '1'); } catch (e) { threw = e.message; }
-  check('a refused send throws with Meta\'s reason', threw === 'Recipient not on WhatsApp');
+  check('a refused send throws with Meta\'s reason', threw === 'HTTP 400: Recipient not on WhatsApp', threw);
+  const fakeToken = 'EAAfake' + 'Q7x'.repeat(30);
+  const echo = makeSender(env, async () => new Response(JSON.stringify({ error: { message: 'Malformed access token ' + fakeToken, type: 'OAuthException', code: 190 } }), { status: 401 }));
+  let echoed = ''; try { await echo.whatsapp('+919876543210', '1'); } catch (e) { echoed = e.message; }
+  check('a refusal that repeats the token never carries it into the logs', echoed === 'HTTP 401 #190: Malformed access token [hidden]' && !echoed.includes('Q7xQ7x'), echoed);
+  const ak = makeSender(env, async () => new Response('{"Message":"Invalid authkey","Status":"Error"}', { status: 401 }));
+  let akSaid = ''; try { await ak.sms('+919876543210', '1'); } catch (e) { akSaid = e.message; }
+  check('an AuthKey refusal keeps its reason', akSaid === 'HTTP 401: Invalid authkey', akSaid);
   let unset = ''; try { await makeSender({}, okFetch).sms('+919876543210', '1'); } catch (e) { unset = e.message; }
   check('a channel with no credentials throws instead of sending', unset === 'SMS is not configured');
 }

@@ -9,6 +9,7 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const LANG_RE = /^[a-z]{2}$/;
 const APP_RE = /^[\w.+ -]{1,32}$/;
 const NOTICE_RE = /^[\w.-]{1,20}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;   /* the same check as the app's */
 const HEARD = ['doc', 'fam', 'wa', 'social', 'qura', 'other'];
 const CODE_TTL_S = 600;
 const RESEND_S = 30;
@@ -21,7 +22,7 @@ export const ALLOW = {
   'POST otp/start': ['phone', 'channel', 'lang', 'app', 'platform'],
   'POST otp/verify': ['challenge', 'code', 'birth_year', 'notice', 'lang', 'app', 'platform'],
   'GET me': [],
-  'PATCH me': ['name', 'pincode', 'heard', 'upd_sms', 'upd_wa', 'lang'],
+  'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
   'POST me/active': ['app', 'lang'],
   'POST session/logout': [],
   'DELETE me': []
@@ -72,7 +73,7 @@ const str = (v, re) => typeof v === 'string' && re.test(v);
 
 /* What the app may see of an account: the same shape the stand-in server in web/app.js returns. */
 const pub = (a) => ({ id: String(a.id), phone: a.phone, birth_year: a.birth_year, name: a.name || null, pincode: a.pincode || null,
-  heard: a.heard || null, upd_sms: !!a.upd_sms, upd_wa: !!a.upd_wa });
+  email: a.email || null, heard: a.heard || null, upd_sms: !!a.upd_sms, upd_wa: !!a.upd_wa });
 
 export function createApi({ store, send, env, now = () => Date.now(), log = () => {} }) {
   const pepper = env.SAKHI_OTP_PEPPER;
@@ -177,19 +178,25 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     return reply(200, { token, is_new: isNew, account: pub(acct) });
   }
 
-  /* 5.3 Her optional details. Every value is checked before anything is written. */
+  /* 5.3 Her details. Her first name and PIN code are needed: they can be changed, never emptied. The email is optional and ''
+     clears it. Every value is checked before anything is written. */
   async function patchMe(b, acct) {
     const f = {};
     if (b.name !== undefined) {
       if (typeof b.name !== 'string') fail(400, 'name_bad');
       const n = b.name.replace(/[\u0000-\u001f\u007f]/g, '').trim();
-      if (n.length > 40) fail(400, 'name_bad');
-      f.name = n || null;
+      if (n.length < 2 || n.length > 40 || !/\p{L}/u.test(n)) fail(400, 'name_bad');
+      f.name = n;
     }
     if (b.pincode !== undefined) {
-      if (b.pincode === '') Object.assign(f, { pincode: null, district: null, state: null });
-      else if (!str(b.pincode, /^[1-9]\d{5}$/)) fail(400, 'pincode_bad');
-      else { const p = await store.lookupPincode(b.pincode); Object.assign(f, { pincode: b.pincode, district: p ? p.district : null, state: p ? p.state : null }); }
+      if (!str(b.pincode, /^[1-9]\d{5}$/)) fail(400, 'pincode_bad');
+      const p = await store.lookupPincode(b.pincode); Object.assign(f, { pincode: b.pincode, district: p ? p.district : null, state: p ? p.state : null });
+    }
+    if (b.email !== undefined) {
+      if (typeof b.email !== 'string' || /[\u0000-\u001f\u007f]/.test(b.email)) fail(400, 'email_bad');
+      const e = b.email.trim().toLowerCase();
+      if (e && (e.length > 254 || !EMAIL_RE.test(e))) fail(400, 'email_bad');
+      f.email = e || null;
     }
     if (b.heard !== undefined) {
       if (b.heard === '') f.heard = null;

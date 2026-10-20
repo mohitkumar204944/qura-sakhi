@@ -4,9 +4,10 @@ Written 20 Oct 2026 for the developer who builds Sakhi's server, and revised the
 - no new spend;
 - Sakhi stays separate from Qura in code, database and deploys.
 
-**Status, 20 Oct 2026:** the server is built in `server/`: code, migration and tests (section 9). It is not deployed yet,
-because that needs the free project and the secrets (`server/DEPLOY.md`). Until then the app runs its stand-in server on the
-phone, which sends nothing (the code is always 123456).
+**Status, 20 Oct 2026:** the server is built in `server/`: code, migration and tests (section 9). It is live on Sakhi's own
+free project `qura-sakhi` (ref `jovplellzaxebcdekpax`, Mumbai), and it has sent real codes to a staff phone by WhatsApp and
+by SMS. An app built without the server's address runs its stand-in server on the phone, which sends nothing (the code is
+always 123456).
 
 Mohit's rules:
 - every woman signs up, and her health data stays on her phone;
@@ -19,8 +20,8 @@ Mohit's rules:
 
 **Does (version 1, this spec):**
 - Signs a woman up with her mobile number and a 6-digit code sent on WhatsApp, or by SMS.
-- Keeps her account details: number, birth year, and the optional first name, PIN code, how she heard of Sakhi, and whether she
-  wants updates by SMS or WhatsApp.
+- Keeps her account details: number, birth year, first name and PIN code (needed), and the optional email, how she heard of
+  Sakhi, and whether she wants updates by SMS or WhatsApp.
 - Records the last day she opened Sakhi, plus her app version and language, once a day.
 - Logs her out and deletes her account when she asks.
 
@@ -137,7 +138,7 @@ are in a schema called `sakhi`, with RLS on and no policies:
 
 | Table | Holds |
 |---|---|
-| `accounts` | Number, birth year, the optional details, district and state from the PIN code, language, platform, app version, last active day |
+| `accounts` | Number, birth year, her details (first name, PIN code, optional email and the rest), district and state from the PIN code, language, platform, app version, last active day |
 | `otp_challenges` | Each code sent: number, channel, HMAC of the code, tries, expiry, used time |
 | `sessions` | SHA-256 of each token, its account, the last day it was used, revoked time |
 | `consents` | Terms and update choices, with the notice version and time |
@@ -233,19 +234,22 @@ are in a schema called `sakhi`, with RLS on and no policies:
    ```json
    { "token": "<43 chars>", "is_new": true,
      "account": { "id": "<uuid>", "phone": "+919876543210", "birth_year": 1994, "name": null, "pincode": null,
-                  "heard": null, "upd_sms": false, "upd_wa": false } }
+                  "email": null, "heard": null, "upd_sms": false, "upd_wa": false } }
    ```
 
-   When `is_new` is false, the app skips the optional details screen.
+   When `is_new` is false and the account already has a first name and PIN code, the app skips the details screen.
 
 ### 5.3 `PATCH /v1/me`
 
-All fields are optional. An empty string clears `name`, `pincode` or `heard`.
+Every field is optional in a request, so one edit can change one thing. Her first name and PIN code are needed: the app keeps
+her on the details screen until both are in, and here they can be changed but never emptied. An empty string clears `email`
+or `heard`. (Mohit, 20 Oct 2026: "app should collect email as optional name and pincode should be mandatory".)
 
 | Field | Rule |
 |---|---|
-| `name` | Trimmed, control characters removed, 1–40 characters |
+| `name` | Trimmed, control characters removed, 2–40 characters with at least one letter (any script) |
 | `pincode` | `^[1-9][0-9]{5}$`, looked up in `sakhi.pincodes` to fill `district` and `state` (both null if not found) |
+| `email` | Trimmed and lower-cased, at most 254 characters, `^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$`, no control characters. Only for Qura to reach her about her account |
 | `heard` | One of `doc` `fam` `wa` `social` `qura` `other` |
 | `upd_sms`, `upd_wa` | Booleans. A change adds a consent row with the new value and her newest `terms` version |
 | `lang` | Two lowercase letters |
@@ -363,21 +367,23 @@ Read the newest weeks with care: weeks younger than N weeks can't have reached N
 
 ## 9. Testing, backups and rollout
 
-1. **Server contract tests:** `node server/test/api.test.mjs` (165 checks).
+1. **Server contract tests:** `node server/test/api.test.mjs` (197 checks).
    - Every row of section 5, run twice: once on an in-memory store, and once on the real SQL in PGlite (Postgres running
      inside the test).
    - Also covers the exact Meta and AuthKey requests, the daily clean-up, the PIN-code loader, and a check that the app's
      `SEND` list and the server's `ALLOW` list are identical.
-2. **End to end:** `node server/test/app-e2e.mjs` (19 checks).
-   - The real app in a browser signs up against the real server code over HTTP, edits, logs out, signs back in by SMS and
-     deletes the account.
+2. **End to end:** `node server/test/app-e2e.mjs` (21 checks).
+   - The real app in a browser signs up against the real server code over HTTP (a first name is asked for before anything
+     is sent; the email lands lower-case), edits, logs out, signs back in by SMS and deletes the account.
    - It checks the database row by row, and that no request carried anything but allowlisted fields.
-3. **App test** (`web/test/signup.mjs`): the same flow against a stand-in server inside the test. Keep it in step with any
-   change here.
-4. **Everything at once:** `npm test`, or `npm run test:server` for the server only. Run it before every deploy.
-5. **Weekly export** (free): `supabase db dump --data-only --schema sakhi`. Keep it in an encrypted folder, never in git: it
+3. **App test** (`web/test/signup.mjs`, 80 checks): the same flow against a stand-in server inside the test. Keep it in step
+   with any change here.
+4. **Key script** (`server/test/set-qura-keys.test.mjs`, 15 checks): what `server/scripts/set-qura-keys.sh` saves and when it
+   stops, with stand-in commands; it never prints a key.
+5. **Everything at once:** `npm test`, or `npm run test:server` for the server only. Run it before every deploy.
+6. **Weekly export** (free): `supabase db dump --data-only --schema sakhi`. Keep it in an encrypted folder, never in git: it
    holds phone numbers.
-6. **Before real users:** follow `server/DEPLOY.md`.
+7. **Before real users:** follow `server/DEPLOY.md`.
    - Free project, migration, secrets, deploy, then staff phones only: sign up, edit, log out, sign back in, delete.
    - The release build needs the real signing key, not the prototype one.
 

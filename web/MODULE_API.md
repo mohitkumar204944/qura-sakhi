@@ -606,7 +606,7 @@ be 17 asks the month too). The notice, the age step and the Me page say what the
    second core call site makes a request, and if any request carries a field or diary text the allowlist doesn't name.
 2. The account is not in `S.state`. It lives under its own key (`qura-sakhi-account-v1`), so backups, samples, "Show my data"
    and `S.reset()` never carry it. Read it with `S.account.signedIn()` and `S.account.info()` (number, birth year, name, PIN
-   code, how she heard, update choices); never copy it into `S.state` and never send it anywhere.
+   code, email, how she heard, update choices); never copy it into `S.state` and never send it anywhere.
 3. Nothing from the diary goes into the account: not her stage, dates, symptoms, notes, conditions, goals or which screens she
    opens. A module that needs the server (a call request, a reply to "Tell a person") needs a new endpoint in ../server/SERVER_SPEC.md, a
    new `SEND` entry in core, and her yes on screen first.
@@ -617,3 +617,49 @@ be 17 asks the month too). The notice, the age step and the Me page say what the
 `build-apk.sh` from `SAKHI_API`) the app runs a stand-in server on the phone: nothing is sent, the code is always 123456 and the
 code screen says so. Tests: `node test/signup.mjs` (66 checks, stand-in server per the spec); `smoke.mjs`, `check.mjs` and
 `maths.mjs` sign in a test account first (`S.account._testSignIn()`).
+
+## 25. Version 25: first name and PIN code needed, email optional, and the full tour for a new woman (Mohit, 20 Oct: "app should collect email as optional name and pincode should be mandatory", "and also full tour should run for a new user")
+
+**Her details.** The screen after the code now needs her first name and her 6-digit PIN code, and Skip is gone.
+- A name is 2–40 characters with a letter, in any script.
+- Email is new and optional ("Only for Qura to reach you about your account"). It is saved trimmed and lower-case.
+- One line names the first thing to fix, and she is put in that field.
+- The screen stays up until both are in. It comes back if she closes Sakhi on it, and when Qura already has an account
+  without them (signing in on a new phone). Help stays open meanwhile.
+- Edit details follows the same rules: the name and PIN code can be changed but never emptied, and the email can be cleared.
+- The account page shows the email.
+- The notice (`ob_notice_5`) says what the account holds. Its version is now `2026-10-20.2`.
+- `SEND['PATCH me']` gains `email`, and the server matches: SERVER_SPEC 5.3 and migration
+  `20261020180000_sakhi_account_email.sql`.
+- Her details go to Qura once. While a save is on its way, `acctSync` leaves the pending details alone. Before this, the details
+  screen sent them twice at the same moment, and the live server recorded each update choice twice (seen on 20 Oct).
+
+**The full tour.** It starts the first time she reaches Home on a Sakhi that has it: a new woman, or one who used Sakhi before
+and never had it. Mohit's phone, an existing diary, didn't get it under the first rule ("no tour seen yet"), so that rule was
+dropped on 20 Oct.
+- It needs tours switched on, her own diary, the app unlocked, and a minute since the last tour.
+- The day's three-tour limit doesn't hold it back: it is her welcome.
+- One tour takes her through Home (her stage's), Diary, Care, Help and Me.
+- The count names the screen ("Diary · 2 of 3"). The last step on each screen says "Next: Care" and goes there. The very last
+  says Done, and a note says How to use Sakhi replays it.
+- Not now, Close, a tap outside or back stops the whole tour. That screen's tour comes back once, as before. The screens she
+  hasn't toured keep their own first-visit tours.
+- Using a lit feature (the ask box, the +) stops it there.
+- Help is in it because the tour takes her there. Help still never starts a tour on its own.
+- It counts as one of the day's three tours and runs once: `state.fullTour = { st: 'on' | 'done' | 'stopped', d }`.
+  Switching tours off keeps it from starting on its own; the replay still works.
+- How to use Sakhi lists "The full tour" first ("5 screens, one after another"; readers get Care and Help).
+- "Show the tours again" also clears `state.fullTour`.
+- API: `S.startFullTour()`.
+
+**Tests.**
+- `node test/signup.mjs` (80 checks): the needed fields, the email, the details going once, and the screen coming back after
+  a restart and for an older account.
+- `node test/tours.mjs` (36 checks):
+  - the whole walk for a new woman;
+  - Not now, and using a lit feature;
+  - the full tour once for a woman who used Sakhi before;
+  - past the day's three tours, and tours switched off;
+  - the replay, and Show the tours again;
+  - Hindi at 360 px, and readers.
+- `S.account._testSignIn()` now gives the test account a name and PIN code.

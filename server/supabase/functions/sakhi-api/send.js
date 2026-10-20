@@ -3,6 +3,15 @@
 // match Qura's src/lib/whatsapp/metaCloud.js and src/lib/authkey.js; they are copied, not shared, so a change in Qura
 // can't break Sakhi's login. The message carries only the code.
 
+/* Why a send was refused, for the logs. Never the provider's raw text: Meta's "Malformed access token" error repeats the
+   token, so every long key-like run is blanked out. */
+export function refusal(status, data) {
+  const err = (data && data.error) || {};
+  const text = String((data && (err.message || data.message || data.Message)) || '').replace(/[A-Za-z0-9_-]{24,}/g, '[hidden]');
+  const code = err.code ? ' #' + err.code + (err.error_subcode ? '/' + err.error_subcode : '') : '';
+  return ('HTTP ' + status + code + (text ? ': ' + text : '')).slice(0, 160);
+}
+
 export function makeSender(env, fetchImpl = fetch) {
   async function post(url, headers, body, timeoutMs) {
     const ctl = new AbortController();
@@ -11,7 +20,7 @@ export function makeSender(env, fetchImpl = fetch) {
       const res = await fetchImpl(url, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, headers), body: JSON.stringify(body), signal: ctl.signal });
       let data = null;
       try { data = await res.json(); } catch (e) { data = null; }
-      if (!res.ok) throw new Error(String((data && ((data.error && data.error.message) || data.message || data.Message)) || 'HTTP ' + res.status).slice(0, 160));
+      if (!res.ok) throw new Error(refusal(res.status, data));
       return data;
     } finally {
       clearTimeout(timer);

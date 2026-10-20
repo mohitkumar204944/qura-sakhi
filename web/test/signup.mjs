@@ -1,6 +1,7 @@
 // Signup walk against a stand-in server (Playwright routes that follow SERVER_SPEC.md), plus the promise that the diary
 // never leaves the phone: every request the page makes is recorded and checked against the allowlist.
-// Covers: first run, wrong code, optional details, daily "last active", under 18, offline + "Continue for now", "Just read",
+// Covers: first run, wrong code, her details (first name and PIN code needed, email optional; the screen comes back after a
+// restart and for an older account without them), daily "last active", under 18, offline + "Continue for now", "Just read",
 // account page (edit, log out, sign back in, delete), expired session (401), an older diary with no birth year,
 // the prototype mode with no server, Hindi, Help during the gate, and a scan of the code for other network calls.
 // Usage: node test/signup.mjs [dir]   (dir defaults to this app folder). Screenshots go to test/shots/signup-*.png.
@@ -20,7 +21,7 @@ const HEALTH_KEYS = ['events', 'daily', 'notes', 'situation', 'checkins', 'pregn
 const ALLOWED = {
   'POST otp/start': ['phone', 'channel', 'lang', 'app', 'platform'],
   'POST otp/verify': ['challenge', 'code', 'birth_year', 'notice', 'lang', 'app', 'platform'],
-  'PATCH me': ['name', 'pincode', 'heard', 'upd_sms', 'upd_wa', 'lang'],
+  'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
   'POST me/active': ['app', 'lang'],
   'POST session/logout': [],
   'DELETE me': []
@@ -50,12 +51,15 @@ function makeServer() {
       if (body.code !== '424242') { c.tries += 1; return send(400, { error: c.tries >= 5 ? 'too_many' : 'code_wrong', tries_left: 5 - c.tries }); }
       delete s.challenges[body.challenge];
       let a = Object.values(s.accounts).find((x) => x.phone === c.phone); const isNew = !a;
-      if (!a) { a = { id: 'acc' + (++s.n), phone: c.phone, birth_year: body.birth_year || null, name: null, pincode: null, heard: null, upd_sms: false, upd_wa: false }; s.accounts[a.id] = a; }
+      if (!a) { a = { id: 'acc' + (++s.n), phone: c.phone, birth_year: body.birth_year || null, name: null, pincode: null, email: null, heard: null, upd_sms: false, upd_wa: false }; s.accounts[a.id] = a; }
       const tok = 'tok' + (++s.n); s.sessions[tok] = a.id; return send(200, { token: tok, is_new: isNew, account: a });
     }
     const a = s.accounts[s.sessions[auth]];
     if (!a) return send(401, { error: 'unauthorized' });
-    if (method === 'PATCH' && p === 'me') { ['name', 'pincode', 'heard', 'upd_sms', 'upd_wa'].forEach((k) => { if (body[k] !== undefined) a[k] = body[k] === '' ? null : body[k]; }); return send(200, { account: a }); }
+    if (method === 'PATCH' && p === 'me') {
+      if (body.name === '' || body.pincode === '') return send(400, { error: body.name === '' ? 'name_bad' : 'pincode_bad' });   /* needed: never emptied */
+      ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa'].forEach((k) => { if (body[k] !== undefined) a[k] = body[k] === '' ? null : body[k]; }); return send(200, { account: a });
+    }
     if (method === 'POST' && p === 'me/active') { a.last_active_app = body.app; return send(204); }
     if (method === 'POST' && p === 'session/logout') { delete s.sessions[auth]; return send(204); }
     if (method === 'DELETE' && p === 'me') { Object.keys(s.sessions).forEach((k) => { if (s.sessions[k] === a.id) delete s.sessions[k]; }); delete s.accounts[a.id]; return send(204); }
@@ -104,7 +108,8 @@ async function signIn(page, num, o = {}) {
   await page.waitForSelector('#su-code');
   await page.fill('#su-code', o.code || '424242');
   if (o.returning) { await page.waitForFunction(() => !document.querySelector('#su-code')); return; }
-  await page.waitForSelector('#su-skip'); if (o.skip !== false) await tap(page, '#su-skip');
+  await page.waitForSelector('#su-done');
+  if (o.fill !== false) { await page.fill('#su-name', o.name || 'Test'); await page.fill('#su-pin', o.pin || '560001'); await tap(page, '#su-done'); }
 }
 const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' + name + '.png') });
 
@@ -133,17 +138,26 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   check('1 wrong code explained', /didn’t match/.test(await text(page, '#view .flag')));
   await page.fill('#su-code', '424242'); await page.waitForSelector('#su-done');
   const vf = srv.calls.filter((c) => c.key === 'POST otp/verify').pop();
-  check('1 verify carries birth year 1994 and notice version, nothing else', vf && vf.body.birth_year === 1994 && vf.body.notice === '2026-10-20' && Object.keys(vf.body).every((k) => ALLOWED['POST otp/verify'].includes(k)), vf && vf.body);
-  check('1 optional details screen', /Almost done/.test(await h1(page)));
+  check('1 verify carries birth year 1994 and notice version, nothing else', vf && vf.body.birth_year === 1994 && vf.body.notice === '2026-10-20.2' && Object.keys(vf.body).every((k) => ALLOWED['POST otp/verify'].includes(k)), vf && vf.body);
+  check('1 details screen: name and PIN code needed, email optional, no Skip', /Almost done/.test(await h1(page)) && /First name/.test(await text(page, '#view')) && !/First name \(optional\)/.test(await text(page, '#view'))
+    && /Email \(optional\)/.test(await text(page, '#view')) && !!(await page.$('#su-email')) && !(await page.$('#su-skip')));
   await shot(page, '3-about');
-  await page.fill('#su-name', 'Asha'); await page.fill('#su-pin', '56000'); await tap(page, '[data-heard="fam"]'); await tap(page, '#su-sms');
   await tap(page, '#su-done'); await sleep(150);
-  check('1 five-digit PIN code refused', /6 numbers/.test(await text(page, '#view .flag')));
-  await page.fill('#su-pin', '560001'); await tap(page, '#su-done');
+  check('1 no first name: asked for it, put in the field, nothing sent', /Enter your first name/.test(await text(page, '#view .flag')) && await page.evaluate(() => document.activeElement && document.activeElement.id === 'su-name') && !srv.calls.some((c) => c.key === 'PATCH me'));
+  await page.fill('#su-name', 'Asha'); await tap(page, '#su-done'); await sleep(150);
+  check('1 no PIN code: asked for it', /6-digit PIN code/.test(await text(page, '#view .flag')) && !srv.calls.some((c) => c.key === 'PATCH me'));
+  await page.fill('#su-pin', '56000'); await tap(page, '[data-heard="fam"]'); await tap(page, '#su-sms');
+  await tap(page, '#su-done'); await sleep(150);
+  check('1 five-digit PIN code refused', /6-digit PIN code/.test(await text(page, '#view .flag')));
+  await page.fill('#su-pin', '560001'); await page.fill('#su-email', 'asha@'); await tap(page, '#su-done'); await sleep(150);
+  check('1 an email that isn\'t one is refused', /email doesn’t look right/.test(await text(page, '#view .flag')) && !srv.calls.some((c) => c.key === 'PATCH me'));
+  await page.fill('#su-email', ' Asha@Example.IN '); await tap(page, '#su-done');
   await page.waitForSelector('.card.hero');
   await sleep(400);
   const pt = srv.calls.find((c) => c.key === 'PATCH me');
   check('1 details sent with the session token', pt && pt.auth.startsWith('tok') && pt.body.name === 'Asha' && pt.body.pincode === '560001' && pt.body.heard === 'fam' && pt.body.upd_sms === true && pt.body.upd_wa === false, pt && pt.body);
+  check('1 the email goes trimmed and lower-case', pt && pt.body.email === 'asha@example.in', pt && pt.body);
+  check('1 her details go once, not twice at the same moment', srv.calls.filter((c) => c.key === 'PATCH me').length === 1, srv.calls.map((c) => c.key));
   check('1 Home after signup, no reminder card', !(await page.$('[data-su-go]')));
   check('1 last-active sent once today', srv.calls.filter((c) => c.key === 'POST me/active').length === 1);
   const stores = await page.evaluate(() => ({ diary: localStorage.getItem('qura-saathi-v1') || '', acc: localStorage.getItem('qura-sakhi-account-v1') || '' }));
@@ -159,13 +173,16 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
     S.state.askTopics = [m[2]]; S.save();
   }, MARK);
   await page.evaluate(() => { location.hash = '#account'; }); await page.waitForSelector('#acc-edit');
-  check('2 account page shows what Qura keeps', /Asha/.test(await text(page, '#acc-list')) && /560001/.test(await text(page, '#acc-list')) && /Friend or family/.test(await text(page, '#acc-list')) && /SMS: on · WhatsApp: off/.test(await text(page, '#acc-list')) && /•••/.test(await text(page, '#acc-list')));
+  check('2 account page shows what Qura keeps', /Asha/.test(await text(page, '#acc-list')) && /560001/.test(await text(page, '#acc-list')) && /asha@example\.in/.test(await text(page, '#acc-list')) && /Friend or family/.test(await text(page, '#acc-list')) && /SMS: on · WhatsApp: off/.test(await text(page, '#acc-list')) && /•••/.test(await text(page, '#acc-list')));
   await shot(page, '4-account');
   await tap(page, '#acc-edit'); await page.waitForSelector('#ae-name');
-  await page.fill('#ae-name', 'Asha R'); await tap(page, '#ae-wa'); await tap(page, '#ae-go'); await sleep(500);
+  const patches = srv.calls.filter((c) => c.key === 'PATCH me').length;
+  await page.fill('#ae-name', ''); await tap(page, '#ae-go'); await sleep(200);
+  check('2 the first name can\'t be emptied in Edit details', /Enter your first name/.test(await text(page, '#ae-err')) && srv.calls.filter((c) => c.key === 'PATCH me').length === patches && !!(await page.$('#ae-name')));
+  await page.fill('#ae-name', 'Asha R'); await page.fill('#ae-email', ''); await tap(page, '#ae-wa'); await tap(page, '#ae-go'); await sleep(500);
   const pt2 = srv.calls.filter((c) => c.key === 'PATCH me').pop();
-  check('2 edit sends only the new details', pt2 && pt2.body.name === 'Asha R' && pt2.body.upd_wa === true, pt2 && pt2.body);
-  check('2 account page updated', /Asha R/.test(await text(page, '#acc-list')) && /WhatsApp: on/.test(await text(page, '#acc-list')));
+  check('2 edit sends only the new details', pt2 && pt2.body.name === 'Asha R' && pt2.body.upd_wa === true && pt2.body.email === '', pt2 && pt2.body);
+  check('2 account page updated, email cleared', /Asha R/.test(await text(page, '#acc-list')) && /WhatsApp: on/.test(await text(page, '#acc-list')) && !/asha@example/.test(await text(page, '#acc-list')));
   // Next day: the stored "last active" date is yesterday's, so opening the app sends one more ping.
   await page.evaluate(() => { const a = JSON.parse(localStorage.getItem('qura-sakhi-account-v1')); a.activeOn = '2000-01-01'; localStorage.setItem('qura-sakhi-account-v1', JSON.stringify(a)); });
   await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await sleep(600);
@@ -236,7 +253,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.waitForSelector('#su-num');
   check('6 reader asked the birth year, then the gate', await page.evaluate(() => window.Saathi.state.stage === 'browse' && window.Saathi.state.dob === '1994-07-01'));
   await signIn(page, '9000012345');
-  await page.waitForFunction(() => !document.querySelector('#su-skip'));
+  await page.waitForFunction(() => !document.querySelector('#su-done'));
   check('6 reader lands on the guides', await page.evaluate(() => location.hash === '#care'));
   const vf = srv.calls.find((c) => c.key === 'POST otp/verify');
   check('6 reader birth year sent', vf && vf.body.birth_year === 1994);
@@ -275,7 +292,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await tap(page, '#u18-back'); await sleep(100);
   await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi);
   await page.waitForSelector('#su-year'); await page.selectOption('#su-year', '1988'); await page.fill('#su-num', '9822222222'); await tap(page, '#su-send');
-  await page.waitForSelector('#su-code'); await page.fill('#su-code', '424242'); await page.waitForSelector('#su-skip');
+  await page.waitForSelector('#su-code'); await page.fill('#su-code', '424242'); await page.waitForSelector('#su-done');
   const vf = srv.calls.find((c) => c.key === 'POST otp/verify');
   check('8 birth year from the field is sent and saved', vf && vf.body.birth_year === 1988 && await page.evaluate(() => window.Saathi.state.dob === '1988-07-01'), vf && vf.body);
   check('8 no page errors', !errs.length, errs);
@@ -289,7 +306,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.fill('#su-num', '9876500000'); await tap(page, '#su-send'); await page.waitForSelector('#su-code');
   check('9 prototype says no SMS is sent and gives the code', /Prototype: no message is sent\. The code is 123456\./.test(await text(page, '#view')));
   await page.fill('#su-code', '424242'); await page.waitForSelector('#view .flag[role="alert"]');
-  await page.fill('#su-code', '123456'); await page.waitForSelector('#su-skip'); await tap(page, '#su-skip'); await page.waitForSelector('.card.hero');
+  await page.fill('#su-code', '123456'); await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Meera'); await page.fill('#su-pin', '110001'); await tap(page, '#su-done'); await page.waitForSelector('.card.hero');
   check('9 signed in on the stand-in server', await page.evaluate(() => window.Saathi.account.signedIn()));
   check('9 prototype makes no network requests at all', !reqs.length, reqs);
   check('9 no page errors', !errs.length, errs);
@@ -306,10 +323,40 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await shot(page, '6-hindi-360');
   await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.waitForSelector('#su-code');
   check('10 Hindi code screen', /कोड डालें/.test(await text(page, '#view')));
-  await page.fill('#su-code', '424242'); await page.waitForSelector('#su-skip');
-  check('10 Hindi details screen fits', /बस हो गया/.test(await text(page, '#view')) && await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+  await page.fill('#su-code', '424242'); await page.waitForSelector('#su-done');
+  check('10 Hindi details screen fits', /बस हो गया/.test(await text(page, '#view')) && /ईमेल \(वैकल्पिक\)/.test(await text(page, '#view')) && !/पहला नाम \(वैकल्पिक\)/.test(await text(page, '#view')) && await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+  await tap(page, '#su-done'); await sleep(150);
+  check('10 Hindi asks for the first name', /अपना पहला नाम डालें/.test(await text(page, '#view .flag')));
   await shot(page, '7-hindi-about');
   check('10 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+
+/* ---------- 11. Her first name and PIN code are needed: after a restart, and for an older account without them ---------- */
+{
+  const srv = makeServer();
+  const { ctx, page, errs } = await open({ name: 'details', srv });
+  await firstRun(page); await page.waitForSelector('#su-num'); await noTours(page);
+  await signIn(page, '9833333333', { fill: false });
+  await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await page.waitForSelector('#su-done');
+  check('11 closing Sakhi on the details screen brings it back', /Almost done/.test(await h1(page)) && await page.evaluate(() => window.Saathi.account.signedIn()));
+  await page.evaluate(() => { location.hash = '#diary'; }); await sleep(200);
+  check('11 no other screen until her name and PIN code are in', !!(await page.$('#su-done')));
+  await page.evaluate(() => { location.hash = '#help'; }); await sleep(200);
+  check('11 Help stays open meanwhile', /Help/.test(await h1(page)) && !(await page.$('#su-done')));
+  await page.evaluate(() => { location.hash = '#home'; }); await page.waitForSelector('#su-done');
+  await page.fill('#su-name', 'Kavya'); await page.fill('#su-pin', '400001'); await tap(page, '#su-done'); await page.waitForSelector('.card.hero');
+  check('11 with them in, Home', !(await page.$('#su-done')));
+  /* an account Qura already has without them (made before they were needed): signing in asks for them */
+  const old = { id: 'old1', phone: '+919844444444', birth_year: 1990, name: null, pincode: null, email: null, heard: null, upd_sms: false, upd_wa: false };
+  srv.accounts.old1 = old;
+  await page.evaluate(() => { location.hash = '#account'; }); await page.waitForSelector('#acc-out'); await tap(page, '#acc-out');
+  await signIn(page, '9844444444', { returning: true });
+  await page.waitForSelector('#su-done');
+  check('11 an older account without them gets the details screen', /Almost done/.test(await h1(page)));
+  await page.fill('#su-name', 'Radha'); await page.fill('#su-pin', '600001'); await tap(page, '#su-done'); await page.waitForSelector('#acc-list, .card.hero'); await sleep(300);
+  check('11 and her details reach Qura', old.name === 'Radha' && old.pincode === '600001', old);
+  check('11 no page errors', !errs.length, errs);
   await ctx.close();
 }
 
