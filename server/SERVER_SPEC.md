@@ -4,8 +4,9 @@ Written 20 Oct 2026 for the developer who builds Sakhi's server, and revised the
 - no new spend;
 - Sakhi stays separate from Qura in code, database and deploys.
 
-The app side is already built (prototype 0.21) and calls exactly the endpoints in section 5. Until the server exists, the app
-runs a stand-in server on the phone that sends nothing (the code is always 123456).
+**Status, 20 Oct 2026:** the server is built in `server/`: code, migration and tests (section 9). It is not deployed yet,
+because that needs the free project and the secrets (`server/DEPLOY.md`). Until then the app runs its stand-in server on the
+phone, which sends nothing (the code is always 123456).
 
 Mohit's rules:
 - every woman signs up, and her health data stays on her phone;
@@ -87,6 +88,10 @@ Mohit's rules:
   `/v1/otp/verify`, `/v1/me`, `/v1/me/active`, `/v1/session/logout`.
   - Deploy it with JWT verification **off** (`verify_jwt = false` in `supabase/config.toml`, or `--no-verify-jwt`). The app
     sends its own Sakhi token, not a Supabase one, and sends none at all for the two code calls.
+  - It reaches the database directly with postgres.js through `SUPABASE_DB_URL`, which Supabase gives every Edge
+    Function. The REST API can't be used, because the `sakhi` schema isn't exposed through it.
+  - Code: `server/supabase/functions/sakhi-api/`. `index.ts` starts it; `api.js`, `store-pg.js` and `send.js` hold the logic
+    and run unchanged in the Node tests.
 - **Base address:** the app is built with `SAKHI_API=<base>` (see `android/build-apk.sh`) and calls `<base>/v1/...`.
   - On the free plan that is the function's own address: `https://<ref>.supabase.co/functions/v1/sakhi-api`, so the first
     call goes to `https://<ref>.supabase.co/functions/v1/sakhi-api/v1/otp/start`.
@@ -127,108 +132,24 @@ Mohit's rules:
 
 ## 4. Tables
 
-These live in a schema called `sakhi`, even in Sakhi's own project, so the same SQL works if it ever has to sit inside another
-database.
+The SQL lives in `server/supabase/migrations/20261020120000_sakhi_accounts.sql`, which is the source of truth. All tables
+are in a schema called `sakhi`, with RLS on and no policies:
 
-```sql
-create schema if not exists sakhi;
-revoke all on schema sakhi from public, anon, authenticated;
+| Table | Holds |
+|---|---|
+| `accounts` | Number, birth year, the optional details, district and state from the PIN code, language, platform, app version, last active day |
+| `otp_challenges` | Each code sent: number, channel, HMAC of the code, tries, expiry, used time |
+| `sessions` | SHA-256 of each token, its account, the last day it was used, revoked time |
+| `consents` | Terms and update choices, with the notice version and time |
+| `rate_hits` | One counter per key per time window (the function works out the window, so tests can move the clock) |
+| `daily_stats` | Signups, active women, WhatsApp and SMS codes sent, per India date |
+| `pincodes` | PIN code to district and state, loaded with `server/scripts/load-pincodes.mjs` |
+| `jobs` | When the daily clean-up last ran |
 
-create table sakhi.accounts (
-  id             uuid primary key default gen_random_uuid(),
-  phone          text not null unique check (phone ~ '^\+91[6-9][0-9]{9}$'),
-  birth_year     smallint not null check (birth_year between 1900 and 2100),
-  name           text check (name is null or char_length(name) between 1 and 40),
-  pincode        text check (pincode is null or pincode ~ '^[1-9][0-9]{5}$'),
-  district       text,                       -- from sakhi.pincodes when she gives a PIN code
-  state          text,
-  heard          text check (heard is null or heard in ('doc', 'fam', 'wa', 'social', 'qura', 'other')),
-  upd_sms        boolean not null default false,
-  upd_wa         boolean not null default false,
-  lang           text check (lang is null or lang ~ '^[a-z]{2}$'),
-  platform       text check (platform is null or platform in ('android', 'web')),
-  app_version    text check (app_version is null or char_length(app_version) <= 32),
-  last_active_on date,                       -- India date; updated at most once a day
-  created_at     timestamptz not null default now(),
-  updated_at     timestamptz not null default now()
-);
-
-create table sakhi.otp_challenges (
-  id          uuid primary key default gen_random_uuid(),
-  phone       text not null,
-  channel     text not null check (channel in ('whatsapp', 'sms')),
-  code_hash   text not null,                 -- hex HMAC-SHA256(SAKHI_OTP_PEPPER, id || ':' || code)
-  tries       smallint not null default 0,
-  expires_at  timestamptz not null,          -- created_at + 10 minutes
-  used_at     timestamptz,
-  created_at  timestamptz not null default now()
-);
-create index otp_challenges_phone_idx on sakhi.otp_challenges (phone, created_at desc);
-
-create table sakhi.sessions (
-  token_hash   text primary key,             -- hex SHA-256 of the token; the token itself is never stored
-  account_id   uuid not null references sakhi.accounts (id) on delete cascade,
-  created_at   timestamptz not null default now(),
-  last_used_on date not null default (now() at time zone 'Asia/Kolkata')::date,
-  revoked_at   timestamptz
-);
-create index sessions_account_idx on sakhi.sessions (account_id);
-
-create table sakhi.consents (
-  id             bigint generated always as identity primary key,
-  account_id     uuid not null references sakhi.accounts (id) on delete cascade,
-  kind           text not null check (kind in ('terms', 'upd_sms', 'upd_wa')),
-  granted        boolean not null,
-  notice_version text not null,              -- the app sends '2026-10-20' today
-  at             timestamptz not null default now()
-);
-create index consents_account_idx on sakhi.consents (account_id, kind, at desc);
-
-create table sakhi.rate_hits (
-  key    text not null,                      -- e.g. 'otp:phone:<phone>:<channel>', 'otp:ip:<daily ip hash>'
-  bucket timestamptz not null,
-  hits   int not null default 0,
-  primary key (key, bucket)
-);
-
-create table sakhi.daily_stats (
-  day      date primary key,                 -- India date
-  signups  int not null default 0,
-  active   int not null default 0,           -- accounts whose last_active_on moved to this day
-  wa_sent  int not null default 0,
-  sms_sent int not null default 0
-);
-
-create table sakhi.pincodes (                -- loaded once from the government's All India Pincode Directory (data.gov.in)
-  pincode  text primary key,
-  district text not null,
-  state    text not null
-);
-
-alter table sakhi.accounts       enable row level security;
-alter table sakhi.otp_challenges enable row level security;
-alter table sakhi.sessions       enable row level security;
-alter table sakhi.consents       enable row level security;
-alter table sakhi.rate_hits      enable row level security;
-alter table sakhi.daily_stats    enable row level security;
-alter table sakhi.pincodes       enable row level security;
-
--- One counter per key per window; true while under the limit.
-create or replace function sakhi.hit(p_key text, p_window interval, p_max int)
-returns boolean language plpgsql as $$
-declare n int;
-begin
-  insert into sakhi.rate_hits (key, bucket, hits)
-  values (p_key, date_bin(p_window, now(), timestamptz '2000-01-01'), 1)
-  on conflict (key, bucket) do update set hits = sakhi.rate_hits.hits + 1
-  returning hits into n;
-  return n <= p_max;
-end $$;
-```
-
-**Housekeeping (daily):**
-- Delete challenges older than 1 day and rate rows older than 2 days.
-- Delete sessions revoked more than 30 days ago, or unused for 365 days.
+**Daily clean-up, with no cron needed:** the first code request after 24 hours claims the `jobs` row and deletes:
+- challenges older than a day;
+- rate counters older than two days;
+- sessions revoked more than 30 days ago or unused for 365 days.
 
 ---
 
@@ -236,8 +157,11 @@ end $$;
 
 - **Format:** JSON in and out. Errors look like `{ "error": "<code>" }`, sometimes with extra fields.
 - **Login:** calls under `/v1/me` and `/v1/session` need `Authorization: Bearer <token>`.
-- **Size:** request bodies are limited to 2 KB.
+- **Size:** request bodies are limited to 2 KB (`413 too_large`). Broken JSON is `400 bad_json`.
 - **Unknown fields:** any field not listed for a call gives `400 field_not_allowed`.
+- **Unknown paths:** `404 not_found`, or `405 method_not_allowed` for a known path with the wrong method.
+- **Malformed values:** a challenge that isn't a UUID is `400 challenge_bad`, a code that isn't 6 digits is `400 code_bad`, and
+  other fields give `400 <field>_bad`.
 
 | Call | Fields the app may send (`SEND` in `web/app.js`) |
 |---|---|
@@ -379,6 +303,8 @@ return `401 unauthorized`. The app then signs her out on the phone and shows the
   - Expire after 10 minutes, allow 5 tries, and can be resent after 30 seconds on the same channel.
   - Capped per number, per day and per IP hash.
   - Error messages never say whether a number has an account.
+- **IP limits:** the IP is only ever stored as a daily HMAC. A request with no IP header skips the IP limits rather than
+  sharing one counter with everyone.
 - **Message-pumping guard:** Indian mobiles only, the caps above, and an alert when `daily_stats.wa_sent` plus `sms_sent`
   passes a threshold you set. Each message is paid for from Qura's Meta and AuthKey balances.
 - **Tokens:**
@@ -437,24 +363,22 @@ Read the newest weeks with care: weeks younger than N weeks can't have reached N
 
 ## 9. Testing, backups and rollout
 
-1. **Contract tests** for the function, one per row of section 5:
-   - The happy path and every error code.
-   - `field_not_allowed` for an extra field (for example `{"phone": "...", "events": []}`).
-   - `401` after logout and after delete.
-   - The channel rules and rate limits.
-   - The `under_18` refusal.
-2. **App test** (`web/test/signup.mjs`):
-   - It runs the whole flow against a stand-in server that follows this spec, including the WhatsApp and SMS screens.
-   - It records every request the page makes and fails if any goes elsewhere, carries a field outside the allowlist, or carries
-     diary text.
-   - Keep the stand-in server in that file in step with any change here.
-3. **Weekly export** (free):
-   - Run `supabase db dump --data-only --schema sakhi` against the Sakhi project.
-   - Keep it in an encrypted folder, never in git: it holds phone numbers.
-4. **Before real users:**
-   - Create the free project, run section 4's SQL, load `sakhi.pincodes`, set the secrets and deploy the function.
-   - Build the APK with `SAKHI_API=<function address> VERSION_CODE=… ./build-apk.sh` and test with staff numbers only: sign up,
-     edit, log out, sign back in, delete.
+1. **Server contract tests:** `node server/test/api.test.mjs` (165 checks).
+   - Every row of section 5, run twice: once on an in-memory store, and once on the real SQL in PGlite (Postgres running
+     inside the test).
+   - Also covers the exact Meta and AuthKey requests, the daily clean-up, the PIN-code loader, and a check that the app's
+     `SEND` list and the server's `ALLOW` list are identical.
+2. **End to end:** `node server/test/app-e2e.mjs` (19 checks).
+   - The real app in a browser signs up against the real server code over HTTP, edits, logs out, signs back in by SMS and
+     deletes the account.
+   - It checks the database row by row, and that no request carried anything but allowlisted fields.
+3. **App test** (`web/test/signup.mjs`): the same flow against a stand-in server inside the test. Keep it in step with any
+   change here.
+4. **Everything at once:** `npm test`, or `npm run test:server` for the server only. Run it before every deploy.
+5. **Weekly export** (free): `supabase db dump --data-only --schema sakhi`. Keep it in an encrypted folder, never in git: it
+   holds phone numbers.
+6. **Before real users:** follow `server/DEPLOY.md`.
+   - Free project, migration, secrets, deploy, then staff phones only: sign up, edit, log out, sign back in, delete.
    - The release build needs the real signing key, not the prototype one.
 
 ---

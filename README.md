@@ -4,8 +4,8 @@ A free reproductive-health companion app for Indian women, in English and Hindi,
 
 - `web/`: the app. Open `web/index.html`, or double-click `../Open prototype.command`.
 - `android/`: the Android wrapper. Build the APK with `android/build-apk.sh`.
-- `server/SERVER_SPEC.md`: the spec for the accounts server (not built yet).
+- `server/`: the accounts server (a Supabase Edge Function), with its spec (`SERVER_SPEC.md`) and deploy steps (`DEPLOY.md`).
 - `docs/history.md`: what each version changed.
 
-Tests: `cd web && node test/signup.mjs`, plus `maths.mjs`, `smoke.mjs .` and `check.mjs all --quick`. The rules for working on
+Tests: `npm test` runs them all (the app's suites in `web/test`, the server's in `server/test`). The rules for working on
 Sakhi are in `CLAUDE.md`.

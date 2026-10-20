@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.21.0",
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
+  "type": "module",
   "scripts": {
-    "test": "cd web && node test/signup.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick",
+    "test": "cd web && node test/signup.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server",
     "test:signup": "cd web && node test/signup.mjs",
-    "apk": "cd android && ./build-apk.sh"
+    "apk": "cd android && ./build-apk.sh",
+    "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
     "playwright": "1.59.1"
   }
 }
