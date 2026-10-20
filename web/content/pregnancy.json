@@ -1,0 +1,401 @@
+{
+  "group": "pregnancy",
+  "articles": [
+    {
+      "id": "register-by-12-weeks",
+      "title_en": "Pregnant? Register before 12 weeks",
+      "title_hi": "गर्भ ठहरा है? 12 हफ़्ते से पहले रजिस्टर कराएँ",
+      "summary_en": "Tell your ASHA or ANM as soon as you know, get your MCP card, and your free government care starts from there.",
+      "summary_hi": "जैसे ही पता चले, अपनी ASHA या ANM को बताएँ, MCP कार्ड बनवाएँ, और सरकारी मुफ़्त देखभाल वहीं से शुरू हो जाती है।",
+      "body_en": [
+        "Most of us wait. The first three months feel private, and the family says not to tell anyone till it shows, right?",
+        "Who you tell is your choice. But one person should know early: your ASHA, or the ANM at your nearest PHC or Ayushman Arogya Mandir. Registering before 12 weeks is the most useful thing you can do right now.",
+        "Why the hurry? Folic acid matters most in these first weeks, when the baby's spine and brain are forming. Your first blood tests, blood pressure and sugar test happen at this visit. And your name goes on the RCH portal, which is what starts the Kilkari calls and lets you claim the cash schemes later. Your MCP card is also what you show at the PMSMA clinic on the 9th.",
+        "You get a Mother and Child Protection (MCP) card, a small booklet. Every visit, tablet, injection and later your baby's vaccines get written in it. Carry it to every visit, even to a private doctor.",
+        "Don't know your ASHA? Ask at the Anganwadi, or walk into the PHC or Ayushman Arogya Mandir and say 'ANC registration'. In states that run it, 104 can also tell you. It is free. Seeing a private gynaecologist? You can still register with the ANM; the two do not clash.",
+        "Not sure yet? A home urine test from any chemist is a fine first step. The ANM can do one too."
+      ],
+      "body_hi": [
+        "हम में से ज़्यादातर इंतज़ार करती हैं। पहले तीन महीने अपनी बात लगते हैं, और घर वाले कहते हैं कि जब तक पेट न दिखे किसी को मत बताओ, है ना?",
+        "किसे बताना है, यह आपकी मर्ज़ी। पर एक इंसान को जल्दी पता होना चाहिए: आपकी ASHA, या पास के PHC या आयुष्मान आरोग्य मंदिर की ANM। 12 हफ़्ते से पहले रजिस्ट्रेशन अभी का सबसे ज़रूरी काम है।",
+        "जल्दी क्यों? फोलिक एसिड इन्हीं शुरुआती हफ़्तों में सबसे ज़्यादा काम आता है, जब बच्चे की रीढ़ और दिमाग बन रहे होते हैं। पहले ब्लड टेस्ट, BP और शुगर टेस्ट इसी मुलाक़ात में होते हैं। और आपका नाम RCH पोर्टल पर चढ़ जाता है, जिससे किलकारी की कॉल शुरू होती हैं और आगे पैसे वाली योजनाएँ मिलती हैं। 9 तारीख़ की PMSMA क्लिनिक में भी यही MCP कार्ड दिखाना होता है।",
+        "आपको एक Mother and Child Protection (MCP) कार्ड मिलेगा, छोटी-सी किताब। हर मुलाक़ात, हर गोली, हर टीका और आगे बच्चे के टीके इसी में लिखे जाते हैं। हर बार साथ ले जाएँ, प्राइवेट डॉक्टर के पास भी।",
+        "ASHA कौन है, पता नहीं? आँगनवाड़ी में पूछें, या PHC या आयुष्मान आरोग्य मंदिर जाकर कहें 'ANC रजिस्ट्रेशन'। जिन राज्यों में 104 चलता है, वहाँ उससे भी पता चल सकता है। यह मुफ़्त है। प्राइवेट गायनेकोलॉजिस्ट को दिखा रही हैं? फिर भी ANM के पास रजिस्टर करा सकती हैं, दोनों में कोई टकराव नहीं।",
+        "अभी पक्का नहीं? किसी भी केमिस्ट से घर पर करने वाला यूरिन टेस्ट पहला अच्छा कदम है। ANM भी करवा सकती है।"
+      ],
+      "see_doctor_en": [
+        "Bleeding, or pain low on one side of the belly, dizziness or fainting in these early weeks: call 112 or 108 and go to the nearest hospital. This can be an emergency.",
+        "Vomiting so much you cannot keep water down: see the ANM or PHC doctor today.",
+        "Past 12 weeks and not yet registered: register anyway, today. Late is far better than never.",
+        "No ASHA in your area: ask at the Anganwadi, PHC or Ayushman Arogya Mandir. In states that run it, 104 can also help."
+      ],
+      "see_doctor_hi": [
+        "शुरुआती हफ़्तों में ब्लीडिंग, या पेट के नीचे एक तरफ़ दर्द, सिर घूमना या बेहोशी: 112 या 108 पर कॉल करें और पास के अस्पताल जाएँ। यह इमरजेंसी हो सकती है।",
+        "उल्टी इतनी कि पानी भी न रुके: आज ही ANM या PHC डॉक्टर को दिखाएँ।",
+        "12 हफ़्ते निकल गए और रजिस्ट्रेशन नहीं हुआ: फिर भी आज ही कराएँ। देर से होना, न होने से बहुत बेहतर है।",
+        "आपके इलाक़े में ASHA नहीं: आँगनवाड़ी, PHC या आयुष्मान आरोग्य मंदिर में पूछें। जिन राज्यों में 104 चलता है, वहाँ उससे भी मदद मिल सकती है।"
+      ],
+      "qura_line_en": "Pregnancy care is with your ANM or an MBBS gynaecologist. A Qura doctor can only review any Ayurvedic or herbal medicines you were taking before the pregnancy and tell you which to stop. Never stop a medicine another doctor prescribed on your own; tell that doctor you are pregnant.",
+      "qura_line_hi": "गर्भावस्था की देखभाल आपकी ANM या MBBS गायनेकोलॉजिस्ट के पास है। Qura की डॉक्टर सिर्फ़ यह देख सकती हैं कि गर्भ से पहले आप जो आयुर्वेदिक या जड़ी-बूटी वाली दवाएँ ले रही थीं, उनमें से कौन बंद करनी हैं। किसी डॉक्टर की लिखी दवा अपने आप न बंद करें; उस डॉक्टर को बताएँ कि गर्भ ठहरा है।",
+      "sources": [
+        "ICMR Standard Treatment Workflow, Ante-natal Management of Normal Pregnancy, Dec 2025 (first visit: fill MCP card, RCH portal entry, folic acid, first Td): https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "Anemia Mukt Bharat (folic acid 400 mcg pre-conception and first trimester): https://en.vikaspedia.in/viewcontent/health/health-campaigns/anemia-mukt-bharat?lgn=en",
+        "NHS, Ectopic pregnancy symptoms (one-sided pain, dizziness, fainting, weeks 4 to 12): https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "Kilkari runs off the RCH portal (Rajya Sabha reply, 3 Dec 2024): https://rsdebate.nic.in/bitstream/123456789/754581/1/PQ_266_03122024_U920_p441_p442.pdf",
+        "PIB fact sheet, PMSMA at ten years, June 2026 (any woman in the 2nd or 3rd trimester willing to come on the 9th; not gated by registration): https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc202668887301.pdf",
+        "PIB Fact Check, Nov 2024: 104 is a state-run health helpline, not a pan-India number (reviewer citation, not re-fetched this round)",
+        "MoHFW Revised India MCP Card 2018 (not fetchable this round): https://hbnc-hbyc.mohfw.gov.in/assets/document/Revised India MCP Card English_(28-05-2018).pdf",
+        "Product vision section 3.3 'What switches' (fixed instruction: do not stop prescription medicines on your own), docs/_product-vision-womens-health-companion-oct18.md",
+        "Research report section 5.3 (R1), docs/_research-flo-free-cycle-tracker-oct18.md"
+      ],
+      "notes": "Unverified: the PIB Fact Check (Nov 2024) on 104 was supplied by the reviewer and not re-fetched; 104 now appears only with the 'in states that run it' caveat, and the Anganwadi/PHC walk-in routes come first. The MCP card PDF on hbnc-hbyc.mohfw.gov.in refused connection twice; card contents are taken from the ICMR STW ('Fill up Mother and Child protection card... generate RCH number') and the product vision. 'Registering by 12 weeks' is the MoHFW ANC standard; the ICMR STW itself says 'preferably in first trimester'. PMSMA is a walk-in clinic for the 2nd and 3rd trimester and is not gated by RCH registration, so the body now says only that the MCP card is shown there; Kilkari is RCH-driven and JSY/PMMVY need registration proof. Reviewer correction applied: the Qura line now carries the fixed 'never stop a prescribed medicine on your own' instruction."
+    },
+    {
+      "id": "four-antenatal-visits",
+      "title_en": "Your four check-ups, and what happens at each",
+      "title_hi": "आपकी चार जाँचें, और हर बार क्या होता है",
+      "summary_en": "India's schedule asks for at least four antenatal visits: before 12 weeks, between 14 and 26, between 28 and 34, and from 36 weeks. This is what each one is for.",
+      "summary_hi": "भारत में कम से कम चार ANC जाँचें होती हैं: 12 हफ़्ते से पहले, 14 से 26 हफ़्ते, 28 से 34 हफ़्ते, और 36 हफ़्ते से। हर एक किस लिए है, यहाँ है।",
+      "body_en": [
+        "Four check-ups in nine months sounds like very little, right? Many of us go only when something feels wrong.",
+        "Yes, four is the least you should have. WHO now suggests eight contacts, so more is better, and you go in between whenever something worries you. But each of the four sits where a risk sits, so a missed visit leaves a gap.",
+        "Visit 1, before 12 weeks. Your history, weight, height, blood pressure. Blood for haemoglobin, blood group, HIV, hepatitis B and syphilis. Urine. A sugar test. Folic acid starts, the first Td injection is given, your MCP card is made.",
+        "Visit 2, between 14 and 26 weeks. Haemoglobin, blood pressure and urine protein again, and the ANM feels how high the womb has grown. Iron and calcium start. Second Td, four weeks after the first. The big scan at 18 to 20 weeks. Sugar test again at 24 to 28 weeks if the first was clear.",
+        "Visit 3, at 28 to 34 weeks, and visit 4, from 36 weeks. Baby's heartbeat and position, your blood pressure, haemoglobin and urine. Then you plan the birth: which hospital, who comes with you, how you get there. Save 112 and 102 in your phone.",
+        "Told your pregnancy is 'high risk'? You will be asked to come more often and to deliver at a district hospital. Please go. Delivery, tests and the ambulance are free there under JSSK."
+      ],
+      "body_hi": [
+        "नौ महीने में बस चार जाँचें, बहुत कम लगती हैं, है ना? हम में से बहुत सी तभी जाती हैं जब कुछ गड़बड़ लगे।",
+        "हाँ, चार कम से कम हैं। WHO अब आठ मुलाक़ातें बताता है, तो ज़्यादा हो तो बेहतर, और बीच में कुछ भी परेशान करे तो जाना ही है। पर इन चार में हर एक वहीं रखी गई है जहाँ ख़तरा होता है, इसलिए एक छूटी तो वह कमी रह जाती है।",
+        "पहली जाँच, 12 हफ़्ते से पहले। आपकी हिस्ट्री, वज़न, लंबाई, BP। खून में हीमोग्लोबिन, ब्लड ग्रुप, HIV, हेपेटाइटिस B और सिफ़लिस। यूरिन। एक शुगर टेस्ट। फोलिक एसिड शुरू, पहला Td टीका, और आपका MCP कार्ड बनता है।",
+        "दूसरी जाँच, 14 से 26 हफ़्ते के बीच। हीमोग्लोबिन, BP और यूरिन में प्रोटीन दोबारा, और ANM हाथ से देखती है कि बच्चेदानी कितनी ऊपर आई है। आयरन और कैल्शियम शुरू। दूसरा Td, पहले के चार हफ़्ते बाद। 18 से 20 हफ़्ते में बड़ी सोनोग्राफ़ी। पहला शुगर टेस्ट ठीक था तो 24 से 28 हफ़्ते में दोबारा।",
+        "तीसरी जाँच 28 से 34 हफ़्ते, और चौथी 36 हफ़्ते से। बच्चे की धड़कन और उसकी पोज़िशन, आपका BP, हीमोग्लोबिन और यूरिन। फिर डिलीवरी की तैयारी: कौन सा अस्पताल, साथ कौन जाएगा, वहाँ कैसे पहुँचेंगी। फ़ोन में 112 और 102 सेव कर लें।",
+        "'हाई रिस्क' बताया गया है? आपको ज़्यादा बार बुलाया जाएगा और डिलीवरी ज़िला अस्पताल में करने को कहा जाएगा। ज़रूर जाएँ। वहाँ डिलीवरी, टेस्ट और एम्बुलेंस JSSK में मुफ़्त हैं।"
+      ],
+      "see_doctor_en": [
+        "Between visits, go straight in for: bleeding, leaking water, fever, severe headache or blurred vision, fits, swelling of face or hands, or the baby moving less after 28 weeks. Call 112, 108 or 102 if you cannot get there yourself.",
+        "Missed a visit: go to the PHC, or (from the 4th month) to the PMSMA clinic on the 9th. Do not wait for the next one.",
+        "Haemoglobin below 7, or blood pressure 140/90 or more on two checks: the ANM should refer you to a higher centre. Ask her to."
+      ],
+      "see_doctor_hi": [
+        "जाँचों के बीच में सीधे अस्पताल जाएँ अगर: ब्लीडिंग, पानी निकलना, बुखार, तेज़ सिरदर्द या धुंधला दिखना, झटके, चेहरे या हाथों पर सूजन, या 28 हफ़्ते के बाद बच्चा कम हिले। खुद न जा पाएँ तो 112, 108 या 102 पर कॉल करें।",
+        "कोई जाँच छूट गई: PHC जाएँ, या (4थे महीने से) महीने की 9 तारीख़ को PMSMA क्लिनिक। अगली का इंतज़ार न करें।",
+        "हीमोग्लोबिन 7 से कम, या दो बार BP 140/90 या ज़्यादा: ANM को आपको बड़े सेंटर भेजना चाहिए। उनसे कहें।"
+      ],
+      "qura_line_en": "Antenatal visits are with your ANM, PHC doctor or an MBBS gynaecologist. A Qura doctor does not run antenatal care, but can review any Ayurvedic or herbal medicines you were taking so you can tell your ANC provider exactly what they were. Never stop a medicine another doctor prescribed on your own; tell that doctor you are pregnant.",
+      "qura_line_hi": "ANC जाँचें आपकी ANM, PHC डॉक्टर या MBBS गायनेकोलॉजिस्ट के पास होती हैं। Qura की डॉक्टर ANC नहीं करतीं, पर आप जो आयुर्वेदिक या जड़ी-बूटी वाली दवाएँ ले रही थीं, उन्हें देखकर बता सकती हैं ताकि आप अपनी ANM को सही जानकारी दें। किसी डॉक्टर की लिखी दवा अपने आप न बंद करें; उस डॉक्टर को बताएँ कि गर्भ ठहरा है।",
+      "sources": [
+        "ICMR STW, Ante-natal Management of Normal Pregnancy, Dec 2025 (visit contents, essential tests, Td, IFA, calcium, USG 18 to 20 weeks, DIPSI repeat, high-risk box incl. Hb <7 and BP >140/90 on 2 occasions, delivery at district hospital): https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "WHO recommendations on antenatal care for a positive pregnancy experience, 2016 (eight contacts): https://www.who.int/publications/i/item/9789241549912",
+        "PIB fact sheet, PMSMA at ten years, June 2026 (2nd trimester 13 to 27 weeks and 3rd trimester only): https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc202668887301.pdf",
+        "MoHFW National Guidelines for Calcium Supplementation 2014 (start at 14 weeks): https://www.iapsm.org/pdf/Guidelines/RMNCH+A/Guidelines for Calcium Supplementation During Pregnancy and Lactation 2014.pdf",
+        "NHM Diagnosis and Management of Gestational Diabetes Mellitus, Technical and Operational Guidelines 2018 (first antenatal contact and 24 to 28 weeks): https://nhm.gov.in/New_Updates_2018/NHM_Components/RMNCH_MH_Guidelines/Gestational-Diabetes-Mellitus.pdf",
+        "National Immunization Schedule, Td-1 and Td-2 (Himachal NHM copy): https://nhm.hp.gov.in/immmunization",
+        "JSSK entitlements, NHM: https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=308",
+        "Product vision section 3.3 'What switches' (do not stop prescription medicines on your own), docs/_product-vision-womens-health-companion-oct18.md"
+      ],
+      "notes": "The week bands '<12, 14 to 26, 28 to 34, 36+' are the MoHFW four-visit standard (traditional WHO model). The ICMR STW labels visit 1 'preferably in first trimester' and visit 2 'second trimester', giving weeks only for visits 3 (28 to 34) and 4 (36 to 40). WHO 2016 recommends 8 contacts; India's minimum stays 4, and the body now says so ('WHO now suggests eight contacts, so more is better'). Reviewer corrections applied: the missed-visit line sends a first-trimester woman to the PHC, not PMSMA (PMSMA covers 13 weeks onward); 'Save 102' became 'Save 112 and 102' because 102 does not run in every state; the Qura line carries the never-stop-prescribed-medicine instruction. The WHO 2016 URL is the publication landing page and was not re-fetched this round."
+    },
+    {
+      "id": "iron-folic-acid-calcium-td",
+      "title_en": "The red tablet, the white tablet and two injections",
+      "title_hi": "लाल गोली, सफ़ेद गोली और दो टीके",
+      "summary_en": "Folic acid first, then one iron tablet and two calcium tablets a day from the fourth month, taken at different times, plus two Td injections. All free from your ANM.",
+      "summary_hi": "पहले फोलिक एसिड, फिर चौथे महीने से रोज़ एक आयरन और दो कैल्शियम की गोली, अलग-अलग वक़्त पर, और दो Td टीके। सब ANM से मुफ़्त।",
+      "body_en": [
+        "The iron tablet makes you feel sick, so you quietly stop it, right? Many women do.",
+        "Yes, the red tablet can bring nausea, a heavy stomach and black stools. But low haemoglobin makes any bleeding at delivery far more dangerous, and leaves you wiped out for months after. Dull as it is, it is one of the few things that truly protects you.",
+        "Weeks 1 to 12: folic acid alone, ideally started before conceiving. It helps the baby's spine and brain form properly. Start the day you know.",
+        "From the fourth month: one red iron-folic acid tablet a day, for at least 180 days, and again for 180 days after the birth. Take it two hours after a meal, with water or lemon water, not with tea or milk. If it upsets you, take it at bedtime.",
+        "From 14 weeks: calcium, one tablet with the morning meal and one with the evening meal, till six months after the birth. Never take calcium and the iron tablet together; each blocks the other. It also lowers your chance of high blood pressure.",
+        "Two Td injections in the arm, four weeks apart, the first as early as you can. Had both in a pregnancy in the last three years? One booster is enough. It protects you and the baby from tetanus.",
+        "It is all free from the ANM."
+      ],
+      "body_hi": [
+        "आयरन की गोली से जी मिचलाता है, तो आप चुपचाप बंद कर देती हैं, है ना? बहुत सी औरतें यही करती हैं।",
+        "हाँ, लाल गोली से उबकाई आ सकती है, पेट भारी लग सकता है और पॉटी काली हो सकती है। पर कम हीमोग्लोबिन डिलीवरी में होने वाले खून के बहाव को कहीं ज़्यादा ख़तरनाक बना देता है, और बाद में महीनों तक शरीर टूटा-सा रहता है। गोली बोरिंग है, पर उन गिनी-चुनी चीज़ों में है जो सच में आपकी रक्षा करती हैं।",
+        "हफ़्ता 1 से 12: सिर्फ़ फोलिक एसिड, बेहतर हो तो गर्भ से पहले ही शुरू। इससे बच्चे की रीढ़ और दिमाग ठीक से बनते हैं। जिस दिन पता चले, उसी दिन शुरू करें।",
+        "चौथे महीने से: रोज़ एक लाल आयरन-फोलिक एसिड की गोली, कम से कम 180 दिन, और डिलीवरी के बाद फिर 180 दिन। खाने के दो घंटे बाद लें, पानी या नींबू पानी से, चाय या दूध से नहीं। परेशान करे तो रात को सोते वक़्त लें।",
+        "14 हफ़्ते से: कैल्शियम, एक गोली सुबह के खाने के साथ, एक शाम के खाने के साथ, डिलीवरी के छह महीने बाद तक। कैल्शियम और आयरन की गोली कभी एक साथ न लें; एक दूसरे को काम नहीं करने देती। इससे BP बढ़ने का ख़तरा भी कम होता है।",
+        "बाँह में दो Td टीके, चार हफ़्ते के फ़ासले पर, पहला जितनी जल्दी हो सके। पिछले तीन साल में किसी गर्भ में दोनों लग चुके हैं? तो एक बूस्टर काफ़ी है। यह आपको और बच्चे को टिटनेस से बचाता है।",
+        "यह सब ANM से मुफ़्त मिलता है।"
+      ],
+      "see_doctor_en": [
+        "Very pale, breathless on stairs, heart racing, or very tired: ask the ANM for a haemoglobin test this week. Below 7 needs a higher centre.",
+        "Vomiting every tablet, or no rise in haemoglobin after 4 weeks of tablets: ask the ANM to refer you. Iron by injection is given at the CHC or district hospital, and the doctor decides the dose.",
+        "Known thalassaemia or repeated blood transfusions: do not take iron tablets without a doctor's advice.",
+        "Unsure about any tablet or injection: ask at the PHC or Ayushman Arogya Mandir, or call 104 in states that run it. If the ANM runs out, ask her when stock comes; a Jan Aushadhi store may also have them cheaply."
+      ],
+      "see_doctor_hi": [
+        "बहुत पीलापन, सीढ़ी चढ़ने में साँस फूलना, दिल तेज़ धड़कना, या बहुत थकान: इसी हफ़्ते ANM से हीमोग्लोबिन टेस्ट कराएँ। 7 से नीचे हो तो बड़े सेंटर जाना होता है।",
+        "हर गोली उल्टी हो जाती है, या 4 हफ़्ते गोली के बाद भी हीमोग्लोबिन नहीं बढ़ा: ANM से रेफ़र करने को कहें। इंजेक्शन से आयरन CHC या ज़िला अस्पताल में दिया जाता है, और डोज़ डॉक्टर तय करते हैं।",
+        "थैलेसीमिया है या बार-बार खून चढ़ा है: डॉक्टर की सलाह बिना आयरन की गोली न लें।",
+        "किसी गोली या टीके पर शक हो: PHC या आयुष्मान आरोग्य मंदिर में पूछें, या जिन राज्यों में 104 चलता है वहाँ कॉल करें। ANM के पास ख़त्म हो तो पूछें कब आएगा; जन औषधि स्टोर पर भी सस्ते में मिल सकती हैं।"
+      ],
+      "qura_line_en": "Your ANM decides these doses; this list only helps you ask. A Qura doctor can look at any Ayurvedic or herbal product you were taking before pregnancy and tell you which to stop, so nothing clashes with these tablets. Never stop a medicine another doctor prescribed on your own; tell that doctor you are pregnant.",
+      "qura_line_hi": "डोज़ आपकी ANM तय करती हैं; यह लिस्ट बस पूछने में मदद करती है। Qura की डॉक्टर गर्भ से पहले ली जा रही आयुर्वेदिक या जड़ी-बूटी वाली चीज़ें देखकर बता सकती हैं कि कौन बंद करनी हैं, ताकि इन गोलियों से कोई टकराव न हो। किसी डॉक्टर की लिखी दवा अपने आप न बंद करें; उस डॉक्टर को बताएँ कि गर्भ ठहरा है।",
+      "sources": [
+        "Anemia Mukt Bharat (one red tablet 60 mg iron + 500 mcg folic acid daily from the 4th month, 180 days in pregnancy and 180 days postpartum; folic acid 400 mcg pre-conception to first trimester; withhold in thalassaemia major or repeated transfusion; anaemia as a risk factor for poor maternal outcomes): https://en.vikaspedia.in/viewcontent/health/health-campaigns/anemia-mukt-bharat?lgn=en",
+        "MoHFW National Guidelines for Calcium Supplementation During Pregnancy and Lactation, 17 Nov 2014 (500 mg elemental calcium + 250 IU vitamin D3 twice daily with meals, 14 weeks to six months after delivery; calcium and IFA not together; IFA two hours after a meal): https://www.iapsm.org/pdf/Guidelines/RMNCH+A/Guidelines for Calcium Supplementation During Pregnancy and Lactation 2014.pdf",
+        "ICMR STW Dec 2025 (IFA once if Hb >11, twice if <11, with water or lemon juice; refer to higher centre if no rise after 4 weeks; parenteral iron sucrose if Hb <9 or non-compliant; refer Hb <7): https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "National Immunization Schedule (Td-1 early, Td-2 four weeks later, booster if 2 Td doses in a pregnancy within the last 3 years): https://nhm.hp.gov.in/immmunization",
+        "WHO recommendations on the prevention and treatment of postpartum haemorrhage (uterine atony the commonest cause; anaemia a risk factor), reviewer citation",
+        "Systematic review and meta-analysis of PPH causes, 327 studies, reported via MIMS 2025 (uterine atony about 70.6% of cases; anaemia a strong risk factor), reviewer citation, not re-fetched",
+        "Product vision section 3.3 'What switches' (do not stop prescription medicines on your own), docs/_product-vision-womens-health-companion-oct18.md"
+      ],
+      "notes": "Reviewer must-fix applied: the earlier line called low haemoglobin 'the commonest reason mothers bleed too much at delivery'; that is wrong. The commonest cause of postpartum haemorrhage is uterine atony; anaemia is a risk factor that makes bleeding more dangerous and recovery slower (AMB, WHO). The body now says so. The WHO PPH and MIMS 2025 meta-analysis citations were supplied by the reviewer and not re-fetched this round. 'Most women stop the tablet' became 'Many women do' because the UP '10% completed IFA' figure is unverified in the vision document. The PHC-injection dead end is removed: oral failure now routes to referral, with iron injection at CHC or district hospital per the ICMR STW. Still unverified: 'not with tea or milk' is standard IFA counselling but not quoted from the fetched documents (the STW says 'with water or lemon juice'); Jan Aushadhi stocking of IFA and calcium is unverified, so the line is hedged to 'may also have them'. The ICMR STW phrases the Td booster as 'if received the first dose within last 3 years'; the NIS says 'if received 2 Td doses in a pregnancy within the last 3 years'. We used the NIS wording. 104 appears only with the state caveat."
+    },
+    {
+      "id": "sugar-test-blood-pressure-pmos",
+      "title_en": "The sugar test and your blood pressure, especially with PMOS",
+      "title_hi": "शुगर टेस्ट और BP, ख़ास तौर पर PMOS में",
+      "summary_en": "Every pregnant woman gets a sugar test at the first visit and again at 24 to 28 weeks, and a blood pressure check every visit. If a doctor diagnosed PMOS (PCOS) before your pregnancy, make sure neither is skipped.",
+      "summary_hi": "हर गर्भवती का शुगर टेस्ट पहली जाँच में और फिर 24 से 28 हफ़्ते में होता है, और BP हर जाँच में। गर्भ से पहले डॉक्टर ने PMOS (PCOS) बताया था, तो पक्का करें कि दोनों में से कोई छूटे नहीं।",
+      "body_en": [
+        "You were told years ago that PMOS (earlier called PCOS) makes conceiving hard. Now you are pregnant, so that chapter is closed, right?",
+        "Yes, conceiving was the hard part. But the insulin resistance that troubled your cycles does not switch off in pregnancy. Women with PMOS more often get pregnancy sugar (gestational diabetes) and high blood pressure. Both are quiet. Both are caught by simple tests.",
+        "The test is easy. You drink 75 grams of glucose in water, fasting or not, any time of day. Blood is checked two hours later. If the two-hour reading is 140 or more, the doctor will tell you it is gestational diabetes and start care the same day. It is done at your first visit and again at 24 to 28 weeks if the first was clear.",
+        "Blood pressure is checked at every visit, sitting. 140/90 or more on two checks counts as high. Urine protein is checked alongside, because the two together point to pre-eclampsia (the dangerous high blood pressure of pregnancy).",
+        "Tell your ANM or gynaecologist: 'I was diagnosed with PMOS before pregnancy.' The 2023 international PCOS guideline asks that this be noted in antenatal care and that the glucose test be done at the first visit and repeated at 24 to 28 weeks. Say it, and make sure both happen.",
+        "If it is high, care starts with what you eat and a daily walk, and a repeat check. Any medicine is the doctor's call."
+      ],
+      "body_hi": [
+        "सालों पहले आपको बताया गया था कि PMOS (पहले PCOS) में गर्भ ठहरना मुश्किल है। अब गर्भ ठहर गया, तो वह किस्सा ख़त्म, है ना?",
+        "हाँ, गर्भ ठहरना मुश्किल हिस्सा था। पर जो इंसुलिन रेज़िस्टेंस आपके पीरियड्स को परेशान करता था, वह गर्भ में बंद नहीं हो जाता। PMOS वाली औरतों में गर्भ की शुगर (gestational diabetes) और हाई BP ज़्यादा होते हैं। दोनों चुपचाप आते हैं। दोनों आसान टेस्ट से पकड़ में आ जाते हैं।",
+        "टेस्ट आसान है। आप 75 ग्राम ग्लूकोज़ पानी में घोलकर पीती हैं, खाली पेट हो या न हो, दिन के किसी भी वक़्त। दो घंटे बाद खून जाँचा जाता है। दो घंटे की रीडिंग 140 या ज़्यादा हो तो डॉक्टर बताएँगे कि गर्भ की शुगर है और उसी दिन देखभाल शुरू करेंगे। यह पहली जाँच में होता है, और पहला ठीक हो तो 24 से 28 हफ़्ते में दोबारा।",
+        "BP हर जाँच में बैठकर नापा जाता है। दो बार 140/90 या ज़्यादा आए तो हाई माना जाता है। साथ में यूरिन में प्रोटीन देखा जाता है, क्योंकि दोनों मिलकर प्री-एक्लेम्पसिया (गर्भ का ख़तरनाक हाई BP) की तरफ़ इशारा करते हैं।",
+        "अपनी ANM या गायनेकोलॉजिस्ट को कहें: 'गर्भ से पहले मुझे PMOS बताया गया था।' 2023 की अंतर्राष्ट्रीय PCOS गाइडलाइन कहती है कि यह ANC में लिखा जाए और ग्लूकोज़ टेस्ट पहली जाँच में और फिर 24 से 28 हफ़्ते में हो। बोलिए, और पक्का करिए कि दोनों हुए।",
+        "ज़्यादा निकले तो देखभाल खाने-पीने और रोज़ की सैर से शुरू होती है, और दोबारा जाँच। कोई भी दवा डॉक्टर का फ़ैसला है।"
+      ],
+      "see_doctor_en": [
+        "Severe headache that painkillers do not touch, blurred vision or flashing lights, pain under the ribs, vomiting, or sudden swelling of face, hands or feet: hospital today. Call 112 or 108. This can be pre-eclampsia.",
+        "Very thirsty, passing urine constantly, or a sugar test that was never done: ask the ANM, or go to the PMSMA clinic on the 9th (from the 4th month). The test is free.",
+        "Blood pressure 140/90 or more: the ANM should refer you to a higher centre. Ask her to write it in the MCP card.",
+        "Sugar found high: you will be asked to come more often, to deliver at a district hospital, and to repeat the test 6 weeks after the birth. Keep that appointment."
+      ],
+      "see_doctor_hi": [
+        "ऐसा तेज़ सिरदर्द जो दर्द की गोली से न जाए, धुंधला दिखना या रोशनी चमकना, पसलियों के नीचे दर्द, उल्टी, या चेहरे, हाथ या पैर में अचानक सूजन: आज ही अस्पताल। 112 या 108 पर कॉल करें। यह प्री-एक्लेम्पसिया हो सकता है।",
+        "बहुत प्यास, बार-बार पेशाब, या शुगर टेस्ट कभी हुआ ही नहीं: ANM से कहें, या 9 तारीख़ को PMSMA क्लिनिक जाएँ (4थे महीने से)। टेस्ट मुफ़्त है।",
+        "BP 140/90 या ज़्यादा: ANM को आपको बड़े सेंटर भेजना चाहिए। कहें कि MCP कार्ड में लिखें।",
+        "शुगर ज़्यादा निकली: आपको ज़्यादा बार बुलाया जाएगा, ज़िला अस्पताल में डिलीवरी होगी, और जन्म के 6 हफ़्ते बाद फिर टेस्ट। वह अपॉइंटमेंट न छोड़ें।"
+      ],
+      "qura_line_en": "If PMOS is in your Qura record, a Qura doctor can write you a short note in your language with the diagnosis date and the tests the 2023 guideline asks for, signed with her name and registration number, to hand to your ANM or gynaecologist. The tests, the readings and any medicine are for your MBBS gynaecologist or PHC doctor.",
+      "qura_line_hi": "PMOS आपके Qura रिकॉर्ड में है, तो Qura की डॉक्टर आपकी भाषा में छोटा नोट लिख सकती हैं, जिसमें डायग्नोसिस की तारीख़ और 2023 गाइडलाइन के टेस्ट हों, उनके नाम और रजिस्ट्रेशन नंबर के साथ, जो आप ANM या गायनेकोलॉजिस्ट को दें। टेस्ट, रीडिंग और कोई भी दवा आपकी MBBS गायनेकोलॉजिस्ट या PHC डॉक्टर का काम है।",
+      "sources": [
+        "NHM/MoHFW Diagnosis and Management of GDM, Technical and Operational Guidelines 2018, section 4.5 (75 g glucose in about 300 ml water, fasting or non-fasting; 2-hour value, cut-off 140 mg/dL or more; first antenatal contact and repeat at 24 to 28 weeks; result and advice the same day; medical nutrition therapy; repeat OGTT 6 weeks postpartum): https://nhm.gov.in/New_Updates_2018/NHM_Components/RMNCH_MH_Guidelines/Gestational-Diabetes-Mellitus.pdf",
+        "International Evidence-based Guideline for PCOS 2023, summary (4.10.1 identify PCOS in antenatal care, EBR; 4.10.2 higher risk of gestational diabetes, hypertension in pregnancy and pre-eclampsia, EBR; 4.10.7 OGTT at first antenatal visit and 24 to 28 weeks, practice point): https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "ICMR STW Dec 2025 (BP in sitting position; BP >140/90 on 2 occasions 6 hours apart = high risk; urine albumin each visit; danger signals): https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "NHS, Pre-eclampsia (symptom list, most likely from 20 weeks, can occur after birth): https://www.nhs.uk/conditions/pre-eclampsia/",
+        "NICE NG133 Hypertension in pregnancy (cited in the product vision; page returned 403 this round): https://www.nice.org.uk/guidance/ng133",
+        "PIB fact sheet, PMSMA at ten years, June 2026 (2nd and 3rd trimester only): https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc202668887301.pdf",
+        "Product vision section 3.3 PMOS note spec (signed with the reviewing doctor's name, BAMS, council and registration number) and section 5.6 (never 'you have'), docs/_product-vision-womens-health-companion-oct18.md",
+        "Telemedicine Practice Guidelines 2020, clause 3.2.5 (registration number on electronic communication), as cited in the product vision from a mirror PDF; verify against the official MoHFW PDF before signature"
+      ],
+      "notes": "Reviewer corrections applied: '140 or above means pregnancy sugar' was a self-diagnosis rule and now reads 'the doctor will tell you it is gestational diabetes'; the Qura note is offered only when PMOS is in the Qura record and is described as signed with name and registration number, per the vision spec and Telemedicine Guidelines; the PMSMA pointer carries 'from the 4th month'. Unverified: 'care starts with what you eat and a daily walk' paraphrases the NHM protocol's medical nutrition therapy started the same day (the same-day wording came from a study table summarising the protocol). 4.10.7 is a practice point, not a graded recommendation; 4.10.1 and 4.10.2 are evidence-based. The NICE NG133 page could not be fetched (403); the symptom list is from the fetched NHS pre-eclampsia page. 'Pregnancy sugar' is our plain-word gloss for gestational diabetes. The Telemedicine Guidelines clause number is confirmed from a mirror PDF only."
+    },
+    {
+      "id": "danger-signs-call-112",
+      "title_en": "Signs that mean go now, not tomorrow",
+      "title_hi": "ये लक्षण हों तो अभी जाएँ, कल नहीं",
+      "summary_en": "Most pregnancies go fine. A few signs do not wait for the next check-up or for morning. Learn them, tell your family, and save 112, 108 and 102.",
+      "summary_hi": "ज़्यादातर गर्भ ठीक चलते हैं। कुछ लक्षण अगली जाँच या सुबह का इंतज़ार नहीं करते। इन्हें जानें, घर वालों को बताएँ, और 112, 108 और 102 सेव करें।",
+      "body_en": [
+        "We tell ourselves it will pass by morning. The ANM is far, the family is asleep, and nobody wants to make a fuss over nothing.",
+        "Most of the time it does pass. But a few signs in pregnancy are not 'nothing', and the hour you wait is the hour that matters. Read this once, then show it to the person who would take you to hospital.",
+        "- Bleeding at any stage. In the early weeks, also: pain low on one side of the belly, pain at the tip of the shoulder, sudden sharp pain, dizziness or fainting.",
+        "- Severe headache a painkiller does not touch, blurred vision or flashing lights, pain under the ribs, vomiting, sudden swelling of face, hands or feet. Fits. Too weak to get up.",
+        "- Fever. Burning or very little urine. Vomiting that will not stop. Breathing fast or with difficulty. Itching all over the body. Discharge that smells bad or looks unusual. Water leaking, or pains before 37 weeks.",
+        "- After 28 weeks: the baby moving less, or not at all, once you had got used to feeling it.",
+        "For any of these: call 112 or 108 for an ambulance, or 102, the free ambulance for pregnant women. 112 works everywhere; 108 and 102 in most states. Go to the nearest 24-hour facility. A CHC, FRU or district hospital (a hospital that can do a caesarean and give blood) is best for bleeding, fits or breathing trouble; if the PHC is much closer, go there first and they will start treatment and send you on by ambulance. Take your MCP card.",
+        "If it turns out to be nothing, you still did the right thing by coming. Being fine is the result everyone wants."
+      ],
+      "body_hi": [
+        "हम खुद को समझा लेती हैं कि सुबह तक ठीक हो जाएगा। ANM दूर है, घर वाले सो रहे हैं, और छोटी बात पर हंगामा कौन करे।",
+        "ज़्यादातर बार ठीक हो भी जाता है। पर गर्भ में कुछ लक्षण 'छोटी बात' नहीं हैं, और जो घंटा आप रुकती हैं, वही घंटा सबसे ज़्यादा मायने रखता है। इसे एक बार पढ़ें, फिर उस इंसान को दिखाएँ जो आपको अस्पताल ले जाएगा।",
+        "- किसी भी महीने में ब्लीडिंग। शुरुआती हफ़्तों में साथ में: पेट के नीचे एक तरफ़ दर्द, कंधे की नोक पर दर्द, अचानक तेज़ दर्द, सिर घूमना या बेहोशी।",
+        "- ऐसा तेज़ सिरदर्द जो दर्द की गोली से न जाए, धुंधला दिखना या रोशनी चमकना, पसलियों के नीचे दर्द, उल्टी, चेहरे, हाथ या पैर में अचानक सूजन। झटके। इतनी कमज़ोरी कि उठ न पाएँ।",
+        "- बुखार। पेशाब में जलन या बहुत कम पेशाब। उल्टी जो रुके नहीं। तेज़ या मुश्किल साँस। पूरे शरीर में खुजली। बदबूदार या अलग तरह का डिस्चार्ज। पानी निकलना, या 37 हफ़्ते से पहले दर्द उठना।",
+        "- 28 हफ़्ते के बाद: बच्चा कम हिले, या बिल्कुल न हिले, जबकि आपको उसकी हरकत की आदत हो गई थी।",
+        "इनमें से कुछ भी हो: 112 या 108 पर एम्बुलेंस के लिए कॉल करें, या 102, जो गर्भवती औरतों की मुफ़्त एम्बुलेंस है। 112 हर जगह चलता है; 108 और 102 ज़्यादातर राज्यों में। पास की 24 घंटे खुली सुविधा पर जाएँ। ब्लीडिंग, झटके या साँस की दिक़्क़त में CHC, FRU या ज़िला अस्पताल (ऐसा अस्पताल जहाँ सिज़ेरियन और खून की सुविधा हो) सबसे ठीक है; PHC बहुत पास हो तो पहले वहीं जाएँ, वे इलाज शुरू करके एम्बुलेंस से आगे भेजेंगे। MCP कार्ड साथ लें।",
+        "सब ठीक निकले तो भी आपने सही किया। सब ठीक निकलना ही तो सब चाहते हैं।"
+      ],
+      "see_doctor_en": [
+        "Any sign above: call 112 or 108, or 102 (free ambulance for pregnant women under JSSK). 112 works everywhere; 108 and 102 in most states. Go to the nearest 24-hour facility. A CHC, FRU or district hospital is best for bleeding, fits or breathing trouble; if the PHC is much closer, go there first and they will start treatment and send you on by ambulance.",
+        "Not sure if it counts: call your ANM, or 104 in states that run it. If you cannot reach anyone in 15 minutes, treat it as yes and go.",
+        "Fits, fainting, heavy bleeding or a baby not moving: do not wait for anyone's permission. Go.",
+        "Feeling unsafe at home, or being stopped from going: 181 (Women Helpline) or 112."
+      ],
+      "see_doctor_hi": [
+        "ऊपर का कोई भी लक्षण: 112 या 108 पर कॉल करें, या 102 (JSSK में गर्भवती औरतों की मुफ़्त एम्बुलेंस)। 112 हर जगह चलता है; 108 और 102 ज़्यादातर राज्यों में। पास की 24 घंटे खुली सुविधा पर जाएँ। ब्लीडिंग, झटके या साँस की दिक़्क़त में CHC, FRU या ज़िला अस्पताल सबसे ठीक है; PHC बहुत पास हो तो पहले वहीं जाएँ, वे इलाज शुरू करके एम्बुलेंस से आगे भेजेंगे।",
+        "पक्का नहीं कि गिनती में आता है: अपनी ANM को कॉल करें, या जिन राज्यों में 104 चलता है वहाँ 104 पर। 15 मिनट में किसी से बात न हो तो 'हाँ' मानकर निकल पड़ें।",
+        "झटके, बेहोशी, ज़्यादा ब्लीडिंग या बच्चा न हिले: किसी की इजाज़त का इंतज़ार न करें। जाएँ।",
+        "घर में असुरक्षित लगे या जाने से रोका जाए: 181 (महिला हेल्पलाइन) या 112।"
+      ],
+      "qura_line_en": "",
+      "qura_line_hi": "",
+      "sources": [
+        "ICMR STW Dec 2025, 'Danger signals for patient to report to health facility' (fever, persistent vomiting, abnormal vaginal discharge, palpitations/breathlessness, vaginal bleeding, decreased or absent fetal movements >28 weeks, leaking fluid, severe headache/blurring/convulsion, less urine/burning, itching all over the body) and bleeding PV 'to be referred to CHC or higher centre': https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "NHS, Ectopic pregnancy symptoms (weeks 4 to 12; one-sided low pain; shoulder tip pain; sharp sudden pain, dizziness, fainting = emergency): https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "NHS, Pre-eclampsia (severe headache not relieved by simple painkillers, blurred vision or flashing lights, pain below the ribs, sudden swelling of face, hands or feet, vomiting): https://www.nhs.uk/conditions/pre-eclampsia/",
+        "NHS, Your baby's movements (do not wait until the next day): https://www.nhs.uk/pregnancy/keeping-well/your-babys-movements/",
+        "JSSK and 102 transport, incl. inter-facility referral transport, NHM: https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=308",
+        "ERSS 112 is pan-India (MHA); 108 and 102 are state-run ambulance services (MoHFW annual report, state NAS descriptions), reviewer citations, not re-fetched",
+        "PIB Fact Check, Nov 2024: 104 is a state-run health helpline, not a pan-India number (reviewer citation, not re-fetched)",
+        "Research report section 5.3 rule R1; product vision section 3.3 safety list (NHS, NICE NG133, RCOG GTG 57, ICMR STW), docs/_research-flo-free-cycle-tracker-oct18.md and docs/_product-vision-womens-health-companion-oct18.md"
+      ],
+      "notes": "This article was flagged unsafe by the reviewer because it told women to bypass the PHC. Must-fix applied: the routing now says go to the nearest 24-hour facility, a CHC, FRU or district hospital is best for bleeding, fits or breathing trouble, and a much closer PHC comes first because it can stabilise and arrange 108 transfer (ICMR STW refers bleeding to CHC or higher via the PHC; JSSK pays inter-facility transport). The plain gloss '(a hospital that can do a caesarean and give blood)' for FRU is ours. Also applied: 'itching all over the body' and 'abnormal discharge' added from the STW list; '112 works everywhere; 108 and 102 in most states' added; the promise 'you will not be scolded' replaced with 'you still did the right thing by coming'; 104 caveated. Unverified: 'too weak to get up', 'breathing fast or with difficulty' and 'pains before 37 weeks' come from the product vision's merged safety list (WHO/NICE-derived), not from the ICMR STW directly. 'If you cannot reach anyone in 15 minutes, treat it as yes' is our own rule with no external source. 108/102 state coverage and the 104 fact check are reviewer citations not re-fetched. This is a red-flag article, so it carries no Qura line by design (report section 5.3)."
+    },
+    {
+      "id": "babys-movements",
+      "title_en": "When you first feel the baby, and when the kicks slow down",
+      "title_hi": "बच्चा पहली बार कब हिलता है, और जब हरकत कम लगे",
+      "summary_en": "Most women feel the baby between 16 and 24 weeks. Once you know its pattern, any day it moves less or stops means a same-day visit. You do not have to reach a number.",
+      "summary_hi": "ज़्यादातर औरतें 16 से 24 हफ़्ते के बीच बच्चे को महसूस करती हैं। उसका ढंग समझ आ जाए, तो जिस दिन कम हिले या रुक जाए, उसी दिन दिखाएँ। किसी गिनती तक पहुँचना ज़रूरी नहीं।",
+      "body_en": [
+        "Your mother-in-law says a quiet baby is a calm baby, and that babies sleep more near the end, right?",
+        "Yes, babies have sleep and wake times, and short quiet spells are normal. But a baby does not slow down because the end is near. If the movements you know slow down, that is the baby asking for a check.",
+        "Most women feel the first flutters between 16 and 24 weeks. With a first baby it is often after 20 weeks, and early on it feels like gas or a fish turning. If you have felt nothing by 24 weeks, tell your ANM.",
+        "Once you feel the baby most days (usually by 24 to 28 weeks), get to know its pattern, and keep noticing right up to the birth: when it is lively, after which meals, at what time of night. You do not need to count kicks or reach a number. You need to know what is usual for your baby. If your doctor or ANM has asked you to count, do that as well; fewer than she told you also means go.",
+        "If today is quieter than usual, or the movements have stopped or changed, go to the hospital or call your ANM the same day. Do not wait till morning, and do not wait at home to 'be sure'. Going twice is fine; a normal check last week does not cover this week.",
+        "Do not buy a home heartbeat machine. Hearing a heartbeat does not mean the baby is well."
+      ],
+      "body_hi": [
+        "सासू माँ कहती हैं कि शांत बच्चा सुकून वाला बच्चा है, और आख़िरी दिनों में बच्चे ज़्यादा सोते हैं, है ना?",
+        "हाँ, बच्चों के भी सोने-जगने के वक़्त होते हैं, और थोड़ी देर की चुप्पी सामान्य है। पर बच्चा इसलिए कम नहीं हिलता कि डिलीवरी पास है। जो हरकत आप जानने लगी थीं, वह धीमी पड़े, तो यह बच्चे का जाँच माँगने का तरीका है।",
+        "ज़्यादातर औरतें पहली हलचल 16 से 24 हफ़्ते के बीच महसूस करती हैं। पहले बच्चे में अक्सर 20 हफ़्ते के बाद, और शुरू में यह गैस या मछली के पलटने जैसा लगता है। 24 हफ़्ते तक कुछ न लगे तो ANM को बताएँ।",
+        "जब बच्चा ज़्यादातर दिन महसूस होने लगे (आम तौर पर 24 से 28 हफ़्ते तक), उसका ढंग पहचानें और डिलीवरी तक ध्यान रखें: कब चंचल रहता है, किस खाने के बाद, रात में किस वक़्त। किक गिनने या किसी गिनती तक पहुँचने की ज़रूरत नहीं। बस यह जानना है कि आपके बच्चे के लिए सामान्य क्या है। डॉक्टर या ANM ने गिनने को कहा है तो वह भी करें; उनकी बताई गिनती से कम हो तो भी जाएँ।",
+        "आज रोज़ से ज़्यादा शांत है, या हरकत रुक गई या बदल गई, तो उसी दिन अस्पताल जाएँ या ANM को कॉल करें। सुबह का इंतज़ार न करें, और 'पक्का करने' के लिए घर पर न रुकें। दो बार जाना भी ठीक है; पिछले हफ़्ते की ठीक जाँच इस हफ़्ते की गारंटी नहीं।",
+        "घर पर धड़कन सुनने की मशीन न लें। धड़कन सुनाई देना इस बात का सबूत नहीं कि बच्चा ठीक है।"
+      ],
+      "see_doctor_en": [
+        "Baby moving less than usual, stopped, or the pattern changed: go to the hospital or labour room the same day, even at night. Call 102 or 108 if you have no way to get there.",
+        "Nothing felt by 24 weeks: tell your ANM at the next visit, or sooner.",
+        "Reduced movements along with bleeding, leaking water, fever or severe headache: call 112 or 108 now.",
+        "The hospital checked and all was fine, and it happens again: go again. Every time."
+      ],
+      "see_doctor_hi": [
+        "बच्चा रोज़ से कम हिले, रुक जाए, या ढंग बदल जाए: उसी दिन अस्पताल या लेबर रूम जाएँ, रात में भी। जाने का साधन न हो तो 102 या 108 पर कॉल करें।",
+        "24 हफ़्ते तक कुछ महसूस न हो: अगली जाँच में या उससे पहले ANM को बताएँ।",
+        "कम हरकत के साथ ब्लीडिंग, पानी निकलना, बुखार या तेज़ सिरदर्द: अभी 112 या 108 पर कॉल करें।",
+        "अस्पताल ने जाँचा और सब ठीक था, फिर दोबारा हो: फिर जाएँ। हर बार।"
+      ],
+      "qura_line_en": "A baby's movements can only be checked at a hospital. A Qura doctor cannot do this over a call.",
+      "qura_line_hi": "बच्चे की हरकत सिर्फ़ अस्पताल में जाँची जा सकती है। Qura की डॉक्टर यह फ़ोन पर नहीं कर सकतीं।",
+      "sources": [
+        "NHS, Your baby's movements (first felt 16 to 24 weeks, often after 20 weeks with a first baby, tell midwife if nothing by 24 weeks; 'Do not wait until the next day'; 'You do not need to count the number of kicks'; no home doppler): https://www.nhs.uk/pregnancy/keeping-well/your-babys-movements/",
+        "RCOG Green-top Guideline 57 patient information, 'Your baby's movements in pregnancy' (repeat episodes: contact again even if last check was normal), copy via NHS Wales: https://bipcaf.gig.cymru/images/maternity-images/your-babys-movements-and-you-rcog-dec-18-pdf/",
+        "ICMR STW Dec 2025 (asks about fetal movements at every visit; decreased or absent fetal movements at >28 weeks is a danger signal): https://www.icmr.gov.in/icmrobject/uploads/STWs/1771568619_ante-natalmanagementofnormalpregnancy-7.pdf",
+        "Tommy's, reduced fetal movement poster and HCP guidance (monitor from when movements are felt regularly, 16 to 24 weeks, right up to birth; babies do not move less near the end): https://tommys.org/sites/default/files/2023-11/PregHub reduced fetal movement poster ENGLISH2_0.pdf",
+        "Daily fetal movement count charts remain in Indian obstetric practice (MJAFI 2011 study), reviewer citation, not re-fetched"
+      ],
+      "notes": "Reviewer corrections applied: the pattern-watching start moved from 'about 28 weeks' to 'once you feel the baby most days (usually by 24 to 28 weeks)', with 'keep noticing right up to the birth', per Tommy's/RCOG; the STW's 28-week anchor is kept for the danger signal only. A line was added so a woman whose ANM or doctor gave her a kick-count chart keeps using it ('fewer than she told you also means go'), since daily counts remain common Indian practice; the summary was softened to 'You do not have to reach a number'. Unverified: 'short quiet spells are normal' and 'babies do not slow down near the end' are standard RCOG/Tommy's leaflet content seen only in search snippets, not on a fetched primary page. 'Gas or a fish turning' is a common clinical description, not sourced. The MJAFI 2011 citation is the reviewer's and was not re-fetched."
+    },
+    {
+      "id": "government-support-schemes",
+      "title_en": "What the government gives you, free, and who to ask",
+      "title_hi": "सरकार से क्या-क्या मुफ़्त मिलता है, और किससे पूछें",
+      "summary_en": "Free check-ups, free delivery, cash after registration and birth, weekly phone calls and a free ambulance. Amounts change; ask your ASHA.",
+      "summary_hi": "मुफ़्त जाँच, मुफ़्त डिलीवरी, रजिस्ट्रेशन और जन्म पर पैसे, हफ़्ते की फ़ोन कॉल और मुफ़्त एम्बुलेंस। रकम बदलती रहती है; अपनी ASHA से पूछें।",
+      "body_en": [
+        "Most women never claim what is already theirs, because nobody explained it. Amounts change and differ by state. Read them as 'about', and ask your ASHA or Anganwadi worker for today's figure.",
+        "- PMSMA: the 9th of every month, a free doctor-led check-up with tests, tablets and a scan if due, at the PHC, CHC or district hospital, from the 4th month on. Holiday on the 9th? Usually the next working day.",
+        "- JSSK: delivery in a government hospital is free, caesarean included, with tests, medicines, blood, meals for 3 days (7 after caesarean) and the ambulance there and back. Same cover for a sick baby up to 1 year.",
+        "- JSY: cash after a government-hospital delivery. In Rajasthan and similar states about Rs 1,400 rural, Rs 1,000 urban (checked Oct 2026). Other states pay less, and only to BPL, SC and ST women.",
+        "- PMMVY: about Rs 5,000 for your first child, in two parts: about Rs 3,000 after registration and an ANC check, Rs 2,000 after the birth is registered and the 14-week vaccines are done. Rs 6,000 in one go if your second child is a girl. You need one proof: SC/ST, 40% disability, BPL ration card, PMJAY card, family income under Rs 8 lakh a year, MGNREGA job card, PM-Kisan, or an e-Shram card. Apply at the Anganwadi within 270 days of the birth. Not for regular government employees.",
+        "- Kilkari: free weekly voice calls about pregnancy and baby, 4th month till the baby turns one, to the number the ASHA writes on the RCH portal. Choose that number carefully if the phone is shared.",
+        "- Save: 112 (any emergency, works everywhere), 108 (emergency ambulance, most states), 102 (free ambulance for pregnant women and babies, where it runs), 104 (health advice; a state helpline that does not run everywhere; if it does not connect, ask your ASHA or ANM)."
+      ],
+      "body_hi": [
+        "ज़्यादातर औरतें वह कभी नहीं लेतीं जो उनका हक़ है, क्योंकि किसी ने बताया ही नहीं। रकम बदलती रहती है और राज्य-राज्य में अलग है। इन्हें 'लगभग' मानें, और आज की रकम अपनी ASHA या आँगनवाड़ी कार्यकर्ता से पूछें।",
+        "- PMSMA: हर महीने की 9 तारीख़ को डॉक्टर की मुफ़्त जाँच, टेस्ट, गोलियाँ और ज़रूरत हो तो सोनोग्राफ़ी, PHC, CHC या ज़िला अस्पताल में, 4थे महीने से आगे। 9 को छुट्टी हो? आम तौर पर अगले काम के दिन।",
+        "- JSSK: सरकारी अस्पताल में डिलीवरी मुफ़्त, सिज़ेरियन समेत, साथ में टेस्ट, दवाएँ, खून, 3 दिन का खाना (सिज़ेरियन में 7) और आने-जाने की एम्बुलेंस। बीमार बच्चे के लिए यही सुविधा 1 साल तक।",
+        "- JSY: सरकारी अस्पताल में डिलीवरी के बाद हाथ में पैसे। राजस्थान जैसे राज्यों में लगभग 1,400 रुपये गाँव में, 1,000 शहर में (अक्टूबर 2026 तक की जानकारी)। बाक़ी राज्य कम देते हैं, और सिर्फ़ BPL, SC और ST औरतों को।",
+        "- PMMVY: पहले बच्चे पर लगभग 5,000 रुपये, दो हिस्सों में: रजिस्ट्रेशन और एक ANC जाँच के बाद लगभग 3,000, और जन्म रजिस्टर होने व 14 हफ़्ते के टीकों के बाद 2,000। दूसरा बच्चा बेटी हो तो एक बार में 6,000। एक सबूत चाहिए: SC/ST, 40% विकलांगता, BPL राशन कार्ड, PMJAY कार्ड, परिवार की आय 8 लाख से कम, MGNREGA जॉब कार्ड, PM-किसान, या e-Shram कार्ड। जन्म के 270 दिन के अंदर आँगनवाड़ी से अप्लाई करें। नियमित सरकारी कर्मचारी को नहीं मिलता।",
+        "- किलकारी: गर्भ और बच्चे के बारे में हर हफ़्ते मुफ़्त फ़ोन कॉल, 4थे महीने से बच्चे के एक साल तक, उसी नंबर पर जो ASHA ने RCH पोर्टल पर लिखा। फ़ोन साझा है तो वह नंबर सोचकर दें।",
+        "- सेव करें: 112 (कोई भी इमरजेंसी, हर जगह चलता है), 108 (इमरजेंसी एम्बुलेंस, ज़्यादातर राज्यों में), 102 (गर्भवती और बच्चों की मुफ़्त एम्बुलेंस, जहाँ चलती है), 104 (सेहत की सलाह; हर राज्य में नहीं चलता; न लगे तो ASHA या ANM से पूछें)।"
+      ],
+      "see_doctor_en": [
+        "Denied a free service, or asked to pay at a government hospital: ask for the medical officer, call 104 where it runs, or complain at the district health office.",
+        "No ASHA, or the ASHA says you are 'not on the list': go to the PHC yourself and ask for ANC registration and your RCH number.",
+        "Any danger sign (bleeding, fits, severe headache, leaking water, baby moving less): 112, 108 or 102. Do not wait to sort out paperwork."
+      ],
+      "see_doctor_hi": [
+        "सरकारी अस्पताल में मुफ़्त सुविधा न मिले या पैसे माँगे जाएँ: मेडिकल ऑफ़िसर से मिलें, जहाँ 104 चलता है वहाँ कॉल करें, या ज़िला स्वास्थ्य कार्यालय में शिकायत करें।",
+        "ASHA नहीं है, या कहती है आप 'लिस्ट में नहीं': खुद PHC जाएँ और ANC रजिस्ट्रेशन और अपना RCH नंबर माँगें।",
+        "कोई भी ख़तरे का लक्षण (ब्लीडिंग, झटके, तेज़ सिरदर्द, पानी निकलना, बच्चा कम हिले): 112, 108 या 102। काग़ज़ का इंतज़ार न करें।"
+      ],
+      "qura_line_en": "These are government services. Qura has no part in them and cannot speed them up.",
+      "qura_line_hi": "ये सरकारी सेवाएँ हैं। Qura का इनमें कोई हिस्सा नहीं और Qura इन्हें जल्दी नहीं करा सकता।",
+      "sources": [
+        "PIB fact sheet, PMSMA at ten years, June 2026 (9th of every month; second trimester 13 to 27 weeks and third trimester; clinical exam, lab tests, ultrasound, IFA/calcium; Extended PMSMA Jan 2022): https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc202668887301.pdf",
+        "Vikaspedia, PMSMA (if the 9th is a Sunday or holiday, clinic on the next working day): https://en.vikaspedia.in/viewcontent/health/health-campaigns/pradhan-mantri-surakshit-matritva-abhiyan",
+        "NHM, Janani Suraksha Yojana (LPS rural Rs 1,400 / urban Rs 1,000; HPS rural Rs 700 / urban Rs 600; LPS list incl. Rajasthan; HPS only BPL/SC/ST): https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=841&lid=309",
+        "NHM, Janani Shishu Suraksha Karyakram (free delivery incl. caesarean, drugs, diagnostics, blood, diet 3/7 days, transport home to facility, referral and drop back; sick infants up to one year): https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=308",
+        "PIB fact sheet, PMMVY, 24 Aug 2025 (Rs 5,000 first child; Rs 6,000 second girl child; PMMVY 2.0 from April 2022; MCP card plus eligibility proof): https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/aug/doc2025825619601.pdf",
+        "WCD / SNIWCD PMMVY FAQ (first instalment Rs 3,000 after registration and one ANC; second Rs 2,000 after birth registration and 14 weeks of immunisation; Rs 6,000 for a second girl child in one instalment; eligibility proofs incl. SC/ST, 40% disability, BPL ration card, PMJAY, family income under Rs 8 lakh, MGNREGA job card, PM-Kisan, e-Shram; age 18 years 7 months to under 55 at childbirth; registration window 270 days): https://www.spniwcd.wcd.gov.in/pradhan-mantri-matru-vandana-yojna/faqs",
+        "Rajya Sabha reply, 3 Dec 2024, Kilkari (free weekly IVR calls from the second trimester until the child is one year old, to women registered in the RCH portal): https://rsdebate.nic.in/bitstream/123456789/754581/1/PQ_266_03122024_U920_p441_p442.pdf",
+        "ERSS 112 is pan-India (MHA); 108 and 102 are state-run ambulance services (MoHFW annual report, state NAS descriptions); PIB Fact Check Nov 2024 on 104, reviewer citations, not re-fetched",
+        "Women Helpline 181 (Haryana WCD description of the national scheme): https://wcdhry.gov.in/women-helpline-number-181/"
+      ],
+      "notes": "Reviewer corrections applied: the PMMVY bullet now gives the two instalments (about Rs 3,000 then Rs 2,000), the one-proof eligibility list, the 270-day window and the single Rs 6,000 instalment for a second girl, all from the WCD/SNIWCD FAQ, so the earlier 'instalment split unverified' flag is cleared; the Save line marks 112 as pan-India and 108, 102 and 104 as state services; 'call 104' in the first see-a-doctor line reads 'where it runs'. Still unverified: the exclusion of regular government employees comes from the product vision citing secondary text; the PMSMA holiday rule is from a Vikaspedia search snippet, the PIB fact sheet does not state it; Kilkari's Rajya Sabha reply says 'second trimester' and we wrote '4th month'; the age window (18 years 7 months to under 55) is in the FAQ but left out of the body for length; the SNIWCD FAQ URL and the 108/102/104 coverage citations were supplied by the reviewer and not re-fetched this round. JSY figures are the nhm.gov.in central rates; states may top up. 'Complain at the district health office' is our suggestion, no source."
+    },
+    {
+      "id": "after-birth-first-six-weeks",
+      "title_en": "The first six weeks after birth: your body, your mood, your ASHA",
+      "title_hi": "जन्म के बाद के छह हफ़्ते: आपका शरीर, आपका मन, आपकी ASHA",
+      "summary_en": "The ASHA visits on days 3, 7, 14, 21, 28 and 42. Between visits, know what bleeding is too much, what low mood is too long, and whom to call.",
+      "summary_hi": "ASHA तीसरे, 7वें, 14वें, 21वें, 28वें और 42वें दिन आती है। बीच में जानें कि कितनी ब्लीडिंग ज़्यादा है, कितना उदास रहना ज़्यादा लंबा है, और किसे कॉल करें।",
+      "body_en": [
+        "After the delivery, all eyes move to the baby. Whatever you feel now is 'just hormones', right?",
+        "Yes, hormones do swing in the first days. But most serious problems for mothers come in these six weeks, and they get missed because nobody is looking at you.",
+        "The ASHA comes on days 3, 7, 14, 21, 28 and 42, and on day 1 if you delivered at home. She checks your bleeding, temperature and the baby, and writes in the MCP card. Let her in. Keep taking iron for 180 days and calcium for six months.",
+        "Bleeding for up to about 6 weeks is normal, often less, red turning pink then brownish. Too much is more than five pads or a thick cloth in a day, large clots, a bad smell, or heavy red bleeding returning after it had slowed. Hospital the same day.",
+        "Fever, pain low in the belly, a hot painful breast, burning or unable to pass urine, a fit, severe headache or swelling of face and hands: PHC or hospital today.",
+        "Tears and feeling flat in the first two weeks is common and passes. If it lasts longer, nothing feels enjoyable, or you cannot sleep even when the baby sleeps, this can be postnatal depression. It is common, and it gets better with treatment. Tell the ASHA and one person at home, and call Tele-MANAS 14416, free, any hour.",
+        "One thing cannot wait, not even till tomorrow: any thought of harming yourself or the baby, hearing or seeing things others cannot, feeling confused, or feeling very 'high' and not sleeping for days. This can start suddenly in the first weeks, and you may not feel ill yourself, so show this line to your family. Someone should stay with you and the baby. Go to the district hospital or call 112 today."
+      ],
+      "body_hi": [
+        "डिलीवरी के बाद सबकी नज़र बच्चे पर चली जाती है। आपको जो भी महसूस हो, वह 'बस हॉर्मोन' है, है ना?",
+        "हाँ, पहले दिनों में हॉर्मोन ऊपर-नीचे होते ही हैं। पर माँ के लिए ज़्यादातर गंभीर दिक़्क़तें इन्हीं छह हफ़्तों में आती हैं, और छूट जाती हैं क्योंकि कोई आपकी तरफ़ देख ही नहीं रहा।",
+        "ASHA तीसरे, 7वें, 14वें, 21वें, 28वें और 42वें दिन आती है, और घर पर डिलीवरी हुई हो तो पहले दिन भी। वह आपकी ब्लीडिंग, बुखार और बच्चे को देखती है, और MCP कार्ड में लिखती है। उन्हें अंदर आने दें। आयरन 180 दिन और कैल्शियम छह महीने लेती रहें।",
+        "ज़्यादा से ज़्यादा लगभग 6 हफ़्ते ब्लीडिंग सामान्य है, अक्सर कम, लाल से गुलाबी, फिर भूरी। ज़्यादा का मतलब: दिन में पाँच से ज़्यादा पैड या एक मोटा कपड़ा भर जाए, बड़े थक्के, बदबू, या धीमी पड़ने के बाद फिर तेज़ लाल ब्लीडिंग। उसी दिन अस्पताल।",
+        "बुखार, पेट के नीचे दर्द, गरम और दर्द वाला स्तन, पेशाब में जलन या पेशाब न हो पाना, झटका, तेज़ सिरदर्द या चेहरे-हाथों पर सूजन: आज ही PHC या अस्पताल।",
+        "पहले दो हफ़्ते रोना आना और मन उदास रहना आम है और चला जाता है। इससे लंबा खिंचे, कुछ अच्छा न लगे, या बच्चा सोए तब भी नींद न आए, तो यह पोस्टनेटल डिप्रेशन हो सकता है। यह आम है, और इलाज से ठीक होता है। ASHA को और घर में एक इंसान को बताएँ, और Tele-MANAS 14416 पर कॉल करें, मुफ़्त, किसी भी वक़्त।",
+        "एक बात कल तक भी नहीं रुक सकती: खुद को या बच्चे को नुक़सान का कोई भी ख़याल, ऐसी आवाज़ें या चीज़ें जो दूसरों को न सुनाई-दिखाई दें, उलझन, या बहुत 'ऊँचा' महसूस करना और कई दिन नींद न आना। यह पहले हफ़्तों में अचानक शुरू हो सकता है, और हो सकता है आपको खुद बीमार न लगे, इसलिए यह लाइन घर वालों को दिखाएँ। कोई आपके और बच्चे के साथ रहे। आज ही ज़िला अस्पताल जाएँ या 112 पर कॉल करें।"
+      ],
+      "see_doctor_en": [
+        "Soaking more than five pads or a thick cloth a day, large clots, a bad smell, or heavy red bleeding coming back: hospital today. With dizziness, fainting or breathlessness: 112 or 108 now.",
+        "Fever, a fit, severe headache, blurred vision, or swelling of face and hands: 112 or 108 now. Pre-eclampsia can start after the birth.",
+        "Low mood past two weeks, nothing feels enjoyable, or no sleep even when the baby sleeps: Tele-MANAS 14416 or 1-800-891-4416, any hour, and tell the ASHA or PHC doctor.",
+        "Any thought of harming yourself or the baby, hearing or seeing things others cannot, feeling confused, or feeling very 'high' and not sleeping for days: a doctor today, not tomorrow. Someone should stay with you and the baby. Go to the district hospital or call 112, and call Tele-MANAS 14416 on the way.",
+        "Your 6-week check at the PHC: go even if you feel fine. Stitches, bleeding, haemoglobin, sugar (if it was high in pregnancy) and family planning are reviewed then.",
+        "Feeling unsafe at home: 181 or 112."
+      ],
+      "see_doctor_hi": [
+        "दिन में पाँच से ज़्यादा पैड या मोटा कपड़ा भर जाए, बड़े थक्के, बदबू, या तेज़ लाल ब्लीडिंग वापस आए: आज ही अस्पताल। साथ में सिर घूमना, बेहोशी या साँस फूलना: अभी 112 या 108।",
+        "बुखार, झटका, तेज़ सिरदर्द, धुंधला दिखना, या चेहरे-हाथों पर सूजन: अभी 112 या 108। प्री-एक्लेम्पसिया जन्म के बाद भी शुरू हो सकता है।",
+        "दो हफ़्ते से ज़्यादा उदासी, कुछ अच्छा न लगे, या बच्चा सोए तब भी नींद न आए: Tele-MANAS 14416 या 1-800-891-4416, किसी भी वक़्त, और ASHA या PHC डॉक्टर को बताएँ।",
+        "खुद को या बच्चे को नुक़सान का कोई भी ख़याल, ऐसी आवाज़ें या चीज़ें जो दूसरों को न सुनाई-दिखाई दें, उलझन, या बहुत 'ऊँचा' महसूस करना और कई दिन नींद न आना: आज ही डॉक्टर, कल नहीं। कोई आपके और बच्चे के साथ रहे। ज़िला अस्पताल जाएँ या 112 पर कॉल करें, और रास्ते में Tele-MANAS 14416 पर।",
+        "PHC में 6 हफ़्ते की जाँच: ठीक लग रहा हो तब भी जाएँ। इसी में टाँके, ब्लीडिंग, हीमोग्लोबिन, शुगर (गर्भ में ज़्यादा थी तो) और परिवार नियोजन देखे जाते हैं।",
+        "घर में असुरक्षित लगे: 181 या 112।"
+      ],
+      "qura_line_en": "Bleeding, fever, mood illness and anything about the baby are for the PHC, hospital or an MBBS doctor, not Qura. If a doctor diagnosed PMOS before your pregnancy, a Qura doctor can talk about that care again after your 6-week check. Tell her if you are breastfeeding; that changes what is safe to take.",
+      "qura_line_hi": "ब्लीडिंग, बुखार, मन की बीमारी और बच्चे से जुड़ी हर बात PHC, अस्पताल या MBBS डॉक्टर के लिए है, Qura के लिए नहीं। गर्भ से पहले डॉक्टर ने PMOS बताया था, तो 6 हफ़्ते की जाँच के बाद Qura की डॉक्टर उस देखभाल पर फिर बात कर सकती हैं। स्तनपान करा रही हैं तो ज़रूर बताएँ; इससे तय होता है कि क्या लेना सुरक्षित है।",
+      "sources": [
+        "NHM Home Based Newborn Care, visit schedule (days 3, 7, 14, 21, 28, 42; plus day 1 for home delivery), Himachal NHM copy of the MoHFW programme: https://nhm.hp.gov.in/child-health/community-based-care/hbnc",
+        "NHSRC/MoHFW, 'Complications during the post-partum period' (excessive bleeding = more than five pads or one thick cloth per day, refer urgently; foul smelling discharge, fever, chills = sepsis, refer same day; convulsions with or without swelling of face and hands, severe headache, blurred vision = refer immediately; engorged breast with fever; perineal infection; mood changes not improving after a week or so = referral): https://qps.nhsrcindia.org/sites/default/files/2021-05/Complications%20During%20Post%20Partum%20Period%20English.pdf",
+        "NHS, Postnatal depression (baby blues usually goes away within 2 weeks; PND can start up to a year after birth): https://www.nhs.uk/mental-health/conditions/post-natal-depression/overview/",
+        "NHS, Postpartum psychosis (hallucinations, delusions, mania, confusion; onset usually within 2 weeks of birth; 'request an urgent assessment on the same day'; emergency number if imminent danger; 'you may not realise you're ill'): https://www.nhs.uk/mental-health/conditions/post-partum-psychosis/",
+        "NHS, Pre-eclampsia (can develop in the days or weeks after birth): https://www.nhs.uk/conditions/pre-eclampsia/",
+        "NHS, Your post-pregnancy body (postnatal check at 6 to 8 weeks): https://www.nhs.uk/conditions/baby/support-and-services/your-post-pregnancy-body/",
+        "University Hospitals Sussex NHS Foundation Trust leaflet, 'Blood loss: what to expect after the birth' (lochia 2 to 6 weeks), reviewer citation, not re-fetched",
+        "Anemia Mukt Bharat (IFA 180 days postpartum): https://en.vikaspedia.in/viewcontent/health/health-campaigns/anemia-mukt-bharat?lgn=en",
+        "MoHFW Calcium Supplementation Guidelines 2014 (calcium till six months after delivery): https://www.iapsm.org/pdf/Guidelines/RMNCH+A/Guidelines for Calcium Supplementation During Pregnancy and Lactation 2014.pdf",
+        "NHM GDM Guidelines 2018 (repeat OGTT 6 weeks after delivery): https://nhm.gov.in/New_Updates_2018/NHM_Components/RMNCH_MH_Guidelines/Gestational-Diabetes-Mellitus.pdf",
+        "Tele-MANAS 14416 / 1-800-891-4416: https://telemanas.mohfw.gov.in/",
+        "Product vision section 3.3 Exit (kit stays off while breastfeeding unless the doctor says otherwise) and 5.8 doctor-signed kit rule, docs/_product-vision-womens-health-companion-oct18.md"
+      ],
+      "notes": "This article was flagged unsafe by the reviewer because thoughts of harming the baby sat in the same sentence, with the same response, as low mood past two weeks. Must-fix applied: postpartum psychosis signs (thoughts of harm, hallucinations, confusion, mania with no sleep) now have their own paragraph and their own see-a-doctor bullet, with same-day care, 'someone should stay with you and the baby', district hospital or 112, and the NHS warning that the woman may not feel ill herself; NHS postpartum psychosis added to sources. The condition is described, not named, in the body, to stay non-diagnostic. Should-fixes applied: 'this is an illness' became 'this can be postnatal depression'; bleeding floor changed from '4 to 6 weeks' to 'up to about 6 weeks, often less'; the Qura line adds the breastfeeding caveat per the vision's kit rule. Unverified: 'red then pink then brownish' is standard NHS/Tommy's content, but both pages were blocked (403/404), so it rests on search snippets; the Sussex NHS leaflet is the reviewer's citation and was not re-fetched. 'Large clots' replaces a specific size because no fetched Indian source gives one (RCOG uses a 50p coin). The contents of the 6-week check (stitches, Hb, sugar, contraception) are standard Indian postnatal practice plus the NHM GDM 6-week OGTT, not a single fetched list. The NHSRC card says refer mood changes after 'a week or so'; we kept the NHS two-week line for ordinary low mood, which is more conservative for a self-help page, and the psychosis bullet carries no waiting period at all. No infant-feeding product content included (Infant Milk Substitutes Act 1992); 'sleep when the baby sleeps' is about the mother's sleep only."
+    }
+  ]
+}

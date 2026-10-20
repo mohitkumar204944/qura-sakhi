@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+# Android build output and signing keys: never commit a keystore
+android/build/
+*.apk
+*.idsig
+*.keystore
+*.jks
+# Test output
+web/test/shots/
+web/test/report-*.json
+# Server secrets and data exports (exports hold phone numbers)
+server/.env*
+server/exports/
+*.sql.gz

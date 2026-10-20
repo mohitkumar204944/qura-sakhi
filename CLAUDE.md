@@ -1,0 +1,46 @@
+# Qura Sakhi
+
+Free bilingual (English + Hindi) reproductive-health companion app for Indian women, made by Qura (Trinaya Wellness LLP).
+This repo is Sakhi only. Qura's website and database live in `~/Desktop/qura_nutrition-version1` and are out of scope here:
+don't read, search or change them from a Sakhi session. The one exception is the humanizer skill file named below. The single
+planned link between the two products is the doctor-call hand-off in `server/SERVER_SPEC.md` section 10.1.
+
+## Layout
+- `web/`: the app (vanilla JS, no build step): `app.js` core, `mods/*.js` care areas, `content.json` Learn library.
+  Module contract and every version's rules: `web/MODULE_API.md`.
+- `android/`: WebView wrapper. `build-apk.sh` builds `QuraSakhi-prototype.apk` from `web/`.
+- `server/SERVER_SPEC.md`: the accounts server. Not built yet; the app runs a stand-in server whose code is always 123456.
+- `docs/history.md`: build log for 18–20 Oct 2026. It's long; read it only when the history matters.
+- Outside the repo (business files, not in git): `../2 - Screenshots`, `../3 - Research and planning` (product vision,
+  research, audits, internal-only Flo reference screenshots), `../4 - Learn library`, the .docx files, and the latest APK copy.
+
+## Commands (run tests from `web/`)
+- Tests:
+  - `node test/signup.mjs`
+  - `node test/maths.mjs`
+  - `node test/smoke.mjs .`
+  - `node test/check.mjs all --quick`
+- APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`. Add `SAKHI_API=<server>` once the server exists.
+  It installs on the phone if one is on adb. Copy the result to `../QuraSakhi-prototype.apk`.
+- Preview: `../Open prototype.command`, or "Sakhi web" in `.claude/launch.json`.
+- Web prototype (a private Claude artifact): https://claude.ai/artifact/25aocCU68U1DHebpjTmne6. To republish, copy
+  `web/index.html` and the changed files to the session scratchpad and publish to that URL.
+- Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy
+  (see `web/test/pw.mjs`).
+
+## Mohit's rules for Sakhi
+- Reproductive health only. No new conditions; evidence is used only to strengthen existing features.
+- The diary never leaves the phone.
+  - Only core `net()` talks to a server, and only with allowlisted fields (MODULE_API section 24).
+  - Modules never touch the network.
+  - Never send health data to Meta.
+- Every woman signs up, except girls under 18.
+- No new spend: a free Supabase project, plus Qura's existing WhatsApp number and AuthKey account.
+- Content was doctor-verified on 20 Oct 2026. New health wording needs doctor review before it ships.
+- Loading a Demo sample replaces the diary on that phone. Never do it on Mohit's phone without asking.
+- Never enter the phone's PIN or passwords, and don't wake or unlock the phone.
+- Never write a Flo (or other competitor) walkthrough report; principle-level notes only.
+- Commit, push or open PRs only when asked. Ask before downloads (npm install, SDKs), licence acceptance or publishing.
+- Sakhi website or marketing copy: apply the humanizer in Dr. Megha's voice
+  (`~/Desktop/qura_nutrition-version1/.claude/skills/humanizer/SKILL.md`).
+- Keep every test inside this repo. The session scratchpad is wiped when the Mac restarts.

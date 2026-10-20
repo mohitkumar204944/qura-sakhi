@@ -1,0 +1,14 @@
+{
+  "name": "qura-sakhi",
+  "private": true,
+  "version": "0.21.0",
+  "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
+  "scripts": {
+    "test": "cd web && node test/signup.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick",
+    "test:signup": "cd web && node test/signup.mjs",
+    "apk": "cd android && ./build-apk.sh"
+  },
+  "devDependencies": {
+    "playwright": "1.59.1"
+  }
+}

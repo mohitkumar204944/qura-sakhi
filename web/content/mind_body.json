@@ -1,0 +1,365 @@
+{
+  "group": "mind_body",
+  "articles": [
+    {
+      "id": "mood-and-the-cycle",
+      "title_en": "Mood and your cycle: what is usual, and when to ask for help",
+      "title_hi": "मूड और पीरियड साइकिल: क्या आम है, और कब मदद लेनी है",
+      "summary_en": "Feeling low or snappy in the days before a period is common; mood that stops your day, or dark thoughts, needs a person, and Tele-MANAS 14416 is free.",
+      "summary_hi": "पीरियड से पहले के दिनों में मन गिरना या चिड़चिड़ापन आम है; पर जो मूड आपका दिन रोक दे, या बुरे ख़याल आएँ, उसके लिए किसी इंसान से बात करना ज़रूरी है। Tele-MANAS 14416 फ़्री है।",
+      "body_en": [
+        "When a woman is upset, somebody always says 'it must be her periods', right? Half of that is true. The other half is unfair.",
+        "Yes, in the week before a period many women feel low, tearful, snappy or tired, and want to eat more. Hormones rise and fall through the month, and the body feels it. For most women this lifts within a day or two of the bleeding starting.",
+        "But nobody should use 'it's just hormones' to brush off real suffering. Some women get the same heavy feelings every month, strong enough to cause fights at home, missed work, or wanting to see nobody. Doctors call the severe form PMDD. It is a real condition, and it is treatable.",
+        "How do you tell the difference? Write it down. For two months, note each day in a few words: mood, sleep, bleeding or not. If the bad days sit in the same place before each period, and the good days come back after, that pattern is exactly what a doctor needs to see.",
+        "And if the heaviness does not lift with the period, or fills most of the day for two weeks or more, that is probably more than a cycle problem. That is the time to talk to a person, not wait for next month."
+      ],
+      "body_hi": [
+        "जब कोई औरत परेशान होती है तो कोई न कोई कह देता है, 'पीरियड चल रहे होंगे', है न? इसमें आधी बात सच है। आधी नाइंसाफ़ी।",
+        "हाँ, पीरियड से पहले के हफ़्ते में बहुत सी औरतों का मन उदास रहता है, रोना आता है, चिड़चिड़ापन होता है, थकान लगती है, और भूख ज़्यादा लगती है। महीने भर हार्मोन ऊपर-नीचे होते हैं और शरीर उसे महसूस करता है। ज़्यादातर औरतों में ब्लीडिंग शुरू होने के एक-दो दिन में यह अपने आप हल्का हो जाता है।",
+        "पर 'हार्मोन का असर है' कहकर असली तकलीफ़ टाल देना ठीक नहीं। कुछ औरतों को हर महीने इतना भारी लगता है कि घर में झगड़े हो जाते हैं, काम छूट जाता है, किसी से मिलने का मन नहीं करता। डॉक्टर इसके गंभीर रूप को PMDD कहते हैं। यह असली बीमारी है, और इसका इलाज है।",
+        "फ़र्क कैसे पता चले? लिखिए। दो महीने तक हर दिन दो-चार शब्द नोट करें: मूड कैसा था, नींद कैसी थी, ब्लीडिंग थी या नहीं। अगर बुरे दिन हर बार पीरियड से पहले ही आते हैं और बाद में अच्छे दिन लौट आते हैं, तो यही पैटर्न डॉक्टर को दिखाना है।",
+        "और अगर भारीपन पीरियड के साथ नहीं जाता, या दो हफ़्ते से ज़्यादा दिन का बड़ा हिस्सा उदासी में बीतता है, तो यह सिर्फ़ पीरियड की बात नहीं लगती। तब किसी इंसान से बात करने का समय है, अगले महीने का इंतज़ार करने का नहीं।"
+      ],
+      "see_doctor_en": [
+        "Low mood most of the day, nearly every day, for 2 weeks or more",
+        "Mood before periods that causes fights, missed work or hiding away, two months running: take your diary to a doctor",
+        "Thoughts of hurting yourself: call Tele-MANAS 14416 now. Free, 24 hours. If you are about to act, call 108 or 112, or get someone to take you to the nearest hospital now.",
+        "Free in person: your PHC or Ayushman Arogya Mandir, or the District Mental Health Programme (DMHP) clinic that most district hospitals run; ask at the OPD counter"
+      ],
+      "see_doctor_hi": [
+        "दो हफ़्ते या ज़्यादा से, लगभग हर दिन, दिन का बड़ा हिस्सा मन उदास रहे",
+        "पीरियड से पहले का मूड लगातार दो महीने झगड़े, काम छूटना या सबसे दूर रहना करवा दे: अपनी डायरी लेकर डॉक्टर को दिखाएँ",
+        "खुद को चोट पहुँचाने के ख़याल आएँ: अभी Tele-MANAS 14416 पर कॉल करें। फ़्री है, 24 घंटे। अगर कुछ करने ही वाली हैं तो 108 या 112 पर कॉल करें, या किसी को कहें कि अभी नज़दीकी अस्पताल ले जाए।",
+        "फ़्री, आमने-सामने: अपना PHC या आयुष्मान आरोग्य मंदिर, या District Mental Health Programme (DMHP) की क्लिनिक, जो ज़्यादातर ज़िला अस्पतालों में चलती है; OPD काउंटर पर पूछें"
+      ],
+      "qura_line_en": "A Qura doctor can read your mood and cycle diary with you and help with sleep, food and routine. Medicines for PMDD or depression come from an MBBS doctor or a psychiatrist; Tele-MANAS can connect you to one free.",
+      "qura_line_hi": "Qura की डॉक्टर आपकी मूड और पीरियड डायरी आपके साथ देख सकती हैं और नींद, खाने और रूटीन में मदद कर सकती हैं। PMDD या डिप्रेशन की दवा MBBS डॉक्टर या साइकियाट्रिस्ट देते हैं; Tele-MANAS आपको फ़्री में उन तक पहुँचा सकता है।",
+      "sources": [
+        "NHS, Pre-menstrual syndrome (PMS), nhs.uk/conditions/pre-menstrual-syndrome/ (self-help; keep a symptom diary for at least 2 cycles; PMDD as the severe form)",
+        "NHS, Depression in adults (see a GP if symptoms last most of the day, every day, for more than 2 weeks)",
+        "Tele-MANAS, Ministry of Health and Family Welfare, telemanas.mohfw.gov.in (14416, 24x7, run with NIMHANS)",
+        "Ministry of Health and Family Welfare press release: District Mental Health Programme sanctioned in 767 districts",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.3, rule R9"
+      ],
+      "notes": "Tele-MANAS: the official portal could not be fetched on 18 Oct 2026 (TLS error, 'unable to verify the first certificate'), so only 14416 is printed. The 1-800 alternate number is printed two ways in secondary sources (1-800-891-4416 in IMPRI and the research report; 1-800-91-4416 in the IIIT-B copy of the PIB launch release). Dial-test it before publishing, record the date here, then restore it. 'In Hindi' was removed for the same reason: the 20-language claim is secondary and no fetched source names Hindi; restore after the dial test. DMHP is sanctioned in 767 districts but coverage is uneven (Maharashtra has district hospitals without functional psychiatric units), hence 'most district hospitals' and 'ask at the OPD counter'. The NHS depression 2-week line is from memory of that page, not fetched today."
+    },
+    {
+      "id": "stress-and-periods",
+      "title_en": "Stress and periods: why a hard month can move your date",
+      "title_hi": "स्ट्रेस और पीरियड: मुश्किल महीना तारीख़ क्यों हिला देता है",
+      "summary_en": "One late period after a hard month is usually the body being sensible; periods that keep slipping need a test, not a guess.",
+      "summary_hi": "मुश्किल महीने के बाद एक लेट पीरियड अक्सर शरीर की समझदारी है; पर पीरियड बार-बार खिसके तो अंदाज़ा नहीं, टेस्ट चाहिए।",
+      "body_en": [
+        "A period came late during exams, a wedding, or a death in the family. Just a coincidence, right?",
+        "Usually not. Your cycle is run from the brain, not only the ovaries. A small part of the brain sends the signal that starts each month's egg release. Under strain, that signal can go quiet. The brain reads a very hard time as 'not a good month to be pregnant', and the period comes late or is skipped.",
+        "The strain can be mental: grief, fear, a job lost, a fight at home that will not end. It can also be physical: sudden weight loss, eating very little, hard exercise with little food, or a bad fever. Britain's NHS counts stress, sudden weight loss and too much exercise among the common causes of a missed period, alongside thyroid problems and PMOS (PCOS).",
+        "So one late period after a hard month is usually the body being sensible, not damaged. Ayurveda would say vata (the quality of movement and dryness) has risen, and the answer is warmth, routine and rest, not more pushing. Eat at roughly the same times. Sleep at roughly the same time. Tell one person you are struggling. The cycle usually settles once life does.",
+        "But stress is also the easiest thing to blame, and it hides other causes. Thyroid, PMOS (PCOS) and pregnancy can all look like 'stress'. And one thing cannot wait: a late period with sharp or one-sided pain low in the belly, pain at the tip of the shoulder, dizziness or fainting can be a pregnancy outside the womb, so call 108 or 112 or go to the nearest hospital now. If periods keep slipping, check. Do not guess."
+      ],
+      "body_hi": [
+        "एग्ज़ाम, शादी या घर में किसी की मौत के दौरान पीरियड लेट हो गया। बस इत्तेफ़ाक़ है, है न?",
+        "अक्सर नहीं। आपकी साइकिल सिर्फ़ ओवरी से नहीं, दिमाग़ से चलती है। दिमाग़ का एक छोटा हिस्सा हर महीने अंडा छूटने का सिग्नल भेजता है। जब शरीर पर दबाव होता है, तो यह सिग्नल कुछ समय के लिए चुप हो जाता है। दिमाग़ बहुत मुश्किल वक़्त को ऐसे पढ़ता है कि 'यह महीना गर्भ के लिए ठीक नहीं', और पीरियड लेट आता है या छूट जाता है।",
+        "दबाव मन का हो सकता है: शोक, डर, नौकरी जाना, घर का झगड़ा जो थमता नहीं। शरीर का भी हो सकता है: अचानक वज़न गिरना, बहुत कम खाना, कम खाकर ज़ोरदार कसरत, या तेज़ बुख़ार। ब्रिटेन की NHS पीरियड छूटने के आम कारणों में स्ट्रेस, अचानक वज़न गिरना और बहुत ज़्यादा कसरत को गिनती है, और साथ में थायरॉइड की दिक़्क़त और PMOS (PCOS) को।",
+        "तो मुश्किल महीने के बाद एक लेट पीरियड अक्सर शरीर की समझदारी है, नुकसान नहीं। आयुर्वेद कहेगा वात (हलचल और सूखेपन का गुण) बढ़ गया है, और इसका जवाब है गर्माहट, रूटीन और आराम, ज़्यादा ज़ोर लगाना नहीं। लगभग एक ही समय पर खाएँ। लगभग एक ही समय पर सोएँ। किसी एक इंसान को बताएँ कि आप परेशान हैं। ज़िंदगी थमती है तो साइकिल भी थम जाती है।",
+        "पर स्ट्रेस पर इल्ज़ाम लगाना सबसे आसान भी है, और इसके पीछे दूसरे कारण छिप जाते हैं। थायरॉइड, PMOS (PCOS) और प्रेग्नेंसी, सब 'स्ट्रेस' जैसे दिख सकते हैं। और एक बात जो इंतज़ार नहीं कर सकती: लेट पीरियड के साथ पेट के नीचे एक तरफ़ तेज़ दर्द, कंधे की नोक में दर्द, सिर घूमना या बेहोशी, यह गर्भ के बाहर प्रेग्नेंसी हो सकती है, इसलिए अभी 108 या 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ। अगर पीरियड बार-बार खिसक रहा है, तो जाँच कराइए। अंदाज़ा मत लगाइए।"
+      ],
+      "see_doctor_en": [
+        "A late period with sharp or one-sided lower belly pain, pain in the shoulder tip, dizziness or fainting: call 108 or 112 or go to the nearest hospital now. This can be a pregnancy outside the womb.",
+        "No period for 90 days, or 3 missed in a row, and you are not pregnant or breastfeeding: do a home pregnancy test first, then see a doctor",
+        "Periods late again and again, along with weight change, new hair on the face or chin, or heavy tiredness",
+        "Stress that has stopped you sleeping or eating for 2 weeks or more: Tele-MANAS 14416, free, 24 hours",
+        "Free: your PHC or Ayushman Arogya Mandir; eSanjeevani for a free online doctor"
+      ],
+      "see_doctor_hi": [
+        "लेट पीरियड के साथ पेट के नीचे तेज़ या एक तरफ़ का दर्द, कंधे की नोक में दर्द, सिर घूमना या बेहोशी: अभी 108 या 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ। यह गर्भ के बाहर प्रेग्नेंसी हो सकती है।",
+        "90 दिन से पीरियड नहीं, या लगातार 3 छूट गए, और आप प्रेग्नेंट या स्तनपान कराती नहीं हैं: पहले घर पर प्रेग्नेंसी टेस्ट, फिर डॉक्टर",
+        "पीरियड बार-बार लेट हो रहा है, साथ में वज़न बदला है, चेहरे या ठुड्डी पर नए बाल आए हैं, या बहुत थकान है",
+        "स्ट्रेस से 2 हफ़्ते या ज़्यादा से नींद या खाना छूट गया है: Tele-MANAS 14416, फ़्री, 24 घंटे",
+        "फ़्री: अपना PHC या आयुष्मान आरोग्य मंदिर; ऑनलाइन फ़्री डॉक्टर के लिए eSanjeevani"
+      ],
+      "qura_line_en": "A Qura doctor can look at your cycle dates with you, order thyroid and other blood tests, and help with sleep, food and routine. If a pregnancy test is positive, register with your ANM or PHC that week, free, and see an MBBS doctor or gynaecologist. Hormone medicines also need an MBBS doctor.",
+      "qura_line_hi": "Qura की डॉक्टर आपके साथ पीरियड की तारीख़ें देख सकती हैं, थायरॉइड और दूसरे ब्लड टेस्ट लिख सकती हैं, और नींद, खाने और रूटीन में मदद कर सकती हैं। प्रेग्नेंसी टेस्ट पॉज़िटिव आए तो उसी हफ़्ते अपनी ANM या PHC में रजिस्ट्रेशन कराएँ, फ़्री है, और MBBS डॉक्टर या गाइनेकोलॉजिस्ट को दिखाएँ। हार्मोन की दवा भी MBBS डॉक्टर ही देते हैं।",
+      "sources": [
+        "NHS, Missed or late periods, nhs.uk/conditions/missed-or-late-periods/ (fetched 18 Oct 2026: stress, sudden weight loss, being overweight, excessive exercise, hormonal contraception, breastfeeding, perimenopause, PCOS, thyroid; see a GP after 3 missed periods in a row)",
+        "NHS, Ectopic pregnancy (one-sided tummy pain, shoulder tip pain, dizziness or fainting; via product vision 5.5 rule R1)",
+        "International Evidence-based Guideline for the Assessment and Management of PCOS 2023, rec 1.1.1 and the rule-out tests (TSH, prolactin)",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.3, rules R1 (ectopic red flag, 108/112), R6 (90 days) and R7 (pregnancy test first)"
+      ],
+      "notes": "The brain-signal explanation (hypothalamic suppression under stress) is standard physiology; no single page was fetched for it this round. 'A bad fever' is the doctor's own observation and is no longer attributed to the NHS. The vata framing is Dr. Megha's house lens, not a clinical claim. Free antenatal registration with the ANM or PHC is standard NHM practice, not fetched today."
+    },
+    {
+      "id": "sleep-and-hormones",
+      "title_en": "Sleep and hormones: the repair work that happens at night",
+      "title_hi": "नींद और हार्मोन: रात में शरीर की मरम्मत",
+      "summary_en": "Short or broken sleep pushes the body towards insulin resistance and sugar cravings; better hours matter more than more hours.",
+      "summary_hi": "कम या टूटी नींद शरीर को इंसुलिन रेज़िस्टेंस और मीठे की तलब की तरफ़ धकेलती है; ज़्यादा घंटों से ज़्यादा ज़रूरी हैं बेहतर घंटे।",
+      "body_en": [
+        "Sleep is the first thing we give up, right? The house goes quiet after 11, the phone comes out, and the alarm is still set for 5.",
+        "Yes, that hour feels like the only one that is yours. But hormones do their repair work while you sleep, and they do not wait for you to finish scrolling.",
+        "Short or broken sleep raises the stress hormone next day and makes the body handle sugar less well. Over months that pushes towards insulin resistance (needing more insulin for the same job), which sits at the centre of PMOS (PCOS) and weight at the waist. Poor sleep also makes you hungrier, mostly for sweet things, which is why the 4 pm biscuit wins after a bad night.",
+        "Ayurveda calls sleep (nidra) one of the three pillars of health, next to food and how you spend your energy. Modern medicine lands in the same place: most adults need 7 to 9 hours.",
+        "You cannot always get more hours. You can get better ones. Finish dinner 2 to 3 hours before bed, and keep it light. Once you lie down, the phone goes out of reach. Same wake time, even on Sunday. On night shifts, protect your day sleep: dark room, phone on silent, family told.",
+        "Loud snoring, or waking tired every day despite 7 hours, is worth telling a doctor. It can be sleep apnoea, which is more common in PMOS whatever your weight, and more common again with extra weight."
+      ],
+      "body_hi": [
+        "नींद सबसे पहले कुर्बान होती है, है न? 11 बजे के बाद घर में चुप्पी होती है, फ़ोन निकल आता है, और अलार्म अब भी 5 बजे का है।",
+        "हाँ, वह घंटा ही लगता है जो सिर्फ़ आपका है। पर हार्मोन अपनी मरम्मत का काम नींद में करते हैं, और वे आपके स्क्रॉल ख़त्म करने का इंतज़ार नहीं करते।",
+        "कम या टूटी नींद अगले दिन स्ट्रेस हार्मोन बढ़ा देती है और शरीर शुगर को ठीक से नहीं संभाल पाता। महीनों तक ऐसा चले तो यह इंसुलिन रेज़िस्टेंस (उसी काम के लिए ज़्यादा इंसुलिन की ज़रूरत) की तरफ़ धकेलता है, जो PMOS (PCOS) और कमर पर जमा वज़न की जड़ में है। कम नींद से भूख भी बढ़ती है, ख़ास तौर पर मीठे की। इसलिए ख़राब रात के बाद 4 बजे का बिस्कुट जीत जाता है।",
+        "आयुर्वेद नींद (निद्रा) को सेहत के तीन स्तंभों में गिनता है, खाने और ऊर्जा के इस्तेमाल के साथ। आधुनिक मेडिसिन भी वहीं पहुँचती है: ज़्यादातर बड़ों को 7 से 9 घंटे चाहिए।",
+        "ज़्यादा घंटे हमेशा नहीं मिल सकते। बेहतर घंटे मिल सकते हैं। रात का खाना सोने से 2-3 घंटे पहले ख़त्म करें, और हल्का रखें। लेटने के बाद फ़ोन हाथ की पहुँच से बाहर। उठने का समय रोज़ एक, इतवार को भी। नाइट शिफ़्ट हो तो दिन की नींद बचाइए: अँधेरा कमरा, फ़ोन साइलेंट, घरवालों को बता दें।",
+        "ज़ोर के खर्राटे, या 7 घंटे सोकर भी रोज़ थके उठना, डॉक्टर को बताने की बात है। यह स्लीप एपनिया हो सकता है, जो PMOS में वज़न चाहे जो हो ज़्यादा देखा जाता है, और ज़्यादा वज़न के साथ और भी ज़्यादा।"
+      ],
+      "see_doctor_en": [
+        "You snore loudly, someone says you stop breathing in sleep, or you wake with a headache most mornings",
+        "You sleep 7 hours or more and still wake exhausted every day, for a month",
+        "Sleep trouble together with low mood for 2 weeks or more: Tele-MANAS 14416, free",
+        "Free: PHC or Ayushman Arogya Mandir; eSanjeevani for an online doctor"
+      ],
+      "see_doctor_hi": [
+        "ज़ोर के खर्राटे, कोई बताए कि नींद में साँस रुकती है, या ज़्यादातर सुबह सिरदर्द के साथ उठती हैं",
+        "7 घंटे या ज़्यादा सोकर भी एक महीने से रोज़ थकी हुई उठ रही हैं",
+        "नींद की दिक़्क़त के साथ 2 हफ़्ते या ज़्यादा से मन उदास: Tele-MANAS 14416, फ़्री",
+        "फ़्री: PHC या आयुष्मान आरोग्य मंदिर; ऑनलाइन डॉक्टर के लिए eSanjeevani"
+      ],
+      "qura_line_en": "A Qura doctor can help you fix sleep timing, dinner and routine, and order thyroid and sugar tests if the tiredness does not lift. A sleep study or treatment for sleep apnoea needs an MBBS doctor.",
+      "qura_line_hi": "Qura की डॉक्टर नींद का समय, रात का खाना और रूटीन ठीक करने में मदद कर सकती हैं, और थकान न जाए तो थायरॉइड और शुगर टेस्ट लिख सकती हैं। स्लीप स्टडी या स्लीप एपनिया का इलाज MBBS डॉक्टर करते हैं।",
+      "sources": [
+        "NHS Every Mind Matters, Sleep problems (nhs.uk/every-mind-matters/mental-health-issues/sleep/): most healthy adults need around 7 to 9 hours",
+        "International PCOS Guideline 2023, rec 1.10.1 (obstructive sleep apnoea more prevalent in PCOS independent of BMI) and 1.10.2 (snoring plus waking unrefreshed, daytime sleepiness or fatigue); lifestyle recommendations",
+        "NHS, Sleep apnoea (loud snoring, stopping breathing in sleep, waking with a headache, daytime tiredness)",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.1"
+      ],
+      "notes": "The sleep-loss to insulin-resistance link is well described in sleep-restriction studies (e.g., Spiegel et al., Lancet 1999) but no primary paper was fetched this round: unverified; body wording kept to 'handle sugar less well'. The 'three pillars' (ahara, nidra, brahmacharya) is a Charaka Samhita concept used as house framing. The 7 to 9 hours figure is now sourced to the main NHS site (Every Mind Matters), fetched 18 Oct 2026 by the reviewer."
+    },
+    {
+      "id": "simple-indian-plate",
+      "title_en": "Food for hormone health: a simple Indian plate",
+      "title_hi": "हार्मोन के लिए खाना: एक सीधी-सादी भारतीय थाली",
+      "summary_en": "Dal, roti, sabzi and dahi were already a good plate; what changed is the proportion, and fixing that is where hormone-friendly eating starts.",
+      "summary_hi": "दाल, रोटी, सब्ज़ी और दही पहले से अच्छी थाली थी; बदला है अनुपात, और उसे ठीक करना ही हार्मोन के लिए खाने की शुरुआत है।",
+      "body_en": [
+        "To eat healthy you need oats and quinoa, right? Nothing in your own kitchen counts.",
+        "Yes, those are fine foods. But dal, roti, sabzi and dahi were already a good plate. The problem is the proportion, not the food. Over the years the rice and roti grew, the sabzi shrank to a spoon, and the dal turned to water.",
+        "ICMR (India's own medical research body) has a 'My Plate for the Day'. It puts vegetables and fruit at about half the plate, and says rice, roti and millets should give under half your calories. Dal, milk, eggs or fish fill the rest. On a steel thali: two ladles of sabzi, a bowl of thick dal, chana or rajma, one or two rotis, a bowl of dahi, a little ghee or oil.",
+        "Why does it matter for hormones? When a meal is mostly rice or roti, sugar enters the blood fast and insulin has to rush. Years of that, and the body stops listening to insulin well. In PMOS (PCOS) this makes everything worse: weight at the waist, and heavier or more irregular cycles. Dal and vegetables slow the rush.",
+        "Ayurveda says the same in older words: eat warm and fresh, make midday the biggest meal when agni (digestive fire) is strongest, and keep dinner small and early.",
+        "Start with one change. Add a bowl of dal or sabzi to the meal you already eat. Do not cut the roti first; that leaves you hungry at 5 pm, and the biscuits win."
+      ],
+      "body_hi": [
+        "हेल्दी खाने के लिए ओट्स और क्विनोआ चाहिए, है न? अपनी रसोई की कोई चीज़ नहीं चलती।",
+        "हाँ, वे भी ठीक चीज़ें हैं। पर दाल, रोटी, सब्ज़ी और दही पहले से अच्छी थाली थी। दिक़्क़त खाने में नहीं, अनुपात में है। सालों में चावल और रोटी बढ़ते गए, सब्ज़ी एक चम्मच रह गई, और दाल पानी हो गई।",
+        "ICMR (भारत की अपनी मेडिकल रिसर्च संस्था) की 'My Plate for the Day' थाली का लगभग आधा हिस्सा सब्ज़ी और फल को देती है, और कहती है कि चावल, रोटी और बाजरा-ज्वार से आधी से कम कैलोरी आए। बाक़ी दाल, दूध, अंडा या मछली से। स्टील की थाली में यह ऐसा दिखता है: दो कड़छी सब्ज़ी, एक कटोरी गाढ़ी दाल या चना या राजमा, एक-दो रोटी, एक कटोरी दही, और थोड़ा सा घी या तेल।",
+        "हार्मोन के लिए यह क्यों ज़रूरी है? जब खाना ज़्यादातर चावल या रोटी हो, तो शुगर तेज़ी से ख़ून में जाती है और इंसुलिन को भागना पड़ता है। सालों ऐसा चले तो शरीर इंसुलिन की सुनना कम कर देता है। PMOS (PCOS) में इससे सब कुछ और बिगड़ता है: कमर पर वज़न, और पीरियड ज़्यादा भारी या ज़्यादा अनियमित। दाल और सब्ज़ी उस भागदौड़ को धीमा करती हैं।",
+        "आयुर्वेद पुराने शब्दों में यही कहता है: गरम और ताज़ा खाएँ, दोपहर का खाना सबसे बड़ा रखें जब अग्नि (पाचन की आग) सबसे तेज़ होती है, और रात का खाना छोटा और जल्दी।",
+        "एक बदलाव से शुरू करें। जो खाना अभी खाती हैं उसमें एक कटोरी दाल या सब्ज़ी जोड़ दें। रोटी पहले मत काटिए; उससे 5 बजे भूख लगती है और बिस्कुट जीत जाते हैं।"
+      ],
+      "see_doctor_en": [
+        "Weight going up or down fast without trying",
+        "Very tired, dizzy, or breathless on stairs: ask for a haemoglobin test, free at a PHC or government hospital",
+        "Diabetes in the family and you are 30 or older: free sugar and BP check at your Ayushman Arogya Mandir",
+        "Pregnant or breastfeeding: ask your ANM or doctor before changing what you eat"
+      ],
+      "see_doctor_hi": [
+        "बिना कोशिश के वज़न तेज़ी से बढ़ या घट रहा है",
+        "बहुत थकान, सिर घूमना, या सीढ़ी चढ़ने में साँस फूलना: हीमोग्लोबिन टेस्ट कराएँ, PHC या सरकारी अस्पताल में फ़्री",
+        "परिवार में शुगर है और आप 30 या ऊपर हैं: आयुष्मान आरोग्य मंदिर में शुगर और BP की फ़्री जाँच",
+        "प्रेग्नेंट या स्तनपान करा रही हैं: खाना बदलने से पहले ANM या डॉक्टर से पूछें"
+      ],
+      "qura_line_en": "A Qura doctor can turn this plate into a plan for your kitchen, budget and cycle, and order sugar, thyroid and haemoglobin (CBC) tests. Diabetes medicines come from an MBBS doctor.",
+      "qura_line_hi": "Qura की डॉक्टर इस थाली को आपकी रसोई, बजट और पीरियड साइकिल के हिसाब से प्लान बना सकती हैं, और शुगर, थायरॉइड और हीमोग्लोबिन (CBC) टेस्ट लिख सकती हैं। शुगर की दवा MBBS डॉक्टर देते हैं।",
+      "sources": [
+        "ICMR-NIN Policy Brief, My Plate for the Day (nin.res.in/brief/): vegetables, fruits, green leafy vegetables, tubers and roots essentially half the plate; the 2000 kcal model plate takes 42% of energy from cereals and millets (250 g), pulses 14%, milk and curd 11%, fats 12%; Dietary Guidelines for Indians 2024 ceiling 45% of calories from cereals; eggs, fish or meat can substitute part of the pulses",
+        "International PCOS Guideline 2023, lifestyle section 3.1 (healthy eating for improving metabolic health; no one regimen has benefits over others; the guideline does not attribute PCOS causation to diet)",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 3; humanizer reference megha-voice-sample.md (curd and the insulinemic index)"
+      ],
+      "notes": "The 42% model-plate figure and the 45% DGI 2024 ceiling were both rounded to 'under half' in the body. The agni and midday-meal framing is house lens, not a clinical claim. Haemoglobin in the qura_line is covered by 'CBC (Complete Blood Count)', row 1 of Qura's seeded investigation_catalog (supabase/migrations/20260613000000_investigations_issuance.sql); it is on the existing 30-test menu, not a Phase 0a addition, so the product vision 5.7 rule is met. Confirm the lab partner runs CBC on a BAMS requisition before launch."
+    },
+    {
+      "id": "movement-busy-day",
+      "title_en": "Movement that fits a busy day",
+      "title_hi": "भागदौड़ वाले दिन में भी थोड़ी कसरत",
+      "summary_en": "Housework counts for something, but it rarely makes you breathe hard; 20 to 25 minutes a day of brisk movement, in small pieces, is what moves sugar into the muscles.",
+      "summary_hi": "घर का काम कुछ तो गिना जाता है, पर उससे साँस कम ही फूलती है; रोज़ 20-25 मिनट की तेज़ चाल, छोटे टुकड़ों में, शुगर को मांसपेशियों तक पहुँचाती है।",
+      "body_en": [
+        "Housework is exercise, right? You are on your feet from 6 am. Surely that counts.",
+        "Yes, it counts for something. Sweeping, washing, carrying water, chasing a toddler: all movement, and far better than sitting. But housework is mostly light and start-stop. It rarely makes you breathe hard for ten minutes together, and that harder breathing is what pulls sugar out of the blood into the muscles.",
+        "WHO's measure for adults is about 150 minutes a week of movement brisk enough that you can talk but not sing, plus muscle work on two days. Split it, and it is 20 to 25 minutes a day, in pieces as small as 10, and WHO now says even a few minutes count.",
+        "For PMOS (PCOS) this matters more than for most. Working muscle takes up sugar without needing much insulin, and lower insulin helps the whole PMOS picture. For many women that shows up over months as more regular periods.",
+        "What fits a real day: walk to the market instead of sending someone. Take stairs at a pace that makes you breathe. Ten minutes of fast walking on the terrace after dinner. Squats or surya namaskar while the cooker whistles.",
+        "Ayurveda's rule is balardha (half your strength): breathing deeper and a little sweaty, not gasping or dizzy. On heavy bleeding days slow walking is fine. Pain or dizziness means rest, not push."
+      ],
+      "body_hi": [
+        "घर का काम ही कसरत है, है न? सुबह 6 बजे से पैरों पर हैं। इतना तो गिना जाना चाहिए।",
+        "हाँ, कुछ तो गिना जाता है। झाड़ू, कपड़े, पानी भरना, बच्चे के पीछे भागना: यह सब हिलना-डुलना है, और बैठे रहने से बहुत बेहतर। पर घर का काम ज़्यादातर हल्का और रुक-रुक कर होता है। इससे दस मिनट लगातार साँस फूलती नहीं, और वही तेज़ साँस है जो शुगर को ख़ून से निकालकर मांसपेशियों में भेजती है।",
+        "WHO का पैमाना बड़ों के लिए हफ़्ते में क़रीब 150 मिनट ऐसी चाल है जिसमें आप बात कर सकें पर गा न सकें, और दो दिन कुछ ऐसा जो मांसपेशियों पर ज़ोर डाले। बाँट लें तो रोज़ 20-25 मिनट, 10-10 मिनट के टुकड़ों में भी चलता है, और WHO अब कहता है कि कुछ मिनट भी गिनती में आते हैं।",
+        "PMOS (PCOS) में यह और ज़्यादा काम का है। काम करती मांसपेशी बिना ज़्यादा इंसुलिन के शुगर ले लेती है, और कम इंसुलिन PMOS की पूरी तस्वीर को बेहतर करता है। बहुत सी औरतों में यह महीनों में ज़्यादा नियमित पीरियड के रूप में दिखता है।",
+        "असली दिन में क्या बैठता है: किसी को भेजने के बजाय ख़ुद बाज़ार तक चलकर जाएँ। सीढ़ियाँ इतनी तेज़ चढ़ें कि साँस फूले। रात के खाने के बाद छत पर दस मिनट तेज़ चाल। कुकर की सीटी तक स्क्वॉट या सूर्य नमस्कार।",
+        "आयुर्वेद का नियम है बलार्ध (अपनी ताक़त का आधा): साँस गहरी हो और हल्का पसीना आए, पर हाँफना या सिर घूमना नहीं। ज़्यादा ब्लीडिंग वाले दिनों में धीमी चाल ठीक है। दर्द या सिर घूमे तो आराम करें, ज़ोर नहीं।"
+      ],
+      "see_doctor_en": [
+        "Chest pain, breathlessness far beyond the effort, or fainting during activity: stop at once and call 108 or 112, or get to the nearest hospital now. Do not wait for the day to end.",
+        "Knee, hip or back pain that gets worse with each walk: this is not an emergency, but rest it and see a doctor",
+        "Pregnant, or with heart or BP problems: ask your doctor what is safe before you start",
+        "Free: BP and sugar check at your Ayushman Arogya Mandir if you are 30 or older"
+      ],
+      "see_doctor_hi": [
+        "छाती में दर्द, मेहनत से कहीं ज़्यादा साँस फूलना, या कसरत के दौरान बेहोशी: फ़ौरन रुकें और 108 या 112 पर कॉल करें, या अभी नज़दीकी अस्पताल पहुँचें। दिन ख़त्म होने का इंतज़ार न करें।",
+        "घुटने, कूल्हे या कमर का दर्द जो हर चाल के साथ बढ़ता जाए: यह इमरजेंसी नहीं है, पर आराम दें और डॉक्टर को दिखाएँ",
+        "प्रेग्नेंट हैं, या दिल या BP की दिक़्क़त है: शुरू करने से पहले डॉक्टर से पूछें क्या सुरक्षित है",
+        "फ़्री: 30 या ऊपर हैं तो आयुष्मान आरोग्य मंदिर में BP और शुगर की जाँच"
+      ],
+      "qura_line_en": "A Qura doctor can build a movement routine around your day, your cycle and your energy. For heart, BP or joint conditions, get an MBBS doctor's go-ahead first.",
+      "qura_line_hi": "Qura की डॉक्टर आपके दिन, पीरियड साइकिल और ताक़त के हिसाब से कसरत का रूटीन बना सकती हैं। दिल, BP या जोड़ों की बीमारी हो तो पहले MBBS डॉक्टर की हरी झंडी लें।",
+      "sources": [
+        "WHO Guidelines on physical activity and sedentary behaviour 2020 (adults: 150 to 300 min moderate or 75 to 150 min vigorous per week; muscle strengthening on 2 or more days; the 10-minute bout minimum was removed, every minute counts)",
+        "International PCOS Guideline 2023, rec 3.4.3 (same 150 to 300 min figures for adults with PCOS), PP 3.4.5 (bouts of at least 10 minutes, at least 30 minutes on most days), and 3.4.1 to 3.4.3 (exercise benefits for metabolic and anthropometric outcomes)",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.3 (red-flag wording: call 108/112 or go to the nearest hospital now) and section 3 (time on shared phones, design facts)"
+      ],
+      "notes": "'Talk but not sing' is the widely used moderate-intensity test (CDC and NHS wording), not from the WHO page itself. Balardha is Charaka's exercise rule, used as house lens. 'More regular periods for many women over months' is the direction of effect from the guideline's lifestyle section, not a quantified promise; the earlier hair and acne claims were dropped because the evidence for those outcomes is weak. The 10-minute pieces come from the PCOS guideline practice point, not WHO 2020, which dropped its 10-minute minimum."
+    },
+    {
+      "id": "weight-and-waist",
+      "title_en": "Weight and waist: why the 'normal' BMI number is wrong for Indian women",
+      "title_hi": "वज़न और कमर: 'नॉर्मल' BMI का नंबर भारतीय औरतों के लिए क्यों सही नहीं",
+      "summary_en": "Indian bodies carry more deep belly fat at the same weight, so the Indian lines are BMI 23 and a waist of 80 cm; the tape tells you more than the scale.",
+      "summary_hi": "भारतीय शरीर उसी वज़न पर पेट के अंदर ज़्यादा चर्बी रखता है, इसलिए भारतीय लकीरें हैं BMI 23 और कमर 80 सेंटीमीटर; तराज़ू से ज़्यादा इंची टेप बताता है।",
+      "body_en": [
+        "A BMI under 25 means your weight is fine, right? That is what the clinic chart says.",
+        "Yes, that chart is the WHO's, built mostly on Western bodies. Indian bodies store fat differently: at the same weight, more fat, less muscle, and more of it deep in the belly around the liver and pancreas. That fat pushes insulin resistance, sugar and PMOS (PCOS), at a BMI the Western chart calls normal.",
+        "So Indian doctors moved the lines. By Indian consensus, a BMI of 23 is where doctors start to act, and the newest Indian guidance (2025) treats a BMI over 23 as the start of obesity, not just overweight. More useful than the scale is the tape. A waist of 80 cm (about 31.5 inches) or more in a woman is the action line, whatever the weight. Britain's NICE guideline has a simpler rule still: keep your waist under half your height. At 155 cm, that is under 77.5 cm.",
+        "To measure: stand, breathe out normally, wrap the tape at navel level, snug but not pressing. Once a month is enough. Write the number, not a verdict.",
+        "A thin woman with an 84 cm waist and a heavier woman with a 76 cm waist are not what the scale says. That is why a good doctor asks for the waist, not only the weight.",
+        "A waist over the line is not a diagnosis. It is a reason for a free sugar and BP check, and to start with the plate and the walk."
+      ],
+      "body_hi": [
+        "BMI 25 से कम है तो वज़न ठीक है, है न? क्लिनिक का चार्ट तो यही कहता है।",
+        "हाँ, वह चार्ट WHO का है, और ज़्यादातर पश्चिमी शरीर पर बना है। भारतीय शरीर चर्बी अलग तरह से रखता है: उसी वज़न पर ज़्यादा चर्बी, कम मांसपेशी, और उसका बड़ा हिस्सा पेट के अंदर, लिवर और पैंक्रियास के आसपास। यही चर्बी इंसुलिन रेज़िस्टेंस, शुगर और PMOS (PCOS) को बढ़ाती है, और उस BMI पर भी जिसे पश्चिमी चार्ट नॉर्मल कहता है।",
+        "इसलिए भारतीय डॉक्टरों ने लकीरें हिला दीं। भारतीय सहमति के हिसाब से BMI 23 वह लकीर है जहाँ से डॉक्टर कदम उठाना शुरू करते हैं, और सबसे नई भारतीय गाइडलाइन (2025) BMI 23 से ऊपर को सिर्फ़ ओवरवेट नहीं, मोटापे की शुरुआत मानती है। तराज़ू से ज़्यादा काम का है इंची टेप। औरत की कमर 80 सेंटीमीटर (क़रीब 31.5 इंच) या ज़्यादा हो तो वज़न जो भी हो, यह कदम उठाने की लकीर है। ब्रिटेन की NICE गाइडलाइन का नियम और भी सीधा है: कमर अपनी लंबाई के आधे से कम रखें। लंबाई 155 सेंटीमीटर है तो कमर 77.5 से कम।",
+        "नापने का तरीक़ा: खड़ी हों, सामान्य साँस छोड़ें, टेप नाभि की ऊँचाई पर लपेटें, कसा हुआ पर दबाता नहीं। महीने में एक बार काफ़ी है। नंबर लिखिए, फ़ैसला नहीं।",
+        "84 सेंटीमीटर कमर वाली पतली औरत और 76 सेंटीमीटर कमर वाली भारी औरत वह नहीं हैं जो तराज़ू कहता है। इसलिए अच्छा डॉक्टर सिर्फ़ वज़न नहीं, कमर भी पूछता है।",
+        "लकीर से ऊपर कमर कोई डायग्नोसिस नहीं है। यह शुगर और BP की फ़्री जाँच कराने की, और थाली और चाल से शुरू करने की वजह है।"
+      ],
+      "see_doctor_en": [
+        "Waist 80 cm or more, or weight going up fast: free BP and sugar check at an Ayushman Arogya Mandir (30 and above) or any PHC",
+        "Dark, velvety patches on the neck or underarms along with weight at the waist: ask for a sugar test",
+        "Weight falling without trying, or you cannot eat without feeling sick",
+        "Told to 'just lose weight' with no tests: ask for TSH, sugar and haemoglobin"
+      ],
+      "see_doctor_hi": [
+        "कमर 80 सेंटीमीटर या ज़्यादा, या वज़न तेज़ी से बढ़ रहा है: आयुष्मान आरोग्य मंदिर (30 और ऊपर) या किसी PHC में BP और शुगर की फ़्री जाँच",
+        "गर्दन या बग़ल में काले, मखमली धब्बे और कमर पर वज़न: शुगर टेस्ट करवाएँ",
+        "बिना कोशिश वज़न गिर रहा है, या खाते ही जी मिचलाता है",
+        "बिना टेस्ट 'बस वज़न घटाओ' कहा गया है: TSH, शुगर और हीमोग्लोबिन टेस्ट माँगें"
+      ],
+      "qura_line_en": "A Qura doctor can order sugar and thyroid tests and work on food, sleep and movement with you. Weight-loss medicines or surgery need an MBBS specialist.",
+      "qura_line_hi": "Qura की डॉक्टर शुगर और थायरॉइड टेस्ट लिख सकती हैं और खाने, नींद और कसरत पर आपके साथ काम कर सकती हैं। वज़न घटाने की दवा या सर्जरी MBBS स्पेशलिस्ट के पास है।",
+      "sources": [
+        "Misra A et al., Consensus statement for diagnosis of obesity, abdominal obesity and the metabolic syndrome for Asian Indians, J Assoc Physicians India 2009;57:163-170, PubMed 19582986 (BMI 23 to 24.9 overweight, 25 or more obese; waist 80 cm women, 90 cm men)",
+        "Misra A, Mohan V et al., Revised definition of obesity in Asian Indians living in India, 2025 (CMC Vellore document): BMI over 23 as the start of a two-stage obesity definition; waist 80 cm women and 90 cm men retained",
+        "WHO Expert Consultation, Appropriate body-mass index for Asian populations and its implications for policy and intervention strategies, Lancet 2004",
+        "NICE NG246 (January 2025), Overweight and obesity management: waist-to-height ratio bands (0.4 to 0.49 healthy, 0.5 to 0.59 increased, 0.6 and over high) and the advice to keep waist to less than half of height; BMI 23 to 27.4 overweight and 27.5 and over obesity for South Asian ancestry",
+        "International PCOS Guideline 2023 (central adiposity and insulin resistance in PCOS)"
+      ],
+      "notes": "Misra 2009 primary text was not opened; the cut-offs come from its abstract and the 2025 revised-definition document that cites it. NICE NG246's 27.5 obesity line for South Asian ancestry was considered and not used, because the audience is in India and the 2025 Indian revision treats a BMI over 23 as the start of obesity; the body keeps 23 and 80 cm. 'More fat, less muscle at the same weight' is the standard 'thin-fat Indian' finding (Yajnik), no paper fetched this round. Lipid profile was removed from the qura_line: it is not on Qura's 30-test lab menu (report 5.1) and is a Phase 0a addition pending written lab confirmation (product vision 5.7); restore once confirmed. The product vision section 3.1 says the app will not track weight or BMI in v1; the body gives cut-offs as fixed education only and asks no one to compute a score."
+    },
+    {
+      "id": "talking-to-family",
+      "title_en": "Talking to family about periods and health",
+      "title_hi": "घर में पीरियड और सेहत की बात कैसे करें",
+      "summary_en": "Silence about periods has a cost; start with the person who already asks how you are, say one fact and one need, and know that ASHA, ANM and 181 are free if home is not safe.",
+      "summary_hi": "पीरियड पर चुप्पी की क़ीमत है; उससे शुरू करें जो पहले से आपकी ख़बर लेता है, एक बात और एक ज़रूरत कहें, और याद रखें कि घर सुरक्षित न हो तो आशा, ANM और 181 फ़्री हैं।",
+      "body_en": [
+        "Period talk at home is shameful, right? Better to buy pads quietly and keep the pain to yourself.",
+        "Yes, in most homes nobody taught the men, and often not the women either. Silence feels like respect, but it has a cost. The woman who says nothing about soaking a pad every hour is the one whose blood count falls. The girl who hides a missed period reaches a doctor late.",
+        "You do not have to start with the hardest person. Start with the one who already asks how you are: a sister, a bhabhi, a friend at work.",
+        "Use plain words: a fact and a need. 'My periods are very heavy, I feel dizzy, I need a doctor this week.' No long explanation.",
+        "With a husband, pick a calm time, not the day of the pain. Tell him what the doctor said, not what you fear; most men act on a task: 'I need two hours on Saturday for a test.' With a mother-in-law, ask what her periods were like. Most women over 50 were never asked.",
+        "If you have a daughter, tell her before her first period. Girls who know in advance do not think they are dying.",
+        "And if home is not a safe place to speak, you are still not alone. Your ASHA, the ANM at the PHC, and the Women Helpline 181 are free, and they have heard it all before."
+      ],
+      "body_hi": [
+        "घर में पीरियड की बात करना शर्म की बात है, है न? चुपचाप पैड ले आओ और दर्द अपने पास रखो।",
+        "हाँ, हमारे ज़्यादातर घरों में मर्दों को किसी ने सिखाया ही नहीं, और अक्सर औरतों को भी नहीं। चुप्पी इज़्ज़त जैसी लगती है, पर इसकी क़ीमत है। जो औरत हर घंटे पैड भीगने की बात नहीं कहती, उसी का ख़ून गिरता जाता है। जो लड़की छूटा पीरियड छिपाती है, वह डॉक्टर तक देर से पहुँचती है।",
+        "सबसे मुश्किल इंसान से शुरू करना ज़रूरी नहीं। उससे शुरू करें जो पहले से पूछता है कि आप कैसी हैं: बहन, भाभी, काम की कोई दोस्त।",
+        "सीधे शब्द: एक बात और एक ज़रूरत। 'मेरे पीरियड बहुत ज़्यादा आते हैं, सिर घूमता है, मुझे इस हफ़्ते डॉक्टर को दिखाना है।' लंबी सफ़ाई नहीं।",
+        "पति से शांत वक़्त पर बात करें, दर्द वाले दिन नहीं। उन्हें वह बताएँ जो डॉक्टर ने कहा, वह नहीं जो आपको डर है; ज़्यादातर मर्द काम की बात पर चलते हैं: 'मुझे शनिवार को टेस्ट के लिए दो घंटे चाहिए।' सास से पूछें उनके पीरियड कैसे थे। 50 से ऊपर की ज़्यादातर औरतों से यह कभी पूछा ही नहीं गया।",
+        "बेटी है तो उसे पहले पीरियड से पहले बता दें। जिन लड़कियों को पहले से पता होता है, वे यह नहीं सोचतीं कि वे मर रही हैं।",
+        "और अगर घर बोलने के लिए सुरक्षित जगह नहीं है, तब भी आप अकेली नहीं हैं। आपकी आशा दीदी, PHC की ANM, और महिला हेल्पलाइन 181, सब फ़्री हैं, और यह बातचीत उनके लिए नई नहीं है।"
+      ],
+      "see_doctor_en": [
+        "Soaking a pad every 1 to 2 hours, dizzy or breathless: tell someone today and see a doctor today; if you faint, call 108 or 112 or go to the nearest hospital emergency",
+        "Any bleeding, pain or missed period you have been hiding for more than a month",
+        "Not safe at home: Women Helpline 181, or 112 for the police right now; the One Stop Centre (Sakhi) is at or within 2 km of the district hospital, and 181 can tell you where",
+        "Under 18: a parent, a teacher, or call 1098 or 112 (1098 now connects through 112)",
+        "Free and used to this conversation: your ASHA, the ANM, your PHC or Ayushman Arogya Mandir"
+      ],
+      "see_doctor_hi": [
+        "हर 1-2 घंटे में पैड भीग रहा है, सिर घूमता है या साँस फूलती है: आज ही किसी को बताएँ और आज ही डॉक्टर; बेहोशी हो तो 108 या 112 पर कॉल करें या नज़दीकी अस्पताल की इमरजेंसी में जाएँ",
+        "कोई ब्लीडिंग, दर्द या छूटा पीरियड जो आप एक महीने से ज़्यादा से छिपा रही हैं",
+        "घर सुरक्षित नहीं: महिला हेल्पलाइन 181, या अभी पुलिस के लिए 112; वन स्टॉप सेंटर (सखी) ज़िला अस्पताल में या उससे 2 किलोमीटर के अंदर होता है, 181 बता देगा कहाँ",
+        "18 से कम: माँ-बाप, टीचर, या 1098 या 112 पर कॉल करें (1098 अब 112 से जुड़ता है)",
+        "फ़्री और इस बात के आदी: आपकी आशा, ANM, PHC या आयुष्मान आरोग्य मंदिर"
+      ],
+      "qura_line_en": "A Qura doctor speaks to you alone on the call, in Hindi. Bleeding that needs a scan or urgent care needs an MBBS gynaecologist or a government hospital.",
+      "qura_line_hi": "Qura की डॉक्टर कॉल पर आपसे अकेले में, हिंदी में बात करती हैं। जिस ब्लीडिंग में स्कैन या तुरंत इलाज चाहिए, उसके लिए MBBS गाइनेकोलॉजिस्ट या सरकारी अस्पताल ज़रूरी है।",
+      "sources": [
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 3 (shared phones, privacy, 'put a person behind the product') and section 5.3 rule R2",
+        "NHS, Heavy periods (signs: soaking through a pad every 1 to 2 hours, bleeding over 7 days, clots, tiredness and breathlessness)",
+        "Ministry of Women and Child Development, One Stop Centre Scheme implementation guidelines 2017, paras 1.3 and 5.2 to 5.4 (OSC within a hospital or medical facility where possible, otherwise within 2 km of it at the district headquarters); Mission Shakti portal (181 is 24x7 and connects to the OSC, police and hospitals)",
+        "MWCD decision to integrate Child Helpline 1098 with ERSS-112 (2022-23); 1098 remains live and routes to 112"
+      ],
+      "notes": "This is social, not clinical, guidance; there is no primary source for the communication advice itself. 'Most women over 50 were never asked' is an observation, not a statistic. The sentence promising 'a short note you can show your family' was removed: any written note is a medical document that must carry the doctor's name, qualification and registration number (NCISM 2023 Reg 22(18)(a); Telemedicine guidelines 3.2.5), and only 1 of 15 doctor profiles in Qura's database holds a licence number. Restore as 'a short written summary of the consult' only after both doctors' registration numbers are entered and the consult-summary template carries them. On the 'not safe at home' line, 112 is printed without 108 because 108 is an ambulance service and the right first call in a safety emergency is the police; the 108-or-112 pairing is used on every medical emergency line. The Tribune (4 Oct 2025) reported gaps in 1098 night staffing after the 112 merger; the number is still live. 'In Hindi' on the qura_line assumes both Qura doctors consult in Hindi; confirm with Dr. Megha and Dr. Ayushi."
+    },
+    {
+      "id": "thyroid-and-anaemia-tests",
+      "title_en": "Thyroid and anaemia: two cheap tests that explain a lot",
+      "title_hi": "थायरॉइड और ख़ून की कमी: दो सस्ते टेस्ट जो बहुत कुछ बता देते हैं",
+      "summary_en": "Tiredness, hair fall, weight creep and heavy or late periods often trace back to a slow thyroid or low haemoglobin; a TSH test and a haemoglobin count find both, and a PHC or district hospital can do them.",
+      "summary_hi": "थकान, बाल गिरना, वज़न बढ़ना और भारी या लेट पीरियड अक्सर धीमे थायरॉइड या कम हीमोग्लोबिन से जुड़े होते हैं; TSH और हीमोग्लोबिन टेस्ट दोनों पकड़ लेते हैं, और PHC या ज़िला अस्पताल में ये हो जाते हैं।",
+      "body_en": [
+        "Tired, hair falling, weight creeping up, periods heavy or late: just being a woman in your 30s, right?",
+        "Yes, they are so common we stop mentioning them. But two of the commonest causes are a small gland in the neck and the iron in your blood, and one blood draw finds both.",
+        "The thyroid sets the body's speed. Run slow, it makes you cold and tired, adds weight, thins hair, and often turns periods heavier or further apart. The test is TSH. An eight-city Indian study found a slow thyroid in about one woman in six (three times the rate in men); a third of those affected did not know.",
+        "Anaemia means too little haemoglobin, the part of blood that carries oxygen. Signs: tiredness, breathlessness on stairs, a pale inner eyelid. Heavy periods cause it, and it makes heavy periods feel worse. In India's big national survey, NFHS-5, more than half of women aged 15 to 49 were anaemic.",
+        "Both touch your cycle. The 2023 international PCOS guideline tells doctors to check TSH before calling long gaps PMOS (PCOS), because a slow thyroid copies it. And no cycle feels manageable while the blood is short of iron.",
+        "Haemoglobin is free at a PHC or Ayushman Arogya Mandir. Many district hospitals do TSH under the free diagnostics scheme; ask at the lab counter. If you are 20 to 49 and not pregnant or breastfeeding, your ASHA or ANM can give you the weekly iron-folic acid tablet under Anemia Mukt Bharat (60 mg iron, 500 mcg folic acid). Pregnant and breastfeeding women get a different dose. Take iron the way the ASHA, ANM or doctor tells you, not on a guess."
+      ],
+      "body_hi": [
+        "थकान, बाल गिरना, वज़न धीरे-धीरे बढ़ना, पीरियड भारी या लेट: 30 के बाद औरत की ज़िंदगी यही है, है न?",
+        "हाँ, ये शिकायतें इतनी आम हैं कि हम बताना ही छोड़ देते हैं। पर इनके दो सबसे आम कारण हैं गले की एक छोटी ग्लैंड और आपके ख़ून का आयरन, और एक बार ख़ून देने से दोनों पकड़ में आ जाते हैं।",
+        "थायरॉइड शरीर की रफ़्तार तय करता है। धीमा चले तो ठंड लगती है, थकान रहती है, वज़न बढ़ता है, बाल झड़ते हैं, और पीरियड अक्सर भारी या ज़्यादा अंतर पर आने लगते हैं। टेस्ट है TSH। आठ भारतीय शहरों की एक स्टडी में क़रीब हर छह में एक औरत का थायरॉइड धीमा मिला (मर्दों से तीन गुना); जिन्हें यह था उनमें से एक तिहाई को पता ही नहीं था।",
+        "ख़ून की कमी (एनीमिया) का मतलब है हीमोग्लोबिन कम होना, ख़ून का वह हिस्सा जो ऑक्सीजन ले जाता है। पहचान: थकान, सीढ़ी पर साँस फूलना, पलक के अंदर का हिस्सा फीका। भारी पीरियड इसे लाता है, और यह भारी पीरियड को और मुश्किल बनाता है। भारत के बड़े सरकारी सर्वे NFHS-5 में 15 से 49 साल की आधी से ज़्यादा औरतें एनीमिक थीं।",
+        "दोनों आपकी साइकिल से जुड़े हैं। 2023 की अंतरराष्ट्रीय PCOS गाइडलाइन डॉक्टरों को कहती है कि लंबे अंतर को PMOS (PCOS) कहने से पहले TSH देखें, क्योंकि धीमा थायरॉइड उसकी नक़ल करता है। और जब तक ख़ून में आयरन कम है, कोई साइकिल संभलती नहीं।",
+        "हीमोग्लोबिन PHC या आयुष्मान आरोग्य मंदिर में फ़्री होता है। बहुत से ज़िला अस्पताल फ़्री जाँच योजना के तहत TSH करते हैं; लैब काउंटर पर पूछें। अगर आप 20 से 49 की हैं और प्रेग्नेंट या स्तनपान कराती नहीं हैं, तो आपकी आशा या ANM Anemia Mukt Bharat के तहत हफ़्ते की आयरन-फ़ोलिक एसिड गोली दे सकती हैं (60 mg आयरन, 500 mcg फ़ोलिक एसिड)। प्रेग्नेंट और स्तनपान कराने वाली औरतों की ख़ुराक अलग होती है। आयरन वैसे लें जैसे आशा, ANM या डॉक्टर बताएँ, अंदाज़े से नहीं।"
+      ],
+      "see_doctor_en": [
+        "Soaking a pad every 1 to 2 hours, or bleeding more than 8 days: a doctor this week, and ask for haemoglobin; today if you are dizzy or breathless",
+        "Haemoglobin under 12 g/dL (WHO's line for a woman who is not pregnant): see a doctor about the cause, not only the tablet",
+        "Tired for a month or more, hair fall, feeling cold, or a swelling in the front of the neck: ask for TSH",
+        "Planning a pregnancy or pregnant: both tests early; thyroid tablets come from an MBBS doctor",
+        "Free: PHC or Ayushman Arogya Mandir for haemoglobin and the weekly iron tablet; many district hospitals for TSH (ask at the lab counter); eSanjeevani for a free online doctor; a Jan Aushadhi kendra sells low-cost iron tablets, check with the pharmacist"
+      ],
+      "see_doctor_hi": [
+        "हर 1-2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इसी हफ़्ते डॉक्टर, और हीमोग्लोबिन टेस्ट माँगें; सिर घूमे या साँस फूले तो आज ही",
+        "हीमोग्लोबिन 12 g/dL से कम (WHO की लकीर, प्रेग्नेंट न हों तो): सिर्फ़ गोली नहीं, कारण के लिए डॉक्टर को दिखाएँ",
+        "एक महीने या ज़्यादा से थकान, बाल झड़ना, ठंड लगना, या गले के सामने सूजन: TSH टेस्ट माँगें",
+        "प्रेग्नेंसी की प्लानिंग या प्रेग्नेंट: दोनों टेस्ट जल्दी; थायरॉइड की गोली MBBS डॉक्टर देते हैं",
+        "फ़्री: PHC या आयुष्मान आरोग्य मंदिर में हीमोग्लोबिन और हफ़्ते की आयरन गोली; बहुत से ज़िला अस्पतालों में TSH (लैब काउंटर पर पूछें); ऑनलाइन फ़्री डॉक्टर के लिए eSanjeevani; जन औषधि केंद्र में सस्ती आयरन की गोली मिलती है, फ़ार्मासिस्ट से पूछें"
+      ],
+      "qura_line_en": "A Qura doctor can order both tests (TSH, and haemoglobin as part of a CBC), go through the results with you, and help with iron-rich food and cycle care. Thyroid tablets and treatment for severe anaemia come from an MBBS doctor.",
+      "qura_line_hi": "Qura की डॉक्टर दोनों टेस्ट लिख सकती हैं (TSH, और CBC में हीमोग्लोबिन), रिपोर्ट आपके साथ समझ सकती हैं, और आयरन वाले खाने और पीरियड की देखभाल में मदद कर सकती हैं। थायरॉइड की गोली और गंभीर एनीमिया का इलाज MBBS डॉक्टर करते हैं।",
+      "sources": [
+        "Unnikrishnan AG et al., Prevalence of hypothyroidism in adults: an epidemiological study in eight cities of India, Indian J Endocrinol Metab 2013;17(4):647-652, PMC3743364 (10.95% overall; 15.86% women vs 5.02% men; 3.47% previously undetected)",
+        "Ministry of Health and Family Welfare, Lok Sabha reply citing NFHS-5 (2019-21): anaemia in women aged 15-49 = 57.0%",
+        "WHO, Guideline on haemoglobin cutoffs to define anaemia in individuals and populations, 2024: non-pregnant women 15 and over below 120 g/L (12 g/dL), unchanged from 2011; mild 110-119, moderate 80-109, severe below 80",
+        "International PCOS Guideline 2023 (TSH and prolactin to exclude other causes of irregular cycles)",
+        "Anemia Mukt Bharat operational guidelines, as summarised on Vikaspedia and in Glob Health Sci Pract 2025;13(2):e2400077 (women 20-49, not pregnant or lactating: weekly 1 tablet, 60 mg elemental iron + 500 mcg folic acid, 52 tablets a year; pregnant and lactating women on a daily regimen)",
+        "NHSRC, Free Diagnostics Service Initiative (free of cost, extended list of tests up to district hospitals; test-level lists sit in linked PDFs)",
+        "NHS, Underactive thyroid (hypothyroidism) symptoms",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.3 rule R2"
+      ],
+      "notes": "'One woman in six' is 15.86% and 'three times the rate in men' is 15.86 against 5.02 (Unnikrishnan 2013, fetched by the reviewer 18 Oct 2026); 'a third of those affected did not know' is 3.47 of 10.95. TSH at district hospitals is softened to 'many' because the Free Diagnostics Initiative test lists sit in PDFs not opened this round; before launch, open the FDSI district-hospital essential list, confirm TSH, and restore firmer wording. Haemoglobin at PHC/AAM being free is standard NHM practice but was not fetched today. Jan Aushadhi iron pricing was not checked, and IFA tablets are not Schedule H, so 'on prescription' was dropped. The WHO 12 g/dL cut-off is debated for Indian women in some studies, but the 2024 WHO guideline kept it and it remains the survey standard. The qura_line haemoglobin test is covered by 'CBC (Complete Blood Count)', row 1 of Qura's seeded investigation_catalog (supabase/migrations/20260613000000_investigations_issuance.sql); confirm the lab partner runs it on a BAMS requisition before launch."
+    }
+  ]
+}

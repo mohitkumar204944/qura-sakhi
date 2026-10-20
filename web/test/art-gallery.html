@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8"><title>Sakhi art gallery</title>
+<link rel="stylesheet" href="../app.css">
+<style>body{padding:16px;background:var(--bg)} .g{display:grid;grid-template-columns:repeat(8,1fr);gap:10px} .c{background:var(--card);border-radius:14px;padding:6px;text-align:center;font-size:11px;color:var(--fg)} .c .art{width:72px;height:72px;margin:0 auto} h2{margin:14px 0 8px} .s .art{width:120px;height:120px;margin:0 auto} .f .art{width:96px;height:96px}</style>
+<div id="out"></div>
+<script src="../app.js"></script><script src="../art.js"></script>
+<script>
+const S = window.Saathi, A = S.art; let h = '<h2>Produce by week</h2><div class="g">';
+for (let w = 3; w <= 42; w++) h += '<div class="c">' + A.produce(w) + w + ' ' + A.produceKey(w) + '</div>';
+h += '</div><h2>Flowers</h2><div class="g f">';
+for (let m = 0; m < 12; m++) h += '<div class="c">' + A.flower(m, [12, 7, 3, 12, 12, 9, 12, 5, 12, 8, 12, 0][m]) + A.flowers[m].en + '</div>';
+h += '</div><h2>Spots</h2><div class="g">';
+['periods','contra','pregtest','ttc','preg','post','loss','intimate','cond','screen','meno','teen','tools','mind_body','services','joy'].forEach((k) => h += '<div class="c">' + A.spot(k) + k + '</div>');
+h += '</div><h2>Badges</h2><div class="g">';
+[['sparkle','rose',1],['flower','orange',1],['check','teal',1],['learn','sky',1],['help','purple',0],['users','plum',0],['bell','gold',1],['heart','green',0]].forEach((b) => h += '<div class="c">' + A.badge(b[0], b[1], b[2]) + b[0] + '</div>');
+h += '</div><h2>Sakhi (4 looks x 3 poses)</h2><div class="g s">';
+for (let l = 0; l < A.looks; l++) ['hi', 'calm', 'cheer'].forEach((p) => h += '<div class="c">' + A.sakhi({ look: l, pose: p }) + 'look ' + l + ' ' + p + '</div>');
+h += '</div><h2>Sakhi without a circle</h2><div class="g s">';
+for (let l = 0; l < A.looks; l++) h += '<div class="c">' + A.sakhi({ look: l, pose: 'calm', bg: false }) + 'look ' + l + '</div>';
+h += '</div>';
+document.getElementById('out').innerHTML = h;
+</script>

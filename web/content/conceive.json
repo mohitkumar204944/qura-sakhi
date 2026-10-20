@@ -1,0 +1,393 @@
+{
+  "group": "conceive",
+  "articles": [
+    {
+      "id": "getting-ready-india-preconception-checklist",
+      "title_en": "Getting ready for a baby: the India checklist",
+      "title_hi": "बच्चे की तैयारी: भारत की चेकलिस्ट",
+      "summary_en": "Most care starts after the test turns positive; this list is what to do in the months before, and where to get it free.",
+      "summary_hi": "ज़्यादातर देखभाल टेस्ट पॉज़िटिव आने के बाद शुरू होती है; यह लिस्ट उसके पहले के महीनों के लिए है, और बताती है कि यह सब मुफ़्त कहाँ मिलेगा।",
+      "body_en": [
+        "Getting ready for a baby starts when the test turns positive, right? Yes, that is when most of us first see a doctor. But the baby's spine and brain form in the first weeks after conception, around the time most women first find out. A little work now goes a long way.",
+        "Go through this list. Mark each line Done, Ask a doctor, or Not for me.",
+        "- Folic acid, 400 micrograms (mcg) a day, from now until 12 weeks of pregnancy. Ask your ASHA or the PHC / Ayushman Arogya Mandir for the tablet they give women before pregnancy. At a chemist, check the strip: the usual tablet sold is 5 mg, which is the higher dose. Ask for 400 mcg, or ask a doctor which one to take. Either costs a few rupees.",
+        "- The usual blood tests: haemoglobin, blood group, thyroid, sugar, rubella and the infection tests. Most are free at a government hospital. HIV testing is free and private at any ICTC. Get your BP checked the same day.",
+        "- Rubella protection. Ask the doctor for the rubella blood test. If you are not protected, take the MMR injection only when you are sure you are not pregnant, then wait 4 weeks before trying. The adult injection is usually private; ask where it is available.",
+        "- Every medicine you take, shown to a doctor: tablets, injections, and any Ayurvedic or herbal product, including anything for PMOS. Do not stop a prescribed medicine on your own.",
+        "- No tobacco, gutkha or alcohol, for both of you. Your partner's semen test can be done now too.",
+        "- Your mood. If it has been low for weeks, say so. It matters as much as the blood tests."
+      ],
+      "body_hi": [
+        "बच्चे की तैयारी तो टेस्ट पॉज़िटिव आने के बाद शुरू होती है, है ना? हाँ, ज़्यादातर औरतें तभी पहली बार डॉक्टर के पास जाती हैं। पर बच्चे की रीढ़ और दिमाग़ गर्भ ठहरने के पहले कुछ हफ़्तों में ही बनने लगते हैं, करीब उसी समय जब ज़्यादातर औरतों को पता चलता है। इसलिए अभी थोड़ी तैयारी बहुत काम आती है।",
+        "यह लिस्ट देखिए। हर लाइन पर लिखिए: हो गया, डॉक्टर से पूछना है, या मेरे लिए नहीं।",
+        "- फोलिक एसिड, 400 माइक्रोग्राम (mcg) रोज़, आज से लेकर प्रेग्नेंसी के 12 हफ़्ते तक। आशा दीदी या PHC / आयुष्मान आरोग्य मंदिर से वह गोली माँगें जो प्रेग्नेंसी से पहले औरतों को दी जाती है। केमिस्ट से लें तो पत्ते पर ताक़त देखें: दुकान पर आम तौर पर 5 mg वाली गोली मिलती है, जो ज़्यादा डोज़ है। 400 mcg वाली माँगें, या डॉक्टर से पूछें कौन सी लेनी है। दोनों कुछ रुपये की हैं।",
+        "- आम ब्लड टेस्ट: हीमोग्लोबिन, ब्लड ग्रुप, थायरॉइड, शुगर, रूबेला और इन्फेक्शन के टेस्ट। सरकारी अस्पताल में ज़्यादातर मुफ़्त हैं। HIV टेस्ट किसी भी ICTC पर मुफ़्त और गुप्त होता है। उसी दिन BP भी चेक करवा लें।",
+        "- रूबेला से बचाव। डॉक्टर से रूबेला का ब्लड टेस्ट कराएँ। अगर बचाव नहीं है, तो MMR का टीका तभी लगवाएँ जब पक्का हो कि प्रेग्नेंट नहीं हैं, फिर 4 हफ़्ते रुककर कोशिश शुरू करें। बड़ों का यह टीका आम तौर पर प्राइवेट में मिलता है; पूछ लें कहाँ मिलेगा।",
+        "- जो भी दवा लेती हैं, सब डॉक्टर को दिखाएँ: गोली, इंजेक्शन, और कोई भी आयुर्वेदिक या जड़ी-बूटी वाली चीज़, PMOS के लिए जो ले रही हैं वह भी। डॉक्टर की लिखी दवा अपने आप बंद न करें।",
+        "- तंबाकू, गुटखा, शराब बंद, आप दोनों की। पति का सीमन टेस्ट भी अभी हो सकता है।",
+        "- आपका मन। अगर कई हफ़्तों से उदास है, तो यह भी बताइए। यह ब्लड टेस्ट जितना ही ज़रूरी है।"
+      ],
+      "see_doctor_en": [
+        "Before you start trying, for the folic acid, the tests and a look at your medicines. The PHC or Ayushman Arogya Mandir does this free; eSanjeevani gives a free online doctor.",
+        "Right away if your periods come more than 35 days apart or skip months, if you have had 2 or more pregnancy losses, or if you know of a tube, womb or thyroid problem.",
+        "If you are 35 or older, ask the doctor at the start what the plan is.",
+        "Health helpline 104 answers questions about government schemes in most states; if it does not in yours, ask your ASHA."
+      ],
+      "see_doctor_hi": [
+        "कोशिश शुरू करने से पहले, फोलिक एसिड, टेस्ट और दवाओं की जाँच के लिए। PHC या आयुष्मान आरोग्य मंदिर में यह मुफ़्त है; eSanjeevani पर डॉक्टर से मुफ़्त ऑनलाइन बात हो सकती है।",
+        "तुरंत, अगर पीरियड 35 दिन से ज़्यादा के अंतर पर आते हैं या महीनों गायब रहते हैं, अगर 2 या ज़्यादा बार गर्भ गिरा है, या ट्यूब, बच्चेदानी या थायरॉइड की कोई दिक्कत पहले से पता है।",
+        "अगर आप 35 या उससे ऊपर हैं, तो शुरू में ही डॉक्टर से पूछ लें कि आगे का प्लान क्या है।",
+        "ज़्यादातर राज्यों में 104 हेल्पलाइन सरकारी योजनाओं के सवाल लेती है; आपके राज्य में न हो तो आशा दीदी से पूछें।"
+      ],
+      "qura_line_en": "A Qura doctor can go through this checklist with you, order the thyroid test and a basic sugar test (HbA1c), and help with weight, food, sleep and cycles. The 2-hour glucose drink test, if a doctor has diagnosed PMOS, is done at a government hospital or by the gynaecologist. Vaccines, egg-release medicines and fertility treatment also come from an MBBS gynaecologist.",
+      "qura_line_hi": "Qura का डॉक्टर यह चेकलिस्ट आपके साथ देख सकता है, थायरॉइड और बुनियादी शुगर (HbA1c) का टेस्ट लिखवा सकता है, और वज़न, खाना, नींद और पीरियड साइकिल में मदद कर सकता है। PMOS में 2 घंटे वाला ग्लूकोज़ टेस्ट सरकारी अस्पताल या स्त्री रोग विशेषज्ञ से होता है। टीके, अंडा बनाने की दवाएँ और फर्टिलिटी का इलाज भी MBBS स्त्री रोग विशेषज्ञ से ही मिलता है।",
+      "sources": [
+        "WHO e-Library of Evidence for Nutrition Actions, periconceptional folic acid: 400 µg daily from trying to conceive until 12 weeks; 5 mg after a previous neural tube defect. https://www.who.int/tools/elena/interventions/folate-periconceptional",
+        "Anemia Mukt Bharat programme note (Vikaspedia): 400 mcg folic acid daily in the pre-conception period and up to the first trimester; weekly iron-folic acid tablet for women of reproductive age. https://en.vikaspedia.in/viewcontent/health/health-campaigns/anemia-mukt-bharat",
+        "CDC, Pregnancy and Rubella: MMR is not given in pregnancy; avoid pregnancy for at least 4 weeks after MMR. https://www.cdc.gov/rubella/pregnancy/index.html",
+        "NHS, Planning your pregnancy: check rubella immunity first, MMR, do not stop prescribed medicines, smoking, alcohol, weight. https://www.nhs.uk/pregnancy/trying-for-a-baby/planning-your-pregnancy/",
+        "ASRM Practice Committee 2021, Fertility evaluation of infertile women: evaluate at 12 months (<35), 6 months (35+), without delay for oligo/amenorrhoea, tubal or uterine disease, male subfertility. https://www.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/",
+        "NACO ICTC: free, confidential HIV counselling and testing; helpline 1097",
+        "Vikaspedia, How to use eSanjeevani OPD (free national teleconsultation, MoHFW)",
+        "104 helpline is a state NHM service whose role differs by state: Lok Sabha answer via eparlib (108 and 102 ambulance numbers, 104 in Rajasthan); NHM Uttarakhand 104 page; press reports on the Rajasthan medical-advice line and Haryana appointment booking",
+        "Qura research report docs/_research-flo-free-cycle-tracker-oct18.md §5.1 and product vision §5.7: TSH and HbA1c are on the current lab menu; the 75 g OGTT is not confirmed, so no page says a Qura doctor can order it",
+        "Qura product vision, docs/_product-vision-womens-health-companion-oct18.md §3.2 (India preconception checklist items)"
+      ],
+      "notes": "Review flagged four items here (folic acid sourcing, the rubella step, the 104 helpline, the OGTT in the Qura line); all four are fixed in this version. Jan Aushadhi dropped until the PMBJP product list is checked. 'The usual tablet sold is 5 mg' rests on Indian online pharmacy listings, not a pharmacopoeia check: unverified. Free status of hepatitis B, syphilis, rubella IgG and thalassaemia HPLC at PHC level not verified test by test; body says 'most are free'. Adult rubella vaccine is not in India's UIP (vision §3.2), hence 'usually private; ask'. The RMNCH+A '3 months before' citation was dropped (only a secondary paper carried it); the AMB note is cited instead. 'First weeks after conception' is standard embryology (neural tube closes by about day 28 post-fertilisation); no page fetched for it. Whether Qura's lab partner runs haemoglobin/CBC on a BAMS requisition is unconfirmed (vision §5.7), so the Qura line names only TSH and HbA1c."
+    },
+    {
+      "id": "why-no-app-can-name-your-fertile-day",
+      "title_en": "Why no app can name your fertile day",
+      "title_hi": "कोई ऐप आपका 'सही दिन' क्यों नहीं बता सकता",
+      "summary_en": "An app guesses backwards from a period that has not come yet; the egg does not follow a calendar, and sex every 2 to 3 days works as well as any timing.",
+      "summary_hi": "ऐप उस पीरियड से पीछे की ओर गिनती करता है जो अभी आया ही नहीं; अंडा कैलेंडर नहीं देखता, और हर 2-3 दिन में संबंध बनाना किसी भी 'टाइमिंग' जितना ही काम करता है।",
+      "body_en": [
+        "The app puts a little flower on day 14 and says this is your day, right? Yes, it is only counting from the dates you gave it. But your body does not read that calendar.",
+        "A study followed 221 women through 625 cycles. Pregnancy happened only when sex fell in the 6 days ending on the day the egg was released. After that day the egg is gone.",
+        "The catch is that egg-release day moves. In data from over 600,000 cycles it fell around day 17 on average, not 14, and varied by several days even between women whose cycles were the same length. The time from egg release to the next period is steadier, about 12 days, but even that ranged from 7 to 17.",
+        "So the only thing you can be sure of is the day your next period starts, and you count backwards from there. An app cannot see a period that has not come yet. With long or uneven gaps, as many women with PMOS have, the guess gets worse still.",
+        "What works without any guessing: sex every 2 to 3 days right through the month. The NHS gives the same advice. Whenever the egg comes, you are covered.",
+        "Two things this app will never do: name your fertile days, or name safe days. Dates from any app are not a way to avoid pregnancy."
+      ],
+      "body_hi": [
+        "ऐप 14वें दिन पर एक फूल बना देता है और कहता है, आज आपका दिन है, है ना? हाँ, वह बस आपकी दी हुई तारीख़ों से गिनती कर रहा है। पर आपका शरीर वह कैलेंडर नहीं पढ़ता।",
+        "एक स्टडी में 221 औरतों की 625 साइकिल देखी गईं। प्रेग्नेंसी तभी हुई जब संबंध उन 6 दिनों में बना जो अंडा निकलने के दिन पर ख़त्म होते हैं। उस दिन के बाद अंडा रहता ही नहीं।",
+        "दिक्कत यह है कि अंडा निकलने का दिन हिलता रहता है। 6 लाख से ज़्यादा साइकिल के डेटा में यह औसतन 17वें दिन के आसपास था, 14वें नहीं, और एक जैसी लंबाई की साइकिल वाली औरतों में भी कई दिन ऊपर-नीचे था। अंडा निकलने से अगले पीरियड तक का समय ज़्यादा टिका हुआ है, लगभग 12 दिन, पर वह भी 7 से 17 के बीच था।",
+        "यानी एक ही बात पक्की है: अगला पीरियड जिस दिन शुरू होगा, वहाँ से पीछे गिनना। जो पीरियड अभी आया ही नहीं, ऐप उसे देख नहीं सकता। लंबे या ऊपर-नीचे अंतर में, जैसा PMOS वाली कई औरतों में होता है, अंदाज़ा और भी कच्चा हो जाता है।",
+        "बिना अंदाज़े के जो काम करता है: पूरे महीने हर 2 से 3 दिन में संबंध। NHS भी यही सलाह देता है। अंडा जब भी निकले, आप उसे चूकेंगी नहीं।",
+        "दो चीज़ें यह ऐप कभी नहीं करेगा: आपके 'फर्टाइल दिन' बताना, या 'सेफ़ दिन' बताना। किसी भी ऐप की तारीख़ें प्रेग्नेंसी से बचने का तरीक़ा नहीं हैं।"
+      ],
+      "see_doctor_en": [
+        "If you have been trying for 12 months, or 6 months if you are 35 or older. At 40 or older, go at the start.",
+        "Sooner if your periods come more than 35 days apart or skip months. A doctor can check with a blood test whether an egg is being released at all.",
+        "A government hospital gynaecology OPD or your PHC does this; eSanjeevani is a free online doctor."
+      ],
+      "see_doctor_hi": [
+        "अगर 12 महीने कोशिश हो गई, या 35 या उससे ऊपर हैं तो 6 महीने। 40 या उससे ऊपर हैं तो शुरू में ही जाएँ।",
+        "जल्दी जाएँ अगर पीरियड 35 दिन से ज़्यादा के अंतर पर आते हैं या महीनों गायब रहते हैं। ब्लड टेस्ट से डॉक्टर देख सकते हैं कि अंडा बन भी रहा है या नहीं।",
+        "सरकारी अस्पताल की स्त्री रोग OPD या आपका PHC यह करता है; eSanjeevani पर डॉक्टर मुफ़्त ऑनलाइन मिलते हैं।"
+      ],
+      "qura_line_en": "A Qura doctor can look at your cycle dates with you and work on the things that move long gaps, such as weight, food and sleep. Checking whether an egg is released, and medicines to help it, come from an MBBS gynaecologist.",
+      "qura_line_hi": "Qura का डॉक्टर आपकी साइकिल की तारीख़ें आपके साथ देख सकता है और लंबे अंतर पर असर डालने वाली चीज़ों पर काम कर सकता है, जैसे वज़न, खाना और नींद। अंडा निकल रहा है या नहीं, इसकी जाँच और उसमें मदद करने वाली दवाएँ MBBS स्त्री रोग विशेषज्ञ से मिलती हैं।",
+      "sources": [
+        "Wilcox AJ, Weinberg CR, Baird DD. Timing of sexual intercourse in relation to ovulation. NEJM 1995;333:1517 (PMID 7477165): 221 women, 625 cycles; conception only with intercourse in the 6-day period ending on ovulation day",
+        "Bull JR et al. Real-world menstrual cycle characteristics of more than 600,000 menstrual cycles. npj Digital Medicine 2019 (PMC6710244): follicular phase 16.9 days (SD 5.3), luteal 12.4 days (95% range 7 to 17), ovulation not consistently on day 14. https://pmc.ncbi.nlm.nih.gov/articles/PMC6710244/",
+        "NHS, Trying to get pregnant: sex every 2 to 3 days; ovulation usually about 14 days before the next period but depends on cycle length. https://www.nhs.uk/pregnancy/trying-for-a-baby/trying-to-get-pregnant/",
+        "ASRM Practice Committee 2021, Fertility evaluation of infertile women: 12 months (<35), 6 months (35+), more immediate evaluation over 40. https://www.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/",
+        "Qura product vision §3.2 (no fertile-days bar; CDSCO Notice 29/Misc./03/2020-DC(198) Appendix A S.No. 24 lists contraceptive fertility software as Class C) and research report §5.6 (never predict fertile or safe days)"
+      ],
+      "notes": "NICE NG257 (31 Mar 2026) could not be fetched (403 on nice.org.uk and cks.nice.org.uk), so the 'every 2 to 3 days' advice is cited to the live NHS page. 'Around day 17' reads Bull 2019's mean follicular length (16.9 days) as the ovulation day; 'several days either way' summarises the 5.3-day SD. The PMOS sentence (long or uneven gaps make the estimate worse) is reasoning from the same data, not a separate study. 'At 40 or older, go at the start' is the group-wide phrasing, slightly earlier than ASRM's 'over 40' and never later; the other two fertility articles now match it."
+    },
+    {
+      "id": "folic-acid-and-tests-before-pregnancy",
+      "title_en": "Folic acid and the tests a doctor orders before pregnancy",
+      "title_hi": "फोलिक एसिड और वे टेस्ट जो डॉक्टर प्रेग्नेंसी से पहले लिखते हैं",
+      "summary_en": "One small tablet from the day you start trying, and a short list of blood tests, most of them free at a government hospital.",
+      "summary_hi": "कोशिश शुरू करने के दिन से एक छोटी गोली, और कुछ ब्लड टेस्ट की छोटी लिस्ट, जिनमें से ज़्यादातर सरकारी अस्पताल में मुफ़्त हैं।",
+      "body_en": [
+        "Folic acid is for pregnant women, right? Yes, every pregnant woman in India is meant to get iron and folic acid tablets. But the baby's spine and brain close in the first weeks after conception, around the time most women first find out. By then the tablet is late.",
+        "So start now: 400 micrograms (mcg) a day, from the day you begin trying until 12 weeks of pregnancy. India's anaemia programme says the same: take it in the months before pregnancy and through the first 3 months. If an earlier baby had a spine defect, if a doctor has diagnosed diabetes (sugar), or if you take epilepsy medicine, a doctor may give a higher dose. Ask.",
+        "Where to get it: ask your ASHA or the PHC / Ayushman Arogya Mandir for the folic acid or iron-folic acid tablet they give women before pregnancy. At a chemist, check the strip: the usual tablet sold is 5 mg, which is the higher dose. Ask the pharmacist for 400 mcg, or ask a doctor which one to take. Either costs a few rupees.",
+        "The blood tests a doctor usually orders before pregnancy:",
+        "- Haemoglobin. More than half of Indian women run low, and pregnancy pulls it lower.",
+        "- Blood group with Rh. Thyroid (TSH). Sugar, with the 2-hour glucose drink test if a doctor has diagnosed PMOS. Urine.",
+        "- Rubella, hepatitis B, HIV and syphilis. HIV testing is free and private at any ICTC. A thalassaemia carrier test (HPLC), where the doctor thinks it fits.",
+        "If you take thyroid tablets, ask the doctor to aim for TSH under 2.5 before conceiving, and call them the day the test turns positive. The dose usually needs to go up."
+      ],
+      "body_hi": [
+        "फोलिक एसिड तो प्रेग्नेंट औरतों के लिए होता है, है ना? हाँ, भारत में हर प्रेग्नेंट औरत को आयरन-फोलिक एसिड की गोली मिलनी ही चाहिए। पर बच्चे की रीढ़ और दिमाग़ गर्भ ठहरने के पहले कुछ हफ़्तों में ही बंद हो जाते हैं, करीब उसी समय जब ज़्यादातर औरतों को पता चलता है। तब तक गोली देर से पहुँचती है।",
+        "इसलिए अभी से शुरू करें: 400 माइक्रोग्राम (mcg) रोज़, कोशिश शुरू करने के दिन से प्रेग्नेंसी के 12 हफ़्ते तक। भारत का एनीमिया प्रोग्राम भी यही कहता है: प्रेग्नेंसी से पहले के महीनों में और पहले 3 महीनों तक लेते रहें। अगर पहले किसी बच्चे की रीढ़ में कमी थी, शुगर की बीमारी बताई गई है, या मिर्गी की दवा लेती हैं, तो डॉक्टर ज़्यादा डोज़ दे सकते हैं। पूछ लें।",
+        "कहाँ मिलेगा: आशा दीदी या PHC / आयुष्मान आरोग्य मंदिर से वह फोलिक एसिड या आयरन-फोलिक एसिड की गोली माँगें जो प्रेग्नेंसी से पहले औरतों को दी जाती है। केमिस्ट से लें तो पत्ते पर ताक़त देखें: दुकान पर आम तौर पर 5 mg वाली गोली मिलती है, जो ज़्यादा डोज़ है। 400 mcg वाली माँगें, या डॉक्टर से पूछें कौन सी लेनी है। दोनों कुछ रुपये की हैं।",
+        "प्रेग्नेंसी से पहले डॉक्टर आम तौर पर ये ब्लड टेस्ट लिखते हैं:",
+        "- हीमोग्लोबिन। भारत की आधी से ज़्यादा औरतों में यह कम रहता है, और प्रेग्नेंसी इसे और नीचे खींचती है।",
+        "- ब्लड ग्रुप और Rh। थायरॉइड (TSH)। शुगर, और अगर डॉक्टर ने PMOS बताया है तो 2 घंटे वाला ग्लूकोज़ पिलाकर टेस्ट। पेशाब की जाँच।",
+        "- रूबेला, हेपेटाइटिस B, HIV और सिफ़लिस। HIV टेस्ट किसी भी ICTC पर मुफ़्त और गुप्त है। थैलेसीमिया कैरियर टेस्ट (HPLC), अगर डॉक्टर को ठीक लगे।",
+        "अगर आप थायरॉइड की गोली लेती हैं, तो डॉक्टर से कहें कि कोशिश से पहले TSH 2.5 से नीचे रखने का लक्ष्य रखें, और टेस्ट पॉज़िटिव आने के दिन ही उन्हें फ़ोन करें। डोज़ आम तौर पर बढ़ानी पड़ती है।"
+      ],
+      "see_doctor_en": [
+        "Before you start trying, for the tablet and the tests. Your PHC or Ayushman Arogya Mandir does most of this free; eSanjeevani gives a free online doctor.",
+        "If your haemoglobin comes back low, go back for treatment before trying; do not wait for the pregnancy.",
+        "If you take thyroid, sugar, epilepsy, acne, blood-pressure or blood-thinning medicine, or any herbal product, see the prescribing doctor before trying.",
+        "Any infection test that comes back positive needs a doctor's follow-up, and your partner may need testing too. An ICTC counsellor explains HIV results privately."
+      ],
+      "see_doctor_hi": [
+        "कोशिश शुरू करने से पहले, गोली और टेस्ट के लिए। PHC या आयुष्मान आरोग्य मंदिर में ज़्यादातर मुफ़्त है; eSanjeevani पर डॉक्टर मुफ़्त ऑनलाइन मिलते हैं।",
+        "अगर हीमोग्लोबिन कम आए, तो कोशिश से पहले इलाज के लिए वापस जाएँ; प्रेग्नेंसी का इंतज़ार न करें।",
+        "अगर आप थायरॉइड, शुगर, मिर्गी, मुहाँसे, BP या खून पतला करने की दवा लेती हैं, या कोई जड़ी-बूटी वाली चीज़, तो कोशिश से पहले उसी डॉक्टर से मिलें जिसने लिखी है।",
+        "कोई भी इन्फेक्शन टेस्ट पॉज़िटिव आए तो डॉक्टर से आगे की बात ज़रूरी है, और पति का टेस्ट भी हो सकता है। ICTC का काउंसलर HIV रिपोर्ट गुप्त रखकर समझाता है।"
+      ],
+      "qura_line_en": "A Qura doctor can order the thyroid test and a basic sugar test (HbA1c) and go through your folic acid and medicines with you. The 2-hour glucose drink test, the blood group, infection and thalassaemia tests, and anything that needs a prescription medicine, go through a government hospital or an MBBS gynaecologist.",
+      "qura_line_hi": "Qura का डॉक्टर थायरॉइड और बुनियादी शुगर (HbA1c) का टेस्ट लिखवा सकता है और आपके फोलिक एसिड और दवाओं पर आपके साथ बात कर सकता है। 2 घंटे वाला ग्लूकोज़ टेस्ट, ब्लड ग्रुप, इन्फेक्शन और थैलेसीमिया के टेस्ट, और जिस चीज़ में डॉक्टर की लिखी दवा चाहिए, वह सरकारी अस्पताल या MBBS स्त्री रोग विशेषज्ञ से।",
+      "sources": [
+        "WHO ELENA, periconceptional folic acid supplementation: 400 µg daily from trying to conceive until 12 weeks; 5 mg daily after a previous neural tube defect. https://www.who.int/tools/elena/interventions/folate-periconceptional",
+        "Anemia Mukt Bharat programme note (Vikaspedia): 400 mcg folic acid daily in the pre-conception period and up to the first trimester; weekly iron-folic acid tablet (60 mg iron + 500 mcg folic acid) for women of reproductive age. https://en.vikaspedia.in/viewcontent/health/health-campaigns/anemia-mukt-bharat",
+        "NICE-derived UK summaries (GPnotebook): 5 mg folic acid for diabetes, a previous neural tube defect or antiepileptic medicines; BMI alone is no longer an indication",
+        "Indian online pharmacy listings: the retail folic-acid tablet strength is 5 mg and prescription-labelled (an observation, not a pharmacopoeia source)",
+        "American Thyroid Association 2017 guideline (Alexander et al., Thyroid 2017;27:315) via thyroid.org patient page: preconception TSH between the lower reference limit and 2.5 mU/L for women on levothyroxine; increase dose 20 to 30% at a positive pregnancy test. https://www.thyroid.org/management-hypothyroidism-pregnancy/",
+        "2023 International Evidence-based Guideline for PCOS (Teede et al.; Monash summary PDF), recommendation 4.10.7: 75 g OGTT recommended preconception in PCOS",
+        "NFHS-5 (2019-21): 57% of women aged 15-49 anaemic (secondary reports; Rajya Sabha PQ 267, 11 Feb 2025)",
+        "SGPGIMS, Screening for genetic disorders: guidelines for India (Hb HPLC preferably pre-pregnancy or at first antenatal visit); FOGSI GCPR Thalassemia 2025 (HPLC as gold standard)",
+        "NACO ICTC: free, confidential HIV testing",
+        "Qura research report §5.1 and product vision §5.7: TSH and HbA1c on the current lab menu; 75 g OGTT not confirmed with the lab partner",
+        "Qura product vision §3.2 (preconception checklist and test list)"
+      ],
+      "notes": "Review flagged five items here (the RMNCH+A '3 months' line, the sourcing line, the OGTT in the Qura line, the weight-based higher dose, the 'first 4 weeks' clock); all five are fixed in this version. WHO names only the 5 mg dose for a previous neural tube defect; the diabetes and epilepsy-medicine indications come from NICE-derived UK summaries, not a primary NICE page: unverified. 'The usual tablet sold is 5 mg' rests on online pharmacy listings: unverified against a pharmacopoeia. The AMB note says 'pre-conception period and up to the first trimester' with no 3-month window, so the body says 'the months before'. Neural tube closure by about day 28 after conception is standard embryology; no page fetched. Free status at PHC not verified for hepatitis B, syphilis, rubella IgG or HPLC individually. Levothyroxine is not named in the body ('thyroid tablets') to keep Schedule H drug names off a kit-selling domain pending counsel (vision §6)."
+    },
+    {
+      "id": "when-to-see-a-fertility-doctor",
+      "title_en": "When to see a fertility doctor",
+      "title_hi": "फर्टिलिटी डॉक्टर के पास कब जाएँ",
+      "summary_en": "12 months of trying; 6 months if you are 35 or older; at the start if you are 40 or older, your periods are irregular, or you already know of a problem.",
+      "summary_hi": "12 महीने की कोशिश; 35 या ऊपर हैं तो 6 महीने; 40 या उससे ऊपर हैं, पीरियड अनियमित हैं, या कोई दिक्कत पहले से पता है तो शुरू में ही।",
+      "body_en": [
+        "If it has not happened in a few months, something must be wrong, right? Yes, the waiting is hard, and every month that passes feels like bad news. But for most couples under 35 it simply takes time, and that is why doctors do not start tests before a year.",
+        "The timelines doctors use:",
+        "- Under 35: see a doctor after 12 months of regular sex without contraception.",
+        "- 35 or older: after 6 months.",
+        "- 40 or older: go at the start. Do not wait.",
+        "Go now, whatever your age, if any of these is true: your periods come more than 35 days apart, skip months, or have stopped; you have had 2 or more pregnancy losses; a doctor has ever mentioned a tube problem, pelvic infection, genital TB or endometriosis; your partner has had an abnormal semen result; or either of you had cancer treatment.",
+        "Who to see: the gynaecology OPD at a government hospital or medical college is free and sees fertility cases every day. Your PHC can refer you. eSanjeevani gives a free online consultation to start.",
+        "Take your period dates for the last 6 months, any old reports, and your partner. The first visit is usually a talk, a blood test timed to your cycle, and a semen test for him.",
+        "One Indian rule worth knowing: IVF-type treatment is allowed by law only from age 21."
+      ],
+      "body_hi": [
+        "कुछ महीनों में नहीं हुआ तो ज़रूर कुछ गड़बड़ है, है ना? हाँ, इंतज़ार बहुत भारी होता है, और हर गुज़रता महीना बुरी ख़बर जैसा लगता है। पर 35 से कम उम्र के ज़्यादातर जोड़ों में बस समय लगता है, और इसी वजह से डॉक्टर एक साल से पहले टेस्ट शुरू नहीं करते।",
+        "डॉक्टर जो समय-सीमा मानते हैं:",
+        "- 35 से कम: बिना किसी बचाव के नियमित संबंध के 12 महीने बाद डॉक्टर को दिखाएँ।",
+        "- 35 या ऊपर: 6 महीने बाद।",
+        "- 40 या उससे ऊपर: शुरू में ही जाएँ। इंतज़ार न करें।",
+        "उम्र चाहे जो हो, अभी जाएँ अगर इनमें से कुछ भी सही है: पीरियड 35 दिन से ज़्यादा के अंतर पर आते हैं, महीनों गायब रहते हैं, या बंद हो गए हैं; 2 या ज़्यादा बार गर्भ गिरा है; किसी डॉक्टर ने कभी ट्यूब की दिक्कत, पेट के अंदर का इन्फेक्शन, बच्चेदानी या ट्यूब की TB (जननांग TB) या एंडोमेट्रियोसिस का नाम लिया है; पति की सीमन रिपोर्ट ठीक नहीं आई; या आप दोनों में से किसी का कैंसर का इलाज हुआ है।",
+        "किसे दिखाएँ: सरकारी अस्पताल या मेडिकल कॉलेज की स्त्री रोग OPD मुफ़्त है और वहाँ रोज़ ऐसे केस आते हैं। आपका PHC वहाँ रेफ़र कर सकता है। शुरुआत के लिए eSanjeevani पर मुफ़्त ऑनलाइन डॉक्टर मिलते हैं।",
+        "साथ ले जाएँ: पिछले 6 महीनों की पीरियड की तारीख़ें, पुरानी रिपोर्टें, और पति। पहली मुलाक़ात में आम तौर पर बातचीत होती है, साइकिल के हिसाब से एक ब्लड टेस्ट, और उनका सीमन टेस्ट।",
+        "भारत का एक नियम जानना ज़रूरी है: IVF जैसा इलाज क़ानून के हिसाब से 21 साल की उम्र से ही हो सकता है।"
+      ],
+      "see_doctor_en": [
+        "At 12 months of trying under 35, 6 months at 35 or older, and at the start if you are 40 or older.",
+        "Now, if periods are more than 35 days apart or absent, or you have had 2 or more losses, a known tube or womb problem, or an abnormal semen report.",
+        "Any time you have one-sided belly pain with a late period or a positive test: call 112 or 108; that is an emergency.",
+        "If the waiting is weighing on your mind, Tele-MANAS 14416 is free, 24 hours, in your language."
+      ],
+      "see_doctor_hi": [
+        "35 से कम हैं तो 12 महीने की कोशिश पर, 35 या ऊपर हैं तो 6 महीने पर, और 40 या उससे ऊपर हैं तो शुरू में ही।",
+        "अभी, अगर पीरियड 35 दिन से ज़्यादा के अंतर पर हैं या गायब हैं, 2 या ज़्यादा बार गर्भ गिरा है, ट्यूब या बच्चेदानी की दिक्कत पता है, या सीमन रिपोर्ट ठीक नहीं आई।",
+        "कभी भी, अगर पीरियड लेट है या टेस्ट पॉज़िटिव है और पेट में एक तरफ़ दर्द है: 112 या 108 पर कॉल करें; यह इमरजेंसी है।",
+        "अगर इंतज़ार मन पर भारी पड़ रहा है, तो Tele-MANAS 14416 मुफ़्त है, 24 घंटे, आपकी भाषा में।"
+      ],
+      "qura_line_en": "Qura's doctors are Ayurveda (BAMS) doctors. They can help with cycles, weight, food and sleep, and order basic blood tests. The fertility work-up itself, and egg-release medicines, come from an MBBS gynaecologist, and a Qura doctor will tell you when it is time to go.",
+      "qura_line_hi": "Qura के डॉक्टर आयुर्वेद (BAMS) डॉक्टर हैं। वे पीरियड साइकिल, वज़न, खाने और नींद में मदद कर सकते हैं और बुनियादी ब्लड टेस्ट लिखवा सकते हैं। फर्टिलिटी की पूरी जाँच और अंडा बनाने की दवाएँ MBBS स्त्री रोग विशेषज्ञ से मिलती हैं, और Qura का डॉक्टर आपको बताएगा कि वहाँ जाने का समय कब है।",
+      "sources": [
+        "ASRM Practice Committee 2021, Fertility evaluation of infertile women: evaluation at 12 months (<35), 6 months (35+), 'more immediate' over 40; without delay for oligomenorrhoea/amenorrhoea, known or suspected uterine/tubal/peritoneal disease or endometriosis, known or suspected male subfertility. https://www.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/",
+        "ACOG Committee Opinion 781 (2019), Infertility workup for the women's health specialist (PMID 31135764): 12 months; 6 months over 35; more immediate over 40; immediate with a known cause",
+        "NHS, Infertility diagnosis: see a GP after a year; sooner at 36+, after cancer treatment, or with a possible STI; tubal blockage as a cause. https://www.nhs.uk/conditions/infertility/diagnosis/",
+        "Assisted Reproductive Technology (Regulation) Act 2021, s.21(g): ART services for women aged 21 to 50 (confirmed via Madras High Court, Kavitha Anand v State of Tamil Nadu 2025, verdictum.in summary; Act text not fetched)",
+        "Qura product vision §3.2 (entry chips: previous ectopic, tubal surgery or pelvic infection, genital TB) and §5.6 (MBBS handoff for every fertility goal)",
+        "Tele-MANAS 14416 / 1-800-891-4416 (Vikaspedia; official site TLS error)"
+      ],
+      "notes": "Review flagged the '40' threshold wording and the Hindi for genital TB; both fixed. '40 or older' is now the group-wide phrasing, slightly earlier than ASRM's 'over 40' and never later. Hindi 'genital TB' reads 'बच्चेदानी या ट्यूब की TB (जननांग TB)' because genital TB most often affects the tubes. ART Act age floor confirmed only from court summaries; the Act text was not fetched. 'Genital TB' and 'pelvic infection' as early-referral reasons come from the vision doc chip list, consistent with ASRM's 'tubal/peritoneal disease' but not named there. No Indian guideline (FOGSI/ICMR) was fetched for these timelines; they are ASRM/ACOG/NHS. 'Most couples under 35 simply take time' paraphrases ASRM's older figure that about 85% conceive within 12 months, deliberately given without the number."
+    },
+    {
+      "id": "ovulation-strips-temperature-progesterone",
+      "title_en": "Ovulation strips, temperature and progesterone: what each can and cannot tell you",
+      "title_hi": "ओव्युलेशन स्ट्रिप, तापमान और प्रोजेस्टेरोन: हर एक क्या बता सकता है और क्या नहीं",
+      "summary_en": "A strip hints that an egg may be about to release, a temperature chart says it probably did, and only a timed blood test read by a doctor confirms it; none of them gives a safe day.",
+      "summary_hi": "स्ट्रिप इशारा करती है कि अंडा निकलने वाला हो सकता है, तापमान का चार्ट कहता है कि शायद निकल गया, और सिर्फ़ डॉक्टर द्वारा पढ़ा गया सही समय का ब्लड टेस्ट उसे पक्का करता है; इनमें से कोई 'सेफ़ दिन' नहीं बताता।",
+      "body_en": [
+        "Two lines on the strip means the egg is out, right? Yes, the strip is picking up a real hormone, LH, which rises just before an egg is released. But it is a hint. It is not proof that an egg came out.",
+        "Ovulation strips. After the LH rise, the egg usually releases within 12 to 36 hours. The strip cannot tell you that it did. In PMOS, LH often runs high all month, so two lines can show up on many days with no egg at all. If that sounds like your strips, stop buying them and ask a doctor.",
+        "Temperature. Your morning temperature rises a little after egg release and stays up. A chart can tell you, days later, that it probably happened. It cannot tell you in advance, so it cannot help you time anything.",
+        "Progesterone blood test. This one confirms. A doctor times it to your cycle, usually about a week before the period is due, and reads it against the lab's range. A raised level means an egg very likely released that month. With irregular cycles the timing is tricky, so a doctor, not an app, should pick the day.",
+        "None of these gives you a fertile day or a safe day. Sex every 2 to 3 days through the month does the same job without a single strip."
+      ],
+      "body_hi": [
+        "स्ट्रिप पर दो लाइन आईं मतलब अंडा निकल गया, है ना? हाँ, स्ट्रिप एक असली हॉर्मोन पकड़ती है, LH, जो अंडा निकलने से ठीक पहले बढ़ता है। पर यह एक इशारा है, इस बात का सबूत नहीं कि अंडा निकल गया।",
+        "ओव्युलेशन स्ट्रिप। LH बढ़ने के बाद अंडा आम तौर पर 12 से 36 घंटे में निकलता है। स्ट्रिप यह नहीं बता सकती कि निकला भी या नहीं। PMOS में LH अक्सर पूरे महीने ऊँचा रहता है, इसलिए कई दिनों तक दो लाइनें दिख सकती हैं और अंडा एक भी नहीं। अगर आपकी स्ट्रिप ऐसा ही कर रही है, तो स्ट्रिप ख़रीदना बंद करें और डॉक्टर से पूछें।",
+        "तापमान। अंडा निकलने के बाद सुबह का तापमान थोड़ा बढ़ता है और बढ़ा रहता है। चार्ट कुछ दिन बाद बता सकता है कि शायद हो गया। पहले से नहीं बता सकता, इसलिए टाइमिंग में इसका कोई काम नहीं।",
+        "प्रोजेस्टेरोन ब्लड टेस्ट। यही पक्का करता है। डॉक्टर इसे आपकी साइकिल के हिसाब से तय करते हैं, आम तौर पर पीरियड आने से करीब एक हफ़्ता पहले, और लैब की रेंज के हिसाब से पढ़ते हैं। बढ़ा हुआ लेवल मतलब उस महीने अंडा लगभग पक्का निकला। अनियमित साइकिल में दिन चुनना मुश्किल है, इसलिए दिन डॉक्टर चुने, ऐप नहीं।",
+        "इनमें से कोई भी आपको 'फर्टाइल दिन' या 'सेफ़ दिन' नहीं देता। पूरे महीने हर 2 से 3 दिन में संबंध वही काम करता है, बिना एक भी स्ट्रिप के।"
+      ],
+      "see_doctor_en": [
+        "If strips show two lines on many days, or never, for 2 or 3 months running.",
+        "If your periods come more than 35 days apart or skip months. A timed progesterone test and a few other blood tests sort out whether an egg is releasing.",
+        "After 12 months of trying, 6 months at 35 or older, right away at 40 or older.",
+        "The gynaecology OPD at a government hospital does these tests; eSanjeevani is a free first step."
+      ],
+      "see_doctor_hi": [
+        "अगर स्ट्रिप 2-3 महीने लगातार कई दिनों तक दो लाइनें दिखाए, या कभी भी न दिखाए।",
+        "अगर पीरियड 35 दिन से ज़्यादा के अंतर पर आते हैं या महीनों गायब रहते हैं। सही समय का प्रोजेस्टेरोन टेस्ट और कुछ और ब्लड टेस्ट बता देते हैं कि अंडा निकल रहा है या नहीं।",
+        "12 महीने की कोशिश के बाद, 35 या ऊपर हैं तो 6 महीने, 40 या उससे ऊपर हैं तो तुरंत।",
+        "सरकारी अस्पताल की स्त्री रोग OPD ये टेस्ट करती है; eSanjeevani मुफ़्त पहला क़दम है।"
+      ],
+      "qura_line_en": "A Qura doctor can explain what your strips and dates are showing and work on the cycle itself through food, weight and sleep. Timing and reading the progesterone test, and any medicine to help an egg release, is MBBS gynaecologist work.",
+      "qura_line_hi": "Qura का डॉक्टर समझा सकता है कि आपकी स्ट्रिप और तारीख़ें क्या कह रही हैं, और खाने, वज़न और नींद के ज़रिए साइकिल पर काम कर सकता है। प्रोजेस्टेरोन टेस्ट का समय तय करना और पढ़ना, और अंडा निकलने में मदद करने वाली कोई भी दवा, MBBS स्त्री रोग विशेषज्ञ का काम है।",
+      "sources": [
+        "ASRM patient fact sheet, Ovulation detection (reproductivefacts.org): LH surge then ovulation within 12 to 36 hours; BBT charts confirm ovulation only after the fact and 'cannot predict when ovulation is going to occur'; progesterone blood test about one week before the expected period. https://www.reproductivefacts.org/news-and-publications/fact-sheets-and-infographics/ovulation-detection/",
+        "NHS, Infertility diagnosis: progesterone test timing depends on how regular periods are. https://www.nhs.uk/conditions/infertility/diagnosis/",
+        "NHS, Trying to get pregnant: sex every 2 to 3 days. https://www.nhs.uk/pregnancy/trying-for-a-baby/trying-to-get-pregnant/",
+        "ASRM Practice Committee 2021: 12 months (<35), 6 months (35+), more immediate evaluation over 40",
+        "Qura product vision §3.2 (LH strips often misleading in PCOS; progesterone as 'lab reference, interpreted by the doctor'; no BBT or LH logging built)"
+      ],
+      "notes": "Review flagged the NICE CG156 citation (withdrawn 31 Mar 2026; NG257 not fetchable) and the '40' wording; both fixed. The temperature line now says only what ASRM's live fact sheet supports: BBT confirms after the fact and cannot predict. CG156 is no longer cited. No primary study was found for 'LH runs high in PMOS so strips mislead'; it is the vision doc's line and a widely stated mechanism (only consumer pages surfaced in search). ASRM gives the temperature rise as at least 0.5°F; the body says 'a little' so women do not try to measure it with a fever thermometer. Mid-luteal progesterone is on Qura's planned lab list (vision §5.7) but unconfirmed with the lab partner, so the Qura line routes it to the gynaecologist."
+    },
+    {
+      "id": "pregnancy-test-when-and-how",
+      "title_en": "Pregnancy test: when and how",
+      "title_hi": "प्रेग्नेंसी टेस्ट: कब और कैसे",
+      "summary_en": "From the first day your period is late, or 21 days after sex if your dates are unclear; a positive is almost always right, an early negative is not.",
+      "summary_hi": "पीरियड लेट होने के पहले दिन से, या तारीख़ साफ़ न हो तो संबंध के 21 दिन बाद; पॉज़िटिव लगभग हमेशा सही होता है, जल्दी किया गया नेगेटिव नहीं।",
+      "body_en": [
+        "A faint line means the test is confused, right? Yes, strips can be hard to read. But the test looks for one hormone, hCG, which the body makes only in pregnancy. PMOS does not fool it. The one exception: if you are having fertility injections, the injection itself can make the test positive for about 2 weeks; ask that doctor when to test.",
+        "When: from the first day your period is late. If your periods are irregular or you do not know when the next is due, wait at least 21 days after the sex. Too early, and it can say no when the answer is yes.",
+        "How: a strip from any chemist; your ASHA or PHC may have one free. Dip or hold it exactly as the leaflet says, wait the full minutes, then read. Do not read it an hour later.",
+        "A positive is almost certainly right, faint or dark. A negative with no period: test again after a few days. Two negatives and still no period: see a doctor.",
+        "If positive: pause any Ayurvedic or herbal product until a doctor has seen it, tell the doctor who prescribed each medicine, keep the folic acid going, and register with your ASHA or ANM for the free check-ups.",
+        "One danger sign to know now. A late period or a positive test, plus pain on one side of the lower belly, pain at the shoulder tip, dizziness or fainting: call 112 or 108 or go to the nearest hospital, day or night."
+      ],
+      "body_hi": [
+        "हल्की लाइन मतलब टेस्ट कन्फ़्यूज़ है, है ना? हाँ, स्ट्रिप पढ़ना कभी-कभी मुश्किल होता है। पर टेस्ट बस एक हॉर्मोन ढूँढता है, hCG, जो शरीर सिर्फ़ प्रेग्नेंसी में बनाता है। PMOS उसे धोखा नहीं दे सकता। एक अपवाद: अगर फर्टिलिटी के इंजेक्शन चल रहे हैं, तो इंजेक्शन से ही टेस्ट करीब 2 हफ़्ते तक पॉज़िटिव दिख सकता है; उसी डॉक्टर से पूछें कि टेस्ट कब करें।",
+        "कब: पीरियड लेट होने के पहले दिन से। अगर पीरियड अनियमित हैं या पता नहीं कि अगला कब आना है, तो संबंध के कम से कम 21 दिन बाद करें। बहुत जल्दी करेंगी तो जवाब हाँ होते हुए भी ना दिखा सकता है।",
+        "कैसे: किसी भी केमिस्ट से स्ट्रिप; आशा दीदी या PHC पर मुफ़्त भी मिल सकती है। पर्चे में जैसा लिखा है ठीक वैसे डुबोएँ या पकड़ें, पूरे मिनट रुकें, फिर पढ़ें। एक घंटे बाद न पढ़ें।",
+        "पॉज़िटिव लगभग पक्का सही है, लाइन हल्की हो या गहरी। नेगेटिव और पीरियड नहीं आया: कुछ दिन बाद फिर करें। दो बार नेगेटिव और फिर भी पीरियड नहीं: डॉक्टर को दिखाएँ।",
+        "अगर पॉज़िटिव है: कोई भी आयुर्वेदिक या जड़ी-बूटी वाली चीज़ तब तक रोक दें जब तक डॉक्टर उसे देख न लें, जिस डॉक्टर ने जो दवा लिखी है उसे बताएँ, फोलिक एसिड चलती रहे, और मुफ़्त जाँच के लिए आशा दीदी या ANM के पास नाम लिखवाएँ।",
+        "एक ख़तरे का निशान अभी जान लें। पीरियड लेट या टेस्ट पॉज़िटिव, और साथ में पेट के नीचे एक तरफ़ दर्द, कंधे की नोक पर दर्द, सिर घूमना या बेहोशी: 112 या 108 पर कॉल करें या नज़दीकी अस्पताल जाएँ, दिन हो या रात।"
+      ],
+      "see_doctor_en": [
+        "Call 112 or 108 now: late period or positive test with one-sided lower belly pain, shoulder-tip pain, dizziness or fainting.",
+        "Within a few days of a positive test: your ASHA, ANM, PHC or a gynaecologist, to register the pregnancy and review your medicines.",
+        "If two tests are negative and your period still has not come.",
+        "If you are not sure how you feel about the result, Tele-MANAS 14416 is free and private, any hour."
+      ],
+      "see_doctor_hi": [
+        "अभी 112 या 108: पीरियड लेट या टेस्ट पॉज़िटिव, और पेट के नीचे एक तरफ़ दर्द, कंधे की नोक पर दर्द, सिर घूमना या बेहोशी।",
+        "पॉज़िटिव आने के कुछ दिनों के अंदर: आशा दीदी, ANM, PHC या स्त्री रोग विशेषज्ञ, नाम लिखवाने और दवाओं की जाँच के लिए।",
+        "अगर दो टेस्ट नेगेटिव हैं और पीरियड फिर भी नहीं आया।",
+        "अगर रिज़ल्ट को लेकर मन साफ़ नहीं है, तो Tele-MANAS 14416 मुफ़्त और गुप्त है, किसी भी समय।"
+      ],
+      "qura_line_en": "If you are on anything from a Qura doctor, a positive test means pause it and tell us; the doctor will review your medicines and call you. Pregnancy care itself is with your ASHA, ANM or an MBBS obstetrician, not with Qura.",
+      "qura_line_hi": "अगर आप Qura के डॉक्टर की दी हुई कोई चीज़ ले रही हैं, तो पॉज़िटिव टेस्ट का मतलब है उसे रोकें और हमें बताएँ; डॉक्टर आपकी दवाओं की जाँच करके आपसे बात करेंगे। प्रेग्नेंसी की देखभाल आशा दीदी, ANM या MBBS प्रसूति डॉक्टर के पास है, Qura के पास नहीं।",
+      "sources": [
+        "NHS, Doing a pregnancy test: from the first day of a missed period; at least 21 days after unprotected sex if the due date is unknown; repeat a negative after a few days; a positive is almost certainly correct, a negative less reliable; some medicines can affect the result. https://www.nhs.uk/pregnancy/trying-for-a-baby/doing-a-pregnancy-test/",
+        "Cleveland Clinic patient page on hCG trigger injections: wait at least two weeks after the injection before a home pregnancy test (not fetched this round)",
+        "NHS, Ectopic pregnancy (fetched 18 Oct 2026 per vision sources); Qura rules registry R1 (late period or positive test plus one-sided pain, shoulder-tip pain, dizziness or fainting: 112/108 now)",
+        "Qura product vision §3.2 'Test today?' and §3.3 (pause the kit, doctor medicine review, register the pregnancy with ASHA/ANM by 12 weeks, MCP card, free ANC) and §6 liability gate (no printed response-time promise beyond 112 and Tele-MANAS)",
+        "Research report §5.5 R1 wording in Hindi and English"
+      ],
+      "notes": "Flagged unsafe by review for the printed '48 hours' medicine-review promise in the Qura line; removed in both languages per the vision §6 liability gate. Re-add a stated time only once the care_tasks queue is staffed and counsel has cleared the wording. The hCG-injection exception rests on the NHS 'some medicines can affect the results' line plus a Cleveland Clinic patient page not fetched this round: unverified. Free pregnancy test kit through ASHA/PHC (Nishchay kit under NRHM) not re-verified; body says 'may have one free'. The 'hCG, PMOS does not fool it' line is sound (home tests detect hCG) but only consumer pages surfaced in search; no clinical page fetched for it."
+    },
+    {
+      "id": "partner-health-and-semen-test",
+      "title_en": "Partner health and the semen test",
+      "title_hi": "पति की सेहत और सीमन टेस्ट",
+      "summary_en": "In many couples the reason sits with the man, or with both; one painless test tells a lot, and his habits matter as much as yours.",
+      "summary_hi": "कई जोड़ों में वजह पति की तरफ़ होती है, या दोनों की; एक बिना दर्द का टेस्ट बहुत कुछ बता देता है, और उनकी आदतें आपकी आदतों जितनी ही मायने रखती हैं।",
+      "body_en": [
+        "When a baby is slow to come, the woman gets tested first, right? Yes, that is how it usually goes, and often she is the only one tested. But in many couples the reason sits with the man, or with both. His test is the easiest one in the whole work-up, so it belongs near the start.",
+        "The semen test. He gives a sample at the lab, in a private room, after 2 to 7 days without ejaculating. It is painless and takes a morning. The lab counts the sperm and checks how they move and how they are shaped.",
+        "One report does not settle it. Numbers swing with illness, fever, stress and the gap since the last ejaculation, so doctors often repeat the test after some weeks before saying anything is wrong.",
+        "What he can do now: stop tobacco, including gutkha and bidi; cut alcohol; if he carries extra weight, work on it with you. Tell the doctor about any medicine, body-building powder or steroid he takes. A long fever, or a slow swelling or ache in the testicles, needs a doctor, not patience. Sudden severe pain in one testicle is an emergency: hospital now, 112 or 108.",
+        "Where. The gynaecology OPD at a government hospital or medical college orders it at little or no cost; so does any pathology lab with a doctor's slip. If he will not go, go alone and tell the doctor that. They have heard it before."
+      ],
+      "body_hi": [
+        "बच्चा देर से हो तो पहले औरत का टेस्ट होता है, है ना? हाँ, आम तौर पर ऐसा ही होता है, और अक्सर सिर्फ़ उसका ही होता है। पर कई जोड़ों में वजह पति की तरफ़ होती है, या दोनों की। उनका टेस्ट पूरी जाँच में सबसे आसान है, इसलिए यह शुरू में ही होना चाहिए।",
+        "सीमन टेस्ट। वे लैब में, एक अलग कमरे में, सैंपल देते हैं, 2 से 7 दिन तक बिना संबंध बनाए या वीर्य निकले। इसमें दर्द नहीं है, एक सुबह लगती है। लैब स्पर्म की गिनती करती है और देखती है कि वे कैसे चलते हैं और उनकी बनावट कैसी है।",
+        "एक रिपोर्ट से कुछ तय नहीं होता। बीमारी, बुख़ार, तनाव और पिछली बार से अंतर, इन सबसे नंबर ऊपर-नीचे होते हैं, इसलिए डॉक्टर कुछ हफ़्ते बाद टेस्ट दोबारा करवाकर ही कुछ कहते हैं।",
+        "वे अभी क्या कर सकते हैं: तंबाकू बंद, गुटखा और बीड़ी भी; शराब कम; अगर वज़न ज़्यादा है तो आपके साथ उस पर काम करें। डॉक्टर को बताएँ कि वे कोई दवा, जिम का पाउडर या स्टेरॉयड लेते हैं क्या। लंबा बुख़ार, या अंडकोष में धीरे-धीरे आई सूजन या दर्द, डॉक्टर को दिखाने की चीज़ है, सहने की नहीं। अंडकोष में अचानक तेज़ दर्द इमरजेंसी है: अभी अस्पताल, 112 या 108।",
+        "कहाँ। सरकारी अस्पताल या मेडिकल कॉलेज की स्त्री रोग OPD इसे लिखती है, बहुत कम या बिना ख़र्च के; डॉक्टर की पर्ची पर कोई भी पैथोलॉजी लैब भी कर देती है। अगर वे नहीं जाते, तो आप अकेली जाएँ और डॉक्टर को यह बता दें। डॉक्टर ने यह पहले भी सुना है।"
+      ],
+      "see_doctor_en": [
+        "Call 112 or 108 now if he has sudden severe pain in one testicle.",
+        "For him: as soon as you two decide to get checked; his test comes first because it is simplest.",
+        "Now, if he has ever had a hernia or testicle operation, mumps after childhood, an injury or swelling there, or treatment for cancer.",
+        "Now, if either of you has had a sexually transmitted infection, or there is a chance of one. A Suraksha Clinic at the district hospital tests and treats free; an ICTC does HIV testing free and privately.",
+        "The gynaecology OPD at a government hospital, or eSanjeevani for a free first conversation."
+      ],
+      "see_doctor_hi": [
+        "अभी 112 या 108, अगर उनके अंडकोष में अचानक तेज़ दर्द हो।",
+        "उनके लिए: जैसे ही आप दोनों जाँच का फ़ैसला करें; उनका टेस्ट पहले, क्योंकि सबसे आसान है।",
+        "अभी, अगर उन्हें कभी हर्निया या अंडकोष का ऑपरेशन हुआ है, बड़े होकर गलसुआ (mumps) हुआ है, वहाँ चोट या सूजन रही है, या कैंसर का इलाज हुआ है।",
+        "अभी, अगर आप दोनों में से किसी को कभी यौन संक्रमण हुआ है, या होने की संभावना है। ज़िला अस्पताल का सुरक्षा क्लिनिक मुफ़्त जाँच और इलाज करता है; ICTC पर HIV टेस्ट मुफ़्त और गुप्त है।",
+        "सरकारी अस्पताल की स्त्री रोग OPD, या पहली मुफ़्त बात के लिए eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor can talk to both of you about tobacco, weight, food and sleep. The semen test is not on Qura's lab list; a gynaecologist or any pathology lab does it, and an abnormal result goes to an MBBS gynaecologist or urologist.",
+      "qura_line_hi": "Qura का डॉक्टर आप दोनों से तंबाकू, वज़न, खाने और नींद पर बात कर सकता है। सीमन टेस्ट Qura की लैब लिस्ट में नहीं है; स्त्री रोग विशेषज्ञ या कोई भी पैथोलॉजी लैब इसे करती है, और रिपोर्ट ठीक न आए तो MBBS स्त्री रोग विशेषज्ञ या यूरोलॉजिस्ट के पास जाना होता है।",
+      "sources": [
+        "WHO laboratory manual for the examination and processing of human semen, 6th ed., 2021 (ISBN 978-92-4-003078-7): 2 to 7 days' abstinence before a diagnostic sample, as cited in a Translational Andrology and Urology review. https://tau.amegroups.org/article/view/149513/html",
+        "NHS, Infertility diagnosis: semen analysis for sperm count and movement; see a GP after a year, sooner with a possible STI. https://www.nhs.uk/conditions/infertility/diagnosis/",
+        "NHS, Testicle lumps and swellings: go to A&E for sudden, severe pain in a testicle (standard urology: testicular torsion is time-critical; page not fetched this round)",
+        "ASRM Practice Committee 2021: known or suspected male subfertility means evaluation without delay",
+        "NACO: Suraksha Clinics (DSRC) at district hospitals with free STI treatment; ICTC free HIV testing (per Qura product vision §3.4 directory)",
+        "Qura product vision §3.2 (partner semen test after 2 to 7 days' abstinence, marked secondary) and §5.7 (semen analysis not on the lab menu)"
+      ],
+      "notes": "Review flagged the testicle-pain line (all pain treated as routine); split into a routine line and an emergency line for sudden severe one-sided pain, and the emergency added to the top of the see-doctor list. The torsion rule is standard urology; the NHS testicle page was not fetched this round: unverified. The WHO manual text itself was not fetched; the 2 to 7 day window is confirmed from a review that cites the 6th edition. The repeat-test interval is given as 'some weeks' because NICE NG257 could not be fetched (CG156 said about 3 months). Hernia/testicle surgery, mumps after childhood, fever and steroid effects are standard male-factor history items; no page fetched for them. 'In many couples the reason sits with the man, or both' is deliberately given without a percentage (NHS/ASRM put male factor at roughly 40 to 50% of couples; not fetched). Whether government hospitals run semen analysis free in every state is not verified; body says 'little or no cost'."
+    },
+    {
+      "id": "after-a-pregnancy-loss-care-and-support",
+      "title_en": "After a pregnancy loss: care and support",
+      "title_hi": "गर्भ गिरने के बाद: देखभाल और सहारा",
+      "summary_en": "You did not cause this; here is what your body needs this week, the signs that mean hospital now, and where a free, kind voice is.",
+      "summary_hi": "यह आपकी वजह से नहीं हुआ; इस हफ़्ते आपके शरीर को क्या चाहिए, कौन से निशान मतलब अभी अस्पताल, और मुफ़्त, अपनापन वाली आवाज़ कहाँ मिलेगी।",
+      "body_en": [
+        "We are sorry. You do not have to explain anything to anyone, including us.",
+        "Someone will say you lifted something, or walked too much, or thought the wrong thoughts, right? Yes, people say it, often people who love you. It is not true. Early loss is common: at least 1 in 5 women has one at some point, and in most cases the cause is a chance problem in how the pregnancy formed. Stress and sex do not cause it, and neither does an ordinary day's work.",
+        "Your body this week. Bleeding like a heavy period for some days is expected. Hospital now, call 112 or 108, if you soak a pad within an hour, have pain at the shoulder tip, severe belly pain, or feel faint. Go to a hospital, PHC or CHC today, not next week, if you have fever or chills or a bad-smelling discharge; these can mean an infection.",
+        "Within a week, a gynaecologist or your PHC or CHC should check you, even if the bleeding has settled. Tell them your blood group; if it is Rh-negative, ask about an anti-D injection. Take along anything you were taking, including Ayurvedic or herbal products.",
+        "Your period usually returns within about 8 weeks. You can try again when you both feel ready; one or two losses do not raise the chance of another. Start folic acid again first. After 2 or more losses, ask a gynaecologist for a check.",
+        "Your mind counts too. Tele-MANAS 14416 is free, 24 hours, in your language. If anyone at home blames you or you feel unsafe, the Women Helpline 181 is free as well."
+      ],
+      "body_hi": [
+        "हमें अफ़सोस है। आपको किसी को कुछ समझाने की ज़रूरत नहीं, हमें भी नहीं।",
+        "कोई कहेगा कि आपने कुछ भारी उठा लिया, या ज़्यादा चल लिया, या ग़लत सोच लिया, है ना? हाँ, लोग कहते हैं, अक्सर वही लोग जो आपको चाहते हैं। पर यह सच नहीं है। शुरुआती महीनों में गर्भ गिरना आम है: कम से कम 5 में 1 औरत के साथ कभी न कभी ऐसा होता है, और ज़्यादातर बार वजह गर्भ बनने में हुई एक इत्तफ़ाक़ की गड़बड़ होती है। तनाव और संबंध से यह नहीं होता, और रोज़ के काम से भी नहीं।",
+        "इस हफ़्ते आपका शरीर। कुछ दिन भारी पीरियड जैसी ब्लीडिंग होना तय है। अभी अस्पताल, 112 या 108 पर कॉल करें, अगर एक घंटे में पैड भर जाए, कंधे की नोक पर दर्द हो, पेट में तेज़ दर्द हो, या सिर घूमे। बुख़ार या कँपकँपी हो, या बदबूदार पानी आए, तो आज ही अस्पताल, PHC या CHC जाएँ, अगले हफ़्ते नहीं; यह इन्फेक्शन का निशान हो सकता है।",
+        "एक हफ़्ते के अंदर स्त्री रोग विशेषज्ञ या आपका PHC या CHC आपको एक बार देखे, ब्लीडिंग रुक गई हो तो भी। उन्हें अपना ब्लड ग्रुप बताएँ; अगर Rh नेगेटिव है तो anti-D इंजेक्शन के बारे में पूछें। जो भी ले रही थीं, आयुर्वेदिक या जड़ी-बूटी वाली चीज़ भी, साथ ले जाएँ।",
+        "पीरियड आम तौर पर 8 हफ़्ते के अंदर वापस आ जाता है। जब आप दोनों तैयार महसूस करें, फिर कोशिश कर सकती हैं; एक या दो बार गिरने से अगली बार का ख़तरा नहीं बढ़ता। उससे पहले फोलिक एसिड फिर शुरू करें। 2 या ज़्यादा बार हुआ हो तो स्त्री रोग विशेषज्ञ से जाँच की बात करें।",
+        "मन भी उतना ही मायने रखता है। Tele-MANAS 14416 मुफ़्त है, 24 घंटे, आपकी भाषा में। अगर घर में कोई आपको दोष दे या आप सुरक्षित महसूस न करें, तो महिला हेल्पलाइन 181 भी मुफ़्त है।"
+      ],
+      "see_doctor_en": [
+        "Call 112 or 108 now: a pad soaked within an hour, shoulder-tip pain, severe belly pain, or feeling faint.",
+        "Today, a hospital, PHC or CHC: fever or chills, or a bad-smelling discharge.",
+        "Within a week: a gynaecologist, PHC or CHC for a check, your blood group, and the anti-D question.",
+        "If bleeding goes on past 2 weeks, or your period has not come back after 8 weeks.",
+        "After 2 or more losses, before trying again.",
+        "Any hour, for your mind: Tele-MANAS 14416. For safety at home: Women Helpline 181."
+      ],
+      "see_doctor_hi": [
+        "अभी 112 या 108: एक घंटे में पैड भर जाए, कंधे की नोक पर दर्द, पेट में तेज़ दर्द, या सिर घूमना।",
+        "आज ही अस्पताल, PHC या CHC: बुख़ार या कँपकँपी, या बदबूदार पानी।",
+        "एक हफ़्ते के अंदर: स्त्री रोग विशेषज्ञ, PHC या CHC, जाँच, ब्लड ग्रुप और anti-D के सवाल के लिए।",
+        "अगर ब्लीडिंग 2 हफ़्ते से ज़्यादा चले, या 8 हफ़्ते बाद भी पीरियड वापस न आए।",
+        "2 या ज़्यादा बार गिरने के बाद, दोबारा कोशिश से पहले।",
+        "किसी भी समय, मन के लिए: Tele-MANAS 14416। घर में सुरक्षा के लिए: महिला हेल्पलाइन 181।"
+      ],
+      "qura_line_en": "Qura's part here is small on purpose: if you were taking anything from a Qura doctor, it stays paused until the doctor has spoken to you. The check-up after a loss is for a gynaecologist or your PHC; a Qura doctor comes in only later, if and when you want to restart.",
+      "qura_line_hi": "यहाँ Qura का हिस्सा जान-बूझकर छोटा है: अगर आप Qura के डॉक्टर की दी हुई कोई चीज़ ले रही थीं, तो वह तब तक रुकी रहेगी जब तक डॉक्टर आपसे बात न कर लें। गर्भ गिरने के बाद की जाँच स्त्री रोग विशेषज्ञ या आपके PHC का काम है; Qura का डॉक्टर बाद में ही आता है, अगर और जब आप दोबारा शुरू करना चाहें।",
+      "sources": [
+        "RCOG patient information, Early miscarriage: 'at least one in five women have a miscarriage' in the first 13 weeks for no apparent reason; most often a chromosome problem; no evidence that stress or sex causes it; anti-D for rhesus D negative women; one or two early miscarriages do not raise the risk of another; try again when ready. https://www.rcog.org.uk/for-the-public/browse-our-patient-information/early-miscarriage/",
+        "NHS, Miscarriage: call 999 for heavy bleeding (soaking a pad soon after putting it on), severe tummy pain, pain in your shoulder, feeling faint or dizzy; signs of infection need urgent same-day review; anti-D injection; periods can take up to 8 weeks to return. https://www.nhs.uk/conditions/miscarriage/",
+        "NHS, Ectopic pregnancy symptoms: shoulder-tip pain as a sign of internal bleeding. https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "Qura product vision §3.3 loss path (112; gynaecologist or PHC/CHC within a week; blood group and anti-D; bring herbal products; Tele-MANAS; care pause) and rules registry R2",
+        "ASRM 2021: 2 or more pregnancy losses warrants evaluation",
+        "Tele-MANAS 14416 / 1-800-891-4416 (Vikaspedia, MoHFW); Women Helpline 181 (Ministry of Women and Child Development, per vision sources)"
+      ],
+      "notes": "Flagged unsafe by review because the emergency lists omitted shoulder-tip pain; now added to the body and the see-doctor list in both languages (NHS 999 list; a presumed early loss can be an undiagnosed ectopic). The '1 in 5' now uses RCOG's own unit (per woman, not per pregnancy); the vision doc's '1 in 8 pregnancies' (NHS England) was not found on any live page. Fever, chills and bad-smelling discharge moved from the ambulance line to a 'today' tier per NHS (urgent same-day review); review accepted either tiering. 'Ordinary day's work does not cause it' comes from the older NHS miscarriage causes page (exercise, lifting, working), which the current nhs.uk page no longer carries; RCOG confirms only stress and sex. 'Bleeding past 2 weeks' as a see-doctor trigger is Qura's lay threshold, not a sourced number. NHS offers anti-D only from 12 weeks or after surgical management, and RCOG after an operation; the body says 'ask' rather than stating a rule because Indian (FOGSI) practice was not checked. The 'within a week' check is the vision doc's loss path, not an external guideline."
+    }
+  ]
+}

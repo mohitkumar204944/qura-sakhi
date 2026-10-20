@@ -1,0 +1,406 @@
+{
+  "group": "services",
+  "articles": [
+    {
+      "id": "helplines-directory",
+      "title_en": "Helplines: who to call, and what each one does",
+      "title_hi": "हेल्पलाइन: किसे कॉल करें, और कौन क्या करता है",
+      "summary_en": "Eight free numbers, what each one is for, and which to call first.",
+      "summary_hi": "आठ फ़्री नंबर, हर एक किस काम का है, और पहले किसे कॉल करें।",
+      "body_en": [
+        "- 112: any emergency. Police, fire, ambulance, or a woman in danger. One number in every state, free, even with zero balance. Many phones also have an Emergency SOS shortcut (on most Android phones, press the power button 5 times quickly). Check your phone's settings today so you know yours. If in doubt, just dial 112.",
+        "- 108: ambulance for a medical emergency, free in most states. Heavy bleeding with dizziness, fainting, a fit, chest pain: call 108 or 112, whichever you remember.",
+        "- 102: free ambulance for pregnant women and babies up to one year old. Home to hospital, hospital to hospital, and back home after delivery. Some states have merged it into 108.",
+        "- 104: your state's health helpline. Ask where the nearest government hospital, test or doctor is, get basic health advice, or complain about a government facility. Not every state runs it.",
+        "- 181: Women Helpline, 24 hours. Violence at home, harassment, feeling unsafe. They connect you to police, a One Stop Centre, a hospital or free legal help. Someone else can call for you.",
+        "- 1098: Child Helpline, 24 hours, for anyone under 18 who is hurt, scared or alone, and for any adult worried about a child. It now works together with 112.",
+        "- 14416 (also 1-800-891-4416): Tele-MANAS, the government's free mental health line, 24 hours, in Hindi and about 20 languages. Call when you feel very low, cannot stop worrying, or have thoughts of hurting yourself. A trained counsellor answers.",
+        "- 1097: the national HIV/AIDS helpline, free, 24 hours. Questions about HIV, where the nearest free test centre (ICTC) or treatment centre is, or a complaint about being refused care."
+      ],
+      "body_hi": [
+        "- 112: कोई भी इमरजेंसी। पुलिस, आग, एम्बुलेंस, या कोई महिला खतरे में हो। हर राज्य में एक ही नंबर, फ़्री, ज़ीरो बैलेंस पर भी। कई फ़ोन में इमरजेंसी SOS शॉर्टकट भी होता है (ज़्यादातर Android फ़ोन में पावर बटन 5 बार जल्दी-जल्दी दबाने से)। आज ही अपने फ़ोन की सेटिंग में देख लें कि आपके फ़ोन में कौन सा है। शक हो तो सीधे 112 डायल करें।",
+        "- 108: किसी भी मेडिकल इमरजेंसी के लिए एम्बुलेंस, ज़्यादातर राज्यों में फ़्री। बहुत ज़्यादा ब्लीडिंग के साथ सिर घूमना, बेहोशी, दौरा, सीने में दर्द: 108 या 112, जो याद आए।",
+        "- 102: गर्भवती महिलाओं और 1 साल तक के बच्चों के लिए फ़्री एम्बुलेंस। घर से अस्पताल, एक अस्पताल से दूसरे, और डिलीवरी के बाद घर वापस। कुछ राज्यों में यह 108 में मिला दी गई है।",
+        "- 104: आपके राज्य की हेल्थ हेल्पलाइन। पास का सरकारी अस्पताल, टेस्ट या डॉक्टर कहाँ है, सामान्य सलाह, या किसी सरकारी अस्पताल की शिकायत। हर राज्य में नहीं चलती।",
+        "- 181: महिला हेल्पलाइन, 24 घंटे। घर में मारपीट, छेड़छाड़, या असुरक्षित महसूस करना। ये पुलिस, वन स्टॉप सेंटर, अस्पताल या फ़्री कानूनी मदद से जोड़ते हैं। आपकी जगह कोई और भी कॉल कर सकता है।",
+        "- 1098: चाइल्ड हेल्पलाइन, 24 घंटे। 18 साल से छोटा कोई भी बच्चा जो डरा हुआ, अकेला या चोटिल हो, और कोई भी बड़ा जो किसी बच्चे के लिए चिंतित हो। अब यह 112 के साथ मिलकर काम करती है।",
+        "- 14416 (या 1-800-891-4416): Tele-MANAS, सरकार की फ़्री मानसिक स्वास्थ्य लाइन, 24 घंटे, हिंदी और लगभग 20 भाषाओं में। जब मन बहुत उदास हो, चिंता रुके नहीं, या खुद को नुकसान पहुँचाने का ख़्याल आए। एक ट्रेंड काउंसलर बात करता है।",
+        "- 1097: राष्ट्रीय HIV/AIDS हेल्पलाइन, फ़्री, 24 घंटे। HIV से जुड़ा कोई सवाल, पास का फ़्री टेस्ट सेंटर (ICTC) या इलाज केंद्र कहाँ है, या इलाज से मना करने की शिकायत।"
+      ],
+      "see_doctor_en": [
+        "Call 112 or 108 now: sudden one-sided belly pain with a late period; a fit; chest pain or trouble breathing; fainting.",
+        "Soaking a pad every 1 to 2 hours, or bleeding over 8 days: see a doctor this week and ask for a haemoglobin test. If you also feel dizzy or breathless: today, or call 112.",
+        "Call 14416 now if you have thoughts of harming yourself. If you are about to act on them, 112.",
+        "Call 181 if you are being hurt at home. 1098 if a child is.",
+        "For anything that can wait till morning: your PHC, Arogya Mandir or a government hospital OPD. eSanjeevani for a free video doctor."
+      ],
+      "see_doctor_hi": [
+        "अभी 112 या 108: पीरियड लेट है और पेट के एक तरफ़ अचानक दर्द; दौरा; सीने में दर्द या साँस में तकलीफ़; बेहोशी।",
+        "हर 1 से 2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इस हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन टेस्ट कराएँ। साथ में सिर घूमे या साँस फूले: आज ही, या 112।",
+        "खुद को नुकसान पहुँचाने का ख़्याल आए तो अभी 14416। अगर अभी कुछ करने जा रही हैं तो 112।",
+        "घर में मारपीट हो रही है तो 181। किसी बच्चे के साथ हो रही है तो 1098।",
+        "जो सुबह तक रुक सकता है: PHC, आरोग्य मंदिर या सरकारी अस्पताल की OPD। फ़्री वीडियो डॉक्टर के लिए eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor cannot take emergency calls. Use 112 first; a Qura call is for questions about periods, PMOS (PCOS), food and sleep that can wait.",
+      "qura_line_hi": "Qura डॉक्टर इमरजेंसी कॉल नहीं ले सकते। पहले 112। Qura की कॉल पीरियड, PMOS (PCOS), खाने और नींद के उन सवालों के लिए है जो रुक सकते हैं।",
+      "sources": [
+        "112: Google Android Help, Emergency SOS (support.google.com/android/answer/9319337, fetched 18 Oct 2026): press the power button 5 times or more; 112.gov.in (ERSS, Ministry of Home Affairs) unreachable (ECONNREFUSED) on 18 Oct 2026; factly.in ERSS explainer for the one-number and zero-balance claims",
+        "102 ambulance service / JSSK: en.wikipedia.org/wiki/102_(ambulance_service); NHM JSSK pages",
+        "104: nhmodisha.gov.in 104 Health Help Line; vikaspedia Comprehensive Call Centre (Himachal); Wikipedia Arogyavani state list",
+        "181: myscheme.gov.in/schemes/whl-181 (Ministry of Women and Child Development)",
+        "1098: vikaspedia Child Helpline Service; Mission Vatsalya Child Helpline SOP (mphc.gov.in copy); parliamentary reply citing integration with ERSS-112 in all 36 states/UTs",
+        "14416: vikaspedia Tele-MANAS page; telemanas.mohfw.gov.in not reachable (TLS) on 18 Oct 2026; numbers verified by test call on <date>",
+        "1097: naco.mohfw.gov.in/living-with-hiv-aids/hotlines-helplines (Toll Free, 24x7, fetched 18 Oct 2026)",
+        "R2 bleeding line: product vision docs/_product-vision-womens-health-companion-oct18.md section 5.5 R2 and 3.1 flow-and-pain fixed line; NHS Heavy periods (nhs.uk/conditions/heavy-periods, fetched 18 Oct 2026); FIGO 2018 (8 days)",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md section 5.3 (R1, R2, R9)"
+      ],
+      "notes": "Flagged unsafe before this pass for the 3-press panic-button claim; the must-fix is applied (Emergency SOS, 5 presses on most Android phones, check your settings, dial 112 if in doubt). Still unverified or soft: (1) 'free, even with zero balance' comes from secondary summaries of 112.gov.in, which could not be fetched; no-SIM calling is not claimed; (2) iPhone uses hold side button plus a volume button, so the text says 'most Android phones' and tells the reader to check her own settings; (3) '104 not in every state' rests on a Wikipedia state list that includes Rajasthan; (4) 1098 integration status rests on a parliamentary reply citing FY 2024-25 data; (5) Tele-MANAS official site could not be fetched (certificate error), so numbers, 24x7, free and 'about 20 languages' come from vikaspedia and secondary pages; (6) '102 merged into 108 in some states' is from secondary sources (MP, Odisha named); (7) in Rajasthan 181 also serves as the CM helpline, so routing may differ locally. LAUNCH CHECKLIST: a human dials 112, 108, 181, 1098, 1097, 14416 and 1-800-891-4416 once before launch and writes the date into the sources line."
+    },
+    {
+      "id": "free-government-services",
+      "title_en": "Free government health services near you",
+      "title_hi": "आपके पास की फ़्री सरकारी स्वास्थ्य सेवाएँ",
+      "summary_en": "What the PHC, Arogya Mandir, eSanjeevani, ICTC, Suraksha Clinic, district hospital and Jan Aushadhi Kendra give you for free.",
+      "summary_hi": "PHC, आरोग्य मंदिर, eSanjeevani, ICTC, सुरक्षा क्लिनिक, ज़िला अस्पताल और जन औषधि केंद्र आपको फ़्री में क्या देते हैं।",
+      "body_en": [
+        "- PHC (Primary Health Centre): the government clinic for your area. A doctor, a nurse, basic blood and urine tests, pregnancy check-ups, family planning, and free medicines from the government list. Your ASHA or ANM knows where yours is. Some PHCs (called 24x7 PHCs) are open round the clock for deliveries; ask your ASHA which one is yours.",
+        "- Ayushman Arogya Mandir: the new name for Health and Wellness Centres. Twelve kinds of care under one roof, including women's and children's health and mental health, with free medicines, free tests from the list, and a video link to a doctor in a bigger hospital.",
+        "- eSanjeevani: the government's free video doctor on your phone. Register with your mobile number and an OTP, choose your state's OPD, and wait for your turn. The prescription comes to your phone. Timings differ by state. If the app is hard, an Arogya Mandir can connect you.",
+        "- ICTC: a free HIV test with counselling, inside government hospitals, often near the gynaecology department. Confidential. Results usually the same day. Nobody at home is told.",
+        "- Suraksha Clinic: the STI/RTI clinic at the district hospital or medical college. Free treatment for discharge, sores or burning with ready medicine kits, condoms, and a referral for an HIV or syphilis test if needed. Your partner can be treated too.",
+        "- District hospital: gynaecologist, ultrasound, lab, blood bank, delivery and operations. Most tests on the government list are free. The registration fee is small or nil, depending on your state.",
+        "- Jan Aushadhi Kendra: government shops for generic medicines at 50 to 80 percent lower prices, and sanitary pads at Rs 1 each. Ask the doctor to write the salt name."
+      ],
+      "body_hi": [
+        "- PHC (प्राइमरी हेल्थ सेंटर): आपके इलाके का सरकारी क्लिनिक। डॉक्टर, नर्स, खून-पेशाब के बेसिक टेस्ट, गर्भ की जाँच, परिवार नियोजन, और सरकारी लिस्ट की दवाएँ फ़्री। आपकी ASHA या ANM को पता होगा कि आपका PHC कहाँ है। कुछ PHC (24x7 PHC) डिलीवरी के लिए रात-दिन खुले रहते हैं; अपनी ASHA से पूछें कि आपके पास वाला कौन सा है।",
+        "- आयुष्मान आरोग्य मंदिर: हेल्थ एंड वेलनेस सेंटर का नया नाम। एक ही जगह 12 तरह की देखभाल, जिसमें महिलाओं और बच्चों की सेहत और मानसिक स्वास्थ्य भी है। लिस्ट की दवाएँ और टेस्ट फ़्री, और बड़े अस्पताल के डॉक्टर से वीडियो पर बात।",
+        "- eSanjeevani: सरकार का फ़्री वीडियो डॉक्टर, आपके फ़ोन पर। मोबाइल नंबर और OTP से रजिस्टर करें, अपने राज्य की OPD चुनें, और बारी का इंतज़ार करें। पर्ची फ़ोन पर आ जाती है। टाइमिंग राज्य के हिसाब से अलग है। ऐप मुश्किल लगे तो आरोग्य मंदिर जोड़ देता है।",
+        "- ICTC: HIV का फ़्री टेस्ट और काउंसलिंग, सरकारी अस्पताल के अंदर, अक्सर स्त्री रोग विभाग के पास। पूरी गोपनीयता। रिज़ल्ट ज़्यादातर उसी दिन। घर में किसी को नहीं बताया जाता।",
+        "- सुरक्षा क्लिनिक: ज़िला अस्पताल या मेडिकल कॉलेज में STI/RTI क्लिनिक। सफ़ेद पानी, घाव या जलन का फ़्री इलाज, तैयार दवा किट के साथ, कंडोम, और ज़रूरत हो तो HIV या सिफ़लिस टेस्ट के लिए रेफ़र। पार्टनर का इलाज भी हो सकता है।",
+        "- ज़िला अस्पताल: स्त्री रोग डॉक्टर, अल्ट्रासाउंड, लैब, ब्लड बैंक, डिलीवरी और ऑपरेशन। सरकारी लिस्ट के ज़्यादातर टेस्ट फ़्री। रजिस्ट्रेशन फ़ीस बहुत कम या नहीं, राज्य पर निर्भर।",
+        "- जन औषधि केंद्र: सरकारी दुकान, जेनेरिक दवाएँ 50 से 80 प्रतिशत सस्ती, और सैनिटरी पैड 1 रुपये का एक। डॉक्टर से दवा का साल्ट नाम लिखवा लें।"
+      ],
+      "see_doctor_en": [
+        "Soaking a pad every 1 to 2 hours, or bleeding over 8 days: see a doctor this week and ask for a haemoglobin test. If you also feel dizzy or breathless: today, or call 112.",
+        "Go to a government hospital today: fever with lower belly pain, or burning urine with fever or back pain.",
+        "This week, at the PHC or a gynaecologist: discharge that itches, smells or has changed; pain that stops your day; no period for 90 days (pregnancy test first).",
+        "Any bleeding after periods have stopped for 12 months: a gynaecologist within about 2 weeks.",
+        "Call 112 for an emergency, 1097 for a free HIV test centre, 104 for your nearest facility."
+      ],
+      "see_doctor_hi": [
+        "हर 1 से 2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इस हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन टेस्ट कराएँ। साथ में सिर घूमे या साँस फूले: आज ही, या 112।",
+        "आज ही सरकारी अस्पताल: पेट के निचले हिस्से में दर्द के साथ बुखार, या पेशाब में जलन के साथ बुखार या कमर दर्द।",
+        "इस हफ़्ते PHC या स्त्री रोग डॉक्टर: सफ़ेद पानी में खुजली, बदबू या बदलाव; ऐसा दर्द जो दिन रोक दे; 90 दिन से पीरियड नहीं (पहले प्रेगनेंसी टेस्ट)।",
+        "पीरियड 12 महीने से बंद हैं और फिर ब्लीडिंग: लगभग 2 हफ़्ते के अंदर स्त्री रोग डॉक्टर।",
+        "इमरजेंसी में 112, फ़्री HIV टेस्ट सेंटर के लिए 1097, पास की सुविधा के लिए 104।"
+      ],
+      "qura_line_en": "A Qura doctor can help you read a report from any of these places and plan food and sleep around it; for an examination, a scan or hormone medicines you need an MBBS gynaecologist, and the district hospital is the free route.",
+      "qura_line_hi": "Qura डॉक्टर इन जगहों की रिपोर्ट आपके साथ पढ़ सकते हैं और उसके हिसाब से खाने-नींद की योजना बना सकते हैं; जाँच, स्कैन या हॉर्मोन दवा के लिए MBBS स्त्री रोग डॉक्टर चाहिए, और ज़िला अस्पताल फ़्री रास्ता है।",
+      "sources": [
+        "NHM Free Drugs Service Initiative and Free Diagnostics Service Initiative (Lok Sabha replies via eparlib.nic.in; 179 medicines / 63 tests at PHC-level AAM, 381 drugs at district hospital)",
+        "PIB document Jan 2026 on Ayushman Arogya Mandirs: 12 service packages and teleconsultation (static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jan/doc202611749801.pdf)",
+        "NACO HIV Counselling and Testing Services page and Operational Guidelines for ICTC (naco.mohfw.gov.in): free in government ICTCs, confidential, rapid results",
+        "NACO STI/RTI Services page (naco.mohfw.gov.in/division/sti-rti-services/): DSRC / Suraksha Clinic at district hospitals and medical colleges, colour-coded kits, condoms, referral to ICTC",
+        "PIB Jan Aushadhi briefing, March 2026: Suvidha pads Rs 1 per pad; PMBJP 50 to 80 percent lower prices (static.pib.gov.in/WriteReadData/specificdocs/documents/2026/mar/doc202637814101.pdf)",
+        "eSanjeevani: esanjeevani.mohfw.gov.in (official page is script-only); Delhi government poster; Tribune and Deccan Herald reports on OTP registration and state timings",
+        "IPHS 2022 PHC norms (24x7 PHC vs day PHC), not fetched this round",
+        "R2 bleeding line: product vision section 5.5 R2 and 3.1 flow-and-pain fixed line; NHS Heavy periods (nhs.uk/conditions/heavy-periods, fetched 18 Oct 2026); FIGO 2018 (8 days)",
+        "Research report section 3 (57 percent of eSanjeevani consults with women)"
+      ],
+      "notes": "Unverified or soft: (1) the eSanjeevani OTP flow, state-wise timings and the assisted path at an Arogya Mandir come from news and third-party guides because the official page renders no text; (2) 'results usually the same day' at ICTC is inferred from NACO's 20 to 30 minute rapid test; (3) 'partner can be treated too' is standard syndromic management practice, not quoted from the NACO services page; (4) the 24x7 PHC distinction follows IPHS 2022 but the norms document was not fetched; (5) free medicine and test lists and registration fees vary by state and are not sourced for Rajasthan; (6) Suraksha Clinic counts differ between sources (1,127 vs 1,168), none quoted. The bleeding threshold now uses the single R2 sentence shared by every article in this group."
+    },
+    {
+      "id": "see-gynaecologist-government-hospital",
+      "title_en": "Seeing a gynaecologist at a government hospital",
+      "title_hi": "सरकारी अस्पताल में स्त्री रोग डॉक्टर को कैसे दिखाएँ",
+      "summary_en": "The steps from the registration counter to the women's OPD, so the visit costs you a morning, not a day.",
+      "summary_hi": "रजिस्ट्रेशन काउंटर से महिला OPD तक के स्टेप, ताकि पूरा दिन नहीं, बस एक सुबह लगे।",
+      "body_en": [
+        "Most of us think a government hospital means a whole day gone and nobody who explains, right? Yes, there is a queue. But the gynaecologist there is free or nearly free, and it goes smoothly once you know the steps.",
+        "- Find the right place. A PHC may not have a gynaecologist. A CHC often has one on fixed days; the district hospital and medical college run a women's OPD every working day. Ask your ASHA or ANM, or call 104.",
+        "- Go early. OPD registration is usually in the morning and closes before noon. Ask the day before.",
+        "- Register at the counter with your name, age and address. Carry a photo ID if you have one, but you can usually register without it. The fee is small or nil, depending on your state. With the ABHA app, scan the hospital's QR code and the token comes to your phone. Keep the OPD slip: it is your record.",
+        "- Find the room written on the slip: Gynaecology or Stri Rog. Wait for your number.",
+        "- Inside, say your main problem in one line and show your period dates. If an examination is needed, it happens behind a curtain, and you can ask for a woman to stay with you.",
+        "- Tests are done in the same building, most of them free. Results come the same day or the next. The slip will carry a date to come back. Come back.",
+        "- Medicines from the hospital pharmacy are free if they are on the list. If not, try the Jan Aushadhi Kendra."
+      ],
+      "body_hi": [
+        "हम में से ज़्यादातर सोचते हैं कि सरकारी अस्पताल मतलब पूरा दिन खराब और समझाने वाला कोई नहीं, है ना? हाँ, लाइन लगती है। लेकिन वहाँ स्त्री रोग डॉक्टर फ़्री या लगभग फ़्री है, और स्टेप पता हों तो काम आसान हो जाता है।",
+        "- सही जगह चुनें। PHC में स्त्री रोग डॉक्टर हो, ज़रूरी नहीं। CHC में अक्सर तय दिनों पर होते हैं; ज़िला अस्पताल और मेडिकल कॉलेज में हर काम के दिन महिला OPD चलती है। ASHA या ANM से पूछें, या 104 पर कॉल करें।",
+        "- सुबह जल्दी जाएँ। OPD रजिस्ट्रेशन ज़्यादातर सुबह होता है और दोपहर से पहले बंद हो जाता है। एक दिन पहले पूछ लें।",
+        "- काउंटर पर नाम, उम्र, पता बताएँ। फ़ोटो ID हो तो साथ रखें, पर आम तौर पर बिना ID भी रजिस्ट्रेशन हो जाता है। फ़ीस बहुत कम या नहीं, राज्य पर निर्भर। ABHA ऐप हो तो अस्पताल का QR कोड स्कैन करें, टोकन फ़ोन पर आ जाता है। OPD पर्ची सँभाल कर रखें, यही आपका रिकॉर्ड है।",
+        "- पर्ची पर लिखा कमरा ढूँढें: \"स्त्री रोग\" या Gynaecology। अपने नंबर का इंतज़ार करें।",
+        "- अंदर अपनी मुख्य परेशानी एक लाइन में बताएँ और पीरियड की तारीखें दिखाएँ। जाँच ज़रूरी हो तो पर्दे के पीछे होती है, और आप साथ में किसी महिला को रखने के लिए कह सकती हैं।",
+        "- टेस्ट उसी बिल्डिंग में होते हैं, ज़्यादातर फ़्री। रिज़ल्ट उसी दिन या अगले दिन। पर्ची पर वापस आने की तारीख होगी; ज़रूर आएँ।",
+        "- अस्पताल की फ़ार्मेसी से लिस्ट की दवाएँ फ़्री मिलती हैं। न मिलें तो जन औषधि केंद्र देखें।"
+      ],
+      "see_doctor_en": [
+        "Do not wait for OPD hours; go to emergency or call 112: sudden one-sided belly pain with a late period; fainting; a fit.",
+        "Soaking a pad every 1 to 2 hours, or bleeding over 8 days: see a doctor this week and ask for a haemoglobin test. If you also feel dizzy or breathless: today, or call 112.",
+        "This week at the women's OPD: clots the size of a Rs 10 coin; no period for 90 days (home pregnancy test first); pain that stops your day; bleeding after sex at any age; and at 40 and above, bleeding between periods or periods that have become heavier or longer.",
+        "Within about 2 weeks: any bleeding 12 months after your last period.",
+        "If you cannot reach a hospital: eSanjeevani (free video doctor), or your PHC for a referral slip."
+      ],
+      "see_doctor_hi": [
+        "OPD के समय का इंतज़ार न करें, इमरजेंसी जाएँ या 112: पीरियड लेट है और पेट के एक तरफ़ अचानक दर्द; बेहोशी; दौरा।",
+        "हर 1 से 2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इस हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन टेस्ट कराएँ। साथ में सिर घूमे या साँस फूले: आज ही, या 112।",
+        "इस हफ़्ते महिला OPD: 10 रुपये के सिक्के जितने थक्के; 90 दिन से पीरियड नहीं (पहले घर पर प्रेगनेंसी टेस्ट); ऐसा दर्द जो दिन रोक दे; किसी भी उम्र में सेक्स के बाद ब्लीडिंग; और 40 के बाद दो पीरियड के बीच ब्लीडिंग या पहले से ज़्यादा या लंबी ब्लीडिंग।",
+        "लगभग 2 हफ़्ते के अंदर: आख़िरी पीरियड के 12 महीने बाद कोई भी ब्लीडिंग।",
+        "अस्पताल तक न पहुँच पाएँ तो eSanjeevani (फ़्री वीडियो डॉक्टर), या रेफ़रल पर्ची के लिए अपना PHC।"
+      ],
+      "qura_line_en": "A Qura doctor can go through your period diary with you before the visit and order first blood tests; the examination, the scan and any hormone medicine need the MBBS gynaecologist you are going to see.",
+      "qura_line_hi": "Qura डॉक्टर अस्पताल जाने से पहले आपकी पीरियड डायरी आपके साथ देख सकते हैं और पहले खून के टेस्ट लिख सकते हैं; जाँच, स्कैन और कोई भी हॉर्मोन दवा उसी MBBS स्त्री रोग डॉक्टर से, जिनसे आप मिलने जा रही हैं।",
+      "sources": [
+        "ABDM Scan and Share onboarding manual (abdm.gov.in, Jan 2023) and MoHFW press release 7554: QR scan at the counter, token on the phone, usable at PHC, CHC and district hospital; the ABHA route is optional",
+        "NHM Free Diagnostics Service Initiative (Lok Sabha replies via eparlib.nic.in)",
+        "NHS 'What causes a woman to bleed after sex?' (fetched 18 Oct 2026): see a GP or sexual health clinic for bleeding between periods or after sex, no age limit",
+        "Research report section 5.3 (R1, R2, R3, R6, R8) and product vision section 5.5 rules registry (clot size Rs 10 coin, 8 days, 90 days, 12 months; R8 40+: bleeding between periods, heavier or longer periods)",
+        "R2 bleeding line: product vision section 5.5 R2 and 3.1 flow-and-pain fixed line; NHS Heavy periods (nhs.uk/conditions/heavy-periods, fetched 18 Oct 2026); FIGO 2018 (8 days)",
+        "PIB Jan Aushadhi briefing March 2026"
+      ],
+      "notes": "Unverified or soft: (1) 'registration is usually in the morning and closes before noon' is common practice, not sourced; ask locally; (2) the registration fee varies by state and hospital and is not sourced; (3) 'you can usually register without ID' reflects that NHM sets no statutory ID requirement for OPD registration, but no circular was fetched; some hospitals still ask; (4) 'a CHC often has a gynaecologist on fixed days' is typical under IPHS norms but not sourced this round; (5) 'you can ask for a woman to stay with you' is a reasonable request, not a cited legal right; (6) same-day or next-day results depend on the test and the facility. Bleeding after sex is now flagged at any age; the 40+ qualifier applies only to the R8 items."
+    },
+    {
+      "id": "doctor-visit-bring-and-ask",
+      "title_en": "What to bring and what to ask at a doctor visit",
+      "title_hi": "डॉक्टर के पास क्या लेकर जाएँ, क्या पूछें",
+      "summary_en": "A short list of what to carry and what to ask, so you leave the room with answers.",
+      "summary_hi": "क्या साथ रखें और क्या पूछें, इसकी छोटी लिस्ट, ताकि आप जवाब लेकर निकलें।",
+      "body_en": [
+        "Ever walked out of the doctor's room and remembered the real question at the gate? A little preparation fixes that.",
+        "Bring a photo ID and your ABHA card if you have them, every old prescription and report in one folder, even the ones that seem unimportant, and the medicines you take now, including any Ayurvedic, herbal or tonic. Bring the strip or the bottle.",
+        "Bring your period record too: the start dates of your last 3 periods, how many days you bleed, and how many pads on the heaviest day. This app's diary shows it on one screen. Bring someone you trust if you want; you can ask them to step out for part of the visit.",
+        "Type your questions in your phone before you go. Then ask:",
+        "- What are the likely causes? Which test, what will it tell us, and is it free here?",
+        "- Is this medicine for the symptom or the cause? For how long? What if I miss a dose? Is it safe if I could be pregnant or am breastfeeding?",
+        "- What should bring me back sooner, and when do I come back? Please write it on the slip.",
+        "Tell the doctor plainly if you are trying for a baby, had a miscarriage or an abortion, if sex hurts, or if you are not safe at home. The doctor needs to know, and keeps it private, except in the rare cases where the law requires a report. If home is not safe, Women Helpline 181 is there too, 24 hours."
+      ],
+      "body_hi": [
+        "कभी डॉक्टर के कमरे से निकलकर गेट पर असली सवाल याद आया है? थोड़ी तैयारी से यह ठीक हो जाता है।",
+        "साथ रखें: फ़ोटो ID और ABHA कार्ड अगर हों, सारी पुरानी पर्चियाँ और रिपोर्ट एक फ़ोल्डर में, वो भी जो बेकार लगती हैं, और जो दवाएँ अभी ले रही हैं, आयुर्वेदिक, जड़ी-बूटी या टॉनिक भी। पत्ता या बोतल साथ ले जाएँ।",
+        "पीरियड का रिकॉर्ड भी: पिछले 3 पीरियड की शुरुआत की तारीख, कितने दिन ब्लीडिंग, और सबसे भारी दिन कितने पैड। इस ऐप की डायरी यह सब एक स्क्रीन पर दिखाती है। चाहें तो कोई भरोसे का इंसान साथ ले जाएँ; कुछ देर के लिए उन्हें बाहर रुकने को भी कह सकती हैं।",
+        "जाने से पहले अपने सवाल फ़ोन में लिख लें। फिर पूछें:",
+        "- इसके क्या कारण हो सकते हैं? कौन सा टेस्ट, उससे क्या पता चलेगा, और यहाँ फ़्री है?",
+        "- यह दवा लक्षण के लिए है या कारण के लिए? कितने दिन? डोज़ छूट जाए तो? अगर गर्भ हो सकता है या दूध पिला रही हूँ तो सुरक्षित है?",
+        "- किस बात पर जल्दी वापस आना है, और अगली बार कब? पर्ची पर लिख दीजिए।",
+        "डॉक्टर को साफ़ बताएँ अगर बच्चे की कोशिश कर रही हैं, मिसकैरेज या गर्भपात हुआ है, सेक्स में दर्द होता है, या घर में सुरक्षित नहीं हैं। डॉक्टर को यह जानना ज़रूरी है, और वे इसे गोपनीय रखते हैं, सिवाय उन गिनती के मामलों के जहाँ कानून रिपोर्ट करना ज़रूरी बनाता है। घर सुरक्षित न हो तो महिला हेल्पलाइन 181 भी है, 24 घंटे।"
+      ],
+      "see_doctor_en": [
+        "Soaking a pad every 1 to 2 hours, or bleeding over 8 days: see a doctor this week and ask for a haemoglobin test. If you also feel dizzy or breathless: today, or call 112.",
+        "Go today, not on the appointment date: fever after a procedure or a delivery; severe pain.",
+        "Call 112 for an emergency. Call 181 if you cannot speak freely because of someone at home.",
+        "If a doctor visit costs you a day's wage, remember that the PHC, Arogya Mandir and eSanjeevani are free, and the district hospital nearly free."
+      ],
+      "see_doctor_hi": [
+        "हर 1 से 2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इस हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन टेस्ट कराएँ। साथ में सिर घूमे या साँस फूले: आज ही, या 112।",
+        "अपॉइंटमेंट की तारीख का इंतज़ार न करें, आज ही जाएँ: किसी प्रोसीजर या डिलीवरी के बाद बुखार; बहुत तेज़ दर्द।",
+        "इमरजेंसी में 112। घर में किसी की वजह से खुलकर बात न कर पाएँ तो 181।",
+        "अगर डॉक्टर के पास जाने में दिन की मज़दूरी जाती है, तो याद रखें: PHC, आरोग्य मंदिर और eSanjeevani फ़्री हैं, और ज़िला अस्पताल लगभग फ़्री।"
+      ],
+      "qura_line_en": "A Qura doctor can help you build this list from your diary before a hospital visit; for the examination and the prescription itself you need the MBBS doctor in front of you.",
+      "qura_line_hi": "Qura डॉक्टर अस्पताल जाने से पहले आपकी डायरी से यह लिस्ट बनाने में मदद कर सकते हैं; जाँच और पर्ची के लिए आपके सामने बैठे MBBS डॉक्टर ही चाहिए।",
+      "sources": [
+        "Product vision docs/_product-vision-womens-health-companion-oct18.md section 3.1 (diary fields: dates, bleeding days, pads, pain) and section 5.2 (herbal products flagged to the doctor)",
+        "Research report section 5.3 (R2 heavy bleeding thresholds; R7 pregnancy test first)",
+        "R2 bleeding line: product vision section 5.5 R2 and 3.1 flow-and-pain fixed line; NHS Heavy periods (nhs.uk/conditions/heavy-periods, fetched 18 Oct 2026); FIGO 2018 (8 days)",
+        "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations 2002, Reg 7.14 (patient confidentiality and its exceptions) and NCISM Ethics Regulations 2023 (equivalent duty for BAMS doctors); BNSS 2023 s.397 (ex-CrPC 357C, duty to inform police after sexual assault or acid attack); POCSO Act 2012 s.19 (mandatory reporting for minors)"
+      ],
+      "notes": "No external source was fetched for the question list itself; it is built from the report's diary fields and red flags. Confidentiality is now stated with the legal exceptions ('except in the rare cases where the law requires a report'): IMC Reg 7.14 exceptions (court order, notifiable disease, serious identified risk), BNSS s.397 and POCSO s.19. None of those three texts was re-fetched this round (nmc.org.in returned 404), so counsel should confirm the wording. The 181 line sits in the body beside the disclosure sentence and again in the see-doctor list. ID wording now matches the gynaecologist article: bring it if you have it."
+    },
+    {
+      "id": "reading-prescription-tests",
+      "title_en": "Reading a prescription and asking about tests",
+      "title_hi": "पर्ची कैसे पढ़ें, टेस्ट के बारे में क्या पूछें",
+      "summary_en": "The short forms on a prescription, how to get the same medicine cheaper, and the four questions to ask about any test.",
+      "summary_hi": "पर्ची के शॉर्ट फ़ॉर्म, वही दवा सस्ती कैसे मिले, और किसी भी टेस्ट पर पूछने के चार सवाल।",
+      "body_en": [
+        "A prescription looks like a secret code, right? Yes, the handwriting is bad and the short forms are Latin. But there are only a handful, and once you know them you will never guess a dose again.",
+        "Each line is one medicine: its name, the strength (like 500 mg), and how to take it. OD means once a day. BD, twice. TDS, three times. HS, at bedtime. SOS, only when needed. AC, before food; PC, after food. \"1-0-1\" means morning and night, nothing in the afternoon. \"x 5 days\" is how long.",
+        "Ask the doctor to also write the salt (generic) name. With the salt name, a Jan Aushadhi Kendra can give you the same medicine for much less.",
+        "Take a photo of the prescription before you lose it. Take every medicine for as many days as written, even once you feel better, unless the doctor tells you to stop. Never reuse an old prescription for a new problem, and never share tablets with a sister or a neighbour.",
+        "About tests. For period problems a doctor often starts with a few blood tests, such as haemoglobin, thyroid and sugar, and sometimes an ultrasound. Before you leave, ask:",
+        "- What is this test for, and do I come empty stomach?",
+        "- Is it free at the government lab here? When will the result come, and who will explain it?",
+        "A number outside the range on a report is not a diagnosis. The doctor reads it together with your story."
+      ],
+      "body_hi": [
+        "पर्ची कोई गुप्त कोड लगती है, है ना? हाँ, लिखाई खराब होती है और शॉर्ट फ़ॉर्म लैटिन में हैं। लेकिन वे गिनती के हैं, और एक बार समझ लें तो डोज़ का अंदाज़ा कभी नहीं लगाना पड़ेगा।",
+        "हर लाइन एक दवा है: नाम, ताकत (जैसे 500 mg), और कैसे लेनी है। OD मतलब दिन में एक बार। BD, दो बार। TDS, तीन बार। HS, सोते समय। SOS, सिर्फ़ ज़रूरत पड़ने पर। AC, खाने से पहले; PC, खाने के बाद। \"1-0-1\" मतलब सुबह और रात, दोपहर में नहीं। \"x 5 days\" मतलब कितने दिन।",
+        "डॉक्टर से साल्ट (जेनेरिक) नाम भी लिखवाएँ। साल्ट नाम से जन औषधि केंद्र वही दवा काफ़ी सस्ती दे देता है।",
+        "पर्ची खोने से पहले उसकी फ़ोटो ले लें। हर दवा उतने दिन लें जितने लिखे हैं, ठीक लगने पर भी, जब तक डॉक्टर रोकने को न कहें। नई परेशानी में पुरानी पर्ची दोबारा न चलाएँ, और गोलियाँ बहन या पड़ोसन से न बाँटें।",
+        "अब टेस्ट की बात। पीरियड की परेशानी में डॉक्टर अक्सर कुछ खून के टेस्ट से शुरू करते हैं, जैसे हीमोग्लोबिन, थायरॉइड और शुगर, और कभी अल्ट्रासाउंड। निकलने से पहले पूछें:",
+        "- यह टेस्ट किस लिए है, और खाली पेट आना है?",
+        "- यहाँ सरकारी लैब में फ़्री है? रिज़ल्ट कब आएगा, और कौन समझाएगा?",
+        "रिपोर्ट में रेंज से बाहर कोई नंबर डायग्नोसिस नहीं है। डॉक्टर उसे आपकी पूरी बात के साथ पढ़ते हैं।"
+      ],
+      "see_doctor_en": [
+        "Call 112 or go to emergency now if, after a medicine, you get swelling of the lips, face, tongue or throat, trouble breathing, or feel faint.",
+        "Go back before the review date if: a rash alone; vomiting that stops you keeping tablets down; bleeding that gets heavier on treatment; no better 2 days into treatment for a urine or other infection.",
+        "If you could be pregnant and were not asked, tell the doctor before you take anything.",
+        "Free medicine: the hospital pharmacy or a Jan Aushadhi Kendra. Free tests: the government lab at the PHC, Arogya Mandir or district hospital."
+      ],
+      "see_doctor_hi": [
+        "दवा लेने के बाद होंठ, चेहरे, जीभ या गले में सूजन, साँस लेने में तकलीफ़, या बेहोशी जैसा लगे: अभी 112 पर कॉल करें या इमरजेंसी जाएँ।",
+        "रिव्यू की तारीख से पहले वापस जाएँ अगर: सिर्फ़ चकत्ते; उल्टी से गोली पेट में न रुके; इलाज के दौरान ब्लीडिंग बढ़े; पेशाब या किसी और इंफ़ेक्शन के इलाज के 2 दिन बाद भी आराम नहीं।",
+        "अगर गर्भ हो सकता है और डॉक्टर ने नहीं पूछा, तो कुछ भी लेने से पहले बताएँ।",
+        "फ़्री दवा: अस्पताल की फ़ार्मेसी या जन औषधि केंद्र। फ़्री टेस्ट: PHC, आरोग्य मंदिर या ज़िला अस्पताल की सरकारी लैब।"
+      ],
+      "qura_line_en": "A Qura doctor can read your reports with you and explain the words on a prescription; to change a hormone medicine you need the MBBS doctor who wrote it.",
+      "qura_line_hi": "Qura डॉक्टर आपकी रिपोर्ट आपके साथ पढ़ सकते हैं और पर्ची के शब्द समझा सकते हैं; हॉर्मोन दवा बदलने के लिए उसी MBBS डॉक्टर से मिलें जिन्होंने लिखी है।",
+      "sources": [
+        "NHS Anaphylaxis (nhs.uk/conditions/anaphylaxis, fetched 18 Oct 2026): swelling of throat and tongue, difficulty breathing, feeling faint or dizzy are emergency signs",
+        "NHS Urinary tract infections (fetched 18 Oct 2026): take all the medicine you are prescribed even if you start to feel better; see a GP if no better within 2 days of starting treatment",
+        "Indian Medical Council (Professional Conduct, Etiquette and Ethics) Regulations 2002, Reg 1.5 as amended 2016 (prescribe drugs with generic names, legibly)",
+        "PIB Jan Aushadhi briefing March 2026 (generic medicines 50 to 80 percent lower)",
+        "NHM Free Diagnostics Service Initiative (Lok Sabha replies via eparlib.nic.in)",
+        "Research report section 5.1 and 5.5 L1 card (a doctor usually checks a few simple blood tests first: TSH, prolactin, sugar) and product vision section 3.4 (urine infection: go back if not better after 2 days of treatment, NHS)",
+        "Standard Latin prescription abbreviations (OD, BD, TDS, HS, SOS, AC, PC); no single source fetched"
+      ],
+      "notes": "Flagged unsafe before this pass because lip, face or throat swelling after a medicine sat under 'go back early'; the must-fix is applied and those signs now have their own emergency line (112 or emergency now). The 'finish the course prevents resistance' claim is dropped; the text now says take every medicine for as many days as written unless the doctor says stop, matching NHS wording. Still unverified or soft: (1) abbreviation meanings are standard notation but no single reference page was fetched; (2) the generic-name request rests on MCI Reg 1.5 (2016 amendment), not re-fetched this round; the 2023 NMC regulation on generics was later held in abeyance, so cite the 2016 text; (3) the first-tests list (haemoglobin, thyroid, sugar, ultrasound) is drawn from the report's L1 card and common practice, not a guideline that applies to every case; doctor review advised."
+    },
+    {
+      "id": "how-qura-helps",
+      "title_en": "How Qura helps, and where it stops",
+      "title_hi": "Qura कैसे मदद करता है, और कहाँ रुक जाता है",
+      "summary_en": "What a 20-minute first call with a Qura BAMS doctor can do, what it cannot, and when she sends you elsewhere.",
+      "summary_hi": "Qura के BAMS डॉक्टर से 20 मिनट की पहली कॉल क्या कर सकती है, क्या नहीं, और वे आपको कब और कहाँ भेजती हैं।",
+      "body_en": [
+        "You may wonder who is behind this app. Real doctors, and here, plainly, is what they can and cannot do.",
+        "Qura's doctors are BAMS doctors: Ayurveda graduates registered with their state council. There is no fee for the first call; it lasts about 20 minutes, on video or phone. It is booked only when you tap Book a consultation. Nothing in this app books it for you or decides that you need it.",
+        "- A Qura doctor can listen, go through your period diary with you if you share it, and explain in general terms what long gaps, heavy days or pain may point to, without labelling you.",
+        "- She can order first blood tests through a partner lab, read the reports with you, and help with food, sleep, stress and daily routine using Ayurveda.",
+        "- She cannot handle an emergency (call 112), care for a pregnancy, do a scan or an internal examination, or see anyone under 18 through this app.",
+        "- She cannot prescribe hormone medicines such as the pill, HRT or fertility tablets. Those need an MBBS doctor.",
+        "She will send you on for heavy bleeding, bleeding after periods have stopped, no period for 90 days, a fertility goal, pregnancy, thoughts of harming yourself (14416) or violence at home (181). Free routes: a gynaecologist at a government hospital, and eSanjeevani.",
+        "Our doctors: Dr. Megha, BAMS (Ayurveda), registration number 28526, state Ayurveda council; Dr. Ayushi, BAMS (Ayurveda), registration number [to be added before this page goes live]. You can ask any doctor, including ours, for her registration number and council."
+      ],
+      "body_hi": [
+        "मन में आता होगा कि इस ऐप के पीछे कौन है। असली डॉक्टर। और वे क्या कर सकती हैं, क्या नहीं, यह साफ़-साफ़।",
+        "Qura की डॉक्टर BAMS डॉक्टर हैं: आयुर्वेद की ग्रेजुएट, अपनी स्टेट काउंसिल में रजिस्टर्ड। पहली कॉल की कोई फ़ीस नहीं है; यह लगभग 20 मिनट की होती है, वीडियो या फ़ोन पर। यह तभी बुक होती है जब आप \"कंसल्टेशन बुक करें\" दबाती हैं। ऐप में कुछ भी आपके लिए खुद बुक नहीं करता, न यह तय करता है कि आपको ज़रूरत है।",
+        "- Qura डॉक्टर सुन सकती हैं, आप शेयर करें तो आपकी पीरियड डायरी आपके साथ देख सकती हैं, और सामान्य भाषा में समझा सकती हैं कि लंबे गैप, भारी दिन या दर्द किस ओर इशारा कर सकते हैं, बिना आप पर कोई लेबल लगाए।",
+        "- वे पार्टनर लैब से पहले खून के टेस्ट लिख सकती हैं, रिपोर्ट आपके साथ पढ़ सकती हैं, और आयुर्वेद के आधार पर खाना, नींद, तनाव और दिनचर्या में मदद कर सकती हैं।",
+        "- वे इमरजेंसी नहीं देख सकतीं (112 पर कॉल करें), गर्भ की देखभाल, स्कैन या अंदरूनी जाँच नहीं कर सकतीं, और इस ऐप से 18 से छोटी किसी को नहीं देख सकतीं।",
+        "- वे हॉर्मोन की दवाएँ नहीं लिख सकतीं, जैसे गर्भनिरोधक गोली, HRT या फ़र्टिलिटी की गोलियाँ। इनके लिए MBBS डॉक्टर चाहिए।",
+        "वे आपको आगे भेजेंगी अगर: बहुत ज़्यादा ब्लीडिंग, पीरियड बंद होने के बाद कोई ब्लीडिंग, 90 दिन से पीरियड नहीं, बच्चे की योजना, गर्भ, खुद को नुकसान पहुँचाने का ख़्याल (14416), या घर में हिंसा (181)। फ़्री रास्ते: सरकारी अस्पताल की स्त्री रोग डॉक्टर, और eSanjeevani।",
+        "हमारी डॉक्टर: डॉ. मेघा, BAMS (आयुर्वेद), रजिस्ट्रेशन नंबर 28526, स्टेट आयुर्वेद काउंसिल; डॉ. आयुषी, BAMS (आयुर्वेद), रजिस्ट्रेशन नंबर [पेज लाइव होने से पहले जोड़ा जाएगा]। किसी भी डॉक्टर से, हमारी डॉक्टर से भी, उनका रजिस्ट्रेशन नंबर और काउंसिल पूछ सकती हैं।"
+      ],
+      "see_doctor_en": [
+        "Do not book a Qura call for these; go straight to care: heavy bleeding with dizziness, or one-sided pain with fainting (112 or 108); any bleeding after periods have stopped; a pregnancy; thoughts of harming yourself (14416).",
+        "For an examination, a scan or hormone medicines, the free route is a gynaecologist at a government hospital or on eSanjeevani.",
+        "Anyone under 18: a paediatrician or gynaecologist at a government hospital, with a parent."
+      ],
+      "see_doctor_hi": [
+        "इनके लिए Qura कॉल बुक न करें, सीधे इलाज के लिए जाएँ: ब्लीडिंग के साथ सिर घूमना, या एक तरफ़ दर्द के साथ बेहोशी (112 या 108); पीरियड बंद होने के बाद कोई ब्लीडिंग; गर्भ; खुद को नुकसान पहुँचाने का ख़्याल (14416)।",
+        "जाँच, स्कैन या हॉर्मोन दवा के लिए फ़्री रास्ता: सरकारी अस्पताल की स्त्री रोग डॉक्टर या eSanjeevani।",
+        "18 से छोटी कोई भी: सरकारी अस्पताल में बाल रोग या स्त्री रोग डॉक्टर, माता-पिता के साथ।"
+      ],
+      "qura_line_en": "A Qura doctor can help with periods, PMOS (PCOS), food, sleep, stress and first tests; for pregnancy, hormone medicines, scans or any emergency you need an MBBS gynaecologist or 112.",
+      "qura_line_hi": "Qura डॉक्टर पीरियड, PMOS (PCOS), खाना, नींद, तनाव और पहले टेस्ट में मदद कर सकती हैं; गर्भ, हॉर्मोन दवा, स्कैन या किसी इमरजेंसी के लिए MBBS स्त्री रोग डॉक्टर या 112।",
+      "sources": [
+        "Research report section 6.3 (NCISM Regulations 2023 Reg 19 and 22(19): BAMS doctors may advise, order and interpret investigations, run telemedicine, triage and refer; Schedule H prescribing legally doubtful in Rajasthan); Reg 22(18)(a) registration number on prescriptions, website and electronic communication; Reg 22(8) solicitation",
+        "Product vision section 1 (companion says plainly the doctors are BAMS; MBBS routing never promised), section 5.6 (MBBS partner handoffs), 5.7 (lab menu limits), 5.8 (never 'free' or 'offer' as a hook) and section 6 DMR Act 1954 row (counsel pending on Schedule items 13, 18, 38)",
+        "Telemedicine Practice Guidelines 2020 (minors only with a verified adult; registration number on electronic communication), clause numbers confirmed from a mirror per product vision section 5.5; official PDF returned 403 on 18 Oct 2026",
+        "Dr. Megha's registration number: live user_profiles.license_number read on 18 Oct 2026 (value 28526; registration_verified = false; no certificate uploaded; council name not stored)",
+        "src/messages/en.json lines 11, 246, 887 (first consult free and 20 minutes); memory: free 20-minute first consult live since 28 to 29 Sep 2026"
+      ],
+      "notes": "PUBLICATION BLOCKERS: (a) Dr. Megha's number 28526 comes from the live doctor profile, but registration_verified is false, no certificate is uploaded and the council's name is not stored anywhere; confirm number and council against her certificate before printing; (b) Dr. Ayushi has no doctor profile in the database (only a customer row), so her number is a bracketed placeholder; fill from her certificate, never from the seed file (AYU-/MCI- values in supabase/migrations/20260222000003_seed_test_users.sql are fake). Other items: (1) the 20-minute no-fee first call is confirmed in the live booking strings, but several pages still say '45-minute' and 'Rs. 99' (src/messages/hi.json, pcos-consultation copy.js); align before publishing; (2) 'free' is removed from the summary and kept once as a factual fee sentence per product vision 5.8; (3) 'weight' and 'cycles' are dropped from bullet 2 and 'weight' from the Qura line pending counsel on DMR Act Schedule items 13 and 38; cycle interpretation stays in bullet 1; (4) 'first blood tests through a partner lab' is limited to tests the lab has confirmed it runs on a BAMS requisition (product vision 5.7); (5) 'the pill, HRT, fertility tablets' names drug classes, not brands; whether any Schedule H class may be named on a kit-selling domain is a counsel question under the DMR Act; (6) BAMS prescribing is 'legally doubtful', not settled, so the body says 'need an MBBS doctor' rather than 'cannot by law'."
+    },
+    {
+      "id": "your-data-privacy",
+      "title_en": "Your data in this app, in plain words",
+      "title_hi": "इस ऐप में आपका डेटा, सीधी भाषा में",
+      "summary_en": "What this app stores, who can see it, what we never do with it, and how to delete it.",
+      "summary_hi": "यह ऐप क्या रखता है, कौन देख सकता है, हम इसके साथ क्या कभी नहीं करते, और इसे कैसे मिटाएँ।",
+      "body_en": [
+        "You may be reading this on a phone that others at home also use. We built this app for that.",
+        "What we keep for the diary: your date of birth, phone number, period dates, the symptom taps you make, anything you write or record in Tell a person, and a record of what you agreed to and when. Security logs (such as sign-in times) are kept for up to one year because the law requires it. Your Qura account itself (name, consults, orders) is covered by the main Privacy Policy. Under 18, the app stops at the date of birth question and saves no diary.",
+        "Who sees it: no one at Qura is allowed to read it unless you share it with your Qura doctor or tap Tell a person; every read is logged. No computer program reads your diary, your notes or your voice. Messages you send on WhatsApp are handled separately; the Notice page explains. When you do share or tap Tell a person, a Qura doctor or a coordinator reads it; how soon is on the Notice page.",
+        "What we never do: sell your data, send your period or symptom data to any advertising company, or put a health word in a WhatsApp message. A message says only that your update is ready.",
+        "Where it lives: on servers run by the companies that host this app. Their names, and how long each item is kept, are on the full Notice page.",
+        "Your controls, on one Settings page: see it, download it, switch sharing off, pause messages, hide the diary, or delete your diary and messages in one tap, with no undo; only the security log stays for its legal period. Shared-phone mode signs you out on its own after a short break, and a diary you have not opened for a long time is deleted; the Notice page gives both timings.",
+        "A complaint? The Grievance Officer's name, address and reply time are on the Notice page."
+      ],
+      "body_hi": [
+        "शायद आप यह ऐसे फ़ोन पर पढ़ रही हैं जो घर के और लोग भी चलाते हैं। यह ऐप इसी बात को सोचकर बनाया गया है।",
+        "डायरी के लिए हम क्या रखते हैं: आपकी जन्मतिथि, फ़ोन नंबर, पीरियड की तारीखें, जो लक्षण आप टैप करती हैं, \"किसी को बताएँ\" में जो लिखती या रिकॉर्ड करती हैं, और आपने किस बात पर कब सहमति दी इसका रिकॉर्ड। सुरक्षा लॉग (जैसे लॉग-इन का समय) कानून के हिसाब से एक साल तक रहते हैं। आपका Qura खाता (नाम, कंसल्टेशन, ऑर्डर) मुख्य प्राइवेसी पॉलिसी के तहत आता है। 18 से कम उम्र पर ऐप जन्मतिथि के सवाल पर ही रुक जाता है और कोई डायरी नहीं रखता।",
+        "कौन देखता है: Qura में किसी को इसे पढ़ने की अनुमति नहीं है, जब तक आप अपने Qura डॉक्टर से शेयर न करें या \"किसी को बताएँ\" न दबाएँ; हर बार पढ़ना रिकॉर्ड होता है। कोई कंप्यूटर प्रोग्राम आपकी डायरी, नोट या आवाज़ नहीं पढ़ता। WhatsApp पर भेजे संदेश अलग तरह से संभाले जाते हैं; नोटिस पेज में बताया गया है। जब आप शेयर करती हैं या \"किसी को बताएँ\" दबाती हैं, तब Qura डॉक्टर या कोऑर्डिनेटर उसे पढ़ते हैं; कितनी जल्दी, यह नोटिस पेज पर है।",
+        "हम कभी नहीं करते: आपका डेटा बेचना, पीरियड या लक्षण का डेटा किसी विज्ञापन कंपनी को भेजना, या WhatsApp संदेश में सेहत का कोई शब्द लिखना। संदेश में बस इतना आता है कि आपकी जानकारी तैयार है।",
+        "कहाँ रहता है: उन कंपनियों के सर्वर पर जो यह ऐप चलाती हैं। उनके नाम, और हर चीज़ कितने समय रखी जाती है, पूरे नोटिस पेज पर है।",
+        "आपका कंट्रोल, एक ही सेटिंग्स पेज पर: देखें, डाउनलोड करें, शेयरिंग बंद करें, संदेश रोकें, डायरी छुपाएँ, या एक टैप में अपनी डायरी और संदेश मिटाएँ, बिना वापसी; सिर्फ़ सुरक्षा लॉग अपनी कानूनी अवधि तक रहता है। शेयर्ड फ़ोन मोड थोड़ी देर बाद अपने आप लॉग आउट कर देता है, और लंबे समय तक न खुली डायरी मिट जाती है; दोनों का समय नोटिस पेज पर है।",
+        "शिकायत? ग्रीवांस ऑफ़िसर का नाम, पता और जवाब का समय नोटिस पेज पर है।"
+      ],
+      "see_doctor_en": [
+        "This page is about your data. For your health: call 112 in an emergency, and 14416 if you have thoughts of harming yourself.",
+        "If you think someone has read your diary without permission, delete it from Settings, change your phone lock, and tell our Grievance Officer. If you are unsafe at home, 181."
+      ],
+      "see_doctor_hi": [
+        "यह पेज आपके डेटा के बारे में है। सेहत के लिए: इमरजेंसी में 112, और खुद को नुकसान पहुँचाने का ख़्याल आए तो 14416।",
+        "अगर लगे कि किसी ने बिना पूछे आपकी डायरी पढ़ी है, तो सेटिंग्स से मिटा दें, फ़ोन का लॉक बदलें, और हमारे ग्रीवांस ऑफ़िसर को बताएँ। घर में सुरक्षित नहीं हैं तो 181।"
+      ],
+      "qura_line_en": "Your Qura doctor sees your diary only if you switch sharing on, and you can switch it off at any time.",
+      "qura_line_hi": "आपकी Qura डॉक्टर आपकी डायरी तभी देखती हैं जब आप शेयरिंग चालू करें, और आप उसे कभी भी बंद कर सकती हैं।",
+      "sources": [
+        "IT (Reasonable Security Practices) SPDI Rules 2011, r.3, r.4, r.5(1), r.5(7), r.5(9) (consent, policy, purpose, withdrawal, grievance officer)",
+        "Digital Personal Data Protection Act 2023, s.6, s.7, s.9; DPDP Rules 2025 Rule 3 (notice), Rule 6 (security and logs), Rule 8(3) (retention), Rule 10 (children)",
+        "CERT-In Directions of 28 April 2022 (ICT system logs kept for 180 days), via research report section 6.1",
+        "Product vision section 4.6 (discretion: neutral previews, shared-phone sign-out, delete with no undo), 4.7 (consent ledger, Notice page lists processors and the Grievance Officer, 24-month deletion is Qura's own choice), 5.1 (logged reads), 4.4 (WhatsApp webhook fence, not built), 5.4 (weekly doctor review, 1 working day coordinator)",
+        "Research report section 6.1 (processors to name: Supabase, Vercel, Meta WhatsApp Cloud API, Authkey, Resend, Anthropic for the lead bot; Anthropic receives inbound WhatsApp text) and 5.6 (no diary-derived data to ad platforms)"
+      ],
+      "notes": "Flagged unsafe before this pass; both must-fix items are applied: 'what we keep' now names the consent record, the one-year security log and the main Qura account, and 'delete' is limited to diary and messages with the log excepted. PUBLICATION GATES, all open today: (1) no Grievance Officer is published and no Notice page exists; (2) the live privacy page still says under 15 (origin/main src/app/[locale]/privacy/page.jsx line 144), which must become 18; (3) the weekly doctor review, 1 working day coordinator read, 10-minute shared-phone sign-out and 24-month deletion are design commitments, not built or staffed, so every timing on this page now says 'see the Notice page'; restore the printed numbers only when each is live; (4) 'every read is logged' assumes the logged-reads design in product vision 5.1 ships; (5) the WhatsApp carve-out stays until the webhook fence in product vision 4.4 is built and verified with a webhook capture, because the lead bot forwards inbound WhatsApp text to Anthropic today; (6) 'saves no diary under 18' assumes the DOB-first gate ships as specified. Processor names are deliberately kept off this plain-language page and deferred to the Notice page, which must list them under DPDP Rule 3 and SPDI r.5(9). The one-year log period follows the report's design (CERT-In requires 180 days; the design keeps minimal processing logs for a year); confirm the final figure with counsel before publishing."
+    },
+    {
+      "id": "under-18-daughter-sister",
+      "title_en": "For a daughter or sister under 18",
+      "title_hi": "18 से छोटी बेटी या बहन के लिए",
+      "summary_en": "Why this app keeps no diary for anyone under 18, what is usual in the first years, and when to take her to a doctor.",
+      "summary_hi": "यह ऐप 18 से छोटी किसी की डायरी क्यों नहीं रखता, शुरुआती सालों में क्या सामान्य है, और उसे डॉक्टर को कब दिखाएँ।",
+      "body_en": [
+        "Worried about your daughter's or younger sister's periods, and wondering if this app can keep her diary? It cannot, and we want to explain why.",
+        "The first question this app asks is date of birth. Under 18, nothing is saved: no diary, no WhatsApp message, no reminder, no doctor call. India's data protection law (the DPDP Act 2023) treats anyone under 18 as a child whose health data needs a parent's verified consent, and even today a child cannot give valid consent herself. We would rather give her free, safe information than store anything about her.",
+        "What she can use, with you: the safety guide and these help pages. Read them together.",
+        "Most girls start around 12; anywhere from about 8 to 15 is common. In the first years, gaps of 21 to 45 days, bleeding up to 7 days, some pain and mood changes are all usual. Clean cloth or a pad, changed every few hours, both fine. Jan Aushadhi pads cost Rs 1 each.",
+        "Take her to a doctor, with a parent, if: no period by 15; no breast development by 13; no period by 14 with extra body hair or very low weight; soaking a pad every 1 to 2 hours; pain that stops school; milky nipple discharge; no period for 90 days once they had started.",
+        "Where: your PHC or Arogya Mandir, or the paediatric or gynaecology OPD at a government hospital. Ask there about the free HPV vaccine for girls around 14.",
+        "If she is scared, hurt or being touched wrongly: Child Helpline 1098, 24 hours, or 112. She can call herself. For her mind, 14416."
+      ],
+      "body_hi": [
+        "बेटी या छोटी बहन के पीरियड की चिंता है, और सोच रही हैं कि यह ऐप उसकी डायरी रख सकता है? नहीं रख सकता, और क्यों, यह हम बताना चाहते हैं।",
+        "ऐप का पहला सवाल जन्मतिथि है। 18 से कम पर कुछ सेव नहीं होता: न डायरी, न WhatsApp संदेश, न रिमाइंडर, न डॉक्टर की कॉल। भारत का डेटा सुरक्षा कानून (DPDP Act 2023) 18 से कम को बच्चा मानता है, जिसकी सेहत की जानकारी के लिए माता-पिता की पक्की सहमति चाहिए, और आज भी बच्चा खुद वैध सहमति नहीं दे सकता। हमें उसकी कोई जानकारी रखने से बेहतर उसे फ़्री, सुरक्षित जानकारी देना लगता है।",
+        "वह आपके साथ क्या पढ़ सकती है: सुरक्षा गाइड और ये मदद पेज। साथ बैठकर पढ़ें।",
+        "ज़्यादातर लड़कियों का पहला पीरियड लगभग 12 साल पर आता है; 8 से 15 के बीच कभी भी आना आम है। शुरुआती सालों में 21 से 45 दिन का गैप, 7 दिन तक ब्लीडिंग, थोड़ा दर्द और मूड बदलना, सब सामान्य है। साफ़ कपड़ा या पैड, कुछ घंटों में बदलना, दोनों ठीक हैं। जन औषधि के पैड 1 रुपये के हैं।",
+        "डॉक्टर को दिखाएँ, माता-पिता के साथ, अगर: 15 तक पीरियड नहीं; 13 तक स्तन का विकास नहीं; 14 तक पीरियड नहीं और शरीर पर ज़्यादा बाल या बहुत कम वज़न; हर 1 से 2 घंटे में पैड भीग जाए; दर्द से स्कूल छूटे; निप्पल से दूध जैसा पानी; शुरू होने के बाद 90 दिन पीरियड नहीं।",
+        "कहाँ: PHC या आरोग्य मंदिर, या सरकारी अस्पताल की बाल रोग या स्त्री रोग OPD। वहाँ 14 साल के आस-पास की लड़कियों के लिए फ़्री HPV टीके के बारे में पूछें।",
+        "अगर वह डरी हुई है, चोट लगी है, या कोई गलत तरीके से छूता है: चाइल्ड हेल्पलाइन 1098, 24 घंटे, या 112। वह खुद भी कॉल कर सकती है। मन के लिए 14416।"
+      ],
+      "see_doctor_en": [
+        "Take her to a doctor, with a parent: no period by 15; no breast development by 13; no period within 3 years of breasts starting; pain that stops school; no period for 90 days after they had started; milky nipple discharge.",
+        "Soaking a pad every 1 to 2 hours, or bleeding over 8 days: see a doctor this week and ask for a haemoglobin test. If she also feels dizzy or breathless: today, or call 112.",
+        "Emergency, call 112 or 108: bleeding with dizziness or fainting; severe belly pain.",
+        "Free: PHC, Arogya Mandir, the paediatric or gynaecology OPD at a government hospital, eSanjeevani.",
+        "If she is unsafe or being hurt: Child Helpline 1098 or 112. For her mind: Tele-MANAS 14416."
+      ],
+      "see_doctor_hi": [
+        "डॉक्टर को दिखाएँ, माता-पिता के साथ: 15 तक पीरियड नहीं; 13 तक स्तन का विकास नहीं; स्तन बढ़ने के 3 साल में पीरियड नहीं; दर्द से स्कूल छूटे; शुरू होने के बाद 90 दिन पीरियड नहीं; निप्पल से दूध जैसा पानी।",
+        "हर 1 से 2 घंटे में पैड भीगना, या 8 दिन से ज़्यादा ब्लीडिंग: इस हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन टेस्ट कराएँ। साथ में उसे सिर घूमे या साँस फूले: आज ही, या 112।",
+        "इमरजेंसी, 112 या 108: ब्लीडिंग के साथ सिर घूमना या बेहोशी; पेट में बहुत तेज़ दर्द।",
+        "फ़्री: PHC, आरोग्य मंदिर, सरकारी अस्पताल की बाल रोग या स्त्री रोग OPD, eSanjeevani।",
+        "अगर वह असुरक्षित है या उसे कोई चोट पहुँचा रहा है: चाइल्ड हेल्पलाइन 1098 या 112। मन के लिए: Tele-MANAS 14416।"
+      ],
+      "qura_line_en": "This app does not offer a Qura call for anyone under 18. For her periods, a paediatrician or gynaecologist at a government hospital, with you in the room, is the right first step.",
+      "qura_line_hi": "यह ऐप 18 से छोटी किसी के लिए Qura कॉल नहीं देता। उसके पीरियड के लिए सरकारी अस्पताल में बाल रोग या स्त्री रोग डॉक्टर, आप कमरे में साथ, सही पहला कदम है।",
+      "sources": [
+        "DPDP Act 2023 s.2(f) (child = under 18), s.9(1) verifiable parental consent, s.9(3) no tracking or targeted ads; DPDP Rules 2025 Rule 10 and Fourth Schedule; children's provisions commence about May 2027 (research report section 6.1 timing row); until then a minor's consent is not valid under SPDI and contract law",
+        "NHS Starting periods (nhs.uk/conditions/periods/starting-periods, fetched 18 Oct 2026): usually between age 8 and 17, most around 12; see a GP if periods have not started by 15, or by 13 with no other signs of puberty",
+        "Product vision section 3.1 safety guide, Under 18 section (first years 21 to 45 days, bleeding up to 7 days, no period by 15, no breast development by 13, no period within 3 years of breast development, no period by 14 with extra hair growth or very low weight, with a parent, Childline 1098) and rules R10, R12",
+        "2023 International PCOS Guideline (primary amenorrhoea by 15); ACOG Committee Opinion 651 (synopsis only; median age at first period 12.4)",
+        "R2 bleeding line: product vision section 5.5 R2 and 3.1 flow-and-pain fixed line; NHS Heavy periods (nhs.uk/conditions/heavy-periods, fetched 18 Oct 2026); FIGO 2018 (8 days)",
+        "Mission Vatsalya Child Helpline SOP; vikaspedia Child Helpline Service (1098, 24x7, integrated with 112)",
+        "Tele-MANAS 14416 (vikaspedia); PIB Jan Aushadhi March 2026 (Rs 1 pad)",
+        "Gavi, 28 Feb 2026: one free HPV dose at 14 at government facilities (MoHFW notification unverified per product vision 3.4)"
+      ],
+      "notes": "Unverified or soft: (1) the age of first period now follows NHS ('around 12; about 8 to 15 is common'); NHS gives 8 to 17 as the full range, and 15 is kept as the upper figure because it is also the see-a-doctor line; (2) the 21 to 45 day and 7-day figures come via the product vision's guide section, which cites the ACOG CO 651 synopsis (full text paywalled, unverified); (3) the HPV line is phrased as a question to ask because the MoHFW notification is unverified; (4) 'changed every few hours' has no Indian authority figure (report 3.4 found none); (5) a parent-accompanied teleconsult for a minor is allowed under the Telemedicine Practice Guidelines 2020, but Qura's policy (R12) is no consult offer for under-18s, so none is offered here; (6) 'no period within 3 years of breasts starting' is kept in the see-doctor list, not the body, to hold the word count; (7) the DPDP sentence now says what the Act provides and adds that a child cannot give valid consent today, because DPDP s.9 and Rule 10 are not yet in force (commencement about May 2027, computed not confirmed); whether the Fourth Schedule 'healthcare professional' exemption covers BAMS doctors is an open counsel question; (8) the R2 line is adapted to 'she' for this third-person article; the body's 'take her to a doctor' list keeps 'soaking a pad every 1 to 2 hours' because that matches 'this week'."
+    }
+  ]
+}

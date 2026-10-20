@@ -1,0 +1,451 @@
+{
+  "group": "pmos",
+  "articles": [
+    {
+      "id": "what-pmos-is",
+      "title_en": "PMOS (PCOS): what it really is",
+      "title_hi": "PMOS (PCOS) असल में है क्या",
+      "summary_en": "PMOS, which most people still call PCOS, is a hormone and sugar-handling condition, not cysts in the ovary; it is common in India and it can be managed.",
+      "summary_hi": "PMOS, जिसे ज़्यादातर लोग अभी भी PCOS कहते हैं, हार्मोन और शुगर संभालने की गड़बड़ी है, ovary में सिस्ट नहीं; यह भारत में आम है और इसे संभाला जा सकता है।",
+      "body_en": [
+        "You heard PCOS and pictured cysts growing inside the ovary, right? The name said so.",
+        "Yes, on an ultrasound the ovaries can look full of small bubbles. But those are not cysts that burst or need removing. They are eggs that started growing and paused. That is one reason doctors, researchers and patients' groups agreed in May 2026 to rename it PMOS. Expect to hear both names for the next few years.",
+        "In plain words, PMOS is a condition where the body's hormones and its sugar handling fall out of step. Insulin (the hormone that moves sugar from the blood into the body) has to work harder than it should. High insulin nudges the ovary to make more male-type hormones, called androgens. Together those explain most of the signs: late periods, coarse facial hair, acne, thinning hair on the head, weight on the belly.",
+        "In Ayurveda we read the same picture as kapha and ama (a sluggish metabolism and build-up) blocking the body's natural flow. Different language, same body.",
+        "PMOS is common: a large ICMR study found it in between 1 in 14 and 1 in 5 Indian women aged 18 to 40, depending on how it was counted. It can also be managed. Food, movement, sleep and, when needed, medicine bring most women's cycles back under control."
+      ],
+      "body_hi": [
+        "PCOS सुना और लगा कि ovary में गांठें या सिस्ट बन गई हैं, है ना? नाम ही ऐसा था।",
+        "हाँ, अल्ट्रासाउंड में ovary में कई छोटे बुलबुले जैसे दिख सकते हैं। पर ये फटने वाली या निकालने वाली सिस्ट नहीं हैं। ये वो अंडे हैं जो बढ़ना शुरू हुए और रुक गए। इसी वजह से मई 2026 में दुनिया के डॉक्टरों, रिसर्च करने वालों और मरीज़ों के संगठनों ने मिलकर नाम बदलकर PMOS रख दिया। अगले कुछ साल दोनों नाम सुनने को मिलेंगे।",
+        "आसान भाषा में, PMOS में शरीर के हार्मोन और शुगर संभालने का सिस्टम तालमेल खो देते हैं। इंसुलिन (वो हार्मोन जो खून से शुगर को शरीर में पहुँचाता है) को ज़्यादा मेहनत करनी पड़ती है। ज़्यादा इंसुलिन ovary को पुरुष-टाइप हार्मोन (androgen) ज़्यादा बनाने को उकसाता है। इन्हीं से ज़्यादातर लक्षण आते हैं: देर से पीरियड, चेहरे पर मोटे बाल, मुहाँसे, सिर के बाल पतले होना, पेट पर वज़न।",
+        "आयुर्वेद में हम इसी को कफ और आम (सुस्त मेटाबॉलिज़्म और जमाव) के रूप में पढ़ते हैं। भाषा अलग, शरीर वही।",
+        "PMOS आम है: ICMR की बड़ी स्टडी में 18 से 40 साल की हर 14 में से 1 से लेकर हर 5 में से 1 भारतीय महिला में यह मिला, गिनने के तरीके के हिसाब से। इसे संभाला जा सकता है। खाना, चलना-फिरना, नींद और ज़रूरत पड़े तो दवा, इनसे ज़्यादातर महिलाओं के पीरियड फिर ठीक हो जाते हैं।"
+      ],
+      "see_doctor_en": [
+        "Gaps that often run past 35 days (up to 45 days is still normal if your first period was under 3 years ago), or fewer than 8 periods in the last year.",
+        "No period for 3 months and you are not pregnant, breastfeeding or on a hormonal pill, injection or IUD: do a home pregnancy test first, then see a doctor.",
+        "Hair growth getting worse over months, or your voice deepening: see a gynaecologist or endocrinologist in person, soon.",
+        "Free options: your PHC or Ayushman Arogya Mandir (a PHC doctor sees you at any age; the free sugar and BP camps are for people 30 and over), or eSanjeevani for a free video consult at esanjeevani.mohfw.gov.in."
+      ],
+      "see_doctor_hi": [
+        "अंतर बार-बार 35 दिन से ज़्यादा जा रहा है (पहला पीरियड 3 साल से कम पहले आया हो तो 45 दिन तक सामान्य है), या पिछले एक साल में 8 से कम पीरियड आए हैं।",
+        "3 महीने से पीरियड नहीं आया और आप गर्भवती नहीं हैं, स्तनपान नहीं करा रहीं, और हार्मोन वाली pill, इंजेक्शन या IUD पर नहीं हैं: पहले घर पर प्रेग्नेंसी टेस्ट करें, फिर डॉक्टर को दिखाएँ।",
+        "बाल महीनों में तेज़ी से बढ़ रहे हैं, या आवाज़ भारी हो रही है: जल्दी ही किसी स्त्री रोग विशेषज्ञ या endocrinologist को सामने जाकर दिखाएँ।",
+        "मुफ़्त विकल्प: आपका PHC या आयुष्मान आरोग्य मंदिर (PHC के डॉक्टर किसी भी उम्र में देखते हैं; मुफ़्त शुगर और BP कैंप 30 साल से ऊपर वालों के लिए हैं), या eSanjeevani पर मुफ़्त वीडियो परामर्श (esanjeevani.mohfw.gov.in)।"
+      ],
+      "qura_line_en": "A Qura doctor (BAMS) can go through your signs, order the first blood tests and plan food, sleep and cycle care with you. If you need a prescription medicine for periods, hair or sugar, that comes from an MBBS doctor, and the Qura doctor will say so (see Who treats what).",
+      "qura_line_hi": "Qura के डॉक्टर (BAMS) आपके लक्षण समझ सकते हैं, पहले ब्लड टेस्ट लिख सकते हैं और आपके साथ खाने, नींद और पीरियड की देखभाल की योजना बना सकते हैं। अगर पीरियड, बाल या शुगर के लिए पर्ची वाली दवा चाहिए, तो वह MBBS डॉक्टर से मिलेगी, और Qura के डॉक्टर आपको यह साफ़ बताएँगे (देखें: कौन क्या देखता है)।",
+      "sources": [
+        "International evidence-based guideline for the assessment and management of PCOS 2023, Summary (Monash), intro, rec 1.1.1 (cycle bands by years since first period) and diagnosis section: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "STAT News, 12 May 2026, PCOS renamed PMOS (polyendocrine metabolic ovarian syndrome), Lancet consensus, 90-member panel, about 3-year transition: https://www.statnews.com/2026/05/12/pcos-now-called-pmos-polyendocrine-metabolic-ovarian-syndrome/",
+        "ICMR multicentre prevalence study, JAMA Network Open (7.2% NIH / 13.6% AE-PCOS / 19.6% Rotterdam, ages 18-40): https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2825233",
+        "NHS, Polycystic ovary syndrome (PMOS) page, causes and symptoms: https://www.nhs.uk/conditions/polycystic-ovary-syndrome-pcos/",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 3 (ICMR prevalence row) and 5.1 (cycle bands, hormone exclusion)"
+      ],
+      "notes": "The '1 in 14 to 1 in 5' range converts the ICMR 7.2% and 19.6% figures; the study's two population counts (9824 vs 8993) do not match in the paper itself. The Ayurvedic framing (kapha, ama) is Dr. Megha's teaching, not from a cited source; she should confirm the wording. 'Doctors, researchers and patients' groups' and 'both names for the next few years' rest on STAT's report of a 90-member panel (87 voted for the name) and a roughly 3-year dissemination period. The 45-day band and the hormone exclusion in the see-doctor list follow guideline 1.1.1 and the report's 5.1 rules. The Qura line no longer names any drug; names sit only in 'Who treats what'. 104 was dropped from the free options because it could not be verified state by state this round (several states run a different service on 104). The 'camps for 30 and over' caveat follows the NPCDCS/CPHC screening age noted in the report; not re-fetched this round. 'Bring most women's cycles back under control' is general clinical experience, not a sourced figure."
+    },
+    {
+      "id": "signs-to-notice",
+      "title_en": "Signs worth noticing",
+      "title_hi": "कौन से लक्षण ध्यान देने लायक हैं",
+      "summary_en": "Long gaps between periods, coarse dark hair, acne, thinning hair on the head and dark velvety neck patches are the signs doctors ask about; one alone rarely means much.",
+      "summary_hi": "पीरियड के बीच लंबा अंतर, मोटे काले बाल, मुहाँसे, सिर के बाल पतले होना और गर्दन पर काले मखमली धब्बे, डॉक्टर इन्हीं लक्षणों के बारे में पूछते हैं; अकेला एक लक्षण शायद ही कुछ कहता है।",
+      "body_en": [
+        "Acne at 28 means PCOS, right? It is not that simple.",
+        "Yes, acne, extra hair and weight gain all turn up in PMOS (PCOS). But each also turns up on its own, in women whose hormones are fine. A doctor looks for the pattern, not one sign.",
+        "The sign that matters most is your period gap. Count from day one of one period to day one of the next. A usual gap is 21 to 35 days. Gaps that often run past 35 days, or fewer than 8 periods a year, are worth showing a doctor. One long gap means little; two out of your last six is worth checking. (Within 3 years of your first period, gaps up to 45 days are still normal.)",
+        "Second is coarse, dark hair where men grow it: upper lip, chin, chest, belly, lower back. Fine fuzz does not count, and threading every two weeks does not count either. Many Indian women have more facial hair by family type.",
+        "Softer signs: acne that stays past your teens; thinning at the crown; and dark, thick, velvety skin at the back of the neck or underarms (acanthosis nigricans). That last one is really a sugar-handling sign; ask for a sugar test.",
+        "Write your dates down for three months. It tells a doctor more than any single test."
+      ],
+      "body_hi": [
+        "28 की उम्र में मुहाँसे मतलब PCOS, है ना? बात इतनी सीधी नहीं है।",
+        "हाँ, मुहाँसे, ज़्यादा बाल और वज़न बढ़ना, सब PMOS (PCOS) में दिखते हैं। पर ये अकेले-अकेले उन महिलाओं में भी होते हैं जिनके हार्मोन ठीक हैं। डॉक्टर एक लक्षण नहीं, पूरा पैटर्न देखते हैं।",
+        "सबसे ज़रूरी लक्षण है पीरियड का अंतर। एक पीरियड के पहले दिन से अगले के पहले दिन तक गिनिए। आम अंतर 21 से 35 दिन है। अंतर बार-बार 35 दिन से ज़्यादा जाए, या साल में 8 से कम पीरियड आएँ, तो डॉक्टर को दिखाइए। एक लंबा अंतर कुछ नहीं कहता; पिछले छह में से दो हों तो जाँच की बात है। (पहले पीरियड के 3 साल के अंदर 45 दिन तक का अंतर भी सामान्य है।)",
+        "दूसरा: मोटे, काले बाल वहाँ जहाँ पुरुषों के होते हैं: ऊपरी होंठ, ठुड्डी, छाती, पेट, कमर के नीचे। हल्के रोएँ नहीं गिने जाते, और हर दो हफ़्ते की थ्रेडिंग भी नहीं। कई भारतीय महिलाओं में परिवार की वजह से चेहरे पर ज़्यादा बाल होते हैं।",
+        "हल्के लक्षण: टीनएज के बाद भी बने मुहाँसे; सिर के बीच से बाल पतले होना; और गर्दन के पीछे या बगल में काली, मोटी, मखमली त्वचा (acanthosis nigricans)। आखिरी वाला असल में शुगर का लक्षण है। शुगर टेस्ट माँगिए।",
+        "तीन महीने तारीखें लिखिए। यह डॉक्टर को किसी एक टेस्ट से ज़्यादा बताती हैं।"
+      ],
+      "see_doctor_en": [
+        "Gaps that often run past 35 days (45 if your first period was under 3 years ago), or fewer than 8 periods in the last year.",
+        "No period for 90 days: home pregnancy test first, then a doctor, even if you are not trying for a baby.",
+        "Hair growth getting worse over months rather than years, or a deepening voice: an in-person gynaecologist or endocrinologist, soon.",
+        "Milky discharge from the nipple when you are not breastfeeding: a doctor, and a prolactin blood test.",
+        "Free: a sugar and BP check at your PHC or Ayushman Arogya Mandir (camps screen people 30 and over; a PHC doctor can order a sugar test at any age); eSanjeevani for a free video consult."
+      ],
+      "see_doctor_hi": [
+        "अंतर बार-बार 35 दिन से ज़्यादा (पहला पीरियड 3 साल से कम पहले आया हो तो 45), या पिछले एक साल में 8 से कम पीरियड।",
+        "90 दिन से पीरियड नहीं: पहले घर पर प्रेग्नेंसी टेस्ट, फिर डॉक्टर, चाहे आप बच्चे की कोशिश न कर रही हों।",
+        "बाल सालों में नहीं, महीनों में बढ़ रहे हैं, या आवाज़ भारी हो रही है: जल्दी ही स्त्री रोग विशेषज्ञ या endocrinologist को सामने जाकर दिखाएँ।",
+        "स्तनपान नहीं करा रहीं और निप्पल से दूध जैसा कुछ निकल रहा है: डॉक्टर को दिखाएँ, prolactin का ब्लड टेस्ट होगा।",
+        "मुफ़्त: PHC या आयुष्मान आरोग्य मंदिर पर शुगर और BP की जाँच (कैंप 30 साल से ऊपर वालों के लिए होते हैं; PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं); eSanjeevani पर मुफ़्त वीडियो परामर्श।"
+      ],
+      "qura_line_en": "A Qura doctor can look at your dates and signs together and tell you which tests, if any, make sense. Fast-worsening hair or a deepening voice needs an in-person MBBS gynaecologist or endocrinologist, not an online consult.",
+      "qura_line_hi": "Qura के डॉक्टर आपकी तारीखें और लक्षण एक साथ देखकर बता सकते हैं कि कौन से टेस्ट, अगर कोई ज़रूरी हो, कराने चाहिए। तेज़ी से बढ़ते बाल या भारी होती आवाज़ के लिए ऑनलाइन नहीं, सामने जाकर MBBS स्त्री रोग विशेषज्ञ या endocrinologist को दिखाना ज़रूरी है।",
+      "sources": [
+        "2023 International PCOS Guideline Summary (cycle definitions in rec 1.1.1, hirsutism, adolescent 1-3 years post-menarche band, rec 1.3.7 on virilisation): https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "NHS PCOS (PMOS) page, symptom list incl. acanthosis nigricans: https://www.nhs.uk/conditions/polycystic-ovary-syndrome-pcos/",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 5.1 (cycle ranges by years since first period; persistence rule of at least 2 of the last 6 cycles out of range; strong/soft/weak androgen signs; R5, R6, R10)"
+      ],
+      "notes": "'Two out of your last six' is the report's persistence rule (at least 2 of the last 6 cycles out of range), now used in every article in this group; the earlier 'three in six months' line was dropped because a higher threshold flags fewer women, not more. 'Many Indian women have more facial hair by family type' is clinical common knowledge, unverified against a published Indian figure. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report; not re-fetched this round."
+    },
+    {
+      "id": "tests-and-why",
+      "title_en": "The tests a doctor usually orders, and why",
+      "title_hi": "डॉक्टर आम तौर पर कौन से टेस्ट लिखते हैं, और क्यों",
+      "summary_en": "Doctors order TSH, prolactin, 17-OHP, testosterone, a sugar test and a lipid profile to rule out look-alikes and to check the sugar and fat side of PMOS; a scan is often not needed.",
+      "summary_hi": "डॉक्टर TSH, prolactin, 17-OHP, testosterone, शुगर टेस्ट और lipid profile इसलिए लिखते हैं कि PMOS जैसी दिखने वाली दूसरी बीमारियाँ हटाई जा सकें और शुगर व फैट की तरफ़ जाँच हो; अल्ट्रासाउंड अक्सर ज़रूरी नहीं होता।",
+      "body_en": [
+        "Irregular periods, so the doctor sends you for an ultrasound, right? In fact the blood tests matter more, and a scan is often not needed.",
+        "Yes, a scan can show the ovary pattern. But three other conditions copy PMOS (PCOS), and only blood separates them. So the first tests rule those out. TSH, for a slow thyroid, which alone can stretch your cycle. Prolactin, the milk hormone, which switches periods off when high and can cause nipple discharge. And 17-OHP (17-hydroxyprogesterone), for a mild adrenal gland condition that also causes extra hair and acne.",
+        "Then the PMOS side itself. Testosterone (total, and often 'free') shows whether androgens are really high; many women with extra hair have normal levels.",
+        "The sugar test the guideline prefers is the 75 g OGTT. You come in the morning without eating for 8 to 12 hours, give one blood sample, drink a measured glucose drink, and give a second sample two hours later. It catches early sugar trouble that a fasting sugar or HbA1c misses, and is repeated every one to three years. A lipid profile (cholesterol and triglycerides) is done at diagnosis, whatever your weight, and then as often as your doctor advises from the result. Blood pressure is checked yearly.",
+        "Two tests you do not need: an insulin level, and, if your first period was under 8 years ago, an ultrasound or AMH.",
+        "Government PHCs and Ayushman Arogya Mandirs check blood sugar and blood pressure free (the screening camps focus on people 30 and over, but a PHC doctor can order a sugar test at any age). The 75 g OGTT is usually done at a district hospital or a private lab; ask."
+      ],
+      "body_hi": [
+        "पीरियड अनियमित हैं, तो डॉक्टर अल्ट्रासाउंड करवाएँगे, है ना? असल में ब्लड टेस्ट ज़्यादा ज़रूरी हैं, और अल्ट्रासाउंड की अक्सर ज़रूरत नहीं होती।",
+        "हाँ, अल्ट्रासाउंड में ovary का पैटर्न दिखता है। पर तीन और बीमारियाँ PMOS (PCOS) जैसी दिखती हैं, और उन्हें सिर्फ़ खून की जाँच अलग करती है। TSH, सुस्त थायरॉइड के लिए, जो अकेले ही अंतर बढ़ा सकता है। Prolactin, दूध वाला हार्मोन, जो ज़्यादा होने पर पीरियड रोक देता है और निप्पल से रिसाव भी करा सकता है। और 17-OHP (17-hydroxyprogesterone), adrenal ग्रंथि की एक हल्की गड़बड़ी के लिए, जिससे भी ज़्यादा बाल और मुहाँसे होते हैं।",
+        "फिर PMOS की तरफ़। Testosterone (total, और अक्सर 'free') बताता है कि androgen सच में ज़्यादा हैं या नहीं; ज़्यादा बाल वाली कई महिलाओं में यह सामान्य निकलता है।",
+        "शुगर के लिए गाइडलाइन 75 g OGTT को सबसे अच्छा मानती है। आप सुबह 8 से 12 घंटे बिना खाए आती हैं, एक बार खून देती हैं, तय मात्रा का ग्लूकोज़ पीती हैं, और दो घंटे बाद दोबारा खून देती हैं। यह वह गड़बड़ी पकड़ता है जो fasting शुगर या HbA1c से छूट जाती है, और हर एक से तीन साल में दोहराया जाता है। Lipid profile (cholesterol और triglycerides) diagnosis पर एक बार, वज़न चाहे जो हो, फिर रिपोर्ट देखकर जितनी बार डॉक्टर कहें। BP हर साल।",
+        "दो टेस्ट जिनकी ज़रूरत नहीं: इंसुलिन लेवल, और अगर पहला पीरियड 8 साल से कम पहले आया है तो अल्ट्रासाउंड या AMH।",
+        "सरकारी PHC और आयुष्मान आरोग्य मंदिर पर शुगर और BP की जाँच मुफ़्त है (कैंप 30 साल से ऊपर वालों पर ध्यान देते हैं, पर PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं)। 75 g OGTT आम तौर पर ज़िला अस्पताल या प्राइवेट लैब में होता है; पूछिए।"
+      ],
+      "see_doctor_en": [
+        "Ask for these tests if 2 of your last 6 gaps ran past 35 days, or you have coarse hair plus any change in your cycle.",
+        "Nipple discharge when not breastfeeding: a prolactin test, soon.",
+        "Dark neck patches, diabetes in the family, or a waist over 80 cm: ask for the OGTT rather than a fasting sugar alone.",
+        "Free: sugar and BP checks at your PHC or Ayushman Arogya Mandir; eSanjeevani if no clinic is near."
+      ],
+      "see_doctor_hi": [
+        "अगर पिछले 6 में से 2 अंतर 35 दिन से ज़्यादा गए, या मोटे बाल हैं और पीरियड में कोई भी बदलाव है, तो ये टेस्ट माँगिए।",
+        "स्तनपान नहीं करा रहीं और निप्पल से रिसाव है: जल्दी prolactin टेस्ट।",
+        "गर्दन पर काले धब्बे, परिवार में डायबिटीज़, या कमर 80 cm से ज़्यादा: सिर्फ़ fasting शुगर नहीं, OGTT माँगिए।",
+        "मुफ़्त: PHC या आयुष्मान आरोग्य मंदिर पर शुगर और BP जाँच; पास में क्लिनिक न हो तो eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor can order the thyroid, prolactin, testosterone and HbA1c tests. HbA1c is the quicker but less exact sugar test; if it comes back borderline, or you have dark neck patches or diabetes in the family, the Qura doctor will ask you to get a 75 g OGTT at a lab. They will also read any report you bring, including an OGTT or lipid report from a government or private lab. If you need a prescription medicine for periods, hair or sugar, that comes from an MBBS doctor, and the Qura doctor will say so (see Who treats what).",
+      "qura_line_hi": "Qura के डॉक्टर थायरॉइड, prolactin, testosterone और HbA1c टेस्ट लिख सकते हैं। HbA1c शुगर का जल्दी वाला पर कम सटीक टेस्ट है; अगर यह बॉर्डर पर आए, या गर्दन पर काले धब्बे हैं या परिवार में डायबिटीज़ है, तो Qura के डॉक्टर आपको लैब से 75 g OGTT कराने को कहेंगे। आपकी लाई हुई कोई भी रिपोर्ट भी वे पढ़ेंगे, चाहे OGTT या lipid की रिपोर्ट सरकारी या प्राइवेट लैब की हो। अगर पीरियड, बाल या शुगर के लिए पर्ची वाली दवा चाहिए, तो वह MBBS डॉक्टर से मिलेगी, और Qura के डॉक्टर आपको यह साफ़ बताएँगे (देखें: कौन क्या देखता है)।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: exclusion of thyroid disease (TSH), hyperprolactinaemia (prolactin), non-classic CAH (17-OHP); rec 1.2.1 total and free testosterone; 1.8.3 lipid profile at diagnosis regardless of age and BMI, thereafter by risk; 1.8.4 BP annually; 1.9.3 glycaemic reassessment every 1-3 years; 1.9.9 75 g OGTT most accurate regardless of BMI; 1.9.10 fasting glucose/HbA1c reduced accuracy; 1.9.12 insulin assays not recommended; ultrasound and AMH not recommended within 8 years of menarche: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "WHO/IDF 2006, Definition and diagnosis of diabetes mellitus and intermediate hyperglycaemia (75 g OGTT after an overnight fast of 8 to 14 hours, fasting and 2-hour samples)",
+        "Ayushman Arogya Mandir free diagnostics and NCD screening (NHSRC IEC poster; returned 403 on re-check): https://nhsrcindia.org/sites/default/files/2026-08/IEC_Poster_for_Ayushman_Arogya_Mandir.pdf",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 5.1 guardrails (Qura lab menu lacks 17-OHP, OGTT, lipid profile; persistence rule 2 of last 6 cycles)"
+      ],
+      "notes": "The Qura line deliberately does not say a Qura doctor can order 17-OHP, the 75 g OGTT or a lipid profile: the report says these are not in Qura's lab panel and the vision doc (5.7) bars that claim until the lab confirms. The OGTT fasting step (8 to 12 hours) is standard lab practice inside the WHO 8 to 14 hour range; the WHO document was not fetched this round. Waist 80 cm is the Asian-Indian cut-off used in the report. Whether a PHC runs an OGTT is unverified; PHCs are confirmed only for capillary glucose and BP screening, and 'district hospital or private lab' is general practice, not a fetched source. The NHSRC Ayushman Arogya Mandir poster returned 403 on re-check, so the current AAM diagnostics list is unverified. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report. The Qura line no longer names any drug; 104 dropped (unverified per state)."
+    },
+    {
+      "id": "same-signs-different-cause",
+      "title_en": "Same signs, different cause",
+      "title_hi": "लक्षण वही, वजह अलग",
+      "summary_en": "Long gaps and extra hair have several causes; when women with these signs are tested, a large share, perhaps half or more, turn out to have something else, which is why tests come before any label.",
+      "summary_hi": "लंबे अंतर और ज़्यादा बाल की कई वजहें होती हैं; जब इन लक्षणों वाली महिलाओं की जाँच होती है, तो बड़ी संख्या में, शायद आधी या ज़्यादा में, कोई और वजह निकलती है, इसीलिए किसी भी नाम से पहले टेस्ट होते हैं।",
+      "body_en": [
+        "Long gaps plus some chin hair, so it must be PCOS, right? Everyone, including Google, will tell you so.",
+        "Yes, that pair of signs is exactly what doctors ask about. But when women with these signs are tested, a large share, perhaps half or more, turn out to have a different reason. PMOS (PCOS) is only one cause.",
+        "What else stretches a cycle: a slow thyroid; high prolactin; stress and poor sleep; a quick weight change; breastfeeding; heavy exercise or eating too little; stopping the pill or an injection in the last three months; and being within a few years of your first period, when 45-day gaps are normal.",
+        "What else causes extra hair: family pattern (common in Indian families); a mild adrenal condition the 17-OHP test picks up; and a few medicines. In one clinic study, only about 3 in 10 women who rated their own hair as too much were rated the same by a doctor. Threading often is grooming, not a symptom.",
+        "This is why no app, quiz or chatbot can tell you whether this is PMOS, and why this app never will. A diagnosis needs two findings together, after blood tests rule out the look-alikes. Until then the honest label is 'worth checking'.",
+        "Many other causes are easier to fix than PMOS. The tests might be the answer."
+      ],
+      "body_hi": [
+        "लंबा अंतर और ठुड्डी पर कुछ बाल, तो PCOS ही होगा, है ना? सब यही कहेंगे, Google भी।",
+        "हाँ, यही दो लक्षण डॉक्टर सबसे पहले पूछते हैं। पर जब इन लक्षणों वाली महिलाओं की जाँच होती है, तो बड़ी संख्या में, शायद आधी या ज़्यादा में, कोई और वजह निकलती है। PMOS (PCOS) उनकी एक वजह है।",
+        "अंतर और क्या बढ़ाता है: सुस्त थायरॉइड; ज़्यादा prolactin; तनाव और कम नींद; वज़न का तेज़ी से बदलना; स्तनपान; बहुत कसरत या बहुत कम खाना; पिछले तीन महीने में pill या इंजेक्शन बंद करना; और पहले पीरियड के कुछ ही साल के अंदर होना, जब 45 दिन का अंतर सामान्य है।",
+        "ज़्यादा बाल और किस वजह से: परिवार का पैटर्न (भारतीय परिवारों में आम); adrenal ग्रंथि की हल्की गड़बड़ी जो 17-OHP टेस्ट से पकड़ में आती है; और कुछ दवाइयाँ। एक क्लिनिक की स्टडी में, जो महिलाएँ खुद अपने बाल 'बहुत ज़्यादा' कहती थीं, उनमें से सिर्फ़ 10 में से 3 को डॉक्टर ने भी वैसा माना। थ्रेडिंग अक्सर सजने-सँवरने की बात है, लक्षण नहीं।",
+        "इसीलिए कोई app, quiz या chatbot नहीं बता सकता कि यह PMOS है या नहीं, और यह app कभी नहीं बताएगा। Diagnosis के लिए दो बातें एक साथ मिलनी चाहिए, वो भी ब्लड टेस्ट से मिलती-जुलती बीमारियाँ हटाने के बाद। तब तक सही शब्द है 'जाँच कराने लायक'।",
+        "बाकी कई वजहें PMOS से आसानी से ठीक होती हैं। हो सकता है टेस्ट ही जवाब हों।"
+      ],
+      "see_doctor_en": [
+        "Gaps over 35 days in 2 of your last 6 cycles, or no period for 90 days (pregnancy test first).",
+        "Coarse hair plus a cycle change, or hair worsening over months: a gynaecologist or endocrinologist in person.",
+        "Nipple discharge, very low weight or restricted eating, or a known thyroid problem: tell the doctor; each points to a different cause.",
+        "Free: your PHC or Ayushman Arogya Mandir for the first checks (camps screen people 30 and over; a PHC doctor can order a sugar test at any age); eSanjeevani for a free teleconsult; Tele-MANAS 14416 or 1-800-891-4416 if restricted eating or low mood is part of the picture."
+      ],
+      "see_doctor_hi": [
+        "पिछले 6 में से 2 पीरियड में अंतर 35 दिन से ज़्यादा, या 90 दिन से पीरियड नहीं (पहले प्रेग्नेंसी टेस्ट)।",
+        "मोटे बाल और पीरियड में बदलाव, या बाल महीनों में बढ़ रहे हैं: स्त्री रोग विशेषज्ञ या endocrinologist को सामने जाकर दिखाएँ।",
+        "निप्पल से रिसाव, बहुत कम वज़न या बहुत कम खाना, या पहले से थायरॉइड की बीमारी: डॉक्टर को बताएँ; हर एक अलग वजह की तरफ़ इशारा करता है।",
+        "मुफ़्त: पहली जाँच के लिए PHC या आयुष्मान आरोग्य मंदिर (कैंप 30 साल से ऊपर वालों के लिए होते हैं; PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं); मुफ़्त टेली-परामर्श के लिए eSanjeevani; अगर कम खाना या उदासी भी साथ है तो Tele-MANAS 14416 या 1-800-891-4416।"
+      ],
+      "qura_line_en": "A Qura doctor can sort your signs into 'PMOS pattern' or 'another cause' with a history and the first blood tests. A thyroid or prolactin problem found this way is usually treated by an MBBS physician or endocrinologist.",
+      "qura_line_hi": "Qura के डॉक्टर इतिहास और पहले ब्लड टेस्ट से आपके लक्षणों को 'PMOS का पैटर्न' या 'कोई और वजह' में छाँट सकते हैं। इस तरह मिला थायरॉइड या prolactin का रोग आम तौर पर MBBS फ़िज़िशियन या endocrinologist से ठीक कराया जाता है।",
+      "sources": [
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 5.1: 'at Indian prevalence only about 24 to 50% of flags will be true cases'; self-rated hirsutism confirmed in about 30%; P2 education names thyroid, prolactin, stress, weight change, breastfeeding; hypothalamic causes card; R9 Tele-MANAS numbers",
+        "Self-assessed vs clinician Ferriman-Gallwey, 188 premenopausal women, PPV 30.1% (Brazilian outpatient study, Arch Endocrinol Metab): https://scielo.br/j/aem/a/f8grW6j5JmCpfLKTrRXcLRx/?lang=en",
+        "2023 International PCOS Guideline Summary: two of three features required in adults; exclusion of TSH, prolactin, 17-OHP; adolescent band: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "Chan 2020 self-report screen (cycle + hair) 89% sensitivity / 78% specificity: https://pmc.ncbi.nlm.nih.gov/articles/PMC7448931/"
+      ],
+      "notes": "'A large share, perhaps half or more' is a plain-language version of the report's modelled 24 to 50% true-positive range at Indian prevalence (so 50 to 76% of flagged women would have another cause); it is not a published Indian clinic figure and should be read as directional. The '3 in 10' hair figure is from one Brazilian outpatient sample (PPV 30%), now labelled 'one clinic study' in the body; the report cited PMC11213573 for it but that ID could not be located. 'A few medicines' causing hair growth is general knowledge, no source fetched. Tele-MANAS toll-free number from report R9. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report."
+    },
+    {
+      "id": "food-for-hormones",
+      "title_en": "A thali that helps your hormones",
+      "title_hi": "एक थाली जो आपके हार्मोन की मदद करे",
+      "summary_en": "There is no special PMOS diet; a normal Indian thali works when you fix the order, the portions and the timing so insulin stays calm.",
+      "summary_hi": "PMOS के लिए कोई खास डाइट नहीं है; आम भारतीय थाली ही काम करती है, बस खाने का क्रम, मात्रा और समय ठीक करना है ताकि इंसुलिन शांत रहे।",
+      "body_en": [
+        "Give up roti and rice to fix PMOS, right? Most women are told so, and most quit within a month.",
+        "Yes, insulin sits at the centre of PMOS (PCOS), and a plate that is mostly white rice or maida does spike it. But the guideline is clear: no one diet beats another. What works is the plate your family already eats, arranged differently.",
+        "Start with the order: sabzi and dal first, grain last. Fibre and protein slow the sugar, so insulin rises gently instead of spiking.",
+        "Then the portions. Half the plate sabzi; a quarter dal, paneer, egg, curd, chana or fish; a quarter grain. Two rotis with a bowl of dal and plenty of sabzi is a good meal. Four rotis with a spoon of sabzi is not.",
+        "Swap, do not ban. Bajra, jowar or ragi roti instead of wheat some days. Chaas (buttermilk) in the afternoon instead of curd at night; Ayurveda calls curd guru (heavy to digest), and it pushes insulin more than its sugar suggests.",
+        "Timing matters too. Eat your biggest meal while the sun is up, when agni (digestive fire) is strongest. Finish dinner three hours before sleep.",
+        "The daily 5 pm tea with two biscuits is often the real culprit. Keep the tea; swap the biscuits for roasted chana or a fruit."
+      ],
+      "body_hi": [
+        "PMOS ठीक करना है तो रोटी-चावल छोड़ो, है ना? ज़्यादातर महिलाओं को यही कहा जाता है, और ज़्यादातर महीने भर में यह प्लान छोड़ देती हैं।",
+        "हाँ, PMOS (PCOS) के बीच में इंसुलिन ही है, और जिस थाली में ज़्यादातर सफ़ेद चावल या मैदा हो, वह इंसुलिन उछाल देती है। पर गाइडलाइन साफ़ है: कोई एक डाइट दूसरी से बेहतर नहीं। जो काम करता है वह है घर की वही थाली, अलग तरह से सजी।",
+        "शुरुआत क्रम से: पहले सब्ज़ी और दाल, अनाज आख़िर में। फाइबर और प्रोटीन शुगर को धीरे छोड़ते हैं, तो इंसुलिन उछलने के बजाय धीरे बढ़ता है।",
+        "फिर मात्रा। आधी थाली सब्ज़ी; एक चौथाई दाल, पनीर, अंडा, दही, चना या मछली; एक चौथाई अनाज। दो रोटी, कटोरी भर दाल और भरपूर सब्ज़ी अच्छा खाना है। चार रोटी और चम्मच भर सब्ज़ी नहीं।",
+        "बदलिए, बंद मत करिए। कुछ दिन गेहूँ की जगह बाजरा, ज्वार या रागी की रोटी। रात की दही की जगह दोपहर की छाछ; आयुर्वेद दही को गुरु (पचने में भारी) कहता है, और यह अपनी शुगर से ज़्यादा इंसुलिन बढ़ाता है।",
+        "समय भी ज़रूरी है। सबसे बड़ा खाना दिन में, जब अग्नि (पाचन की आग) सबसे तेज़ है। रात का खाना सोने से तीन घंटे पहले ख़त्म।",
+        "रोज़ शाम 5 बजे चाय के साथ दो बिस्कुट अक्सर असली वजह हैं। चाय रखिए; बिस्कुट की जगह भुना चना या एक फल।"
+      ],
+      "see_doctor_en": [
+        "You are eating well for 3 months and your gaps are still over 35 days, or you are losing weight without trying.",
+        "Constant thirst, passing urine often, or blurred vision: see a doctor this week for a sugar test. Dark neck patches alone: ask for the 75 g OGTT rather than a fasting sugar.",
+        "You feel you cannot stop eating, or you are skipping meals to control weight: tell a doctor; Tele-MANAS 14416 or 1-800-891-4416 is free if food has become a source of distress.",
+        "Free: a dietitian or doctor at your PHC or district hospital; eSanjeevani for a teleconsult; a sugar check at an Ayushman Arogya Mandir (camps screen people 30 and over; a PHC doctor can order a sugar test at any age)."
+      ],
+      "see_doctor_hi": [
+        "3 महीने से अच्छा खा रही हैं और फिर भी अंतर 35 दिन से ज़्यादा है, या बिना कोशिश वज़न घट रहा है।",
+        "हमेशा प्यास, बार-बार पेशाब, या धुँधला दिखना: इसी हफ़्ते डॉक्टर को दिखाकर शुगर टेस्ट कराइए। सिर्फ़ गर्दन पर काले धब्बे हों: fasting शुगर नहीं, 75 g OGTT माँगिए।",
+        "लगता है खाना रोक नहीं पातीं, या वज़न के लिए खाना छोड़ रही हैं: डॉक्टर को बताइए; अगर खाना परेशानी की वजह बन गया है तो Tele-MANAS 14416 या 1-800-891-4416 मुफ़्त है।",
+        "मुफ़्त: PHC या ज़िला अस्पताल में डाइटीशियन या डॉक्टर; टेली-परामर्श के लिए eSanjeevani; आयुष्मान आरोग्य मंदिर पर शुगर जाँच (कैंप 30 साल से ऊपर वालों के लिए होते हैं; PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं)।"
+      ],
+      "qura_line_en": "Food and meal timing are exactly what a Qura doctor works on with you, month by month, around what your kitchen already cooks. If a sugar test shows diabetes, the medicine for it comes from an MBBS doctor.",
+      "qura_line_hi": "खाना और खाने का समय ठीक यही है जिस पर Qura के डॉक्टर आपके साथ महीने-दर-महीने काम करते हैं, आपकी रसोई में जो बनता है उसी के आसपास। अगर शुगर टेस्ट में डायबिटीज़ निकलती है, तो उसकी दवा MBBS डॉक्टर से मिलेगी।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: 3.3.1 no evidence one diet type is better; 3.3.2 any diet consistent with population healthy-eating guidelines; 3.1.5 benefits of healthy lifestyle even without weight loss; 1.9.9 75 g OGTT; intro 'no one regimen has benefits over others': https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "Dr. Megha voice sample on curd: low glycaemic but high insulinaemic index; daytime use; buttermilk swap (.claude/skills/humanizer/references/megha-voice-sample.md)",
+        "NHS PCOS (PMOS) page: healthy balanced diet, regular exercise as treatment: https://www.nhs.uk/conditions/polycystic-ovary-syndrome-pcos/",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md R9 (Tele-MANAS 14416 / 1-800-891-4416)"
+      ],
+      "notes": "The 'vegetables and protein first, grain last' order and the 'biggest meal in daylight / dinner three hours before sleep' advice are Dr. Megha's teaching and general clinical practice; no primary source fetched. The curd insulin-index point is from her sample, not independently verified here. No spice, herb or product is named on purpose. The see-doctor list now sends constant thirst, frequent urine and blurred vision to a doctor this week, matching the long-term article, and keeps the OGTT request for dark neck patches alone. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report."
+    },
+    {
+      "id": "movement-sleep-stress",
+      "title_en": "Movement, sleep and stress with PMOS",
+      "title_hi": "PMOS में चलना-फिरना, नींद और तनाव",
+      "summary_en": "Thirty minutes of brisk movement most days, seven hours of sleep and a daily pause for stress do as much for insulin as any diet change, and no gym is needed.",
+      "summary_hi": "ज़्यादातर दिनों में 30 मिनट तेज़ चलना, सात घंटे की नींद और तनाव के लिए रोज़ थोड़ा रुकना, इंसुलिन के लिए किसी भी डाइट बदलाव जितना काम करता है, और इसके लिए जिम ज़रूरी नहीं।",
+      "body_en": [
+        "You need a gym and an hour of workout to beat PMOS, right? For most women that is where the plan dies.",
+        "Yes, movement is one of the most useful things for PMOS (PCOS), because a working muscle pulls sugar out of the blood without much insulin. But the guideline's ask is modest: 150 to 300 minutes a week of moderate activity, which is a brisk 30-minute walk most days, plus something that works your muscles on two separate days a week. A 10-minute walk after meals blunts that meal's sugar rise.",
+        "Sleep is the part everyone skips. Under 7 hours, or sleep broken by phone light, raises stress hormones and insulin the next day. Snoring and broken sleep are also more common with PMOS. If you wake unrefreshed or doze in the afternoon, tell your doctor; sleep apnoea (breathing that stops and starts during sleep) is common with PMOS and can be treated.",
+        "Stress works the same way. Cortisol (the stress hormone) makes the body hold on to sugar and fat, and can delay a period by itself. You can give the body a daily signal that it is safe: 10 slow breaths before meals, a walk without the phone, pranayama if you know it.",
+        "Low mood and anxiety are more common with PMOS, part of the condition, not weakness. Tele-MANAS (14416 or 1-800-891-4416) is free, in your language, at any hour."
+      ],
+      "body_hi": [
+        "PMOS से लड़ने के लिए जिम और घंटे भर की कसरत चाहिए, है ना? ज़्यादातर महिलाओं का प्लान यहीं टूट जाता है।",
+        "हाँ, PMOS (PCOS) में चलना-फिरना सबसे काम की चीज़ों में से है, क्योंकि चलती मांसपेशी खून से शुगर बिना ज़्यादा इंसुलिन के खींच लेती है। पर गाइडलाइन की माँग छोटी है: हफ़्ते में 150 से 300 मिनट की मध्यम गतिविधि, यानी ज़्यादातर दिन 30 मिनट तेज़ सैर, और हफ़्ते में दो अलग-अलग दिन कुछ ऐसा जो मांसपेशियों पर ज़ोर डाले। खाने के बाद 10 मिनट की सैर उस खाने की शुगर की उछाल कम कर देती है।",
+        "नींद वह हिस्सा है जिसे सब छोड़ देते हैं। 7 घंटे से कम, या फ़ोन की रोशनी से टूटी नींद, अगले दिन तनाव के हार्मोन और इंसुलिन बढ़ा देती है। खर्राटे और टूटी नींद भी PMOS में ज़्यादा होती है। सुबह थकी उठती हैं या दोपहर में झपकी आती है, तो डॉक्टर को बताइए; नींद में साँस रुकने की बीमारी (sleep apnoea) PMOS में आम है और इसका इलाज है।",
+        "तनाव भी ऐसे ही काम करता है। Cortisol (तनाव का हार्मोन) शरीर को शुगर और फैट पकड़कर रखने को कहता है, और अकेले ही पीरियड टाल सकता है। पर शरीर को रोज़ एक संकेत दिया जा सकता है कि सब ठीक है: खाने से पहले 10 धीमी साँसें, बिना फ़ोन की सैर, प्राणायाम अगर आप जानती हैं।",
+        "उदासी और घबराहट PMOS में ज़्यादा होती है, बीमारी का हिस्सा है, कमज़ोरी नहीं। Tele-MANAS (14416 या 1-800-891-4416) मुफ़्त है, आपकी भाषा में, किसी भी समय।"
+      ],
+      "see_doctor_en": [
+        "Loud snoring, waking unrefreshed, or falling asleep in the day: ask a doctor about a sleep check.",
+        "Low mood for more than two weeks, or anxiety that stops daily life: Tele-MANAS 14416 or 1-800-891-4416 (free, 24 hours), or your PHC doctor.",
+        "Any thought of harming yourself: call Tele-MANAS 14416 or 112 now.",
+        "Chest pain or pressure that does not ease within a few minutes of stopping, or comes with sweating, breathlessness, or pain spreading to the arm, jaw or back: call 108 or 112 now. Any chest pain on walking that settles: see a doctor before you walk again.",
+        "Free: Tele-MANAS 14416; your PHC or Ayushman Arogya Mandir (any age; the free sugar camps are for people 30 and over); eSanjeevani."
+      ],
+      "see_doctor_hi": [
+        "ज़ोर के खर्राटे, सुबह थकी उठना, या दिन में नींद आना: डॉक्टर से नींद की जाँच के बारे में पूछिए।",
+        "दो हफ़्ते से ज़्यादा उदासी, या ऐसी घबराहट जो रोज़ का काम रोक दे: Tele-MANAS 14416 या 1-800-891-4416 (मुफ़्त, 24 घंटे), या PHC के डॉक्टर।",
+        "खुद को चोट पहुँचाने का कोई भी विचार: अभी Tele-MANAS 14416 या 112 पर कॉल करें।",
+        "छाती में दर्द या दबाव जो रुकने के कुछ मिनट बाद भी कम न हो, या साथ में पसीना, साँस फूलना, या दर्द बाँह, जबड़े या पीठ तक जाए: अभी 108 या 112 पर कॉल करें। चलने पर छाती में कोई भी दर्द जो रुकने पर ठीक हो जाए: दोबारा सैर पर जाने से पहले डॉक्टर को दिखाइए।",
+        "मुफ़्त: Tele-MANAS 14416; PHC या आयुष्मान आरोग्य मंदिर (किसी भी उम्र में; मुफ़्त शुगर कैंप 30 साल से ऊपर वालों के लिए हैं); eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor can build a movement, sleep and stress routine around your day and check it with you each month. A suspected sleep disorder, or depression that needs medicine, is handled by an MBBS doctor or psychiatrist.",
+      "qura_line_hi": "Qura के डॉक्टर आपके दिन के हिसाब से चलने-फिरने, नींद और तनाव की दिनचर्या बना सकते हैं और हर महीने आपके साथ उसे देख सकते हैं। नींद की बीमारी का शक हो, या उदासी के लिए दवा चाहिए, तो वह MBBS डॉक्टर या psychiatrist देखते हैं।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: 3.4.3 150-300 min/week moderate activity plus muscle strengthening on two non-consecutive days; 3.4.5 at least 30 minutes most days; 1.10.1-1.10.2 obstructive sleep apnoea higher prevalence, screen for symptoms; intro and 2.2.x depressive and anxiety symptoms increased, screen all women: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "Tele-MANAS 14416 / 1-800-891-4416, free, 24x7, choice of language (Vikaspedia summary of MoHFW programme): https://en.vikaspedia.in/viewcontent/health/mental-health/tele-manas",
+        "NHS, Heart attack symptoms (chest pain or pressure, pain spreading to arm, jaw or back, sweating, breathlessness; call emergency services): https://www.nhs.uk/conditions/heart-attack/symptoms/",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md R9 (Tele-MANAS routing) and 5.3 (red flags carry urgent wording)"
+      ],
+      "notes": "Review flagged the chest-pain line as unsafe (a routine appointment came before the emergency number); it now leads with 108/112 and a time limit, following standard NHS/AHA heart-attack guidance, which was not fetched this round. 'A 10-minute walk after meals cuts the sugar rise' and 'less than 7 hours of sleep raises insulin the next day' are general physiology, not fetched from a primary source. The sleep apnoea line follows guideline 1.10 (higher prevalence, screen for symptoms). 'Two separate days' follows 3.4.3 ('two non-consecutive days'). The official telemanas.mohfw.gov.in site failed a TLS check, so both Tele-MANAS numbers are confirmed from Vikaspedia and the report. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report."
+    },
+    {
+      "id": "pmos-planning-a-baby",
+      "title_en": "PMOS and planning a baby",
+      "title_hi": "PMOS और बच्चे की योजना",
+      "summary_en": "Most women with PMOS do conceive; the steps are steadying your cycle, checking sugar, thyroid and blood pressure first, and seeing a gynaecologist early rather than waiting a year.",
+      "summary_hi": "PMOS वाली ज़्यादातर महिलाएँ माँ बनती हैं; रास्ता है पीरियड को नियमित करना, पहले शुगर, थायरॉइड और BP जाँचना, और साल भर इंतज़ार करने के बजाय जल्दी स्त्री रोग विशेषज्ञ को दिखाना।",
+      "body_en": [
+        "PCOS means you cannot have children, right? That is not true.",
+        "Yes, PMOS (PCOS) often makes ovulation (the egg's release) irregular, and that makes conceiving slower. But most women with PMOS do conceive, many without medicine. Those who need help have good options.",
+        "Start before you start trying. A doctor should check your sugar with the 75 g OGTT, your thyroid and your blood pressure; these problems are more common in PMOS pregnancies and easier to fix beforehand. Begin folic acid 400 micrograms a day now; ask whether your PHC has it, otherwise any chemist sells it. If you have diabetes, a BMI over 30, a past baby with a spine defect, or take epilepsy medicine, a doctor will prescribe a higher dose. Show the doctor every medicine you take, including anything Ayurvedic, and do not stop a prescribed medicine on your own.",
+        "Your cycle length is your best clue. Gaps of 21 to 35 days mean an egg is probably released most months. Regular sex every 2 to 3 days through the month gives the best chance. Counting days adds stress and is not needed. Ovulation strips often mislead in PMOS.",
+        "If gaps are long or periods missing, do not wait the usual year. See a gynaecologist soon; the first-step tablet that helps the egg release works for many women, and the gynaecologist will explain your own chances. Over 35, go after 6 months of trying; over 40, straight away.",
+        "If your weight is high, even a modest loss restarts ovulation for many. If it is normal, do not lose any."
+      ],
+      "body_hi": [
+        "PCOS मतलब बच्चे नहीं हो सकते, है ना? यह सच नहीं है।",
+        "हाँ, PMOS (PCOS) में अंडा निकलना (ovulation) अक्सर अनियमित होता है, और इससे गर्भ ठहरने में देर लगती है। पर PMOS वाली ज़्यादातर महिलाएँ माँ बनती हैं, कई बिना दवा के। जिन्हें मदद चाहिए, उनके लिए अच्छे रास्ते हैं।",
+        "कोशिश शुरू करने से पहले शुरू करिए। डॉक्टर से 75 g OGTT से शुगर, थायरॉइड और BP जाँचवाइए; ये दिक्कतें PMOS में ज़्यादा होती हैं और पहले ठीक करना आसान है। folic acid 400 microgram रोज़ अभी से शुरू करिए; PHC पर पूछिए कि मिलती है या नहीं, वरना किसी भी केमिस्ट पर मिल जाती है। अगर आपको डायबिटीज़ है, BMI 30 से ऊपर है, पहले किसी बच्चे की रीढ़ में जन्म से खराबी रही है, या आप मिर्गी की दवा लेती हैं, तो डॉक्टर ज़्यादा खुराक लिखेंगे। डॉक्टर को अपनी हर दवा दिखाइए, आयुर्वेदिक भी, और पर्ची वाली दवा अपने से बंद मत करिए।",
+        "पीरियड का अंतर सबसे अच्छा संकेत है। 21 से 35 दिन का अंतर यानी शायद ज़्यादातर महीनों में अंडा निकल रहा है। महीने भर हर 2 से 3 दिन में संबंध बनाना सबसे अच्छा रास्ता है। दिन गिनने से तनाव बढ़ता है, ज़रूरत नहीं। Ovulation strips (अंडा निकलने की जाँच की पट्टी) PMOS में अक्सर गलत जवाब देती हैं।",
+        "अगर अंतर लंबा है या पीरियड नहीं आ रहे, तो साल भर का इंतज़ार मत करिए। जल्दी स्त्री रोग विशेषज्ञ को दिखाइए; अंडा निकलने में मदद की पहली दवा कई महिलाओं में काम करती है; आपके लिए कितनी, यह स्त्री रोग विशेषज्ञ बताएँगे। 35 के बाद 6 महीने कोशिश के बाद; 40 के बाद सीधे।",
+        "वज़न ज़्यादा है तो थोड़ा सा कम होने से भी कई महिलाओं में अंडा फिर निकलना शुरू हो जाता है। वज़न सामान्य है तो बिल्कुल कम मत करिए।"
+      ],
+      "see_doctor_en": [
+        "Trying for 12 months with regular cycles; 6 months if you are over 35; straight away if over 40, or if your gaps are long or periods missing.",
+        "Two or more pregnancy losses, a past ectopic pregnancy, pelvic infection or genital TB: a gynaecologist before you try.",
+        "A late or missed period with one-sided belly pain, shoulder-tip pain, fainting or dizziness: call 112 or 108 or go to the nearest hospital now.",
+        "Free: a gynaecologist at a government hospital; eSanjeevani for a free video OPD; basic tests at your PHC or Ayushman Arogya Mandir (camps screen people 30 and over; a PHC doctor can order tests at any age); ask whether folic acid is available there, otherwise any chemist sells it."
+      ],
+      "see_doctor_hi": [
+        "नियमित पीरियड के साथ 12 महीने कोशिश; 35 से ऊपर हैं तो 6 महीने; 40 से ऊपर, या अंतर लंबा है या पीरियड नहीं आ रहे, तो सीधे।",
+        "दो या ज़्यादा बार गर्भ गिरना, पहले ectopic गर्भ, पेड़ू का संक्रमण या जननांग की TB: कोशिश से पहले स्त्री रोग विशेषज्ञ।",
+        "पीरियड लेट या नहीं आया और एक तरफ़ पेट में दर्द, कंधे के ऊपर दर्द, बेहोशी या सिर घूमना: अभी 112 या 108 पर कॉल करें या नज़दीकी अस्पताल जाएँ।",
+        "मुफ़्त: सरकारी अस्पताल में स्त्री रोग विशेषज्ञ; मुफ़्त वीडियो OPD के लिए eSanjeevani; PHC या आयुष्मान आरोग्य मंदिर पर बुनियादी टेस्ट (कैंप 30 साल से ऊपर वालों के लिए होते हैं; PHC के डॉक्टर किसी भी उम्र में टेस्ट लिख सकते हैं); वहाँ पूछिए कि folic acid मिलती है या नहीं, वरना किसी भी केमिस्ट पर मिल जाती है।"
+      ],
+      "qura_line_en": "A Qura doctor can get you ready: the pre-pregnancy tests, your weight, food, sleep and cycle, and a review of anything you are taking. The medicine that helps the egg release, and any fertility treatment, comes from an MBBS gynaecologist, and the Qura doctor will send you there early rather than late.",
+      "qura_line_hi": "Qura के डॉक्टर आपको तैयार कर सकते हैं: गर्भ से पहले के टेस्ट, आपका वज़न, खाना, नींद और पीरियड, और आप जो भी ले रही हैं उसकी समीक्षा। अंडा निकलने में मदद करने वाली दवा और गर्भधारण में मदद का कोई भी इलाज MBBS स्त्री रोग विशेषज्ञ से मिलता है, और Qura के डॉक्टर आपको देर से नहीं, जल्दी वहाँ भेजेंगे।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: 1.9.11 OGTT when planning pregnancy; 4.10.6 BP when planning pregnancy; 4.10.7 OGTT preconception; 5.3.1-5.3.2 letrozole first-line ovulation induction, off-label in many countries; intro on lifestyle and weight: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "NHS, Infertility page: regular unprotected sex every 2 or 3 days; timing to ovulation not needed: https://www.nhs.uk/conditions/infertility/",
+        "Product vision docs/_product-vision-womens-health-companion-oct18.md section 3.2 (folic acid 400 µg WHO, higher dose if BMI over 30, diabetes or a previous spine defect; sex every 2-3 days NICE CG156/NG257; LH strips misleading in PCOS; specialist at 12 months / 6 months at 35+ / immediately at 40+ per ASRM 2021 and ACOG CO 781; R1 ectopic line; medicine chips)",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md R1 and section 6.3 (letrozole is an MBBS prescription; fertility goal routes to MBBS partner)"
+      ],
+      "notes": "Review flagged 'simple and works for most' as an unsafe outcome promise (the reviewer cited Legro 2014, NEJM: ovulation in about 6 in 10 cycles and a live birth in about 1 in 4 women over 5 cycles; not fetched here) and as DMR Schedule item 48 exposure; it is replaced with 'works for many women, and the gynaecologist will explain your own chances', and the drug stays unnamed in this article. 'Even a modest loss restarts ovulation for many women' replaces the often-quoted 5-10% figure, which was not located in the 2023 summary text. Whether a PHC gives folic acid to a woman who is not yet pregnant is unverified (IFA is programmed for pregnant and adolescent groups), so the wording is 'ask, otherwise any chemist'. The higher-dose folic acid groups (diabetes, BMI over 30, previous spine defect, epilepsy medicine) follow the vision doc 3.2 and UK practice (5 mg on prescription); not fetched this round. 'Regular sex every 2 to 3 days gives the best chance; counting days adds stress' follows the NHS infertility page and NICE CG156; NG257 (Mar 2026) was not re-checked. 'बाँझपन' was replaced with 'गर्भधारण में मदद' to avoid stigma. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report."
+    },
+    {
+      "id": "pmos-long-term",
+      "title_en": "PMOS over the years: sugar, pressure and the womb lining",
+      "title_hi": "सालों में PMOS: शुगर, BP और बच्चेदानी की परत",
+      "summary_en": "PMOS is a lifelong metabolic condition; a yearly blood pressure check, a sugar test every one to three years and never letting periods vanish for months protect you for decades.",
+      "summary_hi": "PMOS जीवन भर चलने वाली मेटाबॉलिक स्थिति है; हर साल BP जाँच, हर एक से तीन साल में शुगर टेस्ट, और पीरियड को महीनों गायब न रहने देना, यही आपको दशकों तक बचाता है।",
+      "body_en": [
+        "Once the periods are regular, PMOS is over, right? Many women stop thinking about it once the cycle settles.",
+        "Yes, a regular cycle is a real win. But PMOS (PCOS) is a metabolic condition that lasts across life. The insulin part does not switch off at 30, and it carries on after menopause. Three things deserve a yearly thought.",
+        "Sugar. Early sugar trouble and type 2 diabetes are more common with PMOS, at any weight. The guideline asks for a sugar test, ideally the 75 g OGTT, at diagnosis and then every one to three years. A PHC or Ayushman Arogya Mandir checks blood sugar and blood pressure free (screening camps focus on people 30 and over, but a PHC doctor can order a sugar test at any age). The 75 g OGTT is usually done at a district hospital or a private lab; ask.",
+        "Blood pressure and fats. Check BP once a year and before any pregnancy. Get a lipid profile once at diagnosis. Both are silent for years, and PMOS adds to the heart's load.",
+        "The womb lining. Each month the lining (endometrium) thickens; a period sheds it. When periods stop for months, the lining keeps building and over years can overgrow. The overall chance of anything serious is low, but there is a simple protection: do not let about three months pass without a bleed. If periods stop, a doctor may give a short course of tablets to bring one on.",
+        "Regular periods are not vanity. They are the lining being cleaned."
+      ],
+      "body_hi": [
+        "पीरियड नियमित हो गए तो PMOS ख़त्म, है ना? कई महिलाएँ पीरियड ठीक होते ही इसके बारे में सोचना छोड़ देती हैं।",
+        "हाँ, नियमित पीरियड सच में बड़ी जीत है। पर PMOS (PCOS) एक मेटाबॉलिक स्थिति है जो जीवन भर रहती है। इंसुलिन वाला हिस्सा 30 की उम्र में बंद नहीं होता, और menopause के बाद भी चलता रहता है। तीन बातें हर साल सोचने लायक हैं।",
+        "शुगर। PMOS में शुरुआती शुगर की गड़बड़ी और type 2 डायबिटीज़ ज़्यादा होती है, वज़न चाहे जो हो। गाइडलाइन कहती है diagnosis पर शुगर टेस्ट, हो सके तो 75 g OGTT, फिर हर एक से तीन साल में। PHC या आयुष्मान आरोग्य मंदिर पर शुगर और BP की जाँच मुफ़्त है (कैंप 30 साल से ऊपर वालों पर ध्यान देते हैं, पर PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं)। 75 g OGTT आम तौर पर ज़िला अस्पताल या प्राइवेट लैब में होता है; पूछिए।",
+        "BP और फैट। BP साल में एक बार और किसी भी गर्भ से पहले। Lipid profile diagnosis पर एक बार। दोनों सालों तक चुप रहते हैं, और PMOS दिल पर बोझ बढ़ाता है।",
+        "बच्चेदानी की परत। हर महीने बच्चेदानी की परत (endometrium) मोटी होती है; पीरियड उसे बाहर निकाल देता है। जब पीरियड महीनों रुके रहते हैं, तो परत बनती रहती है और सालों में बहुत मोटी हो सकती है। कुछ गंभीर होने की कुल संभावना कम है, पर एक आसान बचाव है: लगभग तीन महीने बिना पीरियड मत जाने दीजिए। पीरियड रुक जाएँ तो डॉक्टर कुछ दिनों की गोली देकर पीरियड ला सकते हैं।",
+        "नियमित पीरियड दिखावे की बात नहीं। यह परत की सफ़ाई है।"
+      ],
+      "see_doctor_en": [
+        "No period for 90 days and you are not pregnant, breastfeeding or on hormones: pregnancy test, then a doctor.",
+        "A pad soaked every hour or two, bleeding over 8 days, or clots bigger than a Rs 10 coin: a doctor this week and ask for a haemoglobin test; if you also feel dizzy or breathless, today.",
+        "Bleeding between periods, or any bleeding after 12 months without a period: a gynaecologist within two weeks.",
+        "Constant thirst, frequent urine, blurred vision, or a BP reading above 140/90 at a camp: a doctor this week. If the reading is 180/120 or higher, or you have a severe headache, chest pain or sudden vision change with it: 108 or 112 now.",
+        "Free: yearly sugar and BP check at your PHC or Ayushman Arogya Mandir; eSanjeevani for a teleconsult."
+      ],
+      "see_doctor_hi": [
+        "90 दिन से पीरियड नहीं और आप गर्भवती नहीं, स्तनपान नहीं, हार्मोन की दवा नहीं: प्रेग्नेंसी टेस्ट, फिर डॉक्टर।",
+        "हर घंटे-दो घंटे में पैड भर जाना, 8 दिन से ज़्यादा ब्लीडिंग, या 10 रुपये के सिक्के से बड़े थक्के: इसी हफ़्ते डॉक्टर को दिखाइए और haemoglobin (खून की कमी) का टेस्ट माँगिए; अगर साथ में सिर घूमे या साँस फूले, तो आज ही।",
+        "पीरियड के बीच में ब्लीडिंग, या 12 महीने बिना पीरियड के बाद कोई भी ब्लीडिंग: दो हफ़्ते के अंदर स्त्री रोग विशेषज्ञ।",
+        "हमेशा प्यास, बार-बार पेशाब, धुँधला दिखना, या कैंप में BP 140/90 से ऊपर: इसी हफ़्ते डॉक्टर। अगर BP 180/120 या ज़्यादा है, या साथ में तेज़ सिरदर्द, छाती में दर्द या अचानक धुँधला दिखना है: अभी 108 या 112।",
+        "मुफ़्त: PHC या आयुष्मान आरोग्य मंदिर पर हर साल शुगर और BP जाँच; टेली-परामर्श के लिए eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor can keep the yearly checks on your calendar, work on the sugar side through food, movement and sleep, and follow your cycle so gaps do not go unnoticed. Tablets to bring on a period, blood pressure or diabetes medicine come from an MBBS doctor.",
+      "qura_line_hi": "Qura के डॉक्टर सालाना जाँच आपके कैलेंडर पर रख सकते हैं, खाने, चलने-फिरने और नींद से शुगर की तरफ़ काम कर सकते हैं, और आपके पीरियड पर नज़र रख सकते हैं ताकि लंबा अंतर छूटे नहीं। पीरियड लाने की गोली, BP या डायबिटीज़ की दवा MBBS डॉक्टर से मिलती है।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: 1.9.1 increased diabetes risk regardless of age and BMI; 1.9.2-1.9.3 glycaemic testing at diagnosis then every 1-3 years; 1.8.3 lipid profile at diagnosis; 1.8.4 BP annually and when planning pregnancy; 1.11.1-1.11.5 endometrial hyperplasia and cancer, overall chance low, no routine screening, prevention via weight management, cycle regulation and regular withdrawal bleeds: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "NHS PCOS (PMOS) page: long-term risks type 2 diabetes, high blood pressure, cardiovascular disease, fatty liver, womb cancer: https://www.nhs.uk/conditions/polycystic-ovary-syndrome-pcos/",
+        "NHS, Heavy periods page (pad soaked every 1-2 hours, clots, bleeding over 7-8 days, tiredness or breathlessness): https://www.nhs.uk/conditions/heavy-periods/",
+        "ACC/AHA 2017 high blood pressure guideline (stage 2 at 140/90; hypertensive crisis at 180/120 or higher)",
+        "Product vision docs/_product-vision-womens-health-companion-oct18.md 5.5 rules registry R2, R3, R6, R8; Report docs/_research-flo-free-cycle-tracker-oct18.md R3, R6 ('regulating cycles protects the womb lining'), R8"
+      ],
+      "notes": "Review flagged the see-doctor bleeding line as unsafe (heavy bleeding was bundled under 'two weeks'); it is now split per the rules registry R2 and R3: this week with a haemoglobin test, today with dizziness or breathlessness, two weeks for bleeding between periods or after 12 months without a period. 'Do not let about three months pass without a bleed' is the report's R6 90-day rule paired with guideline 1.11.4; the guideline itself gives no month count. The 140/90 and 180/120 BP lines are standard thresholds (ACC/AHA 2017), not fetched from a source this round. The drug class name (progestogen) was removed from the body and the Qura line on DMR Schedule item 13 grounds; nothing the reader decides depends on it. Whether a PHC runs an OGTT is unverified; 'district hospital or private lab' is general practice. The 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report. 104 dropped (unverified per state)."
+    },
+    {
+      "id": "lean-pmos",
+      "title_en": "Lean PMOS",
+      "title_hi": "पतली महिलाओं में PMOS (lean PMOS)",
+      "summary_en": "PMOS is not a weight problem; many Indian women with it are slim, still carry insulin resistance, and need the same tests and the same care without being told to lose weight.",
+      "summary_hi": "PMOS वज़न की बीमारी नहीं है; इससे जूझती कई भारतीय महिलाएँ पतली हैं, फिर भी उनमें इंसुलिन की गड़बड़ी होती है, और उन्हें वही टेस्ट और वही देखभाल चाहिए, बिना 'वज़न घटाओ' सुने।",
+      "body_en": [
+        "PCOS only happens to overweight women, right? So if you are slim, your irregular periods and chin hair must be something else.",
+        "Yes, higher weight makes PMOS (PCOS) more likely and its signs louder. But many women with PMOS are at a normal weight. In the ICMR study, between a third and just over half of the women with PMOS were not overweight, depending on which cut-off was used. Doctors call it lean PMOS. Same condition, lighter frame.",
+        "Inside, the picture is the same: insulin working harder than it should, often with fat stored around the organs where a weighing scale cannot see it. For Indian women a waist over 80 cm says more than BMI.",
+        "Lean PMOS gets missed because nobody suspects it, and mistreated because the only advice given is 'lose weight'. If your weight is normal, losing more can make periods worse. For women who are not overweight, the guideline's focus is healthy habits, not weight loss.",
+        "What helps: the same tests as everyone; movement that builds muscle, because muscle is where sugar goes; protein at every meal; sleep; stress care. In Ayurveda, lean PMOS often shows a vata picture (dryness, anxiety, irregularity), so the food advice shifts from 'lighter' to 'warm, cooked and on time'.",
+        "If a doctor waves away your signs because you are slim, ask for the tests anyway."
+      ],
+      "body_hi": [
+        "PCOS सिर्फ़ मोटी महिलाओं को होता है, है ना? पतली हैं तो पीरियड की गड़बड़ी और ठुड्डी के बाल किसी और वजह से होंगे।",
+        "हाँ, ज़्यादा वज़न से PMOS (PCOS) की संभावना बढ़ती है और लक्षण ज़्यादा दिखते हैं। पर PMOS वाली कई महिलाएँ सामान्य वज़न की हैं। ICMR की स्टडी में PMOS वाली एक-तिहाई से आधी या थोड़ी ज़्यादा महिलाएँ, कट-ऑफ़ के हिसाब से, मोटी नहीं थीं। डॉक्टर इसे lean PMOS कहते हैं। बीमारी वही, शरीर हल्का।",
+        "अंदर की तस्वीर वही है: इंसुलिन ज़रूरत से ज़्यादा मेहनत कर रहा है, अक्सर फैट अंगों के आसपास जमा है जहाँ तराज़ू उसे देख नहीं पाता। भारतीय महिलाओं के लिए 80 cm से ज़्यादा कमर BMI से ज़्यादा बताती है।",
+        "Lean PMOS इसलिए छूट जाता है क्योंकि किसी को शक नहीं होता, और गलत संभाला जाता है क्योंकि एक ही सलाह मिलती है: 'वज़न घटाओ'। वज़न सामान्य है तो और घटाने से पीरियड बिगड़ सकते हैं। जो महिलाएँ मोटी नहीं हैं, उनके लिए गाइडलाइन का ध्यान अच्छी आदतों पर है, वज़न घटाने पर नहीं।",
+        "क्या मदद करता है: सबके जैसे वही टेस्ट; मांसपेशी बनाने वाली कसरत, क्योंकि शुगर मांसपेशी में ही जाती है; हर खाने में प्रोटीन; नींद; तनाव की देखभाल। आयुर्वेद में lean PMOS अक्सर वात की तस्वीर दिखाता है (सूखापन, घबराहट, अनियमितता), तो खाने की सलाह 'हल्का' से बदलकर 'गर्म, पका और समय पर' हो जाती है।",
+        "डॉक्टर पतले होने की वजह से लक्षण टाल दे, तो टेस्ट फिर भी माँगिए।"
+      ],
+      "see_doctor_en": [
+        "Gaps over 35 days or fewer than 8 periods a year, whatever your weight.",
+        "You are losing weight without trying, eating very little, or exercising hard and your periods have stopped: a doctor, and Tele-MANAS 14416 or 1-800-891-4416 if food or body worry is heavy.",
+        "Dark neck patches or diabetes in a parent, even at a normal weight: ask for the OGTT.",
+        "Free: PHC or Ayushman Arogya Mandir for sugar and BP (camps screen people 30 and over; a PHC doctor can order a sugar test at any age); eSanjeevani for a teleconsult."
+      ],
+      "see_doctor_hi": [
+        "अंतर 35 दिन से ज़्यादा या साल में 8 से कम पीरियड, वज़न चाहे जो हो।",
+        "बिना कोशिश वज़न घट रहा है, बहुत कम खा रही हैं, या बहुत कसरत कर रही हैं और पीरियड रुक गए हैं: डॉक्टर, और अगर खाने या शरीर की चिंता भारी है तो Tele-MANAS 14416 या 1-800-891-4416।",
+        "गर्दन पर काले धब्बे या माँ-बाप में डायबिटीज़, सामान्य वज़न पर भी: OGTT माँगिए।",
+        "मुफ़्त: शुगर और BP के लिए PHC या आयुष्मान आरोग्य मंदिर (कैंप 30 साल से ऊपर वालों के लिए होते हैं; PHC के डॉक्टर किसी भी उम्र में शुगर टेस्ट लिख सकते हैं); टेली-परामर्श के लिए eSanjeevani।"
+      ],
+      "qura_line_en": "A Qura doctor can recognise lean PMOS, order the first tests and build a food and movement plan that does not start with 'lose weight'. If you need a prescription medicine for periods, hair or sugar, that comes from an MBBS doctor, and the Qura doctor will say so (see Who treats what).",
+      "qura_line_hi": "Qura के डॉक्टर lean PMOS पहचान सकते हैं, पहले टेस्ट लिख सकते हैं और ऐसा खाने और कसरत का प्लान बना सकते हैं जो 'वज़न घटाओ' से शुरू न हो। अगर पीरियड, बाल या शुगर के लिए पर्ची वाली दवा चाहिए, तो वह MBBS डॉक्टर से मिलेगी, और Qura के डॉक्टर आपको यह साफ़ बताएँगे (देखें: कौन क्या देखता है)।",
+      "sources": [
+        "ICMR multicentre study, JAMA Network Open: weight status of PCOS participants by Asian cut-offs 20.0% overweight and 43.2% obese, by WHO cut-offs 32.0% and 10.9%; mean BMI 24.8 (classic PCOS) vs 24.7 (healthy); no lean-PCOS figure reported: https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2825233",
+        "2023 International PCOS Guideline Summary: 1.9.1 and 1.9.9 risk and OGTT regardless of BMI; 1.8.3 lipids regardless of BMI; 3.1.9 in those not overweight, focus on healthy lifestyle and prevention of weight gain: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 5.1 (no BMI requirement; Asian-Indian waist 80 cm cut-off; no sourced Indian lean-PCOS prevalence) and R9 (Tele-MANAS numbers)"
+      ],
+      "notes": "The report states plainly that no sourced figure exists for how common lean PCOS is in India, so the body says 'many', never 'most'. 'Between a third and just over half were not overweight' comes from the ICMR study's weight data: with Asian cut-offs 20.0% overweight plus 43.2% obese (so about 37% not overweight); with WHO cut-offs 32.0% plus 10.9% (about 57% not overweight). The earlier 'almost no difference in average BMI' line (24.8 vs 24.7 in the classic-PCOS subgroup) was dropped because an average near 25 does not show that many women are slim. 'Fat stored around the organs' (visceral fat in normal-weight PCOS) is general clinical knowledge, not fetched this round. The vata framing is Dr. Megha's teaching to confirm. The Qura line no longer names any drug. Tele-MANAS toll-free number from report R9; the 'camps for 30 and over' caveat follows the NPCDCS screening age noted in the report."
+    },
+    {
+      "id": "who-treats-what",
+      "title_en": "Who treats what: Qura doctor or gynaecologist?",
+      "title_hi": "कौन क्या देखता है: Qura के डॉक्टर या स्त्री रोग विशेषज्ञ?",
+      "summary_en": "A Qura (BAMS) doctor handles tests, food, movement, sleep and cycle care; the pill, metformin and letrozole are MBBS prescriptions, and the Qura doctor will send you there when you need them.",
+      "summary_hi": "Qura के (BAMS) डॉक्टर टेस्ट, खाना, चलना-फिरना, नींद और पीरियड की देखभाल देखते हैं; pill, metformin और letrozole MBBS की पर्ची से मिलते हैं, और ज़रूरत पड़ने पर Qura के डॉक्टर आपको वहाँ भेजेंगे।",
+      "body_en": [
+        "One doctor should handle all of PMOS, right? In India two kinds of doctor usually share the work, and you should know which does what.",
+        "Qura's doctors are BAMS (Ayurveda) doctors. They take your history, order and read blood tests, judge urgency, plan food, movement, sleep and stress care, and follow your cycle monthly. That is where care starts for everyone, and for some women it is enough; the guideline asks every woman with PMOS to begin with food, movement and sleep, and adds medicine when needed.",
+        "Three medicines sit with an MBBS doctor, usually a gynaecologist. The combined pill is the first-line medicine for irregular periods and extra hair. Metformin is mainly for the sugar side: raised sugar, dark neck patches. Letrozole is the first-line medicine to help the egg release when you are trying for a baby. In India its licence is for breast cancer; using it to help the egg release is off-label, so the gynaecologist decides and explains. All three need a prescription. In Rajasthan these come from an MBBS doctor. A Qura doctor does not prescribe them; they tell you when to go and whom to see.",
+        "Go straight to an MBBS gynaecologist, in person, for hair worsening over months or a deepening voice, any bleeding after 12 months without a period, a pad soaked every hour, or long gaps while trying to conceive.",
+        "If cost is the worry: a government hospital gynaecologist is free, eSanjeevani is a free video OPD, and Jan Aushadhi Kendras sell generic medicines at 50 to 80% below branded prices; ask the doctor to write the generic name."
+      ],
+      "body_hi": [
+        "एक ही डॉक्टर को पूरा PMOS देख लेना चाहिए, है ना? भारत में आम तौर पर दो तरह के डॉक्टर यह काम बाँटते हैं, और आपको पता होना चाहिए कि कौन क्या करता है।",
+        "Qura के डॉक्टर BAMS (आयुर्वेद) डॉक्टर हैं। वे आपकी पूरी बात सुनते हैं, ब्लड टेस्ट लिखते और पढ़ते हैं, देखते हैं कि कितनी जल्दी है, खाने, चलने-फिरने, नींद और तनाव की योजना बनाते हैं, और हर महीने आपके पीरियड पर नज़र रखते हैं। देखभाल की शुरुआत हर महिला के लिए यहीं से होती है, और कुछ के लिए इतना ही काफ़ी होता है; गाइडलाइन PMOS वाली हर महिला को खाने, चलने-फिरने और नींद से शुरू करने को कहती है, और ज़रूरत पड़े तो दवा जोड़ती है।",
+        "तीन दवाइयाँ MBBS डॉक्टर, आम तौर पर स्त्री रोग विशेषज्ञ के पास हैं। Combined pill अनियमित पीरियड और ज़्यादा बालों की पहली दवा है। Metformin मुख्य रूप से शुगर की तरफ़ के लिए है: बढ़ी शुगर, गर्दन पर काले धब्बे। Letrozole बच्चे की कोशिश में अंडा निकलने में मदद की पहली दवा है। भारत में इसका लाइसेंस breast cancer के लिए है; अंडा निकलने के लिए इसका इस्तेमाल off-label है, इसलिए स्त्री रोग विशेषज्ञ ही तय करते और समझाते हैं। तीनों पर्ची से मिलती हैं। राजस्थान में ये MBBS डॉक्टर से मिलती हैं। Qura के डॉक्टर इन्हें नहीं लिखते; वे बताते हैं कि कब जाना है और किसे दिखाना है।",
+        "सीधे MBBS स्त्री रोग विशेषज्ञ को दिखाइए अगर: बाल महीनों में तेज़ी से बढ़ रहे हैं या आवाज़ भारी हो रही है, 12 महीने बिना पीरियड के बाद कोई ब्लीडिंग, हर घंटे पैड भरना, या बच्चे की कोशिश के दौरान लंबा अंतर।",
+        "पैसे की चिंता है तो: सरकारी अस्पताल में स्त्री रोग विशेषज्ञ मुफ़्त, eSanjeevani मुफ़्त वीडियो OPD, और जन औषधि केंद्र पर generic दवाइयाँ ब्रांडेड से 50 से 80% कम दाम पर मिलती हैं; डॉक्टर से दवा का generic नाम लिखने को कहिए।"
+      ],
+      "see_doctor_en": [
+        "Hair growth worsening over months, or a deepening voice: in-person gynaecologist or endocrinologist, soon.",
+        "Any bleeding 12 months after your last period; a pad soaked every hour; bleeding over 8 days: a gynaecologist, today if you feel dizzy or breathless.",
+        "Trying to conceive with long gaps, or for 6 months at 35+, or at 40+: a gynaecologist now.",
+        "Severe one-sided belly pain with a late period: 112 or 108, or the nearest hospital.",
+        "Free: government hospital gynaecologist; eSanjeevani; Jan Aushadhi Kendra for low-cost generics; Women Helpline 181 if you are being stopped from seeing a doctor."
+      ],
+      "see_doctor_hi": [
+        "बाल महीनों में तेज़ी से बढ़ रहे हैं, या आवाज़ भारी हो रही है: जल्दी ही सामने जाकर स्त्री रोग विशेषज्ञ या endocrinologist।",
+        "आख़िरी पीरियड के 12 महीने बाद कोई भी ब्लीडिंग; हर घंटे पैड भरना; 8 दिन से ज़्यादा ब्लीडिंग: स्त्री रोग विशेषज्ञ, और अगर सिर घूमे या साँस फूले तो आज ही।",
+        "लंबे अंतर के साथ बच्चे की कोशिश, या 35+ पर 6 महीने से, या 40+ पर: अभी स्त्री रोग विशेषज्ञ।",
+        "पीरियड लेट और एक तरफ़ पेट में तेज़ दर्द: 112 या 108, या नज़दीकी अस्पताल।",
+        "मुफ़्त: सरकारी अस्पताल के स्त्री रोग विशेषज्ञ; eSanjeevani; कम दाम की generic दवा के लिए जन औषधि केंद्र; अगर आपको डॉक्टर के पास जाने से रोका जा रहा है तो महिला हेल्पलाइन 181।"
+      ],
+      "qura_line_en": "A Qura doctor does the first assessment, the tests, and the food, movement, sleep and cycle care, and will tell you plainly when you need an MBBS gynaecologist for the pill, metformin or letrozole.",
+      "qura_line_hi": "Qura के डॉक्टर पहली जाँच, टेस्ट, और खाने, चलने-फिरने, नींद और पीरियड की देखभाल करते हैं, और साफ़ बताएँगे कि pill, metformin या letrozole के लिए आपको कब MBBS स्त्री रोग विशेषज्ञ के पास जाना है।",
+      "sources": [
+        "2023 International PCOS Guideline Summary: intro (COCP first-line pharmacological treatment for menstrual irregularity and hyperandrogenism; metformin primarily for metabolic features; letrozole first-line infertility therapy, off-label in many countries); 3.1.1-3.1.2 lifestyle for all; 4.4.1-4.4.2; 5.3.1-5.3.2: https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "Wikipedia, Letrozole, citing Times of India 18 Oct 2011 on the DCGI ban on its use for infertility in India (current status not verified this round): https://en.wikipedia.org/wiki/Letrozole",
+        "Report docs/_research-flo-free-cycle-tracker-oct18.md section 6.3 (BAMS scope under NCISM Regs 2023 Reg 19, 22(19); pill/letrozole Schedule H; BAMS prescribing status marked 'counsel'; MBBS partner for red flags and PCOS patients needing guideline drugs) and R2, R3, R5",
+        "Product vision docs/_product-vision-womens-health-companion-oct18.md 5.6 MBBS partner handoffs ('a gynaecologist at a government hospital; eSanjeevani is free') and 6 (DMR Act counsel gate)",
+        "eSanjeevani free patient-to-doctor OPD (Delhi government poster): https://health.delhi.gov.in/sites/default/files/Health/circulars-orders/poster_esanjeevni.pdf",
+        "Jan Aushadhi: 20,149 Kendras as of 30 June 2026 (Lok Sabha reply 24 Jul 2026, via Organiser); prices 50-80% below branded per government statements: https://organiser.org/2026/07/27/371959/bharat/from-300-to-20149-jan-aushadhi-kendras-how-pmbjp-is-transforming-affordable-healthcare-across-india/"
+      ],
+      "notes": "Review flagged three passages as unsafe: the metformin price-and-place line (DMR Schedule item 9), Qura's own legal reading on BAMS prescribing, and letrozole called first-line with no India caveat. All three are replaced as above. Drug names (the pill, metformin, letrozole) now appear in this article only; every other Qura line in the group points here instead of naming them. Letrozole: the 2023 guideline itself notes it is off-label in many countries; India's DCGI banned its infertility use in 2011 (Wikipedia citing Times of India, 18 Oct 2011) and the current status was not verified this round, so counsel and the MBBS partner must confirm before publishing. 'In Rajasthan these come from an MBBS doctor' states Qura's practice, not a legal ruling; the report (6.3) marks BAMS prescribing status as a counsel question. 'Lifestyle first, medicine when needed' follows guideline 3.1.1-3.1.2 and the intro. Jan Aushadhi '50 to 80% below branded prices' is the government's claim seen only in secondary reports (Lok Sabha reply via Organiser; janaushadhi.gov.in returned no text); whether Kendras stock the combined pill was not checked. 104 dropped (unverified per state). Naming Schedule H drugs on a kit-selling domain remains a DMR Act counsel question (vision doc 6)."
+    }
+  ]
+}

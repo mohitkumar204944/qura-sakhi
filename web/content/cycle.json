@@ -1,0 +1,568 @@
+{
+  "group": "cycle",
+  "articles": [
+    {
+      "id": "what-is-a-menstrual-cycle",
+      "title_en": "What a menstrual cycle is",
+      "title_hi": "पीरियड साइकिल क्या होती है",
+      "summary_en": "Your cycle is the whole month, not just the bleeding days, and knowing how to count it is the first step to understanding your body.",
+      "summary_hi": "साइकिल मतलब पूरा महीना, सिर्फ़ ब्लीडिंग के दिन नहीं। इसे गिनना सीख लिया तो अपने शरीर को समझना आसान हो जाता है।",
+      "body_en": [
+        "Most of us think the 'period' and the 'cycle' are the same thing, right? They are not. The period is only the bleeding days. The cycle is the whole stretch from day one of one period to day one of the next.",
+        "What happens in that stretch? After a period ends, the lining of the womb (bachhedani) slowly builds up again. Somewhere in the middle, one ovary releases an egg. If no pregnancy happens, the lining is not needed, so it breaks down and comes out as a period. Then the count starts again.",
+        "Day 1 is the first day of proper bleeding, not spotting. Count from there to the day before the next period starts. That number is your cycle length. For many women it is around 28 days, but anything from 21 to 35 days is usual.",
+        "Bleeding itself usually lasts 2 to 7 days, heaviest in the first two.",
+        "One thing to be clear about: counting your cycle does not tell you safe days. No app or calendar can. If you want to avoid pregnancy, talk to a doctor or the ANM at your PHC about contraception.",
+        "Your cycle changes with age, stress, illness, breastfeeding and medicines. A little variation is normal. Writing down day 1 each month is the simplest way to know your own pattern."
+      ],
+      "body_hi": [
+        "हम में से ज़्यादातर लोग 'पीरियड' और 'साइकिल' को एक ही चीज़ समझते हैं, है ना? पर ये अलग हैं। पीरियड सिर्फ़ ब्लीडिंग के दिन हैं। साइकिल पूरा वो समय है जो एक पीरियड के पहले दिन से अगले पीरियड के पहले दिन तक चलता है।",
+        "इस बीच शरीर में क्या होता है? पीरियड खत्म होने के बाद बच्चेदानी की अंदर की परत धीरे-धीरे फिर से बनती है। बीच में कहीं एक अंडाशय (ovary) से अंडा निकलता है। अगर प्रेगनेंसी नहीं हुई तो उस परत की ज़रूरत नहीं रहती, वो टूटकर पीरियड के रूप में बाहर आ जाती है। फिर गिनती दोबारा शुरू।",
+        "दिन 1 वो दिन है जब ठीक से ब्लीडिंग शुरू हो, हल्के धब्बे नहीं। वहाँ से अगले पीरियड के एक दिन पहले तक गिनिए। यही आपकी साइकिल की लंबाई है। बहुत सी महिलाओं में यह करीब 28 दिन होती है, पर 21 से 35 दिन तक सब आम है।",
+        "ब्लीडिंग खुद 2 से 7 दिन चलती है, पहले दो दिन सबसे ज़्यादा।",
+        "एक बात साफ़ समझ लें: साइकिल गिनने से 'सेफ़ दिन' नहीं पता चलते। कोई ऐप या कैलेंडर नहीं बता सकता। प्रेगनेंसी से बचना है तो डॉक्टर या PHC की ANM दीदी से गर्भनिरोधक के बारे में बात करें।",
+        "उम्र, तनाव, बीमारी, स्तनपान और दवाओं से साइकिल बदलती रहती है। थोड़ा आगे-पीछे होना सामान्य है। हर महीने दिन 1 लिख लेना अपना पैटर्न जानने का सबसे आसान तरीका है।"
+      ],
+      "see_doctor_en": [
+        "No period by age 15: see a doctor, with a parent.",
+        "Gaps that are often shorter than 21 days or longer than 35 days (after the first 3 years of periods).",
+        "Bleeding that lasts more than 8 days, or bleeding between periods.",
+        "Any bleeding after your periods have stopped for a year.",
+        "Free help: your PHC or Ayushman Arogya Mandir, or a free video consult on eSanjeevani (hours vary by state). Health advice line 104 in many states."
+      ],
+      "see_doctor_hi": [
+        "15 साल तक पीरियड शुरू न हुआ हो: माँ या किसी बड़े के साथ डॉक्टर को दिखाएँ।",
+        "अंतर बार-बार 21 दिन से कम या 35 दिन से ज़्यादा हो (पीरियड शुरू होने के 3 साल बाद)।",
+        "ब्लीडिंग 8 दिन से ज़्यादा चले, या दो पीरियड के बीच में ब्लीडिंग हो।",
+        "पीरियड एक साल से बंद हों और फिर ब्लीडिंग हो।",
+        "मुफ़्त मदद: अपना PHC या आयुष्मान आरोग्य मंदिर, या eSanjeevani पर वीडियो से मुफ़्त डॉक्टर की सलाह (समय राज्य के हिसाब से अलग)। कई राज्यों में 104 हेल्थ हेल्पलाइन।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can go through your cycle diary with you and explain your pattern. If a scan or hormone treatment is needed, you will need a gynaecologist (an MBBS doctor with specialist training).",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर आपकी पीरियड डायरी देखकर आपका पैटर्न समझा सकती हैं। अगर अल्ट्रासाउंड या हार्मोन की दवा की ज़रूरत हो तो स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) को दिखाना होगा।",
+      "sources": [
+        "NHS, Periods (fetched 18 Oct 2026): 21 to 35 days usual; bleeding 2 to 7 days: https://www.nhs.uk/conditions/periods/",
+        "NHS, Stopped or missed periods (fetched 18 Oct 2026): 'not started by the time you're 15': https://www.nhs.uk/conditions/stopped-or-missed-periods/",
+        "2023 International PCOS Guideline, rec 1.1.1 (Monash summary PDF, read locally 18 Oct 2026): https://assets.monashivf.com/assets/Summary-International-evidence-based-guideline-for-the-assessment-and-management-of-polycystic-ovary-syndrome-2023.pdf",
+        "FIGO 2018 normal duration up to 8 days, via docs/_product-vision-womens-health-companion-oct18.md §3.1 and §5.5 R2",
+        "docs/_product-vision-womens-health-companion-oct18.md §3.1 (fixed anti-contraception line, no fertile marks)",
+        "eSanjeevani: https://esanjeevani.mohfw.gov.in/ (site served no text on 18 Oct 2026; hours and availability vary by state)",
+        "Telemedicine Practice Guidelines 2020 and NCISM 2023 Reg 22(18): practitioner qualification and registration number visible in electronic communication (mohfw.gov.in and nmc.org.in PDFs returned 403/404 this session; cited from reviewer knowledge; research report §6.1 Telemedicine row and §6.3)"
+      ],
+      "notes": "Ovulation timing kept deliberately vague ('somewhere in the middle') so no fertile window is implied. 104 is a state-run advice line, not in every state (Punjab PHSC document seen; national coverage unverified). eSanjeevani hours and availability vary by state (unverified; site served no text). Before launch, confirm 104, 14416 / 1-800-891-4416, 181 and 1098 on their official pages and record the fetch date in the sources list; 108 is not universal either, so every emergency line pairs it with 112, which is national. Qura doctor is now named as Ayurveda (BAMS) in every qura_line in this group for the Telemedicine Practice Guidelines / NCISM disclosure; the consult page these lines link to must show registration numbers (only 1 of 15 doctor profiles has one today per the research report)."
+    },
+    {
+      "id": "usual-gap-between-periods",
+      "title_en": "What a usual gap between periods is",
+      "title_hi": "दो पीरियड के बीच कितना अंतर सामान्य है",
+      "summary_en": "A gap of 21 to 35 days is usual for most women, and up to 45 days in the first years after periods begin.",
+      "summary_hi": "ज़्यादातर महिलाओं में 21 से 35 दिन का अंतर सामान्य है, और पीरियड शुरू होने के पहले कुछ सालों में 45 दिन तक।",
+      "body_en": [
+        "We all grew up hearing that a period should come 'every month', on the same date, right? Many of us worry the moment it comes a few days late.",
+        "Yes, a cycle of about 28 days is common. But it is not a rule. The doctors who wrote the 2023 international guideline on PMOS (the condition earlier called PCOS) put the usual range at 21 to 35 days, counted from day 1 of one period to day 1 of the next. A 26-day cycle one month and a 32-day cycle the next is still inside that range. If your gaps jump around by more than a week from one month to the next, that is also worth writing down.",
+        "The first years are different. For a girl in her first year of periods, no gap is called irregular. From the first to the third year, 21 to 45 days is usual. The body is still settling.",
+        "After 3 years, two things count as outside the usual range: gaps often under 21 days or over 35 days, or fewer than 8 periods in a year.",
+        "What about one odd month? One long gap after a fever, a wedding season, exams or a big life change is common. The pattern over 3 to 6 cycles tells you more than any single month.",
+        "So count, write it down, and look at the last few numbers together. That is exactly what a doctor will want to see."
+      ],
+      "body_hi": [
+        "हम सब यही सुनते बड़े हुए कि पीरियड 'हर महीने' उसी तारीख़ को आना चाहिए, है ना? दो-चार दिन देर हो जाए तो चिंता शुरू।",
+        "हाँ, करीब 28 दिन की साइकिल आम है। पर यह कोई नियम नहीं है। PMOS (जिसे पहले PCOS कहते थे) पर 2023 की अंतरराष्ट्रीय गाइडलाइन लिखने वाले डॉक्टरों ने सामान्य अंतर 21 से 35 दिन माना है, एक पीरियड के पहले दिन से अगले के पहले दिन तक। एक महीने 26 दिन और अगले महीने 32 दिन, यह भी इसी सीमा के अंदर है। अगर आपके अंतर हर महीने एक हफ़्ते से ज़्यादा ऊपर-नीचे होते हैं, तो वह भी लिखने लायक है।",
+        "शुरुआती साल अलग होते हैं। जिस लड़की के पीरियड पहले साल में हों, उसका कोई भी अंतर अनियमित नहीं कहा जाता। पहले से तीसरे साल तक 21 से 45 दिन सामान्य है। शरीर अभी सेट हो रहा होता है।",
+        "3 साल बाद दो बातें सामान्य सीमा से बाहर मानी जाती हैं: अंतर बार-बार 21 दिन से कम या 35 दिन से ज़्यादा, या साल में 8 से कम पीरियड।",
+        "और अगर एक महीना अलग निकले? बुखार, शादी का सीज़न, परीक्षा या ज़िंदगी के किसी बड़े बदलाव के बाद एक लंबा अंतर आम बात है। 3 से 6 साइकिल का पैटर्न एक महीने से कहीं ज़्यादा बताता है।",
+        "तो गिनिए, लिखिए, और पिछले कुछ नंबर एक साथ देखिए। डॉक्टर भी यही देखना चाहेंगे।"
+      ],
+      "see_doctor_en": [
+        "Gaps often under 21 days or over 35 days, over several cycles (21 to 45 in the first 3 years).",
+        "Fewer than 8 periods in a year.",
+        "A single gap of 90 days or more (after the first year of periods), when you are not pregnant or breastfeeding: do a pregnancy test, then see a doctor.",
+        "Free help: the ANM or doctor at your PHC or Ayushman Arogya Mandir, or eSanjeevani for a free video consult (hours vary by state)."
+      ],
+      "see_doctor_hi": [
+        "अंतर कई साइकिल तक 21 दिन से कम या 35 दिन से ज़्यादा रहे (पहले 3 साल में 21 से 45)।",
+        "साल में 8 से कम पीरियड।",
+        "एक बार में 90 दिन या ज़्यादा का अंतर (पीरियड शुरू होने के पहले साल के बाद), और आप प्रेगनेंट या स्तनपान करा रही नहीं हैं: पहले प्रेगनेंसी टेस्ट, फिर डॉक्टर।",
+        "मुफ़्त मदद: PHC या आयुष्मान आरोग्य मंदिर की ANM या डॉक्टर, या eSanjeevani पर वीडियो से मुफ़्त डॉक्टर की सलाह (समय राज्य के हिसाब से अलग)।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can look at your gaps with you and explain which simple blood tests are usually checked first. If the pill or fertility treatment is needed, that is a job for a gynaecologist (an MBBS doctor with specialist training).",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर आपके अंतर आपके साथ देखकर बता सकती हैं कि आम तौर पर कौन से आसान ब्लड टेस्ट पहले होते हैं। अगर गोली (pill) या बच्चे के लिए इलाज की ज़रूरत हो, तो वह स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) का काम है।",
+      "sources": [
+        "2023 International PCOS Guideline, rec 1.1.1 (Monash summary PDF, read locally 18 Oct 2026): first year normal; 1 to under 3 years 21 to 45; 3+ years 21 to 35 or fewer than 8 cycles a year; '> 1 year post menarche > 90 days for any one cycle'",
+        "FIGO 2018 AUB System 1 regularity bands: normal shortest-to-longest variation up to 7 days at ages 26 to 41, 9 days at 18 to 25 and 42 to 45 (Wiley and PubMed returned 403; cited from reviewer knowledge; marked unverified in the vision doc §3.1)",
+        "NHS, Irregular periods: https://www.nhs.uk/conditions/irregular-periods/",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §5.1 (cycle ranges by years since first period; 'persistent' = pattern over several cycles) and §5.3 R6",
+        "eSanjeevani: https://esanjeevani.mohfw.gov.in/ (hours and availability vary by state; site served no text 18 Oct 2026)"
+      ],
+      "notes": "The 'pattern over 3 to 6 cycles' framing follows the report's §5.1 data rule (3 completed cycles, 2 of last 6 out of range); it is a Qura design rule, not a guideline threshold. The example was changed from 24/33 to 26/32 because a 9-day swing meets FIGO 2018's own 'irregular' definition for ages 26 to 41; the 'more than a week' sentence rests on those FIGO bands, which could not be fetched this session (unverified). Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure; see the first article's notes."
+    },
+    {
+      "id": "why-cycles-become-irregular",
+      "title_en": "Why cycles become irregular, and when it matters",
+      "title_hi": "पीरियड अनियमित क्यों हो जाते हैं, और कब ध्यान देना है",
+      "summary_en": "Stress, weight change, breastfeeding, thyroid, PMOS and the years before menopause can all shift your cycle; the pattern over months tells you when to get it checked.",
+      "summary_hi": "तनाव, वज़न में बदलाव, स्तनपान, थायरॉइड, PMOS और मेनोपॉज़ से पहले के साल, सब साइकिल बदल सकते हैं; महीनों का पैटर्न बताता है कि जाँच कब करानी है।",
+      "body_en": [
+        "When periods go off track, the first thought is usually 'something is wrong inside', right? Sometimes. But most of the time the body is reacting to something in your life.",
+        "Yes, conditions can cause it. But so can ordinary things. These are the common reasons doctors look at:",
+        "- Stress, poor sleep, or a big life change.",
+        "- Quick weight loss or gain, eating very little, or very heavy exercise.",
+        "- Breastfeeding, and the first months after a baby.",
+        "- Hormone medicines: the pill, the injection, a hormone device placed in the womb, or stopping any of these recently.",
+        "- Thyroid problems, or a hormone called prolactin running high (it can also cause milky discharge from the breast).",
+        "- PMOS (earlier called PCOS), which often shows up as long gaps plus coarse hair on the chin or lip, or acne.",
+        "- The years before menopause, usually after 40, when gaps start to stretch.",
+        "Why does this happen? The ovary releases an egg only when the brain's signals are steady. Stress, hunger and illness tell the body 'not now', and the egg does not release that month. No egg, no period on time. That is your body protecting you. It is not a fault in you.",
+        "When does it matter? One odd cycle, rarely. The same change showing up again over 3 to 6 cycles, yes. That is when a doctor checks a few simple blood tests first."
+      ],
+      "body_hi": [
+        "पीरियड गड़बड़ हों तो पहला ख़याल आता है 'अंदर कुछ गड़बड़ है', है ना? कभी-कभी ऐसा होता है। पर ज़्यादातर बार शरीर आपकी ज़िंदगी में चल रही किसी बात का असर दिखा रहा होता है।",
+        "हाँ, कुछ बीमारियाँ कारण हो सकती हैं। पर रोज़मर्रा की बातें भी। डॉक्टर जो आम कारण देखते हैं:",
+        "- तनाव, नींद की कमी, या ज़िंदगी का कोई बड़ा बदलाव।",
+        "- तेज़ी से वज़न घटना या बढ़ना, बहुत कम खाना, या बहुत ज़्यादा कसरत।",
+        "- स्तनपान, और बच्चे के बाद के पहले महीने।",
+        "- हार्मोन की दवाएँ: गोली, इंजेक्शन, बच्चेदानी में लगने वाली हार्मोन वाली डिवाइस, या इनमें से कोई हाल में बंद करना।",
+        "- थायरॉइड की गड़बड़ी, या प्रोलैक्टिन नाम का हार्मोन बढ़ना (इससे स्तन से दूध जैसा पानी भी आ सकता है)।",
+        "- PMOS (जिसे पहले PCOS कहते थे), जो अक्सर लंबे अंतर के साथ ठुड्डी या होंठ पर मोटे बाल या मुँहासों के रूप में दिखता है।",
+        "- मेनोपॉज़ से पहले के साल, आम तौर पर 40 के बाद, जब अंतर बढ़ने लगते हैं।",
+        "ऐसा होता क्यों है? अंडाशय से अंडा तभी निकलता है जब दिमाग़ के संकेत ठीक चल रहे हों। तनाव, भूख और बीमारी शरीर को कहते हैं 'अभी नहीं', और उस महीने अंडा नहीं निकलता। अंडा नहीं तो पीरियड समय पर नहीं। यह आपका शरीर आपको बचा रहा है। इसमें आपकी कोई कमी नहीं है।",
+        "ध्यान कब देना है? एक अलग साइकिल पर, कम ही। वही बदलाव 3 से 6 साइकिल तक बार-बार दिखे, तो हाँ। तब डॉक्टर सबसे पहले कुछ आसान ब्लड टेस्ट करवाते हैं।"
+      ],
+      "see_doctor_en": [
+        "Gaps often under 21 or over 35 days for several cycles, or fewer than 8 periods a year.",
+        "Irregular periods plus coarse facial hair, acne, hair thinning, or dark velvety patches on the neck.",
+        "Milky discharge from the breast when you are not breastfeeding.",
+        "No period for 90 days or more: pregnancy test first, then a doctor.",
+        "Under 40 and no period for 4 months or more (not pregnant, not breastfeeding, no hormone medicine), or irregular periods with hot flushes: see a doctor; a blood test is usually part of this.",
+        "Irregular periods and you are trying for a baby.",
+        "Hair growth getting worse over months, or your voice deepening: see a gynaecologist or hormone specialist in person.",
+        "Free options: PHC or Ayushman Arogya Mandir; eSanjeevani video consult (hours vary by state); 104 health line in many states."
+      ],
+      "see_doctor_hi": [
+        "अंतर कई साइकिल तक 21 दिन से कम या 35 दिन से ज़्यादा, या साल में 8 से कम पीरियड।",
+        "अनियमित पीरियड के साथ चेहरे पर मोटे बाल, मुँहासे, बाल झड़ना, या गर्दन पर काले मोटे धब्बे।",
+        "स्तनपान नहीं करा रहीं फिर भी स्तन से दूध जैसा पानी।",
+        "90 दिन या ज़्यादा पीरियड नहीं: पहले प्रेगनेंसी टेस्ट, फिर डॉक्टर।",
+        "40 से कम उम्र और 4 महीने या ज़्यादा पीरियड नहीं (प्रेगनेंट नहीं, स्तनपान नहीं, हार्मोन की दवा नहीं), या अनियमित पीरियड के साथ गर्मी की लहरें: डॉक्टर को दिखाएँ; आम तौर पर ब्लड टेस्ट होता है।",
+        "पीरियड अनियमित और बच्चे की कोशिश कर रही हैं।",
+        "बाल महीनों में तेज़ी से बढ़ रहे हों, या आवाज़ भारी हो रही हो: gynaecologist या हार्मोन विशेषज्ञ को आमने-सामने दिखाएँ।",
+        "मुफ़्त विकल्प: PHC या आयुष्मान आरोग्य मंदिर; eSanjeevani पर वीडियो से डॉक्टर की सलाह (समय राज्य के हिसाब से अलग); कई राज्यों में 104 हेल्थ लाइन।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can help you sort out the likely reasons, go through your diary and advise on diet and daily routine. If you need the pill, hormone medicines or fertility medicines, you need a gynaecologist (an MBBS doctor with specialist training).",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर संभावित कारण समझने, डायरी देखने और खाने-पीने व दिनचर्या पर सलाह में मदद कर सकती हैं। अगर गोली, हार्मोन या बच्चे के लिए दवा की ज़रूरत हो, तो स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) ज़रूरी हैं।",
+      "sources": [
+        "NHS, Irregular periods (causes, when to see a GP): https://www.nhs.uk/conditions/irregular-periods/",
+        "NHS, Stopped or missed periods (causes incl. thyroid, breastfeeding, PMOS): https://www.nhs.uk/conditions/stopped-or-missed-periods/",
+        "NHS, Early menopause (fetched 18 Oct 2026): before 45 is early, before 40 is premature: https://www.nhs.uk/conditions/early-menopause/",
+        "2023 International PCOS Guideline, rec 1.1.1 and 1.3.7 (virilisation / rapid hair growth referred elsewhere), Monash summary PDF, read locally 18 Oct 2026",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §5.1 (other causes: prolactin, hypothalamic, thyroid; R5, R6, R10 red flags), §5.2 M4 (under 40: 4+ months no period or irregular cycles plus hot flushes; never say 'early menopause') and §5.5 L1 card wording"
+      ],
+      "notes": "The explanation of why stress delays ovulation (brain signals to the ovary) is simplified general physiology, not quoted from a fetched source. Dark velvety neck patches are listed per the report's §5.1 'weak signs'; the article does not link them to blood sugar for the reader. The under-40 line follows the report's M4 rule and never uses the words 'early menopause' on the reader-facing side. Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "missed-period-what-to-do-first",
+      "title_en": "Missed period: what to do first",
+      "title_hi": "पीरियड मिस हो गया: सबसे पहले क्या करें",
+      "summary_en": "Check your dates, do a home pregnancy test if there is any chance, repeat it after a few days if it is negative, then watch for one cycle unless a warning sign appears.",
+      "summary_hi": "तारीख़ें देखें, थोड़ी भी संभावना हो तो घर पर प्रेगनेंसी टेस्ट करें, नेगेटिव हो तो कुछ दिन बाद दोबारा करें, फिर एक साइकिल तक देखें, जब तक कोई चेतावनी का लक्षण न हो।",
+      "body_en": [
+        "A missed period sends most of us straight to worry, right? Either 'am I pregnant' or 'is something wrong'. Take a breath. There is an order to this.",
+        "First, check the dates. Count from day 1 of your last period. As a rough rule, a regular cycle is late about 7 days past your usual gap. If your cycles are already irregular, think of it as late about 14 days past your usual longest gap. Many 'missed' periods are just a longer-than-usual month.",
+        "Second, if you have had sex and there is any chance, do a home pregnancy test. You can test from the day your period was due, and any time of day is fine. If it is negative and the period still has not come, test again after 4 to 7 days. The kit costs little at any chemist, and the ANM at your PHC or Ayushman Arogya Mandir can do it free.",
+        "Third, think back over the month. Fever, travel, exams, a big fight at home, a crash diet, a new medicine, or just stopping the pill. Any of these can delay a period once.",
+        "Fourth, if the second test is also negative, write the date down and wait one cycle. If the period comes, note the new gap. If it still does not come, that is the time to see a doctor. It is worth doing, but it is not an emergency.",
+        "One rule above all: a missed period with sharp one-sided belly pain, dizziness, or fainting is an emergency, whatever the test said. Call 108 or 112."
+      ],
+      "body_hi": [
+        "पीरियड मिस हो तो हम में से ज़्यादातर सीधे चिंता में चली जाती हैं, है ना? या तो 'कहीं प्रेगनेंट तो नहीं' या 'कुछ गड़बड़ है'। एक साँस लीजिए। इसका एक क्रम है।",
+        "पहला, तारीख़ें देखिए। पिछले पीरियड के दिन 1 से गिनिए। मोटे तौर पर, नियमित साइकिल तब लेट मानिए जब आपके आम अंतर से करीब 7 दिन ऊपर हो जाएँ। अगर साइकिल पहले से अनियमित है, तो अपने सबसे लंबे अंतर से करीब 14 दिन ऊपर। बहुत से 'मिस' पीरियड बस एक लंबा महीना होते हैं।",
+        "दूसरा, अगर आपने संबंध बनाए हैं और थोड़ी भी संभावना है, तो घर पर प्रेगनेंसी टेस्ट करें। जिस दिन पीरियड आना था, उसी दिन से टेस्ट कर सकती हैं, दिन के किसी भी समय। अगर नेगेटिव आए और पीरियड फिर भी न आए, तो 4 से 7 दिन बाद दोबारा टेस्ट करें। किट किसी भी केमिस्ट पर सस्ती मिलती है, और PHC या आयुष्मान आरोग्य मंदिर की ANM दीदी मुफ़्त में कर देती हैं।",
+        "तीसरा, पूरे महीने पर नज़र डालिए। बुखार, सफ़र, परीक्षा, घर में बड़ा झगड़ा, एकदम कम खाना, कोई नई दवा, या गोली बंद करना। इनमें से कोई भी एक बार पीरियड टाल सकता है।",
+        "चौथा, अगर दूसरा टेस्ट भी नेगेटिव है, तो तारीख़ लिखिए और एक साइकिल इंतज़ार करिए। पीरियड आ जाए तो नया अंतर नोट करें। फिर भी न आए, तब डॉक्टर को दिखाने का समय है। दिखाना ज़रूरी है, पर यह इमरजेंसी नहीं है।",
+        "सबसे ऊपर एक नियम: पीरियड मिस हो और एक तरफ़ पेट में तेज़ दर्द, सिर घूमना या बेहोशी हो, तो यह इमरजेंसी है, टेस्ट ने जो भी कहा हो। 108 या 112 पर कॉल करें।"
+      ],
+      "see_doctor_en": [
+        "Emergency, call 108 or 112 now: missed period plus sudden sharp pain on one side of the lower belly, shoulder-tip pain, fainting or dizziness (possible pregnancy in the wrong place).",
+        "No period for 90 days, with a negative pregnancy test and not breastfeeding.",
+        "Three periods missed in a row.",
+        "Missed period plus new facial hair, weight change, milky discharge from the breast, or tiredness.",
+        "Positive test: register at the PHC or Ayushman Arogya Mandir for free pregnancy check-ups. In most states the 102 ambulance is free for pregnant women; otherwise call 108 or 112."
+      ],
+      "see_doctor_hi": [
+        "इमरजेंसी, अभी 108 या 112: पीरियड मिस और पेट के निचले हिस्से में एक तरफ़ अचानक तेज़ दर्द, कंधे की नोक में दर्द, बेहोशी या सिर घूमना (गलत जगह प्रेगनेंसी हो सकती है)।",
+        "90 दिन पीरियड नहीं, प्रेगनेंसी टेस्ट नेगेटिव, और स्तनपान नहीं।",
+        "लगातार तीन पीरियड मिस।",
+        "पीरियड मिस के साथ चेहरे पर नए बाल, वज़न में बदलाव, स्तन से दूध जैसा पानी, या थकान।",
+        "टेस्ट पॉज़िटिव: PHC या आयुष्मान आरोग्य मंदिर में प्रेगनेंसी की मुफ़्त जाँच के लिए नाम लिखवाएँ। ज़्यादातर राज्यों में गर्भवती महिलाओं के लिए 102 एम्बुलेंस मुफ़्त है; न हो तो 108 या 112।"
+      ],
+      "qura_line_en": "Once pregnancy is ruled out, a Qura Ayurveda (BAMS) doctor can go through the likely reasons for a missed period and the first tests. If you are pregnant, or the pain or bleeding is unusual, you need a gynaecologist (an MBBS doctor with specialist training).",
+      "qura_line_hi": "प्रेगनेंसी की संभावना हटने के बाद Qura की आयुर्वेद (BAMS) डॉक्टर पीरियड मिस होने के संभावित कारण और पहले टेस्ट समझा सकती हैं। अगर आप प्रेगनेंट हैं, या दर्द या ब्लीडिंग असामान्य है, तो स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) ज़रूरी हैं।",
+      "sources": [
+        "NHS, Doing a pregnancy test (fetched 18 Oct 2026): test 'from the first day of a missed period'; 'urine collected at any time of the day'; if negative and no period, 'wait a few days and try again': https://www.nhs.uk/pregnancy/trying-for-a-baby/doing-a-pregnancy-test/",
+        "NHS, Stopped or missed periods (3 missed in a row; by 15; other symptoms): https://www.nhs.uk/conditions/stopped-or-missed-periods/",
+        "NHS, What causes bleeding between periods (fetched 18 Oct 2026): urgent if missed period + unusual bleeding + tummy pain: https://www.nhs.uk/common-health-questions/womens-health/what-causes-bleeding-between-periods/",
+        "NHS, Ectopic pregnancy symptoms (fetched 18 Oct 2026): 999 for sharp sudden pain, dizziness or fainting, shoulder-tip pain: https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "docs/_product-vision-womens-health-companion-oct18.md §5.5 R1 (NHS ectopic page) and R7 (7 days late regular / 14 days past range, Qura inference), R6 (90 days)",
+        "NHM Free Diagnostics Service Initiative, Operational Guidelines (Dec 2025), Annexure IV (read locally 18 Oct 2026): Pregnancy Test Kit is an essential free test at AAM-Sub Health Centre: https://nhsrcindia.org/sites/default/files/2025-12/Operational%20Guidelines_FDSI.pdf",
+        "102 ambulance under JSSK, state-by-state rollout (secondary): https://en.wikipedia.org/wiki/102_(ambulance_service)"
+      ],
+      "notes": "The 7-day / 14-day 'late' thresholds are the report's R7 inference, now written as 'a rough rule', not a guideline. The '4 to 7 days' repeat follows NHS 'wait a few days and try again'. Jan Aushadhi stocking of pregnancy test cards was not verified (site returned no content); re-add it only after checking the PMBJP product list. 102 is a state-run JSSK service and not every state operates it (unverified nationally), hence 'in most states' plus the 108/112 fallback. Rendering rule for this and every article whose see_doctor list opens with an emergency line (heavy bleeding, spotting, painful periods): show qura_line as plain, link-free text after the see_doctor block, never as a 'Book a consult' button, with no price, kit or doctor photo (vision doc §3.1 Safety rules and §5.5; research report §5.3). The link version stays only on the diary, myths, usual-gap and teens articles. Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "heavy-bleeding-how-to-tell",
+      "title_en": "Heavy bleeding: how to tell, and what to do",
+      "title_hi": "ज़्यादा ब्लीडिंग: कैसे पहचानें, क्या करें",
+      "summary_en": "Soaking a pad every 1 to 2 hours, clots about 2.5 cm across (roughly a 10-rupee coin), or bleeding past 8 days need a doctor and a haemoglobin test. If your period is late or you could be pregnant, heavy bleeding needs care today.",
+      "summary_hi": "हर 1 से 2 घंटे में पैड भर जाना, करीब 2.5 cm (10 रुपये के सिक्के जितने) थक्के, या 8 दिन से ज़्यादा ब्लीडिंग, इनमें डॉक्टर और हीमोग्लोबिन टेस्ट ज़रूरी है। पीरियड लेट है या प्रेगनेंसी की संभावना है और ब्लीडिंग ज़्यादा हो रही है, तो आज ही दिखाएँ।",
+      "body_en": [
+        "'Heavy is just how my periods are.' We hear that from so many women, right? Our mothers had it too, so it feels normal.",
+        "Yes, flow differs from woman to woman, and some women bleed more than others their whole life. But there is a point where 'heavy' is costing you iron and days of your life. Doctors use plain signs to tell:",
+        "- You need to change a pad every 1 to 2 hours.",
+        "- You pass clots about 2.5 cm across or bigger, roughly the size of a 10-rupee coin.",
+        "- You bleed through to your clothes or bedding, or wear two pads at once.",
+        "- Bleeding goes on for more than 8 days.",
+        "- You skip work, school or housework because of it.",
+        "- You feel tired, breathless or dizzy a lot.",
+        "Why it matters: every heavy month drains iron. Low iron (anaemia) shows as tiredness, breathlessness on stairs, pale skin and hair fall. Many Indian women already run low, and heavy periods tip them over.",
+        "What to do this week: see a doctor and ask for a haemoglobin (blood count) test. It is on the free list at your Ayushman Arogya Mandir or PHC. Take your pad count and bleeding days with you. Causes are often fibroids, PMOS, thyroid or simply the years before menopause, and most can be treated.",
+        "What to do today: if your period is late, you could be pregnant, or a test was positive, and you are now bleeding heavily, go to a hospital today or call 108 or 112, with or without pain. The same if you are soaking a pad every hour and also feel dizzy or breathless."
+      ],
+      "body_hi": [
+        "'ज़्यादा ब्लीडिंग तो मेरे पीरियड ऐसे ही होते हैं।' यह बात हम कितनी महिलाओं से सुनते हैं, है ना? माँ को भी ऐसा ही था, तो सामान्य लगता है।",
+        "हाँ, हर महिला का फ़्लो अलग होता है, और कुछ महिलाओं को ज़िंदगी भर दूसरों से ज़्यादा ब्लीडिंग होती है। पर एक हद के बाद 'ज़्यादा' आपका आयरन और आपके दिन खा रहा होता है। डॉक्टर इसे सीधे संकेतों से पहचानते हैं:",
+        "- हर 1 से 2 घंटे में पैड बदलना पड़े।",
+        "- करीब 2.5 cm या उससे बड़े थक्के आएँ, मोटे तौर पर 10 रुपये के सिक्के जितने।",
+        "- कपड़ों या बिस्तर तक ब्लीडिंग पहुँच जाए, या एक साथ दो पैड लगाने पड़ें।",
+        "- ब्लीडिंग 8 दिन से ज़्यादा चले।",
+        "- इसकी वजह से काम, स्कूल या घर का काम छूटे।",
+        "- बहुत थकान, साँस फूलना या सिर घूमना रहे।",
+        "यह क्यों ज़रूरी है: हर भारी महीना आयरन खींचता है। आयरन की कमी (खून की कमी, anaemia) थकान, सीढ़ियों पर साँस फूलना, पीली त्वचा और बाल झड़ने के रूप में दिखती है। बहुत सी भारतीय महिलाओं में आयरन पहले से कम होता है, ज़्यादा ब्लीडिंग उन्हें और नीचे ले जाती है।",
+        "इस हफ़्ते क्या करें: डॉक्टर को दिखाएँ और हीमोग्लोबिन (खून की जाँच) टेस्ट माँगें। यह आपके आयुष्मान आरोग्य मंदिर या PHC की मुफ़्त सूची में है। अपने पैड की गिनती और ब्लीडिंग के दिन साथ लेकर जाएँ। कारण अक्सर फ़ाइब्रॉइड (बच्चेदानी की गाँठ), PMOS, थायरॉइड या बस मेनोपॉज़ से पहले के साल होते हैं, और ज़्यादातर का इलाज है।",
+        "आज क्या करें: अगर पीरियड लेट है, प्रेगनेंसी की संभावना है या टेस्ट पॉज़िटिव था, और अब ब्लीडिंग ज़्यादा हो रही है, तो आज ही अस्पताल जाएँ या 108/112 पर कॉल करें, दर्द हो या न हो। ऐसा ही तब भी जब हर घंटे पैड भर रहा हो और साथ में सिर घूम रहा हो या साँस फूल रही हो।"
+      ],
+      "see_doctor_en": [
+        "Today, or call 108 or 112: heavy bleeding when your period is late, you could be pregnant, or a test was positive, with or without pain.",
+        "Today, or call 108 or 112: soaking a pad every hour with dizziness, breathlessness or fainting.",
+        "This week: a pad every 1 to 2 hours, clots about 2.5 cm or bigger (roughly a 10-rupee coin), bleeding past 8 days, or two pads at once. Ask for a haemoglobin test, free at the PHC or Ayushman Arogya Mandir.",
+        "Heavy periods plus pain during sex or while passing urine or stool.",
+        "Heavy or long bleeding after 40, or any bleeding a year after periods stopped: gynaecologist.",
+        "Pads: Suvidha pads cost ₹1 each at Jan Aushadhi Kendras."
+      ],
+      "see_doctor_hi": [
+        "आज ही, या 108/112: पीरियड लेट है, प्रेगनेंसी की संभावना है या टेस्ट पॉज़िटिव था और ब्लीडिंग ज़्यादा हो रही है, दर्द हो या न हो।",
+        "आज ही, या 108/112: हर घंटे पैड भरना और साथ में सिर घूमना, साँस फूलना या बेहोशी।",
+        "इस हफ़्ते: हर 1 से 2 घंटे में पैड, करीब 2.5 cm या बड़े थक्के (10 रुपये के सिक्के जितने), 8 दिन से ज़्यादा ब्लीडिंग, या एक साथ दो पैड। हीमोग्लोबिन टेस्ट माँगें, PHC या आयुष्मान आरोग्य मंदिर में मुफ़्त।",
+        "ज़्यादा ब्लीडिंग के साथ संबंध के समय या पेशाब-पॉटी के समय दर्द।",
+        "40 के बाद ज़्यादा या लंबी ब्लीडिंग, या पीरियड बंद होने के एक साल बाद कोई भी ब्लीडिंग: gynaecologist।",
+        "पैड: जन औषधि केंद्र पर सुविधा पैड ₹1 का एक।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can review your bleeding diary and haemoglobin report and support you with diet for iron. Heavy bleeding itself needs a gynaecologist (an MBBS doctor with specialist training), usually with a scan.",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर आपकी ब्लीडिंग डायरी और हीमोग्लोबिन रिपोर्ट देख सकती हैं और आयरन के लिए खाने-पीने में मदद कर सकती हैं। ज़्यादा ब्लीडिंग का इलाज स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) करती हैं, आम तौर पर अल्ट्रासाउंड के साथ।",
+      "sources": [
+        "NHS, Heavy periods (fetched 18 Oct 2026): pad every 1 to 2 hours, 2 products together, clots larger than about 2.5 cm (NHS uses a 10p coin, 24.5 mm), bleeding through clothes, tired or short of breath; causes incl. fibroids, PMOS, endometriosis, adenomyosis; thyroid added from general gynaecology (hypothyroidism), not NHS: https://www.nhs.uk/conditions/heavy-periods/",
+        "NHS, Ectopic pregnancy symptoms (fetched 18 Oct 2026): 999 for sharp sudden pain, dizziness or fainting: https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "NHS, What causes bleeding between periods (fetched 18 Oct 2026): missed period + unusual bleeding + tummy pain is urgent: https://www.nhs.uk/common-health-questions/womens-health/what-causes-bleeding-between-periods/",
+        "docs/_product-vision-womens-health-companion-oct18.md §5.5 R1 (late period + bleeding or pain = emergency) and R2 (FIGO 2018 normal duration up to 8 days; 'today' with dizziness or breathlessness is doctor consensus), §3.1",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §5.3 R2 and R8 (40+ heavy or long bleeding), R3 (bleeding after 12 months)",
+        "NHM Free Diagnostics Service Initiative, Operational Guidelines (Dec 2025), Annexure IV (read locally 18 Oct 2026): Haemoglobin (Hb meter) is an essential free test at AAM-Sub Health Centre and PHC: https://nhsrcindia.org/sites/default/files/2025-12/Operational%20Guidelines_FDSI.pdf",
+        "NFHS-5 (2019-21) India fact sheet: 57.0% of women 15-49 anaemic (NFHS-4: 53.1%); not re-fetched this session (rchiips.org and dhsprogram.com refused connections); verify the figure before publishing",
+        "Suvidha pads ₹1 per pad at Jan Aushadhi Kendras: NHM Menstrual Hygiene Policy for School-Going Girls (2025-26); Rajya Sabha reply PQ 250 (22 Nov 2019): https://rsdebate.nic.in/bitstream/123456789/706480/2/PQ_250_22112019_U682_p211_p212.pdf",
+        "Wikipedia, Indian 10-rupee coin: diameter 27 mm (RBI coin page returned 404); the threshold is 2.5 cm and the coin is only a rough picture"
+      ],
+      "notes": "This article was flagged unsafe by review because it had no pregnancy branch; the must-fix (today / 108 or 112 for heavy bleeding when the period is late, pregnancy is possible or a test was positive, with or without pain) is now the first see_doctor line in both languages and the lead of the 'What to do today' paragraph. NHS says 'more than 7 days'; the article uses 'more than 8 days' to match FIGO 2018 and Qura's R2 wording. 'Many Indian women already run low on iron' rests on NFHS-5 anaemia figures not re-fetched this session (unverified here); the figure is kept out of the body. The circulating ₹10 coin is 27 mm, not 25 mm, so the text now leads with 2.5 cm and uses the coin as a rough stand-in; design may switch to the ₹2 coin (~25 mm) if a coin picture is wanted. Render qura_line as plain, link-free text after the see_doctor block (emergency article, vision doc §5.5). Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "painful-periods",
+      "title_en": "Painful periods",
+      "title_hi": "पीरियड में दर्द",
+      "summary_en": "Some cramping is normal; pain that stops your day, needs more than a simple painkiller, or comes on other days of the month needs checking.",
+      "summary_hi": "थोड़ा मरोड़ सामान्य है; ऐसा दर्द जो दिन रोक दे, एक साधारण दर्द की गोली से न जाए, या महीने के दूसरे दिनों में भी हो, उसकी जाँच ज़रूरी है।",
+      "body_en": [
+        "'Period pain is part of being a woman, just bear it.' Most of us were told exactly this, right?",
+        "Yes, some cramping is normal. The womb is a muscle, and it squeezes to push the lining out. That squeeze is the pain, usually the first 1 to 3 days, low in the belly and back.",
+        "But bearing it silently is not the rule. Two kinds of pain are different and should not be ignored: pain so strong you cannot do your day even after a painkiller, and pain that also comes on non-bleeding days, during or after sex, or while passing urine or stool. These can point to endometriosis, fibroids or an infection, and they can be treated. A normal scan does not rule endometriosis out, so a diary of your pain matters more than you think.",
+        "What helps at home:",
+        "- Heat: a hot water bag or a warm cloth on the lower belly, or a warm bath.",
+        "- Gentle movement: a walk, light stretching, yoga. Lying still all day often makes it worse.",
+        "- A simple painkiller like paracetamol, taken as the packet says, started as soon as the pain begins rather than when it is unbearable. Ask the pharmacist first if you have other health problems.",
+        "- Check that no other tablet you take that day also contains paracetamol; many fever and cold tablets do.",
+        "- Rubbing the lower back, warm water to drink, and rest when you can.",
+        "Write down each month how bad it was: no pain, mild, needed a painkiller, or could not do my day. Four months of that tells a doctor more than any single visit."
+      ],
+      "body_hi": [
+        "'पीरियड का दर्द तो औरत होने का हिस्सा है, सह लो।' हम में से ज़्यादातर को यही कहा गया, है ना?",
+        "हाँ, थोड़ा मरोड़ सामान्य है। बच्चेदानी एक मांसपेशी है, और वह परत को बाहर निकालने के लिए सिकुड़ती है। वही सिकुड़न दर्द है, आम तौर पर पहले 1 से 3 दिन, पेट के नीचे और कमर में।",
+        "पर चुपचाप सहना नियम नहीं है। दो तरह का दर्द अलग है और उसे अनदेखा नहीं करना चाहिए: इतना तेज़ दर्द कि दर्द की गोली के बाद भी दिन न चल पाए, और ऐसा दर्द जो बिना ब्लीडिंग वाले दिनों में भी हो, संबंध के समय या बाद में, या पेशाब-पॉटी के समय। ये एंडोमेट्रियोसिस, फ़ाइब्रॉइड या इन्फ़ेक्शन की ओर इशारा कर सकते हैं, और इनका इलाज है। अल्ट्रासाउंड नॉर्मल आने से एंडोमेट्रियोसिस खारिज नहीं होता, इसलिए आपके दर्द की डायरी जितना आप सोचती हैं उससे ज़्यादा मायने रखती है।",
+        "घर पर क्या मदद करता है:",
+        "- गर्माहट: पेट के नीचे गर्म पानी की थैली या गर्म कपड़ा, या गुनगुने पानी से नहाना।",
+        "- हल्की हरकत: टहलना, हल्की स्ट्रेचिंग, योग। पूरे दिन लेटे रहने से अक्सर दर्द बढ़ता है।",
+        "- पैरासिटामोल जैसी साधारण दर्द की गोली, पत्ते पर लिखे अनुसार, दर्द शुरू होते ही लें, असहनीय होने का इंतज़ार न करें। कोई और बीमारी हो तो पहले फ़ार्मासिस्ट से पूछ लें।",
+        "- ध्यान रखें कि उस दिन कोई और गोली (बुखार या सर्दी की) भी पैरासिटामोल वाली न हो; बहुत सी होती हैं।",
+        "- कमर की मालिश, गुनगुना पानी पीना, और जब हो सके आराम।",
+        "हर महीने लिखिए दर्द कितना था: नहीं, हल्का, गोली लेनी पड़ी, या दिन नहीं चल पाया। चार महीने की यह जानकारी डॉक्टर को एक मुलाक़ात से ज़्यादा बताती है।"
+      ],
+      "see_doctor_en": [
+        "Call 108 or 112 now: sudden severe pain on one side, especially if your period is late or you could be pregnant.",
+        "Urgent, same day: pain that is severe or much worse than usual and painkillers have not helped, or pain with fever or fainting. Call 108 or 112 if you cannot reach a hospital.",
+        "Pain that stops your daily work most months.",
+        "Pain on non-bleeding days, during or after sex, or while passing urine or stool.",
+        "Periods getting more painful, heavier or more irregular than before.",
+        "Pain and trouble getting pregnant.",
+        "Free: the doctor at your PHC or Ayushman Arogya Mandir; eSanjeevani video consult (hours vary by state)."
+      ],
+      "see_doctor_hi": [
+        "अभी 108 या 112: एक तरफ़ अचानक बहुत तेज़ दर्द, ख़ास तौर पर अगर पीरियड लेट है या प्रेगनेंसी की संभावना है।",
+        "उसी दिन: दर्द बहुत तेज़ या पहले से कहीं ज़्यादा हो और गोली से आराम न मिले, या दर्द के साथ बुखार या बेहोशी। अस्पताल न पहुँच पाएँ तो 108 या 112।",
+        "दर्द जो ज़्यादातर महीनों में आपका रोज़ का काम रोक दे।",
+        "बिना ब्लीडिंग वाले दिनों में, संबंध के समय या बाद में, या पेशाब-पॉटी के समय दर्द।",
+        "पीरियड पहले से ज़्यादा दर्दनाक, ज़्यादा भारी या अनियमित होते जाएँ।",
+        "दर्द और बच्चा ठहरने में दिक़्क़त।",
+        "मुफ़्त: PHC या आयुष्मान आरोग्य मंदिर की डॉक्टर; eSanjeevani पर वीडियो से डॉक्टर की सलाह (समय राज्य के हिसाब से अलग)।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can help with diet, daily routine and tracking your pain pattern. For pain that stops your day, pain on other days, or trouble conceiving, you need a gynaecologist (an MBBS doctor with specialist training), who may do a scan.",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर खाने-पीने, दिनचर्या और दर्द का पैटर्न लिखने में मदद कर सकती हैं। दिन रोक देने वाले दर्द, दूसरे दिनों के दर्द, या बच्चा न ठहरने के लिए स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) ज़रूरी हैं, जो अल्ट्रासाउंड कर सकती हैं।",
+      "sources": [
+        "NHS, Period pain (fetched 18 Oct 2026): womb tightening; up to 3 days; heat, gentle exercise, paracetamol or ibuprofen; urgent if severe and painkillers not helping; non-urgent list: https://www.nhs.uk/conditions/period-pain/",
+        "NHS, Ectopic pregnancy symptoms (fetched 18 Oct 2026): sudden severe one-sided pain, 999 criteria: https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "NICE NG73 endometriosis 1.3.1 and 1.5.1 (symptom pattern; normal scan does not rule out endometriosis), via docs/_product-vision-womens-health-companion-oct18.md §5.5 R11 (direct NICE fetch returned 403)",
+        "docs/_product-vision-womens-health-companion-oct18.md §3.1 pain vocabulary (no pain / mild / needed a painkiller / couldn't do my day) and §5.5 R1"
+      ],
+      "notes": "Paracetamol is named generically (not a brand) as general public-health information that NHS gives, not as a Qura recommendation; Qura's doctors are BAMS. Ibuprofen is omitted to avoid dosing and stomach/kidney caveats for a low-literacy reader; no other drug is added. The combination-product caution (many Indian OTC fever and cold tablets contain paracetamol) is reviewer clinical judgement, not from a fetched page. 'Fever or fainting' as a same-day trigger is a reasonable addition not quoted from NHS (unverified). The one-sided-pain 108/112 line covers ectopic pregnancy and ovarian torsion presentations (NHS ectopic page; vision doc R1). Heat and movement advice is NHS; 'rubbing the lower back' is NHS 'massaging your tummy and back'. Render qura_line as plain, link-free text after the see_doctor block (emergency article). Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "spotting-between-periods",
+      "title_en": "Spotting between periods",
+      "title_hi": "दो पीरियड के बीच हल्की ब्लीडिंग (स्पॉटिंग)",
+      "summary_en": "Light bleeding between periods is common and often harmless, but it always deserves a check; after a missed period, with belly pain, it needs a hospital the same day.",
+      "summary_hi": "दो पीरियड के बीच हल्की ब्लीडिंग आम है और अक्सर नुकसान नहीं करती, पर जाँच हमेशा ज़रूरी है; पीरियड मिस होने के बाद पेट दर्द के साथ हो तो उसी दिन अस्पताल।",
+      "body_en": [
+        "A few brown or pink drops in the middle of the month, and the first thought is 'is my period coming early, or is this something bad?' Right? Usually neither.",
+        "Spotting means light bleeding on days you are not having a period: a few drops, a brown or pink stain, not enough to need a proper pad. It is not a period, so do not count it as day 1 in your diary. Write it as 'spotting' on its own.",
+        "Common reasons:",
+        "- Starting or missing a hormone pill, the injection, or a hormone device in the womb. Very common in the first 3 months.",
+        "- A small harmless growth (polyp) or a fibroid in the womb.",
+        "- Infection, including infections passed through sex. These are tested and treated free at a Suraksha Clinic (the free STI/RTI clinic) in a government hospital.",
+        "- Early pregnancy.",
+        "- Changes on the neck of the womb (cervix). Women 30 and over can get a free screening test (VIA) at the PHC or Ayushman Arogya Mandir; under 30, ask the doctor to examine the cervix.",
+        "- The years before menopause, as hormones swing.",
+        "So what do you do? Note the date, how much, and the colour. Note if it came after sex. Do a pregnancy test if there is any chance. Then show a doctor, not in a panic, but do not let it slide for months either.",
+        "Two situations change everything. Spotting after a missed period with pain in the belly can mean a pregnancy growing in the wrong place: go to a hospital today. If the pain is sudden and sharp on one side, or you feel faint, very dizzy or sick, or have pain at the tip of your shoulder, call 108 or 112 now. And any bleeding a year or more after periods have stopped always needs a gynaecologist."
+      ],
+      "body_hi": [
+        "महीने के बीच में कुछ भूरी या गुलाबी बूँदें, और पहला ख़याल 'पीरियड जल्दी आ गया, या कुछ बुरा है?' है ना? आम तौर पर दोनों नहीं।",
+        "स्पॉटिंग मतलब उन दिनों हल्की ब्लीडिंग जब पीरियड नहीं चल रहा: कुछ बूँदें, भूरा या गुलाबी धब्बा, इतना नहीं कि पैड लगाना पड़े। यह पीरियड नहीं है, इसलिए डायरी में इसे दिन 1 न गिनें। अलग से 'स्पॉटिंग' लिखें।",
+        "आम कारण:",
+        "- हार्मोन की गोली, इंजेक्शन या बच्चेदानी में लगी हार्मोन वाली डिवाइस शुरू करना या गोली छूटना। पहले 3 महीनों में बहुत आम।",
+        "- बच्चेदानी में छोटी, नुकसान न करने वाली गाँठ (पॉलिप) या फ़ाइब्रॉइड।",
+        "- इन्फ़ेक्शन, जिसमें संबंध से फैलने वाले इन्फ़ेक्शन भी शामिल हैं। सरकारी अस्पताल के सुरक्षा क्लिनिक (मुफ़्त STI/RTI क्लिनिक) में इनकी जाँच और इलाज मुफ़्त है।",
+        "- शुरुआती प्रेगनेंसी।",
+        "- बच्चेदानी के मुँह (cervix) में बदलाव। 30 साल और ऊपर की महिलाएँ PHC या आयुष्मान आरोग्य मंदिर पर मुफ़्त स्क्रीनिंग जाँच (VIA) करा सकती हैं; 30 से कम उम्र हो तो डॉक्टर से बच्चेदानी के मुँह की जाँच करने को कहें।",
+        "- मेनोपॉज़ से पहले के साल, जब हार्मोन ऊपर-नीचे होते हैं।",
+        "तो करें क्या? तारीख़, कितना, और रंग नोट करें। संबंध के बाद हुआ हो तो वह भी। थोड़ी भी संभावना हो तो प्रेगनेंसी टेस्ट करें। फिर डॉक्टर को दिखाएँ, घबराकर नहीं, पर महीनों टालें भी नहीं।",
+        "दो हालात सब बदल देते हैं। पीरियड मिस होने के बाद स्पॉटिंग और पेट में दर्द, गलत जगह बढ़ती प्रेगनेंसी हो सकती है: आज ही अस्पताल जाएँ। अगर दर्द एक तरफ़ अचानक और तेज़ हो, या बेहोशी जैसा लगे, सिर बहुत घूमे, जी मिचलाए, या कंधे की नोक में दर्द हो, तो अभी 108 या 112 पर कॉल करें। और पीरियड बंद होने के एक साल या ज़्यादा बाद कोई भी ब्लीडिंग हमेशा gynaecologist को दिखानी है।"
+      ],
+      "see_doctor_en": [
+        "Go to a hospital today: a missed period plus any unusual bleeding and belly pain (possible pregnancy in the wrong place).",
+        "Call 108 or 112 now: sudden sharp one-sided pain, shoulder-tip pain, fainting, dizziness or feeling sick.",
+        "Bleeding after sex, every time it happens.",
+        "Spotting most months, or getting heavier.",
+        "Any bleeding 12 months or more after your last period.",
+        "Bleeding between periods after age 40.",
+        "Spotting with discharge that smells, itching, or burning urine: Suraksha Clinic (the free STI/RTI clinic) at the government hospital."
+      ],
+      "see_doctor_hi": [
+        "आज ही अस्पताल जाएँ: पीरियड मिस, कोई भी असामान्य ब्लीडिंग और पेट में दर्द (गलत जगह प्रेगनेंसी हो सकती है)।",
+        "अभी 108 या 112: एक तरफ़ अचानक तेज़ दर्द, कंधे की नोक में दर्द, बेहोशी, सिर घूमना या जी मिचलाना।",
+        "संबंध के बाद ब्लीडिंग, हर बार।",
+        "ज़्यादातर महीनों में स्पॉटिंग, या बढ़ती हुई।",
+        "पिछले पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग।",
+        "40 की उम्र के बाद दो पीरियड के बीच ब्लीडिंग।",
+        "स्पॉटिंग के साथ बदबूदार पानी आना, खुजली, या पेशाब में जलन: सरकारी अस्पताल का सुरक्षा क्लिनिक (मुफ़्त STI/RTI क्लिनिक)।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can help you record the pattern and understand what the gynaecologist may check. Spotting itself needs a gynaecologist (an MBBS doctor with specialist training), usually with an examination and a scan.",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर पैटर्न लिखने और यह समझने में मदद कर सकती हैं कि gynaecologist क्या जाँच सकती हैं। स्पॉटिंग की जाँच स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) ही करती हैं, आम तौर पर जाँच और अल्ट्रासाउंड के साथ।",
+      "sources": [
+        "NHS, What causes bleeding between periods (fetched 18 Oct 2026): hormonal contraception, polyps or fibroids, STIs; urgent same-day assessment if missed period + unusual bleeding + tummy pain: https://www.nhs.uk/common-health-questions/womens-health/what-causes-bleeding-between-periods/",
+        "NHS, Ectopic pregnancy symptoms (fetched 18 Oct 2026): 999 tier is sharp sudden intense pain, feeling very dizzy or fainting, feeling sick, shoulder-tip pain: https://www.nhs.uk/conditions/ectopic-pregnancy/symptoms/",
+        "NHS, Periods: bleeding between periods or after sex needs a check: https://www.nhs.uk/conditions/periods/",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §5.3 R3 (bleeding 12+ months after last period), R8 (40+ bleeding between periods); product vision §3.1 (spotting stored as its own event, never day 1)",
+        "NHM Free Diagnostics Service Initiative, Operational Guidelines (Dec 2025), Annexure IV (read locally 18 Oct 2026): VIA test (cervical screening) listed as an essential free test at AAM-Sub Health Centre: https://nhsrcindia.org/sites/default/files/2025-12/Operational%20Guidelines_FDSI.pdf",
+        "NP-NCD population screening for cervical cancer covers women aged 30 and above (reviewer knowledge; not re-fetched this session)"
+      ],
+      "notes": "Emergency tier is now split to match NHS: hospital today for missed period + unusual bleeding + belly pain; 108/112 only for the ectopic 999 criteria. Treat the first see_doctor line as an urgent block for rendering: qura_line shows as plain, link-free text after it. Suraksha Clinics (NACO's designated free STI/RTI clinics in government hospitals) could not be verified this session (naco.gov.in refused connection); signboards may read 'STI/RTI clinic' or 'DSRC'; verify the name on naco.gov.in before launch. VIA screening age 30+ is NP-NCD policy from reviewer knowledge (unverified this session). 'Early pregnancy' as a cause of spotting is general knowledge, not from the NHS page fetched. Perimenopausal hormone swings causing spotting: general, source not fetched. Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "first-periods-for-teens",
+      "title_en": "First periods: a guide for girls and parents",
+      "title_hi": "पहला पीरियड: लड़कियों और माँ-बाप के लिए",
+      "summary_en": "Periods usually start between 10 and 15; the first years are irregular by nature, and a parent should read this with her.",
+      "summary_hi": "पीरियड आम तौर पर 10 से 15 साल के बीच शुरू होते हैं; शुरुआती साल अपने आप अनियमित होते हैं, और माँ या किसी बड़े को यह उसके साथ पढ़ना चाहिए।",
+      "body_en": [
+        "Most girls hear about periods from a friend or a cousin, in whispers, right? Then the first one comes at school and no one has told her what it is.",
+        "This page is for a parent to read with her. Qura's diary is for women 18 and over; a girl's periods are a family matter and a doctor's, not an app's.",
+        "What to tell her:",
+        "- Periods usually start between 10 and 15. In India the average is around 12 to 13. Breast growth comes first, usually 2 to 3 years before.",
+        "- The first bleeding may be brown, light and short. That is normal.",
+        "- In the first year, gaps of any length are normal. For the next two years, 21 to 45 days is usual. Her body is still learning.",
+        "- Bleeding lasts 2 to 7 days. Change a pad before it soaks through, roughly every 4 to 8 hours, and never keep one on all day.",
+        "- Cloth is fine if it is washed with soap and dried in direct sun, not hidden damp under a bed.",
+        "- She can bathe, go to school, play, cook and pray. Nothing about her is unclean.",
+        "What to keep ready: a few pads and a spare underwear in her school bag, and a small pouch for used pads. Suvidha pads are ₹1 each at Jan Aushadhi Kendras; ask at school too, there is a government scheme for school girls.",
+        "Teach her to mark day 1 on a calendar. That habit will serve her for the next 35 years."
+      ],
+      "body_hi": [
+        "ज़्यादातर लड़कियाँ पीरियड के बारे में किसी दोस्त या कज़िन से, धीमी आवाज़ में सुनती हैं, है ना? फिर पहला पीरियड स्कूल में आ जाता है और किसी ने बताया ही नहीं था कि यह क्या है।",
+        "यह पेज माँ या किसी बड़े के लिए है, उसके साथ बैठकर पढ़ने के लिए। Qura की डायरी 18 साल से ऊपर की महिलाओं के लिए है; एक लड़की के पीरियड परिवार और डॉक्टर की बात हैं, किसी ऐप की नहीं।",
+        "उसे क्या बताएँ:",
+        "- पीरियड आम तौर पर 10 से 15 साल के बीच शुरू होते हैं। भारत में औसत करीब 12 से 13 साल है। स्तन का बढ़ना पहले आता है, आम तौर पर 2 से 3 साल पहले।",
+        "- पहली ब्लीडिंग भूरी, हल्की और छोटी हो सकती है। यह सामान्य है।",
+        "- पहले साल में किसी भी लंबाई का अंतर सामान्य है। अगले दो साल 21 से 45 दिन आम है। उसका शरीर अभी सीख रहा है।",
+        "- ब्लीडिंग 2 से 7 दिन चलती है। पैड भरने से पहले बदलें, करीब हर 4 से 8 घंटे में, और एक पैड पूरे दिन कभी न रखें।",
+        "- कपड़ा ठीक है अगर साबुन से धोकर सीधी धूप में सुखाया जाए, बिस्तर के नीचे गीला छुपाया न जाए।",
+        "- वह नहा सकती है, स्कूल जा सकती है, खेल सकती है, खाना बना सकती है और पूजा कर सकती है। उसमें कुछ भी अशुद्ध नहीं है।",
+        "क्या तैयार रखें: स्कूल बैग में कुछ पैड और एक अतिरिक्त अंडरवियर, और इस्तेमाल किए पैड के लिए छोटी पाउच। जन औषधि केंद्र पर सुविधा पैड ₹1 का एक; स्कूल में भी पूछें, स्कूल की लड़कियों के लिए सरकारी योजना है।",
+        "उसे कैलेंडर पर दिन 1 पर निशान लगाना सिखाएँ। यह आदत अगले 35 साल काम आएगी।"
+      ],
+      "see_doctor_en": [
+        "No period by 15, or no breast development by 13: see a doctor, with a parent.",
+        "No period within 3 years of breast growth starting.",
+        "No period by 14 together with extra body hair or very low weight.",
+        "Soaking a pad every 1 to 2 hours, or bleeding more than 7 days.",
+        "Pain that keeps her out of school every month.",
+        "If she is being hurt or is unsafe: Childline 1098, Women Helpline 181, or 112, free and any time.",
+        "Free care: the school health team, or the ANM or doctor at the PHC or Ayushman Arogya Mandir."
+      ],
+      "see_doctor_hi": [
+        "15 साल तक पीरियड नहीं, या 13 साल तक स्तन का बढ़ना शुरू नहीं: माँ-बाप के साथ डॉक्टर को दिखाएँ।",
+        "स्तन बढ़ना शुरू होने के 3 साल के अंदर पीरियड नहीं।",
+        "14 साल तक पीरियड नहीं और साथ में शरीर पर ज़्यादा बाल या बहुत कम वज़न।",
+        "हर 1 से 2 घंटे में पैड भरना, या 7 दिन से ज़्यादा ब्लीडिंग।",
+        "ऐसा दर्द जो हर महीने उसे स्कूल से रोक दे।",
+        "अगर उसे कोई तकलीफ़ दे रहा है या वह सुरक्षित नहीं है: चाइल्डलाइन 1098, महिला हेल्पलाइन 181, या 112, मुफ़्त, किसी भी समय।",
+        "मुफ़्त देखभाल: स्कूल हेल्थ टीम, या PHC या आयुष्मान आरोग्य मंदिर की ANM या डॉक्टर।"
+      ],
+      "qura_line_en": "Qura's diary is for women 18 and over. A girl under 18 should see the PHC or a gynaecologist (an MBBS doctor with specialist training) with a parent; Qura does not offer consults to girls under 18 on their own.",
+      "qura_line_hi": "Qura की डायरी 18 साल से ऊपर की महिलाओं के लिए है। 18 से कम उम्र की लड़की को माँ-बाप PHC या स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) के पास ले जाएँ; Qura 18 से कम उम्र की लड़कियों को अकेले परामर्श नहीं देता।",
+      "sources": [
+        "2023 International PCOS Guideline, rec 1.1.1 (Monash summary PDF, read locally 18 Oct 2026): first year normal; 1 to under 3 years 21 to 45 days; 'Primary amenorrhea by age 15 or > 3 years post thelarche'",
+        "ACOG Committee Opinion 651, Menstruation in Girls and Adolescents: evaluation box (no period by 15; no breast development by 13; none within 3 years of thelarche; none by 14 with hirsutism or very low weight; menses lasting more than 7 days). Consistent with the items used here; full text not fetched (acog.org 402, PubMed cookie wall)",
+        "docs/_product-vision-womens-health-companion-oct18.md §3.1 Safety guide under-18 section and §5.5 R10, R12 (Childline 1098; with a parent); §3.1 onboarding (DOB gate on the diary only)",
+        "NHS, Periods: usually start around 12; 2 to 7 days bleeding: https://www.nhs.uk/conditions/periods/",
+        "Cureus, Sept 2023 (fetched 18 Oct 2026), prospective cohort, Barabanki UP, n=470, mean age at menarche 13.13 (SD 1.23) years: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10579622/",
+        "NHM Menstrual Hygiene Policy for School-Going Girls (2025-26) (PDF read locally): Suvidha pads ₹1 at Jan Aushadhi Kendras; IEC to address myths and prepare girls for menarche: https://nhm.gov.in/New-Update-2025-26/Adolescent-Health/Menstrual-Hygiene-Policy/Menstrual-Hygiene-Policy-for-School-Going-Girls.pdf",
+        "Women Helpline 181 (myScheme; page served footer only this session): https://www.myscheme.gov.in/schemes/whl-181",
+        "Childline 1098: toll-free, 24x7, under MHA/ERSS control since 2021 (Wikipedia, Childline India Foundation; childlineindia.org returned 503)",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §6.1 Telemedicine row (a minor's teleconsult only with a verified adult present)"
+      ],
+      "notes": "Pad change 'roughly every 4 to 8 hours' matches ACOG/UNICEF teaching; no MoHFW or UNICEF primary source was reachable this session (UNICEF India FAQ 404; IEC PDF host unreachable) (unverified). 'Breast growth 2 to 3 years before' is general paediatric knowledge (unverified here). 'Around 12 to 13' rests on one Barabanki UP cohort (mean 13.13, n=470); regional means range roughly 12 to 14. The bleeding threshold here is 7 days (ACOG adolescent trigger); adult articles in this group use 8 days (FIGO 2018). The four R10 items are consistent with ACOG CO 651's evaluation box, full text not fetched. Childline 1098's operating status after the 2023-24 ERSS/112 integration under MWCD and Women Helpline 181 were not re-verified (childlineindia.org 503; wcd.gov.in 404); both stay paired with 112 and must be re-verified on wcd.gov.in before launch. Whether a given school supplies free pads depends on the state, hence 'ask at school'. The 18+ statement now covers the diary only: the live Qura booking flow has no date-of-birth gate, so either add one before this ships or keep this softer wording; Telemedicine Practice Guidelines allow a minor's consult with an adult present rather than forbidding it."
+    },
+    {
+      "id": "common-period-myths",
+      "title_en": "Common myths about periods",
+      "title_hi": "पीरियड के बारे में आम भ्रम",
+      "summary_en": "There is no health reason to avoid bathing, cooking, exercise, pickles or prayer during periods; the real hygiene rules are simpler than the myths.",
+      "summary_hi": "सेहत की कोई वजह नहीं है कि पीरियड में नहाना, खाना बनाना, कसरत, अचार या पूजा छोड़ी जाए; असली साफ़-सफ़ाई के नियम भ्रमों से कहीं आसान हैं।",
+      "body_en": [
+        "Don't touch the pickle, don't wash your hair, don't go to the temple, don't enter the kitchen. Every one of us has heard at least one of these, right?",
+        "Yes, these rules came from a time when women had no pads, no running water and no rest. Some of them were a rough way of giving a tired woman a break. But the health reasons given for them were never true, and some do harm. There is no health reason to avoid bathing, cooking, exercise, pickles or prayer during a period. What your family does about custom is your family's choice; this page is only about what the body needs.",
+        "- Myth: bathing or washing hair during periods is harmful. Truth: a daily bath is one of the most useful hygiene steps. Warm water also eases cramps.",
+        "- Myth: period blood is dirty. Truth: it is normal blood and womb lining. It only smells if a pad is kept on too long.",
+        "- Myth: you cannot exercise. Truth: walking and stretching ease pain. Rest if you want to, not because you must.",
+        "- Myth: pickle spoils if a menstruating woman touches it. Truth: pickle spoils from moisture and dirty hands, nothing else.",
+        "- Myth: you cannot get pregnant during or just after your period. Truth: you can. Periods are not a contraceptive, and no calendar gives safe days.",
+        "- Myth: a regular cycle means nothing can be wrong. Truth: some conditions, including PMOS, can be present with regular periods.",
+        "- Myth: cold food, sour food or curd stops a period. Truth: food does not stop a period. Hormones, stress, weight change and pregnancy do.",
+        "What actually matters: change your pad before it soaks through, wash cloth with soap and dry it in the sun, wash your hands, and sleep. That is the whole list."
+      ],
+      "body_hi": [
+        "अचार मत छूना, बाल मत धोना, मंदिर मत जाना, रसोई में मत आना। हम में से हर किसी ने इनमें से कम से कम एक बात सुनी है, है ना?",
+        "हाँ, ये नियम उस ज़माने से आए जब औरतों के पास न पैड थे, न नल का पानी, न आराम। इनमें से कुछ एक थकी औरत को छुट्टी देने का टेढ़ा तरीका थे। पर इनके लिए जो सेहत के कारण बताए गए वे कभी सच नहीं थे, और कुछ नुकसान करते हैं। सेहत की कोई वजह नहीं है कि पीरियड में नहाना, खाना बनाना, कसरत, अचार या पूजा छोड़ी जाए। रीति-रिवाज़ का क्या करना है, वह आपके परिवार की बात है; यह पेज सिर्फ़ इस बारे में है कि शरीर को क्या चाहिए।",
+        "- भ्रम: पीरियड में नहाना या बाल धोना नुकसान करता है। सच: रोज़ नहाना साफ़-सफ़ाई के सबसे काम के कदमों में से एक है। गुनगुना पानी मरोड़ भी कम करता है।",
+        "- भ्रम: पीरियड का खून गंदा होता है। सच: यह सामान्य खून और बच्चेदानी की परत है। बदबू तभी आती है जब पैड ज़्यादा देर लगा रहे।",
+        "- भ्रम: कसरत नहीं कर सकते। सच: टहलना और स्ट्रेचिंग दर्द कम करते हैं। आराम करना चाहें तो करें, मजबूरी में नहीं।",
+        "- भ्रम: पीरियड वाली औरत के छूने से अचार खराब हो जाता है। सच: अचार नमी और गंदे हाथों से खराब होता है, और किसी चीज़ से नहीं।",
+        "- भ्रम: पीरियड के दौरान या उसके ठीक बाद प्रेगनेंसी नहीं हो सकती। सच: हो सकती है। पीरियड गर्भनिरोधक नहीं है, और कोई कैलेंडर 'सेफ़ दिन' नहीं बताता।",
+        "- भ्रम: साइकिल नियमित है तो कुछ गड़बड़ हो ही नहीं सकती। सच: कुछ बीमारियाँ, जिनमें PMOS भी है, नियमित पीरियड के साथ भी हो सकती हैं।",
+        "- भ्रम: ठंडी चीज़, खट्टा या दही पीरियड रोक देता है। सच: खाना पीरियड नहीं रोकता। हार्मोन, तनाव, वज़न में बदलाव और प्रेगनेंसी रोकते हैं।",
+        "जो सच में मायने रखता है: पैड भरने से पहले बदलें, कपड़ा साबुन से धोकर धूप में सुखाएँ, हाथ धोएँ, और नींद लें। बस यही पूरी सूची है।"
+      ],
+      "see_doctor_en": [
+        "If any belief is keeping you from treatment for heavy bleeding, pain or missed periods, see the doctor at your PHC or Ayushman Arogya Mandir.",
+        "Discharge that smells or itches, or burning urine: Suraksha Clinic (the free STI/RTI clinic) at the government hospital.",
+        "Shame or low mood around periods that will not lift: Tele-MANAS 14416, free, any time."
+      ],
+      "see_doctor_hi": [
+        "अगर कोई मान्यता आपको ज़्यादा ब्लीडिंग, दर्द या पीरियड मिस होने के इलाज से रोक रही है, तो PHC या आयुष्मान आरोग्य मंदिर की डॉक्टर को दिखाएँ।",
+        "बदबूदार या खुजली वाला पानी आना, या पेशाब में जलन: सरकारी अस्पताल का सुरक्षा क्लिनिक (मुफ़्त STI/RTI क्लिनिक)।",
+        "पीरियड को लेकर शर्म या उदासी जो जाती न हो: टेली-मानस 14416, मुफ़्त, किसी भी समय।"
+      ],
+      "qura_line_en": "A Qura Ayurveda (BAMS) doctor can answer questions like these in your own language. For bleeding or pain problems, a gynaecologist (an MBBS doctor with specialist training) examines and treats.",
+      "qura_line_hi": "Qura की आयुर्वेद (BAMS) डॉक्टर ऐसे सवालों के जवाब आपकी भाषा में दे सकती हैं। ब्लीडिंग या दर्द की समस्या की जाँच और इलाज स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) करती हैं।",
+      "sources": [
+        "NHS, Period pain (warm baths, gentle exercise help): https://www.nhs.uk/conditions/period-pain/",
+        "NHS, Periods (21 to 35 days; no contraceptive effect implied): https://www.nhs.uk/conditions/periods/",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §3 (ICMR: the most common PCOS type in India has regular cycles) and §5.6 (never predict safe days)",
+        "NHM Menstrual Hygiene Policy for School-Going Girls (2025-26) (PDF read locally 18 Oct 2026): hygiene package is soap, clean water, washing and disposal; IEC/BCC to address myths and taboos: https://nhm.gov.in/New-Update-2025-26/Adolescent-Health/Menstrual-Hygiene-Policy/Menstrual-Hygiene-Policy-for-School-Going-Girls.pdf",
+        "UNICEF India IEC document (via search summary only; PDF host unreachable): low rates of changing absorbents twice a day, cloth not washed with detergent or sun-dried",
+        "Tele-MANAS 14416 / 1-800-891-4416 (vikaspedia; official site certificate error this session): https://en.vikaspedia.in/viewcontent/health/mental-health/tele-manas"
+      ],
+      "notes": "The bathing line was softened from 'the single best hygiene step' to 'one of the most useful' because the NHM hygiene package gives equal weight to changing the absorbent, soap, clean water and disposal. Custom-related items (prayer, kitchen, pickle) are framed as 'no health reason to avoid', not 'safe', so the page does not rule on religious custom. The pickle, hair-washing, temple and kitchen myths are from common Indian experience, not a fetched survey. 'Pickle spoils from moisture and dirty hands' is food-science common knowledge (unverified). 'You can get pregnant during or just after a period' is general reproductive knowledge, not quoted from a fetched page (unverified). Sun-drying cloth advice is in the search summary of UNICEF India material, primary PDF not read (unverified). Tele-MANAS 14416 not re-verified this session (telemanas.mohfw.gov.in and nimhans.ac.in certificate errors); confirm before launch. Suraksha Clinic name to be verified on naco.gov.in. Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    },
+    {
+      "id": "how-to-keep-a-period-diary",
+      "title_en": "How to keep a period diary, and why doctors want it",
+      "title_hi": "पीरियड डायरी कैसे रखें, और डॉक्टर इसे क्यों माँगते हैं",
+      "summary_en": "Four dates and a few taps a month answer the first five questions any doctor asks, and save you a wasted visit.",
+      "summary_hi": "महीने में चार तारीख़ें और कुछ निशान, डॉक्टर के पहले पाँच सवालों का जवाब दे देते हैं और एक बेकार चक्कर बचाते हैं।",
+      "body_en": [
+        "'When was your last period?' Every gynaecologist asks it first, and most of us answer 'last month, around the 10th... or the 15th?' Right?",
+        "That guess is the problem. Doctors decide a lot from dates: whether a gap is long, whether bleeding is too much, whether a pregnancy test is due, when a scan should be done. A guess sends you home with 'come back after your next period'. A diary gets you answers in the first visit.",
+        "What to write, once a month:",
+        "- Day 1: the first day of proper bleeding (not spotting).",
+        "- The last day of bleeding.",
+        "- Pads on the heaviest day: 1 to 2, 3 to 5, 6 or more, or soaked one every 1 to 2 hours.",
+        "- Clots: none, small, or about 2.5 cm (roughly a 10-rupee coin).",
+        "- Pain: none, mild, needed a painkiller, or could not do my day.",
+        "- Spotting on other days, written separately.",
+        "- Anything new: a medicine started or stopped, a fever, breastfeeding, a big weight change.",
+        "Where to write it: a wall calendar, the back page of a notebook, a phone note, or Qura's diary. Any of these will do, as long as it is the same place every month.",
+        "Why it protects you: a single late period means little. Three gaps written down, say 31, 46 and 62 days, is a pattern a doctor can act on. Pads counted over four months show whether your iron is at risk. And a diary in your hand works at any doctor, government or private, in any town.",
+        "One privacy tip for a shared phone: write only the date, not the word 'period'. You will know what it means."
+      ],
+      "body_hi": [
+        "'पिछला पीरियड कब आया था?' हर gynaecologist सबसे पहले यही पूछती हैं, और हम में से ज़्यादातर कहती हैं 'पिछले महीने, 10 के आस-पास... या 15?' है ना?",
+        "यही अंदाज़ा समस्या है। डॉक्टर तारीख़ों से बहुत कुछ तय करती हैं: अंतर लंबा है या नहीं, ब्लीडिंग ज़्यादा है या नहीं, प्रेगनेंसी टेस्ट का समय है या नहीं, अल्ट्रासाउंड कब करना है। अंदाज़ा आपको 'अगले पीरियड के बाद आना' कहकर घर भेज देता है। डायरी पहली ही मुलाक़ात में जवाब दिला देती है।",
+        "महीने में एक बार क्या लिखें:",
+        "- दिन 1: ठीक से ब्लीडिंग का पहला दिन (स्पॉटिंग नहीं)।",
+        "- ब्लीडिंग का आख़िरी दिन।",
+        "- सबसे भारी दिन पैड: 1 से 2, 3 से 5, 6 या ज़्यादा, या हर 1 से 2 घंटे में एक भर गया।",
+        "- थक्के: नहीं, छोटे, या करीब 2.5 cm (10 रुपये के सिक्के जितने)।",
+        "- दर्द: नहीं, हल्का, गोली लेनी पड़ी, या दिन नहीं चल पाया।",
+        "- दूसरे दिनों की स्पॉटिंग, अलग से।",
+        "- कुछ नया: कोई दवा शुरू या बंद, बुखार, स्तनपान, वज़न में बड़ा बदलाव।",
+        "कहाँ लिखें: दीवार का कैलेंडर, कॉपी का आख़िरी पन्ना, फ़ोन का नोट, या Qura की डायरी। इनमें से कोई भी चलेगा, बस हर महीने एक ही जगह हो।",
+        "यह आपको कैसे बचाती है: एक लेट पीरियड का मतलब कम है। तीन अंतर लिखे हुए, मान लीजिए 31, 46 और 62 दिन, एक पैटर्न है जिस पर डॉक्टर काम कर सकती हैं। चार महीने के पैड की गिनती बताती है कि आयरन खतरे में है या नहीं। और हाथ में डायरी किसी भी डॉक्टर के पास चलती है, सरकारी हो या प्राइवेट, किसी भी शहर में।",
+        "साझा फ़ोन के लिए एक निजता की बात: सिर्फ़ तारीख़ लिखें, 'पीरियड' शब्द नहीं। आप समझ जाएँगी।"
+      ],
+      "see_doctor_en": [
+        "Take your diary when: gaps run under 21 or over 35 days over several cycles, bleeding passes 8 days, pads soak every 1 to 2 hours, pain stops your day, or you have spotting between periods.",
+        "Any bleeding a year after periods stop: gynaecologist, with the dates.",
+        "Free: PHC or Ayushman Arogya Mandir, eSanjeevani video consult (hours vary by state); 104 health line in many states."
+      ],
+      "see_doctor_hi": [
+        "डायरी लेकर जाएँ जब: अंतर कई साइकिल तक 21 से कम या 35 से ज़्यादा दिन, ब्लीडिंग 8 दिन से ज़्यादा, हर 1 से 2 घंटे में पैड भरना, दर्द दिन रोक दे, या दो पीरियड के बीच स्पॉटिंग।",
+        "पीरियड बंद होने के एक साल बाद कोई भी ब्लीडिंग: gynaecologist, तारीख़ों के साथ।",
+        "मुफ़्त: PHC या आयुष्मान आरोग्य मंदिर, eSanjeevani पर वीडियो से डॉक्टर की सलाह (समय राज्य के हिसाब से अलग); कई राज्यों में 104 हेल्थ लाइन।"
+      ],
+      "qura_line_en": "If you choose to share it, a Qura Ayurveda (BAMS) doctor reads your diary before the call and explains what it shows. For any finding that needs a scan or hormone treatment, you need a gynaecologist (an MBBS doctor with specialist training).",
+      "qura_line_hi": "अगर आप साझा करना चुनें तो Qura की आयुर्वेद (BAMS) डॉक्टर कॉल से पहले आपकी डायरी पढ़ती हैं और बताती हैं कि इसमें क्या दिख रहा है। जिस बात में अल्ट्रासाउंड या हार्मोन के इलाज की ज़रूरत हो, उसके लिए स्त्री रोग विशेषज्ञ (gynaecologist, MBBS के बाद विशेष प्रशिक्षण वाली डॉक्टर) ज़रूरी हैं।",
+      "sources": [
+        "docs/_product-vision-womens-health-companion-oct18.md §3.1 (log sheet, flow and pain vocabularies, spotting as its own event, discreet mode on shared phones, doctor Cycle tab with C4 sharing)",
+        "docs/_research-flo-free-cycle-tracker-oct18.md §3 (shared phones: keep nothing sensitive on screen; one log a month) and §5.1 (3 completed cycles before a pattern is read)",
+        "NHS, Heavy periods (fetched 18 Oct 2026; signs used for the pad and clot scale; clots over about 2.5 cm): https://www.nhs.uk/conditions/heavy-periods/",
+        "NICE NG73 1.3.1 (symptom pattern over cycles) via vision doc §5.5 R11; NICE NG88 heavy menstrual bleeding history-taking could not be fetched (403), listed as unverified",
+        "eSanjeevani: https://esanjeevani.mohfw.gov.in/ (hours and availability vary by state; site served no text 18 Oct 2026)"
+      ],
+      "notes": "The claim that a diary 'saves a wasted visit' and that doctors say 'come back after your next period' is clinical common experience, not a sourced finding (unverified). NICE NG88 recommendation on menstrual history/diary not read this session (unverified). Example gaps 31, 46, 62 are illustrative, mirroring the vision doc's day-count mode example. Clot scale now leads with 2.5 cm; the ₹10 coin (27 mm) is only a rough picture. Qura doctor named as Ayurveda (BAMS) for the telemedicine disclosure."
+    }
+  ]
+}

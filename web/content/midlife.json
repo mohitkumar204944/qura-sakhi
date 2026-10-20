@@ -1,0 +1,430 @@
+{
+  "group": "midlife",
+  "articles": [
+    {
+      "id": "perimenopause-indian-age",
+      "title_en": "Perimenopause: what it is, and when it comes for Indian women",
+      "title_hi": "पेरिमेनोपॉज़ क्या है, और भारतीय महिलाओं में यह कब आता है",
+      "summary_en": "The years of changing periods before they stop, which for Indian women usually end around 46 to 47, earlier than the Western figure of 51.",
+      "summary_hi": "पीरियड बंद होने से पहले के बदलाव वाले साल, जो भारतीय महिलाओं में आम तौर पर 46 से 47 की उम्र के आस-पास पूरे होते हैं, पश्चिम के 51 से पहले।",
+      "body_en": [
+        "You have heard that menopause comes at 50, right? That number comes from Western women. In India, periods stop at about 46 to 47 on average. In a large national survey, about 7 in 100 women said their periods stopped before 40, and about 17 in 100 between 40 and 44. So if you are 44 and your body is changing, you are not early. You are on time for an Indian woman.",
+        "Menopause itself is your last period. You only know it was the last one after 12 months with no period. Perimenopause is the stretch before it, often several years, when your ovaries make hormones unevenly. Periods come closer, then far apart. Some months you skip. Sleep, mood and body heat change too.",
+        "If you are 45 or older, a doctor can usually tell from your symptoms alone. No hormone test is needed, though a thyroid or haemoglobin test may still be done to rule out other causes. Between 40 and 44, a blood test can help. Under 40, a gap in periods always needs a proper check; do not call it menopause on your own.",
+        "One caution. If you have PMOS (PCOS), are on the pill or a hormonal IUD, or have had your uterus removed, the usual cycle clues do not work for you. Your age and symptoms tell the story instead.",
+        "And no, the AMH test does not tell you when menopause will come. Save your money."
+      ],
+      "body_hi": [
+        "आपने सुना होगा कि मेनोपॉज़ 50 की उम्र में आता है, है ना? यह आँकड़ा पश्चिमी देशों की महिलाओं का है। भारत में पीरियड औसतन 46 से 47 साल की उम्र में बंद होते हैं। एक बड़े राष्ट्रीय सर्वे में 100 में से करीब 7 महिलाओं ने बताया कि उनके पीरियड 40 से पहले बंद हो गए, और करीब 17 ने 40 से 44 के बीच। तो अगर आप 44 की हैं और शरीर बदल रहा है, तो आप जल्दी नहीं हैं। भारतीय महिला के हिसाब से आप सही समय पर हैं।",
+        "मेनोपॉज़ असल में आपका आख़िरी पीरियड है, जो 12 महीने बिना पीरियड बीतने पर ही पक्का पता चलता है। उससे पहले का समय पेरिमेनोपॉज़ है, अक्सर कई साल, जब अंडाशय (ovary) हार्मोन ऊपर-नीचे बनाते हैं। पीरियड कभी जल्दी आते हैं, कभी देर से। कुछ महीने छूट जाते हैं। नींद, मूड और शरीर की गर्मी भी बदलती है।",
+        "अगर आप 45 या उससे ऊपर हैं, तो डॉक्टर आम तौर पर आपके लक्षण सुनकर ही बता देते हैं। हार्मोन टेस्ट की ज़रूरत नहीं, हाँ दूसरे कारण जाँचने के लिए थायरॉइड या हीमोग्लोबिन टेस्ट हो सकता है। 40 से 44 के बीच एक ब्लड टेस्ट मदद कर सकता है। 40 से पहले पीरियड का रुकना हमेशा ठीक से जाँच माँगता है; उसे खुद से मेनोपॉज़ मत मान लीजिए।",
+        "एक बात का ध्यान रखें। अगर आपको PMOS (PCOS) है, आप गर्भनिरोधक गोली या हार्मोन वाली IUD पर हैं, या बच्चेदानी निकल चुकी है, तो पीरियड के आम संकेत आपके लिए काम नहीं करते। तब उम्र और लक्षण ही बताते हैं।",
+        "और हाँ, AMH टेस्ट यह नहीं बताता कि मेनोपॉज़ कब आएगा। पैसे मत खर्च कीजिए।"
+      ],
+      "see_doctor_en": [
+        "Under 40 and no period for 4 months or more (not pregnant, not breastfeeding, not on hormones): see a doctor; rule out pregnancy first; a blood test is usually part of it.",
+        "Any bleeding after 12 months without a period: see a gynaecologist within about 2 weeks.",
+        "At 40 or older, very heavy bleeding, or bleeding between periods or after sex: see a gynaecologist.",
+        "Free options: your PHC or Ayushman Arogya Mandir; a free video consult on eSanjeevani; the 104 health helpline in many states."
+      ],
+      "see_doctor_hi": [
+        "40 से कम उम्र और 4 महीने या ज़्यादा से पीरियड नहीं (प्रेग्नेंट नहीं, स्तनपान नहीं, हार्मोन नहीं): डॉक्टर को दिखाएँ; पहले प्रेग्नेंसी टेस्ट; आम तौर पर एक ब्लड टेस्ट होता है।",
+        "12 महीने बिना पीरियड के बाद कोई भी ब्लीडिंग: करीब 2 हफ़्ते के अंदर स्त्री रोग विशेषज्ञ (gynaecologist)।",
+        "40 के बाद बहुत ज़्यादा ब्लीडिंग, या दो पीरियड के बीच या संबंध के बाद ब्लीडिंग: स्त्री रोग विशेषज्ञ।",
+        "मुफ़्त विकल्प: आपका PHC या आयुष्मान आरोग्य मंदिर; eSanjeevani पर मुफ़्त वीडियो परामर्श; कई राज्यों में 104 हेल्थ हेल्पलाइन।"
+      ],
+      "qura_line_en": "A Qura doctor can talk through your symptoms, go through your thyroid and haemoglobin reports, and help with food, sleep and weight in this phase; for hormone therapy or a bleeding check-up you need an MBBS gynaecologist.",
+      "qura_line_hi": "Qura के डॉक्टर आपके लक्षण समझने, थायरॉइड और हीमोग्लोबिन की रिपोर्ट देखने, और इस दौर में खाने, नींद और वज़न पर मदद कर सकते हैं; हार्मोन थेरेपी या ब्लीडिंग की जाँच के लिए MBBS स्त्री रोग विशेषज्ञ चाहिए।",
+      "sources": [
+        "NHS, Menopause overview (usually 45 to 55; 12 months without a period): https://www.nhs.uk/conditions/menopause/",
+        "NHS, Menopause symptoms (symptoms last 7 to 9 years): https://www.nhs.uk/conditions/menopause/symptoms/",
+        "NICE NG23 recommendations 1.2 (over 45: diagnose on vasomotor symptoms and irregular periods without laboratory tests; other tests such as blood count or thyroid function may still be needed): https://www.nice.org.uk/guidance/ng23/chapter/recommendations",
+        "NICE QS143 statement 1 and NG23 (45+ diagnosed on symptoms; 40 to 44 blood test can help; no routine AMH): https://www.nice.org.uk/guidance/QS143/chapter/quality-statement-1-diagnosing-perimenopause-and-menopause",
+        "STRAW+10, Harlow 2012 (final menstrual period is Stage 0, confirmed after 12 months without a period; cycle staging not valid with PCOS, hormones, hysterectomy): https://pmc.ncbi.nlm.nih.gov/articles/PMC3340903/",
+        "LASI analysis (7.4% recalled menopause before 40; 17.5% at 40 to 44): https://pmc.ncbi.nlm.nih.gov/articles/PMC11709050/",
+        "Indian Menopause Society 2026 (average age about 46.6): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "Research report docs/_research-flo-free-cycle-tracker-oct18.md sections 3 and 5.2"
+      ],
+      "notes": "NICE NG23 primary page returned 403 on an earlier fetch; the age bands, the AMH line and 'other tests may still be needed' were verified through NICE QS143 statement 1 and the NG23 recommendations summary. 'Often several years' is used instead of a fixed perimenopause length because the NHS gives 7 to 9 years for symptoms, not for perimenopause itself. LASI figures are recall data. 104 is a state-run helpline: confirmed for Karnataka, Punjab, Odisha and Madhya Pradesh among others, but no national MoHFW list was found, so 'many states' is used here and at every 104 mention in this group; verify against the NHM state list before launch. The Qura line says 'go through reports' rather than 'order tests' because the lab partner and BAMS requisition are unconfirmed (vision doc section 5.7)."
+    },
+    {
+      "id": "periods-after-40",
+      "title_en": "Periods changing after 40: what is usual, what needs a check",
+      "title_hi": "40 के बाद पीरियड में बदलाव: क्या आम है, क्या जाँच माँगता है",
+      "summary_en": "After 40, cycles that shift by a week or skip a month or two are common; heavy, long or in-between bleeding is not something to wait out.",
+      "summary_hi": "40 के बाद पीरियड का हफ़्ता भर आगे-पीछे होना या एक-दो महीने छूटना आम है; बहुत ज़्यादा, लंबी या बीच में होने वाली ब्लीडिंग पर इंतज़ार नहीं करना चाहिए।",
+      "body_en": [
+        "Most women think periods just get lighter and fade out, right? Yes, for some they do. But for many the first sign is the opposite: cycles that jump around. 24 days, then 38, then 26. A month skipped, then two periods close together.",
+        "What is usual after 40: the gap between periods changing by a week or more from one cycle to the next, a skipped month now and then, and later a gap of 2 months or more. If you have skipped 2 months and could be pregnant, do a home pregnancy test first. Pregnancy is still possible in these years.",
+        "What is not usual, at any age after 40:",
+        "- Soaking a pad every 1 to 2 hours, clots the size of a 10-rupee coin, or bleeding through your clothes.",
+        "- Bleeding for more than 8 days.",
+        "- Bleeding between periods or after sex.",
+        "These need a gynaecologist, usually a scan and often a small test of the womb lining. Most causes are fibroids, polyps or hormone swings, but checking is the only way to know.",
+        "One more thing. Tiredness, a racing heart and heavy bleeding are also what low iron and thyroid trouble look like. A simple blood test checks both. Do not put every symptom down to age."
+      ],
+      "body_hi": [
+        "ज़्यादातर महिलाएँ सोचती हैं कि पीरियड बस हल्के होते-होते बंद हो जाते हैं, है ना? हाँ, कुछ के साथ ऐसा ही होता है। पर बहुत सी महिलाओं में पहला संकेत उल्टा होता है: पीरियड का हिसाब बिगड़ जाता है। 24 दिन, फिर 38, फिर 26। एक महीना छूटा, फिर दो पीरियड पास-पास।",
+        "40 के बाद क्या आम है: पीरियड का अंतर एक बार से अगली बार में हफ़्ते भर या ज़्यादा बदल जाना, कभी-कभी एक महीना छूटना, और बाद में 2 महीने या ज़्यादा का अंतर। अगर 2 महीने छूट गए हैं और प्रेग्नेंसी की गुंजाइश है, तो पहले घर पर प्रेग्नेंसी टेस्ट कर लीजिए। इन सालों में भी प्रेग्नेंसी हो सकती है।",
+        "40 के बाद किसी भी उम्र में क्या आम नहीं है:",
+        "- हर 1 से 2 घंटे में पैड भर जाना, 10 रुपये के सिक्के जितने थक्के, या कपड़ों तक ब्लीडिंग आना।",
+        "- 8 दिन से ज़्यादा ब्लीडिंग।",
+        "- दो पीरियड के बीच में या संबंध के बाद ब्लीडिंग।",
+        "इनके लिए स्त्री रोग विशेषज्ञ (gynaecologist) को दिखाना ज़रूरी है। आम तौर पर एक सोनोग्राफी होती है और अक्सर बच्चेदानी की परत का छोटा टेस्ट। ज़्यादातर कारण फाइब्रॉइड, पॉलिप या हार्मोन का उतार-चढ़ाव होते हैं, पर जाँच ही बताती है।",
+        "एक बात और। थकान, दिल की धड़कन तेज़ होना और ज़्यादा ब्लीडिंग, ये खून की कमी (low iron) और थायरॉइड की गड़बड़ी में भी होते हैं। एक आसान ब्लड टेस्ट दोनों जाँच लेता है। हर लक्षण को उम्र पर मत डालिए।"
+      ],
+      "see_doctor_en": [
+        "Pad soaked every 1 to 2 hours, or bleeding with dizziness or breathlessness: see a doctor today; call 108 or 112 if you feel faint.",
+        "Bleeding over 8 days, clots the size of a 10-rupee coin, or bleeding between periods or after sex: a gynaecologist this week.",
+        "Tired, breathless or heart racing with heavy periods: ask for a haemoglobin test at your PHC or Ayushman Arogya Mandir, and a thyroid test at the CHC or district hospital (some PHCs send the sample for you).",
+        "No period for 2 months and you could be pregnant: home pregnancy test, then a doctor.",
+        "Free options: government hospital gynaecology OPD, eSanjeevani video consult, 104 health helpline (many states)."
+      ],
+      "see_doctor_hi": [
+        "हर 1 से 2 घंटे में पैड भर रहा है, या ब्लीडिंग के साथ चक्कर या साँस फूलना: आज ही डॉक्टर; बेहोशी जैसा लगे तो 108 या 112।",
+        "8 दिन से ज़्यादा ब्लीडिंग, 10 रुपये के सिक्के जितने थक्के, या बीच में या संबंध के बाद ब्लीडिंग: इसी हफ़्ते स्त्री रोग विशेषज्ञ।",
+        "ज़्यादा ब्लीडिंग के साथ थकान, साँस फूलना या तेज़ धड़कन: PHC या आयुष्मान आरोग्य मंदिर पर हीमोग्लोबिन टेस्ट, और थायरॉइड टेस्ट CHC या ज़िला अस्पताल में (कुछ PHC सैंपल भिजवा देते हैं)।",
+        "2 महीने से पीरियड नहीं और प्रेग्नेंसी की गुंजाइश: घर पर प्रेग्नेंसी टेस्ट, फिर डॉक्टर।",
+        "मुफ़्त विकल्प: सरकारी अस्पताल की स्त्री रोग OPD, eSanjeevani वीडियो परामर्श, 104 हेल्पलाइन (कई राज्यों में)।"
+      ],
+      "qura_line_en": "A Qura doctor can go through your cycle diary, tell you which blood tests to ask for and read the reports with you, and help with iron-rich food and energy; bleeding that is heavy, long or between periods needs an MBBS gynaecologist for a scan.",
+      "qura_line_hi": "Qura के डॉक्टर आपकी पीरियड डायरी देख सकते हैं, बता सकते हैं कि कौन से ब्लड टेस्ट माँगें और रिपोर्ट आपके साथ पढ़ सकते हैं, और आयरन वाले खाने और ताक़त पर मदद कर सकते हैं; ज़्यादा, लंबी या बीच में होने वाली ब्लीडिंग के लिए सोनोग्राफी MBBS स्त्री रोग विशेषज्ञ से।",
+      "sources": [
+        "STRAW+10, Harlow 2012 (7-day cycle variability; 60-day gaps): https://pmc.ncbi.nlm.nih.gov/articles/PMC3340903/",
+        "NHS, Heavy periods (pad every 1 to 2 hours, large clots, over 7 to 8 days; see a GP if you bleed between periods or after sex): https://www.nhs.uk/conditions/heavy-periods/",
+        "FIGO 2018 AUB system (normal duration up to 8 days; intermenstrual bleeding as abnormal): https://pubmed.ncbi.nlm.nih.gov/30083701/",
+        "Indian Menopause Society 2026, item 166 (endometrial biopsy recommended in all women aged 40 and over presenting with AUB, no grade) and item 168 (transvaginal ultrasound first-line for perimenopausal AUB, no grade): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "NHS, About HRT (contraception needed until 2 years after last period under 50): https://www.nhs.uk/medicines/hormone-replacement-therapy-hrt/about-hormone-replacement-therapy-hrt/",
+        "NHSRC Guidance document for Free Laboratory Services (19 tests at PHC, 39 at CHC) and ICMR National Essential Diagnostics List 2019 Tables 3 and 4 (haemoglobin at PHC; TSH at CHC and district level via hub and spoke)",
+        "Research report sections 5.2 and 5.3 (R2, R7, R8); product vision section 3.5 card 2 and rules registry 5.5"
+      ],
+      "notes": "'Clots the size of a 10-rupee coin' is the registry R2 phrasing (NHS uses a 10p coin). The 'today' urgency for dizziness or breathlessness is doctor consensus, not a sourced threshold. The bleeding-between-periods and after-sex trigger comes from FIGO 2018 and the NHS heavy periods page, not from IMS items 166 and 168, which cover biopsy and TVS for AUB at 40+. 'Often a small test of the womb lining' follows IMS item 166 (biopsy in all AUB at 40+); doctors to confirm 'often' against Indian OPD practice. Thyroid testing is placed at CHC or district level per NEDL 2019; the Arunachal Pradesh FDI report 2022 excludes hormone tests from the free package, so availability varies by state. The Qura line no longer promises to 'order' tests because the lab partner and BAMS requisition (vision doc section 5.7) are unconfirmed."
+    },
+    {
+      "id": "hot-flushes-night-sweats",
+      "title_en": "Hot flushes and night sweats: what helps, and who can prescribe",
+      "title_hi": "हॉट फ्लश और रात का पसीना: क्या मदद करता है, और दवा कौन लिख सकता है",
+      "summary_en": "Hot flushes are common but not universal in India; simple habits help a little, hormone therapy helps the most, and an MBBS gynaecologist is the one to prescribe it.",
+      "summary_hi": "हॉट फ्लश आम हैं पर हर भारतीय महिला को नहीं होते; आसान आदतें थोड़ी मदद करती हैं, हार्मोन थेरेपी सबसे ज़्यादा, और उसे MBBS स्त्री रोग विशेषज्ञ ही लिखते हैं।",
+      "body_en": [
+        "Everyone says hot flushes are the sign of menopause, right? They are the best known one. But in one rural Haryana study, far more women reported anxiety than hot flushes. If your main trouble is worry and poor sleep, that can be part of the transition too.",
+        "A hot flush is a sudden wave of heat in the face, neck and chest, often with sweat and a racing heart. At night it wakes you drenched. It passes in minutes. It is tiring, not dangerous.",
+        "What you can try today: thin cotton layers, a cooler room, water by the bed, less tea, chilli and alcohol, no smoking, and a steady weight. These help some women, not all.",
+        "On exercise and yoga the evidence is mixed. The Indian Menopause Society finds regular exercise eases flushes. The US Menopause Society does not recommend exercise or yoga for flushes. Both agree it is good for your bones and your heart, so move anyway.",
+        "What works best is hormone therapy. It is a prescription medicine, and in India an MBBS gynaecologist prescribes it after checking your history. If you cannot take hormones, there are non-hormone prescription medicines, and a talking therapy called CBT also helps.",
+        "No herbal powder, tea or capsule has good evidence for hot flushes: the Indian Menopause Society grades the evidence as weak, and the US Menopause Society does not recommend supplements for flushes. Quality of over-the-counter supplements also varies a lot, so tell your doctor what you take."
+      ],
+      "body_hi": [
+        "सब कहते हैं कि हॉट फ्लश ही मेनोपॉज़ की पहचान है, है ना? यह सबसे जाना-पहचाना लक्षण है। पर हरियाणा के एक गाँव के अध्ययन में हॉट फ्लश से कहीं ज़्यादा महिलाओं ने घबराहट (anxiety) बताई। अगर आपकी मुख्य परेशानी चिंता और कम नींद है, तो वह भी इसी बदलाव का हिस्सा हो सकती है।",
+        "हॉट फ्लश में चेहरे, गर्दन और छाती में अचानक गर्मी की लहर उठती है, अक्सर पसीने और तेज़ धड़कन के साथ। रात में आप पसीने से भीगकर जाग जाती हैं। यह कुछ मिनट में उतर जाता है। थका देता है, पर खतरनाक नहीं है।",
+        "आज से क्या कर सकती हैं: पतले सूती कपड़े तह में पहनें, कमरा ठंडा रखें, बिस्तर के पास पानी रखें, चाय, मिर्च और शराब कम करें, धूम्रपान बंद करें, और वज़न स्थिर रखें। यह कुछ महिलाओं को मदद करता है, सबको नहीं।",
+        "कसरत और योग पर सबूत मिले-जुले हैं। Indian Menopause Society मानती है कि नियमित कसरत से फ्लश कम होते हैं। अमेरिका की Menopause Society फ्लश के लिए कसरत या योग की सलाह नहीं देती। दोनों मानती हैं कि यह हड्डी और दिल के लिए अच्छा है, तो चलना-फिरना जारी रखें।",
+        "सबसे ज़्यादा असर हार्मोन थेरेपी का है। यह पर्ची वाली दवा है, और भारत में MBBS स्त्री रोग विशेषज्ञ आपकी हिस्ट्री देखकर लिखते हैं। अगर आप हार्मोन नहीं ले सकतीं, तो बिना हार्मोन की पर्ची वाली दवाएँ हैं, और CBT नाम की बातचीत वाली थेरेपी भी मदद करती है।",
+        "किसी भी जड़ी-बूटी के चूर्ण, चाय या कैप्सूल के पास हॉट फ्लश के लिए पक्का सबूत नहीं है: Indian Menopause Society इसे कमज़ोर सबूत मानती है और अमेरिका की Menopause Society सप्लीमेंट की सलाह नहीं देती। बाज़ार के सप्लीमेंट की क्वालिटी भी बहुत अलग-अलग होती है, इसलिए डॉक्टर को बताएँ कि आप क्या ले रही हैं।"
+      ],
+      "see_doctor_en": [
+        "Flushes or night sweats that wake you 2 or more nights a week, or stop you working: see a doctor; ask about hormone and non-hormone options.",
+        "Flushes with weight loss, a racing heart at rest, or shaking hands: ask for a thyroid test, as an overactive thyroid feels similar.",
+        "Flushes with a new fever, or sweats with cough or weight loss: a doctor soon, to rule out infection.",
+        "Low mood or hopeless thoughts alongside: Tele-MANAS 14416, free, 24 hours.",
+        "Free options: PHC or Ayushman Arogya Mandir, eSanjeevani, government hospital gynaecology OPD."
+      ],
+      "see_doctor_hi": [
+        "फ्लश या रात का पसीना हफ़्ते में 2 या ज़्यादा रातें जगा दे, या काम रुकवा दे: डॉक्टर को दिखाएँ; हार्मोन और बिना हार्मोन के विकल्प पूछें।",
+        "फ्लश के साथ वज़न घटना, आराम में भी तेज़ धड़कन, या हाथ काँपना: थायरॉइड टेस्ट माँगें; थायरॉइड बढ़ने पर भी ऐसा ही लगता है।",
+        "फ्लश के साथ नया बुख़ार, या पसीने के साथ खाँसी या वज़न घटना: जल्दी डॉक्टर, इन्फ़ेक्शन की जाँच के लिए।",
+        "साथ में उदासी या निराशा के ख़याल: Tele-MANAS 14416, मुफ़्त, 24 घंटे।",
+        "मुफ़्त विकल्प: PHC या आयुष्मान आरोग्य मंदिर, eSanjeevani, सरकारी अस्पताल की स्त्री रोग OPD।"
+      ],
+      "qura_line_en": "A Qura doctor can help you with sleep routine, food and weight, suggest a thyroid test and read the report with you, and will refer you on; hormone therapy itself needs an MBBS gynaecologist, and our doctors do not prescribe it.",
+      "qura_line_hi": "Qura के डॉक्टर नींद की दिनचर्या, खाने और वज़न में मदद कर सकते हैं, थायरॉइड टेस्ट की सलाह देकर रिपोर्ट आपके साथ देख सकते हैं, और आगे रेफ़र करेंगे; हार्मोन थेरेपी MBBS स्त्री रोग विशेषज्ञ ही लिखते हैं, हमारे डॉक्टर नहीं।",
+      "sources": [
+        "NHS, Menopause: things you can do (clothing, cool room, triggers, CBT): https://www.nhs.uk/conditions/menopause/things-you-can-do/",
+        "The Menopause Society 2023 nonhormone therapy position statement (exercise and yoga Level II not recommended; supplements and herbal remedies Level I to II not recommended; CBT, hypnosis and prescription options recommended): https://menopause.org/wp-content/uploads/press-release/nonhormone-therapy-position-statement-release.pdf",
+        "Indian Menopause Society 2026, item 234 Grade A (exercise reduces VMS severity); item 38 and item 41 Grade D (Shatavari, Ashoka and soy 'may show promise'; 'In India, herbal and nutraceutical products are not regulated for potency, purity, or quality'): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "NICE NG23 2024 update (HRT first line for vasomotor symptoms; menopause-specific CBT): https://www.nice.org.uk/guidance/ng23",
+        "Research report section 5.2 (Haryana anxiety vs hot flushes study, medium confidence); product vision section 3.5 card 3"
+      ],
+      "notes": "The Rohtak/Haryana figures (80% anxiety vs 36.7% hot flushes) are medium confidence in the report, so numbers are left out of the body. 'Non-hormone prescription medicines' is deliberately generic: no drug names, and fezolinetant has no CDSCO approval found. NICE NG23 primary page returned 403; CBT and HRT first-line wording verified via QS143 and 2024 update coverage. The supplement paragraph keeps the quality point generic in the body; the IMS item 41 regulation wording sits in the source line only, since licensed ASU medicines are regulated under the Drugs and Cosmetics Act Chapter IVA and Schedule T GMP."
+    },
+    {
+      "id": "hormone-therapy-explained",
+      "title_en": "Hormone therapy (HRT): what it is, who prescribes it, who should not take it",
+      "title_hi": "हार्मोन थेरेपी (HRT): यह क्या है, कौन लिखता है, किसे नहीं लेनी चाहिए",
+      "summary_en": "HRT replaces the oestrogen your body stops making; it is the most effective treatment for menopause symptoms, needs an MBBS gynaecologist to prescribe, and is not for everyone.",
+      "summary_hi": "HRT वह एस्ट्रोजन देती है जो शरीर बनाना बंद कर देता है; मेनोपॉज़ के लक्षणों के लिए यह सबसे असरदार इलाज है, इसे MBBS स्त्री रोग विशेषज्ञ लिखते हैं, और यह हर किसी के लिए नहीं है।",
+      "body_en": [
+        "Most women have heard HRT is dangerous, right? That fear comes from one large study from 2002 of mostly older women. Guidance since then is clearer: for most healthy women under 60, or within 10 years of their last period, with troublesome symptoms, the benefits outweigh the risks. The US and UK menopause societies both say so. The risk picture changes if you start later. It is still a decision to make with a doctor, not from a WhatsApp forward.",
+        "What it is: oestrogen, as a tablet, patch, gel or spray, usually with progesterone to protect the womb lining. If your uterus has been removed, oestrogen alone. Low-dose vaginal oestrogen is a separate, local treatment for dryness.",
+        "What it does: eases hot flushes and night sweats, helps the sleep and mood that flushes disturb, eases dryness, and protects your bones.",
+        "Who prescribes it in India: an MBBS gynaecologist. It is a Schedule H medicine. An Ayurvedic doctor does not prescribe it and will refer you.",
+        "Who should not take it, or needs a specialist to decide: anyone who has had breast, ovarian or womb cancer; a past blood clot (patches or gel may still be possible); untreated high blood pressure; liver disease; or pregnancy. Yes, you can still get pregnant on HRT. It is not a contraceptive.",
+        "Two more points. Bleeding that comes back after the first 6 months on HRT, a monthly bleed that lasts over 7 days, or bleeding most days for 4 weeks, means contact the doctor who prescribed it. And buy it only with a prescription from a licensed pharmacy, never online without one."
+      ],
+      "body_hi": [
+        "ज़्यादातर महिलाओं ने सुना है कि HRT खतरनाक है, है ना? यह डर 2002 के एक बड़े अध्ययन से आया, जिसमें ज़्यादातर बड़ी उम्र की महिलाएँ थीं। उसके बाद की गाइडलाइन साफ़ है: 60 से कम उम्र की, या आख़िरी पीरियड के 10 साल के अंदर की ज़्यादातर स्वस्थ महिलाओं में, जिन्हें लक्षण परेशान करते हैं, फ़ायदा नुकसान से ज़्यादा है। अमेरिका और UK की मेनोपॉज़ सोसाइटी दोनों यही कहती हैं। देर से शुरू करने पर हिसाब बदल जाता है। फिर भी यह फ़ैसला डॉक्टर के साथ बैठकर लेना है, WhatsApp फॉरवर्ड से नहीं।",
+        "यह क्या है: एस्ट्रोजन, गोली, पैच, जेल या स्प्रे के रूप में, आम तौर पर बच्चेदानी की परत बचाने के लिए प्रोजेस्टेरोन के साथ। अगर बच्चेदानी निकल चुकी है, तो सिर्फ़ एस्ट्रोजन। सूखेपन के लिए योनि में लगाने वाला कम डोज़ का एस्ट्रोजन अलग, लोकल इलाज है।",
+        "यह क्या करती है: हॉट फ्लश और रात का पसीना कम करती है, उनसे बिगड़ी नींद और मूड सुधारती है, सूखापन कम करती है, और हड्डियाँ बचाती है।",
+        "भारत में कौन लिखता है: MBBS स्त्री रोग विशेषज्ञ। यह शेड्यूल H की दवा है। आयुर्वेदिक डॉक्टर इसे नहीं लिखते और आपको रेफ़र करेंगे।",
+        "किसे नहीं लेनी चाहिए, या किसके लिए विशेषज्ञ तय करे: जिसे कभी स्तन, अंडाशय या बच्चेदानी का कैंसर हुआ हो; पहले खून का थक्का (clot) बना हो (पैच या जेल फिर भी संभव हो सकता है); बिना इलाज का हाई BP; लिवर की बीमारी; या प्रेग्नेंसी। हाँ, HRT पर भी प्रेग्नेंसी हो सकती है। यह गर्भनिरोधक नहीं है।",
+        "दो बातें और। HRT के पहले 6 महीने बीत जाने के बाद भी ब्लीडिंग होना, महीने की ब्लीडिंग 7 दिन से लंबी चलना, या 4 हफ़्ते तक ज़्यादातर दिन ब्लीडिंग होना, मतलब उसी डॉक्टर से संपर्क करें जिसने दवा लिखी। और दवा हमेशा पर्ची के साथ लाइसेंस वाली दुकान से लें, बिना पर्ची ऑनलाइन कभी नहीं।"
+      ],
+      "see_doctor_en": [
+        "Bleeding after the first 6 months on HRT, a monthly bleed lasting over 7 days, flooding or clots, or bleeding most days for 4 weeks: contact your prescribing doctor this week.",
+        "Sudden leg pain and swelling, chest pain or breathlessness on HRT: call 108 or 112 now.",
+        "A new breast lump, nipple discharge or skin change: a doctor within 2 weeks.",
+        "Want to know if HRT is for you: gynaecology OPD at a government hospital, or a free eSanjeevani consult to start."
+      ],
+      "see_doctor_hi": [
+        "HRT के पहले 6 महीने बीत जाने के बाद भी ब्लीडिंग, महीने की ब्लीडिंग 7 दिन से लंबी, बहुत ज़्यादा बहाव या थक्के, या 4 हफ़्ते तक ज़्यादातर दिन ब्लीडिंग: इसी हफ़्ते दवा लिखने वाले डॉक्टर से संपर्क करें।",
+        "HRT पर अचानक टाँग में दर्द और सूजन, छाती में दर्द या साँस फूलना: अभी 108 या 112 पर कॉल करें।",
+        "स्तन में नई गाँठ, निप्पल से स्राव या त्वचा में बदलाव: 2 हफ़्ते के अंदर डॉक्टर।",
+        "जानना है कि HRT आपके लिए है या नहीं: सरकारी अस्पताल की स्त्री रोग OPD, या शुरुआत के लिए eSanjeevani पर मुफ़्त परामर्श।"
+      ],
+      "qura_line_en": "A Qura doctor can explain the options, go through your BP readings and your sugar and thyroid reports, and write a summary for your gynaecologist; the HRT prescription and follow-up must come from an MBBS gynaecologist.",
+      "qura_line_hi": "Qura के डॉक्टर विकल्प समझा सकते हैं, आपकी BP की रीडिंग और शुगर-थायरॉइड रिपोर्ट देख सकते हैं, और आपके स्त्री रोग विशेषज्ञ के लिए सारांश लिख सकते हैं; HRT की पर्ची और फ़ॉलो-अप MBBS स्त्री रोग विशेषज्ञ से ही।",
+      "sources": [
+        "NHS, About HRT (who may not be able to take it; still possible to get pregnant on HRT): https://www.nhs.uk/medicines/hormone-replacement-therapy-hrt/about-hormone-replacement-therapy-hrt/",
+        "NHS, HRT guide index and benefits and risks: https://www.nhs.uk/medicines/hormone-replacement-therapy-hrt/",
+        "The 2022 Hormone Therapy Position Statement of The North American Menopause Society, Menopause 2022 (PMID 35797481): benefit-risk ratio favourable for women younger than 60 or within 10 years of menopause onset with no contraindications",
+        "British Menopause Society consensus statements on HRT (benefit and risk by age and time since menopause): https://thebms.org.uk/publications/consensus-statements/",
+        "NICE NG23 2024 update (HRT first line; individualised benefit and risk tables): https://www.nice.org.uk/guidance/ng23",
+        "British Menopause Society FAQs, Management of unscheduled bleeding on HRT, June 2026 (bleeding returning after 6 months; withdrawal bleed over 7 days; flooding or clots; bleeding most days for 4 weeks or more): https://thebms.org.uk/wp-content/uploads/2026/06/02-NEW-BMS-GUIDELINE-FAQs-Management-of-unscheduled-bleeding-HRT-JUNE2026-B.pdf",
+        "Research report section 6.3 (Schedule H; BAMS prescribing legally doubtful in Rajasthan); product vision section 3.5 card 4; rules registry R4"
+      ],
+      "notes": "'One large study from 2002 of mostly older women' refers to the WHI trial; not re-fetched this round. 'Under 60 or within 10 years of last period' is the TMS 2022 position statement wording; NICE NG23 2024 gives individualised risk tables rather than a blanket statement, so NICE is cited for 'first line' only. The BMS consensus statement page was not fetched directly. The clot and chest pain emergency line is standard NHS HRT advice, not fetched this round. The Qura line says 'BP readings' because a 20-minute video consult cannot measure blood pressure (Telemedicine Practice Guidelines 2020)."
+    },
+    {
+      "id": "early-menopause-poi",
+      "title_en": "Early menopause and POI: why 'before 40' and 'before 45' cannot wait",
+      "title_hi": "जल्दी मेनोपॉज़ और POI: '40 से पहले' और '45 से पहले' पर इंतज़ार क्यों नहीं",
+      "summary_en": "Periods stopping before 45 is early menopause and before 40 is premature ovarian insufficiency; both should be confirmed with a blood test and, unless there is a reason not to, treated with hormones until the usual age of menopause, which guidelines put at about 50, to protect bones and heart.",
+      "summary_hi": "45 से पहले पीरियड बंद होना जल्दी मेनोपॉज़ है और 40 से पहले POI; दोनों में ब्लड टेस्ट से पक्की जाँच चाहिए और, जब तक कोई रुकावट न हो, मेनोपॉज़ की आम उम्र, करीब 50, तक हार्मोन इलाज, ताकि हड्डी और दिल बचे रहें।",
+      "body_en": [
+        "If periods stop early, at least the monthly trouble is over, right? That is what many women are told, by family and sometimes by doctors. But stopping early is not a shortcut. The oestrogen your body loses years ahead of time was protecting your bones and heart.",
+        "The words: before 45 is early menopause. Before 40 is premature ovarian insufficiency, or POI. In India this is more common than people think: in a large national survey about 7 in 100 women recalled menopause before 40.",
+        "Causes include family history, surgery to remove the ovaries, chemotherapy or radiotherapy, some autoimmune conditions, and often no reason found at all. Smoking and very low weight raise the chance.",
+        "Diagnosis rests on your history plus an FSH blood test, usually repeated 4 to 6 weeks later if the first result is borderline, because hormones swing in this phase. AMH is not the test for this.",
+        "Why it cannot wait: guidelines say start hormone treatment, HRT or the combined pill, unless there is a reason you cannot take it, and continue until the usual age of menopause. Guidelines use about 50, the age most women worldwide reach menopause; your doctor decides the exact stopping point with you. Every year without it means faster bone loss. It only puts back what your body has stopped making.",
+        "If you have PMOS (PCOS), long gaps are common and usually come from the PMOS itself rather than early menopause. Still get checked; the blood test is the same and it settles the question."
+      ],
+      "body_hi": [
+        "अगर पीरियड जल्दी बंद हो जाएँ, तो कम से कम हर महीने की परेशानी तो गई, है ना? बहुत सी महिलाओं को यही कहा जाता है, घरवाले कहते हैं और कभी-कभी डॉक्टर भी। पर जल्दी बंद होना कोई शॉर्टकट नहीं है। जो एस्ट्रोजन शरीर समय से सालों पहले खो देता है, वह आपकी हड्डियों और दिल की रक्षा कर रहा था।",
+        "शब्द समझ लें: 45 से पहले बंद होना जल्दी मेनोपॉज़ है। 40 से पहले बंद होना POI (premature ovarian insufficiency) है। भारत में यह सोच से ज़्यादा आम है: एक बड़े राष्ट्रीय सर्वे में 100 में से करीब 7 महिलाओं ने बताया कि उनका मेनोपॉज़ 40 से पहले हुआ।",
+        "कारणों में परिवार में ऐसा इतिहास, अंडाशय निकालने का ऑपरेशन, कीमोथेरेपी या रेडियोथेरेपी, कुछ ऑटोइम्यून बीमारियाँ, और अक्सर कोई कारण मिलता ही नहीं। धूम्रपान और बहुत कम वज़न से गुंजाइश बढ़ती है।",
+        "जाँच आपकी हिस्ट्री और FSH ब्लड टेस्ट से होती है; पहला रिज़ल्ट साफ़ न हो तो 4 से 6 हफ़्ते बाद दोबारा, क्योंकि इस दौर में हार्मोन ऊपर-नीचे होते हैं। AMH इसका टेस्ट नहीं है।",
+        "देर क्यों नहीं करनी: गाइडलाइन कहती हैं कि हार्मोन इलाज, HRT या कंबाइंड गोली, शुरू करें, जब तक कोई रुकावट न हो, और मेनोपॉज़ की आम उम्र तक जारी रखें। गाइडलाइन करीब 50 कहती हैं, जिस उम्र में दुनिया की ज़्यादातर महिलाओं का मेनोपॉज़ होता है; बंद करने का सही समय डॉक्टर आपके साथ तय करेंगे। बिना इसके हर साल हड्डी तेज़ी से घिसती है। यह बस उस कमी को भरता है जो शरीर ने बनाना बंद कर दिया।",
+        "अगर आपको PMOS (PCOS) है, तो लंबे अंतर आम हैं और आम तौर पर PMOS की वजह से होते हैं, जल्दी मेनोपॉज़ से नहीं। फिर भी जाँच करवाएँ; टेस्ट वही है और उससे बात साफ़ हो जाती है।"
+      ],
+      "see_doctor_en": [
+        "Under 40 and no period for 4 months or more (not pregnant, not breastfeeding, not on hormones): see a doctor; rule out pregnancy first; a blood test is usually part of it.",
+        "Under 45 with hot flushes, night sweats or dryness and changing periods: a gynaecologist; ask about FSH testing and a bone density scan.",
+        "Had your ovaries removed, or chemotherapy or radiotherapy: ask your treating doctor how to protect your bones and heart; for some cancers hormone replacement is not safe and there are other options. Do not wait for symptoms.",
+        "Free options: government hospital gynaecology OPD (medical college hospitals have endocrine clinics too), eSanjeevani, 104 (many states)."
+      ],
+      "see_doctor_hi": [
+        "40 से कम और 4 महीने या ज़्यादा से पीरियड नहीं (प्रेग्नेंट नहीं, स्तनपान नहीं, हार्मोन नहीं): डॉक्टर को दिखाएँ; पहले प्रेग्नेंसी टेस्ट; आम तौर पर ब्लड टेस्ट होता है।",
+        "45 से कम, और हॉट फ्लश, रात का पसीना या सूखापन के साथ पीरियड बदल रहे हैं: स्त्री रोग विशेषज्ञ; FSH टेस्ट और हड्डी की डेंसिटी जाँच के बारे में पूछें।",
+        "अंडाशय निकल चुके हैं, या कीमोथेरेपी या रेडियोथेरेपी हुई है: अपने इलाज करने वाले डॉक्टर से पूछें कि हड्डी और दिल कैसे बचाएँ; कुछ कैंसर में हार्मोन की भरपाई सुरक्षित नहीं होती और दूसरे विकल्प होते हैं। लक्षणों का इंतज़ार न करें।",
+        "मुफ़्त विकल्प: सरकारी अस्पताल की स्त्री रोग OPD (मेडिकल कॉलेज अस्पतालों में एंडोक्राइन क्लिनिक भी होते हैं), eSanjeevani, 104 (कई राज्यों में)।"
+      ],
+      "qura_line_en": "A Qura doctor can suggest thyroid and prolactin tests, since both cause the same long gaps, read the reports with you, and help with bone-friendly food and strength exercise; the FSH diagnosis and hormone treatment must come from an MBBS gynaecologist.",
+      "qura_line_hi": "Qura के डॉक्टर थायरॉइड और प्रोलैक्टिन टेस्ट की सलाह दे सकते हैं, क्योंकि इनसे भी ऐसे लंबे अंतर होते हैं, रिपोर्ट आपके साथ पढ़ सकते हैं, और हड्डी के लिए अच्छे खाने और ताक़त की कसरत में मदद कर सकते हैं; FSH से पक्की जाँच और हार्मोन इलाज MBBS स्त्री रोग विशेषज्ञ से।",
+      "sources": [
+        "NHS, Early menopause (before 45 early, before 40 premature; replace missing hormones with HRT or combined pill; women with some cancers, including some breast cancers, may not be able to have hormone treatment): https://www.nhs.uk/conditions/early-menopause/",
+        "NICE QS143 statements 2 and 3 citing NG23 rec 1.7.2 and 1.7.6 (FSH on two samples 4 to 6 weeks apart; HRT or combined hormonal contraception unless contraindicated, until at least the age of natural menopause): https://www.nice.org.uk/guidance/qs143/chapter/Quality-statement-3-Managing-premature-ovarian-insufficiency",
+        "NICE NG23 pathway (POI diagnosis and treatment): https://www.ncbi.nlm.nih.gov/books/NBK552590/bin/niceng23guid_pathway1.pdf",
+        "ESHRE/ASRM/IMS/Monash 2024 evidence-based guideline on premature ovarian insufficiency (one FSH above 25 IU/L with 4 or more months of irregular or absent periods; repeat only if the diagnosis is unclear), via the Monash MCHRI POI guideline toolkit 2024",
+        "Indian Menopause Society 2026, item 38 (POI criterion: FSH above 25 IU/L with amenorrhoea or irregular cycles for 4 months or more, under 40), Section 4 item 41 (DXA at POI diagnosis), item 135 Grade B (POI and early menopause raise osteoporosis risk), item 40 Grade B (oestrogen until average age of natural menopause after oophorectomy), item 61 (Indian mean age at natural menopause 46.6): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "LASI analysis (7.4% recalled menopause before 40): https://pmc.ncbi.nlm.nih.gov/articles/PMC11709050/",
+        "Research report section 5.2 (M4) and 5.3; product vision section 3.5; POI reference PMC11631070 via report"
+      ],
+      "notes": "NICE NG23 primary page returned 403; POI wording verified via QS143 and the NG23 pathway PDF. The FSH line now follows the 2024 international POI guideline and IMS 2026 item 38 (one test, repeat if unclear) rather than NICE's two samples; 'usually repeated if borderline' covers both routes. 'About 50' follows NICE's 'at least the natural age of menopause' and is now explained in the body against the Indian average of 46.6. The PCOS paragraph follows rule M4: 'worth checking', no early-menopause call either way. Autoimmune causes are general knowledge not fetched this round; the rest of the causes list is NHS. The Qura line says 'suggest' tests because the lab partner and BAMS requisition are unconfirmed (vision doc section 5.7)."
+    },
+    {
+      "id": "bones-heart-after-40",
+      "title_en": "Bones and heart after 40: the checks and the habits",
+      "title_hi": "40 के बाद हड्डी और दिल: कौन सी जाँच, कौन सी आदतें",
+      "summary_en": "After 40 the fall in oestrogen speeds up bone loss and raises heart risk; a few free checks and three habits do most of the protecting.",
+      "summary_hi": "40 के बाद एस्ट्रोजन घटने से हड्डी तेज़ी से घिसती है और दिल का खतरा बढ़ता है; कुछ मुफ़्त जाँचें और तीन आदतें ज़्यादातर बचाव कर देती हैं।",
+      "body_en": [
+        "Heart trouble is a men's problem, right? Until menopause, oestrogen gives women some protection. After it, that protection goes, and bone loss speeds up in the first years after periods stop. The good news: most of the protection is cheap or free.",
+        "Checks from 40, free at your Ayushman Arogya Mandir or PHC under the national NCD programme: blood pressure and blood sugar every year, and a waist measurement. For Indian women 80 cm is the action line. Ask for a cholesterol (lipid) test too.",
+        "Screening: cervical screening every 5 years from 30 to 65, free at government facilities. A breast examination by a trained health worker every 5 years from 30 to 65 under the same programme, free at your Ayushman Arogya Mandir, and sooner any time you notice a change. A mammogram every 2 to 3 years where available. And a bone density scan once you are 5 or more years past your last period.",
+        "- Calcium from food, at least 800 mg a day, more after menopause (the national RDA is 1,000 to 1,200 mg): milk, curd, ragi, til, leafy greens, dals. Food first; ask a doctor before any calcium tablet, and ask whether you need vitamin D.",
+        "- Move: 30 minutes of brisk walking 5 days a week, plus something that loads your bones twice a week, like squats, stairs or carrying a filled bucket.",
+        "- No tobacco, including gutka, and little or no alcohol.",
+        "If BP or sugar is high, the medicines come from a PHC doctor or MBBS physician. Jan Aushadhi Kendras sell generic versions cheaply."
+      ],
+      "body_hi": [
+        "दिल की बीमारी मर्दों की समस्या है, है ना? मेनोपॉज़ तक एस्ट्रोजन महिलाओं को कुछ सुरक्षा देता है। उसके बाद वह सुरक्षा चली जाती है, और पीरियड बंद होने के शुरुआती सालों में हड्डी तेज़ी से घिसती है। अच्छी बात यह है कि ज़्यादातर बचाव सस्ता या मुफ़्त है।",
+        "40 से जाँचें, आपके आयुष्मान आरोग्य मंदिर या PHC पर राष्ट्रीय NCD कार्यक्रम के तहत मुफ़्त: हर साल BP और शुगर, और कमर की माप। भारतीय महिलाओं के लिए 80 सेंटीमीटर से ऊपर कमर मतलब कदम उठाने का समय। कोलेस्ट्रॉल (lipid) टेस्ट भी माँगें।",
+        "स्क्रीनिंग: 30 से 65 की उम्र में हर 5 साल में सर्वाइकल (बच्चेदानी के मुँह की) जाँच, सरकारी केंद्र पर मुफ़्त। हर 5 साल में प्रशिक्षित स्वास्थ्य कार्यकर्ता से स्तन की जाँच (30 से 65, आयुष्मान आरोग्य मंदिर पर मुफ़्त), और कोई बदलाव दिखे तो तुरंत। जहाँ उपलब्ध हो, हर 2 से 3 साल में मैमोग्राम। और आख़िरी पीरियड के 5 साल या ज़्यादा बीत जाने पर एक बार हड्डी की डेंसिटी (BMD) जाँच।",
+        "- कैल्शियम खाने से, दिन में कम से कम 800 मिलीग्राम, मेनोपॉज़ के बाद और ज़्यादा (राष्ट्रीय RDA 1,000 से 1,200 मिलीग्राम है): दूध, दही, रागी, तिल, हरी पत्तेदार सब्ज़ी, दाल। पहले खाना; कैल्शियम की कोई भी गोली डॉक्टर से पूछकर, और यह भी पूछें कि विटामिन D चाहिए या नहीं।",
+        "- चलें-फिरें: हफ़्ते में 5 दिन 30 मिनट तेज़ चाल, और हफ़्ते में दो बार कुछ ऐसा जो हड्डियों पर ज़ोर डाले, जैसे उठक-बैठक, सीढ़ियाँ या भरी बाल्टी उठाना।",
+        "- तंबाकू नहीं, गुटखा भी नहीं, और शराब नहीं या बहुत कम।",
+        "अगर BP या शुगर ज़्यादा है, तो दवा PHC के डॉक्टर या MBBS फ़िज़िशियन से मिलती है। जन औषधि केंद्र पर जेनेरिक दवाएँ सस्ती मिलती हैं।"
+      ],
+      "see_doctor_en": [
+        "Chest pain, pressure or tightness, especially with breathlessness, sweating or pain in the jaw or arm: call 108 or 112 now. In women it can feel like indigestion or sudden tiredness.",
+        "A fall from standing height that breaks a bone, or height loss and a stooped back: ask for a bone density scan.",
+        "BP 140/90 or above on two visits, or sugar above the normal range: PHC doctor for medicines and a plan.",
+        "Free: Ayushman Arogya Mandir and PHC screening (everyone 30+), eSanjeevani, 104 health helpline (many states), Jan Aushadhi Kendra for generic medicines."
+      ],
+      "see_doctor_hi": [
+        "छाती में दर्द, दबाव या भारीपन, ख़ास तौर पर साँस फूलने, पसीने या जबड़े या बाँह में दर्द के साथ: अभी 108 या 112 पर कॉल करें। महिलाओं में यह बदहज़मी या अचानक थकान जैसा भी लग सकता है।",
+        "खड़े-खड़े गिरने से हड्डी टूट जाए, या कद घटे और पीठ झुके: हड्डी की डेंसिटी जाँच माँगें।",
+        "दो बार की जाँच में BP 140/90 या ऊपर, या शुगर सामान्य से ज़्यादा: PHC के डॉक्टर से दवा और योजना।",
+        "मुफ़्त: आयुष्मान आरोग्य मंदिर और PHC की स्क्रीनिंग (30 से ऊपर सबके लिए), eSanjeevani, 104 हेल्थ हेल्पलाइन (कई राज्यों में), जेनेरिक दवाओं के लिए जन औषधि केंद्र।"
+      ],
+      "qura_line_en": "A Qura doctor can review your BP, sugar and cholesterol reports and build a calcium-rich Indian diet plan and a walking and strength routine with you; BP, sugar and bone medicines are Schedule H and come from a PHC doctor or MBBS physician.",
+      "qura_line_hi": "Qura के डॉक्टर आपकी BP, शुगर और कोलेस्ट्रॉल रिपोर्ट देख सकते हैं, कैल्शियम वाला भारतीय खाना और चलने-ताक़त की दिनचर्या आपके साथ बना सकते हैं; BP, शुगर और हड्डी की दवाएँ शेड्यूल H हैं और PHC के डॉक्टर या MBBS फ़िज़िशियन से मिलती हैं।",
+      "sources": [
+        "Indian Menopause Society 2026 (calcium above 800 mg/day mainly from food, items 109 and 116 and Section 6 item 28; DXA for all women 5+ years past menopause, Grade B; 30 min moderate activity mainly 5 days a week plus muscle strengthening at least 2 days a week, item 31; brisk walking 30 min 4 to 5 times a week, item 122 Grade A; cervical screening 30 to 65 every 5 years, item 32 Grade A; clinical breast examination, Section 5 item 8 Grade B, no interval stated; selective or opportunistic mammography every 2 to 3 years, Section 5 item 10 Grade B; BP target and 140/90 treatment threshold): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "ICMR-NIN Nutrient Requirements for Indians 2020 (RDA calcium 1,000 mg for adult women, plus 200 mg for postmenopausal and lactating women)",
+        "Waist 80 cm for Indian women: Misra A et al., Consensus statement for diagnosis of obesity, abdominal obesity and the metabolic syndrome for Asian Indians, JAPI 2009;57:163-70; IDF South Asian cut-off. IMS 2026 Table 7 lists WHO above 80 cm (action line 1) and an Indian cut-off above 72 cm.",
+        "MoHFW Operational Framework for Screening and Management of Common Cancers 2016, delivered under NP-NCD (clinical breast examination and cervical screening every 5 years for women 30 to 65); NHSRC Aspirational Block Programme NP-NCD screening intervals",
+        "MoHFW press release, NP-NCD population-based screening of everyone 30+ for hypertension, diabetes and oral, breast and cervical cancer at Ayushman Arogya Mandirs: https://mohfw.gov.in/press-info/8408",
+        "NHS, Early menopause (lower oestrogen raises osteoporosis and cardiovascular risk): https://www.nhs.uk/conditions/early-menopause/",
+        "Product vision section 3.5, bone and heart checklist"
+      ],
+      "notes": "The exercise bullet is sourced to IMS 2026 item 31 (30 min moderate activity, mainly 5 days a week, plus strength at least 2 days a week) and item 122 Grade A (brisk walking 4 to 5 times a week). The breast examination interval now follows the government programme (every 5 years, 30 to 65); IMS gives CBE Grade B without an interval, and the 2 to 3 years belongs to mammography. ICMR-NIN 2020 RDA figures are taken from the NIN RDA brief note and press coverage, not the full report. The claim about heart risk after menopause is kept qualitative; no Indian mortality figure printed. Which generics Jan Aushadhi stocks is not verified. The 2025 NCD screening drive was time-limited; routine 30+ screening is the standing NP-NCD strategy. The heart attack symptoms in women line is standard advice, not fetched."
+    },
+    {
+      "id": "bleeding-after-menopause",
+      "title_en": "Bleeding after menopause: always get it checked",
+      "title_hi": "मेनोपॉज़ के बाद ब्लीडिंग: हमेशा जाँच करवाएँ",
+      "summary_en": "Any bleeding or spotting 12 months or more after your last period is not a 'last period'; most causes are harmless, but it always needs a gynaecologist within about 2 weeks.",
+      "summary_hi": "आख़िरी पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग या धब्बा 'आख़िरी पीरियड' नहीं है; ज़्यादातर कारण हानिरहित हैं, पर करीब 2 हफ़्ते में स्त्री रोग विशेषज्ञ को दिखाना हमेशा ज़रूरी है।",
+      "body_en": [
+        "A little spotting a year after periods stopped is just the body finishing up, right? That is what most women decide, and it is the one decision in this phase we most want you to change. Once you have gone 12 months without a period, any bleeding, however small, even once, needs a doctor.",
+        "Most of the time the cause is not serious: the thinned lining of the vagina or womb, a small polyp, or inflammation. Sometimes it is a thickened womb lining that can become cancer if left. Occasionally it is cancer of the womb. Found early, it is very treatable. Waiting is what makes it dangerous.",
+        "What the gynaecologist does: an examination, a vaginal ultrasound to measure the womb lining, and if needed a small tissue sample (biopsy) from the lining, sometimes with a thin camera. It is done in an OPD or day care. Government medical college hospitals do this free or nearly free.",
+        "Two notes. If you are on HRT, bleeding is handled by the doctor who prescribed it. And if you had your uterus removed and still bleed from the vagina, that also needs a gynaecologist.",
+        "Please also tell the doctor about any herbal or Ayurvedic product you have been taking, so the full picture is in front of them."
+      ],
+      "body_hi": [
+        "पीरियड बंद होने के साल भर बाद थोड़ा धब्बा आना बस शरीर का काम पूरा करना है, है ना? ज़्यादातर महिलाएँ यही तय कर लेती हैं, और इस दौर का यही एक फ़ैसला है जिसे हम सबसे ज़्यादा बदलवाना चाहते हैं। जब आपके 12 महीने बिना पीरियड पूरे हो गए, तो उसके बाद कोई भी ब्लीडिंग, चाहे कितनी कम हो, चाहे एक बार हो, डॉक्टर को दिखानी है।",
+        "ज़्यादातर बार कारण गंभीर नहीं होता: योनि या बच्चेदानी की पतली हुई परत, छोटा पॉलिप, या सूजन। कभी-कभी बच्चेदानी की मोटी हुई परत होती है, जो छोड़ दें तो कैंसर बन सकती है। कभी-कभार बच्चेदानी का कैंसर होता है। जल्दी पकड़ में आए तो इलाज बहुत अच्छा है। इंतज़ार ही इसे खतरनाक बनाता है।",
+        "स्त्री रोग विशेषज्ञ क्या करते हैं: जाँच, बच्चेदानी की परत मापने के लिए सोनोग्राफी, और ज़रूरत हो तो परत का छोटा सा नमूना (biopsy), कभी पतले कैमरे से। यह OPD या डे-केयर में हो जाता है। सरकारी मेडिकल कॉलेज अस्पताल में यह मुफ़्त या बहुत कम खर्च में होता है।",
+        "दो बातें। अगर आप HRT पर हैं, तो ब्लीडिंग उसी डॉक्टर को दिखाएँ जिसने दवा लिखी। और अगर बच्चेदानी निकल चुकी है और फिर भी योनि से ब्लीडिंग हो, तो वह भी स्त्री रोग विशेषज्ञ को दिखानी है।",
+        "डॉक्टर को यह भी बताएँ कि आप कोई जड़ी-बूटी या आयुर्वेदिक चीज़ ले रही हैं, ताकि पूरी तस्वीर उनके सामने हो।"
+      ],
+      "see_doctor_en": [
+        "Any bleeding or spotting 12 months or more after your last period: a gynaecologist within about 2 weeks, even if it was once and tiny.",
+        "Heavy bleeding with dizziness, fainting or breathlessness: call 108 or 112, or go to the nearest hospital now.",
+        "Bleeding after hysterectomy: a gynaecologist.",
+        "On HRT and bleeding after the first 6 months, a monthly bleed lasting over 7 days, or bleeding most days for 4 weeks: your prescribing doctor this week.",
+        "Free: government hospital gynaecology OPD (district hospital or medical college), eSanjeevani to arrange a referral, 104 (many states)."
+      ],
+      "see_doctor_hi": [
+        "आख़िरी पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग या धब्बा: करीब 2 हफ़्ते में स्त्री रोग विशेषज्ञ, चाहे एक बार और थोड़ा सा ही हो।",
+        "ज़्यादा ब्लीडिंग के साथ चक्कर, बेहोशी या साँस फूलना: 108 या 112 पर कॉल करें, या अभी नज़दीकी अस्पताल जाएँ।",
+        "बच्चेदानी निकलने के बाद ब्लीडिंग: स्त्री रोग विशेषज्ञ।",
+        "HRT पर हैं और पहले 6 महीने बीत जाने के बाद भी ब्लीडिंग, महीने की ब्लीडिंग 7 दिन से लंबी, या 4 हफ़्ते तक ज़्यादातर दिन: इसी हफ़्ते दवा लिखने वाले डॉक्टर।",
+        "मुफ़्त: सरकारी अस्पताल की स्त्री रोग OPD (ज़िला अस्पताल या मेडिकल कॉलेज), रेफ़रल के लिए eSanjeevani, 104 (कई राज्यों में)।"
+      ],
+      "qura_line_en": "This is not something a Qura doctor can check online; please see an MBBS gynaecologist in person first. Afterwards, a Qura doctor can help you understand the report and what comes next.",
+      "qura_line_hi": "यह Qura के डॉक्टर ऑनलाइन नहीं जाँच सकते; पहले MBBS स्त्री रोग विशेषज्ञ को सामने जाकर दिखाएँ। उसके बाद Qura के डॉक्टर रिपोर्ट समझने और आगे क्या, इसमें मदद कर सकते हैं।",
+      "sources": [
+        "NHS, Post-menopausal bleeding (see a GP even if small or once; causes; tests; specialist within 2 weeks): https://www.nhs.uk/conditions/post-menopausal-bleeding/",
+        "Indian Menopause Society 2026 (PMB definition Grade A; evaluation with ultrasound and guided biopsy, item 26 Grade A; report any unexpected bleeding, item 64 Grade A): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "British Menopause Society FAQs, Management of unscheduled bleeding on HRT, June 2026: https://thebms.org.uk/wp-content/uploads/2026/06/02-NEW-BMS-GUIDELINE-FAQs-Management-of-unscheduled-bleeding-HRT-JUNE2026-B.pdf",
+        "Rules registry R3, R4 and R13 in docs/_product-vision-womens-health-companion-oct18.md section 5.5; research report section 5.3"
+      ],
+      "notes": "'Within about 2 weeks' is the UK NHS referral standard, not an Indian pathway. R13 (bleeding after hysterectomy) is doctor consensus with no external source fetched. The herbal-products line is the coordinator question from R3/R13, kept generic; no evidence on specific herbs and the womb lining was fetched. 'Free or nearly free at government medical college hospitals' is general knowledge of public hospital charges, not fetched. The HRT line now carries the BMS June 2026 'monthly bleed over 7 days' trigger so it matches the HRT article."
+    },
+    {
+      "id": "sleep-mood-dryness-midlife",
+      "title_en": "Sleep, mood and dryness in midlife",
+      "title_hi": "बीच की उम्र में नींद, मूड और सूखापन",
+      "summary_en": "Broken sleep, anxiety or low mood, and vaginal dryness are as much part of the transition as hot flushes, and each has help that works.",
+      "summary_hi": "टूटी नींद, घबराहट या उदासी, और योनि का सूखापन भी हॉट फ्लश की तरह इस बदलाव का हिस्सा हैं, और हर एक के लिए असरदार मदद है।",
+      "body_en": [
+        "Lying awake at 3 am is just stress and age, right? Partly. But in these years hormone swings themselves disturb sleep, with or without night sweats. In one Indian study anxiety was reported far more often than hot flushes. And dryness is the symptom women tell nobody.",
+        "Sleep: one fixed waking time every day, Sundays too. No tea or coffee after 4 pm. Bedroom dark and as cool as you can. Bed only for sleep. A 20-minute daylight walk helps more than any syrup. If night sweats are the cause, treating them fixes the sleep.",
+        "Mood: low mood, irritability and anxiety in this phase are real, not a character flaw. Talk to someone. A talking therapy called CBT is recommended for menopause-related mood and sleep trouble. If you feel hopeless or think of harming yourself, call Tele-MANAS on 14416: free, 24 hours, in your language.",
+        "Dryness and burning: this gets worse with time, not better, and it brings repeated urine infections. Water-based moisturisers and lubricants from a pharmacy help; ask the pharmacist quietly. Low-dose vaginal oestrogen is the main treatment. A gynaecologist prescribes it, and it is safe for most women, including many who cannot take full HRT; if you have had breast cancer, it is only used with your cancer doctor's agreement.",
+        "None of this needs a tonic or a capsule."
+      ],
+      "body_hi": [
+        "रात 3 बजे जागे रहना बस तनाव और उम्र है, है ना? कुछ हद तक। पर इन सालों में हार्मोन का उतार-चढ़ाव खुद नींद बिगाड़ता है, रात के पसीने के साथ या बिना। भारत के एक अध्ययन में हॉट फ्लश से कहीं ज़्यादा महिलाओं ने घबराहट बताई। और सूखापन वह लक्षण है जो महिलाएँ किसी को नहीं बतातीं।",
+        "नींद: हर दिन उठने का एक तय समय, इतवार को भी। शाम 4 बजे के बाद चाय-कॉफ़ी नहीं। कमरा अँधेरा और जितना हो सके ठंडा। बिस्तर सिर्फ़ सोने के लिए। दिन की रोशनी में 20 मिनट की सैर किसी भी सिरप से ज़्यादा काम करती है। अगर रात का पसीना कारण है, तो उसका इलाज नींद ठीक कर देता है।",
+        "मूड: इस दौर की उदासी, चिड़चिड़ापन और घबराहट असली हैं, आपके स्वभाव की कमी नहीं। किसी से बात करें। CBT नाम की बातचीत वाली थेरेपी मेनोपॉज़ से जुड़े मूड और नींद के लिए सुझाई जाती है। अगर निराशा लगे या खुद को नुकसान पहुँचाने का ख़याल आए, तो Tele-MANAS 14416 पर कॉल करें: मुफ़्त, 24 घंटे, आपकी भाषा में।",
+        "सूखापन और जलन: यह समय के साथ बढ़ता है, घटता नहीं, और इससे बार-बार पेशाब का इन्फ़ेक्शन होता है। दवा की दुकान से पानी वाले (water-based) मॉइस्चराइज़र और लुब्रिकेंट मदद करते हैं; केमिस्ट से धीरे से पूछ लें। कम डोज़ का योनि में लगाने वाला एस्ट्रोजन मुख्य इलाज है। इसे स्त्री रोग विशेषज्ञ लिखते हैं, और यह ज़्यादातर महिलाओं के लिए सुरक्षित है, उनके लिए भी जो पूरी HRT नहीं ले सकतीं; स्तन कैंसर हुआ हो तो सिर्फ़ अपने कैंसर डॉक्टर की सहमति से।",
+        "इनमें से किसी के लिए टॉनिक या कैप्सूल नहीं चाहिए।"
+      ],
+      "see_doctor_en": [
+        "Thoughts of harming yourself, or feeling life is not worth living: Tele-MANAS 14416 now; 112 if you are in immediate danger.",
+        "Low mood most days for 2 weeks or more, or anxiety that stops daily life: a doctor; a PHC can refer you to the District Mental Health Programme, free.",
+        "Burning when passing urine with fever or back pain, or 2 or more urine infections in 6 months: a doctor; ask about vaginal oestrogen.",
+        "Bleeding after sex, or pain or a lump in the vagina: a gynaecologist.",
+        "Free: Tele-MANAS 14416, PHC / Ayushman Arogya Mandir, eSanjeevani, 104 (many states)."
+      ],
+      "see_doctor_hi": [
+        "खुद को नुकसान पहुँचाने के ख़याल, या लगे कि जीने का मतलब नहीं: अभी Tele-MANAS 14416; तुरंत खतरा हो तो 112।",
+        "2 हफ़्ते या ज़्यादा से ज़्यादातर दिन उदासी, या घबराहट जो रोज़ का काम रोक दे: डॉक्टर; PHC आपको ज़िला मानसिक स्वास्थ्य कार्यक्रम में मुफ़्त रेफ़र कर सकता है।",
+        "पेशाब में जलन के साथ बुख़ार या कमर दर्द, या 6 महीने में 2 या ज़्यादा पेशाब के इन्फ़ेक्शन: डॉक्टर; योनि के एस्ट्रोजन के बारे में पूछें।",
+        "संबंध के बाद ब्लीडिंग, या योनि में दर्द या गाँठ: स्त्री रोग विशेषज्ञ।",
+        "मुफ़्त: Tele-MANAS 14416, PHC / आयुष्मान आरोग्य मंदिर, eSanjeevani, 104 (कई राज्यों में)।"
+      ],
+      "qura_line_en": "A Qura doctor can work on your sleep routine, food and daily movement with you and go through your thyroid and haemoglobin reports; vaginal oestrogen and medicines for mood are prescriptions from an MBBS gynaecologist or psychiatrist.",
+      "qura_line_hi": "Qura के डॉक्टर नींद की दिनचर्या, खाने और रोज़ की चाल-फिर पर आपके साथ काम कर सकते हैं और थायरॉइड-हीमोग्लोबिन की रिपोर्ट देख सकते हैं; योनि का एस्ट्रोजन और मूड की दवाएँ MBBS स्त्री रोग विशेषज्ञ या मनोचिकित्सक की पर्ची से।",
+      "sources": [
+        "NHS, Menopause: things you can do (sleep routine, mood, CBT, moisturisers and lubricants, prescribed vaginal treatments): https://www.nhs.uk/conditions/menopause/things-you-can-do/",
+        "NHS, Menopause symptoms (sleep, mood, dryness, recurrent UTI-like symptoms): https://www.nhs.uk/conditions/menopause/symptoms/",
+        "NICE NG23 2024 update (menopause-specific CBT for vasomotor symptoms, sleep and depressive symptoms; offer vaginal oestrogen for genitourinary symptoms; breast cancer cases with oncologist input): https://www.nice.org.uk/guidance/ng23",
+        "Indian Menopause Society 2026 (sleep hygiene item 34; social support item 35; local oestrogen primary treatment for GSM, item 107 Grade A; local oestrogen in breast cancer survivors only after consulting an oncologist, Section 5 item 22 Grade C): https://pmc.ncbi.nlm.nih.gov/articles/PMC12948155/",
+        "Tele-MANAS 14416 / 1-800-891-4416 (MoHFW, launched Oct 2022, 24x7): https://en.vikaspedia.in/viewcontent/health/mental-health/tele-manas",
+        "Research report section 5.2 (Haryana study) and R9"
+      ],
+      "notes": "Haryana anxiety vs hot flushes figures are medium confidence in the report; numbers omitted. PHC referral to the District Mental Health Programme is the standard NMHP structure, not fetched this round. 'Recurrent UTI = 2 or more in 6 months' is the standard clinical definition, not fetched. The breast cancer caveat on vaginal oestrogen is now in the body (IMS 2026 Section 5 item 22 Grade C; NICE 2024). The Qura line says 'go through reports' because the lab partner and BAMS requisition are unconfirmed (vision doc section 5.7)."
+    },
+    {
+      "id": "contraception-perimenopause",
+      "title_en": "Contraception in perimenopause: you can still get pregnant",
+      "title_hi": "पेरिमेनोपॉज़ में गर्भनिरोध: प्रेग्नेंसी अभी भी हो सकती है",
+      "summary_en": "Irregular periods after 40 do not mean you cannot conceive; keep using contraception until 2 years after your last period if under 50, 1 year if over 50, and HRT does not count.",
+      "summary_hi": "40 के बाद अनियमित पीरियड का मतलब यह नहीं कि प्रेग्नेंसी नहीं हो सकती; 50 से कम हैं तो आख़िरी पीरियड के 2 साल बाद तक और 50 से ऊपर हैं तो 1 साल बाद तक गर्भनिरोध जारी रखें, और HRT गर्भनिरोधक नहीं है।",
+      "body_en": [
+        "Once periods go irregular, pregnancy is over, right? That is one of the most common and most costly beliefs in these years. Your ovaries release an egg unpredictably in perimenopause, so you cannot tell a 'safe' month from an unsafe one. Pregnancy after 40 also carries more risk for you.",
+        "The rule, from the UK family planning body and the NHS: if you are under 50, keep using contraception until 2 full years after your last period. If you are over 50, until 1 full year after. At 55, nearly every woman can stop, whatever her periods are doing.",
+        "What suits this age: a copper IUD (Copper-T, free at government facilities) fitted at 40 or after can often stay in until menopause. Ask the doctor how long your type is approved for, and have it taken out 1 year after your last period if you are over 50, 2 years if under 50. It should not be left in for good. Condoms work and also protect against infection. Hormonal IUDs and other progestogen-only methods are options to discuss. The combined pill is usually stopped at 50. Permanent methods are free at government hospitals.",
+        "Two things that catch women out. HRT is not a contraceptive; you can conceive while on it. And a blood test for FSH cannot tell you it is 'safe' to stop if you are on the combined pill or HRT, because the hormones hide the real level.",
+        "If a period is 2 weeks late and you could be pregnant, do a home test. Do not wait for the next one."
+      ],
+      "body_hi": [
+        "पीरियड अनियमित हो गए तो प्रेग्नेंसी का सवाल ख़त्म, है ना? इन सालों की यह सबसे आम और सबसे भारी पड़ने वाली धारणा है। पेरिमेनोपॉज़ में अंडाशय कब अंडा छोड़ेगा, इसका कोई हिसाब नहीं रहता, इसलिए आप 'सुरक्षित' महीना पहचान ही नहीं सकतीं। 40 के बाद की प्रेग्नेंसी आपके लिए ज़्यादा जोखिम भी लाती है।",
+        "नियम, UK की परिवार नियोजन संस्था और NHS के हिसाब से: अगर आप 50 से कम हैं, तो आख़िरी पीरियड के पूरे 2 साल बाद तक गर्भनिरोध जारी रखें। 50 से ऊपर हैं, तो पूरे 1 साल बाद तक। 55 पर करीब हर महिला बंद कर सकती है, पीरियड चाहे कुछ भी कर रहे हों।",
+        "इस उम्र में क्या ठीक रहता है: 40 के बाद लगवाई कॉपर-टी (सरकारी केंद्र पर मुफ़्त) अक्सर मेनोपॉज़ तक रह सकती है। डॉक्टर से पूछें कि आपकी किस्म कितने साल की है, और 50 के बाद आख़िरी पीरियड के 1 साल (50 से कम में 2 साल) बाद निकलवा लें। हमेशा के लिए नहीं छोड़ना है। कंडोम काम करता है और इन्फ़ेक्शन से भी बचाता है। हार्मोन वाली IUD और सिर्फ़ प्रोजेस्टोजन वाले तरीके डॉक्टर से बात करने लायक विकल्प हैं। कंबाइंड गोली आम तौर पर 50 पर बंद की जाती है। स्थायी तरीके (नसबंदी) सरकारी अस्पताल में मुफ़्त हैं।",
+        "दो बातें जो महिलाओं को चौंका देती हैं। HRT गर्भनिरोधक नहीं है; उस पर भी प्रेग्नेंसी हो सकती है। और अगर आप कंबाइंड गोली या HRT पर हैं, तो FSH का ब्लड टेस्ट यह नहीं बता सकता कि बंद करना 'सुरक्षित' है, क्योंकि हार्मोन असली स्तर छुपा देते हैं।",
+        "अगर पीरियड 2 हफ़्ते देर है और प्रेग्नेंसी की गुंजाइश है, तो घर पर टेस्ट करें। अगले पीरियड का इंतज़ार मत करें।"
+      ],
+      "see_doctor_en": [
+        "Late period plus one-sided lower belly pain, shoulder-tip pain, dizziness or fainting: call 108 or 112 now; this can be an ectopic pregnancy.",
+        "Positive home pregnancy test after 40: see a gynaecologist within the week, whatever you decide.",
+        "Want a Copper-T, hormonal IUD or permanent method: PHC, CHC or district hospital; ask for the family planning counsellor.",
+        "Pressure at home over contraception or an unwanted pregnancy: Women Helpline 181.",
+        "Free: PHC / Ayushman Arogya Mandir, government hospital family planning OPD, eSanjeevani, 104 (many states)."
+      ],
+      "see_doctor_hi": [
+        "पीरियड देर से और साथ में पेट के नीचे एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी: अभी 108 या 112; यह ट्यूब में प्रेग्नेंसी (ectopic) हो सकती है।",
+        "40 के बाद घर पर प्रेग्नेंसी टेस्ट पॉज़िटिव: इसी हफ़्ते स्त्री रोग विशेषज्ञ, आप जो भी तय करें।",
+        "कॉपर-टी, हार्मोन वाली IUD या स्थायी तरीका चाहिए: PHC, CHC या ज़िला अस्पताल; परिवार नियोजन काउंसलर से मिलें।",
+        "गर्भनिरोध या अनचाही प्रेग्नेंसी पर घर में दबाव: महिला हेल्पलाइन 181।",
+        "मुफ़्त: PHC / आयुष्मान आरोग्य मंदिर, सरकारी अस्पताल की परिवार नियोजन OPD, eSanjeevani, 104 (कई राज्यों में)।"
+      ],
+      "qura_line_en": "A Qura doctor can explain your options and your diary pattern; contraception fitting, prescriptions and anything about continuing or ending a pregnancy are for an MBBS gynaecologist or your government hospital.",
+      "qura_line_hi": "Qura के डॉक्टर आपके विकल्प और डायरी का पैटर्न समझा सकते हैं; गर्भनिरोधक लगवाना, पर्ची, और प्रेग्नेंसी जारी रखने या रोकने से जुड़ी कोई भी बात MBBS स्त्री रोग विशेषज्ञ या सरकारी अस्पताल के लिए है।",
+      "sources": [
+        "NHS, About HRT (still possible to get pregnant on HRT; contraception until 2 years after last period under 50, 1 year after 50): https://www.nhs.uk/medicines/hormone-replacement-therapy-hrt/about-hormone-replacement-therapy-hrt/",
+        "FSRH, Contraception for Women Aged Over 40 Years (2017/2019, amended 2023): 2 years amenorrhoea under 50, 1 year over 50, stop combined methods at 50, all methods may stop at 55, FSH unreliable on combined hormones or HRT; read via GP reference summary: https://gpnotebook.com/pages/gynaecology/when-contraception-can-be-stopped",
+        "FSRH Intrauterine Contraception 2023 and NHS Scotland Cu-IUD guidance (a copper IUD with 300 mm2 or more of copper inserted at 40 or over may stay until menopause; remove 1 year after the last period if over 50, 2 years if under 50; not left in indefinitely), via the GP reference summary above",
+        "India Family Planning Programme IUCD devices: CuT-380A (380 mm2 copper, 10 years) and Cu-375 (375 mm2 copper, 5 years), via FOGSI IUCD standards and manufacturer sheets",
+        "NHS, Ectopic pregnancy symptoms, via rules registry R1",
+        "Research report section 5.3 (R1, R7); product vision section 3.5 card 2 and section 5.6"
+      ],
+      "notes": "FSRH primary documents were not fetched; thresholds confirmed through the NHS HRT page and a GP reference summarising FSRH 2019 and the 2023 IUC guideline (the vision doc had marked this 'unverified'). Copper IUD removal timing and 'not left in for good' come from that summary and the NHS Scotland guideline; the India programme device labels (CuT-380A 10 years, Cu-375 5 years) are from FOGSI IUCD standards and manufacturer sheets, not fetched this round. 'Copper-T free at government facilities', 'permanent methods free at government hospitals' and 'ask for the family planning counsellor' are standard India Family Planning Programme facts, not fetched. 'Pregnancy after 40 carries more risk' is general obstetric knowledge, not fetched. BAMS doctors are not RMPs under the MTP Act, so pregnancy-ending questions are routed away from Qura per vision section 5.6."
+    }
+  ]
+}
