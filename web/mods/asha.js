@@ -51,7 +51,7 @@
   }
 
   /* ---------- the summary she shows: big type, her own entries, nothing sent ---------- */
-  const SHOW_MODS = ['preg', 'post', 'iron', 'screen', 'contra'];
+  const SHOW_MODS = ['preg', 'post', 'iron', 'access', 'screen', 'contra'];
   function renderShow(v) {
     if (!S.canSave()) { render(v); return; }
     const sit = S.state.situation || {}; const acc = S.account && S.account.signedIn() ? S.account.info() : {}; const age = S.cycle.ageYears();
@@ -71,6 +71,9 @@
       '<p class="footnote">' + esc(t('asha_show_foot')) + '</p>';
     S.wire(v);
   }
+
+  /* for other modules (the pregnancy plan): is her ASHA's number saved? Read-only */
+  S.asha = { saved: () => S.canSave() && !!tenDigits(D().phone) };
 
   S.register({
     id: 'asha',

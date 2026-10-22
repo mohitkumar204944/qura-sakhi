@@ -25,6 +25,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/me.mjs`
   - `node test/privacy.mjs` (help wording, lock, screen capture, shares, reminders, the APK's CSP)
   - `node test/companions.mjs` (iron tablets, check-ups due, My ASHA, Do it online)
+  - `node test/plans.mjs` (pregnancy plan, scheme claims, the doctor report's language, big screen and PDF)
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`
@@ -37,6 +38,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
   - It installs on the phone if one is on adb.
   - Copy the result to `../QuraSakhi-prototype.apk`.
+- Care near me data: `node web/tools/care-data.mjs` writes `web/care/` (not in git) from data.gov.in. It needs Mohit's own
+  key or his hand-downloaded files: `docs/care-near-me-data-2026-10-22.md`. `build-apk.sh` bundles it when present.
 - Preview: `../Open prototype.command`, or "Sakhi web" in `.claude/launch.json`.
 - Web prototype (a private Claude artifact): https://claude.ai/artifact/25aocCU68U1DHebpjTmne6. To republish, copy
   `web/index.html` and the changed files to the session scratchpad and publish to that URL.

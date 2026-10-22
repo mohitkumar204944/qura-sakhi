@@ -50,7 +50,7 @@
       ci_neck: 'Dark velvety patches on neck or underarms', ci_heavy: 'Heavy flow or clots', ci_mood: 'Low mood or anxiety most days', ci_none: 'None of these', ci_hot: 'Hot flushes or night sweats', hot_0: 'None', hot_1: 'Mild', hot_2: 'Moderate', hot_3: 'Woke me at night',
       ci_more: 'More (personal care)', ci_disch: 'Unusual discharge', ci_itch: 'Itching', ci_burn: 'Burning when peeing', ci_sexpain: 'Pain during sex', ci_aftersex: 'Bleeding after sex',
       ci_note: 'Anything for your doctor?', ci_note_ph: 'Type a note. It stays in your diary on this phone.', ci_save: 'Save check-in', ci_thanks: 'Saved. Thank you. Nothing is scored here.',
-      learn_h: 'Learn', learn_p: 'Short, doctor-reviewed answers. Read in Hindi or English.', search: 'Search topics', all: 'All', loading: 'The library is being written. Check back soon.', read: 'Read',
+      learn_h: 'Learn', search: 'Search topics', all: 'All', loading: 'The library is being written. Check back soon.', read: 'Read',
       see_doctor: 'When to see a doctor', qura_can: 'How Qura can help', ask_qura: 'Ask a Qura doctor about this', sources: 'Sources', draft: 'Draft for doctor review', no_results: 'No matches. Try another word.',
       help_h: 'Help and safety', call_now: 'Call 112 now if', today_if: 'See a doctor today if', weeks2: 'See a gynaecologist within about 2 weeks if', week_if: 'This week if', under18: 'Under 18', mood: 'Mood', after35: 'After 35',
       s1a: 'Period late or a positive test, plus one-sided lower belly pain, shoulder-tip pain, dizziness or fainting', s1b: 'Soaking a pad every 1–2 hours and feeling dizzy or breathless', s1c: 'In pregnancy: bleeding, fits, severe headache with blurred vision, fluid leaking, baby moving less',
@@ -161,7 +161,7 @@
       rp_about: 'About me', rp_age: 'Age {n}', rp_preg: 'Pregnant: week {w}, due around {d}', rp_birth: 'Baby born on {d}', rp_periods: 'My last periods', rp_col_start: 'Started', rp_col_bleed: 'Days of bleeding', rp_col_gap: 'Days to the next', rp_heavy: 'heavy', rp_guess: 'date guessed', rp_t_row: 'bled {b} days, next period after {g} days',
       rp_gaps: 'Counted gaps in this table: average {a} days · shortest {s} · longest {l}', rp_sym: 'What I noted (last 90 days)', rp_days: '{n} days', rp_out: 'not counted', rp_t_bled: 'bled {n} days', rp_t_noend: 'end not logged', rp_t_next: 'next period after {n} days', rp_ci: 'Monthly check-ins', rp_tools: 'From my tools', rp_q: 'Questions I want to ask',
       rp_q_gap: 'My gaps between periods are often longer than 35 days. What could cause this, and which tests do I need?', rp_q_heavy: 'My periods are heavy. Should I have an Hb test?', rp_q_pain: 'My period pain stops my day. What can help?', rp_q_preg: 'Are my BP, sugar and Hb fine for this week of pregnancy?', rp_q_any: 'Is there anything here I should keep an eye on?',
-      rp_notes_sw: 'Add my notes from the last 30 days', rp_notes: 'My notes', rp_none: 'Nothing to show yet. Log your period and how you feel, and your report fills in.', rp_foot: 'From Sakhi, {d}. My own entries, not a diagnosis.', rp_send: 'Share', share_copied: 'Copied. Paste it in any app.', rp_copy: 'Copy', rp_copied: 'Copied. Paste it in your chat with the doctor.', rp_copy_fail: 'Could not copy on this phone.',
+      rp_notes_sw: 'Add my notes from the last 30 days', rp_notes: 'My notes', rp_none: 'Nothing to show yet. Log your period and how you feel, and your report fills in.', rp_foot: 'From Sakhi, {d}. My own entries, not a diagnosis.', rp_send: 'Share', share_copied: 'Copied. Paste it in any app.', rp_lang: 'Report language', rp_big: 'Show the doctor, in big letters', rp_pdf: 'Save as PDF or print', rp_copy: 'Copy', rp_copied: 'Copied. Paste it in your chat with the doctor.', rp_copy_fail: 'Could not copy on this phone.',
       bk_h: 'Move to a new phone', bk_entry_s: 'A backup code, locked with your PIN', bk_p: 'Sakhi keeps your diary only on this phone. To move it, make a backup code here, keep it safe, and enter it on the new phone with the same PIN.',
       bk_make_h: 'Make a backup code', bk_pin: 'Choose a PIN (4 to 6 numbers; 6 is safer)', bk_pin2: 'Type the PIN again', bk_make: 'Make the code', bk_pin_bad: 'Use 4 to 6 numbers, the same both times.', bk_code_h: 'Your backup code',
       bk_code_p: 'Copy it and keep it where only you can see it, like WhatsApp “Message yourself” or your notes. The code is locked with your PIN, but anyone who has it could try to guess a short PIN, so never share it. Sakhi can’t recover a lost PIN.', bk_copy: 'Copy the code', bk_copied: 'Copied. Keep it safe.',
@@ -227,7 +227,7 @@
       ci_neck: 'गर्दन या बगल में काले मखमली धब्बे', ci_heavy: 'भारी ब्लीडिंग या थक्के', ci_mood: 'ज़्यादातर दिन उदासी या घबराहट', ci_none: 'इनमें से कुछ नहीं', ci_hot: 'गर्मी के झोंके या रात में पसीना', hot_0: 'नहीं', hot_1: 'हल्के', hot_2: 'मध्यम', hot_3: 'रात में नींद खुली',
       ci_more: 'और (निजी देखभाल)', ci_disch: 'असामान्य सफ़ेद पानी', ci_itch: 'खुजली', ci_burn: 'पेशाब में जलन', ci_sexpain: 'संबंध के समय दर्द', ci_aftersex: 'संबंध के बाद ब्लीडिंग',
       ci_note: 'डॉक्टर के लिए कुछ?', ci_note_ph: 'नोट लिखें। यह इसी फ़ोन पर आपकी डायरी में रहता है।', ci_save: 'चेक-इन सेव करें', ci_thanks: 'सेव हो गया। धन्यवाद। यहाँ कुछ भी score नहीं होता।',
-      learn_h: 'जानें', learn_p: 'छोटे, डॉक्टर-जाँचे जवाब। हिंदी या English में पढ़ें।', search: 'विषय खोजें', all: 'सब', loading: 'यह library लिखी जा रही है। थोड़ी देर में देखें।', read: 'पढ़ें',
+      learn_h: 'जानें', search: 'विषय खोजें', all: 'सब', loading: 'यह library लिखी जा रही है। थोड़ी देर में देखें।', read: 'पढ़ें',
       see_doctor: 'डॉक्टर को कब दिखाएँ', qura_can: 'Qura कैसे मदद कर सकता है', ask_qura: 'इस बारे में Qura की डॉक्टर से पूछें', sources: 'स्रोत', draft: 'डॉक्टर की समीक्षा के लिए draft', no_results: 'कुछ नहीं मिला। दूसरा शब्द आज़माएँ।',
       help_h: 'मदद और सुरक्षा', call_now: 'अभी 112 पर कॉल करें अगर', today_if: 'आज ही डॉक्टर को दिखाएँ अगर', weeks2: 'लगभग 2 हफ़्ते में स्त्री रोग विशेषज्ञ को दिखाएँ अगर', week_if: 'इसी हफ़्ते अगर', under18: '18 से कम', mood: 'मन', after35: '35 के बाद',
       s1a: 'पीरियड देर से या test positive, साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी', s1b: 'हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना', s1c: 'गर्भ में: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, बच्चे की हलचल कम',
@@ -338,7 +338,7 @@
       rp_about: 'मेरे बारे में', rp_age: 'उम्र {n}', rp_preg: 'गर्भवती: {w}वाँ हफ़्ता, डिलीवरी लगभग {d}', rp_birth: 'बच्चे का जन्म {d}', rp_periods: 'मेरे पिछले पीरियड', rp_col_start: 'शुरू', rp_col_bleed: 'ब्लीडिंग के दिन', rp_col_gap: 'अगले तक दिन', rp_heavy: 'भारी', rp_guess: 'अंदाज़े की तारीख़', rp_t_row: '{b} दिन ब्लीडिंग, {g} दिन बाद अगला पीरियड',
       rp_gaps: 'इस तालिका के गिने गए अंतर: औसत {a} दिन · सबसे कम {s} · सबसे ज़्यादा {l}', rp_sym: 'मैंने क्या नोट किया (पिछले 90 दिन)', rp_days: '{n} दिन', rp_out: 'नहीं गिना', rp_t_bled: '{n} दिन ब्लीडिंग', rp_t_noend: 'ख़त्म होने की तारीख़ नहीं लिखी', rp_t_next: '{n} दिन बाद अगला पीरियड', rp_ci: 'महीने के चेक-इन', rp_tools: 'मेरे टूल्स से', rp_q: 'मेरे सवाल',
       rp_q_gap: 'मेरे पीरियड के बीच का अंतर अक्सर 35 दिन से ज़्यादा होता है। इसकी वजह क्या हो सकती है, और मुझे कौन सी जाँचें करानी चाहिए?', rp_q_heavy: 'मेरे पीरियड भारी होते हैं। क्या मुझे Hb जाँच करानी चाहिए?', rp_q_pain: 'पीरियड का दर्द मेरा दिन रोक देता है। किससे आराम मिलेगा?', rp_q_preg: 'क्या प्रेग्नेंसी के इस हफ़्ते के हिसाब से मेरा BP, sugar और Hb ठीक है?', rp_q_any: 'क्या इसमें कुछ है जिस पर मुझे ध्यान रखना चाहिए?',
-      rp_notes_sw: 'पिछले 30 दिन के मेरे नोट्स जोड़ें', rp_notes: 'मेरे नोट्स', rp_none: 'अभी दिखाने को कुछ नहीं। पीरियड और कैसा लगता है, दर्ज करें, रिपोर्ट अपने आप भरेगी।', rp_foot: 'Sakhi से, {d}। मेरी अपनी एंट्री, यह जाँच का नतीजा नहीं है।', rp_send: 'शेयर करें', share_copied: 'कॉपी हो गया। किसी भी ऐप में पेस्ट करें।', rp_copy: 'कॉपी करें', rp_copied: 'कॉपी हो गया। डॉक्टर वाली चैट में पेस्ट करें।', rp_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
+      rp_notes_sw: 'पिछले 30 दिन के मेरे नोट्स जोड़ें', rp_notes: 'मेरे नोट्स', rp_none: 'अभी दिखाने को कुछ नहीं। पीरियड और कैसा लगता है, दर्ज करें, रिपोर्ट अपने आप भरेगी।', rp_foot: 'Sakhi से, {d}। मेरी अपनी एंट्री, यह जाँच का नतीजा नहीं है।', rp_send: 'शेयर करें', share_copied: 'कॉपी हो गया। किसी भी ऐप में पेस्ट करें।', rp_lang: 'रिपोर्ट की भाषा', rp_big: 'डॉक्टर को बड़े अक्षरों में दिखाएँ', rp_pdf: 'PDF में सेव करें या प्रिंट करें', rp_copy: 'कॉपी करें', rp_copied: 'कॉपी हो गया। डॉक्टर वाली चैट में पेस्ट करें।', rp_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
       bk_h: 'नए फ़ोन पर ले जाएँ', bk_entry_s: 'आपके PIN से बंद बैकअप कोड', bk_p: 'Sakhi आपकी डायरी सिर्फ़ इसी फ़ोन पर रखती है। इसे ले जाने के लिए यहाँ बैकअप कोड बनाएँ, सँभालकर रखें, और नए फ़ोन पर उसी PIN के साथ डालें।',
       bk_make_h: 'बैकअप कोड बनाएँ', bk_pin: 'एक PIN चुनें (4 से 6 अंक; 6 ज़्यादा सुरक्षित है)', bk_pin2: 'PIN फिर से लिखें', bk_make: 'कोड बनाएँ', bk_pin_bad: '4 से 6 अंक, दोनों बार एक जैसे।', bk_code_h: 'आपका बैकअप कोड',
       bk_code_p: 'इसे कॉपी करें और ऐसी जगह रखें जहाँ सिर्फ़ आप देख सकें, जैसे WhatsApp पर “ख़ुद को मैसेज” में या अपने नोट्स में। कोड आपके PIN से बंद है, पर जिसके पास कोड हो वह छोटे PIN का अंदाज़ा लगाकर उसे खोलने की कोशिश कर सकता है, इसलिए इसे किसी से शेयर न करें। भूला हुआ PIN Sakhi वापस नहीं ला सकती।', bk_copy: 'कोड कॉपी करें', bk_copied: 'कॉपी हो गया। सँभालकर रखें।',
@@ -729,7 +729,7 @@
     if (mem.under18) return renderUnder18(v);
     if (state.stage === 'welcome') return renderWelcome(v);
     if (state.stage === 'onboard') return renderOnboard(v);
-    const map = { account: renderAccount, home: renderHome, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, tell: renderTell, care: renderCare, report: renderReport, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, tell: renderTell, care: renderCare, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) renderArticle(v, r.slice(2));
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
     else if (map[r]) map[r](v);
@@ -2060,12 +2060,12 @@
     if (cis.length) parts.push({ h: t('rp_ci'), lines: cis.map((k) => fmtD(fromISO(k + '-01'), { month: 'long', year: 'numeric' }) + ': ' + ((state.checkins[k].chips || []).map((c) => t('ci_' + c)).join(', ') || '–')) });
     const mods = []; safe(() => api.summaries(), []).forEach((m) => (m.sections || []).forEach((x) => { if (x && x.lines && x.lines.length) mods.push(x.title + ': ' + x.lines.join('; ')); }));
     if (mods.length) parts.push({ h: t('rp_tools'), lines: mods });
-    const qs = []; const g2 = usable().slice(-6);
+    const qs = (state.askTopics || []).filter((x) => typeof x === 'string' && x).slice(-4); const g2 = usable().slice(-6);   /* her own questions for the call come first */
     if (isPregnant()) qs.push(t('rp_q_preg'));
     if (g2.filter((x) => x > 35).length >= 2) qs.push(t('rp_q_gap'));
     if (rows.some((r) => r.heavy)) qs.push(t('rp_q_heavy'));
     if ((counts.d_cramps || 0) >= 3) qs.push(t('rp_q_pain'));
-    qs.push(t('rp_q_any')); parts.push({ h: t('rp_q'), lines: qs.slice(0, 4), q: true });
+    qs.push(t('rp_q_any')); parts.push({ h: t('rp_q'), lines: qs.slice(0, 7), q: true });
     if (withNotes) { const nn = Object.keys(state.notes || {}).filter((k) => state.notes[k] && diffDays(fromISO(k), today()) <= 30).sort(); if (nn.length) parts.push({ h: t('rp_notes'), lines: nn.map((k) => fmtD(fromISO(k)) + ': ' + state.notes[k]) }); }
     return { parts: parts, any: rows.length > 0 || top.length > 0 || cis.length > 0 || mods.length > 0 };
   }
@@ -2074,20 +2074,46 @@
     r.parts.forEach((p) => { L.push('', p.h); (p.rows || []).forEach((x) => L.push(fmtD(fromISO(x.d)) + ': ' + (x.bleed == null ? t('rp_t_noend') : tf('rp_t_bled', { n: x.bleed })) + (x.gap == null ? '' : ', ' + tf('rp_t_next', { n: x.gap }) + (x.out ? ' (' + t('rp_out') + ')' : '')) + (x.heavy ? ', ' + t('rp_heavy') : '') + (x.guess ? ' (' + t('rp_guess') + ')' : ''))); p.lines.forEach((l) => L.push((p.q ? '- ' : '') + l)); });
     L.push('', tf('rp_foot', { d: fmtD(today(), { day: 'numeric', month: 'short', year: 'numeric' }) })); return L.join('\n');
   }
-  function renderReport(v) {
-    const r = reportParts(!!mem.rpNotes); const txt = reportText(r);
-    const sec = (p) => '<div class="card rp-sec"><h3>' + esc(p.h) + '</h3>' +
+  /* ---------- Report for my doctor (Version 28, C1: docs/feature-research-2026-10-22.md) ----------
+     Her own entries on one screen, her questions for the visit first, in the language her doctor reads best (without changing
+     the app's own language), as a large-type screen to hold up across the table, and on Android as a PDF or a print through the
+     phone's print screen. Nothing is sent unless she shares it herself. */
+  const RP_LANGS = () => { const L2 = ['en', 'hi']; if (L2.indexOf(state.lang) < 0) L2.unshift(state.lang); return L2; };
+  const rpLang = () => (mem.rpLang && RP_LANGS().indexOf(mem.rpLang) >= 0 ? mem.rpLang : state.lang);
+  /* render with another language for a moment: the report only. Saving waits until her language is back, so a module that
+     saves while giving its summary can't store the report's language as hers. */
+  const inLang = (lang, fn) => { const keep = state.lang; if (!lang || lang === keep) return fn(); const hold = holdSave; holdSave = true; state.lang = lang; try { return fn(); } finally { state.lang = keep; holdSave = hold; } };
+  function reportHtml(r, big) {
+    const sec = (p) => '<div class="card rp-sec' + (big ? ' rp-big' : '') + '" data-nofold="1"><h3>' + esc(p.h) + '</h3>' +
       (p.rows ? '<div class="table-wrap"><table class="rp-table"><thead><tr><th>' + esc(t('rp_col_start')) + '</th><th>' + esc(t('rp_col_bleed')) + '</th><th>' + esc(t('rp_col_gap')) + '</th></tr></thead><tbody>' + p.rows.map((x) => '<tr><td>' + esc(fmtD(fromISO(x.d))) + (x.guess ? ' <span class="small">(' + esc(t('rp_guess')) + ')</span>' : '') + '</td><td class="num">' + (x.bleed == null ? '–' : x.bleed) + (x.heavy ? ' <span class="pill accent">' + esc(t('rp_heavy')) + '</span>' : '') + '</td><td class="num">' + (x.gap == null ? '–' : x.gap) + (x.out ? ' <span class="small">(' + esc(t('rp_out')) + ')</span>' : '') + '</td></tr>').join('') + '</tbody></table></div>' : '') +
       (p.lines.length ? (p.q ? '<ol class="steps">' + p.lines.map((l) => '<li>' + esc(l) + '</li>').join('') + '</ol>' : '<ul class="rp-lines">' + p.lines.map((l) => '<li>' + esc(l) + '</li>').join('') + '</ul>') : '') + '</div>';
-    v.innerHTML = backRow(t('rp_h'), 'me') + '<p class="small">' + esc(t('rp_p')) + '</p>' +
-      (r.any ? r.parts.map(sec).join('') : '<div class="card soft"><p>' + esc(t('rp_none')) + '</p></div>') +
-      '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('rp_notes_sw')) + '</strong></span><input type="checkbox" id="rp-notes" ' + (mem.rpNotes ? 'checked' : '') + '></label></div>' +
-      '<p class="footnote">' + esc(tf('rp_foot', { d: fmtD(today(), { day: 'numeric', month: 'short', year: 'numeric' }) })) + '</p>' +
-      (r.any ? '<div class="grid2"><button type="button" class="btn" id="rp-send">' + I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('rp_send')) + '</button><button type="button" class="btn" id="rp-copy">' + esc(t('rp_copy')) + '</button></div>' : '');
+    return r.any ? r.parts.map(sec).join('') : '<div class="card soft"><p>' + esc(t('rp_none')) + '</p></div>';
+  }
+  function renderReport(v) {
+    const lang = rpLang(); const B = window.SakhiAndroid;
+    const body = inLang(lang, () => { const r = reportParts(!!mem.rpNotes); return { r: r, html: reportHtml(r, false), txt: reportText(r), foot: tf('rp_foot', { d: fmtD(today(), { day: 'numeric', month: 'short', year: 'numeric' }) }), title: t('rp_h') }; });
+    const langs = RP_LANGS();
+    v.innerHTML = backRow(t('rp_h'), 'me') + '<p class="small no-print">' + esc(t('rp_p')) + '</p>' +
+      '<div class="card no-print rp-langs"><div class="row spread" style="gap:8px;flex-wrap:wrap"><span class="small" style="color:var(--fg);font-weight:600">' + esc(t('rp_lang')) + '</span><div class="chips" role="group" aria-label="' + esc(t('rp_lang')) + '">' + langs.map((c) => '<button type="button" class="chip' + (c === lang ? ' on' : '') + '" data-rp-lang="' + c + '" lang="' + c + '">' + esc(langMeta(c).name || c) + '</button>').join('') + '</div></div></div>' +
+      body.html +
+      '<div class="list no-print"><label class="item"><span class="body"><strong>' + esc(t('rp_notes_sw')) + '</strong></span><input type="checkbox" id="rp-notes" ' + (mem.rpNotes ? 'checked' : '') + '></label></div>' +
+      '<p class="footnote">' + esc(body.foot) + '</p>' +
+      (body.r.any ? '<div class="stack no-print" style="gap:8px"><button type="button" class="btn primary block" data-go="report-show">' + esc(t('rp_big')) + '</button>' +
+        '<div class="grid2"><button type="button" class="btn" id="rp-send">' + I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('rp_send')) + '</button><button type="button" class="btn" id="rp-copy">' + esc(t('rp_copy')) + '</button></div>' +
+        (B && B.printPage ? '<button type="button" class="btn block" id="rp-pdf">' + I.file + ' ' + esc(t('rp_pdf')) + '</button>' : '') + '</div>' : '');
     wire(v);
+    v.querySelectorAll('[data-rp-lang]').forEach((b) => b.addEventListener('click', () => { mem.rpLang = b.dataset.rpLang; render(); }));
     $('#rp-notes', v).addEventListener('change', (e) => { mem.rpNotes = e.target.checked; render(); });
-    const sd = $('#rp-send', v); if (sd) sd.addEventListener('click', () => shareText(t('rp_h'), txt));
-    const cp = $('#rp-copy', v); if (cp) cp.addEventListener('click', () => { try { navigator.clipboard.writeText(txt).then(() => toast(t('rp_copied')), () => toast(t('rp_copy_fail'))); } catch (e) { toast(t('rp_copy_fail')); } });
+    const sd = $('#rp-send', v); if (sd) sd.addEventListener('click', () => shareText(body.title, body.txt));
+    const cp = $('#rp-copy', v); if (cp) cp.addEventListener('click', () => { try { navigator.clipboard.writeText(body.txt).then(() => toast(t('rp_copied')), () => toast(t('rp_copy_fail'))); } catch (e) { toast(t('rp_copy_fail')); } });
+    const pf = $('#rp-pdf', v); if (pf) pf.addEventListener('click', () => safe(() => B.printPage(state.settings.discreet ? t('notes_brand') : body.title)));
+  }
+  /* the same report, big, to hold up across the table */
+  function renderReportShow(v) {
+    const lang = rpLang();
+    const body = inLang(lang, () => { const r = reportParts(!!mem.rpNotes); return { html: reportHtml(r, true), foot: tf('rp_foot', { d: fmtD(today(), { day: 'numeric', month: 'short', year: 'numeric' }) }), title: t('rp_h') }; });
+    v.innerHTML = backRow(body.title, 'report') + '<div class="rp-show" lang="' + esc(lang) + '">' + body.html + '<p class="footnote">' + esc(body.foot) + '</p></div>';
+    wire(v);
   }
 
   /* ---------- move to a new phone: a backup code locked with a PIN she chooses (AES-GCM, key from PBKDF2). The diary never
@@ -2694,6 +2720,27 @@
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),
     _testSignIn: (o) => { acct = Object.assign({ token: 'test', id: 'test', phone: '+919800000000', name: 'Test', pincode: '560001', activeOn: toISO(today()) }, o || {}); saveAcct(); },
     _testSignOut: () => { acct = {}; saveAcct(); mem.su = null; mem.suLater = false; }
+  };
+  /* Care near me's data (MODULE_API section 30): files bundled with the app, made by web/tools/care-data.mjs from
+     government lists. Each is a local script that sets window.SAKHI_CARE[name]. The folder comes from the build (config
+     `care`, set only when the data is bundled) and must be a plain relative path; a name is letters, digits and _. So
+     nothing here can reach a network address, and nothing about her goes anywhere: the lookup happens on the phone. */
+  const careBox = () => (window.SAKHI_CARE = window.SAKHI_CARE && typeof window.SAKHI_CARE === 'object' ? window.SAKHI_CARE : {});
+  const careBase = () => { const b = CFG.care; return typeof b === 'string' && /^[a-z0-9_\-]+(\/[a-z0-9_\-]+)*\/$/i.test(b) ? b : ''; };
+  const careAsked = {};
+  api.care = {
+    on: () => !!careBase(),
+    load: (name) => {
+      name = String(name); const box = careBox(); const own = (k) => Object.prototype.hasOwnProperty.call(box, k);
+      if (!careBase() || !/^[a-z0-9_]{1,40}$/.test(name)) return Promise.resolve(null);
+      if (own(name)) return Promise.resolve(box[name]);
+      if (careAsked[name]) return careAsked[name];
+      return (careAsked[name] = new Promise((res) => {
+        const s = document.createElement('script'); s.src = careBase() + name + '.js'; s.async = true;
+        s.onload = () => { s.remove(); res(own(name) ? box[name] : null); }; s.onerror = () => { s.remove(); res(null); };
+        document.head.appendChild(s);
+      }));
+    }
   };
 
   /* ---------- boot (called from index.html after the module scripts load) ---------- */

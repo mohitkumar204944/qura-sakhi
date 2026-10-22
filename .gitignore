@@ -8,6 +8,9 @@ android/build/
 *.jks
 # Test output
 web/test/shots/
+web/test/_care/
+# Care near me data, made by web/tools/care-data.mjs from data.gov.in (see docs/care-near-me-data-2026-10-22.md)
+web/care/
 web/test/report-*.json
 # Server secrets and data exports (exports hold phone numbers)
 server/.env*

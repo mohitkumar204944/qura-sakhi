@@ -1,0 +1,17 @@
+circlename,regionname,divisionname,officename,pincode,officetype,delivery,district,statename,latitude,longitude
+Karnataka Circle,Bangalore HQ Region,Bangalore GPO Division,TEST Bangalore GPO,560001,H.O,Delivery,BENGALURU URBAN,KARNATAKA,12.9716,77.5946
+Karnataka Circle,Bangalore HQ Region,Bangalore GPO Division,TEST Vidhana Soudha SO,560001,S.O,Non Delivery,BENGALURU URBAN,KARNATAKA,12.9790,77.5910
+Karnataka Circle,Bangalore HQ Region,Bangalore East Division,TEST Whitefield SO,560066,S.O,Delivery,BENGALURU URBAN,KARNATAKA,12.9698,77.7500
+Karnataka Circle,Bangalore HQ Region,Bangalore East Division,TEST Nowhere BO,560998,B.O,Delivery,BENGALURU URBAN,KARNATAKA,NA,NA
+Karnataka Circle,Bangalore HQ Region,Bangalore East Division,"TEST Swapped, SO",560067,S.O,Delivery,BENGALURU URBAN,KARNATAKA,77.7400,12.9800
+Delhi Circle,Delhi Region,New Delhi GPO Division,TEST Parliament Street HO,110001,H.O,Delivery,NEW DELHI,DELHI,28.6250,77.2140
+West Bengal Circle,Kolkata Region,Kolkata GPO Division,TEST BBD Bagh HO,700001,H.O,Delivery,KOLKATA,WEST BENGAL,22.5791,88.3498
+West Bengal Circle,Kolkata Region,Kolkata GPO Division,TEST BBD Bagh misplaced A,700001,S.O,Delivery,KOLKATA,WEST BENGAL,22.3425,88.2088
+West Bengal Circle,Kolkata Region,Kolkata GPO Division,TEST BBD Bagh misplaced B,700001,S.O,Delivery,KOLKATA,WEST BENGAL,22.3413,88.2035
+West Bengal Circle,Kolkata Region,Kolkata North Division,TEST Jorasanko SO,700007,S.O,Delivery,KOLKATA,WEST BENGAL,22.5840,88.3619
+West Bengal Circle,Kolkata Region,Kolkata Central Division,TEST Bowbazar SO,700013,S.O,Delivery,KOLKATA,WEST BENGAL,22.5648,88.3604
+West Bengal Circle,Kolkata Region,Kolkata South Division,TEST Park Street SO,700069,S.O,Delivery,KOLKATA,WEST BENGAL,22.5446,88.3584
+Karnataka Circle,Bangalore HQ Region,Bangalore South Division,TEST Centre of India BO,560099,B.O,Delivery,BENGALURU URBAN,KARNATAKA,22.9734,78.6568
+Karnataka Circle,North Karnataka Region,Testpur Division,TEST Testpur SO,581999,S.O,Delivery,TESTPUR,KARNATAKA,22.9734,78.6568
+Haryana Circle,Ambala Region,Hisar Division,TEST Hisar HO,125001,H.O,Delivery,HISAR,HARYANA,29.1492,75.7217
+Bihar Circle,Patna Region,NA Division,TEST No State BO,800099,B.O,Delivery,NA,NA,25.6093,85.1376

@@ -885,3 +885,180 @@ From `../docs/feature-research-2026-10-22.md`: A2, A4, B4 and B5. New wording fo
    CAPTCHA.
 
 **Tests:** new `node test/companions.mjs` (49 checks), in `npm test`.
+
+## 29. Version 28, part 2: the pregnancy plan, scheme claims and the report for the doctor (Mohit, 22 Oct: "do the pregnancy plan, schemes, care near me and report next")
+
+From `../docs/feature-research-2026-10-22.md`: A1, B1 and C1. Care near me (B2) waits for the open-data check and gets its
+own section. New wording for the doctor is in `../docs/wording-review-v28.md`, section 5.
+
+**My pregnancy plan (preg module, route `preg-plan`):**
+- **Items:** 19, each with a week window. They follow the national schedule as Sakhi's verified week tips already state it:
+  - registration, folic acid, and the four check-ups (by 12, 14–26, 28–34, from 36 weeks);
+  - Td, the early scan (if advised) and the anomaly scan (18–20, as its tip says);
+  - the PMMVY and JSY money, iron, calcium, PMSMA on the 9th and the 75 g sugar test;
+  - JSSK, the birth plan, the ASHA and ambulance numbers, and family planning after the birth;
+  - the 41-week check, shown only from week 41.
+- **Text:** each card shows its week's verified tip (the `W` table) word for word. The only new words are the item names and
+  the page's own lines.
+- **Status, from her dates alone:**
+  - Due now; Coming up (the next four); Done; Not done yet.
+  - A missed window is never an alarm: "If you missed one, ask your ANM about it at your next visit."
+  - Windows that start at week 0 read "Up to week 12", not "Weeks 0 to 12".
+- **Done by itself, from her own records:**
+  - her MCP card: the registration date, a check-up date inside each window, and both Td doses or a booster;
+  - the pregnancy logs: a 75 g test in weeks 24–28;
+  - her iron plan (`S.iron.active()`) and her ASHA's number (`S.asha.saved()`).
+  - Anything else she marks Done (the date is kept) and can Undo.
+- **PMSMA** repeats: "I went today" counts her visits, the item stays due through its window, and the next 9th is shown.
+- **Reminders:** off until she turns them on (`plan.rem`). Then:
+  - one at 10 am on the first day of each future check-up or test window (`preg-plan-anc1`…`anc4`, `scan2`, `ogtt`);
+  - PMSMA at 9 am on each 9th until the due date, up to 8 (`preg-plan-pmsma`);
+  - Td-2 four weeks after Td-1, while only Td-1 is in her MCP card (`preg-plan-td2`).
+  - Items already due, done or past get none.
+  - `planSync()` removes every `preg-plan-*` reminder and adds them again after each change (a tick, an MCP save, the
+    switch), so none can go stale.
+- **Elsewhere:** one row on Home, "Due now: X, and n more". It is a `homeTop` strip, under the round buttons and above
+  the iron card, so the three-card cap on Home's items can't push it off. It's hidden in discreet mode, like the rest of the
+  pregnancy card. The summary adds "Due now: …" for the report and the ASHA screen.
+- **Data:** `mods.preg.plan = { done: { id: date }, pmsma: [dates], rem: true|false }`. `S.pregAnc()` gives her check-up
+  dates to other modules, read-only.
+
+**My claims (access module, on every scheme page):**
+- **"Track my claim"** on the seven schemes she applies for herself: PMMVY, JSY, Anganwadi food (Poshan 2.0), paid maternity
+  leave, sterilisation compensation, the PM-JAY card and Ni-kshay Poshan. Services like JSSK and PMSMA have no claim.
+- **Saved in her diary only:** `mods.access.claims[k] = { started, docs: { i: 1 }, applied, got }`. The finder's answers
+  are still never saved.
+- **Papers:** the scheme's verified documents line, split at its semicolons into ticks. This only happens when the English
+  and Hindi split into the same number of items.
+- **Steps:** Getting papers ready, then Applied (dated), then Money or card received (dated). She can tap back to an earlier
+  step.
+- **PMMVY:**
+  - "Register by {date}": 270 days after the birth, from the verified "how" text.
+  - Reminders (`access-pmmvy`, 10 am) a month and a week before that date, removed once she has applied.
+  - In pregnancy, once her MCP card has two check-up dates, a line says she can apply for the first part (₹3,000) now.
+    The ministry's FAQ (read 22 Oct) asks for one check-up in one answer and two in another, so the line waits for two.
+- **"My claims"** sits at the top of every scheme page. The summary goes to the report and the ASHA screen.
+- **What a birth costs:** the pregnancy list adds the 2025 out-of-pocket cost of a birth (NSS 80th round, PIB: ₹37,630
+  private, ₹2,299 public), next to JSSK's verified line.
+
+**The report for the doctor (core, routes `report` and `report-show`):**
+- **Her questions first:** her own questions (`state.askTopics`, the last 4) open "Questions I want to ask", then the
+  suggested ones, up to 7 in all.
+- **Report language:**
+  - Chips for her app's language, English and Hindi (a Marathi app shows Marathi first).
+  - The report renders in the chosen language through `inLang()`. It swaps `state.lang` for the render, holds saving, and
+    puts both back in `finally`.
+  - The choice lives in `mem.rpLang` and is never saved. The app's own screens stay in her language.
+- **"Show the doctor, in big letters"** (`report-show`): the same report in large type, with no buttons.
+- **Share and Copy** send the text in the report's language.
+- **PDF, on Android only:** "Save as PDF or print" calls `SakhiAndroid.printPage(title)`.
+  - That opens the phone's own print screen (`PrintManager` with the WebView's print adapter), where Save as PDF works
+    offline.
+  - In discreet mode the document is called "My notes".
+  - The web has no such button, because an artifact page can't open the print dialog.
+- **Print styles:** `@media print` hides the bars, sheets, toasts, everything marked `.no-print`, and all buttons.
+
+**Rules for module authors:**
+1. Summary lines are built at call time with `S.t`, `tx` and `S.fmtD`, so they come out in the report's language. Never
+   keep translated text from an earlier render.
+2. `save()` does nothing while `inLang()` runs. Anything a summary changes is saved by the next ordinary save.
+3. New wording gets a new string key. `test/dupkeys.mjs` (run by smoke) fails when an object names a key twice, because
+   JavaScript would silently keep only the last one. Version 28 nearly shipped `rp_show` twice, which would have renamed
+   Help's "Going to a doctor? Show this report".
+4. A module that owns a set of reminders rebuilds the whole set (remove everything with its prefix, then add) rather than
+   patching single ones.
+
+**Tests:** new `node test/plans.mjs` (72 checks), in `npm test`. The duplicate-key scan runs in `smoke.mjs`.
+
+## 30. Version 28, part 3: Care near me from bundled government lists (Mohit, 22 Oct: "do the pregnancy plan, schemes, care near me and report next")
+
+B2 in `../docs/feature-research-2026-10-22.md`. Where the data comes from, and the one step only Mohit can do (a data.gov.in
+key, or downloading two files by hand), is in `../docs/care-near-me-data-2026-10-22.md`.
+
+**The data (`web/tools/care-data.mjs` → `web/care/`, not in git):**
+- **Sources:** India Post's PIN code directory and the NIN list of health facilities, both from data.gov.in under GODL.
+- **Files:** each is a small script that sets `window.SAKHI_CARE[name]`:
+  - `index` (sources, dates, counts and file lists);
+  - `p56` and the like: PIN codes by their first two digits, `{ d: [districts], s: [states], p: { pin: [lat, lon, d, s] } }`;
+  - `t12_77` and the like: facilities in 1-degree map squares, `[name, type, lat, lon, pin, address]`.
+- **Types kept:**
+  - centres: sub-centre `sc`, PHC `phc`, urban PHC or urban health centre `uphc`, urban health post `uhp`;
+  - hospitals: CHC `chc`, sub-district `sdh`, district `dh`, civil, general or "<100 bedded" `gh`, women's or maternity
+    `wh`, medical college `mc`.
+  - Other types ("Others", dispensaries, post-partum units) and rows without a usable map location are left out. Swapped
+    latitude and longitude are put right. The builder prints what it kept and dropped.
+  - The rules were set from the real list's labels on 22 Oct: "Women Hospital" and "Civil Hospital/General Hospital" were
+    being dropped until then.
+- **Freshness:** `fac.revised` is the NIN list's last real revision (December 2021); the card shows its year.
+- **Cleaning the locations.** Both lists have errors, found on the real data on 22 Oct, and a wrong "nearest" is worse than
+  none. Six rules; the builder prints each count:
+  1. **Misplaced post offices:** an India Post office beyond 15 km from its district's middle, or 3 times the district's
+     median distance if that is more, is not used for its PIN code's location. Central Kolkata's 700001 had two of its
+     three offices 25 km away. About 10,000 offices are set aside this way.
+  2. **Shared default points:** a point shared by 4 or more facilities is a default, like a block or district centre; those
+     facilities are left out. About 8,500, for example 106 Rajasthan sub-centres on one point, and Goa sub-centres placed
+     in Bengaluru.
+  3. **PIN codes that disagree with their facilities:** a PIN code more than 50 km from where 3 or more of its own
+     facilities agree it is takes their location. 416 moved, for example PIN 486666, which sat on India's geographic
+     centre, and 166 got a location they lacked.
+  4. **Facilities far from their PIN:** a facility still more than 50 km from its own PIN code is left out. About 5,800.
+  5. **Town-level points:** a facility with no PIN code to check, sitting on whole minutes of arc (a town's gazetteer
+     point), is left out. About 100, for example CHC Valpoi placed in Panaji.
+  6. **Far outside its own district:** a facility with no PIN code, whose own district India Post knows, is left out if it
+     sits more than 40 km (or 3 times the district's median spread) from that district's middle. About 1,000.
+     - An error of one district (Narsra, of Sikar district, placed in Jaipur) isn't caught, because a tighter rule would
+       drop real remote centres such as Valparai's hospital. The caveat covers it.
+     - Addresses lose the list's empty markers (`NA`, `\N`).
+- **States the list hardly covers:** in a state with fewer kept facilities per post office than 40% of the national figure
+  (`index.thin`), the card says the list is missing most centres there instead of showing a list.
+  - On 22 Oct these were Kerala (2 facilities in the whole list), Gujarat (about a fifth), Arunachal Pradesh, Andaman and
+    Nicobar, and Lakshadweep.
+  - When nothing in either group is within 50 km in a covered state, one plain line says so, and that this doesn't mean
+    there are none.
+- **The first real build (22 Oct 2026):** 19,586 PIN codes and 147,967 facilities, in 394 files totalling 12.3 MB. The APK
+  grows from 2.0 to about 6 MB.
+
+**Loading (core, `S.care`):**
+- `S.care.on()` is true only when the build bundled the data: config `care`, set by `build-apk.sh` when `web/care/index.js`
+  exists.
+- `S.care.load(name)` adds the app's own script `care/<name>.js` and resolves with its data, or with null when it is
+  missing. The folder must be a plain relative path, and the name letters, digits and _. A web address or `..` loads
+  nothing.
+- It is the only place in the app that makes a script element (`test/signup.mjs` checks this). Modules never load files
+  themselves.
+
+**The card (access module, `access-care`):**
+- **Her PIN:** her account's PIN code is filled in, with a line saying so. A PIN she types (her mother's home, say) is used
+  on this screen only and not saved.
+- **The answer:** the PIN's district and state, then the three nearest health centres (sub-centre, PHC, urban PHC, urban
+  health post) and the three nearest hospitals (CHC, sub-district, district, government, women's, medical college) within
+  50 km. Each row has its type, a
+  straight-line distance, the address and Directions. Directions opens a map at the centre, never at her.
+- **Edge cases:**
+  - a PIN not in India Post's list says so;
+  - a PIN with no map location shows its district without distances;
+  - no centre within 50 km says "None within 50 km in this list".
+- **Caveat and sources:** straight-line distances; the list was last revised in {year}, so check with the ASHA or 104 before
+  going. Then the date Sakhi checked it, GODL, and links to both data.gov.in pages.
+- **Without the data**, the old card stays: the live app will list real facilities here.
+- **Privacy:** nothing about the lookup is sent. The phone reads `index`, one PIN file and up to nine map squares.
+
+**Rules for module authors:**
+1. Bundled data goes through `S.care.load()` (or a loader like it in core), never a module's own `fetch` or script tag.
+2. Data from a government list shows its source, its licence and how old it is, next to the data.
+3. A list Sakhi may not reproduce (Jan Aushadhi, One Stop Centres, NACO, until permission comes) is only linked, never
+   bundled.
+
+**Builder options:** `--save <dir>` keeps the downloaded lists (only the columns it reads) so `--from <dir>` can rebuild
+without downloading again.
+
+**Tests:** `node test/plans.mjs` section 4 runs the builder on made-up files in `test/fixtures/care/` (every name starts with
+TEST) into `test/_care/` (not in git), then checks the card, the edge cases, Hindi, that nothing is sent, and that a bad
+folder or name loads nothing. Section 4 adds 28 checks; with two more for the Home row, `plans.mjs` has 102.
+
+**Also fixed while building Version 28, part 2:**
+- `iron` and `asha` (part 1) were missing from `mods/order.json`. So `check.mjs all` skipped them, and running `build.py`
+  would have dropped them from `index.html`. Both are now listed. `build.py` reproduces `index.html` unchanged, and the check
+  covers all 25 modules.
+- Two core strings were defined twice: the new `rp_show`, now `rp_big`, and an old, unused `learn_p`, now removed. The new
+  `test/dupkeys.mjs`, run inside smoke, stops this from happening again.

@@ -20,6 +20,8 @@ import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PersistableBundle;
+import android.print.PrintAttributes;
+import android.print.PrintManager;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.app.NotificationManager;
@@ -221,6 +223,20 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             if (title != null && title.length() > 0) send.putExtra(Intent.EXTRA_TITLE, title);
             try { startActivity(Intent.createChooser(send, title)); return true; }
             catch (ActivityNotFoundException e) { return false; }
+        }
+
+        /** The phone's own print screen for the page on show (the doctor report): Save as PDF, or a printer. */
+        @JavascriptInterface
+        public void printPage(final String title) {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    PrintManager pm = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+                    if (pm == null) return;
+                    String name = title == null || title.length() == 0 ? "Sakhi" : title;
+                    try { pm.print(name, web.createPrintDocumentAdapter(name), new PrintAttributes.Builder().build()); }
+                    catch (Exception e) { /* no print service on this phone */ }
+                }
+            });
         }
 
         /** The phone's maker, so Me can show battery-saving help on phones known to stop reminders. */

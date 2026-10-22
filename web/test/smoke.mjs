@@ -1,11 +1,12 @@
 // Fast smoke test of a folder with index.html + all modules wired: every route, 7 sample setups, EN + HI,
 // plus discreet mode and prototype labels on. No clicks. Also: every screen at the phone's largest text (200%), and every
-// Learn article the code links to exists (audit fixes 11 and 30).
+// Learn article the code links to exists (audit fixes 11 and 30), and no object names the same key twice.
 // Usage: node test/smoke.mjs <dir-relative-to-this-app-folder>
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { dupKeys } from './dupkeys.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', process.argv[2] || '.');
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -62,5 +63,7 @@ if (fs.existsSync(content)) {
   }
   if (named < 30) problems.push('article link check found only ' + named + ' links: has the key format changed?');
 }
+/* No string or setting is named twice in one object: the second would silently replace the first */
+for (const x of dupKeys(root)) problems.push(x);
 console.log(JSON.stringify({ mods: info.mods.length, routes: info.routes.length, tiles: info.tiles, setups: setups.length }));
 console.log(problems.length ? problems.slice(0, 60).join('\n') + (problems.length > 60 ? '\n… ' + (problems.length - 60) + ' more' : '') : 'SMOKE OK: no errors, no empty screens, no overflow');

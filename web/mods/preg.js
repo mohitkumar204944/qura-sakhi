@@ -6,6 +6,25 @@
 
   /* ---------- strings: [English, Hindi]; every key becomes preg_<key> ---------- */
   const P = {
+    /* My pregnancy plan (Version 28, A1) */
+    plan_h: ['My pregnancy plan', 'मेरा गर्भावस्था प्लान'],
+    plan_s: ['What is due now, week by week, with reminders', 'अभी क्या करना है, हफ़्ते-दर-हफ़्ते, रिमाइंडर के साथ'],
+    plan_p: ['What is due in your pregnancy, from your dates. Tick what you have done; the dates in your MCP card and your logs count too.', 'आपकी तारीख़ों से, गर्भावस्था में कब क्या करना है। जो कर लिया, उसे टिक करें; MCP card और रिकॉर्ड की तारीख़ें भी गिनी जाती हैं।'],
+    plan_now: ['Due now', 'अभी का'], plan_soon: ['Coming up', 'आगे'], plan_done_h: ['Done ({n})', 'हो गया ({n})'], plan_past_h: ['Not done yet ({n})', 'अभी नहीं हुआ ({n})'],
+    plan_past_p: ['If you missed one, ask your ANM about it at your next visit.', 'कोई छूट गया हो, तो अगली जाँच में ANM से उसके बारे में पूछें।'],
+    plan_wk: ['Weeks {a} to {b}', 'हफ़्ता {a} से {b}'], plan_upto: ['Up to week {b}', 'हफ़्ता {b} तक'], plan_from: ['From week {a}, {d}', 'हफ़्ता {a} से, {d}'],
+    plan_open: ['Open', 'खोलें'], plan_mark: ['Done', 'हो गया'], plan_marked: ['Done on {d}', '{d} को हो गया'], plan_undo: ['Undo', 'वापस लें'], plan_auto: ['Done: from your MCP card, logs or tools', 'हो गया: आपके MCP card, रिकॉर्ड या टूल से'],
+    plan_td2: ['Second dose from {d}', 'दूसरी खुराक {d} से'],
+    plan_pmsma_next: ['Next PMSMA day: {d}', 'अगला PMSMA दिन: {d}'], plan_pmsma_went: ['I went today', 'आज गई थी'], plan_pmsma_n: ['Went: {n}', 'गईं: {n} बार'],
+    plan_rem: ['Remind me when each one is due', 'हर चीज़ का समय आने पर याद दिलाएँ'], plan_rem_s: ['At 10 am on the first day of each check-up and test, and at 9 am on each PMSMA day.', 'हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे, और हर PMSMA दिन सुबह 9 बजे।'],
+    plan_none: ['Add your due date or last period to see your plan.', 'अपना प्लान देखने के लिए डिलीवरी की तारीख़ या पिछला पीरियड डालें।'], plan_all_now: ['Nothing is due right now.', 'अभी कुछ बाकी नहीं।'],
+    plan_home: ['Due now: {x}', 'अभी: {x}'], plan_home_more: ['{x}, and {n} more', '{x} और {n} अन्य'], plan_rem_now: ['Due now: {x}', 'अभी: {x}'], plan_rem_pmsma: ['PMSMA: free check-up today', 'PMSMA: आज मुफ़्त जाँच'],
+    sum_due: ['Due now: {x}', 'अभी: {x}'],
+    pi_reg: ['Register your pregnancy', 'गर्भ का पंजीकरण'], pi_folic: ['Folic acid', 'फोलिक एसिड'], pi_anc1: ['First check-up and free tests', 'पहली जाँच और मुफ़्त टेस्ट'], pi_td: ['Td injections', 'Td के टीके'],
+    pi_scan1: ['Early scan, if advised', 'शुरुआती scan, अगर सलाह मिले'], pi_scheme: ['Scheme money: PMMVY and JSY', 'योजना का पैसा: PMMVY और JSY'], pi_ifa: ['Iron tablets', 'आयरन की गोलियाँ'], pi_ca: ['Calcium tablets', 'कैल्शियम की गोलियाँ'],
+    pi_anc2: ['Second check-up', 'दूसरी जाँच'], pi_scan2: ['Anomaly scan', 'Anomaly scan'], pi_pmsma: ['PMSMA: free check-up on the 9th', 'PMSMA: 9 तारीख़ को मुफ़्त जाँच'], pi_ogtt: ['Sugar test (75 g)', 'शुगर टेस्ट (75 g)'],
+    pi_anc3: ['Third check-up', 'तीसरी जाँच'], pi_jssk: ['Free birth at a government hospital (JSSK)', 'सरकारी अस्पताल में मुफ़्त डिलीवरी (JSSK)'], pi_birth: ['Your birth plan', 'आपका डिलीवरी प्लान'], pi_asha: ['ASHA and ambulance numbers', 'ASHA और एम्बुलेंस के नंबर'],
+    pi_anc4: ['Fourth check-up', 'चौथी जाँच'], pi_fp: ['Family planning after the birth', 'डिलीवरी के बाद परिवार नियोजन'], pi_w41: ['A check at 41 weeks', '41 हफ़्ते पर जाँच'],
     /* tiles */
     t_hub: ['Pregnancy guide', 'गर्भावस्था गाइड'],
     t_hub_s: ['Your week, check-up logs, food, discomforts and your MCP card', 'आपका हफ़्ता, जाँच का रिकॉर्ड, खाना, तकलीफ़ें और आपका MCP card'],
@@ -384,7 +403,7 @@
   };
   const W_MIN = 4, W_MAX = 42;
   const GO_LABEL = { 'preg-logs': () => T('go_logs'), 'preg-mcp': () => T('t_mcp'), 'preg-diet': () => T('t_diet'), 'preg-symptoms': () => T('t_sym'), help: () => t('safety'),
-    'access-schemes-preg': () => T('hub_schemes'), 'pregtools-kicks': () => T('go_kicks'), 'pregtools-bag': () => T('go_bag'), 'pregtools-contractions': () => T('go_ctx'), 'post-feed': () => T('go_feed'), 'post-contra': () => T('go_contra') };
+    'access-schemes-preg': () => T('hub_schemes'), 'pregtools-kicks': () => T('go_kicks'), 'pregtools-bag': () => T('go_bag'), 'pregtools-contractions': () => T('go_ctx'), 'post-feed': () => T('go_feed'), 'post-contra': () => T('go_contra'), iron: () => t('iron_h'), asha: () => t('asha_h') };
 
   /* ---------- common discomforts ---------- */
   const SYM = [
@@ -558,6 +577,8 @@
   const sizeLine = (n) => { const x = W[n]; return tx(x.s) + ', ' + lcFirst(tx(x.c)); };
   /* The week's fruit or vegetable, drawn by art.js (Home shows it beside the week number). */
   const sizeArt = (n, cls) => (S.art ? '<span class="' + (cls || 'pg-art') + '">' + S.art.produce(n, tx(W[n].c)) + '</span>' : '');
+  /* for other modules (the scheme claims): her antenatal visit dates from the MCP card. Read-only copy */
+  S.pregAnc = () => (S.canSave() ? store().mcp.anc.slice() : []);
   S.pregSize = (w) => { if (w == null || w < W_MIN) return null; const n = clampW(w); return W[n] ? { s: tx(W[n].s), c: tx(W[n].c), line: sizeLine(n) } : null; };   /* weeks 0-3 have no size of their own */
 
   /* trimester bar (same look as the core pregnancy page) */
@@ -640,7 +661,7 @@
     const free = '<div class="card"><h3>' + esc(T('hub_free_h')) + '</h3><ul class="pg-ul">' + ['free_1', 'free_2', 'free_3', 'free_4', 'free_5', 'free_amb'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul>' + goBtn('access-schemes-preg') + '</div>';
     v.innerHTML = S.backRow(T('hub_h'), 'care', false) + '<p class="small">' + esc(T('hub_p')) + '</p>' + top +
       '<h2>' + esc(T('hub_guides')) + '</h2><div class="list">' +
-      item('preg-week', T('t_week'), T('t_week_s'), S.I.baby, false) + item('preg-logs', T('t_logs'), T('t_logs_s'), S.I.chart, true) + item('preg-symptoms', T('t_sym'), T('t_sym_s'), S.I.help, true) +
+      item('preg-plan', T('plan_h'), T('plan_s'), S.I.check, false) + item('preg-week', T('t_week'), T('t_week_s'), S.I.baby, false) + item('preg-logs', T('t_logs'), T('t_logs_s'), S.I.chart, true) + item('preg-symptoms', T('t_sym'), T('t_sym_s'), S.I.help, true) +
       item('preg-diet', T('t_diet'), T('t_diet_s'), S.I.leaf, false) + item('post-pelvic', T('t_pelvic'), T('t_pelvic_s'), S.I.heart, false) + item('preg-mcp', T('t_mcp'), T('t_mcp_s'), CARD_SVG, false) + item('pregnancy', T('hub_visits'), T('hub_visits_s'), S.I.check, true) + tools + '</div>' +
       '<details class="pg-acc"><summary>' + esc(T('hub_all')) + '</summary><div class="pg-body"><p class="small">' + esc(T('hub_all_p')) + '</p>' + weekGrid(wi ? clampW(wi.w) : -1) + '</div></details>' +
       free + urgentAction() +
@@ -844,10 +865,11 @@
     S.wire(v);
     const $ = (id) => v.querySelector('#' + id);
     const collect = () => { m.rch = $('pg-rch').value.trim().slice(0, 40); m.regd = $('pg-regd').value || ''; m.bg = $('pg-bg').value; m.rh = $('pg-rh').value; m.edd = $('pg-edd').value || ''; m.td1 = $('pg-td1').value || ''; m.td2 = $('pg-td2').value || ''; m.tdb = $('pg-tdb').value || ''; m.rnote = $('pg-rnote').value.slice(0, 400); };
-    $('pg-mcp-save').addEventListener('click', () => { collect(); S.save(); S.toast(t('saved')); S.render(); });
+    const planUp = () => { const wi2 = weekInfo(); if (wi2) planSync(st, wi2); };   /* a visit or Td date can complete a plan item */
+    $('pg-mcp-save').addEventListener('click', () => { collect(); planUp(); S.save(); S.toast(t('saved')); S.render(); });
     ['pg-rch', 'pg-regd', 'pg-bg', 'pg-rh', 'pg-edd', 'pg-td1', 'pg-td2', 'pg-tdb', 'pg-rnote'].forEach((id) => { const el = $(id); if (el) el.addEventListener('change', () => { const wasNeg = m.rh === '-'; collect(); S.save(); if ((m.rh === '-') !== wasNeg) S.render(); }); });
     const ef = $('pg-edd-fill'); if (ef) ef.addEventListener('click', () => { $('pg-edd').value = S.toISO(S.addDays(S.fromISO(wi.lmp), 280)); });
-    $('pg-anc-add').addEventListener('click', () => { const d = $('pg-anc').value; if (!d || d > todayISO()) { S.toast(T('lg_bad')); return; } collect(); if (m.anc.indexOf(d) < 0) m.anc.push(d); S.save(); S.toast(t('saved')); S.render(); });
+    $('pg-anc-add').addEventListener('click', () => { const d = $('pg-anc').value; if (!d || d > todayISO()) { S.toast(T('lg_bad')); return; } collect(); if (m.anc.indexOf(d) < 0) m.anc.push(d); planUp(); S.save(); S.toast(t('saved')); S.render(); });
     v.querySelectorAll('[data-pg-anc-del]').forEach((b) => b.addEventListener('click', () => { collect(); m.anc = m.anc.filter((d) => d !== b.dataset.pgAncDel); S.save(); S.render(); }));
     v.querySelectorAll('[data-pg-risk]').forEach((c) => c.addEventListener('change', () => { collect(); m.risk[c.dataset.pgRisk] = c.checked; if (!c.checked) delete m.risk[c.dataset.pgRisk]; S.save(); S.render(); }));
   }
@@ -864,6 +886,113 @@
     if (wi.w < W_MIN || wi.w > W_MAX) return '';
     return '<button type="button" class="action" data-go="preg-week"><span class="ico ' + (S.art ? 'hue hue-orange pg-ico-art' : 'accent') + '">' + (S.art ? S.art.produce(clampW(wi.w)) : S.I.baby) + '</span><span class="body"><strong>' + esc(S.art ? TF('home_line2', { n: wi.w }) : TF('home_line', { n: wi.w, s: sizeLine(wi.w) })) + '</strong><span class="small">' + esc(T('home_sub')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
   }
+  /* What is due now, as a strip near the top of Home (homeTop), so the cap on Home's cards can't push it off. Never in discreet
+     mode, like the rest of the pregnancy card, and not after 42 weeks, when Home's urgent flag takes over. */
+  function homeTop() {
+    if (S.state.settings.discreet) return '';
+    const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return '';
+    const due = dueNames();
+    return due.length ? '<button type="button" class="action pg-due" data-go="preg-plan"><span class="ico accent">' + S.I.check + '</span><span class="body"><strong>' + esc(TF('plan_home', { x: due.length > 1 ? TF('plan_home_more', { x: due[0], n: due.length - 1 }) : due[0] })) + '</strong><span class="small">' + esc(T('plan_h')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '';
+  }
+  /* ---------- My pregnancy plan (Version 28; docs/feature-research-2026-10-22.md, A1) ----------
+     What is due from her weeks: the four check-ups and their free tests, Td, the scans, PMSMA on the 9th, the 75 g sugar test,
+     iron and calcium, scheme money, the birth plan, her ASHA's number and family planning. Each item's words are that week's
+     verified tip (W). Done comes from what she already keeps wherever it can: MCP card visits, registration and Td dates, the
+     75 g test in the logs, her iron plan, her ASHA's number. Anything else she ticks. A missed window is never an alarm, only
+     "ask your ANM at your next visit". Only her dates decide what shows; nothing judges her entries. */
+  const wkOf = (wi, isoD) => Math.floor(S.diffDays(S.fromISO(wi.basis), S.fromISO(isoD)) / 7);
+  const ancIn = (st, wi, a, b) => st.mcp.anc.some((d) => { const w = wkOf(wi, d); return w >= a && w <= b; });
+  const PLAN = [
+    { id: 'reg', w: [0, 12], tip: 5, go: 'preg-mcp', auto: (st) => !!st.mcp.regd },
+    { id: 'folic', w: [0, 12], tip: 4 },
+    { id: 'anc1', w: [0, 12], tip: 9, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 0, 13) },
+    { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
+    { id: 'scan1', w: [11, 14], tip: 11 },
+    { id: 'scheme', w: [5, 40], tip: 12, go: 'access-schemes-preg' },
+    { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) },
+    { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs' },
+    { id: 'anc2', w: [14, 26], tip: 16, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 14, 26) },
+    { id: 'scan2', w: [18, 20], tip: 18, rem: true },   /* the verified tip says 18–20 weeks */
+    { id: 'pmsma', w: [13, 40], tip: 23, pmsma: true },
+    { id: 'ogtt', w: [24, 28], tip: 24, go: 'preg-logs', rem: true, auto: (st, wi) => st.sug.some((x) => x.k === 'dipsi' && wkOf(wi, x.d) >= 24 && wkOf(wi, x.d) <= 28) },
+    { id: 'anc3', w: [28, 34], tip: 27, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 28, 34) },
+    { id: 'jssk', w: [28, 40], tip: 29, go: 'access-schemes-preg' },
+    { id: 'birth', w: [32, 40], tip: 33, go: 'pregtools-bag' },
+    { id: 'asha', w: [32, 40], tip: 34, go: 'asha', auto: () => !!(S.asha && S.asha.saved()) },
+    { id: 'anc4', w: [36, 41], tip: 36, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 36, 42) },
+    { id: 'fp', w: [36, 40], tip: 39, go: 'post-contra' },
+    { id: 'w41', w: [41, 42], tip: 41, only: true }
+  ];
+  const planOf = (st) => { const pl = st.plan && typeof st.plan === 'object' ? st.plan : (st.plan = {}); if (!pl.done || typeof pl.done !== 'object') pl.done = {}; if (!Array.isArray(pl.pmsma)) pl.pmsma = []; return pl; };
+  const dayOfWeek = (wi, n) => S.addDays(S.fromISO(wi.basis), n * 7);
+  /* the 9th of each month from today until the due date */
+  const ninths = (wi) => { const out = []; const td = S.today(); let x = new Date(td.getFullYear(), td.getMonth(), 9); if (x < td) x = new Date(td.getFullYear(), td.getMonth() + 1, 9); const end = wi.due; while (x <= end && out.length < 8) { if (wkOf(wi, S.toISO(x)) >= 13) out.push(new Date(x)); x = new Date(x.getFullYear(), x.getMonth() + 1, 9); } return out; };
+  function planStatus(st, wi) {
+    const pl = planOf(st);
+    return PLAN.filter((it) => !it.only || wi.w >= it.w[0]).map((it) => {
+      const auto = !!(it.auto && safeAuto(it, st, wi)); const tick = pl.done[it.id];
+      let code = 'soon';
+      if (it.pmsma) code = wi.w < it.w[0] ? 'soon' : (wi.w <= it.w[1] ? 'now' : 'past');
+      else if (auto || tick) code = 'done';
+      else if (wi.w < it.w[0]) code = 'soon';
+      else if (wi.w <= it.w[1]) code = 'now';
+      else code = 'past';
+      return { it: it, code: code, auto: auto, tick: tick };
+    });
+  }
+  const safeAuto = (it, st, wi) => { try { return it.auto(st, wi); } catch (e) { return false; } };
+  function planSync(st, wi) {
+    const pl = planOf(st);
+    S.reminders.list().filter((r) => r.mod === 'preg' && String(r.id).indexOf('preg-plan-') === 0).map((r) => r.id).forEach((id) => S.reminders.remove(id));
+    if (!pl.rem || !wi || !S.canSave()) return;
+    const td = S.today();
+    planStatus(st, wi).forEach((x) => {
+      if (x.it.pmsma) { if (x.code !== 'past') { const ds = ninths(wi).map(S.toISO); if (ds.length) S.reminders.upsert({ id: 'preg-plan-pmsma', mod: 'preg', title: { en: P.plan_rem_pmsma[0], hi: P.plan_rem_pmsma[1] }, kind: 'visit', dates: ds, start: null, every: null, weekdays: null, time: '09:00', on: true }); } return; }
+      if (!x.it.rem || x.code === 'done' || x.code === 'past') return;
+      const start = dayOfWeek(wi, x.it.w[0]); const when = start > td ? start : null; if (!when) return;   /* already due: no alarm, the plan and Home show it */
+      S.reminders.upsert({ id: 'preg-plan-' + x.it.id, mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', P['pi_' + x.it.id][0]), hi: P.plan_rem_now[1].replace('{x}', P['pi_' + x.it.id][1]) }, kind: 'checkup', dates: [S.toISO(when)], start: null, every: null, weekdays: null, time: '10:00', on: true });
+    });
+    /* Td: the second dose four weeks after the first */
+    if (st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb) { const d2 = S.addDays(S.fromISO(st.mcp.td1), 28); if (d2 > td) S.reminders.upsert({ id: 'preg-plan-td2', mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', P.pi_td[0]), hi: P.plan_rem_now[1].replace('{x}', P.pi_td[1]) }, kind: 'checkup', dates: [S.toISO(d2)], start: null, every: null, weekdays: null, time: '10:00', on: true }); }
+  }
+  function renderPlan(v) {
+    const wi = weekInfo(); const head = S.backRow(T('plan_h'), backTo(), false) + '<p class="small">' + esc(T('plan_p')) + '</p>';
+    if (!S.canSave()) { v.innerHTML = head + S.needDiary(); S.wire(v); return; }
+    if (!wi) { v.innerHTML = head + setCard(); S.wire(v); wireSetCard(v); return; }
+    const st = store(); const pl = planOf(st); const rows = planStatus(st, wi);
+    const tipOf = (it) => (W[it.tip] && W[it.tip].tip ? tx(W[it.tip].tip) : '');
+    const win = (it) => (it.w[0] ? TF('plan_wk', { a: it.w[0], b: it.w[1] }) : TF('plan_upto', { b: it.w[1] }));
+    const card = (x) => {
+      const it = x.it; const name = T('pi_' + it.id); let extra = '';
+      if (it.pmsma) { const n9 = ninths(wi)[0]; extra = (n9 ? '<p class="small" style="color:var(--fg);font-weight:600">' + esc(TF('plan_pmsma_next', { d: S.fmtD(n9, { weekday: 'short', day: 'numeric', month: 'short' }) })) + '</p>' : '') + (pl.pmsma.length ? '<p class="small">' + esc(TF('plan_pmsma_n', { n: pl.pmsma.length })) + '</p>' : ''); }
+      if (it.id === 'td' && st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb && x.code !== 'done') extra += '<p class="small" style="color:var(--fg)">' + esc(TF('plan_td2', { d: fdy(S.toISO(S.addDays(S.fromISO(st.mcp.td1), 28))) })) + '</p>';
+      const doneLine = x.code === 'done' ? '<p class="small" style="color:var(--ok)">' + esc(x.auto ? T('plan_auto') : TF('plan_marked', { d: fdy(x.tick) })) + '</p>' : '';
+      const btns = [];
+      if (it.pmsma && x.code === 'now') btns.push('<button type="button" class="btn sm' + (pl.pmsma.indexOf(todayISO()) >= 0 ? ' on' : '') + '" data-pg-pmsma="1">' + esc(T('plan_pmsma_went')) + '</button>');
+      else if (!it.pmsma && !x.auto) btns.push(x.tick ? '<button type="button" class="btn sm" data-pg-plan-undo="' + it.id + '">' + esc(T('plan_undo')) + '</button>' : '<button type="button" class="btn sm' + (x.code === 'now' ? ' primary' : '') + '" data-pg-plan="' + it.id + '">' + esc(T('plan_mark')) + '</button>');
+      if (it.go && linkOk(it.go)) btns.push('<button type="button" class="btn sm" data-go="' + esc(it.go) + '">' + esc(GO_LABEL[it.go] ? GO_LABEL[it.go]() : T('plan_open')) + '</button>');
+      return '<div class="card pg-plan" data-plan="' + it.id + '"><div class="row spread" style="align-items:flex-start;gap:8px"><h3 style="margin:0;min-width:0">' + esc(name) + '</h3><span class="pill ' + (x.code === 'now' ? 'accent' : (x.code === 'done' ? 'ok' : 'muted')) + '">' + esc(x.code === 'soon' ? TF('plan_from', { a: it.w[0], d: S.fmtD(dayOfWeek(wi, it.w[0]), { day: 'numeric', month: 'short' }) }) : win(it)) + '</span></div>' +
+        '<p class="small" style="color:var(--fg)">' + esc(tipOf(it)) + '</p>' + extra + doneLine + (btns.length ? '<div class="row wrap">' + btns.join('') + '</div>' : '') + '</div>';
+    };
+    const now = rows.filter((x) => x.code === 'now'), soon = rows.filter((x) => x.code === 'soon').sort((a, b) => a.it.w[0] - b.it.w[0]).slice(0, 4), done = rows.filter((x) => x.code === 'done'), past = rows.filter((x) => x.code === 'past' && !x.it.pmsma);
+    v.innerHTML = head +
+      '<div class="card"><div class="eyebrow">' + esc(T('hub_h')) + '</div><h2>' + esc(TF('hub_now', { n: wi.w })) + '</h2><p class="small">' + esc(TF('hub_due', { d: S.fmtD(wi.due, { day: 'numeric', month: 'long', year: 'numeric' }) })) + '</p></div>' +
+      '<h2>' + esc(T('plan_now')) + '</h2>' + (now.length ? now.map(card).join('') : '<div class="card soft"><p class="small">' + esc(T('plan_all_now')) + '</p></div>') +
+      (soon.length ? '<h2>' + esc(T('plan_soon')) + '</h2>' + soon.map(card).join('') : '') +
+      (done.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_done_h', { n: done.length })) + '</summary><div class="stack" style="margin-top:10px">' + done.map(card).join('') + '</div></details>' : '') +
+      (past.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_past_h', { n: past.length })) + '</summary><p class="small">' + esc(T('plan_past_p')) + '</p><div class="stack" style="margin-top:10px">' + past.map(card).join('') + '</div></details>' : '') +
+      '<div class="list"><label class="item"><span class="body"><strong>' + esc(T('plan_rem')) + '</strong><span>' + esc(T('plan_rem_s')) + '</span></span><input type="checkbox" id="pg-plan-rem"' + (pl.rem ? ' checked' : '') + '></label></div>' +
+      urgentAction();
+    S.wire(v);
+    const redo = () => { planSync(st, wi); S.save(); S.render(); };
+    v.querySelectorAll('[data-pg-plan]').forEach((b) => b.addEventListener('click', () => { pl.done[b.dataset.pgPlan] = todayISO(); redo(); }));
+    v.querySelectorAll('[data-pg-plan-undo]').forEach((b) => b.addEventListener('click', () => { delete pl.done[b.dataset.pgPlanUndo]; redo(); }));
+    v.querySelectorAll('[data-pg-pmsma]').forEach((b) => b.addEventListener('click', () => { const k = todayISO(); const i = pl.pmsma.indexOf(k); if (i >= 0) pl.pmsma.splice(i, 1); else pl.pmsma.push(k); redo(); }));
+    const rm = v.querySelector('#pg-plan-rem'); if (rm) rm.addEventListener('change', () => { pl.rem = rm.checked; redo(); });
+  }
+  /* what is due now, by name, for Home and the summaries */
+  const dueNames = () => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => T('pi_' + x.it.id)); };
+
   function summary() {
     const st = store(); const wi = weekInfo(); const L = [];
     if (wi) L.push(TF('sum_w', { n: wi.w }) + ' (' + T(wi.from === 'scan' ? 'sum_scan' : 'sum_lmp') + ')');
@@ -873,6 +1002,7 @@
     if (s) L.push(TF('sum_sug', { k: T(s.k === 'dipsi' ? 'sug_d_short' : 'sug_f_short'), v: s.v, d: fdy(s.d) }));
     if (h) L.push(TF('sum_hb', { v: num1(h.v), d: fdy(h.d) }));
     if (Object.keys(st.tabs).length) L.push(TF('sum_tab', { a: tabDays(st, 'ifa', 7), b: tabDays(st, 'ca', 7) }));
+    const due = dueNames(); if (due.length) L.push(TF('sum_due', { x: due.join(', ') }));
     if (st.mcp.bg || st.mcp.edd) L.push(TF('sum_rch', { b: st.mcp.bg ? st.mcp.bg + (st.mcp.rh || '') : T('mcp_none'), e: st.mcp.edd ? fdy(st.mcp.edd) : T('mcp_none') }));
     return L.length ? [{ title: T('sum_h'), lines: L }] : [];
   }
@@ -893,12 +1023,13 @@
     id: 'preg',
     demoPersona: 'meera',
     strings: strings,
-    routes: { 'preg': renderHub, 'preg-week': renderWeekRoute, 'preg-logs': renderLogs, 'preg-symptoms': renderSymptoms, 'preg-diet': renderDiet, 'preg-mcp': renderMcp },
+    routes: { 'preg': renderHub, 'preg-plan': renderPlan, 'preg-week': renderWeekRoute, 'preg-logs': renderLogs, 'preg-symptoms': renderSymptoms, 'preg-diet': renderDiet, 'preg-mcp': renderMcp },
     prefixes: { 'preg-w-': (v, rest) => { const n = parseInt(rest, 10); if (String(n) === String(rest) && W[n]) renderWeek(v, n); else renderWeekRoute(v); } },
     testRoutes: (function () { const a = []; for (let n = W_MIN; n <= W_MAX; n++) a.push('preg-w-' + n); return a; })(),
-    open: ['preg', 'preg-week', 'preg-logs', 'preg-symptoms', 'preg-diet', 'preg-mcp', 'preg-w-*'],
+    open: ['preg', 'preg-plan', 'preg-week', 'preg-logs', 'preg-symptoms', 'preg-diet', 'preg-mcp', 'preg-w-*'],
     tiles: [
       { section: 'preg', route: 'preg', title: 'preg_t_hub', sub: 'preg_t_hub_s', icon: 'heart', order: 1, gated: false, keywords: 'pregnancy pregnant garbh garbhavastha गर्भ गर्भावस्था' },
+      { section: 'preg', route: 'preg-plan', title: 'preg_plan_h', sub: 'preg_plan_s', icon: 'check', order: 3, gated: false, keywords: 'plan checklist due check-up anc visit test scan td pmsma ogtt sugar test birth plan what to do when reminder प्लान जाँच टीका' },
       { section: 'preg', route: 'preg-week', title: 'preg_t_week', sub: 'preg_t_week_s', icon: 'baby', order: 6, gated: false, keywords: 'week by week baby size fruit hafta हफ़्ता बच्चा आकार scan' },
       { section: 'preg', route: 'preg-logs', title: 'preg_t_logs', sub: 'preg_t_logs_s', icon: 'chart', order: 10, gated: true, keywords: 'weight bp blood pressure sugar dipsi ogtt gdm hb haemoglobin anaemia iron ifa calcium tablet वज़न शुगर' },
       { section: 'preg', route: 'preg-symptoms', title: 'preg_t_sym', sub: 'preg_t_sym_s', icon: 'help', order: 20, gated: true, keywords: 'nausea vomiting heartburn constipation piles cramps swelling back pain sleep discharge urine gums skin breathless उल्टी जलन क़ब्ज़ सूजन' },
@@ -958,6 +1089,7 @@
       '.pg-two .kv { font-size: 13px; }'
     ].join('\n'),
     home: home,
+    homeTop: homeTop,
     summary: summary,
     sample: sample
   });

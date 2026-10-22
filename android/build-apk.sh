@@ -40,13 +40,22 @@ cp "$WEB"/mods/*.js build/assets/www/mods/
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/
-python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" <<'PY'
+# Care near me: the PIN codes and health facilities made by web/tools/care-data.mjs from data.gov.in (not in git; see
+# docs/care-near-me-data-2026-10-22.md). Without them the app explains what the live list will show.
+CARE=""
+if [ -f "$WEB/care/index.js" ]; then
+  mkdir -p build/assets/www/care && cp "$WEB"/care/*.js build/assets/www/care/ && CARE="care/"
+  echo "Care near me: $(ls "$WEB"/care/*.js | wc -l | tr -d ' ') data files bundled."
+else
+  echo "Note: no Care near me data in web/care, so this build lists no facilities (docs/care-near-me-data-2026-10-22.md)."
+fi
+python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" <<'PY'
 import sys, os, json, re, hashlib, base64
 from urllib.parse import urlsplit
-web, out, api, ver, wa = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
+web, out, api, ver, wa, care = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
 c = json.load(open(os.path.join(web, 'content.json'), encoding='utf-8'))
 open(os.path.join(out, 'content.js'), 'w', encoding='utf-8').write('window.SAKHI_CONTENT = ' + json.dumps(c, ensure_ascii=False, separators=(',', ':')) + ';\n')
-open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}) + ';\n')
+open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}))) + ';\n')
 html = open(os.path.join(web, 'index.html'), encoding='utf-8').read()
 html = html.replace('<script src="app.js"', '<script src="android-shim.js"></script>\n<script src="config.js"></script>\n<script src="content.js" charset="utf-8"></script>\n<script src="app.js"', 1)
 # Content-Security-Policy (audit fix 28): only the app's own files run, and the only server the page can reach is the

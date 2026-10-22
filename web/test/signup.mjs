@@ -387,6 +387,10 @@ const modDoors = mods.filter((f) => doors.test(src('mods/' + f)) && (doors.lastI
 check('CODE app.js has exactly two fetch calls (content.json and net)', coreDoors === 2, coreDoors);
 check('CODE no module makes network calls', !modDoors.length, modDoors);
 check('CODE art.js makes no network calls', !doors.test(src('art.js')));
+/* Care near me's data loader adds the app's own script files (MODULE_API section 30): it is the only place that makes a
+   script element, and no module makes one */
+const scripts = /createElement\(\s*['"]script['"]\s*\)/g;
+check('CODE only the Care data loader in app.js makes script elements', (src('app.js').match(scripts) || []).length === 1 && /api\.care = \{[\s\S]{0,900}createElement\('script'\)/.test(src('app.js')) && !mods.some((f) => scripts.test(src('mods/' + f)) && (scripts.lastIndex = 0, true)));
 
 const pass = results.filter((r) => r.pass).length;
 console.log(pass + '/' + results.length + ' signup checks pass');

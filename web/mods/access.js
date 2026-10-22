@@ -2,7 +2,7 @@
 (function (S) {
   'use strict';
   if (!S) return;
-  const t = S.t, esc = S.esc, tx = S.tx, I = S.I;
+  const t = S.t, tf = S.tf, esc = S.esc, tx = S.tx, I = S.I;
   const L = (en, hi) => ({ en: en, hi: hi });
   const E = (o) => esc(tx(o));
   const P = (o, cls, style) => '<p' + (cls ? ' class="' + cls + '"' : '') + (style ? ' style="' + style + '"' : '') + '>' + E(o) + '</p>';
@@ -10,8 +10,8 @@
   const chev = '<span class="access-chev">' + I.chev + '</span>';
 
   /* Screen state that is never saved: PIN, scheme answers, chosen body area. */
-  const mem = { pin: '', pinErr: '', ans: {}, area: 'bleed' };
-  if (S.onOwnerChange) S.onOwnerChange(() => { mem.pin = ''; mem.pinErr = ''; mem.ans = {}; mem.area = 'bleed'; });
+  const mem = { pin: '', pinErr: '', ans: {}, area: 'bleed', open: null };
+  if (S.onOwnerChange) S.onOwnerChange(() => { mem.pin = ''; mem.pinErr = ''; mem.ans = {}; mem.area = 'bleed'; mem.open = null; });
 
   /* ---------- sources (each one opened and checked, Oct 2026) ---------- */
   const SRC = {
@@ -125,15 +125,73 @@
       (c.links.length ? '<div class="access-links">' + c.links.map(linkFor).join('') + '</div>' : '') + '</div></details>';
   }
 
+  /* ---------- Near her PIN code: the government's facility list, bundled with the app (Version 28, B2; MODULE_API
+     section 30). Her PIN is looked up on the phone, the nearest centres are worked out on the phone, and nothing is sent.
+     Without the bundled data (the web prototype, a build without web/care) the card explains what the live app will do. */
+  const NEAR_T = { sc: L('Sub-centre', 'उप-स्वास्थ्य केंद्र'), phc: L('Primary health centre (PHC)', 'प्राथमिक स्वास्थ्य केंद्र (PHC)'), uphc: L('Urban primary health centre', 'शहरी प्राथमिक स्वास्थ्य केंद्र'), chc: L('Community health centre (CHC)', 'सामुदायिक स्वास्थ्य केंद्र (CHC)'), uhp: L('Urban health post', 'शहरी स्वास्थ्य पोस्ट'), sdh: L('Sub-district hospital', 'उप-ज़िला अस्पताल'), dh: L('District hospital', 'ज़िला अस्पताल'), gh: L('Government hospital', 'सरकारी अस्पताल'), wh: L('Women’s hospital', 'महिला अस्पताल'), mh: L('Maternity home', 'प्रसूति गृह'), mcw: L('Mother and child welfare centre', 'मातृ-शिशु कल्याण केंद्र'), mc: L('Medical college hospital', 'मेडिकल कॉलेज अस्पताल') };
+  const NEAR_G = [{ h: 'access_near_centres', types: ['sc', 'phc', 'uphc', 'uhp', 'mcw'] }, { h: 'access_near_hosp', types: ['chc', 'sdh', 'dh', 'gh', 'wh', 'mh', 'mc'] }];
+  const NEAR_KM = 50;
+  const kmBetween = (a, b, c, d) => { const r = Math.PI / 180; const x = Math.pow(Math.sin((c - a) * r / 2), 2) + Math.cos(a * r) * Math.cos(c * r) * Math.pow(Math.sin((d - b) * r / 2), 2); return 12742 * Math.asin(Math.min(1, Math.sqrt(x))); };
+  const nearMem = {};   /* PIN → { st: 'loading' | 'done', res }, for this visit only */
+  const accPin = () => { try { const a = S.account && S.account.signedIn() ? S.account.info() : null; const p = a ? String(a.pincode || '') : ''; return /^[1-9]\d{5}$/.test(p) ? p : ''; } catch (e) { return ''; } };
+  function nearFind(pin) {
+    if (nearMem[pin]) return;
+    const box = nearMem[pin] = { st: 'loading' };
+    const done = (res) => { box.st = 'done'; box.res = res; if ((location.hash || '').slice(1) === 'access-care') S.render(); };
+    S.care.load('index').then((ix) => {
+      if (!ix || !ix.fac || !ix.pins) return done({ none: true });
+      return S.care.load('p' + pin.slice(0, 2)).then((ps) => {
+        const rec = ps && ps.p && Object.prototype.hasOwnProperty.call(ps.p, pin) ? ps.p[pin] : null;
+        if (!rec) return done({ ix: ix, unknown: true });
+        const place = [ps.d[rec[2]], ps.s[rec[3]]].filter(Boolean).join(', ');
+        if (typeof rec[0] !== 'number' || typeof rec[1] !== 'number') return done({ ix: ix, place: place, nocoord: true });
+        /* a state the list hardly covers: say so rather than show a "nearest" that may be far from the real one */
+        const st = ps.s[rec[3]]; if (st && Array.isArray(ix.thin) && ix.thin.indexOf(st) >= 0) return done({ ix: ix, place: place, thin: st });
+        const la = Math.floor(rec[0]), lo = Math.floor(rec[1]); const names = [];
+        for (let a = la - 1; a <= la + 1; a++) for (let b = lo - 1; b <= lo + 1; b++) { const n = 't' + a + '_' + b; if (!Array.isArray(ix.tiles) || ix.tiles.indexOf(n) >= 0) names.push(n); }
+        return Promise.all(names.map((n) => S.care.load(n))).then((ts) => {
+          const all = [];
+          ts.forEach((tl) => (Array.isArray(tl) ? tl : []).forEach((f) => { if (!Array.isArray(f) || !NEAR_T[f[1]]) return; const d = kmBetween(rec[0], rec[1], +f[2], +f[3]); if (d <= NEAR_KM) all.push({ f: f, d: d }); }));
+          all.sort((x, y) => x.d - y.d);
+          done({ ix: ix, place: place, groups: NEAR_G.map((g) => ({ h: g.h, rows: all.filter((x) => g.types.indexOf(x.f[1]) >= 0).slice(0, 3) })) });
+        });
+      });
+    }).catch(() => done({ none: true }));
+  }
+  const dataGov = (u) => (/^https:\/\/www\.data\.gov\.in\//.test(String(u || '')) ? String(u) : '');
+  function nearFoot(ix, withNote) {   /* the distance caveat only where distances are shown */
+    const y = String((ix.fac && ix.fac.revised) || '').slice(0, 4); const b = /^\d{4}-\d{2}-\d{2}$/.test(ix.built || '') ? S.fmtD(S.fromISO(ix.built), { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+    const src = [ix.fac, ix.pins].map((x) => (dataGov(x.url) ? '<a href="' + esc(dataGov(x.url)) + '" target="_blank" rel="noopener">' + esc(String(x.src || '')) + '</a>' : esc(String(x.src || '')))).join(' · ');
+    return (withNote ? '<p class="small" style="color:var(--fg)">' + esc(tf('access_near_note', { y: /^\d{4}$/.test(y) ? y : '–' })) + '</p>' : '') + '<p class="sources">' + esc(tf('access_near_src', { d: b || '–' })) + ' ' + src + '</p>';
+  }
+  function nearBlock(pin) {
+    nearFind(pin); const box = nearMem[pin]; const r = box.res || {};
+    if (r.none) return null;
+    const head = '<div class="row spread" style="align-items:flex-start;gap:8px"><div style="min-width:0"><h3>' + esc(tf('access_near_h', { pin: pin })) + '</h3>' + (r.place ? '<p class="small access-near-place" style="color:var(--fg)">' + esc(r.place) + '</p>' : '') + '</div><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>';
+    if (box.st === 'loading') return '<div class="card soft access-near" data-nofold="1" aria-busy="true">' + head + '<p class="small">' + esc(t('access_near_load')) + '</p></div>';
+    if (r.unknown) return '<div class="card soft access-near" data-nofold="1">' + head + '<p class="small" style="color:var(--fg)">' + esc(t('access_near_unknown')) + '</p></div>';
+    if (r.thin) return '<div class="card soft access-near" data-nofold="1">' + head + '<p class="small" style="color:var(--fg)">' + esc(tf('access_near_thin', { s: r.thin })) + '</p>' + nearFoot(r.ix) + '</div>';
+    if (r.nocoord) return '<div class="card soft access-near" data-nofold="1">' + head + '<p class="small" style="color:var(--fg)">' + esc(t('access_near_nocoord')) + '</p>' + nearFoot(r.ix) + '</div>';
+    const row = (x) => { const f = x.f; const km = x.d < 1 ? t('access_near_km0') : tf('access_near_km', { n: Math.round(x.d) });
+      const map = 'https://www.google.com/maps/search/?api=1&query=' + (+f[2]).toFixed(4) + ',' + (+f[3]).toFixed(4);
+      return '<div class="item access-fac"><span class="body"><strong>' + esc(String(f[0])) + '</strong><span>' + E(NEAR_T[f[1]]) + ' · ' + esc(km) + '</span>' + (f[5] ? '<span>' + esc(String(f[5])) + '</span>' : '') + '</span><a class="btn sm" href="' + esc(map) + '" target="_blank" rel="noopener">' + esc(t('access_near_dir')) + '</a></div>'; };
+    /* nothing near in either group: one plain line, so two "None" lines don't read as "no care here" */
+    if (r.groups.every((g) => !g.rows.length)) return '<div class="card soft access-near" data-nofold="1">' + head + '<p class="small" style="color:var(--fg)">' + esc(t('access_near_empty')) + '</p>' + nearFoot(r.ix) + '</div>';
+    return '<div class="card access-near" data-nofold="1">' + head + r.groups.map((g) => '<h4>' + esc(t(g.h)) + '</h4>' + (g.rows.length ? '<div class="list">' + g.rows.map(row).join('') + '</div>' : '<p class="small">' + esc(t('access_near_none')) + '</p>')).join('') + nearFoot(r.ix, true) + '</div>';
+  }
+  const protoCard = (pin) => '<div class="card soft"><div class="row spread"><h3>' + esc(t('access_pin_for')) + ' <span class="num hl">' + esc(pin) + '</span></h3><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>' +
+    P(L('In the live app this page will list the real facilities near this PIN from government directories, with timings and distance. This prototype does not invent names or addresses, so for now it shows the kinds of free care every PIN has and the official links to find them.', 'असली app में यह पन्ना सरकारी सूचियों से इस PIN के पास की असली जगहें, समय और दूरी के साथ दिखाएगा। यह prototype नाम या पते नहीं गढ़ता, इसलिए अभी हर PIN पर मिलने वाले मुफ़्त इलाज के प्रकार और उन्हें खोजने के सरकारी link दिखाता है।'), 'small', 'color:var(--fg)') + '</div>';
+
   function renderCare(v) {
-    const pin = mem.pin;
+    /* her account's PIN code until she types another one (or clears it) on this screen */
+    const pin = mem.pinSet ? mem.pin : (mem.pin || accPin()); const fromAcc = !mem.pinSet && !mem.pin && !!pin;
+    const near = pin && S.care && S.care.on() ? nearBlock(pin) : null;
     v.innerHTML = S.backRow(t('access_care'), 'care', false) +
       P(L('Every PIN code in India has free government care: from your ASHA at home to the district hospital. Here is what each one gives free, and the official way to find it.', 'भारत के हर PIN code पर मुफ़्त सरकारी इलाज है: घर पर ASHA से लेकर ज़िला अस्पताल तक। यहाँ देखें कि हर जगह क्या मुफ़्त है, और उसे खोजने का सरकारी तरीक़ा।'), 'small') +
       '<div class="card"><label for="access-pin">' + esc(t('access_pin_l')) + '</label><div class="row"><input id="access-pin" inputmode="numeric" maxlength="6" autocomplete="postal-code" placeholder="' + esc(t('access_pin_ph')) + '" value="' + esc(pin) + '" style="flex:1"><button type="button" class="btn primary sm" id="access-pin-go">' + esc(t('access_pin_go')) + '</button></div>' +
       (mem.pinErr ? '<div class="flag" role="alert">' + E(mem.pinErr) + '</div>' : '') +
-      '<p class="small">' + esc(t('access_pin_note')) + '</p></div>' +
-      (pin ? '<div class="card soft"><div class="row spread"><h3>' + esc(t('access_pin_for')) + ' <span class="num hl">' + esc(pin) + '</span></h3><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>' +
-        P(L('In the live app this page will list the real facilities near this PIN from government directories, with timings and distance. This prototype does not invent names or addresses, so for now it shows the kinds of free care every PIN has and the official links to find them.', 'असली app में यह पन्ना सरकारी सूचियों से इस PIN के पास की असली जगहें, समय और दूरी के साथ दिखाएगा। यह prototype नाम या पते नहीं गढ़ता, इसलिए अभी हर PIN पर मिलने वाले मुफ़्त इलाज के प्रकार और उन्हें खोजने के सरकारी link दिखाता है।'), 'small', 'color:var(--fg)') + '</div>' : '') +
+      '<p class="small">' + esc(t(fromAcc ? 'access_near_acc' : 'access_pin_note')) + '</p></div>' +
+      (pin ? (near || protoCard(pin)) : '') +
       '<div class="list">' + (S.routeOwner('asha') ? '<button type="button" class="item" data-go="asha"><span class="ico-sm hue hue-teal">' + S.icon('person') + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span>' + esc(t('asha_help_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' : '') +
         '<button type="button" class="item" data-go="access-online"><span class="ico-sm hue hue-sky">' + S.icon('file') + '</span><span class="body"><strong>' + esc(t('access_online')) + '</strong><span>' + esc(t('access_online_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' +
       '<div class="flag urgent">' + E(L('Emergency: call 112, or 108 or 102 for a free ambulance. Do not wait to find the right centre.', 'Emergency: 112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102। सही केंद्र खोजने में देर न करें।')) + '</div>' +
@@ -151,11 +209,11 @@
       if (!/^\d{6}$/.test(val)) { mem.pinErr = L('Enter all 6 digits of your PIN code.', 'अपने PIN code के पूरे 6 अंक लिखें।'); mem.pin = ''; }
       else if (val[0] === '0') { mem.pinErr = L('Indian PIN codes start with a digit from 1 to 9. Please check the first digit.', 'भारत के PIN code 1 से 9 तक के अंक से शुरू होते हैं। पहला अंक जाँचें।'); mem.pin = ''; }
       else { mem.pinErr = ''; mem.pin = val; }
-      renderCare(v);
+      mem.pinSet = true; renderCare(v);
     };
     v.querySelector('#access-pin-go').addEventListener('click', go);
     inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
-    const cl = v.querySelector('#access-pin-clear'); if (cl) cl.addEventListener('click', () => { mem.pin = ''; mem.pinErr = ''; renderCare(v); });
+    const cl = v.querySelector('#access-pin-clear'); if (cl) cl.addEventListener('click', () => { mem.pin = ''; mem.pinErr = ''; mem.pinSet = true; renderCare(v); const i2 = v.querySelector('#access-pin'); if (i2) i2.focus(); });
   }
 
   /* =====================================================================
@@ -317,11 +375,57 @@
   };
   const STATUS = { yes: ['ok', L('Likely for you', 'शायद आपके लिए')], maybe: ['', L('Check if it fits', 'देखें कि लागू है या नहीं')], all: ['accent', L('For everyone', 'सबके लिए')], no: ['muted', L('Not now', 'अभी नहीं')] };
 
+  /* ---------- My claims (Version 28; docs/feature-research-2026-10-22.md, B1) ----------
+     For schemes she applies for, she can track her claim on this phone: papers ready (PMMVY's list as ticks), applied, money or
+     card received, each with its date. PMMVY's deadline (270 days after the birth, from the verified "how") is worked out from
+     her baby's birth date, with a reminder a month and a week before. The finder's answers are still never saved; only the
+     claims she chooses to track are, in her diary. */
+  const TRACK = ['pmmvy', 'jsy', 'thr', 'matben', 'steril', 'pmjay', 'nikshay'];
+  const STEPS = ['ready', 'applied', 'got'];
+  const AD = () => { const d = S.data('access'); if (!d.claims || typeof d.claims !== 'object') d.claims = {}; return d; };
+  const claimOf = (k) => (S.canSave() ? AD().claims[k] || null : null);
+  const docList = (s) => { const a = s.docs.en.split(/;\s*/), b = s.docs.hi.split(/;\s*/); return a.length >= 2 && a.length === b.length ? a.map((x, i) => L(x.charAt(0).toUpperCase() + x.slice(1), b[i])) : null; };   /* a list item starts with a capital */
+  const birthISO = () => { const b = (S.state.situation || {}).deliveredOn; return typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) ? b : null; };
+  const pmmvyBy = () => { const b = birthISO(); return b ? S.addDays(S.fromISO(b), 270) : null; };
+  const fmtL = (d) => S.fmtD(d, { day: 'numeric', month: 'short', year: 'numeric' });
+  const stepOf = (c) => (c.got ? 'got' : (c.applied ? 'applied' : 'ready'));
+  function claimSync() {
+    S.reminders.remove('access-pmmvy');
+    const c = claimOf('pmmvy'); const by = pmmvyBy();
+    if (!c || c.applied || c.got || !by) return;
+    const ds = [S.addDays(by, -30), S.addDays(by, -7)].filter((d) => d > S.today()).map(S.toISO);
+    if (ds.length) S.reminders.upsert({ id: 'access-pmmvy', mod: 'access', title: L('PMMVY: register soon', 'PMMVY: जल्द पंजीकरण करें'), kind: 'custom', dates: ds, start: null, every: null, weekdays: null, time: '10:00', on: true });
+  }
+  function claimBlock(k) {
+    if (!S.canSave() || TRACK.indexOf(k) < 0) return '';
+    const s = SCH[k]; const c = claimOf(k);
+    if (!c) return '<button type="button" class="btn sm primary access-inline" data-claim-start="' + k + '">' + esc(t('access_claim_start')) + '</button>';
+    const docs = docList(s); const st = stepOf(c);
+    let extra = '';
+    if (k === 'pmmvy') {
+      const by = pmmvyBy();
+      if (by && !c.applied && !c.got) extra += '<div class="flag">' + esc(tf('access_pmmvy_by', { d: fmtL(by) })) + '</div>';
+      const anc = S.pregAnc ? S.pregAnc() : [];
+      /* The ministry's FAQ asks for one check-up in one answer and two in another (read 22 Oct 2026), so the line waits for two:
+         true either way. docs/wording-review-v28.md, section 5, asks which is right. */
+      if (!by && S.cycle.isPregnant() && anc.length >= 2 && !c.applied && !c.got) extra += '<p class="small" style="color:var(--fg)">' + esc(t('access_pmmvy_part1')) + '</p>';
+    }
+    return '<div class="access-claim" data-claim="' + k + '"><h4>' + esc(t('access_claim_h')) + '</h4>' + extra +
+      (docs ? '<p class="small">' + esc(t('access_claim_docs')) + '</p><div class="checklist">' + docs.map((x, i) => '<label class="' + ((c.docs || {})[i] ? 'done' : '') + '"><input type="checkbox" data-claim-doc="' + k + '|' + i + '"' + ((c.docs || {})[i] ? ' checked' : '') + '> <span>' + E(x) + '</span></label>').join('') + '</div>' : '') +
+      '<div class="access-steps">' + STEPS.map((x) => '<button type="button" class="chip' + (x === st ? ' on' : '') + '" data-claim-step="' + k + '|' + x + '">' + esc(t('access_step_' + x)) + (x !== 'ready' && c[x] ? ' · ' + esc(S.fmtD(S.fromISO(c[x]), { day: 'numeric', month: 'short' })) : '') + '</button>').join('') + '</div>' +
+      '<button type="button" class="linkbtn" data-claim-stop="' + k + '">' + esc(t('access_claim_stop')) + '</button></div>';
+  }
+  function myClaims() {
+    if (!S.canSave()) return ''; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return '';
+    return '<div class="card access-my"><h3>' + esc(t('access_my_h')) + '</h3><div class="list">' + ks.map((k) => { const c = cl[k]; const st = stepOf(c); const by = k === 'pmmvy' && st === 'ready' ? pmmvyBy() : null;
+      return '<button type="button" class="item" data-claim-open="' + k + '"><span class="body"><strong>' + E(SCH[k].name) + '</strong><span>' + esc(t('access_step_' + st)) + (c[st] && st !== 'ready' ? ' · ' + esc(fmtL(S.fromISO(c[st]))) : '') + (by ? ' · ' + esc(tf('access_pmmvy_by', { d: fmtL(by) })) : '') + '</span></span><span class="chev">' + S.I.chev + '</span></button>'; }).join('') + '</div></div>';
+  }
+
   function schemeCard(k, st, a) {
     const s = SCH[k]; const p = STATUS[st]; const note = s.note ? s.note(a) : null;
-    return '<details class="access-sch"><summary><span class="body"><strong>' + E(s.name) + '</strong><span>' + E(s.line) + '</span></span><span class="pill ' + p[0] + '">' + E(p[1]) + '</span>' + chev + '</summary>' +
+    return '<details class="access-sch" id="sch-' + k + '"' + (mem.open === k ? ' open' : '') + '><summary><span class="body"><strong>' + E(s.name) + '</strong><span>' + E(s.line) + '</span></span><span class="pill ' + p[0] + '">' + E(p[1]) + '</span>' + chev + '</summary>' +
       '<div class="in">' + (note ? '<div class="flag">' + E(note) + '</div>' : '') +
-      '<h4>' + esc(t('access_benefit')) + '</h4>' + P(s.benefit) + '<h4>' + esc(t('access_who')) + '</h4>' + P(s.who) + '<h4>' + esc(t('access_apply')) + '</h4>' + P(s.how) + '<h4>' + esc(t('access_docs')) + '</h4>' + P(s.docs) +
+      '<h4>' + esc(t('access_benefit')) + '</h4>' + P(s.benefit) + '<h4>' + esc(t('access_who')) + '</h4>' + P(s.who) + '<h4>' + esc(t('access_apply')) + '</h4>' + P(s.how) + '<h4>' + esc(t('access_docs')) + '</h4>' + P(s.docs) + claimBlock(k) +
       (s.links.length ? '<div class="access-links">' + s.links.map((x) => ext(x[0], x[1])).join('') + '</div>' : '') + goBtns(s.go) +
       '<p class="sources">' + esc(t('access_source')) + ': ' + s.src.map((x) => '<a href="' + esc(SRC[x].url) + '" target="_blank" rel="noopener">' + E(SRC[x]) + '</a>').join(' · ') + '</p></div></details>';
   }
@@ -376,6 +480,7 @@
     const answered = qs.filter((k) => a[k] != null).length;
     v.innerHTML = S.backRow(t(T.title), 'care', false) +
       P(L('Government money and free services for women and families, checked against official sources for 2025–26. Answer what you like; your answers stay on this screen and are not saved.', 'महिलाओं और परिवारों के लिए सरकारी पैसा और मुफ़्त सेवाएँ, 2025–26 के सरकारी स्रोतों से जाँची गई। जो चाहें उसका जवाब दें; आपके जवाब इसी screen पर रहते हैं, save नहीं होते।'), 'small') +
+      myClaims() + (tg === 'preg' ? '<div class="card soft">' + P(L('In 2025, families paid about ₹37,600 of their own money on average for a birth in a private hospital, and about ₹2,300 in a government one (national survey, NSS 80th round). Under JSSK, birth at a government hospital is free and cashless.', 'साल 2025 में परिवारों ने निजी अस्पताल में एक डिलीवरी पर औसतन लगभग ₹37,600 अपनी जेब से दिए, और सरकारी अस्पताल में लगभग ₹2,300 (राष्ट्रीय सर्वे, NSS 80वाँ दौर)। JSSK में सरकारी अस्पताल में डिलीवरी मुफ़्त और बिना नक़द के होती है।'), 'small') + '<p class="sources"><a href="https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/apr/doc2026420852401.pdf" target="_blank" rel="noopener">' + E(L('PIB, NSS 80th round: household health spending, 2026', 'PIB, NSS 80वाँ दौर: परिवारों का स्वास्थ्य ख़र्च, 2026')) + '</a></p></div>' : '') +
       '<div class="chips access-tags" role="group" aria-label="' + esc(t('access_filter')) + '">' + TAG_ORDER.map((x) => '<button type="button" class="chip' + (x === tg ? ' on' : '') + '" data-go="access-schemes-' + x + '">' + E(TAG_CHIP[x]) + '</button>').join('') + '</div>' +
       '<div class="card"><div class="row spread"><h3>' + esc(t('access_q_h')) + '</h3><span class="small num">' + answered + '/' + qs.length + '</span></div>' +
       qs.map((k) => '<div class="access-q"><span class="access-ql">' + E(Q[k].q) + '</span><div class="chips">' + Q[k].o.map((o) => '<button type="button" class="chip' + (a[k] === o ? ' on' : '') + '" data-q="' + k + '" data-o="' + o + '">' + E(OPT[o]) + '</button>').join('') + '</div></div>').join('') +
@@ -390,6 +495,14 @@
       renderSchemes(v, tg);
     }));
     const rs = v.querySelector('#access-q-reset'); if (rs) rs.addEventListener('click', () => { mem.ans = {}; renderSchemes(v, tg); });
+    /* claims: saved in her diary; the card she is working on stays open */
+    const redo = (k) => { mem.open = k; claimSync(); S.save(); renderSchemes(v, tg); const el = v.querySelector('#sch-' + k); if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' }); };
+    v.querySelectorAll('[data-claim-start]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.claimStart; AD().claims[k] = { started: S.toISO(S.today()), docs: {} }; redo(k); }));
+    v.querySelectorAll('[data-claim-doc]').forEach((c) => c.addEventListener('change', () => { const p = c.dataset.claimDoc.split('|'); const cl = AD().claims[p[0]]; if (!cl) return; cl.docs = cl.docs || {}; if (c.checked) cl.docs[p[1]] = 1; else delete cl.docs[p[1]]; redo(p[0]); }));
+    v.querySelectorAll('[data-claim-step]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.claimStep.split('|'); const cl = AD().claims[p[0]]; if (!cl) return; const td = S.toISO(S.today());
+      if (p[1] === 'ready') { delete cl.applied; delete cl.got; } else if (p[1] === 'applied') { cl.applied = cl.applied || td; delete cl.got; } else { cl.applied = cl.applied || td; cl.got = cl.got || td; } redo(p[0]); }));
+    v.querySelectorAll('[data-claim-stop]').forEach((b) => b.addEventListener('click', () => { delete AD().claims[b.dataset.claimStop]; redo(null); }));
+    v.querySelectorAll('[data-claim-open]').forEach((b) => b.addEventListener('click', () => { mem.open = b.dataset.claimOpen; const el = v.querySelector('#sch-' + mem.open); if (el) { el.open = true; if (el.scrollIntoView) el.scrollIntoView({ block: 'start' }); } else renderSchemes(v, 'all'); }));
   }
 
   /* =====================================================================
@@ -725,6 +838,9 @@
   const en = {
     access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Home', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
     access_care: 'Care near me', access_care_s: 'Free government care by PIN code, and how to find it',
+    access_claim_start: 'Track my claim', access_claim_h: 'My claim', access_claim_docs: 'Papers to keep ready. Tick each one you have.', access_claim_stop: 'Stop tracking',
+    access_step_ready: 'Getting papers ready', access_step_applied: 'Applied', access_step_got: 'Money or card received', access_my_h: 'My claims',
+    access_pmmvy_by: 'Register by {d}', access_pmmvy_part1: 'You have had two check-ups, so you can apply for the first part (₹3,000) now.',
     access_online: 'Do it online: government services', access_online_s: 'ABHA, U-WIN, PMMVY, Ayushman card, eSanjeevani, Jan Aushadhi',
     access_online_need: 'You need:', access_online_open: 'Open the official site', access_online_who: 'Who gets it', access_online_foot: 'Official government sites, checked on 22 Oct 2026. Sakhi is not part of them.',
     access_schemes: 'Government schemes for you', access_schemes_s: 'PMMVY, JSY, JSSK, Ayushman card and more: who gets what',
@@ -738,6 +854,10 @@
     access_symptoms: 'Symptom guide', access_symptoms_s: 'By body area: how urgent, what it often is, where to go',
     access_sources: 'Sources', access_source: 'Source', access_what_free: 'What you get', access_how_find: 'How to find it',
     access_pin_l: 'Your PIN code', access_pin_ph: '6 digits, e.g. 226010', access_pin_go: 'Show care', access_pin_note: 'Your PIN is used only on this screen and is not saved.', access_pin_for: 'PIN', access_pin_change: 'Change',
+    access_near_acc: 'This is the PIN code in your Sakhi account. To look near another place, like your mother’s home, change it.', access_near_h: 'Near PIN {pin}', access_near_load: 'Looking in the government lists on this phone…',
+    access_near_unknown: 'This PIN code isn’t in India Post’s list. Please check the number.', access_near_nocoord: 'India Post’s list has no map location for this PIN code, so Sakhi can’t tell which centres are closest. The official links below can help.',
+    access_near_centres: 'Health centres', access_near_hosp: 'Hospitals', access_near_none: 'None within 50 km in this list.', access_near_empty: 'The government’s list has no centres within 50 km of this PIN code. That doesn’t mean there are none: ask your ASHA or call 104.', access_near_thin: 'The government’s list is missing most centres in {s}, so Sakhi can’t tell which are nearest. Your ASHA, 104 or the official links below can tell you.', access_near_km: 'about {n} km', access_near_km0: 'less than 1 km', access_near_dir: 'Directions',
+    access_near_note: 'Distances are in a straight line. This is the government’s list of health facilities (NIN), last revised in {y}: a centre may be missing, or may have moved, closed or changed. Before you go, check with your ASHA or call 104.', access_near_src: 'Checked by Sakhi on {d}. Government Open Data License – India:',
     access_benefit: 'What you get', access_who: 'Who can get it', access_apply: 'How to apply', access_docs: 'Papers to keep ready',
     access_filter: 'Show schemes for', access_q_h: 'A few questions (optional)', access_q_reset: 'Clear my answers',
     access_mins: 'About {n} min', access_planned: 'Recording planned', access_text_v: 'Short text version', access_read_guide: 'Read the guide', access_close: 'Close',
@@ -748,6 +868,9 @@
   const hi = {
     access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: 'होम पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
     access_care: 'मेरे पास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
+    access_claim_start: 'मेरा दावा ट्रैक करें', access_claim_h: 'मेरा दावा', access_claim_docs: 'तैयार रखने वाले काग़ज़। जो पास है, उसे टिक करें।', access_claim_stop: 'ट्रैक करना बंद करें',
+    access_step_ready: 'काग़ज़ तैयार कर रही हूँ', access_step_applied: 'आवेदन किया', access_step_got: 'पैसा या कार्ड मिल गया', access_my_h: 'मेरे दावे',
+    access_pmmvy_by: '{d} तक पंजीकरण करें', access_pmmvy_part1: 'आपकी दो जाँचें हो चुकी हैं, इसलिए आप पहले हिस्से (₹3,000) के लिए अभी आवेदन कर सकती हैं।',
     access_online: 'ऑनलाइन करें: सरकारी सेवाएँ', access_online_s: 'ABHA, U-WIN, PMMVY, आयुष्मान कार्ड, eSanjeevani, जन औषधि',
     access_online_need: 'आपको चाहिए:', access_online_open: 'सरकारी साइट खोलें', access_online_who: 'किसे मिलता है', access_online_foot: 'सरकारी वेबसाइटें, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
     access_schemes: 'आपके लिए सरकारी योजनाएँ', access_schemes_s: 'PMMVY, JSY, JSSK, आयुष्मान card और भी: किसे क्या मिलता है',
@@ -761,6 +884,10 @@
     access_symptoms: 'लक्षण गाइड', access_symptoms_s: 'शरीर के हिस्से से: कितना ज़रूरी, अक्सर क्या, कहाँ जाएँ',
     access_sources: 'स्रोत', access_source: 'स्रोत', access_what_free: 'क्या मिलता है', access_how_find: 'कैसे खोजें',
     access_pin_l: 'आपका PIN code', access_pin_ph: '6 अंक, जैसे 226010', access_pin_go: 'इलाज दिखाएँ', access_pin_note: 'आपका PIN सिर्फ़ इसी screen पर इस्तेमाल होता है और save नहीं होता।', access_pin_for: 'PIN', access_pin_change: 'बदलें',
+    access_near_acc: 'यह आपके Sakhi account का PIN code है। किसी और जगह के पास देखने के लिए, जैसे मायके के पास, इसे बदलें।', access_near_h: 'PIN {pin} के पास', access_near_load: 'इस फ़ोन पर सरकारी सूची में देख रहे हैं…',
+    access_near_unknown: 'यह PIN code India Post की सूची में नहीं है। नंबर एक बार जाँच लें।', access_near_nocoord: 'India Post की सूची में इस PIN code की नक्शे पर जगह नहीं है, इसलिए Sakhi नहीं बता सकती कि कौन से केंद्र सबसे पास हैं। नीचे दिए सरकारी लिंक मदद कर सकते हैं।',
+    access_near_centres: 'स्वास्थ्य केंद्र', access_near_hosp: 'अस्पताल', access_near_none: 'इस सूची में 50 किलोमीटर के अंदर कोई नहीं।', access_near_empty: 'सरकारी सूची में इस PIN code के 50 किलोमीटर के अंदर कोई केंद्र नहीं है। इसका मतलब यह नहीं कि वहाँ कोई नहीं है: अपनी ASHA से पूछें या 104 पर कॉल करें।', access_near_thin: 'सरकारी सूची में {s} के ज़्यादातर केंद्र नहीं हैं, इसलिए Sakhi नहीं बता सकती कि कौन से सबसे पास हैं। आपकी ASHA, 104 या नीचे दिए सरकारी लिंक बता सकते हैं।', access_near_km: 'लगभग {n} किमी', access_near_km0: '1 किमी से कम', access_near_dir: 'रास्ता देखें',
+    access_near_note: 'दूरी सीधी रेखा में है। यह सरकार की स्वास्थ्य केंद्रों की सूची (NIN) है, जो आख़िरी बार {y} में बदली गई थी: कोई केंद्र इसमें छूटा हो सकता है, या हट गया, बंद हो गया या बदल गया हो सकता है। जाने से पहले अपनी ASHA से पूछें या 104 पर कॉल करें।', access_near_src: 'Sakhi ने {d} को जाँचा। Government Open Data License – India:',
     access_benefit: 'क्या मिलता है', access_who: 'किसे मिलता है', access_apply: 'आवेदन कैसे करें', access_docs: 'तैयार रखने वाले काग़ज़',
     access_filter: 'किसके लिए योजनाएँ दिखाएँ', access_q_h: 'कुछ सवाल (वैकल्पिक)', access_q_reset: 'मेरे जवाब हटाएँ',
     access_mins: 'लगभग {n} मिनट', access_planned: 'रिकॉर्डिंग बाक़ी', access_text_v: 'छोटा लिखित रूप', access_read_guide: 'गाइड पढ़ें', access_close: 'बंद करें',
@@ -801,7 +928,7 @@
     '.access-fc{gap:6px}',
     '.access-vid{align-items:flex-start}',
     '.access-vid .body strong{overflow-wrap:break-word;line-height:1.35}',
-    '.access-planned{align-self:flex-start;margin-top:4px;font-size:12px !important;font-weight:600}',
+    '.access-claim{display:flex;flex-direction:column;gap:8px;margin-top:6px;padding-top:10px;border-top:1px solid var(--line)} .access-steps{display:flex;flex-wrap:wrap;gap:6px} .access-planned{align-self:flex-start;margin-top:4px;font-size:12px !important;font-weight:600}',
     '.access-vt{display:flex;flex-direction:column;gap:6px;padding-left:18px;color:var(--fg);font-size:14px}',
     '.access-lvl{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:13px !important;font-weight:600;padding:2px 8px;border-radius:10px;line-height:1.4}',
     '.lvt-urgent{background:var(--ink);color:var(--ink-text) !important}',
@@ -832,12 +959,13 @@
       { section: 'preg', route: 'access-schemes-preg', title: 'access_schemes_preg', sub: 'access_schemes_preg_s', icon: 'file', order: 70, gated: false, keywords: 'pmmvy jsy jssk pmsma money scheme maternity योजना' },
       { section: 'post', route: 'access-schemes-post', title: 'access_schemes_post', sub: 'access_schemes_post_s', icon: 'file', order: 70, gated: false, keywords: 'pmmvy jssk anganwadi ration scheme योजना' }
     ],
-    css: css + '.st-wrap { display: flex; flex-direction: column; gap: 12px; } .st-bars { display: flex; gap: 4px; } .st-bars i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; } .st-bars i.done b { width: 100%; } .st-bars b { display: block; height: 100%; width: 0; background: var(--accent); }' +
+    css: css + '.access-near .item { box-shadow: none; background: var(--card-2); } .access-near h4 { margin: 14px 0 6px; } .access-fac .btn { flex-shrink: 0; } .st-wrap { display: flex; flex-direction: column; gap: 12px; } .st-bars { display: flex; gap: 4px; } .st-bars i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; } .st-bars i.done b { width: 100%; } .st-bars b { display: block; height: 100%; width: 0; background: var(--accent); }' +
       '.st-top { display: flex; align-items: center; gap: 10px; } .st-top strong { flex: 1; min-width: 0; } .st-av { width: 40px; height: 40px; flex: none; } .st-av .sakhi { width: 40px; height: 40px; }' +
       '.st-card { min-height: 46vh; justify-content: center; gap: 10px; cursor: pointer; } .st-card h2 { margin: 0; font-size: 24px; } .st-text { font-size: 17px; line-height: 1.5; color: var(--fg); } .st-end { align-items: center; text-align: center; cursor: default; } .st-end .sakhi { width: 76px; height: 76px; }' +
       '.st-ring { background: none !important; padding: 0; border: 2.5px solid var(--accent); } .st-home.seen .st-ring { border-color: var(--line); } .st-ring .sakhi { width: 100%; height: 100%; }',
     home: home,
     homeTop: storyRow,
+    summary: () => { if (!S.canSave()) return []; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return []; return [{ title: t('access_my_h'), lines: ks.map((k) => { const c = cl[k]; const st = stepOf(c); return tx(SCH[k].name).split(':')[0] + ': ' + t('access_step_' + st) + (c[st] && st !== 'ready' ? ' (' + fmtL(S.fromISO(c[st])) + ')' : ''); }) }]; },
     afterRender: (v, route) => { if (route !== 'access-stories') stopStories(); }
   });
 })(window.Saathi);
