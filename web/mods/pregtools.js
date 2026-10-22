@@ -241,7 +241,7 @@
     s += '<line class="gd" x1="' + L + '" y1="' + B + '" x2="' + Rr + '" y2="' + B + '"/><line class="gd" x1="' + L + '" y1="' + Tp + '" x2="' + Rr + '" y2="' + Tp + '"/>';
     s += '<text x="0" y="' + (B + 3) + '">0</text><text x="0" y="' + (Tp + 3) + '">' + mx + '</text>';
     if (n > 1) s += '<polyline class="ln" points="' + vals.map((val, i) => x(i).toFixed(1) + ',' + y(val).toFixed(1)).join(' ') + '"/>';
-    s += vals.map((val, i) => '<circle class="pt" cx="' + x(i).toFixed(1) + '" cy="' + y(val).toFixed(1) + '" r="3.5"/><text x="' + x(i).toFixed(1) + '" y="' + (y(val) - 7).toFixed(1) + '" text-anchor="middle">' + val + '</text>').join('');
+    s += vals.map((val, i) => '<circle class="pt" cx="' + x(i).toFixed(1) + '" cy="' + y(val).toFixed(1) + '" r="3.5"/><text x="' + x(i).toFixed(1) + '" y="' + (y(val) - 7).toFixed(1) + '" text-anchor="' + (n > 1 && i === n - 1 ? 'end' : (n > 1 && i === 0 ? 'start' : 'middle')) + '">' + val + '</text>').join('');   /* end labels stay inside the chart */
     return s + '</svg>';
   }
   function renderKicks(v) {

@@ -151,12 +151,11 @@
     doc_for: ['For the doctor', 'डॉक्टर के लिए'],
     doc_lang: ['Does your doctor read the other language better? Switch EN / हिंदी at the top first, then tap Show to doctor.', 'आपकी डॉक्टर दूसरी भाषा बेहतर पढ़ती हैं? पहले ऊपर EN / हिंदी बदलें, फिर “डॉक्टर को दिखाएँ” दबाएँ।'],
     share_h: ['Share with my Qura doctor', 'मेरी Qura डॉक्टर से साझा करें'],
-    share_what: ['What this means: your Qura doctor can read your diary, check-ins and this summary before and during your calls. Nobody else sees it, and nothing goes to ad companies. You can withdraw it at any time on the Me page.', 'इसका मतलब: आपकी Qura डॉक्टर कॉल से पहले और कॉल के दौरान आपकी डायरी, चेक-इन और यह सारांश पढ़ सकती हैं। और कोई नहीं देखता, ad companies को कुछ नहीं जाता। “मैं” पन्ने पर कभी भी सहमति वापस ले सकती हैं।'],
-    share_proto: ['Prototype: nothing leaves this phone.', 'Prototype: कुछ भी इस फ़ोन से बाहर नहीं जाता।'],
+    share_what: ['What this means: once Sakhi can send to Qura, your Qura doctor will be able to read your diary, check-ins and this summary before and during your calls. Until then nothing leaves this phone. Nobody else will see it, and nothing goes to ad companies. You can withdraw it at any time on the Me page.', 'इसका मतलब: जब Sakhi, Qura को भेज पाएगी, तब आपकी Qura डॉक्टर कॉल से पहले और कॉल के दौरान आपकी डायरी, चेक-इन और यह सारांश पढ़ पाएँगी। तब तक कुछ भी इस फ़ोन से बाहर नहीं जाता। और कोई नहीं देखेगा, ad companies को कुछ नहीं जाता। “मैं” पन्ने पर कभी भी सहमति वापस ले सकती हैं।'],
     share_q: ['Share your diary and this summary with your Qura doctor?', 'अपनी डायरी और यह सारांश अपनी Qura डॉक्टर से साझा करें?'],
     share_yes: ['Yes, share', 'हाँ, साझा करें'],
-    shared_on: ['Shared with your Qura doctor since {d}. She sees this at your next call. To stop, withdraw it on the Me page.', '{d} से आपकी Qura डॉक्टर से साझा है। अगली कॉल में वह यह देखेंगी। रोकना हो तो “मैं” पन्ने पर सहमति वापस लें।'],
-    shared_toast: ['Shared with your Qura doctor.', 'आपकी Qura डॉक्टर से साझा किया।'],
+    shared_on: ['You said yes to sharing on {d}. Sakhi cannot send it to your doctor yet, so show it to her on your call. To stop, withdraw it on the Me page.', 'आपने {d} को साझा करने के लिए हाँ कहा। Sakhi अभी इसे आपकी डॉक्टर को नहीं भेज सकती, इसलिए कॉल पर उन्हें दिखाएँ। रोकना हो तो “मैं” पन्ने पर सहमति वापस लें।'],
+    shared_toast: ['Saved: you said yes to sharing.', 'सेव हुआ: आपने साझा करने के लिए हाँ कहा।'],
     sum_urgent: ['Something urgent? Do not wait for a visit. Call 112.', 'कुछ ज़रूरी हो? मुलाक़ात का इंतज़ार न करें। 112 पर कॉल करें।']
   };
   const strings = { en: {}, hi: {} };
@@ -643,7 +642,7 @@
       const thin = !S.cycle.starts().length && !curMeds(peek()).length;
       const share = c4
         ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(T('share_h')) + '</h3><p class="small" style="color:var(--ok)">' + esc(TF('shared_on', { d: fmtLong(c4) })) + '</p><button type="button" class="btn sm tl-self" data-go="me">' + esc(t('me')) + '</button></div>'
-        : '<div class="card"><h3>' + esc(T('share_h')) + '</h3><p class="small">' + esc(T('share_what')) + '</p><p class="small">' + esc(T('share_proto')) + '</p>' +
+        : '<div class="card"><h3>' + esc(T('share_h')) + '</h3><p class="small">' + esc(T('share_what')) + '</p>' +
           (ui.shareAsk
             ? '<div class="tl-confirm"><p class="small" style="color:var(--fg);font-weight:600">' + esc(T('share_q')) + '</p><div class="grid2"><button type="button" class="btn sm" id="tl-sh-no">' + esc(t('consent_no')) + '</button><button type="button" class="btn sm primary" id="tl-sh-yes">' + esc(T('share_yes')) + '</button></div></div>'
             : '<button type="button" class="btn secondary" id="tl-sh">' + esc(T('share_h')) + '</button>') + '</div>';

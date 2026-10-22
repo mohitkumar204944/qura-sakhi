@@ -49,7 +49,7 @@
       last6: 'मागची 6 अंतरं (दिवस)', band_note: 'रंगीत पट्टा: साधारण अंतर, सर्वांसाठी सारखंच', trends: 'आलेख',
       period_started: 'पाळी सुरू झाली', ended: 'संपली', spotting: 'स्पॉटिंग',
       checkin_t: 'चेक-इन', checkin_sub: '8 टॅप, साधारण 1 मिनिट. महिन्यातून एकदा.', checkin_done: 'या महिन्याचं झालं. धन्यवाद.', start_b: 'सुरू करा', edit: 'बदला',
-      safety: 'सुरक्षा मार्गदर्शिका', safety_sub: 'डॉक्टरांकडे कधी जायचं. सर्वांसाठी सारखं.', tell: 'एखाद्या व्यक्तीला सांगा', tell_sub: 'एक व्यक्ती 1 कामकाजाच्या दिवसात उत्तर देते.',
+      safety: 'सुरक्षा मार्गदर्शिका', safety_sub: 'डॉक्टरांकडे कधी जायचं. सर्वांसाठी सारखं.', tell: 'एखाद्या व्यक्तीला सांगा', tell_sub: 'Qura च्या टीमला WhatsApp वर लिहा.',
       qura_h: 'Qura च्या डॉक्टरांशी बोला', qura_p: 'BAMS डॉक्टरांसोबत 20 मिनिटांचा मोफत कॉल. तुमची डायरी सोबत ठेवा; तुम्ही शेअर केली तर त्या ती पाहू शकतात.', qura_b: 'मोफत कॉल बुक करा',
       doc_sees: 'तुम्ही शेअर केलं तर तुमच्या Qura डॉक्टर पुढच्या भेटीत हे पाहतील. काहीही तातडीचं असेल तर 112 वर कॉल करा.',
       r6_h: 'मागच्या पाळीला 90+ दिवस झाले',
@@ -125,7 +125,7 @@
       last6: 'শেষ 6টি ব্যবধান (দিন)', band_note: 'রঙিন পট্টি: সাধারণ ব্যবধান, সবার জন্য একই', trends: 'ট্রেন্ড',
       period_started: 'মাসিক শুরু হয়েছে', ended: 'শেষ হয়েছে', spotting: 'স্পটিং',
       checkin_t: 'চেক-ইন', checkin_sub: '8টি ট্যাপ, প্রায় 1 মিনিট। মাসে একবার।', checkin_done: 'এই মাসের হয়ে গেছে। ধন্যবাদ।', start_b: 'শুরু করুন', edit: 'বদলান',
-      safety: 'নিরাপত্তা গাইড', safety_sub: 'কখন ডাক্তার দেখাবেন। সবার জন্য একই।', tell: 'কাউকে জানান', tell_sub: 'একজন মানুষ 1 কাজের দিনের মধ্যে উত্তর দেন।',
+      safety: 'নিরাপত্তা গাইড', safety_sub: 'কখন ডাক্তার দেখাবেন। সবার জন্য একই।', tell: 'কাউকে জানান', tell_sub: 'Qura-র টিমকে WhatsApp-এ লিখুন।',
       qura_h: 'Qura-র ডাক্তারের সঙ্গে কথা বলুন', qura_p: 'একজন BAMS ডাক্তারের সঙ্গে 20 মিনিটের বিনামূল্যের কল। ডায়েরি সঙ্গে রাখুন; আপনি শেয়ার করলে তিনি দেখতে পাবেন।', qura_b: 'বিনামূল্যে কল বুক করুন',
       doc_sees: 'আপনি শেয়ার করলে আপনার Qura ডাক্তার পরের সাক্ষাতে এটা দেখবেন। জরুরি কিছু হলে 112-এ ফোন করুন।',
       r6_h: 'শেষ মাসিকের পর 90+ দিন হয়ে গেছে',
@@ -201,7 +201,7 @@
       last6: 'கடைசி 6 இடைவெளிகள் (நாட்கள்)', band_note: 'நிழலிட்ட பட்டை: வழக்கமான இடைவெளி, அனைவருக்கும் ஒன்றே', trends: 'போக்குகள்',
       period_started: 'மாதவிடாய் தொடங்கியது', ended: 'முடிந்தது', spotting: 'ஸ்பாட்டிங்',
       checkin_t: 'செக்-இன்', checkin_sub: '8 தட்டல்கள், சுமார் 1 நிமிடம். மாதம் ஒருமுறை.', checkin_done: 'இந்த மாதம் முடிந்தது. நன்றி.', start_b: 'தொடங்கு', edit: 'மாற்று',
-      safety: 'பாதுகாப்பு வழிகாட்டி', safety_sub: 'எப்போது டாக்டரைப் பார்க்க வேண்டும். அனைவருக்கும் ஒன்றே.', tell: 'ஒருவரிடம் சொல்லுங்கள்', tell_sub: '1 வேலை நாளுக்குள் ஒருவர் பதில் அளிப்பார்.',
+      safety: 'பாதுகாப்பு வழிகாட்டி', safety_sub: 'எப்போது டாக்டரைப் பார்க்க வேண்டும். அனைவருக்கும் ஒன்றே.', tell: 'ஒருவரிடம் சொல்லுங்கள்', tell_sub: 'Qura குழுவுக்கு WhatsApp-இல் எழுதுங்கள்.',
       qura_h: 'Qura டாக்டரிடம் பேசுங்கள்', qura_p: 'BAMS டாக்டருடன் 20 நிமிட இலவச அழைப்பு. உங்கள் டைரியை வைத்திருங்கள்; நீங்கள் பகிர்ந்தால் அவர் பார்ப்பார்.', qura_b: 'இலவச அழைப்பை முன்பதிவு செய்யுங்கள்',
       doc_sees: 'நீங்கள் பகிர்ந்தால், அடுத்த சந்திப்பில் உங்கள் Qura டாக்டர் இதைப் பார்ப்பார். அவசரம் என்றால் 112-ஐ அழையுங்கள்.',
       r6_h: 'கடைசி மாதவிடாய்க்குப் பிறகு 90+ நாட்கள்',
@@ -278,7 +278,7 @@
       last6: 'చివరి 6 వ్యవధులు (రోజులు)', band_note: 'రంగు పట్టీ: సాధారణ వ్యవధి, అందరికీ ఒకటే', trends: 'ధోరణులు',
       period_started: 'నెలసరి మొదలైంది', ended: 'ముగిసింది', spotting: 'స్పాటింగ్',
       checkin_t: 'చెక్-ఇన్', checkin_sub: '8 ట్యాప్‌లు, సుమారు 1 నిమిషం. నెలకు ఒకసారి.', checkin_done: 'ఈ నెలది పూర్తయింది. ధన్యవాదాలు.', start_b: 'ప్రారంభించండి', edit: 'మార్చండి',
-      safety: 'భద్రతా గైడ్', safety_sub: 'డాక్టర్‌ను ఎప్పుడు కలవాలి. అందరికీ ఒకటే.', tell: 'ఎవరికైనా చెప్పండి', tell_sub: 'ఒక వ్యక్తి 1 పని దినంలో జవాబిస్తారు.',
+      safety: 'భద్రతా గైడ్', safety_sub: 'డాక్టర్‌ను ఎప్పుడు కలవాలి. అందరికీ ఒకటే.', tell: 'ఎవరికైనా చెప్పండి', tell_sub: 'Qura బృందానికి WhatsApp‌లో రాయండి.',
       qura_h: 'Qura డాక్టర్‌తో మాట్లాడండి', qura_p: 'BAMS డాక్టర్‌తో 20 నిమిషాల ఉచిత కాల్. మీ డైరీ దగ్గర ఉంచుకోండి; మీరు షేర్ చేస్తే ఆమె చూస్తారు.', qura_b: 'ఉచిత కాల్ బుక్ చేయండి',
       doc_sees: 'మీరు షేర్ చేస్తే, తదుపరి అపాయింట్‌మెంట్‌లో మీ Qura డాక్టర్ దీన్ని చూస్తారు. అత్యవసరమైతే 112కి కాల్ చేయండి.',
       r6_h: 'చివరి నెలసరి తర్వాత 90+ రోజులు',
@@ -559,10 +559,23 @@
       }
       return root;
     };
-    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n;
+    /* A folded section (a closed <details>) is skipped except its own heading; a labelled chart or picture
+       (role="img" with aria-label) is read by its label (22 Oct audit, item 18). */
+    const folded = (el) => { const d = el.closest('details:not([open])'); if (!d) return false; const sm = el.closest('summary'); return !(sm && sm.parentElement === d); };
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, { acceptNode: (x) => {
+      if (x.nodeType !== 1) return NodeFilter.FILTER_ACCEPT;
+      if (x.matches('[role="img"][aria-label]')) return NodeFilter.FILTER_ACCEPT;
+      return x.matches(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+    } });
+    let n;
     while ((n = w.nextNode())) {
+      if (n.nodeType === 1) {
+        const lab = String(n.getAttribute('aria-label') || '').trim();
+        if (lab && n.getClientRects().length && !folded(n) && !foreign(lab, script)) { if (cur) out.push(cur); out.push(lab); cur = ''; curBlock = null; }
+        continue;
+      }
       const s = String(n.nodeValue || '').replace(/\s+/g, ' ').trim(); if (!s) continue;
-      const el = n.parentElement; if (!el || el.closest(SKIP) || foreign(s, script)) continue;
+      const el = n.parentElement; if (!el || el.closest(SKIP) || el.closest('[role="img"][aria-label]') || folded(el) || foreign(s, script)) continue;
       if (!el.getClientRects().length) continue;
       const b = blockOf(el);
       if (b !== curBlock) { if (cur) out.push(cur); cur = s; curBlock = b; } else cur += ' ' + s;

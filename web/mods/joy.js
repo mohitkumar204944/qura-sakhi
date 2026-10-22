@@ -259,10 +259,10 @@
       (!disc && s.top.length ? '<h2>' + esc(t('joy_rc_top')) + '</h2><div class="list">' + s.top.map((x) => '<div class="item quiet"><span class="body"><strong>' + esc(t(x.k)) + '</strong><span>' + esc(tf('joy_rc_times', { n: x.n })) + '</span></span></div>').join('') + '</div>' : '') +
       (helped.length ? '<h2>' + esc(t('joy_rc_helped')) + '</h2><div class="list">' + helped.map((h) => '<div class="item quiet"><span class="ico-sm hue hue-green">' + S.I.leaf + '</span><span class="body"><strong>' + esc(h) + '</strong></span></div>').join('') + '</div>' : '') +
       '<div class="card soft rc-kind">' + (S.art.sakhi ? S.art.sakhi({ pose: s.kind ? 'cheer' : 'calm', look: (S.state.settings || {}).look }) : '') + '<p>' + esc(s.kind ? tf('joy_rc_kind', { n: s.kind }) : t('joy_rc_kind0')) + '</p></div>' +
-      '<a class="btn block" id="rc-share" href="https://wa.me/?text=' + encodeURIComponent(share) + '" target="_blank" rel="noopener">' + S.I.users.replace('<svg', '<svg style="width:20px;height:20px"') + ' ' + esc(t('joy_rc_share')) + '</a>' +
+      '<button type="button" class="btn block" id="rc-share">' + S.I.users.replace('<svg', '<svg style="width:20px;height:20px"') + ' ' + esc(t('joy_rc_share')) + '</button>' +
       '<p class="footnote">' + esc(t('joy_rc_private')) + '</p>';
     S.wire(v);
-    const sh = v.querySelector('#rc-share'); if (sh) sh.addEventListener('click', () => S.emit('share', {}));
+    const sh = v.querySelector('#rc-share'); if (sh) sh.addEventListener('click', () => { S.share(t('joy_rc_share'), share); S.emit('share', {}); });
   }
   function refreshStrip() { const el = document.querySelector('#view .joy-strip'); if (!el) return; const h = stripHtml(); if (!h) return; el.outerHTML = h; const n = document.querySelector('#view .joy-strip'); if (n) S.wire(n); }
 
@@ -298,7 +298,7 @@
     const d = D(); const done = todayList(d);
     let cur = q.id ? CARDS.find((c) => c.id === q.id) : null; let repeat = false;
     if (!cur) { const nx = nextCard(d); if (nx) { cur = nx.c; repeat = nx.repeat; q = { id: cur.id, ans: null }; } }
-    let body;
+    let body, share = '';
     if (!cur) body = '<div class="card joy-qcard joy-qdone">' + (S.art ? '<div class="joy-qdone-art">' + S.art.flower(monthIdx(S.monthKey(S.today())), S.canSave() ? monthPetals(d, S.monthKey(S.today())) : 12, { leaves: false }) + '</div>' : '') + '<h2>' + esc(t('joy_done_h')) + '</h2>' + (S.canSave() ? '<button type="button" class="btn primary block" data-go="joy">' + esc(t('joy_to_garden')) + '</button>' : '') + '</div>';
     else {
       const num = q.ans == null ? done.length + 1 : done.indexOf(cur.id) + 1;
@@ -306,10 +306,10 @@
       if (q.ans == null) body = '<div class="card joy-qcard">' + top + (repeat ? '<p class="small">' + esc(t('joy_seen_all')) + '</p>' : '') + '<p class="joy-stmt">' + esc(tx(cur.s)) + '</p><div class="grid2"><button type="button" class="btn joy-ans" data-ans="1">' + esc(t('joy_sach')) + '</button><button type="button" class="btn joy-ans" data-ans="0">' + esc(t('joy_myth')) + '</button></div></div>';
       else {
         const right = (q.ans === 1) === cur.a;
-        const share = tx(cur.s) + '\n\n' + (cur.a ? t('joy_is_sach') : t('joy_is_myth')) + '. ' + tx(cur.w) + '\n\n' + t('joy_share_from');
+        share = tx(cur.s) + '\n\n' + (cur.a ? t('joy_is_sach') : t('joy_is_myth')) + '. ' + tx(cur.w) + '\n\n' + t('joy_share_from');
         body = '<div class="card joy-qcard">' + top + '<p class="joy-stmt">' + esc(tx(cur.s)) + '</p><div class="joy-verdict ' + (cur.a ? 'sach' : 'myth') + '"><b>' + esc(cur.a ? t('joy_is_sach') : t('joy_is_myth')) + '</b><span>' + esc(right ? t('joy_right') : t('joy_wrong')) + '</span></div><p style="color:var(--fg)">' + esc(tx(cur.w)) + '</p>' +
           (S.routeOwner(cur.go) || ['diary', 'help', 'care', 'learn'].indexOf(cur.go) >= 0 || cur.go.indexOf('topic-') === 0 || cur.go.indexOf('contra-m-') === 0 ? '<button type="button" class="morebtn" data-go="' + esc(cur.go) + '">' + esc(t('joy_more')) + '</button>' : '') +
-          '<div class="stack"><button type="button" class="btn primary block" id="joy-next">' + esc(t('joy_next')) + '</button><a class="btn block" id="joy-share" href="https://wa.me/?text=' + encodeURIComponent(share) + '" target="_blank" rel="noopener">' + S.I.users.replace('<svg', '<svg style="width:20px;height:20px"') + ' ' + esc(t('joy_share')) + '</a></div></div>';
+          '<div class="stack"><button type="button" class="btn primary block" id="joy-next">' + esc(t('joy_next')) + '</button><button type="button" class="btn block" id="joy-share">' + S.I.users.replace('<svg', '<svg style="width:20px;height:20px"') + ' ' + esc(t('joy_share')) + '</button></div></div>';
       }
     }
     v.innerHTML = S.backRow(t('joy_quiz_h'), 'home', false) + '<p class="small">' + esc(t('joy_quiz_p')) + '</p>' + body + (S.canSave() ? '' : '<p class="small">' + esc(t('joy_need_diary')) + '</p>') + '<p class="footnote">' + esc(t('joy_quiz_foot')) + '</p>';
@@ -321,7 +321,7 @@
       S.render(); S.emit('quiz', {});
     }));
     const nx = v.querySelector('#joy-next'); if (nx) nx.addEventListener('click', () => { q = { id: null, ans: null }; S.render(); window.scrollTo(0, 0); });
-    const sh = v.querySelector('#joy-share'); if (sh) sh.addEventListener('click', () => S.emit('share', {}));
+    const sh = v.querySelector('#joy-share'); if (sh) sh.addEventListener('click', () => { S.share(t('joy_quiz_h'), share); S.emit('share', {}); });
   }
 
   /* ---------- sample women: a garden that has been growing for a few months ---------- */

@@ -133,6 +133,9 @@
     tb_how: ['IFA: one red tablet a day from the 4th month, for at least 180 days, with water or lemon water, about 2 hours after a meal. Calcium: one tablet with lunch and one with dinner, from 14 weeks until 6 months after the birth. Never take calcium and iron together, and keep tea and coffee away from the iron tablet.', 'IFA: चौथे महीने से रोज़ एक लाल गोली, कम से कम 180 दिन, सादे पानी या नींबू पानी के साथ, खाने के लगभग 2 घंटे बाद। Calcium: एक गोली दोपहर के खाने के साथ और एक रात के खाने के साथ, 14 हफ़्ते से डिलीवरी के 6 महीने बाद तक। calcium और iron कभी एक साथ न लें, और iron की गोली के आसपास चाय-कॉफ़ी न लें।'],
     tb_side: ["Black stools are normal with iron. If it makes you feel sick, take it after a meal or at bedtime. For constipation: more water, fibre and walking. Don't stop; tell your ANM if it bothers you.", 'iron से मल काला होना सामान्य है। जी मिचलाए तो खाने के बाद या सोते समय लें। क़ब्ज़ हो तो ज़्यादा पानी, फ़ाइबर और टहलना। गोली बंद न करें; परेशानी हो तो ANM को बताएँ।'],
     tb_rem: ['Daily reminder for both tablets', 'दोनों गोलियों का रोज़ का रिमाइंडर'],
+    tb_rem_ca: ['Daily reminder for calcium', 'calcium का रोज़ का रिमाइंडर'],
+    tb_iron: ['Iron tablets: 180-day count, reminder and help', 'आयरन की गोलियाँ: 180 दिन की गिनती, रिमाइंडर और मदद'],
+    tb_iron_on: ['Your iron plan and its reminder', 'आपका आयरन प्लान और उसका रिमाइंडर'],
     tb_rem_on: ['Reminder on', 'रिमाइंडर चालू'],
     tb_rem_off: ['Turn on', 'चालू करें'],
     tb_rem_done: ['Reminders set.', 'रिमाइंडर लग गए।'],
@@ -592,7 +595,7 @@
       const many = pts.length > 6;
       pts.forEach((p, i) => {
         s += '<circle class="' + (ser.dash ? 'pg-pt2' : 'pt') + '" cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="3.2"/>';
-        if (!many || i === 0 || i === pts.length - 1) s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (ser.below ? y(p.v) + 13 : y(p.v) - 7).toFixed(1) + '" text-anchor="middle">' + esc(f(p.v)) + '</text>';
+        if (!many || i === 0 || i === pts.length - 1) s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (ser.below ? y(p.v) + 13 : y(p.v) - 7).toFixed(1) + '" text-anchor="' + (pts.length > 1 && i === pts.length - 1 ? 'end' : 'middle') + '">' + esc(f(p.v)) + '</text>';   /* the last label ends at its point, inside the chart */
       });
     });
     const first = all.map((p) => p.d).sort()[0], last = all.map((p) => p.d).sort().slice(-1)[0];
@@ -614,8 +617,10 @@
     if ((!only || only === 'hb') && skip !== 'hb') { const h = latest(st.hb); if (h && h.v < 7) out.push('<div class="flag">' + esc(T('hb_flag')) + '</div>'); }
     return out.length ? '<div class="pg-flags">' + out.join('') + '</div>' : '';
   }
-  const tabDays = (st, key, n) => { let c = 0; for (let i = 0; i < n; i++) { const k = S.toISO(S.addDays(S.today(), -i)); if (st.tabs[k] && st.tabs[k][key]) c++; } return c; };
-  const tabTotal = (st, key) => Object.keys(st.tabs).filter((k) => st.tabs[k] && st.tabs[k][key]).length;
+  /* IFA days live in the iron module when it is there (one record for the iron companion and this grid); calcium stays here */
+  const tabOn = (st, key, k) => (key === 'ifa' && S.iron ? S.iron.taken(k) : !!(st.tabs[k] && st.tabs[k][key]));
+  const tabDays = (st, key, n) => { let c = 0; for (let i = 0; i < n; i++) { const k = S.toISO(S.addDays(S.today(), -i)); if (tabOn(st, key, k)) c++; } return c; };
+  const tabTotal = (st, key) => (key === 'ifa' && S.iron ? S.iron.days().length : Object.keys(st.tabs).filter((k) => st.tabs[k] && st.tabs[k][key]).length);
 
   /* ---------- hub ---------- */
   function renderHub(v) {
@@ -629,7 +634,7 @@
     } else {
       top = setCard();
     }
-    const item = (r, title, sub, ico, gated) => (linkOk(r) ? '<button type="button" class="item" data-go="' + esc(r) + '"><span class="ico-sm">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span>' + (gated ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>' : '');
+    const item = (r, title, sub, ico, gated) => (linkOk(r) ? '<button type="button" class="item" data-go="' + esc(r) + '"><span class="ico-sm">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span>' + (gated && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>' : '');
     const tools = [['pregtools-kicks', 'pregtools_t_kicks', 'pregtools_t_kicks_s', S.I.baby, true], ['pregtools-contractions', 'pregtools_t_ctx', 'pregtools_t_ctx_s', S.I.clock, true], ['pregtools-bag', 'pregtools_t_bag', 'pregtools_t_bag_s', S.I.file, false], ['pregtools-birth', 'pregtools_t_birth', 'pregtools_t_birth_s', S.I.heart, false]]
       .filter((x) => has(x[0]) && S.strings.en[x[1]]).map((x) => item(x[0], t(x[1]), t(x[2]), x[3], x[4])).join('');
     const free = '<div class="card"><h3>' + esc(T('hub_free_h')) + '</h3><ul class="pg-ul">' + ['free_1', 'free_2', 'free_3', 'free_4', 'free_5', 'free_amb'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul>' + goBtn('access-schemes-preg') + '</div>';
@@ -734,11 +739,12 @@
     }
     /* tablets */
     const days = []; for (let i = 6; i >= 0; i--) days.push(S.addDays(S.today(), -i));
-    const row = (key, lbl) => '<span class="pg-rl">' + esc(lbl) + '</span>' + days.map((d) => { const k = S.toISO(d); const on = !!(st.tabs[k] && st.tabs[k][key]); return '<button type="button" class="pg-tick' + (on ? ' on' : '') + '" data-pg-tick="' + key + '|' + k + '" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + esc(lbl + ' ' + S.fmtD(d, { weekday: 'long', day: 'numeric', month: 'short' })) + '">' + (on ? TICK_SVG : '') + '</button>'; }).join('');
-    const remOn = !!(S.reminders.get('preg-ifa'));
+    const row = (key, lbl) => '<span class="pg-rl">' + esc(lbl) + '</span>' + days.map((d) => { const k = S.toISO(d); const on = tabOn(st, key, k); return '<button type="button" class="pg-tick' + (on ? ' on' : '') + '" data-pg-tick="' + key + '|' + k + '" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + esc(lbl + ' ' + S.fmtD(d, { weekday: 'long', day: 'numeric', month: 'short' })) + '">' + (on ? TICK_SVG : '') + '</button>'; }).join('');
+    const ironOn = !!(S.iron && S.iron.active()); const remOn = !!(S.reminders.get(ironOn ? 'preg-ca' : 'preg-ifa'));
     return '<div class="card"><h3>' + esc(T('tb_week')) + '</h3><p class="small">' + esc(T('tb_tap')) + '</p><div class="pg-ticks"><span></span>' + days.map((d) => '<span class="pg-dh">' + esc(S.fmtD(d, { weekday: 'narrow' })) + '<br><span class="num">' + d.getDate() + '</span></span>').join('') + row('ifa', T('tb_ifa_s')) + row('ca', T('tb_ca')) + '</div>' +
       '<p class="small" style="color:var(--fg)">' + esc(TF('tb_count', { k: T('tb_ifa_s'), n: tabDays(st, 'ifa', 7) })) + ' · ' + esc(TF('tb_count', { k: T('tb_ca'), n: tabDays(st, 'ca', 7) })) + '</p><p class="small">' + esc(TF('tb_total', { a: tabTotal(st, 'ifa'), b: tabTotal(st, 'ca') })) + '</p></div>' +
-      '<div class="card"><div class="row spread"><span class="small" style="color:var(--fg);font-weight:600;flex:1">' + esc(T('tb_rem')) + '</span><button type="button" class="btn sm' + (remOn ? ' on' : '') + '" id="pg-rem">' + esc(remOn ? T('tb_rem_on') : T('tb_rem_off')) + '</button></div></div>' +
+      '<div class="card"><div class="row spread"><span class="small" style="color:var(--fg);font-weight:600;flex:1">' + esc(T(ironOn ? 'tb_rem_ca' : 'tb_rem')) + '</span><button type="button" class="btn sm' + (remOn ? ' on' : '') + '" id="pg-rem">' + esc(remOn ? T('tb_rem_on') : T('tb_rem_off')) + '</button></div>' +
+      (S.routeOwner && S.routeOwner('iron') ? '<button type="button" class="btn sm" style="align-self:flex-start" data-go="iron">' + esc(T(ironOn ? 'tb_iron_on' : 'tb_iron')) + '</button>' : '') + '</div>' +
       '<div class="card soft"><p class="small" style="color:var(--fg)">' + esc(T('tb_how')) + '</p><p class="small">' + esc(T('tb_side')) + '</p></div>';
   }
   function renderLogs(v) {
@@ -756,8 +762,13 @@
     v.querySelectorAll('[data-pg-tab]').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.pgTab; S.render(); }));
     v.querySelectorAll('[data-pg-sk]').forEach((b) => b.addEventListener('click', () => { sugKind = b.dataset.pgSk; v.querySelectorAll('[data-pg-sk]').forEach((x) => x.classList.toggle('on', x === b)); }));
     v.querySelectorAll('[data-pg-del]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.pgDel.split('|'); st[p[0]] = st[p[0]].filter((e) => e.id !== p[1]); S.save(); S.render(); }));
-    v.querySelectorAll('[data-pg-tick]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.pgTick.split('|'); const day = st.tabs[p[1]] || (st.tabs[p[1]] = {}); day[p[0]] = !day[p[0]]; if (!day.ifa && !day.ca) delete st.tabs[p[1]]; S.save(); S.render(); }));
+    v.querySelectorAll('[data-pg-tick]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.pgTick.split('|'); if (p[0] === 'ifa' && S.iron) { S.iron.mark(p[1], !S.iron.taken(p[1])); S.render(); return; } const day = st.tabs[p[1]] || (st.tabs[p[1]] = {}); day[p[0]] = !day[p[0]]; if (!day.ifa && !day.ca) delete st.tabs[p[1]]; S.save(); S.render(); }));
     const rem = $('pg-rem'); if (rem) rem.addEventListener('click', () => {
+      if (S.iron && S.iron.active()) {   /* the iron companion has the iron reminder: this button is for calcium only */
+        if (S.reminders.get('preg-ca')) { S.reminders.remove('preg-ca'); S.toast(T('tb_rem_gone')); }
+        else { S.reminders.upsert({ id: 'preg-ca', mod: 'preg', title: { en: 'Calcium tablet with lunch and dinner', hi: 'दोपहर और रात के खाने के साथ calcium की गोली' }, kind: 'med', start: todayISO(), every: 1, time: '13:00' }); S.toast(T('tb_rem_done')); }
+        S.render(); return;
+      }
       if (S.reminders.get('preg-ifa')) { S.reminders.remove('preg-ifa'); S.reminders.remove('preg-ca'); S.toast(T('tb_rem_gone')); }
       else { S.reminders.upsert({ id: 'preg-ifa', mod: 'preg', title: { en: 'IFA tablet, 2 hours after a meal', hi: 'IFA की गोली, खाने के 2 घंटे बाद' }, kind: 'med', start: todayISO(), every: 1, time: '21:00' }); S.reminders.upsert({ id: 'preg-ca', mod: 'preg', title: { en: 'Calcium tablet with lunch and dinner', hi: 'दोपहर और रात के खाने के साथ calcium की गोली' }, kind: 'med', start: todayISO(), every: 1, time: '13:00' }); S.toast(T('tb_rem_done')); }
       S.render();

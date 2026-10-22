@@ -440,8 +440,8 @@
       '.teen-ch { flex-direction: row; align-items: flex-start; gap: 12px; }',
       '.teen-ch .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }',
       '.teen-chart { display: block; width: 100%; height: auto; }',
-      '.teen-chart text { fill: var(--muted); font-size: 10px; font-family: inherit; }',
-      '.teen-chart .lbl { fill: var(--fg); font-size: 11px; font-weight: 600; }',
+      '.teen-chart text { fill: var(--muted); font-size: 13px; font-family: inherit; }',
+      '.teen-chart .lbl { fill: var(--fg); font-size: 13px; font-weight: 600; }',
       '.teen-chart .bl { fill: var(--accent-2); opacity: 0.4; }',
       '.teen-chart .bd { fill: var(--accent); }',
       '.teen-chart .band { fill: var(--peach); opacity: 0.75; }',
@@ -464,7 +464,7 @@
       '.teen-fig .a { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }',
       '.teen-fig .b { fill: var(--peach-2); stroke: var(--fg); stroke-width: 1.6; stroke-linejoin: round; }',
       '.teen-fig .pp { fill: var(--card); stroke: var(--muted); stroke-width: 1.2; }',
-      '.teen-fig text { fill: var(--muted); font-size: 9px; font-family: inherit; }',
+      '.teen-fig text { fill: var(--muted); font-size: 13px; font-family: inherit; }',
       '.teen-say { border-left: 3px solid var(--accent-2); padding: 2px 0 2px 10px; color: var(--fg); font-size: 14px; line-height: 1.55; overflow-wrap: break-word; }',
       '.teen-say.alt { border-left-color: var(--peach); color: var(--text); font-size: 13px; }'
     ].join('\n')

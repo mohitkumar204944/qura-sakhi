@@ -892,7 +892,7 @@
     if (has('pregtools-birth') && n != null && n <= 7) tools.push(['pregtools-birth', 'birthprep', 'birthprep_s', S.I.heart]);
     v.innerHTML = S.backRow(T('h'), 'care', false) + '<p class="small">' + esc(T('p')) + '</p>' + hero +
       '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span><div class="pst-row">' + copyBtn('112', 'pst-onDark') + copyBtn('108', 'pst-onDark') + copyBtn('14416', 'pst-onDark') + '</div></div>' +
-      '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
+      '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
       askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v); wireCopy(v);
   }

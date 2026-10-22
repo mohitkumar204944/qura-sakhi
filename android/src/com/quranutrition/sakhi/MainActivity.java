@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.app.NotificationManager;
@@ -25,7 +27,11 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
 import android.view.HapticFeedbackConstants;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.RenderProcessGoneDetail;
+import android.webkit.WebBackForwardList;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -51,16 +57,30 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        // The recent-apps list shows Sakhi's icon, never a picture of her diary (Android 13+; older phones get FLAG_SECURE
+        // from the page while lock, shared-phone or discreet mode is on).
+        if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
+        tts = new TextToSpeech(this, this);
+        makeWeb();
+        WebBackForwardList restored = state != null ? web.restoreState(state) : null;
+        if (restored == null || restored.getSize() == 0) web.loadUrl(START);   // nothing to restore, or the restore failed
+    }
+
+    private static final String START = "file:///android_asset/www/index.html";
+
+    /** One WebView for the bundled app. Called again if Android kills the page's renderer. */
+    private void makeWeb() {
         web = new WebView(this);
         setContentView(web);
 
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);          // the diary lives in localStorage
-        s.setDatabaseEnabled(true);
         s.setAllowFileAccess(false);
-        s.setAllowContentAccess(true);
+        s.setAllowContentAccess(false);
         s.setMediaPlaybackRequiresUserGesture(true);
+        // Text follows the phone's font size setting (Settings > Display > Font size), up to 200%.
+        s.setTextZoom(Math.round(getResources().getConfiguration().fontScale * 100));
 
         web.addJavascriptInterface(new Bridge(), "SakhiAndroid");
 
@@ -71,6 +91,18 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 if ("file".equals(u.getScheme())) return false;
                 // Official pages, booking link, phone numbers: open outside the app.
                 try { startActivity(new Intent(Intent.ACTION_VIEW, u)); } catch (ActivityNotFoundException e) { /* nothing can open it */ }
+                return true;
+            }
+
+            /** The page's renderer crashed or was killed to free memory. Her diary is safe in localStorage: start a fresh
+             *  WebView on Home instead of leaving a dead screen (or letting the whole app close). */
+            @Override
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                if (view != web) return true;
+                if (web.getParent() instanceof ViewGroup) ((ViewGroup) web.getParent()).removeView(web);
+                web.destroy();
+                makeWeb();
+                web.loadUrl(START);
                 return true;
             }
         });
@@ -90,11 +122,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 return true;
             }
         });
-
-        tts = new TextToSpeech(this, this);
-
-        if (state != null) web.restoreState(state);
-        else web.loadUrl("file:///android_asset/www/index.html");
     }
 
     @Override
@@ -136,21 +163,28 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 if (vs != null) for (Voice v : vs) {
                     String tag = v.getLocale().toLanguageTag();
                     if (!seen.add(tag)) continue;
+                    Voice local = localVoice(v.getLocale());
+                    Voice show = local != null ? local : v;
                     if (b.length() > 1) b.append(',');
                     b.append("{\"lang\":").append(json(tag))
-                     .append(",\"name\":").append(json(v.getName()))
-                     .append(",\"localService\":").append(!v.isNetworkConnectionRequired())
+                     .append(",\"name\":").append(json(show.getName()))
+                     .append(",\"localService\":").append(local != null)
                      .append(",\"default\":false}");
                 }
             } catch (Exception e) { /* some engines throw before voices load */ }
             return b.append(']').toString();
         }
 
+        /** Reads aloud with a voice that runs on the phone when there is one, so her screen's words don't go to a speech
+         *  server (audit fix 8). Only if the language has no installed voice does the engine's own choice speak. */
         @JavascriptInterface
         public boolean speak(String text, String lang, float rate, String id) {
             if (!ttsReady) return false;
-            int r = tts.setLanguage(Locale.forLanguageTag(lang));
+            Locale loc = Locale.forLanguageTag(lang);
+            int r = tts.setLanguage(loc);
             if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) return false;
+            Voice local = localVoice(loc);
+            if (local != null) tts.setVoice(local);
             tts.setSpeechRate(rate > 0 ? rate : 1f);
             String t = text.length() > 3800 ? text.substring(0, 3800) : text;
             return tts.speak(t, TextToSpeech.QUEUE_FLUSH, null, id) == TextToSpeech.SUCCESS;
@@ -164,6 +198,43 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         public void haptic() {
             runOnUiThread(new Runnable() {
                 @Override public void run() { web.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY); }
+            });
+        }
+
+        /** No screenshots, screen recording or recent-apps picture while lock, shared-phone or discreet mode is on. */
+        @JavascriptInterface
+        public void setSecure(final boolean on) {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    if (on) getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                    else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                }
+            });
+        }
+
+        /** Android's share sheet: she picks the app and the person. Replaces wa.me links, which put the words in a web address. */
+        @JavascriptInterface
+        public boolean share(String title, String text) {
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.setType("text/plain");
+            send.putExtra(Intent.EXTRA_TEXT, text == null ? "" : text);
+            if (title != null && title.length() > 0) send.putExtra(Intent.EXTRA_TITLE, title);
+            try { startActivity(Intent.createChooser(send, title)); return true; }
+            catch (ActivityNotFoundException e) { return false; }
+        }
+
+        /** The phone's maker, so Me can show battery-saving help on phones known to stop reminders. */
+        @JavascriptInterface
+        public String maker() { return Build.MANUFACTURER == null ? "" : Build.MANUFACTURER; }
+
+        /** Sakhi's page in the phone's Settings (Battery, Notifications). */
+        @JavascriptInterface
+        public void openAppSettings() {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    try { startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()))); }
+                    catch (ActivityNotFoundException e) { /* no such screen on this phone */ }
+                }
             });
         }
 
@@ -225,35 +296,38 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             });
         }
 
-        /** For demos: a notification about five seconds from now. */
+        /** "Send a test notification": one about five seconds from now, hidden from the lock screen like a real reminder
+         *  when discreet mode is on (secret). */
         @JavascriptInterface
-        public void testNotify(final String title, final String body) {
+        public void testNotify(final String title, final String body, final boolean secret) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override public void run() { ReminderReceiver.post(MainActivity.this, title, body, 4242); }
+                @Override public void run() { ReminderReceiver.post(MainActivity.this, title, body, 4242, secret); }
             }, 5000);
         }
 
-        /* ---------- unlock with fingerprint, face or the phone's own PIN ---------- */
+        /* ---------- unlock with a fingerprint (strong biometrics only), when she turned it on ----------
+           Never the phone's own PIN, pattern or a weak face unlock: the person holding her phone often knows or has those. */
         @JavascriptInterface
-        public boolean canBiometric() { return Build.VERSION.SDK_INT >= 28; }
+        public boolean canBiometric() {
+            if (Build.VERSION.SDK_INT < 29) return false;
+            BiometricManager bm = (BiometricManager) getSystemService(Context.BIOMETRIC_SERVICE);
+            if (bm == null) return false;
+            if (Build.VERSION.SDK_INT >= 30) return bm.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS;
+            return bm.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
+        }
 
         @JavascriptInterface
         public void biometric(final String title, final String cancelLabel) {
-            if (Build.VERSION.SDK_INT < 28) { bio(false); return; }
+            if (!canBiometric()) { bio(false); return; }
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         BiometricPrompt.Builder b = new BiometricPrompt.Builder(MainActivity.this).setTitle(title);
-                        if (Build.VERSION.SDK_INT >= 30) {
-                            b.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
-                        } else if (Build.VERSION.SDK_INT >= 29) {
-                            b.setDeviceCredentialAllowed(true);
-                        } else {
-                            b.setNegativeButton(cancelLabel, getMainExecutor(), new DialogInterface.OnClickListener() {
-                                @Override public void onClick(DialogInterface d, int w) { bio(false); }
-                            });
-                        }
+                        if (Build.VERSION.SDK_INT >= 30) b.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+                        b.setNegativeButton(cancelLabel, getMainExecutor(), new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface d, int w) { bio(false); }
+                        });
                         b.build().authenticate(new CancellationSignal(), getMainExecutor(), new BiometricPrompt.AuthenticationCallback() {
                             @Override public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult r) { bio(true); }
                             @Override public void onAuthenticationError(int code, CharSequence msg) { bio(false); }
@@ -284,9 +358,33 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         public boolean copy(String text) {
             ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             if (cm == null) return false;
-            cm.setPrimaryClip(ClipData.newPlainText("Qura Sakhi", text));
+            ClipData clip = ClipData.newPlainText("Sakhi", text);
+            if (Build.VERSION.SDK_INT >= 24) {
+                PersistableBundle extras = new PersistableBundle();
+                extras.putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true);   // a constant, so this works below Android 13 too
+                clip.getDescription().setExtras(extras);
+            }
+            cm.setPrimaryClip(clip);
             return true;
         }
+    }
+
+    /** The best installed voice for this language that runs without the network (same country first), or null. */
+    private Voice localVoice(Locale want) {
+        Voice best = null; int bestScore = -1;
+        try {
+            Set<Voice> vs = tts.getVoices();
+            if (vs == null) return null;
+            for (Voice v : vs) {
+                Locale l = v.getLocale();
+                if (!l.getLanguage().equals(want.getLanguage()) || v.isNetworkConnectionRequired()) continue;
+                Set<String> f = v.getFeatures();
+                if (f != null && f.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED)) continue;
+                int score = (l.getCountry().equals(want.getCountry()) ? 1000 : 0) + v.getQuality();
+                if (score > bestScore) { best = v; bestScore = score; }
+            }
+        } catch (Exception e) { /* some engines throw before voices load */ }
+        return best;
     }
 
     private void bio(final boolean ok) {

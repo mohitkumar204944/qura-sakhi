@@ -18,7 +18,7 @@
   const card = (title, inner, cls) => '<div class="card' + (cls ? ' ' + cls : '') + '">' + (title ? '<h3>' + T(title) + '</h3>' : '') + inner + '</div>';
   const P = (o, cls) => '<p class="' + (cls || 'small') + '">' + T(o) + '</p>';
   const ext = (href, label) => '<a href="' + href + '" target="_blank" rel="noopener">' + T(label) + '</a>';
-  const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(typeof title === 'string' ? t(title) : tx(title)) + '</strong><span>' + esc(typeof sub === 'string' ? t(sub) : tx(sub)) + '</span></span>' + (gated ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
+  const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(typeof title === 'string' ? t(title) : tx(title)) + '</strong><span>' + esc(typeof sub === 'string' ? t(sub) : tx(sub)) + '</span></span>' + (gated && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
   const pregNote = () => (S.canSave() && (S.state.situation || {}).pregnant ? '<div class="card ok"><p class="ttc-p" style="color:var(--ok)">' + T({ en: 'You are marked as pregnant on the Me page. These pages are for while you are trying; the Pregnancy section is the one for you now.', hi: '“मैं” पन्ने पर आप गर्भवती के रूप में दर्ज हैं। ये पन्ने कोशिश के समय के लिए हैं; अब आपके लिए “गर्भावस्था” वाला हिस्सा है।' }) + '</p>' + goBtn('preg', { en: 'Open Pregnancy', hi: 'गर्भावस्था खोलें' }, 'sm ttc-start') + '</div>' : '');
   const urgent = (o) => '<div class="flag urgent"><span class="ttc-fi">' + S.I.help + '</span><span class="ttc-ft">' + T(o) + '</span></div>';
 
@@ -271,7 +271,7 @@
   }
   function chartSvg(w, entries, unit) {
     const len = S.diffDays(w.from, w.to) + 1; const MAXD = 70; const off = Math.max(0, len - MAXD);
-    const slots = Math.max(28, Math.min(MAXD, len)); const W = 320, L = 40, R = 6, top = 8, H = 112;
+    const slots = Math.max(28, Math.min(MAXD, len)); const W = 320, L = 50, R = 6, top = 8, H = 112;   /* L: room for the row labels at 13 px */
     const rowM = top + H + 18, rowL = rowM + 16, xl = rowL + 20, VH = xl + 4;
     const step = (W - L - R) / slots; const X = (i) => L + step * (i + 0.5); const rr = Math.min(3.4, step * 0.42);
     const pts = entries.map((e) => Object.assign({ i: S.diffDays(w.from, S.fromISO(e.d)) - off }, e)).filter((e) => e.i >= 0 && e.i < slots);
@@ -597,7 +597,7 @@
       '.ttc-chart .ln { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }',
       '.ttc-chart .pt { fill: var(--accent); }',
       '.ttc-chart .td { stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 3 3; }',
-      '.ttc-chart text { fill: var(--muted); font-size: 10px; font-family: inherit; }',
+      '.ttc-chart text { fill: var(--muted); font-size: 13px; font-family: inherit; }',
       '.ttc-m0 { fill: var(--card); stroke: var(--muted); stroke-width: 1.2; }',
       '.ttc-m1 { fill: var(--peach); stroke: var(--gold); stroke-width: 1; }',
       '.ttc-m2 { fill: var(--gold); }',

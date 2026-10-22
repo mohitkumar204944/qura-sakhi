@@ -23,6 +23,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/signup.mjs`
   - `node test/tours.mjs`
   - `node test/me.mjs`
+  - `node test/privacy.mjs` (help wording, lock, screen capture, shares, reminders, the APK's CSP)
+  - `node test/companions.mjs` (iron tablets, check-ups due, My ASHA, Do it online)
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`
@@ -30,6 +32,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 - APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`.
   - For the live server, add `SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api`. Every signup on
     such a build sends a real code.
+  - Add `SAKHI_HELP_WA=91XXXXXXXXXX` (Qura's staffed WhatsApp number) for "Speak to a doctor" and "Tell a person". Without
+    it the doctor screen offers Qura's booking page and "Tell a person" is hidden.
+  - A version name without "demo" refuses to build unless `SAKHI_API` is https.
   - It installs on the phone if one is on adb.
   - Copy the result to `../QuraSakhi-prototype.apk`.
 - Preview: `../Open prototype.command`, or "Sakhi web" in `.claude/launch.json`.

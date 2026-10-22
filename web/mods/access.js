@@ -134,6 +134,8 @@
       '<p class="small">' + esc(t('access_pin_note')) + '</p></div>' +
       (pin ? '<div class="card soft"><div class="row spread"><h3>' + esc(t('access_pin_for')) + ' <span class="num hl">' + esc(pin) + '</span></h3><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>' +
         P(L('In the live app this page will list the real facilities near this PIN from government directories, with timings and distance. This prototype does not invent names or addresses, so for now it shows the kinds of free care every PIN has and the official links to find them.', 'असली app में यह पन्ना सरकारी सूचियों से इस PIN के पास की असली जगहें, समय और दूरी के साथ दिखाएगा। यह prototype नाम या पते नहीं गढ़ता, इसलिए अभी हर PIN पर मिलने वाले मुफ़्त इलाज के प्रकार और उन्हें खोजने के सरकारी link दिखाता है।'), 'small', 'color:var(--fg)') + '</div>' : '') +
+      '<div class="list">' + (S.routeOwner('asha') ? '<button type="button" class="item" data-go="asha"><span class="ico-sm hue hue-teal">' + S.icon('person') + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span>' + esc(t('asha_help_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' : '') +
+        '<button type="button" class="item" data-go="access-online"><span class="ico-sm hue hue-sky">' + S.icon('file') + '</span><span class="body"><strong>' + esc(t('access_online')) + '</strong><span>' + esc(t('access_online_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' +
       '<div class="flag urgent">' + E(L('Emergency: call 112, or 108 or 102 for a free ambulance. Do not wait to find the right centre.', 'Emergency: 112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102। सही केंद्र खोजने में देर न करें।')) + '</div>' +
       '<h2>' + E(pin ? L('Free care near you', 'आपके पास मुफ़्त इलाज') : L('Free care every PIN has', 'हर PIN पर मिलने वाला मुफ़्त इलाज')) + '</h2>' +
       '<div class="list">' + CARE.map(careCard).join('') + '</div>' +
@@ -322,6 +324,45 @@
       '<h4>' + esc(t('access_benefit')) + '</h4>' + P(s.benefit) + '<h4>' + esc(t('access_who')) + '</h4>' + P(s.who) + '<h4>' + esc(t('access_apply')) + '</h4>' + P(s.how) + '<h4>' + esc(t('access_docs')) + '</h4>' + P(s.docs) +
       (s.links.length ? '<div class="access-links">' + s.links.map((x) => ext(x[0], x[1])).join('') + '</div>' : '') + goBtns(s.go) +
       '<p class="sources">' + esc(t('access_source')) + ': ' + s.src.map((x) => '<a href="' + esc(SRC[x].url) + '" target="_blank" rel="noopener">' + E(SRC[x]) + '</a>').join(' · ') + '</p></div></details>';
+  }
+
+  /* ---------- Do it online: the government's own apps and websites (Version 28; docs/feature-research-2026-10-22.md, B5) ----------
+     Each opens the official site in her browser. Sakhi sends nothing and fills in nothing for her. Every link was opened and
+     checked on 22 Oct 2026; the facts are from each scheme's official page or Sakhi's verified articles. */
+  const ONLINE = [
+    { k: 'abha', icon: 'file', hue: 'sky', url: 'https://abha.abdm.gov.in/abha/v3/',
+      name: L('ABHA: your free health ID', 'ABHA: आपकी मुफ़्त हेल्थ ID'),
+      what: L('A free 14-digit health ID from the Government of India. Labs and hospitals in the Ayushman Bharat Digital Mission can link your reports to it, and a doctor sees them only with your consent.', 'भारत सरकार की 14 अंकों की मुफ़्त हेल्थ ID। आयुष्मान भारत डिजिटल मिशन से जुड़ी लैब और अस्पताल आपकी रिपोर्ट इससे जोड़ सकते हैं, और डॉक्टर उन्हें सिर्फ़ आपकी सहमति से देखते हैं।'),
+      need: L('Usually your Aadhaar and the mobile number linked to it. Or ask at your Ayushman Arogya Mandir.', 'आम तौर पर आपका आधार और उससे जुड़ा मोबाइल नंबर। या अपने आयुष्मान आरोग्य मंदिर में पूछें।') },
+    { k: 'uwin', icon: 'check', hue: 'teal', url: 'https://uwin.mohfw.gov.in/home',
+      name: L('U-WIN: vaccination records', 'U-WIN: टीकों का रिकॉर्ड'),
+      what: L('Your Td doses in pregnancy and your baby’s vaccines, with certificates. You can also find a vaccination session near your PIN code.', 'गर्भावस्था के Td टीके और बच्चे के टीके, सर्टिफ़िकेट के साथ। अपने PIN code के पास टीकाकरण का दिन भी देख सकती हैं।'),
+      need: L('A mobile number for the OTP.', 'OTP के लिए एक मोबाइल नंबर।') },
+    { k: 'pmmvy', icon: 'file', hue: 'gold', url: 'https://pmmvy.wcd.gov.in/', go: 'access-schemes-preg',
+      name: L('PMMVY: ₹5,000 for your first child', 'PMMVY: पहले बच्चे के लिए ₹5,000'),
+      what: L('Apply yourself on the official portal, or through your Anganwadi worker or ASHA. A second child who is a girl gets ₹6,000.', 'सरकारी पोर्टल पर ख़ुद आवेदन करें, या आंगनवाड़ी कार्यकर्ता या ASHA के ज़रिए। दूसरा बच्चा बेटी हो तो ₹6,000 मिलते हैं।'),
+      need: L('Aadhaar, a bank or post office account linked to Aadhaar, your MCP card, and one proof that you are eligible, such as a ration card or an Ayushman card.', 'आधार, आधार से जुड़ा बैंक या डाकघर खाता, आपका MCP कार्ड, और पात्रता का एक सबूत, जैसे राशन कार्ड या आयुष्मान कार्ड।') },
+    { k: 'pmjay', icon: 'heart', hue: 'rose', url: 'https://beneficiary.nha.gov.in/',
+      name: L('Ayushman card (PM-JAY)', 'आयुष्मान कार्ड (PM-JAY)'),
+      what: L('Check whether your family has free hospital care of up to ₹5 lakh a year, and get your card.', 'देखें कि आपके परिवार को हर साल ₹5 लाख तक का मुफ़्त अस्पताल इलाज मिलता है या नहीं, और अपना कार्ड बनवाएँ।'),
+      need: L('Your mobile number, and Aadhaar for e-KYC. Or ask at the Ayushman Mitra desk of a listed hospital. Helpline 14555.', 'आपका मोबाइल नंबर, और e-KYC के लिए आधार। या किसी सूचीबद्ध अस्पताल के आयुष्मान मित्र डेस्क पर पूछें। हेल्पलाइन 14555।') },
+    { k: 'esanj', icon: 'person', hue: 'purple', url: 'https://esanjeevani.mohfw.gov.in/',
+      name: L('eSanjeevani: free video OPD', 'eSanjeevani: मुफ़्त वीडियो OPD'),
+      what: L('Talk to a government doctor on a video call from your phone, free.', 'अपने फ़ोन से वीडियो कॉल पर सरकारी डॉक्टर से बात करें, मुफ़्त।'),
+      need: L('A mobile number for the OTP. Timings depend on your state.', 'OTP के लिए एक मोबाइल नंबर। समय आपके राज्य पर निर्भर है।') },
+    { k: 'ja', icon: 'pill', hue: 'green', url: 'https://janaushadhi.gov.in/locate-kendra',
+      name: L('Jan Aushadhi: medicines for less', 'जन औषधि: कम दाम पर दवाएँ'),
+      what: L('Find a Jan Aushadhi store near you: generic medicines at 50 to 80 percent lower prices, and sanitary pads at ₹1 each.', 'अपने पास जन औषधि स्टोर खोजें: जेनेरिक दवाएँ 50 से 80 प्रतिशत कम दाम पर, और सैनिटरी पैड ₹1 में।'),
+      need: L('Your state and district.', 'आपका राज्य और ज़िला।') }
+  ];
+  function renderOnline(v) {
+    v.innerHTML = S.backRow(t('access_online'), 'care', false) + P(L('These are the government’s own websites. They open in your browser: Sakhi sends nothing and fills in nothing for you.', 'ये सरकार की अपनी वेबसाइटें हैं। ये आपके browser में खुलती हैं: Sakhi न कुछ भेजती है, न आपकी ओर से कुछ भरती है।')) +
+      '<div class="flag">' + E(L('Never share an OTP with someone who calls you, and never pay anyone to get a scheme.', 'कॉल करने वाले किसी को OTP न बताएँ, और किसी योजना के लिए किसी को पैसे न दें।')) + '</div>' +
+      ONLINE.map((x) => '<div class="card access-on" data-nofold="1"><div class="row" style="gap:10px;align-items:center"><span class="ico-sm hue hue-' + x.hue + '">' + S.icon(x.icon) + '</span><h3 style="margin:0;min-width:0">' + E(x.name) + '</h3></div>' +
+        '<p>' + E(x.what) + '</p><p class="small"><strong>' + esc(t('access_online_need')) + '</strong> ' + E(x.need) + '</p>' +
+        '<div class="row wrap"><a class="btn sm primary" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(t('access_online_open')) + '</a>' + (x.go ? '<button type="button" class="btn sm" data-go="' + x.go + '">' + esc(t('access_online_who')) + '</button>' : '') + '</div></div>').join('') +
+      '<p class="footnote">' + esc(t('access_online_foot')) + '</p>';
+    S.wire(v);
   }
 
   function renderSchemes(v, tag) {
@@ -684,6 +725,8 @@
   const en = {
     access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Home', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
     access_care: 'Care near me', access_care_s: 'Free government care by PIN code, and how to find it',
+    access_online: 'Do it online: government services', access_online_s: 'ABHA, U-WIN, PMMVY, Ayushman card, eSanjeevani, Jan Aushadhi',
+    access_online_need: 'You need:', access_online_open: 'Open the official site', access_online_who: 'Who gets it', access_online_foot: 'Official government sites, checked on 22 Oct 2026. Sakhi is not part of them.',
     access_schemes: 'Government schemes for you', access_schemes_s: 'PMMVY, JSY, JSSK, Ayushman card and more: who gets what',
     access_schemes_preg: 'Money and free care in pregnancy', access_schemes_preg_s: 'PMMVY, JSY, JSSK, PMSMA, Anganwadi food, maternity leave',
     access_schemes_post: 'Schemes after the birth', access_schemes_post_s: 'PMMVY instalments, free care for the baby, food, contraception',
@@ -705,6 +748,8 @@
   const hi = {
     access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: 'होम पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
     access_care: 'मेरे पास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
+    access_online: 'ऑनलाइन करें: सरकारी सेवाएँ', access_online_s: 'ABHA, U-WIN, PMMVY, आयुष्मान कार्ड, eSanjeevani, जन औषधि',
+    access_online_need: 'आपको चाहिए:', access_online_open: 'सरकारी साइट खोलें', access_online_who: 'किसे मिलता है', access_online_foot: 'सरकारी वेबसाइटें, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
     access_schemes: 'आपके लिए सरकारी योजनाएँ', access_schemes_s: 'PMMVY, JSY, JSSK, आयुष्मान card और भी: किसे क्या मिलता है',
     access_schemes_preg: 'गर्भ में पैसा और मुफ़्त देखभाल', access_schemes_preg_s: 'PMMVY, JSY, JSSK, PMSMA, आंगनवाड़ी का खाना, मातृत्व छुट्टी',
     access_schemes_post: 'डिलीवरी के बाद की योजनाएँ', access_schemes_post_s: 'PMMVY की किस्तें, बच्चे का मुफ़्त इलाज, खाना, गर्भनिरोध',
@@ -756,9 +801,9 @@
     '.access-fc{gap:6px}',
     '.access-vid{align-items:flex-start}',
     '.access-vid .body strong{overflow-wrap:break-word;line-height:1.35}',
-    '.access-planned{align-self:flex-start;margin-top:4px;font-size:11px !important;font-weight:600}',
+    '.access-planned{align-self:flex-start;margin-top:4px;font-size:12px !important;font-weight:600}',
     '.access-vt{display:flex;flex-direction:column;gap:6px;padding-left:18px;color:var(--fg);font-size:14px}',
-    '.access-lvl{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:11px !important;font-weight:600;padding:2px 8px;border-radius:10px;line-height:1.4}',
+    '.access-lvl{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:13px !important;font-weight:600;padding:2px 8px;border-radius:10px;line-height:1.4}',
     '.lvt-urgent{background:var(--ink);color:var(--ink-text) !important}',
     '.lvt-today{background:var(--accent-soft);color:var(--accent) !important}',
     '.lvt-week{background:var(--gold-soft);color:var(--gold) !important;border:1px solid var(--gold)}',
@@ -772,13 +817,14 @@
     id: 'access',
     demoPersona: 'blank',
     strings: { en: en, hi: hi },
-    routes: { 'access-stories': (v) => { stI = 0; stPaused = false; renderStories(v); }, 'access-care': renderCare, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-feed': renderFeed, 'access-videos': renderVideos, 'access-symptoms': renderSymptoms },
+    routes: { 'access-stories': (v) => { stI = 0; stPaused = false; renderStories(v); }, 'access-care': renderCare, 'access-online': renderOnline, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-feed': renderFeed, 'access-videos': renderVideos, 'access-symptoms': renderSymptoms },
     prefixes: { 'access-schemes-': (v, rest) => renderSchemes(v, rest) },
     testRoutes: ['access-schemes-preg', 'access-schemes-post', 'access-schemes-period', 'access-schemes-teen', 'access-schemes-family', 'access-schemes-all'],
-    open: ['access-stories', 'access-care', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-feed', 'access-videos', 'access-symptoms'],
+    open: ['access-stories', 'access-care', 'access-online', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-feed', 'access-videos', 'access-symptoms'],
     tiles: [
       { section: 'tools', route: 'access-care', title: 'access_care', sub: 'access_care_s', icon: 'map', order: 20, gated: false, keywords: 'care near me pin code phc chc district hospital asha anganwadi ayushman arogya mandir jan aushadhi ictc one stop centre afhc पास इलाज अस्पताल' },
       { section: 'tools', route: 'access-schemes', title: 'access_schemes', sub: 'access_schemes_s', icon: 'file', order: 21, gated: false, keywords: 'scheme yojana pmmvy jsy jssk pmsma pm-jay ayushman card maternity benefit ni-kshay suvidha 181 योजना पैसा' },
+      { section: 'tools', route: 'access-online', title: 'access_online', sub: 'access_online_s', icon: 'file', order: 21, gated: false, keywords: 'online website portal app abha health id u-win vaccine certificate pmmvy apply ayushman card pm-jay esanjeevani video doctor jan aushadhi ऑनलाइन वेबसाइट आवेदन' },
       { section: 'tools', route: 'access-partner', title: 'access_partner', sub: 'access_partner_s', icon: 'users', order: 22, gated: false, keywords: 'husband partner men nsv vasectomy condom semen test consent पति साथी' },
       { section: 'tools', route: 'access-feed', title: 'access_feed', sub: 'access_feed_s', icon: 'sparkle', order: 23, gated: true, keywords: 'today for you feed tips insights आज' },
       { section: 'tools', route: 'access-videos', title: 'access_videos', sub: 'access_videos_s', icon: 'play', order: 24, gated: false, keywords: 'video doctor talk dr megha वीडियो' },

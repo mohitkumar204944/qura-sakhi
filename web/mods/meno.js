@@ -112,9 +112,9 @@
       '<div class="card soft meno-stat"><b class="num">46</b><span class="small">' + T({ en: 'The average age at menopause in India, about 5 years earlier than in Western countries. From an Indian Menopause Society survey of 2,108 women in 21 cities (2016).', hi: 'भारत में मेनोपॉज़ की औसत उम्र, पश्चिमी देशों से लगभग 5 साल पहले। Indian Menopause Society का 21 शहरों की 2,108 महिलाओं पर सर्वे (2016)।' }) + '</span></div>' +
       '<div class="list">' +
       linkItem('meno-timeline', 'clock', t('meno_tl_h'), t('meno_tl_s')) +
-      linkItem('meno-score', 'check', t('meno_sc_h'), t('meno_sc_s'), t('gated_short')) +
-      linkItem('midlife', 'moon', t('midlife'), t('midlife_d'), t('gated_short')) +
-      linkItem('meno-diary', 'chart', t('meno_diary'), t('meno_diary_s'), t('gated_short')) +
+      linkItem('meno-score', 'check', t('meno_sc_h'), t('meno_sc_s'), S.flags.proto ? t('gated_short') : '') +
+      linkItem('midlife', 'moon', t('midlife'), t('midlife_d'), S.flags.proto ? t('gated_short') : '') +
+      linkItem('meno-diary', 'chart', t('meno_diary'), t('meno_diary_s'), S.flags.proto ? t('gated_short') : '') +
       linkItem('meno-hrt', 'pill', t('meno_hrt'), t('meno_hrt_s')) +
       linkItem('meno-bones', 'heart', t('meno_bones'), t('meno_bones_s')) +
       linkItem('meno-intimate', 'flower', t('meno_intimate'), t('meno_intimate_s')) +
@@ -202,7 +202,7 @@
   function gridHTML(dia, keys) {
     const ks = keys.slice(-8);
     let h = '<div class="meno-gridwrap"><div class="meno-grid" style="grid-template-columns:minmax(0,1fr) repeat(' + ks.length + ',24px)">';
-    h += '<span class="gl gx">' + T({ en: 'Week of', hi: 'हफ़्ता' }) + '</span>' + ks.map((k) => '<span class="gh num">' + esc(shortD(k)) + '</span>').join('');
+    h += '<span class="gl gx">' + T({ en: 'Week of', hi: 'हफ़्ता' }) + '</span>' + ks.map((k, i) => { const d = S.fromISO(k); const mo = i === 0 || S.fromISO(ks[i - 1]).getMonth() !== d.getMonth(); return '<span class="gh num" aria-label="' + esc(shortD(k)) + '">' + d.getDate() + '<small>' + (mo ? esc(S.fmtD(d, { month: 'short' })) : '&nbsp;') + '</small></span>'; }).join('');
     SYM.forEach((s) => {
       h += '<span class="gl">' + esc(t('meno_g_' + s)) + '</span>' + ks.map((k) => { const n = lvOf(dia[k], s); return '<span class="gc meno-l' + n + ' num" title="' + esc(t('meno_g_' + s) + ' · ' + shortD(k) + ': ' + n) + '">' + (n || '') + '</span>'; }).join('');
     });
@@ -815,13 +815,14 @@
       '.meno-grid .gl { font-size: 11px; color: var(--fg); min-width: 0; overflow-wrap: anywhere; line-height: 1.2; padding-right: 4px; }',
       '.meno-grid .gx { color: var(--muted); }',
       '.meno-grid .gsum { color: var(--muted); font-weight: 600; padding-top: 4px; }',
-      '.meno-grid .gh { font-size: 10px; color: var(--muted); text-align: center; white-space: nowrap; letter-spacing: -0.2px; }',
+      '.meno-grid .gh { font-size: 13px; line-height: 1.1; color: var(--muted); text-align: center; white-space: nowrap; display: flex; flex-direction: column; align-items: center; overflow: visible; }',
+      '.meno-grid .gh small { font-size: 12px; }',
       '.meno-grid .gc { height: 22px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; }',
       '.meno-grid .gn { font-size: 12px; color: var(--fg); font-weight: 600; text-align: center; padding-top: 4px; }',
       '.meno-spark { height: 100px; }',
       '.meno-tbl th[scope=row] { color: var(--fg); font-size: 13px; }',
       '.meno-lab { color: var(--fg); }',
-      '.meno-spark text { font-size: 10px; }',
+      '.meno-spark text { font-size: 13px; }',
       '.msc-q { gap: 6px; }', '.msc-q p { margin: 0; color: var(--fg); }', '.msc-q .small { color: var(--muted); }', '.msc-left { text-align: center; }',
       '.msc-res { gap: 10px; }', '.msc-res h3 { margin: 4px 0 0; }',
       '.msc-big { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }',

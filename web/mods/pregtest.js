@@ -89,7 +89,7 @@
   }
   function renderHub(v) {
     own();
-    const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.I[ico] + '</span><span class="body"><strong>' + esc(t(title)) + '</strong><span>' + esc(t(sub)) + '</span></span>' + (gated ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
+    const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.I[ico] + '</span><span class="body"><strong>' + esc(t(title)) + '</strong><span>' + esc(t(sub)) + '</span></span>' + (gated && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
     v.innerHTML = S.backRow(t('pregtest_hub'), 'care', false) +
       '<p class="small">' + T({ en: "A late period, a test, maybe a result you didn't plan for. Take it one step at a time. Nothing on these pages is saved unless you choose to save it.", hi: 'पीरियड देर से, एक test, और शायद ऐसा result जिसकी योजना नहीं थी। एक-एक क़दम करके चलें। इन पन्नों पर कुछ भी save नहीं होता, जब तक आप ख़ुद न चुनें।' }) + '</p>' +
       lateNote() +
@@ -382,7 +382,7 @@
       '.pregtest-kit .miss { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2; }',
       '.pregtest-kit .clk circle { fill: var(--card); stroke: var(--gold); stroke-width: 1.3; }',
       '.pregtest-kit .clk path { fill: none; stroke: var(--gold); stroke-width: 1.3; stroke-linecap: round; }',
-      '.pregtest-kit text { fill: var(--muted); font-size: 9px; font-weight: 600; font-family: var(--font-body); }',
+      '.pregtest-kit text { fill: var(--muted); font-size: 13px; font-weight: 600; font-family: var(--font-body); }',
       '.pregtest-day { font-family: var(--font-display); font-size: 30px; font-weight: 600; color: var(--accent); line-height: 1.15; }',
       'body.hi .pregtest-day { font-family: var(--font-hi); font-size: 24px; }',
       '.pregtest-band { display: flex; flex-direction: column; gap: 4px; border-left: 3px solid var(--accent-2); padding-left: 10px; }',

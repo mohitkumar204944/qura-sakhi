@@ -1009,7 +1009,7 @@
     '.contra-big small{font-size:14px;font-weight:500;color:var(--muted)}',
     '.contra-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}',
     '.contra-day{min-height:58px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--fg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:13px;padding:2px 0;font-family:inherit}',
-    '.contra-day .dw{font-size:10px;color:var(--muted)}',
+    '.contra-day .dw{font-size:12px;color:var(--muted)}',
     '.contra-day .mk{font-size:13px;font-weight:700;line-height:1}',
     '.contra-day.t{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}',
     '.contra-day.m{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}',

@@ -532,7 +532,8 @@
         { en: 'Constipation: more water, fruit, vegetables and walking.', hi: 'कब्ज़ हो तो: ज़्यादा पानी, फल, सब्ज़ी और टहलना।' },
         { en: 'Pause it during a fever, diarrhoea or other short illness, and restart when you are well.', hi: 'बुख़ार, दस्त या कोई और छोटी बीमारी में रोक दें, ठीक होने पर फिर शुरू करें।' },
         { en: 'Thalassaemia major or repeated blood transfusions: do not take iron unless your doctor says so.', hi: 'Thalassaemia major हो या बार-बार ख़ून चढ़ा हो: डॉक्टर के कहे बिना आयरन न लें।' },
-        { en: 'Severe vomiting, belly pain that does not settle, rash, swelling or trouble breathing: stop and see a doctor.', hi: 'तेज़ उल्टी, पेट दर्द जो न रुके, चकत्ते, सूजन या साँस में तकलीफ़: गोली रोकें और डॉक्टर को दिखाएँ।' }]) + '</div>';
+        { en: 'Severe vomiting, belly pain that does not settle, rash, swelling or trouble breathing: stop and see a doctor.', hi: 'तेज़ उल्टी, पेट दर्द जो न रुके, चकत्ते, सूजन या साँस में तकलीफ़: गोली रोकें और डॉक्टर को दिखाएँ।' }]) +
+      (S.routeOwner('iron') ? '<button type="button" class="btn sm" style="align-self:flex-start" data-go="iron">' + h({ en: 'Iron tablets: tick and reminder', hi: 'आयरन की गोलियाँ: टिक और रिमाइंडर' }) + '</button>' : '') + '</div>';
 
     const food = '<div class="card"><h2>' + h({ en: 'Food that builds blood', hi: 'ख़ून बढ़ाने वाला खाना' }) + '</h2>' +
       ul([{ en: 'Green leafy vegetables such as chaulai, methi, gongura, beet greens and pumpkin leaves', hi: 'हरी पत्तेदार सब्ज़ियाँ, जैसे चौलाई, मेथी, गोंगुरा, चुकंदर के पत्ते और कद्दू के पत्ते' },
@@ -673,8 +674,8 @@
   function renderHub(v) {
     v.innerHTML = S.backRow(t('cond_hub'), 'care', false) +
       intro({ en: 'Guides for women\'s health conditions other than PMOS: what they are, which tests help, what a gynaecologist may offer, and what is free. Not a diagnosis.', hi: 'PMOS के अलावा महिलाओं की दूसरी बीमारियों की गाइड: ये क्या हैं, कौन सी जाँच काम आती है, स्त्री रोग विशेषज्ञ क्या इलाज दे सकती हैं, और क्या मुफ़्त है। यह diagnosis नहीं है।' }) +
-      '<div class="list">' + SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]), x[4] ? t('gated_short') : '')).join('') +
-      (S.canSave() ? linkItem('pattern', 'check', t('pattern'), t('pattern_d'), t('gated_short')) : '') + '</div>' +
+      '<div class="list">' + SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]), x[4] && S.flags.proto ? t('gated_short') : '')).join('') +
+      (S.canSave() ? linkItem('pattern', 'check', t('pattern'), t('pattern_d'), S.flags.proto ? t('gated_short') : '') : '') + '</div>' +
       '<div class="card"><h3 style="color:var(--accent)">' + esc(t('see_doctor')) + '</h3>' +
       flagLead('urgent', t('call_now'), t('s1a')) + flag('urgent', TORSION) +
       flagLead('', t('today_if'), t('s2b')) +
@@ -860,7 +861,7 @@
       '.cond-map figure { margin: 0; display: flex; flex-direction: column; align-items: stretch; gap: 4px; background: var(--card-2); border-radius: 14px; padding: 8px; min-width: 0; }',
       '.cond-map figcaption { font-size: 12px; font-weight: 600; color: var(--fg); text-align: center; }',
       '.cond-map svg { width: 100%; height: auto; max-height: 230px; display: block; }',
-      '.cond-lr { font-size: 10px; color: var(--muted); }',
+      '.cond-lr { font-size: 13px; color: var(--muted); }',
       '.cond-fig { fill: var(--card); stroke: var(--muted); stroke-width: 1.4; }',
       '.cond-zone { fill: var(--accent-soft); stroke: var(--accent-2); stroke-width: 1.5; cursor: pointer; }',
       '.cond-zone.on { fill: var(--accent); stroke: var(--accent); }',

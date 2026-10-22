@@ -53,7 +53,7 @@ body.hi .brand small { font-family: var(--font-hi); }
 .langtoggle .hi { font-family: var(--font-hi); }
 
 main { flex: 1; padding: 4px 16px 96px 16px; display: flex; flex-direction: column; gap: 14px; }
-.view { display: flex; flex-direction: column; gap: 14px; }
+.view { display: flex; flex-direction: column; gap: 14px; overflow-wrap: break-word; }   /* at the phone's largest text a long word breaks instead of pushing the screen sideways */
 
 .card { background: var(--card); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; }
 .card.soft { background: var(--card-2); box-shadow: none; }
@@ -109,7 +109,7 @@ body.hi .big { font-family: var(--font-hi); font-size: 52px; }
 .bars .col { flex: 1; background: var(--accent); border-radius: 6px 6px 2px 2px; min-height: 3px; }
 .bars .col.last { background: var(--accent-2); }
 .bars .col.x { background: repeating-linear-gradient(135deg, var(--muted) 0 3px, transparent 3px 6px); opacity: 0.6; }
-.barlabels { display: flex; gap: 6px; font-size: 10px; color: var(--muted); text-align: center; }
+.barlabels { display: flex; gap: 6px; font-size: 12px; color: var(--muted); text-align: center; }
 .barlabels span { flex: 1; }
 
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; }
@@ -169,7 +169,7 @@ details summary { cursor: pointer; font-size: 12px; color: var(--muted); font-we
 .timeline { position: relative; height: 14px; border-radius: 7px; background: var(--peach); overflow: visible; }
 .timeline .seg { position: absolute; top: 0; bottom: 0; }
 .timeline .mark { position: absolute; top: -5px; width: 24px; height: 24px; border-radius: 12px; background: var(--card); border: 3px solid var(--fg); margin-left: -12px; }
-.tl-labels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-size: 10px; color: var(--muted); text-align: center; gap: 4px; }
+.tl-labels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-size: 13px; line-height: 1.25; color: var(--muted); text-align: center; gap: 4px; }
 .tl-labels .on { color: var(--fg); font-weight: 600; }
 .meter { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--fg); }
 .meter .lbl { width: 110px; flex-shrink: 0; }
@@ -229,7 +229,7 @@ details summary { cursor: pointer; font-size: 12px; color: var(--muted); font-we
 .spark .ln { fill: none; stroke: var(--accent); stroke-width: 2; }
 .spark .pt { fill: var(--accent); }
 .spark .gd { stroke: var(--line); stroke-width: 1; }
-.spark text { fill: var(--muted); font-size: 10px; }
+.spark text { fill: var(--muted); font-size: 13px; }
 .segmented { display: flex; gap: 6px; flex-wrap: wrap; }
 .note { font-size: 12px; color: var(--muted); border-left: 3px solid var(--peach); padding-left: 10px; }
 
@@ -838,3 +838,8 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .su-num input:focus, .su-num input:focus-visible { outline: none; box-shadow: none; }
 .su-otp { font-size: 24px; letter-spacing: 0.35em; text-align: center; font-variant-numeric: tabular-nums; }
 .linkbtn:disabled { color: var(--muted); font-weight: 500; }
+
+/* The speaker on every sheet (22 Oct audit, item 18): top right, clear of the content. */
+.sheet { position: relative; }
+.sheet-say { position: absolute; top: 10px; right: 12px; z-index: 2; }
+.sheet-say ~ h2:first-of-type { padding-right: 48px; }

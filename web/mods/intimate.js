@@ -170,7 +170,7 @@
   /* ---------- hub ---------- */
   function renderHub(v) {
     own();
-    const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(t(title)) + '</strong><span>' + esc(t(sub)) + '</span></span>' + (gated ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
+    const item = (route, ico, title, sub, gated) => '<button type="button" class="item" data-go="' + route + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(t(title)) + '</strong><span>' + esc(t(sub)) + '</span></span>' + (gated && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>';
     v.innerHTML = S.backRow(t('intimate_hub'), 'care', false) +
       '<p class="small">' + T({ en: 'Discharge, itching, pain with sex, leaking urine, a worry about an infection, or not feeling safe at home. These are common, and you can ask about them without shame. Nothing on these pages is saved unless you choose.', hi: 'सफ़ेद पानी, खुजली, संबंध में दर्द, पेशाब लीक होना, किसी इन्फ़ेक्शन की चिंता, या घर में सुरक्षित महसूस न करना। ये सब आम बातें हैं, और इनके बारे में बिना शर्म के पूछ सकती हैं। इन पन्नों पर कुछ भी save नहीं होता, जब तक आप ख़ुद न चुनें।' }) + '</p>' +
       '<div class="list">' + item('intimate-check', 'drop', 'intimate_check', 'intimate_check_s', true) + item('intimate-sti', 'check', 'intimate_sti', 'intimate_sti_s') + item('intimate-firsttime', 'heart', 'intimate_first', 'intimate_first_s') + item('intimate-prolapse', 'flower', 'intimate_prolapse', 'intimate_prolapse_s') + item('intimate-safety', 'lock', 'intimate_safety', 'intimate_safety_s') + '</div>' +

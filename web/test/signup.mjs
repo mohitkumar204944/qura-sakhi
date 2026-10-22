@@ -187,9 +187,10 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.evaluate(() => { const a = JSON.parse(localStorage.getItem('qura-sakhi-account-v1')); a.activeOn = '2000-01-01'; localStorage.setItem('qura-sakhi-account-v1', JSON.stringify(a)); });
   await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await sleep(600);
   check('2 a new day sends one more last-active', srv.calls.filter((c) => c.key === 'POST me/active').length === 2);
-  // Ask form: her number is filled in from the account (it stays on the phone in this prototype).
-  await page.evaluate(() => { location.hash = '#ask'; }); await page.waitForSelector('#ask-phone');
-  check('2 Ask form prefilled from the account', (await page.$eval('#ask-phone', (i) => i.value)) === '9876543210' && (await page.$eval('#ask-name', (i) => i.value)) === 'Asha R');
+  // Ask: she books on WhatsApp or Qura's website herself; the page sends nothing about her (audit fix 1a).
+  const callsBefore = srv.calls.length;
+  await page.evaluate(() => { location.hash = '#ask'; }); await page.waitForSelector('#ask-web');
+  check('2 Ask offers the booking page and sends nothing about her', srv.calls.length === callsBefore && !/9876543210|Asha/.test(await page.$eval('#ask-web', (a) => a.getAttribute('href'))) && !(await page.$('#ask-form')));
 
   /* ---------- 3. Log out, back in on the same number, then delete ---------- */
   await page.evaluate(() => { location.hash = '#account'; }); await page.waitForSelector('#acc-out');

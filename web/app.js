@@ -32,7 +32,7 @@
       no_contra: 'This range is not a way to avoid pregnancy and shows no safe days.', gap_mode_note: 'When gaps change a lot we show counts, not a guessed date.', first_log: 'Log the day your last period started. Sakhi then shows your cycle day, your gaps, and when your next period is likely.',
       last6: 'Last 6 gaps (days)', band_note: 'Shaded band: usual gap, same for everyone', trends: 'Trends', period_started: 'Period started', ended: 'Ended', spotting: 'Spotting',
       checkin_t: 'check-in', checkin_sub: '8 taps, about 1 minute. Once a month.', checkin_done: 'Done this month. Thank you.', start_b: 'Start', edit: 'Edit',
-      safety: 'Safety guide', safety_sub: 'When to see a doctor. Same for everyone.', tell: 'Tell a person', tell_sub: 'A person replies within 1 working day.',
+      safety: 'Safety guide', safety_sub: 'When to see a doctor. Same for everyone.', tell: 'Tell a person', tell_sub: 'Write to Qura’s team on WhatsApp.',
       qura_h: 'Talk to a Qura doctor', qura_p: 'Free 20-minute call with a BAMS doctor. Bring your diary; she sees it if you share it.', qura_b: 'Book a free call',
       doc_sees: 'Your Qura doctor sees this at your next visit if you share it. For anything urgent, call 112.',
       r6_h: '90+ days since your last period', r6_p: 'If you could be pregnant, a home test is the first step. Then see a doctor. For PMOS, regular periods protect the womb lining.',
@@ -45,11 +45,11 @@
       daily_h: 'Anything else today? (optional)', d_cramps: 'Cramps', d_headache: 'Headache', d_bloat: 'Bloating', d_mood: 'Low mood', d_tired: 'Tired', d_sleep: 'Poor sleep',
       r2: 'Bleeding more than 8 days, or soaking a pad every 1–2 hours: see a doctor this week and ask for a haemoglobin (blood count) test; it is free at a government hospital. If you also feel dizzy or breathless: see a doctor today, or call 112.',
       save: 'Save', saved: 'Noted.', cancel: 'Cancel', delete_entry: 'Delete this entry',
-      cadence: 'A doctor at Qura reads diaries of patients in care once a week. It is not live. Heavy bleeding with dizziness, one-sided pain with fainting, or any emergency: call 112 now. Thoughts of harming yourself: 14416 or 112.',
+      cadence: 'Show this note to your doctor on your call. Heavy bleeding with dizziness, one-sided pain with fainting, or any emergency: call 112 now. Thoughts of harming yourself: 14416 or 112.',
       ci_h: 'check-in', ci_p: 'Tap what you noticed this month. About 1 minute.', ci_hair: 'Coarse dark hair on lip, chin, chest, belly or back', ci_removal: 'Remove face or body hair weekly or more', ci_acne: 'Pimples or acne', ci_thin: 'Scalp hair thinning',
       ci_neck: 'Dark velvety patches on neck or underarms', ci_heavy: 'Heavy flow or clots', ci_mood: 'Low mood or anxiety most days', ci_none: 'None of these', ci_hot: 'Hot flushes or night sweats', hot_0: 'None', hot_1: 'Mild', hot_2: 'Moderate', hot_3: 'Woke me at night',
       ci_more: 'More (personal care)', ci_disch: 'Unusual discharge', ci_itch: 'Itching', ci_burn: 'Burning when peeing', ci_sexpain: 'Pain during sex', ci_aftersex: 'Bleeding after sex',
-      ci_note: 'Anything for your doctor?', ci_note_ph: 'Type a note (read by a person within 1 working day)', ci_save: 'Save check-in', ci_thanks: 'Saved. Thank you. Nothing is scored here.',
+      ci_note: 'Anything for your doctor?', ci_note_ph: 'Type a note. It stays in your diary on this phone.', ci_save: 'Save check-in', ci_thanks: 'Saved. Thank you. Nothing is scored here.',
       learn_h: 'Learn', learn_p: 'Short, doctor-reviewed answers. Read in Hindi or English.', search: 'Search topics', all: 'All', loading: 'The library is being written. Check back soon.', read: 'Read',
       see_doctor: 'When to see a doctor', qura_can: 'How Qura can help', ask_qura: 'Ask a Qura doctor about this', sources: 'Sources', draft: 'Draft for doctor review', no_results: 'No matches. Try another word.',
       help_h: 'Help and safety', call_now: 'Call 112 now if', today_if: 'See a doctor today if', weeks2: 'See a gynaecologist within about 2 weeks if', week_if: 'This week if', under18: 'Under 18', mood: 'Mood', after35: 'After 35',
@@ -59,12 +59,14 @@
       s4a: 'Bleeding more than 8 days, clots the size of a ₹10 coin, or bleeding through clothes', s4b: 'Period pain that stops your day, or pain during sex: take this diary with you', s4c: 'Discharge that changed colour or smell, itching, or burning when peeing',
       s5a: 'No period by 15, or no breast development by 13: see a doctor with a parent', s5b: 'Childline 1098 for anyone under 18', s6a: 'Low mood most days for two weeks or more: Tele-MANAS 14416, free, any time', s6b: 'Thoughts of harming yourself: call 14416 or 112 now',
       helplines: 'Helplines, free', copy: 'Copy', copied: 'Copied', same_for_all: 'Same text for everyone. Not a diagnosis. Based on official health guidance, with sources.',
-      tell_h: 'Tell a person', tell_p: 'A person at Qura reads this on working days and replies within 1 working day (Mon–Sat). This is not live. For an emergency call 112. For thoughts of harming yourself call 14416 or 112.',
-      tell_about: 'What is it about?', t_bleed: 'Bleeding', t_pain: 'Pain', t_missed: 'Missed period', t_mood: 'Mood', t_other: 'Something else', tell_msg: 'Your message', tell_send: 'Send to a person', tell_ok: 'Received. Reference', tell_ok2: 'In the live app a coordinator reads this. In this prototype it stays on your phone.',
+      tell_h: 'Tell a person', tell_p: 'Write to Qura’s team on WhatsApp. A person reads messages on working days, Monday to Saturday.', tell_urgent: 'This is not for emergencies. For an emergency call 112. For thoughts of harming yourself call 14416 or 112.',
+      tell_wa: 'Open WhatsApp', tell_none: 'Qura’s WhatsApp line is not in this version of Sakhi yet. You can still book a free call with a Qura doctor.', help_wa_note: 'Sakhi only opens WhatsApp with a hello. Nothing from your diary goes with it, and you choose what to write.', help_wa_shared: 'Others use this phone: the chat will show in WhatsApp like any other.',
+      help_wa_hello: 'Hello Qura team, I am writing from the Sakhi app.', ask_wa_hello: 'Hello Qura team, I would like to book the free call with a Qura doctor. I am writing from the Sakhi app.',
+      t_bleed: 'Bleeding', t_pain: 'Pain', t_missed: 'Missed period', t_mood: 'Mood', t_other: 'Something else',
       ask_h: 'Talk to a Qura doctor', ask_p: 'A free 20-minute video or phone call with a Qura doctor (BAMS). She can order tests and help with cycles, weight, sleep and diet. For hormone medicines like the pill, HRT or letrozole you need an MBBS gynaecologist; Qura refers.',
-      name: 'Your name (optional)', phone: 'Phone number', best_time: 'Best time to call', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', topic: 'What is it about?', share_diary: 'Share my diary with the doctor before the call',
-      ask_send: 'Request a free call', ask_ok: 'Request saved. Reference', ask_ok2: 'Prototype: nothing was sent. In the live app Qura calls you back. You can also book directly:', book_link: 'Book at quranutrition.com',
-      me_h: 'Me', me_on_list: 'On: {list}', me_none_on: 'Nothing switched on yet', me_health_h: 'My health details', me_health_hd: 'My details', me_health_private: 'Only you can see these', me_data_h: 'My data', me_data_s: 'Report for my doctor, backup and what Sakhi keeps', me_help_s: '{n} short tours and the full tour', me_about_h: 'About and privacy', me_version: 'Version {v}', me_more: 'More', me_theme_h: 'Light or dark', me_dk_h: 'What Sakhi keeps on this phone', me_dk_periods: 'Periods logged', me_dk_days: 'Days with something noted', me_dk_checkins: 'Monthly check-ins', me_dk_reminders: 'Reminders', me_dk_tools: 'Other tools you used', me_dk_entries: 'Entries', me_dk_raw: 'Show the raw data', me_proto_shown: 'Prototype settings are showing.', me_rem_web: 'Reminders work in the Sakhi app on Android.', situation: 'My situation', sit_p2: 'You set these yourself. The diary never guesses them from your entries.', since: 'since', pregnant_d: 'We stop predicting periods while you are pregnant. Tell your doctor about any medicines you take.', bf_d: 'Periods often stay away while you breastfeed, so we do not predict them for a year after the birth.',
+      ask_how_h: 'How to book', ask_how_wa: 'Message Qura on WhatsApp, and a person there sets a time for your call.', ask_how_web: 'Book a time on Qura’s website. Sakhi only opens the page: nothing from your diary goes with it.', ask_wa: 'Book on WhatsApp',
+      ask_q_h: 'Your questions for the call', ask_q_p: 'Saved on this phone only. Keep them in front of you on the call.', ask_q_clear: 'Clear the list', book_link: 'Book at quranutrition.com',
+      me_h: 'Me', err_screen_h: 'Something went wrong on this screen', err_screen_p: 'Your diary is safe. Go back and try again.', me_on_list: 'On: {list}', me_none_on: 'Nothing switched on yet', me_health_h: 'My health details', me_health_hd: 'My details', me_health_private: 'Only you can see these', me_data_h: 'My data', me_data_s: 'Report for my doctor, backup and what Sakhi keeps', me_help_s: '{n} short tours and the full tour', me_about_h: 'About and privacy', me_version: 'Version {v}', me_more: 'More', me_theme_h: 'Light or dark', me_dk_h: 'What Sakhi keeps on this phone', me_dk_periods: 'Periods logged', me_dk_days: 'Days with something noted', me_dk_checkins: 'Monthly check-ins', me_dk_reminders: 'Reminders', me_dk_tools: 'Other tools you used', me_dk_entries: 'Entries', me_dk_raw: 'Show the raw data', me_proto_shown: 'Prototype settings are showing.', me_rem_web: 'Reminders work in the Sakhi app on Android.', situation: 'My situation', sit_p2: 'You set these yourself. The diary never guesses them from your entries.', since: 'since', pregnant_d: 'We stop predicting periods while you are pregnant. Tell your doctor about any medicines you take.', bf_d: 'Periods often stay away while you breastfeed, so we do not predict them for a year after the birth.',
       horm_d: 'Pill, hormonal IUD, injection, HRT or steroids. These change your cycle, so those months are left out of your averages.', pcos: 'Diagnosed PMOS (PCOS)', pcos_d: 'Your doctor sees this. We will not use your cycle gaps to judge menopause.', thyroid: 'Thyroid, endometriosis or fibroids', thyroid_d: 'Your doctor sees this when you share your diary.',
       hyst: 'Hysterectomy or ablation', hyst_d: 'There are no periods to count, so the diary stops counting cycles.', stopped: 'My periods have stopped', stopped_d: 'Home shows menopause care instead of a cycle count.', planning: 'Planning a baby', planning_d: 'Shows the guides for trying for a baby. Tell your doctor about any medicines you take.',
       tools: 'Tools', pattern: 'Pattern check', pattern_d: 'Your entries against patterns doctors look for', fertile: 'Fertile days estimate', fertile_d: 'Only for cycles that vary by 7 days or less', midlife: 'My midlife picture', midlife_d: 'Counts and the timeline doctors use', pregw: 'Pregnancy week by week', pregw_d: 'Counted from your scan date',
@@ -159,7 +161,7 @@
       rp_about: 'About me', rp_age: 'Age {n}', rp_preg: 'Pregnant: week {w}, due around {d}', rp_birth: 'Baby born on {d}', rp_periods: 'My last periods', rp_col_start: 'Started', rp_col_bleed: 'Days of bleeding', rp_col_gap: 'Days to the next', rp_heavy: 'heavy', rp_guess: 'date guessed', rp_t_row: 'bled {b} days, next period after {g} days',
       rp_gaps: 'Counted gaps in this table: average {a} days · shortest {s} · longest {l}', rp_sym: 'What I noted (last 90 days)', rp_days: '{n} days', rp_out: 'not counted', rp_t_bled: 'bled {n} days', rp_t_noend: 'end not logged', rp_t_next: 'next period after {n} days', rp_ci: 'Monthly check-ins', rp_tools: 'From my tools', rp_q: 'Questions I want to ask',
       rp_q_gap: 'My gaps between periods are often longer than 35 days. What could cause this, and which tests do I need?', rp_q_heavy: 'My periods are heavy. Should I have an Hb test?', rp_q_pain: 'My period pain stops my day. What can help?', rp_q_preg: 'Are my BP, sugar and Hb fine for this week of pregnancy?', rp_q_any: 'Is there anything here I should keep an eye on?',
-      rp_notes_sw: 'Add my notes from the last 30 days', rp_notes: 'My notes', rp_none: 'Nothing to show yet. Log your period and how you feel, and your report fills in.', rp_foot: 'From Sakhi, {d}. My own entries, not a diagnosis.', rp_send: 'Send on WhatsApp', rp_copy: 'Copy', rp_copied: 'Copied. Paste it in your chat with the doctor.', rp_copy_fail: 'Could not copy on this phone.',
+      rp_notes_sw: 'Add my notes from the last 30 days', rp_notes: 'My notes', rp_none: 'Nothing to show yet. Log your period and how you feel, and your report fills in.', rp_foot: 'From Sakhi, {d}. My own entries, not a diagnosis.', rp_send: 'Share', share_copied: 'Copied. Paste it in any app.', rp_copy: 'Copy', rp_copied: 'Copied. Paste it in your chat with the doctor.', rp_copy_fail: 'Could not copy on this phone.',
       bk_h: 'Move to a new phone', bk_entry_s: 'A backup code, locked with your PIN', bk_p: 'Sakhi keeps your diary only on this phone. To move it, make a backup code here, keep it safe, and enter it on the new phone with the same PIN.',
       bk_make_h: 'Make a backup code', bk_pin: 'Choose a PIN (4 to 6 numbers; 6 is safer)', bk_pin2: 'Type the PIN again', bk_make: 'Make the code', bk_pin_bad: 'Use 4 to 6 numbers, the same both times.', bk_code_h: 'Your backup code',
       bk_code_p: 'Copy it and keep it where only you can see it, like WhatsApp “Message yourself” or your notes. The code is locked with your PIN, but anyone who has it could try to guess a short PIN, so never share it. Sakhi can’t recover a lost PIN.', bk_copy: 'Copy the code', bk_copied: 'Copied. Keep it safe.',
@@ -187,8 +189,8 @@
       r_pain: 'Pain that stops your day is worth a doctor visit this month. Sudden severe pain on one side with a late period: call 112 now.',
       ring_period: 'Period', ring_usual: 'Usual gap {a}–{b} days', ring_likely: 'Likely next', ring_aria: 'Cycle day {n}. The usual gap is {a} to {b} days.',
       pp_ring: 'days since birth', pp_ring_1: 'day since birth', pp_week: 'Week {n} of 6', pp_aria: 'Day {n} of the first 6 weeks after the birth',
-      notif_sec: 'Reminders on this phone', notif_h: 'Phone notifications', notif_d: 'Your reminders, and a heads-up the day before your period may start. Discreet mode keeps the wording neutral.', notif_exact_p: 'Android may ring your reminders up to an hour late. Allow alarms and reminders for Sakhi so they come on time.', notif_exact_b: 'Allow on-time reminders', notif_test_btn: 'Send a test notification', notif_test: 'This is how Sakhi reminders look. You can turn them off on the Me page.', notif_test_sent: 'A test notification arrives in about 5 seconds.', notif_on: 'Notifications are on', notif_denied: 'Notifications are off for this app in your phone settings.', notif_period: 'Your period may start in the next few days. Keep a pad handy.',
-      bio_btn: 'Use fingerprint or phone lock', bio_title: 'Unlock Qura Sakhi', bio_title_d: 'Unlock My notes',
+      notif_sec: 'Reminders on this phone', notif_h: 'Phone notifications', notif_d: 'Your reminders, and a heads-up the day before your period may start. Discreet mode keeps the wording neutral.', notif_exact_p: 'Android may ring your reminders up to an hour late. Allow alarms and reminders for Sakhi so they come on time.', notif_refill: 'Open Sakhi so your reminders keep coming.', d_refill: 'Open the app so your reminders keep coming.', notif_batt_p: 'On some phones, battery saving stops reminders while Sakhi is closed. In Sakhi’s app settings, open Battery and choose “Unrestricted” or “No restrictions”.', notif_batt_b: 'Open Sakhi’s settings', notif_exact_b: 'Allow on-time reminders', notif_test_btn: 'Send a test notification', notif_test: 'This is how Sakhi reminders look. You can turn them off on the Me page.', notif_test_sent: 'A test notification arrives in about 5 seconds.', notif_on: 'Notifications are on', notif_denied: 'Notifications are off for this app in your phone settings.', notif_period: 'Your period may start in the next few days. Keep a pad handy.',
+      bio_btn: 'Use fingerprint', bio_sw: 'Fingerprint unlock', bio_sw_d: 'Your fingerprint opens Sakhi too. The phone’s own PIN never does.', bio_sw_shared: 'Off while the phone is shared: anyone whose fingerprint is saved on it could open Sakhi.', bio_title: 'Unlock Qura Sakhi', bio_title_d: 'Unlock My notes',
       demo_h: 'Demo', demo_p: 'Show the app as one of the sample women. Your settings stay; the sample entries replace what is on this phone.', demo_sure: 'This replaces the entries on this phone with the sample. To keep yours, make a backup code first (Me, then Move to a new phone).', demo_yes: 'Replace with the sample', demo_doc: "Doctor's view", demo_welcome: 'Clear the sample and start from the welcome screen', cal_a_spot: 'spotting', cal_a_range: 'likely period dates', bars_aria: 'Gaps between periods, in days: {list}'
     },
     hi: {
@@ -207,7 +209,7 @@
       no_contra: 'यह अंतर गर्भ रोकने का तरीक़ा नहीं है और कोई “safe days” नहीं दिखाता।', gap_mode_note: 'जब अंतर बहुत बदलते हैं, हम तारीख़ का अंदाज़ा नहीं देते, सिर्फ़ गिनती दिखाते हैं।', first_log: 'पिछला पीरियड जिस दिन शुरू हुआ, वह दर्ज करें। फिर Sakhi आपके चक्र का दिन, पीरियड के बीच का अंतर और अगला पीरियड कब आ सकता है, दिखाएगी।',
       last6: 'पिछले 6 अंतर (दिन)', band_note: 'छायादार पट्टी: आम अंतर, सबके लिए एक जैसी', trends: 'रुझान', period_started: 'पीरियड शुरू', ended: 'ख़त्म', spotting: 'स्पॉटिंग',
       checkin_t: 'चेक-इन', checkin_sub: '8 टैप, लगभग 1 मिनट। महीने में एक बार।', checkin_done: 'इस महीने हो गया। धन्यवाद।', start_b: 'शुरू करें', edit: 'बदलें',
-      safety: 'सुरक्षा गाइड', safety_sub: 'डॉक्टर को कब दिखाएँ। सबके लिए एक जैसी।', tell: 'किसी को बताएँ', tell_sub: '1 कार्यदिवस में जवाब।',
+      safety: 'सुरक्षा गाइड', safety_sub: 'डॉक्टर को कब दिखाएँ। सबके लिए एक जैसी।', tell: 'किसी को बताएँ', tell_sub: 'Qura की टीम को WhatsApp पर लिखें।',
       qura_h: 'Qura की डॉक्टर से बात करें', qura_p: 'BAMS डॉक्टर से 20 मिनट की मुफ़्त कॉल। अपनी डायरी साथ रखें; साझा करें तो वह देख सकती हैं।', qura_b: 'मुफ़्त कॉल बुक करें',
       doc_sees: 'अगर आप साझा करें तो आपकी Qura डॉक्टर अगली मुलाक़ात में यह देखेंगी। कुछ भी ज़रूरी हो तो 112 पर कॉल करें।',
       r6_h: 'पिछले पीरियड को 90+ दिन हो गए', r6_p: 'अगर गर्भ की संभावना है तो पहले घर पर test करें। फिर डॉक्टर को दिखाएँ। PMOS में नियमित पीरियड गर्भाशय की परत को सुरक्षित रखते हैं।',
@@ -220,11 +222,11 @@
       daily_h: 'आज कुछ और? (वैकल्पिक)', d_cramps: 'ऐंठन', d_headache: 'सिरदर्द', d_bloat: 'पेट फूलना', d_mood: 'मन उदास', d_tired: 'थकान', d_sleep: 'नींद ख़राब',
       r2: '8 दिन से ज़्यादा ब्लीडिंग, या हर 1–2 घंटे में pad भीगना: इसी हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन (खून की) जाँच माँगें; सरकारी अस्पताल में मुफ़्त है। साथ में चक्कर या साँस फूले तो आज ही डॉक्टर को दिखाएँ या 112 पर कॉल करें।',
       save: 'सेव करें', saved: 'दर्ज हो गया।', cancel: 'रद्द', delete_entry: 'यह entry हटाएँ',
-      cadence: 'Qura की डॉक्टर इलाज में शामिल मरीज़ों की डायरी हफ़्ते में एक बार पढ़ती हैं। यह live नहीं है। चक्कर के साथ भारी ब्लीडिंग, एक तरफ़ दर्द के साथ बेहोशी, या कोई emergency: अभी 112 पर कॉल करें। ख़ुद को नुक़सान के विचार: 14416 या 112।',
+      cadence: 'कॉल पर यह नोट अपनी डॉक्टर को दिखाएँ। चक्कर के साथ भारी ब्लीडिंग, एक तरफ़ दर्द के साथ बेहोशी, या कोई emergency: अभी 112 पर कॉल करें। ख़ुद को नुक़सान के विचार: 14416 या 112।',
       ci_h: 'चेक-इन', ci_p: 'इस महीने जो महसूस किया, टैप करें। लगभग 1 मिनट।', ci_hair: 'होंठ, ठुड्डी, छाती, पेट या पीठ पर मोटे काले बाल', ci_removal: 'हफ़्ते में एक या ज़्यादा बार चेहरे/शरीर के बाल हटाना', ci_acne: 'मुँहासे', ci_thin: 'सिर के बाल पतले होना',
       ci_neck: 'गर्दन या बगल में काले मखमली धब्बे', ci_heavy: 'भारी ब्लीडिंग या थक्के', ci_mood: 'ज़्यादातर दिन उदासी या घबराहट', ci_none: 'इनमें से कुछ नहीं', ci_hot: 'गर्मी के झोंके या रात में पसीना', hot_0: 'नहीं', hot_1: 'हल्के', hot_2: 'मध्यम', hot_3: 'रात में नींद खुली',
       ci_more: 'और (निजी देखभाल)', ci_disch: 'असामान्य सफ़ेद पानी', ci_itch: 'खुजली', ci_burn: 'पेशाब में जलन', ci_sexpain: 'संबंध के समय दर्द', ci_aftersex: 'संबंध के बाद ब्लीडिंग',
-      ci_note: 'डॉक्टर के लिए कुछ?', ci_note_ph: 'नोट लिखें (1 कार्यदिवस में एक व्यक्ति पढ़ेगा)', ci_save: 'चेक-इन सेव करें', ci_thanks: 'सेव हो गया। धन्यवाद। यहाँ कुछ भी score नहीं होता।',
+      ci_note: 'डॉक्टर के लिए कुछ?', ci_note_ph: 'नोट लिखें। यह इसी फ़ोन पर आपकी डायरी में रहता है।', ci_save: 'चेक-इन सेव करें', ci_thanks: 'सेव हो गया। धन्यवाद। यहाँ कुछ भी score नहीं होता।',
       learn_h: 'जानें', learn_p: 'छोटे, डॉक्टर-जाँचे जवाब। हिंदी या English में पढ़ें।', search: 'विषय खोजें', all: 'सब', loading: 'यह library लिखी जा रही है। थोड़ी देर में देखें।', read: 'पढ़ें',
       see_doctor: 'डॉक्टर को कब दिखाएँ', qura_can: 'Qura कैसे मदद कर सकता है', ask_qura: 'इस बारे में Qura की डॉक्टर से पूछें', sources: 'स्रोत', draft: 'डॉक्टर की समीक्षा के लिए draft', no_results: 'कुछ नहीं मिला। दूसरा शब्द आज़माएँ।',
       help_h: 'मदद और सुरक्षा', call_now: 'अभी 112 पर कॉल करें अगर', today_if: 'आज ही डॉक्टर को दिखाएँ अगर', weeks2: 'लगभग 2 हफ़्ते में स्त्री रोग विशेषज्ञ को दिखाएँ अगर', week_if: 'इसी हफ़्ते अगर', under18: '18 से कम', mood: 'मन', after35: '35 के बाद',
@@ -234,12 +236,14 @@
       s4a: '8 दिन से ज़्यादा ब्लीडिंग, ₹10 के सिक्के जितने थक्के, या कपड़ों तक निकलना', s4b: 'पीरियड का दर्द जो दिन रोक दे, या संबंध में दर्द: यह डायरी साथ ले जाएँ', s4c: 'सफ़ेद पानी का रंग या गंध बदली, खुजली, या पेशाब में जलन',
       s5a: '15 साल तक पीरियड नहीं, या 13 तक स्तन विकास नहीं: माता-पिता के साथ डॉक्टर को दिखाएँ', s5b: '18 से कम उम्र के लिए Childline 1098', s6a: 'दो हफ़्ते या ज़्यादा लगभग रोज़ मन उदास: Tele-MANAS 14416, मुफ़्त, कभी भी', s6b: 'ख़ुद को नुक़सान के विचार: अभी 14416 या 112 पर कॉल करें',
       helplines: 'हेल्पलाइन, मुफ़्त', copy: 'कॉपी', copied: 'कॉपी हुआ', same_for_all: 'सबके लिए एक जैसा। diagnosis नहीं। सरकारी और डॉक्टरी गाइडलाइन के आधार पर, स्रोतों के साथ।',
-      tell_h: 'किसी को बताएँ', tell_p: 'Qura में एक व्यक्ति इसे कार्यदिवसों में पढ़ता है और 1 कार्यदिवस (सोम–शनि) में जवाब देता है। यह live नहीं है। Emergency में 112। ख़ुद को नुक़सान के विचार में 14416 या 112।',
-      tell_about: 'किस बारे में है?', t_bleed: 'ब्लीडिंग', t_pain: 'दर्द', t_missed: 'पीरियड नहीं आया', t_mood: 'मन', t_other: 'कुछ और', tell_msg: 'आपका संदेश', tell_send: 'किसी को भेजें', tell_ok: 'मिल गया। संदर्भ', tell_ok2: 'असली app में एक coordinator इसे पढ़ेगा। इस prototype में यह आपके फ़ोन पर ही रहता है।',
+      tell_h: 'किसी को बताएँ', tell_p: 'Qura की टीम को WhatsApp पर लिखें। सोमवार से शनिवार, कामकाजी दिनों में एक व्यक्ति मैसेज पढ़ता है।', tell_urgent: 'यह emergency के लिए नहीं है। Emergency में 112। ख़ुद को नुक़सान के विचार में 14416 या 112।',
+      tell_wa: 'WhatsApp खोलें', tell_none: 'Qura की WhatsApp लाइन अभी Sakhi के इस वर्ज़न में नहीं है। आप फिर भी Qura की डॉक्टर के साथ मुफ़्त कॉल बुक कर सकती हैं।', help_wa_note: 'Sakhi सिर्फ़ एक नमस्ते के साथ WhatsApp खोलती है। आपकी डायरी से कुछ भी साथ नहीं जाता, और क्या लिखना है यह आप तय करती हैं।', help_wa_shared: 'इस फ़ोन को दूसरे भी इस्तेमाल करते हैं: यह चैट बाकी चैट की तरह WhatsApp में दिखेगी।',
+      help_wa_hello: 'नमस्ते Qura टीम, मैं Sakhi ऐप से लिख रही हूँ।', ask_wa_hello: 'नमस्ते Qura टीम, मुझे Qura की डॉक्टर के साथ मुफ़्त कॉल बुक करनी है। मैं Sakhi ऐप से लिख रही हूँ।',
+      t_bleed: 'ब्लीडिंग', t_pain: 'दर्द', t_missed: 'पीरियड नहीं आया', t_mood: 'मन', t_other: 'कुछ और',
       ask_h: 'Qura की डॉक्टर से बात करें', ask_p: 'Qura की डॉक्टर (BAMS) से 20 मिनट की मुफ़्त वीडियो या फ़ोन कॉल। वह test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। pill, HRT या letrozole जैसी हॉर्मोन दवाओं के लिए MBBS स्त्री रोग विशेषज्ञ चाहिए; Qura refer करता है।',
-      name: 'आपका नाम (वैकल्पिक)', phone: 'फ़ोन नंबर', best_time: 'कॉल का सही समय', morning: 'सुबह', afternoon: 'दोपहर', evening: 'शाम', topic: 'किस बारे में?', share_diary: 'कॉल से पहले मेरी डायरी डॉक्टर से साझा करें',
-      ask_send: 'मुफ़्त कॉल माँगें', ask_ok: 'अनुरोध सेव हुआ। संदर्भ', ask_ok2: 'Prototype: कुछ भेजा नहीं गया। असली app में Qura आपको कॉल करता है। सीधे भी बुक कर सकती हैं:', book_link: 'quranutrition.com पर बुक करें',
-      me_h: 'मैं', me_on_list: 'चालू: {list}', me_none_on: 'अभी कुछ भी चालू नहीं', me_health_h: 'मेरी सेहत की जानकारी', me_health_hd: 'मेरी जानकारी', me_health_private: 'इन्हें सिर्फ़ आप देख सकती हैं', me_data_h: 'मेरा डेटा', me_data_s: 'डॉक्टर के लिए रिपोर्ट, बैकअप और Sakhi क्या रखती है', me_help_s: '{n} छोटे टूर और पूरा टूर', me_about_h: 'Sakhi और आपकी निजता', me_version: 'वर्ज़न {v}', me_more: 'और', me_theme_h: 'हल्का या गहरा', me_dk_h: 'Sakhi इस फ़ोन पर क्या रखती है', me_dk_periods: 'दर्ज पीरियड', me_dk_days: 'जिन दिनों कुछ नोट किया', me_dk_checkins: 'महीने के चेक-इन', me_dk_reminders: 'रिमाइंडर', me_dk_tools: 'आपके इस्तेमाल किए दूसरे टूल', me_dk_entries: 'एंट्री', me_dk_raw: 'पूरा डेटा (raw) दिखाएँ', me_proto_shown: 'Prototype सेटिंग दिख रही हैं।', me_rem_web: 'रिमाइंडर Android वाले Sakhi ऐप में चलते हैं।', situation: 'मेरी स्थिति', sit_p2: 'ये आप ख़ुद तय करती हैं। डायरी आपकी entries से इन्हें कभी नहीं अनुमानती।', since: 'से', pregnant_d: 'गर्भ के दौरान हम पीरियड का अंदाज़ा नहीं लगाते। जो भी दवा लेती हैं, डॉक्टर को बताएँ।', bf_d: 'दूध पिलाते समय पीरियड अक्सर रुके रहते हैं, इसलिए जन्म के बाद एक साल हम अंदाज़ा नहीं लगाते।',
+      ask_how_h: 'बुक कैसे करें', ask_how_wa: 'Qura को WhatsApp पर मैसेज करें, वहाँ एक व्यक्ति आपकी कॉल का समय तय करेगा।', ask_how_web: 'Qura की वेबसाइट पर समय बुक करें। Sakhi सिर्फ़ पेज खोलती है: आपकी डायरी से कुछ भी साथ नहीं जाता।', ask_wa: 'WhatsApp पर बुक करें',
+      ask_q_h: 'कॉल के लिए आपके सवाल', ask_q_p: 'सिर्फ़ इसी फ़ोन पर सेव हैं। कॉल के समय इन्हें सामने रखें।', ask_q_clear: 'लिस्ट हटाएँ', book_link: 'quranutrition.com पर बुक करें',
+      me_h: 'मैं', err_screen_h: 'इस स्क्रीन में कुछ गड़बड़ हो गई', err_screen_p: 'आपकी डायरी सुरक्षित है। वापस जाकर फिर कोशिश करें।', me_on_list: 'चालू: {list}', me_none_on: 'अभी कुछ भी चालू नहीं', me_health_h: 'मेरी सेहत की जानकारी', me_health_hd: 'मेरी जानकारी', me_health_private: 'इन्हें सिर्फ़ आप देख सकती हैं', me_data_h: 'मेरा डेटा', me_data_s: 'डॉक्टर के लिए रिपोर्ट, बैकअप और Sakhi क्या रखती है', me_help_s: '{n} छोटे टूर और पूरा टूर', me_about_h: 'Sakhi और आपकी निजता', me_version: 'वर्ज़न {v}', me_more: 'और', me_theme_h: 'हल्का या गहरा', me_dk_h: 'Sakhi इस फ़ोन पर क्या रखती है', me_dk_periods: 'दर्ज पीरियड', me_dk_days: 'जिन दिनों कुछ नोट किया', me_dk_checkins: 'महीने के चेक-इन', me_dk_reminders: 'रिमाइंडर', me_dk_tools: 'आपके इस्तेमाल किए दूसरे टूल', me_dk_entries: 'एंट्री', me_dk_raw: 'पूरा डेटा (raw) दिखाएँ', me_proto_shown: 'Prototype सेटिंग दिख रही हैं।', me_rem_web: 'रिमाइंडर Android वाले Sakhi ऐप में चलते हैं।', situation: 'मेरी स्थिति', sit_p2: 'ये आप ख़ुद तय करती हैं। डायरी आपकी entries से इन्हें कभी नहीं अनुमानती।', since: 'से', pregnant_d: 'गर्भ के दौरान हम पीरियड का अंदाज़ा नहीं लगाते। जो भी दवा लेती हैं, डॉक्टर को बताएँ।', bf_d: 'दूध पिलाते समय पीरियड अक्सर रुके रहते हैं, इसलिए जन्म के बाद एक साल हम अंदाज़ा नहीं लगाते।',
       horm_d: 'Pill, हॉर्मोन वाला IUD, इंजेक्शन, HRT या steroids। इनसे चक्र बदलता है, इसलिए वे महीने औसत में नहीं गिने जाते।', pcos: 'PMOS (PCOS) बताया गया है', pcos_d: 'आपकी डॉक्टर यह देखेंगी। मेनोपॉज़ का अंदाज़ा हम पीरियड के अंतर से नहीं लगाएँगे।', thyroid: 'थायरॉइड, endometriosis या fibroids', thyroid_d: 'डायरी साझा करने पर आपकी डॉक्टर यह देखेंगी।',
       hyst: 'गर्भाशय निकाला गया या ablation', hyst_d: 'गिनने को पीरियड नहीं, इसलिए डायरी चक्र नहीं गिनती।', stopped: 'मेरे पीरियड बंद हो गए हैं', stopped_d: 'होम पर चक्र की गिनती की जगह मेनोपॉज़ की देखभाल दिखेगी।', planning: 'बच्चे की योजना', planning_d: 'बच्चे की कोशिश वाली गाइड दिखेंगी। जो भी दवा लेती हैं, डॉक्टर को बताएँ।',
       tools: 'टूल', pattern: 'पैटर्न जाँच', pattern_d: 'आपकी entries, डॉक्टरों के देखे पैटर्न के सामने', fertile: 'Fertile दिनों का अनुमान', fertile_d: 'सिर्फ़ उन चक्रों के लिए जो 7 दिन या कम बदलते हैं', midlife: 'मेरी midlife तस्वीर', midlife_d: 'गिनती और डॉक्टरों की timeline', pregw: 'गर्भ, हफ़्ता दर हफ़्ता', pregw_d: 'scan की तारीख़ से गिना',
@@ -334,7 +338,7 @@
       rp_about: 'मेरे बारे में', rp_age: 'उम्र {n}', rp_preg: 'गर्भवती: {w}वाँ हफ़्ता, डिलीवरी लगभग {d}', rp_birth: 'बच्चे का जन्म {d}', rp_periods: 'मेरे पिछले पीरियड', rp_col_start: 'शुरू', rp_col_bleed: 'ब्लीडिंग के दिन', rp_col_gap: 'अगले तक दिन', rp_heavy: 'भारी', rp_guess: 'अंदाज़े की तारीख़', rp_t_row: '{b} दिन ब्लीडिंग, {g} दिन बाद अगला पीरियड',
       rp_gaps: 'इस तालिका के गिने गए अंतर: औसत {a} दिन · सबसे कम {s} · सबसे ज़्यादा {l}', rp_sym: 'मैंने क्या नोट किया (पिछले 90 दिन)', rp_days: '{n} दिन', rp_out: 'नहीं गिना', rp_t_bled: '{n} दिन ब्लीडिंग', rp_t_noend: 'ख़त्म होने की तारीख़ नहीं लिखी', rp_t_next: '{n} दिन बाद अगला पीरियड', rp_ci: 'महीने के चेक-इन', rp_tools: 'मेरे टूल्स से', rp_q: 'मेरे सवाल',
       rp_q_gap: 'मेरे पीरियड के बीच का अंतर अक्सर 35 दिन से ज़्यादा होता है। इसकी वजह क्या हो सकती है, और मुझे कौन सी जाँचें करानी चाहिए?', rp_q_heavy: 'मेरे पीरियड भारी होते हैं। क्या मुझे Hb जाँच करानी चाहिए?', rp_q_pain: 'पीरियड का दर्द मेरा दिन रोक देता है। किससे आराम मिलेगा?', rp_q_preg: 'क्या प्रेग्नेंसी के इस हफ़्ते के हिसाब से मेरा BP, sugar और Hb ठीक है?', rp_q_any: 'क्या इसमें कुछ है जिस पर मुझे ध्यान रखना चाहिए?',
-      rp_notes_sw: 'पिछले 30 दिन के मेरे नोट्स जोड़ें', rp_notes: 'मेरे नोट्स', rp_none: 'अभी दिखाने को कुछ नहीं। पीरियड और कैसा लगता है, दर्ज करें, रिपोर्ट अपने आप भरेगी।', rp_foot: 'Sakhi से, {d}। मेरी अपनी एंट्री, यह जाँच का नतीजा नहीं है।', rp_send: 'WhatsApp पर भेजें', rp_copy: 'कॉपी करें', rp_copied: 'कॉपी हो गया। डॉक्टर वाली चैट में पेस्ट करें।', rp_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
+      rp_notes_sw: 'पिछले 30 दिन के मेरे नोट्स जोड़ें', rp_notes: 'मेरे नोट्स', rp_none: 'अभी दिखाने को कुछ नहीं। पीरियड और कैसा लगता है, दर्ज करें, रिपोर्ट अपने आप भरेगी।', rp_foot: 'Sakhi से, {d}। मेरी अपनी एंट्री, यह जाँच का नतीजा नहीं है।', rp_send: 'शेयर करें', share_copied: 'कॉपी हो गया। किसी भी ऐप में पेस्ट करें।', rp_copy: 'कॉपी करें', rp_copied: 'कॉपी हो गया। डॉक्टर वाली चैट में पेस्ट करें।', rp_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
       bk_h: 'नए फ़ोन पर ले जाएँ', bk_entry_s: 'आपके PIN से बंद बैकअप कोड', bk_p: 'Sakhi आपकी डायरी सिर्फ़ इसी फ़ोन पर रखती है। इसे ले जाने के लिए यहाँ बैकअप कोड बनाएँ, सँभालकर रखें, और नए फ़ोन पर उसी PIN के साथ डालें।',
       bk_make_h: 'बैकअप कोड बनाएँ', bk_pin: 'एक PIN चुनें (4 से 6 अंक; 6 ज़्यादा सुरक्षित है)', bk_pin2: 'PIN फिर से लिखें', bk_make: 'कोड बनाएँ', bk_pin_bad: '4 से 6 अंक, दोनों बार एक जैसे।', bk_code_h: 'आपका बैकअप कोड',
       bk_code_p: 'इसे कॉपी करें और ऐसी जगह रखें जहाँ सिर्फ़ आप देख सकें, जैसे WhatsApp पर “ख़ुद को मैसेज” में या अपने नोट्स में। कोड आपके PIN से बंद है, पर जिसके पास कोड हो वह छोटे PIN का अंदाज़ा लगाकर उसे खोलने की कोशिश कर सकता है, इसलिए इसे किसी से शेयर न करें। भूला हुआ PIN Sakhi वापस नहीं ला सकती।', bk_copy: 'कोड कॉपी करें', bk_copied: 'कॉपी हो गया। सँभालकर रखें।',
@@ -362,8 +366,8 @@
       r_pain: 'जो दर्द आपका दिन रोक दे, उसके लिए इसी महीने डॉक्टर को दिखाएँ। देर से आए पीरियड के साथ एक तरफ़ अचानक तेज़ दर्द हो: अभी 112 पर कॉल करें।',
       ring_period: 'पीरियड', ring_usual: 'आम अंतर {a}–{b} दिन', ring_likely: 'अगला संभावित', ring_aria: 'चक्र का दिन {n}। आम अंतर {a} से {b} दिन होता है।',
       pp_ring: 'दिन जन्म के बाद', pp_ring_1: 'दिन जन्म के बाद', pp_week: '6 में से {n}वाँ हफ़्ता', pp_aria: 'डिलीवरी के बाद पहले 6 हफ़्तों का दिन {n}',
-      notif_sec: 'इस फ़ोन पर रिमाइंडर', notif_h: 'फ़ोन नोटिफ़िकेशन', notif_d: 'आपके रिमाइंडर, और पीरियड आने से एक दिन पहले सूचना। गुप्त mode में शब्द सामान्य रहते हैं।', notif_exact_p: 'Android आपके रिमाइंडर एक घंटे तक देर से बजा सकता है। समय पर बजें, इसके लिए Sakhi को अलार्म और रिमाइंडर की अनुमति दें।', notif_exact_b: 'समय पर रिमाइंडर की अनुमति दें', notif_test_btn: 'टेस्ट नोटिफ़िकेशन भेजें', notif_test: 'Sakhi के रिमाइंडर ऐसे दिखते हैं। “मैं” पन्ने पर इन्हें बंद कर सकती हैं।', notif_test_sent: 'लगभग 5 सेकंड में एक टेस्ट नोटिफ़िकेशन आएगा।', notif_on: 'नोटिफ़िकेशन चालू हैं', notif_denied: 'फ़ोन की settings में इस ऐप के नोटिफ़िकेशन बंद हैं।', notif_period: 'अगले कुछ दिनों में पीरियड शुरू हो सकता है। pad पास रखें।',
-      bio_btn: 'फ़िंगरप्रिंट या फ़ोन लॉक से खोलें', bio_title: 'Qura Sakhi खोलें', bio_title_d: 'मेरे नोट्स खोलें',
+      notif_sec: 'इस फ़ोन पर रिमाइंडर', notif_h: 'फ़ोन नोटिफ़िकेशन', notif_d: 'आपके रिमाइंडर, और पीरियड आने से एक दिन पहले सूचना। गुप्त mode में शब्द सामान्य रहते हैं।', notif_exact_p: 'Android आपके रिमाइंडर एक घंटे तक देर से बजा सकता है। समय पर बजें, इसके लिए Sakhi को अलार्म और रिमाइंडर की अनुमति दें।', notif_refill: 'Sakhi खोलें, ताकि आपके रिमाइंडर आते रहें।', d_refill: 'ऐप खोलें, ताकि आपके रिमाइंडर आते रहें।', notif_batt_p: 'कुछ फ़ोन में बैटरी बचाने वाली सेटिंग, Sakhi बंद होने पर रिमाइंडर रोक देती है। Sakhi की ऐप सेटिंग में Battery खोलें और “Unrestricted” या “No restrictions” चुनें।', notif_batt_b: 'Sakhi की सेटिंग खोलें', notif_exact_b: 'समय पर रिमाइंडर की अनुमति दें', notif_test_btn: 'टेस्ट नोटिफ़िकेशन भेजें', notif_test: 'Sakhi के रिमाइंडर ऐसे दिखते हैं। “मैं” पन्ने पर इन्हें बंद कर सकती हैं।', notif_test_sent: 'लगभग 5 सेकंड में एक टेस्ट नोटिफ़िकेशन आएगा।', notif_on: 'नोटिफ़िकेशन चालू हैं', notif_denied: 'फ़ोन की settings में इस ऐप के नोटिफ़िकेशन बंद हैं।', notif_period: 'अगले कुछ दिनों में पीरियड शुरू हो सकता है। pad पास रखें।',
+      bio_btn: 'फ़िंगरप्रिंट से खोलें', bio_sw: 'फ़िंगरप्रिंट से खोलना', bio_sw_d: 'आपका फ़िंगरप्रिंट भी Sakhi खोलेगा। फ़ोन का अपना PIN कभी नहीं।', bio_sw_shared: 'फ़ोन साझा है, इसलिए यह बंद है: जिसका भी फ़िंगरप्रिंट इस फ़ोन में सेव है, वह Sakhi खोल सकता है।', bio_title: 'Qura Sakhi खोलें', bio_title_d: 'मेरे नोट्स खोलें',
       demo_h: 'Demo', demo_p: 'ऐप को किसी नमूना महिला की तरह दिखाएँ। आपकी settings बनी रहेंगी; इस फ़ोन की entries की जगह नमूने की entries आ जाएँगी।', demo_sure: 'इससे इस फ़ोन की आपकी entries की जगह sample आ जाएगा। अपनी entries रखनी हैं, तो पहले backup code बना लें (“मैं”, फिर “नए फ़ोन पर ले जाएँ”)।', demo_yes: 'sample से बदलें', demo_doc: 'डॉक्टर का view', demo_welcome: 'नमूना हटाकर welcome स्क्रीन से शुरू करें', cal_a_spot: 'स्पॉटिंग', cal_a_range: 'पीरियड की संभावित तारीख़ें', bars_aria: 'पीरियड के बीच के अंतर, दिनों में: {list}'
     }
   };
@@ -417,7 +421,11 @@
   const KEY = 'qura-saathi-v1';
   const defaults = () => ({ lang: 'en', stage: 'welcome', consent: { c1: null, c2: null, c4: null }, dob: null, situation: {}, events: [], daily: {}, notes: {}, checkins: {}, strips: {}, settings: { discreet: false, shared: false, proto: false, pinHash: null, notify: false, theme: 'light', look: 0, toursAuto: true, tourVoice: false }, goals: [], requests: [], leads: [], askTopics: [], sample: null, created: toISO(today()), mods: {}, reminders: [], tours: {}, tourDay: null, langChosen: false, prompts: {} });
   let state = defaults();
-  const load = () => { try { const s = localStorage.getItem(KEY); if (s) { const p = JSON.parse(s); state = Object.assign(defaults(), p); state.settings = Object.assign(defaults().settings, state.settings || {}); } } catch (e) { state = defaults(); } };
+  /* A diary from an older version or a damaged backup must never break a screen (22 Oct audit, item 12): daily entries are
+     lists of tags, and every logged day needs a date and a type. */
+  function cleanDaily(d) { const o = {}; Object.keys(d && typeof d === 'object' ? d : {}).forEach((k) => { const v = d[k]; const list = Array.isArray(v) ? v : (v && typeof v === 'object' ? [].concat.apply([], Object.values(v).filter(Array.isArray)) : []); const tags = list.filter((x) => typeof x === 'string'); if (tags.length) o[k] = tags; }); return o; }
+  function tidyState() { state.daily = cleanDaily(state.daily); state.events = (Array.isArray(state.events) ? state.events : []).filter((e) => e && typeof e.d === 'string' && typeof e.t === 'string'); }
+  const load = () => { try { const s = localStorage.getItem(KEY); if (s) { const p = JSON.parse(s); state = Object.assign(defaults(), p); state.settings = Object.assign(defaults().settings, state.settings || {}); tidyState(); } } catch (e) { state = defaults(); } };
   let holdSave = false;
   const save = () => { if (holdSave || mem.teen) return; if (sheetUp()) sheetDirty = true; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage may be blocked; the page still works */ } syncNotifications(); };
   let CONTENT = { groups: [] };
@@ -640,8 +648,10 @@
   const data = (id) => { state.mods = state.mods || {}; return state.mods[id] || (state.mods[id] = {}); };
   const canSave = () => state.stage === 'app';
   const needDiary = () => '<div class="card warn"><h3>' + esc(t('need_diary_h')) + '</h3><p class="small">' + esc(t('need_diary_p')) + '</p><button type="button" class="btn primary sm" data-start-diary="1">' + esc(t('start')) + '</button></div>';
-  const ask = (topic) => { state.askTopics = topic ? [topic] : []; save(); setHash('ask'); };
-  const sheet = (inner, onWire) => { if (tour && tour.def.moment) clearTour(); if (!sheetUp()) sheetDirty = false; const root = $('#sheet-root'); root.innerHTML = '<div class="sheet-bg" id="sheet-bg"><div class="sheet" role="dialog"><div class="handle"></div>' + inner + '</div></div>'; $('#sheet-bg', root).addEventListener('click', (e) => { if (e.target.id === 'sheet-bg') closeSheet(); }); wire(root); if (onWire) onWire(root.querySelector('.sheet')); };
+  /* "Ask a Qura doctor about this": the topic joins her list of questions for the call, kept on this phone (renderAsk) */
+  const ask = (topic) => { if (topic) { state.askTopics = (state.askTopics || []).filter((x) => x !== topic).concat([topic]).slice(-8); save(); } setHash('ask'); };
+  /* Every sheet gets its own speaker (the top bar's sits behind the backdrop), unless it has a Listen button of its own. */
+  const sheet = (inner, onWire) => { if (tour && tour.def.moment) clearTour(); if (!sheetUp()) sheetDirty = false; const root = $('#sheet-root'); const say = api.readAloud && inner.indexOf('ans-listen') < 0 ? '<button type="button" class="iconbtn sheet-say" id="sheet-say" aria-label="' + esc(t('tour_listen')) + '">' + I.speaker + '</button>' : ''; root.innerHTML = '<div class="sheet-bg" id="sheet-bg"><div class="sheet" role="dialog"><div class="handle"></div>' + say + inner + '</div></div>'; $('#sheet-bg', root).addEventListener('click', (e) => { if (e.target.id === 'sheet-bg') closeSheet(); }); const sb = $('#sheet-say', root); if (sb) sb.addEventListener('click', () => api.readAloud(root.querySelector('.sheet'))); wire(root); if (onWire) onWire(root.querySelector('.sheet')); };
   const closeSheet = (quiet) => { const was = sheetUp(); $('#sheet-root').innerHTML = ''; if (tour && tour.def.moment) clearTour(); if (was && sheetDirty && quiet !== true) { sheetDirty = false; render(); } sheetDirty = false; };
   const icon = (k) => (k && k.indexOf('<svg') === 0 ? k : (I[k] || I.leaf));
 
@@ -693,16 +703,20 @@
   /* When the diary changes hands (Delete everything, a sample woman, a restored backup) every screen forgets what the last
      person typed: the core's own memory, and each module that registered with onOwnerChange. */
   const ownerFns = []; let ownerSeen = null;
+  /* With app lock, shared-phone or discreet mode on, the screen can't be captured: no screenshot, no screen recording, no
+     picture in the recent-apps list (FLAG_SECURE, audit fix 2). Otherwise she can still screenshot her own report. */
+  let secureNow = null;
+  const secureSync = () => { const B = window.SakhiAndroid; if (!B || !B.setSecure) return; const on = !!(state.settings.pinHash || state.settings.shared || state.settings.discreet); if (on !== secureNow) { secureNow = on; safe(() => B.setSecure(on)); } };
   function render() {
     if (ownerSeen !== state) { const had = ownerSeen !== null; ownerSeen = state; if (had) { const lockedNow = mem.locked; mem = freshMem(); mem.locked = lockedNow; ownerFns.forEach((f) => safe(f)); } }
     const lm = langMeta(state.lang); const script = lm.script || 'latn';
     document.body.classList.toggle('hi', script !== 'latn'); document.body.dataset.script = script; document.documentElement.lang = state.lang;
     document.body.classList.toggle('discreet', !!state.settings.discreet);
-    applyTheme();
+    applyTheme(); secureSync();
     /* A link ending in #demo opens the sample women (for investor demos), wherever she is. */
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
-    if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; if (curRoute === 'ask') mem.askDraft = null; }   /* a sheet never follows her to another screen */
+    if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; }   /* a sheet never follows her to another screen */
     const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced, chain: tour.chain } : null; renderFab(null); clearTour();
     renderTopbar(); renderTabbar();
     const v = view(); v.innerHTML = '';
@@ -720,7 +734,7 @@
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
     else if (map[r]) map[r](v);
     else if (r.startsWith('topic-') && SECTIONS.indexOf(r.slice(6)) >= 0) renderTopic(v, r.slice(6));
-    else { const mr = modRoute(r); if (mr) { const ok = safe(() => { mr.fn(v); return true; }, false); if (!ok) v.innerHTML = '<div class="card warn"><p>This screen hit an error in the prototype.</p><button type="button" class="btn sm" data-go="care">' + esc(t('care')) + '</button></div>'; wire(v); } else renderHome(v); }
+    else { const mr = modRoute(r); if (mr) { const ok = safe(() => { mr.fn(v); return true; }, false); if (!ok) v.innerHTML = '<div class="card warn" role="alert" data-crash="1"><h3>' + esc(t('err_screen_h')) + '</h3><p>' + esc(t('err_screen_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm" data-go="care">' + esc(t('care')) + '</button></div></div>'; wire(v); } else renderHome(v); }
     runHook('afterRender', [v, r, api]);
     safe(() => tidyView(v, r));
     const y = r === curRoute ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0);
@@ -892,7 +906,7 @@
       $('#wr-no', sh).addEventListener('click', () => closeSheet(true));
       $('#wr-go', sh).addEventListener('click', async () => {
         let st; try { st = await readBackup($('#wr-code', sh).value, $('#wr-pin', sh).value); } catch (e) { $('#wr-out', sh).innerHTML = '<div class="flag">' + esc(t('bk_wrong')) + '</div>'; return; }
-        const lang = state.lang; state = Object.assign(defaults(), st); state.settings = Object.assign(defaults().settings, st.settings || {}); state.sample = null; state.langChosen = true; if (!state.lang) state.lang = lang;
+        const lang = state.lang; state = Object.assign(defaults(), st); state.settings = Object.assign(defaults().settings, st.settings || {}); tidyState(); state.sample = null; state.langChosen = true; if (!state.lang) state.lang = lang;
         save(); closeSheet(true); toast(t('bk_done')); setHash('home'); render();
       });
     });
@@ -1615,9 +1629,20 @@
     if (!urgent) tourMoment('answer');   /* never on danger signs */
   }
   /* SOS: every emergency number one tap away (the phone's dialer opens; she presses call). */
+  /* Text she chooses to send (the doctor report, a family explainer, a quiz card) goes through the phone's own share sheet,
+     where she picks the app and the person. Never a wa.me link: that puts the words in a web address that passes through
+     Meta's servers (audit fix 8). On the web: navigator.share where the browser has it, otherwise copy. */
+  const shareText = (title, text) => {
+    const B = window.SakhiAndroid; const ti = String(title || ''), tx = String(text || '');
+    if (B && B.share && safe(() => B.share(ti, tx), false)) return;
+    const copy = () => { try { navigator.clipboard.writeText(tx).then(() => toast(t('share_copied')), () => toast(t('rp_copy_fail'))); } catch (e) { toast(t('rp_copy_fail')); } };
+    if (navigator.share) navigator.share({ title: ti, text: tx }).catch((e) => { if (!e || e.name !== 'AbortError') copy(); }); else copy();
+  };
   const copyNum = (n, el) => { const done = () => toast(t('copied') + ' ' + n); try { navigator.clipboard.writeText(n).then(done, () => { const r = document.createRange(); r.selectNodeContents(el); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }); } catch (e) { toast(n); } };
+  /* a helpline's label in her language: the extra languages' own labels (mods/lang.js), else Hindi for Marathi, else English */
+  const hlLabel = (h) => { if (state.lang === 'en') return h[1]; if (state.lang === 'hi') return h[2]; const own = STR[state.lang] && STR[state.lang]['lang_hl_' + h[0]]; return own || (langChain().indexOf('hi') >= 0 ? h[2] : h[1]); };
   function openSOS() {
-    sheet('<h2>' + esc(t('sos_h')) + '</h2><p class="small">' + esc(t('sos_p')) + '</p><div class="list">' + HELPLINES.map((h) => '<div class="sos-row"><div class="sos-n num">' + h[0] + '</div><div class="sos-w">' + esc(state.lang === 'hi' ? h[2] : h[1]) + '</div><a class="btn sm sos-call" href="tel:' + h[0] + '">' + esc(t('call_b')) + '</a><button type="button" class="btn sm" data-copy="' + h[0] + '">' + esc(t('copy')) + '</button></div>').join('') + '</div><button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>', (sh) => {
+    sheet('<h2>' + esc(t('sos_h')) + '</h2><p class="small">' + esc(t('sos_p')) + '</p><div class="list">' + HELPLINES.map((h) => '<div class="sos-row"><div class="sos-n num">' + h[0] + '</div><div class="sos-w">' + esc(hlLabel(h)) + '</div><a class="btn sm sos-call" href="tel:' + h[0] + '">' + esc(t('call_b')) + '</a><button type="button" class="btn sm" data-copy="' + h[0] + '">' + esc(t('copy')) + '</button></div>').join('') + '</div><button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>', (sh) => {
       sh.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copyNum(b.dataset.copy, b.parentElement.querySelector('.sos-n'))));
     });
   }
@@ -2058,9 +2083,10 @@
       (r.any ? r.parts.map(sec).join('') : '<div class="card soft"><p>' + esc(t('rp_none')) + '</p></div>') +
       '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('rp_notes_sw')) + '</strong></span><input type="checkbox" id="rp-notes" ' + (mem.rpNotes ? 'checked' : '') + '></label></div>' +
       '<p class="footnote">' + esc(tf('rp_foot', { d: fmtD(today(), { day: 'numeric', month: 'short', year: 'numeric' }) })) + '</p>' +
-      (r.any ? '<div class="grid2"><a class="btn" id="rp-send" href="https://wa.me/?text=' + encodeURIComponent(txt) + '" target="_blank" rel="noopener">' + I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('rp_send')) + '</a><button type="button" class="btn" id="rp-copy">' + esc(t('rp_copy')) + '</button></div>' : '');
+      (r.any ? '<div class="grid2"><button type="button" class="btn" id="rp-send">' + I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('rp_send')) + '</button><button type="button" class="btn" id="rp-copy">' + esc(t('rp_copy')) + '</button></div>' : '');
     wire(v);
     $('#rp-notes', v).addEventListener('change', (e) => { mem.rpNotes = e.target.checked; render(); });
+    const sd = $('#rp-send', v); if (sd) sd.addEventListener('click', () => shareText(t('rp_h'), txt));
     const cp = $('#rp-copy', v); if (cp) cp.addEventListener('click', () => { try { navigator.clipboard.writeText(txt).then(() => toast(t('rp_copied')), () => toast(t('rp_copy_fail'))); } catch (e) { toast(t('rp_copy_fail')); } });
   }
 
@@ -2119,7 +2145,7 @@
       try { st = await readBackup($('#bk-code', v).value, $('#bk-rpin', v).value); } catch (e) { out.innerHTML = '<div class="flag">' + esc(t('bk_wrong')) + '</div>'; return; }
       out.innerHTML = '<div class="card warn"><p style="color:var(--fg)">' + esc(t('bk_sure')) + '</p><div class="grid2"><button type="button" class="btn" id="bk-no">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="bk-yes">' + esc(t('bk_yes')) + '</button></div></div>';
       $('#bk-no', out).addEventListener('click', () => { out.innerHTML = ''; });
-      $('#bk-yes', out).addEventListener('click', () => { state = Object.assign(defaults(), st); state.settings = Object.assign(defaults().settings, st.settings || {}); state.sample = null; save(); toast(t('bk_done')); setHash('home'); });
+      $('#bk-yes', out).addEventListener('click', () => { state = Object.assign(defaults(), st); state.settings = Object.assign(defaults().settings, st.settings || {}); tidyState(); state.sample = null; save(); toast(t('bk_done')); setHash('home'); });
     });
   }
 
@@ -2199,7 +2225,8 @@
   }
 
   /* ---------- learn ---------- */
-  const L = (a, k) => a[k + '_' + state.lang] || a[k + '_en'] || '';
+  /* an article field in her language, else down her language's chain (Marathi falls back to Hindi, then English), like the rest of the UI */
+  const L = (a, k) => { const ch = langChain(); for (let i = 0; i < ch.length; i++) { const v = a[k + '_' + ch[i]]; if (v) return v; } return ''; };
   function renderLearn(v) {
     const groups = CONTENT.groups || []; const q = (mem.learnQ || '').trim(); let body;
     if (!groups.length) body = '<div class="card"><p>' + esc(t('loading')) + '</p></div>';
@@ -2223,7 +2250,7 @@
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
       '<button type="button" class="btn primary block" id="art-ask">' + esc(t('ask_qura')) + '</button>' +
       relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
-    wire(v); $('#art-ask', v).addEventListener('click', () => { state.askTopics = [L(a, 'title')]; save(); setHash('ask'); });
+    wire(v); $('#art-ask', v).addEventListener('click', () => ask(L(a, 'title')));
     v.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
     /* Nine seconds on a guide counts as reading it. */
     clearTimeout(readTm); readTm = setTimeout(() => { if (route() === 'a-' + key) emit('read', { key: key }); }, 9000);
@@ -2237,29 +2264,42 @@
     v.innerHTML = '<h1>' + esc(t('help_h')) + '</h1><p class="small">' + esc(t('same_for_all')) + '</p>' +
       '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
       sec(t('call_now'), ['s1a', 's1b', 's1c'], 'dark urgent').replace(/<\/div>$/, '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a', 's5b']) + sec(t('mood'), ['s6a', 's6b']) +
-      (state.stage === 'app' ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + tourMenuHtml();
+      (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
+      (state.stage === 'app' && waNum() && !mem.teen ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + tourMenuHtml();
     wire(v); wireTourMenu(v); const so = $('#sos-btn', v); if (so) so.addEventListener('click', openSOS); v.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => { const n = b.dataset.copy; const done = () => toast(t('copied') + ' ' + n); try { navigator.clipboard.writeText(n).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.parentElement.querySelector('.n')); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }); } catch (e) { toast(n); } }));
   }
+  /* Help that reaches a person (audit fix 1a; Mohit, 22 Oct: "WhatsApp only"). Until the doctor hand-off (SERVER_SPEC 10.1)
+     Sakhi sends nothing for her: these screens open WhatsApp to Qura's team (CFG.helpWa, set when the APK is built) with a
+     plain hello in her language. Nothing about her health goes into the link, which passes through Meta. Without a number
+     the doctor screen offers Qura's booking page, and "Tell a person" is hidden. */
+  const waNum = () => (/^91[6-9]\d{9}$/.test(String(CFG.helpWa || '')) ? String(CFG.helpWa) : '');
+  const waLink = (key) => 'https://wa.me/' + waNum() + '?text=' + encodeURIComponent(t(key));
+  const waNote = () => '<p class="small">' + esc(t('help_wa_note')) + (state.settings.shared || state.settings.discreet ? ' ' + esc(t('help_wa_shared')) : '') + '</p>';
+  /* She opened WhatsApp or the booking page: a dated mark on this phone (the "brave" badge counts these), nothing else */
+  const askTapped = (via) => { state.leads.push({ d: toISO(today()), via: via }); save(); emit('ask', {}); };
   function renderTell(v) {
-    const d = { about: 't_bleed', msg: '' };
-    v.innerHTML = '<div class="row">' + backBtn('help') + '<h1 style="font-size:24px">' + esc(t('tell_h')) + '</h1></div><div class="card warn"><p class="small" style="color:var(--fg)">' + esc(t('tell_p')) + '</p></div><div class="card"><label>' + esc(t('tell_about')) + '</label><div class="chips">' + ['t_bleed', 't_pain', 't_missed', 't_mood', 't_other'].map((k) => '<button type="button" class="chip ' + (d.about === k ? 'on' : '') + '" data-about="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div><label for="tell-msg">' + esc(t('tell_msg')) + '</label><textarea id="tell-msg"></textarea><button type="button" class="btn primary block" id="tell-send">' + esc(t('tell_send')) + '</button></div><div id="tell-out"></div>';
-    wire(v); v.querySelectorAll('[data-about]').forEach((b) => b.addEventListener('click', () => { d.about = b.dataset.about; v.querySelectorAll('[data-about]').forEach((x) => x.classList.toggle('on', x === b)); }));
-    $('#tell-send', v).addEventListener('click', () => { const ref = 'QS-' + Math.floor(1000 + Math.random() * 9000); state.requests.push({ kind: 'tell', about: d.about, text: $('#tell-msg', v).value, d: toISO(today()), ref: ref }); save(); $('#tell-out', v).innerHTML = '<div class="card ok"><p><strong>' + esc(t('tell_ok')) + ' ' + ref + '</strong></p><p class="small" style="color:var(--ok)">' + esc(t('tell_ok2')) + '</p></div>'; });
+    if (mem.teen) { renderAsk(v); return; }
+    const wa = waNum();
+    v.innerHTML = '<div class="row">' + backBtn('help') + '<h1 style="font-size:24px">' + esc(t('tell_h')) + '</h1></div>' +
+      (wa ? '<div class="card"><p>' + esc(t('tell_p')) + '</p><a class="btn primary block" id="tell-wa" href="' + esc(waLink('help_wa_hello')) + '" target="_blank" rel="noopener">' + esc(t('tell_wa')) + '</a>' + waNote() + '</div>'
+        : '<div class="card"><p>' + esc(t('tell_none')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button></div>') +
+      '<div class="card warn"><p class="small" style="color:var(--fg)">' + esc(t('tell_urgent')) + '</p><button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>';
+    wire(v); $('#sos-btn', v).addEventListener('click', openSOS);
+    const a = $('#tell-wa', v); if (a) a.addEventListener('click', () => askTapped('whatsapp'));
   }
   function renderAsk(v) {
     if (mem.teen) { v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_teen_h')) + '</h1></div><div class="card"><p>' + esc(t('ask_teen_p')) + '</p><div class="helpline"><div style="min-width:0"><div class="n num">1098</div><div class="what">Childline</div></div></div></div><div class="list"><button type="button" class="item" data-go="help"><span class="body"><strong>' + esc(t('safety')) + '</strong></span><span class="chev">' + I.chev + '</span></button>' + (modRoute('teen') ? '<button type="button" class="item" data-go="teen"><span class="body"><strong>' + esc(t('teen_u18')) + '</strong></span><span class="chev">' + I.chev + '</span></button>' : '') + '</div>'; wire(v); return; }
-    const dr = mem.askDraft || (mem.askDraft = { name: (signedIn() && acct.name) || '', phone: signedIn() ? natPhone(acct.phone) : '', topic: (state.askTopics || []).join(', '), time: 'morning' });
-    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t('ask_p')) + '</p><form class="card" id="ask-form"><label for="ask-name">' + esc(t('name')) + '</label><input id="ask-name" value="' + esc(dr.name) + '"><label for="ask-phone">' + esc(t('phone')) + '</label><input id="ask-phone" inputmode="tel" required value="' + esc(dr.phone) + '"><label>' + esc(t('best_time')) + '</label><div class="grid3">' + ['morning', 'afternoon', 'evening'].map((k) => '<button type="button" class="btn sm ' + (dr.time === k ? 'on' : '') + '" data-time="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div><label for="ask-topic">' + esc(t('topic')) + '</label><input id="ask-topic" value="' + esc(dr.topic) + '"><button type="submit" class="btn primary block">' + esc(t('ask_send')) + '</button></form><div id="ask-out"></div>';
-    wire(v); let time = dr.time; v.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('click', () => { time = dr.time = b.dataset.time; v.querySelectorAll('[data-time]').forEach((x) => x.classList.toggle('on', x === b)); }));
-    [['ask-name', 'name'], ['ask-phone', 'phone'], ['ask-topic', 'topic']].forEach((x) => { const el = $('#' + x[0], v); el.addEventListener('input', () => { dr[x[1]] = el.value; }); });
-    /* Booking a call never depends on sharing. Before anything would leave the phone she sees exactly what, and says yes separately. */
-    const sendAsk = (lead, share) => { const ref = 'QC-' + Math.floor(1000 + Math.random() * 9000); if (share && !state.consent.c4) state.consent.c4 = toISO(today()); state.leads.push(Object.assign({ ref: ref, share: !!share }, lead)); state.askTopics = []; mem.askDraft = null; save(); emit('ask', {}); $('#ask-out', v).innerHTML = '<div class="card ok"><p><strong>' + esc(t('ask_ok')) + ' ' + ref + '</strong></p><p class="small" style="color:var(--ok)">' + esc(t('ask_ok2')) + '</p><a class="btn sm" href="https://quranutrition.com/book-consultation" target="_blank" rel="noopener">' + esc(t('book_link')) + '</a></div>'; };
-    $('#ask-form', v).addEventListener('submit', (e) => { e.preventDefault(); const lead = { name: $('#ask-name', v).value, phone: $('#ask-phone', v).value, time: time, topic: $('#ask-topic', v).value, d: toISO(today()) };
-      if (state.stage !== 'app') { sendAsk(lead, false); return; }
-      sheet('<h2>' + esc(t('sh_h')) + '</h2><p><strong>' + esc(t('sh_will')) + '</strong></p><ul class="ob-ul">' + ['sh_i1', 'sh_i2', 'sh_i3', 'sh_i4'].map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul><p class="small">' + esc(t('sh_not')) + '</p><div class="sheet-foot"><div class="stack" style="gap:8px"><button type="button" class="btn primary block" id="sh-yes">' + esc(t('sh_yes')) + '</button><button type="button" class="btn block" id="sh-no">' + esc(t('sh_no')) + '</button></div></div>', (sh) => {
-        $('#sh-yes', sh).addEventListener('click', () => { closeSheet(); sendAsk(lead, true); }); $('#sh-no', sh).addEventListener('click', () => { closeSheet(); sendAsk(lead, false); });
-      });
-    });
+    const wa = waNum(); const qs = (state.askTopics || []).filter((x) => typeof x === 'string' && x);
+    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t('ask_p')) + '</p>' +
+      '<div class="card"><h3>' + esc(t('ask_how_h')) + '</h3>' +
+      (wa ? '<p class="small">' + esc(t('ask_how_wa')) + '</p><a class="btn primary block" id="ask-wa" href="' + esc(waLink('ask_wa_hello')) + '" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('ask_wa')) + '</a>' + waNote()
+        : '<p class="small">' + esc(t('ask_how_web')) + '</p><a class="btn primary block" id="ask-web" href="https://quranutrition.com/book-consultation" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('book_link')) + '</a>') + '</div>' +
+      (qs.length ? '<div class="card soft" id="ask-qs"><h3>' + esc(t('ask_q_h')) + '</h3><ul>' + qs.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul><p class="small">' + esc(t('ask_q_p')) + '</p><button type="button" class="linkbtn" id="ask-q-clear">' + esc(t('ask_q_clear')) + '</button></div>' : '') +
+      (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '');
+    wire(v);
+    const aw = $('#ask-wa', v); if (aw) aw.addEventListener('click', () => askTapped('whatsapp'));
+    const ab = $('#ask-web', v); if (ab) ab.addEventListener('click', () => askTapped('web'));
+    const qc = $('#ask-q-clear', v); if (qc) qc.addEventListener('click', () => { state.askTopics = []; save(); render(); });
   }
 
   /* ---------- me: situation, tools, settings ---------- */
@@ -2275,6 +2315,10 @@
   const wireSettings = (v) => v.querySelectorAll('[data-set]').forEach((c) => c.addEventListener('change', () => { state.settings[c.dataset.set] = c.checked; save(); render(); if (c.dataset.set === 'shared') sharedPoke(); }));
   const disguised = () => { const B = window.SakhiAndroid; return !!(B && B.setDisguise && safe(() => B.isDisguised(), false)); };
   const hasReminders = () => { const B = window.SakhiAndroid; return !!(B && B.schedule); };
+  /* Sakhi's lock takes Sakhi's own PIN. A fingerprint opens it too only when she turned that on, never while the phone is
+     shared, and the bridge accepts strong biometrics only: never the phone's own PIN, which others often know (audit fix 2). */
+  const canBio = () => { const B = window.SakhiAndroid; return !!(B && B.canBiometric && safe(() => B.canBiometric(), false)); };
+  const bioOn = () => !!(state.settings.bio && state.settings.pinHash && !state.settings.shared && canBio());
   const onOff = (on) => { const w = t(on ? 'acc_on' : 'acc_off'); return w.charAt(0).toUpperCase() + w.slice(1); };   /* "On" / "Off" standing alone */
   /* "On: App lock, Discreet mode", or nothing on yet */
   const privacySummary = () => { const on = [['discreet', state.settings.discreet], ['shared', state.settings.shared], ['applock', !!state.settings.pinHash], ['disguise', disguised()]].filter((x) => x[1]).map((x) => t(x[0])); return on.length ? tf('me_on_list', { list: on.join(', ') }) : t('me_none_on'); };
@@ -2315,6 +2359,7 @@
     const B = window.SakhiAndroid; const canDisguise = !!(B && B.setDisguise);
     v.innerHTML = backRow(t('discretion'), 'me', false) + '<div class="list">' + meSw('discreet', 'discreet', 'discreet_d') + meSw('shared', 'shared', 'shared_d') +
       '<label class="item"><span class="body"><strong>' + esc(t('applock')) + '</strong><span>' + esc(t('applock_d')) + '</span></span><input type="checkbox" id="me-lock" ' + (state.settings.pinHash ? 'checked' : '') + '></label>' +
+      (state.settings.pinHash && canBio() ? (state.settings.shared ? '<div class="item quiet" id="me-bio-off"><span class="body"><strong>' + esc(t('bio_sw')) + '</strong><span>' + esc(t('bio_sw_shared')) + '</span></span></div>' : meSw('bio', 'bio_sw', 'bio_sw_d')) : '') +
       (canDisguise ? '<label class="item"><span class="body"><strong>' + esc(t('disguise')) + '</strong><span>' + esc(t('disguise_d')) + '</span></span><input type="checkbox" id="me-disguise" ' + (disguised() ? 'checked' : '') + '></label>' : '') +
       '</div><p class="small">' + esc(t('pin_note')) + '</p>';
     wire(v); wireSettings(v);
@@ -2332,7 +2377,7 @@
       wire(v);
       pinPad($('#hp-pad', v), t('pin_enter'), (pin, msg) => { if (pinH(pin) === state.settings.pinHash) { mem.healthOk = true; render(); } else msg(t('pin_wrong')); });
       const B = window.SakhiAndroid;
-      if (B && B.canBiometric && safe(() => B.canBiometric(), false)) {
+      if (bioOn()) {
         $('#hp-bio', v).innerHTML = '<button type="button" class="btn block" id="hp-bio-btn">' + esc(t('bio_btn')) + '</button>';
         window.__sakhiBio = (ok) => { if (ok && route() === 'me-health') { mem.healthOk = true; render(); } };
         $('#hp-bio-btn', v).addEventListener('click', () => safe(() => B.biometric(state.settings.discreet ? t('bio_title_d') : t('bio_title'), t('cancel'))));
@@ -2361,12 +2406,15 @@
     if (!hasReminders()) { v.innerHTML = backRow(t('notif_sec'), 'me', false) + '<p>' + esc(t('me_rem_web')) + '</p>'; wire(v); return; }
     v.innerHTML = backRow(t('notif_sec'), 'me', false) + '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('notif_h')) + '</strong><span>' + esc(t('notif_d')) + '</span></span><input type="checkbox" id="me-notif" ' + (state.settings.notify ? 'checked' : '') + '></label></div><button type="button" class="btn sm" id="me-notif-test">' + esc(t('notif_test_btn')) + '</button>' +
       /* Android 12+ rings reminders up to an hour late unless exact alarms are allowed for the app */
-      (state.settings.notify && B.canExactAlarms && !safe(() => B.canExactAlarms(), true) ? '<div class="card soft" style="gap:6px"><p class="small" style="color:var(--fg)">' + esc(t('notif_exact_p')) + '</p><button type="button" class="btn sm" style="align-self:flex-start" id="me-exact">' + esc(t('notif_exact_b')) + '</button></div>' : '');
+      (state.settings.notify && B.canExactAlarms && !safe(() => B.canExactAlarms(), true) ? '<div class="card soft" style="gap:6px"><p class="small" style="color:var(--fg)">' + esc(t('notif_exact_p')) + '</p><button type="button" class="btn sm" style="align-self:flex-start" id="me-exact">' + esc(t('notif_exact_b')) + '</button></div>' : '') +
+      /* phone makers whose battery saving is known to kill alarms of closed apps (dontkillmyapp.com) */
+      (state.settings.notify && B.maker && B.openAppSettings && /xiaomi|redmi|poco|oppo|realme|oneplus|vivo|iqoo|samsung|huawei|honor|tecno|infinix|itel|lava|micromax/i.test(safe(() => B.maker(), '') || '') ? '<div class="card soft" id="me-batt" style="gap:6px"><p class="small" style="color:var(--fg)">' + esc(t('notif_batt_p')) + '</p><button type="button" class="btn sm" style="align-self:flex-start" id="me-batt-b">' + esc(t('notif_batt_b')) + '</button></div>' : '');
     wire(v);
     const whenAllowed = (fn) => { window.__sakhiNotify = (ok) => { if (ok) fn(); else toast(t('notif_denied')); render(); }; if (safe(() => B.canNotify(), false)) window.__sakhiNotify(true); else safe(() => B.askNotify()); };
     $('#me-notif', v).addEventListener('change', (e) => { if (!e.target.checked) { state.settings.notify = false; save(); return; } e.target.checked = false; whenAllowed(() => { state.settings.notify = true; save(); toast(t('notif_on')); }); });
-    const mex = $('#me-exact', v); if (mex) mex.addEventListener('click', () => safe(() => B.askExactAlarms()));   /* back from the setting: the app re-sends the alarms on resume */
-    $('#me-notif-test', v).addEventListener('click', () => whenAllowed(() => { safe(() => B.testNotify(notifBrand(), state.settings.discreet ? t('d_reminder') : t('notif_test'))); toast(t('notif_test_sent')); }));
+    const mex = $('#me-exact', v); if (mex) mex.addEventListener('click', () => safe(() => B.askExactAlarms()));
+    const mbt = $('#me-batt-b', v); if (mbt) mbt.addEventListener('click', () => safe(() => B.openAppSettings()));   /* back from the setting: the app re-sends the alarms on resume */
+    $('#me-notif-test', v).addEventListener('click', () => whenAllowed(() => { safe(() => B.testNotify(notifBrand(), state.settings.discreet ? t('d_reminder') : t('notif_test'), !!state.settings.discreet)); toast(t('notif_test_sent')); }));
   }
 
   /* What she has noted, counted in words. The raw data is one tap further. In discreet mode, one neutral count. */
@@ -2435,7 +2483,7 @@
       '<div class="card"><div class="row spread"><span>' + esc(t('pc_thy')) + '</span><span class="pill muted">' + esc(t('pc_nodata')) + '</span></div><div class="row spread"><span>' + esc(t('pc_heavy')) + '</span><span class="pill ' + (heavy >= 2 ? 'accent' : 'ok') + '">' + esc(heavy >= 2 ? t('pc_seen') : t('pc_not')) + '</span></div><div class="row spread"><span>' + esc(t('pc_pain')) + '</span><span class="pill ' + (painSt === 'pc_seen' ? 'accent' : (painSt === 'pc_not' ? 'ok' : 'muted')) + '">' + esc(t(painSt)) + '</span></div>' + (painSt === 'pc_seen' ? '<p class="small">' + esc(tf('pc_pain_d', { k: painBad, n: st6.length })) + '</p>' + (modRoute('selfcheck-endo') ? '<button type="button" class="btn sm" style="align-self:flex-start" data-go="selfcheck-endo">' + esc(t('pc_pain_go')) + '</button>' : '') : '') + '</div>' +
       '<div class="card"><div class="row spread"><span style="flex:1">' + esc(t('pc_q1')) + '</span>' + yn('q1', q1) + '</div><div class="row spread"><span style="flex:1">' + esc(t('pc_q2')) + '</span>' + yn('q2', pq.q2 || '') + '</div>' + (pq.q2 === 'y' && !isPregnant() && !state.situation.breastfeeding ? '<p class="small" style="color:var(--fg)">' + esc(t('pc_q2_y')) + '</p>' : '') + '</div>' +
       '<div class="grid2"><button type="button" class="btn primary" id="pc-ask">' + esc(t('pc_ask')) + '</button><button type="button" class="btn" data-go="learn">' + esc(t('why')) + '</button></div><p class="footnote">' + esc(t('pc_rule')) + '</p>';
-    wire(v); $('#pc-ask', v).addEventListener('click', () => { state.askTopics = [t('pc_pmos')]; save(); setHash('ask'); });
+    wire(v); $('#pc-ask', v).addEventListener('click', () => ask(t('pc_pmos')));
     /* "Has a doctor told you that you have PMOS?" is the PMOS line on the Me page; the nipple question stays on this screen only. */
     v.querySelectorAll('[data-pcq]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.pcq, a = b.dataset.v; if (k === 'q1') { if (canSave()) { state.situation.pcos = a === 'y'; save(); } pq.q1 = a; } else pq.q2 = pq.q2 === a ? '' : a; render(); }));
   }
@@ -2500,15 +2548,19 @@
       for (let k = 0; k < 400; k++) {
         const d = remNext(r, from); if (!d || d > horizon) break;
         const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hm[0], hm[1]).getTime();
-        if (at > now) out.push({ id: 'r-' + r.id + '-' + toISO(d), at: at, title: notifBrand(), body: disc ? t('d_reminder') : remText(r) });
+        if (at > now) out.push({ id: 'r-' + r.id + '-' + toISO(d), at: at, title: notifBrand(), body: disc ? t('d_reminder') : remText(r), secret: disc });
         from = addDays(d, 1);
       }
     });
     const ri = headsRange();
-    if (ri && !isPregnant() && !countsOff()) { const d = addDays(ri.from, -1); const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0).getTime(); if (at > now) out.push({ id: 'period-' + toISO(ri.from), at: at, title: notifBrand(), body: disc ? t('d_reminder') : t('notif_period') }); }
-    /* The phone keeps the first 60 it is given, so the soonest go first. */
+    if (ri && !isPregnant() && !countsOff()) { const d = addDays(ri.from, -1); const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0).getTime(); if (at > now) out.push({ id: 'period-' + toISO(ri.from), at: at, title: notifBrand(), body: disc ? t('d_reminder') : t('notif_period'), secret: disc }); }
+    /* The phone keeps the first 60 it is given, so the soonest go first. The alarms only refill when Sakhi opens, so the
+       last one, at 10 am the day after the last reminder queued, asks her to open it (audit fix 10). */
     out.sort((a, b) => a.at - b.at);
-    return out.slice(0, 60);
+    const list = out.slice(0, 59); if (!list.length) return list;
+    const ld = new Date(list[list.length - 1].at); const fin = new Date(ld.getFullYear(), ld.getMonth(), ld.getDate() + 1, 10, 0);
+    list.push({ id: 'refill-' + toISO(fin), at: fin.getTime(), title: notifBrand(), body: disc ? t('d_refill') : t('notif_refill'), secret: disc });
+    return list;
   }
   function syncNotifications() {
     const B = window.SakhiAndroid; if (!B || !B.schedule) return;
@@ -2543,7 +2595,7 @@
     v.innerHTML = '<div class="lockwrap"><div class="mark">' + I.lock + '</div><div id="lockpad" style="width:100%"></div><div id="lock-bio-row" style="width:100%;max-width:320px"></div><button type="button" class="btn ghost block" id="lock-forgot">' + esc(t('pin_forgot')) + '</button><div id="lock-out" style="width:100%"></div></div>';
     pinPad($('#lockpad', v), t('pin_enter'), (pin, msg) => { if (pinH(pin) === state.settings.pinHash) { mem.locked = false; mem.bioAuto = false; render(); sharedPoke(); } else msg(t('pin_wrong')); });
     const B = window.SakhiAndroid;
-    if (B && B.canBiometric && safe(() => B.canBiometric(), false)) {
+    if (bioOn()) {
       $('#lock-bio-row', v).innerHTML = '<button type="button" class="btn block" id="lock-bio">' + esc(t('bio_btn')) + '</button>';
       window.__sakhiBio = (ok) => { if (ok && mem.locked) { mem.locked = false; mem.bioAuto = false; render(); sharedPoke(); } };
       const ask = () => safe(() => B.biometric(state.settings.discreet ? t('bio_title_d') : t('bio_title'), t('cancel')));
@@ -2623,7 +2675,7 @@
     $: $, esc: esc, pad2: pad2, toISO: toISO, fromISO: fromISO, addDays: addDays, diffDays: diffDays, today: today, monthKey: monthKey, clamp: clamp, addMonths: addMonths,
     t: t, tf: tf, tx: tx, one: one, fmtD: fmtD, fmtRange: fmtRange, I: I, icon: icon,
     save: modSave, saveQuiet: save, emit: emit, render: render, setHash: setHash, route: route, wire: wire, toast: toast, toastAct: toastAct, sheet: sheet, closeSheet: closeSheet, backRow: backRow, gate: gate,
-    data: data, reminders: reminders, canSave: canSave, needDiary: needDiary, ask: ask, goBack: goBack, backBtn: backBtn,
+    data: data, reminders: reminders, canSave: canSave, needDiary: needDiary, ask: ask, goBack: goBack, backBtn: backBtn, share: shareText,
     cycle: { starts: starts, gapsAll: gapsAll, usable: usable, lastStart: lastStart, cycleDay: cycleDay, bleedingDays: bleedingDays, rangeInfo: rangeInfo, bandHi: bandHi, isPregnant: isPregnant, countsOff: countsOff, afterBirth: afterBirthNow, ageYears: ageYears, lastCheckins: lastCheckins, fertileInfo: fertileInfo, midlifeStage: midlifeStage, excludedWhy: excludedWhy, isMidlife: isMidlife, approxStarts: approxStarts, periodLen: periodLen, rawStarts: () => liveStartEvents().map((e) => e.d).sort() },
     preg: { info: pregInfo },
     openAnswer: openAnswer, stageNow: stageNow, openDay: openDay, kinds: KINDS, openStage: openStage, startTour: (id) => startTour(id, true), startFullTour: () => startFullTour(true), tours: () => TOURS.map((x) => x.id), tourMoment: tourMoment,

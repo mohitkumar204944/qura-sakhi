@@ -137,7 +137,7 @@
   const ul = (arr) => '<ul>' + arr.map((x) => '<li>' + E(x) + '</li>').join('') + '</ul>';
   const steps = (arr) => '<ol class="steps">' + arr.map((x) => '<li>' + E(x) + '</li>').join('') + '</ol>';
   const srcList = (keys) => '<details><summary>' + esc(t('screen_sources')) + '</summary><p class="sources">' + keys.map((k) => '<a href="' + esc(SRC[k].url) + '" target="_blank" rel="noopener">' + E(SRC[k]) + '</a>').join(' · ') + '</p></details>';
-  const linkItem = (go, ico, title, sub, pill, gated) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span>' + (pill ? '<span class="screen-new">' + esc(pill) + '</span>' : '') + (gated ? '<span class="screen-gate">' + esc(t('gated_short')) + '</span>' : '') + '</span>' + chev + '</button>';
+  const linkItem = (go, ico, title, sub, pill, gated) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm">' + S.icon(ico) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span>' + (pill ? '<span class="screen-new">' + esc(pill) + '</span>' : '') + (gated && S.flags.proto ? '<span class="screen-gate">' + esc(t('gated_short')) + '</span>' : '') + '</span>' + chev + '</button>';
   const quraBtn = (topic) => '<button type="button" class="btn block" data-ask="' + esc(topic) + '">' + esc(t('ask_qura')) + '</button>';
   const quraCard = (topic) => '<div class="card dark"><h3>' + esc(t('screen_qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('screen_qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(topic) + '">' + esc(t('qura_b')) + '</button></div>';
   const copyRow = (n, what) => '<div class="helpline"><div style="min-width:0"><div class="n num">' + esc(n) + '</div><div class="what">' + esc(what) + '</div></div><button type="button" class="btn sm" data-copy="' + esc(n) + '">' + esc(t('copy')) + '</button></div>';
@@ -434,6 +434,7 @@
   const en = {
     screen_hub: 'Screening and check-ups', screen_hub_s: 'My check-ups, cervical screening, HPV vaccine, breast self-check',
     screen_hub_p: 'Simple tests find problems early, often years before you feel anything. Most are free at your Ayushman Arogya Mandir (health and wellness centre) or PHC.',
+    screen_home_h: 'Free check-ups for you', screen_home_p: 'From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years, at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_go: 'See my check-ups', screen_home_later: 'Later',
     screen_mine: 'My check-ups', screen_mine_s: 'Built from your age. Add the dates, get reminders.',
     screen_mine_p: 'Built from your age and what you set on the Me page. Add when you last had each one; the next date and a reminder follow.',
     screen_cervix: 'Cervical screening', screen_cervix_s: 'The free VIA test: why, what happens, results',
@@ -491,6 +492,7 @@
   const hi = {
     screen_hub: 'जाँच और चेक-अप', screen_hub_s: 'मेरे चेक-अप, बच्चेदानी के मुँह की जाँच, HPV टीका, स्तन की ख़ुद जाँच',
     screen_hub_p: 'आसान जाँचें बीमारी को जल्दी पकड़ लेती हैं, अक्सर कुछ महसूस होने से सालों पहले। ज़्यादातर जाँचें आपके आयुष्मान आरोग्य मंदिर (हेल्थ एंड वेलनेस सेंटर) या PHC पर मुफ़्त हैं।',
+    screen_home_h: 'आपके लिए मुफ़्त जाँच', screen_home_p: '30 साल से हर महिला 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर, बच्चेदानी के मुँह की जाँच और स्वास्थ्यकर्मी से स्तन की जाँच मुफ़्त करवा सकती है। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_go: 'मेरे चेक-अप देखें', screen_home_later: 'बाद में',
     screen_mine: 'मेरे चेक-अप', screen_mine_s: 'आपकी उम्र के हिसाब से। तारीख़ें डालें, reminder पाएँ।',
     screen_mine_p: 'आपकी उम्र और “मैं” पन्ने पर दी जानकारी के हिसाब से। हर जाँच आख़िरी बार कब हुई, लिखें; अगली तारीख़ और reminder अपने आप बन जाते हैं।',
     screen_cervix: 'बच्चेदानी के मुँह की जाँच', screen_cervix_s: 'मुफ़्त VIA जाँच: क्यों, क्या होता है, नतीजे',
@@ -549,7 +551,7 @@
   const css = [
     '.screen-chev{color:var(--accent);width:18px;flex-shrink:0;display:inline-flex}',
     '.screen-chev svg{width:18px;height:18px}',
-    '.screen-new{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:11px !important;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent) !important}',
+    '.screen-new{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:12px !important;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent) !important}',
     '.screen-row{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);border:none;width:100%;text-align:left;color:var(--fg)}',
     '.screen-row .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}',
     '.screen-row .body strong{font-weight:600;font-size:15px;overflow-wrap:break-word}',
@@ -561,8 +563,31 @@
     '.screen-later summary{font-size:13px;padding:6px 0}',
     '.screen-sum h2{margin-top:2px}',
     '.screen-inline{align-self:flex-start}',
-    '.screen-gate{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:11px !important;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--peach-2);color:var(--gold) !important;border:1px solid var(--gold)}'
+    '.screen-gate{display:inline-flex;align-self:flex-start;margin-top:4px;font-size:12px !important;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--peach-2);color:var(--gold) !important;border:1px solid var(--gold)}'
   ].join('\n');
+
+  /* ---------- Home: "you're due" (Version 28; docs/feature-research-2026-10-22.md, A4) ----------
+     Only about 2 in 100 women aged 30 to 49 have ever had cervical screening. A woman of 30 to 65 whose free 5-yearly
+     check-ups (cervical screening, a breast exam by a health worker) have no date yet, or are due, sees one card on Home
+     until she opens My check-ups (where a date or "never" starts the monthly reminder) or says later (60 days). Never in
+     pregnancy or in discreet mode. Her age alone decides; nothing reads her diary. */
+  const HOME_KEYS = ['cervix', 'cbe'];
+  function homeTop() {
+    if (!S.canSave()) return ''; const st0 = S.state;
+    if ((st0.settings || {}).discreet || S.cycle.isPregnant()) return '';
+    const age = ageNow(); if (age == null || age < 30 || age > 65) return '';
+    const sn = ((st0.mods || {}).screen || {}).snooze; if (okDate(sn) && sn > iso(S.today())) return '';
+    const due = HOME_KEYS.filter((k) => { const c = status(BY[k]).code; return c === 'add' || c === 'due'; });
+    if (!due.length) return '';
+    return '<div class="card screen-home" data-nofold="1"><div class="row" style="gap:10px;align-items:center"><span class="ico-sm hue hue-teal">' + S.icon('check') + '</span><strong style="min-width:0">' + esc(t('screen_home_h')) + '</strong></div>' +
+      '<p class="small">' + esc(due.map((k) => tx(BY[k].name)).join(' · ')) + '</p><p class="small">' + esc(t('screen_home_p')) + '</p>' +
+      '<div class="grid2"><button type="button" class="btn sm primary" data-go="screen-mine">' + esc(t('screen_home_go')) + '</button><button type="button" class="btn sm" id="screen-home-later">' + esc(t('screen_home_later')) + '</button></div></div>';
+  }
+  function afterRender(v, r) {
+    if (r !== 'home') return;
+    const b = v.querySelector('#screen-home-later'); if (!b) return;
+    b.addEventListener('click', () => { D().snooze = iso(S.addDays(S.today(), 60)); S.save(); S.render(); });
+  }
 
   S.register({
     id: 'screen',
@@ -581,6 +606,8 @@
     css: css,
     summary: summary,
     sample: sample,
+    homeTop: homeTop,
+    afterRender: afterRender,
     event: (name, p) => { if (name === 'log' && p && (p.type === 'start' || p.type === 'end') && (D().bse || {}).on && (D().bse || {}).mode === 'period') bseSync(); }
   });
 })(window.Saathi);

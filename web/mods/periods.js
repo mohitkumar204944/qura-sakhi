@@ -98,7 +98,7 @@
   function renderHub(v) {
     v.innerHTML = S.backRow(t('periods_hub'), 'care', false) +
       intro({ en: 'Practical help for the days of your period, and the signs that mean you should see a doctor.', hi: 'पीरियड के दिनों के लिए काम की बातें, और वे निशानियाँ जिनमें डॉक्टर को दिखाना चाहिए।' }) +
-      '<div class="list">' + SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]), x[4] ? t('gated_short') : '')).join('') + '</div>' +
+      '<div class="list">' + SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]), x[4] && S.flags.proto ? t('gated_short') : '')).join('') + '</div>' +
       '<div class="card"><h3 style="color:var(--accent)">' + esc(t('see_doctor')) + '</h3>' +
       '<div class="flag urgent"><span><strong>' + esc(t('call_now')) + ':</strong> ' + esc(t('s1b')) + '</span></div>' +
       '<div class="flag"><span><strong>' + esc(t('today_if')) + ':</strong> ' + esc(t('s2a')) + '</span></div>' +
@@ -487,12 +487,12 @@
       '.periods-grid { display: grid; grid-template-columns: minmax(0, 84px) repeat(35, minmax(0, 1fr)); column-gap: 1px; row-gap: 3px; align-items: center; }',
       '.periods-grid.periods-sub { margin-top: 2px; }',
       '.periods-grid .lbl { font-size: 11px; line-height: 1.2; color: var(--fg); padding-right: 6px; overflow-wrap: anywhere; min-width: 0; }',
-      '.periods-grid .lbl.small { color: var(--muted); font-size: 10px; }',
+      '.periods-grid .lbl.small { color: var(--muted); font-size: 13px; }',
       '.periods-grid .c { height: 15px; border-radius: 2px; min-width: 0; }',
       '.periods-grid .sep { margin-top: 6px; }',
       '.periods-grid .band { height: 6px; border-radius: 3px; background: var(--gold); }',
       '.periods-grid .dot { width: 7px; height: 7px; border-radius: 4px; background: var(--fg); justify-self: center; }',
-      '.periods-grid .dn { font-size: 9px; color: var(--muted); display: flex; justify-content: center; white-space: nowrap; min-width: 0; overflow: visible; }',
+      '.periods-grid .dn { font-size: 12px; color: var(--muted); display: flex; justify-content: center; white-space: nowrap; min-width: 0; overflow: visible; }',
       '.periods-c0 { background: var(--bg); } .periods-c1 { background: var(--peach); } .periods-c2 { background: var(--accent-2); } .periods-c3 { background: var(--accent-strong); }',
       '@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .periods-c1 { background: var(--gold); opacity: 0.5; } :root:not([data-theme="light"]) .periods-c2 { background: var(--accent-strong); } :root:not([data-theme="light"]) .periods-c3 { background: var(--accent-2); } }',
       ':root[data-theme="dark"] .periods-c1 { background: var(--gold); opacity: 0.5; } :root[data-theme="dark"] .periods-c2 { background: var(--accent-strong); } :root[data-theme="dark"] .periods-c3 { background: var(--accent-2); }',

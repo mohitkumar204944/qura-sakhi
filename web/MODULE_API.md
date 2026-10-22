@@ -725,3 +725,163 @@ The Me tour still lights `#me-privacy` and `#me-del`.
   360 px; the web without reminders.
 - `tours.mjs` opens the tour list from `me-help`.
 - `smoke.mjs` and `check.mjs` know the seven new routes.
+
+## 27. Version 27: safe to hand to a woman (Mohit, 22 Oct: "can you plan to do all the fixes")
+
+The audit is `../docs/app-audit-2026-10-22.md` and the plan `../docs/fix-plan-2026-10-22.md`. Numbers below are the audit's.
+
+**Mohit's decisions (22 Oct):**
+- D1, help until the doctor hand-off: WhatsApp only.
+- D2, features awaiting approval: "make it visible without any tag and fully functional". The CDSCO question behind the
+  tag (section 20) is still open; this is Mohit's call. The tag shows only with prototype labels on.
+- D3, the app's name: stays "Qura Sakhi", in notifications too.
+- D4, fonts: bundled in `fonts/` with their OFL licences. Nothing is fetched from Google.
+
+**Help that reaches a person (1a).** Nothing inside Sakhi is sent anywhere until the hand-off (SERVER_SPEC 10.1).
+- "Speak to a doctor" (`ask`) has no form. It opens WhatsApp to Qura's staffed number with a hello in her language
+  (`ask_wa_hello`). Without a number it opens Qura's booking page.
+- The number comes from the build: `SAKHI_HELP_WA=91XXXXXXXXXX ./build-apk.sh` puts it in `CFG.helpWa`.
+- "Ask a Qura doctor about this" adds the topic to her questions for the call (`state.askTopics`, up to 8). They are shown on
+  `ask`, stay on the phone and never go into the link.
+- "Tell a person" (`tell`) opens WhatsApp the same way, and keeps 112, 14416 and the emergency numbers. It is hidden without a
+  number and for girls under 18.
+- Opening WhatsApp or the booking page adds `{ d, via }` to `state.leads`, for the garden's "brave" badge. Nothing else.
+- Copy that said "Received", "Request saved", "replies within 1 working day" or "reads diaries once a week" is gone. That
+  includes the check-in note and the share-with-doctor card, which now say the words stay on this phone.
+- The share-consent sheet (`sh_*`) is no longer shown. Its wording is kept for the hand-off.
+
+**Sharing (8).** `S.share(title, text)` sends text she chose to send through Android's share sheet (the bridge's `share`). On
+the web it uses `navigator.share`, or copies. The doctor report, the family cards and the garden use it. The only `wa.me` link
+left is the help hello, which carries nothing about her.
+
+**A shared phone (2):**
+- While app lock, shared-phone or discreet mode is on, the page asks the bridge for `setSecure(true)` (FLAG_SECURE): no
+  screenshot, screen recording or recent-apps picture. On Android 13+ recents never shows Sakhi's screen.
+- The lock takes Sakhi's PIN. A fingerprint opens it too only when she turns on "Fingerprint unlock" (`state.settings.bio`,
+  Me > Privacy, with app lock on). It is never offered in shared-phone mode. The bridge accepts strong biometrics only, never
+  the phone's own PIN or pattern. Section 26's PIN-before-health page follows the same rule.
+- Reminders on a locked phone:
+  - A phone set to hide sensitive notification content shows a plain "Reminder" (the public version).
+  - A phone set to show all content (Samsung's default) shows the reminder's text, as before.
+  - In discreet mode the lock screen shows nothing, whatever the setting (each alarm's JSON has `secret`).
+  - The icon is a plain bell, and the channel text no longer names periods.
+- Text the bridge copies is marked sensitive.
+
+**Reminders (10):**
+- The phone gets at most 59 alarms, plus one at 10 am on the day after the last. That one asks her to open Sakhi
+  (`notif_refill`, or `d_refill` in discreet mode), since alarms only refill when the app opens.
+- On phones whose battery saving is known to stop alarms, Me > Reminders shows how to allow Sakhi, with a button to its app
+  settings.
+
+**Android (9, 13, 28):**
+- If the page's renderer dies, MainActivity builds a fresh WebView on Home. A restore that fails loads Home too.
+- Text follows the phone's font size (`setTextZoom`).
+- The WebView has no content access and no database.
+- `build-apk.sh` adds a Content-Security-Policy. Only the app's own files and the two inline scripts (by hash) run, and the
+  only server the page can reach is `SAKHI_API`.
+- `build-apk.sh` refuses a version name without "demo" unless `SAKHI_API` is https, and checks `SAKHI_HELP_WA`.
+
+**Text, read-aloud and languages (11, 18, 19, 30):**
+- Chart and label text that was 9–10 px is now 12–13 px.
+- `.view` breaks a long word rather than pushing the screen sideways.
+- Read-aloud skips closed sections, reads an open sheet from its own speaker, and reads charts by their labels.
+- Read-aloud prefers a voice that runs on the phone.
+- Articles follow the language chain (Marathi falls back to Hindi).
+- The emergency sheet uses the translated labels.
+
+**Crash fallback and old backups (12):**
+- A screen that fails shows a bilingual card (`data-crash`) with Home and Care.
+- `tidyState()` repairs a malformed diary on load and on restore.
+
+**Sources (17).** Internal working notes are gone from article sources. The list for the doctor to confirm is
+`../docs/sources-cleanup-2026-10-22.md`.
+
+**Rules for module authors:**
+1. To send text she chose to send, call `S.share(title, text)`. Never build a `wa.me/?text=` link, and never put anything about
+   her health in a URL.
+2. Never say something was sent, received or will be read unless it really leaves the phone through core `net()`.
+3. Text in charts and labels is at least 12 px as drawn, and 13 px for anything she must act on. Check new screens with
+   smoke.mjs's 200% pass.
+4. Link articles by an existing `group.id` key. smoke.mjs checks every quoted key.
+
+**Bridge (android/src):**
+- New: `setSecure(on)`, `share(title, text)`, `maker()`, `openAppSettings()`.
+- `testNotify(title, body, secret)`: the test notification is kept off the lock screen in discreet mode, like a real reminder.
+- `canBiometric()` now means strong biometrics are set up. `biometric()` asks for those only, with a Cancel button.
+- `speak()` picks an installed voice that runs on the phone. `voices()` reports `localService` per language.
+
+**Tests:**
+- New `node test/privacy.mjs` (51 checks):
+  - help wording and links, in English and Hindi, with and without a number;
+  - screen capture blocked with each privacy setting;
+  - the fingerprint rules;
+  - shares through the share sheet, with no `wa.me` share links;
+  - reminders: discreet, the last one, the battery card;
+  - no approval tags, and nothing fetched from Google;
+  - the APK page under its CSP (when `android/build` exists).
+- `smoke.mjs` adds the 200% text pass and the article links, and catches the crash card.
+- `signup.mjs` checks that Ask sends nothing about her.
+
+## 28. Version 28, part 1: four tools that do something (Mohit, 22 Oct: "start with the four small items with version 28")
+
+From `../docs/feature-research-2026-10-22.md`: A2, A4, B4 and B5. New wording for the doctor is in
+`../docs/wording-review-v28.md`. The iron help lines reuse verified text word for word.
+
+**Iron tablets (new module `iron`, route `iron`):**
+- **Plans** (from Anemia Mukt Bharat):
+  - pregnancy: daily, 180 days;
+  - after the birth: daily, 180 days;
+  - the weekly tablet (20–49, not pregnant or breastfeeding), on a weekday she picks;
+  - her doctor's dose: daily, with an optional end date that brings a "repeat Hb test" reminder.
+  - The plan is suggested from her stage and age.
+- **Daily use:**
+  - "I took it" here and as a Home card (homeTop, neutral words in discreet mode).
+  - A 7-day strip to tick a forgotten day.
+  - "Days taken: n of 180" since the plan began. Missed days are never held against her.
+  - Optional tablets left in the strip, counting down with each tick, with a "few left" note at 5.
+  - "If it upsets you" and "When to get help", in verified lines.
+- **Reminder:** one, `iron` (kind `med`), at her time. Ticking today sets `doneOn`. Stopping the plan removes it and keeps
+  the ticks.
+- **One record with the pregnancy logs.** `S.iron = { taken(k), days(), mark(k, on), active() }`:
+  - The pregnancy logs' tablet grid reads and ticks IFA days through it.
+  - IFA days ticked there before Version 28 are copied once (`mig`).
+  - Starting a plan removes the pregnancy logs' `preg-ifa` reminder.
+  - While a plan is active, that card's reminder button is for calcium only.
+- **Summary** (doctor report, ASHA screen): plan and start, days or weeks taken, the last 30 days.
+
+**Free check-ups for you (screen module, Home card through homeTop):**
+- **Who sees it:** at 30–65, when cervical screening or the breast exam by a health worker has no date or is due.
+- **Ways out:** "See my check-ups" (a date or "never" there starts the existing monthly reminder) or "Later" (hidden for 60
+  days, `mods.screen.snooze`).
+- **Never shown** in pregnancy or in discreet mode.
+- Only her age is used; nothing reads her diary.
+
+**My ASHA or ANM (new module `asha`, routes `asha` and `asha-show`):**
+- **Her ASHA's number:** a 10-digit mobile (+91, a leading 0 and spaces accepted), a role and an optional name. It's kept
+  only on the phone, in `mods.asha`.
+- **Call:** a `tel:` link, one tap.
+- **"Show her my summary":** large type, made of:
+  - about her (name, age, stage);
+  - the summaries of preg, post, iron, screen and contra;
+  - her questions for the call (`state.askTopics`).
+  - Nothing is sent.
+- **Where it's linked:** Help (next to Tell a person), Care near me, the iron page, and tiles in tools, pregnancy and after
+  the birth.
+
+**Do it online (access module, route `access-online`):**
+- Six official sites, each with what it's for and what she needs: ABHA, U-WIN, PMMVY, the Ayushman card (PM-JAY),
+  eSanjeevani and the Jan Aushadhi locator.
+- All are https on gov.in, opened and checked on 22 Oct 2026.
+- There's a warning about OTPs and paying anyone. There are no forms: Sakhi fills in nothing.
+- JANANI waits until its official address can be checked.
+- Linked from Care near me, plus a tools tile.
+
+**Rules for module authors:**
+1. Another module's data is read through its API (`S.iron`), never written directly. A module that owns a shared record says
+   so in its header.
+2. Numbers she saves for other people (her ASHA) stay in `S.data(id)`. They are not account fields and never pass through
+   `net()`.
+3. Links to government sites are https on gov.in or nic.in, opened and checked when added. Never automate a portal that has a
+   CAPTCHA.
+
+**Tests:** new `node test/companions.mjs` (49 checks), in `npm test`.

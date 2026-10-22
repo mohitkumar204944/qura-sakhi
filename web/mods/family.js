@@ -74,10 +74,10 @@
     v.innerHTML = S.backRow(t('family_pt_h'), 'family', false) + '<p class="small">' + esc(t('family_pt_p')) + '</p>' +
       '<div class="card fam-card" data-nofold="1"><span class="eyebrow">' + esc(t('family_w_husband')) + '</span>' + (late ? '<div class="flag urgent">' + esc(t('family_pt_late')) + '</div>' : '') + '<h3>' + esc(head) + '</h3>' + (sz && sz.line ? '<p>' + esc(sz.line) + '</p>' : '') +
       '<p><b>' + esc(t('family_pt_help')) + '</b></p><ul class="fam-tips">' + tips.map((x) => '<li>' + esc(tx(x)) + '</li>').join('') + '</ul><div class="flag urgent">' + esc(tx(DANGER)) + '</div>' +
-      '<div class="row wrap"><a class="btn sm" data-fam-share="partner" href="https://wa.me/?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">' + users + ' ' + esc(t('family_send')) + '</a><button type="button" class="btn sm" id="fam-pt-copy">' + esc(t('family_copy')) + '</button></div></div>' +
+      '<div class="row wrap"><button type="button" class="btn sm" data-fam-share="partner">' + users + ' ' + esc(t('family_send')) + '</button><button type="button" class="btn sm" id="fam-pt-copy">' + esc(t('family_copy')) + '</button></div></div>' +
       '<p class="small">' + esc(t('family_pt_safe')) + '</p>';
     S.wire(v);
-    const sh = v.querySelector('[data-fam-share]'); if (sh) sh.addEventListener('click', () => S.emit('share', { id: 'family-partner' }));
+    const sh = v.querySelector('[data-fam-share]'); if (sh) sh.addEventListener('click', () => { S.share(head, text); S.emit('share', { id: 'family-partner' }); });
     v.querySelector('#fam-pt-copy').addEventListener('click', () => { try { navigator.clipboard.writeText(text).then(() => S.toast(t('family_copied')), () => S.toast(t('family_copy_fail'))); } catch (e) { S.toast(t('family_copy_fail')); } });
   }
   const msg = (c) => tx(c.h) + '\n\n' + tx(c.p) + '\n\n' + t('family_from');
@@ -91,11 +91,11 @@
     v.innerHTML = S.backRow(t('family_h'), 'care', false) + '<p class="small">' + esc(t('family_p')) + '</p>' +
       (pw != null ? '<button type="button" class="action fam-pt" data-go="family-partner"><span class="ico hue hue-sky">' + S.I.baby + '</span><span class="body"><strong>' + esc(t('family_pt_card')) + '</strong><span class="small">' + esc(S.tf('family_pt_week', { n: pw })) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
       order().map((c) => '<div class="card fam-card" data-nofold="1" data-fam="' + c.id + '"><span class="eyebrow">' + esc(t(c.who)) + '</span><h3>' + esc(tx(c.h)) + '</h3><p>' + esc(tx(c.p)) + '</p>' +
-        '<div class="row wrap"><a class="btn sm" data-fam-share="' + c.id + '" href="https://wa.me/?text=' + encodeURIComponent(msg(c)) + '" target="_blank" rel="noopener">' + S.I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('family_send')) + '</a>' +
+        '<div class="row wrap"><button type="button" class="btn sm" data-fam-share="' + c.id + '">' + S.I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('family_send')) + '</button>' +
         '<button type="button" class="btn sm" data-fam-copy="' + c.id + '">' + esc(t('family_copy')) + '</button></div></div>').join('') +
       '<p class="footnote">' + esc(t('family_foot')) + '</p>';
     S.wire(v);
-    v.querySelectorAll('[data-fam-share]').forEach((a) => a.addEventListener('click', () => S.emit('share', { id: 'family-' + a.dataset.famShare })));
+    v.querySelectorAll('[data-fam-share]').forEach((a) => a.addEventListener('click', () => { const c = C.find((x) => x.id === a.dataset.famShare); if (c) S.share(tx(c.h), msg(c)); S.emit('share', { id: 'family-' + a.dataset.famShare }); }));
     v.querySelectorAll('[data-fam-copy]').forEach((b) => b.addEventListener('click', () => {
       const c = C.find((x) => x.id === b.dataset.famCopy); const text = msg(c);
       const ok = () => S.toast(t('family_copied')); const no = () => S.toast(t('family_copy_fail'));
@@ -110,7 +110,7 @@
       en: {
         family_h: 'Explain it to my family', family_tile_s: 'Short WhatsApp cards for your husband, mother-in-law or daughter',
         family_p: 'Send a card to someone at home, so they understand and can help. Nothing about you or your diary goes in it.',
-        family_send: 'Send on WhatsApp', family_copy: 'Copy', family_copied: 'Copied. Paste it in any chat.', family_copy_fail: 'Could not copy on this phone.',
+        family_send: 'Share', family_copy: 'Copy', family_copied: 'Copied. Paste it in any chat.', family_copy_fail: 'Could not copy on this phone.',
         family_from: 'From Qura Sakhi, a free health app for women.', family_foot: 'General information, the same for everyone. Not a diagnosis.',
         family_w_all: 'For the family', family_w_husband: 'For your husband', family_w_mother: 'For a mother',
         family_pt_h: 'Weekly update for your husband', family_pt_card: 'This week’s update for your husband', family_pt_p: 'Each week, a short card about the baby and how he can help. Send it if you want to; nothing goes by itself.', family_pt_week: 'Week {n} of the pregnancy', family_pt_early: 'The first weeks of the pregnancy', family_pt_late: 'She is more than 42 weeks pregnant by her dates. If the baby has not come, take her to the hospital today.', family_pt_help: 'How you can help this week:', family_pt_none: 'This weekly card is for pregnancy. For now, here is a page your husband can read.', family_pt_page: 'A page for your husband', family_pt_safe: 'Only you decide what to send. Sakhi never sends anything by itself.'
@@ -118,7 +118,7 @@
       hi: {
         family_h: 'परिवार को समझाएँ', family_tile_s: 'पति, सास या बेटी के लिए छोटे WhatsApp कार्ड',
         family_p: 'घर में किसी को कार्ड भेजें, ताकि वे समझें और मदद कर सकें। इसमें आपके या आपकी डायरी के बारे में कुछ नहीं जाता।',
-        family_send: 'WhatsApp पर भेजें', family_copy: 'कॉपी करें', family_copied: 'कॉपी हो गया। किसी भी चैट में पेस्ट करें।', family_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
+        family_send: 'शेयर करें', family_copy: 'कॉपी करें', family_copied: 'कॉपी हो गया। किसी भी चैट में पेस्ट करें।', family_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
         family_from: 'Qura Sakhi से, महिलाओं के लिए मुफ़्त हेल्थ ऐप।', family_foot: 'सबके लिए एक जैसी आम जानकारी। यह जाँच का नतीजा नहीं है।',
         family_w_all: 'परिवार के लिए', family_w_husband: 'पति के लिए', family_w_mother: 'माँ के लिए',
         family_pt_h: 'पति के लिए हर हफ़्ते की जानकारी', family_pt_card: 'पति के लिए इस हफ़्ते की जानकारी', family_pt_p: 'हर हफ़्ते बच्चे के बारे में और वे कैसे मदद कर सकते हैं, इस पर एक छोटा कार्ड। चाहें तो भेजें; कुछ भी अपने आप नहीं जाता।', family_pt_week: 'प्रेग्नेंसी का {n}वाँ हफ़्ता', family_pt_early: 'प्रेग्नेंसी के शुरुआती हफ़्ते', family_pt_late: 'उनकी तारीख़ों से 42 हफ़्ते से ज़्यादा हो गए हैं। अगर बच्चा नहीं हुआ है, तो आज ही उन्हें अस्पताल ले जाएँ।', family_pt_help: 'इस हफ़्ते आप कैसे मदद कर सकते हैं:', family_pt_none: 'यह हफ़्तावार कार्ड प्रेग्नेंसी के लिए है। अभी के लिए, यह पन्ना आपके पति पढ़ सकते हैं।', family_pt_page: 'आपके पति के लिए एक पन्ना', family_pt_safe: 'क्या भेजना है, यह सिर्फ़ आप तय करती हैं। Sakhi अपने आप कुछ नहीं भेजती।'

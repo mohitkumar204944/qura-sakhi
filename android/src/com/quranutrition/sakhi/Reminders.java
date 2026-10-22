@@ -21,13 +21,14 @@ final class Reminders {
 
     private Reminders() { }
 
-    /** json = [{ "id": "...", "at": epochMillis, "title": "...", "body": "..." }]. Cancels everything scheduled before. */
+    /** json = [{ "id": "...", "at": epochMillis, "title": "...", "body": "...", "secret": true }]. "secret" (discreet mode)
+     *  keeps the reminder off the lock screen. Cancels everything scheduled before. */
     static int replaceAll(Context ctx, String json) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return 0;
         SharedPreferences sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
         for (String id : sp.getStringSet("ids", new HashSet<String>())) {
-            PendingIntent old = pending(ctx, id, null, null);
+            PendingIntent old = pending(ctx, id, null, null, false);
             am.cancel(old);
             old.cancel();
         }
@@ -41,7 +42,7 @@ final class Reminders {
                 long at = o.getLong("at");
                 if (at <= t0) continue;
                 String id = o.getString("id");
-                PendingIntent pi = pending(ctx, id, o.optString("title", "Reminder"), o.optString("body", ""));
+                PendingIntent pi = pending(ctx, id, o.optString("title", "Reminder"), o.optString("body", ""), o.optBoolean("secret", false));
                 if (exact) am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi);
                 else if (Build.VERSION.SDK_INT >= 23) am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi);
                 else am.set(AlarmManager.RTC_WAKEUP, at, pi);
@@ -69,13 +70,14 @@ final class Reminders {
         return replaceAll(ctx, json);
     }
 
-    private static PendingIntent pending(Context ctx, String id, String title, String body) {
+    private static PendingIntent pending(Context ctx, String id, String title, String body, boolean secret) {
         Intent i = new Intent(ctx, ReminderReceiver.class);
         i.setAction("com.quranutrition.sakhi.REMINDER." + id);
         if (title != null) {
             i.putExtra("title", title);
             i.putExtra("body", body);
             i.putExtra("nid", id.hashCode());
+            i.putExtra("secret", secret);
         }
         return PendingIntent.getBroadcast(ctx, id.hashCode(), i, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
     }
