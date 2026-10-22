@@ -60,6 +60,8 @@
   const goOk = (r) => !!r && (['diary', 'checkin'].indexOf(r) >= 0 || r.indexOf('a-') === 0 || !!S.routeOwner(r));
   const doneCount = (d) => Object.keys(d.done).length;
   const finished = (d) => d.active && (doneCount(d) >= N || S.diffDays(S.fromISO(d.start), S.today()) >= N);
+  /* Today's step done: on the journey page and in Home's Today */
+  const markDone = (d, id) => { d.done[dayN(d)] = todayISO(); if (doneCount(d) >= N) { d.finished[id] = todayISO(); S.reminders.remove('journey'); } else if (S.reminders.get('journey')) S.reminders.upsert({ id: 'journey', doneOn: todayISO() }); S.save(); };
   function renderList(v) {
     const d = S.canSave() ? D() : { done: {}, finished: {} };
     v.innerHTML = S.backRow(t('journey_h'), 'care', false) + '<p class="small">' + esc(t('journey_p')) + '</p><div class="list">' +
@@ -97,7 +99,7 @@
     S.wire(v);
     const reRem = () => { if (S.reminders.get('journey')) S.reminders.upsert({ id: 'journey', start: todayISO(), until: S.toISO(S.addDays(S.today(), N - 1)), doneOn: null }); };   /* a new 21 days for a reminder that is on */
     const st = v.querySelector('#jr-start'); if (st) st.addEventListener('click', () => { d.active = id; d.start = todayISO(); d.done = {}; reRem(); S.save(); renderJourney(v, id); });
-    const dn = v.querySelector('#jr-done'); if (dn) dn.addEventListener('click', () => { d.done[dayN(d)] = todayISO(); if (doneCount(d) >= N) { d.finished[id] = todayISO(); S.reminders.remove('journey'); } else if (S.reminders.get('journey')) S.reminders.upsert({ id: 'journey', doneOn: todayISO() }); S.save(); S.toast(t('journey_well')); renderJourney(v, id); });
+    const dn = v.querySelector('#jr-done'); if (dn) dn.addEventListener('click', () => { markDone(d, id); S.toast(t('journey_well')); renderJourney(v, id); });
     const ag = v.querySelector('#jr-again'); if (ag) ag.addEventListener('click', () => { d.start = todayISO(); d.done = {}; reRem(); S.save(); renderJourney(v, id); });
     if (finished(d) && S.reminders.get('journey')) S.reminders.remove('journey');   /* the 21 days are over: no more 9 am reminder */
     const rm = v.querySelector('#jr-remind'); if (rm) rm.addEventListener('change', () => {
@@ -107,12 +109,13 @@
     });
     const sp = v.querySelector('#jr-stop'); if (sp) sp.addEventListener('click', () => { d.active = null; S.reminders.remove('journey'); S.saveQuiet(); renderJourney(v, id); });
   }
-  /* Home: today's step, until it is done. Plain words in discreet mode. */
-  function homeCard() {
-    if (!S.canSave()) return ''; const d = (S.state.mods || {}).journey; if (!d || !d.active || !J[d.active] || !d.start) return '';
-    const dd = Object.assign({ done: {}, finished: {} }, d); if (finished(dd)) return ''; const n = dayN(dd); if ((dd.done || {})[n]) return '';
-    const x = J[d.active].days[n - 1]; const disc = !!(S.state.settings || {}).discreet;
-    return '<button type="button" class="action jr-home" data-go="journey-' + d.active + '"><span class="ico hue hue-' + J[d.active].hue + '">' + S.icon(J[d.active].icon) + '</span><span class="body"><strong>' + esc(disc ? t('journey_home_d') : tx(x[0])) + '</strong><span class="small">' + esc(tf('journey_day', { n: n })) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
+  /* Home's Today: today's step, until it is done, with one tap. Plain words in discreet mode. */
+  function today() {
+    if (!S.canSave()) return null; const d = (S.state.mods || {}).journey; if (!d || !d.active || !J[d.active] || !d.start) return null;
+    const dd = Object.assign({ done: {}, finished: {} }, d); if (finished(dd)) return null; const n = dayN(dd); if ((dd.done || {})[n]) return null;
+    const x = J[d.active].days[n - 1]; const disc = !!(S.state.settings || {}).discreet; const id = d.active;
+    return { id: 'journey', order: 30, icon: J[id].icon, hue: J[id].hue, title: disc ? t('journey_home_d') : tx(x[0]), sub: tf('journey_day', { n: n }), go: 'journey-' + id, rem: ['journey'],
+      actLabel: t('journey_done_b'), act: () => markDone(D(), id), done: t('journey_well') };
   }
 
   S.register({
@@ -147,7 +150,7 @@
     testRoutes: ['journey-pmos', 'journey-iron'],
     open: ['journey', 'journey-*'],
     tiles: [{ section: 'tools', route: 'journey', title: 'journey_h', sub: 'journey_tile_s', icon: 'sparkle', order: 5, keywords: 'journey challenge 21 days habit pmos pcos iron anaemia khoon ki kami small steps' }],
-    homeTop: homeCard,
+    today: today,
     css: '.jr-intro, .jr-fin { align-items: center; text-align: center; gap: 8px; } .jr-intro .sakhi, .jr-fin .sakhi { width: 72px; height: 72px; } .jr-intro .steps { text-align: left; align-self: stretch; }' +
       '.jr-dots { display: grid; grid-template-columns: repeat(21, minmax(0, 1fr)); gap: 3px; } .jr-dots i { height: 8px; border-radius: 4px; background: var(--line); } .jr-dots i.on { background: var(--accent); } .jr-dots i.now { background: var(--accent-2); }' +
       '.jr-today h2 { margin: 0; } .jr-today p { margin: 0; color: var(--fg); } .jr-all { margin: 8px 0 0; padding-left: 22px; display: grid; gap: 4px; color: var(--fg); } .jr-all li.done { color: var(--muted); text-decoration: line-through; }'

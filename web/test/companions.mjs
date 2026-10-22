@@ -71,11 +71,12 @@ const rem = (page, id) => page.evaluate((x) => { const r = (window.Saathi.state.
   check('1 ticking IFA in the pregnancy logs ticks the same day in the iron companion', !!tick && (await iron(page)).log[isoAgo(0)] === 't');
   check('1 the pregnancy logs\' reminder button is now for calcium only', /Daily reminder for calcium/.test(await view(page)) && /Your iron plan and its reminder/.test(await view(page)));
   await go(page, 'home');
-  check('1 Home: no iron card once today is ticked', !(await page.$('#iron-home-took')));
+  const IRON_ROW = '#view .today-iron [data-today-act]';   /* Version 30: the iron card is a row in Home's Today */
+  check('1 Home: no iron row once today is ticked', !(await page.$(IRON_ROW)));
   await page.evaluate((k) => { delete window.Saathi.state.mods.iron.log[k]; window.Saathi.save(); }, isoAgo(0)); await go(page, 'learn'); await go(page, 'home');
-  check('1 Home: the iron card, with one tap', !!(await page.$('#iron-home-took')) && /Iron tablet today/.test(await view(page)));
-  await tap(page, '#iron-home-took'); await sleep(300);
-  check('1 the Home tap ticks today and the card goes', (await iron(page)).log[isoAgo(0)] === 't' && !(await page.$('#iron-home-took')));
+  check('1 Home: the iron row in Today, with one tap', !!(await page.$(IRON_ROW)) && /Iron tablet today/.test(await page.$eval('#view .today-card', (e) => e.innerText)));
+  await tap(page, IRON_ROW); await sleep(300);
+  check('1 the Home tap ticks today and the row goes', (await iron(page)).log[isoAgo(0)] === 't' && !(await page.$(IRON_ROW)));
   await go(page, 'report');
   check('1 the doctor report shows the iron days', /Iron tablets: Pregnancy, since .*1 of 180 days/.test(await view(page)), (await view(page)).slice(0, 900));
   check('1 no page errors', errs.length === 0, errs);
@@ -97,8 +98,8 @@ const rem = (page, id) => page.evaluate((x) => { const r = (window.Saathi.state.
   check('2 done for this week; 1 week counted', /Taken this week/.test(await view(page)) && /Weeks taken: 1/.test(await view(page)));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn');
   await page.evaluate(() => { const S = window.Saathi; const d = S.state.mods.iron; d.log = {}; d.plan = 'doctor'; S.save(); }); await go(page, 'home');
-  const strip = await page.$eval('.iron-home', (e) => e.innerText).catch(() => '');
-  check('2 discreet mode: the Home card says only "Today’s tablet" and "Done"', /Today’s tablet/.test(strip) && !/iron|Days|Weeks/i.test(strip) && /Done/.test(strip), strip);
+  const strip = await page.$eval('#view .today-iron', (e) => e.innerText).catch(() => '');
+  check('2 discreet mode: the Home row says only "Today’s tablet" and "Done"', /Today’s tablet/.test(strip) && !/iron|Days|Weeks/i.test(strip) && /Done/.test(strip), strip);
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = false; S.save(); }); await go(page, 'iron');
   const until = isoAgo(-60);
   await page.fill('#iron-until', until); await page.$eval('#iron-until', (e) => e.dispatchEvent(new Event('change'))); await sleep(250);
@@ -113,6 +114,8 @@ const rem = (page, id) => page.evaluate((x) => { const r = (window.Saathi.state.
 /* ---------- 3. Screening "you're due" on Home ---------- */
 {
   const { ctx, page, errs } = await open({ hash: '#home' });
+  check('3 at 34 with no dates: Home\'s setup card lists the check-ups, and the check-ups card waits for it (Version 30)', /Add your check-up dates/.test(await page.$eval('#view .setup-card', (e) => e.innerText).catch(() => '')) && !/Free check-ups for you/.test(await view(page)));
+  await tap(page, '#setup-hide'); await sleep(250);
   check('3 at 34 with no dates: the free check-ups card, naming both', /Free check-ups for you/.test(await view(page)) && /Cervical screening/.test(await view(page)) && /Breast exam by a health worker/.test(await view(page)));
   await tap(page, '#screen-home-later'); await sleep(250);
   check('3 "Later" hides it for 60 days', !/Free check-ups for you/.test(await view(page)) && (await page.evaluate(() => window.Saathi.state.mods.screen.snooze)) === isoAgo(-60));
@@ -170,7 +173,8 @@ for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', {
   check('6 Hindi: the iron page', /आयरन की गोलियाँ/.test(await view(page)) && /हफ़्ते की गोली/.test(await view(page)));
   await go(page, 'asha'); check('6 Hindi: My ASHA', /मेरी ASHA या ANM/.test(await view(page)));
   await go(page, 'access-online'); check('6 Hindi: Do it online', /सरकारी साइट खोलें/.test(await view(page)));
-  await go(page, 'home'); check('6 Hindi: the check-ups card', /आपके लिए मुफ़्त जाँच/.test(await view(page)));
+  await go(page, 'home'); check('6 Hindi: the setup card and its check-ups step', /Sakhi को अपने लिए तैयार करें/.test(await view(page)) && /अपनी जाँचों की तारीख़ें जोड़ें/.test(await view(page)));
+  await page.$eval('#setup-hide', (e) => e.click()); await sleep(250); check('6 Hindi: the check-ups card', /आपके लिए मुफ़्त जाँच/.test(await view(page)));
   check('6 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
@@ -198,7 +202,10 @@ for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', {
   check('7 the Doctor screen offers the free government options', !!(await page.$('#view #ask-free [data-go="access-doctor"]')) && /Free government options/.test(await view(page)));
   check('7 the Doctor screen\'s booking button has a normal-size icon', (await page.$eval('#ask-web > svg, #ask-wa > svg', (e) => e.getBoundingClientRect().width)) <= 24);
   await go(page, 'help');
-  check('7 Help\'s doctor card links here', !!(await page.$('#view .doc-card [data-go="access-doctor"]')));
+  check('7 Help\'s doctor card links here, through Get care free (Version 30)', !!(await page.$('#view .doc-card [data-go="access-free"]')));
+  await tap(page, '#view .doc-card [data-go="access-free"]'); await sleep(250);
+  check('7 Get care free lists the free doctor page', !!(await page.$('#view [data-go="access-doctor"]')));
+  await go(page, 'help');
   check('7 a tile in the Care hub, in its tools and in pregnancy', JSON.stringify(await page.evaluate(() => window.Saathi.tiles().filter((x) => x.route === 'access-doctor').map((x) => x.section).sort())) === JSON.stringify(['preg', 'tools']));
   await go(page, 'intimate-safety');
   const safe = await page.$$eval('#view a[href]', (a) => a.map((x) => x.getAttribute('href')));

@@ -85,10 +85,10 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   check('1 the anomaly scan\'s window matches its tip: 18 to 20 weeks', /Weeks 18 to 20/.test(await page.$eval('[data-plan="scan2"]', (e) => e.textContent)));
   check('1 the next PMSMA day is a 9th', /Next PMSMA day: \w+, 9 \w+/.test(await page.$eval('[data-plan="pmsma"]', (e) => e.innerText)), await page.$eval('[data-plan="pmsma"]', (e) => e.innerText));
   await go(page, 'home');
-  check('1 Home: one row with what is due now', /Due now: Td injections, and 5 more/.test(await view(page)) && !!(await page.$('#view .pg-due[data-go="preg-plan"]')));
-  check('1 Home: the row sits near the top, above the ask box, where the cap on Home\'s cards can\'t push it off', await page.evaluate(() => { const d = document.querySelector('#view .pg-due'), q = document.querySelector('#view .qa-sec'); return !!d && !!q && !!(d.compareDocumentPosition(q) & Node.DOCUMENT_POSITION_FOLLOWING); }));
+  check('1 Home: one row in Today with what is due now (Version 30)', /Due now: Td injections, and 5 more/.test(await view(page)) && !!(await page.$('#view .today-preg-plan [data-go="preg-plan"]')));
+  check('1 Home: the row sits near the top, above the ask box, where the cap on Home\'s cards can\'t push it off', await page.evaluate(() => { const d = document.querySelector('#view .today-preg-plan'), q = document.querySelector('#view .qa-sec'); return !!d && !!q && !!(d.compareDocumentPosition(q) & Node.DOCUMENT_POSITION_FOLLOWING); }));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn'); await go(page, 'home');
-  check('1 Home in discreet mode: no plan row', !(await page.$('#view .pg-due')) && !/Due now/.test(await view(page)));
+  check('1 Home in discreet mode: no plan row', !(await page.$('#view .today-preg-plan')) && !/Due now/.test(await view(page)));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = false; S.save(); }); await go(page, 'learn');
   await go(page, 'preg-plan');
   await tap(page, '[data-pg-plan="scheme"]'); await sleep(250);
@@ -182,7 +182,7 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   cl = await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access.claims.pmmvy)));
   check('2 back to "Getting papers ready": the dates go and the reminders return', !cl.applied && !cl.got && !!(await rem(page, 'access-pmmvy')), cl);
   await page.$eval('[data-q="ration"][data-o="y"]', (b) => b.click()); await sleep(200);
-  check('2 the finder\'s answers are still never saved', JSON.stringify(Object.keys(await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access))))) === '["claims"]' && !/"ration"/.test(await page.evaluate(() => localStorage.getItem('qura-saathi-v1'))));
+  check('2 the finder\'s answers are still never saved (only her claims, and the dates she first opened Get care free and the finder)', (await page.evaluate(() => Object.keys(window.Saathi.state.mods.access))).every((k) => ['claims', 'seenSchemes', 'seenFree'].indexOf(k) >= 0) && !/"ration"/.test(await page.evaluate(() => localStorage.getItem('qura-saathi-v1'))));
   await page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await tap(page, '[data-claim-stop="pmmvy"]'); await sleep(250);
   check('2 "Stop tracking" removes the claim and its reminders', JSON.stringify(await page.evaluate(() => window.Saathi.state.mods.access.claims)) === '{}' && !(await rem(page, 'access-pmmvy')) && !(await page.$('.access-my')));
   check('2 no birth-cost card on the after-birth list', !/₹37,600/.test(await view(page)));

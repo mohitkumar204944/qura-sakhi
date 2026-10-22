@@ -174,19 +174,23 @@
     });
   }
 
-  /* ---------- Home: today's tablet, until it is ticked (plain words in discreet mode) ---------- */
-  function homeTop() {
-    if (!S.canSave()) return ''; const d0 = (S.state.mods || {}).iron; if (!d0) return '';
-    const d = D(); if (!active(d) || doneNow(d)) return '';
+  /* ---------- Home's Today: today's tablet, until it is ticked (plain words in discreet mode) ---------- */
+  function today() {
+    if (!S.canSave()) return null; const d0 = (S.state.mods || {}).iron; if (!d0) return null;
+    const d = D(); if (!active(d) || doneNow(d)) return null;
     const disc = !!(S.state.settings || {}).discreet; const isW = weekly(d); const P = PLANS[d.plan];
     const sub = disc ? '' : (isW ? tf('iron_weeks_n', { n: weeksTaken(d) }) : (P.target ? tf('iron_of', { n: takenDays(d), of: P.target }) : tf('iron_days_n', { n: takenDays(d) })));
-    return '<div class="card iron-home" data-nofold="1"><button type="button" class="iron-home-go" data-go="iron"><span class="ico-sm hue hue-rose">' + S.icon('drop') + '</span><span class="body"><strong>' + esc(disc ? t('iron_home_d') : t(isW ? 'iron_home_w' : 'iron_home')) + '</strong>' + (sub ? '<span class="small">' + esc(sub) + '</span>' : '') + '</span></button>' +
-      '<button type="button" class="btn sm primary" id="iron-home-took">' + esc(t(disc ? 'iron_home_took_d' : 'iron_took_short')) + '</button></div>';
+    return { id: 'iron', order: 10, icon: 'drop', hue: 'rose', title: disc ? t('iron_home_d') : t(isW ? 'iron_home_w' : 'iron_home'), sub: sub, go: 'iron', rem: [REM],
+      actLabel: t(disc ? 'iron_home_took_d' : 'iron_took_short'), act: () => mark(D(), todayISO(), true), done: t('iron_noted') };
   }
-  function afterRender(v, r) {
-    if (r !== 'home') return;
-    const b = v.querySelector('#iron-home-took'); if (!b) return;
-    b.addEventListener('click', () => { const d = D(); mark(d, todayISO(), true); S.toast(t('iron_noted')); });
+  /* ---------- Home's setup card: iron in pregnancy from the fourth month, and for 180 days after a birth ---------- */
+  function setup() {
+    if (!S.canSave()) return null; const k = S.stageNow(); const sit = S.state.situation || {};
+    if (k === 'preg') { const pi = S.preg.info(); if (!pi || pi.weeks < 13) return null; }
+    else if (k !== 'post' || !okDate(sit.deliveredOn) || S.diffDays(S.fromISO(sit.deliveredOn), S.today()) > 180) return null;
+    /* done once her iron plan is on (or she stopped it), or an iron tablet in My medicines already reminds her */
+    const inMeds = S.reminders.list().some((r) => r.kind === 'med' && r.mod === 'tools' && /iron|ifa|आयरन/i.test(S.reminders.text(r)));
+    const d = D(); return { id: 'iron', order: 30, title: t(k === 'preg' ? 'iron_setup_preg' : 'iron_setup_post'), sub: t(k === 'preg' ? 'iron_setup_preg_s' : 'iron_setup_post_s'), go: 'iron', done: active(d) || !!d.ended || inMeds };
   }
 
   /* ---------- the doctor's summary ---------- */
@@ -232,6 +236,7 @@
         iron_upset_h: 'If it upsets you', iron_help_h: 'When to get help', iron_read: 'Read: the red tablet, the white tablet and two injections', iron_asha: 'My ASHA or ANM',
         iron_stop: 'Stop this plan', iron_stop_q: 'Stop this plan? Your ticked days stay in your diary.', iron_stop_yes: 'Stop the plan',
         iron_ended: 'Your last plan ended on {d}, with {n} days taken.', iron_ended_s: 'Stopped on {d}', iron_last30: 'Last 30 days: {n} days',
+        iron_setup_preg: 'Start your iron tablets', iron_setup_preg_s: 'One a day from the fourth month, with a reminder', iron_setup_post: 'Iron tablets for 180 days after the birth', iron_setup_post_s: 'One a day, with a reminder',
         iron_home: 'Iron tablet today', iron_home_w: 'This week’s iron tablet', iron_home_d: 'Today’s tablet', iron_home_took_d: 'Done',
         iron_sources: 'Sources', iron_foot: 'Free under Anemia Mukt Bharat from your ASHA, ANM, Anganwadi or PHC. Your ticks stay on this phone.'
       },
@@ -252,6 +257,7 @@
         iron_upset_h: 'अगर परेशानी हो', iron_help_h: 'कब मदद लें', iron_read: 'पढ़ें: लाल गोली, सफ़ेद गोली और दो टीके', iron_asha: 'मेरी ASHA या ANM',
         iron_stop: 'यह प्लान रोकें', iron_stop_q: 'यह प्लान रोकें? टिक किए दिन आपकी डायरी में रहेंगे।', iron_stop_yes: 'प्लान रोकें',
         iron_ended: 'आपका पिछला प्लान {d} को ख़त्म हुआ, {n} दिन गोली ली।', iron_ended_s: '{d} को रोका', iron_last30: 'पिछले 30 दिन: {n} दिन',
+        iron_setup_preg: 'आयरन की गोलियाँ शुरू करें', iron_setup_preg_s: 'चौथे महीने से रोज़ एक, रिमाइंडर के साथ', iron_setup_post: 'डिलीवरी के बाद 180 दिन आयरन की गोलियाँ', iron_setup_post_s: 'रोज़ एक, रिमाइंडर के साथ',
         iron_home: 'आज की आयरन की गोली', iron_home_w: 'इस हफ़्ते की आयरन की गोली', iron_home_d: 'आज की गोली', iron_home_took_d: 'हो गया',
         iron_sources: 'स्रोत', iron_foot: 'एनीमिया मुक्त भारत में ASHA, ANM, आंगनवाड़ी या PHC से मुफ़्त। आपके टिक इसी फ़ोन पर रहते हैं।'
       }
@@ -262,15 +268,13 @@
       { section: 'preg', route: 'iron', title: 'iron_h', sub: 'iron_tile_s', icon: 'drop', order: 45, gated: false, keywords: 'iron ifa red tablet 180 days pregnancy आयरन गोली' },
       { section: 'post', route: 'iron', title: 'iron_h', sub: 'iron_tile_s', icon: 'drop', order: 45, gated: false, keywords: 'iron ifa 180 days after birth आयरन गोली' }
     ],
-    homeTop: homeTop,
-    afterRender: afterRender,
+    today: today,
+    setup: setup,
     summary: summary,
     sample: sample,
     css: '.iron-today h2 { margin: 0; } .iron-bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; } .iron-bar i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }' +
       '.iron-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; } .iron-day { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; padding: 6px 0; }' +
       '.iron-day span { font-size: 12px; } .iron-day b { font-size: 15px; color: var(--fg); } .iron-day.on { background: var(--accent-soft); border: 2px solid var(--accent); color: var(--accent); font-weight: 600; }' +
-      '.iron-ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); } .iron-plans .item span { white-space: normal; }' +
-      '.iron-home { flex-direction: row; align-items: center; gap: 10px; padding: 10px 12px; } .iron-home-go { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; border: none; background: none; color: var(--fg); font: inherit; text-align: left; padding: 0; }' +
-      '.iron-home-go .body { display: flex; flex-direction: column; min-width: 0; } .iron-home .btn { flex-shrink: 0; }'
+      '.iron-ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); } .iron-plans .item span { white-space: normal; }' 
   });
 })(window.Saathi);

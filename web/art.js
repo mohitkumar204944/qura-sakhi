@@ -189,6 +189,7 @@
   const SPOT = {
     periods: ['rose', 'drop'], contra: ['teal', 'pill'], pregtest: ['sky', 'check'], ttc: ['green', 'flower'], preg: ['orange', 'baby'], post: ['plum', 'heart'], loss: ['purple', 'leaf'],
     intimate: ['rose', 'lock'], cond: ['gold', 'chart'], screen: ['sky', 'ribbon'], meno: ['purple', 'moon'], teen: ['green', 'users'], tools: ['teal', 'bell'],
+    free: ['teal', 'steth'], plans: ['green', 'bell'], records: ['sky', 'file'], support: ['plum', 'leaf'], fun: ['orange', 'sparkle'],
     cycle: ['rose', 'drop'], mind_body: ['purple', 'sparkle'], pmos: ['gold', 'chart'], conceive: ['green', 'flower'], pregnancy: ['orange', 'baby'], midlife: ['purple', 'moon'], services: ['teal', 'map'], joy: ['orange', 'flower']
   };
   const BLOBS = ['M33 5C47 5 59 15 58 31 57 46 46 59 30 58 15 57 5 46 6 31 7 16 19 5 33 5Z', 'M30 6C44 4 58 14 58 29 58 45 48 57 33 58 17 59 6 48 6 32 6 18 16 8 30 6Z', 'M34 6C49 7 59 19 57 34 55 48 43 58 29 57 15 56 6 45 7 30 8 16 20 5 34 6Z'];

@@ -16,6 +16,7 @@
     plan_open: ['Open', 'खोलें'], plan_mark: ['Done', 'हो गया'], plan_marked: ['Done on {d}', '{d} को हो गया'], plan_undo: ['Undo', 'वापस लें'], plan_auto: ['Done: from your MCP card, logs or tools', 'हो गया: आपके MCP card, रिकॉर्ड या टूल से'],
     plan_td2: ['Second dose from {d}', 'दूसरी खुराक {d} से'],
     plan_pmsma_next: ['Next PMSMA day: {d}', 'अगला PMSMA दिन: {d}'], plan_pmsma_find: ['Find a PMSMA centre', 'PMSMA केंद्र खोजें'], plan_uwin: ['Book on U-WIN', 'U-WIN पर बुक करें'], plan_pmsma_went: ['I went today', 'आज गई थी'], plan_pmsma_n: ['Went: {n}', 'गईं: {n} बार'],
+    setup_plan: ['Turn on your plan’s reminders', 'अपनी योजना के रिमाइंडर चालू करें'],
     plan_rem: ['Remind me when each one is due', 'हर चीज़ का समय आने पर याद दिलाएँ'], plan_rem_s: ['At 10 am on the first day of each check-up and test, and at 9 am on each PMSMA day.', 'हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे, और हर PMSMA दिन सुबह 9 बजे।'],
     plan_none: ['Add your due date or last period to see your plan.', 'अपना प्लान देखने के लिए डिलीवरी की तारीख़ या पिछला पीरियड डालें।'], plan_all_now: ['Nothing is due right now.', 'अभी कुछ बाकी नहीं।'],
     plan_home: ['Due now: {x}', 'अभी: {x}'], plan_home_more: ['{x}, and {n} more', '{x} और {n} अन्य'], plan_rem_now: ['Due now: {x}', 'अभी: {x}'], plan_rem_pmsma: ['PMSMA: free check-up today', 'PMSMA: आज मुफ़्त जाँच'],
@@ -886,13 +887,27 @@
     if (wi.w < W_MIN || wi.w > W_MAX) return '';
     return '<button type="button" class="action" data-go="preg-week"><span class="ico ' + (S.art ? 'hue hue-orange pg-ico-art' : 'accent') + '">' + (S.art ? S.art.produce(clampW(wi.w)) : S.I.baby) + '</span><span class="body"><strong>' + esc(S.art ? TF('home_line2', { n: wi.w }) : TF('home_line', { n: wi.w, s: sizeLine(wi.w) })) + '</strong><span class="small">' + esc(T('home_sub')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
   }
-  /* What is due now, as a strip near the top of Home (homeTop), so the cap on Home's cards can't push it off. Never in discreet
-     mode, like the rest of the pregnancy card, and not after 42 weeks, when Home's urgent flag takes over. */
-  function homeTop() {
-    if (S.state.settings.discreet) return '';
-    const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return '';
-    const due = dueNames();
-    return due.length ? '<button type="button" class="action pg-due" data-go="preg-plan"><span class="ico accent">' + S.I.check + '</span><span class="body"><strong>' + esc(TF('plan_home', { x: due.length > 1 ? TF('plan_home_more', { x: due[0], n: due.length - 1 }) : due[0] })) + '</strong><span class="small">' + esc(T('plan_h')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '';
+  /* Home's Today (Version 30; it was a "Due now" strip at the top of Home): what her plan has due now, never in discreet mode and not
+     after 42 weeks, when Home's urgent flag takes over; and her IFA or calcium tablet while its reminder is on and today's isn't
+     ticked in the logs. The tablet's words are its reminder's, already checked; plain words in discreet mode. */
+  function today() {
+    if (!S.canSave() || !S.cycle.isPregnant()) return null; const out = []; const st = store(); const k = todayISO(); const disc = !!S.state.settings.discreet;
+    const tab = (key, remId, ord) => { const r = S.reminders.get(remId); if (!r || r.on === false || tabOn(st, key, k)) return;
+      out.push({ id: 'preg-' + key, order: ord, icon: 'pill', hue: 'orange', title: disc ? S.t('d_reminder') : S.reminders.text(r), sub: r.time || '', go: 'preg-logs', rem: [remId],
+        act: () => { const s2 = store(); const day = s2.tabs[k] || (s2.tabs[k] = {}); day[key] = true; S.save(); } }); };
+    if (!(S.iron && S.iron.active())) tab('ifa', 'preg-ifa', 13);
+    tab('ca', 'preg-ca', 14);
+    const wi = weekInfo();
+    if (!disc && wi && wi.days <= 294 && wi.w >= W_MIN && wi.w <= W_MAX) {
+      const due = dueNames();
+      if (due.length) out.push({ id: 'preg-plan', order: 20, icon: 'check', hue: 'orange', title: TF('plan_home', { x: due.length > 1 ? TF('plan_home_more', { x: due[0], n: due.length - 1 }) : due[0] }), sub: T('plan_h'), go: 'preg-plan' });
+    }
+    return out;
+  }
+  /* Home's setup card: the plan's reminders */
+  function setup() {
+    if (!S.canSave() || !S.cycle.isPregnant() || !weekInfo()) return null;
+    return { id: 'preg-plan', order: 20, title: T('setup_plan'), sub: T('plan_rem_s'), go: 'preg-plan', done: !!planOf(store()).rem };
   }
   /* ---------- My pregnancy plan (Version 28; docs/feature-research-2026-10-22.md, A1) ----------
      What is due from her weeks: the four check-ups and their free tests, Td, the scans, PMSMA on the 9th, the 75 g sugar test,
@@ -1091,7 +1106,8 @@
       '.pg-two .kv { font-size: 13px; }'
     ].join('\n'),
     home: home,
-    homeTop: homeTop,
+    today: today,
+    setup: setup,
     summary: summary,
     sample: sample
   });

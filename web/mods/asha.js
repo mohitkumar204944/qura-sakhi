@@ -74,6 +74,8 @@
 
   /* for other modules (the pregnancy plan): is her ASHA's number saved? Read-only */
   S.asha = { saved: () => S.canSave() && !!tenDigits(D().phone) };
+  /* Home's setup card (Version 30): her ASHA's number, at every stage */
+  const setup = () => (S.canSave() ? { id: 'asha', order: 50, title: t('asha_setup'), sub: t('asha_help_s'), go: 'asha', done: S.asha.saved() } : null);
 
   S.register({
     id: 'asha',
@@ -84,6 +86,7 @@
         asha_add_h: 'Add your ASHA or ANM', asha_change_h: 'Change her details', asha_who: 'Who is she?', asha_role_asha: 'ASHA', asha_role_anm: 'ANM',
         asha_name_l: 'Her name (optional)', asha_phone_l: 'Her mobile number', asha_phone_ph: '10 digits, e.g. 98765 43210',
         asha_stays: 'Her number stays on this phone. Sakhi never sends it anywhere.', asha_save: 'Save', asha_saved: 'Saved.', asha_bad: 'Enter a 10-digit mobile number.',
+        asha_setup: 'Save your ASHA or ANM’s number',
         asha_del: 'Remove her number', asha_call: 'Call', asha_show: 'Show her my summary', asha_change: 'Change',
         asha_find_h: 'Don’t know your ASHA?', asha_find_p: 'Ask at your nearest Anganwadi centre or Ayushman Arogya Mandir. In states that run it, 104 can help too.', asha_care: 'Care near me',
         asha_can_h: 'What she can help with', asha_can1: 'Registering a pregnancy, and the free check-ups and vaccines', asha_can2: 'Iron tablets, calcium and the weekly iron tablet', asha_can3: 'Schemes like PMMVY and JSY, and the forms', asha_can4: 'Family planning, and where to go for anything she can’t do',
@@ -97,6 +100,7 @@
         asha_add_h: 'अपनी ASHA या ANM जोड़ें', asha_change_h: 'उनकी जानकारी बदलें', asha_who: 'वह कौन हैं?', asha_role_asha: 'ASHA', asha_role_anm: 'ANM',
         asha_name_l: 'उनका नाम (चाहें तो)', asha_phone_l: 'उनका मोबाइल नंबर', asha_phone_ph: '10 अंक, जैसे 98765 43210',
         asha_stays: 'उनका नंबर इसी फ़ोन पर रहता है। Sakhi इसे कहीं नहीं भेजती।', asha_save: 'सेव करें', asha_saved: 'सेव हो गया।', asha_bad: '10 अंकों का मोबाइल नंबर लिखें।',
+        asha_setup: 'अपनी ASHA या ANM का नंबर सेव करें',
         asha_del: 'उनका नंबर हटाएँ', asha_call: 'कॉल करें', asha_show: 'उन्हें मेरा सारांश दिखाएँ', asha_change: 'बदलें',
         asha_find_h: 'अपनी ASHA नहीं पता?', asha_find_p: 'पास के आंगनवाड़ी केंद्र या आयुष्मान आरोग्य मंदिर में पूछें। जिन राज्यों में 104 चलता है, वहाँ उससे भी मदद मिल सकती है।', asha_care: 'मेरे पास इलाज',
         asha_can_h: 'वह किसमें मदद कर सकती हैं', asha_can1: 'गर्भ का पंजीकरण, और मुफ़्त जाँच और टीके', asha_can2: 'आयरन की गोलियाँ, कैल्शियम और हफ़्ते की आयरन गोली', asha_can3: 'PMMVY और JSY जैसी योजनाएँ, और उनके फ़ॉर्म', asha_can4: 'परिवार नियोजन, और जो वह न कर सकें उसके लिए कहाँ जाएँ',
@@ -106,6 +110,7 @@
       }
     },
     routes: { asha: render, 'asha-show': renderShow },
+    setup: setup,
     open: ['asha'],
     tiles: [
       { section: 'tools', route: 'asha', title: 'asha_h', sub: 'asha_tile_s', icon: 'person', order: 3, gated: false, keywords: 'asha anm health worker didi call phone number anganwadi आशा एएनएम दीदी फ़ोन' },

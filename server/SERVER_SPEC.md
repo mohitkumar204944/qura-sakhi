@@ -9,6 +9,10 @@ free project `qura-sakhi` (ref `jovplellzaxebcdekpax`, Mumbai), and it has sent 
 by SMS. An app built without the server's address runs its stand-in server on the phone, which sends nothing (the code is
 always 123456).
 
+**22 Oct 2026, Version 30:** the opt-in "what helps" counts (section 5.9) are built and tested here, with their own migration
+(`20261022120000_sakhi_usage.sql`). They are **not deployed**: the live project has neither the route nor the tables. Mohit
+decides when, after the privacy notice covers them (section 11, decision 8).
+
 Mohit's rules:
 - every woman signs up, and her health data stays on her phone;
 - nothing here may cost new money;
@@ -24,17 +28,21 @@ Mohit's rules:
   Sakhi, and whether she wants updates by SMS or WhatsApp.
 - Records the last day she opened Sakhi, plus her app version and language, once a day.
 - Logs her out and deletes her account when she asks.
+- Only if she turns it on (Version 30, not deployed yet): once a month, adds one phone's "what helps" counts to monthly totals,
+  with no account (section 5.9).
 
 **Never does:**
 - Receives or stores anything from her diary. That means no period dates, symptoms, moods, notes, check-ins, pregnancy or
-  after-birth details, conditions, medicines, reports, her stage, her goals, or which health screens she opens.
+  after-birth details, conditions, medicines, reports, her stage, her goals, or, tied to her account, which health screens she
+  opens. (The opt-in counts of section 5.9 carry no account, and only monthly totals are kept.)
 - Shares account data with Meta or any ad platform, or sends it to a third-party tracker. The code messages themselves go
   through Meta (WhatsApp) or AuthKey (SMS) and carry only the code.
 - Writes to Qura's database or Qura's lead tables.
 
 **Later (phase 2, section 10, not built in the app yet):**
 - The doctor-call hand-off to Qura: the only link between the two products.
-- Anonymous usage counts, crash reports, content and safety switches, "Tell a person", and a locked cloud backup.
+- Crash reports, content and safety switches, "Tell a person", and a locked cloud backup. (Anonymous usage counts are built
+  as section 5.9.)
 
 ---
 
@@ -146,6 +154,8 @@ are in a schema called `sakhi`, with RLS on and no policies:
 | `daily_stats` | Signups, active women, WhatsApp and SMS codes sent, per India date |
 | `pincodes` | PIN code to district and state, loaded with `server/scripts/load-pincodes.mjs` |
 | `jobs` | When the daily clean-up last ran |
+| `usage_counts` | Version 30 (`20261022120000_sakhi_usage.sql`): per month, tool and bucket (`1`, `2-5`, `6+` days), how many phones reported it. Nothing identifies a phone |
+| `usage_reports` | Version 30: per month, how many phones reported |
 
 **Daily clean-up, with no cron needed:** the first code request after 24 hours claims the `jobs` row and deletes:
 - challenges older than a day;
@@ -173,6 +183,7 @@ are in a schema called `sakhi`, with RLS on and no policies:
 | `POST /v1/session/logout` | nothing |
 | `DELETE /v1/me` | nothing |
 | `GET /v1/me` | nothing (not called yet; also serves as "show me my data") |
+| `POST /v1/usage` | `month`, `counts`, and **no** login header (section 5.9) |
 
 ### 5.1 `POST /v1/otp/start`
 
@@ -297,6 +308,43 @@ return `401 unauthorized`. The app then signs her out on the phone and shows the
 | `401` | Signed out on the phone; the signup screen comes back |
 | Details screen failed offline | Kept on the phone and sent on the next app open or when the phone comes back online |
 
+### 5.9 `POST /v1/usage`: what helps (opt-in, Version 30, not deployed)
+
+From `docs/ux-value-audit-2026-10-22.md`, recommendation 10, and MODULE_API section 32. Only a woman who turned on Me > Privacy >
+"Send what helps, once a month" sends this, once a month, a minute or two after she opens Sakhi, never with the daily
+`me/active`.
+
+```json
+{ "month": "2026-09", "counts": { "iron": "6+", "preg-plan": "2-5", "report": "1" } }
+```
+
+1. **No account.** A request with an `Authorization` header is refused (`400 no_token_here`), so a report can never be tied to
+   her. The app sends it without her token.
+2. **Rate limit:** `usage:ip:<hash>`, 3 a day. The hash is an HMAC of the IP with the daily salt *and* the word `usage`, so it
+   matches no other limit's key (a report can't be paired with a code request from the same connection).
+3. `month` must be last month (India date), else `400 month_bad`.
+4. `counts` is an object of at least one tool from `USAGE_TOOLS` in `api.js` (the same list as `USAGE_KEYS` in `web/app.js`; the
+   tests check), each `"1"`, `"2-5"` or `"6+"` days. Anything else is `400 counts_bad`.
+5. **Kept:** one more phone in `usage_counts` for each (month, tool, bucket), and one more in `usage_reports` for the month.
+   Nothing else: no row per phone, no app version, no language.
+6. Return `204`.
+
+**Never counted** (the app's list leaves them out): pregnancy loss, abortion, safety and violence, intimate and sexual health.
+Tool names can still show a stage (the pregnancy plan, say), which is why it is opt-in and the switch says so.
+
+**Before deploying** (Mohit's call): the privacy notice names this flow, then the migration and the function go up together
+(`server/DEPLOY.md`). Until then the live server answers `404`, and the app drops that month's counts.
+
+Reading it:
+
+```sql
+-- Which tools women used last month, and how often (opt-in phones only)
+select tool, sum(phones) filter (where bucket = '1') as one_day, sum(phones) filter (where bucket = '2-5') as two_to_five,
+       sum(phones) filter (where bucket = '6+') as six_plus, sum(phones) as phones
+from sakhi.usage_counts where month = to_char((now() at time zone 'Asia/Kolkata') - interval '1 month', 'YYYY-MM')
+group by tool order by phones desc;
+```
+
 ---
 
 ## 6. Security checklist
@@ -367,7 +415,7 @@ Read the newest weeks with care: weeks younger than N weeks can't have reached N
 
 ## 9. Testing, backups and rollout
 
-1. **Server contract tests:** `node server/test/api.test.mjs` (197 checks).
+1. **Server contract tests:** `node server/test/api.test.mjs` (223 checks; Version 30's "what helps" route added 26).
    - Every row of section 5, run twice: once on an in-memory store, and once on the real SQL in PGlite (Postgres running
      inside the test).
    - Also covers the exact Meta and AuthKey requests, the daily clean-up, the PIN-code loader, and a check that the app's
@@ -376,7 +424,7 @@ Read the newest weeks with care: weeks younger than N weeks can't have reached N
    - The real app in a browser signs up against the real server code over HTTP (a first name is asked for before anything
      is sent; the email lands lower-case), edits, logs out, signs back in by SMS and deletes the account.
    - It checks the database row by row, and that no request carried anything but allowlisted fields.
-3. **App test** (`web/test/signup.mjs`, 80 checks): the same flow against a stand-in server inside the test. Keep it in step
+3. **App test** (`web/test/signup.mjs`, 81 checks; the app's side of section 5.9 is in `web/test/value.mjs`): the same flow against a stand-in server inside the test. Keep it in step
    with any change here.
 4. **Key script** (`server/test/set-qura-keys.test.mjs`, 15 checks): what `server/scripts/set-qura-keys.sh` saves and when it
    stops, with stand-in commands; it never prints a key.
@@ -423,11 +471,8 @@ Other rules for the hand-off:
 
 ### 10.2 The rest
 
-- **Anonymous usage counts:**
-  - No login header and no IP stored.
-  - Daily, weekly and monthly pings with app version, language, install week and which parts of the app were used.
-  - Abortion, pregnancy loss, violence, sexual health and self-harm screens are never counted.
-  - Added to the day's totals on arrival rather than stored ping by ping.
+- **Anonymous usage counts:** built in Version 30 as section 5.9: monthly, opt-in, buckets only, no login header, nothing per
+  phone. The daily and weekly pings and the install week planned here are not built.
 - **Crash reports:** error message, stack (with no user text), app version, phone model and app area.
 - **Content and switches:** static JSON (`config.json`: newest and minimum version, download link, tools switched off, content
   version; plus content bundles). It is the same for every phone, so a tool can be switched off within hours if a doctor finds a
@@ -457,3 +502,5 @@ Other rules for the hand-off:
    again.
 7. Replies to code messages land in Qura's WhatsApp inbox. This is accepted for now; a separate Sakhi number is the fix if
    needed.
+8. "What helps" (section 5.9): whether to turn it on. If yes, the privacy notice (counsel) names the flow first; then deploy the
+   migration and the function together.

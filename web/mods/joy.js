@@ -196,16 +196,6 @@
   }
 
   /* ---------- Home: this month's flower and today's card ---------- */
-  /* Her first week: three small first steps, each one her first petal of its kind. Gone when all three are done, or after 7 days.
-     Not in a sample diary and not in discreet mode. */
-  const FW = [['log', 'joy_fw_log'], ['read', 'joy_fw_read'], ['quiz', 'joy_fw_quiz']];
-  function firstWeek() {
-    const st = S.state; if (!S.canSave() || st.sample || S.flags.discreet) return '';
-    const days = S.diffDays(S.fromISO(st.created || S.toISO(S.today())), S.today()); if (days < 0 || days > 7) return '';
-    const d = D(); const got = (k) => Object.keys(d.days).some((x) => (d.days[x] || []).indexOf(k) >= 0);
-    const n = FW.filter((x) => got(x[0])).length; if (n === FW.length) return '';
-    return '<div class="card joy-fw"><div class="row spread"><h3>' + esc(t('joy_fw_h')) + '</h3><span class="pill">' + n + ' / ' + FW.length + '</span></div><div class="list">' + FW.map((x) => { const ok = got(x[0]); return '<button type="button" class="item quiet joy-fw-it' + (ok ? ' done' : '') + '" data-fw="' + x[0] + '"' + (ok ? ' disabled' : '') + '><span class="joy-fw-tick">' + (ok ? S.I.check : '') + '</span><span class="body"><strong>' + esc(t(x[1])) + '</strong></span>' + (ok ? '' : '<span class="chev">' + S.I.chev + '</span>') + '</button>'; }).join('') + '</div></div>';
-  }
   function stripHtml() {
     if (!S.canSave() || !S.art) return '';
     const d = D(); const mk = S.monthKey(S.today()); const n = monthPetals(d, mk); const m = monthIdx(mk); const done = quizDoneToday(d);
@@ -356,7 +346,6 @@
         joy_rc_kind: 'You looked after yourself on {n} days this month.', joy_rc_kind0: 'A new month is a fresh start. One small thing a day is enough.',
         joy_rc_share: 'Share my flower', joy_rc_share_text: 'My {m} flower in Sakhi: {f}, {n} of 12 petals.', joy_rc_private: 'Only you can see this. Sharing sends just your flower, nothing from your diary.',
         joy_tour: 'Your flower and Today’s card', joy_t1_h: 'Your flower', joy_t1_p: 'Each kind thing you do for yourself adds a petal, up to 3 a day. At 12 petals, this month’s flower blooms.', joy_t2_h: 'Today’s card', joy_t2_p: 'One myth or fact each day. Guess, see the answer, and send it to a friend if you like.',
-        joy_fw_h: 'Your first three petals', joy_fw_log: 'Note how you feel today', joy_fw_read: 'Read one answer', joy_fw_quiz: 'Today’s Sach ya Myth card',
         joy_h: 'My garden', joy_tile_s: 'A flower that grows with each kind thing you do for yourself', joy_intro: "A petal for each kind thing you do for yourself, up to 3 a day. Twelve petals make this month's flower.",
         joy_month_flower: '{m} flower · {f}', joy_petals_n: '{n} of 12 petals', joy_strip_aria: 'My garden: {n} of 12 petals this month', joy_card_today: "Today's card", joy_card_done: 'Card done',
         joy_today_h: 'Petals today', joy_w_quiz: "Do today's card", joy_w_log: 'Log your period or how you feel', joy_w_read: 'Read a guide', joy_w_tool: 'Use a tool, like reminders', joy_w_tool_p: 'Use a tool, like your BP and weight log',
@@ -382,7 +371,6 @@
         joy_rc_kind: 'इस महीने आपने {n} दिन अपना ख़याल रखा।', joy_rc_kind0: 'नया महीना, नई शुरुआत। रोज़ एक छोटी सी चीज़ काफ़ी है।',
         joy_rc_share: 'अपना फूल शेयर करें', joy_rc_share_text: 'Sakhi में मेरा {m} का फूल: {f}, 12 में से {n} पंखुड़ियाँ।', joy_rc_private: 'इसे सिर्फ़ आप देख सकती हैं। शेयर करने पर सिर्फ़ आपका फूल जाता है, डायरी की कोई बात नहीं।',
         joy_tour: 'आपका फूल और आज का कार्ड', joy_t1_h: 'आपका फूल', joy_t1_p: 'अपने लिए किया हर अच्छा काम एक पंखुड़ी जोड़ता है, दिन में 3 तक। 12 पंखुड़ियाँ होते ही इस महीने का फूल खिल जाता है।', joy_t2_h: 'आज का कार्ड', joy_t2_p: 'हर दिन एक बात: सच या मिथक? अंदाज़ा लगाएँ, जवाब देखें, और चाहें तो किसी सहेली को भेजें।',
-        joy_fw_h: 'आपकी पहली तीन पंखुड़ियाँ', joy_fw_log: 'आज कैसा लग रहा है, नोट करें', joy_fw_read: 'एक जवाब पढ़ें', joy_fw_quiz: 'आज का सच या मिथ कार्ड',
         joy_h: 'मेरा बगीचा', joy_tile_s: 'अपने लिए किए हर अच्छे काम से बढ़ता फूल', joy_intro: 'अपने लिए किए हर अच्छे काम पर एक पंखुड़ी, दिन में 3 तक। 12 पंखुड़ियों से इस महीने का फूल बनता है।',
         joy_month_flower: '{m} का फूल · {f}', joy_petals_n: '12 में से {n} पंखुड़ियाँ', joy_strip_aria: 'मेरा बगीचा: इस महीने 12 में से {n} पंखुड़ियाँ', joy_card_today: 'आज का कार्ड', joy_card_done: 'कार्ड हो गया',
         joy_today_h: 'आज की पंखुड़ियाँ', joy_w_quiz: 'आज का कार्ड करें', joy_w_log: 'पीरियड या अपना हाल दर्ज करें', joy_w_read: 'कोई गाइड पढ़ें', joy_w_tool: 'कोई टूल इस्तेमाल करें, जैसे रिमाइंडर', joy_w_tool_p: 'कोई टूल इस्तेमाल करें, जैसे BP और वज़न का रिकॉर्ड',
@@ -411,20 +399,13 @@
       { section: 'tools', route: 'joy', title: 'joy_h', sub: 'joy_tile_s', icon: 'flower', order: 1, gated: false, keywords: 'garden petals flower badges rewards bagicha phool पंखुड़ी बगीचा' },
       { section: 'tools', route: 'joy-quiz', title: 'joy_quiz_h', sub: 'joy_quiz_tile_s', icon: 'sparkle', order: 2, gated: false, keywords: 'myth fact quiz sach bhram card सच भ्रम' }
     ],
-    homeTop: () => firstWeek() + recapCard() + stripHtml(),
+    homeMore: () => recapCard() + stripHtml(),   /* Home's "More for you" (Version 30); the first-week card gave way to the setup card */
     event: (name, payload) => onEvent(name, payload || {}),
     me: () => (S.canSave() && S.art ? '<h2>' + esc(t('joy_h')) + '</h2><div class="list"><button type="button" class="item" data-go="joy"><span class="ico-sm hue hue-orange">' + S.I.flower + '</span><span class="body"><strong>' + esc(t('joy_h')) + '</strong><span>' + esc(tf('joy_petals_n', { n: monthPetals(D(), S.monthKey(S.today())) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : ''),
     under18: () => '<button type="button" class="btn block" data-go="joy-quiz">' + esc(t('joy_quiz_h')) + '</button>',
     sample: (id) => sample(id),
     afterRender: (v, route) => {
       if (route !== 'joy-quiz') q = { id: null, ans: null };
-      if (route !== 'home') return;
-      v.querySelectorAll('[data-fw]').forEach((b) => b.addEventListener('click', () => {
-        const k = b.dataset.fw;
-        if (k === 'log') S.openDay(S.toISO(S.today()), 'sym');
-        else if (k === 'read') { const qs = v.querySelector('.qa-sec'); if (qs) qs.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        else S.setHash('joy-quiz');
-      }));
     }
   });
 })(window.Saathi);

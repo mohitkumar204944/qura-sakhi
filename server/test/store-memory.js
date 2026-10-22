@@ -2,7 +2,7 @@
 // server/test/api.test.mjs runs every check against this and against the real SQL on PGlite, so the two must agree.
 
 export function memoryStore() {
-  const db = { rate: new Map(), challenges: new Map(), accounts: new Map(), consents: [], sessions: new Map(), pincodes: new Map(), stats: new Map(), housekeptAt: 0 };
+  const db = { rate: new Map(), challenges: new Map(), accounts: new Map(), consents: [], sessions: new Map(), pincodes: new Map(), stats: new Map(), usage: new Map(), usageReports: new Map(), housekeptAt: 0 };
   let seq = 0;
   const copy = (o) => (o ? JSON.parse(JSON.stringify(o)) : null);
   const store = {
@@ -81,6 +81,10 @@ export function memoryStore() {
       db.accounts.delete(id);
       db.consents = db.consents.filter((c) => c.account_id !== id);
       for (const [k, s] of db.sessions) if (s.account_id === id) db.sessions.delete(k);
+    },
+    async addUsage(month, pairs) {
+      for (const [tool, bucket] of pairs) { const k = month + '|' + tool + '|' + bucket; db.usage.set(k, (db.usage.get(k) || 0) + 1); }
+      db.usageReports.set(month, (db.usageReports.get(month) || 0) + 1);
     },
     async bumpStat(day, column) {
       if (!['signups', 'active', 'wa_sent', 'sms_sent'].includes(column)) throw new Error('unknown stat ' + column);

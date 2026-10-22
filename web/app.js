@@ -91,6 +91,16 @@
       ask_saved_topic: 'Added to your call request.', teen_learn: 'Learn pages for teens are education only.',
       care: 'Care', care_h: 'Care for every stage', care_p: 'Guides, trackers and reminders, from your first period to after menopause. Free, in your language.', suggested: 'Suggested for you', search_tools: 'Search guides and tools', no_tools: 'No match. Try another word.',
       sec_periods: 'Periods', sec_contra: 'Contraception', sec_pregtest: 'Missed period and unplanned pregnancy', sec_ttc: 'Trying for a baby', sec_preg: 'Pregnancy', sec_post: 'After birth', sec_loss: 'Pregnancy loss', sec_intimate: 'Intimate health and safety', sec_cond: 'Conditions', sec_screen: 'Screening and check-ups', sec_meno: 'Menopause', sec_teen: 'Girls and families', sec_tools: 'My tools',
+      usage_sec: 'Help improve Sakhi', usage_h: 'Send what helps, once a month', usage_d: 'How many days you used each tool, as 1, 2–5 or 6+. It goes without your name or number, and never with your diary.',
+      usage_note: 'Tool names can show your stage, for example the pregnancy plan. Off by default. Turning it off deletes the counts.', usage_see: 'See what would be sent', usage_none: 'Nothing counted yet this month.',
+      usage_days: 'Days used: {n} · sent as {b}', usage_l_search: 'Search', usage_l_diary: 'Diary and logging', usage_l_checkin: 'Monthly check-in',
+      today_done: 'Done', more_h: 'More for you', more_s: 'Search, short reads and your flower',
+      visit_h: 'Going for a check-up today?', visit_p: 'Show your report: what you noted, and your questions, on one screen.', visit_b: 'Open my report', visit_not: 'Not today',
+      setup_h: 'Set up Sakhi for you', setup_hide: 'Hide this', setup_period: 'Log your last period', setup_period_s: 'Then Sakhi can show when the next may come',
+      setup_notif: 'Turn on reminders on this phone', setup_notif_s: 'Tablets and check-ups on time, and a heads-up before your period', setup_notif_s2: 'Tablets and check-ups, on time',
+      setup_dates: 'Add your pregnancy dates', setup_dates_s: 'Your last period or your due date', cu_empty: 'Set a reminder: a tablet, a check-up or anything else', hu_remind: 'Remind me on this phone',
+      sec_free: 'Get care free', sec_plans: 'My plans and reminders', sec_records: 'My records', sec_support: 'Feel better, family and more', sec_fun: 'Just for fun',
+      me_rem_h: 'My reminders', me_rem_on: '{n} on', me_rem_none: 'None yet: tablets, check-ups, anything',
       coming_up: 'Coming up', see_all: 'See all', need_diary_h: 'Start your diary to save this', need_diary_p: 'You can read every guide without a diary. Saving entries needs the diary, which stays on this phone in the prototype.',
       more_langs: 'More languages', partly: 'Partly translated in this prototype. The rest shows in English until doctors review the translation.', lang_h: 'Choose your language',
       sample_meera: 'Meera, 29 · 24 weeks pregnant', sample_sunita: 'Sunita, 33 · baby born 3 weeks ago', sample_kamla: 'Kamla, 48 · periods changing', more_samples: 'More sample women',
@@ -269,6 +279,16 @@
       ask_saved_topic: 'आपके कॉल अनुरोध में जोड़ा गया।', teen_learn: 'किशोरियों के लिए “जानें” के पन्ने सिर्फ़ जानकारी हैं।',
       care: 'देखभाल', care_h: 'हर पड़ाव की देखभाल', care_p: 'गाइड, ट्रैकर और रिमाइंडर, पहले पीरियड से मेनोपॉज़ के बाद तक। मुफ़्त, आपकी भाषा में।', suggested: 'आपके लिए', search_tools: 'गाइड और टूल खोजें', no_tools: 'कुछ नहीं मिला। दूसरा शब्द आज़माएँ।',
       sec_periods: 'पीरियड', sec_contra: 'गर्भनिरोध', sec_pregtest: 'पीरियड मिस होना और अनचाहा गर्भ', sec_ttc: 'बच्चे की कोशिश', sec_preg: 'गर्भावस्था', sec_post: 'डिलीवरी के बाद', sec_loss: 'गर्भ का नुक़सान', sec_intimate: 'निजी सेहत और सुरक्षा', sec_cond: 'बीमारियाँ', sec_screen: 'स्क्रीनिंग और जाँचें', sec_meno: 'मेनोपॉज़', sec_teen: 'बेटियाँ और परिवार', sec_tools: 'मेरे टूल',
+      usage_sec: 'Sakhi को बेहतर बनाने में मदद करें', usage_h: 'महीने में एक बार भेजें कि क्या काम आया', usage_d: 'आपने हर टूल कितने दिन इस्तेमाल किया, 1, 2–5 या 6+ के रूप में। यह आपके नाम या नंबर के बिना जाता है, और आपकी डायरी कभी नहीं।',
+      usage_note: 'टूल के नाम से आपका पड़ाव पता चल सकता है, जैसे गर्भावस्था की योजना। पहले से बंद है। बंद करने पर गिनती मिट जाती है।', usage_see: 'देखें क्या भेजा जाएगा', usage_none: 'इस महीने अभी कुछ नहीं गिना गया।',
+      usage_days: 'इस्तेमाल के दिन: {n} · {b} के रूप में जाएगा', usage_l_search: 'खोज', usage_l_diary: 'डायरी और दर्ज करना', usage_l_checkin: 'महीने का चेक-इन',
+      today_done: 'हो गया', more_h: 'आपके लिए और', more_s: 'खोज, छोटे कार्ड और आपका फूल',
+      visit_h: 'आज जाँच के लिए जा रही हैं?', visit_p: 'अपनी रिपोर्ट दिखाएँ: आपकी लिखी बातें और आपके सवाल, एक स्क्रीन पर।', visit_b: 'मेरी रिपोर्ट खोलें', visit_not: 'आज नहीं',
+      setup_h: 'Sakhi को अपने लिए तैयार करें', setup_hide: 'इसे छिपाएँ', setup_period: 'अपना पिछला पीरियड दर्ज करें', setup_period_s: 'फिर Sakhi बता सकती है कि अगला कब आ सकता है',
+      setup_notif: 'इस फ़ोन पर रिमाइंडर चालू करें', setup_notif_s: 'गोली और जाँच समय पर, और पीरियड से पहले की सूचना', setup_notif_s2: 'गोली और जाँच, समय पर',
+      setup_dates: 'अपने गर्भ की तारीख़ें जोड़ें', setup_dates_s: 'आपका पिछला पीरियड या डिलीवरी की तारीख़', cu_empty: 'रिमाइंडर लगाएँ: गोली, जाँच या कुछ भी', hu_remind: 'इस फ़ोन पर याद दिलाएँ',
+      sec_free: 'मुफ़्त इलाज और मदद', sec_plans: 'मेरी योजनाएँ और रिमाइंडर', sec_records: 'मेरे रिकॉर्ड', sec_support: 'राहत, परिवार और बाक़ी', sec_fun: 'बस मज़े के लिए',
+      me_rem_h: 'मेरे रिमाइंडर', me_rem_on: '{n} चालू', me_rem_none: 'अभी कोई नहीं: गोली, जाँच, कुछ भी',
       coming_up: 'आगे क्या है', see_all: 'सब देखें', need_diary_h: 'इसे सेव करने के लिए डायरी शुरू करें', need_diary_p: 'हर गाइड बिना डायरी के पढ़ सकती हैं। entries सेव करने के लिए डायरी चाहिए, जो prototype में इसी फ़ोन पर रहती है।',
       more_langs: 'और भाषाएँ', partly: 'इस prototype में आंशिक अनुवाद। डॉक्टरों की समीक्षा तक बाक़ी हिस्सा English में दिखेगा।', lang_h: 'अपनी भाषा चुनें',
       sample_meera: 'मीरा, 29 · 24 हफ़्ते की गर्भवती', sample_sunita: 'सुनीता, 33 · 3 हफ़्ते पहले बच्चा हुआ', sample_kamla: 'कमला, 48 · पीरियड बदल रहे हैं', more_samples: 'और नमूना महिलाएँ',
@@ -596,8 +616,14 @@
   /* ---------- module registry ---------- */
   /* Each care area is a module in mods/<id>.js that calls Saathi.register({...}). See MODULE_API.md. */
   const MODS = []; const ROUTES = {}; const PREFIXES = []; const OPEN = []; const TILES = []; const CSS = [];
-  const HOOKS = { home: [], afterHome: [], me: [], afterMe: [], summary: [], under18: [], afterRender: [], beforeRender: [], topbar: [], afterTopbar: [], sample: [], homeTop: [], event: [] };
-  const SECTIONS = ['periods', 'contra', 'pregtest', 'ttc', 'preg', 'post', 'loss', 'intimate', 'cond', 'screen', 'meno', 'teen', 'tools'];
+  const HOOKS = { home: [], afterHome: [], me: [], afterMe: [], summary: [], under18: [], afterRender: [], beforeRender: [], topbar: [], afterTopbar: [], sample: [], homeTop: [], event: [], today: [], setup: [], homeMore: [] };
+  const SECTIONS = ['periods', 'contra', 'pregtest', 'ttc', 'preg', 'post', 'loss', 'intimate', 'cond', 'screen', 'meno', 'teen', 'free', 'plans', 'records', 'support', 'fun'];
+  /* Modules still file their tools under 'tools'; the Care hub shows them in five named groups (Version 30). */
+  const TOOLS_SPLIT = { 'access-free': 'free', 'access-doctor': 'free', 'access-care': 'free', 'access-schemes': 'free', 'access-online': 'free', asha: 'free', ask: 'free',
+    'tools-reminders': 'plans', 'tools-meds': 'plans', iron: 'plans', journey: 'plans', report: 'records', 'tools-reports': 'records', 'tools-summary': 'records',
+    relief: 'support', family: 'support', 'access-partner': 'support', 'access-videos': 'support', 'access-feed': 'support', 'access-symptoms': 'support', lang: 'support',
+    joy: 'fun', 'joy-quiz': 'fun', docportal: 'fun' };
+  const sectionOf = (x) => (x.section === 'tools' ? TOOLS_SPLIT[x.route] || 'support' : x.section);
   const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'tell', 'care', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about'];
   function register(m) {
     if (!m || !m.id) return;
@@ -737,6 +763,7 @@
     else if (map[r]) map[r](v);
     else if (r.startsWith('topic-') && SECTIONS.indexOf(r.slice(6)) >= 0) renderTopic(v, r.slice(6));
     else { const mr = modRoute(r); if (mr) { const ok = safe(() => { mr.fn(v); return true; }, false); if (!ok) v.innerHTML = '<div class="card warn" role="alert" data-crash="1"><h3>' + esc(t('err_screen_h')) + '</h3><p>' + esc(t('err_screen_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm" data-go="care">' + esc(t('care')) + '</button></div></div>'; wire(v); } else renderHome(v); }
+    if (r !== curRoute) usageMark(usageKey(r));
     runHook('afterRender', [v, r, api]);
     safe(() => tidyView(v, r));
     const y = r === curRoute ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0);
@@ -751,20 +778,23 @@
     { section: 'cond', route: 'pattern', title: 'pattern', sub: 'pattern_d', icon: 'check', gated: true, order: 90, mod: 'core' },
     { section: 'ttc', route: 'fertile', title: 'fertile', sub: 'fertile_d', icon: 'flower', gated: true, order: 30, mod: 'core' },
     { section: 'meno', route: 'midlife', title: 'midlife', sub: 'midlife_d', icon: 'moon', gated: true, order: 10, mod: 'core' },
-    { section: 'preg', route: 'pregnancy', title: 'pregw', sub: 'pregw_d', icon: 'baby', gated: true, order: 5, mod: 'core' }
+    { section: 'preg', route: 'pregnancy', title: 'pregw', sub: 'pregw_d', icon: 'baby', gated: true, order: 5, mod: 'core' },
+    { section: 'tools', route: 'report', title: 'rp_h', sub: 'rp_entry_s', icon: 'file', order: 1, mod: 'core', keywords: 'report doctor visit summary show print pdf share checkup रिपोर्ट डॉक्टर जाँच' },
+    { section: 'tools', route: 'ask', title: 'ask_h', sub: 'doc_p', icon: 'steth', order: 3, mod: 'core', keywords: 'doctor qura call video phone consult free speak talk डॉक्टर कॉल बात' }
   ];
   const tileText = (x, k) => (typeof x[k] === 'string' ? t(x[k]) : tx(x[k]));
-  const TOPIC_GROUPS = { periods: ['cycle', 'mind_body'], cond: ['pmos'], ttc: ['conceive'], preg: ['pregnancy'], intimate: ['intimate'], meno: ['midlife'], tools: ['services'] };
-  const SECTION_ICONS = { periods: 'drop', contra: 'pill', pregtest: 'check', ttc: 'flower', preg: 'baby', post: 'heart', loss: 'leaf', intimate: 'lock', cond: 'chart', screen: 'ribbon', meno: 'moon', teen: 'users', tools: 'bell' };
+  const TOPIC_GROUPS = { periods: ['cycle', 'mind_body'], cond: ['pmos'], ttc: ['conceive'], preg: ['pregnancy'], intimate: ['intimate'], meno: ['midlife'], free: ['services'] };
+  const SECTION_ICONS = { periods: 'drop', contra: 'pill', pregtest: 'check', ttc: 'flower', preg: 'baby', post: 'heart', loss: 'leaf', intimate: 'lock', cond: 'chart', screen: 'ribbon', meno: 'moon', teen: 'users', tools: 'bell', free: 'steth', plans: 'bell', records: 'file', support: 'heart', fun: 'sparkle' };
   /* The five tools most likely to matter at her stage, first match wins. */
   const FOR_YOU = {
-    preg: ['preg-week', 'preg-logs', 'pregtools-bag', 'preg-symptoms', 'access-schemes-preg'],
-    post: ['post-recovery', 'post-feed', 'post-contra', 'post-checks', 'post-mood'],
+    preg: ['preg-plan', 'iron', 'access-schemes-preg', 'preg-week', 'preg-logs'],
+    post: ['iron', 'post-contra', 'access-schemes-post', 'post-recovery', 'post-feed'],
     ttc: ['ttc', 'ttc-prep', 'fertile', 'ttc-signs', 'ttc-tests'],
     pmos: ['explain', 'pattern', 'cond-labs', 'periods-pms', 'cond-anaemia'],
-    meno: ['meno', 'midlife', 'meno-diary', 'meno-hrt', 'screen-mine'],
+    meno: ['screen-mine', 'meno-diary', 'meno', 'midlife', 'meno-hrt'],
+    method: ['contra-mine', 'contra-missed', 'tools-reminders'],
     avoid: ['contra', 'contra-mine', 'contra-ec', 'pregtest-when', 'contra-free'],
-    cycle: ['explain', 'periods-pms', 'periods-pain', 'contra', 'screen-mine'],
+    cycle: ['explain', 'screen-mine', 'tools-reminders', 'periods-pain', 'contra'],
     browse: ['teen', 'periods', 'contra', 'pregtest', 'screen']
   };
   function forYouKeys() {
@@ -775,11 +805,12 @@
     if (s.planning || G.indexOf('ttc') >= 0) out.push('ttc');
     if (s.pcos || G.indexOf('pmos') >= 0) out.push('pmos');
     if (isMidlife() || G.indexOf('meno') >= 0) out.push('meno');
+    if (api.contra && safe(() => api.contra.method(), null)) out.push('method');   /* on a method: her method's tools */
     if (G.indexOf('avoid') >= 0) out.push('avoid');
     out.push('cycle'); return out;
   }
   /* Doctor's view is an internal demo; the core pregnancy screen is reached from Home when the pregnancy module is there. */
-  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false))).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']));
+  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false))).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']) && (x.route !== 'report' || canSave())).map((x) => (x.section === 'tools' ? Object.assign({}, x, { section: sectionOf(x) }) : x));
   function forYouTiles(all) {
     const byRoute = {}; all.forEach((x) => { if (!byRoute[x.route]) byRoute[x.route] = x; }); const res = [];
     forYouKeys().forEach((k) => (FOR_YOU[k] || []).forEach((rt) => { const x = byRoute[rt]; if (x && res.indexOf(x) < 0 && res.length < 5) res.push(x); }));
@@ -820,7 +851,7 @@
     [['jalan', 'burning', 'जलन'], 'burning'],
     [['gaanth', 'ganth', 'lump', 'गाँठ', 'गांठ'], 'lump']
   ];
-  const norm = (x) => String(x == null ? '' : x).toLowerCase();
+  const norm = (x) => { const s0 = String(x == null ? '' : x); return (s0.normalize ? s0.normalize('NFC') : s0).toLowerCase(); };   /* फ़ typed or stored either way */
   /* In pregnancy, a danger sign typed in any words (bleeding, swelling, blurred sight, fainting, fits, fever, leaking water,
      belly pain) puts the danger-signs guide first, whatever else matches. */
   const DANGER_ART = 'pregnancy.danger-signs-call-112';
@@ -839,28 +870,63 @@
   function searchTerms(q) {
     const qq = norm(q).trim(); if (!qq) return [];
     const words = qWords(qq); const terms = words.length > 1 ? words.slice() : [words.length ? words[0] : qq];
-    SYN.forEach((row) => { if (row[0].some((v) => { const vv = v.trim(); return qq.indexOf(vv) >= 0 || words.some((w) => w.length >= 3 && vv.indexOf(w) === 0); })) terms.push(row[1]); });
+    SYN.forEach((row) => { if (row[0].some((v) => { const vv = norm(v).trim(); return qq.indexOf(vv) >= 0 || words.some((w) => w.length >= 3 && vv.indexOf(w) === 0); })) terms.push(row[1]); });
     return terms.filter((x, i) => terms.indexOf(x) === i);
   }
   const score = (hay, terms) => terms.reduce((n, tm) => n + (hay.indexOf(tm) >= 0 ? 1 : 0), 0);
+  /* Tools rank by where the words hit (Version 30; docs/ux-value-audit-2026-10-22.md, rec 4). A term at the start of a word counts
+     double, so "plan" finds the pregnancy plan before "unplanned". Each term scores once, in its best place: the title 3, keywords 2,
+     the subtitle or topic 1. Articles keep the plain count above. */
+  const WCH = /[a-z0-9\u00c0-\u024f\u0900-\u0dff]/;
+  const hitAt = (hay, tm) => { let i = hay.indexOf(tm), got = 0; while (i >= 0) { if (i === 0 || !WCH.test(hay.charAt(i - 1))) return 2; got = 1; i = hay.indexOf(tm, i + 1); } return got; };
+  const wscore = (fields, terms) => terms.reduce((n, tm) => n + Math.max.apply(null, fields.map((f) => f[1] * hitAt(f[0], tm))), 0);
+  /* Words that name a tool put that screen first: what she types, then the screens, best first. A typed word matches a whole
+     word here, or the start of one while she is still typing ("remi"). */
+  const TOOL_SYN = [
+    [['report', 'riport', 'रिपोर्ट'], ['report', 'tools-reports', 'tools-summary']],
+    [['doctor', 'docter', 'doctar', 'daktar', 'dr', 'डॉक्टर', 'डाक्टर'], ['ask', 'access-doctor', 'access-free']],
+    [['free', 'muft', 'mufat', 'sarkari', 'मुफ़्त', 'मुफ्त', 'सरकारी'], ['access-free', 'access-doctor', 'access-care']],
+    [['plan', 'प्लान'], ['preg-plan', 'iron', 'journey']],
+    [['reminder', 'remind', 'alarm', 'yaad', 'याद', 'रिमाइंडर', 'अलार्म'], ['tools-reminders', 'contra-mine']],
+    [['iron', 'ifa', 'आयरन', 'आइरन', 'lal goli', 'लाल गोली'], ['iron']],
+    [['scheme', 'yojana', 'yojna', 'money', 'paisa', 'paise', 'pmmvy', 'jsy', 'claim', 'योजना', 'पैसा', 'पैसे', 'दावा'], ['access-schemes', 'access-schemes-preg', 'access-schemes-post']],
+    [['near', 'nearby', 'paas', 'nazdeek', 'najdik', 'hospital', 'aspatal', 'phc', 'chc', 'pincode', 'पास', 'नज़दीक', 'नजदीक', 'अस्पताल'], ['access-care', 'access-doctor']],
+    [['asha', 'anm', 'आशा'], ['asha']],
+    [['online', 'abha', 'uwin', 'u-win', 'ऑनलाइन'], ['access-online']],
+    [['ambulance', '102', '108', 'एम्बुलेंस', 'एंबुलेंस'], ['access-doctor', 'access-free']]
+  ];
+  const toolBoost = (q) => {
+    const qq = norm(q).trim(); const words = qWords(qq).concat(qq.split(/\s+/)); const b = {};
+    TOOL_SYN.forEach((row) => { if (row[0].some((v) => { const vv = norm(v); return vv.indexOf(' ') > 0 ? qq.indexOf(vv) >= 0 : words.some((w) => w === vv || (w.length >= 3 && vv.indexOf(w) === 0)); })) row[1].forEach((rt, i) => { b[rt] = (b[rt] || 0) + 100 - 20 * i; }); });
+    const mine = state.stage !== 'app' ? '' : (isPregnant() ? 'access-schemes-preg' : (afterBirthNow() ? 'access-schemes-post' : ''));
+    if (mine && b[mine] && b['access-schemes']) b[mine] = b['access-schemes'] + 30;   /* in pregnancy or after a birth, her own schemes page first */
+    return b;
+  };
+  /* The tools for a search, best first, one row per screen (iron, ASHA and the free doctor page sit in more than one topic). */
+  const rankTiles = (q, terms, list) => {
+    const boost = toolBoost(q); const seen = {};
+    return list.map((x) => ({ x: x, n: wscore([[norm(bothLang(x, 'title')), 3], [norm(x.keywords || ''), 2], [norm(bothLang(x, 'sub')), 1], [norm((STR.en['sec_' + x.section] || '') + ' ' + (STR.hi['sec_' + x.section] || '')), 1]], terms) + (boost[x.route] || 0) }))
+      .filter((r) => r.n > 0).sort((a, b) => b.n - a.n).map((r) => r.x).filter((x) => (seen[x.route] ? false : (seen[x.route] = true)));
+  };
   const bothLang = (x, k) => { const val = x[k]; if (!val) return ''; if (typeof val === 'string') return (STR.en[val] || val) + ' ' + (STR.hi[val] || ''); return (val.en || '') + ' ' + (val.hi || ''); };
   function searchResults(q, all) {
     const terms = searchTerms(q); if (!terms.length) return '';
     const rank = (list, hayOf) => list.map((x) => ({ x: x, n: score(hayOf(x), terms) })).filter((r) => r.n > 0).sort((a, b) => b.n - a.n).map((r) => r.x);
-    const hitT = rank(all, (x) => norm(bothLang(x, 'title') + ' ' + bothLang(x, 'sub') + ' ' + (STR.en['sec_' + x.section] || '') + ' ' + (STR.hi['sec_' + x.section] || '') + ' ' + (x.keywords || '')));
+    const hitT = rankTiles(q, terms, all);
     const hitA = dangerFirst(q, rank(allArticles(), (a) => norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' '))));
     if (!hitT.length && !hitA.length) return '<div class="card"><p>' + esc(t('no_tools')) + '</p></div>';
     return (hitT.length ? '<section class="care-sec"><h2>' + esc(t('res_tools')) + '</h2><div class="list">' + hitT.slice(0, 24).map(tileHtml).join('') + '</div></section>' : '') +
       (hitA.length ? '<section class="care-sec"><h2>' + esc(t('res_articles')) + '</h2><div class="list">' + hitA.slice(0, 24).map(artHtml).join('') + '</div></section>' : '');
   }
   const searchBox = (id, val) => '<div class="searchbox">' + I.search + '<input id="' + id + '" type="search" enterkeyhint="search" placeholder="' + esc(t('search_all')) + '" value="' + esc(val || '') + '" aria-label="' + esc(t('search_all')) + '"></div>';
-  const wireSearch = (v, id, key) => { const qi = $('#' + id, v); if (!qi) return; qi.addEventListener('input', (e) => { mem[key] = e.target.value; const pos = e.target.selectionStart; render(); const n = $('#' + id); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }); };
+  const wireSearch = (v, id, key) => { const qi = $('#' + id, v); if (!qi) return; qi.addEventListener('input', (e) => { mem[key] = e.target.value; if (e.target.value.trim().length >= 3) usageMark('search'); const pos = e.target.selectionStart; render(); const n = $('#' + id); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }); };
   function renderCare(v) {
     const all = visibleTiles(); const q = (mem.careQ || '').trim(); let body = '';
     if (q) body = searchResults(q, all);
     else {
       const fy = forYouTiles(all);
-      body = (fy.length ? '<section class="care-sec"><h2>' + esc(t('for_you')) + '</h2><div class="list">' + fy.map(tileHtml).join('') + '</div></section>' : '') +
+      body = (ROUTES['access-free'] ? '<div class="list care-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('access_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '') +
+        (fy.length ? '<section class="care-sec"><h2>' + esc(t('for_you')) + '</h2><div class="list">' + fy.map(tileHtml).join('') + '</div></section>' : '') +
         '<section class="care-sec"><h2>' + esc(t('care_topics')) + '</h2><div class="topic-grid">' + SECTIONS.map((sec) => { const n = all.filter((x) => x.section === sec).length + articlesFor(TOPIC_GROUPS[sec] || []).length; if (!n) return ''; return '<button type="button" class="topic-card hue-' + hueOf(sec) + '" data-go="topic-' + sec + '">' + (api.art ? api.art.spot(sec) : '<span class="ico-sm hue">' + icon(SECTION_ICONS[sec]) + '</span>') + '<strong>' + esc(t('sec_' + sec)) + '</strong><span class="small">' + esc(tf('topic_count', { n: n })) + '</span></button>'; }).join('') + '</div></section>';
     }
     if (!q) body += '<button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('all_articles')) + '</strong><span>' + esc(tf('all_articles_d', { n: allArticles().length })) + '</span></span><span class="chev">' + I.chev + '</span></button>';
@@ -917,8 +983,10 @@
   function openNotice() {
     sheet('<h2>' + esc(t('ob_notice_link')) + '</h2><ul class="ob-ul">' + [1, 2, 5, 3, 4].map((i) => '<li>' + esc(t('ob_notice_' + i)) + '</li>').join('') + '</ul><p class="small">' + esc(t('notice_text')) + '</p><p class="small">' + esc(t('grievance')) + '</p><div class="sheet-foot"><button type="button" class="btn primary block" id="nt-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#nt-ok', sh).addEventListener('click', closeSheet); });
   }
-  /* Sample women for demos: press and hold Sakhi on the Hello screen, open the link with #demo, or Me > Demo. */
+  /* Sample women for demos: press and hold Sakhi on the Hello screen, open the link with #demo, or Me > Demo. Only in the web
+     prototype and "demo" APKs: a release APK has no way to load one (Version 30). */
   function openDemo() {
+    if (!demoBuild()) return;
     sheet('<h2>' + esc(t('demo_h')) + '</h2><p class="small">' + esc(t('demo_p')) + '</p><div class="list">' + ['priya', 'asha', 'meera', 'sunita', 'kamla'].map((id) => '<button type="button" class="item" data-sample="' + id + '"><span class="body"><strong>' + esc(t('sample_' + id)) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div><div id="demo-sure"></div>', (sh) => {
       const go = (id) => { const keep = { theme: state.settings.theme, look: state.settings.look }; loadSample(id); Object.assign(state.settings, keep); state.langChosen = true; save(); closeSheet(true); toast(t('sample_note')); setHash('home'); };
       /* Her own entries are replaced by the sample, so that asks first (a sample replacing a sample does not). */
@@ -1053,8 +1121,10 @@
     'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
     'POST me/active': ['app', 'lang'],
     'POST session/logout': [],
-    'DELETE me': []
+    'DELETE me': [],
+    'POST usage': ['month', 'counts']
   };
+  const ANON = { 'POST usage': true };   /* sent without her account token: the server cannot tie it to her (SERVER_SPEC 5.9) */
   const ACC_FIELDS = ['id', 'phone', 'birth_year', 'name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa'];
   let acct = {};
   const loadAcct = () => { try { const a = JSON.parse(localStorage.getItem(ACC_KEY) || 'null'); acct = a && typeof a === 'object' && a.token ? a : {}; } catch (e) { acct = {}; } };
@@ -1078,7 +1148,7 @@
     const allow = SEND[method + ' ' + path]; if (!allow) return Promise.reject(netErr('not_allowed'));
     const clean = {}; allow.forEach((k) => { if (body && body[k] !== undefined && body[k] !== null) clean[k] = body[k]; });
     if (!CFG.api) return demoServer(method + ' ' + path, clean);
-    const headers = { 'Content-Type': 'application/json' }; if (acct.token) headers.Authorization = 'Bearer ' + acct.token;
+    const headers = { 'Content-Type': 'application/json' }; if (acct.token && !ANON[method + ' ' + path]) headers.Authorization = 'Bearer ' + acct.token;
     const ctl = typeof AbortController === 'function' ? new AbortController() : null; const tm = ctl ? setTimeout(() => ctl.abort(), 15000) : 0;
     return fetch(String(CFG.api).replace(/\/+$/, '') + '/v1/' + path, { method: method, headers: headers, body: method === 'DELETE' ? undefined : JSON.stringify(clean), cache: 'no-store', credentials: 'omit', signal: ctl ? ctl.signal : undefined })
       .then((res) => res.text().catch(() => '').then((tx) => {
@@ -1113,6 +1183,39 @@
   const aboutErr = (a) => (!nameOk(a.name) ? ['su_name_bad', 'name'] : !pinCodeOk(a.pin) ? ['su_pin_bad', 'pin'] : !emailOk(a.email) ? ['su_email_bad', 'email'] : null);
   /* Her details go now, or wait in acct.pending and go the next time she is online. A refusal (not a lost connection) drops them. */
   const dropPending = (e) => { if (e.code !== 'offline' && !/^http_5/.test(e.code || '')) { delete acct.pending; saveAcct(); } };
+  /* ---------- What helps (Version 30, opt-in; docs/ux-value-audit-2026-10-22.md, rec 10; MODULE_API section 32) ----------
+     Only after she turns it on (Me > Privacy), the phone counts on how many days of the month she used each tool on a fixed
+     list. Once a month last month's counts go to Sakhi's server as 1, 2-5 or 6+ days, with no account token, no diary and
+     nothing else, a minute or two after she opens Sakhi; the server only adds them to monthly totals. She can see the counts
+     first. Turning it off deletes them. Never for a sample woman, and the list leaves out loss, abortion and safety. */
+  const USAGE_KEYS = ['today', 'setup', 'search', 'diary', 'checkin', 'report', 'ask', 'access-free', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha', 'iron', 'preg-plan', 'preg-week', 'preg-logs', 'post',
+    'contra-mine', 'tools-reminders', 'tools-meds', 'tools-reports', 'journey', 'relief', 'explain', 'screen-mine', 'meno-diary', 'learn', 'joy', 'family'];
+  const usageKey = (r) => (USAGE_KEYS.indexOf(r) >= 0 ? r : (/^access-schemes-/.test(r) ? 'access-schemes' : (/^(journey|relief)-/.test(r) ? r.split('-')[0] : (/^a-/.test(r) ? 'learn' : (/^post-/.test(r) ? 'post' : null)))));
+  const usageOn = () => !!state.settings.usage && canSave() && !state.sample;
+  const usageRoll = () => { const mk = monthKey(today()); const u = state.usage; if (u && u.m && u.m < mk) { if (Object.keys(u.n || {}).length) state.usagePrev = { m: u.m, n: u.n }; state.usage = null; } if (!state.usage) state.usage = { m: mk, n: {}, last: {} }; return state.usage; };
+  function usageMark(k) {
+    if (!k || !usageOn() || USAGE_KEYS.indexOf(k) < 0) return;
+    const u = usageRoll(); const day = toISO(today()); if (u.last[k] === day) return;
+    u.last[k] = day; u.n[k] = (u.n[k] || 0) + 1; save();
+  }
+  const usageBucket = (n) => (n >= 6 ? '6+' : (n >= 2 ? '2-5' : '1'));
+  const prevMonth = (mk) => { const y = +mk.slice(0, 4), m = +mk.slice(5, 7); return m === 1 ? (y - 1) + '-12' : y + '-' + pad2(m - 1); };
+  let usageTm = 0;
+  function usageSend() {
+    if (!usageOn()) return; usageRoll(); const p = state.usagePrev; if (!p) return;
+    if (p.m !== prevMonth(monthKey(today()))) { delete state.usagePrev; save(); return; }   /* older than last month: dropped, never sent */
+    const counts = {}; Object.keys(p.n || {}).forEach((k) => { if (USAGE_KEYS.indexOf(k) >= 0 && p.n[k] > 0) counts[k] = usageBucket(p.n[k]); });
+    if (!Object.keys(counts).length) { delete state.usagePrev; save(); return; }
+    net('POST', 'usage', { month: p.m, counts: counts }).then(() => { delete state.usagePrev; save(); }, (e) => { if (e && e.code !== 'offline' && !/^http_5/.test(e.code || '') && e.code !== 'too_many') { delete state.usagePrev; save(); } });
+  }
+  /* a minute or two after she opens Sakhi, apart from the daily "last active" call */
+  const usageLater = () => { clearTimeout(usageTm); if (usageOn() && (state.usagePrev || (state.usage && state.usage.m !== monthKey(today())))) usageTm = setTimeout(usageSend, 60000 + Math.floor(Math.random() * 60000)); };
+  /* What would go: this month's counts so far, by name, with the bucket that would be sent */
+  const usageName = (k) => { const L0 = { today: 'today_h', setup: 'setup_h', search: 'usage_l_search', diary: 'usage_l_diary', checkin: 'usage_l_checkin', learn: 'learn_h', joy: 'joy_h', post: 'post_t_hub' }[k]; if (L0 && STR.en[L0]) return t(L0); const x = CORE_TILES.concat(TILES).find((y) => y.route === k); return x ? tileText(x, 'title') : k; };
+  function usageSeeHtml() {
+    const u = state.usage && state.usage.m === monthKey(today()) ? state.usage.n || {} : {}; const ks = USAGE_KEYS.filter((k) => u[k] > 0);
+    return '<details class="usage-see"><summary>' + esc(t('usage_see')) + '</summary>' + (ks.length ? '<dl class="kv">' + ks.map((k) => '<dt>' + esc(usageName(k)) + '</dt><dd>' + esc(tf('usage_days', { n: u[k], b: usageBucket(u[k]) })) + '</dd>').join('') + '</dl>' : '<p class="small">' + esc(t('usage_none')) + '</p>') + '</details>';
+  }
   /* While this save is on its way, acctSync leaves her pending details alone: sending them twice at once made the server
      record each update choice twice (seen on the live server, 20 Oct). */
   let saving = false;
@@ -1364,7 +1467,10 @@
     }
     const mk = monthKey(today()); const ciDone = !!state.checkins[mk]; const items = [];
     /* the monthly check-in is one of the round buttons now (with a dot until it is done) */
-    const cu = comingUp(disc); if (cu) items.push(cu);
+    const td = todayHtml(disc); const vc = visitCard(disc); const su = setupCard(disc);
+    const skip = visitIds.slice(); todayItems.forEach((x) => (x.rem || []).forEach((id) => skip.push(id)));   /* already on Home today */
+    const cu = comingUp(disc, skip) || (!su && !disc && canSave() && !reminders.list().length && ROUTES['tools-reminders'] ? '<button type="button" class="item quiet cu-empty" data-go="tools-reminders"><span class="ico-sm">' + I.bell + '</span><span class="body"><strong>' + esc(t('coming_up')) + '</strong><span>' + esc(t('cu_empty')) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '');
+    if (cu) items.push(cu);
     const pi0 = isPregnant() && !disc ? pregInfo() : null; const snz = (state.prompts || {}).baby;
     const bbCard = pi0 && pi0.edd && today() >= addDays(fromISO(pi0.edd), 7) && !(snz && fromISO(snz) > today()) ? ('<div class="card soft bb-card"><h3>' + esc(t('bb_h')) + '</h3><p class="small">' + esc(t('bb_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" id="bb-add">' + esc(t('bb_add')) + '</button><button type="button" class="btn sm" id="bb-not">' + esc(t('bb_not')) + '</button></div><button type="button" class="linkbtn" id="bb-end">' + esc(t('bb_end')) + '</button></div>') : '';
     /* An urgent card (a module card marked data-xp-urgent) sits right under the hero, above the round buttons. Discreet mode hides
@@ -1374,11 +1480,11 @@
     else { const pd = isPregnant() ? pregInfo() : null; if (pd && pd.days > 294) urgentTop.push('<div class="flag urgent pg-late" data-xp-urgent="1">' + esc(t('late_preg_d')) + '</div>'); }
     const hu = headsUpCard(disc);   /* right under the round buttons */
     const stageLink = disc ? '' : '<div class="hero-foot"><button type="button" class="linkbtn" id="stage-btn">' + esc(t('stage_change')) + '</button></div>';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero" style="gap:10px">' + main + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + actionsHtml(showLog, disc, inPeriod) + hu + runHook('homeTop', [api], true) + askHtml(disc) + items.slice(0, 3).join('') +
-      quraCard() +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero" style="gap:10px">' + main + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + actionsHtml(showLog, disc, inPeriod) + hu + td + vc + su + runHook('homeTop', [api], true) + items.slice(0, 3).join('') +
+      moreHtml(disc) + quraCard() +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
-    wireOneTap(v);
+    wireOneTap(v); wireHomeV30(v);
     const hg = $('#hu-got', v); if (hg) hg.addEventListener('click', () => { const ri = rangeInfo(); state.prompts = state.prompts || {}; if (ri) state.prompts.heads = toISO(ri.from); save(); render(); });
     const sbtn = $('#stage-btn', v); if (sbtn) sbtn.addEventListener('click', openStage);
     const ll = $('#log-last', v); if (ll) ll.addEventListener('click', () => openLog('start', toISO(today()), null));
@@ -1402,7 +1508,7 @@
       (disc ? '' : '<p class="small">' + esc(tf('hu_likely', { r: fmtRange(ri.from, ri.to) })) + '</p>') +
       (pats.length ? '<p class="small">' + esc(t('hu_pat_h')) + '</p><ul class="hu-pats">' + pats.map((x) => '<li><b>' + esc(t(x.key)) + '</b>: ' + esc(patWhen(x.r)) + '</li>').join('') + '</ul>' : '') +
       '<p class="small">' + esc(t(disc ? 'hu_ready_d' : 'hu_ready')) + '</p>' +
-      '<div class="row wrap">' + (rel ? '<button type="button" class="btn sm" data-go="relief-' + rel + '">' + esc(t('hu_rel')) + '</button>' : '') + '<button type="button" class="btn sm" id="hu-got">' + esc(t('hu_got')) + '</button></div></div>';
+      '<div class="row wrap">' + (rel ? '<button type="button" class="btn sm" data-go="relief-' + rel + '">' + esc(t('hu_rel')) + '</button>' : '') + (hasReminders() && !state.settings.notify ? '<button type="button" class="btn sm" data-go="me-reminders">' + esc(t('hu_remind')) + '</button>' : '') + '<button type="button" class="btn sm" id="hu-got">' + esc(t('hu_got')) + '</button></div></div>';
   }
   /* The Qura card fits her stage. None in pregnancy, or in the year after a birth while she breastfeeds or is in the first six weeks,
      until the doctor-signed kit rule exists. Wording stays on a conversation with a doctor, never a product. */
@@ -1418,15 +1524,80 @@
   function quickLog(type) {
     const d = toISO(today()); const ex = state.events.find((e) => e.d === d && e.t === type);
     if (ex) { openLog(type, d, ex); return; }
-    const ev = { d: d, t: type }; if (type === 'start') dropGuesses(d); state.events.push(ev); save(); render();
+    const ev = { d: d, t: type }; if (type === 'start') dropGuesses(d); state.events.push(ev); usageMark('diary'); save(); render();
     toastAct(state.settings.discreet ? t('saved') : t('logged_' + type), [
       { label: t('undo'), fn: () => { state.events = state.events.filter((e) => e !== ev); save(); render(); toast(t('undone')); } },
       { label: t('add_details'), fn: () => openLog(type, d, ev) }
     ]);
     emit('log', { type: type });
   }
-  function comingUp(disc) {
-    const up = reminders.upcoming(3).slice(0, 2); if (!up.length) return '';
+  /* ---------- Home, Version 30 (docs/ux-value-audit-2026-10-22.md, recs 1, 2, 7 and 8) ----------
+     Today: up to four things she or her plan set for today, each with one tap. Modules give items through the today hook
+     ({ id, title, sub, icon, hue, go, act, actLabel, done, rem, order }); her own reminders and medicines due today come from the
+     reminders list. Only what she or her plan scheduled shows, never what her entries might suggest. Plain words in discreet mode. */
+  let todayItems = [];
+  function todayHtml(disc) {
+    todayItems = []; if (!canSave()) return '';
+    const items = []; HOOKS.today.forEach((h) => { const x = safe(() => h.fn(api), null); (Array.isArray(x) ? x : [x]).forEach((y) => { if (y && y.id && y.title) items.push(y); }); });
+    const tdS = toISO(today());
+    reminders.list().forEach((r) => {
+      if (r.on === false || (r.mod && r.mod !== 'tools') || r.kind === 'visit' || r.kind === 'checkup') return;
+      const n = remNext(r); if (!n || toISO(n) !== tdS) return;
+      items.push({ id: 'rem-' + r.id, order: 40, icon: r.kind === 'med' ? 'pill' : 'bell', hue: 'green', title: disc ? t('d_reminder') : remText(r), sub: r.time || '', go: ROUTES['tools-reminders'] ? 'tools-reminders' : 'care', rem: [r.id],
+        act: () => { const x = reminders.get(r.id); if (x) { x.doneOn = tdS; save(); } } });
+    });
+    todayItems = items.sort((a, b) => (a.order || 50) - (b.order || 50)).slice(0, 4);
+    if (!todayItems.length) return '';
+    return '<div class="card today-card" data-nofold="1"><h3>' + esc(t('today_h')) + '</h3><div class="list">' + todayItems.map((x, i) => '<div class="item quiet today-it today-' + esc(x.id) + '"><button type="button" class="today-go" data-go="' + esc(x.go) + '"><span class="ico-sm hue hue-' + esc(x.hue || 'rose') + '">' + icon(x.icon || 'bell') + '</span><span class="body"><strong>' + esc(x.title) + '</strong>' + (x.sub ? '<span>' + esc(x.sub) + '</span>' : '') + '</span></button>' +
+      (x.act ? '<button type="button" class="btn sm primary" data-today-act="' + i + '">' + esc(x.actLabel || t('today_done')) + '</button>' : '<span class="chev">' + I.chev + '</span>') + '</div>').join('') + '</div></div>';
+  }
+  /* A check-up or visit today (her reminders of kind "visit": PMSMA day, an injection, a Copper-T visit, her own): the report, which
+     carries her questions, one tap away. Not in discreet mode. "Not today" hides it until tomorrow. */
+  let visitIds = [];
+  function visitCard(disc) {
+    visitIds = []; if (disc || !canSave()) return ''; const tdS = toISO(today());
+    if ((state.prompts || {}).visit === tdS) return '';
+    const due = reminders.list().filter((r) => r.on !== false && r.kind === 'visit' && (() => { const n = remNext(r); return !!n && toISO(n) === tdS; })());
+    if (!due.length) return ''; visitIds = due.map((r) => r.id);
+    return '<div class="card soft visit-card" data-nofold="1"><h3>' + esc(t('visit_h')) + '</h3><p class="small" style="color:var(--fg);font-weight:600">' + esc(due.map(remText).join(' · ')) + '</p><p class="small">' + esc(t('visit_p')) + '</p>' +
+      '<div class="row wrap"><button type="button" class="btn sm primary" data-go="report">' + I.file.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('visit_b')) + '</button><button type="button" class="btn sm" id="visit-not">' + esc(t('visit_not')) + '</button></div></div>';
+  }
+  /* "Set up Sakhi for you": four or five steps for her stage (the set-ups that make Sakhi useful), from the setup hook
+     ({ id, title, sub, go | act, done, order }) and three of the core's own. Gone when all are done or when she hides it; not in
+     discreet mode, for a girl under 18, or while just reading. */
+  let setupSteps = [], setupShown = [];
+  function setupCard(disc) {
+    setupSteps = []; setupShown = []; if (disc || !canSave() || mem.teen || (state.prompts || {}).setup === 'off') return '';
+    const k = stageNow(); const sit = state.situation; const steps = [];
+    if (k === 'preg') steps.push({ id: 'dates', order: 10, title: t('setup_dates'), sub: t('setup_dates_s'), act: () => openStage('preg'), done: !!pregInfo() });
+    else if (k !== 'post' && !sit.stopped && !sit.hysterectomy) steps.push({ id: 'period', order: 10, title: t('setup_period'), sub: t('setup_period_s'), act: () => openLog('start', toISO(today()), null), done: !!lastStart() });
+    if (hasReminders()) steps.push({ id: 'notif', order: k === 'preg' || k === 'post' ? 55 : 15, title: t('setup_notif'), sub: t(k === 'cycle' || k === 'ttc' ? 'setup_notif_s' : 'setup_notif_s2'), go: 'me-reminders', done: !!state.settings.notify });
+    HOOKS.setup.forEach((h) => { const x = safe(() => h.fn(api), null); (Array.isArray(x) ? x : [x]).forEach((y) => { if (y && y.id && y.title && (y.go || y.act)) steps.push(y); }); });
+    setupSteps = steps.sort((a, b) => (a.order || 50) - (b.order || 50)).slice(0, 5);
+    const n = setupSteps.filter((x) => x.done).length; if (!setupSteps.length || n === setupSteps.length) { setupSteps = []; return ''; }
+    /* the steps still to do, three at most; the count says how far she is */
+    const left = setupSteps.map((x, i) => ({ x: x, i: i })).filter((y) => !y.x.done).slice(0, 3); setupShown = left.map((y) => y.x.id);
+    return '<div class="card setup-card" data-nofold="1"><div class="row spread"><h3>' + esc(t('setup_h')) + '</h3><span class="pill">' + n + ' / ' + setupSteps.length + '</span></div><div class="list">' +
+      left.map((y) => '<button type="button" class="item quiet setup-it" data-setup="' + y.i + '"><span class="setup-tick"></span><span class="body"><strong>' + esc(y.x.title) + '</strong>' + (y.x.sub ? '<span>' + esc(y.x.sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>').join('') +
+      '</div><button type="button" class="linkbtn" id="setup-hide">' + esc(t('setup_hide')) + '</button></div>';
+  }
+  /* "More for you": the stories line, Feel better now, the flower and the ask box, folded under one row so the day's tasks come
+     first. Open while just reading, where it is most of Home. A tour that points inside opens it (stepEl). */
+  function moreHtml(disc) {
+    const inner = runHook('homeMore', [api], true) + askHtml(disc);
+    if (state.stage !== 'app') return inner;
+    return '<details class="home-more"' + (mem.homeMore ? ' open' : '') + '><summary class="item"><span class="ico-sm hue hue-plum">' + I.sparkle + '</span><span class="body"><strong>' + esc(t('more_h')) + '</strong><span>' + esc(t('more_s')) + '</span></span><span class="chev">' + I.chev + '</span></summary><div class="home-more-in">' + inner + '</div></details>';
+  }
+  function wireHomeV30(v) {
+    v.querySelectorAll('[data-today-act]').forEach((b) => b.addEventListener('click', () => { const it = todayItems[+b.dataset.todayAct]; if (!it || !it.act) return; safe(() => it.act()); usageMark('today'); save(); toast(it.done || t('saved')); render(); }));
+    v.querySelectorAll('[data-setup]').forEach((b) => b.addEventListener('click', () => { const x = setupSteps[+b.dataset.setup]; if (!x || x.done) return; usageMark('setup'); if (x.act) x.act(); else setHash(x.go); }));
+    const sh = $('#setup-hide', v); if (sh) sh.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.setup = 'off'; save(); render(); });
+    const vn = $('#visit-not', v); if (vn) vn.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.visit = toISO(today()); save(); render(); });
+    const mo = v.querySelector('details.home-more'); if (mo) mo.addEventListener('toggle', () => { mem.homeMore = mo.open; });
+  }
+  function comingUp(disc, skip) {
+    const tdS = toISO(today()); const up = reminders.upcoming(3).filter((x) => !(skip && skip.indexOf(x.r.id) >= 0 && toISO(x.date) === tdS)).slice(0, 2);
+    if (!up.length) return '';
     const go = ROUTES['tools-reminders'] ? 'tools-reminders' : 'care';
     return '<div class="card"><div class="row spread"><h3>' + esc(t('coming_up')) + '</h3><a href="#' + go + '" data-go="' + go + '" class="small">' + esc(t('see_all')) + '</a></div><div class="list">' + up.map((x) => '<div class="item quiet"><span class="ico-sm">' + I.bell + '</span><span class="body"><strong>' + esc(disc ? t('d_reminder') : reminders.text(x.r)) + '</strong><span>' + esc(fmtD(x.date, { weekday: 'short', day: 'numeric', month: 'short' })) + (x.r.time ? ' · ' + esc(x.r.time) : '') + '</span></span></div>').join('') + '</div></div>';
   }
@@ -1586,7 +1757,7 @@
     /* Her stage breaks ties: a pregnant woman asking about movements means the baby's. */
     const near = { preg: ['pregnancy'], post: ['pregnancy'], ttc: ['conceive', 'pmos'], meno: ['midlife'], cycle: ['cycle', 'pmos', 'intimate'], browse: ['cycle'] }[stageNow()] || [];
     const arts = allArticles().map((a) => { const tt = norm(a.title_en + ' ' + a.title_hi); const n = score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) + score(tt, terms) + ph(tt); return { a: a, n: n ? n + (near.indexOf(a.group) >= 0 ? 0.5 : 0) : 0 }; }).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a);
-    const tiles = visibleTiles().map((x) => ({ x: x, n: score(norm(bothLang(x, 'title') + ' ' + bothLang(x, 'sub') + ' ' + (x.keywords || '')), terms) })).filter((r) => r.n > 0).sort((p, r) => r.n - p.n).map((r) => r.x);
+    const tiles = rankTiles(q, terms, visibleTiles());
     return { arts: dangerFirst(q, arts), tiles: tiles };
   }
   function askResults(q) {
@@ -1601,7 +1772,7 @@
     v.querySelectorAll('[data-symlog]').forEach((b) => b.addEventListener('click', () => openDay(toISO(today()))));
     const qi = $('#home-q', v); const res = $('#home-res', v);
     const wireRes = () => { if (!res) return; res.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans))); wire(res); };
-    if (qi && res) { qi.addEventListener('input', () => { mem.homeQ = qi.value; res.innerHTML = askResults(qi.value); wireRes(); }); wireRes(); }
+    if (qi && res) { qi.addEventListener('input', () => { mem.homeQ = qi.value; if (qi.value.trim().length >= 3) usageMark('search'); res.innerHTML = askResults(qi.value); wireRes(); }); wireRes(); }
     const mic = $('#ask-mic', v);
     if (mic && qi) mic.addEventListener('click', () => {
       window.__sakhiHeard = (txt) => { if (!txt) { toast(t('voice_none')); return; } qi.value = txt; mem.homeQ = txt; res.innerHTML = askResults(txt); wireRes(); };
@@ -1771,7 +1942,7 @@
   const kv = (x) => (typeof x === 'function' ? x() : x);
   const stepOk = (s) => !s.when || s.when();
   /* the element a step lights: its feature, or the block around it (wrap), e.g. the ring together with its legend */
-  const stepEl = (s) => { const e = document.querySelector(s.sel); return e && s.wrap ? e.closest(s.wrap) || e : e; };
+  const stepEl = (s) => { const e = document.querySelector(s.sel); const fold = e && e.closest('details:not([open])'); if (fold) fold.open = true; return e && s.wrap ? e.closest(s.wrap) || e : e; };
   const tourRoot = () => { let r = document.getElementById('tour-root'); if (!r) { r = document.createElement('div'); r.id = 'tour-root'; document.body.appendChild(r); } return r; };
   const tourSt = (id) => (state.tours || {})[id] || null;
   const tourDef = (id) => TOURS.find((x) => x.id === id) || null;
@@ -2290,7 +2461,7 @@
   function renderHelp(v) {
     const sec = (title, items, cls) => '<div class="card ' + (cls || '') + '"><h3' + (String(cls || '').indexOf('dark') === 0 ? '' : ' style="color:var(--accent)"') + '>' + esc(title) + '</h3><ul>' + items.map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul></div>';
     v.innerHTML = '<h1>' + esc(t('help_h')) + '</h1><p class="small">' + esc(t('same_for_all')) + '</p>' +
-      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-doctor'] ? '<button type="button" class="linkbtn" data-go="access-doctor">' + esc(t('access_doctor')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
+      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] || ROUTES['access-doctor'] ? '<button type="button" class="linkbtn" data-go="' + (ROUTES['access-free'] ? 'access-free' : 'access-doctor') + '">' + esc(t(ROUTES['access-free'] ? 'access_free' : 'access_doctor')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
       sec(t('call_now'), ['s1a', 's1b', 's1c'], 'dark urgent').replace(/<\/div>$/, '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a', 's5b']) + sec(t('mood'), ['s6a', 's6b']) +
       (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
       (state.stage === 'app' && waNum() && !mem.teen ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + tourMenuHtml();
@@ -2341,7 +2512,11 @@
   const meRows = (page) => HOOKS.me.filter((h) => (ME_PLACE[h.mod] || 'more') === page).map((h) => safe(() => h.fn(api), '')).filter(Boolean).join('');
   const meRow = (go, ico, hue, title, sub, id) => '<button type="button" class="item"' + (id ? ' id="' + id + '"' : '') + ' data-go="' + go + '"><span class="ico-sm hue hue-' + hue + '">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + I.chev + '</span></button>';
   const meSw = (key, label, desc) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + '</span></span><input type="checkbox" data-set="' + key + '" ' + (state.settings[key] ? 'checked' : '') + '></label>';
-  const wireSettings = (v) => v.querySelectorAll('[data-set]').forEach((c) => c.addEventListener('change', () => { state.settings[c.dataset.set] = c.checked; save(); render(); if (c.dataset.set === 'shared') sharedPoke(); }));
+  const wireSettings = (v) => v.querySelectorAll('[data-set]').forEach((c) => c.addEventListener('change', () => {
+    state.settings[c.dataset.set] = c.checked;
+    if (c.dataset.set === 'usage') { delete state.usage; delete state.usagePrev; if (c.checked) usageRoll(); }   /* off deletes the counts; on starts this month afresh */
+    save(); render(); if (c.dataset.set === 'shared') sharedPoke();
+  }));
   const disguised = () => { const B = window.SakhiAndroid; return !!(B && B.setDisguise && safe(() => B.isDisguised(), false)); };
   const hasReminders = () => { const B = window.SakhiAndroid; return !!(B && B.schedule); };
   /* Sakhi's lock takes Sakhi's own PIN. A fingerprint opens it too only when she turned that on, never while the phone is
@@ -2353,6 +2528,9 @@
   const privacySummary = () => { const on = [['discreet', state.settings.discreet], ['shared', state.settings.shared], ['applock', !!state.settings.pinHash], ['disguise', disguised()]].filter((x) => x[1]).map((x) => t(x[0])); return on.length ? tf('me_on_list', { list: on.join(', ') }) : t('me_none_on'); };
   /* her stage in the stage sheet's own words */
   const stageName = () => { const s = stageNow(); return t(s === 'meno' ? (state.situation.stopped ? 'stage_meno' : 'stage_mid') : 'stage_' + (s === 'browse' ? 'cycle' : s)); };
+  const remOnCount = () => reminders.list().filter((r) => r.on !== false).length;
+  /* Prototype settings and the sample women are for Qura's team: the web prototype and "demo" APKs have them, a release APK never */
+  const demoBuild = () => CFG.platform !== 'android' || /demo/i.test(String(CFG.app || ''));
   const demoHtml = () => '<h2>' + esc(t('demo_h')) + '</h2><p class="small">' + esc(t('demo_p')) + '</p><div class="grid2">' + ['priya', 'asha', 'meera', 'sunita', 'kamla'].map((id) => '<button type="button" class="btn sm" data-demo="' + id + '">' + esc(t('sample_' + id)) + '</button>').join('') + (ROUTES['docportal'] ? '<button type="button" class="btn sm" data-go="docportal">' + esc(t('demo_doc')) + '</button>' : '') + '</div><button type="button" class="btn ghost block" id="demo-welcome">' + esc(t('demo_welcome')) + '</button>';
   function wireDemo(v) {
     v.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => { const keep = Object.assign({}, state.settings); loadSample(b.dataset.demo); state.settings = Object.assign(state.settings, keep); save(); toast(t('sample_note')); setHash('home'); }));
@@ -2365,6 +2543,7 @@
     v.innerHTML = backRow(t('me_h'), 'home', false) + head +
       '<div class="list">' + meRow('me-privacy', I.lock, 'purple', t('discretion'), privacySummary(), 'me-privacy') +
         meRow('me-health', disc ? I.leaf : I.heart, 'rose', t(disc ? 'me_health_hd' : 'me_health_h'), disc ? t('me_health_private') : stageName()) +
+        (ROUTES['tools-reminders'] && canSave() ? meRow('tools-reminders', I.clock, 'green', t('me_rem_h'), remOnCount() ? tf('me_rem_on', { n: remOnCount() }) : t('me_rem_none'), 'me-rem-list') : '') +
         (hasReminders() ? meRow('me-reminders', I.bell, 'green', t('notif_sec'), onOff(state.settings.notify)) : '') +
         meRows('main') + '</div>' +
       '<div class="list">' + meRow('me-data', I.file, 'sky', t('me_data_h'), t('me_data_s')) +
@@ -2372,7 +2551,7 @@
         meRow('me-help', I.help, 'teal', t('howto_h'), tf('me_help_s', { n: TOURS.filter((d) => d.menu !== false && tourFits(d)).length })) +
         meRow('me-about', I.learn, 'plum', t('me_about_h'), tf('me_version', { v: CFG.app })) + '</div>' +
       (more ? '<h2>' + esc(t('me_more')) + '</h2>' + more : '') +
-      (state.sample ? demoHtml() : '') +
+      (state.sample && demoBuild() ? demoHtml() : '') +
       '<div class="list me-danger"><button type="button" class="item" id="me-del"><span class="body"><strong>' + esc(t('delete_all')) + '</strong><span>' + esc(t('tm2_p')) + '</span></span></button></div><div id="me-out"></div>';
     wire(v); wireDemo(v);
     $('#me-del', v).addEventListener('click', () => {
@@ -2390,7 +2569,8 @@
       '<label class="item"><span class="body"><strong>' + esc(t('applock')) + '</strong><span>' + esc(t('applock_d')) + '</span></span><input type="checkbox" id="me-lock" ' + (state.settings.pinHash ? 'checked' : '') + '></label>' +
       (state.settings.pinHash && canBio() ? (state.settings.shared ? '<div class="item quiet" id="me-bio-off"><span class="body"><strong>' + esc(t('bio_sw')) + '</strong><span>' + esc(t('bio_sw_shared')) + '</span></span></div>' : meSw('bio', 'bio_sw', 'bio_sw_d')) : '') +
       (canDisguise ? '<label class="item"><span class="body"><strong>' + esc(t('disguise')) + '</strong><span>' + esc(t('disguise_d')) + '</span></span><input type="checkbox" id="me-disguise" ' + (disguised() ? 'checked' : '') + '></label>' : '') +
-      '</div><p class="small">' + esc(t('pin_note')) + '</p>';
+      '</div><p class="small">' + esc(t('pin_note')) + '</p>' +
+      (canSave() && !state.sample && !mem.teen ? '<h2>' + esc(t('usage_sec')) + '</h2><div class="list">' + meSw('usage', 'usage_h', 'usage_d') + '</div>' + (state.settings.usage ? usageSeeHtml() : '') + '<p class="small">' + esc(t('usage_note')) + '</p>' : '');
     wire(v); wireSettings(v);
     $('#me-lock', v).addEventListener('change', (e) => { e.target.checked = !!state.settings.pinHash; pinSheet(state.settings.pinHash ? 'off' : 'set'); });
     const dg = $('#me-disguise', v); if (dg) dg.addEventListener('change', (e) => { safe(() => B.setDisguise(e.target.checked)); toast(t('disguise_done')); });
@@ -2487,13 +2667,13 @@
   /* The notice, the grievance contact and the version. Five taps on the version show the prototype settings, for Qura's team:
      women testing Sakhi never meet them by chance. */
   function renderMeAbout(v) {
-    const proto = !!(state.settings.proto || mem.protoShow);
+    const proto = demoBuild() && !!(state.settings.proto || mem.protoShow);
     v.innerHTML = backRow(t('me_about_h'), 'me', false) + '<ul class="ob-ul">' + [1, 2, 5, 3, 4].map((i) => '<li>' + esc(t('ob_notice_' + i)) + '</li>').join('') + '</ul>' +
       '<p class="small">' + esc(t('notice_text')) + '</p><p class="small">' + esc(t('grievance')) + '</p><p class="small me-version" id="me-version">' + esc(tf('me_version', { v: CFG.app })) + '</p>' +
       (proto ? '<h2>' + esc(t('proto_h')) + '</h2><div class="list">' + meSw('proto', 'protolabels', 'protolabels_d') + '</div>' + (state.settings.proto && !state.sample ? demoHtml() : '') : '');
     wire(v); wireSettings(v); wireDemo(v);
     let taps = 0;
-    $('#me-version', v).addEventListener('click', () => { taps += 1; if (taps >= 5 && !mem.protoShow) { mem.protoShow = true; toast(t('me_proto_shown')); render(); } });
+    $('#me-version', v).addEventListener('click', () => { taps += 1; if (taps >= 5 && !mem.protoShow && demoBuild()) { mem.protoShow = true; toast(t('me_proto_shown')); render(); } });
   }
 
   /* ---------- gated tools ---------- */
@@ -2713,6 +2893,8 @@
     loadSample: loadSample, sampleIds: () => Object.keys(samples), strings: STR,
     onOwnerChange: (fn) => { if (typeof fn === 'function') ownerFns.push(fn); },
     flags: { get proto() { return !!state.settings.proto; }, get discreet() { return !!state.settings.discreet; } },
+    alerts: { can: () => hasReminders(), on: () => !!state.settings.notify },
+    setupShows: (id) => setupShown.indexOf(id) >= 0,   /* Home's setup card lists this step now (a module's own Home card can wait) */   /* phone alerts: Android only, and she turns them on */
     /* Run fn against a sample woman's data without touching the real diary (used by the doctor-view preview). */
     withSample: (id, fn) => { if (!samples[id]) return null; const keep = state; holdSave = true; let out = null; try { state = samples[id](); runHook('sample', [id, api]); out = fn(api); } catch (e) { if (window.console) console.error('[saathi]', e); } finally { state = keep; holdSave = false; } return out; },
     reset: () => { const lang = state.lang; state = defaults(); state.lang = lang; mem = freshMem(); }
@@ -2762,7 +2944,7 @@
       const away = mem.hiddenAt ? Date.now() - mem.hiddenAt : 0; mem.hiddenAt = 0;
       if ((state.settings.pinHash || (state.settings.shared && state.stage === 'app')) && away > 30000 && !mem.locked) { mem.locked = true; mem.bioAuto = false; closeSheet(); render(); }
       else if (route() === 'me' && !sheetUp()) render();   /* back from a phone setting (exact alarms): show its new state */
-      syncNotifications(); acctSync();
+      syncNotifications(); acctSync(); usageLater();
     };
     document.addEventListener('visibilitychange', () => { if (document.hidden) wentAway(); else cameBack(); });
     window.__sakhiPause = wentAway;
@@ -2776,6 +2958,6 @@
     if (state.settings.shared && state.stage === 'app') mem.locked = true;
     armShared();
     render();
-    acctSync(); window.addEventListener('online', acctSync);
+    acctSync(); window.addEventListener('online', acctSync); usageLater();
   };
 })();

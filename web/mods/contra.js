@@ -824,12 +824,22 @@
     const card = (body) => '<div class="card" style="gap:8px"><div class="row spread"><h3>' + esc(nm(d.method)) + '</h3><button type="button" class="btn sm" data-go="contra-mine">' + esc(t('contra_my')) + '</button></div>' + body + '</div>';
     if (expiredOn(d, td)) return card(expiredFlag(d, td));
     if (d.method === 'antara') { const a = antaraDates(d); if (a && td > a.due) return card('<div class="flag">' + esc(td <= a.late ? tf('contra_ant_late_ok', { d: fmt(a.late) }) : t('contra_ant_late')) + '</div>'); }
-    if (!tracks(d)) return '';
-    if (!isDue(d, td) || (d.log || {})[iso(td)]) return '';
-    return '<div class="card" style="gap:8px"><div class="row spread"><h3>' + esc(t('contra_today_q')) + '</h3><span class="small">' + esc(nm(d.method)) + ' · ' + esc(ptime(d)) + '</span></div><div class="grid2"><button type="button" class="btn secondary sm" data-contra-took="1">' + esc(t('contra_took_today')) + '</button><button type="button" class="btn sm" data-go="contra-mine">' + esc(t('contra_my')) + '</button></div></div>';
+    return '';   /* today's pill is a row in Home's Today (today(), below) */
   }
-  function afterHome(v) {
-    v.querySelectorAll('[data-contra-took]').forEach((b) => b.addEventListener('click', () => { markToday(D(), 't'); S.save(); S.toast(t('contra_marked')); S.render(); }));
+  /* Home's Today (Version 30): today's pill or Chhaya day, until she ticks it. Not in discreet mode, as before. */
+  function today() {
+    if (!S.canSave() || S.flags.discreet) return null; const d = D(); if (!M[d.method] || !tracks(d)) return null; const td = S.today();
+    if (expiredOn(d, td) || !isDue(d, td) || (d.log || {})[iso(td)]) return null;
+    return { id: 'contra', order: 12, icon: 'pill', hue: 'teal', title: t('contra_today_q'), sub: nm(d.method) + ' · ' + ptime(d), go: 'contra-mine', rem: PILL_IDS,
+      actLabel: t('contra_took_short'), act: () => { markToday(D(), 't'); S.save(); }, done: t('contra_marked') };
+  }
+  /* Home's setup card: her method and its reminder (on a method, or avoiding pregnancy), or a method for after a birth. */
+  const HAS_REM = ['pill', 'pop', 'chhaya', 'antara', 'cut', 'implant', 'ius', 'nsv', 'lam'];
+  function setup() {
+    if (!S.canSave()) return null; const k = S.stageNow(); const d = D(); const on = !!M[d.method];
+    if (k === 'post') return { id: 'contra', order: 35, title: t('contra_setup_post'), sub: S.routeOwner('post-contra') ? t('post_t_contra_s') : t('contra_hub_s'), go: S.routeOwner('post-contra') ? 'post-contra' : 'contra', done: on };
+    if (k !== 'cycle' || (!on && (S.state.goals || []).indexOf('avoid') < 0)) return null;
+    return { id: 'contra', order: 20, title: t(on ? 'contra_setup_rem' : 'contra_setup_add'), sub: t('contra_mine_s'), go: 'contra-mine', done: on && (HAS_REM.indexOf(d.method) < 0 || d.remOn !== false) };
   }
   function summary() {
     const d = D(); if (!M[d.method]) return [];
@@ -853,6 +863,7 @@
 
   /* ---------- strings ---------- */
   const en = {
+    contra_took_short: 'I took it', contra_setup_add: 'Add the method you use', contra_setup_rem: 'Turn on your method’s reminder', contra_setup_post: 'Choose a method for after the birth',
     contra_hub: 'Contraception', contra_hub_s: 'Find a method, reminders, missed pills, emergency pill', contra_hub_p: 'Most methods here are free at government centres. You choose what suits you; a doctor, nurse or ANM checks that it is safe for you.',
     contra_find: 'Find a method that fits', contra_find_s: '6 short questions. Every method stays on the list.', contra_mine: 'My method and reminders', contra_mine_s: 'Pill time, Chhaya days, next injection, Copper-T dates',
     contra_missed: 'Missed or late pill', contra_missed_s: 'What to do for Mala-N, POP, Chhaya or a late Antara', contra_ec: 'Emergency contraception', contra_ec_s: 'Unprotected sex or a condom broke: what to do, and by when',
@@ -921,6 +932,7 @@
     contra_sum_pills: 'Pills missed in last 30 days: {m} (taken {t}, not marked {u})'
   };
   const hi = {
+    contra_took_short: 'ले ली', contra_setup_add: 'जो तरीक़ा अपनाती हैं, उसे जोड़ें', contra_setup_rem: 'अपने तरीक़े का रिमाइंडर चालू करें', contra_setup_post: 'डिलीवरी के बाद का तरीक़ा चुनें',
     contra_hub: 'गर्भनिरोध', contra_hub_s: 'तरीक़ा चुनें, रिमाइंडर, छूटी गोली, इमरजेंसी गोली', contra_hub_p: 'यहाँ के ज़्यादातर तरीक़े सरकारी केंद्रों पर मुफ़्त हैं। जो आपको ठीक लगे, आप चुनें; डॉक्टर, नर्स या ANM देखती हैं कि वह आपके लिए सुरक्षित है।',
     contra_find: 'आपके लिए सही तरीक़ा खोजें', contra_find_s: '6 छोटे सवाल। हर तरीक़ा सूची में रहता है।', contra_mine: 'मेरा तरीक़ा और रिमाइंडर', contra_mine_s: 'गोली का समय, छाया के दिन, अगला इंजेक्शन, Copper-T की तारीख़ें',
     contra_missed: 'गोली छूट गई या देर हुई', contra_missed_s: 'Mala-N, POP, छाया या अंतरा में देरी पर क्या करें', contra_ec: 'इमरजेंसी गर्भनिरोध', contra_ec_s: 'असुरक्षित संबंध या कंडोम फटा: क्या करें, और कब तक',
@@ -1020,6 +1032,9 @@
     '#view .kv dd{overflow-wrap:anywhere}'
   ].join('\n');
 
+  /* Her method, or null: Care's "For you" puts My method and Missed pill first for her (app.js forYouKeys). */
+  S.contra = { method: () => (S.canSave() && M[D().method] ? D().method : null) };
+
   S.register({
     id: 'contra',
     demoPersona: 'asha',
@@ -1038,7 +1053,8 @@
     ],
     css: css,
     home: home,
-    afterHome: afterHome,
+    today: today,
+    setup: setup,
     summary: summary,
     sample: sample
   });

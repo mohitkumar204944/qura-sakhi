@@ -29,7 +29,7 @@ const browser = await chromium.launch();
 async function open(o = {}) {
   const ctx = await browser.newContext({ viewport: { width: o.w || 390, height: 844 }, locale: o.lang === 'hi' ? 'hi-IN' : 'en-IN' });
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
-  await ctx.addInitScript('window.SAKHI_CONFIG = { api: "", app: "test-0.25", platform: "android" };');
+  await ctx.addInitScript('window.SAKHI_CONFIG = { api: "", app: "' + (o.app || 'test-0.25') + '", platform: "android" };');
   if (o.android !== false) await ctx.addInitScript(ANDROID);
   await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + '); localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify({ token: 'test', id: 'test', phone: '+919876543210', name: 'Asha', pincode: '560001', activeOn: iso(0) })) + '); }');
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
@@ -50,8 +50,8 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   const { ctx, page, errs } = await open();
   const r = await rows(page);
   const order = r.map((x) => x.go || x.id);
-  check('1 the rows, in order: account, privacy, health, reminders, language, data, look, help, about, then delete',
-    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
+  check('1 the rows, in order: account, privacy, health, my reminders, phone reminders, language, data, look, help, about, then delete',
+    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'tools-reminders', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
   check('1 her name and masked number head the page', r[0].t === 'Asha' && /Asha\s*\+91\u00a0•••••\u00a0•3210/.test(await view(page)), await view(page));
   check('1 privacy says what is on', /Privacy on a shared phone/.test(await view(page)) && /Nothing switched on yet/.test(await view(page)));
   check('1 health shows her stage, and names no condition', /Tracking my periods/.test(await view(page)) && !CONDITIONS.test(await view(page)), await view(page));
@@ -75,12 +75,12 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   await ctx.close();
 }
 
-/* ---------- 3. Privacy: four switches; a switch is a switch ---------- */
+/* ---------- 3. Privacy: five switches; a switch is a switch ---------- */
 {
   const { ctx, page, errs } = await open();
   await go(page, '#me-privacy');
   const sw = await page.$$eval('#view .item > input[type=checkbox]', (xs) => xs.map((x) => ({ role: x.getAttribute('role'), w: Math.round(x.getBoundingClientRect().width), app: getComputedStyle(x).appearance })));
-  check('3 four switches: discreet, shared phone, app lock, hide the app', sw.length === 4, sw);
+  check('3 five switches: discreet, shared phone, app lock, hide the app, and (Version 30) send what helps, which starts off', sw.length === 5 && !(await page.$eval('[data-set="usage"]', (e) => e.checked)), sw);
   check('3 drawn and announced as switches', sw.every((x) => x.role === 'switch' && x.w === 48 && x.app === 'none'), sw);
   await page.$eval('[data-set="discreet"]', (el) => el.click()); await sleep(200);
   await go(page, '#me');
@@ -154,10 +154,18 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   check('6 no prototype settings at first', !/Prototype/.test(tx) && !(await page.$('[data-set="proto"]')));
   for (let i = 0; i < 5; i++) { await tap(page, '#me-version'); await sleep(40); }
   await sleep(200);
-  check('6 five taps on the version show them', !!(await page.$('[data-set="proto"]')));
+  check('6 a release APK (no "demo" in its version): five taps show nothing (Version 30)', !(await page.$('[data-set="proto"]')) && !/Prototype/.test(await view(page)));
+  check('6 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  const { ctx, page, errs } = await open({ app: 'test-0.30-demo', hash: '#me-about' });
+  for (let i = 0; i < 5; i++) { await tap(page, '#me-version'); await sleep(40); }
+  await sleep(200);
+  check('6 a demo APK: five taps on the version show them', !!(await page.$('[data-set="proto"]')));
   await page.$eval('[data-set="proto"]', (el) => el.click()); await sleep(250);
   check('6 prototype labels on: the sample women appear', (await page.$$('[data-demo]')).length === 5);
-  check('6 no page errors', !errs.length, errs);
+  check('6 no page errors (demo)', !errs.length, errs);
   await ctx.close();
 }
 

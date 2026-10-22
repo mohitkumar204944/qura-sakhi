@@ -234,3 +234,48 @@ A page of free government services. Each card opens the official site or app, or
 **Buttons and titles need no clinical review:** "Open eSanjeevani", "OPD timings", "Book on ORS", "Get the app", "Find a
 PMSMA centre", "Book on U-WIN", "Call 102", "Find a hospital", "Check my card", "Tele-MANAS website", "Free doctor and care".
 
+
+## 7. Version 30: Today, the setup card, Get care free and "what helps" (please check the first table)
+
+Version 30 mostly moves things that were already checked (the iron, pill and plan rows, the scheme and doctor pages). The
+new words are below. Each line is a step or a label, not advice, but the first table restates checked facts in fewer words.
+Please check that the short form is still right.
+
+**Short forms of checked facts (please check):**
+
+| Where | English | Hindi | Checked source |
+|---|---|---|---|
+| Setup step, pregnancy | Start your iron tablets. One a day from the fourth month, with a reminder | आयरन की गोलियाँ शुरू करें। चौथे महीने से रोज़ एक, रिमाइंडर के साथ | The iron page's plan line (week 14 tip) |
+| Setup step, after a birth | Iron tablets for 180 days after the birth. One a day, with a reminder | डिलीवरी के बाद 180 दिन आयरन की गोलियाँ। रोज़ एक, रिमाइंडर के साथ | The same line: "again for 180 days after the birth" |
+| Setup step, 30 to 65 | Add your check-up dates. Free from 30: cervical screening and a breast exam | अपनी जाँचों की तारीख़ें जोड़ें। 30 से मुफ़्त: बच्चेदानी के मुँह की जाँच और स्तन की जाँच | The check-ups card: "From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years" |
+| Setup step, the period | Log your last period. Then Sakhi can show when the next may come | अपना पिछला पीरियड दर्ज करें। फिर Sakhi बता सकती है कि अगला कब आ सकता है | Home's "Next period likely" |
+| Visit day | Going for a check-up today? Show your report: what you noted, and your questions, on one screen. | आज जाँच के लिए जा रही हैं? अपनी रिपोर्ट दिखाएँ: आपकी लिखी बातें और आपके सवाल, एक स्क्रीन पर। | The report's own description |
+
+**Steps and labels (no health content):**
+
+| Where | English | Hindi |
+|---|---|---|
+| Home | Today · Done · More for you · Search, short reads and your flower | आज · हो गया · आपके लिए और · खोज, छोटे कार्ड और आपका फूल |
+| Setup card | Set up Sakhi for you · Hide this | Sakhi को अपने लिए तैयार करें · इसे छिपाएँ |
+| Setup steps | Turn on reminders on this phone (Tablets and check-ups on time, and a heads-up before your period) · Add your pregnancy dates (Your last period or your due date) · Turn on your plan’s reminders · Check the scheme money you can get · Save your ASHA or ANM’s number · Look at free care near you (Free doctors, schemes and helplines, before you need them) · Add the method you use · Turn on your method’s reminder · Choose a method for after the birth · Start the weekly symptom diary | इस फ़ोन पर रिमाइंडर चालू करें (गोली और जाँच समय पर, और पीरियड से पहले की सूचना) · अपने गर्भ की तारीख़ें जोड़ें (आपका पिछला पीरियड या डिलीवरी की तारीख़) · अपनी योजना के रिमाइंडर चालू करें · देखें कि योजना का कितना पैसा मिल सकता है · अपनी ASHA या ANM का नंबर सेव करें · अपने पास का मुफ़्त इलाज देखें (मुफ़्त डॉक्टर, योजनाएँ और हेल्पलाइन, ज़रूरत से पहले) · जो तरीक़ा अपनाती हैं, उसे जोड़ें · अपने तरीक़े का रिमाइंडर चालू करें · डिलीवरी के बाद का तरीक़ा चुनें · हफ़्ते की लक्षण डायरी शुरू करें |
+| Visit day | Open my report · Not today | मेरी रिपोर्ट खोलें · आज नहीं |
+| Today, the pill | I took it | ले ली |
+| Coming up, empty | Set a reminder: a tablet, a check-up or anything else | रिमाइंडर लगाएँ: गोली, जाँच या कुछ भी |
+| Heads-up, Android | Remind me on this phone | इस फ़ोन पर याद दिलाएँ |
+| Reminders centre, Android | Phone alerts are off, so these reminders will not ring. · Turn on | फ़ोन पर अलर्ट बंद हैं, इसलिए ये रिमाइंडर नहीं बजेंगे। · चालू करें |
+| Me | My reminders · {n} on · None yet: tablets, check-ups, anything | मेरे रिमाइंडर · {n} चालू · अभी कोई नहीं: गोली, जाँच, कुछ भी |
+| Get care free | Get care free · Every free doctor, scheme and helper in one place · Free doctors, care near you, scheme money and your ASHA, in one place. Each opens its own page. · My claims: {n} | मुफ़्त इलाज और मदद · हर मुफ़्त डॉक्टर, योजना और मदद एक जगह · मुफ़्त डॉक्टर, आपके पास इलाज, योजना का पैसा और आपकी ASHA, एक जगह। हर एक अपना पन्ना खोलता है। · मेरे दावे: {n} |
+| Care groups | Get care free · My plans and reminders · My records · Feel better, family and more · Just for fun | मुफ़्त इलाज और मदद · मेरी योजनाएँ और रिमाइंडर · मेरे रिकॉर्ड · राहत, परिवार और बाक़ी · बस मज़े के लिए |
+
+**"What helps" (Me > Privacy; please check the privacy wording with counsel too):**
+
+| English | Hindi |
+|---|---|
+| Help improve Sakhi | Sakhi को बेहतर बनाने में मदद करें |
+| Send what helps, once a month | महीने में एक बार भेजें कि क्या काम आया |
+| How many days you used each tool, as 1, 2–5 or 6+. It goes without your name or number, and never with your diary. | आपने हर टूल कितने दिन इस्तेमाल किया, 1, 2–5 या 6+ के रूप में। यह आपके नाम या नंबर के बिना जाता है, और आपकी डायरी कभी नहीं। |
+| Tool names can show your stage, for example the pregnancy plan. Off by default. Turning it off deletes the counts. | टूल के नाम से आपका पड़ाव पता चल सकता है, जैसे गर्भावस्था की योजना। पहले से बंद है। बंद करने पर गिनती मिट जाती है। |
+| See what would be sent · Nothing counted yet this month. · Days used: {n} · sent as {b} | देखें क्या भेजा जाएगा · इस महीने अभी कुछ नहीं गिना गया। · इस्तेमाल के दिन: {n} · {b} के रूप में जाएगा |
+
+**Other languages:** the five group names and the new labels fall back to English in Marathi, Bengali, Tamil and Telugu until
+they are translated, like the rest of those partial languages.

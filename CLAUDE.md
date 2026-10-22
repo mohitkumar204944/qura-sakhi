@@ -14,6 +14,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - It's live on Sakhi's own free Supabase project `qura-sakhi` (ref `jovplellzaxebcdekpax`). It sends real codes by
     WhatsApp and SMS through Qura's accounts; the keys are set with `server/scripts/set-qura-keys.sh`.
   - An APK built without `SAKHI_API` still runs the stand-in server, whose code is always 123456.
+  - Version 30's opt-in "what helps" route and its migration are built but not deployed (SERVER_SPEC 5.9). The next `db push`
+    or function deploy would carry them, so either waits for Mohit's yes.
 - `docs/history.md`: build log for 18–20 Oct 2026. It's long; read it only when the history matters.
 - Outside the repo (business files, not in git): `../2 - Screenshots`, `../3 - Research and planning` (product vision,
   research, audits, internal-only Flo reference screenshots), `../4 - Learn library`, the .docx files, and the latest APK copy.
@@ -26,6 +28,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/privacy.mjs` (help wording, lock, screen capture, shares, reminders, the APK's CSP)
   - `node test/companions.mjs` (iron tablets, check-ups due, My ASHA, Do it online)
   - `node test/plans.mjs` (pregnancy plan, scheme claims, the doctor report's language, big screen and PDF)
+  - `node test/value.mjs` (Version 30: search, Care's groups, Get care free, Home's Today, setup and visit cards, the fold,
+    reminders, and the opt-in "what helps" counts)
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`
@@ -36,7 +40,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - Add `SAKHI_HELP_WA=91XXXXXXXXXX` (Qura's staffed WhatsApp number) for "Speak to a doctor" and "Tell a person". Without
     it the doctor screen offers Qura's booking page and "Tell a person" is hidden.
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
-  - It installs on the phone if one is on adb.
+  - It installs and opens the app on the phone if one is on adb. To build without installing, run it with adb off the path:
+    `PATH=/usr/bin:/bin:/usr/sbin:/sbin` before the command.
   - Copy the result to `../QuraSakhi-prototype.apk`.
 - Care near me data: `node web/tools/care-data.mjs` writes `web/care/` (not in git) from data.gov.in. It needs Mohit's own
   key or his hand-downloaded files: `docs/care-near-me-data-2026-10-22.md`. `build-apk.sh` bundles it when present.

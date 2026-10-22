@@ -37,7 +37,11 @@ supabase link --project-ref jovplellzaxebcdekpax
 supabase db push
 ```
 
-`db push` applies the one Sakhi migration. This is Sakhi's own project, so nothing of Qura's is touched.
+`db push` applies every Sakhi migration not yet on the project. This is Sakhi's own project, so nothing of Qura's is touched.
+
+**Version 30 (22 Oct 2026):** `20261022120000_sakhi_usage.sql` adds the two tables for the opt-in "what helps" counts
+(SERVER_SPEC section 5.9). It is **not on the live project yet**, and the function there has no `usage` route. The next
+`db push` and the next function deploy carry both, so both wait for Mohit's yes (SERVER_SPEC section 11, decision 8).
 
 ## 3. Set the secrets
 
@@ -140,3 +144,11 @@ cd ~/Desktop/QuraSakhi/sakhi/server && supabase db dump --data-only --schema sak
 - **No cron needed:** daily clean-up runs inside the function. The first code request after 24 hours clears old codes, rate
   counters and dead sessions.
 - **Code changes:** run `npm run test:server` before every deploy.
+- **"What helps" (Version 30):** when Mohit says yes, `supabase db push`, then deploy the function (section 4), then check that
+  a request with a token is refused:
+
+  ```bash
+  curl -s -X POST https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/usage -H 'content-type: application/json' -H 'authorization: Bearer xxxxxxxxxxxxxxxxxxxxxxxx' -d '{"month":"2026-09","counts":{"iron":"1"}}'
+  ```
+
+  It should answer `{"error":"no_token_here"}`. Don't send a real report by hand: it would count in the totals.

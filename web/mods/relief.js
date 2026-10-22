@@ -212,7 +212,7 @@
     testRoutes: ['relief-cramps', 'relief-nausea', 'relief-sleep', 'relief-calm', 'relief-hot'],
     open: ['relief', 'relief-*'],
     tiles: [{ section: 'tools', route: 'relief', title: 'relief_h', sub: 'relief_tile_s', icon: 'leaf', order: 4, keywords: 'pain cramps dard aithan nausea ulti ji michlana sleep neend anxiety ghabrahat tension udasi low mood hot flush garmi relax breathing saans' }],
-    homeTop: homeCard,
+    homeMore: homeCard,
     afterRender: (v, route) => { if (!/^relief-/.test(route || '')) stopRun(); },
     sample: (id) => { if (id === 'asha') D().log.push({ d: '2026-09-29', id: 'cramps', r: 'yes' }); if (id === 'kamla') D().log.push({ d: '2026-10-12', id: 'hot', r: 'some' }); },
     css: '.rl-player { display: flex; flex-direction: column; gap: 12px; }' +

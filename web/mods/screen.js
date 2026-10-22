@@ -434,7 +434,7 @@
   const en = {
     screen_hub: 'Screening and check-ups', screen_hub_s: 'My check-ups, cervical screening, HPV vaccine, breast self-check',
     screen_hub_p: 'Simple tests find problems early, often years before you feel anything. Most are free at your Ayushman Arogya Mandir (health and wellness centre) or PHC.',
-    screen_home_h: 'Free check-ups for you', screen_home_p: 'From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years, at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_go: 'See my check-ups', screen_home_later: 'Later',
+    screen_setup: 'Add your check-up dates', screen_setup_s: 'Free from 30: cervical screening and a breast exam', screen_home_h: 'Free check-ups for you', screen_home_p: 'From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years, at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_go: 'See my check-ups', screen_home_later: 'Later',
     screen_mine: 'My check-ups', screen_mine_s: 'Built from your age. Add the dates, get reminders.',
     screen_mine_p: 'Built from your age and what you set on the Me page. Add when you last had each one; the next date and a reminder follow.',
     screen_cervix: 'Cervical screening', screen_cervix_s: 'The free VIA test: why, what happens, results',
@@ -492,7 +492,7 @@
   const hi = {
     screen_hub: 'जाँच और चेक-अप', screen_hub_s: 'मेरे चेक-अप, बच्चेदानी के मुँह की जाँच, HPV टीका, स्तन की ख़ुद जाँच',
     screen_hub_p: 'आसान जाँचें बीमारी को जल्दी पकड़ लेती हैं, अक्सर कुछ महसूस होने से सालों पहले। ज़्यादातर जाँचें आपके आयुष्मान आरोग्य मंदिर (हेल्थ एंड वेलनेस सेंटर) या PHC पर मुफ़्त हैं।',
-    screen_home_h: 'आपके लिए मुफ़्त जाँच', screen_home_p: '30 साल से हर महिला 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर, बच्चेदानी के मुँह की जाँच और स्वास्थ्यकर्मी से स्तन की जाँच मुफ़्त करवा सकती है। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_go: 'मेरे चेक-अप देखें', screen_home_later: 'बाद में',
+    screen_setup: 'अपनी जाँचों की तारीख़ें जोड़ें', screen_setup_s: '30 से मुफ़्त: बच्चेदानी के मुँह की जाँच और स्तन की जाँच', screen_home_h: 'आपके लिए मुफ़्त जाँच', screen_home_p: '30 साल से हर महिला 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर, बच्चेदानी के मुँह की जाँच और स्वास्थ्यकर्मी से स्तन की जाँच मुफ़्त करवा सकती है। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_go: 'मेरे चेक-अप देखें', screen_home_later: 'बाद में',
     screen_mine: 'मेरे चेक-अप', screen_mine_s: 'आपकी उम्र के हिसाब से। तारीख़ें डालें, reminder पाएँ।',
     screen_mine_p: 'आपकी उम्र और “मैं” पन्ने पर दी जानकारी के हिसाब से। हर जाँच आख़िरी बार कब हुई, लिखें; अगली तारीख़ और reminder अपने आप बन जाते हैं।',
     screen_cervix: 'बच्चेदानी के मुँह की जाँच', screen_cervix_s: 'मुफ़्त VIA जाँच: क्यों, क्या होता है, नतीजे',
@@ -574,7 +574,7 @@
   const HOME_KEYS = ['cervix', 'cbe'];
   function homeTop() {
     if (!S.canSave()) return ''; const st0 = S.state;
-    if ((st0.settings || {}).discreet || S.cycle.isPregnant()) return '';
+    if ((st0.settings || {}).discreet || S.cycle.isPregnant() || (S.setupShows && S.setupShows('checkups'))) return '';   /* the setup card has it */
     const age = ageNow(); if (age == null || age < 30 || age > 65) return '';
     const sn = ((st0.mods || {}).screen || {}).snooze; if (okDate(sn) && sn > iso(S.today())) return '';
     const due = HOME_KEYS.filter((k) => { const c = status(BY[k]).code; return c === 'add' || c === 'due'; });
@@ -582,6 +582,14 @@
     return '<div class="card screen-home" data-nofold="1"><div class="row" style="gap:10px;align-items:center"><span class="ico-sm hue hue-teal">' + S.icon('check') + '</span><strong style="min-width:0">' + esc(t('screen_home_h')) + '</strong></div>' +
       '<p class="small">' + esc(due.map((k) => tx(BY[k].name)).join(' · ')) + '</p><p class="small">' + esc(t('screen_home_p')) + '</p>' +
       '<div class="grid2"><button type="button" class="btn sm primary" data-go="screen-mine">' + esc(t('screen_home_go')) + '</button><button type="button" class="btn sm" id="screen-home-later">' + esc(t('screen_home_later')) + '</button></div></div>';
+  }
+  /* Home's setup card (Version 30): at 30 to 65, outside pregnancy, add her check-up dates. Done once both free 5-yearly
+     check-ups have a date or "never", or she said later. */
+  function setup() {
+    if (!S.canSave() || S.cycle.isPregnant()) return null; const age = ageNow(); if (age == null || age < 30 || age > 65) return null;
+    const sn = D().snooze; const later = okDate(sn) && sn > iso(S.today());
+    /* after a birth, it comes after the birth's own set-ups */
+    return { id: 'checkups', order: S.stageNow() === 'post' ? 58 : 25, title: t('screen_setup'), sub: t('screen_setup_s'), go: 'screen-mine', done: later || HOME_KEYS.every((k) => status(BY[k]).code !== 'add') };
   }
   function afterRender(v, r) {
     if (r !== 'home') return;
@@ -607,6 +615,7 @@
     summary: summary,
     sample: sample,
     homeTop: homeTop,
+    setup: setup,
     afterRender: afterRender,
     event: (name, p) => { if (name === 'log' && p && (p.type === 'start' || p.type === 'end') && (D().bse || {}).on && (D().bse || {}).mode === 'period') bseSync(); }
   });

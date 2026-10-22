@@ -182,6 +182,7 @@
   const protoCard = (pin) => '<div class="card soft"><div class="row spread"><h3>' + esc(t('access_pin_for')) + ' <span class="num hl">' + esc(pin) + '</span></h3><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>' +
     P(L('In the live app this page will list the real facilities near this PIN from government directories, with timings and distance. This prototype does not invent names or addresses, so for now it shows the kinds of free care every PIN has and the official links to find them.', 'असली app में यह पन्ना सरकारी सूचियों से इस PIN के पास की असली जगहें, समय और दूरी के साथ दिखाएगा। यह prototype नाम या पते नहीं गढ़ता, इसलिए अभी हर PIN पर मिलने वाले मुफ़्त इलाज के प्रकार और उन्हें खोजने के सरकारी link दिखाता है।'), 'small', 'color:var(--fg)') + '</div>';
 
+  const EMERG = L('Emergency: call 112, or 108 or 102 for a free ambulance. Do not wait to find the right centre.', 'Emergency: 112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102। सही केंद्र खोजने में देर न करें।');
   function renderCare(v) {
     /* her account's PIN code until she types another one (or clears it) on this screen */
     const pin = mem.pinSet ? mem.pin : (mem.pin || accPin()); const fromAcc = !mem.pinSet && !mem.pin && !!pin;
@@ -194,7 +195,7 @@
       (pin ? (near || protoCard(pin)) : '') +
       '<div class="list"><button type="button" class="item" data-go="access-doctor"><span class="ico-sm hue hue-purple">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('access_doctor')) + '</strong><span>' + esc(t('access_doctor_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' + (S.routeOwner('asha') ? '<button type="button" class="item" data-go="asha"><span class="ico-sm hue hue-teal">' + S.icon('person') + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span>' + esc(t('asha_help_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' : '') +
         '<button type="button" class="item" data-go="access-online"><span class="ico-sm hue hue-sky">' + S.icon('file') + '</span><span class="body"><strong>' + esc(t('access_online')) + '</strong><span>' + esc(t('access_online_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' +
-      '<div class="flag urgent">' + E(L('Emergency: call 112, or 108 or 102 for a free ambulance. Do not wait to find the right centre.', 'Emergency: 112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102। सही केंद्र खोजने में देर न करें।')) + '</div>' +
+      '<div class="flag urgent">' + E(EMERG) + '</div>' +
       '<h2>' + E(pin ? L('Free care near you', 'आपके पास मुफ़्त इलाज') : L('Free care every PIN has', 'हर PIN पर मिलने वाला मुफ़्त इलाज')) + '</h2>' +
       '<div class="list">' + CARE.map(careCard).join('') + '</div>' +
       '<div class="card ok">' + P(L('Not sure which scheme money you can get? The scheme finder asks five quick questions.', 'कौन सी योजना का पैसा मिल सकता है, पता नहीं? योजना खोजने वाला पन्ना पाँच छोटे सवाल पूछता है।'), '', 'color:var(--ok)') + '<button type="button" class="btn sm access-inline" data-go="access-schemes">' + esc(t('access_schemes')) + '</button></div>' +
@@ -470,6 +471,21 @@
     S.wire(v);
   }
 
+  /* ---------- Get care free (Version 30; docs/ux-value-audit-2026-10-22.md, rec 3) ----------
+     One page for every free doctor, scheme and helper. Each row opens a page that already exists, so nothing here is new health
+     wording. Care's first row and Help's doctor card open it. Opening it ticks "look at free care" in her setup (app.js). */
+  function renderFree(v) {
+    if (S.canSave()) { const d = S.data('access'); if (!d.seenFree) { d.seenFree = S.toISO(S.today()); S.saveQuiet(); } }
+    const n = S.canSave() ? TRACK.filter((k) => AD().claims[k]).length : 0;
+    const row = (go, ic, hue, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-' + hue + '">' + S.icon(ic) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';
+    v.innerHTML = S.backRow(t('access_free'), 'care', false) + '<p class="small">' + esc(t('access_free_p')) + '</p>' +
+      '<div class="list">' + row('ask', 'steth', 'rose', t('ask_h'), t('doc_p')) + row('access-doctor', 'steth', 'purple', t('access_doctor'), t('access_doctor_s')) +
+        row('access-care', 'map', 'teal', t('access_care'), t('access_care_s')) + row('access-schemes', 'file', 'gold', t('access_schemes'), n ? tf('access_free_claims', { n: n }) : t('access_schemes_s')) +
+        row('access-online', 'file', 'sky', t('access_online'), t('access_online_s')) + (S.routeOwner('asha') ? row('asha', 'person', 'green', t('asha_h'), t('asha_help_s')) : '') + '</div>' +
+      '<div class="flag urgent">' + E(EMERG) + '</div>';
+    S.wire(v);
+  }
+
   /* ---------- Free doctor and care (Version 29; docs/consult-booking-research-2026-10-22.md) ----------
      Free government doctors and care she can reach from her phone. No booking API is open to an app like Sakhi: eSanjeevani
      has none, and booking through ABDM's UHI network needs paid certification. So each card says what to choose and opens
@@ -533,6 +549,7 @@
   }
 
   function renderSchemes(v, tag) {
+    if (S.canSave()) { const d0 = S.data('access'); if (!d0.seenSchemes) { d0.seenSchemes = S.toISO(S.today()); S.saveQuiet(); } }   /* ticks "check scheme money" in her setup */
     const tg = TAGS[tag] ? tag : 'all'; const T = TAGS[tg]; const a = mem.ans;
     Object.keys(T.preset || {}).forEach((k) => { if (a[k] == null) a[k] = T.preset[k]; });
     const qs = T.qs.filter((k) => !Q[k].mom || isMom(a));
@@ -893,12 +910,21 @@
     return '<button type="button" class="action st-home' + (seen ? ' seen' : '') + '" data-go="access-stories"><span class="ico st-ring">' + (S.art ? S.art.sakhi({ pose: 'hi', look: (S.state.settings || {}).look }) : I.sparkle) + '</span><span class="body"><strong>' + esc(t('access_feed')) + '</strong><span class="small">' + esc(S.tf(seen ? 'access_st_seen' : 'access_st_n', { n: n })) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
   }
 
+  /* ---------- Home's setup card (Version 30): look at free care; check scheme money in pregnancy and after a birth ---------- */
+  function setup() {
+    if (!S.canSave()) return null; const k = S.stageNow(); const d = S.data('access');
+    if (k === 'preg' || k === 'post') return { id: 'schemes', order: 40, title: t('access_setup_sch'), sub: t('access_schemes_s'), go: 'access-schemes-' + k, done: !!d.seenSchemes || Object.keys(AD().claims).length > 0 };
+    return { id: 'free', order: 60, title: t('access_setup_free'), sub: t('access_setup_free_s'), go: 'access-free', done: !!d.seenFree };
+  }
+
   /* ---------- home hook ---------- */
   /* The "Today for you" card used to sit among Home's module cards; the stories line at the top of Home (storyRow) replaces it. */
   function home() { return ''; }
 
   /* ---------- strings ---------- */
   const en = {
+    access_setup_free: 'Look at free care near you', access_setup_free_s: 'Free doctors, schemes and helplines, before you need them', access_setup_sch: 'Check the scheme money you can get',
+    access_free: 'Get care free', access_free_s: 'Every free doctor, scheme and helper in one place', access_free_p: 'Free doctors, care near you, scheme money and your ASHA, in one place. Each opens its own page.', access_free_claims: 'My claims: {n}',
     access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Home', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
     access_care: 'Care near me', access_care_s: 'Free government care by PIN code, and how to find it',
     access_claim_start: 'Track my claim', access_claim_h: 'My claim', access_claim_docs: 'Papers to keep ready. Tick each one you have.', access_claim_stop: 'Stop tracking',
@@ -930,6 +956,8 @@
     access_not_dx: 'Not a diagnosis. These are common causes, not what you have. Only a doctor who examines you can say.'
   };
   const hi = {
+    access_setup_free: 'अपने पास का मुफ़्त इलाज देखें', access_setup_free_s: 'मुफ़्त डॉक्टर, योजनाएँ और हेल्पलाइन, ज़रूरत से पहले', access_setup_sch: 'देखें कि योजना का कितना पैसा मिल सकता है',
+    access_free: 'मुफ़्त इलाज और मदद', access_free_s: 'हर मुफ़्त डॉक्टर, योजना और मदद एक जगह', access_free_p: 'मुफ़्त डॉक्टर, आपके पास इलाज, योजना का पैसा और आपकी ASHA, एक जगह। हर एक अपना पन्ना खोलता है।', access_free_claims: 'मेरे दावे: {n}',
     access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: 'होम पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
     access_care: 'मेरे पास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
     access_claim_start: 'मेरा दावा ट्रैक करें', access_claim_h: 'मेरा दावा', access_claim_docs: 'तैयार रखने वाले काग़ज़। जो पास है, उसे टिक करें।', access_claim_stop: 'ट्रैक करना बंद करें',
@@ -1009,11 +1037,12 @@
     id: 'access',
     demoPersona: 'blank',
     strings: { en: en, hi: hi },
-    routes: { 'access-stories': (v) => { stI = 0; stPaused = false; renderStories(v); }, 'access-care': renderCare, 'access-online': renderOnline, 'access-doctor': renderDoctor, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-feed': renderFeed, 'access-videos': renderVideos, 'access-symptoms': renderSymptoms },
+    routes: { 'access-stories': (v) => { stI = 0; stPaused = false; renderStories(v); }, 'access-free': renderFree, 'access-care': renderCare, 'access-online': renderOnline, 'access-doctor': renderDoctor, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-feed': renderFeed, 'access-videos': renderVideos, 'access-symptoms': renderSymptoms },
     prefixes: { 'access-schemes-': (v, rest) => renderSchemes(v, rest) },
     testRoutes: ['access-schemes-preg', 'access-schemes-post', 'access-schemes-period', 'access-schemes-teen', 'access-schemes-family', 'access-schemes-all'],
-    open: ['access-stories', 'access-care', 'access-online', 'access-doctor', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-feed', 'access-videos', 'access-symptoms'],
+    open: ['access-stories', 'access-free', 'access-care', 'access-online', 'access-doctor', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-feed', 'access-videos', 'access-symptoms'],
     tiles: [
+      { section: 'tools', route: 'access-free', title: 'access_free', sub: 'access_free_s', icon: 'steth', order: 1, gated: false, keywords: 'free care help doctor scheme money claim asha ambulance helpline muft sarkari मुफ़्त इलाज मदद सरकारी योजना' },
       { section: 'tools', route: 'access-doctor', title: 'access_doctor', sub: 'access_doctor_s', icon: 'steth', order: 19, gated: false, keywords: 'free doctor video consult call esanjeevani opd gynae obs gynaecologist appointment ors aiims aarogya setu scan share pmsma 9th u-win td injection ambulance 102 108 jssk ayushman hospital pm-jay tele-manas 14416 mood मुफ़्त डॉक्टर वीडियो अस्पताल एम्बुलेंस' },
       { section: 'preg', route: 'access-doctor', title: 'access_doctor', sub: 'access_doctor_s', icon: 'steth', order: 69, gated: false, keywords: 'free doctor pmsma 9th u-win td ambulance 102 108 मुफ़्त डॉक्टर' },
       { section: 'tools', route: 'access-care', title: 'access_care', sub: 'access_care_s', icon: 'map', order: 20, gated: false, keywords: 'care near me pin code phc chc district hospital asha anganwadi ayushman arogya mandir jan aushadhi ictc one stop centre afhc पास इलाज अस्पताल' },
@@ -1031,7 +1060,8 @@
       '.st-card { min-height: 46vh; justify-content: center; gap: 10px; cursor: pointer; } .st-card h2 { margin: 0; font-size: 24px; } .st-text { font-size: 17px; line-height: 1.5; color: var(--fg); } .st-end { align-items: center; text-align: center; cursor: default; } .st-end .sakhi { width: 76px; height: 76px; }' +
       '.st-ring { background: none !important; padding: 0; border: 2.5px solid var(--accent); } .st-home.seen .st-ring { border-color: var(--line); } .st-ring .sakhi { width: 100%; height: 100%; }',
     home: home,
-    homeTop: storyRow,
+    homeMore: storyRow,
+    setup: setup,
     summary: () => { if (!S.canSave()) return []; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return []; return [{ title: t('access_my_h'), lines: ks.map((k) => { const c = cl[k]; const st = stepOf(c); return tx(SCH[k].name).split(':')[0] + ': ' + t('access_step_' + st) + (c[st] && st !== 'ready' ? ' (' + fmtL(S.fromISO(c[st])) + ')' : ''); }) }]; },
     afterRender: (v, route) => { if (route !== 'access-stories') stopStories(); }
   });

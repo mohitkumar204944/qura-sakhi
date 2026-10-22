@@ -10,6 +10,11 @@ const LANG_RE = /^[a-z]{2}$/;
 const APP_RE = /^[\w.+ -]{1,32}$/;
 const NOTICE_RE = /^[\w.-]{1,20}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;   /* the same check as the app's */
+const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
+/* 5.9 What helps: the tools the app may count. It mirrors USAGE_KEYS in web/app.js (server/test/api.test.mjs checks the two agree). */
+export const USAGE_TOOLS = ['today', 'setup', 'search', 'diary', 'checkin', 'report', 'ask', 'access-free', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha', 'iron', 'preg-plan', 'preg-week', 'preg-logs', 'post',
+  'contra-mine', 'tools-reminders', 'tools-meds', 'tools-reports', 'journey', 'relief', 'explain', 'screen-mine', 'meno-diary', 'learn', 'joy', 'family'];
+const BUCKETS = ['1', '2-5', '6+'];
 const HEARD = ['doc', 'fam', 'wa', 'social', 'qura', 'other'];
 const CODE_TTL_S = 600;
 const RESEND_S = 30;
@@ -25,7 +30,8 @@ export const ALLOW = {
   'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
   'POST me/active': ['app', 'lang'],
   'POST session/logout': [],
-  'DELETE me': []
+  'DELETE me': [],
+  'POST usage': ['month', 'counts']
 };
 
 const CORS = {
@@ -67,6 +73,7 @@ const IST_MS = 5.5 * 3600 * 1000;
 const indiaDay = (ms) => new Date(ms + IST_MS).toISOString().slice(0, 10);
 const indiaYear = (ms) => new Date(ms + IST_MS).getUTCFullYear();
 const addDays = (day, n) => new Date(Date.parse(day + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
+const prevMonth = (mk) => { const y = +mk.slice(0, 4), m = +mk.slice(5, 7); return m === 1 ? (y - 1) + '-12' : y + '-' + String(m - 1).padStart(2, '0'); };
 const clientIp = (req) => (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || req.headers.get('x-real-ip') || '';
 const short = (e) => String((e && e.message) || e).slice(0, 160);
 const str = (v, re) => typeof v === 'string' && re.test(v);
@@ -214,6 +221,22 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     return reply(200, { account: pub(next) });
   }
 
+  /* 5.9 What helps (opt-in, Version 30): last month's counts from one phone, each tool as 1, 2-5 or 6+ days. It carries no
+     account: a request with a token is refused, so a report can never be tied to her. Only monthly totals are kept, never a
+     row per phone. The IP limit uses its own daily hash, which matches no other limit's. */
+  async function usage(req, b, t) {
+    if (req.headers.get('authorization')) fail(400, 'no_token_here');
+    const ip = clientIp(req);
+    if (ip) await limit('usage:ip:' + await hmacHex(ipSeed, 'usage|' + indiaDay(t) + '|' + ip), 86400, 3, t);
+    if (!str(b.month, MONTH_RE) || b.month !== prevMonth(indiaDay(t).slice(0, 7))) fail(400, 'month_bad');
+    const c = b.counts;
+    if (!c || typeof c !== 'object' || Array.isArray(c)) fail(400, 'counts_bad');
+    const keys = Object.keys(c);
+    if (!keys.length || keys.some((k) => !USAGE_TOOLS.includes(k) || !BUCKETS.includes(c[k]))) fail(400, 'counts_bad');
+    await store.addUsage(b.month, keys.map((k) => [k, c[k]]));
+    return reply(204);
+  }
+
   return async function handle(req) {
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
     let path = '';
@@ -232,6 +255,7 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
       const t = now();
       if (key === 'POST otp/start') return await otpStart(req, b, t);
       if (key === 'POST otp/verify') return await otpVerify(req, b, t);
+      if (key === 'POST usage') return await usage(req, b, t);
       const { acct, th, day } = await auth(req, t);
       if (key === 'GET me') return reply(200, { account: pub(acct) });
       if (key === 'PATCH me') return await patchMe(b, acct);

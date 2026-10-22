@@ -736,13 +736,26 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .approx-note { color: var(--accent); }
 .bb-card { gap: 8px; }
 .bb-card .linkbtn { align-self: flex-start; }
-.joy-fw { gap: 8px; }
-.joy-fw .list { display: flex; flex-direction: column; gap: 6px; }
-.joy-fw-it { min-height: 48px; }
-.joy-fw-tick { width: 26px; height: 26px; border-radius: 13px; border: 2px solid var(--line); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFFFFF; }
-.joy-fw-tick svg { width: 16px; height: 16px; }
-.joy-fw-it.done .joy-fw-tick { background: var(--ok); border-color: var(--ok); }
-.joy-fw-it.done .body strong { color: var(--muted); text-decoration: line-through; }
+/* Version 30 Home: Today, the setup card, a visit today and "More for you" (docs/ux-value-audit-2026-10-22.md) */
+.today-card, .setup-card, .visit-card { gap: 8px; }
+.today-card .list, .setup-card .list { display: flex; flex-direction: column; gap: 6px; }
+.today-it { gap: 10px; padding: 8px 10px; min-height: 56px; }
+.today-go { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; border: none; background: none; padding: 0; margin: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.today-go .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.today-go .body strong { overflow-wrap: anywhere; }
+.today-it > .btn { flex-shrink: 0; }
+.setup-it { min-height: 48px; }
+.setup-tick { width: 26px; height: 26px; border-radius: 13px; border: 2px solid var(--line); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFFFFF; }
+.setup-tick svg { width: 16px; height: 16px; }
+.setup-it.done .setup-tick { background: var(--ok); border-color: var(--ok); }
+.setup-it.done .body strong { color: var(--muted); text-decoration: line-through; }
+.setup-card .linkbtn, .visit-card .linkbtn { align-self: flex-start; }
+.home-more > summary.item { list-style: none; padding: 12px 14px; font-size: 15px; color: var(--fg); font-weight: 400; }
+.home-more > summary.item::-webkit-details-marker { display: none; }
+.home-more > summary .chev { transform: rotate(90deg); transition: transform .15s; }
+.home-more[open] > summary .chev { transform: rotate(-90deg); }
+.home-more-in { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.cu-empty .ico-sm { color: var(--accent); }
 @media (max-width: 360px) { .ob-grid5 { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ob-c { font-size: 14px; } }
 
 .ob-stages .qa-tile span { -webkit-hyphens: manual; hyphens: manual; overflow-wrap: normal; word-break: normal; }

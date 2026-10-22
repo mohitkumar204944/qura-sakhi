@@ -1124,3 +1124,130 @@ icon is now 18 px.
 - pregnancy first;
 - every way in, the plan buttons (gone once Td is done) and the safety links;
 - Hindi, and the icon size.
+
+## 32. Version 30: how a woman gets the most from Sakhi (Mohit, 22 Oct: "do all recommendations")
+
+From `../docs/ux-value-audit-2026-10-22.md`, recommendations 1 to 10. Most of it rearranges what exists; the few new lines
+of wording are in `docs/wording-review-v28.md`, section 7.
+
+**New hooks:**
+- **`today(api)`** returns an item, a list of items, or null. An item is
+  `{ id, title, sub, icon, hue, go, act, actLabel, done, rem, order }`.
+  - `act()` is the one tap (it saves its own change); `done` is the toast; `rem` lists the reminder ids the row stands for, so
+    Coming up doesn't show them again today.
+  - Only what she or her plan scheduled: never something her entries suggest (the CDSCO line). Plain words in discreet mode,
+    or no item.
+  - Today shows up to four rows. Users: iron (order 10), contra's pill or Chhaya day (12), pregnancy IFA and calcium from the
+    logs' reminders (13, 14), the plan's "Due now" (20, never in discreet mode), today's journey step (30). The core adds her
+    own reminders and medicines due today (`mod: 'tools'`, kinds `custom` and `med`; 40).
+- **`setup(api)`** returns a step `{ id, title, sub, go | act, done, order }` or null, for the "Set up Sakhi for you" card.
+  - The card shows at most five steps for her stage, and lists the three still to do.
+  - Core steps: log your last period, or your pregnancy dates (10), and phone reminders (Android only; 15, or 55 in pregnancy
+    and after a birth).
+  - Module steps:
+
+    | Module | Step | Order |
+    |---|---|---|
+    | contra | your method and its reminder, on a method or avoiding pregnancy; a method after a birth | 20; 35 |
+    | screen | check-up dates, 30 to 65 | 25; 58 after a birth |
+    | preg | the plan's reminders | 20 |
+    | iron | from week 13, or within 180 days of a birth (done also when My medicines has an iron tablet with a reminder) | 30 |
+    | access | scheme money in pregnancy and after a birth; "look at free care" otherwise | 40; 60 |
+    | asha | her ASHA's number | 50 |
+    | meno | the weekly diary in midlife | 20 |
+
+  - The card is gone when all are done or she taps "Hide this" (`state.prompts.setup = 'off'`). It never shows in discreet
+    mode, for a girl under 18 or while just reading.
+  - `S.setupShows(id)` is true while a step is listed. The check-ups card (screen's `homeTop`) waits while the setup card
+    lists `checkups`.
+- **`homeMore(api)`** returns HTML for "More for you", a closed `<details>` under the day's tasks. Users: the stories line
+  (access), Feel better now (relief) and the flower (joy, without the first-week card, which the setup card replaced). The
+  core adds the ask box and the quick questions.
+  - `mem.homeMore` keeps it open while she moves around.
+  - A tour step inside a closed `<details>` opens it first (`stepEl`).
+- **Retired:** the `homeTop` cards of iron, preg and journey (now Today rows), contra's pill card and its `afterHome`, and joy's
+  first-week card.
+
+**Home, top to bottom:**
+1. the week strip, the hero, urgent cards, the account and baby-born cards, the round buttons and the heads-up;
+2. **Today**;
+3. a check-up today;
+4. the setup card;
+5. `homeTop` (screen);
+6. Coming up, then up to two stage cards;
+7. **More for you**;
+8. the Qura card.
+
+**Also on Home:**
+- **A check-up today:** her reminders of kind `visit` due today (PMSMA day, an Antara injection, a Copper-T visit, her own). It
+  offers the report, which carries her questions. "Not today" hides it until tomorrow (`state.prompts.visit`). Not in
+  discreet mode.
+- **Coming up, when she has no reminders and no setup card:** one row, "Set a reminder", to the reminders centre.
+- **The heads-up**, on Android with phone alerts off, offers "Remind me on this phone".
+
+**Care:**
+- **Five groups:** the old `tools` topic is now Get care free (`free`), My plans and reminders (`plans`), My records
+  (`records`), Feel better, family and more (`support`) and Just for fun (`fun`). Modules still file tools under
+  `section: 'tools'`; `TOOLS_SPLIT` in app.js maps each route to its group, and an unknown one goes to `support`. The
+  `services` Learn articles moved to `free`.
+- **New core tiles:** the report for the doctor (`report`, in `records`, only with a diary) and Qura's doctor (`ask`, in `free`).
+- **"Get care free"** (access, route `access-free`) lists, in this order: Qura's doctor, Free doctor and care, Care near me,
+  schemes (with "My claims: n" when she tracks any), Do it online and her ASHA, then the emergency line.
+  - It is the first row of Care and the link in Help's doctor card.
+  - Opening it sets `mods.access.seenFree`; opening a scheme page sets `seenSchemes`. Both are only dates, for the setup card.
+- **For you puts her tools first:**
+  - pregnancy: plan, iron, schemes;
+  - after a birth: iron, contraception, schemes;
+  - on a method: My method, missed pill, reminders (`S.contra.method()`);
+  - midlife: check-ups and the diary;
+  - periods: What your diary shows, check-ups, reminders.
+
+**Search** (Care and Home's ask box):
+- **Tools rank by where a word hits:** the title 3, keywords 2, subtitle or topic 1, doubled at the start of a word, so "plan"
+  no longer finds "unplanned" first.
+- **`TOOL_SYN`** puts a named tool first: report, doctor, free, plan, reminder, iron, scheme money, near me, ASHA, online,
+  ambulance, in English, Hinglish and Hindi. In pregnancy or after a birth, her own schemes page comes first.
+- **One row per screen.**
+- **Articles keep their plain count**, so their order is unchanged.
+- **Typed and stored Hindi are compared in NFC**, so फ़ matches either way.
+
+**Reminders:**
+- Me's first list has "My reminders" (`#me-rem-list`, "n on"), next to the phone-reminders row on Android.
+- The reminders centre says when phone alerts are off (Android), with "Turn on" (`#tl-alerts`).
+- `S.alerts = { can, on }` tells modules whether phone alerts exist and are on.
+
+**Demo items stay in demo builds:**
+- `demoBuild()` is true for the web prototype and for APKs whose version has "demo".
+- A release APK never shows the prototype settings (five taps on the version do nothing).
+- It never shows the Demo section in Me, even with a sample loaded.
+- It never opens the sample women: no `#demo` link and no long press.
+
+**What helps (rec 10, opt-in), core only:**
+- **Off by default.** Me > Privacy > "Send what helps, once a month" (`state.settings.usage`).
+- **Counting.** Only while it is on, the phone counts the days of the month she used each tool in `USAGE_KEYS`:
+  - a screen she opens (articles count as `learn`, scheme pages as `access-schemes`, after-birth pages as `post`);
+  - a Today tap, a setup tap, a search of three letters or more, and a one-tap period log.
+- **What it never counts:** loss, abortion, safety, intimate health and STIs are not on the list.
+- **What she can see.** "See what would be sent" shows this month's days and the bucket each would go as.
+- **Off deletes.** Turning it off deletes `state.usage` and `state.usagePrev`.
+- **Sending.**
+  - Last month goes once, 60 to 120 seconds after she opens Sakhi, through `net('POST', 'usage')`.
+  - Its allowlist is `month` and `counts`. Each count is a bucket: `1`, `2-5` or `6+`.
+  - It goes without the account token (`ANON`).
+  - It is never sent for a sample woman. A month older than last month is dropped, never sent.
+- **The server** (SERVER_SPEC 5.9) refuses any token, any other field, any tool off the same list (`USAGE_TOOLS`, checked equal
+  by the server tests) and any month but last month. It keeps only monthly totals.
+- **Not deployed:** the live server doesn't have the route or the migration yet. Until it does, a report gets 404 and is
+  dropped.
+
+**Tests:** `node test/value.mjs` (106 checks). It covers:
+- the audit's 18 searches for two women;
+- Care's order and the five groups;
+- Get care free;
+- Today: the pill, the iron, the due row, a journey step and her own reminder, discreet mode;
+- the visit card and the setup card, on the web and on Android;
+- the fold and a tour into it;
+- the reminders rows and the heads-up offer;
+- Hindi, and a release build;
+- what helps: off by default, counting, what is never counted, the preview, off deletes, and the anonymous monthly send
+  (on a fake clock).

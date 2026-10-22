@@ -77,6 +77,11 @@ export function pgStore(q) {
     async deleteAccount(id) {
       await q('delete from sakhi.accounts where id = $1::uuid', [id]);
     },
+    /* What helps: one more phone in each tool's bucket for the month, and one more report for the month */
+    async addUsage(month, pairs) {
+      for (const [tool, bucket] of pairs) await q('insert into sakhi.usage_counts (month, tool, bucket, phones) values ($1, $2, $3, 1) on conflict (month, tool, bucket) do update set phones = sakhi.usage_counts.phones + 1', [month, tool, bucket]);
+      await q('insert into sakhi.usage_reports (month, phones) values ($1, 1) on conflict (month) do update set phones = sakhi.usage_reports.phones + 1', [month]);
+    },
     async bumpStat(day, column) {
       if (!STATS.has(column)) throw new Error('unknown stat ' + column);
       await q('insert into sakhi.daily_stats (day, ' + column + ') values ($1::date, 1) on conflict (day) do update set ' + column + ' = sakhi.daily_stats.' + column + ' + 1', [day]);

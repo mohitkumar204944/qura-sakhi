@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ALLOW, createApi } from '../supabase/functions/sakhi-api/api.js';
+import { ALLOW, USAGE_TOOLS, createApi } from '../supabase/functions/sakhi-api/api.js';
 import { makeSender } from '../supabase/functions/sakhi-api/send.js';
 import { makeStore, makeApi, call, fakeSender, ENV, pgliteDb } from './harness.mjs';
 import { pincodeSql } from '../scripts/load-pincodes.mjs';
@@ -244,6 +244,41 @@ for (const kind of ['memory', 'pglite']) {
     check('a session unused for over 365 days is 401', (await call(ctx.api, 'GET', 'me', undefined, { token: me.token })).status === 401);
   }
 
+  /* ---------- 5.8 what helps: monthly counts, with no account ---------- */
+  {
+    const ctx = await newCtx(kind);
+    const usageRows = async () => {
+      if (ctx.kind === 'memory') return { rows: [...ctx.store.db.usage.entries()].map(([k, n]) => k + '=' + n).sort(), reports: ctx.store.db.usageReports.get('2026-09') || 0 };
+      const rows = (await ctx.db.query("select month || '|' || tool || '|' || bucket || '=' || phones as r from sakhi.usage_counts order by 1")).rows.map((x) => x.r);
+      return { rows, reports: ((await ctx.db.query("select phones from sakhi.usage_reports where month = '2026-09'")).rows[0] || {}).phones || 0 };
+    };
+    const ok1 = await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '6+', report: '1', 'preg-plan': '2-5' } });
+    check('usage: last month\'s counts, with no token, are 204', ok1.status === 204, ok1);
+    await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '6+' } }, { ip: '203.0.113.8' });
+    const u = await usageRows();
+    check('usage: only monthly totals are kept, per tool and bucket, and how many phones reported', JSON.stringify(u.rows) === JSON.stringify(['2026-09|iron|6+=2', '2026-09|preg-plan|2-5=1', '2026-09|report|1=1']) && u.reports === 2, u);
+    const me = await signUp(ctx);
+    check('usage: a request that carries an account token is refused, so a report can never be tied to her', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '1' } }, { token: me.token, ip: '203.0.113.9' })).json.error === 'no_token_here');
+    check('usage: this month is refused (only last month goes)', (await call(ctx.api, 'POST', 'usage', { month: '2026-10', counts: { iron: '1' } }, { ip: '203.0.113.9' })).json.error === 'month_bad');
+    check('usage: an older month is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-08', counts: { iron: '1' } }, { ip: '203.0.113.10' })).json.error === 'month_bad');
+    check('usage: a tool off the list is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { loss: '1' } }, { ip: '203.0.113.10' })).json.error === 'counts_bad');
+    check('usage: a raw count instead of a bucket is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: 7 } }, { ip: '203.0.113.11' })).json.error === 'counts_bad');
+    check('usage: an empty report is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: {} }, { ip: '203.0.113.11' })).json.error === 'counts_bad');
+    check('usage: any other field (a phone number, a diary entry) is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '1' }, phone: '+919876543210' }, { ip: '203.0.113.12' })).json.error === 'field_not_allowed'
+      && (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '1' }, situation: { pregnant: true } }, { ip: '203.0.113.12' })).json.error === 'field_not_allowed');
+    check('usage: refusals added nothing', JSON.stringify((await usageRows()).rows) === JSON.stringify(u.rows));
+    for (let i = 0; i < 2; i++) await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { asha: '1' } }, { ip: '198.51.100.20' });
+    check('usage: a fourth report from one connection in a day is refused', (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { asha: '1' } }, { ip: '198.51.100.20' })).status === 204
+      && (await call(ctx.api, 'POST', 'usage', { month: '2026-09', counts: { asha: '1' } }, { ip: '198.51.100.20' })).status === 429);
+    if (ctx.kind === 'pglite') {
+      const cols = (await ctx.db.query("select table_name || '.' || column_name as c from information_schema.columns where table_schema = 'sakhi' and table_name like 'usage%' order by 1")).rows.map((x) => x.c);
+      check('usage: its tables hold months, tools, buckets and totals, nothing else', JSON.stringify(cols) === JSON.stringify(['usage_counts.bucket', 'usage_counts.month', 'usage_counts.phones', 'usage_counts.tool', 'usage_reports.month', 'usage_reports.phones']), cols);
+      const rl = (await ctx.db.query("select key from sakhi.rate_hits where key like 'usage:%'")).rows.map((x) => x.key.split(':ip:')[1]);
+      const others = (await ctx.db.query("select key from sakhi.rate_hits where key like 'otp:ip:%' or key like 'verify:ip:%'")).rows.map((x) => x.key.split(':ip:')[1]);
+      check('usage: its rate limit\'s IP hash matches no other limit\'s', rl.length > 0 && rl.every((h) => others.indexOf(h) < 0), { rl, others });
+    }
+  }
+
   /* ---------- a database failure never leaks details ---------- */
   {
     const { store } = await makeStore(kind);
@@ -339,7 +374,10 @@ prefix = '';
   const appSend = {};
   for (const m of block.matchAll(/'([A-Z]+ [a-z/]+)': \[([^\]]*)\]/g)) appSend[m[1]] = m[2].split(',').map((x) => x.trim().replace(/'/g, '')).filter(Boolean);
   const serverAllow = Object.assign({}, ALLOW); delete serverAllow['GET me'];
-  check('the app\'s SEND list and the server\'s ALLOW list are identical', Object.keys(appSend).length === 6 && JSON.stringify(appSend) === JSON.stringify(serverAllow), { appSend });
+  check('the app\'s SEND list and the server\'s ALLOW list are identical', Object.keys(appSend).length === 7 && JSON.stringify(appSend) === JSON.stringify(serverAllow), { appSend });
+  const keys = ((appJs.match(/const USAGE_KEYS = \[([\s\S]*?)\];/) || [])[1] || '').split(',').map((x) => x.trim().replace(/'/g, '')).filter(Boolean);
+  check('the tools the app counts are the tools the server accepts', keys.length > 20 && JSON.stringify(keys) === JSON.stringify(USAGE_TOOLS), keys);
+  check('the counted tools leave out loss, abortion and safety', !USAGE_TOOLS.some((k) => /loss|abortion|safety|intimate|sti/.test(k)));
 }
 
 const pass = results.filter((r) => r.pass).length;

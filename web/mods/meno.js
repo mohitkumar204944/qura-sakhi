@@ -693,6 +693,7 @@
         meno_tl_s1: 'Periods change', meno_tl_s1p: 'Gaps change; flushes and poor sleep can start', meno_tl_s2: 'Last period + 12 months', meno_tl_s2p: 'Menopause is confirmed', meno_tl_s3: 'After menopause', meno_tl_s3p: 'Bones and heart need more care',
         meno_tl_relief: 'What helps', meno_tl_hot: 'Feel better now: hot flushes', meno_tl_sleep: 'Feel better now: sleep', meno_tl_ask: 'Talk to a Qura doctor about menopause', meno_tl_foot: 'Counts from your own dates. Not a diagnosis.',
         meno_hub: 'Menopause', meno_hub_t: 'All about menopause', meno_hub_s: 'What changes, what helps, when to see a doctor',
+        meno_setup: 'Start the weekly symptom diary',
         meno_diary: 'Weekly symptom diary', meno_diary_s: 'Hot flushes, sleep, mood and 9 more, rated 0–3 once a week',
         meno_hrt: 'Hormone therapy (HRT)', meno_hrt_s: 'What it helps, the real risks, who can’t take it, other options',
         meno_bones: 'Bones and heart', meno_bones_s: 'Calcium from Indian food, vitamin D, exercise, falls, yearly checks',
@@ -751,6 +752,7 @@
         meno_tl_s1: 'पीरियड बदलते हैं', meno_tl_s1p: 'अंतर बदलता है; हॉट फ़्लश और नींद की दिक़्क़त शुरू हो सकती है', meno_tl_s2: 'आख़िरी पीरियड + 12 महीने', meno_tl_s2p: 'मेनोपॉज़ पक्का होता है', meno_tl_s3: 'मेनोपॉज़ के बाद', meno_tl_s3p: 'हड्डियों और दिल का ज़्यादा ख़याल',
         meno_tl_relief: 'किससे आराम मिलता है', meno_tl_hot: 'अभी थोड़ा आराम: हॉट फ़्लश', meno_tl_sleep: 'अभी थोड़ा आराम: नींद', meno_tl_ask: 'मेनोपॉज़ के बारे में Qura की डॉक्टर से बात करें', meno_tl_foot: 'आपकी अपनी तारीख़ों से गिनती। यह जाँच का नतीजा नहीं है।',
         meno_hub: 'मेनोपॉज़', meno_hub_t: 'मेनोपॉज़: पूरी जानकारी', meno_hub_s: 'क्या बदलता है, क्या मदद करता है, डॉक्टर को कब दिखाएँ',
+        meno_setup: 'हफ़्ते की लक्षण डायरी शुरू करें',
         meno_diary: 'हफ़्ते की लक्षण डायरी', meno_diary_s: 'गर्मी के झोंके, नींद, मन और 9 और, हफ़्ते में एक बार 0–3 अंक',
         meno_hrt: 'हॉर्मोन therapy (HRT)', meno_hrt_s: 'किसमें मदद करती है, असली जोखिम, कौन नहीं ले सकता, दूसरे रास्ते',
         meno_bones: 'हड्डियाँ और दिल', meno_bones_s: 'भारतीय खाने से calcium, vitamin D, कसरत, गिरने से बचाव, सालाना जाँच',
@@ -843,6 +845,8 @@
       '.pill.msc-p3 { background: var(--accent-strong); color: #FFFFFF; border-color: transparent; }', '.msc-not { color: var(--muted); }'
     ].join('\n'),
     home: home,
+    /* Home's setup card (Version 30): in midlife, the weekly symptom diary */
+    setup: () => (S.canSave() && S.stageNow() === 'meno' ? { id: 'meno-diary', order: 20, title: t('meno_setup'), sub: t('meno_diary_s'), go: 'meno-diary', done: Object.keys(peekDiary()).length > 0 } : null),
     summary: summary,
     sample: sample,
     afterRender: (v, route) => { if (route !== 'meno-diary') { mem.week = null; mem.draft = null; mem.confirm = false; } }

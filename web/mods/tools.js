@@ -39,6 +39,7 @@
     rem_how_proto: ['In this prototype nothing is sent. Reminders for the next 3 days show on your Home screen under "Coming up".', 'इस prototype में कुछ नहीं भेजा जाता। अगले 3 दिनों के रिमाइंडर होम पर “आगे क्या है” में दिखते हैं।'],
     g_today: ['Today', 'आज'], g_week: ['This week', 'इस हफ़्ते'], g_later: ['Later', 'बाद में'], g_off: ['Off', 'बंद'],
     g_done: ['Finished', 'पूरे हो गए'], g_done_p: ['One-time reminders whose date has passed. Delete them when you no longer need them.', 'एक बार वाले रिमाइंडर जिनकी तारीख़ निकल गई। ज़रूरत न हो तो हटा दें।'],
+    alerts_off: ['Phone alerts are off, so these reminders will not ring.', 'फ़ोन पर अलर्ट बंद हैं, इसलिए ये रिमाइंडर नहीं बजेंगे।'], alerts_b: ['Turn on', 'चालू करें'],
     rem_none: ['No reminders yet. Add your own with the button above, or set them from these pages:', 'अभी कोई रिमाइंडर नहीं। ऊपर वाले बटन से अपना जोड़ें, या इन पन्नों से लगाएँ:'],
     lnk_meds: ['Medicines you take', 'आपकी दवाएँ'], lnk_contra: ['Pill, injection or Copper-T dates', 'गोली, इंजेक्शन या Copper-T की तारीख़ें'],
     lnk_screen: ['Check-ups due at your age', 'आपकी उम्र में ज़रूरी जाँचें'], lnk_post: ["After-birth check-ups and the baby's vaccines", 'डिलीवरी के बाद की जाँच और बच्चे के टीके'],
@@ -286,7 +287,8 @@
       const empty = '<div class="card"><p>' + esc(T('rem_none')) + '</p><div class="list">' + links.map((x) => '<button type="button" class="item quiet" data-go="' + x[0] + '"><span class="ico-sm">' + S.icon(x[2]) + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong></span><span style="color:var(--accent);width:18px;flex-shrink:0">' + S.I.chev + '</span></button>').join('') + '</div></div>';
       const how = '<div class="card soft"><h3>' + esc(T('rem_how_h')) + '</h3><p class="small">' + esc(T('rem_how_live')) + '</p><p class="small">' + esc(T('rem_how_proto')) + '</p>' + (can ? '<div class="row wrap"><button type="button" class="btn sm" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm ghost" data-go="me">' + esc(t('me')) + '</button></div>' : '') + '</div>';
       const addPart = !can ? S.needDiary() : (ui.remForm ? remFormHtml(ui.remForm) : '<button type="button" class="btn primary block" id="tl-radd">' + S.I.bell.replace('<svg', '<svg style="width:20px;height:20px"') + esc(T('add_rem')) + '</button>');
-      v.innerHTML = S.backRow(T('rem_h'), 'care', false) + '<p class="small">' + esc(T('rem_p')) + '</p>' + (can && !storageOK() ? '<div class="flag">' + esc(T('store_err')) + '</div>' : '') + addPart +
+      v.innerHTML = S.backRow(T('rem_h'), 'care', false) + '<p class="small">' + esc(T('rem_p')) + '</p>' + (can && !storageOK() ? '<div class="flag">' + esc(T('store_err')) + '</div>' : '') +
+        (can && all.length && S.alerts && S.alerts.can() && !S.alerts.on() ? '<div class="flag" id="tl-alerts"><span>' + esc(T('alerts_off')) + '</span> <button type="button" class="btn sm" data-go="me-reminders">' + esc(T('alerts_b')) + '</button></div>' : '') + addPart +
         (all.length ? grp('today', 'g_today', g.today) + grp('week', 'g_week', g.week) + grp('later', 'g_later', g.later) + grp('off', 'g_off', g.off) + grp('done', 'g_done', g.done, 'g_done_p') : (can ? empty : '')) + how;
       S.wire(v);
       v.querySelectorAll('[data-rtog]').forEach((c) => c.addEventListener('change', () => { S.reminders.upsert({ id: c.dataset.rtog, on: c.checked }); S.toast(T(c.checked ? 'r_now_on' : 'r_now_off')); draw(); }));
@@ -696,10 +698,10 @@
         { id: 'tools-c-smp-a2', mod: 'tools', kind: 'custom', title: { en: 'Refill my medicines', hi: 'दवाएँ फिर से लानी हैं' }, start: ago(17), time: '18:00', rep: 'monthly', dom: 1, on: true, every: null, weekdays: null, dates: null },
         { id: 'tools-c-smp-a3', mod: 'tools', kind: 'custom', title: { en: 'Evening walk', hi: 'शाम की सैर' }, start: ago(20), time: '18:30', rep: 'daily', on: false, every: 1, weekdays: null, dates: null }
       ];
-    } else if (id === 'meera') {
+    } else if (id === 'meera') {   /* her iron plan (mods/iron.js) carries the IFA reminder, so the medicine here has none */
       const base = okISO(sit.pregnantSince) ? S.fromISO(sit.pregnantSince) : S.addDays(td, -168); const at = (n) => iso(S.addDays(base, n));
       meds = [
-        med({ id: 'smp-m1', name: { en: 'Iron and folic acid (IFA) tablet', hi: 'आयरन-फ़ोलिक एसिड (IFA) की गोली' }, why: { en: 'Pregnancy, to prevent anaemia', hi: 'गर्भावस्था में, खून की कमी से बचाव' }, dose: { en: '1 tablet a day, as on my MCP card', hi: 'रोज़ 1 गोली, MCP card के हिसाब से' }, by: { en: 'ANM at my ANC visit', hi: 'ANC जाँच में ANM' }, start: at(112), times: ['21:00'] }),
+        med({ id: 'smp-m1', name: { en: 'Iron and folic acid (IFA) tablet', hi: 'आयरन-फ़ोलिक एसिड (IFA) की गोली' }, why: { en: 'Pregnancy, to prevent anaemia', hi: 'गर्भावस्था में, खून की कमी से बचाव' }, dose: { en: '1 tablet a day, as on my MCP card', hi: 'रोज़ 1 गोली, MCP card के हिसाब से' }, by: { en: 'ANM at my ANC visit', hi: 'ANC जाँच में ANM' }, start: at(112), times: ['21:00'] , remind: false}),
         med({ id: 'smp-m2', name: { en: 'Calcium tablet', hi: 'Calcium की गोली' }, why: { en: "Pregnancy, for my bones and the baby's", hi: 'गर्भावस्था में, मेरी और बच्चे की हड्डियों के लिए' }, dose: { en: 'As on my MCP card. Not at the same time as the iron tablet.', hi: 'MCP card के हिसाब से। iron की गोली के साथ नहीं।' }, by: { en: 'ANM at my ANC visit', hi: 'ANC जाँच में ANM' }, start: at(112), times: ['13:00'] })
       ];
       reps = [
