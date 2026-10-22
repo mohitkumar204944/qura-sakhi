@@ -64,13 +64,13 @@
       ask_h: 'Talk to a Qura doctor', ask_p: 'A free 20-minute video or phone call with a Qura doctor (BAMS). She can order tests and help with cycles, weight, sleep and diet. For hormone medicines like the pill, HRT or letrozole you need an MBBS gynaecologist; Qura refers.',
       name: 'Your name (optional)', phone: 'Phone number', best_time: 'Best time to call', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', topic: 'What is it about?', share_diary: 'Share my diary with the doctor before the call',
       ask_send: 'Request a free call', ask_ok: 'Request saved. Reference', ask_ok2: 'Prototype: nothing was sent. In the live app Qura calls you back. You can also book directly:', book_link: 'Book at quranutrition.com',
-      me_h: 'Me', situation: 'My situation', sit_p2: 'You set these yourself. The diary never guesses them from your entries.', since: 'since', pregnant_d: 'We stop predicting periods while you are pregnant. Tell your doctor about any medicines you take.', bf_d: 'Periods often stay away while you breastfeed, so we do not predict them for a year after the birth.',
+      me_h: 'Me', me_on_list: 'On: {list}', me_none_on: 'Nothing switched on yet', me_health_h: 'My health details', me_health_hd: 'My details', me_health_private: 'Only you can see these', me_data_h: 'My data', me_data_s: 'Report for my doctor, backup and what Sakhi keeps', me_help_s: '{n} short tours and the full tour', me_about_h: 'About and privacy', me_version: 'Version {v}', me_more: 'More', me_theme_h: 'Light or dark', me_dk_h: 'What Sakhi keeps on this phone', me_dk_periods: 'Periods logged', me_dk_days: 'Days with something noted', me_dk_checkins: 'Monthly check-ins', me_dk_reminders: 'Reminders', me_dk_tools: 'Other tools you used', me_dk_entries: 'Entries', me_dk_raw: 'Show the raw data', me_proto_shown: 'Prototype settings are showing.', me_rem_web: 'Reminders work in the Sakhi app on Android.', situation: 'My situation', sit_p2: 'You set these yourself. The diary never guesses them from your entries.', since: 'since', pregnant_d: 'We stop predicting periods while you are pregnant. Tell your doctor about any medicines you take.', bf_d: 'Periods often stay away while you breastfeed, so we do not predict them for a year after the birth.',
       horm_d: 'Pill, hormonal IUD, injection, HRT or steroids. These change your cycle, so those months are left out of your averages.', pcos: 'Diagnosed PMOS (PCOS)', pcos_d: 'Your doctor sees this. We will not use your cycle gaps to judge menopause.', thyroid: 'Thyroid, endometriosis or fibroids', thyroid_d: 'Your doctor sees this when you share your diary.',
       hyst: 'Hysterectomy or ablation', hyst_d: 'There are no periods to count, so the diary stops counting cycles.', stopped: 'My periods have stopped', stopped_d: 'Home shows menopause care instead of a cycle count.', planning: 'Planning a baby', planning_d: 'Shows the guides for trying for a baby. Tell your doctor about any medicines you take.',
       tools: 'Tools', pattern: 'Pattern check', pattern_d: 'Your entries against patterns doctors look for', fertile: 'Fertile days estimate', fertile_d: 'Only for cycles that vary by 7 days or less', midlife: 'My midlife picture', midlife_d: 'Counts and the timeline doctors use', pregw: 'Pregnancy week by week', pregw_d: 'Counted from your scan date',
-      gated: 'Needs approval before launch', lang: 'Language', discretion: 'Discretion', discreet: 'Discreet mode', discreet_d: 'Hides numbers, charts and words like "period" on Home. The Diary tab is called "Notes".', shared: 'Shared-phone mode', shared_d: 'Closes after 10 minutes without a tap, and when you come back to the app. Nothing is deleted.', rest_h: 'Your diary is closed', rest_h_d: 'Notes are closed', rest_p: 'Shared-phone mode closes it after 10 minutes without a tap, and when you come back to the app. Set a PIN on the Me page so only you can open it.', rest_open: 'Open',
-      consent_data: 'Consent and my data', c1: 'Diary and safety review', c2: 'One WhatsApp reminder per cycle', c4: 'Share with my Qura doctor', given: 'Given', withdraw: 'Withdraw', give: 'Give', export: 'Show my data', delete_all: 'Delete everything', delete_sure: 'Delete everything now? There is no undo.', yes_delete: 'Yes, delete', deleted: 'Everything was deleted.',
-      delete_note: 'Immediate, no undo window, so no one can find it later.', grievance: 'Grievance Officer: [NAME, ADDRESS]', notice_text: 'Your entries stay only on this phone. Qura (Trinaya Wellness LLP) keeps your account details to run your account. The live app will name every processor, the retention period and the Grievance Officer here.',
+      gated: 'Needs approval before launch', lang: 'Language', discretion: 'Privacy on a shared phone', discreet: 'Discreet mode', discreet_d: 'Hides numbers, charts and words like "period" on Home. The Diary tab is called "Notes".', shared: 'Shared-phone mode', shared_d: 'Closes after 10 minutes without a tap, and when you come back to the app. Nothing is deleted.', rest_h: 'Your diary is closed', rest_h_d: 'Notes are closed', rest_p: 'Shared-phone mode closes it after 10 minutes without a tap, and when you come back to the app. Set a PIN on the Me page so only you can open it.', rest_open: 'Open',
+      c1: 'Diary and safety review', c2: 'One WhatsApp reminder per cycle', c4: 'Share with my Qura doctor', given: 'Given', delete_all: 'Delete everything on this phone', delete_sure: 'Delete everything now? There is no undo.', yes_delete: 'Yes, delete', deleted: 'Everything was deleted.',
+      grievance: 'Grievance Officer: [NAME, ADDRESS]', notice_text: 'Your entries stay only on this phone. Qura (Trinaya Wellness LLP) keeps your account details to run your account. The live app will name every processor, the retention period and the Grievance Officer here.',
       pc_h: 'Pattern check', pc_p: 'Compares your own entries with patterns doctors look for. Not a diagnosis.', pc_updated: 'Updated', pc_pmos: 'PMOS (PCOS) pattern', pc_seen: 'Pattern seen', pc_gaps: 'Long gaps seen', pc_hair: 'Hair signs seen', pc_not: 'Not seen', pc_nodata: 'Not enough data',
       pc_detail: 'Long gaps (over 35 days) in {g} of your last {n} cycles; coarse hair in {h} monthly check-ins.', pc_causes: 'Several things cause this: thyroid, high prolactin, stress, weight change, breastfeeding, or PMOS. A doctor usually checks a few blood tests first. About half of women with this pattern turn out not to have PMOS.',
       pc_verdict: "Doctor's verdict", pending: 'Pending review', pc_thy: 'Thyroid-type pattern', pc_heavy: 'Heavy-bleeding pattern', pc_pain: 'Pain pattern (endometriosis-type)', pc_pain_d: 'Pain that stopped your day in {k} of your last {n} periods.', pc_pain_go: 'Should I get this checked?', pc_q2_y: 'Milky discharge from the nipples when you are not pregnant or breastfeeding needs a doctor’s check. A blood test (prolactin) is part of it.', pc_q1: 'Has a doctor already told you that you have PMOS?', pc_q2: 'Any milky discharge from the nipples?', yes: 'Yes', no: 'No',
@@ -239,13 +239,13 @@
       ask_h: 'Qura की डॉक्टर से बात करें', ask_p: 'Qura की डॉक्टर (BAMS) से 20 मिनट की मुफ़्त वीडियो या फ़ोन कॉल। वह test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। pill, HRT या letrozole जैसी हॉर्मोन दवाओं के लिए MBBS स्त्री रोग विशेषज्ञ चाहिए; Qura refer करता है।',
       name: 'आपका नाम (वैकल्पिक)', phone: 'फ़ोन नंबर', best_time: 'कॉल का सही समय', morning: 'सुबह', afternoon: 'दोपहर', evening: 'शाम', topic: 'किस बारे में?', share_diary: 'कॉल से पहले मेरी डायरी डॉक्टर से साझा करें',
       ask_send: 'मुफ़्त कॉल माँगें', ask_ok: 'अनुरोध सेव हुआ। संदर्भ', ask_ok2: 'Prototype: कुछ भेजा नहीं गया। असली app में Qura आपको कॉल करता है। सीधे भी बुक कर सकती हैं:', book_link: 'quranutrition.com पर बुक करें',
-      me_h: 'मैं', situation: 'मेरी स्थिति', sit_p2: 'ये आप ख़ुद तय करती हैं। डायरी आपकी entries से इन्हें कभी नहीं अनुमानती।', since: 'से', pregnant_d: 'गर्भ के दौरान हम पीरियड का अंदाज़ा नहीं लगाते। जो भी दवा लेती हैं, डॉक्टर को बताएँ।', bf_d: 'दूध पिलाते समय पीरियड अक्सर रुके रहते हैं, इसलिए जन्म के बाद एक साल हम अंदाज़ा नहीं लगाते।',
+      me_h: 'मैं', me_on_list: 'चालू: {list}', me_none_on: 'अभी कुछ भी चालू नहीं', me_health_h: 'मेरी सेहत की जानकारी', me_health_hd: 'मेरी जानकारी', me_health_private: 'इन्हें सिर्फ़ आप देख सकती हैं', me_data_h: 'मेरा डेटा', me_data_s: 'डॉक्टर के लिए रिपोर्ट, बैकअप और Sakhi क्या रखती है', me_help_s: '{n} छोटे टूर और पूरा टूर', me_about_h: 'Sakhi और आपकी निजता', me_version: 'वर्ज़न {v}', me_more: 'और', me_theme_h: 'हल्का या गहरा', me_dk_h: 'Sakhi इस फ़ोन पर क्या रखती है', me_dk_periods: 'दर्ज पीरियड', me_dk_days: 'जिन दिनों कुछ नोट किया', me_dk_checkins: 'महीने के चेक-इन', me_dk_reminders: 'रिमाइंडर', me_dk_tools: 'आपके इस्तेमाल किए दूसरे टूल', me_dk_entries: 'एंट्री', me_dk_raw: 'पूरा डेटा (raw) दिखाएँ', me_proto_shown: 'Prototype सेटिंग दिख रही हैं।', me_rem_web: 'रिमाइंडर Android वाले Sakhi ऐप में चलते हैं।', situation: 'मेरी स्थिति', sit_p2: 'ये आप ख़ुद तय करती हैं। डायरी आपकी entries से इन्हें कभी नहीं अनुमानती।', since: 'से', pregnant_d: 'गर्भ के दौरान हम पीरियड का अंदाज़ा नहीं लगाते। जो भी दवा लेती हैं, डॉक्टर को बताएँ।', bf_d: 'दूध पिलाते समय पीरियड अक्सर रुके रहते हैं, इसलिए जन्म के बाद एक साल हम अंदाज़ा नहीं लगाते।',
       horm_d: 'Pill, हॉर्मोन वाला IUD, इंजेक्शन, HRT या steroids। इनसे चक्र बदलता है, इसलिए वे महीने औसत में नहीं गिने जाते।', pcos: 'PMOS (PCOS) बताया गया है', pcos_d: 'आपकी डॉक्टर यह देखेंगी। मेनोपॉज़ का अंदाज़ा हम पीरियड के अंतर से नहीं लगाएँगे।', thyroid: 'थायरॉइड, endometriosis या fibroids', thyroid_d: 'डायरी साझा करने पर आपकी डॉक्टर यह देखेंगी।',
       hyst: 'गर्भाशय निकाला गया या ablation', hyst_d: 'गिनने को पीरियड नहीं, इसलिए डायरी चक्र नहीं गिनती।', stopped: 'मेरे पीरियड बंद हो गए हैं', stopped_d: 'होम पर चक्र की गिनती की जगह मेनोपॉज़ की देखभाल दिखेगी।', planning: 'बच्चे की योजना', planning_d: 'बच्चे की कोशिश वाली गाइड दिखेंगी। जो भी दवा लेती हैं, डॉक्टर को बताएँ।',
       tools: 'टूल', pattern: 'पैटर्न जाँच', pattern_d: 'आपकी entries, डॉक्टरों के देखे पैटर्न के सामने', fertile: 'Fertile दिनों का अनुमान', fertile_d: 'सिर्फ़ उन चक्रों के लिए जो 7 दिन या कम बदलते हैं', midlife: 'मेरी midlife तस्वीर', midlife_d: 'गिनती और डॉक्टरों की timeline', pregw: 'गर्भ, हफ़्ता दर हफ़्ता', pregw_d: 'scan की तारीख़ से गिना',
-      gated: 'लॉन्च से पहले मंज़ूरी चाहिए', lang: 'भाषा', discretion: 'गोपनीयता', discreet: 'गुप्त mode', discreet_d: 'होम पर नंबर, चार्ट और “पीरियड” जैसे शब्द छिप जाते हैं; डायरी टैब का नाम “नोट्स” हो जाता है।', shared: 'साझा फ़ोन mode', shared_d: '10 मिनट तक कोई टैप न होने पर, और ऐप पर लौटने पर बंद हो जाता है। कुछ मिटता नहीं।', rest_h: 'आपकी डायरी बंद है', rest_h_d: 'नोट्स बंद हैं', rest_p: 'साझा फ़ोन mode इसे 10 मिनट तक कोई टैप न होने पर, और ऐप पर लौटने पर बंद कर देता है। “मैं” पन्ने पर PIN लगाएँ, ताकि इसे सिर्फ़ आप खोल सकें।', rest_open: 'खोलें',
-      consent_data: 'सहमति और मेरा डेटा', c1: 'डायरी और safety समीक्षा', c2: 'हर चक्र में एक WhatsApp reminder', c4: 'मेरी Qura डॉक्टर से साझा', given: 'दी गई', withdraw: 'वापस लें', give: 'दें', export: 'मेरा डेटा दिखाएँ', delete_all: 'सब कुछ delete करें', delete_sure: 'अभी सब delete करें? undo नहीं होगा।', yes_delete: 'हाँ, delete करें', deleted: 'सब कुछ delete हो गया।',
-      delete_note: 'तुरंत, बिना undo, ताकि बाद में कोई न देख सके।', grievance: 'Grievance Officer: [नाम, पता]', notice_text: 'आपकी entries सिर्फ़ इसी फ़ोन पर रहती हैं। Qura (Trinaya Wellness LLP) अकाउंट चलाने के लिए आपके अकाउंट की जानकारी रखता है। असली app में यहाँ हर processor, रखने की अवधि और Grievance Officer का नाम होगा।',
+      gated: 'लॉन्च से पहले मंज़ूरी चाहिए', lang: 'भाषा', discretion: 'शेयर्ड फ़ोन पर निजता', discreet: 'गुप्त mode', discreet_d: 'होम पर नंबर, चार्ट और “पीरियड” जैसे शब्द छिप जाते हैं; डायरी टैब का नाम “नोट्स” हो जाता है।', shared: 'साझा फ़ोन mode', shared_d: '10 मिनट तक कोई टैप न होने पर, और ऐप पर लौटने पर बंद हो जाता है। कुछ मिटता नहीं।', rest_h: 'आपकी डायरी बंद है', rest_h_d: 'नोट्स बंद हैं', rest_p: 'साझा फ़ोन mode इसे 10 मिनट तक कोई टैप न होने पर, और ऐप पर लौटने पर बंद कर देता है। “मैं” पन्ने पर PIN लगाएँ, ताकि इसे सिर्फ़ आप खोल सकें।', rest_open: 'खोलें',
+      c1: 'डायरी और safety समीक्षा', c2: 'हर चक्र में एक WhatsApp reminder', c4: 'मेरी Qura डॉक्टर से साझा', given: 'दी गई', delete_all: 'इस फ़ोन से सब कुछ delete करें', delete_sure: 'अभी सब delete करें? undo नहीं होगा।', yes_delete: 'हाँ, delete करें', deleted: 'सब कुछ delete हो गया।',
+      grievance: 'Grievance Officer: [नाम, पता]', notice_text: 'आपकी entries सिर्फ़ इसी फ़ोन पर रहती हैं। Qura (Trinaya Wellness LLP) अकाउंट चलाने के लिए आपके अकाउंट की जानकारी रखता है। असली app में यहाँ हर processor, रखने की अवधि और Grievance Officer का नाम होगा।',
       pc_h: 'पैटर्न जाँच', pc_p: 'आपकी entries को उन पैटर्न से मिलाता है जो डॉक्टर देखते हैं। diagnosis नहीं।', pc_updated: 'अपडेट', pc_pmos: 'PMOS (PCOS) पैटर्न', pc_seen: 'पैटर्न दिखा', pc_gaps: 'लंबे अंतर दिखे', pc_hair: 'बालों के संकेत दिखे', pc_not: 'नहीं दिखा', pc_nodata: 'काफ़ी डेटा नहीं',
       pc_detail: 'पिछले {n} चक्रों में से {g} में लंबे अंतर (35 दिन से ज़्यादा); {h} मासिक चेक-इन में मोटे बाल।', pc_causes: 'इसके कई कारण होते हैं: थायरॉइड, ज़्यादा prolactin, तनाव, वज़न में बदलाव, स्तनपान, या PMOS। डॉक्टर आम तौर पर पहले कुछ blood test करवाते हैं। इस पैटर्न वाली लगभग आधी महिलाओं को PMOS नहीं निकलता।',
       pc_verdict: 'डॉक्टर की राय', pending: 'समीक्षा बाक़ी', pc_thy: 'थायरॉइड-जैसा पैटर्न', pc_heavy: 'भारी ब्लीडिंग पैटर्न', pc_pain: 'दर्द पैटर्न (endometriosis-जैसा)', pc_pain_d: 'आपके पिछले {n} में से {k} पीरियड में दर्द से दिन रुक गया।', pc_pain_go: 'क्या मुझे जाँच करानी चाहिए?', pc_q2_y: 'गर्भ या स्तनपान न होने पर निप्पल से दूध जैसा स्राव डॉक्टर को दिखाना ज़रूरी है। इसमें एक खून की जाँच (prolactin) होती है।', pc_q1: 'क्या किसी डॉक्टर ने पहले ही PMOS बताया है?', pc_q2: 'निप्पल से दूध जैसा स्राव?', yes: 'हाँ', no: 'नहीं',
@@ -588,7 +588,7 @@
   const MODS = []; const ROUTES = {}; const PREFIXES = []; const OPEN = []; const TILES = []; const CSS = [];
   const HOOKS = { home: [], afterHome: [], me: [], afterMe: [], summary: [], under18: [], afterRender: [], beforeRender: [], topbar: [], afterTopbar: [], sample: [], homeTop: [], event: [] };
   const SECTIONS = ['periods', 'contra', 'pregtest', 'ttc', 'preg', 'post', 'loss', 'intimate', 'cond', 'screen', 'meno', 'teen', 'tools'];
-  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'tell', 'care', 'report', 'backup', 'account'];
+  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'tell', 'care', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about'];
   function register(m) {
     if (!m || !m.id) return;
     MODS.push(m);
@@ -681,6 +681,8 @@
     navEl.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => { nav.stack = []; setHash(b.dataset.go); }));
   }
   function wire(root) {
+    /* every setting row's checkbox is drawn as an on/off switch (app.css); screen readers hear it as one */
+    root.querySelectorAll('.item > input[type=checkbox]:not([role])').forEach((c) => c.setAttribute('role', 'switch'));
     root.querySelectorAll('[data-su-go]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { closeSheet(true); mem.suLater = false; mem.su = null; render(); }); });
     root.querySelectorAll('[data-go]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', (e) => { e.preventDefault(); setHash(b.dataset.go); }); });
     root.querySelectorAll('[data-back]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', (e) => { e.preventDefault(); goBack(b.dataset.back); }); });
@@ -713,7 +715,7 @@
     if (mem.under18) return renderUnder18(v);
     if (state.stage === 'welcome') return renderWelcome(v);
     if (state.stage === 'onboard') return renderOnboard(v);
-    const map = { account: renderAccount, home: renderHome, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, tell: renderTell, care: renderCare, report: renderReport, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, tell: renderTell, care: renderCare, report: renderReport, backup: renderBackup };
     if (r.startsWith('a-')) renderArticle(v, r.slice(2));
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
     else if (map[r]) map[r](v);
@@ -2261,56 +2263,160 @@
   }
 
   /* ---------- me: situation, tools, settings ---------- */
+  /* ---------- Me: a short page of rows, each opening a page of its own (Mohit, 22 Oct: "do quick wins and restructure
+     together"; docs/ux-audit-me-2026-10-22.md, MODULE_API section 26) ----------
+     Privacy on a shared phone comes first. Her health details sit behind their own row: in discreet mode Me names none of
+     them, and with app lock on that page asks for the PIN again. Each module's Me row goes where it belongs (ME_PLACE); a
+     module not named there shows under More. Delete everything sits apart, at the bottom. */
+  const ME_PLACE = { lang: 'main', docportal: 'data', joy: 'look', pregtest: 'health' };
+  const meRows = (page) => HOOKS.me.filter((h) => (ME_PLACE[h.mod] || 'more') === page).map((h) => safe(() => h.fn(api), '')).filter(Boolean).join('');
+  const meRow = (go, ico, hue, title, sub, id) => '<button type="button" class="item"' + (id ? ' id="' + id + '"' : '') + ' data-go="' + go + '"><span class="ico-sm hue hue-' + hue + '">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + I.chev + '</span></button>';
+  const meSw = (key, label, desc) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + '</span></span><input type="checkbox" data-set="' + key + '" ' + (state.settings[key] ? 'checked' : '') + '></label>';
+  const wireSettings = (v) => v.querySelectorAll('[data-set]').forEach((c) => c.addEventListener('change', () => { state.settings[c.dataset.set] = c.checked; save(); render(); if (c.dataset.set === 'shared') sharedPoke(); }));
+  const disguised = () => { const B = window.SakhiAndroid; return !!(B && B.setDisguise && safe(() => B.isDisguised(), false)); };
+  const hasReminders = () => { const B = window.SakhiAndroid; return !!(B && B.schedule); };
+  const onOff = (on) => { const w = t(on ? 'acc_on' : 'acc_off'); return w.charAt(0).toUpperCase() + w.slice(1); };   /* "On" / "Off" standing alone */
+  /* "On: App lock, Discreet mode", or nothing on yet */
+  const privacySummary = () => { const on = [['discreet', state.settings.discreet], ['shared', state.settings.shared], ['applock', !!state.settings.pinHash], ['disguise', disguised()]].filter((x) => x[1]).map((x) => t(x[0])); return on.length ? tf('me_on_list', { list: on.join(', ') }) : t('me_none_on'); };
+  /* her stage in the stage sheet's own words */
+  const stageName = () => { const s = stageNow(); return t(s === 'meno' ? (state.situation.stopped ? 'stage_meno' : 'stage_mid') : 'stage_' + (s === 'browse' ? 'cycle' : s)); };
+  const demoHtml = () => '<h2>' + esc(t('demo_h')) + '</h2><p class="small">' + esc(t('demo_p')) + '</p><div class="grid2">' + ['priya', 'asha', 'meera', 'sunita', 'kamla'].map((id) => '<button type="button" class="btn sm" data-demo="' + id + '">' + esc(t('sample_' + id)) + '</button>').join('') + (ROUTES['docportal'] ? '<button type="button" class="btn sm" data-go="docportal">' + esc(t('demo_doc')) + '</button>' : '') + '</div><button type="button" class="btn ghost block" id="demo-welcome">' + esc(t('demo_welcome')) + '</button>';
+  function wireDemo(v) {
+    v.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => { const keep = Object.assign({}, state.settings); loadSample(b.dataset.demo); state.settings = Object.assign(state.settings, keep); save(); toast(t('sample_note')); setHash('home'); }));
+    const dw = $('#demo-welcome', v); if (dw) dw.addEventListener('click', wipeAll);
+  }
+
   function renderMe(v) {
-    const sit = state.situation; const tog = (key, label, desc, dateKey) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + (dateKey && sit[dateKey] ? ' · ' + esc(t('since')) + ' ' + esc(fmtD(fromISO(sit[dateKey]), { day: 'numeric', month: 'short', year: 'numeric' })) : '') + '</span></span><input type="checkbox" data-sit="' + key + '" ' + (sit[key] ? 'checked' : '') + '></label>';
-    const sw = (key, label, desc) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + '</span></span><input type="checkbox" data-set="' + key + '" ' + (state.settings[key] ? 'checked' : '') + '></label>';
-    const cons = (k, label) => '<div class="item quiet"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + (state.consent[k] ? esc(t('given')) + ' ' + esc(fmtD(fromISO(state.consent[k]), { day: 'numeric', month: 'short', year: 'numeric' })) : '—') + '</span></span><button type="button" class="btn sm" data-cons="' + k + '">' + esc(state.consent[k] ? t('withdraw') : t('give')) + '</button></div>';
+    const disc = !!state.settings.discreet; const more = meRows('more');
+    const head = mem.teen || state.sample ? '' : '<div class="list">' + meRow('account', I.person, 'teal', signedIn() && acct.name ? acct.name : t('acc_h'), signedIn() ? maskPhone(acct.phone) : t('acc_card_h')) + '</div>';
+    v.innerHTML = backRow(t('me_h'), 'home', false) + head +
+      '<div class="list">' + meRow('me-privacy', I.lock, 'purple', t('discretion'), privacySummary(), 'me-privacy') +
+        meRow('me-health', disc ? I.leaf : I.heart, 'rose', t(disc ? 'me_health_hd' : 'me_health_h'), disc ? t('me_health_private') : stageName()) +
+        (hasReminders() ? meRow('me-reminders', I.bell, 'green', t('notif_sec'), onOff(state.settings.notify)) : '') +
+        meRows('main') + '</div>' +
+      '<div class="list">' + meRow('me-data', I.file, 'sky', t('me_data_h'), t('me_data_s')) +
+        meRow('me-look', I.sparkle, 'orange', t('appearance'), t('theme_' + (state.settings.theme || 'light')) + ' · ' + tf('look_n', { n: (state.settings.look | 0) + 1 })) +
+        meRow('me-help', I.help, 'teal', t('howto_h'), tf('me_help_s', { n: TOURS.filter((d) => d.menu !== false && tourFits(d)).length })) +
+        meRow('me-about', I.learn, 'plum', t('me_about_h'), tf('me_version', { v: CFG.app })) + '</div>' +
+      (more ? '<h2>' + esc(t('me_more')) + '</h2>' + more : '') +
+      (state.sample ? demoHtml() : '') +
+      '<div class="list me-danger"><button type="button" class="item" id="me-del"><span class="body"><strong>' + esc(t('delete_all')) + '</strong><span>' + esc(t('tm2_p')) + '</span></span></button></div><div id="me-out"></div>';
+    wire(v); wireDemo(v);
+    $('#me-del', v).addEventListener('click', () => {
+      const out = $('#me-out', v);
+      out.innerHTML = '<div class="card warn"><p style="color:var(--fg)">' + esc(t('delete_sure')) + '</p><div class="grid2"><button type="button" class="btn" id="del-no">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="del-yes">' + esc(t('yes_delete')) + '</button></div></div>';
+      $('#del-no', v).addEventListener('click', () => { out.innerHTML = ''; }); $('#del-yes', v).addEventListener('click', () => { wipeAll(); });
+      out.scrollIntoView({ block: 'nearest' });
+    });
+    runHook('afterMe', [v, api, 'main']);
+  }
+
+  function renderMePrivacy(v) {
     const B = window.SakhiAndroid; const canDisguise = !!(B && B.setDisguise);
-    v.innerHTML = backRow(t('me_h'), 'home', false) + acctItem() + '<h2>' + esc(t('situation')) + '</h2><p class="small">' + esc(t('sit_p2')) + '</p><div class="list">' + tog('pregnant', 'pregnant', 'pregnant_d', 'pregnantSince') + tog('breastfeeding', 'bf', 'bf_d', 'deliveredOn') + tog('hormones', 'hormones', 'horm_d', 'hormonesSince') + tog('pcos', 'pcos', 'pcos_d') + tog('thyroid', 'thyroid', 'thyroid_d') + tog('hysterectomy', 'hyst', 'hyst_d') + tog('stopped', 'stopped', 'stopped_d') + tog('midlife', 'sit_mid', 'sit_mid_d') + tog('planning', 'planning', 'planning_d') + '</div>' +
-      runHook('me', [api], true) +
-      '<h2>' + esc(t('discretion')) + '</h2><div class="list" id="me-privacy">' + sw('discreet', 'discreet', 'discreet_d') + sw('shared', 'shared', 'shared_d') +
+    v.innerHTML = backRow(t('discretion'), 'me', false) + '<div class="list">' + meSw('discreet', 'discreet', 'discreet_d') + meSw('shared', 'shared', 'shared_d') +
       '<label class="item"><span class="body"><strong>' + esc(t('applock')) + '</strong><span>' + esc(t('applock_d')) + '</span></span><input type="checkbox" id="me-lock" ' + (state.settings.pinHash ? 'checked' : '') + '></label>' +
-      (canDisguise ? '<label class="item"><span class="body"><strong>' + esc(t('disguise')) + '</strong><span>' + esc(t('disguise_d')) + '</span></span><input type="checkbox" id="me-disguise" ' + (safe(() => B.isDisguised(), false) ? 'checked' : '') + '></label>' : '') +
-      '</div><p class="small">' + esc(t('pin_note')) + '</p>' +
-      (B && B.schedule ? '<h2>' + esc(t('notif_sec')) + '</h2><div class="list"><label class="item"><span class="body"><strong>' + esc(t('notif_h')) + '</strong><span>' + esc(t('notif_d')) + '</span></span><input type="checkbox" id="me-notif" ' + (state.settings.notify ? 'checked' : '') + '></label></div><button type="button" class="btn sm" id="me-notif-test">' + esc(t('notif_test_btn')) + '</button>' +
-        /* Android 12+ rings reminders up to an hour late unless exact alarms are allowed for the app */
-        (state.settings.notify && B.canExactAlarms && !safe(() => B.canExactAlarms(), true) ? '<div class="card soft" style="gap:6px"><p class="small" style="color:var(--fg)">' + esc(t('notif_exact_p')) + '</p><button type="button" class="btn sm" style="align-self:flex-start" id="me-exact">' + esc(t('notif_exact_b')) + '</button></div>' : '') : '') +
-      '<h2>' + esc(t('consent_data')) + '</h2><div class="list">' + cons('c4', 'c4') + '</div>' +
-      '<div class="list"><button type="button" class="item" data-go="report"><span class="ico-sm hue hue-sky">' + I.file + '</span><span class="body"><strong>' + esc(t('rp_h')) + '</strong><span>' + esc(t('rp_entry_s')) + '</span></span><span class="chev">' + I.chev + '</span></button><button type="button" class="item" data-go="backup"><span class="ico-sm hue hue-teal">' + I.lock + '</span><span class="body"><strong>' + esc(t('bk_h')) + '</strong><span>' + esc(t('bk_entry_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div><div class="grid2"><button type="button" class="btn" id="me-export">' + esc(t('export')) + '</button><button type="button" class="btn danger" id="me-del">' + esc(t('delete_all')) + '</button></div><div id="me-out"></div><p class="small">' + esc(t('delete_note')) + '</p>' +
-      (state.sample || state.settings.proto ? '<h2>' + esc(t('demo_h')) + '</h2><p class="small">' + esc(t('demo_p')) + '</p><div class="grid2">' + ['priya', 'asha', 'meera', 'sunita', 'kamla'].map((id) => '<button type="button" class="btn sm" data-demo="' + id + '">' + esc(t('sample_' + id)) + '</button>').join('') + (ROUTES['docportal'] ? '<button type="button" class="btn sm" data-go="docportal">' + esc(t('demo_doc')) + '</button>' : '') + '</div><button type="button" class="btn ghost block" id="demo-welcome">' + esc(t('demo_welcome')) + '</button>' : '') +
-      '<h2>' + esc(t('appearance')) + '</h2><div class="chips" role="group" aria-label="' + esc(t('appearance')) + '">' + [['light', 'theme_light'], ['dark', 'theme_dark'], ['system', 'theme_system']].map((x) => '<button type="button" class="chip' + ((state.settings.theme || 'light') === x[0] ? ' on' : '') + '" data-theme-pick="' + x[0] + '" aria-pressed="' + ((state.settings.theme || 'light') === x[0]) + '">' + esc(t(x[1])) + '</button>').join('') + '</div>' +
-      (api.art ? '<h2>' + esc(t('look_h')) + '</h2><div class="looks" role="group" aria-label="' + esc(t('look_h')) + '">' + [0, 1, 2, 3].map((n) => '<button type="button" class="look' + ((state.settings.look | 0) === n ? ' on' : '') + '" data-look="' + n + '" aria-pressed="' + ((state.settings.look | 0) === n) + '" aria-label="' + esc(tf('look_n', { n: n + 1 })) + '">' + api.art.sakhi({ pose: 'calm', look: n }) + '</button>').join('') + '</div>' : '') +
-      tourMenuHtml() + '<div class="list">' + sw('toursAuto', 'tours_auto', 'tours_auto_d') + sw('tourVoice', 'tour_voice', 'tour_voice_d') + '</div><button type="button" class="btn sm" id="me-tips">' + esc(t('tours_again')) + '</button>' +
-      '<h2>' + esc(t('proto_h')) + '</h2><div class="list">' + sw('proto', 'protolabels', 'protolabels_d') + '</div><p class="small">' + esc(t('notice_text')) + '</p><p class="small">' + esc(t('grievance')) + '</p>';
+      (canDisguise ? '<label class="item"><span class="body"><strong>' + esc(t('disguise')) + '</strong><span>' + esc(t('disguise_d')) + '</span></span><input type="checkbox" id="me-disguise" ' + (disguised() ? 'checked' : '') + '></label>' : '') +
+      '</div><p class="small">' + esc(t('pin_note')) + '</p>';
+    wire(v); wireSettings(v);
+    $('#me-lock', v).addEventListener('change', (e) => { e.target.checked = !!state.settings.pinHash; pinSheet(state.settings.pinHash ? 'off' : 'set'); });
+    const dg = $('#me-disguise', v); if (dg) dg.addEventListener('change', (e) => { safe(() => B.setDisguise(e.target.checked)); toast(t('disguise_done')); });
+  }
+
+  /* Her stage (one row: the stage sheet sets pregnancy, a birth and breastfeeding, trying, after 40 and periods stopped, so
+     they can never contradict each other) and the conditions she has been told about. With app lock on, the PIN first:
+     someone may be holding her unlocked phone. Once it's in, it holds until Sakhi goes to the background. */
+  function renderMeHealth(v) {
+    const title = t(state.settings.discreet ? 'me_health_hd' : 'me_health_h');
+    if (state.settings.pinHash && !mem.healthOk) {
+      v.innerHTML = backRow(title, 'me', false) + '<div class="lockwrap"><div id="hp-pad" style="width:100%"></div><div id="hp-bio" style="width:100%;max-width:320px"></div></div>';
+      wire(v);
+      pinPad($('#hp-pad', v), t('pin_enter'), (pin, msg) => { if (pinH(pin) === state.settings.pinHash) { mem.healthOk = true; render(); } else msg(t('pin_wrong')); });
+      const B = window.SakhiAndroid;
+      if (B && B.canBiometric && safe(() => B.canBiometric(), false)) {
+        $('#hp-bio', v).innerHTML = '<button type="button" class="btn block" id="hp-bio-btn">' + esc(t('bio_btn')) + '</button>';
+        window.__sakhiBio = (ok) => { if (ok && route() === 'me-health') { mem.healthOk = true; render(); } };
+        $('#hp-bio-btn', v).addEventListener('click', () => safe(() => B.biometric(state.settings.discreet ? t('bio_title_d') : t('bio_title'), t('cancel'))));
+      }
+      return;
+    }
+    const sit = state.situation;
+    const tog = (key, label, desc, dateKey) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + (dateKey && sit[dateKey] ? ' · ' + esc(t('since')) + ' ' + esc(fmtD(fromISO(sit[dateKey]), { day: 'numeric', month: 'short', year: 'numeric' })) : '') + '</span></span><input type="checkbox" data-sit="' + key + '" ' + (sit[key] ? 'checked' : '') + '></label>';
+    v.innerHTML = backRow(title, 'me', false) + '<p class="small">' + esc(t('sit_p2')) + '</p>' +
+      '<div class="list"><button type="button" class="item" id="me-stage"><span class="ico-sm hue hue-rose">' + I.heart + '</span><span class="body"><strong>' + esc(stageName()) + '</strong><span>' + esc(t('stage_change')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' +
+      '<h2>' + esc(t('situation')) + '</h2><div class="list">' + tog('hormones', 'hormones', 'horm_d', 'hormonesSince') + tog('pcos', 'pcos', 'pcos_d') + tog('thyroid', 'thyroid', 'thyroid_d') + tog('hysterectomy', 'hyst', 'hyst_d') + '</div>' +
+      meRows('health');
     wire(v);
-    /* Pregnancy and a birth carry the dates every count depends on, so these switches open the stage sheet, which asks for
-       them: a tick never invents a date and an untick never deletes one she gave. Unticking breastfeeding keeps the birth
-       date; unticking hormones keeps when they started and notes when they stopped, so those months stay out of her averages. */
+    $('#me-stage', v).addEventListener('click', () => openStage());
+    /* Unticking hormones keeps when they started and notes when they stopped, so those months stay out of her averages. */
     v.querySelectorAll('[data-sit]').forEach((c) => c.addEventListener('change', () => {
-      const k = c.dataset.sit;
-      if (k === 'pregnant') { c.checked = !c.checked; openStage(c.checked ? undefined : 'preg'); return; }
-      if (k === 'breastfeeding' && c.checked && !sit.deliveredOn) { c.checked = false; openStage('post'); return; }
-      sit[k] = c.checked;
+      const k = c.dataset.sit; sit[k] = c.checked;
       if (k === 'hormones') { if (c.checked) { if (isISO(sit.hormonesSince) && isISO(sit.hormonesUntil)) addSpan({ k: 'horm', a: sit.hormonesSince, b: sit.hormonesUntil }); if (!sit.hormonesSince || sit.hormonesUntil) sit.hormonesSince = toISO(today()); delete sit.hormonesUntil; } else if (sit.hormonesSince) sit.hormonesUntil = toISO(today()); }
       save(); render();
     }));
-    v.querySelectorAll('[data-set]').forEach((c) => c.addEventListener('change', () => { state.settings[c.dataset.set] = c.checked; save(); render(); if (c.dataset.set === 'shared') sharedPoke(); }));
-    v.querySelectorAll('[data-cons]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.cons; state.consent[k] = state.consent[k] ? false : toISO(today()); save(); render(); }));
-    $('#me-lock', v).addEventListener('change', (e) => { e.target.checked = !!state.settings.pinHash; pinSheet(state.settings.pinHash ? 'off' : 'set'); });
-    const dg = $('#me-disguise', v); if (dg) dg.addEventListener('change', (e) => { safe(() => B.setDisguise(e.target.checked)); toast(t('disguise_done')); });
+    runHook('afterMe', [v, api, 'health']);
+  }
+
+  function renderMeReminders(v) {
+    const B = window.SakhiAndroid;
+    if (!hasReminders()) { v.innerHTML = backRow(t('notif_sec'), 'me', false) + '<p>' + esc(t('me_rem_web')) + '</p>'; wire(v); return; }
+    v.innerHTML = backRow(t('notif_sec'), 'me', false) + '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('notif_h')) + '</strong><span>' + esc(t('notif_d')) + '</span></span><input type="checkbox" id="me-notif" ' + (state.settings.notify ? 'checked' : '') + '></label></div><button type="button" class="btn sm" id="me-notif-test">' + esc(t('notif_test_btn')) + '</button>' +
+      /* Android 12+ rings reminders up to an hour late unless exact alarms are allowed for the app */
+      (state.settings.notify && B.canExactAlarms && !safe(() => B.canExactAlarms(), true) ? '<div class="card soft" style="gap:6px"><p class="small" style="color:var(--fg)">' + esc(t('notif_exact_p')) + '</p><button type="button" class="btn sm" style="align-self:flex-start" id="me-exact">' + esc(t('notif_exact_b')) + '</button></div>' : '');
+    wire(v);
     const whenAllowed = (fn) => { window.__sakhiNotify = (ok) => { if (ok) fn(); else toast(t('notif_denied')); render(); }; if (safe(() => B.canNotify(), false)) window.__sakhiNotify(true); else safe(() => B.askNotify()); };
-    const nt = $('#me-notif', v); if (nt) nt.addEventListener('change', (e) => { if (!e.target.checked) { state.settings.notify = false; save(); return; } e.target.checked = false; whenAllowed(() => { state.settings.notify = true; save(); toast(t('notif_on')); }); });
+    $('#me-notif', v).addEventListener('change', (e) => { if (!e.target.checked) { state.settings.notify = false; save(); return; } e.target.checked = false; whenAllowed(() => { state.settings.notify = true; save(); toast(t('notif_on')); }); });
     const mex = $('#me-exact', v); if (mex) mex.addEventListener('click', () => safe(() => B.askExactAlarms()));   /* back from the setting: the app re-sends the alarms on resume */
-    const ntt = $('#me-notif-test', v); if (ntt) ntt.addEventListener('click', () => whenAllowed(() => { safe(() => B.testNotify(notifBrand(), state.settings.discreet ? t('d_reminder') : t('notif_test'))); toast(t('notif_test_sent')); }));
+    $('#me-notif-test', v).addEventListener('click', () => whenAllowed(() => { safe(() => B.testNotify(notifBrand(), state.settings.discreet ? t('d_reminder') : t('notif_test'))); toast(t('notif_test_sent')); }));
+  }
+
+  /* What she has noted, counted in words. The raw data is one tap further. In discreet mode, one neutral count. */
+  function keepsCard() {
+    const st = state; const days = new Set(Object.keys(st.daily || {}).concat(Object.keys(st.notes || {}))).size;
+    const periods = (st.events || []).filter((e) => e.t === 'start').length; const cis = Object.keys(st.checkins || {}).length;
+    const tools = Object.keys(st.mods || {}).filter((k) => st.mods[k] && typeof st.mods[k] === 'object' && Object.keys(st.mods[k]).length).length;
+    const lines = st.settings.discreet ? [['me_dk_entries', periods + days + cis]] : [['me_dk_periods', periods], ['me_dk_days', days], ['me_dk_checkins', cis], ['me_dk_reminders', (st.reminders || []).length], ['me_dk_tools', tools]];
+    return '<div class="card" id="me-keeps">' + lines.map((x) => '<div class="row spread"><span>' + esc(t(x[0])) + '</span><strong class="num">' + x[1] + '</strong></div>').join('') + '<p class="small">' + esc(t('ob_notice_1')) + '</p></div>';
+  }
+  function renderMeData(v) {
+    const c4 = state.consent.c4;
+    v.innerHTML = backRow(t('me_data_h'), 'me', false) +
+      '<div class="list"><button type="button" class="item" data-go="report"><span class="ico-sm hue hue-sky">' + I.file + '</span><span class="body"><strong>' + esc(t('rp_h')) + '</strong><span>' + esc(t('rp_entry_s')) + '</span></span><span class="chev">' + I.chev + '</span></button><button type="button" class="item" data-go="backup"><span class="ico-sm hue hue-teal">' + I.lock + '</span><span class="body"><strong>' + esc(t('bk_h')) + '</strong><span>' + esc(t('bk_entry_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' +
+      '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('c4')) + '</strong><span>' + esc(c4 ? t('given') + ' ' + fmtD(fromISO(c4), { day: 'numeric', month: 'short', year: 'numeric' }) : onOff(false)) + '</span></span><input type="checkbox" id="me-c4"' + (c4 ? ' checked' : '') + '></label>' + meRows('data') + '</div>' +
+      '<h2>' + esc(t('me_dk_h')) + '</h2>' + keepsCard() + '<button type="button" class="btn sm" id="me-export">' + esc(t('me_dk_raw')) + '</button><div id="me-out"></div>';
+    wire(v);
+    $('#me-c4', v).addEventListener('change', (e) => { state.consent.c4 = e.target.checked ? toISO(today()) : false; save(); render(); });
+    $('#me-export', v).addEventListener('click', () => { $('#me-out', v).innerHTML = '<textarea readonly style="min-height:160px;font-size:13px">' + esc(JSON.stringify(state, null, 1)) + '</textarea>'; });
+    runHook('afterMe', [v, api, 'data']);
+  }
+
+  function renderMeLook(v) {
+    const theme = state.settings.theme || 'light';
+    v.innerHTML = backRow(t('appearance'), 'me', false) +
+      '<h2>' + esc(t('me_theme_h')) + '</h2><div class="chips" role="group" aria-label="' + esc(t('me_theme_h')) + '">' + [['light', 'theme_light'], ['dark', 'theme_dark'], ['system', 'theme_system']].map((x) => '<button type="button" class="chip' + (theme === x[0] ? ' on' : '') + '" data-theme-pick="' + x[0] + '" aria-pressed="' + (theme === x[0]) + '">' + esc(t(x[1])) + '</button>').join('') + '</div>' +
+      (api.art ? '<h2>' + esc(t('look_h')) + '</h2><div class="looks" role="group" aria-label="' + esc(t('look_h')) + '">' + [0, 1, 2, 3].map((n) => '<button type="button" class="look' + ((state.settings.look | 0) === n ? ' on' : '') + '" data-look="' + n + '" aria-pressed="' + ((state.settings.look | 0) === n) + '" aria-label="' + esc(tf('look_n', { n: n + 1 })) + '">' + api.art.sakhi({ pose: 'calm', look: n }) + '</button>').join('') + '</div>' : '') +
+      meRows('look');
+    wire(v);
     v.querySelectorAll('[data-theme-pick]').forEach((b) => b.addEventListener('click', () => { state.settings.theme = b.dataset.themePick; save(); render(); }));
     v.querySelectorAll('[data-look]').forEach((b) => b.addEventListener('click', () => { state.settings.look = +b.dataset.look; save(); render(); }));
+    runHook('afterMe', [v, api, 'look']);
+  }
+
+  function renderMeHelp(v) {
+    v.innerHTML = backRow(t('howto_h'), 'me', false) + tourMenuHtml().replace(/^<h2>[^<]*<\/h2>/, '') + '<div class="list">' + meSw('toursAuto', 'tours_auto', 'tours_auto_d') + meSw('tourVoice', 'tour_voice', 'tour_voice_d') + '</div><button type="button" class="btn sm" id="me-tips">' + esc(t('tours_again')) + '</button>';
+    wire(v); wireSettings(v); wireTourMenu(v);
     $('#me-tips', v).addEventListener('click', () => { state.tours = {}; state.tourDay = null; state.fullTour = null; save(); toast(t('tours_again_done')); render(); });
-    wireTourMenu(v);
-    v.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => { const keep = Object.assign({}, state.settings); loadSample(b.dataset.demo); state.settings = Object.assign(state.settings, keep); save(); toast(t('sample_note')); setHash('home'); }));
-    const dw = $('#demo-welcome', v); if (dw) dw.addEventListener('click', wipeAll);
-    runHook('afterMe', [v, api]);
-    $('#me-export', v).addEventListener('click', () => { $('#me-out', v).innerHTML = '<textarea readonly style="min-height:160px;font-size:13px">' + esc(JSON.stringify(state, null, 1)) + '</textarea>'; });
-    $('#me-del', v).addEventListener('click', () => { $('#me-out', v).innerHTML = '<div class="card warn"><p style="color:var(--fg)">' + esc(t('delete_sure')) + '</p><div class="grid2"><button type="button" class="btn" id="del-no">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="del-yes">' + esc(t('yes_delete')) + '</button></div></div>'; $('#del-no', v).addEventListener('click', () => { $('#me-out', v).innerHTML = ''; }); $('#del-yes', v).addEventListener('click', () => { wipeAll(); }); });
+  }
+
+  /* The notice, the grievance contact and the version. Five taps on the version show the prototype settings, for Qura's team:
+     women testing Sakhi never meet them by chance. */
+  function renderMeAbout(v) {
+    const proto = !!(state.settings.proto || mem.protoShow);
+    v.innerHTML = backRow(t('me_about_h'), 'me', false) + '<ul class="ob-ul">' + [1, 2, 5, 3, 4].map((i) => '<li>' + esc(t('ob_notice_' + i)) + '</li>').join('') + '</ul>' +
+      '<p class="small">' + esc(t('notice_text')) + '</p><p class="small">' + esc(t('grievance')) + '</p><p class="small me-version" id="me-version">' + esc(tf('me_version', { v: CFG.app })) + '</p>' +
+      (proto ? '<h2>' + esc(t('proto_h')) + '</h2><div class="list">' + meSw('proto', 'protolabels', 'protolabels_d') + '</div>' + (state.settings.proto && !state.sample ? demoHtml() : '') : '');
+    wire(v); wireSettings(v); wireDemo(v);
+    let taps = 0;
+    $('#me-version', v).addEventListener('click', () => { taps += 1; if (taps >= 5 && !mem.protoShow) { mem.protoShow = true; toast(t('me_proto_shown')); render(); } });
   }
 
   /* ---------- gated tools ---------- */
@@ -2549,7 +2655,7 @@
        (Android may pause the 10-minute timer while the app is in the background). The page's own visibility events and the
        Android app's pause/resume calls both land here; the second arrival finds nothing to do, so she is never locked twice.
        Coming back also re-sends the alarm list so it never runs dry. */
-    const wentAway = () => { if (!mem.hiddenAt) mem.hiddenAt = Date.now(); };
+    const wentAway = () => { if (!mem.hiddenAt) mem.hiddenAt = Date.now(); mem.healthOk = false; };   /* her health details ask for the PIN again */
     const cameBack = () => {
       const away = mem.hiddenAt ? Date.now() - mem.hiddenAt : 0; mem.hiddenAt = 0;
       if ((state.settings.pinHash || (state.settings.shared && state.stage === 'app')) && away > 30000 && !mem.locked) { mem.locked = true; mem.bioAuto = false; closeSheet(); render(); }

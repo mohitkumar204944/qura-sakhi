@@ -751,6 +751,6 @@
       }
     },
     me: () => '<div class="list"><button type="button" class="item" data-go="lang"><span class="ico-sm">' + S.I.speaker + '</span><span class="body"><strong>' + esc(t('lang_tile')) + '</strong><span>' +
-      esc(tf('lang_me_s', { lang: S.langMeta(S.state.lang).name || S.state.lang, speed: t('lang_' + rateKey()) })) + '</span></span></button></div>'
+      esc(tf('lang_me_s', { lang: S.langMeta(S.state.lang).name || S.state.lang, speed: t('lang_' + rateKey()) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>'
   });
 })(window.Saathi);

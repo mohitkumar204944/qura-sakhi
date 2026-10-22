@@ -24,7 +24,7 @@
     you_on: ['You share your diary with your Qura doctor since {d}.', 'आप {d} से अपनी डायरी अपनी Qura डॉक्टर से साझा कर रही हैं।'],
     you_off: ['You are not sharing your diary with a Qura doctor, so no doctor sees it.', 'आप अपनी डायरी किसी Qura डॉक्टर से साझा नहीं कर रहीं, इसलिए कोई डॉक्टर इसे नहीं देखती।'],
     you_browse: ['You are reading without a diary, so there is nothing of yours to share.', 'आप बिना डायरी के पढ़ रही हैं, इसलिए आपका कुछ भी साझा होने को नहीं है।'],
-    you_change: ['Change it on the {me} page', '“{me}” पन्ने पर बदलें'],
+    you_change: ['Change it in {me} → My data', '“{me}” → “मेरा डेटा” में बदलें'],
     you_sum: ['See your own doctor summary', 'अपनी doctor summary देखें'],
     list_h: ['Patients (sample)', 'मरीज़ (नमूना)'],
     list_p: ['The list as a Qura doctor would see it. Tap a name to open her shared diary.', 'सूची वैसी, जैसी Qura की डॉक्टर को दिखती। उसकी साझा डायरी खोलने के लिए नाम पर टैप करें।'],
@@ -338,7 +338,7 @@
     }).join('');
     let you = '';
     if (st.stage === 'app') {
-      you = '<p class="small">' + esc(st.consent && st.consent.c4 ? TF('you_on', { d: fmtL(st.consent.c4) }) : T('you_off')) + '</p><div class="row wrap"><button type="button" class="btn sm" data-go="me">' + esc(TF('you_change', { me: t('me') })) + '</button>' +
+      you = '<p class="small">' + esc(st.consent && st.consent.c4 ? TF('you_on', { d: fmtL(st.consent.c4) }) : T('you_off')) + '</p><div class="row wrap"><button type="button" class="btn sm" data-go="me-data">' + esc(TF('you_change', { me: t('me') })) + '</button>' +
         (S.routeOwner('tools-summary') ? '<button type="button" class="btn sm ghost" data-go="tools-summary">' + esc(T('you_sum')) + '</button>' : '') + '</div>';
     } else you = '<p class="small">' + esc(T('you_browse')) + '</p>';
     v.innerHTML = S.backRow(T('tile'), 'care', true) + '<p class="small">' + esc(T('intro')) + '</p>' +
@@ -448,7 +448,7 @@
     testRoutes: PEOPLE.map((p) => 'docportal-p-' + p),
     open: ['docportal', 'docportal-p-*'],
     tiles: [{ section: 'tools', route: 'docportal', title: 'docportal_tile', sub: 'docportal_tile_s', icon: 'users', order: 90, gated: true, keywords: 'doctor portal view share sharing consent privacy what the doctor sees डॉक्टर साझा सहमति portal' }],
-    me: () => '<div class="list"><button type="button" class="item" data-go="docportal"><span class="ico-sm">' + S.I.users + '</span><span class="body"><strong>' + esc(T('me_item')) + '</strong><span>' + esc(T('me_item_s')) + '</span></span><span class="pill">' + esc(t('gated_short')) + '</span></button></div>',
+    me: () => '<div class="list"><button type="button" class="item" data-go="docportal"><span class="ico-sm">' + S.I.users + '</span><span class="body"><strong>' + esc(T('me_item')) + '</strong><span>' + esc(T('me_item_s')) + '</span></span>' + (S.state.settings.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '<span class="chev">' + S.I.chev + '</span></button></div>',
     css: [
       '.docp-ul { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg); }',
       '.docp-ul li { margin: 0; }',

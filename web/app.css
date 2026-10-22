@@ -141,7 +141,18 @@ body.hi .big { font-family: var(--font-hi); font-size: 52px; }
 .item .body strong { font-weight: 600; font-size: 15px; }
 .item .body span { font-size: 12px; color: var(--muted); }
 .item .num { width: 30px; height: 30px; border-radius: 15px; background: var(--dark); color: var(--bg); font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.item input[type=checkbox] { width: 24px; height: 24px; accent-color: var(--accent); flex-shrink: 0; min-height: 0; }
+/* A setting row's checkbox is an on/off switch (22 Oct Me audit): an outlined track with a small thumb when off, a filled
+   track with a larger thumb when on. The whole row still taps; app.js gives it role="switch". */
+.item > input[type=checkbox] { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 48px; height: 28px; min-height: 0; margin: 0; padding: 0; border-radius: 14px; border: 2px solid var(--muted); background: var(--card-2); position: relative; cursor: pointer; transition: background-color .15s, border-color .15s; }
+.item > input[type=checkbox]::before { content: ''; position: absolute; top: 50%; left: 4px; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--muted); transition: transform .15s, width .15s, height .15s, margin .15s, background-color .15s; }
+.item > input[type=checkbox]:checked { background: var(--accent); border-color: var(--accent); }
+.item > input[type=checkbox]:checked::before { width: 20px; height: 20px; margin-top: -10px; transform: translateX(18px); background: var(--card); }
+.item > input[type=checkbox]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .item > input[type=checkbox], .item > input[type=checkbox]::before { transition: none; } }
+/* Me: Delete everything sits apart at the bottom, in the accent colour; the version line under About. */
+.me-danger { margin-top: 10px; }
+.me-danger .item strong { color: var(--accent); }
+.me-version { text-align: center; padding: 6px 0; }
 .item.quiet { box-shadow: none; background: var(--card-2); }
 
 .article { display: flex; flex-direction: column; gap: 14px; }

@@ -22,6 +22,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 - Tests:
   - `node test/signup.mjs`
   - `node test/tours.mjs`
+  - `node test/me.mjs`
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`

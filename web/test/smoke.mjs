@@ -23,7 +23,7 @@ for (const p of ['blank', 'browse', 'priya', 'asha', 'meera', 'sunita', 'kamla']
 setups.push({ p: 'priya', lang: 'en', discreet: true }, { p: 'meera', lang: 'hi', discreet: true }, { p: 'asha', lang: 'en', proto: true });
 for (const su of setups) {
   await page.evaluate((su) => { const S = window.Saathi; S.reset(); if (S.account) S.account._testSignIn(); if (su.p === 'blank') { S.state.stage = 'app'; S.state.consent.c1 = '2026-01-01'; S.state.dob = '1994-01-01'; } else if (su.p === 'browse') S.state.stage = 'browse'; else S.loadSample(su.p); S.state.lang = su.lang; S.state.settings.discreet = !!su.discreet; S.state.settings.proto = !!su.proto; S.save(); }, su);
-  for (const r of ['home', 'care', 'me', 'learn', 'help', 'checkin', 'diary', 'account', ...info.routes]) {
+  for (const r of ['home', 'care', 'me', 'learn', 'help', 'checkin', 'diary', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', ...info.routes]) {
     where = su.p + ' ' + su.lang + (su.discreet ? ' discreet' : '') + (su.proto ? ' proto' : '') + ' #' + r; const before = errs.length;
     const res = await page.evaluate((r) => { location.hash = '#' + r; window.Saathi.render(); const v = document.getElementById('view'); const t = (v.innerText || '').trim(); return { len: t.length, err: /hit an error in the prototype/.test(t), over: document.documentElement.scrollWidth > window.innerWidth + 1 }; }, r);
     if (errs.length > before) problems.push(where + ': ' + errs.slice(before).join(' / '));

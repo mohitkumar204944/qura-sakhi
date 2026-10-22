@@ -109,7 +109,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   check('4 a woman who has seen tours before gets the full tour once', s && s.n === 'Home · 1 of 3', s);
   await tap(page, '#tour-later'); await sleep(300);
   check('4 Not now ends it for good', (await st(page)).full.st === 'stopped');
-  await page.evaluate(() => { location.hash = '#me'; }); await page.waitForSelector('[data-tour-full]');
+  await page.evaluate(() => { location.hash = '#me-help'; }); await page.waitForSelector('[data-tour-full]');
   check('4 How to use Sakhi offers it', /The full tour/.test(await page.$eval('[data-tour-full]', (e) => e.innerText)) && /5 screens, one after another/.test(await page.$eval('[data-tour-full]', (e) => e.innerText)));
   await tap(page, '[data-tour-full]');
   const r = await waitTour(page);
@@ -121,7 +121,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
 /* ---------- 5. "Show the tours again" brings the full tour back on her next Home ---------- */
 {
   const all = Object.fromEntries(['home', 'diary', 'care', 'help', 'me'].map((k) => [k, { st: 'done', d: '2026-10-01' }]));
-  const { ctx, page, errs } = await open({ seed: seedApp({ tours: all, fullTour: { st: 'done', d: '2026-10-01' } }), hash: '#me' });
+  const { ctx, page, errs } = await open({ seed: seedApp({ tours: all, fullTour: { st: 'done', d: '2026-10-01' } }), hash: '#me-help' });
   await page.waitForSelector('#me-tips');
   check('5 a finished full tour is marked seen', /seen/.test(await page.$eval('[data-tour-full]', (e) => e.innerText)));
   await tap(page, '#me-tips'); await sleep(300);
@@ -171,7 +171,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   const off = await open({ seed: seedApp({ settings: { toursAuto: false } }) });
   await sleep(1800);
   check('8 with tours switched off it never starts on its own', !(await now(off.page)) && !(await st(off.page)).full);
-  await off.page.evaluate(() => { location.hash = '#me'; }); await off.page.waitForSelector('[data-tour-full]'); await tap(off.page, '[data-tour-full]');
+  await off.page.evaluate(() => { location.hash = '#me-help'; }); await off.page.waitForSelector('[data-tour-full]'); await tap(off.page, '[data-tour-full]');
   const r = await waitTour(off.page);
   check('8 but the replay still works', r && r.n === 'Home · 1 of 3', r);
   check('8 no page errors (tours off)', !off.errs.length, off.errs);

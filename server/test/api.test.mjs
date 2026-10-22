@@ -267,6 +267,7 @@ prefix = '[pglite] ';
     insert into sakhi.rate_hits (key, bucket, hits) values ('old', now() - interval '3 days', 1);
     insert into sakhi.sessions (token_hash, account_id, last_used_on, revoked_at) select 'revoked-old', id, current_date, now() - interval '31 days' from sakhi.accounts limit 1;
     insert into sakhi.sessions (token_hash, account_id, last_used_on) select 'idle-old', id, current_date - 400 from sakhi.accounts limit 1;
+    update sakhi.sessions set last_used_on = current_date where token_hash not in ('revoked-old', 'idle-old');   -- her live session, on the real date the clean-up uses
     update sakhi.jobs set ran_at = now() - interval '25 hours';`);
   ctx.clock.add(31);
   await sendCode(ctx, '+919876543210');

@@ -663,3 +663,65 @@ dropped on 20 Oct.
   - the replay, and Show the tours again;
   - Hindi at 360 px, and readers.
 - `S.account._testSignIn()` now gives the test account a name and PIN code.
+
+## 26. Version 26: Me as a short page with a page for each part (Mohit, 22 Oct: "do quick wins and restructure together")
+
+The audit is in `../docs/ux-audit-me-2026-10-22.md`. This version builds its quick wins and the restructure (a–j). Me was 5.7
+screens with 12 sections and 66 controls; it is now about 1.2 screens.
+
+**Me, top to bottom:**
+1. Her name and masked number (→ account).
+2. Privacy on a shared phone (→ `me-privacy`), with what's on: "On: App lock, Discreet mode" or "Nothing switched on yet".
+3. My health details (→ `me-health`), showing her stage in the stage sheet's words. In discreet mode: "My details · Only you
+   can see these", with no stage or condition named.
+4. Reminders on this phone (→ `me-reminders`, Android only).
+5. Language and read-aloud (the lang module's row).
+6. My data (→ `me-data`).
+7. Appearance (→ `me-look`).
+8. How to use Sakhi (→ `me-help`).
+9. About and privacy (→ `me-about`, with the version).
+10. Delete everything on this phone, set apart at the bottom in the accent colour, asking first as before.
+
+The Me tour still lights `#me-privacy` and `#me-del`.
+
+**The pages:**
+- **Privacy:** discreet mode, shared-phone mode, app lock, hide the app (Android).
+- **Health:**
+  - One Stage row that opens the stage sheet. It replaces the five stage checkboxes (pregnant, breastfeeding, periods
+    stopped, after 40, planning a baby), which could contradict each other.
+  - The four conditions as switches, with their doctor-verified wording unchanged.
+  - With app lock on, the page asks for the PIN (or fingerprint) first. That holds until Sakhi goes to the background
+    (`mem.healthOk`).
+- **Data:**
+  - Report for my doctor and Move to a new phone.
+  - "Share with my Qura doctor" as a switch (was "—" and a Give button), next to "See what a doctor sees".
+  - "What Sakhi keeps on this phone": counts in words, or one neutral count in discreet mode. The raw data is one tap further.
+- **Appearance:** light, dark or same as phone; Sakhi's look; the garden.
+- **Help:** the tour list (the same one as on the Help tab), the two tour switches, and Show the tours again.
+- **About:** the notice, the notice text, the grievance contact (still a placeholder, waiting for Mohit) and the version.
+  Five taps on the version show the prototype settings; the sample women appear once prototype labels are on. Women testing
+  Sakhi never meet them by chance, and the doctor view's "Needs approval" tag shows only with prototype labels on.
+
+**Switches:** every setting row's checkbox (`.item > input[type=checkbox]`) is drawn as an on/off switch. `wire()` gives it
+`role="switch"`. Checkboxes in lists (`.checklist`, the intimate-health share box) stay checkboxes.
+
+**Rules for module authors:**
+1. A module's `me` hook still returns HTML. Core places it by module id (`ME_PLACE` in app.js):
+   - `lang` → the main page;
+   - `docportal` → My data;
+   - `joy` → Appearance;
+   - `pregtest` → My health details;
+   - any other module → a "More" group on the main page.
+
+   To place a new module elsewhere, add it to `ME_PLACE`.
+2. `afterMe(v, api, page)` now gets the page (`main`, `health`, `data` or `look`).
+3. To link to a setting, use its page: `data-go="me-health"` (hormone medicine, conditions, stage), `me-data` (sharing,
+   report, backup), `me-privacy`. contra and docportal were moved from `me` to these.
+4. Never name a stage or condition on the main Me page.
+
+**Tests:**
+- `node test/me.mjs` (58 checks): the order, fit and discreet wording; each page and where module rows went; switches; the
+  Stage row; the PIN asked again; data in words; prototype behind the version; Delete everything; the Me tour; Hindi at
+  360 px; the web without reminders.
+- `tours.mjs` opens the tour list from `me-help`.
+- `smoke.mjs` and `check.mjs` know the seven new routes.

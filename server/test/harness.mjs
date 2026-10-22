@@ -18,6 +18,10 @@ export async function pgliteDb() {
   await db.exec('create role anon; create role authenticated;');
   for (const f of fs.readdirSync(MIGRATIONS).filter((x) => x.endsWith('.sql')).sort()) await db.exec(fs.readFileSync(path.join(MIGRATIONS, f), 'utf8'));
   await db.exec("insert into sakhi.pincodes (pincode, district, state) values ('560001', 'Bengaluru Urban', 'Karnataka'), ('110001', 'New Delhi', 'Delhi')");
+  /* The daily clean-up compares with the database's real clock, but the tests run on a fake one (20 Oct 2026). Marked as just
+     run, it stays out of every test but its own, which sets it due on purpose. (From 22 Oct it deleted the fake-dated rate
+     counters as two days old, and the rate limits stopped counting.) */
+  await db.exec("update sakhi.jobs set ran_at = now() where name = 'housekeep'");
   return db;
 }
 export const pgQuery = (db) => (text, params) => db.query(text, params).then((r) => r.rows);
