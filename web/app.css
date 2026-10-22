@@ -758,7 +758,7 @@ body.hi .docbtn { font-family: var(--font-hi); }
 body.discreet .topbar .brand .bname { display: block; }
 @media (max-width: 330px) { .docbtn span { display: none; } .docbtn { width: 40px; height: 40px; padding: 0; justify-content: center; } }
 .doc-card { gap: 8px; }
-.doc-card .btn svg, .periods-urg ~ .btn svg, [data-ask] > svg { width: 18px; height: 18px; }
+.doc-card .btn svg, .periods-urg ~ .btn svg, [data-ask] > svg, #ask-web > svg, #ask-wa > svg { width: 18px; height: 18px; flex: none; }
 .btn.sos-open { background: var(--ink-text); color: var(--ink); border: none; margin-top: 4px; }
 
 /* ===================== v16: tours. One feature at a time, lifted out of a dimmed screen, with Sakhi saying what it is ===================== */

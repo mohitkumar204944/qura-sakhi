@@ -15,7 +15,7 @@
     plan_wk: ['Weeks {a} to {b}', 'हफ़्ता {a} से {b}'], plan_upto: ['Up to week {b}', 'हफ़्ता {b} तक'], plan_from: ['From week {a}, {d}', 'हफ़्ता {a} से, {d}'],
     plan_open: ['Open', 'खोलें'], plan_mark: ['Done', 'हो गया'], plan_marked: ['Done on {d}', '{d} को हो गया'], plan_undo: ['Undo', 'वापस लें'], plan_auto: ['Done: from your MCP card, logs or tools', 'हो गया: आपके MCP card, रिकॉर्ड या टूल से'],
     plan_td2: ['Second dose from {d}', 'दूसरी खुराक {d} से'],
-    plan_pmsma_next: ['Next PMSMA day: {d}', 'अगला PMSMA दिन: {d}'], plan_pmsma_went: ['I went today', 'आज गई थी'], plan_pmsma_n: ['Went: {n}', 'गईं: {n} बार'],
+    plan_pmsma_next: ['Next PMSMA day: {d}', 'अगला PMSMA दिन: {d}'], plan_pmsma_find: ['Find a PMSMA centre', 'PMSMA केंद्र खोजें'], plan_uwin: ['Book on U-WIN', 'U-WIN पर बुक करें'], plan_pmsma_went: ['I went today', 'आज गई थी'], plan_pmsma_n: ['Went: {n}', 'गईं: {n} बार'],
     plan_rem: ['Remind me when each one is due', 'हर चीज़ का समय आने पर याद दिलाएँ'], plan_rem_s: ['At 10 am on the first day of each check-up and test, and at 9 am on each PMSMA day.', 'हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे, और हर PMSMA दिन सुबह 9 बजे।'],
     plan_none: ['Add your due date or last period to see your plan.', 'अपना प्लान देखने के लिए डिलीवरी की तारीख़ या पिछला पीरियड डालें।'], plan_all_now: ['Nothing is due right now.', 'अभी कुछ बाकी नहीं।'],
     plan_home: ['Due now: {x}', 'अभी: {x}'], plan_home_more: ['{x}, and {n} more', '{x} और {n} अन्य'], plan_rem_now: ['Due now: {x}', 'अभी: {x}'], plan_rem_pmsma: ['PMSMA: free check-up today', 'PMSMA: आज मुफ़्त जाँच'],
@@ -906,14 +906,14 @@
     { id: 'reg', w: [0, 12], tip: 5, go: 'preg-mcp', auto: (st) => !!st.mcp.regd },
     { id: 'folic', w: [0, 12], tip: 4 },
     { id: 'anc1', w: [0, 12], tip: 9, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 0, 13) },
-    { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
+    { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', ext: ['https://uwinselfregistration.mohfw.gov.in/login', 'plan_uwin'], auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
     { id: 'scan1', w: [11, 14], tip: 11 },
     { id: 'scheme', w: [5, 40], tip: 12, go: 'access-schemes-preg' },
     { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) },
     { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs' },
     { id: 'anc2', w: [14, 26], tip: 16, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 14, 26) },
     { id: 'scan2', w: [18, 20], tip: 18, rem: true },   /* the verified tip says 18–20 weeks */
-    { id: 'pmsma', w: [13, 40], tip: 23, pmsma: true },
+    { id: 'pmsma', w: [13, 40], tip: 23, pmsma: true, ext: ['https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/', 'plan_pmsma_find'] },
     { id: 'ogtt', w: [24, 28], tip: 24, go: 'preg-logs', rem: true, auto: (st, wi) => st.sug.some((x) => x.k === 'dipsi' && wkOf(wi, x.d) >= 24 && wkOf(wi, x.d) <= 28) },
     { id: 'anc3', w: [28, 34], tip: 27, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 28, 34) },
     { id: 'jssk', w: [28, 40], tip: 29, go: 'access-schemes-preg' },
@@ -970,6 +970,8 @@
       const btns = [];
       if (it.pmsma && x.code === 'now') btns.push('<button type="button" class="btn sm' + (pl.pmsma.indexOf(todayISO()) >= 0 ? ' on' : '') + '" data-pg-pmsma="1">' + esc(T('plan_pmsma_went')) + '</button>');
       else if (!it.pmsma && !x.auto) btns.push(x.tick ? '<button type="button" class="btn sm" data-pg-plan-undo="' + it.id + '">' + esc(T('plan_undo')) + '</button>' : '<button type="button" class="btn sm' + (x.code === 'now' ? ' primary' : '') + '" data-pg-plan="' + it.id + '">' + esc(T('plan_mark')) + '</button>');
+      /* an official site, opened outside Sakhi (Version 29) */
+      if (it.ext && x.code !== 'done' && x.code !== 'past') btns.push('<a class="btn sm" href="' + esc(it.ext[0]) + '" target="_blank" rel="noopener">' + esc(T(it.ext[1])) + '</a>');
       if (it.go && linkOk(it.go)) btns.push('<button type="button" class="btn sm" data-go="' + esc(it.go) + '">' + esc(GO_LABEL[it.go] ? GO_LABEL[it.go]() : T('plan_open')) + '</button>');
       return '<div class="card pg-plan" data-plan="' + it.id + '"><div class="row spread" style="align-items:flex-start;gap:8px"><h3 style="margin:0;min-width:0">' + esc(name) + '</h3><span class="pill ' + (x.code === 'now' ? 'accent' : (x.code === 'done' ? 'ok' : 'muted')) + '">' + esc(x.code === 'soon' ? TF('plan_from', { a: it.w[0], d: S.fmtD(dayOfWeek(wi, it.w[0]), { day: 'numeric', month: 'short' }) }) : win(it)) + '</span></div>' +
         '<p class="small" style="color:var(--fg)">' + esc(tipOf(it)) + '</p>' + extra + doneLine + (btns.length ? '<div class="row wrap">' + btns.join('') + '</div>' : '') + '</div>';

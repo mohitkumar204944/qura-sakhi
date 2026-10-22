@@ -1071,3 +1071,56 @@ folder or name loads nothing. `plans.mjs` now has 115 checks.
   covers all 25 modules.
 - Two core strings were defined twice: the new `rp_show`, now `rp_big`, and an old, unused `learn_p`, now removed. The new
   `test/dupkeys.mjs`, run inside smoke, stops this from happening again.
+
+## 31. Version 29: Free doctor and care (Mohit, 22 Oct: "yes build the free doctor and care section")
+
+From `../docs/consult-booking-research-2026-10-22.md`. No booking API is open to an app like Sakhi:
+- eSanjeevani has none, and its site is behind reCAPTCHA;
+- booking through ABDM's UHI network needs paid certification.
+
+So this section sends her to the right free service and says what to choose there.
+
+**The page (access module, route `access-doctor`):**
+- **"A doctor, free":**
+  - **eSanjeevani**, with "choose your state's Obs & Gynae OPD, or else the General OPD" and the list of states that had one
+    on 22 Oct. Links go to sign-in and to OPD timings.
+  - **ORS:** a government-hospital OPD appointment, AIIMS included.
+  - **Aarogya Setu 2.0:** the government's UHI app, with Scan and Share.
+- **"In pregnancy":**
+  - the PMSMA centre finder;
+  - Td on U-WIN (self-registration log-in);
+  - free ambulances on `tel:102` and `tel:108`, with the JSSK line.
+- **"Hospital care and support":**
+  - PM-JAY hospitals (`hem.nha.gov.in/search`), with the C-section referral note and "Check my card" (Do it online);
+  - Tele-MANAS: `tel:14416`, `tel:18008914416` and the website, with the verified line about thoughts of harm.
+- **Order:** for a pregnant woman, the pregnancy group comes first.
+- **Footer:** "Or speak to a Qura doctor" (`data-ask`), the shared OTP warning, and the date the links were checked.
+- **Wording:** reused word for word where it exists (week tips 23 and 29, Do it online's eSanjeevani and U-WIN lines, the
+  helpline labels). The new lines are in `docs/wording-review-v28.md`, section 6.
+
+**Ways in:**
+- first in Care near me's list;
+- a "Free government options" card on the Doctor screen (`ask`);
+- a link under Help's doctor card;
+- Care tiles under tools and pregnancy.
+- The pregnancy plan's Td card gets "Book on U-WIN", and its PMSMA card gets "Find a PMSMA centre", until the item is done.
+- The safety page gets "Find your nearest One Stop Centre" and "Book a visit to a One Stop Centre" (Mission Shakti).
+
+**Rules:**
+1. Every link is static and carries nothing about her (no number, PIN code or name). Links open outside Sakhi:
+   `shouldOverrideUrlLoading` hands them to the browser or dialer.
+2. **Links are https on gov.in or nic.in.** The one exception is Aarogya Setu, which links to its official Play listing
+   (published by NHA) because aarogyasetu.gov.in did not answer on 22 Oct 2026.
+3. Sakhi never books for her and never automates a CAPTCHA portal. If a booking API ever opens to apps like Sakhi without
+   paid certification, it goes through core `net()` with her explicit yes, never from a module.
+
+**Also fixed:** the Doctor screen's booking button (`#ask-web`, `#ask-wa`) showed a stethoscope as big as the button; its
+icon is now 18 px.
+
+**Tests:** `node test/companions.mjs` section 7 (now 71 checks). It covers:
+- the order and content;
+- that every web link is official and every number right;
+- that nothing about her is in any link and nothing is sent;
+- pregnancy first;
+- every way in, the plan buttons (gone once Td is done) and the safety links;
+- Hindi, and the icon size.

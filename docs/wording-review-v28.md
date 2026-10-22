@@ -200,3 +200,37 @@ The facility names, types and addresses come from the government's list, not fro
 
 The emergency line on this page ("Emergency: call 112, or 108 or 102 for a free ambulance") is unchanged.
 
+## 6. Version 29: Free doctor and care (please check)
+
+A page of free government services. Each card opens the official site or app, or dials the number.
+
+**Reused word for word, so no review is needed:**
+- **eSanjeevani** and **U-WIN** lines: from "Do it online" (section 3);
+- **PMSMA:** the week-23 tip;
+- **The ambulance card:** the week-29 JSSK tip;
+- **Tele-MANAS:** the label "Tele-MANAS: someone to talk to, free, 24×7";
+- **"Thoughts of harming yourself or the baby: call 14416 or 112 now"**;
+- **"Find your nearest One Stop Centre (official)"**.
+
+**New lines:**
+
+| Where | English | Hindi |
+|---|---|---|
+| Intro | Free government doctors and care, from your phone. Each button opens the official site or app, or calls the number: Sakhi books nothing and sends nothing. You sign in there with your own mobile number. | फ़ोन से मुफ़्त सरकारी डॉक्टर और इलाज। हर बटन सरकारी साइट या ऐप खोलता है, या नंबर मिलाता है: Sakhi न कुछ बुक करती है, न कुछ भेजती है। वहाँ आप अपने मोबाइल नंबर से साइन इन करती हैं। |
+| eSanjeevani (please check) | Choose your state’s Obs & Gynae (women’s health) OPD if it has one, or else the General OPD. Check the OPD timings first. | आपके राज्य में Obs & Gynae (महिला स्वास्थ्य) OPD हो तो उसे चुनें, नहीं तो General OPD। पहले OPD का समय देख लें। |
+| eSanjeevani (a fact, checked 22 Oct) | Obs & Gynae OPDs on 22 Oct 2026: Delhi, Jammu and Kashmir, Jharkhand, Karnataka, Kerala, Maharashtra, Punjab, Rajasthan and Uttar Pradesh, and AIIMS and other central government hospitals. | 22 अक्टूबर 2026 को Obs & Gynae OPD: दिल्ली, जम्मू-कश्मीर, झारखंड, कर्नाटक, केरल, महाराष्ट्र, पंजाब, राजस्थान और उत्तर प्रदेश में, और AIIMS व दूसरे केंद्रीय सरकारी अस्पतालों में। |
+| ORS | Book an OPD appointment at a government hospital, including AIIMS, before you go. You need: a mobile number for the OTP, or your ABHA. | जाने से पहले किसी सरकारी अस्पताल में, AIIMS में भी, OPD का समय बुक करें। आपको चाहिए: OTP के लिए मोबाइल नंबर, या आपकी ABHA। |
+| Aarogya Setu | Find doctors and book visits on the national health network, and skip the registration queue at many hospitals by scanning a QR code (Scan and Share). | राष्ट्रीय स्वास्थ्य नेटवर्क पर डॉक्टर खोजें और मिलने का समय बुक करें, और कई अस्पतालों में QR code स्कैन करके (Scan and Share) पर्ची की लाइन से बचें। |
+| PM-JAY hospitals | Find hospitals near you that treat Ayushman (PM-JAY) card holders free. | अपने पास वे अस्पताल खोजें जहाँ आयुष्मान (PM-JAY) कार्ड पर मुफ़्त इलाज होता है। |
+| PM-JAY note (please check) | Under the scheme, a C-section or a high-risk delivery is mainly done in government hospitals; a private hospital needs a referral. Ask at the Ayushman Mitra desk. | इस योजना में ऑपरेशन (C-section) या ज़्यादा जोखिम वाली डिलीवरी मुख्य रूप से सरकारी अस्पतालों में होती है; निजी अस्पताल के लिए रेफ़रल चाहिए। आयुष्मान मित्र डेस्क पर पूछें। |
+| Tele-MANAS (please check; adapted from the verified partner-page line) | Low mood or worry is common after a birth, a loss and around menopause, and it is treatable. | उदासी या चिंता डिलीवरी, गर्भ के नुक़सान और मेनोपॉज़ के आसपास आम है, और इसका इलाज है। |
+| Doctor screen | Free government options. A government doctor on a video call, a hospital OPD slot, or a free check-up in pregnancy. | मुफ़्त सरकारी विकल्प। वीडियो कॉल पर सरकारी डॉक्टर, अस्पताल में OPD का समय, या गर्भ में मुफ़्त जाँच। |
+| Safety page | Book a visit to a One Stop Centre | वन स्टॉप सेंटर में जाने का समय बुक करें |
+
+**Sources for the facts:**
+- `docs/consult-booking-research-2026-10-22.md`;
+- PM-JAY's C-section rule: Health Benefit Package 2.2.
+
+**Buttons and titles need no clinical review:** "Open eSanjeevani", "OPD timings", "Book on ORS", "Get the app", "Find a
+PMSMA centre", "Book on U-WIN", "Call 102", "Find a hospital", "Check my card", "Tele-MANAS website", "Free doctor and care".
+
