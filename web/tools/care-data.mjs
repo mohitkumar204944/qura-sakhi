@@ -91,6 +91,13 @@ const inIndia = (la, lo) => la != null && lo != null && la >= 6 && la <= 37.6 &&
 const coords = (la, lo) => { la = num(la); lo = num(lo); if (inIndia(la, lo)) return [la, lo, false]; if (inIndia(lo, la)) return [lo, la, true]; return null; };
 const title = (s) => (/^\s*(na|n\/a|null|-)?\s*$/i.test(String(s || '')) ? '' : String(s).toLowerCase().replace(/\s+/g, ' ').trim().replace(/(^|[\s(/-])([a-z])/g, (m, a, b) => a + b.toUpperCase()));   /* "NA" is blank, not a place */
 const r4 = (x) => Math.round(x * 1e4) / 1e4;
+/* Some addresses carry a staff member's mobile number or e-mail. They are personal, so they are taken out of every name and
+   address.
+   A landline needs its STD code written with a separator (080-22334455) or as 11 digits, so facility codes such as
+   "Area-2 (070607804)" stay. Text without any of these is left exactly as it is. */
+const PRIVATE = [/[\w.%+-]+@[\w.-]+\.[a-z]{2,}/i, /(?<!\d)(?:\+?91[\s-]?)?[6-9]\d{9}(?!\d)/, /(?<!\d)0\d{2,4}[\s-]\d{6,8}(?!\d)/, /(?<!\d)0\d{10}(?!\d)/];
+const hasPrivate = (s) => PRIVATE.some((re) => re.test(s));
+const scrub = (s) => PRIVATE.reduce((x, re) => x.replace(new RegExp(re.source, re.flags + 'g'), ' '), String(s || '')).replace(/\s+/g, ' ').replace(/\s*,(\s*,)+/g, ',').replace(/\s+,/g, ',').replace(/^[\s,;:/-]+|[\s,;:/-]+$/g, '').trim();
 const mode = (arr) => { const c = {}; let best = '', n = 0; arr.forEach((x) => { if (!x) return; c[x] = (c[x] || 0) + 1; if (c[x] > n) { n = c[x]; best = x; } }); return best; };
 const median = (arr) => { const s = arr.slice().sort((a, b) => a - b); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 /* the facility types Sakhi lists; anything else (AYUSH, private, labs, "others") is left out */
@@ -168,7 +175,7 @@ function buildPins(recs) {
 
 function buildFacilities(recs, P) {
   needCols(recs, FAC_COLS, 'Facilities');
-  const raw = {}; let noCoord = 0, swapped = 0, other = 0; const all = []; const onPoint = new Map();
+  const raw = {}; let noCoord = 0, swapped = 0, other = 0, scrubbed = 0; const all = []; const onPoint = new Map();
   const pointOf = (la, lo) => la.toFixed(4) + ',' + lo.toFixed(4);
   recs.forEach((r) => {
     const rt = pick(r, FAC_COLS.type) || '(blank)'; raw[rt] = (raw[rt] || 0) + 1;
@@ -176,9 +183,11 @@ function buildFacilities(recs, P) {
     if (c) onPoint.set(pointOf(c[0], c[1]), (onPoint.get(pointOf(c[0], c[1])) || 0) + 1);   /* every type counts towards a shared point */
     const ty = typeOf(rt); if (!ty || (ty === 'sc' && !SUBCENTRES)) { other++; return; }
     if (!c) { noCoord++; return; } if (c[2]) swapped++;
-    const name = pick(r, FAC_COLS.name).replace(/\s+/g, ' ').slice(0, 90); if (!name) return;
+    const rawName = pick(r, FAC_COLS.name).replace(/\s+/g, ' ').trim(); let hadPrivate = hasPrivate(rawName);
+    const name = (hadPrivate ? scrub(rawName) : rawName).slice(0, 90); if (!name) return;
     /* the list writes empty fields as NA or \N */
-    const parts = []; ['address', 'street', 'landmark', 'locality'].forEach((k) => { const v = String(r[k] || '').replace(/\\N/g, '').replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim(); if (v && !/^(na|n\/a|null|0|-)$/i.test(v) && !parts.some((p) => p.toLowerCase().includes(v.toLowerCase()))) parts.push(v); });
+    const parts = []; ['address', 'street', 'landmark', 'locality'].forEach((k) => { const v0 = String(r[k] || '').replace(/\\N/g, '').replace(/\s+/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '').trim(); const has = hasPrivate(v0); const v = has ? scrub(v0) : v0; if (has) hadPrivate = true; if (v && !/^(na|n\/a|null|0|-)$/i.test(v) && !parts.some((p) => p.toLowerCase().includes(v.toLowerCase()))) parts.push(v); });
+    if (hadPrivate) scrubbed++;
     const pin = pick(r, ['pincode', 'pin']).replace(/\D/g, '');
     all.push({ dist: pick(r, ['districtname', 'district']), name, ty, la: c[0], lo: c[1], pin: /^[1-9]\d{5}$/.test(pin) ? pin : '', addr: parts.join(', ').slice(0, 100), st: pick(r, ['state', 'statename']) });
   });
@@ -202,9 +211,10 @@ function buildFacilities(recs, P) {
   /* rule 6 */
   const ok = near.filter((f) => { const rec = f.pin ? P.loc.get(f.pin) : null; if (rec && rec[0] != null) return true; const d = P.districts.get(stateKey(f.st) + '|' + nameKey(f.dist)); return !d || kmBetween(f.la, f.lo, d.m[0], d.m[1]) <= Math.max(40, 3 * d.spread); });
   const tiles = {}; const kept = {};
-  ok.forEach((f) => { const k = 't' + Math.floor(f.la) + '_' + Math.floor(f.lo); (tiles[k] || (tiles[k] = [])).push([f.name, f.ty, r4(f.la), r4(f.lo), f.pin, f.addr]); kept[f.ty] = (kept[f.ty] || 0) + 1; });
+  /* the square comes from the rounded location, so 81.99997 (stored as 82) sits in square 82 */
+  ok.forEach((f) => { const la = r4(f.la), lo = r4(f.lo); const k = 't' + Math.floor(la) + '_' + Math.floor(lo); (tiles[k] || (tiles[k] = [])).push([f.name, f.ty, la, lo, f.pin, f.addr]); kept[f.ty] = (kept[f.ty] || 0) + 1; });
   Object.values(tiles).forEach((t) => t.sort((a, b) => a[2] - b[2] || a[3] - b[3]));
-  return { tiles, ok, rows: recs.length, kept: ok.length, types: kept, raw, noCoord, swapped, other, shared: sharedOut.length, coarse: coarseOut.length, farFromPin: placed.length - near.length, outOfDistrict: near.length - ok.length, pinMoved, pinFilled };
+  return { tiles, ok, rows: recs.length, kept: ok.length, types: kept, raw, noCoord, swapped, other, shared: sharedOut.length, coarse: coarseOut.length, farFromPin: placed.length - near.length, outOfDistrict: near.length - ok.length, pinMoved, pinFilled, scrubbed };
 }
 
 /* States where the facility list is missing most centres: fewer kept facilities per post office than 40% of the national
@@ -256,12 +266,14 @@ const main = async () => {
   const built = new Date(); const day = built.getFullYear() + '-' + String(built.getMonth() + 1).padStart(2, '0') + '-' + String(built.getDate()).padStart(2, '0');
   write('index', { v: 1, built: day, licence: 'GODL-India',
     pins: { src: SRC.pins.name, url: SRC.pins.url, updated: pinsIn.updated, rows: P.rows, pins: P.pins, noCoord: pinNoLoc },
-    fac: { src: SRC.fac.name, url: SRC.fac.url, updated: facIn.updated, revised: NIN_REVISED, rows: F.rows, kept: F.kept, types: F.types },
+    /* the earlier of the catalogue's revision and the date the API gives its own copy (27 Aug 2019 on 22 Oct 2026) */
+    fac: { src: SRC.fac.name, url: SRC.fac.url, updated: facIn.updated, revised: facIn.updated && facIn.updated < NIN_REVISED ? facIn.updated : NIN_REVISED, rows: F.rows, kept: F.kept, types: F.types },
     thin: thin, shards: Object.keys(P.shards).sort(), tiles: Object.keys(F.tiles).sort() });
   console.log('PIN codes: ' + P.pins + ' from ' + P.offices + ' post offices; ' + pinNoLoc + ' without a map location. Not used: ' + P.outliers + ' post offices far outside their district.');
   console.log('PIN codes moved to where 3 or more of their own facilities agree: ' + F.pinMoved + '; given a location that way: ' + F.pinFilled + '.');
   console.log('Facilities kept: ' + F.kept + ' of ' + F.rows + ' ' + JSON.stringify(F.types) + '; left out: ' + F.other + ' of other types, ' + F.noCoord + ' without a usable map location, ' + F.shared + ' on a point shared by 4 or more, ' + F.coarse + ' on a town-level point with no PIN code to check, ' + F.farFromPin + ' more than 50 km from their own PIN code, ' + F.outOfDistrict + ' with no PIN code, far outside their own district. Put right: ' + F.swapped + ' with latitude and longitude the wrong way round.');
   console.log('Facility types in the source: ' + Object.entries(F.raw).sort((a, b) => b[1] - a[1]).slice(0, 30).map(([k, v]) => k + ' ' + v).join('; '));
+  console.log('Phone numbers or e-mails taken out of ' + F.scrubbed + ' facility names or addresses.');
   console.log('States where the list is missing most centres: ' + (thin.join(', ') || 'none') + '.');
   console.log('Wrote ' + (Object.keys(P.shards).length + Object.keys(F.tiles).length + 1) + ' files, ' + (bytes / 1048576).toFixed(1) + ' MB, to ' + OUT);
 };

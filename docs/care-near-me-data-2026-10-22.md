@@ -80,6 +80,9 @@ The full download took about 12 minutes, roughly 360 pages. The builder now clea
 MODULE_API section 30, because both lists place some offices and centres in the wrong spot. It kept 19,586 PIN codes and
 147,967 of 192,905 facilities, in 394 files totalling 12.3 MB. The APK grows from 2.0 to about 6 MB.
 
+**Personal details removed:** 119 facilities had a staff member's mobile number, a landline or an e-mail in their name or
+address. The builder takes these out before anything is bundled or published.
+
 **A known limit:** an error of one district isn't caught. Narsra sub-centre, of Sikar district, is placed in Jaipur. That's
 one more reason the card says to check with the ASHA or 104 before going.
 
@@ -100,10 +103,10 @@ centres and points to the ASHA, 104 and the official links. Big city hospitals c
 | List | How to get it | Size | Freshness |
 |---|---|---|---|
 | India Post PIN code directory | Download box (CAPTCHA) or API key | 165,627 post offices, about 19,000 PIN codes; some have no map location | Updated monthly; page says 10 Aug 2026 |
-| NIN health facilities | API key; the file link is dead | 192,905 rows with type and map location | **Last real revision December 2021.** The page's 2026 date is a bulk metadata change. |
+| NIN health facilities | API key; the file link is dead | 192,905 rows with type and map location | **The API dates its copy 27 August 2019.** The catalogue shows a revision in December 2021, and its 2026 date is a bulk metadata change. The card says "last revised in 2019". |
 
-The NIN list being from 2021 is why the card says "last revised in 2021, so a centre may have moved, closed or changed. Before
-you go, check with your ASHA or call 104". No newer open list exists:
+The list's age is why the card says it was last revised in 2019, so a centre may be missing, or may have moved, closed or
+changed, and that she should check with her ASHA or call 104 before going. No newer open list exists:
 - the ABDM facility registry has no open export, and its search needs a CAPTCHA;
 - the old NHP hospital directory downloads freely, but it has no usable facility types.
 

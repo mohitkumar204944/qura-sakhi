@@ -989,7 +989,12 @@ key, or downloading two files by hand), is in `../docs/care-near-me-data-2026-10
     latitude and longitude are put right. The builder prints what it kept and dropped.
   - The rules were set from the real list's labels on 22 Oct: "Women Hospital" and "Civil Hospital/General Hospital" were
     being dropped until then.
-- **Freshness:** `fac.revised` is the NIN list's last real revision (December 2021); the card shows its year.
+- **Freshness:** `fac.revised` is the earlier of two dates: the catalogue's revision (December 2021) and the date the API
+  gives its own copy (27 August 2019 on 22 Oct 2026). The card shows its year, now 2019.
+- **Personal details:** mobile numbers, landlines (with an STD separator, or as 11 digits) and e-mails are taken out of
+  every name and address. On the real list, 119 facilities had one, mostly a staff member's mobile number. Codes such as
+  "Area-2 (070607804)" stay.
+- **Map squares** come from the rounded location, so 81.99997 (stored as 82) sits in square 82.
 - **Cleaning the locations.** Both lists have errors, found on the real data on 22 Oct, and a wrong "nearest" is worse than
   none. Six rules; the builder prints each count:
   1. **Misplaced post offices:** an India Post office beyond 15 km from its district's middle, or 3 times the district's
@@ -1052,9 +1057,13 @@ key, or downloading two files by hand), is in `../docs/care-near-me-data-2026-10
 **Builder options:** `--save <dir>` keeps the downloaded lists (only the columns it reads) so `--from <dir>` can rebuild
 without downloading again.
 
+**Web prototype:** the published copy of `index.html` adds `window.SAKHI_CONFIG = Object.assign({ care: 'care/' }, …)` before
+`app.js`. The 394 `care/*.js` files go up in two publishes, because a publish takes at most 255 files. The repo's
+`index.html` stays without it, so the tests' own config isn't overridden.
+
 **Tests:** `node test/plans.mjs` section 4 runs the builder on made-up files in `test/fixtures/care/` (every name starts with
 TEST) into `test/_care/` (not in git), then checks the card, the edge cases, Hindi, that nothing is sent, and that a bad
-folder or name loads nothing. Section 4 adds 28 checks; with two more for the Home row, `plans.mjs` has 102.
+folder or name loads nothing. `plans.mjs` now has 115 checks.
 
 **Also fixed while building Version 28, part 2:**
 - `iron` and `asha` (part 1) were missing from `mods/order.json`. So `check.mjs all` skipped them, and running `build.py`

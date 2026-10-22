@@ -43,6 +43,10 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 - Preview: `../Open prototype.command`, or "Sakhi web" in `.claude/launch.json`.
 - Web prototype (a private Claude artifact): https://claude.ai/artifact/25aocCU68U1DHebpjTmne6. To republish, copy
   `web/index.html` and the changed files to the session scratchpad and publish to that URL.
+  - The published `index.html` adds `window.SAKHI_CONFIG = Object.assign({ care: 'care/' }, window.SAKHI_CONFIG || {});` before
+    `app.js`.
+  - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
+    with a script that checks each record.
 - Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy
   (see `web/test/pw.mjs`).
 

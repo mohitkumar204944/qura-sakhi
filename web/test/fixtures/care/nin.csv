@@ -29,3 +29,6 @@ SrNo,Health Facility Name,Address,Street,Landmark,Locality,Pincode,Landline Numb
 28,TEST Sub-centre Testpur B,TEST Road,,,Testpur,581999,,14.0105,75.0113,,SubCentre,Karnataka,Testpur,,
 29,TEST Sub-centre Testpur C,TEST Road,,,Testpur,581999,,14.0201,75.0207,,SubCentre,Karnataka,Testpur,,
 30,TEST PHC Hisar Misplaced,TEST Road,,,Hisar,,,28.6100,77.2300,,Primary Health Centre,Haryana,Hisar,,
+31,TEST Sub-centre Contact,"TEST Road, 9876543210",test.anm@example.com,080-22334455,Ulsoor,560008,,12.9805,77.6205,,SubCentre,Karnataka,Bengaluru Urban,,
+32,TEST Sub-centre Edge,TEST Road,,,Hoskote,,,12.9600,77.99997,,SubCentre,Karnataka,Bengaluru Rural,,
+33,TEST Area-2 (070607804),TEST Road,,,Bidadi,,,12.7211,77.2813,,Urban Health Posts,Karnataka,Ramanagara,,
