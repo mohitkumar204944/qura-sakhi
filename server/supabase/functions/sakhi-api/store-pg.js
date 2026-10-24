@@ -82,6 +82,29 @@ export function pgStore(q) {
       for (const [tool, bucket] of pairs) await q('insert into sakhi.usage_counts (month, tool, bucket, phones) values ($1, $2, $3, 1) on conflict (month, tool, bucket) do update set phones = sakhi.usage_counts.phones + 1', [month, tool, bucket]);
       await q('insert into sakhi.usage_reports (month, phones) values ($1, 1) on conflict (month) do update set phones = sakhi.usage_reports.phones + 1', [month]);
     },
+    /* Version 33, the doctor-call hand-off (spec section 10.1): her request waits here until Qura's endpoint has it. */
+    /* The list and the sections go in as JSON text and are converted in SQL, so the drivers' own array and json handling never
+       matters (postgres.js JSON-encodes a value bound to a json parameter; PGlite passes a string through). */
+    async addRequest(r) {
+      return one('insert into sakhi.call_requests (ref, account_id, best_time, lang, notice, shared, topic, shared_data, next_try_at, created_at) values ($1, $2::uuid, $3, $4, $5, array(select json_array_elements_text($6::text::json)), $7, $8::text::json, $9::timestamptz, $9::timestamptz) on conflict (ref) do nothing returning id::text, ref',
+        [r.ref, r.accountId, r.bestTime, r.lang, r.notice, JSON.stringify(r.shared), r.topic, JSON.stringify(r.sharedData), new Date(r.at).toISOString()]);
+    },
+    async listRequests(accountId) {
+      return q("select ref, status, to_char(created_at at time zone 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') as created_at, to_char(sent_at at time zone 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') as sent_at from sakhi.call_requests where account_id = $1::uuid order by created_at desc, id desc limit 20", [accountId]);
+    },
+    /* Claims up to n queued requests that are due (only `ref`, when given), pushing their next try a minute ahead first, so two
+       calls at once never send the same request twice. Each comes with her number and first name, which Qura needs to call her.
+       created_ms is float8 so both drivers return a number (numeric and bigint come back as strings). */
+    async claimDueRequests(nowMs, n, ref) {
+      return q("with c as (update sakhi.call_requests set next_try_at = $1::timestamptz + interval '1 minute' where id in (select id from sakhi.call_requests where status = 'queued' and next_try_at <= $1::timestamptz and ($3::text is null or ref = $3::text) order by next_try_at limit $2 for update skip locked) returning id, ref, account_id, best_time, lang, notice, shared, topic, shared_data, tries, created_at) select c.id::text, c.ref, c.best_time, c.lang, c.notice, to_json(c.shared) as shared, c.topic, c.shared_data, c.tries, (extract(epoch from c.created_at) * 1000)::float8 as created_ms, a.phone, a.name from c join sakhi.accounts a on a.id = c.account_id",
+        [new Date(nowMs).toISOString(), n, ref || null]);
+    },
+    /* Sent or failed: the health details go. Queued again: the next try's time. */
+    async finishRequest(id, f) {
+      if (f.status === 'queued') return q('update sakhi.call_requests set tries = $2, next_try_at = $3::timestamptz, last_error = $4 where id = $1::bigint', [id, f.tries, new Date(f.nextTryAt).toISOString(), f.error || null]);
+      return q('update sakhi.call_requests set status = $2, tries = $3, last_error = $4, qura_lead_id = $5, sent_at = $6::timestamptz, next_try_at = null, topic = null, shared_data = null where id = $1::bigint',
+        [id, f.status, f.tries, f.error || null, f.leadId || null, f.status === 'sent' ? new Date(f.at).toISOString() : null]);
+    },
     async bumpStat(day, column) {
       if (!STATS.has(column)) throw new Error('unknown stat ' + column);
       await q('insert into sakhi.daily_stats (day, ' + column + ') values ($1::date, 1) on conflict (day) do update set ' + column + ' = sakhi.daily_stats.' + column + ' + 1', [day]);

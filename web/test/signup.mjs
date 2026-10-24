@@ -24,7 +24,9 @@ const ALLOWED = {
   'PATCH me': ['name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa', 'lang'],
   'POST me/active': ['app', 'lang'],
   'POST session/logout': [],
-  'DELETE me': []
+  'DELETE me': [],
+  'POST requests': ['topic', 'best_time', 'lang', 'notice', 'shared', 'shared_data'],
+  'GET requests': []
 };
 
 const results = [];
@@ -54,6 +56,7 @@ function makeServer() {
       if (!a) { a = { id: 'acc' + (++s.n), phone: c.phone, birth_year: body.birth_year || null, name: null, pincode: null, email: null, heard: null, upd_sms: false, upd_wa: false }; s.accounts[a.id] = a; }
       const tok = 'tok' + (++s.n); s.sessions[tok] = a.id; return send(200, { token: tok, is_new: isNew, account: a });
     }
+    if (method === 'GET' && p === 'requests' && !auth) return send(200, { available: false });   /* Version 33: is "Ask Qura to call me" on? (no token) */
     const a = s.accounts[s.sessions[auth]];
     if (!a) return send(401, { error: 'unauthorized' });
     if (method === 'PATCH' && p === 'me') {
@@ -100,6 +103,7 @@ async function firstRun(page, o = {}) {
   if (o.read) return;
   await page.waitForSelector('[data-ob-st="cycle"]'); await tap(page, '[data-ob-st="cycle"]');
   await page.waitForSelector('[data-ob-lp="7"]'); await tap(page, '[data-ob-lp="7"]');
+  await page.waitForSelector('[data-pl-goal="track"]'); await tap(page, '[data-pl-goal="track"]');   /* Version 37: what she wants to work on ("Just keeping track" skips the plan questions) */
   await page.waitForSelector('[data-ob-sh="me"]'); await tap(page, '[data-ob-sh="me"]');
 }
 async function signIn(page, num, o = {}) {
@@ -138,7 +142,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   check('1 wrong code explained', /didn’t match/.test(await text(page, '#view .flag')));
   await page.fill('#su-code', '424242'); await page.waitForSelector('#su-done');
   const vf = srv.calls.filter((c) => c.key === 'POST otp/verify').pop();
-  check('1 verify carries birth year 1994 and notice version, nothing else', vf && vf.body.birth_year === 1994 && vf.body.notice === '2026-10-20.2' && Object.keys(vf.body).every((k) => ALLOWED['POST otp/verify'].includes(k)), vf && vf.body);
+  check('1 verify carries birth year 1994 and notice version, nothing else', vf && vf.body.birth_year === 1994 && vf.body.notice === '2026-10-23.2' && Object.keys(vf.body).every((k) => ALLOWED['POST otp/verify'].includes(k)), vf && vf.body);
   check('1 details screen: name and PIN code needed, email optional, no Skip', /Almost done/.test(await h1(page)) && /First name/.test(await text(page, '#view')) && !/First name \(optional\)/.test(await text(page, '#view'))
     && /Email \(optional\)/.test(await text(page, '#view')) && !!(await page.$('#su-email')) && !(await page.$('#su-skip')));
   await shot(page, '3-about');
@@ -190,7 +194,9 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   // Ask: she books on WhatsApp or Qura's website herself; the page sends nothing about her (audit fix 1a).
   const callsBefore = srv.calls.length;
   await page.evaluate(() => { location.hash = '#ask'; }); await page.waitForSelector('#ask-web');
-  check('2 Ask offers the booking page and sends nothing about her', srv.calls.length === callsBefore && !/9876543210|Asha/.test(await page.$eval('#ask-web', (a) => a.getAttribute('href'))) && !(await page.$('#ask-form')));
+  await sleep(300);
+  const askCalls = srv.calls.slice(callsBefore);
+  check('2 Ask offers the booking page and sends nothing about her (only "is the call request on?", with no token and no body)', askCalls.every((c) => c.key === 'GET requests' && !c.auth && !c.raw) && !/9876543210|Asha/.test(await page.$eval('#ask-web', (a) => a.getAttribute('href'))) && !(await page.$('#ask-form')), askCalls);
 
   /* ---------- 3. Log out, back in on the same number, then delete ---------- */
   await page.evaluate(() => { location.hash = '#account'; }); await page.waitForSelector('#acc-out');
@@ -325,7 +331,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.waitForSelector('#su-code');
   check('10 Hindi code screen', /कोड डालें/.test(await text(page, '#view')));
   await page.fill('#su-code', '424242'); await page.waitForSelector('#su-done');
-  check('10 Hindi details screen fits', /बस हो गया/.test(await text(page, '#view')) && /ईमेल \(वैकल्पिक\)/.test(await text(page, '#view')) && !/पहला नाम \(वैकल्पिक\)/.test(await text(page, '#view')) && await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+  check('10 Hindi details screen fits', /बस, थोड़ा और/.test(await text(page, '#view')) && /ईमेल \(वैकल्पिक\)/.test(await text(page, '#view')) && !/पहला नाम \(वैकल्पिक\)/.test(await text(page, '#view')) && await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
   await tap(page, '#su-done'); await sleep(150);
   check('10 Hindi asks for the first name', /अपना पहला नाम डालें/.test(await text(page, '#view .flag')));
   await shot(page, '7-hindi-about');

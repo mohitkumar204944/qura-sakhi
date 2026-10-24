@@ -77,7 +77,12 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
 
 /* ---------- 3. Privacy: five switches; a switch is a switch ---------- */
 {
-  const { ctx, page, errs } = await open();
+  /* Version 32: a tester's APK (no "demo" in its name) has no "send what helps" until its server route is live (CFG.usage) */
+  const t0 = await open();
+  await go(t0.page, '#me-privacy');
+  check('3 a release or test APK: four switches, no "send what helps" while its server route is not live', (await t0.page.$$('#view .item > input[type=checkbox]')).length === 4 && !(await t0.page.$('[data-set="usage"]')));
+  await t0.ctx.close();
+  const { ctx, page, errs } = await open({ app: 'test-0.32-demo' });
   await go(page, '#me-privacy');
   const sw = await page.$$eval('#view .item > input[type=checkbox]', (xs) => xs.map((x) => ({ role: x.getAttribute('role'), w: Math.round(x.getBoundingClientRect().width), app: getComputedStyle(x).appearance })));
   check('3 five switches: discreet, shared phone, app lock, hide the app, and (Version 30) send what helps, which starts off', sw.length === 5 && !(await page.$eval('[data-set="usage"]', (e) => e.checked)), sw);
@@ -123,7 +128,12 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
 
 /* ---------- 5. My data: report, backup, sharing as a switch with the doctor view, what Sakhi keeps ---------- */
 {
-  const { ctx, page, errs } = await open();
+  /* Version 32: "Share with my Qura doctor" only where the doctor hand-off exists: not in a tester's APK */
+  const t0 = await open();
+  await go(t0.page, '#me-data');
+  check('5 a release or test APK has no sharing switch (the hand-off is not built)', !(await t0.page.$('#me-c4')) && !/Share with my Qura doctor/.test(await view(t0.page)));
+  await t0.ctx.close();
+  const { ctx, page, errs } = await open({ app: 'test-0.32-demo' });
   await go(page, '#me-data');
   const r = await rows(page);
   check('5 report, backup, sharing and the doctor view are here', ['report', 'backup', 'docportal'].every((g) => r.some((x) => x.go === g)) && !!(await page.$('#me-c4')));
@@ -150,7 +160,7 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   check('6 help: the full tour, the tours, the two switches and Show the tours again', !!(await page.$('[data-tour-full]')) && (await page.$$('[data-tour-run]')).length >= 10 && !!(await page.$('[data-set="toursAuto"]')) && !!(await page.$('#me-tips')));
   await go(page, '#me-about');
   const tx = await view(page);
-  check('6 about: the notice, the grievance contact and the version', (await page.$$('#view .ob-ul li')).length === 5 && /Grievance Officer/.test(tx) && /Version test-0\.25/.test(tx));
+  check('6 about: the notice and the version; no grievance placeholder until the build names the officer (Version 32)', (await page.$$('#view .ob-ul li')).length === 5 && !/Grievance Officer|\[NAME/.test(tx) && /Mumbai \(Supabase\)/.test(tx) && /Version test-0\.25/.test(tx));
   check('6 no prototype settings at first', !/Prototype/.test(tx) && !(await page.$('[data-set="proto"]')));
   for (let i = 0; i < 5; i++) { await tap(page, '#me-version'); await sleep(40); }
   await sleep(200);
@@ -182,14 +192,17 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   await ctx.close();
 }
 
-/* ---------- 8. The Me tour still finds its two features; back from a page returns to Me ---------- */
+/* ---------- 8. The Me tour still finds its features (Version 34.1: privacy, reminders on Android, then her backup, no longer
+   Delete everything); back from a page returns to Me ---------- */
 {
   const { ctx, page, errs } = await open();
   await page.evaluate(() => window.Saathi.startTour('me')); await sleep(600);
   const lit = async () => page.evaluate(() => { const h = document.querySelector('#tour-root #tour-h'); return h ? h.innerText : null; });
   check('8 step 1 lights the privacy row', (await lit()) === 'Privacy on a shared phone');
   await tap(page, '#tour-next'); await sleep(400);
-  check('8 step 2 lights Delete everything', (await lit()) === 'Delete everything');
+  check('8 step 2 lights Reminders (the Android app has phone reminders)', (await lit()) === 'Reminders');
+  await tap(page, '#tour-next'); await sleep(400);
+  check('8 step 3 lights her data and backup, not Delete everything', (await lit()) === 'Your data and backup');
   await tap(page, '#tour-next'); await sleep(300);
   await go(page, '#me-data'); await page.$eval('#view .backrow button', (el) => el.click()); await sleep(250);
   check('8 back from a page returns to Me', (await page.evaluate(() => location.hash)) === '#me');

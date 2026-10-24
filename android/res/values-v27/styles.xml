@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 8.1+ (Version 32, field-test audit 3.6): dark Back, Home and Recents buttons on the cream bar in the light look.
+         Without windowLightNavigationBar they are white on cream and hard to see on phones with 3-button navigation.
+         values-night still wins in the phone's dark mode (night ranks above the API level when Android picks resources). -->
+    <style name="SakhiTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:colorAccent">#C2345B</item>
+    </style>
+</resources>

@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from '../../web/test/pw.mjs';
 import { createApi, ALLOW } from '../supabase/functions/sakhi-api/api.js';
 import { pgStore } from '../supabase/functions/sakhi-api/store-pg.js';
-import { pgliteDb, pgQuery, fakeSender, fakeClock, ENV } from './harness.mjs';
+import { pgliteDb, pgQuery, fakeSender, fakeClock, ENV, HANDOFF_ENV } from './harness.mjs';
 import { serve } from './serve-local.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -20,7 +20,7 @@ const MARK = ['MARKER-NOTE-4417', 'MARKER-CHECKIN-8820'];
 const db = await pgliteDb();
 const send = fakeSender();
 const clock = fakeClock(Date.now());
-const api = createApi({ store: pgStore(pgQuery(db)), send, env: ENV, now: clock.now });
+const api = createApi({ store: pgStore(pgQuery(db)), send, env: Object.assign({}, ENV, HANDOFF_ENV), now: clock.now });
 const server = await serve(api);
 const row = async (sql, params = []) => (await db.query(sql, params)).rows[0] || null;
 
@@ -42,7 +42,7 @@ await page.goto(pathToFileURL(path.join(web, 'index.html')).href + '#home', { wa
 await page.waitForFunction(() => !!window.Saathi);
 
 /* First run, then signup with a code the server really generated */
-for (const sel of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1994"]', '[data-ob-st="cycle"]', '[data-ob-lp="7"]', '[data-ob-sh="me"]']) { await page.waitForSelector(sel); await tap(sel); }
+for (const sel of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1994"]', '[data-ob-st="cycle"]', '[data-ob-lp="7"]', '[data-pl-goal="track"]', '[data-ob-sh="me"]']) { await page.waitForSelector(sel); await tap(sel); }
 await page.waitForSelector('#su-num');
 await page.evaluate(() => { window.Saathi.state.settings.toursAuto = false; window.Saathi.save(); });
 await page.fill('#su-num', '98765 43210'); await tap('#su-send');
@@ -67,7 +67,7 @@ check('her email landed trimmed and lower-case', acct && acct.email === 'asha@ex
 check('app version, platform and language recorded', acct && acct.app_version === 'e2e-0.21' && acct.platform === 'web' && acct.lang === 'en', acct);
 check('last active is today (India date)', acct && acct.last_active_on === new Date(clock.now() + 5.5 * 3600e3).toISOString().slice(0, 10), acct);
 const cons = (await db.query('select kind, granted, notice_version from sakhi.consents order by id')).rows;
-check('consents: terms at sign-up, then SMS updates', JSON.stringify(cons) === JSON.stringify([{ kind: 'terms', granted: true, notice_version: '2026-10-20.2' }, { kind: 'upd_sms', granted: true, notice_version: '2026-10-20.2' }]), cons);
+check('consents: terms at sign-up, then SMS updates', JSON.stringify(cons) === JSON.stringify([{ kind: 'terms', granted: true, notice_version: '2026-10-23.2' }, { kind: 'upd_sms', granted: true, notice_version: '2026-10-23.2' }]), cons);
 const st = await row('select signups, active, wa_sent, sms_sent from sakhi.daily_stats');
 check('daily stats: 1 signup, 1 active, 1 WhatsApp code', st && st.signups === 1 && st.active === 1 && st.wa_sent === 1 && st.sms_sent === 0, st);
 check('the session row holds a hash, not the token', await page.evaluate(() => JSON.parse(localStorage.getItem('qura-sakhi-account-v1')).token).then(async (tok) => !(await row('select 1 from sakhi.sessions where token_hash = $1', [tok])) && !!(await row('select 1 from sakhi.sessions'))));
@@ -83,6 +83,23 @@ await page.evaluate(() => { location.hash = '#account'; }); await page.waitForSe
 await tap('#acc-edit'); await page.waitForSelector('#ae-name');
 await page.fill('#ae-name', 'Asha R'); await tap('#ae-go'); await sleep(600);
 check('an edit reaches the database', (await row('select name from sakhi.accounts')).name === 'Asha R');
+
+/* Version 33: she asks Qura to call her, ticks only her periods, and Qura gets exactly the lines on her screen (SERVER_SPEC 10.1) */
+await page.evaluate(() => { location.hash = '#ask'; }); await page.waitForSelector('#ask-call [data-go="ask-call"]');
+await tap('#ask-call [data-go="ask-call"]'); await page.waitForSelector('#ac-topic');
+check('hand-off: the share list starts with nothing ticked', await page.$$eval('[data-ac-sec]', (xs) => xs.length >= 2 && xs.every((x) => !x.checked)));
+await page.fill('#ac-topic', 'Irregular periods'); await tap('[data-ac-time="evening"]'); await page.waitForSelector('[data-ac-time="evening"].on');
+await tap('[data-ac-sec="periods"]'); await page.waitForSelector('#ac-preview h4');
+const shown = await text('#ac-preview');
+await tap('#ac-send'); await page.waitForSelector('#ac-done');
+const h = send.handoffs[0] || { consent: {}, shared_data: { sections: [] } };
+check('hand-off: Qura got her topic, time and name, and only her periods, exactly as her screen showed them', send.handoffs.length === 1 && h.topic === 'Irregular periods' && h.best_time === 'evening' && h.name === 'Asha R' && h.phone === '+919876543210'
+  && JSON.stringify(h.consent.shared) === '["periods"]' && h.shared_data.sections.length === 1 && h.shared_data.sections[0].lines.length >= 1 && h.shared_data.sections[0].lines.every((l) => shown.includes(l)), h);
+check('hand-off: nothing she left unticked went (her note, her check-in)', !JSON.stringify(send.handoffs).includes('MARKER'));
+const cr = await row('select ref, status, topic, shared_data from sakhi.call_requests');
+check('hand-off: once Qura had it, the server kept only the reference and the status', cr && cr.status === 'sent' && cr.topic === null && cr.shared_data === null && cr.ref === h.ref, cr);
+check('hand-off: the app shows her reference', !!h.ref && (await text('#ac-done')).includes(h.ref));
+await page.evaluate(() => { location.hash = '#account'; });
 
 /* Log out, sign back in by SMS ("Not on WhatsApp?"), straight back to the account page */
 await page.waitForSelector('#acc-out'); await tap('#acc-out');
@@ -101,7 +118,7 @@ check('still one account, now two sessions', (await row('select count(*)::int as
 /* Delete the account: the database forgets her; her diary stays on the phone */
 await tap('#acc-del'); await page.waitForSelector('#acc-del-yes'); await tap('#acc-del-yes');
 await page.waitForSelector('#su-num');
-check('delete removed the account, its consents and sessions', (await row('select (select count(*) from sakhi.accounts)::int + (select count(*) from sakhi.consents)::int + (select count(*) from sakhi.sessions)::int as n')).n === 0);
+check('delete removed the account, its consents, sessions and call requests', (await row('select (select count(*) from sakhi.accounts)::int + (select count(*) from sakhi.consents)::int + (select count(*) from sakhi.sessions)::int + (select count(*) from sakhi.call_requests)::int as n')).n === 0);
 check('her diary is still on the phone', await page.evaluate((m) => JSON.stringify(window.Saathi.state.notes).includes(m), MARK[0]));
 
 /* Every request the page made: only the API, only allowlisted fields, no diary text */

@@ -86,7 +86,7 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   check('1 the next PMSMA day is a 9th', /Next PMSMA day: \w+, 9 \w+/.test(await page.$eval('[data-plan="pmsma"]', (e) => e.innerText)), await page.$eval('[data-plan="pmsma"]', (e) => e.innerText));
   await go(page, 'home');
   check('1 Home: one row in Today with what is due now (Version 30)', /Due now: Td injections, and 5 more/.test(await view(page)) && !!(await page.$('#view .today-preg-plan [data-go="preg-plan"]')));
-  check('1 Home: the row sits near the top, above the ask box, where the cap on Home\'s cards can\'t push it off', await page.evaluate(() => { const d = document.querySelector('#view .today-preg-plan'), q = document.querySelector('#view .qa-sec'); return !!d && !!q && !!(d.compareDocumentPosition(q) & Node.DOCUMENT_POSITION_FOLLOWING); }));
+  check('1 Home: the row sits in Today, above Sakhi says, where the cap on Home\'s cards can\'t push it off (Version 37: the ask box moved to Explore)', await page.evaluate(() => { const d = document.querySelector('#view .today-card .today-preg-plan'), q = document.querySelector('#view .slot'); return !!d && (!q || !!(d.compareDocumentPosition(q) & Node.DOCUMENT_POSITION_FOLLOWING)); }));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn'); await go(page, 'home');
   check('1 Home in discreet mode: no plan row', !(await page.$('#view .today-preg-plan')) && !/Due now/.test(await view(page)));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = false; S.save(); }); await go(page, 'learn');

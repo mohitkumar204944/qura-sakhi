@@ -23,7 +23,7 @@ const diary = (cfg) => page.evaluate((cfg) => {
   (cfg.events || []).forEach((e) => st.events.push(e));
   st.situation = cfg.situation || {}; st.checkins = cfg.checkins || {}; S.save();
 }, cfg);
-const C = (expr) => page.evaluate((expr) => { const S = window.Saathi; const c = S.cycle; const iso = (d) => (d ? S.toISO(d) : null); return eval(expr); }, expr);
+const C = (expr) => page.evaluate((expr) => { const S = window.Saathi; const c = S.cycle; const iso = (d) => (d ? S.toISO(d) : null); return eval(expr); }, expr);   // S is the app for the expressions below
 
 /* 1. Regular 28-day cycles: starts 1 Jul, 29 Jul, 26 Aug, 23 Sep; each lasts 5 days. */
 await diary({ periods: [['2026-07-01', '2026-07-05'], ['2026-07-29', '2026-08-02'], ['2026-08-26', '2026-08-30'], ['2026-09-23', '2026-09-27']] });
@@ -182,6 +182,64 @@ check('window: none while breastfeeding', await C('c.rangeInfo()'), null);
 await diary({ periods: [['2026-08-04', '2026-08-08'], ['2026-09-01', '2026-09-12'], ['2026-10-01']] });
 check('period length: 5 and 12 days', [await C('c.periodLen("2026-08-04")'), await C('c.periodLen("2026-09-01")')], [5, 12]);
 check('period length: no end logged', await C('c.periodLen("2026-10-01")'), null);
+
+/* ---------- Version 31: predictions from up to a year of her diary (MODULE_API section 33) ----------
+   16. Ten gaps 27, 31, 31, 27, 28, 26, 30, 32, 27, 29 (the feedback diary); last start 25 Sep, so 18 Oct is day 24. Periods
+       of 4 days, one of 5.
+       Next start: the last 3 gaps count double: (27+31+31+27+28+26+30 + 2x(32+27+29)) / 13 = 376 / 13 = 28.9 -> 29, inside the
+       last 6 gaps' 26..32 -> 25 Sep + 29 = 24 Oct, 6 days away. Period length: (10x4 + 5) / 11 = 4.1 -> 4.
+       Ovulation: 14 days before 24 Oct = 10 Oct. Fertile window: the 6 days ending there, 5..10 Oct.
+       Possible fertile days (Version 32, the NHS figures: ovulation 10 to 16 days before the next period, sperm up to 7 days),
+       from the last 6 gaps (26..32): 25 Sep + (26 - 16 - 7) = 28 Sep, to 25 Sep + (32 - 10 + 1) = 18 Oct.
+       Chance: high 8..10 Oct; medium 28 Sep..7 Oct and 11..18 Oct; low otherwise. Next cycle's ovulation: 24 Oct + 15 = 8 Nov.
+       Fertile days show only while she is trying for a baby (Version 32), so these diaries are. */
+const S16 = ['2025-12-11', '2026-01-07', '2026-02-07', '2026-03-10', '2026-04-06', '2026-05-04', '2026-05-30', '2026-06-29', '2026-07-31', '2026-08-27', '2026-09-25'];
+const plus = (iso0, n) => { const d = new Date(iso0 + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+await diary({ dob: '1996-05-01', periods: S16.map((d, i) => [d, plus(d, i === 9 ? 4 : 3)]), situation: { planning: true } });
+check('predict: the ten gaps', await C('c.usable()'), [27, 31, 31, 27, 28, 26, 30, 32, 27, 29]);
+check('predict: next start 24 Oct, 6 days away, from 10 cycles; period 4 days', await C('(() => { const p = c.predict(); return p && [p.gap, iso(p.next), p.daysTo, p.n, p.plen]; })()'), [29, '2026-10-24', 6, 10, 4]);
+check('predict: ovulation 10 Oct, fertile window 5..10 Oct, possible 28 Sep..18 Oct', await C('(() => { const f = c.predict().fert; return f && [iso(f.ov), iso(f.fwFrom), iso(f.fwTo), iso(f.posFrom), iso(f.posTo)]; })()'), ['2026-10-10', '2026-10-05', '2026-10-10', '2026-09-28', '2026-10-18']);
+check('predict: chance by day', await C('(() => { const f = c.predict().fert; return ["2026-09-27", "2026-09-28", "2026-10-07", "2026-10-08", "2026-10-10", "2026-10-15", "2026-10-18", "2026-10-19"].map((d) => c.chanceOn(f, S.fromISO(d))); })()'), ['low', 'mid', 'mid', 'high', 'high', 'mid', 'mid', 'low']);
+check('predict: a "low" day is never shown as a chance (Version 32)', await C('(() => { const f = c.predict().fert; return ["2026-09-27", "2026-10-08", "2026-10-19"].map((d) => c.chanceShown(f, S.fromISO(d))); })()'), [null, 'high', null]);
+check('predict: phase by day', await C('(() => { const f = c.predict().fert; return ["2026-10-01", "2026-10-06", "2026-10-10", "2026-10-18"].map((d) => c.phaseOn(f, S.fromISO(d))); })()'), ['before', 'fertile', 'ov', 'after']);
+check('predict: the next cycle\'s ovulation, 8 Nov', await C('iso(c.predict().fertNext.ov)'), '2026-11-08');
+check('predict: her cycles, newest first, with their own fertile windows', await C('c.cycleList(3).map((x) => [iso(x.start), x.gap, x.plen, x.fert && iso(x.fert.ov)])'), [['2026-09-25', null, 4, '2026-10-10'], ['2026-08-27', 29, 5, '2026-09-11'], ['2026-07-31', 27, 4, '2026-08-13']]);
+/* 17. Recent gaps count double: nine of 28 then three of 32 (last start 27 Sep). Plain average 29; weighted (9x28 + 2x3x32) / 15
+       = 29.6 -> 30 -> 27 Oct. */
+await diary({ dob: '1996-05-01', periods: ['2025-10-14', '2025-11-11', '2025-12-09', '2026-01-06', '2026-02-03', '2026-03-03', '2026-03-31', '2026-04-28', '2026-05-26', '2026-06-23', '2026-07-25', '2026-08-26', '2026-09-27'].map((d) => [d]) });
+check('predict: recent gaps weigh more (30, not the plain 29)', await C('(() => { const p = c.predict(); return [p.gap, iso(p.next)]; })()'), [30, '2026-10-27']);
+/* 18. When fertile days don't show: fewer than 6 gaps, hormones, a method that stops ovulation, pregnancy, 45 or older,
+       irregular gaps. The countdown still shows with 5 steady gaps. */
+await diary({ dob: '1996-05-01', periods: S16.slice(-6).map((d) => [d]), situation: { planning: true } });
+check('fertile: hidden with 5 gaps, the countdown still shows', [await C('c.fertWhy()'), await C('!!c.predict() && c.predict().fert')], ['few', null]);
+await diary({ dob: '1996-05-01', periods: S16.map((d) => [d]), situation: { hormones: true, planning: true } });
+check('fertile: hidden on hormones', await C('c.fertWhy()'), 'hormones');
+await diary({ dob: '1996-05-01', periods: S16.map((d) => [d]), situation: { planning: true } });
+await page.evaluate(() => { window.Saathi.state.mods = { contra: { method: 'pill', remOn: true } }; });
+check('fertile: hidden on the pill', await C('c.fertWhy()'), 'method');
+await page.evaluate(() => { window.Saathi.state.mods = { contra: { method: 'condom' } }; });
+check('fertile: shown with condoms (the chance is for sex without a method)', await C('c.fertWhy()'), null);
+await diary({ dob: '1980-05-01', periods: S16.map((d) => [d]), situation: { planning: true } });
+check('fertile: hidden at 46', await C('c.fertWhy()'), 'age');
+await diary({ dob: '1999-04-12', periods: [['2026-02-28'], ['2026-03-31'], ['2026-05-16'], ['2026-07-17'], ['2026-08-21'], ['2026-09-20'], ['2026-10-03']], situation: { planning: true } });
+check('fertile and countdown: none for irregular gaps', [await C('c.fertWhy()'), await C('c.predict()')], ['irregular', null]);
+await diary({ dob: '1996-05-01', periods: S16.map((d) => [d]), situation: { pregnant: true, pregnantSince: '2026-09-25' } });
+check('fertile: hidden in pregnancy', await C('c.fertWhy()'), 'stage');
+/* Version 32 (decision 1 and audit 2.1 of the field-test audit): only while she is trying for a baby; the 7-day rule at every
+   age; only cycles of 21 to 35 days; no chance and no next window once the predicted day has passed; the possible days come
+   from her last 6 gaps, like her likely range */
+/* Version 33 (Mohit: "fertile days should show to every women"): not only while she is trying for a baby */
+await diary({ dob: '1996-05-01', periods: S16.map((d) => [d]) });
+check('fertile: shown for every woman with steady cycles, not only one trying for a baby', [await C('c.fertWhy()'), await C('!!c.predict() && !!c.predict().fert')], [null, true]);
+await diary({ dob: '2004-05-01', periods: ['2026-01-01', '2026-01-28', '2026-03-03', '2026-03-31', '2026-04-26', '2026-05-28', '2026-06-26'].map((d) => [d]), situation: { planning: true } });
+check('fertile: an 8-day spread at 22 has a likely range but no fertile days (7 days at every age)', [await C('c.usable()'), await C('!!c.rangeInfo()'), await C('c.fertWhy()')], [[27, 34, 28, 26, 32, 29], true, 'irregular']);
+await diary({ dob: '1996-05-01', periods: ['2026-06-15', '2026-07-04', '2026-07-24', '2026-08-12', '2026-08-31', '2026-09-19', '2026-10-08'].map((d) => [d]), situation: { planning: true } });
+check('fertile: steady 19-20 day cycles are outside 21 to 35: no fertile days', [await C('c.usable()'), await C('c.fertWhy()')], [[19, 20, 19, 19, 19, 19], 'irregular']);
+await diary({ dob: '1996-05-01', periods: ['2025-08-01', '2025-09-28', '2025-10-26', '2025-11-23', '2025-12-21', '2026-01-18', '2026-02-15', '2026-03-15', '2026-04-12', '2026-05-10', '2026-06-07', '2026-07-05', '2026-08-02', '2026-08-30', '2026-09-27'].map((d) => [d]), situation: { planning: true } });
+check('fertile: an old 58-day gap (more than 6 gaps back) leaves the possible days alone', await C('(() => { const p = c.predict(); return p && [p.gmin, p.gmax, iso(p.fert.posFrom), iso(p.fert.posTo)]; })()'), [28, 28, '2026-10-02', '2026-10-16']);
+await page.clock.setFixedTime(new Date('2026-10-27T09:00:00+05:30'));
+check('late: once the predicted day has passed, no next window', await C('(() => { const p = c.predict(); return p && [p.daysTo, p.late, p.fertNext]; })()'), [-2, true, null]);
+await page.clock.setFixedTime(new Date('2026-10-18T09:00:00+05:30'));
 
 await browser.close();
 const bad = results.filter((r) => !r.pass);

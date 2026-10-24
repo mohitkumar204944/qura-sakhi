@@ -1,7 +1,9 @@
 // Sakhi accounts API: server/SERVER_SPEC.md sections 2-6. Plain JavaScript on web-standard Request, Response and
 // crypto.subtle, so the same file runs in Supabase's Deno Edge Function (index.ts) and in Node for the tests.
 // Everything outside is passed in: `store` (the database, store-pg.js), `send` (WhatsApp and SMS, send.js), `env`
-// (secrets), `now` (the clock) and `log`. Nothing from a woman's diary is ever accepted, stored or logged.
+// (secrets), `now` (the clock) and `log`. Nothing from a woman's diary is ever accepted, stored or logged, with one exception
+// (Version 33, spec section 10.1): when she asks Qura to call her, the sections she ticks wait here only until Qura's
+// endpoint has them, and are never logged.
 
 const enc = new TextEncoder();
 const PHONE_RE = /^\+91[6-9]\d{9}$/;
@@ -21,6 +23,14 @@ const RESEND_S = 30;
 const MAX_TRIES = 5;
 const SESSION_IDLE_DAYS = 365;
 const MAX_BODY = 2048;
+/* Version 33, the doctor-call hand-off (spec section 10.1). The report sections she may tick: it mirrors SHARE_KEYS in
+   web/app.js (server/test/api.test.mjs checks the two agree). */
+export const SHARE_KEYS = ['about', 'periods', 'symptoms', 'checkins', 'tools', 'questions', 'notes'];
+const BEST_TIMES = ['morning', 'afternoon', 'evening', 'any'];
+const MAX_BODY_REQUEST = 32768;   /* the app trims what she ticked to fit, and shows her exactly that */
+const RETRY_MIN = [2, 10, 30, 60, 120, 240, 480];   /* minutes before each further try */
+const GIVE_UP_MS = 24 * 3600 * 1000;                  /* then the request fails and the app offers the booking link */
+const REF_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 /* The only fields each call may carry. It mirrors SEND in web/app.js (server/test/api.test.mjs checks the two agree). */
 export const ALLOW = {
@@ -31,7 +41,9 @@ export const ALLOW = {
   'POST me/active': ['app', 'lang'],
   'POST session/logout': [],
   'DELETE me': [],
-  'POST usage': ['month', 'counts']
+  'POST usage': ['month', 'counts'],
+  'POST requests': ['topic', 'best_time', 'lang', 'notice', 'shared', 'shared_data'],
+  'GET requests': []
 };
 
 const CORS = {
@@ -96,9 +108,10 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
 
   async function readBody(req, allow, path) {
     if (req.method === 'GET' || req.method === 'DELETE') return {};
-    if (+(req.headers.get('content-length') || 0) > MAX_BODY) fail(413, 'too_large');
+    const max = path === 'requests' ? MAX_BODY_REQUEST : MAX_BODY;   /* a call request carries the sections she ticked */
+    if (+(req.headers.get('content-length') || 0) > max) fail(413, 'too_large');
     const text = await req.text();
-    if (enc.encode(text).length > MAX_BODY) fail(413, 'too_large');
+    if (enc.encode(text).length > max) fail(413, 'too_large');
     if (!text.trim()) return {};
     let body; try { body = JSON.parse(text); } catch (e) { fail(400, 'bad_json'); }
     if (!body || typeof body !== 'object' || Array.isArray(body)) fail(400, 'bad_json');
@@ -237,6 +250,87 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     return reply(204);
   }
 
+  /* ---------- 10.1 The doctor-call hand-off (Version 33) ----------
+     She asks Qura to call her: a topic, the best time, and only the report sections she ticked, each with the exact lines she
+     saw on screen. The request waits here until Qura's endpoint has it (tried at once, then again on a schedule for 24 hours),
+     then the topic and the sections are deleted and only the reference and its status stay. It is on only when Qura's
+     address (https) and the shared key (32+ characters) are set; otherwise the app offers the booking link. */
+  const handoffOn = () => !!(send.handoff && /^https:\/\/[^\s]+$/.test(env.SAKHI_QURA_HANDOFF_URL || '') && (env.SAKHI_QURA_KEY || '').length >= 32);
+  const cleanText = (s, max) => typeof s === 'string' && !/[\u0000-\u001f\u007f]/.test(s) && s.trim().length >= 1 && s.length <= max;
+  function checkRequest(b) {
+    if (!cleanText(b.topic, 120)) fail(400, 'topic_bad');
+    if (!BEST_TIMES.includes(b.best_time)) fail(400, 'best_time_bad');
+    if (!str(b.lang, LANG_RE)) fail(400, 'lang_bad');
+    if (!str(b.notice, NOTICE_RE)) fail(400, 'notice_bad');
+    const sh = b.shared;
+    if (!Array.isArray(sh) || sh.some((k) => !SHARE_KEYS.includes(k)) || new Set(sh).size !== sh.length) fail(400, 'shared_bad');
+    const d = b.shared_data;
+    if (!d || typeof d !== 'object' || Array.isArray(d) || Object.keys(d).some((k) => k !== 'report_lang' && k !== 'sections') || !str(d.report_lang, LANG_RE)) fail(400, 'shared_data_bad');
+    /* one section for each key she ticked, and nothing else */
+    const secs = d.sections; const seen = new Set();
+    if (!Array.isArray(secs) || secs.length !== sh.length) fail(400, 'shared_data_bad');
+    for (const s of secs) {
+      if (!s || typeof s !== 'object' || Array.isArray(s) || Object.keys(s).some((k) => k !== 'key' && k !== 'title' && k !== 'lines')) fail(400, 'shared_data_bad');
+      if (!sh.includes(s.key) || seen.has(s.key) || !cleanText(s.title, 80)) fail(400, 'shared_data_bad');
+      if (!Array.isArray(s.lines) || !s.lines.length || s.lines.length > 40 || s.lines.some((l) => !cleanText(l, 300))) fail(400, 'shared_data_bad');
+      seen.add(s.key);
+    }
+  }
+  function newRef() {
+    const a = crypto.getRandomValues(new Uint8Array(6));
+    return 'QC-' + Array.from(a, (x) => REF_CHARS[x % REF_CHARS.length]).join('');
+  }
+  /* One try at Qura's endpoint. Qura's own text is never logged or kept: only the HTTP status. */
+  async function forward(r, t) {
+    const payload = { ref: r.ref, phone: r.phone, name: r.name || null, best_time: r.best_time, topic: r.topic, lang: r.lang,
+      asked_at: new Date(r.created_ms).toISOString().slice(0, 19) + 'Z', consent: { notice: r.notice, shared: r.shared }, shared_data: r.shared_data };
+    const tries = r.tries + 1;
+    let res = null;
+    try { res = await send.handoff(payload); } catch (e) { res = null; }
+    const st = res ? res.status : 0;
+    if (res && ((st >= 200 && st < 300) || st === 409)) {   /* 409: Qura already has this reference */
+      const lead = res.data && (typeof res.data.lead_id === 'string' || typeof res.data.lead_id === 'number') ? String(res.data.lead_id).slice(0, 64) : null;
+      await store.finishRequest(r.id, { status: 'sent', tries, leadId: lead, at: t });
+      log('handoff', { ref: r.ref, result: 'sent', http: st });
+      return;
+    }
+    const again = !res || st >= 500 || st === 408 || st === 429;
+    if (!again || t - r.created_ms >= GIVE_UP_MS) {
+      await store.finishRequest(r.id, { status: 'failed', tries, error: res ? 'http_' + st : 'network' });
+      log('handoff', { ref: r.ref, result: 'failed', http: st });
+      return;
+    }
+    const wait = RETRY_MIN[Math.min(tries - 1, RETRY_MIN.length - 1)] * 60000;
+    await store.finishRequest(r.id, { status: 'queued', tries, nextTryAt: Math.min(t + wait, r.created_ms + GIVE_UP_MS), error: res ? 'http_' + st : 'network' });
+    log('handoff', { ref: r.ref, result: 'retry', http: st });
+  }
+  /* With no cron, requests that are due are tried when someone uses the API: her own GET, the daily "active" call, a new
+     request. One that waited long past its 24 hours (no one called the API) fails without being sent. */
+  async function pump(t, n, ref) {
+    if (!handoffOn()) return;
+    for (const r of await store.claimDueRequests(t, n, ref || null)) {
+      r.created_ms = Number(r.created_ms); r.tries = Number(r.tries);
+      if (t - r.created_ms > GIVE_UP_MS + 3600000) { await store.finishRequest(r.id, { status: 'failed', tries: r.tries, error: 'expired' }); continue; }
+      await forward(r, t);
+    }
+  }
+  async function postRequest(b, acct, t) {
+    if (!handoffOn()) fail(503, 'handoff_off');
+    checkRequest(b);
+    await limit('req:acct:' + acct.id + ':m', 600, 1, t);
+    await limit('req:acct:' + acct.id + ':d', 86400, 3, t);
+    let row = null;
+    for (let i = 0; i < 5 && !row; i++) row = await store.addRequest({ ref: newRef(), accountId: acct.id, bestTime: b.best_time, lang: b.lang, notice: b.notice, shared: b.shared, topic: b.topic.trim(), sharedData: b.shared_data, at: t });
+    if (!row) throw new Error('no free reference');
+    try { await pump(t, 1, row.ref); } catch (e) { log('handoff_pump_failed', { message: short(e) }); }   /* hers, at once; it waits if this fails */
+    const mine = (await store.listRequests(acct.id)).find((x) => x.ref === row.ref);
+    return reply(201, { ref: row.ref, status: mine ? mine.status : 'queued' });
+  }
+  async function getRequests(acct, t) {
+    try { await pump(t, 2); } catch (e) { log('handoff_pump_failed', { message: short(e) }); }
+    return reply(200, { available: handoffOn(), requests: await store.listRequests(acct.id) });
+  }
+
   return async function handle(req) {
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
     let path = '';
@@ -256,6 +350,8 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
       if (key === 'POST otp/start') return await otpStart(req, b, t);
       if (key === 'POST otp/verify') return await otpVerify(req, b, t);
       if (key === 'POST usage') return await usage(req, b, t);
+      /* 10.1: whether the hand-off is on, asked without her token, so opening the Ask screen tells the server nothing about her */
+      if (key === 'GET requests' && !req.headers.get('authorization')) return reply(200, { available: handoffOn() });
       const { acct, th, day } = await auth(req, t);
       if (key === 'GET me') return reply(200, { account: pub(acct) });
       if (key === 'PATCH me') return await patchMe(b, acct);
@@ -263,8 +359,11 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
         checkMeta(b);
         if (await store.markActive(acct.id, day, b.app || null, b.lang || null)) await store.bumpStat(day, 'active');
         await store.touchSession(th, day);
+        try { await pump(t, 2); } catch (e) { log('handoff_pump_failed', { message: short(e) }); }   /* any due call requests */
         return reply(204);
       }
+      if (key === 'POST requests') return await postRequest(b, acct, t);
+      if (key === 'GET requests') return await getRequests(acct, t);
       if (key === 'POST session/logout') { await store.revokeSession(th); return reply(204); }
       if (key === 'DELETE me') { await store.deleteAccount(acct.id); return reply(204); }
       fail(404, 'not_found');

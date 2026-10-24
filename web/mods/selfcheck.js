@@ -122,6 +122,16 @@
       '<p class="footnote">' + esc(t('selfcheck_v_src')) + '</p></div>';
   }
 
+  /* Version 38: what she already told Sakhi for her plan (state.intake) answers the same questions here, so she isn't asked
+     twice; she still sees and can change each answer. Only answers that mean the same thing carry over: "some months skipped"
+     is not "fewer than 8 periods a year", so that one, the tests and the scans stay hers to answer. */
+  function prefill(id) {
+    const o = {}; if (id !== 'pmos') return o; const ik = S.state.intake || {};
+    if (ik.gap) o.gaps = ['g45', 'g60', 'gt60', 'vary', 'lt21'].indexOf(ik.gap) >= 0 ? 'y' : (ik.gap === 'n' ? 'n' : undefined);
+    const sg = ik.signs || []; if (ik.gap || sg.length) { o.hair = sg.indexOf('hair') >= 0 ? 'y' : 'n'; o.acne = sg.indexOf('acne') >= 0 ? 'y' : 'n'; o.thin = sg.indexOf('thin') >= 0 ? 'y' : 'n'; o.patch = sg.indexOf('neck') >= 0 ? 'y' : 'n'; }
+    Object.keys(o).forEach((k) => { if (o[k] === undefined) delete o[k]; });
+    if (Object.keys(o).length) o._pre = true; return o;
+  }
   function renderList(v) {
     const last = (S.state.mods && S.state.mods.selfcheck) || {};
     v.innerHTML = S.backRow(t('selfcheck_h'), 'care', true) + '<p class="small">' + esc(t('selfcheck_p')) + '</p><div class="list">' +
@@ -131,13 +141,13 @@
   }
   function renderCheck(v, id) {
     const c = C[id]; if (!c) { renderList(v); return; }
-    const a = ans[id] || (ans[id] = {}); const can = S.canSave(); const pg = preg();
+    const a = ans[id] || (ans[id] = prefill(id)); const can = S.canSave(); const pg = preg();
     const done = c.q.every((q) => a[q[0]]); const yes = c.q.filter((q) => a[q[0]] === 'y'); const n = yes.length, m = c.q.length;
     const vd = id === 'pmos' && done && !pg ? pmosVerdict(a) : null;
     let when = c.urgentKey && a[c.urgentKey] === 'y' ? t('selfcheck_w_week') : (n >= 2 || (c.strongKeys || []).some((k) => a[k] === 'y') ? t('selfcheck_w_month') : (n === 1 ? t('selfcheck_w_watch') : t('selfcheck_w_none')));
     /* the line under the count agrees with the verdict: "at risk" in the early years is "keep noting it", not "this month" */
     if (vd && vd.level) when = vd.level === 'match' ? t('selfcheck_w_month') : (vd.level === 'risk' ? t('selfcheck_w_watch') : (vd.od || vd.ha ? t('selfcheck_w_month') : (n ? t('selfcheck_w_watch') : t('selfcheck_w_none'))));
-    v.innerHTML = S.backRow(t(c.t), 'selfcheck', true) + '<p class="small">' + esc(t('selfcheck_intro')) + '</p>' +
+    v.innerHTML = S.backRow(t(c.t), 'selfcheck', true) + '<p class="small">' + esc(t('selfcheck_intro')) + '</p>' + (a._pre ? '<p class="small sc-pre">' + esc(t('selfcheck_pre')) + '</p>' : '') +
       (pg ? '<div class="card soft"><p class="small">' + esc(t('selfcheck_preg')) + '</p><button type="button" class="btn sm" data-go="preg-symptoms">' + esc(t('selfcheck_preg_b')) + '</button></div>' : '') +
       (id === 'pmos' && sit().hormones && !pg ? '<div class="card soft"><p class="small">' + esc(t('selfcheck_horm')) + '</p></div>' : '') +
       (c.now ? '<div class="flag urgent">' + esc(t('selfcheck_now_h')) + ': ' + esc(tx(c.now)) + '</div>' : '') +
@@ -179,7 +189,7 @@
       en: {
         selfcheck_h: 'Should I get this checked?', selfcheck_tile_s: 'PMOS, endometriosis, fibroids: the signs doctors ask about',
         selfcheck_p: 'Answer a few questions about signs doctors ask about. Sakhi shows how soon to see a doctor and what they check. For PMOS it also shows whether your answers match the signs doctors use. It is not a diagnosis.',
-        selfcheck_intro: 'Answer each one for how things have been in the last few months.', selfcheck_qs: '{n} questions', selfcheck_last: 'Last time, {d}: yes to {n} of {m}',
+        selfcheck_intro: 'Answer each one for how things have been in the last few months.', selfcheck_pre: 'Some answers come from what you told Sakhi for your plan. Change any that aren’t right.', selfcheck_qs: '{n} questions', selfcheck_last: 'Last time, {d}: yes to {n} of {m}',
         selfcheck_pmos_t: 'PMOS', selfcheck_endo_t: 'Endometriosis', selfcheck_fib_t: 'Fibroids',
         selfcheck_yes: 'Yes', selfcheck_no: 'No', selfcheck_unsure: 'Not sure', selfcheck_notdone: 'Not done', selfcheck_from: 'From your diary:',
         selfcheck_h_gaps: '{n} of your last {m} gaps were outside 21 to {d} days.', selfcheck_h_heavy: 'you logged {n} heavy periods.', selfcheck_h_pain: 'cramps on {n} days in the last 90.',
@@ -219,7 +229,7 @@
       hi: {
         selfcheck_h: 'क्या मुझे जाँच करानी चाहिए?', selfcheck_tile_s: 'PMOS, एंडोमेट्रियोसिस, फाइब्रॉइड: डॉक्टर किन संकेतों के बारे में पूछते हैं',
         selfcheck_p: 'उन संकेतों के बारे में कुछ सवालों के जवाब दें जिनके बारे में डॉक्टर पूछते हैं। Sakhi बताएगी कि डॉक्टर को कितनी जल्दी दिखाएँ और वे क्या जाँचते हैं। PMOS के लिए यह भी कि आपके जवाब डॉक्टरों के संकेतों से मेल खाते हैं या नहीं। यह जाँच का नतीजा नहीं है।',
-        selfcheck_intro: 'पिछले कुछ महीनों में जैसा रहा, उसके हिसाब से हर सवाल का जवाब दें।', selfcheck_qs: '{n} सवाल', selfcheck_last: 'पिछली बार, {d}: {m} में से {n} पर हाँ',
+        selfcheck_intro: 'पिछले कुछ महीनों में जैसा रहा, उसके हिसाब से हर सवाल का जवाब दें।', selfcheck_pre: 'कुछ जवाब वही हैं जो आपने अपने प्लान के लिए Sakhi को बताए। जो सही न हो, उसे बदल दें।', selfcheck_qs: '{n} सवाल', selfcheck_last: 'पिछली बार, {d}: {m} में से {n} पर हाँ',
         selfcheck_pmos_t: 'PMOS', selfcheck_endo_t: 'एंडोमेट्रियोसिस', selfcheck_fib_t: 'फाइब्रॉइड (बच्चेदानी की गाँठ)',
         selfcheck_yes: 'हाँ', selfcheck_no: 'नहीं', selfcheck_unsure: 'पता नहीं', selfcheck_notdone: 'जाँच नहीं हुई', selfcheck_from: 'आपकी डायरी से:',
         selfcheck_h_gaps: 'पिछले {m} में से {n} अंतर 21 से {d} दिन के बाहर थे।', selfcheck_h_heavy: 'आपने {n} भारी पीरियड दर्ज किए।', selfcheck_h_pain: 'पिछले 90 में से {n} दिन ऐंठन।',

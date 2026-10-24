@@ -11,13 +11,21 @@ BT="$SDK/build-tools/35.0.0"; JAR="$SDK/platforms/android-34/android.jar"
 export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home}"
 export PATH="$JAVA_HOME/bin:$PATH"
 WEB="../web"
-VERSION_CODE="${VERSION_CODE:-1}"; VERSION_NAME="${VERSION_NAME:-0.1-prototype}"
+VERSION_NAME="${VERSION_NAME:-0.1-prototype}"
+# Version 32 (field-test audit 3.6): testers' phones only take an update with the same signing key and a versionCode at least
+# as high as theirs; otherwise the only way is to uninstall, which deletes the diary. So VERSION_CODE must be given, it may
+# not go below the last APK built here, and a missing keystore stops the build instead of making a new key.
+[ -n "$VERSION_CODE" ] || { echo "Give VERSION_CODE (at least the last one built: see README.txt)."; exit 1; }
+case "$VERSION_CODE" in *[!0-9]*) echo "VERSION_CODE must be a whole number."; exit 1 ;; esac
 # The account server (../server/SERVER_SPEC.md), e.g. SAKHI_API=https://api.example.com/sakhi. Left empty, signup
 # runs against the stand-in server inside the app: nothing is sent and the code is always 123456.
 SAKHI_API="${SAKHI_API:-}"
 # Qura's staffed WhatsApp number for "Speak to a doctor" and "Tell a person", e.g. SAKHI_HELP_WA=9198XXXXXXXX (91 and the
 # 10-digit mobile number, no +). Left empty, the doctor screen offers Qura's booking page and "Tell a person" is hidden.
 SAKHI_HELP_WA="${SAKHI_HELP_WA:-}"
+# The Grievance Officer's name and contact for the privacy notice, e.g. SAKHI_GRIEVANCE="Name, Trinaya Wellness LLP, address,
+# email". Left empty, the notice leaves the line out (never a placeholder).
+SAKHI_GRIEVANCE="${SAKHI_GRIEVANCE:-}"
 case "$SAKHI_HELP_WA" in
   ""|91[6-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
   *) echo "SAKHI_HELP_WA must be 91 followed by a 10-digit mobile number, e.g. 919876543210."; exit 1 ;;
@@ -31,6 +39,16 @@ case "$VERSION_NAME" in
        *) echo "VERSION_NAME $VERSION_NAME is not a demo build, so SAKHI_API must be the server's https address."; exit 1 ;;
      esac ;;
 esac
+
+if [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
+  echo "sakhi-prototype.keystore is missing. Every update for testers must be signed with the same key: restore it from your"
+  echo "backup. Only for a first build that no phone has yet, run again with NEW_KEYSTORE=1."; exit 1
+fi
+BT0="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}/build-tools/35.0.0"; [ -x "$BT0/aapt2" ] || BT0="$HOME/Library/Android/sdk/build-tools/35.0.0"
+if [ -f QuraSakhi-prototype.apk ] && [ -x "$BT0/aapt2" ]; then
+  LAST=$("$BT0/aapt2" dump badging QuraSakhi-prototype.apk 2>/dev/null | sed -n "s/.*versionCode='\([0-9]*\)'.*/\1/p" | head -1)
+  if [ -n "$LAST" ] && [ "$VERSION_CODE" -lt "$LAST" ]; then echo "VERSION_CODE $VERSION_CODE is below the last build ($LAST): phones with $LAST won't take it."; exit 1; fi
+fi
 
 rm -rf build && mkdir -p build/assets/www/mods build/classes build/dex build/gen
 
@@ -49,13 +67,21 @@ if [ -f "$WEB/care/index.js" ]; then
 else
   echo "Note: no Care near me data in web/care, so this build lists no facilities (docs/care-near-me-data-2026-10-22.md)."
 fi
-python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" <<'PY'
+# Dr. Megha's 30-second welcome (Version 37.1): her recordings, once made, go in web/audio as megha-welcome-<lang>.mp3. The
+# plan's "How each day works" card offers the ones listed in SAKHI_CONFIG.audio; without them it shows no button.
+AUDIO=""
+if ls "$WEB"/audio/megha-welcome-*.mp3 >/dev/null 2>&1; then
+  mkdir -p build/assets/www/audio && cp "$WEB"/audio/megha-welcome-*.mp3 build/assets/www/audio/
+  AUDIO="$(cd "$WEB/audio" && ls megha-welcome-*.mp3 | sed 's/\.mp3$//' | paste -sd, -)"
+  echo "Dr. Megha's welcome bundled: $AUDIO"
+fi
+python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" <<'PY'
 import sys, os, json, re, hashlib, base64
 from urllib.parse import urlsplit
-web, out, api, ver, wa, care = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
+web, out, api, ver, wa, care, grv, audio = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]
 c = json.load(open(os.path.join(web, 'content.json'), encoding='utf-8'))
 open(os.path.join(out, 'content.js'), 'w', encoding='utf-8').write('window.SAKHI_CONTENT = ' + json.dumps(c, ensure_ascii=False, separators=(',', ':')) + ';\n')
-open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}))) + ';\n')
+open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {})), ensure_ascii=False) + ';\n')
 html = open(os.path.join(web, 'index.html'), encoding='utf-8').read()
 html = html.replace('<script src="app.js"', '<script src="android-shim.js"></script>\n<script src="config.js"></script>\n<script src="content.js" charset="utf-8"></script>\n<script src="app.js"', 1)
 # Content-Security-Policy (audit fix 28): only the app's own files run, and the only server the page can reach is the
@@ -85,7 +111,7 @@ javac -nowarn -Xlint:-options -source 8 -target 8 -bootclasspath "$JAR" -d build
 cp build/base.apk build/unaligned.apk
 (cd build/dex && zip -q ../unaligned.apk classes.dex)
 "$BT/zipalign" -p -f 4 build/unaligned.apk build/aligned.apk
-if [ ! -f sakhi-prototype.keystore ]; then
+if [ ! -f sakhi-prototype.keystore ]; then   # only with NEW_KEYSTORE=1 (checked above)
   keytool -genkeypair -keystore sakhi-prototype.keystore -storepass android -keypass android -alias sakhi \
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Qura Sakhi prototype, O=Trinaya Wellness LLP, C=IN" >/dev/null 2>&1
 fi

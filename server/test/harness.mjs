@@ -37,17 +37,24 @@ export async function makeStore(kind) {
   return { store: pgStore(pgQuery(db)), db };
 }
 
-/* Records every code instead of sending it. Set fail.whatsapp / fail.sms to make a channel throw. */
+/* Records every code instead of sending it. Set fail.whatsapp / fail.sms to make a channel throw. The doctor-call hand-off
+   (Version 33) records each request Qura would get and answers with `qura` (set qura.status to 503 and so on); fail.handoff
+   makes it throw, like a network error or a timeout. */
 export function fakeSender() {
   const outbox = [];
-  const fail = { whatsapp: false, sms: false };
+  const handoffs = [];
+  const fail = { whatsapp: false, sms: false, handoff: false };
+  const qura = { status: 201, data: { lead_id: 'L-1' } };
   return {
-    outbox, fail,
+    outbox, fail, handoffs, qura,
     lastCode: () => (outbox.length ? outbox[outbox.length - 1].code : null),
     async whatsapp(phone, code) { if (fail.whatsapp) throw new Error('whatsapp down'); outbox.push({ channel: 'whatsapp', phone, code }); },
-    async sms(phone, code) { if (fail.sms) throw new Error('sms down'); outbox.push({ channel: 'sms', phone, code }); }
+    async sms(phone, code) { if (fail.sms) throw new Error('sms down'); outbox.push({ channel: 'sms', phone, code }); },
+    async handoff(payload) { if (fail.handoff) throw new Error('qura down'); handoffs.push(JSON.parse(JSON.stringify(payload))); return { status: qura.status, data: qura.data }; }
   };
 }
+/* The secrets that turn the hand-off on (spec section 10.1). */
+export const HANDOFF_ENV = { SAKHI_QURA_HANDOFF_URL: 'https://qura.test/api/partners/sakhi/v1/call-requests', SAKHI_QURA_KEY: 'test-qura-key-0123456789abcdef0123456789' };
 
 /* 20 Oct 2026, 10:00 India time, moved by tests with clock.add(seconds). */
 export function fakeClock(start = Date.parse('2026-10-20T04:30:00Z')) {

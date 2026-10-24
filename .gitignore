@@ -16,3 +16,5 @@ web/test/report-*.json
 server/.env*
 server/exports/
 *.sql.gz
+# The data.gov.in lists the Care data is rebuilt from (node web/tools/care-data.mjs --from web/tools/care-src)
+web/tools/care-src/

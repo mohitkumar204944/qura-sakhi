@@ -344,7 +344,7 @@
           { en: 'Fathers can talk too. Hearing "This is normal, you can tell me anything" from her father matters.', hi: 'पापा भी बात कर सकते हैं। पापा के मुँह से "यह सामान्य है, तुम मुझे कुछ भी बता सकती हो" सुनना बहुत मायने रखता है।' },
           { en: `If you don't know an answer, say "Let's find out together."`, hi: 'अगर किसी सवाल का जवाब न पता हो, तो कहें "चलो, साथ में पता करते हैं।"' }]) +
         goBtn('teen-first', { en: 'Read the first-period guide with her', hi: 'पहले पीरियड की गाइड उसके साथ पढ़ें' })) +
-      '<h2 class="teen-sec" id="p-words">' + T({ en: 'Words you can use', hi: 'आप ये शब्द कह सकते हैं' }) + '</h2>' +
+      '<h2 class="teen-sec" id="p-words">' + T({ en: 'Words you can use', hi: 'आप ये शब्द कह सकती हैं' }) + '</h2>' +
       '<p class="small">' + T({ en: 'Say them in your own way. Each line is in Hindi and in English.', hi: 'अपने तरीक़े से कहें। हर बात हिंदी और English, दोनों में है।' }) + '</p>' +
       SAY.map(sayBlock).join('') +
       sec('p-ready', { en: 'What to keep ready', hi: 'क्या तैयार रखें' },
@@ -369,7 +369,7 @@
         { en: 'Periods come more often than every 21 days, or less often than every 45 days', hi: 'पीरियड 21 दिन से पहले बार-बार आएँ, या 45 दिन से ज़्यादा के अंतर पर आएँ' },
         { en: 'Pain keeps her home from school', hi: 'दर्द की वजह से उसका स्कूल छूटे' },
         { en: 'She seems low or withdrawn most days for two weeks or more. Tele-MANAS 14416 is free for both of you.', hi: 'दो हफ़्ते या ज़्यादा, लगभग रोज़ वह उदास या चुप-चुप लगे। Tele-MANAS 14416 आप दोनों के लिए मुफ़्त है।' }
-      ], true, '<p class="small">' + T({ en: 'The teen clinic (AFHC) at a PHC, CHC or district hospital is free. You can ask for a woman doctor or ANM, and you can go in with her.', hi: 'PHC, CHC या ज़िला अस्पताल का किशोर क्लिनिक (AFHC) मुफ़्त है। आप महिला डॉक्टर या ANM के लिए कह सकते हैं, और उसके साथ अंदर जा सकते हैं।' }) + '</p>' + goBtn('teen-services', { en: 'Free services for girls', hi: 'लड़कियों के लिए मुफ़्त सेवाएँ' })) + '</div>' +
+      ], true, '<p class="small">' + T({ en: 'The teen clinic (AFHC) at a PHC, CHC or district hospital is free. You can ask for a woman doctor or ANM, and you can go in with her.', hi: 'PHC, CHC या ज़िला अस्पताल का किशोर क्लिनिक (AFHC) मुफ़्त है। आप महिला डॉक्टर या ANM के लिए कह सकती हैं, और उसके साथ अंदर जा सकती हैं।' }) + '</p>' + goBtn('teen-services', { en: 'Free services for girls', hi: 'लड़कियों के लिए मुफ़्त सेवाएँ' })) + '</div>' +
       sec('p-safety', { en: 'Talking about safety and POCSO', hi: 'सुरक्षा और POCSO पर बात' },
         ul([{ en: 'Teach her the correct names for private parts, and that no one may touch them, photograph them or ask to see them, except a doctor checking her with you present.', hi: 'उसे प्राइवेट पार्ट के सही नाम सिखाएँ, और यह कि कोई उन्हें न छू सकता है, न फ़ोटो ले सकता है, न देखने को कह सकता है, सिवाय डॉक्टर के जो आपके सामने जाँच करे।' },
           { en: 'Teach the rule: say no, get away, tell. Abuse often comes from someone the child knows and trusts.', hi: 'यह नियम सिखाएँ: "ना" कहो, दूर जाओ, बताओ। शोषण अक्सर कोई जान-पहचान वाला या भरोसे का व्यक्ति करता है।' },

@@ -36,7 +36,11 @@
     rem_p: ['Everything the app reminds you about, in one place. Turn one off, change its time, or add your own.', 'ऐप जिन बातों की याद दिलाता है, सब एक जगह। किसी को बंद करें, उसका समय बदलें, या अपना जोड़ें।'],
     rem_how_h: ['How reminders reach you', 'रिमाइंडर आप तक कैसे पहुँचते हैं'],
     rem_how_live: ['In the live app, everything due on a day comes together in one WhatsApp message, and only if you have said yes to WhatsApp messages. You can say no again at any time on the Me page.', 'असली ऐप में, एक दिन के सारे रिमाइंडर एक ही WhatsApp मैसेज में आते हैं, और सिर्फ़ तब जब आपने WhatsApp मैसेज के लिए हाँ कहा हो। “मैं” पन्ने पर कभी भी फिर से मना कर सकती हैं।'],
-    rem_how_proto: ['In this prototype nothing is sent. Reminders for the next 3 days show on your Home screen under "Coming up".', 'इस prototype में कुछ नहीं भेजा जाता। अगले 3 दिनों के रिमाइंडर होम पर “आगे क्या है” में दिखते हैं।'],
+    rem_how_proto: ['In this prototype nothing is sent. Reminders for the next 3 days show on Today under "Coming up".', 'इस prototype में कुछ नहीं भेजा जाता। अगले 3 दिनों के रिमाइंडर “आज” पर “आगे क्या है” में दिखते हैं।'],
+    /* Version 32 (field-test audit 3.3): on the Android app reminders ring as phone notifications */
+    rem_how_phone: ['On this phone, reminders ring as notifications once phone reminders are on (Me, then Reminders). Reminders for the next 3 days also show on Today under "Coming up".', 'इस फ़ोन पर रिमाइंडर नोटिफ़िकेशन की तरह बजते हैं, जब फ़ोन रिमाइंडर चालू हों (“मैं”, फिर “रिमाइंडर”)। अगले 3 दिनों के रिमाइंडर “आज” पर “आगे क्या है” में भी दिखते हैं।'],
+    rem_how_off: ['Phone reminders are off, so nothing will ring.', 'फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा।'],
+    rem_turn_on: ['Turn on phone reminders', 'फ़ोन रिमाइंडर चालू करें'],
     g_today: ['Today', 'आज'], g_week: ['This week', 'इस हफ़्ते'], g_later: ['Later', 'बाद में'], g_off: ['Off', 'बंद'],
     g_done: ['Finished', 'पूरे हो गए'], g_done_p: ['One-time reminders whose date has passed. Delete them when you no longer need them.', 'एक बार वाले रिमाइंडर जिनकी तारीख़ निकल गई। ज़रूरत न हो तो हटा दें।'],
     alerts_off: ['Phone alerts are off, so these reminders will not ring.', 'फ़ोन पर अलर्ट बंद हैं, इसलिए ये रिमाइंडर नहीं बजेंगे।'], alerts_b: ['Turn on', 'चालू करें'],
@@ -97,7 +101,7 @@
     /* reports */
     reps_h: ['My reports', 'मेरी रिपोर्ट'],
     reps_p: ['Keep photos of your test reports, scans and prescriptions together, so they are ready at your next visit.', 'अपनी जाँच रिपोर्ट, स्कैन और पर्चों की फ़ोटो एक जगह रखें, ताकि अगली मुलाक़ात में तैयार रहें।'],
-    reps_local: ['In this prototype, photos stay only in this browser on this phone. Clearing the browser deletes them, so keep the paper copies too.', 'इस prototype में फ़ोटो सिर्फ़ इसी फ़ोन के इसी browser में रहती हैं। browser साफ़ करने पर मिट जाती हैं, इसलिए काग़ज़ वाली copy भी रखें।'],
+    reps_local: ['Photos stay only on this phone, inside Sakhi. Deleting Sakhi or its data deletes them, so keep the paper copies too.', 'फ़ोटो सिर्फ़ इसी फ़ोन पर, Sakhi के अंदर रहती हैं। Sakhi या उसका डेटा मिटाने पर ये भी मिट जाती हैं, इसलिए काग़ज़ वाली कॉपी भी रखें।'],
     ty_blood: ['Blood test', 'खून की जाँच'], ty_scan: ['Scan', 'स्कैन'], ty_rx: ['Prescription', 'पर्चा'], ty_dis: ['Discharge summary', 'डिस्चार्ज समरी'], ty_other: ['Other', 'अन्य'],
     ty_all: ['All', 'सब'],
     add_rep: ['Add a report', 'रिपोर्ट जोड़ें'], f_type: ['What kind of report', 'किस तरह की रिपोर्ट'], f_rdate: ['Date on the report', 'रिपोर्ट की तारीख़'],
@@ -136,7 +140,7 @@
     abha_saved: ['ABHA address noted on this phone.', 'ABHA address इस फ़ोन पर लिख लिया।'], abha_removed: ['ABHA address removed from this phone.', 'ABHA address इस फ़ोन से हटा दिया।'],
     abha_bad: ['That does not look like an ABHA address. It has an @ in it, like name@abdm.', 'यह ABHA address जैसा नहीं लगता। इसमें @ होता है, जैसे name@abdm।'],
     abha_digits: ['That looks like an Aadhaar or ABHA number. Note only the ABHA address (the one with @) here.', 'यह Aadhaar या ABHA नंबर जैसा लगता है। यहाँ सिर्फ़ ABHA address (@ वाला) लिखें।'],
-    abha_live: ['In the live app, Qura would see or link records only through the official ABDM consent screen, where you approve each request. This prototype does not connect to ABDM.', 'असली ऐप में Qura रिकॉर्ड सिर्फ़ ABDM की सरकारी सहमति स्क्रीन से देखेगा या जोड़ेगा, जहाँ आप हर अनुरोध ख़ुद मंज़ूर करती हैं। यह prototype ABDM से नहीं जुड़ता।'],
+    abha_live: ['Sakhi doesn’t connect to ABDM yet. If it does, Qura will see or link records only through the official ABDM consent screen, where you approve each request.', 'Sakhi अभी ABDM से नहीं जुड़ती। जुड़ेगी, तो Qura रिकॉर्ड सिर्फ़ ABDM की सरकारी सहमति स्क्रीन से देखेगा या जोड़ेगा, जहाँ आप हर अनुरोध ख़ुद मंज़ूर करती हैं।'],
 
     /* doctor summary */
     sum_h: ['Summary for my doctor', 'डॉक्टर के लिए सारांश'],
@@ -285,7 +289,8 @@
       const grp = (key, label, items, note) => (items.length ? '<section class="stack"><div class="row spread"><h2>' + esc(T(label)) + '</h2><span class="pill muted num">' + items.length + '</span></div>' + (note ? '<p class="small">' + esc(T(note)) + '</p>' : '') + items.map(row).join('') + '</section>' : '');
       const links = [[R.meds, 'lnk_meds', 'pill'], ['contra-mine', 'lnk_contra', 'leaf'], ['screen-mine', 'lnk_screen', 'check'], ['post-checks', 'lnk_post', 'baby']];
       const empty = '<div class="card"><p>' + esc(T('rem_none')) + '</p><div class="list">' + links.map((x) => '<button type="button" class="item quiet" data-go="' + x[0] + '"><span class="ico-sm">' + S.icon(x[2]) + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong></span><span style="color:var(--accent);width:18px;flex-shrink:0">' + S.I.chev + '</span></button>').join('') + '</div></div>';
-      const how = '<div class="card soft"><h3>' + esc(T('rem_how_h')) + '</h3><p class="small">' + esc(T('rem_how_live')) + '</p><p class="small">' + esc(T('rem_how_proto')) + '</p>' + (can ? '<div class="row wrap"><button type="button" class="btn sm" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm ghost" data-go="me">' + esc(t('me')) + '</button></div>' : '') + '</div>';
+      const phone = !!(S.alerts && S.alerts.can()); const ringing = phone && S.alerts.on();
+      const how = '<div class="card soft"><h3>' + esc(T('rem_how_h')) + '</h3>' + (phone ? '<p class="small">' + esc(T('rem_how_phone')) + '</p>' + (ringing ? '' : '<p class="small" style="color:var(--fg);font-weight:600">' + esc(T('rem_how_off')) + '</p><button type="button" class="btn sm primary" style="align-self:flex-start" data-go="me-reminders">' + esc(T('rem_turn_on')) + '</button>') : '<p class="small">' + esc(T('rem_how_live')) + '</p><p class="small">' + esc(T('rem_how_proto')) + '</p>') + (can ? '<div class="row wrap"><button type="button" class="btn sm" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm ghost" data-go="me">' + esc(t('me')) + '</button></div>' : '') + '</div>';
       const addPart = !can ? S.needDiary() : (ui.remForm ? remFormHtml(ui.remForm) : '<button type="button" class="btn primary block" id="tl-radd">' + S.I.bell.replace('<svg', '<svg style="width:20px;height:20px"') + esc(T('add_rem')) + '</button>');
       v.innerHTML = S.backRow(T('rem_h'), 'care', false) + '<p class="small">' + esc(T('rem_p')) + '</p>' + (can && !storageOK() ? '<div class="flag">' + esc(T('store_err')) + '</div>' : '') +
         (can && all.length && S.alerts && S.alerts.can() && !S.alerts.on() ? '<div class="flag" id="tl-alerts"><span>' + esc(T('alerts_off')) + '</span> <button type="button" class="btn sm" data-go="me-reminders">' + esc(T('alerts_b')) + '</button></div>' : '') + addPart +
@@ -766,8 +771,8 @@
       '.tl-rem-ctl input:disabled { opacity: 0.7; }',
       'input.tl-time { width: 132px; flex: 0 0 auto; min-height: 40px; padding: 6px 10px; }',
       '.tl-switch { position: relative; width: 52px; height: 32px; flex-shrink: 0; display: inline-block; }',
-      '.tl-switch input { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; margin: 0; padding: 0; opacity: 0; cursor: pointer; z-index: 1; }',
-      '.tl-switch span { position: absolute; inset: 0; border-radius: 16px; background: var(--peach); transition: background 0.2s; }',
+      '.tl-switch input { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; min-height: 0; margin: 0; padding: 0; opacity: 0; cursor: pointer; z-index: 1; }',
+      '.tl-switch span { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: 16px; background: var(--peach); transition: background 0.2s; }',
       '.tl-switch span::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); transition: transform 0.2s; }',
       '.tl-switch input:checked + span { background: var(--accent-strong); }',
       '.tl-switch input:checked + span::after { transform: translateX(20px); }',
@@ -821,7 +826,7 @@
       '.tl-sec ul { padding-left: 18px; font-size: 14px; color: var(--fg); }',
       '.tl-sec li { overflow-wrap: anywhere; margin: 2px 0; }',
       '.tl-copy { min-height: 200px; font-size: 13px; line-height: 1.45; }',
-      '.tl-doc { position: fixed; inset: 0; z-index: 15; background: var(--card); color: var(--fg); overflow-y: auto; overscroll-behavior: contain; }',
+      '.tl-doc { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 15; background: var(--card); color: var(--fg); overflow-y: auto; overscroll-behavior: contain; }',
       '.tl-doc-in { max-width: 680px; margin: 0 auto; padding: 0 20px 48px 20px; display: flex; flex-direction: column; gap: 16px; }',
       '.tl-doc-bar { position: sticky; top: 0; z-index: 1; background: var(--card); display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 0 10px 0; border-bottom: 1px solid var(--line); }',
       '.tl-doc h2 { font-size: 26px; line-height: 1.25; overflow-wrap: anywhere; }',

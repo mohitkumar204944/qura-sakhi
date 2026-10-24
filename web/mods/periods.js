@@ -520,7 +520,8 @@
       lines.push(t('periods_sum_top') + ': ' + (st.top.length ? st.top.map((x) => t('periods_g_' + x.k) + ' ×' + x.n).join(', ') : t('periods_none_yet')));
       lines.push(t('periods_sum_lot') + ': ' + st.preLot + ' / ' + st.preWeeks);
       lines.push(t('periods_noscore'));
-      return [{ title: t('periods_pms'), lines: lines }];
+      /* the doctor's summary (Version 33) takes the pattern and the impact, not the count of days or the note */
+      return [{ title: t('periods_pms'), lines: lines, doctorLines: lines.slice(1, 3) }];
     },
     sample: (personaId, S) => {
       if (personaId !== 'asha' && personaId !== 'priya') return;

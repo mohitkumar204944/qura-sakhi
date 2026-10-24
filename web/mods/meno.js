@@ -65,6 +65,11 @@
     }
     return out;
   }
+  /* Version 38: the midlife plan's results and Today: weeks with a symptom between two dates (week keys are Mondays), and
+     whether this week is noted */
+  S.meno = Object.assign(S.meno || {}, {
+    trend: (key, fromISO, toISO) => { const dia = peekDiary(); const ks = loggedKeys(dia).filter((k) => k >= wk(S.fromISO(fromISO)) && k <= toISO); return { weeks: ks.length, on: ks.filter((k) => lvOf(dia[k], key) > 0).length }; },
+    thisWeek: () => !!peekDiary()[wk(S.today())] });
   const draftFor = (key) => { const e = peekDiary()[key]; const d = zero(); if (e && e.v) SYM.forEach((s) => { d[s] = lvOf(e, s); }); return d; };
 
   /* ---------- hub ---------- */

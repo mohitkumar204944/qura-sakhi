@@ -157,10 +157,12 @@
   const COLS = ['orange', 'pink', 'yellow', 'red', 'leaf', 'purple'];
   const sparks = (n, spread) => { let h = ''; for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + (i % 2) * 0.35; const r = spread * (0.7 + ((i * 37) % 10) / 22); h += '<i class="jp-s" style="--dx:' + Math.round(Math.cos(a) * r) + 'px;--dy:' + Math.round(Math.sin(a) * r) + 'px;--r:' + ((i * 47) % 200) + 'deg;--d:' + (i * 28) + 'ms;--c:var(--art-' + COLS[i % COLS.length] + ')"></i>'; } return h; };
   let fresh = null;   /* { mk, idx }: the petal that should grow in on the Home strip */
+  let held = null;    /* Version 37.1: { mk, n, bloom, b }: earned while her plan's first day waited for its check-in */
   /* A new owner (Delete everything, a sample, a restore) starts with no quiz answers and no petal waiting to grow. */
-  if (S.onOwnerChange) S.onOwnerChange(() => { memQuiz = {}; q = { id: null, ans: null }; fresh = null; });
+  if (S.onOwnerChange) S.onOwnerChange(() => { memQuiz = {}; q = { id: null, ans: null }; fresh = null; held = null; });
   function celebrate(kind, o) {
-    if (/^relief-/.test(S.route())) return;   /* in a routine: no confetti while she is in pain or anxious (the petal still counts) */
+    if (/^relief-/.test(S.route())) return;
+    celebrate.at = Date.now();   /* in a routine: no confetti while she is in pain or anxious (the petal still counts) */
     const m = monthIdx(o.mk || S.monthKey(S.today()));
     const title = kind === 'petal' ? t('joy_pop_petal') : kind === 'bloom' ? tf('joy_pop_bloom', { m: monthName(m) }) : tf('joy_pop_badge', { b: t('joy_b_' + o.b.id) });
     const sub = kind === 'petal' ? tf('joy_pop_sub', { m: monthName(m), n: o.n }) : kind === 'bloom' ? tf('joy_pop_bloom_sub', { f: S.art ? S.art.flowerName(m) : '' }) : t('joy_b_' + o.b.id + '_h');
@@ -191,9 +193,21 @@
     if (after > before) fresh = { mk: mk, idx: after - 1 };
     setTimeout(refreshStrip, 80);
     if (p.quiet) return;
+    /* Version 37.1: on her plan's first day nothing pops up before her first check-in; what she earned waits for it (S.joy.release) */
+    if (S.plan && S.plan.holdJoy && S.plan.holdJoy()) { held = held || { mk: mk, n: 0, bloom: false, b: null }; if (after > before) { held.mk = mk; held.n = after; held.bloom = after >= PER_MONTH; } if (newB.length && !held.b) held.b = newB[0]; return; }
     if (after > before) celebrate(after >= PER_MONTH ? 'bloom' : 'petal', { mk: mk, n: after });
     if (newB.length) setTimeout(() => celebrate('badge', { b: newB[0] }), after > before ? (after >= PER_MONTH ? 5400 : 3100) : 0);
   }
+
+  /* Version 37.1: her first check-in shows what she earned on her plan's first day, once. If the check-in just celebrated a
+     petal of its own, only a waiting badge follows. */
+  S.joy = { petals: () => (S.canSave() ? monthPetals(D(), S.monthKey(S.today())) : 0), release: () => {
+    const h = held; held = null; if (!h) return false;
+    const just = Date.now() - (celebrate.at || 0) < 1000;
+    if (h.n && !just) celebrate(h.bloom ? 'bloom' : 'petal', { mk: h.mk, n: h.n });
+    if (h.b) setTimeout(() => celebrate('badge', { b: h.b }), h.n || just ? (h.bloom ? 5400 : 3100) : 0);
+    return !!(h.n || h.b);   /* something she earned was shown */
+  } };
 
   /* ---------- Home: this month's flower and today's card ---------- */
   function stripHtml() {

@@ -28,7 +28,7 @@
       [L('Know the tests', 'जाँचें जानें'), L('Read which tests doctors do for PMOS, and why.', 'पढ़ें कि PMOS के लिए डॉक्टर कौन सी जाँचें करते हैं, और क्यों।'), 'cond-labs'],
       [L('A 25-minute walk', '25 मिनट की सैर'), L('Walk for 25 minutes today, or take two short walks.', 'आज 25 मिनट टहलें, या दो छोटी सैर करें।')],
       [L('Dal or chana at dinner', 'रात को दाल या चना'), L('Add a bowl of dal or chana to dinner.', 'रात के खाने में एक कटोरी दाल या चना जोड़ें।')],
-      [L('Your check-in', 'आपका चेक-इन'), L('Do this month’s check-in, if you haven’t yet.', 'इस महीने का चेक-इन कर लें, अगर अभी तक नहीं किया।'), 'checkin'],
+      [L('This month', 'इस महीने'), L('Note this month’s signs, if you haven’t yet.', 'इस महीने के संकेत दर्ज कर लें, अगर अभी तक नहीं किए।'), 'checkin'],
       [L('Look back', 'पीछे देखें'), L('Which steps helped most? Keep two of them going.', 'किन क़दमों से सबसे ज़्यादा मदद मिली? उनमें से दो जारी रखें।')]] },
     iron: { hue: 'rose', icon: 'drop', ask: 'Anaemia and iron', days: [
       [L('Your iron tablet', 'आपकी आयरन की गोली'), L('If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani.', 'अगर ASHA या डॉक्टर ने आयरन की गोलियाँ दी हैं, तो आज उनके बताए तरीके से लें, पानी या नींबू पानी के साथ।'), 'iron'],
@@ -50,11 +50,16 @@
       [L('Ask about deworming', 'पेट के कीड़ों की दवा'), L('Worms can cause anaemia. Ask the ASHA or doctor about a deworming tablet.', 'पेट के कीड़ों से ख़ून की कमी हो सकती है। ASHA या डॉक्टर से कीड़े की दवा के बारे में पूछें।')],
       [L('Sprouts', 'अंकुरित अनाज'), L('Add sprouted moong or chana to a meal.', 'किसी खाने में अंकुरित मूँग या चना जोड़ें।')],
       [L('Tell your family', 'परिवार को बताएँ'), L('Send the iron card from Explain it to my family.', '“परिवार को समझाएँ” से आयरन वाला कार्ड भेजें।'), 'family'],
-      [L('Your check-in', 'आपका चेक-इन'), L('Do this month’s check-in, if you haven’t yet.', 'इस महीने का चेक-इन कर लें, अगर अभी तक नहीं किया।'), 'checkin'],
+      [L('This month', 'इस महीने'), L('Note this month’s signs, if you haven’t yet.', 'इस महीने के संकेत दर्ज कर लें, अगर अभी तक नहीं किए।'), 'checkin'],
       [L('Look back', 'पीछे देखें'), L('Which iron foods did you like? Keep three of them in your week.', 'कौन से आयरन वाले खाने अच्छे लगे? उनमें से तीन हर हफ़्ते खाती रहें।')]] }
   };
   const IDS = Object.keys(J);
   const N = 21;
+  /* Version 37: the companion plans reuse these doctor-reviewed steps (the heavy-periods plan's iron food of the day) */
+  /* Version 38: for a vegetarian, or eggs but no meat, the iron day that asks for eggs, fish or meat (day 9) */
+  const ALT = { iron: { 9: { veg: [L('Poha with lemon', 'नींबू वाला पोहा'), L('Have poha with a squeeze of lemon. Poha has iron, and lemon helps your body take it in.', 'पोहे पर नींबू निचोड़कर खाएँ। पोहे में आयरन होता है, और नींबू उसे शरीर में जाने में मदद करता है।')],
+    egg: [L('Eggs today', 'आज अंडे'), L('Have eggs once today, boiled or as a bhurji with less oil.', 'आज एक बार अंडे खाएँ, उबले या कम तेल की भुर्जी।')] } } };
+  S.journey = { step: (id, n, o) => { const j = J[id]; if (!j) return null; const i = (((n - 1) % j.days.length) + j.days.length) % j.days.length; const alt = o && o.food && ALT[id] && ALT[id][i + 1] && ALT[id][i + 1][o.food]; const x = alt || j.days[i]; return { t: tx(x[0]), p: tx(x[1]), go: (alt ? null : x[2]) || null }; }, len: (id) => (J[id] ? J[id].days.length : 0) };
   const todayISO = () => S.toISO(S.today());
   const dayN = (d) => Math.min(N, S.diffDays(S.fromISO(d.start), S.today()) + 1);
   const goOk = (r) => !!r && (['diary', 'checkin'].indexOf(r) >= 0 || r.indexOf('a-') === 0 || !!S.routeOwner(r));
@@ -111,7 +116,7 @@
   }
   /* Home's Today: today's step, until it is done, with one tap. Plain words in discreet mode. */
   function today() {
-    if (!S.canSave()) return null; const d = (S.state.mods || {}).journey; if (!d || !d.active || !J[d.active] || !d.start) return null;
+    if (!S.canSave() || (S.plan && S.plan.running && S.plan.running())) return null; const d = (S.state.mods || {}).journey;   /* Version 38: her plan's steps are Today's */ if (!d || !d.active || !J[d.active] || !d.start) return null;
     const dd = Object.assign({ done: {}, finished: {} }, d); if (finished(dd)) return null; const n = dayN(dd); if ((dd.done || {})[n]) return null;
     const x = J[d.active].days[n - 1]; const disc = !!(S.state.settings || {}).discreet; const id = d.active;
     return { id: 'journey', order: 30, icon: J[id].icon, hue: J[id].hue, title: disc ? t('journey_home_d') : tx(x[0]), sub: tf('journey_day', { n: n }), go: 'journey-' + id, rem: ['journey'],

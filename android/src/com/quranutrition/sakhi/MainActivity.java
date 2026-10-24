@@ -41,6 +41,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
@@ -52,6 +55,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     private static final int REQ_NOTIFY = 42;
     private static final int REQ_SPEECH = 43;
     private WebView web;
+    /** A tapped notification's screen (Version 34), opened once the page has loaded. */
+    private String pendingGo;
     private ValueCallback<Uri[]> fileCallback;
     private TextToSpeech tts;
     private volatile boolean ttsReady = false;
@@ -63,6 +68,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         // from the page while lock, shared-phone or discreet mode is on).
         if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
         tts = new TextToSpeech(this, this);
+        pendingGo = goOf(getIntent());
         makeWeb();
         WebBackForwardList restored = state != null ? web.restoreState(state) : null;
         if (restored == null || restored.getSize() == 0) web.loadUrl(START);   // nothing to restore, or the restore failed
@@ -94,6 +100,12 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 // Official pages, booking link, phone numbers: open outside the app.
                 try { startActivity(new Intent(Intent.ACTION_VIEW, u)); } catch (ActivityNotFoundException e) { /* nothing can open it */ }
                 return true;
+            }
+
+            /** A notification opened the app: go to its screen once the page is ready (the PIN lock, if on, comes first). */
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (pendingGo != null && view == web) { openRoute(pendingGo); pendingGo = null; }
             }
 
             /** The page's renderer crashed or was killed to free memory. Her diary is safe in localStorage: start a fresh
@@ -195,6 +207,35 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         @JavascriptInterface
         public void stop() { if (ttsReady) tts.stop(); }
 
+        /* ---------- a second copy of the diary (Version 32, field-test audit 2.6) ----------
+           The WebView writes localStorage to disk in batches, up to a minute late, so an entry logged just before Android
+           closes Sakhi could be lost. The page hands every save here too, and it is written at once to the app's private
+           storage: a temp file, then a rename, so a half-written copy never replaces a good one. Never backed up
+           (allowBackup is false) and never sent anywhere. An empty string deletes it (Delete everything). */
+        @JavascriptInterface
+        public boolean saveState(String json) {
+            File f = new File(getFilesDir(), "diary.json");
+            if (json == null || json.length() == 0) { f.delete(); return true; }
+            File tmp = new File(getFilesDir(), "diary.json.tmp");
+            try {
+                FileOutputStream out = new FileOutputStream(tmp);
+                try { out.write(json.getBytes("UTF-8")); } finally { out.close(); }
+                return tmp.renameTo(f);
+            } catch (Exception e) { return false; }
+        }
+
+        @JavascriptInterface
+        public String loadState() {
+            File f = new File(getFilesDir(), "diary.json");
+            if (!f.exists() || f.length() > 64L * 1024 * 1024) return "";
+            try {
+                byte[] b = new byte[(int) f.length()];
+                FileInputStream in = new FileInputStream(f);
+                try { int off = 0; while (off < b.length) { int n = in.read(b, off, b.length - off); if (n < 0) break; off += n; } } finally { in.close(); }
+                return new String(b, "UTF-8");
+            } catch (Exception e) { return ""; }
+        }
+
         /** A light tick on taps, like a native app. */
         @JavascriptInterface
         public void haptic() {
@@ -210,6 +251,17 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 @Override public void run() {
                     if (on) getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
                     else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                }
+            });
+        }
+
+        /** Keeps the screen on while she follows a yoga or strength routine: its timer and the read-aloud stop when the screen sleeps. */
+        @JavascriptInterface
+        public void keepAwake(final boolean on) {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    if (on) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             });
         }
@@ -465,6 +517,24 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     protected void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
         web.saveState(out);
+    }
+
+    /** A notification tapped while Sakhi is already open. */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String go = goOf(intent);
+        if (go != null) openRoute(go);
+    }
+
+    private static String goOf(Intent i) {
+        String go = i == null ? null : i.getStringExtra("go");
+        return ReminderMath.okRoute(go) ? go : null;
+    }
+
+    private void openRoute(String go) {
+        if (web != null && ReminderMath.okRoute(go)) web.evaluateJavascript("window.__sakhiOpen && window.__sakhiOpen('" + go + "')", null);
     }
 
     /** Back on screen: the page re-sends its reminder alarms so they never run out, and locks (PIN or shared phone) after 30 seconds away. */

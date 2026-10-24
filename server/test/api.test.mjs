@@ -4,9 +4,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ALLOW, USAGE_TOOLS, createApi } from '../supabase/functions/sakhi-api/api.js';
+import { ALLOW, USAGE_TOOLS, SHARE_KEYS, createApi } from '../supabase/functions/sakhi-api/api.js';
 import { makeSender } from '../supabase/functions/sakhi-api/send.js';
-import { makeStore, makeApi, call, fakeSender, ENV, pgliteDb } from './harness.mjs';
+import { makeStore, makeApi, call, fakeSender, ENV, HANDOFF_ENV, pgliteDb } from './harness.mjs';
 import { pincodeSql } from '../scripts/load-pincodes.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -51,6 +51,21 @@ async function sessionCount(ctx, id) {
   if (ctx.kind === 'memory') return [...ctx.store.db.sessions.values()].filter((s) => s.account_id === id).length;
   return (await ctx.db.query('select count(*)::int as n from sakhi.sessions where account_id = $1::uuid', [id])).rows[0].n;
 }
+/* The doctor-call hand-off (spec section 10.1): what the table holds for each request, the same for both stores. Times in ms. */
+async function reqRows(ctx) {
+  if (ctx.kind === 'memory') return ctx.store.db.requests.map((r) => ({ ref: r.ref, status: r.status, tries: r.tries, topic: r.topic, data: r.shared_data, error: r.last_error, lead: r.qura_lead_id, next: r.next_try_at, sent: r.sent_at }));
+  return (await ctx.db.query('select ref, status, tries, topic, shared_data as data, last_error as error, qura_lead_id as lead, (extract(epoch from next_try_at) * 1000)::float8 as next, (extract(epoch from sent_at) * 1000)::float8 as sent from sakhi.call_requests order by id')).rows;
+}
+const T0 = Date.parse('2026-10-20T04:30:00Z');   /* the fake clock's start */
+/* A request as the app sends it: her topic, the best time, and the two sections she ticked, with the lines she saw */
+const SHARE = (over) => Object.assign({
+  topic: 'My periods come every 40 days MARKER-TOPIC', best_time: 'evening', lang: 'hi', notice: '2026-10-23.2', shared: ['periods', 'questions'],
+  shared_data: { report_lang: 'en', sections: [
+    { key: 'periods', title: 'Periods', lines: ['1 Sep 2026: bled 5 days, next came after 40 days', 'MARKER-LINE: 11 Oct 2026: bled 4 days'] },
+    { key: 'questions', title: 'Questions for the call', lines: ['Is a 40-day gap normal for me?'] }] }
+}, over || {});
+/* SHARE's data with one section changed */
+const shareSec = (i, over) => { const d = JSON.parse(JSON.stringify(SHARE().shared_data)); Object.assign(d.sections[i], over); return d; };
 
 for (const kind of ['memory', 'pglite']) {
   prefix = '[' + kind + '] ';
@@ -279,6 +294,157 @@ for (const kind of ['memory', 'pglite']) {
     }
   }
 
+  /* ---------- 10.1 the doctor-call hand-off (Version 33): off until Qura's address and key are set ---------- */
+  {
+    const off = await newCtx(kind);
+    const me = await signUp(off, '+919876543210');
+    const g = await call(off.api, 'GET', 'requests', undefined, { token: me.token });
+    check('hand-off: off until Qura\'s address and key are set, and GET says so', g.status === 200 && g.json.available === false && JSON.stringify(g.json.requests) === '[]', g.json);
+    check('hand-off: off, and GET without a token says so too', JSON.stringify((await call(off.api, 'GET', 'requests')).json) === '{"available":false}');
+    const p = await call(off.api, 'POST', 'requests', SHARE(), { token: me.token });
+    check('hand-off: while off, a request is 503 handoff_off and nothing is kept or sent', p.status === 503 && p.json.error === 'handoff_off' && (await reqRows(off)).length === 0 && off.send.handoffs.length === 0, p.json);
+    for (const [why, extra] of [['a key under 32 characters', { SAKHI_QURA_KEY: 'short-key' }], ['an http address', { SAKHI_QURA_HANDOFF_URL: 'http://qura.test/api/partners/sakhi/v1/call-requests' }]]) {
+      const c = await newCtx(kind, { env: Object.assign({}, ENV, HANDOFF_ENV, extra) });
+      const m = await signUp(c, '+919876543210');
+      check('hand-off: stays off with ' + why, (await call(c.api, 'GET', 'requests', undefined, { token: m.token })).json.available === false);
+    }
+  }
+
+  /* ---------- 10.1 the hand-off: what is refused, what Qura gets, what stays ---------- */
+  {
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, HANDOFF_ENV) });
+    const me = await signUp(ctx, '+919876543210');
+    await call(ctx.api, 'PATCH', 'me', { name: 'Asha', pincode: '560001' }, { token: me.token });
+    check('hand-off: a request needs her login', (await call(ctx.api, 'POST', 'requests', SHARE())).status === 401);
+    const anon = await call(ctx.api, 'GET', 'requests');
+    check('hand-off: asked without a token, GET says only whether it is on (the Ask screen sends nothing about her)', anon.status === 200 && JSON.stringify(anon.json) === '{"available":true}', anon.json);
+    const bad = [
+      [{ topic: '' }, 'topic_bad'], [{ topic: '   ' }, 'topic_bad'], [{ topic: 'a'.repeat(121) }, 'topic_bad'], [{ topic: 'one\ntwo' }, 'topic_bad'], [{ topic: 7 }, 'topic_bad'],
+      [{ best_time: 'night' }, 'best_time_bad'], [{ lang: 'EN' }, 'lang_bad'], [{ notice: undefined }, 'notice_bad'],
+      [{ shared: ['periods', 'diary'] }, 'shared_bad'], [{ shared: ['periods', 'periods'] }, 'shared_bad'], [{ shared: 'periods' }, 'shared_bad'],
+      [{ shared_data: null }, 'shared_data_bad'], [{ shared_data: Object.assign(SHARE().shared_data, { events: [] }) }, 'shared_data_bad'],
+      [{ shared_data: Object.assign(SHARE().shared_data, { report_lang: 'Hindi' }) }, 'shared_data_bad'],
+      [{ shared_data: { report_lang: 'en', sections: [SHARE().shared_data.sections[0]] } }, 'shared_data_bad'],
+      [{ shared: ['periods', 'notes'] }, 'shared_data_bad'],
+      [{ shared_data: shareSec(0, { lines: ['x'.repeat(301)] }) }, 'shared_data_bad'], [{ shared_data: shareSec(0, { lines: Array(41).fill('x') }) }, 'shared_data_bad'],
+      [{ shared_data: shareSec(0, { lines: [] }) }, 'shared_data_bad'], [{ shared_data: shareSec(0, { lines: ['ok', 'tab\there'] }) }, 'shared_data_bad'],
+      [{ shared_data: shareSec(0, { title: 'x'.repeat(81) }) }, 'shared_data_bad'], [{ shared_data: shareSec(0, { events: [{ d: '2026-10-01', t: 'start' }] }) }, 'shared_data_bad'],
+      [{ shared_data: shareSec(1, { key: 'periods' }) }, 'shared_data_bad']];
+    for (const [over, code] of bad) {
+      const r = await call(ctx.api, 'POST', 'requests', SHARE(over), { token: me.token });
+      check('hand-off: ' + JSON.stringify(over).slice(0, 70) + ' is 400 ' + code, r.status === 400 && r.json.error === code, r.json);
+    }
+    check('hand-off: any other field (a diary) is refused', (await call(ctx.api, 'POST', 'requests', Object.assign(SHARE(), { events: [{ d: '2026-10-01', t: 'start' }] }), { token: me.token })).json.error === 'field_not_allowed');
+    check('hand-off: a body over 32 KB is 413', (await call(ctx.api, 'POST', 'requests', SHARE({ topic: 'x', shared_data: shareSec(0, { lines: Array(40).fill('क'.repeat(300)) }) }), { token: me.token })).status === 413);
+    check('hand-off: refusals kept nothing and sent nothing', (await reqRows(ctx)).length === 0 && ctx.send.handoffs.length === 0);
+
+    const r1 = await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token });
+    check('hand-off: her request is 201 with a QC- reference, and goes to Qura at once', r1.status === 201 && /^QC-[A-HJ-NP-Z2-9]{6}$/.test(r1.json.ref) && r1.json.status === 'sent', r1.json);
+    const h = ctx.send.handoffs[0] || {};
+    check('hand-off: Qura gets the spec\'s fields and nothing else', ctx.send.handoffs.length === 1 && JSON.stringify(Object.keys(h)) === JSON.stringify(['ref', 'phone', 'name', 'best_time', 'topic', 'lang', 'asked_at', 'consent', 'shared_data']), h);
+    check('hand-off: her number and first name, her topic and best time, when she asked, the notice and the sections she ticked, exactly as she saw them',
+      h.ref === r1.json.ref && h.phone === '+919876543210' && h.name === 'Asha' && h.topic === SHARE().topic && h.best_time === 'evening' && h.lang === 'hi' && h.asked_at === '2026-10-20T04:30:00Z'
+      && JSON.stringify(h.consent) === JSON.stringify({ notice: '2026-10-23.2', shared: ['periods', 'questions'] }) && JSON.stringify(h.shared_data) === JSON.stringify(SHARE().shared_data), h);
+    const rows = await reqRows(ctx);
+    check('hand-off: once Qura has it, her topic and what she shared are deleted; the reference, status and Qura\'s lead id stay',
+      rows.length === 1 && rows[0].status === 'sent' && rows[0].topic === null && rows[0].data === null && rows[0].lead === 'L-1' && rows[0].tries === 1 && rows[0].next === null && rows[0].sent === T0, rows);
+    const g = await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    check('hand-off: GET shows her requests: reference, status and times, nothing else', g.status === 200 && g.json.available === true && g.json.requests.length === 1
+      && JSON.stringify(g.json.requests[0]) === JSON.stringify({ ref: r1.json.ref, status: 'sent', created_at: '2026-10-20T04:30:00Z', sent_at: '2026-10-20T04:30:00Z' }), g.json);
+    check('hand-off: the log has the reference and the result, never her topic or what she shared', ctx.logs.some((l) => l.event === 'handoff' && l.data.ref === r1.json.ref && l.data.result === 'sent') && !/MARKER/.test(JSON.stringify(ctx.logs)));
+    const r2 = await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token });
+    check('hand-off: a second request within 10 minutes is 429', r2.status === 429 && r2.json.error === 'too_many', r2.json);
+    ctx.clock.add(600);
+    const r3 = await call(ctx.api, 'POST', 'requests', SHARE({ shared: [], shared_data: { report_lang: 'en', sections: [] } }), { token: me.token });
+    check('hand-off: she can ask for a call and share nothing from her diary', r3.status === 201 && JSON.stringify(ctx.send.handoffs[1].consent.shared) === '[]' && JSON.stringify(ctx.send.handoffs[1].shared_data) === JSON.stringify({ report_lang: 'en', sections: [] }), ctx.send.handoffs[1]);
+    ctx.clock.add(600);
+    check('hand-off: a third request in a day is fine', (await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token })).status === 201);
+    ctx.clock.add(600);
+    check('hand-off: a fourth in a day is 429', (await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token })).status === 429);
+    const g2 = await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    check('hand-off: GET lists the newest first', g2.json.requests.length === 3 && g2.json.requests[0].created_at === '2026-10-20T04:50:00Z' && g2.json.requests[2].ref === r1.json.ref, g2.json);
+    const other = await signUp(ctx, '+919812345678');
+    check('hand-off: another woman sees none of her requests', JSON.stringify((await call(ctx.api, 'GET', 'requests', undefined, { token: other.token })).json.requests) === '[]');
+    await call(ctx.api, 'DELETE', 'me', undefined, { token: me.token });
+    check('hand-off: deleting her account deletes her requests', (await reqRows(ctx)).length === 0);
+    if (ctx.kind === 'pglite') {
+      const cols = (await ctx.db.query("select column_name as c from information_schema.columns where table_schema = 'sakhi' and table_name = 'call_requests' order by ordinal_position")).rows.map((x) => x.c);
+      check('hand-off: its table holds the request and its status, nothing more', JSON.stringify(cols) === JSON.stringify(['id', 'ref', 'account_id', 'best_time', 'lang', 'notice', 'shared', 'topic', 'shared_data', 'status', 'tries', 'next_try_at', 'last_error', 'qura_lead_id', 'created_at', 'sent_at']), cols);
+    }
+  }
+
+  /* ---------- 10.1 the hand-off when Qura is down: it waits, tries again on a schedule, then sends ---------- */
+  {
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, HANDOFF_ENV) });
+    const me = await signUp(ctx, '+919876543210');
+    Object.assign(ctx.send.qura, { status: 503, data: { error: 'busy MARKER-QURA' } });
+    const r = await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token });
+    check('hand-off: Qura down (503): she still gets her reference, and the request waits', r.status === 201 && r.json.status === 'queued', r.json);
+    let row = (await reqRows(ctx))[0];
+    check('hand-off: a waiting request keeps what she shared, and tries again in 2 minutes', row.tries === 1 && row.topic === SHARE().topic && JSON.stringify(row.data) === JSON.stringify(SHARE().shared_data) && row.error === 'http_503' && row.next === T0 + 2 * 60000, row);
+    ctx.clock.add(60);
+    await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    check('hand-off: not tried again before its time', ctx.send.handoffs.length === 1);
+    ctx.clock.add(60);
+    await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    row = (await reqRows(ctx))[0];
+    check('hand-off: her GET tries it when due; then it waits 10 minutes', ctx.send.handoffs.length === 2 && row.tries === 2 && row.next === T0 + 12 * 60000, row);
+    ctx.send.fail.handoff = true;
+    ctx.clock.add(600);
+    await call(ctx.api, 'POST', 'me/active', {}, { token: me.token });
+    row = (await reqRows(ctx))[0];
+    check('hand-off: the daily "active" call tries it too; a network error waits 30 minutes', row.tries === 3 && row.status === 'queued' && row.error === 'network' && row.next === T0 + 42 * 60000, row);
+    ctx.send.fail.handoff = false; Object.assign(ctx.send.qura, { status: 201, data: { lead_id: 77 } });
+    ctx.clock.add(1800);
+    const g = await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    row = (await reqRows(ctx))[0];
+    check('hand-off: when Qura answers, it is sent and the health details go; a numeric lead id is kept as text', g.json.requests[0].status === 'sent' && row.status === 'sent' && row.lead === '77' && row.topic === null && row.data === null && row.tries === 4 && row.sent === T0 + 42 * 60000, row);
+    check('hand-off: every try carried the same reference, so Qura makes one lead', ctx.send.handoffs.length === 3 && new Set(ctx.send.handoffs.map((x) => x.ref)).size === 1);
+    check('hand-off: Qura\'s own reply text is never logged', !/MARKER/.test(JSON.stringify(ctx.logs)));
+  }
+
+  /* ---------- 10.1 the hand-off gives up: after 24 hours, at once on a refusal, or when nothing ran for a day ---------- */
+  {
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, HANDOFF_ENV) });
+    const me = await signUp(ctx, '+919876543210');
+    ctx.send.qura.status = 500;
+    await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token });
+    for (let i = 0; i < 8; i++) { ctx.clock.add(3 * 3600); await call(ctx.api, 'GET', 'requests', undefined, { token: me.token }); }
+    const row = (await reqRows(ctx))[0];
+    check('hand-off: after 24 hours of failures it is marked failed, and her topic and what she shared are deleted', row.status === 'failed' && row.topic === null && row.data === null && row.error === 'http_500' && row.next === null, row);
+    check('hand-off: the last try is at 24 hours, never later (8 tries, the waits growing)', ctx.send.handoffs.length === 8, ctx.send.handoffs.length);
+    check('hand-off: her GET shows it failed, so the app offers the booking link', (await call(ctx.api, 'GET', 'requests', undefined, { token: me.token })).json.requests[0].status === 'failed');
+    const her = await signUp(ctx, '+919812345678');
+    ctx.send.qura.status = 400;
+    const r4 = await call(ctx.api, 'POST', 'requests', SHARE(), { token: her.token });
+    const row4 = (await reqRows(ctx))[1];
+    check('hand-off: a refusal from Qura (400) fails at once, with no retry, and the health details go', r4.json.status === 'failed' && row4.status === 'failed' && row4.error === 'http_400' && row4.topic === null && row4.data === null && row4.tries === 1, row4);
+    const her3 = await signUp(ctx, '+919811111111');
+    Object.assign(ctx.send.qura, { status: 409, data: null });
+    check('hand-off: 409 (Qura already has this reference) counts as sent', (await call(ctx.api, 'POST', 'requests', SHARE(), { token: her3.token })).json.status === 'sent');
+    for (const st of [408, 429]) {
+      const w = await signUp(ctx, st === 408 ? '+919822222222' : '+919833333333');
+      ctx.send.qura.status = st;
+      check('hand-off: ' + st + ' from Qura waits and tries again', (await call(ctx.api, 'POST', 'requests', SHARE(), { token: w.token })).json.status === 'queued');
+    }
+  }
+  {
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, HANDOFF_ENV) });
+    const me = await signUp(ctx, '+919876543210');
+    ctx.send.qura.status = 503;
+    await call(ctx.api, 'POST', 'requests', SHARE(), { token: me.token });
+    ctx.clock.add(2 * 60);
+    const c1 = await ctx.store.claimDueRequests(ctx.clock.now(), 5, null);
+    const c2 = await ctx.store.claimDueRequests(ctx.clock.now(), 5, null);
+    check('hand-off: a claimed request is not claimed again for a minute, so two calls at once never send it twice', c1.length === 1 && c2.length === 0, { c1: c1.length, c2: c2.length });
+    check('hand-off: a claimed request carries her number, and when she asked as a number', c1[0] && c1[0].phone === '+919876543210' && typeof c1[0].created_ms === 'number' && c1[0].created_ms === T0, c1[0]);
+    check('hand-off: claiming one reference leaves the others', (await ctx.store.claimDueRequests(ctx.clock.now() + 3600000, 5, 'QC-ZZZZZZ')).length === 0);
+    ctx.clock.add(26 * 3600); ctx.send.qura.status = 201;
+    await call(ctx.api, 'GET', 'requests', undefined, { token: me.token });
+    const row = (await reqRows(ctx))[0];
+    check('hand-off: a request nothing tried for over 25 hours fails without being sent late', row.status === 'failed' && row.error === 'expired' && row.topic === null && row.data === null && ctx.send.handoffs.length === 1, row);
+  }
+
   /* ---------- a database failure never leaks details ---------- */
   {
     const { store } = await makeStore(kind);
@@ -345,6 +511,19 @@ prefix = '';
   check('an AuthKey refusal keeps its reason', akSaid === 'HTTP 401: Invalid authkey', akSaid);
   let unset = ''; try { await makeSender({}, okFetch).sms('+919876543210', '1'); } catch (e) { unset = e.message; }
   check('a channel with no credentials throws instead of sending', unset === 'SMS is not configured');
+  /* Version 33, the doctor-call hand-off (spec section 10.1) */
+  const henv = { SAKHI_QURA_HANDOFF_URL: 'https://qura.test/api/partners/sakhi/v1/call-requests', SAKHI_QURA_KEY: 'k'.repeat(40) };
+  const hsent = [];
+  const hs = makeSender(henv, async (url, init) => { hsent.push({ url, init }); return new Response('{"lead_id":"L-9"}', { status: 201 }); });
+  const hr = await hs.handoff({ ref: 'QC-ABCDEF', topic: 'x' });
+  check('hand-off: one POST to Qura\'s address with the shared key and the request as JSON, and Qura\'s answer back', hsent.length === 1 && hsent[0].url === henv.SAKHI_QURA_HANDOFF_URL && hsent[0].init.method === 'POST'
+    && hsent[0].init.headers['X-Sakhi-Key'] === 'k'.repeat(40) && hsent[0].init.headers['Content-Type'] === 'application/json' && hsent[0].init.body === '{"ref":"QC-ABCDEF","topic":"x"}' && hr.status === 201 && hr.data.lead_id === 'L-9', hr);
+  const h5 = await makeSender(henv, async () => new Response('Bad gateway', { status: 502 })).handoff({});
+  check('hand-off: a 5xx comes back as a status to try again on, not a throw', h5.status === 502 && h5.data === null, h5);
+  let hdown = ''; try { await makeSender(henv, async () => { throw new TypeError('fetch failed'); }).handoff({}); } catch (e) { hdown = e.message; }
+  check('hand-off: a network error throws, so the API waits and tries again', hdown === 'fetch failed', hdown);
+  let hoff = ''; try { await makeSender({}, okFetch).handoff({}); } catch (e) { hoff = e.message; }
+  check('hand-off: with no address or key it throws instead of sending', hoff === 'hand-off is not configured' && sent.length === 2, hoff);
 }
 
 /* ---------- the PIN-code loader (government CSV -> sakhi.pincodes) ---------- */
@@ -374,7 +553,9 @@ prefix = '';
   const appSend = {};
   for (const m of block.matchAll(/'([A-Z]+ [a-z/]+)': \[([^\]]*)\]/g)) appSend[m[1]] = m[2].split(',').map((x) => x.trim().replace(/'/g, '')).filter(Boolean);
   const serverAllow = Object.assign({}, ALLOW); delete serverAllow['GET me'];
-  check('the app\'s SEND list and the server\'s ALLOW list are identical', Object.keys(appSend).length === 7 && JSON.stringify(appSend) === JSON.stringify(serverAllow), { appSend });
+  check('the app\'s SEND list and the server\'s ALLOW list are identical', Object.keys(appSend).length === 9 && JSON.stringify(appSend) === JSON.stringify(serverAllow), { appSend });
+  const shareKeys = ((appJs.match(/const SHARE_KEYS = \[([\s\S]*?)\];/) || [])[1] || '').split(',').map((x) => x.trim().replace(/'/g, '')).filter(Boolean);
+  check('the report sections the app can share are the ones the server accepts', shareKeys.length === 7 && JSON.stringify(shareKeys) === JSON.stringify(SHARE_KEYS), shareKeys);
   const keys = ((appJs.match(/const USAGE_KEYS = \[([\s\S]*?)\];/) || [])[1] || '').split(',').map((x) => x.trim().replace(/'/g, '')).filter(Boolean);
   check('the tools the app counts are the tools the server accepts', keys.length > 20 && JSON.stringify(keys) === JSON.stringify(USAGE_TOOLS), keys);
   check('the counted tools leave out loss, abortion and safety', !USAGE_TOOLS.some((k) => /loss|abortion|safety|intimate|sti/.test(k)));

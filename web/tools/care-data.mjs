@@ -118,6 +118,18 @@ const typeOf = (raw) => {
   return null;
 };
 
+/* Version 32 (field-test audit 2.5): the NIN list has no ownership column, and its "bedded hospital" types mix government and
+   private hospitals (in Delhi mostly private: Garg Hospital, Primus, NOVA IVI Fertility). Calling those "Government hospital"
+   sends a pregnant woman to a private hospital expecting free care. So a hospital whose name has a private sign (Pvt.,
+   Private, Nursing Home, an NGO, trust or mission, a private chain) is left out, and a "<100" or "100-500 bedded" hospital
+   counts only with a government sign in its name (State General, Civil, District, ESI, Railway, Cantonment, Govt...). On
+   the 22 Oct list this keeps 24 of 250 small and mid-size hospitals, all government, and drops Sir Ganga Ram, St. Stephen's,
+   Indraprastha Apollo and the "(Pvt. Hospital)" entries from the larger types. */
+const HOSP_TYPES = ['gh', 'mh', 'wh', 'mcw'];
+const PRIVATE_NAME = /\b(pvt|private|nursing\s*home|n\.?\s*g\.?\s*o|samiti|trust|mission|christian|charitable|apollo|fortis|max|medanta|manipal|narayana|rockland|ganga\s*ram|kokilaben|lilavati|jaslok|wockhardt|columbia|yashoda|kims|aster|cloudnine|motherhood|rainbow|primus|saint|ivf|ivi)\b|\bst\.\s/i;
+const GOVT_NAME = /\b(govt|government|sarkari|rajkiya|zila|district|civil|general\s+hospital|sub[\s-]*divisional|referral|e\.?s\.?i\.?c?|aiims|cghs|municipal|corporation|mcd|ndmc|railway|police|army|military|cantonment|medical\s+college|community\s+health|primary\s+health|maternity\s+(and|&)\s+gynae)\b/i;
+const SMALL_BEDDED = /<\s*100\s*bedded|100\s*-\s*500\s*bedded/i;
+
 const PIN_COLS = { pincode: ['pincode', 'pin'], district: ['district', 'districtname'], state: ['statename', 'state'], latitude: ['latitude', 'lat'], longitude: ['longitude', 'long', 'lon'] };
 const FAC_COLS = { name: ['healthfacilityname', 'facilityname', 'nameofhealthfacility', 'hospitalname', 'name'], type: ['facilitytype', 'typeoffacility', 'healthfacilitytype', 'facilitytypename', 'type'], latitude: ['latitude', 'lat'], longitude: ['longitude', 'long', 'lon'] };
 
@@ -175,13 +187,14 @@ function buildPins(recs) {
 
 function buildFacilities(recs, P) {
   needCols(recs, FAC_COLS, 'Facilities');
-  const raw = {}; let noCoord = 0, swapped = 0, other = 0, scrubbed = 0; const all = []; const onPoint = new Map();
+  const raw = {}; let noCoord = 0, swapped = 0, other = 0, scrubbed = 0, privateOut = 0; const all = []; const onPoint = new Map();
   const pointOf = (la, lo) => la.toFixed(4) + ',' + lo.toFixed(4);
   recs.forEach((r) => {
     const rt = pick(r, FAC_COLS.type) || '(blank)'; raw[rt] = (raw[rt] || 0) + 1;
     const c = coords(pick(r, FAC_COLS.latitude), pick(r, FAC_COLS.longitude));
     if (c) onPoint.set(pointOf(c[0], c[1]), (onPoint.get(pointOf(c[0], c[1])) || 0) + 1);   /* every type counts towards a shared point */
     const ty = typeOf(rt); if (!ty || (ty === 'sc' && !SUBCENTRES)) { other++; return; }
+    const nm0 = pick(r, FAC_COLS.name); if ((HOSP_TYPES.indexOf(ty) >= 0 && PRIVATE_NAME.test(nm0)) || (SMALL_BEDDED.test(rt) && !GOVT_NAME.test(nm0))) { privateOut++; return; }
     if (!c) { noCoord++; return; } if (c[2]) swapped++;
     const rawName = pick(r, FAC_COLS.name).replace(/\s+/g, ' ').trim(); let hadPrivate = hasPrivate(rawName);
     const name = (hadPrivate ? scrub(rawName) : rawName).slice(0, 90); if (!name) return;
@@ -214,7 +227,7 @@ function buildFacilities(recs, P) {
   /* the square comes from the rounded location, so 81.99997 (stored as 82) sits in square 82 */
   ok.forEach((f) => { const la = r4(f.la), lo = r4(f.lo); const k = 't' + Math.floor(la) + '_' + Math.floor(lo); (tiles[k] || (tiles[k] = [])).push([f.name, f.ty, la, lo, f.pin, f.addr]); kept[f.ty] = (kept[f.ty] || 0) + 1; });
   Object.values(tiles).forEach((t) => t.sort((a, b) => a[2] - b[2] || a[3] - b[3]));
-  return { tiles, ok, rows: recs.length, kept: ok.length, types: kept, raw, noCoord, swapped, other, shared: sharedOut.length, coarse: coarseOut.length, farFromPin: placed.length - near.length, outOfDistrict: near.length - ok.length, pinMoved, pinFilled, scrubbed };
+  return { tiles, ok, rows: recs.length, kept: ok.length, types: kept, raw, noCoord, swapped, other, privateOut, shared: sharedOut.length, coarse: coarseOut.length, farFromPin: placed.length - near.length, outOfDistrict: near.length - ok.length, pinMoved, pinFilled, scrubbed };
 }
 
 /* States where the facility list is missing most centres: fewer kept facilities per post office than 40% of the national
@@ -274,6 +287,7 @@ const main = async () => {
   console.log('Facilities kept: ' + F.kept + ' of ' + F.rows + ' ' + JSON.stringify(F.types) + '; left out: ' + F.other + ' of other types, ' + F.noCoord + ' without a usable map location, ' + F.shared + ' on a point shared by 4 or more, ' + F.coarse + ' on a town-level point with no PIN code to check, ' + F.farFromPin + ' more than 50 km from their own PIN code, ' + F.outOfDistrict + ' with no PIN code, far outside their own district. Put right: ' + F.swapped + ' with latitude and longitude the wrong way round.');
   console.log('Facility types in the source: ' + Object.entries(F.raw).sort((a, b) => b[1] - a[1]).slice(0, 30).map(([k, v]) => k + ' ' + v).join('; '));
   console.log('Phone numbers or e-mails taken out of ' + F.scrubbed + ' facility names or addresses.');
+  console.log('Private or unclear hospitals left out (not called "Government hospital"): ' + F.privateOut + '.');
   console.log('States where the list is missing most centres: ' + (thin.join(', ') || 'none') + '.');
   console.log('Wrote ' + (Object.keys(P.shards).length + Object.keys(F.tiles).length + 1) + ' files, ' + (bytes / 1048576).toFixed(1) + ' MB, to ' + OUT);
 };

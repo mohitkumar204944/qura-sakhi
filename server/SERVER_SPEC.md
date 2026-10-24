@@ -10,8 +10,8 @@ by SMS. An app built without the server's address runs its stand-in server on th
 always 123456).
 
 **22 Oct 2026, Version 30:** the opt-in "what helps" counts (section 5.9) are built and tested here, with their own migration
-(`20261022120000_sakhi_usage.sql`). They are **not deployed**: the live project has neither the route nor the tables. Mohit
-decides when, after the privacy notice covers them (section 11, decision 8).
+(`20261022120000_sakhi_usage.sql`). Deployed on 23 Oct 2026 with Version 33. The app's switch stays hidden in pilot and test
+builds (no `CFG.usage`), so nothing is sent until a build turns it on.
 
 Mohit's rules:
 - every woman signs up, and her health data stays on her phone;
@@ -28,7 +28,7 @@ Mohit's rules:
   Sakhi, and whether she wants updates by SMS or WhatsApp.
 - Records the last day she opened Sakhi, plus her app version and language, once a day.
 - Logs her out and deletes her account when she asks.
-- Only if she turns it on (Version 30, not deployed yet): once a month, adds one phone's "what helps" counts to monthly totals,
+- Only if she turns it on (Version 30, deployed 23 Oct; the switch is hidden in pilot builds): once a month, adds one phone's "what helps" counts to monthly totals,
   with no account (section 5.9).
 
 **Never does:**
@@ -156,6 +156,7 @@ are in a schema called `sakhi`, with RLS on and no policies:
 | `jobs` | When the daily clean-up last ran |
 | `usage_counts` | Version 30 (`20261022120000_sakhi_usage.sql`): per month, tool and bucket (`1`, `2-5`, `6+` days), how many phones reported it. Nothing identifies a phone |
 | `usage_reports` | Version 30: per month, how many phones reported |
+| `call_requests` | Version 33 (`20261023120000_sakhi_call_requests.sql`, section 10.1): each "Ask Qura to call me" request: its `QC-` reference, account, best time, language, notice version, the section keys she ticked, status, tries and Qura's lead id. Her topic and the ticked sections are kept only until Qura has them (or the request fails), then set to null |
 
 **Daily clean-up, with no cron needed:** the first code request after 24 hours claims the `jobs` row and deletes:
 - challenges older than a day;
@@ -167,8 +168,8 @@ are in a schema called `sakhi`, with RLS on and no policies:
 ## 5. API
 
 - **Format:** JSON in and out. Errors look like `{ "error": "<code>" }`, sometimes with extra fields.
-- **Login:** calls under `/v1/me` and `/v1/session` need `Authorization: Bearer <token>`.
-- **Size:** request bodies are limited to 2 KB (`413 too_large`). Broken JSON is `400 bad_json`.
+- **Login:** calls under `/v1/me`, `/v1/session` and `/v1/requests` need `Authorization: Bearer <token>`.
+- **Size:** request bodies are limited to 2 KB, 32 KB for `POST /v1/requests` (`413 too_large`). Broken JSON is `400 bad_json`.
 - **Unknown fields:** any field not listed for a call gives `400 field_not_allowed`.
 - **Unknown paths:** `404 not_found`, or `405 method_not_allowed` for a known path with the wrong method.
 - **Malformed values:** a challenge that isn't a UUID is `400 challenge_bad`, a code that isn't 6 digits is `400 code_bad`, and
@@ -184,6 +185,8 @@ are in a schema called `sakhi`, with RLS on and no policies:
 | `DELETE /v1/me` | nothing |
 | `GET /v1/me` | nothing (not called yet; also serves as "show me my data") |
 | `POST /v1/usage` | `month`, `counts`, and **no** login header (section 5.9) |
+| `POST /v1/requests` | `topic`, `best_time`, `lang`, `notice`, `shared`, `shared_data` (Version 33, section 10.1) |
+| `GET /v1/requests` | nothing (Version 33, section 10.1) |
 
 ### 5.1 `POST /v1/otp/start`
 
@@ -308,7 +311,7 @@ return `401 unauthorized`. The app then signs her out on the phone and shows the
 | `401` | Signed out on the phone; the signup screen comes back |
 | Details screen failed offline | Kept on the phone and sent on the next app open or when the phone comes back online |
 
-### 5.9 `POST /v1/usage`: what helps (opt-in, Version 30, not deployed)
+### 5.9 `POST /v1/usage`: what helps (opt-in, Version 30, deployed 23 Oct)
 
 From `docs/ux-value-audit-2026-10-22.md`, recommendation 10, and MODULE_API section 32. Only a woman who turned on Me > Privacy >
 "Send what helps, once a month" sends this, once a month, a minute or two after she opens Sakhi, never with the daily
@@ -437,34 +440,110 @@ Read the newest weeks with care: weeks younger than N weeks can't have reached N
 
 ---
 
-## 10. Phase 2 (not built in the app yet)
+## 10. Phase 2 (10.1 live since 23 Oct 2026; the rest not built)
 
 ### 10.1 The doctor-call hand-off: the only link between Sakhi and Qura
 
-When she taps "Talk to a Qura doctor" and agrees on the itemised share screen (already in the app):
-1. The app sends the request to Sakhi's server: a new endpoint, `POST /v1/requests`, logged in, with its own allowlist.
-2. Sakhi's server forwards it to Qura:
+**Status, 23 Oct 2026: LIVE.** Sakhi's half (Version 33) is deployed, Qura's endpoint is merged and live, and both secrets are
+set, so `GET /v1/requests` answers `available: true`. Unsetting `SAKHI_QURA_HANDOFF_URL` turns it off again; the app then
+keeps the booking link as the way to book.
 
-   ```
-   POST https://quranutrition.com/api/partners/sakhi/v1/call-requests
-   X-Sakhi-Key: <shared secret, set in both projects>
+**What she does** (Ask screen > "Ask Qura to call you", MODULE_API section 35):
+- She writes what she wants to talk about (up to 120 characters) and picks a time: morning, afternoon, evening or any time.
+- She ticks what the doctor may see first, from her report's sections. **Nothing is ticked to start.** The sections are
+  `about`, `periods`, `symptoms`, `checkins`, `tools`, `questions` and `notes` (her day notes from the last 30 days), each only
+  if her diary has it.
+- The screen shows exactly the lines that will go, in the language she picks for the doctor (English or Hindi by default).
+  They are a short summary for the doctor, not her whole report (MODULE_API section 35):
+  - her last period and the days between periods;
+  - her top symptoms in one line;
+  - each check-in sign once;
+  - only the clinical tools, each line whole;
+  - her questions without the catch-all one.
+  If what she ticked is too long, the oldest notes and periods go first and the screen says so.
+- One button sends it. The consent line names Qura (Trinaya Wellness LLP), the use (to arrange and prepare this call) and the
+  deletion.
 
-   { "ref": "QC-4821", "phone": "+919876543210", "name": "Asha", "best_time": "morning", "topic": "Irregular periods",
-     "lang": "hi", "consent": { "notice": "2026-10-20", "shared": ["periods", "situation"] },
-     "shared_data": { ...only the items she ticked... } }
-   ```
+**1. App to Sakhi's server: `POST /v1/requests`** (logged in; body up to 32 KB):
 
-3. **Qura's side:**
-   - Creates a lead with source `sakhi`, once per `ref` (a repeated request with the same `ref` is ignored).
-   - Answers `201 { "lead_id": ... }`.
-   - Contacts her only to arrange the call she asked for.
-4. **Sakhi's side:**
-   - Retries on network errors or 5xx for 24 hours.
-   - After that, marks the request failed and shows her the booking link instead.
+```json
+{ "topic": "My periods come every 40 days", "best_time": "evening", "lang": "hi", "notice": "2026-10-23.2",
+  "shared": ["periods", "questions"],
+  "shared_data": { "report_lang": "en", "sections": [
+    { "key": "periods", "title": "My last periods", "lines": ["1 Sep: bled 5 days, next period after 40 days", "..."] },
+    { "key": "questions", "title": "Questions I want to ask", "lines": ["Is there anything here I should keep an eye on?"] } ] } }
+```
+
+Checks, each `400 <field>_bad`:
+- `topic`: 1 to 120 characters, not only spaces, no control characters.
+- `best_time`: `morning`, `afternoon`, `evening` or `any`.
+- `lang` and `shared_data.report_lang`: two lower-case letters. `notice`: the notice version (as in 5.2).
+- `shared`: keys from `SHARE_KEYS` in `api.js` (the same list as in `web/app.js`; the tests check), no repeats; it may be
+  empty (a call with nothing shared).
+- `shared_data`: only `report_lang` and `sections`; exactly one section for each key in `shared`, each only `key`, `title`
+  (1 to 80 characters) and `lines` (1 to 40 lines, each 1 to 300 characters, no control characters).
+
+Then:
+- `503 handoff_off` unless `SAKHI_QURA_HANDOFF_URL` (https) and `SAKHI_QURA_KEY` (32+ characters) are both set.
+- Rate limits per account: 1 request in 10 minutes and 3 in a day (`429 too_many` with `retry_after`).
+- The request is stored in `call_requests` with a new reference, `QC-` and 6 letters or digits (no 0, O, 1 or I), and sent to
+  Qura at once. A failure to send never fails her request: it waits.
+- Answer `201 { "ref": "QC-7KQ2MX", "status": "sent" }`, or `"queued"` (waiting for Qura) or `"failed"` (Qura refused it).
+
+**`GET /v1/requests`:**
+- Without a token: `200 { "available": true }`, nothing else. The app asks this way when she opens the Ask screen, so
+  opening it tells the server nothing about her.
+- With her token: `200 { "available": true, "requests": [ { "ref", "status", "created_at", "sent_at" } ] }`, her newest 20.
+  The app asks this way only while one of her requests is still `queued`. It also tries due requests again (below).
+
+**2. Sakhi's server to Qura** (`send.js`, 8-second timeout):
+
+```
+POST <SAKHI_QURA_HANDOFF_URL>          planned: https://quranutrition.com/api/partners/sakhi/v1/call-requests
+Content-Type: application/json
+X-Sakhi-Key: <SAKHI_QURA_KEY, the same secret on both sides>
+
+{ "ref": "QC-7KQ2MX", "phone": "+919876543210", "name": "Asha", "best_time": "evening", "topic": "My periods come every 40 days",
+  "lang": "hi", "asked_at": "2026-10-23T04:30:00Z", "consent": { "notice": "2026-10-23.2", "shared": ["periods", "questions"] },
+  "shared_data": { ...exactly what she saw, as above... } }
+```
+
+`name` is her first name from her account (null if she never gave one). `asked_at` is UTC. Nothing else is ever added.
+
+**3. Qura's side** (Mohit, 23 Oct: the fewest changes; build prompt `docs/qura-session-prompt-2026-10-23.md`):
+- Checks `X-Sakhi-Key` in constant time; anything else is `401`.
+- Stores the request as an ordinary `campaign_leads` row:
+  - source `sakhi`, status `new`, `email_opt_in = false`;
+  - `client_lead_id` derived from the `ref`;
+  - the request itself in `raw_field_data.sakhi`.
+- A repeated `ref` creates nothing and answers `200` with the same lead id.
+- Answers `201 { "lead_id": ... }`.
+- A coordinator calls her from the existing queue and books the free consult with Book & Send. Confirmations go over
+  WhatsApp as for any lead (Mohit's decision).
+- Nothing fires at creation (no opener, conversion event, email or bot).
+- The remarketing sweep and the audience export skip `sakhi`.
+- Her shared sections never leave Qura's database.
+- Deferred: a separate table, a per-person no-ads switch, deleting her sections after 30 days, a doctor's view, status
+  and withdrawal calls, and signed requests (`docs/qura-sakhi-integration-plan-2026-10-23.md`).
+
+**4. Retries and deletion** (`api.js`):
+- `2xx` or `409`: **sent**. Qura's lead id is kept (up to 64 characters); her topic and shared data are set to null.
+- A network error, timeout, `5xx`, `408` or `429`: **queued**, tried again after 2, 10, 30, 60, 120, 240, then every 480
+  minutes, never later than 24 hours after she asked. A failure at 24 hours is **failed**.
+- Any other `4xx` (a bad key, a refused body): **failed** at once.
+- **Failed:** her topic and shared data are set to null, and the app offers the booking link.
+- There is no cron. Due requests are tried when the API is used: her `GET` with a token, any woman's daily `me/active`, and
+  a new request. One that nothing tried for 25 hours fails as `expired` without being sent late.
+- Claiming a due request pushes its next try a minute ahead first (`for update skip locked`), so two calls at once never
+  send it twice.
+- Logs carry the reference, the result and Qura's HTTP status. Never her topic, the shared data or Qura's reply text.
+- Deleting her account deletes her requests.
 
 Other rules for the hand-off:
-- This is the one place any health detail leaves her phone, only what she ticked, and only to Qura (never Meta). The privacy
-  notice must say so.
+- This is the one place any health detail leaves her phone: only what she ticked, only to Qura, and only after she taps the
+  button on the screen that shows it. Her shared sections never go to Meta. If she then books with Qura, Qura treats her as
+  any lead: WhatsApp confirmations and Qura's usual events (Mohit, 23 Oct). The in-app notice says so (`notice_text`, notice `2026-10-23.2`);
+  counsel reviews it with the rest of the notice (section 11).
 - The contract is versioned. Both repos keep a copy of this section, and a change means a new `v2` path, never an edit to
   `v1`.
 - This endpoint is the only thing Qura's codebase needs to know about Sakhi.
@@ -495,7 +574,7 @@ Other rules for the hand-off:
    - How long consent rows are kept after deletion.
    - Whether to keep a hashed "deleted, don't message" record.
 4. The privacy notice and Grievance Officer (counsel). It must name the processors: Supabase (accounts), Meta via WhatsApp and
-   AuthKey (code delivery). It must also cover the doctor-call hand-off once that is built.
+   AuthKey (code delivery). It must also cover the doctor-call hand-off (built in Version 33: the in-app notice now has a line on it, for counsel to check).
 5. Whether "Just read" readers must sign up. The app currently says yes; changing it is one line (`needsSignup` in
    `web/app.js`).
 6. Whether she can keep using the diary after logging out or deleting her account. The app currently shows the signup screen

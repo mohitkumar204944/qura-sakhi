@@ -719,7 +719,11 @@
         '<p class="footnote">' + esc(t('contra_mine_foot')) + '</p>';
       S.wire(v);
       const resync = (msg) => { sync(d); S.save(); if (msg) S.toast(msg); draw(); };
-      v.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.pick; if (k === d.method) return; d.method = k; d.since = k ? iso(S.today()) : ''; if (k && d.remOn == null) d.remOn = true; resync(k ? t('contra_saved') : t('contra_rem_removed')); }));
+      /* Version 32 (field-test audit 3.2): a hormonal method sets those cycles aside by itself, and stopping one makes Home wait
+         for her next period, instead of counting pill bleeds as her own cycles or calling her late the day she stops */
+      v.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.pick; if (k === d.method) return; const was = d.method; d.method = k; d.since = k ? iso(S.today()) : ''; if (k && d.remOn == null) d.remOn = true;
+        if (S.cycle.setHormones) { if (HORM.indexOf(k) >= 0) S.cycle.setHormones(true); else if (HORM.indexOf(was) >= 0) S.cycle.setHormones(false); }
+        resync(k ? t('contra_saved') : t('contra_rem_removed')); }));
       const rem = v.querySelector('#cm-rem'); if (rem) rem.addEventListener('change', () => { d.remOn = rem.checked; resync(rem.checked ? t('contra_rem_set') : t('contra_rem_removed')); });
       const cm = v.querySelector('#cm-cut-month'); if (cm) cm.addEventListener('change', () => { d.cutMonthly = cm.checked; resync(t('contra_saved')); });
       v.querySelectorAll('[data-cut]').forEach((b) => b.addEventListener('click', () => { d.cutType = b.dataset.cut; resync(t('contra_saved')); }));
@@ -821,9 +825,10 @@
   /* ---------- hooks ---------- */
   function home() {
     if (!S.canSave()) return ''; const d = D(); if (!M[d.method]) return ''; const td = S.today();
-    const card = (body) => '<div class="card" style="gap:8px"><div class="row spread"><h3>' + esc(nm(d.method)) + '</h3><button type="button" class="btn sm" data-go="contra-mine">' + esc(t('contra_my')) + '</button></div>' + body + '</div>';
-    if (expiredOn(d, td)) return card(expiredFlag(d, td));
-    if (d.method === 'antara') { const a = antaraDates(d); if (a && td > a.due) return card('<div class="flag">' + esc(td <= a.late ? tf('contra_ant_late_ok', { d: fmt(a.late) }) : t('contra_ant_late')) + '</div>'); }
+    /* Review fix: a method that may no longer protect her is urgent (core lifts data-xp-urgent cards first, so a plan card can't push it out) */
+    const card = (body, urgent) => '<div class="card" style="gap:8px"' + (urgent ? ' data-xp-urgent="1"' : '') + '><div class="row spread"><h3>' + esc(nm(d.method)) + '</h3><button type="button" class="btn sm" data-go="contra-mine">' + esc(t('contra_my')) + '</button></div>' + body + '</div>';
+    if (expiredOn(d, td)) return card(expiredFlag(d, td), true);
+    if (d.method === 'antara') { const a = antaraDates(d); if (a && td > a.due) return card('<div class="flag">' + esc(td <= a.late ? tf('contra_ant_late_ok', { d: fmt(a.late) }) : t('contra_ant_late')) + '</div>', td > a.late); }
     return '';   /* today's pill is a row in Home's Today (today(), below) */
   }
   /* Home's Today (Version 30): today's pill or Chhaya day, until she ticks it. Not in discreet mode, as before. */
@@ -850,8 +855,9 @@
     if (d.method === 'cut') { const c = cutDates(d); if (c) lines.push((d.cutType && d.cutType !== 'unk' ? 'Cu ' + d.cutType + ' · ' : '') + t('contra_cut_date') + ': ' + fmt(c.fit) + (c.replace ? ' · ' + t('contra_cut_replace') + ': ' + fmt(c.replace) : '')); }
     if ((d.method === 'implant' || d.method === 'ius') && okDate(d.until)) lines.push(t('contra_dev_until') + ': ' + fmt(S.fromISO(d.until)));
     if (d.method === 'nsv' && okDate(d.nsvDate)) lines.push(t('contra_nsv_test') + ': ' + fmt(addMonths(S.fromISO(d.nsvDate), 3)));
+    const dr = lines.slice();   /* the doctor's summary (Version 33): her method and what she missed, not her next reminder */
     const nx = nextDue(); if (nx) lines.push(t('contra_next') + ': ' + fmtS(nx.d) + ' · ' + S.reminders.text(nx.r));
-    return [{ title: t('contra_hub'), lines: lines }];
+    return [{ title: t('contra_hub'), lines: lines, doctorLines: dr }];
   }
   function sample(id) {
     if (id !== 'asha') return;
@@ -869,7 +875,7 @@
     contra_missed: 'Missed or late pill', contra_missed_s: 'What to do for Mala-N, POP, Chhaya or a late Antara', contra_ec: 'Emergency contraception', contra_ec_s: 'Unprotected sex or a condom broke: what to do, and by when',
     contra_free: 'Where it is free', contra_free_s: 'ASHA, sub-centre, PHC, CHC, district hospital', contra_all: 'All methods', contra_my: 'My method',
     contra_g_long: 'Lasts months or years', contra_g_pill: 'Pills', contra_g_each: 'Each time you have sex', contra_g_perm: 'Permanent', contra_g_after: 'After a baby', contra_g_emerg: 'Emergency only',
-    contra_safe_days: 'Counting "safe days" is not a reliable way to avoid pregnancy, so this app never shows them.', contra_num_note: 'The number is how many women in 100 get pregnant in a year of typical use (WHO).',
+    contra_safe_days: 'Counting "safe days" is not a reliable way to avoid pregnancy, so this app never calls any day safe. Its fertile-day estimates are for planning a pregnancy.', contra_num_note: 'The number is how many women in 100 get pregnant in a year of typical use (WHO).',
     contra_in100: 'in 100', contra_hours: 'hours', contra_qura_h: 'Not sure which method suits you?', contra_qura_p: "A Qura doctor (BAMS) can talk it through with you on a free call and refer you. Hormonal methods are started by an MBBS doctor or gynaecologist.",
     contra_rate_typ: 'Out of 100 women using it for a year, about {n} get pregnant with typical use.', contra_rate_k: 'Fewer than 1 in 100. Out of 1,000 women using it for a year, about {k} get pregnant.',
     contra_rate_note: 'Typical use means real life, including late or missed doses. Figures from the WHO Family Planning Handbook (2022).', contra_rate_note_in: 'Figure from the Government of India pill manual (2016).',
@@ -890,7 +896,7 @@
     contra_t_weekly: 'Weekly after the first 3 months', contra_t_nothing: 'Nothing to remember daily', contra_t_3m: 'Once every 3 months', contra_t_horm: 'Has hormones', contra_t_nohorm: 'No hormones', contra_t_onechild: 'Govt rule: needs a child over 1 year',
     contra_t_nokids: 'Fine before a first baby too', contra_t_sti: 'Also protects against STIs and HIV', contra_t_private: 'Mostly at private clinics', contra_t_somestates: 'Free in a few districts', contra_t_partner: 'For your husband', contra_t_emerg: 'Emergency only, not regular use',
     contra_t_pcos: 'PMOS: not given in Indian guidance', contra_t_35: '35+: tell the doctor if you smoke',
-    contra_mine_p: 'Pick the method you use now. Reminders show on Home and in your reminders list. Everything stays on this phone.', contra_mine_can: 'With a diary, this page can', contra_mine_c1: 'Remind you to take your daily pill, and keep a "taken" tick for each day', contra_mine_c2: 'Turn your Chhaya start date into the right days: twice a week, then weekly after 3 months',
+    contra_mine_p: 'Pick the method you use now. Reminders show on the Today page and in your reminders list. Everything stays on this phone.', contra_mine_can: 'With a diary, this page can', contra_mine_c1: 'Remind you to take your daily pill, and keep a "taken" tick for each day', contra_mine_c2: 'Turn your Chhaya start date into the right days: twice a week, then weekly after 3 months',
     contra_mine_c3: 'Work out your next Antara date and the allowed window', contra_mine_c4: 'Remember your Copper-T check-up and replacement year', contra_pick: 'The method I use now', contra_pick_p: 'Pick a method to set reminders.', contra_none_now: 'None right now', contra_since: 'Started on',
     contra_next: 'Next', contra_no_next: 'No reminder set', contra_all_rem: 'All reminders', contra_rem_on: 'Reminders for this method', contra_rem_h: 'Daily reminder', contra_time: 'Pill time', contra_rem_set: 'Reminder set.', contra_rem_removed: 'Reminders turned off.', contra_saved: 'Saved.', contra_pick_date: 'Pick a date first.',
     contra_today_q: "Today's pill", contra_taken: 'Taken', contra_missed_b: 'Missed', contra_not_yet: 'Not marked yet', contra_not_today: 'No pill today', contra_took_today: "I took today's pill", contra_mark_missed: 'Mark as missed', contra_marked: 'Marked as taken.', contra_marked_m: 'Marked as missed.',
@@ -903,7 +909,7 @@
     contra_dates: 'Dates', contra_dev_until: 'Remove or replace by (from your card)', contra_dev_note: 'Your doctor writes this date on your card. We remind you on that day.', contra_nsv_date: 'Date of the NSV', contra_nsv_test: 'Semen test due', contra_nsv_note: 'Use condoms until the semen test shows no sperm.',
     contra_lam_birth: "Baby's date of birth", contra_lam_end: 'LAM stops protecting you by', contra_lam_note: 'We remind you 2 weeks before, and on the day. Start your next method before then.',
     contra_condom_note: 'No reminder needed. Keep a few at home; your ASHA brings them free.', contra_tub_note: 'No reminders needed. Go for your check-ups on day 7 and at 6 weeks.',
-    contra_horm_note: 'On a hormonal method? In Me, open My health details and switch on "On hormone medicine" so your diary sets those cycles aside.', contra_open_me: 'Open My health details', contra_mine_foot: 'Prototype: this stays on this phone. Nothing is sent anywhere.',
+    contra_horm_note: 'On a hormonal method? In Me, open My health details and switch on "On hormone medicine" so your diary sets those cycles aside.', contra_open_me: 'Open My health details', contra_mine_foot: 'This stays on this phone. Nothing is sent anywhere.',
     contra_ms_p: 'Pick your method, then what happened. Steps follow WHO and Government of India guidance.', contra_ms_which: 'Which method?', contra_ms_pill: 'Combined pill (Mala-N)', contra_ms_pop: 'POP', contra_ms_chh: 'Chhaya', contra_ms_ant: 'Antara injection late',
     contra_ms_what: 'What happened?', contra_ms_p12: 'Missed 1 or 2 pills, or started a strip 1–2 days late', contra_ms_p3: 'Missed 3 or more, or started a strip 3 or more days late', contra_ms_iron: 'Missed only iron pills (the last 7)',
     contra_ms_week: 'In which week of the strip?', contra_ms_w12: 'Week 1 or 2', contra_ms_w3: 'Week 3', contra_ms_pop_p: 'A POP counts as missed when it is more than 3 hours late (12 hours for some brands; ask which one you have).', contra_ms_c1: 'Late by 7 days or less', contra_ms_c2: 'Late by more than 7 days',
@@ -938,7 +944,7 @@
     contra_missed: 'गोली छूट गई या देर हुई', contra_missed_s: 'Mala-N, POP, छाया या अंतरा में देरी पर क्या करें', contra_ec: 'इमरजेंसी गर्भनिरोध', contra_ec_s: 'असुरक्षित संबंध या कंडोम फटा: क्या करें, और कब तक',
     contra_free: 'कहाँ मुफ़्त मिलता है', contra_free_s: 'ASHA, सब-सेंटर, PHC, CHC, ज़िला अस्पताल', contra_all: 'सभी तरीक़े', contra_my: 'मेरा तरीक़ा',
     contra_g_long: 'महीनों या सालों तक', contra_g_pill: 'गोलियाँ', contra_g_each: 'हर बार संबंध के समय', contra_g_perm: 'स्थायी', contra_g_after: 'बच्चे के बाद', contra_g_emerg: 'सिर्फ़ इमरजेंसी में',
-    contra_safe_days: '“safe days” गिनना गर्भ से बचने का भरोसेमंद तरीक़ा नहीं है, इसलिए यह app इन्हें कभी नहीं दिखाता।', contra_num_note: 'नंबर बताता है कि आम इस्तेमाल के एक साल में 100 में से कितनी महिलाओं को गर्भ ठहरता है (WHO)।',
+    contra_safe_days: '“safe days” गिनना गर्भ से बचने का भरोसेमंद तरीक़ा नहीं है, इसलिए यह app किसी दिन को सुरक्षित नहीं कहता। इसके fertile दिनों के अंदाज़े गर्भ की योजना के लिए हैं।', contra_num_note: 'नंबर बताता है कि आम इस्तेमाल के एक साल में 100 में से कितनी महिलाओं को गर्भ ठहरता है (WHO)।',
     contra_in100: '100 में', contra_hours: 'घंटे', contra_qura_h: 'तय नहीं कर पा रहीं कि कौन सा तरीक़ा ठीक है?', contra_qura_p: 'Qura की डॉक्टर (BAMS) मुफ़्त कॉल पर आपसे बात कर सकती हैं और refer कर सकती हैं। हॉर्मोन वाले तरीक़े MBBS डॉक्टर या स्त्री रोग विशेषज्ञ शुरू करते हैं।',
     contra_rate_typ: 'इसे एक साल इस्तेमाल करने वाली 100 महिलाओं में से, आम इस्तेमाल में लगभग {n} को गर्भ ठहरता है।', contra_rate_k: '100 में 1 से कम। एक साल इस्तेमाल करने वाली 1,000 महिलाओं में से लगभग {k} को गर्भ ठहरता है।',
     contra_rate_note: '“आम इस्तेमाल” यानी असल ज़िंदगी, जिसमें देर से या छूटी ख़ुराक भी शामिल है। आँकड़े WHO की परिवार नियोजन हैंडबुक (2022) से।', contra_rate_note_in: 'आँकड़ा भारत सरकार की गोली गाइड (2016) से।',
@@ -959,7 +965,7 @@
     contra_t_weekly: 'पहले 3 महीने बाद हफ़्ते में एक', contra_t_nothing: 'रोज़ कुछ याद नहीं रखना', contra_t_3m: 'हर 3 महीने में एक बार', contra_t_horm: 'हॉर्मोन वाला', contra_t_nohorm: 'हॉर्मोन नहीं', contra_t_onechild: 'सरकारी नियम: 1 साल से बड़ा बच्चा ज़रूरी',
     contra_t_nokids: 'पहले बच्चे से पहले भी ठीक', contra_t_sti: 'STI और HIV से भी बचाव', contra_t_private: 'ज़्यादातर प्राइवेट क्लिनिक में', contra_t_somestates: 'कुछ ज़िलों में मुफ़्त', contra_t_partner: 'पति के लिए', contra_t_emerg: 'सिर्फ़ इमरजेंसी, नियमित नहीं',
     contra_t_pcos: 'PMOS: भारत के नियमों में नहीं दी जाती', contra_t_35: '35+: धूम्रपान करती हैं तो डॉक्टर को बताएँ',
-    contra_mine_p: 'अभी जो तरीक़ा इस्तेमाल करती हैं, वह चुनें। रिमाइंडर होम पर और आपकी रिमाइंडर सूची में दिखेंगे। सब कुछ इसी फ़ोन पर रहता है।', contra_mine_can: 'डायरी के साथ यह पन्ना', contra_mine_c1: 'रोज़ की गोली याद दिलाता है, और हर दिन “ले ली” का टिक रखता है', contra_mine_c2: 'छाया शुरू करने की तारीख़ से सही दिन बनाता है: हफ़्ते में दो बार, फिर 3 महीने बाद हफ़्ते में एक',
+    contra_mine_p: 'अभी जो तरीक़ा इस्तेमाल करती हैं, वह चुनें। रिमाइंडर “आज” पन्ने पर और आपकी रिमाइंडर सूची में दिखेंगे। सब कुछ इसी फ़ोन पर रहता है।', contra_mine_can: 'डायरी के साथ यह पन्ना', contra_mine_c1: 'रोज़ की गोली याद दिलाता है, और हर दिन “ले ली” का टिक रखता है', contra_mine_c2: 'छाया शुरू करने की तारीख़ से सही दिन बनाता है: हफ़्ते में दो बार, फिर 3 महीने बाद हफ़्ते में एक',
     contra_mine_c3: 'अंतरा की अगली तारीख़ और छूट वाला समय निकालता है', contra_mine_c4: 'Copper-T की जाँच और बदलने का साल याद रखता है', contra_pick: 'अभी मैं यह इस्तेमाल करती हूँ', contra_pick_p: 'रिमाइंडर लगाने के लिए तरीक़ा चुनें।', contra_none_now: 'अभी कोई नहीं', contra_since: 'कब शुरू किया',
     contra_next: 'अगली बार', contra_no_next: 'कोई रिमाइंडर नहीं', contra_all_rem: 'सभी रिमाइंडर', contra_rem_on: 'इस तरीक़े के रिमाइंडर', contra_rem_h: 'रोज़ का रिमाइंडर', contra_time: 'गोली का समय', contra_rem_set: 'रिमाइंडर लग गया।', contra_rem_removed: 'रिमाइंडर बंद हो गए।', contra_saved: 'सेव हो गया।', contra_pick_date: 'पहले तारीख़ चुनें।',
     contra_today_q: 'आज की गोली', contra_taken: 'ले ली', contra_missed_b: 'छूट गई', contra_not_yet: 'अभी दर्ज नहीं', contra_not_today: 'आज गोली नहीं', contra_took_today: 'आज की गोली ले ली', contra_mark_missed: 'छूटी हुई लिखें', contra_marked: '“ले ली” दर्ज हुआ।', contra_marked_m: '“छूट गई” दर्ज हुआ।',
@@ -972,7 +978,7 @@
     contra_dates: 'तारीख़ें', contra_dev_until: 'इस तारीख़ तक निकलवाएँ या बदलवाएँ (card से)', contra_dev_note: 'यह तारीख़ आपकी डॉक्टर card पर लिखती हैं। उसी दिन हम याद दिलाएँगे।', contra_nsv_date: 'NSV की तारीख़', contra_nsv_test: 'वीर्य जाँच की तारीख़', contra_nsv_note: 'जब तक वीर्य जाँच में शुक्राणु न दिखना पक्का न हो, कंडोम इस्तेमाल करें।',
     contra_lam_birth: 'बच्चे की जन्म तारीख़', contra_lam_end: 'LAM इस तारीख़ तक ही बचाता है', contra_lam_note: 'हम 2 हफ़्ते पहले और उसी दिन याद दिलाएँगे। उससे पहले अगला तरीक़ा शुरू करें।',
     contra_condom_note: 'रिमाइंडर की ज़रूरत नहीं। घर पर कुछ रखें; आपकी ASHA मुफ़्त देती है।', contra_tub_note: 'रिमाइंडर की ज़रूरत नहीं। 7वें दिन और 6 हफ़्ते पर जाँच के लिए जाएँ।',
-    contra_horm_note: 'हॉर्मोन वाला तरीक़ा? “मैं” में “मेरी सेहत की जानकारी” खोलकर “हॉर्मोन की दवा पर” चालू करें, ताकि डायरी वे चक्र अलग रखे।', contra_open_me: '“मेरी सेहत की जानकारी” खोलें', contra_mine_foot: 'Prototype: यह इसी फ़ोन पर रहता है। कहीं कुछ नहीं भेजा जाता।',
+    contra_horm_note: 'हॉर्मोन वाला तरीक़ा? “मैं” में “मेरी सेहत की जानकारी” खोलकर “हॉर्मोन की दवा पर” चालू करें, ताकि डायरी वे चक्र अलग रखे।', contra_open_me: '“मेरी सेहत की जानकारी” खोलें', contra_mine_foot: 'यह इसी फ़ोन पर रहता है। कहीं कुछ नहीं भेजा जाता।',
     contra_ms_p: 'अपना तरीक़ा चुनें, फिर बताएँ कि क्या हुआ। कदम WHO और भारत सरकार के नियमों के हिसाब से हैं।', contra_ms_which: 'कौन सा तरीक़ा?', contra_ms_pill: 'रोज़ की गोली (Mala-N)', contra_ms_pop: 'POP', contra_ms_chh: 'छाया', contra_ms_ant: 'अंतरा इंजेक्शन में देरी',
     contra_ms_what: 'क्या हुआ?', contra_ms_p12: '1 या 2 गोलियाँ छूटीं, या पत्ता 1–2 दिन देर से शुरू किया', contra_ms_p3: '3 या ज़्यादा छूटीं, या पत्ता 3 या ज़्यादा दिन देर से शुरू किया', contra_ms_iron: 'सिर्फ़ आयरन की गोलियाँ छूटीं (आख़िरी 7)',
     contra_ms_week: 'पत्ते के किस हफ़्ते में?', contra_ms_w12: 'पहला या दूसरा हफ़्ता', contra_ms_w3: 'तीसरा हफ़्ता', contra_ms_pop_p: 'POP 3 घंटे से ज़्यादा देर से ली जाए तो छूटी हुई मानी जाती है (कुछ brand में 12 घंटे; पूछ लें कि आपकी कौन सी है)।', contra_ms_c1: '7 दिन या कम की देरी', contra_ms_c2: '7 दिन से ज़्यादा की देरी',

@@ -124,7 +124,7 @@
     r_ask_h: ['Want to talk it through?', 'किसी से बात करना चाहती हैं?'],
     r_ask_p: ['A free 20-minute call with a Qura doctor (BAMS) can help you list questions for your hospital visit and plan food, sleep and movement for these last weeks. How you give birth is decided with your obstetrician at the hospital.', 'Qura की डॉक्टर (BAMS) से 20 मिनट की मुफ़्त कॉल में आप अस्पताल में पूछने वाले सवाल तैयार कर सकती हैं, और इन आख़िरी हफ़्तों के खाने, नींद और चलने-फिरने की योजना बना सकती हैं। डिलीवरी कैसे होगी, यह अस्पताल में आपकी स्त्री रोग विशेषज्ञ के साथ तय होता है।'],
     r_ask_topic: ['Preparing for birth', 'डिलीवरी की तैयारी'],
-    r_src: ['Draft for doctor review. Based on MoHFW guidelines for antenatal care and skilled birth attendance (2010), LaQshya (2017), JSSK, and RCOG, NHS and ACOG patient information.', 'डॉक्टर की समीक्षा के लिए draft। स्वास्थ्य मंत्रालय के ANC और प्रशिक्षित दाई से डिलीवरी के दिशानिर्देश (2010), LaQshya (2017), JSSK, और RCOG, NHS व ACOG की मरीज़ जानकारी पर आधारित।'],
+    r_src: ['Based on MoHFW guidelines for antenatal care and skilled birth attendance (2010), LaQshya (2017), JSSK, and RCOG, NHS and ACOG patient information.', 'स्वास्थ्य मंत्रालय के ANC और प्रशिक्षित दाई से डिलीवरी के दिशानिर्देश (2010), LaQshya (2017), JSSK, और RCOG, NHS व ACOG की मरीज़ जानकारी पर आधारित।'],
 
     /* home + summary */
     home_h: ['Is your hospital bag ready?', 'क्या आपका अस्पताल का बैग तैयार है?'],

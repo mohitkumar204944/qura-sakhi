@@ -30,7 +30,7 @@
     remove: ['Remove', 'हटाएँ'], more: ['Related', 'इससे जुड़े'], min: ['min', 'मिनट'],
     side_L: ['Left', 'बायाँ'], side_R: ['Right', 'दायाँ'],
     for_label: ['for:', 'इसके लिए:'],
-    nodx: ["Not a diagnosis. Based on WHO, NHS, CDC and Indian government guidance; to be checked by Qura's doctors and an independent gynaecologist before launch.", 'यह निदान (diagnosis) नहीं है। WHO, NHS, CDC और भारत सरकार की गाइडलाइन पर आधारित; launch से पहले Qura के डॉक्टर और एक स्वतंत्र स्त्री-रोग विशेषज्ञ इसे जाँचेंगे।'],
+    nodx: ['Not a diagnosis. Based on WHO, NHS, CDC and Indian government guidance.', 'यह निदान (diagnosis) नहीं है। WHO, NHS, CDC और भारत सरकार की गाइडलाइन पर आधारित।'],
     ask_topic: ['Recovery after birth', 'डिलीवरी के बाद रिकवरी'],
 
     /* birth date */
@@ -300,7 +300,7 @@
     vax_p0: ['Free under the Universal Immunisation Programme. Your ANM writes each dose on the MCP card: follow the card and the vaccination days in your area.', 'सार्वभौमिक टीकाकरण कार्यक्रम (UIP) में मुफ़्त। ANM हर टीका MCP कार्ड पर लिखती हैं: कार्ड और अपने इलाक़े के टीकाकरण दिवस के हिसाब से चलें।'],
     vx_due: ['Due {d}', '{d} को'], vx_soon: ['Due this week: {d}', 'इसी हफ़्ते: {d}'], vx_today: ['Due today', 'आज'], vx_past: ['Should be done: check the MCP card', 'हो जाने चाहिए: MCP कार्ड देखें'],
     vax_add: ['Add vaccine reminders', 'टीकों के रिमाइंडर जोड़ें'],
-    vax_on: ['Vaccine reminders are on. They show on Home in the days before each one.', 'टीकों के रिमाइंडर चालू हैं। हर टीके से कुछ दिन पहले Home पर दिखेंगे।'],
+    vax_on: ['Vaccine reminders are on. They show on Today in the days before each one.', 'टीकों के रिमाइंडर चालू हैं। हर टीके से कुछ दिन पहले “आज” पर दिखेंगे।'],
     vax_off: ['Remove vaccine reminders', 'टीकों के रिमाइंडर हटाएँ'],
     vax_added_t: ['Vaccine reminders added.', 'टीकों के रिमाइंडर जुड़ गए।'],
     vax_missed: ['Missed a dose? Go to the next vaccination day; the ANM will tell you what to give.', 'कोई टीका छूट गया? अगले टीकाकरण दिवस पर जाएँ; ANM बताएँगी क्या लगाना है।'],
@@ -609,7 +609,7 @@
     const self = '<div class="card soft"><h3>' + esc(T('self_h')) + '</h3><ul class="small pst-ul">' + ['self_1', 'self_2', 'self_3'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul></div>';
     v.innerHTML = S.backRow(T('r_h'), R.hub, true) + '<p class="small">' + esc(T('r_p')) + '</p>' +
       '<p class="eyebrow">' + esc(n != null ? TF('r_forn', { d: dShort(S.today()), n: n }) : TF('r_for', { d: dShort(S.today()) })) + '</p>' +
-      '<div class="card pst-form">' + dangerGrp + grps + '</div>' +
+      '<div class="card pst-form" data-nofold="1">' + dangerGrp + grps + '</div>' +   /* Version 32: never folded, so no warning sign hides behind "Show more" (field-test audit 2.4) */
       '<div id="pst-rsum" class="stack"></div>' +
       (S.canSave() ? '<button type="button" class="btn primary block" id="pst-rsave">' + esc(exists ? T('update_b') : T('save_b')) + '</button>' : S.needDiary()) +
       (S.canSave() ? histHtml : '') + norm + self + related(R.rec) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
@@ -899,8 +899,11 @@
 
   /* ---------- hooks ---------- */
   function stopAll() { stopFeedTick(); stopPfTick(); }
+  /* Version 38: her plan's daily recovery check (plan.js, every after-birth goal until day 42) is done only by this check */
+  S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]) });
   function home() {
     if (!S.canSave()) return ''; const n = dayN(); if (n == null || n > 42) return '';
+    if (S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'post') return '';   /* her plan's step is this card */
     const done = !!store().rec[todayISO()];
     return '<button type="button" class="action" data-go="' + R.rec + '"><span class="ico accent">' + S.I.heart + '</span><span class="body"><strong>' + esc(n === 0 ? T('home_h0') : TF('home_h', { n: n })) + '</strong><span class="small">' + esc(done ? T('home_done') : T('home_s')) + '</span></span><span class="go">' + chev() + '</span></button>';
   }

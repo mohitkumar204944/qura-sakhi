@@ -153,7 +153,7 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
   const sched = await calls(page, 'schedule');
   const list = sched.length ? JSON.parse(sched[sched.length - 1][1]) : [];
   const last = list[list.length - 1] || {};
-  check('7 reminders are queued, with a last one asking her to open Sakhi', list.length > 2 && /^refill-/.test(last.id) && last.body === 'Open Sakhi so your reminders keep coming.' && last.at > list[list.length - 2].at, list.slice(-2));
+  check('7 reminders are queued, each carrying its rule so Android books the next itself (Version 34: no "open Sakhi" alarm needed)', list.length > 2 && list.every((x) => x.rep && x.rep.every === 1 && x.rid === 'm1') && !list.some((x) => /^refill-/.test(x.id)), list.slice(-2));
   check('7 at most 60 alarms, and not hidden outside discreet mode', list.length <= 60 && list.every((x) => x.secret === false));
   check('7 battery-saving help on a Xiaomi phone, with a settings button', /battery saving stops reminders/.test(await view(page)) && !!(await page.$('#me-batt-b')));
   await tap(page, '#me-batt-b'); await sleep(100);

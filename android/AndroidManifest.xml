@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quranutrition.sakhi">
 
-    <!-- Only for Google Fonts and opening official links; the app itself runs offline from bundled files. -->
+    <!-- Only for the accounts server (signup); the app itself runs offline from bundled files, fonts included. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- The kick counter's and pelvic-floor exercises' vibration cues (navigator.vibrate needs it in a WebView). No prompt. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- Reminder notifications the woman turns on herself (Android 13+ asks her first). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- To put reminder alarms back after the phone restarts. -->
@@ -40,6 +42,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 

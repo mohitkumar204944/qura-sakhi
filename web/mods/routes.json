@@ -94,7 +94,14 @@
     "lang",
     "joy",
     "joy-quiz",
-    "explain"
+    "explain",
+    "plan",
+    "plan-pmos",
+    "plan-start",
+    "plan-plate",
+    "plan-body",
+    "plan-moves",
+    "plan-progress"
   ],
   "prefixes": {
     "contra-m-": [
@@ -166,6 +173,13 @@
       "meera",
       "sunita",
       "kamla"
+    ],
+    "plan-r-": [
+      "gentle",
+      "cycle",
+      "sun",
+      "strength",
+      "calm"
     ]
   }
 }

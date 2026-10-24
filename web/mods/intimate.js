@@ -453,7 +453,7 @@
         { en: 'Discreet mode, on the Me page, hides your numbers until you tap, and the Diary tab is called Notes.', hi: '“मैं” पन्ने पर गुप्त mode आपके नंबर टैप करने तक छिपाता है, और डायरी टैब का नाम “नोट्स” हो जाता है।' },
         { en: 'Shared-phone mode closes your diary after 10 minutes without a tap.', hi: 'साझा फ़ोन mode 10 मिनट तक कोई टैप न होने पर आपकी डायरी बंद कर देता है।' },
         { en: 'Learn 112 and 181 by heart instead of saving them in your contacts.', hi: '112 और 181 को contacts में save करने की जगह याद कर लें।' },
-        { en: 'This prototype sends nothing anywhere, but your browser may keep a list of pages you opened.', hi: 'यह prototype कहीं कुछ नहीं भेजता, पर आपका browser खोले गए पन्नों की सूची रख सकता है।' }
+        { en: 'Sakhi sends nothing anywhere. If someone else uses this phone, discreet mode and the app lock on the Me page keep these pages out of sight.', hi: 'Sakhi कहीं कुछ नहीं भेजती। अगर इस फ़ोन को कोई और भी इस्तेमाल करता है, तो “मैं” पन्ने पर गुप्त मोड और ऐप लॉक इन पन्नों को छिपाकर रखते हैं।' }
       ]) + (S.canSave() ? '<div class="row spread wrap"><span class="pill ' + (disc ? 'ok' : 'muted') + '">' + T(disc ? { en: 'Discreet mode is on', hi: 'गुप्त mode चालू है' } : { en: 'Discreet mode is off', hi: 'गुप्त mode बंद है' }) + '</span>' + goBtn('me', { en: 'Open the Me page', hi: '“मैं” पन्ना खोलें' }) + '</div>' : '') + '</div>' +
       '<p class="footnote">' + T({ en: 'Under 18? Childline 1098 is free, day and night. Nothing on this page is saved.', hi: '18 से कम? Childline 1098 मुफ़्त है, दिन-रात। इस पन्ने पर कुछ भी save नहीं होता।' }) + '</p>';
     S.wire(v); wireCopy(v);

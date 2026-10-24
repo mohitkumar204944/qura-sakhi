@@ -898,7 +898,7 @@
     if (!(S.iron && S.iron.active())) tab('ifa', 'preg-ifa', 13);
     tab('ca', 'preg-ca', 14);
     const wi = weekInfo();
-    if (!disc && wi && wi.days <= 294 && wi.w >= W_MIN && wi.w <= W_MAX) {
+    if (!disc && wi && wi.days <= 294 && wi.w >= W_MIN && wi.w <= W_MAX && !planOwns()) {
       const due = dueNames();
       if (due.length) out.push({ id: 'preg-plan', order: 20, icon: 'check', hue: 'orange', title: TF('plan_home', { x: due.length > 1 ? TF('plan_home_more', { x: due[0], n: due.length - 1 }) : due[0] }), sub: T('plan_h'), go: 'preg-plan' });
     }
@@ -1009,6 +1009,10 @@
   }
   /* what is due now, by name, for Home and the summaries */
   const dueNames = () => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => T('pi_' + x.it.id)); };
+  /* Version 38: one pregnancy plan. The companion's pregnancy plan (mods/plan.js, pack 'preg') takes what is due now from here,
+     and while it runs Today's "Due now" row is that plan's first step instead of a row of its own (planOwns). */
+  const planOwns = () => !!(S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'preg');
+  S.preg.plan = { due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: T('pi_' + x.it.id) })); } };
 
   function summary() {
     const st = store(); const wi = weekInfo(); const L = [];
@@ -1019,9 +1023,10 @@
     if (s) L.push(TF('sum_sug', { k: T(s.k === 'dipsi' ? 'sug_d_short' : 'sug_f_short'), v: s.v, d: fdy(s.d) }));
     if (h) L.push(TF('sum_hb', { v: num1(h.v), d: fdy(h.d) }));
     if (Object.keys(st.tabs).length) L.push(TF('sum_tab', { a: tabDays(st, 'ifa', 7), b: tabDays(st, 'ca', 7) }));
-    const due = dueNames(); if (due.length) L.push(TF('sum_due', { x: due.join(', ') }));
+    const due = dueNames(); const dueLine = due.length ? TF('sum_due', { x: due.join(', ') }) : null; if (dueLine) L.push(dueLine);
     if (st.mcp.bg || st.mcp.edd) L.push(TF('sum_rch', { b: st.mcp.bg ? st.mcp.bg + (st.mcp.rh || '') : T('mcp_none'), e: st.mcp.edd ? fdy(st.mcp.edd) : T('mcp_none') }));
-    return L.length ? [{ title: T('sum_h'), lines: L }] : [];
+    /* the doctor's summary (Version 33) leaves out what's due now, which mixes scheme money with check-ups */
+    return L.length ? [{ title: T('sum_h'), lines: L, doctorLines: L.filter((l) => l !== dueLine) }] : [];
   }
   function sample(id) {
     if (id !== 'meera') return;

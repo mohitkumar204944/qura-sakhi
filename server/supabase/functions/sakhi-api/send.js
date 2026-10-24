@@ -55,6 +55,23 @@ export function makeSender(env, fetchImpl = fetch) {
       if (!key || !sid) throw new Error('SMS is not configured');
       await post('https://console.authkey.io/restapi/requestjson.php', { Authorization: 'Basic ' + key },
         { country_code: '91', mobile: national(phone), sid, otp: code }, 8000);
+    },
+    /* Version 33, the doctor-call hand-off (spec section 10.1): her request to Qura's endpoint, with the shared key. It answers
+       with the HTTP status and Qura's JSON, so the API can tell a refusal from a failure to try again. A network error or a
+       timeout throws. */
+    async handoff(payload) {
+      const url = env.SAKHI_QURA_HANDOFF_URL; const key = env.SAKHI_QURA_KEY;
+      if (!url || !key) throw new Error('hand-off is not configured');
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 8000);
+      try {
+        const res = await fetchImpl(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sakhi-Key': key }, body: JSON.stringify(payload), signal: ctl.signal });
+        let data = null;
+        try { data = await res.json(); } catch (e) { data = null; }
+        return { status: res.status, data };
+      } finally {
+        clearTimeout(timer);
+      }
     }
   };
 }

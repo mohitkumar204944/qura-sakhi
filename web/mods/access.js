@@ -249,7 +249,7 @@
       line: L('₹5,000 for the first child; ₹6,000 if the second child is a girl', 'पहले बच्चे पर ₹5,000; दूसरा बच्चा बेटी हो तो ₹6,000'),
       benefit: L('₹5,000 for your first child, in two parts: ₹3,000 after at least one antenatal check-up, and ₹2,000 after the birth is registered and the baby has had the vaccines due by 14 weeks. If your second child is a girl: ₹6,000 in one payment after the birth and the 14-week vaccines. The money comes straight to your bank or post office account.', 'पहले बच्चे पर ₹5,000, दो हिस्सों में: कम से कम एक ANC जाँच के बाद ₹3,000, और जन्म का पंजीकरण और 14 हफ़्ते तक के टीके लगने के बाद ₹2,000। दूसरा बच्चा बेटी हो तो: जन्म और 14 हफ़्ते के टीकों के बाद एक बार में ₹6,000। पैसा सीधे आपके बैंक या डाकघर खाते में आता है।'),
       who: L('Women aged 18 years 7 months to 55 years at the birth, from any one of these groups: SC or ST; disability of 40% or more; BPL or NFSA ration card; Ayushman (PM-JAY) card; e-Shram card; PM-KISAN farmer family; MGNREGA job card; family income under ₹8 lakh a year; Anganwadi workers and helpers, and ASHAs. Women in regular government or PSU jobs with paid maternity leave are not covered. The scheme is not run in Telangana and Odisha; ask your Anganwadi worker what your state offers.', 'जन्म के समय 18 साल 7 महीने से 55 साल की महिलाएँ, इनमें से किसी एक समूह से: SC या ST; 40% या ज़्यादा विकलांगता; BPL या NFSA राशन कार्ड; आयुष्मान (PM-JAY) card; e-Shram card; PM-KISAN किसान परिवार; MGNREGA job card; परिवार की आमदनी साल में ₹8 लाख से कम; आंगनवाड़ी कार्यकर्ता, सहायिका और ASHA। सरकारी या PSU की पक्की नौकरी में सवेतन मातृत्व छुट्टी वाली महिलाएँ इसमें नहीं आतीं। तेलंगाना और ओडिशा में यह योजना नहीं चलती; आंगनवाड़ी कार्यकर्ता से पूछें कि आपके राज्य में क्या मिलता है।'),
-      how: L('Your Anganwadi worker or ASHA can fill the form online for you, or you can register yourself on the PMMVY portal. Register any time up to 270 days after the birth. Helpline 14408. If a pregnancy is lost, you can still apply in a later pregnancy.', 'आपकी आंगनवाड़ी कार्यकर्ता या ASHA आपके लिए online फ़ॉर्म भर सकती हैं, या आप ख़ुद PMMVY portal पर पंजीकरण कर सकती हैं। जन्म के 270 दिन तक कभी भी पंजीकरण करें। हेल्पलाइन 14408। अगर गर्भ नहीं रहा, तो अगले गर्भ में फिर से आवेदन कर सकती हैं।'),
+      how: L('Your Anganwadi worker or ASHA can fill the form online for you, or you can register yourself on the PMMVY portal. Register any time up to 270 days after the birth. Helpline 1515. If a pregnancy is lost, you can still apply in a later pregnancy.', 'आपकी आंगनवाड़ी कार्यकर्ता या ASHA आपके लिए online फ़ॉर्म भर सकती हैं, या आप ख़ुद PMMVY portal पर पंजीकरण कर सकती हैं। जन्म के 270 दिन तक कभी भी पंजीकरण करें। हेल्पलाइन 1515। अगर गर्भ नहीं रहा, तो अगले गर्भ में फिर से आवेदन कर सकती हैं।'),
       docs: L('Aadhaar; a bank or post office account linked to Aadhaar; your mobile number; the MCP card with your last period date and check-up dates; one proof from the groups above (for example a ration card or job card). Later: the birth registration and the baby’s vaccine record.', 'आधार; आधार से जुड़ा बैंक या डाकघर खाता; आपका मोबाइल नंबर; MCP card जिसमें पिछले पीरियड और जाँच की तारीख़ें हों; ऊपर के समूहों में से एक का सबूत (जैसे राशन कार्ड या job card)। बाद में: जन्म का पंजीकरण और बच्चे के टीकों का रिकॉर्ड।'),
       links: [['https://pmmvy.wcd.gov.in/', L('PMMVY portal (official)', 'PMMVY portal (सरकारी)')]], src: ['pmmvyfaq', 'pmmvypib'],
       note: (a) => (a.child === '2' ? L('For a second child, only if the baby is a girl.', 'दूसरे बच्चे के लिए, सिर्फ़ तब जब बेटी हो।') : null),
@@ -479,7 +479,7 @@
     const n = S.canSave() ? TRACK.filter((k) => AD().claims[k]).length : 0;
     const row = (go, ic, hue, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-' + hue + '">' + S.icon(ic) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';
     v.innerHTML = S.backRow(t('access_free'), 'care', false) + '<p class="small">' + esc(t('access_free_p')) + '</p>' +
-      '<div class="list">' + row('ask', 'steth', 'rose', t('ask_h'), t('doc_p')) + row('access-doctor', 'steth', 'purple', t('access_doctor'), t('access_doctor_s')) +
+      '<div class="list">' + row('access-doctor', 'steth', 'purple', t('access_doctor'), t('access_doctor_s')) +
         row('access-care', 'map', 'teal', t('access_care'), t('access_care_s')) + row('access-schemes', 'file', 'gold', t('access_schemes'), n ? tf('access_free_claims', { n: n }) : t('access_schemes_s')) +
         row('access-online', 'file', 'sky', t('access_online'), t('access_online_s')) + (S.routeOwner('asha') ? row('asha', 'person', 'green', t('asha_h'), t('asha_help_s')) : '') + '</div>' +
       '<div class="flag urgent">' + E(EMERG) + '</div>';
@@ -499,7 +499,7 @@
         tip: L('Choose your state’s Obs & Gynae (women’s health) OPD if it has one, or else the General OPD. Check the OPD timings first.', 'आपके राज्य में Obs & Gynae (महिला स्वास्थ्य) OPD हो तो उसे चुनें, नहीं तो General OPD। पहले OPD का समय देख लें।'),
         more: L('Obs & Gynae OPDs on 22 Oct 2026: Delhi, Jammu and Kashmir, Jharkhand, Karnataka, Kerala, Maharashtra, Punjab, Rajasthan and Uttar Pradesh, and AIIMS and other central government hospitals.', '22 अक्टूबर 2026 को Obs & Gynae OPD: दिल्ली, जम्मू-कश्मीर, झारखंड, कर्नाटक, केरल, महाराष्ट्र, पंजाब, राजस्थान और उत्तर प्रदेश में, और AIIMS व दूसरे केंद्रीय सरकारी अस्पतालों में।'),
         links: [['https://esanjeevani.mohfw.gov.in/#/patient/signin', L('Open eSanjeevani', 'eSanjeevani खोलें')], ['https://esanjeevani.mohfw.gov.in/#/opd-timing', L('OPD timings', 'OPD का समय')]] },
-      { k: 'ors', icon: 'clock', hue: 'sky', name: L('ORS: a hospital OPD appointment', 'ORS: अस्पताल में OPD का समय'),
+      { k: 'ors', icon: 'clock', hue: 'sky', name: L('ORS (online OPD booking): a hospital OPD appointment', 'ORS (ऑनलाइन OPD पर्ची): अस्पताल में OPD का समय'),
         what: L('Book an OPD appointment at a government hospital, including AIIMS, before you go.', 'जाने से पहले किसी सरकारी अस्पताल में, AIIMS में भी, OPD का समय बुक करें।'),
         need: L('A mobile number for the OTP, or your ABHA.', 'OTP के लिए मोबाइल नंबर, या आपकी ABHA।'),
         links: [['https://ors.gov.in/orsportal/', L('Book on ORS', 'ORS पर बुक करें')]] },
@@ -543,7 +543,7 @@
       P(L('Free government doctors and care, from your phone. Each button opens the official site or app, or calls the number: Sakhi books nothing and sends nothing. You sign in there with your own mobile number.', 'फ़ोन से मुफ़्त सरकारी डॉक्टर और इलाज। हर बटन सरकारी साइट या ऐप खोलता है, या नंबर मिलाता है: Sakhi न कुछ बुक करती है, न कुछ भेजती है। वहाँ आप अपने मोबाइल नंबर से साइन इन करती हैं।'), 'small') +
       '<div class="flag">' + E(OTP_FLAG) + '</div>' +
       groups.map((g) => '<h2>' + E(g.h) + '</h2>' + g.items.map(card).join('')).join('') +
-      '<div class="card soft"><p class="small" style="color:var(--fg)">' + E(L('Or speak to a Qura doctor.', 'या Qura के डॉक्टर से बात करें।')) + '</p><button type="button" class="btn sm" data-ask="">' + S.I.steth + ' ' + esc(t('doc_b')) + '</button></div>' +
+      '<div class="card soft"><p class="small" style="color:var(--fg)">' + E(L('Or speak to a Qura doctor.', 'या Qura की डॉक्टर से बात करें।')) + '</p><button type="button" class="btn sm" data-ask="">' + S.I.steth + ' ' + esc(t('doc_b')) + '</button></div>' +
       '<p class="footnote">' + esc(t('access_doc_foot')) + '</p>';
     S.wire(v);
   }
@@ -651,7 +651,7 @@
           const txt = [L('Folic acid every day, and register your pregnancy for the MCP card before 12 weeks. Nausea is common; small, frequent meals help.', 'रोज़ फ़ोलिक एसिड, और 12 हफ़्ते से पहले गर्भ का पंजीकरण करवाकर MCP card लें। जी मिचलाना आम है; थोड़ा-थोड़ा, बार-बार खाना मदद करता है।'),
             L('Iron and calcium tablets every day (not together), the Td vaccine, and the anomaly scan at 18–20 weeks. Many women first feel movements between 16 and 24 weeks.', 'रोज़ आयरन और कैल्शियम की गोलियाँ (एक साथ नहीं), Td टीका, और 18–20 हफ़्ते पर anomaly scan। कई महिलाओं को पहली हलचल 16 से 24 हफ़्ते के बीच महसूस होती है।'),
             L('Know your baby’s usual pattern of movements; fewer than usual means a check the same day. Pack your bag and plan transport; the 102 ambulance is free.', 'बच्चे की हलचल का रोज़ का पैटर्न पहचानें; सामान्य से कम हो तो उसी दिन जाँच। अपना बैग तैयार रखें और आने-जाने की योजना बनाएँ; 102 एम्बुलेंस मुफ़्त है।')][tri];
-          add({ why: L('Because you set: pregnant', 'क्योंकि आपने चुना: गर्भवती'), title: L('About week ' + wk + ': what to do now', 'लगभग ' + wk + 'वाँ हफ़्ता: अभी क्या करें'), text: txt, go: 'preg-w-' + wk, btn: L('Week ' + wk, 'हफ़्ता ' + wk) });
+          add({ why: L('Because you set: pregnant', 'क्योंकि आपने चुना: गर्भवती'), title: L('About week ' + wk + ': what to do now', 'लगभग हफ़्ता ' + wk + ': अभी क्या करें'), text: txt, go: 'preg-w-' + wk, btn: L('Week ' + wk, 'हफ़्ता ' + wk) });
           if (wk >= 13) {
             const nine = td.getDate() <= 9 ? new Date(td.getFullYear(), td.getMonth(), 9) : new Date(td.getFullYear(), td.getMonth() + 1, 9);
             const when = S.fmtD(nine, { day: 'numeric', month: 'short' });
@@ -669,7 +669,7 @@
       }
       if (!sit.pregnant && !S.cycle.countsOff() && !sit.stopped) {
         const ls = S.cycle.lastStart();
-        if (!ls) add({ why: L('Your diary', 'आपकी डायरी'), title: L('Log your last period', 'अपना पिछला पीरियड दर्ज करें'), text: L('A few months of start dates help your doctor more than any single day. One tap on Home.', 'कुछ महीनों की शुरुआत की तारीख़ें किसी एक दिन से ज़्यादा डॉक्टर की मदद करती हैं। होम पर एक टैप।'), go: 'diary', btn: GUIDE['diary'] });
+        if (!ls) add({ why: L('Your diary', 'आपकी डायरी'), title: L('Log your last period', 'अपना पिछला पीरियड दर्ज करें'), text: L('A few months of start dates help your doctor more than any single day. One tap on Today.', 'कुछ महीनों की शुरुआत की तारीख़ें किसी एक दिन से ज़्यादा डॉक्टर की मदद करती हैं। “आज” पर एक टैप।'), go: 'diary', btn: GUIDE['diary'] });
         else {
           const cd = S.cycle.cycleDay(); const bd = S.cycle.bleedingDays()[S.toISO(td)];
           if (bd && bd !== 'spot') add({ why: L('Period day ' + cd + ' in your diary', 'आपकी डायरी में पीरियड का दिन ' + cd), title: L('Cramps and flow', 'ऐंठन और ब्लीडिंग'), text: L('Heat, rest and gentle movement ease cramps. Soaking a pad every 1–2 hours is a reason to see a doctor this week.', 'गरमी, आराम और हल्की हलचल से ऐंठन में आराम मिलता है। हर 1–2 घंटे में pad भीगे तो इसी हफ़्ते डॉक्टर को दिखाएँ।'), go: 'periods-pain', btn: GUIDE['periods-pain'] });
@@ -924,8 +924,8 @@
   /* ---------- strings ---------- */
   const en = {
     access_setup_free: 'Look at free care near you', access_setup_free_s: 'Free doctors, schemes and helplines, before you need them', access_setup_sch: 'Check the scheme money you can get',
-    access_free: 'Get care free', access_free_s: 'Every free doctor, scheme and helper in one place', access_free_p: 'Free doctors, care near you, scheme money and your ASHA, in one place. Each opens its own page.', access_free_claims: 'My claims: {n}',
-    access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Home', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
+    access_free: 'Govt. services', access_free_s: 'Free doctor, care near me, schemes, ASHA and online services', access_free_p: 'Government doctors, care near you, scheme money and your ASHA, all free, in one place. Each opens its own page.', access_free_claims: 'My claims: {n}',
+    access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Today', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
     access_care: 'Care near me', access_care_s: 'Free government care by PIN code, and how to find it',
     access_claim_start: 'Track my claim', access_claim_h: 'My claim', access_claim_docs: 'Papers to keep ready. Tick each one you have.', access_claim_stop: 'Stop tracking',
     access_step_ready: 'Getting papers ready', access_step_applied: 'Applied', access_step_got: 'Money or card received', access_my_h: 'My claims',
@@ -957,14 +957,14 @@
   };
   const hi = {
     access_setup_free: 'अपने पास का मुफ़्त इलाज देखें', access_setup_free_s: 'मुफ़्त डॉक्टर, योजनाएँ और हेल्पलाइन, ज़रूरत से पहले', access_setup_sch: 'देखें कि योजना का कितना पैसा मिल सकता है',
-    access_free: 'मुफ़्त इलाज और मदद', access_free_s: 'हर मुफ़्त डॉक्टर, योजना और मदद एक जगह', access_free_p: 'मुफ़्त डॉक्टर, आपके पास इलाज, योजना का पैसा और आपकी ASHA, एक जगह। हर एक अपना पन्ना खोलता है।', access_free_claims: 'मेरे दावे: {n}',
-    access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: 'होम पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
-    access_care: 'मेरे पास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
+    access_free: 'सरकारी सेवाएँ', access_free_s: 'मुफ़्त डॉक्टर, आपके पास इलाज, योजनाएँ, ASHA और ऑनलाइन सेवाएँ', access_free_p: 'सरकारी डॉक्टर, आपके पास इलाज, योजनाओं का पैसा और आपकी ASHA, सब मुफ़्त, एक जगह। हर एक अपना पन्ना खोलता है।', access_free_claims: 'मेरे दावे: {n}',
+    access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: '“आज” पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
+    access_care: 'मेरे आसपास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
     access_claim_start: 'मेरा दावा ट्रैक करें', access_claim_h: 'मेरा दावा', access_claim_docs: 'तैयार रखने वाले काग़ज़। जो पास है, उसे टिक करें।', access_claim_stop: 'ट्रैक करना बंद करें',
     access_step_ready: 'काग़ज़ तैयार कर रही हूँ', access_step_applied: 'आवेदन किया', access_step_got: 'पैसा या कार्ड मिल गया', access_my_h: 'मेरे दावे',
     access_pmmvy_by: '{d} तक पंजीकरण करें', access_pmmvy_part1: 'आपकी दो जाँचें हो चुकी हैं, इसलिए आप पहले हिस्से (₹3,000) के लिए अभी आवेदन कर सकती हैं।',
     access_online: 'ऑनलाइन करें: सरकारी सेवाएँ', access_online_s: 'ABHA, U-WIN, PMMVY, आयुष्मान कार्ड, eSanjeevani, जन औषधि',
-    access_doctor: 'मुफ़्त डॉक्टर और इलाज', access_doctor_s: 'वीडियो पर सरकारी डॉक्टर, अस्पताल OPD का समय, गर्भ में जाँच, एम्बुलेंस', access_doc_foot: 'सरकारी वेबसाइटें और हेल्पलाइन, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
+    access_doctor: 'मुफ़्त डॉक्टर और इलाज', access_doctor_s: 'वीडियो पर सरकारी डॉक्टर, अस्पताल OPD का समय, गर्भावस्था में मुफ़्त जाँच, एम्बुलेंस', access_doc_foot: 'सरकारी वेबसाइटें और हेल्पलाइन, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
     access_online_need: 'आपको चाहिए:', access_online_open: 'सरकारी साइट खोलें', access_online_who: 'किसे मिलता है', access_online_foot: 'सरकारी वेबसाइटें, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
     access_schemes: 'आपके लिए सरकारी योजनाएँ', access_schemes_s: 'PMMVY, JSY, JSSK, आयुष्मान card और भी: किसे क्या मिलता है',
     access_schemes_preg: 'गर्भ में पैसा और मुफ़्त देखभाल', access_schemes_preg_s: 'PMMVY, JSY, JSSK, PMSMA, आंगनवाड़ी का खाना, मातृत्व छुट्टी',

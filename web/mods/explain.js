@@ -28,8 +28,13 @@
       see: L('If it happens twice in 6 months, see a doctor.', '6 महीने में दो बार हो तो डॉक्टर को दिखाएँ।'),
       see2: L('{k} of your last 6 gaps were longer than {b} days. See a doctor this month. Blood tests for thyroid and hormones help find the cause.', 'आपके पिछले 6 में से {k} अंतर {b} दिन से लंबे थे। इसी महीने डॉक्टर को दिखाएँ। थायरॉइड और हॉर्मोन की खून की जाँच से कारण पता चलता है।'), go: 'topic-cond', ask: L('Long gaps between my periods', 'पीरियड के बीच लंबा अंतर') },
     late_now: { t: L('Day {n}, and no period yet', 'दिन {n}, और अभी तक पीरियड नहीं'), w: L('Your period is later than the usual 21 to {b} days.', 'आपका पीरियड आम 21 से {b} दिन से देर से है।'),
+      wOwn: L('Your period is later than your own likely dates.', 'आपका पीरियड आपकी अपनी संभावित तारीख़ों से देर से है।'),
+      /* Version 37.2: from 40, long gaps are expected in the years before menopause (ux-gaps B1; wording-review section 15) */
+      tMid: L('{d} days since your last period', 'पिछले पीरियड को {d} दिन'), wMid: L('In the years before menopause, gaps between periods often get longer or shorter. Keep noting your periods.', 'मेनोपॉज़ से पहले के सालों में पीरियड के बीच का अंतर अक्सर लंबा या छोटा होता है। अपने पीरियड दर्ज करती रहें।'),
       why: [L('Pregnancy, if you have had sex since your last period.', 'गर्भ, अगर पिछले पीरियड के बाद संबंध बने हैं।'), L('Stress, illness, travel or weight change.', 'तनाव, बीमारी, सफ़र या वज़न में बदलाव।'), L('Breastfeeding, PMOS or thyroid problems.', 'दूध पिलाना, PMOS या थायरॉइड की समस्या।')],
-      todo: [L('If you could be pregnant, take a home test. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'), L('If it is negative and your period still has not come, test again in a week.', 'test negative हो और पीरियड फिर भी न आए, तो एक हफ़्ते बाद फिर test करें।')],
+      todo: [L('If you could be pregnant, take a home test. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'), L('If it is negative and your period still has not come, test again in a week.', 'test negative हो और पीरियड फिर भी न आए, तो एक हफ़्ते बाद फिर test करें।'),
+        /* Version 32: the pregnancy-test pages' warning, word for word (field-test audit 2.3) */
+        L('Period late or a positive test, with pain on one side of the lower belly, pain at the tip of the shoulder, bleeding, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which can bleed inside.', 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, ब्लीडिंग, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसमें अंदर ही अंदर ख़ून बह सकता है।')],
       see: L('No period for 90 days, and not pregnant or breastfeeding: see a doctor.', '90 दिन तक पीरियड न आए, और आप गर्भवती या दूध पिलाने वाली नहीं हैं: डॉक्टर को दिखाएँ।'),
       see2: L('It has been {d} days. See a doctor this month. Long gaps can be treated, so the cause is worth finding.', '{d} दिन हो गए हैं। इसी महीने डॉक्टर को दिखाएँ। लंबे अंतर का इलाज होता है, इसलिए कारण जानना ज़रूरी है।'), go: 'pregtest-when', ask: L('My period is late', 'मेरा पीरियड देर से है') },
     period_long: { t: L('Your last period lasted {n} days', 'आपका पिछला पीरियड {n} दिन चला'), w: L('Bleeding for more than 8 days is longer than usual.', '8 दिन से ज़्यादा ब्लीडिंग आम से लंबी है।'), why: BLEED_WHY,
@@ -125,12 +130,15 @@
       }
       const ri = c.rangeInfo(); const since = S.diffDays(ls, S.today());
       /* past her own range (or 21 to 35 days), and always at 90 days, whatever her range says */
-      if (since > Math.max(hiB, ri ? ri.hi : 0) || since >= 90) add({ id: 'late_now', lv: since >= 90 ? 'month' : 'watch', at: S.toISO(ls), vars: { n: since + 1, d: since, b: hiB }, strong: since >= 90 });
+      /* Version 32: at the end of her own likely range, however short her cycles (it waited until day 37: field-test audit 2.3) */
+      if (since > (ri ? ri.hi : hiB) || since >= 90) add({ id: 'late_now', lv: since >= 90 ? 'month' : 'watch', at: S.toISO(ls), vars: { n: since + 1, d: since, b: hiB }, strong: since >= 90, own: !!ri && since <= hiB, mid: !!(S.stageNow && S.stageNow() === 'meno') });
     }
     /* the latest period: how long, how heavy, how painful */
     const lastRaw = raw[raw.length - 1];
-    if (cyclesOn && lastRaw && daysAgo(lastRaw) <= 75) {
-      const end = evs.find((e) => e.t === 'end' && e.d >= lastRaw && daysAgo(e.d) >= 0 && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 20);
+    /* Version 32: also while she breastfeeds with her periods back (field-test audit 3.2) */
+    const bleedOn = !c.isPregnant() && !sit.hysterectomy && !sit.stopped && !(c.afterBirth && c.afterBirth());
+    if (bleedOn && lastRaw && daysAgo(lastRaw) <= 75) {
+      const end = evs.filter((e) => e.t === 'end' && e.d >= lastRaw && daysAgo(e.d) >= 0 && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 20).pop();   /* the latest end, like the calendar */
       if (end) { const len = S.diffDays(S.fromISO(lastRaw), S.fromISO(end.d)) + 1; if (len > 8) add({ id: 'period_long', lv: 'week', at: lastRaw, vars: { n: len } }); }
       const det = evs.filter((e) => (e.t === 'start' || e.t === 'start_detail') && e.d >= lastRaw && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 10);
       if (det.some((e) => e.pads === 'pads_4' || e.clots === 'clots_2' || e.leaked || e.two)) add({ id: 'flow_heavy', lv: 'week', at: lastRaw, vars: {} });
@@ -144,7 +152,8 @@
       const sp = evs.filter((e) => e.t === 'spot' && daysAgo(e.d) <= 45 && daysAgo(e.d) >= 0 && !near(e.d)); const inCycle = ls ? sp.filter((e) => e.d >= S.toISO(ls)).length : sp.length;
       if (sp.length) add({ id: 'spot_between', lv: inCycle >= 3 ? 'month' : 'watch', at: sp[sp.length - 1].d, vars: { k: sp.length }, strong: inCycle >= 3, vars2: { k: inCycle } });
     }
-    if (sit.stopped && !c.isPregnant()) { const b = evs.filter((e) => (e.t === 'start' || e.t === 'spot') && daysAgo(e.d) <= 60 && daysAgo(e.d) >= 0); if (b.length) add({ id: 'bleed_after_stop', lv: 'week', at: b[b.length - 1].d, vars: {} }); }
+    /* Version 32: only bleeding logged after the day she said her periods stopped (field-test audit 3.2) */
+    if (sit.stopped && !c.isPregnant()) { const from = /^\d{4}-\d{2}-\d{2}$/.test(sit.stoppedOn || '') ? sit.stoppedOn : ''; const b = evs.filter((e) => (e.t === 'start' || e.t === 'spot') && daysAgo(e.d) <= 60 && daysAgo(e.d) >= 0 && (!from || e.d > from)); if (b.length) add({ id: 'bleed_after_stop', lv: 'week', at: b[b.length - 1].d, vars: {} }); }
     /* the latest check-in */
     const ci = latestCheckin();
     if (ci) {
@@ -196,9 +205,9 @@
   const LV_HUE = { now: 'rose', today: 'rose', week: 'rose', month: 'gold', watch: 'gold', ok: 'green' };
   /* English plural for a count of one ("1 day", not "1 days"). */
   const one = (str) => (S.state.lang === 'en' ? str.replace(/\b1 days\b/g, '1 day') : str);
-  const title = (f) => one(tx(fill(X[f.id].t, f.vars)));
+  const title = (f) => one(tx(fill(f.mid && X[f.id].tMid ? X[f.id].tMid : X[f.id].t, f.vars)));
   function cardHtml(f) {
-    const x = X[f.id]; const what = one(tx(fill(x.w, f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : ''));
+    const x = X[f.id]; const what = one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : ''));
     const why = (x.why || []).filter((r, i) => !(f.id === 'gap_short' && i === 3 && f.no40) && !(f.id === 'gap_long' && i === 3 && f.no45));
     const see = f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : '');
     const list = (arr) => '<ul>' + arr.map((r) => '<li>' + esc(tx(r)) + '</li>').join('') + '</ul>';
@@ -209,7 +218,10 @@
       (why.length ? '<div class="xp-sec"><b>' + esc(t('explain_why')) + '</b>' + list(why) + '</div>' : '') +
       (x.todo && x.todo.length ? '<div class="xp-sec"><b>' + esc(t('explain_do')) + '</b>' + list(x.todo) + '</div>' : '') +
       '<div class="row wrap xp-acts">' + (goOk ? '<button type="button" class="btn sm" data-go="' + esc(x.go) + '">' + esc(t('explain_more')) + '</button>' : '') +
-      (f.lv === 'now' ? '<button type="button" class="btn sm" data-go="help">' + esc(t('explain_numbers')) + '</button>' : (x.ask ? '<button type="button" class="btn sm" data-ask="' + esc(tx(x.ask)) + '">' + esc(t('ask_qura')) + '</button>' : '')) +
+      (f.lv === 'now' ? '<button type="button" class="btn sm" data-go="help">' + esc(t('explain_numbers')) + '</button>' :
+        /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
+        (f.lv === 'today' && S.routeOwner('access-free') ? '<button type="button" class="btn sm" data-go="access-free">' + esc(t('explain_free')) + '</button>' :
+          (x.ask ? '<button type="button" class="btn sm" data-ask="' + esc(tx(x.ask)) + '">' + esc(t('ask_qura')) + '</button>' : ''))) +
       (f.lv !== 'ok' ? '<button type="button" class="btn sm ghost" data-xp-got="' + esc(f.key) + '">' + esc(t('explain_got')) + '</button>' : '') + '</div></div>';
   }
   /* How Sakhi works out her numbers, with her own dates */
@@ -240,9 +252,11 @@
   /* Home: the most urgent thing she has not yet marked "Got it" */
   function home() {
     if (!S.canSave()) return '';
-    const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key])[0]; if (!f) return '';
+    /* Version 37.2: while her plan's own doctor check for late periods shows, "no period yet" (before 90 days) is that card */
+    const planDoc = !!(S.plan && S.plan.docShowing && S.plan.docShowing());
+    const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !(planDoc && x.id === 'late_now' && x.lv === 'watch'))[0]; if (!f) return '';
     if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(tx(X[f.id].see)) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div>';
-    return '<button type="button" class="action xp-home" data-go="explain"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
+    return '<button type="button" class="action xp-home" data-go="explain" data-xp-lv="' + f.lv + '"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
   }
 
   S.register({
@@ -251,7 +265,7 @@
     /* Tours: the Home card the first time it appears (never an urgent one), and the page on her first visit (never when a card
        says to see a doctor this week or sooner). The "?" on the page replays the page tour. */
     tours: [
-      { id: 'xp-home', route: 'home', kind: 'feature', menu: false, order: 30, title: 'explain_h', hue: 'teal', when: () => !S.state.settings.discreet && S.canSave(), steps: [
+      { id: 'xp-home', route: 'home', kind: 'feature', menu: false, order: 30, title: 'explain_h', hue: 'teal', when: () => !S.state.settings.discreet && S.canSave(), auto: () => !(S.plan && S.plan.early && S.plan.early()), steps: [
         { sel: '#view .xp-home:not([data-xp-urgent])', h: 'explain_th_h', p: 'explain_th_p' }] },
       { id: 'explain', route: 'explain', kind: 'feature', order: 50, title: 'explain_h', hue: 'teal', when: () => S.canSave(), steps: [
         { sel: '#view .xp-card', h: 'explain_t1_h', p: 'explain_t1_p' },
@@ -264,13 +278,13 @@
         explain_tile_s: 'Plain words on anything unusual you logged, and when to see a doctor',
         explain_p: 'Sakhi looks at what you logged and explains it in plain words. This is not a diagnosis. Only a doctor who examines you can say what is causing something.',
         explain_none: 'Nothing unusual in what you logged in the last few weeks.', explain_why: 'Common reasons', explain_do: 'What you can do', explain_see: 'When to see a doctor',
-        explain_more: 'Read more', explain_got: 'Got it', explain_got_toast: 'Hidden from Home. It stays on this page.', explain_means: 'What this means', explain_numbers: 'Emergency numbers',
+        explain_more: 'Read more', explain_got: 'Got it', explain_got_toast: 'Hidden from Today. It stays on this page.', explain_means: 'What this means', explain_numbers: 'Emergency numbers', explain_free: 'Free doctor or hospital',
         explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
         explain_how: 'How Sakhi works out your numbers', explain_h_day: 'Cycle day: day 1 is the day your period starts. Today is day {n}.', explain_h_gap: 'Gap: the days from one period start to the next.',
         explain_h_usual: 'Usual gap: 21 to 35 days, or 21 to 45 in the first few years of periods.', explain_h_likely: 'Likely next period: shown only when your last gaps differ by 21 days or less. It runs from your shortest gap minus 2 days to your longest gap plus 2 days.',
         explain_h_out: 'Left out of the maths: gaps touched by hormonal contraception, a pregnancy or the year after a birth, and a second start less than 10 days after the last one.',
         explain_h_preg: 'Pregnancy weeks: counted from the due date on your scan report, or from the first day of your last period. The due date is 280 days after that first day.', explain_h_preg_now: 'You are {w} weeks {d} days; due {e}.',
-        explain_h_fertile: 'Fertile days: shown only when your gaps stay within 7 days of each other.',
+        explain_h_fertile: 'Fertile days: an estimate, shown only after 6 gaps that stay within 7 days of each other.',
         explain_th_start: 'Period started', explain_th_gap: 'Gap (days)', explain_th_used: 'Counted', explain_r_same: 'Same period', explain_r_first: 'First one', explain_r_hormones: 'Left out: hormones', explain_r_pregnancy: 'Left out: pregnancy', explain_r_birth: 'Left out: after birth', explain_r_long: 'Left out: too long', explain_r_guess: 'Left out: a guessed date',
         explain_foot: 'Fixed rules, the same for every woman. Not a diagnosis.'
       },
@@ -279,13 +293,13 @@
         explain_tile_s: 'जो भी असामान्य दर्ज किया, उसका आसान भाषा में मतलब, और डॉक्टर को कब दिखाएँ',
         explain_p: 'Sakhi आपकी दर्ज की गई बातों को देखकर आसान भाषा में समझाती है। यह diagnosis नहीं है। कारण क्या है, यह सिर्फ़ जाँच करने वाली डॉक्टर बता सकती हैं।',
         explain_none: 'पिछले कुछ हफ़्तों में आपने जो दर्ज किया, उसमें कुछ असामान्य नहीं है।', explain_why: 'आम कारण', explain_do: 'आप क्या कर सकती हैं', explain_see: 'डॉक्टर को कब दिखाएँ',
-        explain_more: 'और पढ़ें', explain_got: 'समझ गई', explain_got_toast: 'होम से हटा दिया। यह इस पन्ने पर रहेगा।', explain_means: 'इसका मतलब क्या है', explain_numbers: 'आपातकालीन नंबर',
+        explain_more: 'और पढ़ें', explain_got: 'समझ गई', explain_got_toast: '“आज” से हटा दिया। यह इस पन्ने पर रहेगा।', explain_means: 'इसका मतलब क्या है', explain_numbers: 'आपातकालीन नंबर', explain_free: 'मुफ़्त डॉक्टर या अस्पताल',
         explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
         explain_how: 'Sakhi आपके नंबर कैसे निकालती है', explain_h_day: 'चक्र का दिन: पीरियड शुरू होने का दिन, दिन 1 है। आज दिन {n} है।', explain_h_gap: 'अंतर: एक पीरियड की शुरुआत से अगले पीरियड की शुरुआत तक के दिन।',
         explain_h_usual: 'आम अंतर: 21 से 35 दिन, या पीरियड के शुरुआती कुछ सालों में 21 से 45 दिन।', explain_h_likely: 'अगला संभावित पीरियड: तभी दिखता है जब आपके पिछले अंतर आपस में 21 दिन से ज़्यादा अलग न हों। यह आपके सबसे छोटे अंतर से 2 दिन पहले से, सबसे लंबे अंतर के 2 दिन बाद तक होता है।',
         explain_h_out: 'गिनती से बाहर: हॉर्मोन वाले गर्भनिरोध, गर्भ या डिलीवरी के बाद के पहले साल से जुड़े अंतर, और पिछली शुरुआत के 10 दिन के अंदर दर्ज की गई दूसरी शुरुआत।',
         explain_h_preg: 'गर्भ के हफ़्ते: स्कैन रिपोर्ट की डिलीवरी तारीख़ से, या पिछले पीरियड के पहले दिन से। डिलीवरी की तारीख़ उस पहले दिन के 280 दिन बाद होती है।', explain_h_preg_now: 'आप {w} हफ़्ते {d} दिन की हैं; डिलीवरी लगभग {e}।',
-        explain_h_fertile: 'fertile दिन: तभी दिखते हैं जब आपके अंतर आपस में 7 दिन के अंदर रहें।',
+        explain_h_fertile: 'fertile दिन: अंदाज़ा, तभी दिखते हैं जब 6 अंतर हों और वे आपस में 7 दिन के अंदर रहें।',
         explain_th_start: 'पीरियड शुरू हुआ', explain_th_gap: 'अंतर (दिन)', explain_th_used: 'गिना गया', explain_r_same: 'वही पीरियड', explain_r_first: 'पहला', explain_r_hormones: 'बाहर: हॉर्मोन', explain_r_pregnancy: 'बाहर: गर्भ', explain_r_birth: 'बाहर: डिलीवरी के बाद', explain_r_long: 'बाहर: बहुत लंबा', explain_r_guess: 'बाहर: अंदाज़े की तारीख़',
         explain_foot: 'तय नियम, हर महिला के लिए एक जैसे। यह diagnosis नहीं है।'
       }

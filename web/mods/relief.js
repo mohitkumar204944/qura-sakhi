@@ -221,7 +221,7 @@
       '.rl-dots { display: flex; justify-content: center; gap: 6px; } .rl-dots i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); } .rl-dots i.on { background: var(--accent); } .rl-dots i.done { background: var(--accent-2); }' +
       '.rl-timer { position: relative; width: 132px; height: 132px; align-self: center; } .rl-timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }' +
       '.rl-timer .trk { fill: none; stroke: var(--line); stroke-width: 8; } .rl-timer .arc { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear; }' +
-      '.rl-timer b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; font-variant-numeric: tabular-nums; color: var(--fg); }' +
+      '.rl-timer b { position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; font-variant-numeric: tabular-nums; color: var(--fg); }' +
       '.rl-breath-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; } .rl-breath { width: 150px; height: 150px; border-radius: 50%; background: var(--accent-soft); border: 2px solid var(--accent-2); transform: scale(0.62); transition: transform 0.25s linear; }' +
       '.rl-breath-wrap b { font-size: 20px; color: var(--fg); min-height: 1.4em; } .rl-left { text-align: center; font-variant-numeric: tabular-nums; }' +
       '.rl-rate { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }' +

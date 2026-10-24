@@ -1,11 +1,15 @@
 // Version 30: how a woman gets the most from Sakhi (docs/ux-value-audit-2026-10-22.md, recommendations 1 to 9).
 // Checks:
-//   - search finds the tool she means: the audit's 18 searches, one row per screen, in Care and in Home's ask box;
-//   - Care: "Get care free" first, "For you" shows her tools first, the old "tools" topic split into five named groups;
+//   - search finds the tool she means: the audit's 18 searches, one row per screen, in Explore (Version 37: Today has no
+//     ask box);
+//   - Explore (Care until Version 37): "For you" shows her tools first, the old "tools" topic split into named groups; For you
+//     has no government pages, and "Govt. services" is one row after it, not a topic card (Version 37: no Plans row, My plan is
+//     a tab);
 //   - Get care free: every free doctor, scheme and helper on one page, linked from Care and Help;
 //   - Home's Today: the day's tablets, the plan's due row, today's journey step and her own reminders, each with one tap;
 //   - a check-up today: the report one tap away;
-//   - the setup card for her stage, and "More for you" folded under the day's tasks (a tour into it opens it);
+//   - the setup card for her stage, one step at a time; Version 37: no "More for you" fold, one "Sakhi says" card with the
+//     rest under "More from Sakhi";
 //   - reminders: a row in Me, an empty Coming up offers one, the reminders centre and the period heads-up say when phone
 //     alerts are off;
 //   - what helps (rec 10): off until she turns it on, counted on the phone, sent once a month as buckets with no account;
@@ -51,6 +55,7 @@ const tap = (page, sel) => page.$eval(sel, (el) => el.click());
 const go = async (page, h) => { await page.evaluate((x) => { location.hash = x; }, h); await sleep(250); };
 const view = (page) => page.$eval('#view', (e) => e.innerText);
 const card = (page, sel) => page.$eval(sel, (e) => e.innerText).catch(() => '');
+const text = (page, sel) => page.$eval(sel, (e) => e.textContent).catch(() => '');   /* also inside a closed fold */
 const gos = (page, sel) => page.$$eval(sel, (b) => b.map((x) => x.dataset.go));
 const setState = (page, fn, arg) => page.evaluate(fn, arg);
 /* the tool rows a search shows, in order (Care's search box) */
@@ -73,30 +78,31 @@ for (const who of ['meera', 'asha']) {
   check('1 ' + who + ': scheme money puts her own stage\'s page first', who === 'meera' ? pm[0] === 'access-schemes-preg' : pm[0] === 'access-schemes', pm);
   const plan = await careSearch(page, 'plan');
   check('1 ' + who + ': "plan" finds the pregnancy plan, not "unplanned" pregnancy', plan[0] === 'preg-plan', plan);
-  await go(page, 'home'); await tap(page, '#view details.home-more > summary'); await sleep(150);
-  await page.fill('#home-q', 'report'); await sleep(200);
-  check('1 ' + who + ': Home\'s ask box finds the report too', (await gos(page, '#home-res [data-go]'))[0] === 'report', await gos(page, '#home-res [data-go]'));
+  await go(page, 'home');
+  check('1 ' + who + ': Version 37: search lives in Explore; Today has no ask box', !(await page.$('#home-q')) && !(await page.$('#view .qa-sec')));
   check('1 ' + who + ': no page errors', !errs.length, errs);
   await ctx.close();
 }
 
-/* ---------- 2. Care: Get care free first, her tools first, five named groups (recs 3, 5, 9) ---------- */
-for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg']], ['sunita', ['iron', 'post-contra', 'access-schemes-post']], ['asha', ['contra-mine', 'contra-missed', 'tools-reminders']], ['kamla', ['screen-mine', 'meno-diary']]]) {
+/* ---------- 2. Explore: her tools first, named groups (recs 3, 5, 9); Govt. services in one row (Version 36) ---------- */
+for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['sunita', ['post-recovery', 'post-pelvic', 'iron']], ['asha', ['contra-mine', 'contra-missed', 'tools-reminders']], ['kamla', ['screen-mine', 'meno-diary']]]) {
   const { ctx, page, errs } = await open({ hash: '#care', sample: who });
-  const rows = await gos(page, '#view > .care-free [data-go], #view .care-sec:first-of-type [data-go]');
-  check('2 ' + who + ': Care opens with Get care free, then For you with her tools first', rows[0] === 'access-free' && want.every((r, i) => rows[i + 1] === r), rows.slice(0, 6));
+  const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
+  check('2 ' + who + ': Explore opens with For you, her tools first, then Govt. services; no Plans row (My plan is a tab)', all[0] === fy[0] && all.indexOf('plan') < 0 && want.every((r, i) => fy[i] === r) && !fy.some((r) => /^access-|^asha$/.test(r)) && all.indexOf('access-free') === all.indexOf(fy[fy.length - 1]) + 1, [all.slice(0, 8), fy]);
   check('2 ' + who + ': no page errors', !errs.length, errs);
   await ctx.close();
 }
 {
   const { ctx, page, errs } = await open({ hash: '#care' });
   const topics = await gos(page, '#view .topic-grid [data-go]');
-  check('2 the tools topic is now five named groups', ['topic-free', 'topic-plans', 'topic-records', 'topic-support', 'topic-fun'].every((x) => topics.indexOf(x) >= 0) && topics.indexOf('topic-tools') < 0, topics);
+  check('2 the tools topic is named groups, and Govt. services is a row, not a topic card', ['topic-plans', 'topic-records', 'topic-support', 'topic-fun'].every((x) => topics.indexOf(x) >= 0) && topics.indexOf('topic-tools') < 0 && topics.indexOf('topic-free') < 0, topics);
   const cv = await view(page);
-  check('2 the groups have their names', ['Get care free', 'My plans and reminders', 'My records', 'Feel better, family and more', 'Just for fun'].every((x) => cv.indexOf(x) >= 0));
+  check('2 the groups have their names', ['Govt. services', 'My plans and reminders', 'My records', 'Feel better, family and more', 'Just for fun'].every((x) => cv.indexOf(x) >= 0));
   await go(page, 'topic-free');
   const free = await gos(page, '#view .list [data-go]');
-  check('2 Get care free (the group) lists the hub, the free doctor, care near me, schemes, online, ASHA and Qura\'s doctor', ['access-free', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha', 'ask'].every((x) => free.indexOf(x) >= 0) && free[0] === 'access-free', free);
+  check('2 Govt. services (the group) lists the hub, the free doctor, care near me, schemes, online and ASHA; Qura\'s doctor is in Support', ['access-free', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha'].every((x) => free.indexOf(x) >= 0) && free[0] === 'access-free' && free.indexOf('ask') < 0, free);
+  await go(page, 'topic-support');
+  check('2 Ask a Qura doctor sits in Support', (await gos(page, '#view .list [data-go]')).indexOf('ask') >= 0);
   await go(page, 'topic-records');
   const recs = await gos(page, '#view .list [data-go]');
   check('2 My records: the report for the doctor, reports and the summary', ['report', 'tools-reports', 'tools-summary'].every((x) => recs.indexOf(x) >= 0), recs);
@@ -115,12 +121,12 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
   check('3 Help\'s doctor card opens Get care free', !!(await page.$('#view .doc-card [data-go="access-free"]')));
   await tap(page, '#view .doc-card [data-go="access-free"]'); await sleep(250);
   const rows = await gos(page, '#view .list [data-go]');
-  check('3 rows: Qura\'s doctor, free government doctors, care near me, schemes, do it online, ASHA', JSON.stringify(rows) === JSON.stringify(['ask', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha']), rows);
+  check('3 rows: free government doctors, care near me, schemes, do it online, ASHA (government only)', JSON.stringify(rows) === JSON.stringify(['access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha']), rows);
   check('3 the schemes row counts her claims', /My claims: 2/.test(await view(page)));
   check('3 the emergency line: 112, and 108 or 102 for a free ambulance', /Emergency: call 112, or 108 or 102 for a free ambulance/.test(await view(page)));
   check('3 opening it is noted on the phone, for her setup card', await page.evaluate(() => !!window.Saathi.state.mods.access.seenFree));
   await go(page, 'care');
-  check('3 Care\'s first row is Get care free', (await gos(page, '#view [data-go]'))[0] === 'access-free');
+  check('3 Care has one Govt. services row', (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length === 1 && /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText)));
   check('3 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -138,7 +144,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
   await setState(page, (k) => { const S = window.Saathi; S.reminders.upsert({ id: 'tools-c-test', mod: 'tools', kind: 'custom', title: { en: 'Buy sanitary pads', hi: 'पैड ख़रीदने हैं' }, start: k, every: null, time: '18:00', on: true }); S.save(); }, isoAgo(0));
   await go(page, 'learn'); await go(page, 'home');
   check('4 her own reminder due today is a row in Today', /Buy sanitary pads/.test(await card(page, '#view .today-card')));
-  check('4 and Coming up does not repeat it', !/Buy sanitary pads/.test(await page.$$eval('#view > .card', (cs) => cs.filter((c) => /Coming up/.test(c.innerText)).map((c) => c.innerText).join(' '))));
+  check('4 and Coming up does not repeat it', !/Buy sanitary pads/.test(await page.$$eval('#view .slot .card', (cs) => cs.filter((c) => /Coming up/.test(c.textContent)).map((c) => c.textContent).join(' '))));
   await tap(page, '#view .today-rem-tools-c-test [data-today-act]'); await sleep(300);
   check('4 Done marks the reminder done for today', (await page.evaluate(() => window.Saathi.reminders.get('tools-c-test').doneOn)) === isoAgo(0) && !/Buy sanitary pads/.test(await card(page, '#view .today-card')));
   await setState(page, () => { const S = window.Saathi; S.reminders.upsert({ id: 'tools-c-test2', mod: 'tools', kind: 'custom', title: { en: 'Buy sanitary pads', hi: 'पैड' }, start: S.toISO(S.today()), every: null, time: '19:00', on: true }); S.state.settings.discreet = true; S.save(); });
@@ -180,20 +186,24 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
   await ctx.close();
 }
 
-/* ---------- 6. The setup card (rec 2) ---------- */
+/* ---------- 6. The setup card (rec 2); Version 37: the next step only, inside Today's slot ---------- */
 {
   const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [] } });
-  const su = await card(page, '#view .setup-card');
-  check('6 a new woman: Set up Sakhi for you, with her first steps', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /Save your ASHA or ANM’s number/.test(su) && /Look at free care near you/.test(su), su);
+  const su = await text(page, '#view .setup-card');
+  check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 3/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
   check('6 the web prototype has no phone-reminders step', !/reminders on this phone/.test(su));
   check('6 the first-week petals card is gone', !/first three petals/.test(await view(page)));
   await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
   check('6 "Log your last period" opens the period log', !!(await page.$('#sheet-root .sheet')));
   await page.evaluate(() => window.Saathi.closeSheet()); await sleep(150);
-  await page.$$eval('#view .setup-it', (bs) => bs.find((b) => /free care/.test(b.innerText)).click()); await sleep(300);
-  check('6 "Look at free care" opens Get care free', await page.evaluate(() => location.hash === '#access-free'));
-  await go(page, 'home');
-  check('6 and that step is done: it leaves the list and the count goes up', !/Look at free care near you/.test(await card(page, '#view .setup-card')) && /1 \/ 3/.test(await card(page, '#view .setup-card')), await card(page, '#view .setup-card'));
+  await setState(page, (d) => { const S = window.Saathi; S.state.events.push({ d, t: 'start' }); S.save(); }, isoAgo(10)); await go(page, 'learn'); await go(page, 'home');
+  const su2 = await text(page, '#view .setup-card');
+  check('6 her period noted: the count goes up and the next step is her ASHA\'s number', /1 \/ 3/.test(su2) && /Save your ASHA or ANM’s number/.test(su2) && !/Log your last period/.test(su2), su2);
+  await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
+  check('6 that step opens My ASHA', await page.evaluate(() => location.hash === '#asha'));
+  await go(page, 'access-free'); await go(page, 'home');
+  const su3 = await text(page, '#view .setup-card');
+  check('6 Get care free opened elsewhere: that step is done too, and her ASHA is still next', /2 \/ 3/.test(su3) && /ASHA/.test(su3) && !/Look at free care near you/.test(su3), su3);
   await tap(page, '#setup-hide'); await sleep(250);
   check('6 "Hide this" hides it, and it stays hidden', !(await page.$('#view .setup-card')) && (await page.evaluate(() => window.Saathi.state.prompts.setup)) === 'off');
   check('6 no page errors', !errs.length, errs);
@@ -201,8 +211,8 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
 }
 {
   const { ctx, page, errs } = await open({ android: true, sample: 'meera' });
-  const su = await card(page, '#view .setup-card');
-  check('6 pregnant, on Android: plan reminders, scheme money and her ASHA (her dates and iron are done)', /Turn on your plan’s reminders/.test(su) && /Check the scheme money you can get/.test(su) && /Save your ASHA or ANM’s number/.test(su) && /2 \/ 5/.test(su), su);
+  const su = await text(page, '#view .setup-card');
+  check('6 pregnant, on Android: the next of plan reminders, scheme money and her ASHA (her dates and iron are done)', (await page.$$('#view .setup-it')).length === 1 && [/Turn on your plan’s reminders/, /Check the scheme money you can get/, /Save your ASHA or ANM’s number/].filter((r) => r.test(su)).length === 1 && /2 \/ 5/.test(su), su);
   await setState(page, () => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn'); await go(page, 'home');
   check('6 discreet mode: no setup card', !(await page.$('#view .setup-card')));
   check('6 no page errors', !errs.length, errs);
@@ -210,27 +220,26 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
 }
 {
   const { ctx, page, errs } = await open({ android: true });
-  check('6 periods, on Android: turning on phone reminders is a step', /Turn on reminders on this phone/.test(await card(page, '#view .setup-card')));
+  check('6 periods, on Android: turning on phone reminders is a step', /Turn on reminders on this phone/.test(await text(page, '#view .setup-card')));
   check('6 no page errors', !errs.length, errs);
   await ctx.close();
 }
 
-/* ---------- 7. "More for you" folds under the day's tasks (rec 8) ---------- */
+/* ---------- 7. Version 37: no "More for you" fold; one "Sakhi says" card, the rest under "More from Sakhi" (rec 8 then) ---------- */
 {
   const { ctx, page, errs } = await open({ sample: 'kamla' });
-  check('7 the ask box and the flower are folded under "More for you", closed at first', !!(await page.$('#view details.home-more:not([open]) .qa-sec')) && !!(await page.$('#view details.home-more .joy-strip')));
-  check('7 the fold comes after Today and the setup card', await page.evaluate(() => { const m = document.querySelector('#view .home-more'), t2 = document.querySelector('#view .today-card'); return !!m && !!t2 && !!(t2.compareDocumentPosition(m) & Node.DOCUMENT_POSITION_FOLLOWING); }));
-  await tap(page, '#view details.home-more > summary'); await sleep(150); await go(page, 'learn'); await go(page, 'home');
-  check('7 open stays open while she moves around', !!(await page.$('#view details.home-more[open]')));
-  await setState(page, () => { window.Saathi.mem.homeMore = false; }); await go(page, 'learn'); await go(page, 'home');
-  await page.evaluate(() => window.Saathi.startTour('home-meno')); await sleep(700);
-  check('7 a tour that points inside the fold opens it', !!(await page.$('#view details.home-more[open]')) && (await page.$eval('#tour-root', (e) => e.innerHTML.length).catch(() => 0)) > 0);
+  check('7 no fold, no ask box and no flower on Today', !(await page.$('#view details.home-more')) && !(await page.$('#view .qa-sec')) && !(await page.$('#view .joy-strip')));
+  const sl = await page.evaluate(() => { const s = document.querySelector('#view section.slot'); if (!s) return null; const more = s.querySelector('details.slot-more'); return { h: s.querySelector('.slot-h').innerText, shown: [...s.children].filter((c) => !c.matches('.slot-h') && c.tagName !== 'DETAILS').length, more: more ? { open: more.open, sum: more.querySelector('summary').innerText, n: more.querySelector('.slot-in').children.length } : null }; });
+  check('7 "Sakhi says": one card shows, the rest fold under "More from Sakhi (n)", closed at first', sl && /Sakhi says/i.test(sl.h) && sl.shown === 1 && sl.more && !sl.more.open && sl.more.sum === 'More from Sakhi (' + sl.more.n + ')', sl);
+  check('7 the slot comes after Today', await page.evaluate(() => { const m = document.querySelector('#view .slot'), t2 = document.querySelector('#view .today-card'); return !!m && !!t2 && !!(t2.compareDocumentPosition(m) & Node.DOCUMENT_POSITION_FOLLOWING); }));
+  await tap(page, '#view details.slot-more > summary'); await sleep(150); await go(page, 'learn'); await go(page, 'home');
+  check('7 open stays open while she moves around', !!(await page.$('#view details.slot-more[open]')));
   check('7 no page errors', !errs.length, errs);
   await ctx.close();
 }
 {
   const { ctx, page, errs } = await open({ hash: '#home', seed: { stage: 'browse', events: [] } });
-  check('7 just reading: her own short Home, with no Today, setup card or fold', !(await page.$('#view details.home-more')) && !(await page.$('#view .today-card')) && !(await page.$('#view .setup-card')) && /Just reading/.test(await view(page)));
+  check('7 just reading: her own short Home, with no Today, setup card or slot', !(await page.$('#view .slot')) && !(await page.$('#view .today-card')) && !(await page.$('#view .setup-card')) && /Just reading/.test(await view(page)));
   check('7 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -249,7 +258,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
 }
 {
   const { ctx, page, errs } = await open({ seed: { prompts: { setup: 'off' } } });
-  check('8 no reminders yet (and no setup card): Coming up offers to set one', !!(await page.$('#view .cu-empty[data-go="tools-reminders"]')) && /Set a reminder/.test(await view(page)));
+  check('8 no reminders yet (and no setup card): Coming up offers to set one, in Today\'s slot', !!(await page.$('#view .slot .cu-empty[data-go="tools-reminders"]')) && /Set a reminder/.test(await text(page, '#view .slot')));
   check('8 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -269,11 +278,11 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'access-schemes-preg'
 {
   const { ctx, page, errs } = await open({ lang: 'hi', seed: { lang: 'hi', dob: '1999-03-01', events: [] } });
   const v = await view(page);
-  check('9 Hindi: the setup card and the fold', /Sakhi को अपने लिए तैयार करें/.test(v) && /आपके लिए और/.test(v), v.slice(0, 600));
+  check('9 Hindi: the setup card and the slot', /Sakhi को अपने लिए तैयार करें/.test(v) && /Sakhi कहती है/i.test(v), v.slice(0, 600));
   await go(page, 'access-free');
-  check('9 Hindi: Get care free', /मुफ़्त इलाज और मदद/.test(await view(page)) && /एम्बुलेंस/.test(await view(page)));
+  check('9 Hindi: Govt. services', /सरकारी सेवाएँ/.test(await view(page)) && /एम्बुलेंस/.test(await view(page)));
   await go(page, 'care');
-  check('9 Hindi: the five groups', /मुफ़्त इलाज और मदद/.test(await view(page)) && /मेरे रिकॉर्ड/.test(await view(page)) && /बस मज़े के लिए/.test(await view(page)));
+  check('9 Hindi: Explore, Govt. services and the groups, with no Plans row', /खोजें/.test(await view(page)) && !/आपके लिए प्लान/.test(await view(page)) && /सरकारी सेवाएँ/.test(await view(page)) && /मेरे रिकॉर्ड/.test(await view(page)) && /बस मज़े के लिए/.test(await view(page)));
   check('9 no page errors', !errs.length, errs);
   await ctx.close();
 }

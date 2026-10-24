@@ -40,8 +40,11 @@ supabase db push
 `db push` applies every Sakhi migration not yet on the project. This is Sakhi's own project, so nothing of Qura's is touched.
 
 **Version 30 (22 Oct 2026):** `20261022120000_sakhi_usage.sql` adds the two tables for the opt-in "what helps" counts
-(SERVER_SPEC section 5.9). It is **not on the live project yet**, and the function there has no `usage` route. The next
-`db push` and the next function deploy carry both, so both wait for Mohit's yes (SERVER_SPEC section 11, decision 8).
+(SERVER_SPEC section 5.9). Applied to the live project on 23 Oct 2026, with the function that has the `usage` route.
+
+**Version 33 (23 Oct 2026):** `20261023120000_sakhi_call_requests.sql` adds `call_requests` for "Ask Qura to call me"
+(SERVER_SPEC section 10.1). Applied on 23 Oct 2026 together with the Version 30 changes; the hand-off was switched on the
+same day.
 
 ## 3. Set the secrets
 
@@ -69,6 +72,38 @@ supabase db push
    - Without a graph version the server uses `v21.0`, the same default as Qura's code.
 
 3. **When Qura rotates its Meta token or AuthKey key, run the script again.**
+
+4. **The doctor-call hand-off (Version 33), once Qura's endpoint is merged and live.** Qura's side was built on 23 Oct
+   (branch `feat/sakhi-call-requests`, env `SAKHI_PARTNER_KEY`). Without these two secrets the hand-off stays off: the server
+   answers `available: false` and the app keeps the booking link. The same key goes in both places, and it never appears on
+   screen.
+   1. Put a new key on the clipboard:
+
+      ```bash
+      openssl rand -hex 24 | tr -d '\n' | pbcopy
+      ```
+
+   2. Paste it into Vercel as `SAKHI_PARTNER_KEY` (Production, and Preview if testing there), then redeploy Qura.
+   3. Set Sakhi's key from the same clipboard. On its own it changes nothing: the hand-off stays off until the address is set
+      too.
+
+      ```bash
+      cd ~/Desktop/QuraSakhi/sakhi/server && supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_QURA_KEY="$(pbpaste)"
+      ```
+
+   4. Copy something else, so the key leaves the clipboard.
+   5. **Only once Qura's endpoint is merged and live in production** (and Sakhi's function is deployed), switch it on. Before
+      that, every request would hit a 404 and fail.
+
+      ```bash
+      cd ~/Desktop/QuraSakhi/sakhi/server && supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_QURA_HANDOFF_URL=https://quranutrition.com/api/partners/sakhi/v1/call-requests
+      ```
+
+   Notes:
+   - Use exactly this URL: with `www.` or a trailing `/` Qura answers with a 308 redirect.
+   - The key must be 32 characters or more (this one is 48), and the address https, or the hand-off stays off.
+   - Turning it off again: `supabase secrets unset SAKHI_QURA_HANDOFF_URL`. Requests already waiting fail after 24 hours, and
+     the app offers the booking link.
 
 ## 4. Deploy the function
 
@@ -152,3 +187,15 @@ cd ~/Desktop/QuraSakhi/sakhi/server && supabase db dump --data-only --schema sak
   ```
 
   It should answer `{"error":"no_token_here"}`. Don't send a real report by hand: it would count in the totals.
+- **"Ask Qura to call me" (Version 33):** after the deploy, check it answers without a token and says whether it is on:
+
+  ```bash
+  curl -s https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/requests
+  ```
+
+  `{"available":false}` until the two secrets in section 3 are set, then `{"available":true}`. Test a real request with a
+  staff phone on a test build, never with a woman's account. In the dashboard, the `call_requests` row should show `sent`
+  with a null `topic` and `shared_data` a moment later.
+- **Hand-off retries:** there is no cron. A request waiting for Qura is tried again when the API is used (her app asks for
+  its status when she opens Sakhi, and any woman's daily visit). With few women in a pilot that can be hours apart; a request
+  nothing tried for 25 hours fails as `expired` and the app offers the booking link.

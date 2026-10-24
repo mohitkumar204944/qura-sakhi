@@ -9,10 +9,14 @@
 body { background: #F7F4F8; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme]) body { background: #1E1414; } }
 :root[data-theme="dark"] body { background: #1E1414; }
+/* Version 32: if the app never starts (a very old WebView), this note shows after 6 seconds; a normal start replaces it */
+.boot-note { opacity: 0; animation: boot-note 0.3s 6s forwards; padding: 24px 16px; font: 16px/1.5 sans-serif; color: #2B1414; }
+:root[data-theme="dark"] .boot-note { color: #F5E8E8; }
+@keyframes boot-note { to { opacity: 1; } }
 </style>
 <div id="app">
   <header class="topbar" id="topbar"></header>
-  <main id="view" class="view" aria-live="polite"></main>
+  <main id="view" class="view" aria-live="polite"><div class="boot-note"><p>If this page stays empty, please update "Android System WebView" and "Chrome" from the Play Store, then open Sakhi again.</p><p lang="hi">अगर यह पन्ना ख़ाली रहे, तो Play Store से "Android System WebView" और "Chrome" अपडेट करें, फिर Sakhi दोबारा खोलें।</p></div></main>
   <nav class="tabbar" id="tabbar" aria-label="Main" hidden></nav>
 </div>
 <div id="sheet-root"></div>
@@ -41,6 +45,7 @@ body { background: #F7F4F8; }
 <script src="mods/access.js" charset="utf-8"></script>
 <script src="mods/relief.js" charset="utf-8"></script>
 <script src="mods/journey.js" charset="utf-8"></script>
+<script src="mods/plan.js" charset="utf-8"></script>
 <script src="mods/joy.js" charset="utf-8"></script>
 <script src="mods/explain.js" charset="utf-8"></script>
 <script src="mods/docportal.js" charset="utf-8"></script>

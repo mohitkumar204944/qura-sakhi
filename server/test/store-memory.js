@@ -2,7 +2,7 @@
 // server/test/api.test.mjs runs every check against this and against the real SQL on PGlite, so the two must agree.
 
 export function memoryStore() {
-  const db = { rate: new Map(), challenges: new Map(), accounts: new Map(), consents: [], sessions: new Map(), pincodes: new Map(), stats: new Map(), usage: new Map(), usageReports: new Map(), housekeptAt: 0 };
+  const db = { rate: new Map(), challenges: new Map(), accounts: new Map(), consents: [], sessions: new Map(), pincodes: new Map(), stats: new Map(), usage: new Map(), usageReports: new Map(), requests: [], housekeptAt: 0 };
   let seq = 0;
   const copy = (o) => (o ? JSON.parse(JSON.stringify(o)) : null);
   const store = {
@@ -81,6 +81,30 @@ export function memoryStore() {
       db.accounts.delete(id);
       db.consents = db.consents.filter((c) => c.account_id !== id);
       for (const [k, s] of db.sessions) if (s.account_id === id) db.sessions.delete(k);
+      db.requests = db.requests.filter((r) => r.account_id !== id);
+    },
+    async addRequest(r) {
+      if (db.requests.some((x) => x.ref === r.ref)) return null;
+      const row = { id: String(++seq), ref: r.ref, account_id: r.accountId, best_time: r.bestTime, lang: r.lang, notice: r.notice, shared: r.shared.slice(), topic: r.topic,
+        shared_data: copy(r.sharedData), status: 'queued', tries: 0, next_try_at: r.at, last_error: null, qura_lead_id: null, created_at: r.at, sent_at: null };
+      db.requests.push(row);
+      return { id: row.id, ref: row.ref };
+    },
+    async listRequests(accountId) {
+      const iso = (ms) => (ms == null ? null : new Date(ms).toISOString().slice(0, 19) + 'Z');
+      return db.requests.filter((r) => r.account_id === accountId).sort((a, b) => b.created_at - a.created_at || +b.id - +a.id).slice(0, 20)
+        .map((r) => ({ ref: r.ref, status: r.status, created_at: iso(r.created_at), sent_at: iso(r.sent_at) }));
+    },
+    async claimDueRequests(nowMs, n, ref) {
+      const due = db.requests.filter((r) => r.status === 'queued' && r.next_try_at <= nowMs && (!ref || r.ref === ref)).sort((a, b) => a.next_try_at - b.next_try_at).slice(0, n);
+      return due.map((r) => { r.next_try_at = nowMs + 60000; const a = db.accounts.get(r.account_id) || {};
+        return { id: r.id, ref: r.ref, best_time: r.best_time, lang: r.lang, notice: r.notice, shared: r.shared.slice(), topic: r.topic, shared_data: copy(r.shared_data), tries: r.tries, created_ms: r.created_at, phone: a.phone, name: a.name }; });
+    },
+    async finishRequest(id, f) {
+      const r = db.requests.find((x) => x.id === id); if (!r) return;
+      r.tries = f.tries; r.last_error = f.error || null;
+      if (f.status === 'queued') { r.next_try_at = f.nextTryAt; return; }
+      Object.assign(r, { status: f.status, qura_lead_id: f.leadId || null, sent_at: f.status === 'sent' ? f.at : null, next_try_at: null, topic: null, shared_data: null });
     },
     async addUsage(month, pairs) {
       for (const [tool, bucket] of pairs) { const k = month + '|' + tool + '|' + bucket; db.usage.set(k, (db.usage.get(k) || 0) + 1); }

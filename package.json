@@ -5,7 +5,7 @@
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
   "type": "module",
   "scripts": {
-    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server",
+    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/insights.mjs && node test/fieldtest.mjs && node test/handoff.mjs && node test/notify.mjs && node test/pmosplan.mjs && node test/companion.mjs && node test/firstday.mjs && node test/notices.mjs && node test/goals.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server && npm run test:android",
     "test:signup": "cd web && node test/signup.mjs",
     "apk": "cd android && ./build-apk.sh",
     "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs && node server/test/set-qura-keys.test.mjs",
@@ -13,7 +13,17 @@
     "test:me": "cd web && node test/me.mjs",
     "test:privacy": "cd web && node test/privacy.mjs",
     "test:companions": "cd web && node test/companions.mjs",
-    "test:value": "cd web && node test/value.mjs"
+    "test:value": "cd web && node test/value.mjs",
+    "test:insights": "cd web && node test/insights.mjs",
+    "test:fieldtest": "cd web && node test/fieldtest.mjs",
+    "test:handoff": "cd web && node test/handoff.mjs",
+    "test:notify": "cd web && node test/notify.mjs",
+    "test:pmosplan": "cd web && node test/pmosplan.mjs",
+    "test:companion": "cd web && node test/companion.mjs",
+    "test:firstday": "cd web && node test/firstday.mjs",
+    "test:notices": "cd web && node test/notices.mjs",
+    "test:goals": "cd web && node test/goals.mjs",
+    "test:android": "android/test/run-reminder-math.sh"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",

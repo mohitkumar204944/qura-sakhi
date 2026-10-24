@@ -46,7 +46,7 @@
 
   /* ---------- shared content ---------- */
   const ECTOPIC = { en: 'Period late or a positive test, with pain on one side of the lower belly, shoulder-tip pain, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which is more likely after tube damage.', hi: 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसका ख़तरा ट्यूब ख़राब होने के बाद ज़्यादा होता है।' };
-  const BAMS = { en: "Qura's doctors are BAMS. They can order tests and help with cycles, weight, sleep and food. Ovulation tablets, IUI and IVF need an MBBS/MD gynaecologist; Qura refers you.", hi: 'Qura की डॉक्टर BAMS हैं। वे test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। Ovulation की गोलियाँ, IUI और IVF के लिए MBBS/MD स्त्री रोग विशेषज्ञ चाहिए; Qura आपको refer करता है।' };
+  const BAMS = { en: "Qura's doctors are BAMS. They can order tests and help with cycles, weight, sleep and food. Ovulation tablets, IUI and IVF need an MBBS/MD gynaecologist; Qura refers you.", hi: 'Qura की डॉक्टर BAMS हैं। वे test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। ओव्यूलेशन की गोलियाँ, IUI और IVF के लिए MBBS/MD स्त्री रोग विशेषज्ञ चाहिए; Qura आपको refer करता है।' };
 
   const FLAGS = [
     { k: 'irregular', en: 'Periods have stopped, or are very irregular (gaps often longer than 35 days)', hi: 'पीरियड बंद हैं, या बहुत अनियमित हैं (अक्सर 35 दिन से ज़्यादा का अंतर)' },
@@ -102,6 +102,8 @@
   ];
   const PREP_ALL = PREP_HER.concat(PREP_HIM);
   const prepDone = (st) => PREP_ALL.filter((x) => (st.prep || {})[x.k]).length;
+  /* Version 38: the trying-for-a-baby plan's results (plan.js) */
+  S.ttc = Object.assign(S.ttc || {}, { prepDone: () => ({ a: prepDone(store()), b: PREP_ALL.length }) });
 
   const MUCUS = [
     { k: 'dry', en: 'Dry', hi: 'सूखा', den: 'nothing felt or seen', dhi: 'कुछ महसूस या दिखा नहीं' },
@@ -143,8 +145,8 @@
     } else if (S.canSave()) {
       top = '<div class="card soft"><p style="color:var(--fg)">' + T({ en: 'Already trying? Add the date you started and we will count it for you, with the time doctors suggest for your age.', hi: 'कोशिश शुरू कर दी है? शुरू करने की तारीख़ डालें, हम महीने गिनेंगे और बताएँगे कि आपकी उम्र में डॉक्टर कब तक इंतज़ार की सलाह देते हैं।' }) + '</p>' + goBtn('ttc-trying', { en: 'Count my months', hi: 'मेरे महीने गिनें' }) + '</div>';
     }
-    const planNote = S.canSave() && !sit.planning && !sit.pregnant ? '<div class="card soft"><p class="small">' + T({ en: 'Tip: switch on "Planning a baby" on the Me page. Your doctor then sees it, and your Home page shows your months of trying.', hi: 'सुझाव: “मैं” पन्ने पर “बच्चे की योजना” चालू करें। तब आपकी डॉक्टर को यह दिखेगा, और होम पेज पर कोशिश के महीने दिखेंगे।' }) + '</p>' + goBtn('me', { en: 'Open Me', hi: '“मैं” खोलें' }) + '</div>' : '';
-    const pmos = sit.pcos ? card({ en: 'With PMOS', hi: 'PMOS के साथ' }, P({ en: "With PMOS, an egg may not be released every month, so there is no need to wait a year. See a gynaecologist when you start trying. Ovulation tablets help many women with PMOS; they need a gynaecologist's prescription and scans.", hi: 'PMOS में हर महीने अंडा निकलना ज़रूरी नहीं, इसलिए साल भर इंतज़ार की ज़रूरत नहीं। कोशिश शुरू करते ही स्त्री रोग विशेषज्ञ को दिखाएँ। Ovulation की गोलियाँ PMOS वाली कई महिलाओं की मदद करती हैं; इनके लिए स्त्री रोग विशेषज्ञ का पर्चा और scan ज़रूरी हैं।' }, 'ttc-p'), 'warn') : '';
+    const planNote = S.canSave() && !sit.planning && !sit.pregnant ? '<div class="card soft"><p class="small">' + T({ en: 'Tip: switch on "Planning a baby" on the Me page. Your doctor then sees it, and your Today page shows your months of trying.', hi: 'सुझाव: “मैं” पन्ने पर “बच्चे की योजना” चालू करें। तब आपकी डॉक्टर को यह दिखेगा, और “आज” पन्ने पर कोशिश के महीने दिखेंगे।' }) + '</p>' + goBtn('me', { en: 'Open Me', hi: '“मैं” खोलें' }) + '</div>' : '';
+    const pmos = sit.pcos ? card({ en: 'With PMOS', hi: 'PMOS के साथ' }, P({ en: "With PMOS, an egg may not be released every month, so there is no need to wait a year. See a gynaecologist when you start trying. Ovulation tablets help many women with PMOS; they need a gynaecologist's prescription and scans.", hi: 'PMOS में हर महीने अंडा निकलना ज़रूरी नहीं, इसलिए साल भर इंतज़ार की ज़रूरत नहीं। कोशिश शुरू करते ही स्त्री रोग विशेषज्ञ को दिखाएँ। ओव्यूलेशन की गोलियाँ PMOS वाली कई महिलाओं की मदद करती हैं; इनके लिए स्त्री रोग विशेषज्ञ का पर्चा और scan ज़रूरी हैं।' }, 'ttc-p'), 'warn') : '';
     v.innerHTML = S.backRow(t('ttc_hub'), 'care', false) +
       P({ en: 'For couples planning a pregnancy or trying now. A few checks and folic acid before you start make a real difference. Nothing here is a diagnosis.', hi: 'उन जोड़ों के लिए जो गर्भ की योजना बना रहे हैं या कोशिश कर रहे हैं। शुरू करने से पहले कुछ जाँचें और folic acid सच में फ़र्क़ डालते हैं। यहाँ कुछ भी diagnosis नहीं है।' }) +
       pregNote() + top + pmos +
@@ -234,7 +236,7 @@
         { en: 'Start at the gynaecology OPD of your district hospital or a government medical college. Your ASHA or ANM can tell you the nearest one.', hi: 'ज़िला अस्पताल या सरकारी medical college की स्त्री रोग OPD से शुरू करें। आपकी ASHA या ANM सबसे पास वाली जगह बता सकती हैं।' },
         { en: 'Go together. His semen test is one of the first tests, not the last.', hi: 'साथ जाएँ। उनका semen test पहली जाँचों में से है, आख़िरी नहीं।' },
         { en: 'Take this diary, old reports, scan reports and a list of the medicines you both take.', hi: 'यह डायरी, पुरानी reports, scan reports और आप दोनों की दवाओं की सूची साथ ले जाएँ।' },
-        { en: "Ovulation tablets, IUI and IVF are started by an MBBS/MD gynaecologist after tests. Do not start them on a chemist's or a relative's advice.", hi: 'Ovulation की गोलियाँ, IUI और IVF जाँच के बाद MBBS/MD स्त्री रोग विशेषज्ञ ही शुरू करते हैं। केमिस्ट या रिश्तेदार की सलाह पर शुरू न करें।' }
+        { en: "Ovulation tablets, IUI and IVF are started by an MBBS/MD gynaecologist after tests. Do not start them on a chemist's or a relative's advice.", hi: 'ओव्यूलेशन की गोलियाँ, IUI और IVF जाँच के बाद MBBS/MD स्त्री रोग विशेषज्ञ ही शुरू करते हैं। केमिस्ट या रिश्तेदार की सलाह पर शुरू न करें।' }
       ])) +
       goBtn('ttc-tests', { en: 'Which tests, and what they mean', hi: 'कौन-सी जाँचें, और उनका मतलब' }, 'block') +
       (S.canSave() ? '' : S.needDiary()) +
@@ -338,7 +340,7 @@
     own(); const st = store(); st.signs = st.signs || {};
     v.innerHTML = S.backRow(t('ttc_signs'), 'ttc', false) +
       P({ en: 'A private log of your waking temperature, cervical mucus and LH strips, drawn by cycle day. Some women like to learn their pattern this way; you do not need it to get pregnant.', hi: 'सुबह के तापमान, म्यूकस (योनि का चिकना स्राव) और LH strip का निजी रिकॉर्ड, चक्र के दिन के हिसाब से। कुछ महिलाएँ इससे अपना पैटर्न समझना पसंद करती हैं; गर्भ ठहरने के लिए यह ज़रूरी नहीं।' }) +
-      '<div class="card warn"><h3>' + T({ en: 'This log is data only', hi: 'यह रिकॉर्ड सिर्फ़ डेटा है' }) + '</h3>' + P({ en: 'Your waking temperature goes up a little, about 0.2–0.5 °C (0.4–0.9 °F), after an egg is released, and stays up until your next period. So a chart can only show afterwards that it probably happened. This app does not detect ovulation, marks no day, and shows no safe days. It is not a way to avoid pregnancy.', hi: 'अंडा निकलने के बाद सुबह का तापमान थोड़ा बढ़ता है, लगभग 0.2–0.5 °C (0.4–0.9 °F), और अगले पीरियड तक बढ़ा रहता है। इसलिए चार्ट बाद में ही दिखा सकता है कि शायद अंडा निकला था। यह app ovulation नहीं पहचानता, कोई दिन नहीं बताता, और कोई safe days नहीं दिखाता। यह गर्भ से बचने का तरीक़ा नहीं है।' }, 'ttc-p') + '</div>' +
+      '<div class="card warn"><h3>' + T({ en: 'This log is data only', hi: 'यह रिकॉर्ड सिर्फ़ डेटा है' }) + '</h3>' + P({ en: 'Your waking temperature goes up a little, about 0.2–0.5 °C (0.4–0.9 °F), after an egg is released, and stays up until your next period. So a chart can only show afterwards that it probably happened. This app does not detect ovulation: it only estimates the day from your dates, and it never shows safe days. It is not a way to avoid pregnancy.', hi: 'अंडा निकलने के बाद सुबह का तापमान थोड़ा बढ़ता है, लगभग 0.2–0.5 °C (0.4–0.9 °F), और अगले पीरियड तक बढ़ा रहता है। इसलिए चार्ट बाद में ही दिखा सकता है कि शायद अंडा निकला था। यह app ovulation नहीं पहचानता: सिर्फ़ आपकी तारीख़ों से दिन का अंदाज़ा लगाता है, और कोई safe days कभी नहीं दिखाता। यह गर्भ से बचने का तरीक़ा नहीं है।' }, 'ttc-p') + '</div>' +
       (S.canSave() ? formHtml(st) : S.needDiary()) +
       '<div id="ttc-chartbox" class="stack" style="gap:14px">' + chartBox(st) + '</div>' +
       card({ en: 'Taking your waking temperature', hi: 'सुबह का तापमान कैसे लें' }, steps([
@@ -431,7 +433,7 @@
       card(null, P({ en: 'Semen analysis comes first, because it is simple and painless. WHO\'s 2021 lab manual asks for 2–7 days without ejaculation before the sample. The sample is collected at the lab by masturbation into a clean container. Counts vary, so a low result is usually repeated after some weeks.', hi: 'Semen analysis सबसे पहले, क्योंकि यह आसान है और दर्द नहीं होता। WHO की 2021 lab manual के अनुसार sample से पहले 2–7 दिन तक वीर्य न निकले। Sample lab में हस्तमैथुन से एक साफ़ डिब्बी में दिया जाता है। गिनती बदलती रहती है, इसलिए कम result आने पर आम तौर पर कुछ हफ़्ते बाद दोबारा जाँच होती है।' }, 'ttc-p') + goBtn('ttc-partner', { en: 'More for your partner', hi: 'साथी के लिए और जानकारी' })) +
       '<h2>' + T({ en: 'Treatments, in plain words', hi: 'इलाज, आसान शब्दों में' }) + '</h2>' +
       '<div class="card"><ul class="ttc-tl">' +
-      li({ en: 'Ovulation tablets (letrozole or clomiphene):', hi: 'Ovulation की गोलियाँ (letrozole या clomiphene):' }, { en: 'help the ovary release an egg; often the first treatment with PMOS. Prescribed by a gynaecologist with scans to watch the eggs, because twins and over-response can happen.', hi: 'अंडाशय को अंडा छोड़ने में मदद करती हैं; PMOS में अक्सर पहला इलाज। स्त्री रोग विशेषज्ञ scan के साथ लिखती हैं, क्योंकि जुड़वाँ या ज़रूरत से ज़्यादा असर हो सकता है।' }) +
+      li({ en: 'Ovulation tablets (letrozole or clomiphene):', hi: 'ओव्यूलेशन की गोलियाँ (letrozole या clomiphene):' }, { en: 'help the ovary release an egg; often the first treatment with PMOS. Prescribed by a gynaecologist with scans to watch the eggs, because twins and over-response can happen.', hi: 'अंडाशय को अंडा छोड़ने में मदद करती हैं; PMOS में अक्सर पहला इलाज। स्त्री रोग विशेषज्ञ scan के साथ लिखती हैं, क्योंकि जुड़वाँ या ज़रूरत से ज़्यादा असर हो सकता है।' }) +
       li({ en: 'IUI:', hi: 'IUI:' }, { en: 'washed sperm is placed inside the womb with a thin tube around the time of egg release. It needs at least one open tube and a reasonable sperm count.', hi: 'अंडा निकलने के समय के आसपास धुले हुए sperm एक पतली नली से बच्चेदानी के अंदर डाले जाते हैं। इसके लिए कम से कम एक ट्यूब खुली हो और sperm की गिनती ठीक-ठाक हो।' }) +
       li({ en: 'IVF:', hi: 'IVF:' }, { en: 'eggs are collected from the ovaries, joined with sperm in a lab, and an embryo is placed in the womb.', hi: 'अंडाशय से अंडे निकाले जाते हैं, lab में sperm से मिलाए जाते हैं, और भ्रूण (embryo) बच्चेदानी में रखा जाता है।' }) +
       li({ en: 'ICSI:', hi: 'ICSI:' }, { en: 'a kind of IVF where one sperm is injected into each egg, used mainly when sperm count or movement is very low.', hi: 'IVF का एक तरीक़ा जिसमें हर अंडे में एक sperm डाला जाता है, ख़ासकर जब sperm बहुत कम हों या ठीक से न चलें।' }) +
@@ -564,7 +566,7 @@
         ttc_tests: 'जाँचें और इलाज', ttc_tests_s: 'महिला और पुरुष की जाँचें, IUI, IVF और क़ानून',
         ttc_partner: 'पति या साथी के लिए', ttc_partner_s: 'Semen test, गर्मी, तंबाकू, steroids: दोनों का सवाल',
         ttc_loss2: 'दो या ज़्यादा बार गर्भ गिरना', ttc_loss2_s: 'आपकी ग़लती नहीं। कौन-सी जाँचें मदद करती हैं, और कहाँ',
-        ttc_month: 'कोशिश का {n}वाँ महीना', ttc_s_mucus_short: 'म्यूकस',
+        ttc_month: 'कोशिश का महीना {n}', ttc_s_mucus_short: 'म्यूकस',
         ttc_home_s: 'चेकलिस्ट {b} में से {a} पूरी · इस चक्र में {c} तापमान',
         ttc_sum_t: 'बच्चे की कोशिश'
       }
@@ -630,16 +632,17 @@
     },
     summary: (S2) => {
       const d = (S2.state.mods || {}).ttc; if (!d) return [];
-      const lines = [];
+      const lines = []; let prepLine = null;
       if (d.since) lines.push(fill(tx({ en: 'Trying since {d} ({n} months)', hi: '{d} से कोशिश ({n} महीने)' }), { d: dayY(S2.fromISO(d.since)), n: monthsSince(d.since) }));
-      if (d.prep && prepDone(d)) lines.push(fill(tx({ en: 'Before-pregnancy checklist: {a} of {b} done', hi: 'गर्भ से पहले की चेकलिस्ट: {b} में से {a} पूरी' }), { a: prepDone(d), b: PREP_ALL.length }));
+      if (d.prep && prepDone(d)) lines.push(prepLine = fill(tx({ en: 'Before-pregnancy checklist: {a} of {b} done', hi: 'गर्भ से पहले की चेकलिस्ट: {b} में से {a} पूरी' }), { a: prepDone(d), b: PREP_ALL.length }));
       const fl = FLAGS.filter((f) => (d.flags || {})[f.k]).map((f) => tx(f)); if (fl.length) lines.push(tx({ en: 'She ticked: ', hi: 'उन्होंने चुना: ' }) + fl.join('; '));
       const sg = d.signs || {}; const ls = S2.cycle.lastStart();
       if (Object.keys(sg).length) {
         const cur = ls ? Object.keys(sg).filter((k) => k >= S2.toISO(ls)) : Object.keys(sg);
         lines.push(fill(tx({ en: 'Signs log: {n} days with temperature this cycle, {k} positive LH strips; {all} days logged in all', hi: 'संकेत रिकॉर्ड: इस चक्र में {n} दिन तापमान, {k} positive LH strip; कुल {all} दिन दर्ज' }), { n: cur.filter((k) => sg[k].c != null).length, k: cur.filter((k) => sg[k].lh === 'pos').length, all: Object.keys(sg).length }));
       }
-      return lines.length ? [{ title: t('ttc_sum_t'), lines: lines }] : [];
+      /* the doctor's summary (Version 33) leaves out her own checklist's progress */
+      return lines.length ? [{ title: t('ttc_sum_t'), lines: lines, doctorLines: lines.filter((l) => l !== prepLine) }] : [];
     },
     sample: (id, S2) => {
       if (id !== 'priya') return;

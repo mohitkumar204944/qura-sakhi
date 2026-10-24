@@ -1251,3 +1251,1065 @@ of wording are in `docs/wording-review-v28.md`, section 7.
 - Hindi, and a release build;
 - what helps: off by default, counting, what is never counted, the preview, off deletes, and the anonymous monthly send
   (on a fake clock).
+
+## 33. Version 31: her cycle at a glance, with predictions from up to a year (Mohit, 23 Oct: "yes build them as version 31 ... also Fertile window, ovulation day, 'non-fertile day' and 'chances of pregnancy', A one-day countdown, A bare 'Normal' badge. the other tracker is predicting from 8 months history we also need similar calculations")
+
+Feedback said another tracker's cycle views and insights help. Sakhi now has the same kinds of views, with its own maths and
+wording. The rule "never predict fertile or safe days" (product vision, 18 Oct) is **overridden by Mohit** for fertile days. As
+with the PMOS verdict (section 20), the features are built and gated. **Safe days are still never named.**
+
+**The maths (core, `app.js`; `S.cycle.predict()`, `cycleList()`, `fertWhy()`, `chanceOn()`, `phaseOn()`):**
+- **Next period:** a weighted average of her last 12 counted gaps, which is about a year, where the last 3 count double so a
+  change shows soon. It stays inside her last 6 gaps' shortest to longest. It needs rangeInfo's window (steady gaps, no hormones,
+  pregnancy or year after a birth), as before.
+  - The likely window is unchanged: her last 6 gaps' shortest and longest, plus 2 days each side.
+  - Her period length is the average of the periods she logged an end for.
+- **Fertile days** (estimates for planning a pregnancy):
+  - **Ovulation:** 14 days before the predicted start. The NHS says 12 to 16; the Learn library's article cites about 12 on
+    average, ranging from 7 to 17.
+  - **Fertile window:** the 6 days ending on ovulation (Wilcox 1995, also in the library).
+  - **Possible fertile days:** from 21 days before the earliest next start her gaps allow (her shortest gap) to 12 days before
+    the latest (her longest). That is, ovulation as early as 16 days before, less 5 days for sperm, through ovulation as late as
+    12 days before.
+  - **Chance of pregnancy from sex without a method:** high on the 3 days ending on ovulation; medium on the rest of the
+    window and the possible days; low otherwise.
+  - **"Low" always says "not zero".** No day is called non-fertile or safe. The NHS says there is no safe time of the month,
+    and the calendar note says so.
+  - **Phase names:** period, before ovulation, fertile window, ovulation day (estimate), after ovulation (luteal phase).
+- **When fertile days show** (`fertWhy()` gives the reason when they don't):
+  - at least 6 counted gaps, and steady (rangeInfo);
+  - age 18 to 44;
+  - not pregnant, not in the year after a birth or while breastfeeding, periods not stopped, no hysterectomy;
+  - no hormones and no method that stops ovulation or pregnancy (`NO_FERT`: pill, Chhaya, POP, Antara, Copper-T, IUS,
+    implant, tubectomy, NSV, LAM). Condoms keep them, because the chance is for sex without a method.
+  - **Release builds:** `FERT_RELEASE = false` hides them in a release APK until CDSCO's risk-class decision and the doctors'
+    review. The web prototype and "demo" APKs show them.
+
+**What she sees:**
+- **Home:**
+  - The days until her predicted start as one number ("6 days until your next period"), or "tomorrow", "today" or "any day
+    now".
+  - The likely range under it ("Likely 24 Oct – 3 Nov · from your last 10 cycles").
+  - When fertile days show: today's phase and chance, never in discreet mode.
+  - "These dates are estimates from your diary. They are not a way to avoid pregnancy."
+- **Calendar:**
+  - Predicted period days (from today on), the fertile window and the ovulation day, for this cycle and the next.
+  - The legend names each estimate. The note says "There is no safe day: without a method, pregnancy can happen at any time of
+    the month". None of this shows in discreet mode.
+  - "Likely range, never one day" is now "Likely range".
+- **Trends, top to bottom:**
+  - **"Your cycle at a glance":**
+    - **Cycle length** over the last 6 gaps, with a badge: Regular, Irregular (varies by more than 7 days, or 9 outside ages
+      26 to 41, FIGO) or Outside the usual (a gap outside 21 to 35, or 45 in the first years).
+    - **Period length**, with a badge: Normal, or Longer than usual for more than 8 days, which brings the checked "see a
+      doctor this week" line.
+    - Under each badge, the usual range it was judged against. Then the next period, and a link to What your diary shows when
+      something is off.
+  - The 12 gaps, as before.
+  - The new **period-length chart** (a bar per logged period, a line at 8 days).
+  - **My cycles:** each cycle as a row of days: period, fertile window and ovulation (estimates), with dates, the period's
+    days and the cycle's length or days so far. Cycles left out of the maths are marked, and so are guessed dates. Four rows
+    are open; "Show all" opens the rest; a row opens its first day.
+  - Then What repeats, What you noted, the report and Your numbers, as before.
+- **Days** (a third Diary tab), for every day she noted in the last year, newest first, 20 at a time:
+  - where the day sat: "Day 2 of your period" or "Day 24 of your cycle";
+  - the estimates around it: fertile window or ovulation in n days, or the chance on that day, and the days to the next
+    period;
+  - what she noted: period start, end and spotting, pads, pain and clots, symptoms with their colour, and the note.
+  - Tapping a day opens it. In discreet mode only the cycle day and what she noted show.
+- **Fertile days screen** (trying for a baby):
+  - It uses the same engine: the window, the ovulation day, the 3 highest-chance days, the possible days, today's chance, the
+    LH strip and "confirm it".
+  - When fertile days are hidden it says why; a release APK says they are switched off until approved.
+
+**Lines changed because they promised no fertile days** (all in `docs/wording-review-v28.md` section 8, for the doctor):
+- Home's and the calendar's notes;
+- Contraception's "safe days" line;
+- Trying for a baby's temperature card;
+- What your diary shows' fertile line;
+- the fertile screen's own notes;
+- the last paragraph of the library article "Why no app can name your fertile day".
+
+**Gated:** in prototype-labels mode, the verdict card, the calendar's fertile legend, My cycles' fertile marks, Home's chance
+line and the Days note carry "Needs approval before launch".
+
+**Before launch:** CDSCO's risk-class decision (contraceptive apps are Class C), the doctors' review of section 8, and then
+`FERT_RELEASE`.
+
+**Tests:**
+- `node test/maths.mjs` sections 16 to 18 (15 checks; 81 in all):
+  - the feedback diary: next start in 6 days, ovulation, window, possible days, the chance and phase by day, the next cycle,
+    and My cycles' own windows;
+  - recency weighting;
+  - every reason fertile days stay hidden.
+- `node test/insights.mjs` (55 checks):
+  - Home, the calendar, Trends, Days and the fertile screen;
+  - irregular gaps, the pill, a release APK and a 10-day period;
+  - discreet mode, Hindi and the library article.
+
+## 34. Version 32: ready for the field test (Mohit, 23 Oct: "go", on `docs/field-test-readiness-2026-10-23.md`)
+
+Mohit asked whether Sakhi was ready to give to 8–10 women around him. The audit found 10 safety and data issues and about 40
+smaller ones, and Mohit said "go" to fixing them all with the recommended defaults. Section and item numbers below are the
+audit's. Testers get a build without "demo" in its name (`0.32-test`).
+
+**The decisions, as built**
+- **Fertile days and the chance of pregnancy (decision 1).**
+  - A release or test APK still hides them (`FERT_RELEASE`).
+  - Where they do show (demo builds, the web prototype), they show only while she is trying for a baby (`situation.planning`;
+    `fertWhy()` gives `'goal'` otherwise). They also need cycles of 21 to 35 days that vary by 7 days or less at any age.
+  - The chance shows only as medium or high (`chanceShown()`), never "low", which can read as a safe day.
+  - The lines say "from sex today" (Hindi "आज संबंध बनाने पर…").
+  - Once the predicted day has passed (`predict().late`), there's no chance for today and no next window (2.3).
+  - **Corrected maths (2.1).** The NHS says ovulation comes "around 10 to 16 days before the next period" and sperm survive "up
+    to 7 days". Possible fertile days now run from her shortest gap − 23 to her longest − 9, from her last 6 gaps like her
+    likely range. Version 31 used 12 to 16 days, 5-day sperm and 12 gaps.
+- **Held back in a release or test APK (decision 3).** These are the self-checks and triage tools that label her, judge
+  eligibility, or set their own go-to-hospital thresholds (`TRIAGE`):
+  - `pattern`, `selfcheck`, `intimate-check`, `cond-labs`, `meno-score`, `midlife`;
+  - `pregtest-abortion`, `access-symptoms`, `preg-symptoms`, `pregtools-kicks`, `pregtools-contractions`.
+  They leave the tile lists and search. Links to them are removed from screens and sheets (`dropTriageLinks`), and the route
+  shows "Not in this version". What your diary shows, the red flags, the pregnancy visits and the after-birth recovery and
+  mood checks stay. Demo builds keep everything (`TRIAGE_RELEASE` turns them on).
+- **Help (decision 4).** Without `SAKHI_HELP_WA`, the doctor screen puts the free government doctor first. Qura's card adds
+  "Qura's doctors are Ayurveda (BAMS) doctors. The first call is free; tests and plans cost money." In What your diary shows,
+  findings that say "see a doctor today" point to free care, not to booking a call.
+- **The notice (decision 5).** It now says:
+  - where the account is kept (a server in Mumbai, Supabase), and until when (until she deletes her account);
+  - who sends the code (WhatsApp/Meta, or AuthKey by SMS).
+  The Grievance Officer line comes from the build (`SAKHI_GRIEVANCE`, `CFG.grievance`) and is left out until given; it is
+  never a placeholder. Notice version `2026-10-23.1`.
+- **Inert switches.** "Share with my Qura doctor" and "Send what helps" show only where they work: demo builds, or
+  `CFG.share` / `CFG.usage`.
+
+**Safety and her data (section 2)**
+- **After a pregnancy ends any other way than a birth** (a loss, or "it's over"), `pregEndedOn` is kept. Home waits for her
+  next period: "Sakhi counts your cycle again from your next period", with no cycle day, late card, estimates or alarm
+  (`afterLossNow`). The same happens after she stops hormones (`afterHormonesNow`). A start on or after that day ends the
+  pause.
+- **Days, My cycles and the day sheet** no longer count a pregnancy, the year after a birth or hormone months as one long
+  cycle: "not counted: pregnancy", "Cycle count paused".
+- **The late card comes at the end of her own likely range** (it waited until day 37). It says "later than your own likely
+  dates" when that comes before 35 days, and it carries the pregnancy-test pages' ectopic warning word for word.
+- **Cards she answers (chips with `aria-pressed`) are never folded**, and `.pst-form` has `data-nofold`: the after-birth check
+  had hidden its warning signs behind "Show more".
+- **Care near me** leaves out hospitals with a private sign in their name, and "<100" or "100–500 bedded" hospitals without a
+  government sign (`web/tools/care-data.mjs`). That's 242 on the 22 Oct list, including Apollo, Sir Ganga Ram and St.
+  Stephen's. The source lists are kept in `web/tools/care-src/` (gitignored) for rebuilding with `--from`.
+- **A second copy of the diary.** On Android every save also goes through `SakhiAndroid.saveState(json)` to a private file,
+  written at once. At start the newer copy wins (`savedAt`). A copy that can't be read is kept as `qura-saathi-v1-rescue`.
+  The WebView writes localStorage up to a minute late.
+- **Samples and "start from the welcome screen"** ask first in demo builds.
+- **Reminders on a locked phone show nothing** (`VISIBILITY_SECRET`); the details appear once she unlocks. Turning on the
+  Notes icon also turns on discreet mode.
+- **The day sheet has no speaker** over its next-day arrow (`data-nosay`).
+- **Hindi:** "गर्भ में जाँच" is now "गर्भावस्था में मुफ़्त जाँच".
+
+**So the test isn't wasted (section 3)**
+- **Signup:**
+  - `netErr` carries the HTTP status. A 5xx, `send_failed`, `server_error` or `too_many` offers "Continue for now", with its
+    own message: "couldn't send a code", "server isn't answering", or "try again in N min".
+  - Five wrong tries say "ask for a new code" and free the button.
+  - "New code" after "Send by SMS" stays on SMS.
+  - Back and "Send code" again for the same number return to its code screen.
+  - The code step is kept for its 10 minutes (`qura-sakhi-signup-v1`: number, challenge, channel; never the code), so an
+    Android reload doesn't lose it.
+  - The wrong-code message no longer names SMS.
+- **Logging:**
+  - A second tap within 2.5 seconds is ignored.
+  - "Period ended" on the start's own day opens the sheet.
+  - On days 11 to 20 of an open period, the + menu keeps "Period ended", and "Period started" asks "A new period?".
+  - An end replaces an earlier one of the same period (`dropEnds`; `periodEnd` takes the latest).
+  - Turning a start into "Ended" keeps the start.
+  - Deleting a start takes its end along, with Undo.
+  - Undo restores exactly what was there, including the onboarding guess.
+- **Home** re-renders on a new day, when she comes back or every minute on Home or Diary. The heads-up says "Your likely
+  days start in N days", so it no longer gives a second "next period".
+- **Stage changes:**
+  - Tracking, trying or after-40 clears breastfeeding.
+  - "Periods stopped" keeps `stoppedOn`, and only bleeding logged after it is flagged.
+  - A hormonal method in My method starts and ends the hormones span (`S.cycle.setHormones`).
+  - The bleeding checks run while she breastfeeds with her periods back.
+- **Trends' period badge** judges the last 6 months only.
+- **Reminders:**
+  - Setting one while phone reminders are off asks "Turn on phone reminders?", once every 3 days at most (`askNotifyNow`).
+  - On Android the Reminders page says they ring as notifications.
+  - The battery card adds Autostart for Xiaomi, Vivo, Oppo and Realme.
+- **Delete everything** also signs her out on this phone, clears the alarms and deletes the second copy. A forgotten PIN
+  offers "Restore from my backup code" first, and a restored backup never brings back a lock PIN (`adoptBackup`).
+- **Android:**
+  - Back steps through first-run and signup steps (`#ob-back`, `#su-back`), and the app's own ← uses `history.back()`.
+  - Dark navigation buttons in the light theme (`res/values-v27`).
+  - `VIBRATE`.
+  - `build-apk.sh` needs `VERSION_CODE`, refuses one below the last APK built, and stops when the keystore is missing (unless
+    `NEW_KEYSTORE=1`).
+- **Old WebViews:**
+  - A note asks to update Android System WebView if the app never starts.
+  - Longhand positions replace CSS `inset`.
+  - A `padStart` fallback.
+  - The `\p{L}` patterns are built at run time.
+- **Words:**
+  - The "prototype", "browser" and "draft" lines on the APK are rewritten.
+  - The PMMVY helpline is 1515.
+  - The library's registration-number placeholder is removed.
+  - The after-birth "to be checked before launch" line is gone.
+- **Hindi:**
+  - Search finds her pregnancy before loss pages (a loss demotes but never drops them) and the fertile tool by its Hindi
+    names, and ignores the nukta.
+  - Ordinals are rewritten ("हफ़्ता {n} (6 में से)").
+  - "पीरियड संभावित समय से {n} दिन देर से है".
+  - "पीरियड की संभावित तारीख़ें".
+  - Fertile-screen labels; spellings फ़र्टाइल and ओव्यूलेशन.
+  - The teen-mother page addresses her as a woman.
+
+**Tests:**
+- `node test/fieldtest.mjs` (109 checks): every item above the way a tester meets it.
+- `maths.mjs` sections 16 to 18 now use the NHS figures, with 6 new checks (87 in all).
+- `insights.mjs` uses a diary of a woman trying for a baby (56 checks).
+- `me.mjs` checks the inert switches are hidden in a tester's APK (62 checks).
+
+## 35. Version 33: the pilot build, fertile days for every woman, and "Ask Qura to call me" (Mohit, 23 Oct: "CDSCO approval i discussed with my legal can be skipped for pilot can you remove this restriction and roll out full working version", then "fertile days should show to every women ,and build server side for share with my qura doctor")
+
+**The pilot build**
+- A version name with "pilot" (`0.33-pilot`) on Android is a pilot build (`pilotBuild()`). It has every tool a demo build has
+  (`fullTools()`): fertile days and the chance of pregnancy, and the 11 `TRIAGE` tools. Like a release build it has no sample
+  women, no prototype settings, and none of the inert switches (section 34).
+- Mohit's legal advice is that CDSCO approval can wait for the pilot. A release or test build is unchanged: `FERT_RELEASE`
+  and `TRIAGE_RELEASE` stay `false` until that question is settled for a public release.
+- **Fertile days for every woman.** `fertWhy()` no longer returns `'goal'`: a woman need not be trying for a baby. Every
+  other rule stays: steady cycles (6 logged gaps of 21 to 35 days, varying by 7 days or less), not pregnant, not on a method
+  that stops ovulation, 18 to 44, not late, never "low chance", hidden in discreet mode. The screen says it is "an
+  estimate from dates, not a measurement, and not a way to avoid pregnancy".
+- Mohit, 23 Oct: "doctor reviewed and approved" (`docs/wording-review-v28.md`). Wording added after that note, including this
+  section's, needs its own review.
+
+**"Ask Qura to call me": the doctor-call hand-off** (server/SERVER_SPEC.md section 10.1; Qura's half:
+`docs/qura-handoff-brief-2026-10-23.md`)
+- **Where:** a card at the top of Ask ("Talk to a Qura doctor"), leading to `#ask-call`. Booking on WhatsApp or the website
+  stays below it as "Or book a time yourself". Without the card, Ask is as it was.
+- **When it shows (`callCan()`):** on a real server, only for a signed-in woman who isn't a sample, and only once the server
+  says `available` (Qura's endpoint and the shared key are set). With the stand-in server (web prototype, demo builds with no
+  `SAKHI_API`) it always shows, and nothing leaves the phone. Never for a girl under 18 or the teen path.
+- **What she does:**
+  - She writes what she wants to talk about (120 characters) and picks morning, afternoon, evening or any time.
+  - She ticks what the doctor may see first, from her report's sections (`reportParts`, each part now has a key `k`). Nothing
+    is ticked to start. Notes are their own section.
+  - The preview shows exactly the lines that go (`shareSections`, `callShare`), in the language she picks for the doctor.
+  - If the body would pass 30 KB, the oldest notes and periods go first, then the last lines of the longest section, and the
+    screen says so. What the screen showed (`mem.ac.shown`) is what is sent.
+  - The consent line names Qura (Trinaya Wellness LLP), the use and the deletion. One button sends it.
+- **The calls (core `net()` only; modules never touch the network):**
+  - `POST requests` with `topic`, `best_time`, `lang`, `notice`, `shared`, `shared_data` (`SEND`; the server's `ALLOW` and
+    `SHARE_KEYS` match, and its tests check).
+  - `GET requests` asks **without her token** when she opens Ask (`net(..., anon)`), so opening Ask tells the server nothing
+    about her. Only while one of her requests is still `queued` does the app ask with her token, from Ask or from the
+    background sync when she opens Sakhi or comes online. That also makes the server try it again.
+  - `net()` no longer sends a body with a GET, and a 401 on a call made without her token never signs her out.
+- **After sending:** "Qura has your request" with her `QC-` reference, or "Your request is saved" (Sakhi keeps trying for 24
+  hours), or "didn't reach Qura" with the booking link. The phone keeps the reference, the date, her topic, the keys she
+  ticked and the status (`state.calls`, last 10). Ask lists them under "Calls you asked for"; discreet mode hides the topic.
+- **Errors keep her words:** off on the server (booking link, and the card goes), "try again in N min", "three times today"
+  (booking link), offline, server down, refused.
+- **The notice** gains one line on what goes to Qura and that the server deletes it. Notice version `2026-10-23.2`.
+- **Server:** `POST /v1/requests` and `GET /v1/requests` in `api.js`, the `call_requests` table, `send.handoff`, retries for
+  24 hours with no cron, and her topic and shared sections set to null once Qura has them or the request fails. Off until
+  `SAKHI_QURA_HANDOFF_URL` (https) and `SAKHI_QURA_KEY` (32+ characters) are set (`server/DEPLOY.md`, section 3).
+
+**Mohit's decisions on Qura's side (23 Oct)** (`docs/qura-sakhi-integration-plan-2026-10-23.md`, section 0):
+- A request becomes an ordinary Qura lead (source `sakhi`), and bookings are confirmed on WhatsApp.
+- So the app now says "Qura's care team" sees what she ticks, not "the doctor".
+- The done screen says a booking is confirmed on WhatsApp.
+- Deleting her Sakhi account warns, when she has sent a request (`acc_del_calls`), that it stays with Qura's care team.
+
+**Only what a doctor needs (Mohit, 23 Oct, after the first live request: "only relevant for doctor should push through")**
+- What goes is a short summary for the doctor (`doctorLines` in `web/app.js`), not her whole report. The sections and their
+  keys are the same, so Qura needed no change.
+- **Periods:** the last period, and the days between periods with the average. A third line appears only if any were
+  heavy.
+- **Symptoms:** her top five, in one line.
+- **Check-ins:** each sign once, with in how many of the last months.
+- **Questions:** hers and the ones her diary raises. The catch-all "anything to keep an eye on?" stays in her report only.
+- **Tools:** only the modules a doctor reads (`DOCTOR_MODS`: medicines, results, pregnancy, iron, after birth,
+  contraception, trying, midlife, the cycle pattern, her saved self-checks). Each line goes whole, where one long joined line
+  used to be cut at 300 characters, losing data.
+- **A module's summary section may carry `doctorLines`:** the subset worth a doctor's time.
+  - `periods`: the pattern and the impact, without the count of days or the note.
+  - `ttc`: without her checklist progress.
+  - `contra`: without the next reminder.
+  - `preg`: without "due now", which mixes scheme money with check-ups.
+- **Not sent:** "What your diary shows" flags, scheme claims, screening dates, ASHA details, hospital-bag and birth-plan
+  progress.
+- Her own "Report for my doctor" is unchanged.
+- In the five sample diaries, a request with everything ticked went from 8 to 29 lines down to 13 to 25, all of them whole.
+
+**Tests:**
+- `node test/handoff.mjs` (61 checks): the card, nothing ticked, the preview, the exact body, statuses, errors, Hindi, a long
+  diary, who never sees it, and the notice.
+- `server/test/api.test.mjs`: the hand-off sections (refusals, what Qura gets, deletion, rate limits, retries, giving up,
+  expiry, claiming), run on both stores; the sender; `SEND`/`ALLOW` and `SHARE_KEYS` matching.
+- `server/test/app-e2e.mjs`: the real app asks for a call against the real server code, and Qura gets exactly her screen.
+- `fieldtest.mjs` section 19: a pilot build. `maths.mjs`: fertile days for every woman with steady cycles.
+
+## 36. Version 34: phone notifications that work (Mohit, 23 Oct: "can you fix all and get notifications working in perfect state", on `docs/notifications-audit-2026-10-23.md`)
+
+**What the page hands Android** (`buildNotifs` in `web/app.js`):
+- **A repeating reminder** (every N days, or on weekdays) carries its rule: `rid`, `rep` (`{ every }` or `{ wd }`, 0 =
+  Sunday), `hh`, `mm`, and `until` (epoch ms, 0 = no end).
+  - Only its next 8 days go from the page, but always its first ring, even a month away.
+  - When one rings, Android books the next itself (`Reminders.chain`), so a daily pill keeps ringing even if she never opens
+    Sakhi.
+  - After a restart, a missed repeat moves on to its next time (`ReminderMath.firstAfter`).
+- **One-off reminders** go up to 400 days ahead (a baby's vaccines run past a year).
+- **Channels by kind**, named in her language (`ch`, `chname`, `imp`):
+  - `sakhi_meds` "Medicines" (pill, iron, IFA and calcium, medicines) rings as a heads-up;
+  - `sakhi_care` "Pregnancy, baby and check-ups";
+  - `sakhi_period` "Period";
+  - `sakhi_other` "Other reminders".
+  In discreet mode **or on a shared phone** (`notifQuiet`), everything uses the neutral `sakhi_reminders` "Reminders"
+  channel and says only "Reminder". The lock screen never shows any of it.
+- **`go`, the screen a tap opens** (`notifGo`): her method, iron, the pregnancy plan or tablets, after birth, screening, her
+  medicines, the check-in, backup, or Home. Android hands it to `window.__sakhiOpen` (letters, digits and dashes only); a
+  PIN lock still comes first.
+- **The late nudge:** three days after her own likely range ends, at 10 am, "Open Sakhi: your dates need a look." It has no
+  health words, and logging her period moves it on.
+- **At most 60**, soonest first. Only when some are left out does a last alarm ask her to open Sakhi.
+
+**Asks**
+- **Once, on Home, she's asked to turn reminders on** (`askNotifyIntro`): after the first-run tour, once she has a period
+  logged. "Not now" is final; the switch stays on Me > Reminders.
+- **"Ring on time?"** (`askExactNow`) opens Android's "Alarms and reminders" setting, which is off by default from Android
+  14. It's asked right after reminders are turned on (either way), and when she sets a daily reminder, at most once a week.
+  Android re-arms the alarms when that permission changes (`BootReceiver`).
+
+**Optional monthly reminders**, off unless she turns them on, at 7 pm:
+- the check-in ("Remind me every month" under Save);
+- a fresh backup code (on Backup).
+
+**Android:**
+- `ReminderMath` holds the repeat maths with no Android code, and `android/test/ReminderMathTest.java` checks it (22
+  checks: `npm run test:android`).
+- The receiver shows each reminder in its channel, then books the next. Alarms booked by older versions still show.
+- Each notification has its own tap target, so the last route no longer wins for all of them.
+
+**Tests:** `node test/notify.mjs` (49 checks); `privacy.mjs` 7 now expects the rule on each reminder, not the "open Sakhi"
+alarm. `tours.mjs` section 9 installs the pilot APK's way: Android, the server's answers, reminders not yet allowed. The full
+tour runs on her first Home, all 13 steps with nothing popping up in between, and only afterwards does Home ask about
+reminders, once (46 checks).
+
+### 36.1 Version 34.1: the tour's gaps (Mohit, 23 Oct: "is there any gap with tour", then "proceed fixing")
+
+- **A stray tap no longer ends the welcome tour.** The dimmed screen ignores taps. "Not now" and the cross still stop it.
+  Android Back steps back a step, and only on a first step does it stop the tour.
+- **A tour she stopped part-way is offered once more.** At least 10 minutes later, Home shows "Finish the tour? It shows
+  where everything is" with "Continue the tour", which picks up at the screen where she stopped (`fullTour.leg`). This runs
+  before the reminders question.
+- **Shared phone:** the privacy kit's PIN is chosen on her first Home, after sign-up (`prompts.pinDue`), not on top of the
+  sign-up screen. The tour starts as soon as the PIN box closes, whether she sets it, cancels or taps outside (`closeSheet`).
+- **Her stage:**
+  - Women trying for a baby, or in midlife, get Home in two parts in the welcome, the second their own (`fullLegs`). The
+    button between the parts says "Next".
+  - The trying-for-a-baby Home tour lost a step that pointed at a link Home no longer has; it now points to Care, where her
+    tools are.
+  - Pregnant women and women after a birth get Diary steps without periods (`td2_pp`, `td3_pp`).
+  - A reader who came to learn is told she can start noting whenever she wants (`tw2_pl`).
+- **Me** points to Reminders (Android) and "Your data and backup", not "Delete everything".
+- **The doctor steps** in Care and Help name the free government doctor as well as a call with a Qura doctor.
+- **Not done:** Bengali, Tamil and Telugu still show the tour in English (Marathi shows Hindi), as those languages are only
+  partly translated.
+- **Tests:** `tours.mjs` sections 9 to 13 (76 checks) install the pilot APK's way: stray taps and Back, resuming, trying,
+  pregnant, learner, and a family phone with the PIN set, cancelled or tapped away. `me.mjs` 8 now expects Reminders and
+  backup.
+
+## 37. Version 35: the 12-week PMOS plan (Mohit, 23 Oct: "Go ahead with the PMOS plan first", then "can you add GIFs")
+
+Research and design: `docs/lifestyle-plans-research-2026-10-23.md`, sections 3 and 8. The wording for the doctor is in
+`docs/wording-review-v28.md`, section 12.
+
+**Where it shows (`PLAN_RELEASE` in `app.js`, `S.planOn()`):** every build. Mohit, 23 Oct: "plan approved build apk" (first
+in `0.35-pilot`, versionCode 40). With `PLAN_RELEASE` false, builds other than demo builds would show nothing:
+- no tile;
+- the route says "not in this version";
+- no Today item, setup step or summary.
+
+**`mods/plan.js`** (routes `plan`, `plan-start`, `plan-plate`, `plan-body`, `plan-moves`, `plan-progress`, `plan-r-<routine>`):
+- **Start:** her goal (regular periods, energy, skin, a healthier weight, less pain), how active she is now (3 levels), knee
+  or back pain, what she eats (veg, eggs, non-veg), and her region.
+  - The region comes from her PIN code on the phone (`regionOfPin`: India Post's first digits, Sikkim's 737 is the
+    North-east).
+  - She can change it, and pick one if she has no PIN code.
+  - "A healthier weight" sets her focus to "habits and weight"; every other goal starts as "habits first".
+- **Weekly target:**
+  - Active minutes build from 50, 75 or 120 to 150 a week, or to 250 with "habits and weight" when her BMI is 23 or more (2023
+    PCOS guideline 3.4.3).
+  - Two strength days, not one after the other.
+  - Today's suggestion is a fifth of the week's minutes, at least 10.
+  - One food habit is added every two weeks (six in all).
+- **Hub:** the 12-week dots, a ring of minutes against the target, the week's days, today's walk with +10/+15/+20/+30, today's
+  routine, today's food habits as ticks, four picture tiles, the daily reminder (her time; until the 12 weeks end), and "Stop my
+  plan" (asks first).
+- **Weekly look-back:** on the first day of a new week, her energy (low, okay, good) and what got in the way. That brings one
+  tip and next week's target. "Got it" puts it away.
+- **My plate:**
+  - The plate picture (half sabzi, a quarter grains, a quarter dal or protein, curd on the side).
+  - Her food habits.
+  - "More often": her region's foods first, then everywhere in India, folded. Then "less often", then "avoid" (trans fats,
+    crash diets, weight-loss pills or powders without a doctor).
+  - Filtered by what she eats. ICMR-NIN 2024. No folk bans and no Ayurvedic food rules.
+- **My body (optional):**
+  - Height in feet and inches or centimetres, weight and waist; one entry a day, at most 60 kept.
+  - BMI and waist bars with the cut-offs for Indian women (2009 consensus: 18.5, 23, 25; waist 80 cm).
+  - A plain sentence for her band; no "obese" or "overweight".
+  - Her focus: habits first, or habits and weight. With a BMI under 23 the target stays at 150.
+  - Discreet mode hides the numbers until she taps Show, and they hide again when she leaves.
+  - "Delete my body notes" (asks first). Not in pregnancy: "your doctor watches your weight".
+- **Yoga and moves:**
+  - Five routines (gentle start, cycle care, sun salutation, strength at home, calm breath), plus walking with the talk test
+    and "stop and rest if".
+  - Knee pain swaps kneeling moves (child pose for a chair forward bend, half camel for tadasana, step-ups for marching).
+  - Back pain skips the half locust and the sun salutation.
+- **The player:**
+  - Each move has a moving drawing that loops like a GIF: one figure whose joints move between two positions (`P`, `ANIM`).
+  - The sun salutation flows from pose to pose and holds. One-sided moves are done right then left, mirrored.
+  - There's a timer (or a breathing circle), and the steps are read aloud (off on a shared phone unless she turns it on).
+  - With "reduce motion" the drawings stay still.
+  - Finishing logs the minutes she actually spent, and the strength day. "How did it feel?" ("Hard" suggests Gentle start).
+  - Timers and drawings stop when she leaves.
+- **My progress:**
+  - Minutes for each of the 12 weeks against the target, strength days, and food habits in the last 7 days.
+  - From her diary, before and since she started: the days between periods, periods that needed a painkiller, and the PMOS
+    signs in her check-in.
+  - Her energy from the look-backs; weight and waist first and latest, only as she noted them (not in discreet mode).
+  - "What to expect" as a timeline (weeks 1 to 4, 4 to 12, 3 to 6 months), never a predicted number.
+  - One Qura button: "Ask a Qura doctor about supplements or medicines".
+- **Paused:** in pregnancy (the tile is hidden, so the pregnancy food guide stays first in search) and for the first 42 days
+  after a birth.
+- **Elsewhere:**
+  - Home's Today (move N minutes today, the newest food habit; one tap each; "Your plan for today" in discreet mode).
+  - The setup card for a woman with PMOS ("Start your PMOS plan").
+  - "For you" for PMOS (first).
+  - Search: food, yoga, exercise and BMI words, in `TOOL_SYN`.
+  - The doctor summary (`DOCTOR_MODS` + `plan`): her week, average minutes and strength over the last weeks, food habits, and
+    her weight, waist and BMI. It travels in the existing "tools" section of "Ask Qura to call me", so the server needs no
+    change.
+  - Priya's sample is three and a half weeks in.
+- **Rules kept:**
+  - No calorie counting, weight target, supplements, herbs or doses.
+  - Nothing leaves the phone except the summary she ticks.
+  - The module never touches the network.
+- **Tests:** `node test/pmosplan.mjs` (129 checks):
+  - the plan is on in pilot, test, demo and web builds;
+  - the rules: PIN codes, targets, knee and back pain, sets and sides, every animation's drawings;
+  - starting, minutes, habits, Today, discreet mode, the routines and their drawings, "reduce motion", the look-back;
+  - the plate, body, progress, pausing, the reminder, For you, setup and search;
+  - the doctor summary and the call form; Hindi; no network.
+
+## 38. Version 36: the Plans tab, plans suggested from her diary, and Govt. services (Mohit, 23 Oct: "Audit this it has bugs and also plan should be handy not deep hidden all other information which is information only about government services should be compacted in Govt. services ...")
+
+Audit and design: `docs/plans-audit-2026-10-23.md`. The wording for the doctor is in `docs/wording-review-v28.md`, section 13.
+
+**Routes (`mods/plan.js`):**
+- `plan` is now the Plans page (`renderPlans`); the PMOS plan's home moved to `plan-pmos` (`renderHub`).
+- Every link moved with it: the tile, For you, `TOOL_SYN`, Today, setup, the player's "Back to my plan" and progress.
+- Sub-pages go back to the page she came from (`S.mem.planFrom`: `plan` or `plan-pmos`).
+- `open` adds `plan-pmos`, so both pages work in browse mode.
+
+**The Plans tab (core):**
+- `planTab()` puts a fifth tab, Plans (`I.target`), between Diary and Care when the stage is `app`, the `plan` route exists and
+  `S.planOn()`.
+- `tabOf` lights it for `plan` and every `plan-*` route.
+
+**The Plans page:** "Your plans now" (a started PMOS plan with its ring, week and minutes; an active 21-day journey), "Suggested
+for you" (the top 4, each with its reason and duration), "What you want help with" (her answers, with Change), "More plans" (the
+rest of the catalogue that fits her stage), and the footnote "not a diagnosis".
+
+**Suggestions:**
+- `signals()` reads her diary on the phone:
+  - the last 6 usable gaps and how many were over 35 days;
+  - flow and pain in her last 3 periods (each start and its details in the first week);
+  - PMOS signs, heavy flow, low mood and hot flushes (moderate or night-waking) in her last 3 check-ins;
+  - her PMOS self-check (`mods.selfcheck.pmos.v`);
+  - days logged with cramps or acne (60 days), tired, low/anxious/irritable, poor sleep or hot flushes (30 days), and nausea
+    (14 days);
+  - her stage, the days since a birth, breastfeeding, PMOS (`situation.pcos` or the goal `pmos`) and her goals.
+- `catalogue()` lists 23 plans, each `{ id, go, t, s, dur, icon, hue, active, paused, score, why }`. A plan's points come from
+  `[n, why]` pairs; the biggest pair gives its reason. Paused and active plans score 0.
+  - A plan is left out when it doesn't fit her stage, its route is missing, or the build holds it back (`S.toolShown`).
+  - Tile-backed plans (iron, PMS, menopause, after-birth, pregnancy and trying tools) take their own title and sub from the
+    tile, and are left out if the tile is hidden.
+  - The table is in the audit doc, section 3.
+- `recsOf()`: 2 points or more, best first, ties in catalogue order, at most 4.
+- Exposed for tests and core: `S.plan.catalogue()`, `S.plan.recs()` (Care's Plans row count) and `S.plan.signals()`.
+- **Never a diagnosis:** long gaps without PMOS suggest the self-check first. "You told Sakhi you have PMOS" needs her own
+  answer.
+
+**"What you want help with":**
+- The same choices as joining, for her stage now (`S.helpKeys(stage)`), without "Just keeping track".
+- Saving replaces the help goals of her current stage in `state.goals` and keeps the others (the stage goal from joining,
+  answers from another stage).
+- "I have PMOS (PCOS)" sets `situation.pcos` either way, as Me > My situation does. Not in pregnancy.
+
+**Home (`home` and `afterHome` hooks):**
+- "A plan for you" is the top suggestion, with its reason and duration. `moduleCards` now asks `explain`, then `plan`, then
+  the stage's modules.
+- It shows only when:
+  - the top suggestion has 3 points or more;
+  - no plan or journey is going;
+  - discreet mode is off;
+  - she hasn't tapped "Not now" in the last 14 days (`prompts.planRec`, an ISO date);
+  - the setup card isn't offering the PMOS plan (`S.setupShows('plan')`).
+
+**Care (core `renderCare`):**
+1. a "Plans for you" row (`.care-plans`, "{n} suggested from your diary");
+2. For you, without `access-*` or `asha`;
+3. one "Govt. services" row (`.care-free`, to `access-free`);
+4. the topic grid, without the free-care card.
+
+Other Care changes:
+- `sec_free` and `access_free` are "Govt. services" (सरकारी सेवाएँ).
+- The Qura "ask" row left `access-free`: `TOOLS_SPLIT.ask` is `support`.
+- `TOOL_SYN`: food, yoga and BMI words go to `plan-pmos`; "govt", "government", "sarkar", "सरकार" and "सरकारी सेवा" go to
+  `access-free`, `access-doctor` and `access-schemes`.
+
+**Joining (core `renderOnboard`):**
+- New step 4, "What would you like help with?" (`OB_HELP[stage]`, chips `data-ob-help`, `#ob-help-next`). The shared-phone
+  question is now step 5 (the `learn` stage skips step 3, so it has 4 steps).
+- "Just keeping track" clears the others.
+- `finishOnboard` stores `state.goals = [stage goal].concat(help)` (no `track`). `pmos` also sets `situation.pcos`, except in
+  pregnancy.
+
+**The plan's audit fixes:**
+- Wording: "Strength days: {a} of {t}", "You moved {a} minutes. Your target was {t}.", "Routine done. Every move counts.", and
+  "Keeping it going" on Today after week 12.
+- Today's routine shows "✓ Done today" (`log.r`). Its row names the routine, then "Today's yoga · About N min".
+- +minutes has Undo (`S.toastAct`). The weekly look-back sits under Today.
+- Reminders:
+  - With the daily reminder on and phone notifications off (`S.alerts.can() && !S.alerts.on()`), a warning card offers "Turn
+    them on" (`S.alerts.ask`, new in core).
+  - Switching the reminder on doesn't ask again: core's own sheet already asks once (`reminders.upsert`).
+  - A tap on the reminder opens the PMOS plan (`NOTIF_GO.plan`; it opened the reminders list).
+  - While the plan is paused, its reminder is removed (`pauseSync`).
+- The screen stays on during a routine. `awake()` calls the Android bridge `keepAwake(boolean)` (`FLAG_KEEP_SCREEN_ON`, new
+  in `MainActivity`), or `navigator.wakeLock` on the web. It is released when she pauses, finishes or leaves.
+- Dark mode chart bars, bigger move pictures, and sized arrows on the plan's action rows.
+
+**Core API added:**
+- `S.helpKeys(stage)`;
+- `S.toolShown(route)`: the route exists and isn't a held-back triage tool, by exact route or by its first part;
+- `S.alerts.ask(then)`.
+
+**Tests:**
+- `node test/pmosplan.mjs` (189 checks; sections 1 to 13 updated for `plan-pmos`). New sections:
+  - 14: the Plans page and tab, and what each diary suggests. Cases: PMOS; long gaps without a diagnosis; a tester build;
+    heavy periods; pregnancy; 3 weeks after a birth; 40+ with hot flushes. Also "What you want help with", Home's card and
+    "Not now", and Care's Plans count.
+  - 15: the audit fixes.
+- `signup.mjs`, `tours.mjs` and `server/test/app-e2e.mjs` tap `#ob-help-next` when joining. `value.mjs` follows Care's new
+  order.
+
+## 39. Version 37: the companion core (Mohit, 23 Oct: "Build", on `docs/companion-journey-2026-10-23.md`)
+
+Research, design and the 12 acceptance criteria: `docs/companion-journey-2026-10-23.md`, sections 7 to 12. The new health
+wording for the doctor is in `docs/wording-review-v28.md`, section 14.
+
+**Joining (core `renderOnboard`, `finishOnboard`):**
+- Step 4 is now the plan module's intake, `S.plan.intake.render(v, a, ctx)` with `ctx = { head, chip, back, done, prev,
+  redraw }`. It replaces V36's "What would you like help with?" (`OB_HELP`, `#ob-help-next` are gone).
+  - First, "What do you want to work on?" (`data-pl-goal`): her stage's goals (`S.plan.intake.goals(stage)`), with "Just
+    keeping track" last. That choice ends the intake and starts no plan.
+  - Then only the screens her goal needs (`SCREENS` in `mods/plan.js`): her periods (gap, skipped months, a PMOS diagnosis,
+    signs) for a cycle goal; pain, heavy bleeding or mood before periods for those goals; her day (how active, food,
+    bedtime, work, the reminder time); when she can move for 10 minutes; her height and weight, which she can skip.
+  - Chips are `data-pl-q="key:value"` (one) and `data-pl-m` (several); values are split at the first colon only, so a time
+    such as `remind:20:00` survives.
+  - A warning shows under an answer that needs a doctor (`warnOf`): pain that stops her day; a pad an hour or less, or clots.
+  - The step count grows with her answers (`S.plan.intake.count(a)`).
+- Joining is kept on the phone as she goes (`localStorage` key `qura-sakhi-ob-v1`), so a call or a trip to WhatsApp for the
+  code loses nothing. It is cleared when she finishes.
+- `finishOnboard`:
+  - `state.goals` is her stage goal plus her plan goal (never `track`);
+  - `pmos`, or a PMOS diagnosis, sets `situation.pcos` (not in pregnancy);
+  - `state.fullTour = { st: 'reveal' }`, so the full tour doesn't start on its own;
+  - `S.plan.startFromIntake(a)`, then the reveal (`plan-reveal`) if a plan started, else Today.
+
+**The plan engine (`mods/plan.js`):**
+- One plan at a time in `state.mods.plan`. `pack` is `cycle` (the V35 plan, for irregular periods, PMOS, skin, weight and
+  trying) or a light plan: `pain`, `heavy`, `pms`, `preg`, `post` or `meno` (`packFor(goal, stage)`). A V35 plan with no
+  `pack` is a cycle plan.
+- `state.intake` keeps her answers, dated, for the reveal, the doctor check and results.
+- Light plans are built from Sakhi's own reviewed routines and tools: the relief routines, the iron journey's step, the kick
+  counter from week 28, the pelvic floor routine and the menopause diary.
+- The cycle and light plans pause in pregnancy and for 6 weeks after a birth. The pregnancy plan ends with the pregnancy; the
+  after-birth plan a year after the birth.
+- `actionsFor(d)` gives today's 2 or 3 actions, `{ id, icon, hue, kind, title, sub, go, state, why }`:
+  - cycle: the walk (one tap; on strength days its row opens the strength routine), the newest food habit, and sleep (her
+    bedtime target, or a line for night shifts);
+  - pain: the cramps routine on period days, a walk, sleep. Heavy: today's iron step, a walk. PMS: calm breathing, a walk,
+    sleep;
+  - pregnancy: one routine for her goal, plus kicks from week 28. After a birth: a tool for her goal and the pelvic floor.
+    40+: a routine for her goal, a walk or strength (for bones on days 1 and 4), the weekly diary on day 7.
+- The day's log: `log[date].ck = { actionId: 'd' | 'p' | 'n' }` (`markAction`), `ci` (checked in) and `bar` (what got in
+  the way).
+
+**Routes (`mods/plan.js`):**
+- `plan`: My plan (`renderMyPlan`). The cycle plan's page (`journeyCycle`), a light plan's page (`renderLight`), the PMOS
+  hub while a plan is paused, or, with no plan, "What do you want to work on?" (`data-pl-pick`).
+- `plan-reveal`: her name, her goal as the change she wants, where she is now, her 12 weeks (`pillars`), what to expect (never
+  a percentage), a doctor card when her answers need one (`docCase`), and today's steps.
+  - Start (`#pl-rv-go`) turns on the daily reminder at her time and opens Today.
+  - "Change my answers" (`#pl-rv-edit`) reopens the intake.
+- `plan-checkin`: the evening check-in.
+  - Each action is done, partly or not today (`data-ci="id:d|p|n"`), and she can say what got in the way (`data-ci-b`).
+  - The feedback (`#pl-ci-fb`) says what each habit does for her, counts the week, gives a tip and adds a petal. No streaks.
+- `plan-goal`: the intake again, from My plan (`S.mem.planIntake`): for a woman who joined before Version 37, or who changes
+  her goal.
+- `plan-pmos` is still the V35 hub. V36's Plans page lives on in My plan, as the no-plan screen and "Other plans".
+- A plan screen with nothing to show (no plan, or paused) draws My plan in place rather than redirect.
+
+**My plan:**
+- The 12-week path (`pathHtml`: a dot a week, last week, this week, next week and the next month's review).
+- The look-back, results (`plan-progress` for the cycle plan; before-and-since cards for light plans).
+- "Your care team" (`careTeam`): a free government doctor, her ASHA, a Qura doctor and the report for the doctor.
+- Settings (`settingsHtml`): the daily reminder and its time (`data-pl-at`), phone notifications (`#pl-notif`), change goal
+  (`#pl-chg`) and stop (`#pl-stop`, `#pl-stop-yes`).
+- Other plans (`otherPlans`).
+
+**Today (core `renderHome`):**
+- The page and its tab are "Today" (`t('home')`; Hindi आज).
+- The Today card opens with a greeting (the time of day and her first name; "Today" in discreet mode), then the new
+  `todayHead` hook. The plan's hook gives its name, its week, "{a} of {n} done today", and the check-in button: primary from
+  6 pm or her reminder time; "Checked in today" once done.
+- The plan's actions are Today rows (the `today` hook).
+- One "Sakhi says" slot (`section.slot`). The first card shows; the rest fold under "More from Sakhi (n)"
+  (`details.slot-more`; `mem.slotMore` keeps it open). The order:
+  1. a check-up today;
+  2. module cards (`explain`, then the plan's card, then her stage's modules);
+  3. the period heads-up;
+  4. `homeTop` (free check-ups);
+  5. the next setup step (one step at a time now, not the whole list);
+  6. Coming up.
+- The plan's slot card (`planCard`) is one of:
+  - Start, if she left the reveal;
+  - the doctor check, on days 2 to 21 when her periods skip (`#pl-doc-yes`; `#pl-doc-later` waits 3 days);
+  - a fresh start after 3 quiet days, said so on a Monday (`#pl-lapse-not`);
+  - a month done (`#pl-m-go`).
+- Gone from Today:
+  - the "More for you" fold, with the ask box, the stories line, Feel better now and the flower;
+  - the setup card's list;
+  - V36's "A plan for you" while a plan is going.
+- Core no longer draws `homeMore`. `access`, `relief` and `joy` still register it.
+
+**Tabs and Help (core):**
+- The tabs are Today, My plan (`planTab()`), Diary and Explore (`I.search`).
+- Help is a header button (`#help-btn`) on every screen. It opens a sheet:
+  - Emergency: call 112 (`#hs-sos`);
+  - See a doctor (`#hs-doc`);
+  - When to see a doctor: the safety guide (`#hs-guide`);
+  - My ASHA (`#hs-asha`);
+  - Tell a person (`#hs-tell`, with `SAKHI_HELP_WA`).
+- The safety guide (`help`) has a back row. Its tour menu moved to Me > How to use Sakhi.
+- The language button sits in the header only before joining; after that it is in Me.
+
+**Explore (core `renderCare`):**
+- The order: the heading "Explore", search, For you, Govt. services, "Your questions", the topics, Help and safety, and All
+  articles. There is no Plans row.
+- Search has Speak on Android (`#care-q-mic`, `SakhiAndroid.listen`).
+- "Your questions" (`qaHtml`) are her stage's quick answers, Danger signs first in pregnancy. They are not shown in discreet
+  mode. They moved here from Today's ask box.
+- A search with no match offers "Ask a Qura doctor about this" (`data-ask`).
+
+**Tours:**
+- The full tour no longer starts on its own for a new woman. Each screen keeps its own first-visit tip, and Me > How to use
+  Sakhi replays the full tour. A diary that never had the full tour still gets it once.
+- Home's tour ends on "Your plan for today" (`.today-card`, `tw4_*`). So do the pregnancy and after-birth Home tours, whose
+  quick-answer step went with the ask box. Explore's last step points at the Help button.
+- When a sheet held Home's first tip back (her PIN, the reminders question), the tip starts as the sheet closes
+  (`homeTipDue`).
+
+**Words:**
+- "Home" is "Today" and "Care" is "Explore", in the tab names and in every line that names them: English, Hindi, Marathi,
+  Bengali, Tamil and Telugu.
+- The "My plan" tab name is added for Marathi, Bengali, Tamil and Telugu.
+
+**Core API added:**
+- `S.plan.intake` (`render`, `count`, `goals`), `S.plan.startFromIntake`, `S.plan.packFor`, `S.plan.packOf`;
+- `S.plan.dayDone(iso)`, which drives the diary calendar's plan mark (`KINDS.plan`), and `S.plan.actions()`;
+- the `todayHead` hook.
+
+**Tests:**
+- `node test/companion.mjs` (123 checks):
+  - the 12 acceptance criteria, every goal and stage, and a woman who joined before Version 37;
+  - "Just keeping track" and "Just learning";
+  - Explore's quick answers and voice search;
+  - Hindi.
+- `tours.mjs` (88): Today's own tip for a new woman, one tip a screen, the full tour for an old diary and from How to use
+  Sakhi. The try-it step is now Diary's "Add for today".
+- `value.mjs` (108): no ask box on Today, Explore's order, one setup step at a time, and the slot.
+- `pmosplan.mjs`, `plans.mjs`, `signup.mjs` and `server/test/app-e2e.mjs` follow the new joining and Today.
+
+## 40. Version 37.1: her first day (Mohit, 24 Oct: "Plan to do all three properly", on `docs/first-days-audit-2026-10-24.md`)
+
+Why: Mohit joined 0.37-pilot on his phone and wrote "i just entered details while onboarding and i am straight on to
+program, i felt i am not sure whats happening my expectations were not set". The design and its acceptance criteria are in
+`docs/first-days-audit-2026-10-24.md`, sections 5 to 8. Mohit's four decisions (24 Oct):
+- sign-up stays before the plan;
+- all three steps from day 1;
+- Dr. Megha's welcome: the player now, her recording later;
+- on day 3, one "Questions about your plan?" card.
+
+The new wording for the doctor is in `docs/wording-review-v28.md`, section 15.
+
+**The plan waits until she starts it (`mods/plan.js`):**
+- `startFromIntake(a)` no longer starts a plan. It writes the plan she would get to `d.next` (`pack`, `goalKey`, `goal`,
+  `focus`, `level`, `limits`, `food`, `region`, `remAt`, `when`, `bed`, `work`, `body`, `intake`, `at`) and sets
+  `prompts.reveal`. "Just keeping track" saves `state.intake` and makes no plan, as before.
+- A plan she is on keeps running, with its own answers (`d.intake`, and `state.intake`), until she starts the new one.
+  `docCase` and `nowLine` read `d.intake` first.
+- `viewOf(d)` is the waiting plan as a plan starting today, to draw its cards.
+- `commitStart(when, at)` is "Start my plan":
+  - it copies `d.next` in;
+  - `d.start` is today, tomorrow or next Monday (`startDay`), and `started` is the day she tapped;
+  - it sets `go` and `remAt`, resets `weeks`, `doc`, `lapse` and `keep`, and keeps `log`;
+  - `state.intake` becomes `next.intake`, and `d.next` and `prompts.reveal` go;
+  - the daily reminder starts on `d.start`, so "Tomorrow" doesn't ring tonight. It goes in quietly (the Start screen asked).
+- A plan whose start is still to come (`upcoming`) isn't on yet: `packOf` needs `d.start <= today`.
+  - Today's line says "Your plan starts tomorrow · Your first step: …".
+  - My plan says when, with "Start today instead" (`#pl-soon-now`).
+- There is one way in. Joining, "Change what I work on", "Start again" after 12 weeks (now the questions, `#pl-again`) and
+  the V35 form (`plan-start`, `#pl-go`) all make a waiting plan and open its cards.
+- The migration runs the first time each saved plan is read (`mig`, in `raw()` and `D()`), because saved data loads after
+  the modules register:
+  - a Version 37 plan with `go: false` and nothing done since its start waits to be started (Mohit's phone). Its stray plan
+    reminder goes, and a morning check-in time becomes 8 pm;
+  - one she followed, and a V35 plan (no `go`), keep running.
+- `pauseSync` uses `pausedFor`, so a pregnancy or after-birth plan keeps its reminder.
+- The doctor summary (`summary`) is titled by her plan. Minutes, strength and food are for the cycle plan only, and a plan
+  that isn't on yet has no summary.
+
+**Her plan's cards (`plan-reveal`, `renderReveal`):** one idea each, with Next and Back (`#pl-rv-next`, `#pl-rv-back`). The
+card she is on stays (`S.mem.rvCard`), so a doctor page opened from one comes back to it.
+1. "Your plan is ready, {name}": her goal, "Made from what you told Sakhi: …", and "12 weeks · from about {n} minutes a day"
+   (`dayMins`). When another plan runs, a line says the new one replaces it when she starts it. "Change my answers"
+   (`#pl-rv-edit`).
+2. "Your {n} steps" (`stepsList`, which replaces `pillars`): each step with what it does for her (the reviewed `plan_fb_*`
+   lines). For the cycle plan, this week's minutes and "In My plan too: yoga, your plate and your progress".
+3. "How each day works": Today and Done, the check-in at her time, what each step does, and "Missed a day? Nothing to catch
+   up." Dr. Megha's welcome (`#pl-rv-aud`) shows when the build lists `megha-welcome-<lang>` in `SAKHI_CONFIG.audio`
+   (`android/build-apk.sh` bundles `web/audio/megha-welcome-*.mp3`).
+4. "What happens when": every week, week 4 and week 12. Period plans add that periods often take 3 to 6 months to change.
+5. Only when her answers need it (`docCase`), and not in discreet mode: "Alongside your plan: one doctor check".
+6. The Start screen:
+   - Today, Tomorrow or Monday (`data-rv-when`). After 9 pm, tomorrow is picked;
+   - the check-in time, evening only (`data-rv-at`: 6, 7, 8 or 9 pm). My plan's time chips are evening only too;
+   - on Android with reminders off, "Allow reminders" (`#pl-st-allow`, `S.alerts.ask`). With reminders on but alarms that may
+     ring late, "Allow" (`#pl-st-exact`, `S.alerts.askExact`);
+   - "Start my plan" (`#pl-rv-go`). When reminders were offered here, it sets `prompts.notifyAsk` and `notifyIntro`, so
+     Today doesn't ask again.
+- Discreet mode: no health words. The goal says "My plan", the reasons go, private steps say "Your plan for today", and there
+  is no doctor card.
+- A waiting plan is her plan: the My plan tab and `plan-pmos` draw its cards.
+
+**Joining (core):**
+- The welcome: "Your period diary, and a plan made for you", three lines (`ob_v1` to `ob_v3`) and "Start · about 3
+  minutes" (`ob_start`).
+- The progress bar is named in three parts (`.ob-parts`): About you, What you want, Your plan. `S.plan.intake.part(a)` puts
+  the summary in part 3.
+- "More than a month ago" asks "About how long ago?" (`data-ob-lpm`: 38, 60 or 90 days), saved as a guess.
+- The plan's questions:
+  - one "why we ask" line on her periods, her day and her walk time;
+  - the check-in time left "Your day" for the Start screen;
+  - a last screen, "Here's what you told Sakhi" (`sum`, `sumRows`). `data-pl-edit` reopens a question and `#pl-in-make`
+    makes the plan.
+- When a plan waits, sign-up says "Your plan is ready. Sign up, and Sakhi shows it next." (`su_plan_wait`). The tabs hide
+  while sign-up shows.
+- Joining (and "Just read") sets `state.whatsNew`, so a new woman never sees "What's new".
+
+**Today (core `renderHome`, `moduleCards`):**
+- Urgent cards (`data-xp-urgent`) are taken from every module first, then two others. While her plan waits or runs
+  (`S.plan.leads()`), it comes first.
+- Her plan's first 3 days (`S.plan.early()`; also while a new plan waits, for 3 days, and before a later start):
+  - these wait: "keep an eye on it" cards (`data-xp-lv="watch"`), the heads-up, `homeTop`, the setup step and Coming up;
+  - month-level and urgent cards don't.
+- `todayHead` is called in discreet mode too, and the plan writes it in plain words. Module cards marked `data-disc-ok` show
+  in discreet mode.
+- The plan's line:
+  - "Day {n}" for the first week, then "Week {n} of 12";
+  - the check-in button from 5 pm, at her time, or after her first Done; before that, "Check-in at {t}";
+  - from day 2, "Yesterday: …"; on day 3, "3 days in: small steps add up.";
+  - no "All done for today" under it.
+- The plan's cards (`planCard`), first that applies:
+  1. "Your plan is ready" (`data-disc-ok`). When another plan runs: "Your new plan is ready", with "Keep my plan"
+     (`#pl-next-drop`);
+  2. "Day 1 of your plan" (`data-disc-ok`), until her first check-in;
+  3. the doctor check (days 2 to 21);
+  4. "Questions about your plan?" once, from day 3 (`prompts.planCall`; `#pl-call-go` opens `ask`, `#pl-call-not`), never
+     in discreet mode;
+  5. the fresh start, then a month done.
+- "Hello" before 5 am.
+- Tours: a new tip, `home-plan` (one step on `.today-card`), runs on its own only on her plan's first days. Home's own tips,
+  the stage tips, the ring, the stage tip and explain's `xp-home` wait then (`auto`).
+- "What's new in Sakhi" (`openWhatsNew`) shows once, for a diary from before Version 37 (`state.whatsNew` unset): the plan,
+  Today and Explore, Help, and "Your plan carries on." when one runs. "See my plan" or "Not now".
+
+**Petals (`mods/joy.js`):** from "Start my plan" to her first check-in, at most to day 3 (`S.plan.holdJoy()`), petals and
+badges are counted but not shown. The check-in calls `S.joy.release()`, which shows one celebration (no second petal if the
+check-in just showed one).
+
+**The check-in:** the first time, "This takes a minute. Your answers stay on this phone." After saving, "Tomorrow: the same
+steps. See you at {t}." (later, "See you tomorrow at {t}."). In discreet mode its reason line is "Every small step counts."
+
+**Core API added:**
+- `S.plan.pending()`, `running()`, `leads()`, `early()`, `holdJoy()`, `start(when, at)` and `intake.part(a)`;
+- `S.joy.release()`;
+- `S.reminders.upsert(r, { quiet: true })`, which skips the reminders question (the screen asked);
+- `S.alerts.exact()` and `S.alerts.askExact()`.
+
+**Tests:**
+- `node test/firstday.mjs` (111 checks): the 16 criteria of the plan, discreet mode, Hindi, 360 px and the doctor summary.
+- `companion.mjs` (127) and `pmosplan.mjs` (192) walk the cards to Start. `notify.mjs` marks its diaries as current
+  (`whatsNew`).
+- The walks (`firstday-walk.mjs`, `weeks-walk.mjs`, `stages-walk.mjs`) follow the cards. `weeks-walk` follows the plan
+  alarm's own `go`.
+
+## 41. Version 37.2: a companion that notices (Mohit, 24 Oct: "Plan to do all three properly", on `docs/ux-gaps-2026-10-24.md`)
+
+Why: the 12-week fast-forward (`web/test/weeks-walk.mjs`) showed:
+- Sakhi didn't notice what she did: no word about yesterday, a period or week 12;
+- her plan was hidden behind "no period yet";
+- two counts disagreed;
+- the 8 pm reminder opened the wrong page;
+- discreet mode leaked health words.
+
+The design and its 8 acceptance criteria are in `docs/ux-gaps-2026-10-24.md`, sections 1 and 3. The new wording for the
+doctor is in `docs/wording-review-v28.md`, sections 15.4 and 15.5.
+
+**The evening reminder (core `NOTIF_GO`, `notifCh`; `mods/plan.js` `remOnNow`):**
+- It opens the check-in (`plan-checkin`), and says "How did today go? 1 minute".
+- It has its own channel, `sakhi_plan` ("Your plan", `ch_plan`). Android already accepts `sakhi_[a-z]+` and the route.
+  Discreet or shared mode keeps the neutral channel and words.
+- The migration (`mig`) updates a saved "Your plan for today" title and moves a check-in time before 5 pm (Version 37
+  offered 8 am and 1 pm) to 8 pm. My plan's times are 6 to 9 pm.
+
+**One count (`countLine`):**
+- Today's line and the check-in both say "2 of 3 done today", or "1 done, 2 partly today". The check-in adds "· {w} of 7
+  days this week".
+- Once she has checked in, the plan's Today rows go (the `today` hook returns nothing), and the plan's line keeps the day's
+  count.
+- Core shows no "All done for today" under a `todayHead` line.
+
+**Her period (`event` hook, `onLog`):** a period start logged during the plan stores
+`d.per = { at, d, days, guess }`, from the gap that just ended. For 2 days:
+- Today's line and My plan (`perBanner`) say "Your period came after {n} days. Sakhi noted it for your results." ("about"
+  when a date was a guess);
+- the pain plan adds the cramps line;
+- discreet mode doesn't show it.
+
+**Today's cards (`planCard`, `cardKind`)**, first that applies:
+1. her weeks done (`end`, until she opens My plan: `d.endSeen`);
+2. day 1;
+3. a month done (weeks 5 and 9). After 3 quiet days its words carry the restart ("You started on {d}. Start again small
+   today: …");
+4. the week's look-back, on the first 3 days of a new week (`rev`);
+5. the doctor check;
+6. "Questions about your plan?";
+7. the fresh start.
+
+In discreet mode only the end, day 1 and the look-back, which carry `data-disc-ok`.
+- `S.plan.docShowing()` is true while the doctor check is the card shown. explain's Home card then skips a `watch`-level
+  `late_now` ("no period yet" before 90 days). At 90 days, as a `month` card, it always shows.
+- A finished plan still leads Today (`leads`).
+
+**The look-back (`reviewCard`):**
+- It leads with what she did ("You followed your plan on {n} of 7 days."; the cycle plan adds the minutes, never the target).
+- It names the week's most common check-in barrier ("No time on 3 days.", `weekBars`).
+- It asks only her energy (`data-pl-e`; the barrier chips `data-pl-b` are gone) and stores `weeks[k] = { e, b }`. Then a tip
+  for that barrier, and "Got it".
+
+**The end (`planWeeks`, `finished`, `remEnd`, `renderFinished`):**
+- Every plan runs 12 weeks, except a pregnancy plan, which runs until the birth (`planWeeks` 0: no end, no `until` on its
+  reminder).
+- Today's line says "Your 12 weeks are done · See your results".
+- My plan shows:
+  - "You followed your plan on {n} of 84 days" (`followedDays`), and "Want to try again, smaller?" under 12 days;
+  - her results (`progressCore`, or `lightResults` for a light plan);
+  - when her answers needed a doctor or nothing changed (`noChange`: no period, or every gap still over 35 days; every
+    period still painful or still heavy), "If nothing has changed, see a doctor";
+  - What next: "Keep going" (`#pl-keep`: `keep`, and the reminder carries on with no end) or "Start a new 12 weeks"
+    (`#pl-again`, the questions again). `renderLight` ends the same way.
+
+**Results (`cycleCompare`):**
+- A gap that ended during the plan counts as "since", even if it began before. A guessed date makes it "about {n}".
+- With no clean gap before, "before" is her own joining answer ("You said: 36 to 45 days"). The pain and heavy results do
+  the same.
+- The cycle results add "Periods often take 3 to 6 months to change."
+
+**Discreet mode:**
+- My plan has no goal label, and "Cycle care yoga" is "Today's yoga" (`rName`, `rSub`).
+- Iron steps are private. The check-in's labels use the plain words, it has no "Pain" chip, and its reason line is "Every
+  small step counts."
+- There are no "Other plans", no period, pain or signs results, and no "What to expect".
+
+**Core:**
+- explain's late card from 40 (`S.stageNow() === 'meno'`): "Day {n} since your last period" and the years-before-menopause
+  line (`tMid`, `wMid`).
+- The ring says "Typical gap 21–35 days".
+- "Your start date is a guess" shows on one day a week (`prompts.approxNote`).
+
+**API added:** `S.plan.docShowing()`; the plan module's `event` hook.
+
+**Tests:**
+- `node test/notices.mjs` (76 checks): the 8 criteria.
+- `pmosplan.mjs` (the reminder opens the check-in; the look-back), `companion.mjs` (one count, rows after the check-in, the
+  look-back's barrier) and `firstday.mjs` (112: the reminder's words, "no period yet" folded into the doctor check) follow it.
+- `weeks-walk.mjs` announces the period as the diary does (`S.emit('log', { type: 'start' })`).
+
+## 42. Version 38: a plan that fits every goal (Mohit, 24 Oct: "Plan to do all three properly", on `docs/ux-gaps-2026-10-24.md`)
+
+Why: the every-goal walk (`web/test/stages-walk.mjs`) showed some plans that didn't fit her goal or stage:
+- two pregnancy plans, and the same after-birth check twice;
+- the cycle plan's words for a woman trying for a baby;
+- a 21-day iron loop that offered meat to vegetarians;
+- a cycle countdown from 40;
+- two "check-ins", other programmes on top of her plan, and For you by stage only.
+
+New wording for the doctor is in `docs/wording-review-v28.md`, section 16. Each owning module exposes a small API and keeps
+writing its own data. `mods/plan.js` looks them up at call time, so the load order doesn't matter.
+
+**One pregnancy plan:**
+- `preg.js` adds `S.preg.plan.due()`: what her pregnancy plan has due now, as `[{ id, name }]` (not after 42 weeks).
+- The plan's `preg` pack (now "My pregnancy plan") takes it as its first step: "Due now: {x}" (kind `link`, opening
+  `preg-plan`, no Done on Today). Then her goal's routine, and kicks from week 28.
+- While that plan runs, preg.js's own "Due now" Today row steps aside (`planOwns`). The tablet rows stay.
+- journey.js's Today row steps aside while any plan runs.
+- Her weeks are her own (`ownWeek`): "Week {n} of pregnancy" on Today, My plan and the doctor summary. The path is her
+  trimesters (`plan_tri_*`). In discreet mode the plain label returns.
+
+**One after-birth check:**
+- Until day 42, every after-birth goal starts with the daily recovery check: kind `check`, opening `post-recovery`. It is
+  done only by post's own record (`S.post.checkedToday()`), never by a tap.
+- On Today it has no Done. The check-in shows "Do it now" or "Done today" instead of chips. `markAction` skips it.
+- post.js's own Today card steps aside while the plan runs.
+- "Week {n} after the birth".
+
+**Trying for a baby (`ttc` pack, goal `ready`):**
+- Its steps are a walk and the food habit. On plan days 1, 8, 15 and so on, a link to her before-pregnancy checklist
+  (`ttc-prep`), which is advice for her doctor and ASHA: there's no dose in the plan's words.
+- Its own reasons (`plan_fb_food_t`, `plan_fb_prep`), and its own "what happens when": the trying page's own reviewed line,
+  more than 8 in 10 couples within a year. No promise about periods or waist.
+- Its results show checklist progress (`S.ttc.prepDone()` gives `{ a, b }`).
+- A pregnancy ends it: `packOf` is null, and My plan offers the pregnancy goals.
+
+**Heavy periods:**
+- `S.journey.step(id, n, { food })` gives a vegetarian ("Poha with lemon") or egg ("Eggs today") step in place of day 9's
+  "Eggs, fish or meat".
+- After day 21, one iron food a day from her own diet (`plan_a_ironf_*`) replaces the loop.
+
+**From 40:**
+- For a midlife woman whose periods still come (`isMidlife()`, not stopped, not discreet), Today's hero is days (then
+  months) since her last period, with her weekly symptom diary one tap away (`S.meno.thisWeek()`). There is no ring, and
+  the ring's tip isn't offered.
+- The midlife plan's results for hot flushes, sleep or mood come from the weekly diary: weeks with it in the 4 weeks before
+  she started, and in the last 4 (`S.meno.trend(key, from, to)`).
+
+**PMS:** in the 7 days before her likely period (`S.cycle.rangeInfo()`), her plan's line says "Your calm week: the days
+before your period. Your calm breath comes first." It isn't shown in discreet mode.
+
+**One name for each thing:**
+- The monthly signs check-in is "This month" (round button `checkin_b`, page `ci_title`). No pre-fill.
+- While a plan runs, My plan has no "Other plans" (`otherPlans` is gone). "Change what I work on" stays in its settings.
+- The PMOS self-check opens with her plan's answers (selfcheck.js `prefill`, from `state.intake`): gap to `gaps`, and the
+  signs. Skipped months do not answer `few` ("fewer than 8 periods a year" is a different question; review fix 42.1). A line says so. The test, scan and baby questions stay open, so no verdict comes until she
+  answers them. TRIAGE gating is unchanged.
+- My plan's minute chips sit under "Add minutes".
+
+**For you by goal:** her plan's goal (`S.plan.goal()`), or the goal she joined with, puts its own 2 or 3 tools first
+(`FOR_GOAL` in core, tile routes only).
+
+**API added:**
+- `S.preg.plan.due()`, `S.post.checkedToday()`, `S.ttc.prepDone()`, `S.meno.trend()`, `S.meno.thisWeek()`;
+- `S.journey.step(id, n, { food })`, `S.plan.goal()`;
+- step kinds `link` and `check`, in `NO_TAP` with `routine`.
+
+**Tests:** `node test/goals.mjs` (71 checks). `companion.mjs` follows the `ttc` pack and the new pregnancy plan name.
+
+### 42.1 The 24 Oct review (a multi-agent review of V37.1 to V38: 57 findings, 52 confirmed by a second agent)
+
+Every confirmed finding is fixed. The checks are in `web/test/goals.mjs`, section 10; a second six-agent pass re-checked
+each fix and found 4 only partly fixed and 7 new slips, all fixed with the checks in section 11. A third pass (each
+reported slip tried by a skeptic) confirmed 5 more from that round, fixed with the checks in section 12.
+- **Reminders:** `pauseSync` also removes the plan reminder when a plan no longer applies: a pregnancy ended, the trying plan
+  after a pregnancy, or an after-birth plan in a new pregnancy. A pregnancy plan's reminder ends 2 weeks after her due date
+  (`remEnd`). `remSync`'s done mark is a quiet upsert, so Start no longer sets off the reminders or exact-alarm sheets. Core
+  shows a shared phone's PIN before any reminders question. Coming back from the alarm setting redraws the Start screen.
+- **Weeks:** `wkNow(d)` counts the real week for a plan with no end (pregnancy) and after "Keep going". It is used in the
+  doctor summary, light results (the latest 12 weeks), the check-in's week count, the ring and strength count. In discreet
+  mode an endless plan says "Week {n}" (`plan_wk_n`), and the summary says "Plan week {n}" (`plan_sum_wkn`).
+- **Safety:**
+  - an expired contraceptive (or Antara past its late window) is `data-xp-urgent`, so no plan card pushes it off Today;
+  - once her periods have stopped there is no "Heavy periods" goal, and the heavy plan's doctor card applies (`goalsFor`,
+    `docCase`);
+  - the PMOS self-check no longer answers "fewer than 8 periods" for her.
+- **Discreet mode:**
+  - a pregnancy plan's cards (`plan_rv_len_d`, no "danger signs"), its trimester path (hidden), the trying checklist step,
+    and the mood and sleep links are private;
+  - the supplements card shows only on the PMOS plan, and never on a shared phone (`pmosAsk`).
+- **Flows:**
+  - a light plan's PMOS page, and a routine's "Back to my plan", open its own page;
+  - a waiting plan shows on the end and "starts tomorrow" pages;
+  - `endSeen` resets with each plan;
+  - a plan paused by pregnancy or a birth shows why, then the goals for now (a new plan replaces it);
+  - after 12 weeks the check-in opens the end page;
+  - "Change my answers" keeps "None of these";
+  - joining remembers "About how long ago?".
+- **Counting and results:**
+  - her period line shows once, only for her latest start, and goes if she takes it back (`latestStart`). Core emits `log`
+    before it redraws Today, so it shows at once;
+  - `docShowing` is false while a new plan's card shows;
+  - yesterday counts a routine and the after-birth check (`S.post.checkedOn`);
+  - a barrier she took back isn't kept;
+  - "A petal for your garden" shows only when one came (`S.joy.petals`, and `S.joy.release()` now returns whether it showed
+    something);
+  - heavy results count only periods with flow details, and pain results count one period once;
+  - the signs results go by each check-in's own date;
+  - midlife results use whole weeks ("4 weeks before you started", "Last 4 weeks").
+- **Goals:**
+  - For you takes a running plan's goal, or a joining goal that fits her stage now (`goalNow`), with stage-specific tools for
+    after-birth and midlife goals (`FOR_GOAL_ST`);
+  - the pregnancy iron goal gets the diet-aware steps and the daily habit after day 21 (and asks what she eats);
+  - iron steps keep their links;
+  - the kick counter only shows where the build shows it (`S.toolShown`);
+  - journey day 20 is "This month".
+- **Words:**
+  - month 1 for pregnancy, after a birth and 40+ says "See how your plan is going." (`plan_sl_m_p2`);
+  - the midlife late card counts days like Today's hero ("{d} days since your last period"), which switches to months only
+    after 60 days;
+  - "What's new" names the tabs by their own labels in her language (`wn_2` takes `{h}` and `{c}`).
+
+**The re-check (second round, 24 Oct):**
+- **Reminders:** when Sakhi takes a plan's reminder away (a pause, or a plan that no longer applies) it marks `remGone`;
+  `pauseSync` puts the reminder back, quietly, once the plan applies again (for example the trying plan after a pregnancy
+  ends). A reminder she turned off herself stays off. A pregnancy plan's reminder end follows her due date when a scan moves
+  it.
+- **Paused and waiting plans:** a plan paused after a birth is paused on My plan (no running card or minutes ring). A light
+  plan's card there has its own name and no ring. A waiting plan that would be paused as soon as it starts isn't offered
+  (`pendingOk` checks `pausedFor`).
+- **Yesterday** counts what Today counted that day: her ticks, minutes only at the walk's target, a routine only when it is
+  one of her steps, and the recovery check only until 6 weeks after the birth (`rcheckOn`, also used by `dayDone`).
+- **Weeks:** the doctor summary averages the 4 complete weeks before this one (a finished plan's weeks 9 to 12), and a
+  plan kept going past 12 weeks says "Plan week {n}". The path card on a kept plan shows "Keeping it going" and this week.
+  Midlife "Last 4 weeks" is this week and the 3 before it.
+- **Results:** pain and heavy results go by period as Days counts them: two starts logged within 10 days are one period
+  (`periodsOf`).
+- **For you:** a running after-birth or midlife plan keys its goal's tools on the plan, not the stage (an after-birth plan
+  stays one once her periods come back). Any other plan keys on her stage, so a kept cycle plan after a birth still leads
+  with the after-birth tools.
+
+**The third check (24 Oct):**
+- **Reminders:** only a reminder that was on is marked `remGone`, so one she switched off in Reminders stays off. An evening
+  time she sets in Reminders becomes her check-in time (`d.remAt`), so a reminder that comes back keeps it; `mig` still
+  moves a daytime one to 8 pm.
+- **The first 6 weeks after a birth:** `stageNowKey` is `post` while `pauseWhy()` is, so My plan and "Change what I work on"
+  offer the after-birth goals even with a period logged. A waiting plan that is paused says why on My plan.
+- **Yesterday** is `actionsFor(d, iso)` for yesterday: its week's walk and food habit, its weekday, its log, and the recovery
+  check while it was one (`todayPlan`, `lightWalk`, `periodToday` and `planDayAt` take the day too). A step she ticked that
+  day which today's list can't rebuild (a pregnancy plan's "Due now" once nothing is due) still counts. A fourth check
+  found only that one; section 12 has its test (104 checks in all).
