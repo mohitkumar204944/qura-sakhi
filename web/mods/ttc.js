@@ -103,7 +103,13 @@
   const PREP_ALL = PREP_HER.concat(PREP_HIM);
   const prepDone = (st) => PREP_ALL.filter((x) => (st.prep || {})[x.k]).length;
   /* Version 38: the trying-for-a-baby plan's results (plan.js) */
-  S.ttc = Object.assign(S.ttc || {}, { prepDone: () => ({ a: prepDone(store()), b: PREP_ALL.length }) });
+  /* Version 39.5: did she tick anything on that day? (read only) */
+  const prepOn = (iso) => { const at = (((S.state.mods || {}).ttc) || {}).prepAt || {}; return Object.keys(at).some((k) => at[k] === iso); };
+  /* Version 39.6: is it time for a doctor check, by her own dates and answers (the months-of-trying page's own rule)? */
+  const tryingNow = () => { const sit = S.state.situation || {}; if (!S.canSave() || !sit.planning || sit.pregnant) return null; const st = store(); if (!st.since) return null;   /* review DOCTOR-09: only while she is trying */ const r = tryingState(st); return { now: !!r.now, months: r.months, reasons: r.reasons.length > 0 }; };
+  /* review FIXES-10: the day she ticked her latest checklist item */
+  const prepLast = () => { const at = (((S.state.mods || {}).ttc) || {}).prepAt || {}; return Object.keys(at).map((k) => at[k]).filter(Boolean).sort().pop() || null; };
+  S.ttc = Object.assign(S.ttc || {}, { prepDone: () => ({ a: prepDone(store()), b: PREP_ALL.length }), prepOn: prepOn, prepLast: prepLast, tryingNow: tryingNow });
 
   const MUCUS = [
     { k: 'dry', en: 'Dry', hi: 'सूखा', den: 'nothing felt or seen', dhi: 'कुछ महसूस या दिखा नहीं' },
@@ -185,7 +191,8 @@
       askBtn({ en: 'Before-pregnancy check', hi: 'गर्भ से पहले की जाँच' });
     S.wire(v);
     v.querySelectorAll('[data-prep]').forEach((c) => c.addEventListener('change', () => {
-      st.prep[c.dataset.prep] = c.checked; if (!c.checked) delete st.prep[c.dataset.prep]; persist();
+      st.prep[c.dataset.prep] = c.checked; if (!c.checked) delete st.prep[c.dataset.prep];
+      st.prepAt = st.prepAt || {}; if (c.checked) st.prepAt[c.dataset.prep] = S.toISO(S.today()); else delete st.prepAt[c.dataset.prep]; persist();   /* Version 39.5 */
       c.closest('label').classList.toggle('done', c.checked);
       const n = v.querySelector('#ttc-count'); if (n) n.innerHTML = count();
       const b = v.querySelector('#ttc-fillbar'); if (b) b.style.width = Math.round((prepDone(st) / PREP_ALL.length) * 100) + '%';
@@ -579,7 +586,7 @@
       { section: 'ttc', route: 'ttc-trying', title: 'ttc_trying', sub: 'ttc_trying_s', icon: 'clock', order: 20, gated: true, keywords: 'months trying not getting pregnant when to see doctor infertility 12 months 6 months' },
       { section: 'ttc', route: 'ttc-signs', title: 'ttc_signs', sub: 'ttc_signs_s', icon: 'chart', order: 40, gated: false, keywords: 'bbt basal body temperature cervical mucus lh strip ovulation chart' },
       { section: 'ttc', route: 'ttc-tests', title: 'ttc_tests', sub: 'ttc_tests_s', icon: 'file', order: 50, gated: false, keywords: 'amh hsg ssg semen analysis iui ivf icsi art act genital tb letrozole' },
-      { section: 'ttc', route: 'ttc-partner', title: 'ttc_partner', sub: 'ttc_partner_s', icon: 'users', order: 60, gated: false, keywords: 'husband male infertility sperm semen test varicocele mumps' },
+      /* Version 39.7 (journey audit P3-18): his page opens from the trying card on "For my family" and from Getting ready; no tile of its own */
       { section: 'ttc', route: 'ttc-loss2', title: 'ttc_loss2', sub: 'ttc_loss2_s', icon: 'heart', order: 70, gated: false, keywords: 'recurrent miscarriage pregnancy loss abortion karyotype antiphospholipid' }
     ],
     css: [

@@ -22,7 +22,7 @@
   const LP = (label, o) => '<p><strong class="meno-lab">' + T(label) + '</strong> ' + T(o) + '</p>';
   const ul = (arr) => '<ul>' + arr.map((x) => '<li>' + T(x) + '</li>').join('') + '</ul>';
   const steps = (arr) => '<ol class="steps">' + arr.map((x) => '<li>' + T(x) + '</li>').join('') + '</ol>';
-  const card = (inner, cls) => '<div class="card' + (cls ? ' ' + cls : '') + '">' + inner + '</div>';
+  const card = (inner, cls, attr) => '<div class="card' + (cls ? ' ' + cls : '') + '"' + (attr ? ' ' + attr : '') + '>' + inner + '</div>';
   const intro = (o) => '<p class="small">' + T(o) + '</p>';
   const goBtn = (route, label) => '<button type="button" class="btn sm meno-self" data-go="' + esc(route) + '">' + T(label) + '</button>';
   const linkItem = (route, icon, title, sub, pill) => '<button type="button" class="item" data-go="' + esc(route) + '"><span class="ico-sm">' + S.icon(icon) + '</span><span class="body"><strong>' + T(title) + '</strong>' + (sub ? '<span>' + T(sub) + '</span>' : '') + '</span>' + (pill ? '<span class="pill meno-pill">' + esc(pill) + '</span>' : '') + '</button>';
@@ -69,7 +69,9 @@
      whether this week is noted */
   S.meno = Object.assign(S.meno || {}, {
     trend: (key, fromISO, toISO) => { const dia = peekDiary(); const ks = loggedKeys(dia).filter((k) => k >= wk(S.fromISO(fromISO)) && k <= toISO); return { weeks: ks.length, on: ks.filter((k) => lvOf(dia[k], key) > 0).length }; },
-    thisWeek: () => !!peekDiary()[wk(S.today())] });
+    thisWeek: () => !!peekDiary()[wk(S.today())],
+    /* Version 39.5: the week of that day has its diary (a plan step counts from it) */
+    diaryOn: (iso) => !!peekDiary()[wk(S.fromISO(iso))] });
   const draftFor = (key) => { const e = peekDiary()[key]; const d = zero(); if (e && e.v) SYM.forEach((s) => { d[s] = lvOf(e, s); }); return d; };
 
   /* ---------- hub ---------- */
@@ -102,6 +104,10 @@
       }
     } else if (can) facts = '<div class="card soft"><p class="small">' + esc(t('meno_tl_none')) + '</p></div>';
     mDone = mDone && !young && !why;
+    /* Version 39.0 (journey audit P0 1): after 12 months with no period, ask once whether her periods have stopped, so any
+       bleeding from now on gets its own check */
+    const askStop = can && mDone && !sit.stopped && !((S.state.prompts || {}).stopAsk);
+    if (askStop) facts += '<div class="card meno-stopq"><h3>' + esc(t('meno_stop_q')) + '</h3><p class="small">' + esc(t('meno_stop_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" id="meno-stop-y">' + esc(t('meno_stop_y')) + '</button><button type="button" class="btn sm" id="meno-stop-n">' + esc(t('meno_stop_n')) + '</button></div></div>';
     const stage = (k, on) => '<div class="meno-tl-st' + (on ? ' on' : '') + '"><b>' + esc(t('meno_tl_' + k)) + '</b><span class="small">' + esc(t('meno_tl_' + k + 'p')) + '</span></div>';
     const rel = (r, icon, title) => (S.routeOwner(r) ? linkItem(r, icon, title, '') : '');
     v.innerHTML = S.backRow(t('meno_tl_h'), 'meno', false) + '<p class="small">' + esc(t('meno_tl_p')) + '</p>' + facts +
@@ -110,6 +116,20 @@
       linkItem('meno-diary', 'chart', t('meno_diary'), t('meno_diary_s')) + linkItem('meno-score', 'check', t('meno_sc_h'), t('meno_sc_s')) + linkItem('meno-hrt', 'pill', t('meno_hrt'), t('meno_hrt_s')) + linkItem('meno-bones', 'heart', t('meno_bones'), t('meno_bones_s')) + linkItem('meno-intimate', 'flower', t('meno_intimate'), t('meno_intimate_s')) + '</div>' +
       '<button type="button" class="btn primary block" data-ask="' + esc(t('meno_hub')) + '">' + esc(t('meno_tl_ask')) + '</button><p class="footnote">' + esc(t('meno_tl_foot')) + '</p>';
     S.wire(v);
+    const sy = v.querySelector('#meno-stop-y'), sn = v.querySelector('#meno-stop-n');
+    const said = (yes) => { const s0 = S.state.situation; if (yes) { s0.stopped = true; s0.midlife = true; s0.stoppedOn = lastBleed() || S.toISO(S.today()); } S.state.prompts = Object.assign({}, S.state.prompts || {}, { stopAsk: S.toISO(S.today()) }); S.save(); S.render(); };
+    if (sy) sy.addEventListener('click', () => said(true)); if (sn) sn.addEventListener('click', () => said(false));
+  }
+  /* Today: a year since her last period (45 or older, or in midlife), until she answers on the timeline */
+  /* review XS-1: the last day she bled, from her last period (its end when she logged one) */
+  const lastBleed = () => { const st = S.cycle.starts(); const ls = st[st.length - 1]; if (!ls) return ''; const n = S.cycle.periodLen ? S.cycle.periodLen(ls) : null; return n ? S.toISO(S.addDays(S.fromISO(ls), n - 1)) : ls; };
+  /* whole calendar months since a date (the 31st counts to the last day of shorter months), as the timeline counts them */
+  const monthsSince = (last) => { const today = S.today(); const plus = (n) => { const d = new Date(last.getFullYear(), last.getMonth() + n, 1); d.setDate(Math.min(last.getDate(), new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate())); return d; }; let m = 0; while (m < 600 && plus(m + 1) <= today) m++; return m; };
+  function stopDue() {
+    const sit = S.state.situation || {}; if (!S.canSave() || sit.stopped || sit.hysterectomy || sit.hormones || sit.breastfeeding || S.cycle.isPregnant() || (S.state.prompts || {}).stopAsk) return false;
+    const age = S.cycle.ageYears(); if (!(age != null && age >= 40)) return false;   /* review XS-6: from 40, as the timeline asks */
+    const born = sit.deliveredOn ? S.diffDays(S.fromISO(sit.deliveredOn), S.today()) : null; if (born != null && born >= 0 && born < 365) return false;
+    const ls = S.cycle.lastStart(); return !!ls && monthsSince(ls) >= 12;   /* review XS-7: 12 calendar months, like the timeline */
   }
   function renderHub(v) {
     v.innerHTML = S.backRow(t('meno_hub'), 'care', false) +
@@ -358,10 +378,15 @@
   }
 
   /* ---------- bones and heart ---------- */
+  /* Version 39.8 (diet audit VD-02): the calcium card's own foods as pictures; with no milk, the card's other foods */
+  function calciumPics() {
+    if (!(S.food && S.food.strip)) return ''; const dt = S.food.diet ? S.food.diet() : { type: 'veg', milk: true }; const milk = dt.milk !== false;
+    return S.food.strip((milk ? [['milk', { en: 'Milk', hi: 'दूध' }], ['dahi', { en: 'Dahi', hi: 'दही' }]] : []).concat([['ragi', { en: 'Ragi', hi: 'रागी' }], ['til', { en: 'Til', hi: 'तिल' }]], milk ? [['paneer', { en: 'Paneer', hi: 'पनीर' }]] : [], [['saag', { en: 'Green leafy sabzi', hi: 'हरी पत्तेदार सब्ज़ी' }], ['rajma', { en: 'Rajma', hi: 'राजमा' }], ['chana', { en: 'Chana', hi: 'चना' }]], dt.type === 'nonveg' ? [['fish', { en: 'Small fish', hi: 'छोटी मछली' }]] : []), t('foods_help'));
+  }
   function renderBones(v) {
     v.innerHTML = S.backRow(t('meno_bones'), 'meno', false) +
       intro({ en: 'After menopause, bones thin faster and the heart loses some of the protection oestrogen gave it. Indian women reach menopause earlier and start with less bone mass, so this matters even more here. Most of what protects you is food, sunlight, movement and a few checks each year.', hi: 'मेनोपॉज़ के बाद हड्डियाँ तेज़ी से कमज़ोर होती हैं और दिल को एस्ट्रोजन से मिलने वाली सुरक्षा कम हो जाती है। भारतीय महिलाओं में मेनोपॉज़ जल्दी आता है और हड्डियों की मज़बूती पहले से कम होती है, इसलिए यहाँ यह और ज़रूरी है। ज़्यादातर बचाव खाने, धूप, चलने-फिरने और साल की कुछ जाँचों से होता है।' }) +
-      card(H2({ en: 'Calcium from your kitchen', hi: 'रसोई से calcium' }) +
+      card(H2({ en: 'Calcium from your kitchen', hi: 'रसोई से calcium' }) + calciumPics() +
         P({ en: 'Aim for more than 800 mg of calcium a day from food (Indian Menopause Society). Most Indian women past menopause get less than half of that.', hi: 'रोज़ खाने से 800 mg से ज़्यादा calcium का लक्ष्य रखें (Indian Menopause Society)। मेनोपॉज़ के बाद ज़्यादातर भारतीय महिलाओं को इसका आधा भी नहीं मिलता।' }) +
         '<dl class="kv"><dt>' + T({ en: 'A glass of milk', hi: '1 गिलास दूध' }) + '</dt><dd>' + T({ en: 'about 300 mg', hi: 'लगभग 300 mg' }) + '</dd><dt>' + T({ en: 'A katori of dahi (curd)', hi: '1 कटोरी दही' }) + '</dt><dd>' + T({ en: 'about 300 mg', hi: 'लगभग 300 mg' }) + '</dd></dl>' +
         ul([
@@ -371,7 +396,7 @@
           { en: 'Green leafy vegetables: chaulai (amaranth), methi, sarson, drumstick (moringa) leaves', hi: 'हरी पत्तेदार सब्ज़ियाँ: चौलाई, मेथी, सरसों, सहजन (moringa) के पत्ते' },
           { en: 'Rajma, chana, soybean and tofu, and small fish eaten with the bones', hi: 'राजमा, चना, सोयाबीन और tofu, और छोटी मछली जो काँटों समेत खाई जाए' }
         ]) +
-        P({ en: 'No milk? Ragi, til, greens and dals together can still get you there. Take calcium tablets only if your doctor advises them, and not at the same time as an iron tablet.', hi: 'दूध नहीं लेतीं? रागी, तिल, हरी सब्ज़ियाँ और दालें मिलकर भी काफ़ी calcium दे सकती हैं। calcium की गोली सिर्फ़ डॉक्टर की सलाह पर लें, और iron की गोली के साथ एक ही समय पर नहीं।' }, 'small')) +
+        P({ en: 'No milk? Ragi, til, greens and dals together can still get you there. Take calcium tablets only if your doctor advises them, and not at the same time as an iron tablet.', hi: 'दूध नहीं लेतीं? रागी, तिल, हरी सब्ज़ियाँ और दालें मिलकर भी काफ़ी calcium दे सकती हैं। calcium की गोली सिर्फ़ डॉक्टर की सलाह पर लें, और iron की गोली के साथ एक ही समय पर नहीं।' }, 'small'), '', 'data-nofold="1"') +
       card(H2({ en: 'Vitamin D and sunlight', hi: 'Vitamin D और धूप' }) +
         P({ en: 'Your skin makes vitamin D in sunlight. Even so, low vitamin D is very common in India at every age; the Indian Menopause Society calls it a national deficiency. Covered clothes, indoor work, pollution and darker skin all reduce how much your skin makes.', hi: 'धूप में त्वचा vitamin D बनाती है। फिर भी भारत में हर उम्र में vitamin D की कमी बहुत आम है; Indian Menopause Society इसे देश भर की कमी कहती है। ढके कपड़े, घर के अंदर काम, प्रदूषण और गहरा रंग, ये सब त्वचा में बनने वाले vitamin D को कम करते हैं।' }) +
         ul([
@@ -628,6 +653,7 @@
   }
   function home() {
     if (!S.canSave()) return '';
+    if (stopDue()) return '<button type="button" class="action" data-go="meno-timeline" data-slot-first="1"><span class="ico accent">' + S.I.chart + '</span><span class="body"><strong>' + esc(t('meno_stop_home')) + '</strong><span class="small">' + esc(t('meno_stop_q')) + '</span></span><span class="go">' + S.I.chev + '</span></button>';
     const dia = peekDiary(); const keys = loggedKeys(dia); if (!keys.length || dia[wk(S.today())]) return '';
     return '<button type="button" class="action" data-go="meno-diary"><span class="ico accent">' + S.I.chart + '</span><span class="body"><strong>' + esc(t('meno_home_h')) + '</strong><span class="small">' + esc(t('meno_home_p')) + '</span></span><span class="go">' + esc(t('start_b')) + '</span></button>';
   }
@@ -694,7 +720,7 @@
         meno_tl_done_early: '12 months without a period before 45: doctors call this early menopause. See a doctor, because your bones and heart need care sooner and treatment helps. Any bleeding from now on needs a check.',
         meno_tl_h: 'Your menopause timeline', meno_tl_s: 'Where your dates are, and what helps', meno_tl_p: 'Menopause is confirmed once 12 months pass without a period. The years before it, when periods change, are called perimenopause. For many women in India the changes start in the early or mid-40s.',
         meno_tl_last: 'Your last period: {d}', meno_tl_months: '{m} of 12 months without a period', meno_tl_still: 'Your periods are still coming. Changes often start as gaps get longer or shorter, and flow gets heavier or lighter.', meno_tl_gap: 'Longest gap in the last year: {n} days',
-        meno_tl_done: '12 months without a period: doctors call this menopause. Any bleeding from now on needs a doctor’s check.', meno_tl_none: 'Log your periods to see your own timeline here.',
+        meno_tl_done: '12 months without a period: doctors call this menopause. Any bleeding from now on needs a doctor’s check.', meno_stop_q: 'Have your periods stopped?', meno_stop_p: 'Tell Sakhi, so any bleeding from now on gets a check.', meno_stop_y: 'Yes, they have stopped', meno_stop_n: 'Not yet', meno_stop_home: 'A year since your last period', meno_tl_none: 'Log your periods to see your own timeline here.',
         meno_tl_s1: 'Periods change', meno_tl_s1p: 'Gaps change; flushes and poor sleep can start', meno_tl_s2: 'Last period + 12 months', meno_tl_s2p: 'Menopause is confirmed', meno_tl_s3: 'After menopause', meno_tl_s3p: 'Bones and heart need more care',
         meno_tl_relief: 'What helps', meno_tl_hot: 'Feel better now: hot flushes', meno_tl_sleep: 'Feel better now: sleep', meno_tl_ask: 'Talk to a Qura doctor about menopause', meno_tl_foot: 'Counts from your own dates. Not a diagnosis.',
         meno_hub: 'Menopause', meno_hub_t: 'All about menopause', meno_hub_s: 'What changes, what helps, when to see a doctor',
@@ -753,7 +779,7 @@
         meno_tl_done_early: '45 से पहले 12 महीने बिना पीरियड: डॉक्टर इसे जल्दी मेनोपॉज़ (early menopause) कहते हैं। डॉक्टर को दिखाएँ, क्योंकि हड्डियों और दिल की देखभाल जल्दी चाहिए और इलाज मदद करता है। अब से कोई भी ब्लीडिंग हो, तो जाँच ज़रूरी है।',
         meno_tl_h: 'आपकी मेनोपॉज़ टाइमलाइन', meno_tl_s: 'आपकी तारीख़ें कहाँ हैं, और किससे आराम मिलता है', meno_tl_p: 'पीरियड बंद हुए 12 महीने हो जाएँ, तब मेनोपॉज़ पक्का होता है। उससे पहले के साल, जब पीरियड बदलते हैं, पेरिमेनोपॉज़ कहलाते हैं। भारत में बहुत सी महिलाओं में ये बदलाव 40 की शुरुआत या बीच से शुरू होते हैं।',
         meno_tl_last: 'आपका पिछला पीरियड: {d}', meno_tl_months: '12 में से {m} महीने बिना पीरियड', meno_tl_still: 'आपके पीरियड अभी आ रहे हैं। बदलाव अक्सर ऐसे शुरू होते हैं: अंतर लंबा या छोटा होना, और ब्लीडिंग ज़्यादा या कम होना।', meno_tl_gap: 'पिछले साल का सबसे लंबा अंतर: {n} दिन',
-        meno_tl_done: '12 महीने बिना पीरियड: डॉक्टर इसे मेनोपॉज़ कहते हैं। अब से कोई भी ब्लीडिंग हो, तो डॉक्टर से जाँच ज़रूरी है।', meno_tl_none: 'अपनी टाइमलाइन यहाँ देखने के लिए पीरियड दर्ज करें।',
+        meno_tl_done: '12 महीने बिना पीरियड: डॉक्टर इसे मेनोपॉज़ कहते हैं। अब से कोई भी ब्लीडिंग हो, तो डॉक्टर से जाँच ज़रूरी है।', meno_stop_q: 'क्या आपके पीरियड बंद हो गए हैं?', meno_stop_p: 'Sakhi को बताएँ, ताकि अब से कोई भी ब्लीडिंग हो तो उसकी जाँच हो।', meno_stop_y: 'हाँ, बंद हो गए हैं', meno_stop_n: 'अभी नहीं', meno_stop_home: 'पिछले पीरियड को एक साल', meno_tl_none: 'अपनी टाइमलाइन यहाँ देखने के लिए पीरियड दर्ज करें।',
         meno_tl_s1: 'पीरियड बदलते हैं', meno_tl_s1p: 'अंतर बदलता है; हॉट फ़्लश और नींद की दिक़्क़त शुरू हो सकती है', meno_tl_s2: 'आख़िरी पीरियड + 12 महीने', meno_tl_s2p: 'मेनोपॉज़ पक्का होता है', meno_tl_s3: 'मेनोपॉज़ के बाद', meno_tl_s3p: 'हड्डियों और दिल का ज़्यादा ख़याल',
         meno_tl_relief: 'किससे आराम मिलता है', meno_tl_hot: 'अभी थोड़ा आराम: हॉट फ़्लश', meno_tl_sleep: 'अभी थोड़ा आराम: नींद', meno_tl_ask: 'मेनोपॉज़ के बारे में Qura की डॉक्टर से बात करें', meno_tl_foot: 'आपकी अपनी तारीख़ों से गिनती। यह जाँच का नतीजा नहीं है।',
         meno_hub: 'मेनोपॉज़', meno_hub_t: 'मेनोपॉज़: पूरी जानकारी', meno_hub_s: 'क्या बदलता है, क्या मदद करता है, डॉक्टर को कब दिखाएँ',

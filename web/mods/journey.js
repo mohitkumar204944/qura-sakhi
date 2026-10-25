@@ -58,8 +58,13 @@
   /* Version 37: the companion plans reuse these doctor-reviewed steps (the heavy-periods plan's iron food of the day) */
   /* Version 38: for a vegetarian, or eggs but no meat, the iron day that asks for eggs, fish or meat (day 9) */
   const ALT = { iron: { 9: { veg: [L('Poha with lemon', 'नींबू वाला पोहा'), L('Have poha with a squeeze of lemon. Poha has iron, and lemon helps your body take it in.', 'पोहे पर नींबू निचोड़कर खाएँ। पोहे में आयरन होता है, और नींबू उसे शरीर में जाने में मदद करता है।')],
-    egg: [L('Eggs today', 'आज अंडे'), L('Have eggs once today, boiled or as a bhurji with less oil.', 'आज एक बार अंडे खाएँ, उबले या कम तेल की भुर्जी।')] } } };
-  S.journey = { step: (id, n, o) => { const j = J[id]; if (!j) return null; const i = (((n - 1) % j.days.length) + j.days.length) % j.days.length; const alt = o && o.food && ALT[id] && ALT[id][i + 1] && ALT[id][i + 1][o.food]; const x = alt || j.days[i]; return { t: tx(x[0]), p: tx(x[1]), go: (alt ? null : x[2]) || null }; }, len: (id) => (J[id] ? J[id].days.length : 0) };
+    egg: [L('Eggs today', 'आज अंडे'), L('Have eggs once today, boiled or as a bhurji with less oil.', 'आज एक बार अंडे खाएँ, उबले या कम तेल की भुर्जी।')] },
+    /* review FOOD-01, FOOD-03 (wording review 17.1, for Dr. Megha): no milk, then no tea with the tablet instead; in pregnancy,
+       sprouts cooked; for a Jain woman, an iron food she eats */
+    14: { nomilk: [L('Tea at another time', 'चाय अलग समय पर'), L('Have tea or coffee at a different time from your iron tablet, not with it.', 'चाय या कॉफ़ी आयरन की गोली के साथ नहीं, अलग समय पर लें।')] },
+    18: { preg: [L('Cooked sprouts', 'पके हुए अंकुरित अनाज'), L('Add boiled sprouted moong or chana to a meal, or cook them in a sabzi.', 'उबले हुए अंकुरित मूँग या चने किसी खाने में जोड़ें, या सब्ज़ी में पकाएँ।')],
+      jain: [L('Dates or raisins', 'खजूर या किशमिश'), L('Have 2 or 3 dates or a few raisins as a snack.', 'नाश्ते में 2-3 खजूर या थोड़ी किशमिश लें।')] } } };
+  S.journey = { step: (id, n, o) => { const j = J[id]; if (!j) return null; const i = (((n - 1) % j.days.length) + j.days.length) % j.days.length; const A = ALT[id] && ALT[id][i + 1]; const ak = A && o ? (['preg', 'jain', 'nomilk'].find((k) => o[k] && A[k]) || (o.food && A[o.food] ? o.food : null)) : null; const alt = ak ? A[ak] : null;   /* review FOOD-01: pregnancy, Jain and no milk first */ const x = alt || j.days[i]; return { t: tx(x[0]), p: tx(x[1]), go: (alt ? null : x[2]) || null }; }, len: (id) => (J[id] ? J[id].days.length : 0) };
   const todayISO = () => S.toISO(S.today());
   const dayN = (d) => Math.min(N, S.diffDays(S.fromISO(d.start), S.today()) + 1);
   const goOk = (r) => !!r && (['diary', 'checkin'].indexOf(r) >= 0 || r.indexOf('a-') === 0 || !!S.routeOwner(r));
@@ -83,12 +88,13 @@
     let body;
     if (d.active !== id) {
       body = '<div class="card jr-intro">' + art('hi') + '<p class="lead">' + esc(t('journey_' + id + '_s')) + '</p><ol class="steps">' + j.days.slice(0, 3).map((x) => '<li>' + esc(tx(x[0])) + '</li>').join('') + '<li>…</li></ol></div>' +
-        (d.active && J[d.active] ? '<p class="small">' + esc(t('journey_replace')) + '</p>' : '') + '<button type="button" class="btn primary block" id="jr-start">' + esc(t('journey_start')) + '</button>';
+        '<details class="jr-read"><summary>' + esc(t('journey_all')) + '</summary><ol class="jr-all">' + j.days.map((y) => '<li>' + esc(tx(y[0])) + '</li>').join('') + '</ol></details>' +
+        (S.routeOwner('plan') ? '<p class="small">' + esc(t('journey_inplan')) + '</p><button type="button" class="btn block" data-go="plan">' + esc(t('journey_plan_b')) + '</button>' : '');   /* Version 39.2: no new journeys */
     } else if (finished(d)) {
       const full = doneCount(d) >= N;
       body = '<div class="card jr-fin">' + art(full ? 'cheer' : 'calm') + '<h2>' + esc(t(full ? 'journey_fin_h' : 'journey_end_h')) + '</h2><p>' + esc(t(full ? 'journey_' + id + '_fin' : 'journey_' + id + '_end')) + '</p><p class="small">' + esc(tf('journey_fin_n', { n: doneCount(d) })) + '</p></div>' +
         '<button type="button" class="btn primary block" data-ask="' + esc(j.ask) + '">' + esc(t('journey_ask')) + '</button>' +
-        '<div class="grid2"><button type="button" class="btn" id="jr-again">' + esc(t('journey_again')) + '</button><button type="button" class="btn" data-go="journey-' + IDS.find((x) => x !== id) + '">' + esc(t('journey_other')) + '</button></div>';
+        '<div class="grid2"><button type="button" class="btn" data-go="plan">' + esc(t('journey_plan_b')) + '</button><button type="button" class="btn" data-go="journey-' + IDS.find((x) => x !== id) + '">' + esc(t('journey_other')) + '</button></div>';
     } else {
       const n = dayN(d); const x = j.days[n - 1]; const doneToday = !!d.done[n]; const missed = Object.keys(d.done).length < n - 1;
       body = '<div class="jr-dots" role="img" aria-label="' + esc(tf('journey_dots', { a: doneCount(d), n: N })) + '">' + j.days.map((y, i) => '<i class="' + (d.done[i + 1] ? 'on' : (i + 1 === n ? 'now' : '')) + '"></i>').join('') + '</div>' +
@@ -105,7 +111,7 @@
     const reRem = () => { if (S.reminders.get('journey')) S.reminders.upsert({ id: 'journey', start: todayISO(), until: S.toISO(S.addDays(S.today(), N - 1)), doneOn: null }); };   /* a new 21 days for a reminder that is on */
     const st = v.querySelector('#jr-start'); if (st) st.addEventListener('click', () => { d.active = id; d.start = todayISO(); d.done = {}; reRem(); S.save(); renderJourney(v, id); });
     const dn = v.querySelector('#jr-done'); if (dn) dn.addEventListener('click', () => { markDone(d, id); S.toast(t('journey_well')); renderJourney(v, id); });
-    const ag = v.querySelector('#jr-again'); if (ag) ag.addEventListener('click', () => { d.start = todayISO(); d.done = {}; reRem(); S.save(); renderJourney(v, id); });
+    /* review PLACES-07: no "Do it again" (the 21-day journeys are reading now; the plans have the steps) */
     if (finished(d) && S.reminders.get('journey')) S.reminders.remove('journey');   /* the 21 days are over: no more 9 am reminder */
     const rm = v.querySelector('#jr-remind'); if (rm) rm.addEventListener('change', () => {
       if (rm.checked) S.reminders.upsert({ id: 'journey', mod: 'journey', title: L('Your small step for today', 'आज का आपका छोटा क़दम'), start: todayISO(), until: S.toISO(S.addDays(S.fromISO(d.start), N - 1)), every: 1, time: '09:00', on: true, doneOn: d.done[dayN(d)] ? todayISO() : null });
@@ -131,7 +137,7 @@
         journey_h: '21 days of small steps', journey_tile_s: 'One small step a day, for PMOS or for more iron',
         journey_p: 'Pick one journey. Each day has one small step that takes a few minutes. Missed a day? Just carry on.',
         journey_pmos_t: 'Small steps for PMOS', journey_iron_t: 'More iron in 21 days', journey_pmos_s: 'Walking, meals and sleep, a little at a time', journey_iron_s: 'Iron-rich Indian food and your tablets',
-        journey_start: 'Start this journey', journey_replace: 'This takes the place of the journey you are on now.', journey_day: 'Day {n} of 21', journey_today: 'Today’s step', journey_open: 'Open',
+        journey_inplan: 'These small steps are part of the 12-week plans now. Pick what you want to work on in My plan.', journey_plan_b: 'Open My plan', journey_start: 'Start this journey', journey_replace: 'This takes the place of the journey you are on now.', journey_day: 'Day {n} of 21', journey_today: 'Today’s step', journey_open: 'Open',
         journey_done_b: 'Done for today', journey_done_ok: 'Done for today. See you tomorrow.', journey_well: 'Well done.', journey_missed: 'Missed a day or two? No problem. Just do today’s step.',
         journey_remind: 'Remind me every day at 9 am', journey_all: 'All 21 days', journey_stop: 'Stop this journey', journey_dots: '{a} of {n} days done', journey_did: 'Done once. Start again any time.',
         journey_fin_h: 'You did it: 21 days', journey_fin_n: 'You marked {n} days done.', journey_end_h: 'Your 21 days are over', journey_pmos_end: 'Every small step counts, and you can start again any time. Keep the ones that helped. For a plan made for you, talk to a doctor.', journey_iron_end: 'Every small step counts, and you can start again any time. If you still feel tired or breathless, see a doctor and ask for an Hb test.', journey_again: 'Do it again', journey_other: 'Try the other journey', journey_ask: 'Talk to a Qura doctor',
@@ -142,7 +148,7 @@
         journey_h: '21 दिन, छोटे क़दम', journey_tile_s: 'PMOS या ज़्यादा आयरन के लिए रोज़ एक छोटा क़दम',
         journey_p: 'एक सफ़र चुनें। हर दिन एक छोटा क़दम है जिसमें कुछ ही मिनट लगते हैं। कोई दिन छूट गया? बस आगे बढ़ती रहें।',
         journey_pmos_t: 'PMOS के लिए छोटे क़दम', journey_iron_t: '21 दिन में ज़्यादा आयरन', journey_pmos_s: 'सैर, खाना और नींद, थोड़ा-थोड़ा करके', journey_iron_s: 'आयरन वाला भारतीय खाना और आपकी गोलियाँ',
-        journey_start: 'यह सफ़र शुरू करें', journey_replace: 'यह आपके अभी के सफ़र की जगह ले लेगा।', journey_day: '21 में से दिन {n}', journey_today: 'आज का क़दम', journey_open: 'खोलें',
+        journey_inplan: 'ये छोटे क़दम अब 12 हफ़्ते के प्लान का हिस्सा हैं। मेरा प्लान में चुनें कि आप किस पर काम करना चाहती हैं।', journey_plan_b: 'मेरा प्लान खोलें', journey_start: 'यह सफ़र शुरू करें', journey_replace: 'यह आपके अभी के सफ़र की जगह ले लेगा।', journey_day: '21 में से दिन {n}', journey_today: 'आज का क़दम', journey_open: 'खोलें',
         journey_done_b: 'आज का हो गया', journey_done_ok: 'आज का हो गया। कल मिलते हैं।', journey_well: 'बहुत अच्छा।', journey_missed: 'एक-दो दिन छूट गए? कोई बात नहीं। बस आज का क़दम करें।',
         journey_remind: 'मुझे रोज़ सुबह 9 बजे याद दिलाएँ', journey_all: 'सभी 21 दिन', journey_stop: 'यह सफ़र रोकें', journey_dots: '{n} में से {a} दिन हो गए', journey_did: 'एक बार पूरा किया। कभी भी फिर शुरू करें।',
         journey_fin_h: 'आपने कर दिखाया: 21 दिन', journey_fin_n: 'आपने {n} दिन पूरे किए।', journey_end_h: 'आपके 21 दिन पूरे हुए', journey_pmos_end: 'हर छोटा क़दम मायने रखता है, और आप कभी भी फिर शुरू कर सकती हैं। जिनसे मदद मिली, उन्हें जारी रखें। अपने लिए बना प्लान चाहिए, तो डॉक्टर से बात करें।', journey_iron_end: 'हर छोटा क़दम मायने रखता है, और आप कभी भी फिर शुरू कर सकती हैं। अगर अब भी थकान या साँस फूलना हो, तो डॉक्टर को दिखाएँ और Hb टेस्ट माँगें।', journey_again: 'फिर से करें', journey_other: 'दूसरा सफ़र आज़माएँ', journey_ask: 'Qura की डॉक्टर से बात करें',

@@ -78,7 +78,8 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const { ctx, page, errs } = await open({ cfg: cfg, hash: '#topic-cond' });
   check(tag + ': the plan is on (PLAN_RELEASE)', (await page.evaluate(() => window.Saathi.plan.on())) === true);
   check(tag + ': the plan heads the PMOS topic', (await gos(page, '#view .list [data-go]'))[0] === 'plan-pmos', await gos(page, '#view .list [data-go]'));
-  check(tag + ': search for "yoga" finds the plan', (await careSearch(page, 'yoga'))[0] === 'plan-pmos', await careSearch(page, 'yoga'));
+  /* Version 39.3: "yoga" finds the yoga moves first, and the PMOS plan with them */
+  check(tag + ': search for "yoga" finds the moves and the plan', ((r) => r[0] === 'plan-moves' && r.indexOf('plan-pmos') >= 0)(await careSearch(page, 'yoga')), await careSearch(page, 'yoga'));
   check(tag + ': the Plans tab is there', await has(page, '#tabbar [data-go="plan"]'));
   await setPlan(page, started({ start: ago(10) }));
   await go(page, 'home');
@@ -150,16 +151,26 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const p1 = await plan(page);
   check('3 "Start my plan" starts it today with her answers', p1 && p1.start === TODAY && p1.goal === 'cycles' && p1.level === 0 && p1.food === 'veg' && p1.region === 'west' && p1.focus === 'habits' && p1.limits.knees === false && !p1.next, p1);
   const hub = await view(page);
-  check('3 week 1: 0 of 50 minutes, 10 minutes today, one strength day', /Week 1 of 12/i.test(hub) && /0 of 50 minutes/.test(hub) && /Walk or move 10 minutes/.test(hub) && /Strength days: 0 of 1/.test(hub), hub.slice(0, 600));
-  check('3 the first food habit is there to tick', await has(page, '[data-pl-hab="half"]'));
+  /* Version 39.5 (journey audit MIN-10): her plan's page has the week's ring and one row for today; Today has the steps, My moves
+     the minutes and My plate the food habits */
+  check('3 week 1: 0 of 50 minutes and one strength day, with one row for today', /Week 1 of 12/i.test(hub) && /0 of 50 minutes/.test(hub) && /Strength days: 0 of 1/.test(hub) && (await has(page, '#view .pl-trow')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 600));
+  await go(page, 'home');
+  check('3 ... and Today has her walk: 10 minutes', /Move 10 minutes today/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  await go(page, 'plan-plate');
+  check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
+  await go(page, 'plan-moves');
   await tap(page, '[data-pl-add="20"]');
-  check('3 +20 adds 20 minutes to today and to the week', /20 of 50 minutes/.test(await view(page)) && (await plan(page)).log[TODAY].min === 20);
+  check('3 +20 on Yoga and moves adds 20 minutes to today', (await plan(page)).log[TODAY].min === 20);
   check('3 the toast says what was added, with Undo', /20 minutes added/.test(await page.$eval('#toast-root', (e) => e.innerText)) && (await has(page, '#toast-root [data-ta="0"]')));
   await tap(page, '#toast-root [data-ta="0"]');
-  check('3 Undo takes the 20 minutes back', /0 of 50 minutes/.test(await view(page)) && !(await plan(page)).log[TODAY].min);
+  check('3 Undo takes the 20 minutes back', !(await plan(page)).log[TODAY].min);
   await tap(page, '[data-pl-add="20"]');
+  await go(page, 'plan-pmos');
+  check('3 ... and the week\'s ring counts them', /20 of 50 minutes/.test(await view(page)));
+  await go(page, 'plan-plate');
   await page.$eval('[data-pl-hab="half"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(page, 300);
   check('3 ticking the food habit saves it for today', (await plan(page)).log[TODAY].plate.half === true);
+  await go(page, 'plan-pmos');
   await shot(page, 'hub-en');
   /* Home's Today: the minutes and the habit, one tap each */
   await setPlan(page, started({ start: ago(15), level: 1 }));
@@ -237,7 +248,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const v = await view(page);
   /* Version 37.2: it leads with what she did, asks only her energy, and takes what got in the way from her check-ins */
   check('5 a new week opens with last week\'s look-back: what she did, the week\'s barrier, one question', /Week 1 is done/.test(v) && /You followed your plan on 7 of 7 days\. You moved 70 minutes\./.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v.slice(v.indexOf('Week 1 is done'), v.indexOf('Week 1 is done') + 200)) && (await has(page, '[data-pl-e="ok"]')) && !(await has(page, '[data-pl-b]')), v.slice(0, 900));
-  check('5 the look-back sits under Today, not above it', await page.evaluate(() => { const a = document.querySelector('#view .pl-today'), b = document.querySelector('#view .pl-review'); return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); }));
+  check('5 the look-back sits under the row for today, not above it', await page.evaluate(() => { const a = document.querySelector('#view .pl-trow'), b = document.querySelector('#view .pl-review'); return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); }));   /* Version 39.5: one row for today */
   await tap(page, '#view .pl-review [data-pl-e="ok"]');
   check('5 her answer brings one tip and next week\'s target', /Split it up: two 10-minute walks count/.test(await view(page)) && /Next week: 60 minutes/.test(await view(page)));
   await tap(page, '#pl-rev-ok');
@@ -320,7 +331,8 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   check('8 her energy each week, from the look-backs', /Your energy each week/.test(v) && /Low/.test(v));
   check('8 weight and waist, first and latest, only as she noted them', /Weight and waist/.test(v) && /66\.4/.test(v) && /65\.8/.test(v) && /86/.test(v));
   check('8 what to expect, as a timeline: she is in weeks 1 to 4', /What to expect/.test(v) && /Weeks 1 to 4\s*You are here/.test(v), v.slice(-900));
-  check('8 one Qura button, for supplements or medicines', (await page.$$('#view [data-ask]')).length === 1 && /Ask a Qura doctor about supplements or medicines/.test(v));
+  /* Version 39.0 (Mohit's decision 3, 24 Oct): the supplements card is gone from the plan's pages */
+  check('8 no supplements card and no "ask about supplements" button (Version 39.0)', !(await page.$$('#view [data-ask]')).length && !/supplements or medicines/.test(v));
   check('8 it says these are her own entries, not a diagnosis', /not a test result or a diagnosis/.test(v));
   await shot(page, 'progress-en');
   await go(page, 'plan-pmos');
@@ -373,12 +385,20 @@ for (const [days, paused] of [[21, true], [50, false]]) {
 {
   const { ctx, page, errs } = await open({ seed: { prompts: { notifyIntro: ago(3) } }, hash: '#care' });
   const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
-  check('11 Explore opens with For you (her plan first), then Govt. services; My plan is a tab, so no Plans row', all[0] === 'plan-pmos' && fy[0] === 'plan-pmos' && all.indexOf('access-free') > all.indexOf(fy[fy.length - 1]) && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
+  /* Version 39.2: Contents (all guides and articles) sits right under search, then For you */
+  check('11 Explore opens with Contents, then For you (her plan first), then Govt. services; My plan is a tab, so no Plans row', all[0] === 'learn' && all[1] === 'plan-pmos' && fy[0] === 'plan-pmos' && all.indexOf('access-free') > all.indexOf(fy[fy.length - 1]) && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
   check('11 For you has no government pages: they sit in Govt. services', !fy.some((r) => /^access-|^asha$/.test(r)), fy);
   check('11 Govt. services is one row, and its topic card is gone', /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText)) && !(await has(page, '#view [data-go="topic-free"]')));
+  /* Version 39.2 (journey audit J-24): she joined months ago, so the setup card waits in Me, one step at a time */
   await go(page, 'home');
-  check('11 "Set up Sakhi for you" sits in Sakhi says and shows one step at a time', (await has(page, '#view .slot .setup-card')) && (await page.$$eval('#view .slot .setup-card .setup-it', (x) => x.length)) === 1);
-  check('11 search: "yoga", "khana" and "BMI" find the plan first', (await careSearch(page, 'yoga'))[0] === 'plan-pmos' && (await careSearch(page, 'khana'))[0] === 'plan-pmos' && (await careSearch(page, 'bmi'))[0] === 'plan-pmos', [await careSearch(page, 'yoga'), await careSearch(page, 'khana'), await careSearch(page, 'bmi')]);
+  check('11 after 30 days the setup card is not on Today', !(await has(page, '#view .setup-card')));
+  await go(page, 'me');
+  check('11 "Set up Sakhi for you" sits in Me and shows one step at a time', (await has(page, '#view .setup-card')) && (await page.$$eval('#view .setup-card .setup-it', (x) => x.length)) === 1);
+  await go(page, 'home');
+  /* Version 39.3: "yoga" finds the moves first and "khana" My food first, each with the plan; "BMI" finds the plan first */
+  { const yo = await careSearch(page, 'yoga'), kh = await careSearch(page, 'khana'), bm = await careSearch(page, 'bmi');
+    /* the V39.3 review (FOOD-11): "BMI" opens My body first, with the plan */
+    check('11 search: "yoga" finds the moves, "khana" My food, "BMI" My body, each with the plan', yo[0] === 'plan-moves' && yo.indexOf('plan-pmos') >= 0 && kh[0] === 'food' && kh.indexOf('plan-pmos') >= 0 && bm[0] === 'plan-body' && bm.indexOf('plan-pmos') >= 0, [yo, kh, bm]); }
   check('11 search: "pcod" still finds the PMOS self-check or guide first', ['selfcheck', 'cond', 'explain'].includes((await careSearch(page, 'pcod'))[0]), await careSearch(page, 'pcod'));
   check('11 search: "plan" still finds the pregnancy plan first', (await careSearch(page, 'plan'))[0] === 'preg-plan', await careSearch(page, 'plan'));
   check('11 no page errors', !errs.length, errs);
@@ -444,7 +464,8 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   let ids = await recIds(page); let why = await recWhy(page);
   check('14 PMOS: her plan is suggested first, because she told Sakhi', ids[0] === 'plan-pmos' && /You told Sakhi you have PMOS/.test(why[0]), [ids, why]);
   check('14 one period that needed a painkiller suggests the cramps routine, with the reason', ids.includes('relief-cramps') && why.some((w) => /You needed a painkiller in 1 of your last 3 periods/.test(w)), [ids, why]);
-  check('14 more plans are listed under More plans', (await gos(page, '#view .pl-sec .list [data-go]')).includes('journey-iron'));
+  /* Version 39.2: the 21-day journeys stop being programmes; More plans holds the routines and tools */
+  check('14 more plans are listed under More plans, and no 21-day journey', (await gos(page, '#view .pl-sec .list [data-go]')).length > 0 && !(await gos(page, '#view [data-go]')).some((r) => /^journey-/.test(r)));
   await shot(page, 'plans-en');
   await setPlan(page, started({ start: ago(10) })); await go(page, 'plan');
   v = await view(page);
@@ -457,13 +478,23 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   await ctx.close();
 }
 {
-  /* long gaps, no diagnosis: the self-check first, never "you have PMOS" */
+  /* long gaps, no diagnosis: never "you have PMOS". Version 39.1 (journey audit): the self-check is a check, not a plan, so it is
+     offered on the long-gap card in Diary's What it shows ("Check the signs"), never as "A plan for you" */
   const { ctx, page, errs } = await open({ seed: { situation: {} }, hash: '#plan' });
-  const ids = await recIds(page); const why = await recWhy(page);
-  check('14 long gaps without a diagnosis: the PMOS self-check first, with her gaps as the reason', ids[0] === 'selfcheck-pmos' && /4 of your last 4 cycles were longer than 35 days/.test(why[0]), [ids, why]);
+  const ids = await recIds(page);
+  check('14 long gaps without a diagnosis: the PMOS self-check is not offered as a plan (Version 39.1)', !ids.includes('selfcheck-pmos'), ids);
   check('14 ... and nothing says she has PMOS', !/You told Sakhi you have PMOS|matched PMOS/.test(await view(page)) && !ids.includes('plan-pmos'), ids);
+  await go(page, 'diary'); await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 400);
+  check('14 ... her long gaps offer "Check the signs" (the PMOS self-check) in What it shows', (await gos(page, '#view [data-xp-check]')).includes('selfcheck-pmos'), await gos(page, '#view [data-xp-check]'));
   await go(page, 'home');
-  check('14 Home: "A plan for you" (in Sakhi says) brings the self-check', /A plan for you/i.test(await page.$eval('#view .slot .pl-homerec', (e) => e.textContent).catch(() => '')) && (await gos(page, '#view .pl-homerec .pl-rec'))[0] === 'selfcheck-pmos');
+  check('14 Home: no "A plan for you" brings a self-check', !(await gos(page, '#view .pl-homerec [data-go]')).includes('selfcheck-pmos'));
+  check('14 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  /* Home's "A plan for you": "Not now" for 2 weeks, and none on a shared phone (a diary with a plan to suggest) */
+  const { ctx, page, errs } = await open({ seed: { situation: { pcos: true }, events: heavyEvents() }, hash: '#home' });
+  check('14 Home: "A plan for you" (in Sakhi says)', /A plan for you/i.test(await page.$eval('#view .slot .pl-homerec', (e) => e.textContent).catch(() => '')));
   await tap(page, '#pl-rec-not');
   check('14 "Not now" puts the Home card away for 2 weeks', !(await has(page, '#view .pl-homerec')) && (await page.evaluate(() => window.Saathi.state.prompts.planRec)) === TODAY);
   await page.evaluate((d) => { const S = window.Saathi; S.state.prompts.planRec = d; S.save(); }, ago(15)); await go(page, 'learn'); await go(page, 'home');
@@ -471,8 +502,8 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn'); await go(page, 'home');
   check('14 discreet mode: no plan card on Home', !(await has(page, '#view .pl-homerec')));
   await go(page, 'plan');
-  check('14 discreet mode: the Plans page hides the reasons from her diary', !(await page.$$eval('#view .pl-why', (x) => x.length)) && !/cycles were longer than 35 days/.test(await view(page)));
-  check('14 no page errors', !errs.length, errs);
+  check('14 discreet mode: the Plans page hides the reasons from her diary', !(await page.$$eval('#view .pl-why', (x) => x.length)) && !/Heavy flow in 2 of your last 3 periods/.test(await view(page)));
+  check('14 no page errors (Home card)', !errs.length, errs);
   await ctx.close();
 }
 {
@@ -485,7 +516,8 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
 {
   const { ctx, page, errs } = await open({ seed: { situation: {}, events: heavyEvents() }, hash: '#plan' });
   const ids = await recIds(page); const why = await recWhy(page);
-  check('14 heavy periods: More iron in 21 days, because of her heavy flow', ids[0] === 'journey-iron' && /Heavy flow in 2 of your last 3 periods/.test(why[0]), [ids, why]);
+  /* Version 39.2 (journey audit J-11): her heavy flow marks the "Heavy periods" goal as Suggested; no 21-day journey */
+  check('14 heavy periods: the Heavy periods goal is "Suggested", because of her heavy flow', /Suggested/.test(await page.$eval('#view [data-pl-pick="heavy"]', (e) => e.innerText).catch(() => '')) && !ids.includes('journey-iron'), [ids, why]);
   check('14 no page errors (heavy)', !errs.length, errs);
   await ctx.close();
 }
@@ -497,7 +529,8 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   await ctx.close();
 }
 {
-  const { ctx, page, errs } = await open({ seed: { situation: { deliveredOn: ago(21), breastfeeding: true }, events: [] }, hash: '#plan' });
+  /* Version 39.2: "My PMOS plan" is listed for a woman with PMOS (for others it is her PMOS goal) */
+  const { ctx, page, errs } = await open({ seed: { situation: { deliveredOn: ago(21), breastfeeding: true, pcos: true }, events: [] }, hash: '#plan' });
   const ids = await recIds(page); const v = await view(page);
   check('14 three weeks after a birth: recovery, then iron and the pelvic floor', ids[0] === 'post-recovery' && ids.includes('post-pelvic') && /Your baby was born 21 days ago/.test(v), [ids, v.slice(0, 500)]);
   check('14 ... and the PMOS plan waits in More plans until her 6-week check', /After your 6-week check/.test(await page.$eval('#view .pl-sec .list', (e) => e.innerText).catch(() => '')) && !ids.includes('plan-pmos'));
@@ -513,16 +546,11 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   await ctx.close();
 }
 {
-  /* "What you want help with": the same choices as when she joined */
+  /* Version 39.2 (journey audit J-11): one picker. "What you want help with" is gone; the goal her records point to is
+     marked "Suggested" (here PMOS, from My situation) */
   const { ctx, page, errs } = await open({ hash: '#plan' });
-  check('14 her help list shows "I have PMOS (PCOS)" from My situation', /I have PMOS \(PCOS\)/.test(await page.$eval('#pl-help', (e) => e.innerText)));
-  await tap(page, '#pl-help-edit');
-  check('14 Change shows her stage\'s choices, with PMOS ticked', (await has(page, '[data-pl-help="pmos"].on')) && (await has(page, '[data-pl-help="pain"]')) && !(await has(page, '[data-pl-help="track"]')));
-  await tap(page, '[data-pl-help="pain"]'); await tap(page, '[data-pl-help="pmos"]'); await tap(page, '#pl-help-save');
-  const st = await page.evaluate(() => ({ g: window.Saathi.state.goals, pcos: window.Saathi.state.situation.pcos }));
-  check('14 Save keeps her answers: pain on, PMOS off (also off in My situation)', st.g.includes('pain') && !st.g.includes('pmos') && st.pcos === false, st);
-  const ids = await recIds(page); const why = await recWhy(page);
-  check('14 her answer comes first: the cramps routine, because she asked', ids[0] === 'relief-cramps' && /You asked for help with: Painful periods/.test(why[0]) && ids.includes('selfcheck-pmos') && !ids.includes('plan-pmos'), [ids, why]);
+  check('14 one picker: no "What you want help with"', !(await has(page, '#pl-help')) && (await has(page, '#view [data-pl-pick]')));
+  check('14 PMOS (from My situation) is the suggested goal', /Suggested/.test(await page.$eval('#view [data-pl-pick="pmos"]', (e) => e.innerText).catch(() => '')));
   check('14 no page errors (help)', !errs.length, errs);
   await ctx.close();
 }
@@ -564,7 +592,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   const rings = await page.evaluate(() => JSON.parse(window.__sched || '[]').filter((x) => /^r-plan-/.test(String(x.id))));
   check('15 a tap on the plan\'s reminder opens its evening check-in (Version 37.2; it opened the PMOS page, and before that the reminders list)', rings.length > 0 && rings.every((x) => x.go === 'plan-checkin'), rings.slice(0, 2));
   await setPlan(page, started({ start: ago(90), keep: true })); await go(page, 'home');
-  check('15 after week 12, Home says "Keeping it going", not "Week 12 of 12"', /Keeping it going/.test(await page.$eval('#view .today-card .pl-th', (e) => e.innerText).catch(() => '')) && !/Week 12 of 12/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('15 after week 12, Home says "Keep it light" (Version 39.6), not "Week 12 of 12"', /Keep it light/.test(await page.$eval('#view .today-card .pl-th', (e) => e.innerText).catch(() => '')) && !/Week 12 of 12/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   check('15 no page errors', !errs.length, errs);
   await ctx.close();
 }

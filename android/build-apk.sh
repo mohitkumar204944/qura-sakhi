@@ -40,6 +40,12 @@ case "$VERSION_NAME" in
      esac ;;
 esac
 
+# Version 39.8: a size ceiling, so nothing big slips into the APK by accident (raw data, say). It is not a budget for cheap
+# phones: Sakhi is built for newer phones, Android 10 or later (min SDK 29 below; Mohit, 25 Oct). Raise MAX_APK_MB on purpose
+# when something big is meant to go in. (V39.8 review SAFETY-07: a whole number, checked before anything is built.)
+MAX_APK_MB="${MAX_APK_MB:-30}"
+case "$MAX_APK_MB" in ''|*[!0-9]*) echo "MAX_APK_MB must be a whole number of MB (it is \"$MAX_APK_MB\")."; exit 1 ;; esac
+
 if [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
   echo "sakhi-prototype.keystore is missing. Every update for testers must be signed with the same key: restore it from your"
   echo "backup. Only for a first build that no phone has yet, run again with NEW_KEYSTORE=1."; exit 1
@@ -55,6 +61,8 @@ rm -rf build && mkdir -p build/assets/www/mods build/classes build/dex build/gen
 # 1. The web app, plus the Android bridge, the server address and the Learn library as scripts (WebView cannot fetch file:// URLs).
 cp "$WEB/app.js" "$WEB/art.js" "$WEB/app.css" build/assets/www/
 cp "$WEB"/mods/*.js build/assets/www/mods/
+# the plans as data (Version 39.4): progs/*.js, loaded before the modules
+mkdir -p build/assets/www/progs && cp "$WEB"/progs/*.js build/assets/www/progs/
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/
@@ -100,12 +108,12 @@ PY
 # 2. Resources and manifest.
 "$BT/aapt2" compile --dir res -o build/res.zip
 "$BT/aapt2" link -o build/base.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets --java build/gen \
-  --min-sdk-version 24 --target-sdk-version 34 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
+  --min-sdk-version 29 --target-sdk-version 34 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
 
 # 3. Java -> dex.
 javac -nowarn -Xlint:-options -source 8 -target 8 -bootclasspath "$JAR" -d build/classes \
   build/gen/com/quranutrition/sakhi/R.java $(find src -name "*.java")
-"$BT/d8" --min-api 24 --lib "$JAR" --output build/dex $(find build/classes -name '*.class')
+"$BT/d8" --min-api 29 --lib "$JAR" --output build/dex $(find build/classes -name '*.class')
 
 # 4. Package, align, sign (prototype debug key, made once and kept next to this script).
 cp build/base.apk build/unaligned.apk
@@ -116,8 +124,17 @@ if [ ! -f sakhi-prototype.keystore ]; then   # only with NEW_KEYSTORE=1 (checked
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Qura Sakhi prototype, O=Trinaya Wellness LLP, C=IN" >/dev/null 2>&1
 fi
 "$BT/apksigner" sign --ks sakhi-prototype.keystore --ks-pass pass:android --key-pass pass:android --ks-key-alias sakhi \
-  --out QuraSakhi-prototype.apk build/aligned.apk
-"$BT/apksigner" verify QuraSakhi-prototype.apk
+  --out build/signed.apk build/aligned.apk
+"$BT/apksigner" verify build/signed.apk
+# The ceiling is checked before the new APK replaces the last good one, so that one (and its version code, which the floor
+# check above reads) survives a build that is too big.
+APK_BYTES=$(wc -c < build/signed.apk | tr -d ' ')
+if [ "$APK_BYTES" -gt $((MAX_APK_MB * 1024 * 1024)) ]; then
+  echo "The APK is $((APK_BYTES / 1024 / 1024)) MB, over the ${MAX_APK_MB} MB ceiling: shrink it, or raise MAX_APK_MB on purpose. The last good APK is kept." >&2
+  exit 1
+fi
+mv -f build/signed.apk QuraSakhi-prototype.apk
+[ -f build/signed.apk.idsig ] && mv -f build/signed.apk.idsig QuraSakhi-prototype.apk.idsig
 echo "Built: $(pwd)/QuraSakhi-prototype.apk ($(du -h QuraSakhi-prototype.apk | cut -f1))"
 
 # 5. Install on a phone connected by USB, if there is one.

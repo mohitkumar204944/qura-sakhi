@@ -87,8 +87,6 @@
     "access-care",
     "access-schemes",
     "access-partner",
-    "access-feed",
-    "access-videos",
     "access-symptoms",
     "docportal",
     "lang",
@@ -101,7 +99,8 @@
     "plan-plate",
     "plan-body",
     "plan-moves",
-    "plan-progress"
+    "plan-progress",
+    "food"
   ],
   "prefixes": {
     "contra-m-": [

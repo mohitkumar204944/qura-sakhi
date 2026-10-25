@@ -111,6 +111,8 @@
       '<label for="iron-time">' + esc(t('iron_time_l')) + '</label><input id="iron-time" type="time" value="21:00">' +
       '<button type="button" class="btn primary block" id="iron-start">' + esc(t('iron_start')) + '</button></div>';
   }
+  /* Version 39.8: the tablet and the strip, drawn */
+  const pic = (k) => (S.art && S.art.hasFood && S.art.hasFood(k) ? '<span class="iron-pic" aria-hidden="true">' + S.art.food(k) + '</span>' : '');
   function render(v) {
     const head = S.backRow(t('iron_h'), 'care', false);
     if (!S.canSave()) { v.innerHTML = head + '<p class="small">' + esc(t('iron_p')) + '</p>' + S.needDiary(); S.wire(v); return; }
@@ -120,7 +122,7 @@
     } else {
       const P = PLANS[d.plan]; const td = S.today(); const tdS = todayISO(); const isW = weekly(d); const done = doneNow(d);
       const n = isW ? weeksTaken(d) : takenDays(d);
-      const today = '<div class="card iron-today" data-nofold="1"><span class="eyebrow">' + E(P.name) + '</span><h2>' + esc(t(isW ? 'iron_week_h' : 'iron_today_h')) + '</h2>' +
+      const today = '<div class="card iron-today" data-nofold="1"><div class="row iron-hd">' + pic('tablet') + '<div><span class="eyebrow">' + E(P.name) + '</span><h2>' + esc(t(isW ? 'iron_week_h' : 'iron_today_h')) + '</h2></div></div>' +
         (done ? '<div class="flag ok">' + esc(t(isW ? 'iron_week_done' : 'iron_today_done')) + '</div>' + (isW || !d.log[tdS] ? '' : '<button type="button" class="linkbtn" id="iron-undo">' + esc(t('iron_undo')) + '</button>')
           : '<button type="button" class="btn primary block" id="iron-took">' + esc(t('iron_took')) + '</button>') + '</div>';
       let prog = '<div class="card"><h3>' + esc(t('iron_prog_h')) + '</h3>';
@@ -137,7 +139,7 @@
       const remCard = '<div class="card"><div class="list"><label class="item"><span class="body"><strong>' + esc(t('iron_rem')) + '</strong><span>' + esc(isW ? tf('iron_rem_w', { day: S.fmtD(lastDue(d), { weekday: 'long' }) }) : t('iron_rem_d')) + '</span></span><input type="checkbox" id="iron-rem"' + (remOn ? ' checked' : '') + '></label></div>' +
         (remOn ? '<label for="iron-time">' + esc(t('iron_time_l')) + '</label><input id="iron-time" type="time" value="' + esc(rem && okTime(rem.time) ? rem.time : (okTime(d.time) ? d.time : '21:00')) + '">' : '') + '</div>';
       const low = typeof d.left === 'number' && d.left <= 5;
-      const strip = '<div class="card' + (low ? ' warn' : '') + '"><h3>' + esc(t('iron_left_h')) + '</h3>' +
+      const strip = '<div class="card' + (low ? ' warn' : '') + '"><div class="row iron-hd">' + pic('strip') + '<h3>' + esc(t('iron_left_h')) + '</h3></div>' +
         (low ? '<p style="color:var(--fg)"><strong>' + esc(tf('iron_low', { n: d.left })) + '</strong> ' + esc(t('iron_low_ask')) + '</p><p class="small" style="color:var(--fg)">' + E(STOCK) + '</p>' : '<p class="small">' + esc(t('iron_left_p')) + '</p>') +
         '<div class="row"><input id="iron-left" type="number" inputmode="numeric" min="0" max="400" placeholder="' + esc(t('iron_left_ph')) + '" value="' + (typeof d.left === 'number' ? d.left : '') + '" style="flex:1"><button type="button" class="btn sm" id="iron-left-go">' + esc(t('iron_left_save')) + '</button></div></div>';
       const docRow = d.plan === 'doctor' ? '<div class="card"><label for="iron-until">' + esc(t('iron_until_l')) + '</label><input id="iron-until" type="date" value="' + esc(okDate(d.until) ? d.until : '') + '"><p class="small">' + esc(t('iron_until_p')) + '</p></div>' : '';
@@ -213,7 +215,9 @@
   }
 
   /* For the pregnancy logs' tablet grid: one record of iron days */
-  S.iron = { taken: (k) => S.canSave() && !!D().log[k], days: () => (S.canSave() ? Object.keys(D().log).filter((k) => okDate(k) && D().log[k]) : []), mark: (k, on) => { if (S.canSave() && okDate(k)) mark(D(), k, !!on); }, active: () => S.canSave() && active(D()) };
+  /* review life-3: after a pregnancy loss, core asks whether to keep the pregnancy course's reminder, and can turn it off */
+  S.iron = { pregRem: () => S.canSave() && active(D()) && D().plan === 'preg' && D().remOn !== false, remOff: () => { if (!S.canSave()) return; const d = D(); d.remOn = false; sync(d); },
+    taken: (k) => S.canSave() && !!D().log[k], days: () => (S.canSave() ? Object.keys(D().log).filter((k) => okDate(k) && D().log[k]) : []), mark: (k, on) => { if (S.canSave() && okDate(k)) mark(D(), k, !!on); }, active: () => S.canSave() && active(D()) };
 
   S.register({
     id: 'iron',
@@ -272,7 +276,7 @@
     setup: setup,
     summary: summary,
     sample: sample,
-    css: '.iron-today h2 { margin: 0; } .iron-bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; } .iron-bar i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }' +
+    css: '.iron-hd { gap: 12px; align-items: center; flex-wrap: nowrap; } .iron-hd h3 { margin: 0; } .iron-pic { width: 52px; height: 52px; flex-shrink: 0; border-radius: 14px; background: var(--peach-2); display: inline-flex; overflow: hidden; } .iron-pic svg { width: 100%; height: 100%; } .iron-today h2 { margin: 0; } .iron-bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; } .iron-bar i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }' +
       '.iron-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; } .iron-day { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; padding: 6px 0; }' +
       '.iron-day span { font-size: 12px; } .iron-day b { font-size: 15px; color: var(--fg); } .iron-day.on { background: var(--accent-soft); border: 2px solid var(--accent); color: var(--accent); font-weight: 600; }' +
       '.iron-ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); } .iron-plans .item span { white-space: normal; }' 

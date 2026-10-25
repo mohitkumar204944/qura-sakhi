@@ -1232,3 +1232,460 @@ Also changed, with no new words:
 - From 40, once her periods have stopped, "Heavy periods" is no longer offered as a goal: bleeding then needs a doctor.
 - The PMOS self-check no longer answers "Fewer than 8 periods in the last year" from "some months skipped".
 
+
+## 17. Food (Version 39.3 onward; Dr. Megha, please check)
+
+### 17.1 Version 39.3: how she eats, and the pregnancy versions of foods (please check)
+
+The foods themselves are unchanged (the ICMR-NIN 2024 plate, moved into one shared table, `web/mods/food.js`). New are:
+how she eats, which foods each choice hides, and a pregnancy version where a food needs care in pregnancy.
+
+| What | English | Hindi | Please confirm |
+|---|---|---|---|
+| How she eats (every goal at joining, My food, My plate); Vegetarian is chosen unless she says otherwise | Vegetarian / Eggs too / Fish or meat too / Jain: no onion, garlic or root vegetables | शाकाहारी / अंडा भी / मछली या मांस भी / जैन: प्याज़, लहसुन या ज़मीन के नीचे की सब्ज़ी नहीं | |
+| Milk | I don’t take milk, curd or paneer / Do you have milk, curd or paneer? | मैं दूध, दही या पनीर नहीं लेती / क्या आप दूध, दही या पनीर लेती हैं? | |
+| Jain hides | carrot (gajar), sprouts, sprouts chaat, jhalmuri, usal, sambar and rasam, poha with vegetables | | Is this the right list for most Jain families? |
+| No milk hides | curd, paneer, milk, chaas, lassi, buttermilk | | |
+| Pregnancy versions (shown instead, while she is pregnant) | Sprouts, cooked · Guava, orange, apple (no papaya) · Guava, orange, ber in season · Guava, amla, jamun in season · Guava, orange, amla · Guava, orange, jamun · Bhuna chana, makhana, cooked sprouts chaat · Jhalmuri with cooked sprouts, less oil | पकाए हुए अंकुरित अनाज · अमरूद, संतरा, सेब · … | Papaya left out (unripe papaya is the caution); sprouts cooked. Anything else to change in pregnancy? |
+| My plate's protein quarter, by how she eats | A quarter: dal, chana or paneer (vegetarian, Jain) · A quarter: dal, chana or soybean (no milk) · A quarter: dal, chana, paneer or egg · A quarter: dal, chana or egg · On the side: a bowl of dal or salad (no milk) | एक चौथाई: दाल, चना या पनीर · … · साथ में: एक कटोरी दाल या सलाद | Vegetarians were shown "paneer, egg or fish" (diet audit 2.9) |
+| My plan in pregnancy | In pregnancy, start moves only after your doctor says it’s OK for you. | प्रेग्नेंसी में व्यायाम तभी शुरू करें जब डॉक्टर कहें कि आपके लिए ठीक है। | |
+| My food's footnote | Based on the ICMR-NIN Dietary Guidelines for Indians (2024). Not a diet chart: your doctor can give you one. | भारतीयों के लिए ICMR-NIN आहार दिशानिर्देश (2024) पर आधारित। यह डाइट चार्ट नहीं है: वह आपकी डॉक्टर दे सकती हैं। | |
+
+My food links each stage to its reviewed page: food in pregnancy, calcium from your kitchen (40+), My plate, food while
+breastfeeding, food that builds blood (the anaemia page) and fasting days. Only the row labels are new (19.3).
+
+### 17.1a Version 39.3: changed after the 24 Oct review (Dr. Megha, please check)
+
+The review found food steps that ignored how she eats, and one that broke the pregnancy rule above. New lines:
+
+| What | English | Hindi | Please confirm |
+|---|---|---|---|
+| The 21 iron days, day 18, in pregnancy (was raw sprouts) | Cooked sprouts: Add boiled sprouted moong or chana to a meal, or cook them in a sabzi. | पके हुए अंकुरित अनाज: उबले हुए अंकुरित मूँग या चने किसी खाने में जोड़ें, या सब्ज़ी में पकाएँ। | |
+| Day 18 for a Jain woman (sprouts are hidden for her) | Dates or raisins: Have 2 or 3 dates or a few raisins as a snack. | खजूर या किशमिश: नाश्ते में 2-3 खजूर या थोड़ी किशमिश लें। | Is this a good iron day for Jain families? |
+| Day 14 for a woman who takes no milk (was "Milk at another time") | Tea at another time: Have tea or coffee at a different time from your iron tablet, not with it. | चाय अलग समय पर: चाय या कॉफ़ी आयरन की गोली के साथ नहीं, अलग समय पर लें। | |
+| The "Protein at breakfast" habit, by how she eats (it named an egg and paneer for everyone) | Vegetarian: dal, besan cheela, sprouts, paneer or curd · Jain: dal, besan cheela, paneer or curd · Eggs: …, sprouts, paneer, curd or an egg (as before) · No milk: dal, besan cheela, sprouts or roasted chana (Jain: dal, besan cheela or roasted chana; eggs: …, sprouts or an egg) | शाकाहारी: दाल, बेसन चीला, अंकुरित अनाज, पनीर या दही · जैन: दाल, बेसन चीला, पनीर या दही · बिना दूध: दाल, बेसन चीला, अंकुरित अनाज या भुने चने · … | |
+| "No sweet drinks" without milk (no chaas) | Have water or nimbu pani without sugar instead of cold drinks, packaged juice or very sweet chai. | कोल्ड ड्रिंक, पैकेट जूस या बहुत मीठी चाय की जगह पानी या बिना चीनी का नींबू पानी लें। | |
+| My plate for fish or meat, no milk / the bowl without milk | A quarter: dal, chana, egg or fish / Dal | एक चौथाई: दाल, चना, अंडा या मछली / दाल | |
+| The third food answer, one name everywhere (joining said "Non-vegetarian") | Fish or meat too | मछली या मांस भी | |
+
+**For the gynaecologist (FOOD-07):** after a birth, Yoga and moves is now hidden for the first 6 weeks and the after-birth
+plan asks about knees and back. post.js's reviewed line says to avoid planks until the baby is 8 weeks old, while Yoga and
+moves (with Surya namaskar's plank) opens from 6 weeks. Should it wait until 8 weeks?
+
+### 17.4 Version 39.9: food steps that change, and fasting (Dr. Megha and the gynaecologist, please check)
+
+The food of the day comes from the foods table already checked in 17.1 (her region and how she eats). The pregnancy food step
+shows the pregnancy food page's own reviewed lines: a heading and its first sentence. These lines are new.
+
+| Where | English | Hindi |
+|---|---|---|
+| Iron step | Eat it with lemon, amla or guava. | इसे नींबू, आँवला या अमरूद के साथ खाएँ। |
+| Calcium step (40+ bones) | Calcium from your kitchen, for your bones | हड्डियों के लिए, रसोई से कैल्शियम |
+| Food while you breastfeed | Keep water near you, and drink a glass at every feed. | पास में पानी रखें, और हर बार दूध पिलाते समय एक गिलास पानी पिएँ। |
+| | Eat your meals: dal, milk or curd, eggs or paneer if you eat them, sabzi, and roti or rice. Your body needs a little more food than before. | अपना खाना पूरा खाएँ: दाल, दूध या दही, खाती हों तो अंडा या पनीर, सब्ज़ी, और रोटी या चावल। शरीर को पहले से थोड़ा ज़्यादा खाना चाहिए। |
+| | Laddoos and panjiri are food too: have them in small helpings, not in place of a meal. | लड्डू और पंजीरी भी खाना हैं: थोड़ी मात्रा में लें, खाने की जगह नहीं। |
+| | Don't cut out water, fruit or vegetables after the birth: your body needs them. | डिलीवरी के बाद पानी, फल या सब्ज़ी बंद न करें: शरीर को इनकी ज़रूरत है। |
+| | Herbal powders, kadhas or supplements: ask your doctor first. | जड़ी-बूटी के पाउडर, काढ़े या सप्लीमेंट: पहले डॉक्टर से पूछें। |
+| The fasting step | A proper sargi or sehri, water when you can, and break the fast gently | सरगी या सेहरी ठीक से, जब हो सके पानी, और व्रत धीरे से खोलें |
+| ... in pregnancy or while breastfeeding | Talk to your doctor before a fast without water | बिना पानी के व्रत से पहले डॉक्टर से बात करें |
+| Fasting page: vrat food (reordered) | For a vrat: kuttu or singhara roti with curd, makhana, fruit with a few nuts, chaas; sabudana khichdi with peanuts now and then. | व्रत के लिए: दही के साथ कुट्टू या सिंघाड़े की रोटी, मखाना, थोड़े मेवे के साथ फल, छाछ; मूँगफली वाली साबूदाना खिचड़ी कभी-कभी। |
+| | With PMOS, or sugar in pregnancy, go easy on sabudana and aloo: they raise sugar fast. | PMOS हो, या गर्भ में शुगर हो, तो साबूदाना और आलू कम लें: इनसे शुगर जल्दी बढ़ती है। |
+| Fasting page: If you are pregnant or breastfeeding | Talk to your doctor before you fast, most of all before a fast without water. | व्रत से पहले डॉक्टर से बात करें, ख़ासकर बिना पानी के व्रत से पहले। |
+| | Sehri or sargi: a full meal with dal or eggs, roti or rice, curd and fruit, and plenty of water. | सेहरी या सरगी: दाल या अंडा, रोटी या चावल, दही और फल के साथ पूरा खाना, और ख़ूब पानी। |
+| | Iftar, or breaking the fast: water or ORS first, then fruit or dates, then a normal meal. Keep drinking water through the evening. | इफ़्तार, या व्रत खोलते समय: पहले पानी या ORS, फिर फल या खजूर, फिर सामान्य खाना। शाम भर पानी पीती रहें। |
+| | Breastfeeding: your body needs extra water. Drink at every feed you can. | स्तनपान: शरीर को ज़्यादा पानी चाहिए। हर फ़ीड पर पानी पिएँ। |
+| | Break the fast and drink water or ORS if you feel dizzy or faint, have a headache, or pass very little or dark urine. | चक्कर या बेहोशी लगे, सिरदर्द हो, या पेशाब बहुत कम या गहरे रंग का हो, तो व्रत खोलें और पानी या ORS पिएँ। |
+| (urgent) | In pregnancy, if the baby moves less than usual: break the fast and go to hospital now. Call 112 or 108. | गर्भ में बच्चा रोज़ से कम हिले: व्रत खोलें और अभी अस्पताल जाएँ। 112 या 108 पर कॉल करें। |
+
+**For Dr. Megha:** the kitchen measures (katori, roti) and "My day of meals" wait for your measures (food track F1).
+
+## 18. Version 39: the three pillars' journey (please check 18.0 first)
+
+Version 39 builds the merged roadmap (`docs/roadmap-v39-2026-10-24.md`). Most of it reuses lines already reviewed; this
+section holds the decisions and the few new lines that touch health. Section 19 holds interface labels (please glance).
+
+### 18.0 Version 39.0: three decisions for the gynaecologist (please check)
+
+These change when a reviewed line shows, not its words. Until you decide, the app shows the stricter reviewed line.
+
+| # | What the app now does | Reviewed line it shows | Please confirm |
+|---|---|---|---|
+| 1 | At 45 or older (or in midlife), bleeding logged 365 days or more after the one before shows "Bleeding after your periods stopped · See a doctor this week", even if she never ticked "periods stopped". After 12 months with no period, the menopause timeline asks once "Have your periods stopped?" | explain.js `bleed_after_stop`: "Any bleeding after your periods have stopped needs a check, even a little." / "See a doctor within 2 weeks." | Is 365 days the right trigger? Is "this week" on Today (the card's level) right, against "within 2 weeks" in its own text? |
+| 2 | Pregnancy logs: a BP of 160/110 or more (or high BP with symptoms) in the last 3 days shows on Today as "Call 112 now"; 140/90 or more as "See a doctor today"; Hb under 7 as "See a doctor today"; a 75 g 2-hour sugar of 140 or more, or a fasting sugar of 95 or more, as "See a doctor this week" | preg.js `bp_urgent`, `bp_today`, `hb_flag`, `sug_flag`, `sug_fflag`, `sug_fflag2` | Is this mapping of log flags to urgency levels right? |
+| 3 | Where two reviewed lines disagree in pregnancy, the stricter one now shows: bleeding in pregnancy and "Baby moving less" (a new day-sheet chip from 28 weeks) are "Call 112 now", led by Help's line | Help `s1c` ("In pregnancy: bleeding, fits, severe headache with blurred vision, fluid leaking, baby moving less"), with pregtools `k_today` as the explanation for movements | Bleeding in pregnancy: "call 112 now" for any bleeding, or "see a doctor today" for light spotting (explain.js `p_bleed` said today)? |
+
+Also from 39.0, with no new words:
+- After a birth, today's and yesterday's recovery-check warning signs show on Today at their own level, in the check's own words
+  (post.js `fl_*`).
+- Headache and swelling in pregnancy now count when they are logged on different days within 3 days of each other.
+- The plan's "kick counter" step is gone (no kick counting to a number).
+- The supplements card ("Want advice on supplements or medicines?") is gone from My progress and the end of a plan.
+- Hindi: "energy" in the weekly look-back is ऊर्जा (it was ताक़त, which means strength).
+
+### 18.0a Version 39.0: new lines that touch health (please check)
+
+| Where | English | Hindi |
+|---|---|---|
+| Day sheet, pregnancy from 28 weeks | Baby moving less | बच्चे की हलचल कम |
+| Today card title for that chip | Baby moving less than usual | बच्चे की हलचल आम से कम |
+| Today, after a loss, when a tablet reminder is on | Keep your tablet reminder? / Your iron or calcium tablet reminder is still on. Keep it if your doctor or ASHA told you to carry on. | गोली का रिमाइंडर रखना है? / आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें। |
+| Menopause timeline and Today, after 12 months with no period | Have your periods stopped? / Tell Sakhi, so any bleeding from now on gets a check. / A year since your last period | क्या आपके पीरियड बंद हो गए हैं? / Sakhi को बताएँ, ताकि अब से कोई भी ब्लीडिंग हो तो उसकी जाँच हो। / पिछले पीरियड को एक साल |
+| My plan, during a pause and in discreet mode | A doctor’s check is part of your plan. It is free at a government health centre. | डॉक्टर से एक जाँच आपके प्लान का हिस्सा है। यह सरकारी स्वास्थ्य केंद्र पर मुफ़्त है। |
+| Help | Thoughts of harming myself or my baby (post.js's reviewed words) / Tele-MANAS 14416 and 112: free, any time / You are not alone. Call now. | ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल / Tele-MANAS 14416 और 112: मुफ़्त, कभी भी / आप अकेली नहीं हैं। अभी कॉल करें। |
+
+### 18.0b Version 39.0: changed after the 24 Oct review (please check)
+
+A review by 3 agents (each finding retried by a skeptic) confirmed 34 findings; all are fixed. These touch when a reviewed line
+shows:
+- **"Have your periods stopped?" → "Yes"** now dates the stop to her last period, not the day she answers, so bleeding logged
+  after her last period (including that day) keeps "Bleeding after your periods stopped". The "My periods have stopped" stage
+  does the same.
+- **The 365-day rule (18.0 #1)** no longer applies on a hormonal method (or after stopping one within that year), while
+  breastfeeding, or to the first bleed after a pregnancy or a birth.
+- **A monthly check-in's "bleeding in pregnancy" tick** is "Call 112 now" only for 2 days. After that it shows "See a doctor
+  today" (its own reviewed line), for as long as the check-in counts (45 days).
+- **After a birth:** Today's card leads with the recovery check's own lead line: "Call 112 now, or go to the nearest
+  hospital" (urgent signs) or "See a doctor today". For thoughts of harming herself or her baby, Today's card and the shared
+  phone's card call **Tele-MANAS 14416** first, then 112. A recovery check today replaces yesterday's.
+- **"Not yet"** keeps the 365-day card for a later bleed. The second agent judged this the documented rule; please say if her
+  "Not yet" should switch it off.
+
+### 18.1 Version 39.1: when existing reviewed cards show (please check)
+
+No new health wording. These change when What your diary shows uses its own reviewed cards, so Diary's "What it shows" and
+its verdict never disagree:
+
+| # | What the app now does | Reviewed card | Please confirm |
+|---|---|---|---|
+| 1 | Trends says "Outside the usual" because of an older gap (one of her last 6): that gap gets the long or short gap card, titled "One of your recent gaps was {n} days". It stays off Today unless 2 or more of her last 6 gaps are outside the range. | `gap_long`, `gap_short` | Fine as "Keep an eye on it", or "See a doctor this month" at 2 or more? |
+| 2 | Trends says "Irregular" (every gap 21 to 35 days, but they vary by more than 7 days, or 9 under 26 and over 41): a card "Your gaps vary by {n} days" with the verdict's own line ("Usual: 21 to {b} days apart, varying by {v} days or less."), "Keep an eye on it", off Today | Trends `vd_cyc_usual` | Is "Keep an eye on it" right? |
+| 3 | A period longer than 8 days in the last 6 months (as Trends counts it) gets the long-period card ("See a doctor this week"), titled "One of your recent periods lasted {n} days" when it isn't her latest. Older than 75 days, it stays off Today. | `period_long` | Is "this week" right for one that is months old? |
+| 4 | Pain that stopped her day in 2 of her last 3 periods shows the severe-pain card, even when the latest was easier | `pain_severe` | Is 2 of 3 right? |
+| 5 | Her heavy-bleeding chart (PBAC) with a total of 100 or more shows the heavy-flow card ("See a doctor this week") | `flow_heavy`; cond.js's own line "Doctors use a total of 100 or more as a sign of heavy periods" | Is 100 the right line for the card? |
+| 6 | Flow and pain can be added on any day of her period, and on the day it ends; the heavy-flow and severe-pain cards, her report and the self-checks read them all | `flow_heavy`, `pain_severe` | (no question) |
+| 7 | Each long-gap, PMOS-signs, heavy-flow, long-period and severe-pain card offers "Check the signs (2 minutes)": the PMOS, fibroids or endometriosis self-check, until she has done it in the last 90 days. Pilot and demo builds only. | selfcheck.js | Are these the right checks for each card? |
+
+Pattern check is gone. Its two questions moved into the PMOS self-check, in their reviewed words: "Has a doctor already told
+you that you have PMOS?" (her PMOS line, as on Me) and, after the 9 signs and not counted with them, "Any milky discharge from
+the nipples?" with its reviewed answer about a prolactin blood test.
+
+### 18.1a Version 39.1: changed after the 24 Oct review (please check)
+
+| # | What changed | Words | Please confirm |
+|---|---|---|---|
+| 1 | Two or more long gaps (or two or more short ones) in her last 6 now always give "See a doctor this month", even when a gap of the other kind sits between them. Before, the count took only the kind of her most recent outside gap. | `gap_long`, `gap_short` (reviewed) | That this answers 18.1 #1 the way you'd want |
+| 2 | A heavy-bleeding chart (PBAC 100 or more) from an earlier period, not her latest, is titled "Heavy flow in one of your recent periods" / "हाल के एक पीरियड में भारी ब्लीडिंग" | `flow_heavy` title only | (no question) |
+| 3 | The plans' reason line counts long gaps against her own usual range: "{n} of your last {m} cycles were longer than {b} days" / "आपके पिछले {m} में से {n} चक्र {b} दिन से लंबे थे।" ({b} is 35, or 45 in the first years of periods) | `plan_why_gaps` | Is 45 right for a teen here, as on Trends? |
+| 4 | A thoughts-of-harm card calls Tele-MANAS 14416 first, then 112, wherever it shows (18.0b, now on Diary and What your diary shows too) | `fl_harm` (reviewed) | (no question) |
+
+## 19. Version 39: interface wording (please glance)
+
+### 19.0 Version 39.0
+
+| English | Hindi |
+|---|---|
+| Something you noted needs help now (discreet mode, with 112, 108 and 102 buttons) | आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए |
+| Something you noted needs a check (discreet mode) | आपने जो दर्ज किया, उसकी जाँच ज़रूरी है |
+| Open | खोलें |
+| Your plan: {n} steps (Today, when the list is long) | आपका प्लान: {n} क़दम |
+| Keep it / Turn it off | रखें / बंद करें |
+| Show what each reminder is about / Off: the phone shows only “A reminder from Sakhi”, so nobody else can read it on your screen. | हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है / बंद: फ़ोन पर सिर्फ़ “Sakhi का रिमाइंडर” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। |
+| Time for your tablet / A reminder from Sakhi. Tap to see. (the phone's lock screen, by default) | आपकी गोली का समय / Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ। |
+| Yes, they have stopped / Not yet | हाँ, बंद हो गए हैं / अभी नहीं |
+| Your plan is resting for now. Take the time you need; these pages may help. / Your plan is resting for now. | अभी आपका प्लान रुका है। जितना समय चाहिए, लें; ये पन्ने मदद कर सकते हैं। / अभी आपका प्लान रुका है। |
+| Pick a goal when you’re ready | जब मन हो, एक लक्ष्य चुनें |
+| Starts a new plan. What you logged stays. (pregnancy plan's settings) | नया प्लान शुरू होगा। आपने जो दर्ज किया, वह रहेगा। |
+| Your BP: {s}/{di} · Your Hb: {v} · Your sugar test: {v} mg/dL · Your fasting sugar: {v} mg/dL | आपका BP: {s}/{di} · आपका Hb: {v} · आपकी शुगर जाँच: {v} mg/dL · आपकी खाली पेट शुगर: {v} mg/dL |
+
+Changed after the 24 Oct review of 39.0:
+
+| English | Hindi |
+|---|---|
+| Off: Sakhi’s reminders show only “A reminder from Sakhi” or “Time for your tablet”, so nobody else can read them on your screen. Reminders you wrote yourself keep your words. | बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं। |
+| Keep your daily reminder? / A daily reminder is still on. Keep it if your doctor told you to carry on. (a shared phone, after a loss) | रोज़ का रिमाइंडर रखें? / रोज़ का एक रिमाइंडर अभी भी चालू है। अगर डॉक्टर ने जारी रखने को कहा है, तो इसे रखें। |
+| Did your pregnancy end? / Yes, it ended / No, I marked it by mistake (changing the stage from Pregnant) | क्या आपकी प्रेग्नेंसी ख़त्म हुई? / हाँ, ख़त्म हुई / नहीं, ग़लती से चुना था |
+
+### 19.1 Version 39.1
+
+| English | Hindi |
+|---|---|
+| What it shows (Diary's tab, was Trends) | क्या दिखता है |
+| This month’s signs / About a minute. It helps Sakhi notice what repeats. / Done for {m}. Tap to change. | इस महीने के संकेत / लगभग एक मिनट। इससे Sakhi देख पाती है कि क्या दोहराया जाता है। / {m} का हो गया। बदलने के लिए दबाएँ। |
+| Checks you did / {d}: yes to {n} of {m} | आपकी की गई जाँचें / {d}: {m} में से {n} पर हाँ |
+| Check the signs (2 minutes) | संकेत जाँचें (2 मिनट) |
+| Free government doctor (on every "this week" and "this month" card, and the self-check result) | मुफ़्त सरकारी डॉक्टर |
+| My report for the doctor | डॉक्टर के लिए मेरी रिपोर्ट |
+| A 12-week plan for your periods (a long-gap card, the PMOS result) | आपके पीरियड के लिए 12 हफ़्ते का प्लान |
+| You did this check on {d}: yes to {n} of {m} | आपने यह जाँच {d} को की: {m} में से {n} पर हाँ |
+| One of your recent gaps was {n} days / One of your recent periods lasted {n} days / Your gaps vary by {n} days | आपका एक हाल का अंतर {n} दिन का था / आपका एक हाल का पीरियड {n} दिन चला / आपके अंतर में {n} दिन तक का फ़र्क़ है |
+| One more question: (before the nipple question) | एक और सवाल: |
+| From your diary: pain stopped your day in {n} of your last {m} periods. | आपकी डायरी से: पिछले {m} में से {n} पीरियड में दर्द ने आपका दिन रोक दिया। |
+| The Diary tour's second tip: What it shows / Anything to check, your gaps between periods and what you noted most, over the months. | क्या दिखता है / जिसकी जाँच करनी है, पीरियड के बीच के अंतर और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ। |
+
+### 19.2 Version 39.2
+
+| English | Hindi |
+|---|---|
+| Topics for you / All topics ({n}) / Fewer topics (Explore) | आपके लिए विषय / सभी विषय ({n}) / कम विषय |
+| Contents: all guides and articles (right under search) | सूची: सभी गाइड और लेख |
+| My baby is born (Today from 37 weeks, and the pregnancy plan from 28 weeks; a shared phone sees "Change stage") | मेरा बच्चा हो गया |
+| Check-ups and tests (the pregnancy checklist page, and its button on Today; "My pregnancy plan" now means only the My plan tab) | जाँचें और टेस्ट |
+| Reminders / Your reminders, medicines and tablets, and this phone’s alerts / What Sakhi reminds you about (Me's one Reminders row) | रिमाइंडर / आपके रिमाइंडर, दवाएँ और गोलियाँ, और इस फ़ोन के अलर्ट / Sakhi किन बातों की याद दिलाती है |
+| Me / मैं (the top bar, in both languages, so she can find it in the wrong language) | Me / मैं |
+| Language · भाषा (Me's language row, with an अ/A mark) | भाषा · Language |
+| My records (Diary's What it shows, the reports page) | मेरे रिकॉर्ड |
+| Suggested (the goal her records point to, on My plan) | सुझाया गया |
+| Report for my doctor (was "Report for any doctor") / My progress (was "How it is going") | डॉक्टर के लिए मेरी रिपोर्ट / मेरी प्रगति |
+| These small steps are part of the 12-week plans now. Pick what you want to work on in My plan. / Open My plan (a 21-day journey page) | ये छोटे क़दम अब 12 हफ़्ते के प्लान का हिस्सा हैं। मेरा प्लान में चुनें कि आप किस पर काम करना चाहती हैं। / मेरा प्लान खोलें |
+| After the 24 Oct review: Change my dates (Check-ups and tests, opening My details) · Check-ups and tests (the paused card's button and the pregnancy plan's due step, which said "My pregnancy plan") · Your check-ups and tests, week by week (the plan screen) · "…pick what you want help with below…" (the paused card, was "see your pregnancy plan") · Your choices (the pregnancy topic's row to the options page; the tile's own label) | मेरी तारीख़ें बदलें · जाँचें और टेस्ट · आपकी जाँचें और टेस्ट, हफ़्ते दर हफ़्ते · "…नीचे चुनें कि आपको किसमें मदद चाहिए…" · आपके विकल्प |
+
+**For the lawyer (roadmap decision 6):** Me > About now carries the intended-use line "A period diary, a guide and habit
+plans. Sakhi doesn’t diagnose; a doctor does." / "एक पीरियड डायरी, एक गाइड और आदतों के प्लान। Sakhi diagnosis नहीं करती; यह
+डॉक्टर करती हैं।" Please check it before it reaches women other than Mohit.
+
+### 19.3 Version 39.3
+
+| English | Hindi |
+|---|---|
+| My food / Your plate and the food for your stage, the way you eat (Explore, right after her stage's own topic; My plan; search) | मेरा खाना / आपकी थाली और आपके दौर का खाना, जैसे आप खाती हैं |
+| Food for your stage, the way you eat. Change how you eat here at any time; your plan keeps going. | आपके दौर का खाना, जैसे आप खाती हैं। आप क्या खाती हैं, यहाँ कभी भी बदलें; आपका प्लान चलता रहेगा। |
+| How you eat / Sakhi shows only foods that fit this, on every food screen. | आप क्या खाती हैं / Sakhi हर खाने वाले पन्ने पर सिर्फ़ वही चीज़ें दिखाएगी जो इससे मेल खाएँ। |
+| What to eat more of, and what to keep away from · Half your plate sabzi, and foods from your region · Food and water while you breastfeed · Food that builds blood / Iron foods, and how to take more of it in · Calcium from your kitchen / For strong bones after 40 · Eating well on fasting days (My food's rows) | क्या ज़्यादा खाएँ, और किससे दूर रहें · आधी थाली सब्ज़ी, और आपके इलाक़े का खाना · दूध पिलाते समय खाना और पानी · ख़ून बढ़ाने वाला खाना / आयरन वाला खाना, और शरीर उसे ज़्यादा कैसे ले · रसोई से calcium / 40 के बाद मज़बूत हड्डियों के लिए · व्रत के दिन ठीक से खाना |
+| From your diary: your last {n} gaps were {a} to {b} days. Change it if this isn’t right. (joining, the period question) | आपकी डायरी से: आपके पिछले {n} अंतर {a} से {b} दिन के थे। सही न हो तो बदल दें। |
+| Your days and weeks (the plan screen's merged card) | आपके दिन और हफ़्ते |
+| Yoga and simple moves, with moving pictures · Half your plate sabzi, and foods from your region (search tiles) | योग और आसान व्यायाम, चलती तस्वीरों के साथ · आधी थाली सब्ज़ी, और आपके इलाक़े का खाना |
+| After the 24 Oct review: Your last period started {n} days ago. (joining's period question, when her gap is still open) · Your weight, waist and BMI, on this phone (My body's search tile) | आपका पिछला पीरियड {n} दिन पहले शुरू हुआ था। · आपका वज़न, कमर और BMI, इसी फ़ोन पर |
+
+### 19.5 Version 39.5 (one plan page; plans that carry on)
+
+| English | Hindi |
+|---|---|
+| {n} of 7 days this week / Days you followed your plan. Rest days count. (the light plans' hero) | इस हफ़्ते 7 में से {n} दिन / जिन दिनों आपने प्लान माना। आराम के दिन भी गिने जाते हैं। |
+| {n} days so far (the My progress tile) | अब तक {n} दिन |
+| Rest day today · {n} left this week / Rest well. Your plan carries on tomorrow. / Rest day / A rest day today. See you tomorrow. | आज आराम का दिन · इस हफ़्ते {n} बचे / अच्छे से आराम करें। आपका प्लान कल से फिर चलेगा। / आराम का दिन / आज आराम का दिन है। कल मिलते हैं। |
+| Make today a rest day? / Yes, rest today (offered on a day she logged pain that stopped her day or heavy flow) | आज आराम का दिन रखें? / हाँ, आज आराम |
+| Welcome back. Nothing to catch up: just today. | फिर से स्वागत है। कुछ पूरा नहीं करना है: बस आज से। |
+| Next week: the same pace. Your steps grow after a week with 3 days or more. (the look-back, the hold rule) | अगले हफ़्ते: वही रफ़्तार। 3 या ज़्यादा दिनों वाले हफ़्ते के बाद आपके क़दम बढ़ेंगे। |
+| Pause for a week / Your steps and the reminder rest for 7 days, then carry on / Paused until {d} / Start again now / Or pause it for a week instead | एक हफ़्ते के लिए रोकें / आपके क़दम और रिमाइंडर 7 दिन रुकेंगे, फिर चलेंगे / {d} तक रुका है / अभी फिर शुरू करें / या इसकी जगह एक हफ़्ते के लिए रोकें |
+| Take a week off? / You can pause your plan for a week. It carries on after that, from where you are. (after 14 quiet days, once) | एक हफ़्ते की छुट्टी लें? / आप अपना प्लान एक हफ़्ते के लिए रोक सकती हैं। उसके बाद वह वहीं से चलेगा जहाँ आप हैं। |
+| Your last plan / {t} · {a} to {b} · followed on {n} days / Before this: {t}, {a} to {b}, followed on {n} days (the doctor summary) | आपका पिछला प्लान / {t} · {a} से {b} · {n} दिन माना / इससे पहले: {t}, {a} से {b}, {n} दिन माना |
+| Your plan has changed / You are pregnant now, so {t} is on hold. You followed it on {n} days. Your pregnancy plan has the steps for now. / Your baby is here, so your pregnancy plan has ended. Your after-birth plan starts with the daily recovery check. / See my pregnancy plan / See my after-birth plan | आपका प्लान बदल गया है / अब आप गर्भवती हैं, इसलिए {t} रुका है। आपने इसे {n} दिन माना। अभी के क़दम आपके गर्भावस्था प्लान में हैं। / आपका बच्चा आ गया है, इसलिए गर्भावस्था का प्लान पूरा हुआ। जन्म के बाद का प्लान रोज़ की रिकवरी जाँच से शुरू होता है। / मेरा गर्भावस्था प्लान देखें / जन्म के बाद का मेरा प्लान देखें |
+| Your plan has changed. Open My plan to see what is next. / Open My plan (a shared phone) | आपका प्लान बदल गया है। आगे क्या है, यह देखने के लिए मेरा प्लान खोलें। / मेरा प्लान खोलें |
+| Keep my habits / Work on something else / Pick a goal. The same goal again starts from where you are now. (the end of 12 weeks) | मेरी आदतें जारी रखें / किसी और चीज़ पर काम करें / एक लक्ष्य चुनें। वही लक्ष्य फिर से चुनें तो प्लान वहीं से शुरू होगा जहाँ आप अभी हैं। |
+| Help / Danger signs, and who to call (the plan's care team) | मदद / ख़तरे के संकेत, और किसे फ़ोन करें |
+
+**Please check (gynaecologist):** the after-birth path's three headings, which describe when its steps change: "Weeks 1 to
+6: Rest, your daily recovery check, and your 6-week check" / "हफ़्ता 1 से 6: आराम, रोज़ की रिकवरी जाँच, और 6 हफ़्ते की जाँच";
+"Weeks 7 to 12: Short walks and your pelvic floor" / "हफ़्ता 7 से 12: थोड़ी सैर और आपका पेल्विक फ़्लोर"; "Months 4 to 12: At
+your own pace" / "महीना 4 से 12: अपनी रफ़्तार से". On days 35 to 42 the plan's step is "Your 6-week check" (post.js's
+reviewed label), and after 6 weeks the recovery goal's steps are a short walk and the pelvic floor trainer.
+
+### 18.2 Version 39.6: the doctor loop and her Hb (please check)
+
+A plan's doctor paths now come only from her answers, the calendar and her own dates (roadmap decision 5(a)). New lines:
+
+| # | Where | English | Hindi | Please confirm |
+|---|---|---|---|---|
+| 1 | Heavy periods plan, she said "often tired or dizzy" | Often tired or dizzy with heavy periods: ask for an Hb test. It is free at a government health centre. | भारी पीरियड के साथ अक्सर थकान या चक्कर: Hb टेस्ट करवाएँ। यह सरकारी स्वास्थ्य केंद्र में मुफ़्त है। | |
+| 2 | Pain plan, pain on 4 days or more | Pain on 4 days or more of each period needs a doctor’s check. It can have a cause that can be treated. | हर पीरियड में 4 या ज़्यादा दिन दर्द हो तो डॉक्टर की जाँच ज़रूरी है। इसकी वजह का इलाज हो सकता है। | Is 4 days the right line? |
+| 3 | PMS plan, "affects my day a lot" | If the week before your period stops your day in most cycles, a doctor can help. Note how you feel each day for 2 cycles and take the log with you. | अगर ज़्यादातर चक्रों में पीरियड से पहले का हफ़्ता आपका दिन रोक देता है, तो डॉक्टर मदद कर सकती हैं। 2 चक्र तक रोज़ लिखें कि कैसा लगा, और वह डायरी साथ ले जाएँ। | |
+| 4 | Trying plan, by her months of trying (ttc.js's own rule) | You have been trying for {n} months. Doctors suggest tests for you both now: see a gynaecologist. / Something you told Sakhi means you don’t need to wait: see a gynaecologist now. | आप {n} महीने से कोशिश कर रही हैं। डॉक्टर अब आप दोनों की जाँच की सलाह देते हैं: स्त्री रोग विशेषज्ञ को दिखाएँ। / आपने Sakhi को जो बताया, उससे इंतज़ार की ज़रूरत नहीं: अभी स्त्री रोग विशेषज्ञ को दिखाएँ। | |
+| 5 | The end of every plan, the same for every woman | Show this page to a doctor / Your before and since are here. A doctor can tell you what they mean for you. | यह पेज डॉक्टर को दिखाएँ / आपका पहले और अब यहाँ है। डॉक्टर बता सकती हैं कि आपके लिए इसका क्या मतलब है। | Replaces "If nothing has changed, see a doctor" |
+| 6 | Her Hb below the range printed on her own lab report (pillar 1) | Your Hb was below your report’s range · Hb carries oxygen in your blood. When it is low (anaemia), you can feel tired or breathless. Heavy periods are a common cause. · See a doctor this month. Low Hb is usually treated with iron tablets and a repeat test. If you feel dizzy or faint, or breathless at rest: call 112 now. | आपका Hb आपकी रिपोर्ट की सीमा से कम था · … | "This month", and "this week" under 7 g/dL (70 g/L): are these right? |
+| 7 | After "Yes, done": what the doctor said (only where an answer has a home) | What did the doctor say? / Only if you want to say. It stays on this phone. / It is PMOS (PCOS) (sets her PMOS line, as Me does) / My Hb was low (opens her lab results) / Something else / I’d rather not say | डॉक्टर ने क्या कहा? / सिर्फ़ अगर आप बताना चाहें। यह इसी फ़ोन पर रहेगा। / PMOS (PCOS) है / मेरा Hb कम था / कुछ और / नहीं बताना चाहती | |
+
+### 19.6 Version 39.6
+
+| English | Hindi |
+|---|---|
+| Time for one doctor check / What doctors suggest (the trying plan's card) | एक बार डॉक्टर की जाँच का समय / डॉक्टर क्या सलाह देते हैं |
+| You told Sakhi you had the doctor check on {d}. / The doctor said PMOS. / The doctor said her Hb was low. (results, report) | आपने Sakhi को बताया कि {d} को डॉक्टर की जाँच हो गई। / डॉक्टर ने PMOS बताया। / डॉक्टर ने बताया कि Hb कम था। |
+| At the start: {x} / Doctor check at the start: not done yet (the report) | शुरुआत में: {x} / शुरुआत की डॉक्टर जाँच: अभी नहीं हुई |
+| You followed your plan on {a} days this month (last month: {b}). / Your doctor check is still to do. (the month card) | इस महीने आपने {a} दिन प्लान माना (पिछले महीने: {b})। / आपकी डॉक्टर जाँच अभी बाक़ी है। |
+| Month 4: your results / You have followed your plan on {n} days. / See my results | महीना 4: आपके नतीजे / आपने {n} दिन प्लान माना है। / मेरे नतीजे देखें |
+| Your year is done / Keep it light (was "Keeping it going") | आपका साल पूरा हुआ / हल्के से जारी |
+| Show my doctor / Details: minutes, food and energy (the end page) | डॉक्टर को दिखाएँ / विवरण: मिनट, खाना और ताक़त |
+| My plan ({t}): questions / My plan ({t}): results (the call form's topic) | मेरा प्लान ({t}): सवाल / मेरा प्लान ({t}): नतीजे |
+| Your best step: {x}, {n} days. (the look-back) | आपका सबसे अच्छा क़दम: {x}, {n} दिन। |
+
+### 18.3 Version 39.7: knowledge that leads somewhere (please check)
+
+**1. One danger list in pregnancy (the crosswalk).** The pregnancy signs that mean "go now" were written six ways. Version 39.7
+uses one list, the reviewed line from "Your four check-ups": *bleeding, leaking water, fever, severe headache or blurred vision,
+fits, swelling of face or hands, or the baby moving less after 28 weeks* (ब्लीडिंग, पानी निकलना, बुखार, तेज़ सिरदर्द या धुंधला दिखना,
+झटके, चेहरे या हाथों पर सूजन या 28 हफ़्ते के बाद बच्चा कम हिले). Where two reviewed lines disagreed, the stricter now shows (your
+decision 2, until you decide).
+
+| Sign | Learn guide "Signs that mean go now" | "Your four check-ups" | Help (Call 112 now) | Family cards | Husband's page | Symptom guide | Now shown everywhere |
+|---|---|---|---|---|---|---|---|
+| Bleeding | Go now | Go straight in | Now | At once | 112 or 102 now | Now | Now |
+| Leaking water | Go now | Go straight in | Now | At once | Now | Now | Now |
+| Fever | Go now | Go straight in | *not listed* | At once | *not listed* | **Today** | **Now** (the symptom guide's "Fever, or burning when you pee" is now "Burning when you pee", Today) |
+| Severe headache or blurred vision | Go now | Go straight in | "with" blurred vision | "or" | "with" | Today ("a headache that will not go away") | Now ("or"); the lasting headache stays Today |
+| Fits | Go now | Go straight in | Now | At once | Now | Now | Now |
+| Swelling of face or hands | Go now | Go straight in | *not listed* | At once (face) | *not listed* | **Today** | **Now** (the symptom guide's swelling line is now only the headache, Today) |
+| Baby moving less after 28 weeks | Go now | Go straight in | Now | At once (separate line) | Now | Now | Now |
+
+Please confirm the list, and these two that stay as they were but the Learn guide puts at "go now": itching all over in the
+last months, and very little urine or vomiting that won't stop (the symptom guide says Today for both; Version 40's safety bank
+settles them). Other languages (Marathi, Bengali, Tamil, Telugu) still show the old 5-sign Help line until it is translated.
+
+**2. New lines (pilot builds; please check):**
+
+| # | Where | English | Hindi |
+|---|---|---|---|
+| 1 | Pregnancy: dos and don'ts (new Learn guide, built from reviewed lines) | Sex is safe in a pregnancy that is going well, unless your doctor has told you not to, for example when the placenta is low. If there is bleeding, pain or leaking water, stop and see a doctor. | ठीक चल रहे गर्भ में संबंध बनाना सुरक्षित है, जब तक डॉक्टर ने मना न किया हो, जैसे जब आँवल (placenta) नीचे हो। ब्लीडिंग, दर्द या पानी निकले तो रुकें और डॉक्टर को दिखाएँ। |
+| 2 | Same | Short trips are fine. On a long journey, take a break and walk around every hour or two, and drink plenty of water. In a car, wear the lap belt under your bump, not across it. Carry your MCP card, and ask your doctor before a long journey in the last months. | छोटा सफ़र ठीक है। लंबे सफ़र में हर एक-दो घंटे में रुककर थोड़ा चलें, और ख़ूब पानी पिएँ। कार में lap belt पेट के नीचे बाँधें, पेट के ऊपर नहीं। अपना MCP कार्ड साथ रखें, और आख़िरी महीनों में लंबे सफ़र से पहले डॉक्टर से पूछें। |
+| 3 | After the birth: dos and don'ts (new Learn guide) | Bathing is safe after the birth. Wash your stitches every day with plain warm water and pat dry: it helps prevent infection. Change your pad often, washing your hands before and after. Use pads, not tampons, until your 6-week check. | डिलीवरी के बाद नहाना सुरक्षित है। टाँकों को रोज़ सादे गुनगुने पानी से धोएँ और हल्के से थपथपाकर सुखाएँ: इससे इन्फ़ेक्शन से बचाव होता है। पैड बार-बार बदलें, पहले और बाद में हाथ धोएँ। 6 हफ़्ते की जाँच तक पैड ही इस्तेमाल करें, tampon नहीं। |
+| 4 | Same | Many families keep the mother at home for 40 days, and rest is good for you. Still go out for your check-ups and the baby's vaccines, and keep eating well and drinking water: you need more of both while you feed. | बहुत से परिवार माँ को 40 दिन घर पर रखते हैं, और आराम आपके लिए अच्छा है। फिर भी अपनी जाँचों और बच्चे के टीकों के लिए बाहर जाएँ, और अच्छा खाती और पानी पीती रहें: दूध पिलाते समय दोनों की ज़्यादा ज़रूरत होती है। |
+| 5 | Contraception hub, "Worries and facts" (and Sach ya Myth) | Myth: A Copper-T can move around inside the body, even up to the heart. / A Copper-T stays inside the womb. It cannot travel to the heart, the brain or anywhere else in the body. Now and then it slips out … (the rest is the reviewed Copper-T line) | भ्रम: Copper-T शरीर के अंदर घूम सकता है, दिल तक भी पहुँच सकता है। / Copper-T बच्चेदानी के अंदर ही रहता है। यह दिल, दिमाग़ या शरीर में कहीं और नहीं जा सकता। … |
+| 6 | Same | Myth: Birth control pills make most women put on weight. / Studies have not found that the pill makes women gain weight. Some notice a little bloating in the first months. If your weight worries you, a doctor can help you pick another method. | भ्रम: गर्भनिरोधक गोलियों से ज़्यादातर औरतों का वज़न बढ़ जाता है। / शोध में यह नहीं पाया गया कि गोली से औरतों का वज़न बढ़ता है। … |
+| 7 | Same | Myth: Taking the pill for years makes it hard to have a baby later. / The pill does not make a woman infertile. Most women can get pregnant soon after they stop taking it. | भ्रम: सालों तक गोली लेने से बाद में बच्चा होना मुश्किल हो जाता है। / गोली से औरत बाँझ नहीं होती। … |
+| 8 | Same (from the reviewed method pages) | Myth: The Antara injection makes a woman unable to have children. / Myth: NSV, the operation for men, makes a man weak. (answers: the reviewed Antara and NSV lines) | भ्रम: अंतरा इंजेक्शन से औरत को बच्चा नहीं हो पाता। / भ्रम: NSV, पुरुषों का ऑपरेशन, आदमी को कमज़ोर बना देता है। |
+
+Sources for the new lines: NHS 111 Wales and nidirect (sex in pregnancy); NHS, Travelling in pregnancy; NHS, Your body after the
+birth; WHO Family Planning Handbook (an IUD does not move to the heart or brain; the pill does not cause infertility); the
+Cochrane review of combined contraceptives and weight (no causal link found).
+
+**3. Built only from reviewed lines (please glance):** the periods dos and don'ts guide, the parts of the pregnancy and
+after-birth guides not in the table, and one weekly "Did you know?" card on Today (a Sach ya Myth card). The periods myths page
+is now a view of the Sach ya Myth deck: its 6 own myths joined the deck in its reviewed words, and the period-blood card took the
+page's fuller answer ("A period that stops is not 'bad blood stuck inside'").
+
+**4. One number for you to pick: changing a pad.** The app says "every 4 to 6 hours" (Sach ya Myth, the family card, the
+periods dos and don'ts), "4–8 hours" (the girls' first-period page and Learn guide), "at least every 6 hours" (the pads Learn
+guide) and "every few hours" (the period products page). Please pick one; every copy then changes together.
+
+**5. Corrected at the official source (24 Oct; please glance):**
+- PMMVY's first part needs the pregnancy registered and one check-up within 6 months of the last period (Mission Shakti
+  guidelines, 2022; PIB, Aug 2025). The portal's FAQ still says two, so the "apply now" line adds "Some offices still ask for two
+  check-ups; your Anganwadi worker will know." A second child who is a girl counts only if the pregnancy was registered.
+  PM-KISAN counts for a woman farmer in her own name. Odisha now pays PMMVY with MAMATA (MAMATA-PMMVY); Telangana doesn't run PMMVY
+  yet (its MCH Kit, earlier KCR Kit).
+- Kilkari runs only in some states, and calls the number given at registration (Lok Sabha, 9 Feb 2024).
+- The Supreme Court ordered free pads in schools on 30 Jan 2026, and on 1 Sep 2026 said they must be biodegradable and compostable.
+  Some states now give the ₹6 Menstrual Hygiene Scheme pads free (Health Ministry letter, April 2026).
+- Paid leave after adopting: 12 weeks for a child of any age, from the day the child is handed over (Supreme Court, 17 Mar 2026).
+- Every helpline number the app shows was confirmed, except the CARA adoption line 1800-11-1311 (CARA's site would not open; a
+  West Bengal government page lists it).
+
+### 18.3a After the review of V39.7 (corrections; please glance)
+
+**Corrected to match the official-source check (MATERNITY-1, MATERNITY-2):**
+- The Learn guide "What the government gives you, free, and who to ask", PMMVY:
+  - **EN:** Rs 5,000 for your first child, in two parts: Rs 3,000 once your pregnancy is registered and you have had at
+    least one antenatal check-up within 6 months of your last period, and Rs 2,000 after the birth is registered and the
+    baby has had the vaccines due by 14 weeks. Rs 6,000 in one go if your second child is a girl; for this, register during
+    the pregnancy. You need one proof, such as SC/ST, 40% disability, a BPL or NFSA ration card, an Ayushman (PM-JAY) card,
+    family income under Rs 8 lakh a year, an MGNREGA job card, PM-KISAN in your own name as a woman farmer, or an e-Shram
+    card. Register with your Anganwadi worker or ASHA, or on the PMMVY portal, up to 270 days after the birth. Not for women
+    in regular government jobs, or women who already get paid maternity benefit under another law.
+  - **HI:** the same, in the card's reviewed Hindi.
+
+**New on the PMMVY claim (labels and one line from the reviewed card):**
+
+| English | Hindi |
+|---|---|
+| First or second child? / First child / Second child | पहला या दूसरा बच्चा? / पहला बच्चा / दूसरा बच्चा |
+| For a second child, register during the pregnancy. If the baby is a girl, ₹6,000 comes in one payment after the birth and the 14-week vaccines. | दूसरे बच्चे के लिए गर्भ के दौरान ही पंजीकरण कराएँ। बेटी हो तो जन्म और 14 हफ़्ते के टीकों के बाद ₹6,000 एक बार में मिलते हैं। |
+
+**Fixed text, no new meaning:**
+- Pads, cups and more (Hindi): "...6 pad का पैकेट ₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है; कुछ राज्य अब ये मुफ़्त
+  देते हैं।"
+- The Hindi danger list now joins its last sign with ", या", as the reviewed four check-ups line does.
+- Marathi, Bengali, Tamil and Telugu no longer show their own older Call-112 line, which lacked fever and swelling. Until
+  those languages have the new list translated, they show the one list in Hindi (Marathi) or English.
+
+### 18.3b The danger list in Marathi, Bengali, Tamil and Telugu (please ask a native speaker to check)
+
+Help's "Call 112 now" pictures, the Call-112 line and the symptom guide now show all 7 pregnancy danger signs in each
+language, in the reviewed list's order. Five signs reuse each language's earlier words; **fever** and **swelling of the face
+or hands** are new translations.
+
+| Language | Heading | The 7 signs |
+|---|---|---|
+| Marathi | गरोदरपणात: | रक्तस्राव · पाणी जाणं · ताप · तीव्र डोकेदुखी किंवा अंधुक दिसणं · झटके (फिट्स) · चेहऱ्यावर किंवा हातांवर सूज · 28 आठवड्यांनंतर बाळाची हालचाल कमी होणं |
+| Bengali | গর্ভাবস্থায়: | রক্তপাত · জল বেরিয়ে আসা · জ্বর · তীব্র মাথাব্যথা বা চোখে ঝাপসা দেখা · খিঁচুনি · মুখ বা হাত ফুলে যাওয়া · 28 সপ্তাহের পরে বাচ্চার নড়াচড়া কমে যাওয়া |
+| Tamil | கர்ப்ப காலத்தில்: | இரத்தப்போக்கு · நீர் கசிதல் · காய்ச்சல் · கடும் தலைவலி அல்லது மங்கலான பார்வை · வலிப்பு · முகம் அல்லது கைகளில் வீக்கம் · 28 வாரங்களுக்குப் பிறகு குழந்தையின் அசைவு குறைதல் |
+| Telugu | గర్భంలో: | రక్తస్రావం · నీరు కారడం · జ్వరం · తీవ్రమైన తలనొప్పి లేదా మసకగా కనిపించడం · ఫిట్స్ (మూర్ఛ) · ముఖం లేదా చేతుల వాపు · 28 వారాల తర్వాత బిడ్డ కదలికలు తగ్గడం |
+
+### 18.3c After the review of V39.9: which guide answers which question (please glance)
+
+No new advice: these rules choose which reviewed guide comes first when she searches.
+- **After a loss or an abortion** ("garbhpat ke baad kya kare", "गर्भ गिर गया क्या करें", "pregnancy loss ke baad"): the
+  guide "After a pregnancy loss: care and support". It was the pregnancy dos and don'ts.
+- **Pregnant, and a loss happening now** ("garbhpat ho raha hai kya kare"): "Signs that mean go now, not tomorrow".
+- **Asking for an abortion** ("abortion karana hai"), contraception ("गर्भनिरोधक गोली भूल गई", "pregnancy rokne") or
+  how to get pregnant: no guide first; the tools lead (the abortion, missed-pill and trying pages).
+- **Pregnant, "period jaisa dard"** (pain like a period): the pregnancy dos and don'ts, whose go-now signs cover pain. It
+  was the periods guide.
+- **After a birth, "pregnancy ke baad kya kare"**: the after-birth dos and don'ts.
+- **Pregnant, the danger guide now also comes first for** a severe headache ("severe headache", "sir me tez dard") and the
+  baby moving less ("bachcha kam hil raha hai", "हलचल कम"), 2 of Help's 7 signs. The kick counter is the first tool for
+  movements.
+- **Pregnant, the danger guide no longer comes first for** "khoon ki kami" (anaemia), "blood test", "blood group",
+  "blood sugar" or "BP". "Khoon aa raha hai" (bleeding) still brings it.
+
+### 19.7 Version 39.7
+
+| English | Hindi |
+|---|---|
+| Use it in Sakhi / The full guide / Read it in 1 minute (an article and its guide) | Sakhi में इस्तेमाल करें / पूरी गाइड / 1 मिनट में पढ़ें |
+| Read / {a} of {b} read / Continue reading / Start here / Where to get it free (the book) | पढ़ लिया / {b} में से {a} पढ़े / आगे पढ़ें / यहाँ से शुरू करें / मुफ़्त कहाँ मिलेगा |
+| Dos and don'ts / Quick answer (Explore and search) | क्या करें, क्या न करें / छोटा जवाब |
+| By urgency / By body part / Screening signs (Help's tabs) | कितनी जल्दी / शरीर के हिस्से से / जाँच के लक्षण |
+| Worries and facts / Myth / Fact / Read about this method (the contraception hub) | चिंताएँ और सच / भ्रम / सच / इस तरीक़े के बारे में पढ़ें |
+| Did you know? (Today's weekly card) | क्या आप जानती हैं? |
+| Why it helps (a plan step's Learn guide) | यह क्यों मदद करता है |
+| For my family / More cards ({n}) / His page: the semen test and what helps (was "Explain it to my family") | मेरे परिवार के लिए / और कार्ड ({n}) / उनका पन्ना: semen test और क्या मदद करता है |
+| How to use free care (Govt. services) | मुफ़्त इलाज कैसे लें |
+| From your diary: {x}. / pregnant / not pregnant / a baby in the last year / no baby in the last year / Answer these myself (the scheme finder) | आपकी डायरी से: {x}। / गर्भवती / गर्भवती नहीं / पिछले साल बच्चा हुआ / पिछले साल बच्चा नहीं हुआ / ये ख़ुद बताऊँगी |
+| Free and ₹6 pads for girls (a schemes card) / Part 1 received / Part 2 received (PMMVY) | लड़कियों के लिए मुफ़्त और ₹6 के पैड / पहला हिस्सा मिला / दूसरा हिस्सा मिला |
+| Your baby is 14 weeks old: once the birth is registered and the vaccines due by 14 weeks are done, you can claim the second part (₹2,000). | आपका बच्चा 14 हफ़्ते का हो गया: जन्म का पंजीकरण और 14 हफ़्ते तक के टीके हो जाने पर आप दूसरे हिस्से (₹2,000) का दावा कर सकती हैं। |
+| Pick a goal for your next plan. (a light plan's end page) / You told Sakhi you had the doctor check. (a check saved before V39.6) | अपने अगले प्लान के लिए एक लक्ष्य चुनें। / आपने Sakhi को बताया कि डॉक्टर की जाँच हो गई। |
+
+### 19.8 Version 39.8: pictures first (captions and labels; no new health advice)
+
+The danger signs under Help's pictures are the reviewed "Your four check-ups" words (section 18.3). Each food strip's names come
+from the reviewed text on its own page. The plate's lines reuse the plate's reviewed words. Please glance at the labels and
+captions below.
+
+| English | Hindi |
+|---|---|
+| Foods that help (a strip of food drawings) | मदद करने वाला खाना |
+| See my cycle (Today's one-line cycle card while a plan runs) | मेरा चक्र देखें |
+| In pregnancy: (over Help's danger-sign pictures) | गर्भ में: |
+| Listen to this (each card's speaker) / Listen (an article) | यह सुनें / सुनें |
+| On this page (the section chips on a long page; read aloud only) | इस पेज पर |
+| Why? (a step's reason on the plan screen) | क्यों? |
+| Eat more often / Less often / Avoid (the spoken names of a food tile's ✓, – and ✗) | ज़्यादा खाएँ / कम खाएँ / न खाएँ |
+| Your first bar fills in as you follow your plan this week. (My progress before her first day) | इस हफ़्ते जैसे-जैसे आप प्लान मानेंगी, पहली पट्टी भरती जाएगी। |
+| What was on your plate today? / Tap what you ate, and the plate fills in. | आज आपकी थाली में क्या था? / जो खाया उस पर टैप करें, थाली भरती जाएगी। |
+| Next meal, you could add {x}. / A full plate today. ({x} is the plate's own words, such as "sabzi and salad") | अगली बार थाली में {x} भी रख सकती हैं। / आज की थाली पूरी है। |
+
+**Food strip captions (from each page's reviewed text):**
+- Anaemia: Green leafy sabzi · Ragi · Chana dal · Sprouts · Til · Gur · Dates · Fish (for women who eat fish) · Amla · Guava ·
+  Lemon.
+- 40+ bones: Milk · Dahi · Ragi · Til · Paneer · Green leafy sabzi · Rajma · Chana · Small fish (milk foods only for women who
+  take milk).
+- Fasting: Roti · Curd · Dalia · Poha · Eggs · Paneer · Chaas · Cucumber, tomato · Coconut water · Dates · ORS.
+- Pregnancy food: Roti · Rice · Ragi · Dal · Rajma · Milk · Curd · Vegetables · Green leafy · Guava · Banana · Peanuts.
+
+**The picture check (pilot builds, for the field-test coordinator only, never shown to women as text):** each drawing's name,
+such as Bleeding, Water leaking, Fever, A bad headache, Fits, Swelling, The baby moving less, Hard to breathe, Dizzy or
+fainting, Belly pain and Call for help, then the 42 food and kitchen drawings. The coordinator asks "What is this?" and notes
+whether she names it. The roadmap's bar is 85% for each drawing.
+
+### 19.9 Version 39.9: food steps that change (labels)
+
+| English | Hindi |
+|---|---|
+| Today's iron food: {x} / Today's calcium food: {x} | आज का आयरन वाला खाना: {x} / आज का कैल्शियम वाला खाना: {x} |
+| Still doing {h}? (an earlier habit, once a week) | क्या अब भी: {h}? |
+| This week: {x} (the pregnancy food step) | इस हफ़्ते: {x} |
+| Food while you breastfeed / Fasting while you breastfeed / Fasting in pregnancy | स्तनपान के दिनों का खाना / स्तनपान के दौरान व्रत / गर्भ में व्रत |
+| On your fast today | आज आपका व्रत है |
+| Fasting today? / Not fasting today (My plan) / Fasting? / Fasting today / Fasting tomorrow (the check-in) | आज व्रत है? / आज व्रत नहीं / व्रत? / आज व्रत है / कल व्रत है |
+| {n} days a week: {x} (the plan screen, for a step that comes on some days) | हफ़्ते में {n} दिन: {x} |
+| On your fast today: a proper sargi or sehri, water when you can, and break the fast gently (My plan, on a day she fasts: the line from 17.4, moved here from under Today's step) | आज आपका व्रत है: सरगी या सेहरी ठीक से, जब हो सके पानी, और व्रत धीरे से खोलें |
+| If you are pregnant or breastfeeding (the fasting page) | अगर आप गर्भवती हैं या स्तनपान करा रही हैं |

@@ -5,7 +5,7 @@
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
   "type": "module",
   "scripts": {
-    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/insights.mjs && node test/fieldtest.mjs && node test/handoff.mjs && node test/notify.mjs && node test/pmosplan.mjs && node test/companion.mjs && node test/firstday.mjs && node test/notices.mjs && node test/goals.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server && npm run test:android",
+    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/insights.mjs && node test/fieldtest.mjs && node test/handoff.mjs && node test/notify.mjs && node test/pmosplan.mjs && node test/companion.mjs && node test/firstday.mjs && node test/notices.mjs && node test/goals.mjs && node test/protect.mjs && node test/records.mjs && node test/places.mjs && node test/food.mjs && node test/golden.mjs && node test/progs.mjs && node test/carryon.mjs && node test/results.mjs && node test/knowledge.mjs && node test/pictures.mjs && node test/foodsteps.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server && npm run test:android",
     "test:signup": "cd web && node test/signup.mjs",
     "apk": "cd android && ./build-apk.sh",
     "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs && node server/test/set-qura-keys.test.mjs",
@@ -23,6 +23,19 @@
     "test:firstday": "cd web && node test/firstday.mjs",
     "test:notices": "cd web && node test/notices.mjs",
     "test:goals": "cd web && node test/goals.mjs",
+    "test:protect": "cd web && node test/protect.mjs",
+    "test:records": "cd web && node test/records.mjs",
+    "test:places": "cd web && node test/places.mjs",
+    "test:food": "cd web && node test/food.mjs",
+    "test:golden": "cd web && node test/golden.mjs",
+    "golden:record": "cd web && node test/golden.mjs --record",
+    "test:progs": "cd web && node test/progs.mjs",
+    "progs:record": "cd web && node test/progs.mjs --record",
+    "test:carryon": "cd web && node test/carryon.mjs",
+    "test:results": "cd web && node test/results.mjs",
+    "test:knowledge": "cd web && node test/knowledge.mjs",
+    "test:pictures": "cd web && node test/pictures.mjs",
+    "test:foodsteps": "cd web && node test/foodsteps.mjs",
     "test:android": "android/test/run-reminder-math.sh"
   },
   "devDependencies": {

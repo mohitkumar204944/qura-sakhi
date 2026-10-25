@@ -146,6 +146,8 @@ body.hi .big { font-family: var(--font-hi); font-size: 52px; }
 .item > input[type=checkbox] { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 48px; height: 28px; min-height: 0; margin: 0; padding: 0; border-radius: 14px; border: 2px solid var(--muted); background: var(--card-2); position: relative; cursor: pointer; transition: background-color .15s, border-color .15s; }
 .item > input[type=checkbox]::before { content: ''; position: absolute; top: 50%; left: 4px; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--muted); transition: transform .15s, width .15s, height .15s, margin .15s, background-color .15s; }
 .item > input[type=checkbox]:checked { background: var(--accent); border-color: var(--accent); }
+/* Version 39.0: a radio in a row (Iron tablets' plans) keeps its own size, so the row's words get the width (diet audit 1.1) */
+.item > input[type=radio] { flex-shrink: 0; width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; border: none; background: none; accent-color: var(--accent); }
 .item > input[type=checkbox]:checked::before { width: 20px; height: 20px; margin-top: -10px; transform: translateX(18px); background: var(--card); }
 .item > input[type=checkbox]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .item > input[type=checkbox], .item > input[type=checkbox]::before { transition: none; } }
@@ -347,6 +349,7 @@ input[type=search] { -webkit-appearance: none; appearance: none; }
 /* ===================== v8: pictures, the petal garden and gentle rewards ===================== */
 /* Picture colours (art.js). Natural colours for fruit and flowers; a few hues for topics and badges. */
 :root {
+  --art-steel: #D7DCE1; --art-steel-2: #A9B2BB; --art-water: #A9D8EE; --art-water-2: #2F7DAA;
   --art-shadow: rgba(74,36,36,0.10); --art-glass: rgba(74,36,36,0.38); --art-white: #FFFFFF; --art-cream: #FFF6E3; --art-cream-2: #E8D6B0; --art-halo: #FCE9EF;
   --art-tan: #EBD1A2; --art-tan-2: #CFAB6E; --art-brown: #A97540; --art-brown-2: #7A5028; --art-seed: #2B1C1C;
   --art-lime: #A3CC55; --art-lime-2: #6E9E33; --art-leaf: #5E9E48; --art-leaf-2: #3D7533;
@@ -357,11 +360,13 @@ input[type=search] { -webkit-appearance: none; appearance: none; }
   --h-purple: #6A4C9C; --h-purple-soft: #EEE8F7; --h-gold: #85601F; --h-gold-soft: #FAF0DC;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --art-steel: #8E979F; --art-steel-2: #6A737B; --art-water: #5E9FBE; --art-water-2: #9AD2EE;
   --art-shadow: rgba(0,0,0,0.38); --art-glass: rgba(245,232,232,0.45); --art-white: #FBF3EC; --art-cream: #F3E4C8; --art-cream-2: #CDB78C; --art-halo: #3A2129;
   --h-rose: #F07A9B; --h-rose-soft: #4A2633; --h-teal: #7FD1C8; --h-teal-soft: #1E3533; --h-sky: #8EC1E8; --h-sky-soft: #1F2E3B;
   --h-green: #9BD37A; --h-green-soft: #26351F; --h-orange: #F3A866; --h-orange-soft: #3E2A1B; --h-plum: #E59AC9; --h-plum-soft: #3B2132;
   --h-purple: #BCA6EA; --h-purple-soft: #2D2541; --h-gold: #E3BA79; --h-gold-soft: #3D3324; } }
 :root[data-theme="dark"] {
+  --art-steel: #8E979F; --art-steel-2: #6A737B; --art-water: #5E9FBE; --art-water-2: #9AD2EE;
   --art-shadow: rgba(0,0,0,0.38); --art-glass: rgba(245,232,232,0.45); --art-white: #FBF3EC; --art-cream: #F3E4C8; --art-cream-2: #CDB78C; --art-halo: #3A2129;
   --h-rose: #F07A9B; --h-rose-soft: #4A2633; --h-teal: #7FD1C8; --h-teal-soft: #1E3533; --h-sky: #8EC1E8; --h-sky-soft: #1F2E3B;
   --h-green: #9BD37A; --h-green-soft: #26351F; --h-orange: #F3A866; --h-orange-soft: #3E2A1B; --h-plum: #E59AC9; --h-plum-soft: #3B2132;
@@ -743,8 +748,8 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .bb-card .linkbtn { align-self: flex-start; }
 /* Version 30 Home: Today, the setup card, a visit today and "More for you" (docs/ux-value-audit-2026-10-22.md) */
 .today-card, .setup-card, .visit-card { gap: 8px; }
-.today-card .list, .setup-card .list { display: flex; flex-direction: column; gap: 6px; }
-.today-it { gap: 10px; padding: 8px 10px; min-height: 56px; }
+.today-card .list, .setup-card .list { display: flex; flex-direction: column; gap: 4px; }
+.today-it { gap: 10px; padding: 6px 10px; min-height: 56px; }   /* V39.9 review: a little tighter, so her 3 steps fit at 360 x 800 */
 .today-go { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; border: none; background: none; padding: 0; margin: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .today-go .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .today-go .body strong { overflow-wrap: anywhere; }
@@ -926,3 +931,117 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .slot-in { display: grid; gap: 10px; }
 .care-p { margin: -6px 0 4px; }
 .hs-list .hs-sos { border: 1.5px solid var(--accent); }
+
+/* Version 39.1 review: the Diary's three tabs fit a 360 px phone; "This month's signs" keeps its not-done dot */
+.tabs.dtabs { -webkit-mask-image: none; mask-image: none; overflow-x: visible; }
+.tabs.dtabs button { flex: 1 1 0; min-width: 0; white-space: normal; padding: 10px 4px; line-height: 1.25; text-align: center; }
+.wis-ci .rdot { position: static; flex-shrink: 0; width: 10px; height: 10px; border-radius: 5px; background: var(--accent-strong); margin-right: 4px; }
+/* Version 39.7: knowledge that leads somewhere */
+.qa-wide { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0 0 8px; background: var(--hue-soft, var(--card)); border: none; border-radius: 16px; padding: 10px 14px; color: var(--fg); text-align: left; min-height: 64px; }
+.qa-wide .spot { width: 44px; height: 44px; flex-shrink: 0; }
+.qa-wide strong { display: block; font-size: 15px; }
+.qa-wide .small { display: block; color: var(--muted); }
+.qa-wide:active { transform: scale(0.98); filter: brightness(0.95); }
+.art-tick { flex-shrink: 0; width: 22px; height: 22px; color: var(--ok); display: inline-flex; align-items: center; justify-content: center; }
+.art-tick svg { width: 18px; height: 18px; }
+.learn-h { align-items: baseline; gap: 8px; }
+.learn-h h2 { margin: 0; }
+.learn-count { color: var(--muted); white-space: nowrap; }
+.learn-next .eyebrow, .art-min .eyebrow { display: block; }
+.ans-first { padding: 10px 12px; }
+.ans-first .item { padding-left: 0; padding-right: 0; }
+.art-tool { display: grid; gap: 6px; margin-top: 4px; }
+.help-tabs { margin: 0 0 10px; }
+.contra-wf { gap: 8px; }
+.contra-wf-c { padding: 10px 12px; }
+.contra-wf-c summary { cursor: pointer; display: flex; gap: 8px; align-items: baseline; list-style: none; min-height: 44px; }
+.contra-wf-c summary::-webkit-details-marker { display: none; }
+.contra-wf-c summary .pill { flex-shrink: 0; }
+.contra-wf-c p { margin: 8px 0 0; color: var(--fg); }
+.joy-dyk .joy-stmt { margin: 2px 0 6px; }
+.fam-more { margin-top: 4px; }
+.fam-more .stack { margin-top: 10px; }
+.pl-why { display: block; min-height: 32px; padding: 0; font-size: 14px; }
+.pl-fb .pl-why { margin: -4px 0 4px; }
+/* Version 39.8: pictures first */
+.food-tiles, .pl-food.food-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+@media (min-width: 420px) { .food-tiles, .pl-food.food-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.food-tile { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 6px; border-radius: 14px; background: var(--h-green-soft); color: var(--fg); min-width: 0; min-height: 52px; }
+.food-tile.less { background: var(--h-gold-soft); }
+.food-tile.avoid { background: var(--h-rose-soft); }
+.food-tile .ft-art { width: 40px; height: 40px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+.food-tile .ft-art svg { width: 100%; height: 100%; }
+.food-tile .ft-ico svg { width: 22px; height: 22px; }
+.food-tile .ft-n { flex: 1; min-width: 0; font-size: 15px; line-height: 1.3; overflow-wrap: anywhere; }
+.food-tile .ft-b { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; background: var(--card); color: var(--ok); }
+.food-tile.less .ft-b { color: var(--h-gold); }
+.food-tile.avoid .ft-b { color: var(--h-rose); }
+.food-strip { display: grid; gap: 6px; }
+.food-strip .fs-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.food-strip .fs-row::-webkit-scrollbar { display: none; }
+.food-strip .fs-it { flex: 0 0 auto; width: 72px; display: grid; justify-items: center; gap: 2px; text-align: center; font-size: 13px; line-height: 1.25; color: var(--fg); }
+.food-strip .fs-it svg { width: 56px; height: 56px; }
+.food-sum { display: flex; align-items: center; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+.food-sum .fs-it { width: 72px; display: grid; justify-items: center; gap: 2px; text-align: center; font-size: 13px; line-height: 1.25; color: var(--fg); }
+.food-sum .fs-it svg { width: 52px; height: 52px; }
+.food-sum .fsum-p { font-size: 22px; font-weight: 700; color: var(--muted); }
+.hero.mini { padding: 8px 12px; }
+.hero-mini { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; }
+.hero-mini .ringwrap { width: 44px; height: 44px; }
+.hero-mini .ringwrap svg { width: 44px; height: 44px; }
+.hero-mini .ringc { display: none; }
+.hero-mini .hero-main { min-width: 0; gap: 2px; }
+.hero-mini .hero-main .lead { margin: 0; font-size: 16px; }
+.hero-mini .hero-main .cd-lead, .hero-mini .hero-main .cd-from, .hero-mini .hero-main .chance { font-size: 13px; margin: 0; }
+.hero-mini .mini-x { grid-column: 1 / -1; display: grid; gap: 4px; justify-items: start; margin-top: 2px; }   /* V39.9 review FIXES-06 */
+.hero-mini .mini-x .small, .hero-mini .mini-x .chance { font-size: 13px; margin: 0; }
+.hero-mini .mini-x .chance { padding: 3px 10px; }
+.hero-mini .linkbtn { min-height: 44px; padding: 0 4px; font-size: 14px; }
+.hero-mini .hero-main .small { margin: 0; font-size: 13px; }
+.hero-mini .mini-stage { min-height: 44px; padding: 0 2px; font-size: 13px; }
+.hero-mini .mini-go { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; background: none; border: none; padding: 0; color: var(--fg); font: inherit; font-size: 16px; text-align: left; }
+.hero-mini .mini-go .chev { display: inline-flex; color: var(--accent); } .hero-mini .mini-go .chev svg { width: 18px; height: 18px; }
+/* the quick-log circles at 44 px while the one-line cycle card shows */
+.ract-row.compact { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }   /* V39.9 review: one line per label */ .ract-row.compact .ract { gap: 4px; font-size: 12px; } .ract-row.compact .ract .rico { width: 44px; height: 44px; border-radius: 22px; } .ract-row.compact .ract .rico svg { width: 22px; height: 22px; }
+.hero.mini > .small { font-size: 13px; margin: 0; }
+.pl-pic-row { align-items: flex-start; }
+.pl-pic { width: 52px; height: 52px; flex-shrink: 0; border-radius: 16px; background: var(--hue-soft); color: var(--hue); display: inline-flex; align-items: center; justify-content: center; }
+.pl-pic svg { width: 30px; height: 30px; }
+.pl-pic svg.art { width: 46px; height: 46px; }
+.pl-why-d { margin-top: 2px; }
+.pl-why-d summary { color: var(--accent); font-weight: 600; font-size: 14px; cursor: pointer; min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; }
+.pl-why-d > span { display: block; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.pl-rv-strip li { align-items: center; }
+.pl-rv-ic { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: var(--hue-soft); color: var(--hue); display: inline-flex; align-items: center; justify-content: center; }
+.pl-rv-ic svg { width: 22px; height: 22px; }
+.dgrid { display: grid; gap: 8px; margin-top: 4px; }
+.dgrid .dg-h { margin: 0; font-weight: 600; color: inherit; }
+.dg-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 420px) { .dg-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dg-it { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 12px; background: rgba(127, 127, 127, 0.18); color: inherit; min-width: 0; font-size: 14px; line-height: 1.3; }
+.dg-it svg { width: 40px; height: 40px; flex-shrink: 0; background: var(--card); border-radius: 10px; padding: 2px; }
+.dg-it span { min-width: 0; overflow-wrap: anywhere; }
+.has-say { position: relative; }
+.say-b { position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--card); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--shadow); }
+.card.urgent .say-b { background: rgba(127, 127, 127, 0.24); color: var(--ink-text); box-shadow: none; }
+.has-say > h3, .has-say > h2, .has-say > .eyebrow { padding-right: 52px; }
+.pc-link { min-width: 44px; min-height: 44px; padding: 0 8px; }
+.food-strip.has-say { padding-right: 0; }
+.say-b.on { background: var(--accent); color: #FFFFFF; }
+/* V39.8 review PICTURES-08: the grid's and the strips' speakers sit beside their heading, not on a drawing */
+.dgrid > .say-b, .food-strip > .say-b { position: static; float: right; margin: 0 0 6px 8px; }
+.dgrid > .dg-row, .food-strip > .fs-row { clear: both; }
+.art-hero { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.art-hero .spot { width: 64px; height: 64px; }
+.art-row .body > span:not(.eyebrow) { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span, body.hi .pl-why-d > span { font-size: 15px; line-height: 1.65; }
+/* Version 39.8: the picture check (pilot and demo builds) */
+.pc-card { align-items: center; text-align: center; gap: 10px; }
+.pc-big { width: 180px; height: 180px; max-width: 100%; }
+.pc-big svg { width: 100%; height: 100%; }
+.pc-sm { width: 44px; height: 44px; flex-shrink: 0; }
+.pc-sm svg { width: 100%; height: 100%; }
+/* Version 39.8: a long page's sections as chips at its top */
+.jump-row { margin: 0 0 4px; }
+.jump-row .chip { font-size: 14px; }
+[data-jump], [data-at] { scroll-margin-top: 88px; }   /* V39.9 review FOOD-02: a step's link that opens at its card */

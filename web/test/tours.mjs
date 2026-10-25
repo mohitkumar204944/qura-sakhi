@@ -76,7 +76,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
 /* ---------- 1b. One tip the first time she opens each screen (docs/companion-journey-2026-10-23.md, section 9) ---------- */
 {
   const done = { st: 'done', d: '2026-10-20' };
-  for (const [hash, tours, n, h] of [['#diary', { home: done }, '1 of 3', 'Your calendar'], ['#care', { home: done, diary: done }, '1 of 3', 'Explore'], ['#me', { home: done, diary: done, care: done }, '1 of 2', 'Privacy on a shared phone']]) {
+  for (const [hash, tours, n, h] of [['#diary', { home: done }, '1 of 3', 'Your calendar'], ['#care', { home: done, diary: done }, '1 of 3', 'Explore'], ['#me', { home: done, diary: done, care: done }, '1 of 3', 'Privacy on a shared phone']]   /* Version 39.2: Me's one Reminders row is on every build, so its tip shows too */) {
     const { ctx, page, errs } = await open({ seed: seedApp({ fullTour: { st: 'reveal', d: '2026-10-20' }, tours }), hash });
     const s = await waitTour(page);
     check('1b the first time she opens ' + hash + ', its own tip', s && s.hash === hash && s.n === n && s.h === h, s);

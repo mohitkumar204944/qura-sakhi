@@ -176,3 +176,5 @@ for (const id of ids) {
   if (M.shots) console.log('  screenshots: ' + M.shots);
 }
 fs.writeFileSync(path.join(root, 'test', 'report-' + ids.join('_').slice(0, 60) + '.json'), JSON.stringify(report, null, 1));
+/* Version 39.0: a missing file, a module that doesn't register, or any issue fails the run, so npm test stops here */
+if (missing.length || ids.some((id) => !report.modules[id] || !report.modules[id].registration || report.modules[id].issues.length)) process.exitCode = 1;

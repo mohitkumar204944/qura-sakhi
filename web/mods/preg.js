@@ -7,7 +7,7 @@
   /* ---------- strings: [English, Hindi]; every key becomes preg_<key> ---------- */
   const P = {
     /* My pregnancy plan (Version 28, A1) */
-    plan_h: ['My pregnancy plan', 'मेरा गर्भावस्था प्लान'],
+    plan_h: ['Check-ups and tests', 'जाँचें और टेस्ट'], dates_b: ['Change my dates', 'मेरी तारीख़ें बदलें'],   /* Version 39.2 (journey audit J-17): "My pregnancy plan" is the My plan tab */
     plan_s: ['What is due now, week by week, with reminders', 'अभी क्या करना है, हफ़्ते-दर-हफ़्ते, रिमाइंडर के साथ'],
     plan_p: ['What is due in your pregnancy, from your dates. Tick what you have done; the dates in your MCP card and your logs count too.', 'आपकी तारीख़ों से, गर्भावस्था में कब क्या करना है। जो कर लिया, उसे टिक करें; MCP card और रिकॉर्ड की तारीख़ें भी गिनी जाती हैं।'],
     plan_now: ['Due now', 'अभी का'], plan_soon: ['Coming up', 'आगे'], plan_done_h: ['Done ({n})', 'हो गया ({n})'], plan_past_h: ['Not done yet ({n})', 'अभी नहीं हुआ ({n})'],
@@ -15,6 +15,7 @@
     plan_wk: ['Weeks {a} to {b}', 'हफ़्ता {a} से {b}'], plan_upto: ['Up to week {b}', 'हफ़्ता {b} तक'], plan_from: ['From week {a}, {d}', 'हफ़्ता {a} से, {d}'],
     plan_open: ['Open', 'खोलें'], plan_mark: ['Done', 'हो गया'], plan_marked: ['Done on {d}', '{d} को हो गया'], plan_undo: ['Undo', 'वापस लें'], plan_auto: ['Done: from your MCP card, logs or tools', 'हो गया: आपके MCP card, रिकॉर्ड या टूल से'],
     plan_td2: ['Second dose from {d}', 'दूसरी खुराक {d} से'],
+    plan_kilkari: ['Kilkari, in states that run it: free weekly voice calls about pregnancy and baby, from the 4th month till the baby turns one, to the mobile number given when your pregnancy is registered (RCH portal). Choose that number carefully if the phone is shared.', 'किलकारी, जिन राज्यों में चलती है: गर्भ और बच्चे के बारे में हर हफ़्ते मुफ़्त फ़ोन कॉल, 4थे महीने से बच्चे के एक साल तक, उस मोबाइल नंबर पर जो गर्भ के पंजीकरण (RCH पोर्टल) के समय दिया गया। फ़ोन साझा है तो वह नंबर सोचकर दें।'],
     plan_pmsma_next: ['Next PMSMA day: {d}', 'अगला PMSMA दिन: {d}'], plan_pmsma_find: ['Find a PMSMA centre', 'PMSMA केंद्र खोजें'], plan_uwin: ['Book on U-WIN', 'U-WIN पर बुक करें'], plan_pmsma_went: ['I went today', 'आज गई थी'], plan_pmsma_n: ['Went: {n}', 'गईं: {n} बार'],
     setup_plan: ['Turn on your plan’s reminders', 'अपनी योजना के रिमाइंडर चालू करें'],
     plan_rem: ['Remind me when each one is due', 'हर चीज़ का समय आने पर याद दिलाएँ'], plan_rem_s: ['At 10 am on the first day of each check-up and test, and at 9 am on each PMSMA day.', 'हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे, और हर PMSMA दिन सुबह 9 बजे।'],
@@ -215,6 +216,7 @@
     /* diet */
     dt_h: ['Food in pregnancy', 'गर्भावस्था में खाना'],
     dt_p: ['A good Indian thali covers most of what you and your baby need. The IFA and calcium tablets fill the rest.', 'अच्छी भारतीय थाली से आपकी और बच्चे की ज़्यादातर ज़रूरतें पूरी होती हैं। बाक़ी कमी IFA और calcium की गोलियाँ पूरी करती हैं।'],
+    dt_fast: ['Fasting in pregnancy', 'गर्भ में व्रत'],
     dt_src: ['Source: ICMR-NIN Dietary Guidelines for Indians, 2024. Amounts are a guide for an average woman; your doctor may change them.', 'स्रोत: ICMR-NIN, भारतीयों के लिए आहार गाइडलाइन 2024। मात्रा औसत महिला के लिए अंदाज़ा है; डॉक्टर इसे बदल सकती हैं।'],
     dt_link: ['Read the ICMR-NIN guidelines (PDF)', 'ICMR-NIN गाइडलाइन पढ़ें (PDF)'],
     dt_myths: ['Myths you may hear at home', 'घर में सुनी जाने वाली बातें'],
@@ -553,7 +555,7 @@
 
   /* ---------- small helpers ---------- */
   const has = (r) => !!S.routeOwner(r) || S.modules.some((m) => Object.keys(m.prefixes || {}).some((p) => r.indexOf(p) === 0));
-  const linkOk = (r) => r === 'help' || r === 'me' || r === 'pregnancy' || has(r);
+  const linkOk = (r) => r === 'help' || r === 'me' || (r === 'pregnancy' && !has('preg-plan')) || has(r);   /* review PLACES-01 */
   const todayISO = () => S.toISO(S.today());
   const fd = (iso) => S.fmtD(S.fromISO(iso), { day: 'numeric', month: 'short' });
   const fdy = (iso) => S.fmtD(S.fromISO(iso), { day: 'numeric', month: 'short', year: 'numeric' });
@@ -663,7 +665,7 @@
     v.innerHTML = S.backRow(T('hub_h'), 'care', false) + '<p class="small">' + esc(T('hub_p')) + '</p>' + top +
       '<h2>' + esc(T('hub_guides')) + '</h2><div class="list">' +
       item('preg-plan', T('plan_h'), T('plan_s'), S.I.check, false) + item('preg-week', T('t_week'), T('t_week_s'), S.I.baby, false) + item('preg-logs', T('t_logs'), T('t_logs_s'), S.I.chart, true) + item('preg-symptoms', T('t_sym'), T('t_sym_s'), S.I.help, true) +
-      item('preg-diet', T('t_diet'), T('t_diet_s'), S.I.leaf, false) + item('post-pelvic', T('t_pelvic'), T('t_pelvic_s'), S.I.heart, false) + item('preg-mcp', T('t_mcp'), T('t_mcp_s'), CARD_SVG, false) + item('pregnancy', T('hub_visits'), T('hub_visits_s'), S.I.check, true) + tools + '</div>' +
+      item('preg-diet', T('t_diet'), T('t_diet_s'), S.I.leaf, false) + item('post-pelvic', T('t_pelvic'), T('t_pelvic_s'), S.I.heart, false) + item('preg-mcp', T('t_mcp'), T('t_mcp_s'), CARD_SVG, false) + item('pregnancy', T('hub_visits'), T('hub_visits_s'), S.I.check, true) + tools + item('pregtest-options', S.t('pregtest_opts'), S.t('pregtest_opts_s'), S.icon('users'), false) + '</div>' +   /* review PLACES-05 */
       '<details class="pg-acc"><summary>' + esc(T('hub_all')) + '</summary><div class="pg-body"><p class="small">' + esc(T('hub_all_p')) + '</p>' + weekGrid(wi ? clampW(wi.w) : -1) + '</div></details>' +
       free + urgentAction() +
       '<div class="card dark"><h3>' + esc(T('hub_ask_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('hub_ask_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic')) + '">' + esc(t('ask_qura')) + '</button></div>' +
@@ -817,11 +819,23 @@
   }
 
   /* ---------- food (open) ---------- */
+  /* Version 39.8 (diet audit VD-01): the day's foods from the table as pictures, and the 4th month's extra as a picture sum
+     (the reviewed line: roughly one roti, a bowl of dal and a glass of milk) */
+  function dayPics() {
+    if (!(S.food && S.food.strip)) return ''; const dt = S.food.diet ? S.food.diet() : { type: 'veg', milk: true };
+    return S.food.strip([['roti', { en: 'Roti', hi: 'रोटी' }], ['chawal_k', { en: 'Rice', hi: 'चावल' }], ['ragi', { en: 'Ragi', hi: 'रागी' }], ['dal', { en: 'Dal', hi: 'दाल' }], ['rajma', { en: 'Rajma', hi: 'राजमा' }]].concat(dt.milk !== false ? [['milk', { en: 'Milk', hi: 'दूध' }], ['dahi', { en: 'Curd', hi: 'दही' }]] : [], [['sabzi', { en: 'Vegetables', hi: 'सब्ज़ियाँ' }], ['saag', { en: 'Green leafy', hi: 'हरी पत्तेदार' }], ['amrood', { en: 'Guava', hi: 'अमरूद' }], ['kela', { en: 'Banana', hi: 'केला' }], ['moongfali', { en: 'Peanuts', hi: 'मूँगफली' }]]), '');
+  }
+  /* V39.8 review PICTURES-06: the 4th month's extra (one roti, a katori of dal, a glass of milk) shows from week 13, under the
+     reviewed words that say when; no milk glass for a woman who takes no milk */
+  function extraPics() {
+    const wi = weekInfo(); if (!(S.art && S.art.food) || !wi || wi.w < 13 || (S.food && S.food.diet && S.food.diet().milk === false)) return ''; const it = (k, l) => '<span class="fs-it">' + S.art.food(k) + '<span>' + esc(tx(l)) + '</span></span>';
+    return '<div class="food-sum" role="img" aria-label="' + esc(tx({ en: 'One roti, a bowl of dal and a glass of milk', hi: 'एक रोटी, एक कटोरी दाल और एक गिलास दूध' })) + '">' + it('roti', { en: '1 roti', hi: '1 रोटी' }) + '<span class="fsum-p">+</span>' + it('dal', { en: '1 katori dal', hi: '1 कटोरी दाल' }) + '<span class="fsum-p">+</span>' + it('milk', { en: '1 glass milk', hi: '1 गिलास दूध' }) + '</div>';
+  }
   function renderDiet(v) {
     const li = (arr) => '<ul class="pg-ul">' + arr.map((x) => '<li>' + esc(tx(x)) + '</li>').join('') + '</ul>';
     v.innerHTML = S.backRow(T('dt_h'), backTo(), false) + '<p class="small">' + esc(T('dt_p')) + '</p>' +
-      '<div class="card"><h3>' + esc(tx(DIET.more_h)) + '</h3>' + li(DIET.more) + '</div>' +
-      '<div class="card"><h3>' + esc(tx(DIET.plate_h)) + '</h3><dl class="kv pg-kv">' + DIET.plate.map((r) => '<dt>' + esc(tx(r[0])) + '</dt><dd class="num">' + esc(r[1]) + '</dd>').join('') + '</dl><p class="small">' + esc(tx(DIET.plate_n)) + '</p></div>' +
+      '<div class="card" data-nofold="1"><h3>' + esc(tx(DIET.more_h)) + '</h3>' + li(DIET.more) + extraPics() + '</div>' +
+      '<div class="card" data-nofold="1"><h3>' + esc(tx(DIET.plate_h)) + '</h3>' + dayPics() + '<dl class="kv pg-kv">' + DIET.plate.map((r) => '<dt>' + esc(tx(r[0])) + '</dt><dd class="num">' + esc(r[1]) + '</dd>').join('') + '</dl><p class="small">' + esc(tx(DIET.plate_n)) + '</p></div>' +
       DIET.cards.map((c) => '<div class="card"><h3>' + esc(tx(c.h)) + '</h3>' + c.p.map((p) => '<p class="pg-p">' + esc(tx(p)) + '</p>').join('') + '</div>').join('') +
       '<div class="card warn"><h3>' + esc(tx(DIET.avoid_h)) + '</h3>' + li(DIET.avoid) + '</div>' +
       '<div class="card"><h3>' + esc(tx(DIET.safe_h)) + '</h3>' + li(DIET.safe) + '</div>' +
@@ -829,6 +843,7 @@
       '<h2>' + esc(T('dt_myths')) + '</h2>' +
       DIET.myths.map((m, i) => '<details class="pg-acc" id="pg-myth-' + i + '"><summary>' + esc(tx(m.q)) + '</summary><div class="pg-body"><p>' + esc(tx(m.a)) + '</p></div></details>').join('') +
       '<div class="card dark"><h3>' + esc(tx(DIET.ask_h)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(tx(DIET.ask_p)) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic_diet')) + '">' + esc(t('ask_qura')) + '</button></div>' +
+      (S.routeOwner && S.routeOwner('periods-fasting') ? '<button type="button" class="btn sm" data-go="periods-fasting">' + esc(T('dt_fast')) + '</button>' : '') +   /* Version 39.9 */
       '<p class="footnote">' + esc(T('dt_src')) + ' <a href="' + DGI_URL + '" target="_blank" rel="noopener">' + esc(T('dt_link')) + '</a></p>';
     S.wire(v);
   }
@@ -923,7 +938,8 @@
     { id: 'anc1', w: [0, 12], tip: 9, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 0, 13) },
     { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', ext: ['https://uwinselfregistration.mohfw.gov.in/login', 'plan_uwin'], auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
     { id: 'scan1', w: [11, 14], tip: 11 },
-    { id: 'scheme', w: [5, 40], tip: 12, go: 'access-schemes-preg' },
+    /* Version 39.0: done once she has applied for PMMVY or JSY in her claims (access.js), so it stops showing as due */
+    { id: 'scheme', w: [5, 40], tip: 12, go: 'access-schemes-preg', auto: () => !!(S.access && S.access.claimed && ['pmmvy', 'jsy'].some((k) => ['applied', 'got', 'got2'].indexOf(S.access.claimed(k, (S.state.situation || {}).pregnantSince)) >= 0)) },
     { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) },
     { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs' },
     { id: 'anc2', w: [14, 26], tip: 16, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 14, 26) },
@@ -971,7 +987,7 @@
     if (st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb) { const d2 = S.addDays(S.fromISO(st.mcp.td1), 28); if (d2 > td) S.reminders.upsert({ id: 'preg-plan-td2', mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', P.pi_td[0]), hi: P.plan_rem_now[1].replace('{x}', P.pi_td[1]) }, kind: 'checkup', dates: [S.toISO(d2)], start: null, every: null, weekdays: null, time: '10:00', on: true }); }
   }
   function renderPlan(v) {
-    const wi = weekInfo(); const head = S.backRow(T('plan_h'), backTo(), false) + '<p class="small">' + esc(T('plan_p')) + '</p>';
+    const wi = weekInfo(); const head = S.backRow(T('plan_h'), backTo(), false) + '<p class="small">' + esc(T('plan_p')) + '</p>' + (S.canSave() ? '<button type="button" class="linkbtn pg-dates" data-go="me-health">' + esc(T('dates_b')) + '</button>' : '');   /* review PLACES-01: her scan and period dates */
     if (!S.canSave()) { v.innerHTML = head + S.needDiary(); S.wire(v); return; }
     if (!wi) { v.innerHTML = head + setCard(); S.wire(v); wireSetCard(v); return; }
     const st = store(); const pl = planOf(st); const rows = planStatus(st, wi);
@@ -980,6 +996,7 @@
     const card = (x) => {
       const it = x.it; const name = T('pi_' + it.id); let extra = '';
       if (it.pmsma) { const n9 = ninths(wi)[0]; extra = (n9 ? '<p class="small" style="color:var(--fg);font-weight:600">' + esc(TF('plan_pmsma_next', { d: S.fmtD(n9, { weekday: 'short', day: 'numeric', month: 'short' }) })) + '</p>' : '') + (pl.pmsma.length ? '<p class="small">' + esc(TF('plan_pmsma_n', { n: pl.pmsma.length })) + '</p>' : ''); }
+      if (it.id === 'scheme' && x.code !== 'past') extra += '<p class="small">' + esc(T('plan_kilkari')) + '</p>';   /* Version 39.7 (journey audit P3-09): Kilkari, in the schemes guide's words, corrected at the official source */
       if (it.id === 'td' && st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb && x.code !== 'done') extra += '<p class="small" style="color:var(--fg)">' + esc(TF('plan_td2', { d: fdy(S.toISO(S.addDays(S.fromISO(st.mcp.td1), 28))) })) + '</p>';
       const doneLine = x.code === 'done' ? '<p class="small" style="color:var(--ok)">' + esc(x.auto ? T('plan_auto') : TF('plan_marked', { d: fdy(x.tick) })) + '</p>' : '';
       const btns = [];
@@ -999,8 +1016,11 @@
       (done.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_done_h', { n: done.length })) + '</summary><div class="stack" style="margin-top:10px">' + done.map(card).join('') + '</div></details>' : '') +
       (past.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_past_h', { n: past.length })) + '</summary><p class="small">' + esc(T('plan_past_p')) + '</p><div class="stack" style="margin-top:10px">' + past.map(card).join('') + '</div></details>' : '') +
       '<div class="list"><label class="item"><span class="body"><strong>' + esc(T('plan_rem')) + '</strong><span>' + esc(T('plan_rem_s')) + '</span></span><input type="checkbox" id="pg-plan-rem"' + (pl.rem ? ' checked' : '') + '></label></div>' +
-      urgentAction();
+      urgentAction() +
+      /* Version 39.2: the old check-up visits page now opens this one, so its "The pregnancy ended" lives here (core's words) */
+      (S.pregEnded ? '<details><summary>' + esc(t('after_change')) + '</summary><div class="card" style="margin-top:8px"><button type="button" class="btn" id="loss">' + esc(t('loss')) + '</button><p class="small" id="loss-p" hidden>' + esc(t('loss_p')) + '</p></div></details>' : '');
     S.wire(v);
+    const ls = v.querySelector('#loss'); if (ls) ls.addEventListener('click', () => { S.pregEnded(); const lp = v.querySelector('#loss-p'); if (lp) lp.hidden = false; });
     const redo = () => { planSync(st, wi); S.save(); S.render(); };
     v.querySelectorAll('[data-pg-plan]').forEach((b) => b.addEventListener('click', () => { pl.done[b.dataset.pgPlan] = todayISO(); redo(); }));
     v.querySelectorAll('[data-pg-plan-undo]').forEach((b) => b.addEventListener('click', () => { delete pl.done[b.dataset.pgPlanUndo]; redo(); }));
@@ -1012,7 +1032,41 @@
   /* Version 38: one pregnancy plan. The companion's pregnancy plan (mods/plan.js, pack 'preg') takes what is due now from here,
      and while it runs Today's "Due now" row is that plan's first step instead of a row of its own (planOwns). */
   const planOwns = () => !!(S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'preg');
-  S.preg.plan = { due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: T('pi_' + x.it.id) })); } };
+  /* Version 39.0 (journey audit P0 2): the warning lines her logs show (BP, Hb and the sugar tests), for Today and her diary's
+     "What it shows", from entries in the last 3 days. The same reviewed words as the logs page. */
+  const recent = (e, n) => !!e && /^\d{4}-\d{2}-\d{2}$/.test(e.d || '') && S.diffDays(S.fromISO(e.d), S.today()) >= 0 && S.diffDays(S.fromISO(e.d), S.today()) <= n;
+  const LP = (k) => ({ en: P[k][0], hi: P[k][1] });
+  S.preg.flags = () => {
+    if (!S.canSave() || !S.cycle.isPregnant()) return []; const st = store(); const out = [];
+    const b = latest(st.bp); const lv = bpLevel(b);
+    if (lv && recent(b, 3)) { const n = b.s && b.di ? ': ' + b.s + '/' + b.di : ''; out.push({ id: 'pg_bp', lv: lv === 2 ? 'now' : 'today', at: b.d, t: { en: 'Your BP' + n, hi: 'आपका BP' + n }, see: LP(lv === 2 ? 'bp_urgent' : 'bp_today'), go: 'preg-logs' }); }
+    const h = latest(st.hb); if (h && h.v < 7 && recent(h, 3)) out.push({ id: 'pg_hb', lv: 'today', at: h.d, t: { en: 'Your Hb: ' + h.v, hi: 'आपका Hb: ' + h.v }, see: LP('hb_flag'), go: 'preg-logs' });
+    const dp = latest(st.sug.filter((e) => e.k === 'dipsi')); if (dp && dp.v >= 140 && recent(dp, 3)) out.push({ id: 'pg_sug', lv: 'week', at: dp.d, t: { en: 'Your sugar test: ' + dp.v + ' mg/dL', hi: 'आपकी शुगर जाँच: ' + dp.v + ' mg/dL' }, see: LP('sug_flag'), go: 'preg-logs' });
+    const fs = latest(st.sug.filter((e) => e.k === 'fast')); if (fs && fs.v >= 95 && recent(fs, 3)) out.push({ id: 'pg_sugf', lv: 'week', at: fs.d, t: { en: 'Your fasting sugar: ' + fs.v + ' mg/dL', hi: 'आपकी खाली पेट शुगर: ' + fs.v + ' mg/dL' }, see: LP(fs.v >= 126 ? 'sug_fflag2' : 'sug_fflag'), go: 'preg-logs' });
+    return out;
+  };
+  /* Version 39.0 (plans review blocker): when the pregnancy ends (a birth or a loss), its check-up and PMSMA reminders stop.
+     Tablet reminders stay; core asks once after a loss whether to keep them. */
+  const clearPlanRems = () => { S.reminders.list().filter((r) => r.mod === 'preg' && String(r.id).indexOf('preg-plan-') === 0).map((r) => r.id).forEach((id) => S.reminders.remove(id)); };
+  /* review life-2: a pregnancy that ended before Version 39.0 (or anywhere the event was missed) leaves no check-up reminders ringing */
+  const planRemsStale = () => S.canSave() && !S.cycle.isPregnant() && S.reminders.list().some((r) => r.mod === 'preg' && String(r.id).indexOf('preg-plan-') === 0);
+  /* Version 39.9 (diet audit 2): the pregnancy plan's food step by trimester and week, from this page's reviewed lines (a
+     heading and its first sentence): how much more to eat, then protein, iron with vitamin C, calcium, salt and water */
+  const FOOD_FOCUS = { 1: [['more', 0], ['card', 1], ['card', 3], ['card', 0]], 2: [['more', 1], ['card', 0], ['card', 2], ['card', 1], ['card', 3]], 3: [['more', 1], ['card', 0], ['card', 1], ['card', 2], ['card', 3]] };
+  const firstSentence = (x) => { const m = /^(.+?[.।])(\s|$)/.exec(x); return m ? m[1] : x; };
+  /* V39.9 review FOOD-04: counted from the trimester's first week, so weeks 14 and 28 open with how much more to eat */
+  function foodTip(w) {
+    const w0 = Math.max(0, w); const tri = w0 < 14 ? 1 : (w0 < 28 ? 2 : 3); const xs = FOOD_FOCUS[tri]; const f = xs[(w0 - (tri === 1 ? 0 : (tri === 2 ? 14 : 28))) % xs.length];
+    if (f[0] === 'more') return { t: tx(DIET.more_h), p: firstSentence(tx(DIET.more[f[1]])) };
+    const c = DIET.cards[f[1]]; return c ? { t: tx(c.h), p: firstSentence(tx(c.p[0])) } : null;
+  }
+  S.preg.foodTip = foodTip;
+  S.preg.plan = { /* Version 39.5: a check-up or test she marked done on that day (a plan step counts from it) */
+    /* review SAFETY-04: a day counts only when she ticked an item that was due then; today, only once nothing is left due */
+    markedOn: (iso) => { if (!S.canSave()) return false; const st = store(); const pl = planOf(st); const ks = Object.keys(pl.done).filter((k) => pl.done[k] === iso); const wi = weekInfo(); if (!ks.length || !wi) return false;
+      if (iso === S.toISO(S.today())) return !planStatus(st, wi).some((x) => x.code === 'now' && !x.it.pmsma);   /* review FIXES-05: PMSMA is 'now' for months, as due() knows */
+      const wAt = wkOf(wi, iso);   /* review FIXES-05: that day's own pregnancy week */ return ks.some((k) => { const it = PLAN.find((x) => x.id === k); return !!it && wAt >= it.w[0] && wAt <= it.w[1]; }); },
+    due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: T('pi_' + x.it.id) })); } };
 
   function summary() {
     const st = store(); const wi = weekInfo(); const L = [];
@@ -1114,6 +1168,8 @@
     today: today,
     setup: setup,
     summary: summary,
-    sample: sample
+    sample: sample,
+    event: (name) => { if (name === 'pregEnd') clearPlanRems(); },
+    afterRender: () => { if (planRemsStale()) clearPlanRems(); }
   });
 })(window.Saathi);

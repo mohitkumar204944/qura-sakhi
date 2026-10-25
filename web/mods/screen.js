@@ -609,7 +609,7 @@
       { section: 'screen', route: 'screen-cervix', title: 'screen_cervix', sub: 'screen_cervix_s', icon: 'check', order: 14, gated: false, keywords: 'cervical cancer screening via vinegar pap smear hpv test speculum सर्वाइकल बच्चेदानी' },
       { section: 'screen', route: 'screen-hpv', title: 'screen_hpv', sub: 'screen_hpv_s', icon: SYRINGE, order: 16, gated: false, keywords: 'hpv vaccine gardasil cervavac daughter girl 14 school टीका' },
       { section: 'screen', route: 'screen-breast', title: 'screen_breast', sub: 'screen_breast_s', icon: 'ribbon', order: 18, gated: false, keywords: 'breast self exam lump mammogram cbe स्तन गाँठ' },
-      { section: 'screen', route: 'screen-signs', title: 'screen_signs', sub: 'screen_signs_s', icon: 'help', order: 20, gated: true, keywords: 'cancer warning signs symptoms bleeding after menopause ovary bloating mouth ulcer tobacco लक्षण' }
+      { section: 'screen', route: 'screen-signs', place: 'help', title: 'screen_signs', sub: 'screen_signs_s', icon: 'help', order: 20, gated: true, keywords: 'cancer warning signs symptoms bleeding after menopause ovary bloating mouth ulcer tobacco लक्षण' }
     ],
     css: css,
     summary: summary,

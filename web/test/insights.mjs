@@ -143,7 +143,8 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   check('5 irregular gaps: no countdown and no chance on Home', !(await page.$('#view .cd-n')) && !(await page.$('#view .chance')));
   await tab(page, 'tr');
   const vd = await card(page, '#view .vd-card');
-  check('5 irregular gaps: the verdict says Irregular (or outside the usual) and links to What your diary shows', /Irregular|Outside the usual/.test(vd) && !!(await page.$('#view .vd-card [data-go="explain"]')), vd);
+  /* Version 39.1: the signal cards themselves sit above the verdict in What it shows, each with "What this means" */
+  check('5 irregular gaps: the verdict says Irregular (or outside the usual), with the gap\'s card above it', /Irregular|Outside the usual/.test(vd) && !!(await page.$('#view .xp-diary .xp-dcard [data-go="explain"]')), vd);
   check('5 irregular gaps: no fertile marks in My cycles', (await page.$$('#view .mc-pills i.f, #view .mc-pills i.o')).length === 0);
   check('5 no page errors', !errs.length, errs);
   await ctx.close();

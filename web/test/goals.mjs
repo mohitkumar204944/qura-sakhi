@@ -83,7 +83,8 @@ const count = (s, re) => (String(s).match(re) || []).length;
   check('1 My plan: her trimesters are the path, with no 12 weeks', /Your pregnancy/.test(v) && /Weeks 1 to 13/.test(v) && /Weeks 28 to 40/.test(v) && !/Your 12 weeks|of 12/.test(v), v.slice(0, 900));
   await shot(page, '1-preg-my-plan');
   await go(page, 'plan-checkin');
-  check('1 the check-in asks about what is due', (await has(page, '[data-ci="pdue:d"]')));
+  /* Version 39.5 (journey audit P2-15): what is due is done in the checklist itself, so the check-in shows it and doesn't ask */
+  check('1 the check-in shows what is due, done in its checklist (not a Done tap)', (await has(page, '#view .pl-ci [data-go="preg-plan"]')) && !(await has(page, '[data-ci^="pdue:"]')));
   check('1 no page errors', errs.length === 0, errs);
   await ctx.close();
   const b = await open({ seed: Object.assign({}, PREG, { mods: { journey: { active: 'iron', start: ago(2), done: {}, finished: {} } } }) });
@@ -120,7 +121,8 @@ for (const goal of ['feed', 'weight', 'recovery']) {
   const { ctx, page, errs } = await open({ seed: { situation: { planning: true }, goals: ['ttc', 'ready'] } });
   await page.evaluate(() => { const S = window.Saathi; S.plan.startFromIntake({ stage: 'ttc', goal: 'ready', act: 0, food: 'veg', bed: 'b23', work: 'day', when: 'evening' }); S.save(); });
   await go(page, 'plan-reveal');
-  let w = ''; for (let i = 0; i < 8; i++) { w += '\n' + (await view(page)); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
+  /* Version 39.8: each step's reason sits behind "Why?" */
+  let w = ''; for (let i = 0; i < 8; i++) { w += '\n' + (await view(page)) + '\n' + (await page.$$eval('#view details.pl-why-d', (xs) => xs.map((x) => x.textContent).join('\n'))); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
   check('3 trying for a baby: its own plan and steps, with the checklist', /Getting ready for a baby/.test(w) && /Your before-pregnancy checklist, once a week/.test(w) && /Eating well before a pregnancy helps your body get ready/.test(w), w.slice(0, 900));
   check('3 ... its own expectation, and no promise about periods or waist', /more than 8 in 10 couples get pregnant within a year/.test(w) && !/Periods often take|waist|regular periods/i.test(w));
   check('3 no doses anywhere in the plan', !/\d+\s?(mg|mcg|µg)\b|tablet/i.test(w));
@@ -132,7 +134,7 @@ for (const goal of ['feed', 'weight', 'recovery']) {
   await page.clock.setSystemTime(at(1, '10:00')); await go(page, 'diary'); await go(page, 'home');
   check('3 day 2: once a week only', !/before-pregnancy checklist/.test(await txt(page, '#view .today-card')));
   await page.evaluate(() => { const S = window.Saathi; S.state.mods.ttc = Object.assign({}, S.state.mods.ttc || {}, { prep: { folic: true, hb: true } }); S.save(); });
-  await go(page, 'plan');
+  await go(page, 'plan-progress');   /* Version 39.5: every plan's results are on My progress */
   check('3 results: her checklist progress', /Before-pregnancy checklist/.test(await view(page)) && /2 of 17 done/.test(await view(page)), (await view(page)).match(/Before-pregnancy.{0,80}/s));
   await page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregnant: true, pregnantSince: x }; S.save(); }, ago(30));
   await go(page, 'plan');
@@ -154,7 +156,8 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
   const { ctx, page } = await open({ seed: { mods: { plan: planOf('heavy', 'heavy', ago(24), { food: 'veg' }) } } });
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
-  check('4 after day 21: one iron food a day, from her own food, not day 1 again', /An iron-rich food today/.test(td) && /chana, rajma, ragi or poha/.test(td) && !/Your iron tablet/.test(td), td);
+  /* Version 39.9: after day 21 the iron food of the day rotates over her own foods (foodsteps.mjs checks the rotation) */
+  check('4 after day 21: one iron food a day, from her own food, not day 1 again', /Today’s iron food: /.test(td) && /with lemon, amla or guava/.test(td) && !/Your iron tablet/.test(td), td);
   await ctx.close();
 }
 
@@ -168,7 +171,7 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
   const v = await view(page);
   check('5 from 40: Today shows days since her last period, not a cycle ring', /Since your last period/i.test(v) && /50\s+days/.test(v) && !(await has(page, '#view .ringwrap')) && !/Cycle day|Typical gap/.test(v), v.slice(0, 600));
   check('5 ... with her weekly symptom diary one tap away', (await has(page, '#view .hero [data-go="meno-diary"]')) && /This week’s diary: done/.test(v));
-  await go(page, 'plan');
+  await go(page, 'plan-progress');   /* Version 39.5 */
   const pv = await view(page);
   check('5 results from her weekly diary: hot flushes before and since', /Weeks with hot flushes/.test(pv) && /4 weeks before you started\s+4 of 4 weeks/.test(pv) && /Last 4 weeks\s+1 of 4 weeks/.test(pv), pv.match(/Weeks with hot flushes.{0,160}/s));
   check('5 no page errors', errs.length === 0, errs);
@@ -192,8 +195,9 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
 {
   const ik = { at: ago(30), stage: 'cycle', goal: 'irregular', gap: 'g45', skips: 'y', dx: 'ns', signs: ['acne'] };
   const { ctx, page, errs } = await open({ seed: { intake: ik, mods: { plan: planOf('cycle', 'irregular', ago(20), { intake: ik }) } } });
-  await go(page, 'home');
-  check('7 the monthly check-in is "This month"', /This month/.test(await txt(page, '#view [data-go="checkin"]')) && !/Check-in$/m.test(await txt(page, '#view [data-go="checkin"]')), await txt(page, '#view [data-go="checkin"]'));
+  /* Version 39.1: the monthly check-in is a row in Diary's What it shows, "This month's signs" */
+  await go(page, 'diary'); await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 300);
+  check('7 the monthly check-in is "This month\'s signs", in Diary\'s What it shows', /This month’s signs/.test(await txt(page, '#view .wis-ci [data-go="checkin"]')) && !/Check-in$/m.test(await txt(page, '#view .wis-ci')), await txt(page, '#view .wis-ci'));
   await go(page, 'checkin');
   check('7 ... and so is its page', /This month: October/.test(await view(page)));
   await go(page, 'plan');
@@ -279,7 +283,8 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   await g.ctx.close();
   const h = await open({ seed: Object.assign({}, PREG, { situation: { pregnant: true, pregnantSince: ago(60), pcos: true }, mods: { plan: planOf('cycle', 'pmos', ago(80)) } }) });
   await go(h.page, 'plan');
-  check('10 a plan paused by pregnancy: My plan says why and offers the pregnancy goals', /paused while you are pregnant/.test(await view(h.page)) && (await has(h.page, '[data-pl-pick="nausea"]')), (await view(h.page)).slice(0, 400));
+  /* Version 39.5 (journey audit P2-09): one "Your plan has changed" card, with the pregnancy plan, and the pregnancy goals */
+  check('10 a plan paused by pregnancy: My plan says her plan changed and offers the pregnancy goals', /Your plan has changed/.test(await view(h.page)) && /See my pregnancy plan/.test(await view(h.page)) && (await has(h.page, '[data-pl-pick="nausea"]')), (await view(h.page)).slice(0, 400));
   await h.ctx.close();
   const k = await open({ seed: { events: [{ d: ago(40), t: 'start' }, { d: ago(35), t: 'end' }], mods: { plan: planOf('cycle', 'irregular', ago(10)) } } });
   await go(k.page, 'home'); await k.page.$eval('[data-log="start"]', (x) => x.click()); await settle(k.page, 600);
@@ -305,7 +310,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   const nx = { pack: 'pain', goalKey: 'pain', goal: 'pain', focus: 'habits', level: 0, limits: {}, food: 'veg', bed: 'b23', work: 'day', when: 'evening', remAt: '20:00', body: null, intake: { goal: 'pain' }, at: ago(1) };
   const b = await open({ seed: Object.assign({}, PREG, { mods: { plan: planOf('cycle', 'irregular', ago(40), { next: nx }) } }), hash: '#plan' });
   const bv = await view(b.page);
-  check('11 pregnant: a plan made before is not "ready"; My plan says why it waits', /paused while you are pregnant/.test(bv) && !/Your plan is ready/.test(bv) && !(await b.page.evaluate(() => window.Saathi.plan.pending())), bv.slice(0, 400));
+  check('11 pregnant: a plan made before is not "ready"; My plan says her plan changed', /Your plan has changed/.test(bv) && !/Your plan is ready/.test(bv) && !(await b.page.evaluate(() => window.Saathi.plan.pending())), bv.slice(0, 400));
   await b.ctx.close();
   /* "Yesterday" counts what Today counted that day */
   const c = await open({ seed: { mods: { plan: planOf('pms', 'pms', ago(4), { log: { [yd]: { r: ['calm'], min: 5 } } }) } } });
@@ -315,7 +320,8 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   check('11 Yesterday: a routine that isn\'t one of her steps, and minutes short of the walk, count nothing', /No steps yesterday/.test(await txt(c2.page, '#view .today-card')), await txt(c2.page, '#view .today-card'));
   await c2.ctx.close();
   const c3 = await open({ seed: Object.assign({}, POST(60), { mods: { post: { rec: { [yd]: REC } }, plan: planOf('post', 'feed', ago(10)) } }) });
-  check('11 Yesterday: after 6 weeks the recovery check is no longer a step to count', /No steps yesterday/.test(await txt(c3.page, '#view .today-card')), await txt(c3.page, '#view .today-card'));
+  /* Version 39.5: after quiet days the line is "Welcome back"; either way the recovery check isn't counted as a step */
+  check('11 Yesterday: after 6 weeks the recovery check is no longer a step to count', /No steps yesterday|Welcome back/.test(await txt(c3.page, '#view .today-card')) && !/Yesterday: 1/.test(await txt(c3.page, '#view .today-card')), await txt(c3.page, '#view .today-card'));
   await c3.ctx.close();
   const c4 = await open({ seed: Object.assign({}, POST(20), { mods: { post: { rec: { [yd]: REC } }, plan: planOf('post', 'feed', ago(10)) } }) });
   check('11 Yesterday: before 6 weeks her recovery check counts', /Yesterday: 1 done\./.test(await txt(c4.page, '#view .today-card')), await txt(c4.page, '#view .today-card'));
@@ -325,8 +331,11 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   await e.page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregnant: true, pregnantSince: x }; S.save(); }, ago(40)); await go(e.page, 'home');
   const e1 = ((await st(e.page)).reminders || []).some((r) => r.id === 'plan');
   await e.page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregEndedOn: x, planning: true }; S.save(); }, ago(0)); await go(e.page, 'home');
+  const e2a = ((await st(e.page)).reminders || []).find((r) => r.id === 'plan');
+  /* Version 39.0: after a loss her plan rests for 6 weeks, so its evening reminder stays away until then */
+  await e.page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregEndedOn: x, planning: true }; S.save(); }, ago(43)); await go(e.page, 'home');
   const e2 = ((await st(e.page)).reminders || []).find((r) => r.id === 'plan');
-  check('11 the trying plan\'s reminder goes with a pregnancy and comes back with the plan', !e1 && !!e2 && e2.on !== false && /8 pm|8:00 pm|20:00/i.test(await txt(e.page, '#view .today-card')) && !((await st(e.page)).mods.plan.remGone), { e1, e2 });
+  check('11 the trying plan\'s reminder goes with a pregnancy, rests 6 weeks after a loss, and comes back with the plan', !e1 && !e2a && !!e2 && e2.on !== false && /8 pm|8:00 pm|20:00/i.test(await txt(e.page, '#view .today-card')) && !((await st(e.page)).mods.plan.remGone), { e1, e2a, e2 });
   await e.ctx.close();
   const e3 = await open({ seed: { reminders: [], mods: { plan: planOf('cycle', 'irregular', ago(20)) } } });
   await go(e3.page, 'home');
@@ -339,7 +348,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   await f.ctx.close();
   /* midlife: "Last 4 weeks" is at most 4 weeks */
   const dia = {}; for (let n = 0; n < 9; n++) dia[iso('2026-10-26', -7 * n)] = { v: { hot: 2 } };
-  const g = await open({ seed: { situation: { midlife: true }, dob: '1978-03-01', events: [{ d: ago(110), t: 'start' }, { d: ago(105), t: 'end' }, { d: ago(50), t: 'start' }, { d: ago(45), t: 'end' }], mods: { meno: { diary: dia }, plan: planOf('meno', 'hot', ago(42)) } }, hash: '#plan' });
+  const g = await open({ seed: { situation: { midlife: true }, dob: '1978-03-01', events: [{ d: ago(110), t: 'start' }, { d: ago(105), t: 'end' }, { d: ago(50), t: 'start' }, { d: ago(45), t: 'end' }], mods: { meno: { diary: dia }, plan: planOf('meno', 'hot', ago(42)) } }, hash: '#plan-progress' });
   const gv = await view(g.page);
   check('11 midlife results: "Last 4 weeks" counts 4 weeks, never 5', /Last 4 weeks\s*\n?\s*4 of 4 weeks/.test(gv) && !/of 5 weeks/.test(gv), (gv.match(/Weeks with[\s\S]{0,160}/) || [gv.slice(0, 300)])[0]);
   await g.ctx.close();
@@ -352,10 +361,10 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   const k = await open({ seed: { mods: { plan: planOf('cycle', 'irregular', ago(95), { keep: true }) } }, hash: '#plan' });
   const ks = await k.page.evaluate(() => (window.Saathi.summaries().find((m) => m.mod === 'plan') || { sections: [] }).sections.map((x) => x.lines.join(' | ')).join(' || '));
   const kp = await txt(k.page, '#view .pl-path');
-  check('11 "Keep going": the summary says her plan week, and the path card follows her weeks past 12', /Plan week 14/.test(ks) && !/of 12/.test(ks) && /Keeping it going/.test(kp) && /Week 14/.test(kp) && !/Week 12 of 12/.test(kp), { ks, kp });
+  check('11 "Keep going": the summary says her plan week, and the path card follows her weeks past 12', /Plan week 14/.test(ks) && !/of 12/.test(ks) && /Keep it light/.test(kp) && /Week 14/.test(kp) && !/Week 12 of 12/.test(kp), { ks, kp });
   await k.ctx.close();
   /* pain results: two starts logged in one period are one period */
-  const m = await open({ seed: { events: [{ d: ago(60), t: 'start', pain: 'pain_1' }, { d: ago(55), t: 'end' }, { d: ago(24), t: 'start', pain: 'pain_2' }, { d: ago(21), t: 'start', pain: 'pain_2' }, { d: ago(18), t: 'end' }], mods: { plan: planOf('pain', 'pain', ago(30), { goal: 'pain' }) } }, hash: '#plan' });
+  const m = await open({ seed: { events: [{ d: ago(60), t: 'start', pain: 'pain_1' }, { d: ago(55), t: 'end' }, { d: ago(24), t: 'start', pain: 'pain_2' }, { d: ago(21), t: 'start', pain: 'pain_2' }, { d: ago(18), t: 'end' }], mods: { plan: planOf('pain', 'pain', ago(30), { goal: 'pain' }) } }, hash: '#plan-progress' });
   const mv = await view(m.page);
   check('11 pain results: two starts logged 3 days apart are one period', /needed a painkiller[\s\S]{0,120}1 of 1/.test(mv) && !/2 of 2/.test(mv), (mv.match(/needed a painkiller[\s\S]{0,160}/) || [mv.slice(0, 300)])[0]);
   await m.ctx.close();
@@ -372,6 +381,8 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   const pregThenLoss = async (page) => {
     await page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregnant: true, pregnantSince: x }; S.save(); }, ago(40)); await go(page, 'home');
     await page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregEndedOn: x, planning: true }; S.save(); }, ago(0)); await go(page, 'home');
+    /* Version 39.0: 6 weeks of rest after a loss, then the plan applies again */
+    await page.evaluate((x) => { const S = window.Saathi; S.state.situation = { pregEndedOn: x, planning: true }; S.save(); }, ago(43)); await go(page, 'home');
     return ((await st(page)).reminders || []).find((r) => r.id === 'plan') || null;
   };
   const a = await open({ seed: { situation: { planning: true }, reminders: rem({ on: false }), mods: { plan: planOf('ttc', 'ready', ago(20)) } } });

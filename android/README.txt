@@ -17,8 +17,10 @@ Rebuild after changing the prototype
   deletes the diary. Testers get a build without "demo" in its name (it needs SAKHI_API, the server's https address):
     SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=34 VERSION_NAME=0.32-test ./build-apk.sh
   The pilot build (Version 33) has every tool on, fertile days and the self-checks included, with no sample women. The
-  last one built is versionCode 42 (0.37-pilot, Version 37: Sakhi as her companion):
-    SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=42 VERSION_NAME=0.37-pilot ./build-apk.sh
+  last one built is versionCode 44 (0.39.9-pilot, Version 39.9: food steps that change), built without installing:
+    PATH=/usr/bin:/bin:/usr/sbin:/sbin SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=44 VERSION_NAME=0.39.9-pilot ./build-apk.sh
+  It needs Android 10 or newer (min SDK 29; Mohit, 25 Oct: newer phones only). The build stops above 30 MB unless
+  MAX_APK_MB is raised on purpose.
 
 What is in here
   AndroidManifest.xml     App id com.quranutrition.sakhi, name "Qura Sakhi"; internet (signup), notifications, restart,

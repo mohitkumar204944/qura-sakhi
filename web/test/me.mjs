@@ -42,16 +42,17 @@ async function open(o = {}) {
 const tap = (page, sel) => page.$eval(sel, (el) => el.click());
 const go = async (page, h) => { await page.evaluate((x) => { location.hash = x; }, h); await sleep(250); };
 const view = (page) => page.$eval('#view', (e) => e.innerText);
-const rows = (page) => page.$$eval('#view .item', (xs) => xs.map((x) => { const s = x.querySelector('strong'); return { go: x.dataset.go || '', id: x.id || '', t: s ? s.innerText : x.innerText.trim().slice(0, 40) }; }));
+const rows = (page) => page.$$eval('#view .item', (xs) => xs.map((x) => { const s = x.querySelector('strong'); return { go: x.dataset.go || '', id: x.id || '', cls: x.className || '', t: s ? s.innerText : x.innerText.trim().slice(0, 40) }; }));
 const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods have stopped|hormone medicine|Hysterectomy|Thyroid/;
 
 /* ---------- 1. The main page: short, privacy first, no condition named ---------- */
 {
   const { ctx, page, errs } = await open();
   const r = await rows(page);
-  const order = r.map((x) => x.go || x.id);
-  check('1 the rows, in order: account, privacy, health, my reminders, phone reminders, language, data, look, help, about, then delete',
-    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'tools-reminders', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
+  /* Version 39.2: one Reminders row (her lists and the phone's alerts are inside it); her unfinished setup steps (setup-it) sit in Me now */
+  const order = r.filter((x) => !/setup/.test(x.cls || '')).map((x) => x.go || x.id).filter(Boolean);
+  check('1 the rows, in order: account, privacy, health, reminders, language, data, look, help, about, then delete',
+    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
   check('1 her name and masked number head the page', r[0].t === 'Asha' && /Asha\s*\+91\u00a0•••••\u00a0•3210/.test(await view(page)), await view(page));
   check('1 privacy says what is on', /Privacy on a shared phone/.test(await view(page)) && /Nothing switched on yet/.test(await view(page)));
   check('1 health shows her stage, and names no condition', /Tracking my periods/.test(await view(page)) && !CONDITIONS.test(await view(page)), await view(page));
@@ -227,12 +228,13 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   await ctx.close();
 }
 
-/* ---------- 10. The web version (no Android app): no reminders row, and the page says why ---------- */
+/* ---------- 10. The web version (no Android app): her reminder lists, no phone alerts, and the page says why ---------- */
 {
   const { ctx, page, errs } = await open({ android: false });
-  check('10 no reminders row on the web', !(await rows(page)).some((x) => x.go === 'me-reminders'));
+  /* Version 39.2: the one Reminders row is on the web too: her lists live there; the phone's alert switches don't */
+  check('10 on the web the Reminders row opens her lists', (await rows(page)).some((x) => x.go === 'me-reminders'));
   await go(page, '#me-reminders');
-  check('10 the reminders page explains', /Android/.test(await view(page)));
+  check('10 the reminders page explains', /Android/.test(await view(page)) && !(await page.$('#me-notif')) && !!(await page.$('#view [data-go="tools-reminders"]')));
   check('10 no page errors', !errs.length, errs);
   await ctx.close();
 }

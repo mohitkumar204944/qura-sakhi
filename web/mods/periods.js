@@ -290,7 +290,7 @@
       sec('pp-pads', { en: 'Pads', hi: 'Pad (सैनिटरी नैपकिन)' },
         ul([{ en: 'Change every few hours, even on light days, and sooner when the flow is heavy. Do not wear one pad all day.', hi: 'हर कुछ घंटे में बदलें, हल्के दिनों में भी, और ज़्यादा ब्लीडिंग में और जल्दी। एक ही pad पूरे दिन न पहनें।' },
           { en: 'Jan Aushadhi "Suvidha" pads cost ₹1 a pad at Jan Aushadhi Kendras. The Jan Aushadhi Sugam app shows the nearest Kendra.', hi: 'जन औषधि केंद्रों पर "Suvidha" pad ₹1 का एक मिलता है। Jan Aushadhi Sugam app से सबसे पास का केंद्र पता चलता है।' },
-          { en: 'Girls aged 10–19 in villages can get a pack of 6 pads for ₹6 from their ASHA under the Menstrual Hygiene Scheme, where the state runs it.', hi: 'गाँव में 10–19 साल की लड़कियों को Menstrual Hygiene Scheme में आशा दीदी से 6 pad का पैकेट ₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है।' }]) +
+          { en: 'Girls aged 10–19 in villages can get a pack of 6 pads for ₹6 from their ASHA under the Menstrual Hygiene Scheme, where the state runs it; some states now give them free.', hi: 'गाँव में 10–19 साल की लड़कियों को Menstrual Hygiene Scheme में आशा दीदी से 6 pad का पैकेट ₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है; कुछ राज्य अब ये मुफ़्त देते हैं।' }]) +
         '<button type="button" class="btn sm" style="align-self:flex-start" data-go="access-schemes-period">' + h({ en: 'Other free and low-cost options', hi: 'दूसरे मुफ़्त और सस्ते विकल्प' }) + '</button>') +
       sec('pp-cloth', { en: 'Cloth pads', hi: 'कपड़े का pad' },
         steps([{ en: 'Use clean cotton cloth. Change it when it feels wet, every few hours.', hi: 'साफ़ सूती कपड़ा इस्तेमाल करें। गीला लगे तो बदलें, हर कुछ घंटे में।' },
@@ -329,32 +329,12 @@
   }
 
   /* ---------- myths and facts ---------- */
-  const MYTHS = [
-    [{ en: 'A woman on her period should not enter the kitchen or touch food.', hi: 'पीरियड में महिला को रसोई में नहीं जाना चाहिए, खाना नहीं छूना चाहिए।' },
-      { en: 'A period does not make food unsafe. Washing your hands before cooking keeps food clean on every day of the month. If you feel tired and want a day off from the kitchen, take it because you need the rest.', hi: 'पीरियड से खाना ख़राब नहीं होता। खाना बनाने से पहले हाथ धोने से खाना साफ़ रहता है, महीने के हर दिन। थकान हो और रसोई से एक दिन की छुट्टी चाहिए, तो ज़रूर लें, क्योंकि आपको आराम चाहिए।' }],
-    [{ en: 'A period makes a woman impure, so she must stay away from the temple or puja.', hi: 'पीरियड में महिला अशुद्ध हो जाती है, इसलिए मंदिर या पूजा से दूर रहना चाहिए।' },
-      { en: 'Medically, a period is the womb shedding its lining each month. It is a sign of a healthy body, and nothing about it is dirty. Whether you go to a temple or do puja is a matter of your faith and your choice.', hi: 'डॉक्टरी नज़र से पीरियड हर महीने गर्भाशय की परत का निकलना है। यह स्वस्थ शरीर की निशानी है, और इसमें कुछ भी गंदा नहीं। मंदिर जाना या पूजा करना आपकी आस्था और आपकी मर्ज़ी की बात है।' }],
-    [{ en: 'If a woman on her period touches pickle, it will spoil.', hi: 'पीरियड में अचार छू लिया तो अचार ख़राब हो जाएगा।' },
-      { en: 'Pickle spoils from moisture, a wet spoon or unwashed hands. A period has nothing to do with it. Use a clean, dry spoon and keep the jar closed.', hi: 'अचार नमी, गीले चम्मच या बिना धुले हाथों से ख़राब होता है। पीरियड का इससे कोई लेना-देना नहीं। साफ़, सूखा चम्मच इस्तेमाल करें और बरनी बंद रखें।' }],
-    [{ en: 'Do not bathe or wash your hair during a period.', hi: 'पीरियड में नहाना या बाल धोना नहीं चाहिए।' },
-      { en: 'Bathing and washing your hair are safe on any day of your period. A warm bath can even ease cramps.', hi: 'पीरियड के किसी भी दिन नहाना और बाल धोना सुरक्षित है। गुनगुने पानी से नहाने से ऐंठन में आराम भी मिल सकता है।' }],
-    [{ en: 'Exercise or sport during a period is harmful.', hi: 'पीरियड में कसरत या खेल नुक़सान करते हैं।' },
-      { en: 'Walking, yoga, dancing and sport are safe during a period, and moving often eases cramps. Rest on days you feel unwell.', hi: 'पीरियड में चलना, योग, नाचना और खेल सुरक्षित हैं, और हिलने-डुलने से अक्सर ऐंठन में आराम मिलता है। जिस दिन तबीयत ठीक न लगे, आराम करें।' }],
-    [{ en: 'If she touches a plant, such as tulsi, it will dry up.', hi: 'पौधा, जैसे तुलसी, छू लिया तो सूख जाएगा।' },
-      { en: 'Plants are not affected by a period. They dry up from too little or too much water, too little sun, or pests.', hi: 'पीरियड का पौधों पर कोई असर नहीं होता। पौधे कम या ज़्यादा पानी, कम धूप या कीड़ों से सूखते हैं।' }],
-    [{ en: 'Sour food like curd, tamarind or lemon makes cramps or bleeding worse.', hi: 'दही, इमली या नींबू जैसी खट्टी चीज़ों से ऐंठन या ब्लीडिंग बढ़ती है।' },
-      { en: 'Sour food does not change your bleeding or cramps. Eat your normal meals, and add iron-rich food such as green leafy vegetables, chana, rajma, eggs or meat.', hi: 'खट्टा खाने से ब्लीडिंग या ऐंठन पर असर नहीं पड़ता। अपना सामान्य खाना खाएँ, और आयरन वाला खाना जोड़ें, जैसे हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडा या मांस।' }],
-    [{ en: 'Period blood is dirty blood: the body throwing out poison.', hi: 'पीरियड का ख़ून गंदा ख़ून है: शरीर ज़हर बाहर निकालता है।' },
-      { en: 'Period blood is ordinary blood mixed with the lining of the womb. It is not dirty and not poison. A period that stops is not "bad blood stuck inside": it needs a check-up.', hi: 'पीरियड का ख़ून आम ख़ून है जिसमें गर्भाशय की परत मिली होती है। यह न गंदा है, न ज़हर। पीरियड रुकने का मतलब "गंदा ख़ून अंदर रुकना" नहीं है: इसके लिए जाँच ज़रूरी है।' }],
-    [{ en: 'Sex during a period is harmful, and you cannot get pregnant then.', hi: 'पीरियड में संबंध बनाना नुक़सानदेह है, और उस समय गर्भ नहीं ठहरता।' },
-      { en: 'Sex during a period is safe if you both want it. It is your choice, and saying no is your right too. Pregnancy is less likely but still possible, and infections can still pass. Use a condom if you do not want a pregnancy or are not sure about infections.', hi: 'अगर दोनों चाहें तो पीरियड में संबंध बनाना सुरक्षित है। यह आपकी मर्ज़ी है, और मना करना भी आपका हक़ है। गर्भ की संभावना कम है पर होती है, और संक्रमण भी फैल सकता है। गर्भ नहीं चाहतीं या संक्रमण को लेकर पक्का नहीं हैं, तो condom इस्तेमाल करें।' }],
-    [{ en: 'Girls should stay home from school or skip sport during periods.', hi: 'पीरियड में लड़कियों को स्कूल नहीं जाना चाहिए या खेल छोड़ देना चाहिए।' },
-      { en: 'Girls can go to school, sit exams and play sport as usual. Carry a spare pad and a small bag to wrap the used one. A teacher can help if you need a pad or have pain. If the school has no clean toilet with water and a dustbin, parents can ask for one.', hi: 'लड़कियाँ हमेशा की तरह स्कूल जा सकती हैं, परीक्षा दे सकती हैं और खेल सकती हैं। एक extra pad और इस्तेमाल किया pad लपेटने के लिए छोटी थैली साथ रखें। pad चाहिए या दर्द हो तो किसी टीचर से कहें। स्कूल में पानी वाला साफ़ शौचालय और कूड़ादान न हो तो माता-पिता इसकी माँग कर सकते हैं।' }]
-  ];
+  /* Version 39.7 (journey audit P3-15): this page is a view of the one myths deck (joy.js), which Sach ya Myth reads too */
+  const myths = () => (S.joy && S.joy.deck ? S.joy.deck('period') : []);
   function renderMyths(v) {
     v.innerHTML = S.backRow(t('periods_myths'), 'periods', false) +
       intro({ en: 'Customs around periods differ between families and faiths. This page is about health only: what your body needs, and what harms no one. What you follow is your choice.', hi: 'पीरियड से जुड़े रिवाज़ हर परिवार और धर्म में अलग हैं। यह पन्ना सिर्फ़ सेहत के बारे में है: आपके शरीर को क्या चाहिए, और किससे किसी का नुक़सान नहीं होता। आप क्या मानें, यह आपकी मर्ज़ी है।' }) +
-      MYTHS.map((m) => '<div class="card periods-myth"><span class="pill muted" style="align-self:flex-start">' + esc(t('periods_myth')) + '</span><h3>' + h(m[0]) + '</h3><div class="flag ok"><span><strong>' + esc(t('periods_fact')) + ':</strong> ' + h(m[1]) + '</span></div></div>').join('') +
+      myths().map((m) => '<div class="card periods-myth"><span class="pill muted" style="align-self:flex-start">' + esc(t(m.a ? 'periods_fact' : 'periods_myth')) + '</span><h3>' + h(m.s) + '</h3><div class="flag ok"><span>' + (m.a ? '' : '<strong>' + esc(t('periods_fact')) + ':</strong> ') + h(m.w) + '</span></div></div>').join('') +
       '<div class="card soft"><p class="small" style="color:var(--fg)">' + h({ en: 'Talking openly helps the next girl in your family. Daughters, and sons too, can learn that a period is normal.', hi: 'खुलकर बात करने से परिवार की अगली लड़की को मदद मिलती है। बेटियाँ, और बेटे भी, सीख सकते हैं कि पीरियड सामान्य है।' }) + '</p></div>' +
       '<div class="list">' +
       linkItem('teen-first', 'flower', tx({ en: 'First period', hi: 'पहला पीरियड' }), tx({ en: 'For girls and their parents', hi: 'लड़कियों और उनके माता-पिता के लिए' })) +
@@ -365,17 +345,22 @@
   }
 
   /* ---------- fasting ---------- */
+  /* Version 39.8 (diet audit VD-02): the card's sargi and sehri foods as pictures (eggs only where she eats them) */
+  function fastPics() {
+    if (!(S.food && S.food.strip)) return ''; const dt = S.food.diet ? S.food.diet() : { type: 'veg' };
+    return S.food.strip([['roti', { en: 'Roti', hi: 'रोटी' }], ['dahi', { en: 'Curd', hi: 'दही' }, 'm'], ['khichdi', { en: 'Dalia', hi: 'दलिया' }], ['poha', { en: 'Poha', hi: 'पोहा' }]].concat(dt.type !== 'veg' && dt.type !== 'jain' ? [['egg', { en: 'Eggs', hi: 'अंडे' }]] : [], [['paneer', { en: 'Paneer', hi: 'पनीर' }, 'm'], ['chaas', { en: 'Chaas', hi: 'छाछ' }, 'm'],   /* V39.8 review REGRESSIONS-06: no milk foods for a woman who takes none */ ['salad', { en: 'Cucumber, tomato', hi: 'खीरा, टमाटर' }], ['nariyal', { en: 'Coconut water', hi: 'नारियल पानी' }], ['khajur', { en: 'Dates', hi: 'खजूर' }], ['ors', { en: 'ORS', hi: 'ORS' }]]), t('foods_help'));
+  }
   function renderFasting(v) {
     v.innerHTML = S.backRow(t('periods_fasting'), 'periods', false) +
       intro({ en: 'Navratri, Karva Chauth, Ramzan, Ekadashi, Teej: for many of us, fasting is part of faith. Whether to fast on period days is a matter of your faith and your family. This page is only about keeping your body safe while you fast.', hi: 'नवरात्रि, करवा चौथ, रमज़ान, एकादशी, तीज: हम में से बहुतों के लिए व्रत या रोज़ा आस्था का हिस्सा है। पीरियड के दिनों में व्रत रखना है या नहीं, यह आपकी आस्था और परिवार की बात है। यह पन्ना सिर्फ़ इस बारे में है कि व्रत के दौरान आपका शरीर सुरक्षित रहे।' }) +
-      '<div class="card"><h2>' + h({ en: 'Before and during the fast', hi: 'व्रत से पहले और व्रत के दौरान' }) + '</h2>' +
+      '<div data-jump="1" class="card"><h2>' + h({ en: 'Before and during the fast', hi: 'व्रत से पहले और व्रत के दौरान' }) + '</h2>' +
       ul([{ en: 'Eat a proper meal before the fast begins (sargi or sehri), and drink water slowly through the hours you can.', hi: 'व्रत शुरू होने से पहले (सरगी या सेहरी में) ठीक से खाएँ, और जिन घंटों में पी सकती हैं उनमें धीरे-धीरे पानी पीती रहें।' },
         { en: 'Fasts without water (nirjala), such as Karva Chauth, Hartalika Teej, Nirjala Ekadashi or roza, carry the most risk of dehydration, more so in heat or on heavy-bleeding days.', hi: 'बिना पानी के व्रत (निर्जला), जैसे करवा चौथ, हरतालिका तीज, निर्जला एकादशी या रोज़ा, में पानी की कमी का ख़तरा सबसे ज़्यादा होता है, ख़ासकर गर्मी में या भारी ब्लीडिंग वाले दिनों में।' },
         { en: 'On period days your body loses blood and fluid. If your tradition allows, a fast with water, milk or fruit (phalahar) is gentler.', hi: 'पीरियड के दिनों में शरीर से ख़ून और पानी निकलता है। अगर आपकी परंपरा में छूट हो, तो पानी, दूध या फल (फलाहार) वाला व्रत शरीर के लिए हल्का रहता है।' },
         { en: 'Keep ORS at home, and mix one packet exactly as written on it.', hi: 'घर में ORS रखें, और एक पैकेट ठीक वैसे घोलें जैसा उस पर लिखा है।' },
         { en: 'Rest in the shade and avoid heavy work in the sun.', hi: 'छाँव में आराम करें और धूप में भारी काम से बचें।' },
         { en: 'Painkillers on an empty stomach can upset it. Take them with your sargi or sehri, or after you break the fast.', hi: 'ख़ाली पेट दर्द की दवा पेट ख़राब कर सकती है। इसे सरगी या सेहरी के साथ, या व्रत खोलने के बाद लें।' }]) + '</div>' +
-      '<div class="card warn"><h3>' + h({ en: 'Talk to your doctor before fasting if you', hi: 'व्रत से पहले डॉक्टर से बात करें अगर आप' }) + '</h3>' +
+      '<div data-jump="1" class="card warn"><h3>' + h({ en: 'Talk to your doctor before fasting if you', hi: 'व्रत से पहले डॉक्टर से बात करें अगर आप' }) + '</h3>' +
       ul([{ en: 'are pregnant, especially before a fast without water', hi: 'गर्भवती हैं, ख़ासकर बिना पानी के व्रत से पहले' },
         { en: 'are breastfeeding: your body needs extra water', hi: 'स्तनपान करा रही हैं: शरीर को ज़्यादा पानी चाहिए' },
         { en: 'have diabetes and take tablets or insulin: sugar can fall dangerously low. See your doctor a few weeks before Ramzan or a long vrat to plan your medicines.', hi: 'डायबिटीज़ है और गोली या insulin लेती हैं: शुगर ख़तरनाक रूप से गिर सकती है। रमज़ान या लंबे व्रत से कुछ हफ़्ते पहले डॉक्टर से मिलकर दवा की योजना बनाएँ।' },
@@ -383,19 +368,28 @@
         { en: 'have PMOS and take metformin or other medicines: ask how to take them on fast days', hi: 'PMOS है और metformin या कोई और दवा लेती हैं: पूछें कि व्रत के दिनों में कैसे लें' },
         { en: 'have anaemia, very heavy periods, kidney or heart disease, or have fainted during a fast before', hi: 'ख़ून की कमी (anaemia), बहुत भारी पीरियड, किडनी या दिल की बीमारी है, या पहले कभी व्रत में बेहोश हुई हैं' }]) +
       '<button type="button" class="btn sm" style="align-self:flex-start" data-go="cond-anaemia">' + h({ en: 'Anaemia and heavy periods', hi: 'ख़ून की कमी और भारी पीरियड' }) + '</button></div>' +
-      '<div class="card"><h3 style="color:var(--accent)">' + h({ en: 'Break the fast now and drink water or ORS if you feel', hi: 'व्रत अभी खोलें और पानी या ORS पिएँ अगर' }) + '</h3>' +
+      '<div data-jump="1" class="card"><h3 style="color:var(--accent)">' + h({ en: 'Break the fast now and drink water or ORS if you feel', hi: 'व्रत अभी खोलें और पानी या ORS पिएँ अगर' }) + '</h3>' +
       ul([{ en: 'dizzy, faint or very weak', hi: 'चक्कर आए, बेहोशी जैसा लगे या बहुत कमज़ोरी हो' },
         { en: 'your heart racing or pounding (palpitations)', hi: 'दिल बहुत तेज़ धड़के या धक-धक करे' },
         { en: 'you are passing very little urine, or it is very dark', hi: 'पेशाब बहुत कम आए या बहुत गहरे रंग का हो' },
         { en: 'shaky, sweaty or confused. With diabetes this can be low sugar: take sugar, glucose or juice now. Stop the fast if your sugar is below 70 or above 300 mg/dL.', hi: 'काँपना, पसीना या उलझन हो। डायबिटीज़ में यह शुगर गिरना हो सकता है: अभी चीनी, glucose या जूस लें। शुगर 70 से कम या 300 mg/dL से ज़्यादा हो तो व्रत तोड़ दें।' }]) +
       '<div class="flag urgent"><span>' + h({ en: 'Fainting, chest pain, confusion that does not clear, or fits: call 112 or 108 now.', hi: 'बेहोशी, सीने में दर्द, उलझन जो ठीक न हो, या दौरे: अभी 112 या 108 पर कॉल करें।' }) + '</span></div>' +
       '<p class="footnote" style="text-align:left">' + h({ en: 'Sugar limits from the International Diabetes Federation and DAR guide to a safe fast.', hi: 'शुगर की सीमाएँ: International Diabetes Federation और DAR की सुरक्षित व्रत गाइड से।' }) + '</p></div>' +
-      '<div class="card"><h2>' + h({ en: 'Sargi and sehri ideas', hi: 'सरगी और सेहरी के लिए' }) + '</h2>' +
+      '<div data-jump="1" class="card" data-nofold="1"><h2>' + h({ en: 'Sargi and sehri ideas', hi: 'सरगी और सेहरी के लिए' }) + '</h2>' + fastPics() +
       ul([{ en: 'Food that keeps you full longer: roti or paratha with curd, dalia or oats with milk, poha with peanuts, eggs or paneer.', hi: 'देर तक पेट भरा रखने वाला खाना: दही के साथ रोटी या पराठा, दूध के साथ दलिया या ओट्स, मूँगफली वाला पोहा, अंडा या पनीर।' },
-        { en: 'For a vrat: sabudana khichdi with peanuts, kuttu or singhara roti with curd, makhana, fruit, chaas.', hi: 'व्रत के लिए: मूँगफली वाली साबूदाना खिचड़ी, दही के साथ कुट्टू या सिंघाड़े की रोटी, मखाना, फल, छाछ।' },
+        { en: 'For a vrat: kuttu or singhara roti with curd, makhana, fruit with a few nuts, chaas; sabudana khichdi with peanuts now and then.', hi: 'व्रत के लिए: दही के साथ कुट्टू या सिंघाड़े की रोटी, मखाना, थोड़े मेवे के साथ फल, छाछ; मूँगफली वाली साबूदाना खिचड़ी कभी-कभी।' },
+        { en: 'With PMOS, or sugar in pregnancy, go easy on sabudana and aloo: they raise sugar fast.', hi: 'PMOS हो, या गर्भ में शुगर हो, तो साबूदाना और आलू कम लें: इनसे शुगर जल्दी बढ़ती है।' },   /* Version 39.9 (diet audit 3.6), new lines */
         { en: 'Water-rich food: cucumber, tomato, watermelon, curd, coconut water.', hi: 'पानी वाली चीज़ें: खीरा, टमाटर, तरबूज़, दही, नारियल पानी।' },
         { en: 'Go easy on very salty or fried food, and on tea and coffee: they leave you thirstier.', hi: 'बहुत नमकीन या तली चीज़ें और चाय-कॉफ़ी कम लें: इनसे प्यास ज़्यादा लगती है।' },
         { en: 'Break the fast gently: water or ORS first, then fruit or dates, then a normal meal.', hi: 'व्रत धीरे से खोलें: पहले पानी या ORS, फिर फल या खजूर, फिर सामान्य खाना।' }]) + '</div>' +
+      /* Version 39.9 (diet audit 3.7): fasting in pregnancy and while breastfeeding (new lines, wording review 17.4) */
+      '<div class="card" data-jump="1"><h2>' + h({ en: 'If you are pregnant or breastfeeding', hi: 'अगर आप गर्भवती हैं या स्तनपान करा रही हैं' }) + '</h2>' +
+      ul([{ en: 'Talk to your doctor before you fast, most of all before a fast without water.', hi: 'व्रत से पहले डॉक्टर से बात करें, ख़ासकर बिना पानी के व्रत से पहले।' },
+        { en: 'Sehri or sargi: a full meal with dal or eggs, roti or rice, curd and fruit, and plenty of water.', hi: 'सेहरी या सरगी: दाल या अंडा, रोटी या चावल, दही और फल के साथ पूरा खाना, और ख़ूब पानी।' },
+        { en: 'Iftar, or breaking the fast: water or ORS first, then fruit or dates, then a normal meal. Keep drinking water through the evening.', hi: 'इफ़्तार, या व्रत खोलते समय: पहले पानी या ORS, फिर फल या खजूर, फिर सामान्य खाना। शाम भर पानी पीती रहें।' },
+        { en: 'Breastfeeding: your body needs extra water. Drink at every feed you can.', hi: 'स्तनपान: शरीर को ज़्यादा पानी चाहिए। हर फ़ीड पर पानी पिएँ।' },
+        { en: 'Break the fast and drink water or ORS if you feel dizzy or faint, have a headache, or pass very little or dark urine.', hi: 'चक्कर या बेहोशी लगे, सिरदर्द हो, या पेशाब बहुत कम या गहरे रंग का हो, तो व्रत खोलें और पानी या ORS पिएँ।' }]) +
+      '<div class="flag urgent"><span>' + h({ en: 'In pregnancy, if the baby moves less than usual: break the fast and go to hospital now. Call 112 or 108.', hi: 'गर्भ में बच्चा रोज़ से कम हिले: व्रत खोलें और अभी अस्पताल जाएँ। 112 या 108 पर कॉल करें।' }) + '</span></div></div>' +
       askCard({ en: 'Fasting safely with my health condition', hi: 'अपनी सेहत की हालत में सुरक्षित व्रत' }, { en: 'Want to fast with diabetes, thyroid, PMOS or heavy periods? A Qura doctor can help plan your meals on a free call. Changes to medicines come from the doctor who prescribed them.', hi: 'डायबिटीज़, थायरॉइड, PMOS या भारी पीरियड के साथ व्रत रखना चाहती हैं? मुफ़्त कॉल पर Qura की डॉक्टर खाने की योजना बनाने में मदद कर सकती हैं। दवा में बदलाव वही डॉक्टर करें जिन्होंने दवा लिखी है।' });
     S.wire(v);
   }

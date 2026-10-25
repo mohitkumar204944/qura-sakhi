@@ -31,7 +31,9 @@
   }
   /* What she said helped in a month ('YYYY-MM'), for her month card. */
   const helped = (mk) => { const seen = {}; D().log.filter((x) => x.d.slice(0, 7) === mk && (x.r === 'yes' || x.r === 'some')).forEach((x) => { seen[x.id] = 1; }); return Object.keys(seen).filter((id) => R[id]).map((id) => t('relief_' + id + '_t')); };
-  S.relief = { pick: pick, forSym: forSym, helped: helped };
+  /* Version 39.5: did she do this routine on that day? A plan step counts from it (read only, never creates her data) */
+  const doneOn = (id, iso) => { const l = ((S.state.mods || {}).relief || {}).log; return Array.isArray(l) && l.some((x) => x && x.d === iso && x.id === id); };
+  S.relief = { pick: pick, forSym: forSym, helped: helped, doneOn: doneOn };
 
   function renderList(v) {
     const ids = IDS.filter((id) => R[id].ok());
@@ -212,7 +214,6 @@
     testRoutes: ['relief-cramps', 'relief-nausea', 'relief-sleep', 'relief-calm', 'relief-hot'],
     open: ['relief', 'relief-*'],
     tiles: [{ section: 'tools', route: 'relief', title: 'relief_h', sub: 'relief_tile_s', icon: 'leaf', order: 4, keywords: 'pain cramps dard aithan nausea ulti ji michlana sleep neend anxiety ghabrahat tension udasi low mood hot flush garmi relax breathing saans' }],
-    homeMore: homeCard,
     afterRender: (v, route) => { if (!/^relief-/.test(route || '')) stopRun(); },
     sample: (id) => { if (id === 'asha') D().log.push({ d: '2026-09-29', id: 'cramps', r: 'yes' }); if (id === 'kamla') D().log.push({ d: '2026-10-12', id: 'hot', r: 'some' }); },
     css: '.rl-player { display: flex; flex-direction: column; gap: 12px; }' +

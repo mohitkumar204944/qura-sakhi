@@ -1,6 +1,7 @@
-/* Explain it to my family: short cards she can send on WhatsApp to her husband, mother-in-law, mother or daughter, so the people
-   at home understand periods, the weeks after a birth, mood after a baby, PMOS, iron tablets, pregnancy check-ups, menopause and
-   trying for a baby. Nothing about her or her diary goes in them. The cards for her stage come first.
+/* For my family (Version 39.7 merged the family and partner pages into one; it was "Explain it to my family"): short cards she
+   can send on WhatsApp to her husband, mother-in-law, mother or daughter, so the people at home understand periods, the weeks
+   after a birth, mood after a baby, PMOS, iron tablets, pregnancy check-ups, menopause and trying for a baby, plus the husband's
+   page as cards. Nothing about her or her diary goes in them. The cards for her stage come first; the rest fold away.
    Copy written in Qura's house voice and checked against the module safety rules; needs a doctor's review before launch. */
 (function (S) {
   'use strict';
@@ -31,8 +32,8 @@
         hi: 'भारत में आधी से ज़्यादा औरतों में ख़ून की कमी (एनीमिया) है, ज़्यादातर आयरन की कमी से। इससे थकान, साँस फूलना और चेहरा पीला पड़ना होता है, और प्रेग्नेंसी में यह माँ और बच्चे दोनों के लिए नुक़सानदेह हो सकता है। आयरन की गोलियाँ ASHA या सरकारी अस्पताल से मुफ़्त मिलती हैं। उसे गोलियाँ वैसे ही लेने में मदद करें जैसे ASHA या डॉक्टर बताएँ, पानी या नींबू पानी के साथ, चाय या दूध के साथ नहीं। हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडे या मीट भी मदद करते हैं। आयरन की गोली से मल काला होना आम है।' } },
     { id: 'checkups', who: 'family_w_all', st: ['preg'],
       h: { en: 'Pregnancy check-ups', hi: 'प्रेग्नेंसी की जाँचें' },
-      p: { en: 'A pregnant woman needs at least four check-ups. They\'re free at government hospitals, PHCs and Ayushman Arogya Mandirs, and the ASHA can help her get there. Each visit checks her BP, weight, blood, urine and the baby\'s growth, so please go with her and help with the travel. Take her to hospital at once if she has bleeding, a bad headache or blurred vision, a swollen face, fits, fever, or if the baby moves less.',
-        hi: 'प्रेग्नेंट औरत को कम से कम चार जाँचें करवानी चाहिए। ये सरकारी अस्पताल, PHC और आयुष्मान आरोग्य मंदिर में मुफ़्त होती हैं, और ASHA वहाँ पहुँचने में मदद कर सकती है। हर बार उसका BP, वज़न, ख़ून, पेशाब और बच्चे की बढ़त जाँची जाती है, इसलिए उसके साथ जाएँ और आने-जाने में मदद करें। अगर ब्लीडिंग हो, तेज़ सिरदर्द या धुंधला दिखे, चेहरा सूजे, दौरे पड़ें, बुखार हो, या बच्चा कम हिले, तो उसे तुरंत अस्पताल ले जाएँ।' } },
+      get p() { const d = danger(); return { en: 'A pregnant woman needs at least four check-ups. They\'re free at government hospitals, PHCs and Ayushman Arogya Mandirs, and the ASHA can help her get there. Each visit checks her BP, weight, blood, urine and the baby\'s growth, so please go with her and help with the travel. ' + d.en,
+        hi: 'प्रेग्नेंट औरत को कम से कम चार जाँचें करवानी चाहिए। ये सरकारी अस्पताल, PHC और आयुष्मान आरोग्य मंदिर में मुफ़्त होती हैं, और ASHA वहाँ पहुँचने में मदद कर सकती है। हर बार उसका BP, वज़न, ख़ून, पेशाब और बच्चे की बढ़त जाँची जाती है, इसलिए उसके साथ जाएँ और आने-जाने में मदद करें। ' + d.hi }; } },
     { id: 'meno', who: 'family_w_all', st: ['meno'],
       h: { en: 'Menopause: what she\'s going through', hi: 'मेनोपॉज़: वह किस दौर से गुज़र रही है' },
       p: { en: 'Somewhere between 45 and 55, a woman\'s periods stop for good. Around that time many women get hot flushes, night sweats, poor sleep, mood changes and aches. It\'s real and common, not drama, and it can last a few years. Keep her room cool, share the chores, and listen when she talks about it. A doctor can help if it gets hard. Any bleeding after her periods have stopped for a year needs a check-up.',
@@ -62,7 +63,11 @@
       L('Help her sleep: an extra pillow, fewer chores, a quiet room.', 'उन्हें सोने में मदद करें: एक और तकिया, कम काम, शांत कमरा।'),
       L('If the baby moves less than usual, take her to hospital the same day.', 'अगर बच्चा रोज़ से कम हिले, तो उसी दिन अस्पताल ले जाएँ।')]
   ];
-  const DANGER = L('Take her to hospital at once for bleeding, a bad headache or blurred vision, a swollen face, fits, fever, or water leaking.', 'ब्लीडिंग, तेज़ सिरदर्द या धुंधला दिखना, चेहरे पर सूजन, दौरे, बुखार, या पानी जाना हो तो उन्हें तुरंत अस्पताल ले जाएँ।');
+  /* Version 39.7 (journey audit P3-15): the signs to go at once come from core's one list (Help and the husband's page read it) */
+  function danger() {
+    return S.dangerLine ? L('Take her to hospital at once for any of these: ' + S.dangerLine('preg', 'en') + '. If you cannot get there, call 112, 108 or 102.', 'इनमें से कुछ भी हो तो उन्हें तुरंत अस्पताल ले जाएँ: ' + S.dangerLine('preg', 'hi') + '। ख़ुद न पहुँच पाएँ तो 112, 108 या 102 पर कॉल करें।')
+      : L('Take her to hospital at once for bleeding, a bad headache or blurred vision, a swollen face, fits, fever, or water leaking.', 'ब्लीडिंग, तेज़ सिरदर्द या धुंधला दिखना, चेहरे पर सूजन, दौरे, बुखार, या पानी जाना हो तो उन्हें तुरंत अस्पताल ले जाएँ।');
+  }
   const pregWeek = () => { if (!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant())) return null; const pi = S.preg && S.preg.info ? S.preg.info() : null; return pi && pi.weeks != null ? pi.weeks : null; };
   function renderPartner(v) {
     const w = pregWeek(); const users = S.I.users.replace('<svg', '<svg style="width:18px;height:18px"');
@@ -70,34 +75,38 @@
     const tips = TRI[w < 14 ? 0 : (w < 28 ? 1 : 2)]; const sz = S.pregSize ? S.pregSize(w) : null;
     /* the first weeks have no week number worth saying ("Week 0"); past 42 weeks the card says hospital today, first */
     const head = w < 4 ? t('family_pt_early') : S.tf('family_pt_week', { n: w }); const pi = S.preg && S.preg.info ? S.preg.info() : null; const late = !!(pi && pi.days > 294);
-    const text = (late ? t('family_pt_late') + '\n\n' : '') + head + (sz && sz.line ? ': ' + sz.line : '') + '\n\n' + t('family_pt_help') + '\n' + tips.map((x) => '- ' + tx(x)).join('\n') + '\n\n' + tx(DANGER) + '\n\n' + t('family_from');
+    const text = (late ? t('family_pt_late') + '\n\n' : '') + head + (sz && sz.line ? ': ' + sz.line : '') + '\n\n' + t('family_pt_help') + '\n' + tips.map((x) => '- ' + tx(x)).join('\n') + '\n\n' + tx(danger()) + '\n\n' + t('family_from');
     v.innerHTML = S.backRow(t('family_pt_h'), 'family', false) + '<p class="small">' + esc(t('family_pt_p')) + '</p>' +
       '<div class="card fam-card" data-nofold="1"><span class="eyebrow">' + esc(t('family_w_husband')) + '</span>' + (late ? '<div class="flag urgent">' + esc(t('family_pt_late')) + '</div>' : '') + '<h3>' + esc(head) + '</h3>' + (sz && sz.line ? '<p>' + esc(sz.line) + '</p>' : '') +
-      '<p><b>' + esc(t('family_pt_help')) + '</b></p><ul class="fam-tips">' + tips.map((x) => '<li>' + esc(tx(x)) + '</li>').join('') + '</ul><div class="flag urgent">' + esc(tx(DANGER)) + '</div>' +
+      '<p><b>' + esc(t('family_pt_help')) + '</b></p><ul class="fam-tips">' + tips.map((x) => '<li>' + esc(tx(x)) + '</li>').join('') + '</ul><div class="flag urgent">' + esc(tx(danger())) + '</div>' +
       '<div class="row wrap"><button type="button" class="btn sm" data-fam-share="partner">' + users + ' ' + esc(t('family_send')) + '</button><button type="button" class="btn sm" id="fam-pt-copy">' + esc(t('family_copy')) + '</button></div></div>' +
       '<p class="small">' + esc(t('family_pt_safe')) + '</p>';
     S.wire(v);
     const sh = v.querySelector('[data-fam-share]'); if (sh) sh.addEventListener('click', () => { S.share(head, text); S.emit('share', { id: 'family-partner' }); });
     v.querySelector('#fam-pt-copy').addEventListener('click', () => { try { navigator.clipboard.writeText(text).then(() => S.toast(t('family_copied')), () => S.toast(t('family_copy_fail'))); } catch (e) { S.toast(t('family_copy_fail')); } });
   }
-  const msg = (c) => tx(c.h) + '\n\n' + tx(c.p) + '\n\n' + t('family_from');
+  const msg = (c) => tx(c.h) + '\n\n' + (c.items ? c.items.map((x) => '- ' + tx(x)).join('\n') : tx(c.p)) + '\n\n' + t('family_from');
+  /* Version 39.7 (journey audit P3-18): the husband's page (access.js) as cards here */
+  const partnerCards = () => (S.access && S.access.partner ? S.access.partner().map((p) => ({ id: p.id, who: 'family_w_husband', st: p.st, h: p.h, items: p.items })) : []);
+  const allCards = () => C.concat(partnerCards());
   function order() {
     const k = S.stageNow ? S.stageNow() : 'cycle'; const pm = !!(S.state.situation || {}).pcos || (S.state.goals || []).indexOf('pmos') >= 0;
     const score = (c) => (c.st.indexOf(k) >= 0 ? 2 : 0) + (c.id === 'pmos' && pm ? 3 : 0);
-    return C.map((c, i) => ({ c: c, i: i })).sort((a, b) => score(b.c) - score(a.c) || a.i - b.i).map((x) => x.c);
+    return allCards().map((c, i) => ({ c: c, i: i, n: score(c) })).sort((a, b) => b.n - a.n || a.i - b.i).map((x) => Object.assign({ mine: x.n > 0 }, x.c));
   }
+  const cardHtml = (c) => '<div class="card fam-card" data-nofold="1" data-fam="' + c.id + '"><span class="eyebrow">' + esc(t(c.who)) + '</span><h3>' + esc(tx(c.h)) + '</h3>' + (c.items ? '<ul class="fam-tips">' + c.items.map((x) => '<li>' + esc(tx(x)) + '</li>').join('') + '</ul>' : '<p>' + esc(tx(c.p)) + '</p>') +
+    '<div class="row wrap"><button type="button" class="btn sm" data-fam-share="' + c.id + '">' + S.I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('family_send')) + '</button>' +
+    '<button type="button" class="btn sm" data-fam-copy="' + c.id + '">' + esc(t('family_copy')) + '</button>' + (c.id === 'ttc' && S.routeOwner('ttc-partner') ? '<button type="button" class="linkbtn" data-go="ttc-partner">' + esc(t('family_ttc_page')) + '</button>' : '') + '</div></div>';
   function render(v) {
     const pw = pregWeek();
     v.innerHTML = S.backRow(t('family_h'), 'care', false) + '<p class="small">' + esc(t('family_p')) + '</p>' +
       (pw != null ? '<button type="button" class="action fam-pt" data-go="family-partner"><span class="ico hue hue-sky">' + S.I.baby + '</span><span class="body"><strong>' + esc(t('family_pt_card')) + '</strong><span class="small">' + esc(S.tf('family_pt_week', { n: pw })) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
-      order().map((c) => '<div class="card fam-card" data-nofold="1" data-fam="' + c.id + '"><span class="eyebrow">' + esc(t(c.who)) + '</span><h3>' + esc(tx(c.h)) + '</h3><p>' + esc(tx(c.p)) + '</p>' +
-        '<div class="row wrap"><button type="button" class="btn sm" data-fam-share="' + c.id + '">' + S.I.users.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('family_send')) + '</button>' +
-        '<button type="button" class="btn sm" data-fam-copy="' + c.id + '">' + esc(t('family_copy')) + '</button></div></div>').join('') +
+      ((cs) => cs.filter((c) => c.mine).map(cardHtml).join('') + (cs.some((c) => !c.mine) ? '<details class="fam-more"><summary class="linkbtn">' + esc(S.tf('family_more', { n: cs.filter((c) => !c.mine).length })) + '</summary><div class="stack">' + cs.filter((c) => !c.mine).map(cardHtml).join('') + '</div></details>' : ''))(order()) +
       '<p class="footnote">' + esc(t('family_foot')) + '</p>';
     S.wire(v);
-    v.querySelectorAll('[data-fam-share]').forEach((a) => a.addEventListener('click', () => { const c = C.find((x) => x.id === a.dataset.famShare); if (c) S.share(tx(c.h), msg(c)); S.emit('share', { id: 'family-' + a.dataset.famShare }); }));
+    v.querySelectorAll('[data-fam-share]').forEach((a) => a.addEventListener('click', () => { const c = allCards().find((x) => x.id === a.dataset.famShare); if (c) S.share(tx(c.h), msg(c)); S.emit('share', { id: 'family-' + a.dataset.famShare }); }));
     v.querySelectorAll('[data-fam-copy]').forEach((b) => b.addEventListener('click', () => {
-      const c = C.find((x) => x.id === b.dataset.famCopy); const text = msg(c);
+      const c = allCards().find((x) => x.id === b.dataset.famCopy); const text = msg(c);
       const ok = () => S.toast(t('family_copied')); const no = () => S.toast(t('family_copy_fail'));
       try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, no); else no(); } catch (e) { no(); }
     }));
@@ -108,7 +117,7 @@
     demoPersona: 'sunita',
     strings: {
       en: {
-        family_h: 'Explain it to my family', family_tile_s: 'Short WhatsApp cards for your husband, mother-in-law or daughter',
+        family_h: 'For my family', family_tile_s: 'Short cards to send your husband, mother-in-law or daughter', family_more: 'More cards ({n})', family_ttc_page: 'His page: the semen test and what helps',
         family_p: 'Send a card to someone at home, so they understand and can help. Nothing about you or your diary goes in it.',
         family_send: 'Share', family_copy: 'Copy', family_copied: 'Copied. Paste it in any chat.', family_copy_fail: 'Could not copy on this phone.',
         family_from: 'From Qura Sakhi, a free health app for women.', family_foot: 'General information, the same for everyone. Not a diagnosis.',
@@ -116,7 +125,7 @@
         family_pt_h: 'Weekly update for your husband', family_pt_card: 'This week’s update for your husband', family_pt_p: 'Each week, a short card about the baby and how he can help. Send it if you want to; nothing goes by itself.', family_pt_week: 'Week {n} of the pregnancy', family_pt_early: 'The first weeks of the pregnancy', family_pt_late: 'She is more than 42 weeks pregnant by her dates. If the baby has not come, take her to the hospital today.', family_pt_help: 'How you can help this week:', family_pt_none: 'This weekly card is for pregnancy. For now, here is a page your husband can read.', family_pt_page: 'A page for your husband', family_pt_safe: 'Only you decide what to send. Sakhi never sends anything by itself.'
       },
       hi: {
-        family_h: 'परिवार को समझाएँ', family_tile_s: 'पति, सास या बेटी के लिए छोटे WhatsApp कार्ड',
+        family_h: 'मेरे परिवार के लिए', family_tile_s: 'पति, सास या बेटी को भेजने के लिए छोटे कार्ड', family_more: 'और कार्ड ({n})', family_ttc_page: 'उनका पन्ना: semen test और क्या मदद करता है',
         family_p: 'घर में किसी को कार्ड भेजें, ताकि वे समझें और मदद कर सकें। इसमें आपके या आपकी डायरी के बारे में कुछ नहीं जाता।',
         family_send: 'शेयर करें', family_copy: 'कॉपी करें', family_copied: 'कॉपी हो गया। किसी भी चैट में पेस्ट करें।', family_copy_fail: 'इस फ़ोन पर कॉपी नहीं हो सका।',
         family_from: 'Qura Sakhi से, महिलाओं के लिए मुफ़्त हेल्थ ऐप।', family_foot: 'सबके लिए एक जैसी आम जानकारी। यह जाँच का नतीजा नहीं है।',

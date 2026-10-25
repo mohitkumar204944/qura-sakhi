@@ -510,6 +510,12 @@
   }
 
   /* ---------- hub ---------- */
+  /* Version 39.7 (journey audit P3-16): common fears, answered from the one myths deck (joy.js), which Sach ya Myth reads too */
+  function worries() {
+    const cards = S.joy && S.joy.deck ? S.joy.deck('contra') : []; if (!cards.length) return '';
+    return '<h2>' + esc(t('contra_wf_h')) + '</h2><div class="stack contra-wf">' + cards.map((c) => '<details class="card contra-wf-c"><summary><span class="pill ' + (c.a ? 'ok' : 'muted') + '">' + esc(t(c.a ? 'contra_wf_fact' : 'contra_wf_myth')) + '</span> <strong>' + esc(tx(c.s)) + '</strong></summary><p class="small">' + esc(tx(c.w)) + '</p>' +
+      (c.go && c.go !== 'contra' && (S.routeOwner(c.go) || c.go.indexOf('contra-m-') === 0) ? '<button type="button" class="linkbtn" data-go="' + esc(c.go) + '">' + esc(t('contra_wf_more')) + '</button>' : '') + '</details>').join('') + '</div>';
+  }
   function renderHub(v) {
     const d = D(); const mine = S.canSave() && d.method && M[d.method];
     let myCard = '';
@@ -527,7 +533,7 @@
       '<p class="note">' + esc(t('contra_safe_days')) + '</p>' +
       '<h2>' + esc(t('contra_all')) + '</h2><p class="small">' + esc(t('contra_num_note')) + '</p>' +
       GROUPS.map((g) => '<div class="stack"><div class="eyebrow">' + esc(t(g[0])) + '</div><div class="list">' + g[1].map(resRow).join('') + '</div></div>').join('') +
-      quraCard(t('contra_hub'));
+      worries() + quraCard(t('contra_hub'));
     S.wire(v);
     const tb = v.querySelector('#hub-took'); if (tb) tb.addEventListener('click', () => { markToday(D(), 't'); S.save(); S.toast(t('contra_marked')); S.render(); });
   }
@@ -875,6 +881,7 @@
     contra_missed: 'Missed or late pill', contra_missed_s: 'What to do for Mala-N, POP, Chhaya or a late Antara', contra_ec: 'Emergency contraception', contra_ec_s: 'Unprotected sex or a condom broke: what to do, and by when',
     contra_free: 'Where it is free', contra_free_s: 'ASHA, sub-centre, PHC, CHC, district hospital', contra_all: 'All methods', contra_my: 'My method',
     contra_g_long: 'Lasts months or years', contra_g_pill: 'Pills', contra_g_each: 'Each time you have sex', contra_g_perm: 'Permanent', contra_g_after: 'After a baby', contra_g_emerg: 'Emergency only',
+    contra_wf_h: 'Worries and facts', contra_wf_myth: 'Myth', contra_wf_fact: 'Fact', contra_wf_more: 'Read about this method',
     contra_safe_days: 'Counting "safe days" is not a reliable way to avoid pregnancy, so this app never calls any day safe. Its fertile-day estimates are for planning a pregnancy.', contra_num_note: 'The number is how many women in 100 get pregnant in a year of typical use (WHO).',
     contra_in100: 'in 100', contra_hours: 'hours', contra_qura_h: 'Not sure which method suits you?', contra_qura_p: "A Qura doctor (BAMS) can talk it through with you on a free call and refer you. Hormonal methods are started by an MBBS doctor or gynaecologist.",
     contra_rate_typ: 'Out of 100 women using it for a year, about {n} get pregnant with typical use.', contra_rate_k: 'Fewer than 1 in 100. Out of 1,000 women using it for a year, about {k} get pregnant.',
@@ -944,6 +951,7 @@
     contra_missed: 'गोली छूट गई या देर हुई', contra_missed_s: 'Mala-N, POP, छाया या अंतरा में देरी पर क्या करें', contra_ec: 'इमरजेंसी गर्भनिरोध', contra_ec_s: 'असुरक्षित संबंध या कंडोम फटा: क्या करें, और कब तक',
     contra_free: 'कहाँ मुफ़्त मिलता है', contra_free_s: 'ASHA, सब-सेंटर, PHC, CHC, ज़िला अस्पताल', contra_all: 'सभी तरीक़े', contra_my: 'मेरा तरीक़ा',
     contra_g_long: 'महीनों या सालों तक', contra_g_pill: 'गोलियाँ', contra_g_each: 'हर बार संबंध के समय', contra_g_perm: 'स्थायी', contra_g_after: 'बच्चे के बाद', contra_g_emerg: 'सिर्फ़ इमरजेंसी में',
+    contra_wf_h: 'चिंताएँ और सच', contra_wf_myth: 'भ्रम', contra_wf_fact: 'सच', contra_wf_more: 'इस तरीक़े के बारे में पढ़ें',
     contra_safe_days: '“safe days” गिनना गर्भ से बचने का भरोसेमंद तरीक़ा नहीं है, इसलिए यह app किसी दिन को सुरक्षित नहीं कहता। इसके fertile दिनों के अंदाज़े गर्भ की योजना के लिए हैं।', contra_num_note: 'नंबर बताता है कि आम इस्तेमाल के एक साल में 100 में से कितनी महिलाओं को गर्भ ठहरता है (WHO)।',
     contra_in100: '100 में', contra_hours: 'घंटे', contra_qura_h: 'तय नहीं कर पा रहीं कि कौन सा तरीक़ा ठीक है?', contra_qura_p: 'Qura की डॉक्टर (BAMS) मुफ़्त कॉल पर आपसे बात कर सकती हैं और refer कर सकती हैं। हॉर्मोन वाले तरीक़े MBBS डॉक्टर या स्त्री रोग विशेषज्ञ शुरू करते हैं।',
     contra_rate_typ: 'इसे एक साल इस्तेमाल करने वाली 100 महिलाओं में से, आम इस्तेमाल में लगभग {n} को गर्भ ठहरता है।', contra_rate_k: '100 में 1 से कम। एक साल इस्तेमाल करने वाली 1,000 महिलाओं में से लगभग {k} को गर्भ ठहरता है।',

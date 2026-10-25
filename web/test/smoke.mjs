@@ -67,3 +67,4 @@ if (fs.existsSync(content)) {
 for (const x of dupKeys(root)) problems.push(x);
 console.log(JSON.stringify({ mods: info.mods.length, routes: info.routes.length, tiles: info.tiles, setups: setups.length }));
 console.log(problems.length ? problems.slice(0, 60).join('\n') + (problems.length > 60 ? '\n… ' + (problems.length - 60) + ' more' : '') : 'SMOKE OK: no errors, no empty screens, no overflow');
+if (problems.length) process.exitCode = 1;   /* Version 39.0: a problem fails the run */

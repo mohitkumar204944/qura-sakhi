@@ -130,8 +130,13 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   check('3 ... and "no period yet" isn\'t a card of its own', !/no period yet/i.test(await allText(page)), (await allText(page)).match(/.{0,60}no period yet.{0,40}/i));
   check('3 the doctor check says a pregnancy test comes first if she could be pregnant', /do a pregnancy test first/.test(v));
   await tap(page, '#pl-doc-yes');
-  check('3 once the check is done, "no period yet" shows again', /no period yet/i.test(await allText(page)));
+  /* Version 39.6: "Yes, done" rests what the doctor check covered, the early "no period yet" too (MODULE_API section 49) */
+  check('3 once the check is done, the early "no period yet" rests too', !/no period yet/i.test(await allText(page)), (await allText(page)).match(/.{0,60}no period yet.{0,40}/i));
   await ctx.close();
+  const e = await open({ seed: { events: [{ d: ago(95), t: 'start' }, { d: ago(90), t: 'end' }], intake: IK, mods: { explain: { seen: { ['late_now:' + ago(95)]: ago(50) } }, plan: planOf('cycle', 'irregular', ago(60), { intake: IK, doc: 'done', docAt: ago(50) }) } } });
+  await go(e.page, 'home');
+  check('3 ... but at 90 days it shows again, though she rested the early card for the same gap', /no period yet/i.test(await allText(e.page)), (await allText(e.page)).slice(0, 900));
+  await e.ctx.close();
   const b = await open({ seed: { events: [{ d: ago(95), t: 'start' }, { d: ago(90), t: 'end' }], intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(4), { intake: IK }) } } });
   await go(b.page, 'home');
   check('3 at 90 days or more it always shows', /no period yet/i.test(await allText(b.page)), (await allText(b.page)).slice(0, 900));
@@ -201,14 +206,16 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   v = await view(page);
   check('6 the summary is honest, then her results', /You followed your plan on 3 of 84 days\./.test(v) && /Want to try again, smaller\?/.test(v) && !/You did 12 weeks/.test(v), v.slice(0, 600));
   check('6 results: her joining answer as "before", and the gap that ended during her plan', /You said: 36 to 45 days/.test(v) && /about 50/.test(v), v.match(/Days between periods.{0,200}/s));
-  check('6 nothing changed: see a doctor', /If nothing has changed, see a doctor/.test(v));
+  /* Version 39.6: one end card for every woman, with no judging word (MODULE_API section 49) */
+  check('6 every plan ends with "Show this page to a doctor"', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc [data-go="report-show"]')) && !/If nothing has changed/.test(v));
   check('6 what next: keep going, or a new 12 weeks', /What next\?/.test(v) && (await has(page, '#pl-keep')) && (await has(page, '#pl-again')));
   await shot(page, '6-end');
   await go(page, 'home');
   check('6 once seen, the end card leaves the slot (the line on Today stays)', (await slotFirst(page)) !== 'Your 12 weeks are done' && /Your 12 weeks are done/.test(await txt(page, '#view .today-card')));
   await go(page, 'plan'); await tap(page, '#pl-keep');
   const s = await st(page); const r = s.reminders.find((x) => x.id === 'plan');
-  check('6 "Keep going": the plan carries on, and so does the evening check-in', s.mods.plan.keep === true && r && r.until == null && /Keeping it going/i.test(await view(page)), [s.mods.plan.keep, r]);
+  /* Version 39.6: "Keep it light" until month 12, and the evening check-in ends there too */
+  check('6 "Keep going": the plan carries on, and so does the evening check-in, until month 12', s.mods.plan.keep === true && r && r.on && r.until === iso(s.mods.plan.start, 52 * 7 - 1) && /Keep it light/.test(await view(page)), [s.mods.plan.keep, r]);
   check('6 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
@@ -218,7 +225,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(page, 'plan');
   const v = await view(page);
   check('6 a light plan ends the same way', /Your 12 weeks are done/.test(v) && /You followed your plan on 2 of 84 days/.test(v) && /What next\?/.test(v), v.slice(0, 500));
-  check('6 pain that stopped her day: a doctor is offered at the end', /If nothing has changed, see a doctor/.test(v));
+  check('6 pain that stopped her day: a doctor is offered at the end', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc [data-go="access-doctor"]')));
   await ctx.close();
   const p = await open({ seed: { events: [], situation: { pregnant: true, pregnantSince: ago(150) }, mods: { plan: planOf('preg', 'food', ago(90)) } } });
   await go(p.page, 'home');

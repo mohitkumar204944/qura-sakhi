@@ -74,7 +74,7 @@ const VAX = { id: 'post-vax-9m', mod: 'post', kind: 'checkup', title: { en: "Bab
   const L = await lastSchedule(T.page);
   const pill = L.filter((x) => /^r-pill-/.test(x.id));
   check('2 a daily pill: tonight and the next 8 days only, each carrying its rule so Android carries on', pill.length === 9 && pill[0].id === 'r-pill-' + TODAY && pill[0].at === at(TODAY, 21) && pill.every((x) => x.rid === 'pill' && x.rep && x.rep.every === 1 && x.hh === 21 && x.mm === 0 && x.until === 0), pill.slice(0, 2));
-  check('2 the pill rings in the medicines channel, as a heads-up, and a tap opens My method', pill.every((x) => x.ch === 'sakhi_meds' && x.chname === 'Medicines' && x.imp === 'high' && x.go === 'contra-mine' && x.secret === false && x.body === 'Take your pill' && x.title === 'Qura Sakhi'), pill[0]);
+  check('2 the pill rings in the medicines channel, as a heads-up, and a tap opens My method', pill.every((x) => x.ch === 'sakhi_meds' && x.chname === 'Medicines' && x.imp === 'high' && x.go === 'contra-mine' && x.secret === false && x.body === 'Time for your tablet' && x.title === 'Qura Sakhi'), pill[0]);   /* Version 39.0: plain words on the lock screen by default */
   const iron = L.filter((x) => /^r-iron-wk-/.test(x.id));
   check('2 a weekly tablet: this Sunday only (the 8 days), carrying its weekday, opening the iron screen', iron.length === 1 && iron[0].id === 'r-iron-wk-' + iso(TODAY, 2) && iron.every((x) => JSON.stringify(x.rep) === '{"wd":[0]}' && x.go === 'iron' && x.ch === 'sakhi_meds'), iron);
   const vax = L.filter((x) => /^r-post-vax-9m-/.test(x.id));
@@ -107,7 +107,7 @@ const VAX = { id: 'post-vax-9m', mod: 'post', kind: 'checkup', title: { en: "Bab
   const L = await lastSchedule(T.page);
   const ri = await T.page.evaluate(() => { const r = window.Saathi.cycle && window.Saathi.cycle.rangeInfo ? window.Saathi.cycle.rangeInfo() : null; return r ? { from: window.Saathi.toISO(r.from), to: window.Saathi.toISO(r.to) } : null; });
   const head = L.find((x) => /^period-/.test(x.id)); const late = L.find((x) => /^late-/.test(x.id));
-  check('4 the heads-up the day before her likely days, in the period channel, opening Home', head && head.body === 'Your period may start in the next few days. Keep a pad handy.' && head.ch === 'sakhi_period' && head.go === 'home', head);
+  check('4 the heads-up the day before her likely days, in the period channel, opening Home', head && head.body === 'A reminder from Sakhi. Tap to see.' && head.ch === 'sakhi_period' && head.go === 'home', head);
   check('4 the late nudge: three days after her range ends, 10 am, with no health words', late && late.body === 'Open Sakhi: your dates need a look.' && late.go === 'home' && late.ch === 'sakhi_period' && (!ri || late.at === at(iso(ri.to, 3), 10)), { late, ri });
   check('4 the nudge comes after the heads-up', head && late && late.at > head.at);
   await T.page.evaluate((d) => { const S = window.Saathi; S.state.events.push({ d: d, t: 'start' }); }, TODAY); await resave(T.page);

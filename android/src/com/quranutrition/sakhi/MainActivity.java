@@ -505,8 +505,10 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     public void onBackPressed() {
         // An open sheet closes first; otherwise each screen is a #route, so WebView history is the app's own back stack.
-        web.evaluateJavascript("(window.__sakhiBack && window.__sakhiBack()) ? 1 : 0", new ValueCallback<String>() {
+        // Version 39.2: Back on Today closes the app ("exit"); Back from another tab's first screen goes to Today (the page does it).
+        web.evaluateJavascript("(function(){var r=window.__sakhiBack&&window.__sakhiBack();return r==='exit'?2:(r?1:0);})()", new ValueCallback<String>() {
             @Override public void onReceiveValue(String v) {
+                if ("2".equals(v)) { finish(); return; }
                 if ("1".equals(v)) return;
                 if (web.canGoBack()) web.goBack(); else finish();
             }

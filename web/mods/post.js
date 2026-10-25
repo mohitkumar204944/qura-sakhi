@@ -56,6 +56,7 @@
     age_m: ['Your baby is about {m} months old.', 'आपका बच्चा लगभग {m} महीने का है।'],
     ph1: ['The first 6 weeks (42 days) are for healing: bleeding settles, the womb shrinks back, stitches heal. Rest when the baby sleeps.', 'पहले 6 हफ़्ते (42 दिन) शरीर के भरने के हैं: ब्लीडिंग कम होती है, बच्चेदानी वापस छोटी होती है, टाँके भरते हैं। जब बच्चा सोए, आप भी आराम करें।'],
     ph2: ['Your 6 weeks of healing are over. Give only breast milk until 6 months: {d}.', 'आपके 6 हफ़्ते का भरने का समय पूरा हुआ। 6 महीने तक, यानी {d} तक, सिर्फ़ माँ का दूध दें।'],
+    bf_food_h: ['Food while you breastfeed', 'स्तनपान के दिनों का खाना'], bf_fast: ['Fasting while you breastfeed', 'स्तनपान के दौरान व्रत'],
     ph3: ['Your baby is past 6 months: start soft home foods and keep breastfeeding to 2 years or more.', 'बच्चा 6 महीने से बड़ा है: नरम घर का खाना शुरू करें और 2 साल या उससे ज़्यादा तक स्तनपान जारी रखें।'],
     k_check: ["Today's check", 'आज की जाँच'], k_done: ['Done', 'हो गई'], k_notyet: ['Not yet', 'अभी नहीं'],
     k_feeds: ['Feeds today', 'आज की फ़ीड'], k_pf: ['Pelvic floor sets today', 'आज पेल्विक फ़्लोर सेट'],
@@ -330,6 +331,14 @@
 
   /* ---------- guide content (bilingual objects) ---------- */
   const G = {
+    /* Version 39.9 (diet audit 3.8): food after the birth (new lines, wording review 17.4) */
+    food: [
+      L('Keep water near you, and drink a glass at every feed.', 'पास में पानी रखें, और हर बार दूध पिलाते समय एक गिलास पानी पिएँ।'),
+      L('Eat your meals: dal, milk or curd, eggs or paneer if you eat them, sabzi, and roti or rice. Your body needs a little more food than before.', 'अपना खाना पूरा खाएँ: दाल, दूध या दही, खाती हों तो अंडा या पनीर, सब्ज़ी, और रोटी या चावल। शरीर को पहले से थोड़ा ज़्यादा खाना चाहिए।'),
+      L('Laddoos and panjiri are food too: have them in small helpings, not in place of a meal.', 'लड्डू और पंजीरी भी खाना हैं: थोड़ी मात्रा में लें, खाने की जगह नहीं।'),
+      L("Don't cut out water, fruit or vegetables after the birth: your body needs them.", 'डिलीवरी के बाद पानी, फल या सब्ज़ी बंद न करें: शरीर को इनकी ज़रूरत है।'),
+      L('Herbal powders, kadhas or supplements: ask your doctor first.', 'जड़ी-बूटी के पाउडर, काढ़े या सप्लीमेंट: पहले डॉक्टर से पूछें।')
+    ],
     find: [
       L('Sit or lie comfortably with your knees slightly apart.', 'घुटने थोड़े खोलकर आराम से बैठें या लेटें।'),
       L('Squeeze as if you are stopping your wee and holding in wind at the same time. You should feel a lift inside.', 'ऐसे कसें जैसे पेशाब रोक रही हों और साथ में गैस भी रोक रही हों। अंदर की ओर ऊपर खिंचाव महसूस होना चाहिए।'),
@@ -502,7 +511,7 @@
   function askCard(hKey, pKey, topicKey) {
     return '<div class="card soft"><h3>' + esc(T(hKey)) + '</h3><p class="small">' + esc(T(pKey)) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T(topicKey)) + '">' + esc(t('ask_qura')) + '</button></div>';
   }
-  function acc(title, inner, open) { return '<details class="pst-acc"' + (open ? ' open' : '') + '><summary>' + esc(title) + '</summary><div class="pst-body">' + inner + '</div></details>'; }
+  function acc(title, inner, open, at) { return '<details class="pst-acc"' + (open ? ' open' : '') + (at ? ' data-at="' + at + '"' : '') + '><summary>' + esc(title) + '</summary><div class="pst-body">' + inner + '</div></details>'; }
   function related(cur) {
     const all = [[R.rec, 't_rec', 't_rec_s', S.I.check], [R.mood, 't_mood', 't_mood_s', S.I.heart], [R.feed, 't_feed', 't_feed_s', S.I.drop], [R.contra, 't_contra', 't_contra_s', S.I.pill], [R.pelvic, 't_pelvic', 't_pelvic_s', S.I.flower], [R.checks, 't_checks', 't_checks_s', S.I.bell]];
     const items = all.filter((x) => x[0] !== cur);
@@ -525,7 +534,7 @@
     if (b) b.addEventListener('click', () => {
       const val = (v.querySelector('#pst-birth') || {}).value || '';
       if (!okISO(val) || S.fromISO(val) > S.today()) { S.toast(T('birth_bad')); return; }
-      store().birth = val; persist(); editBirth = false; S.render();
+      store().birth = val; if (S.birthOn) S.birthOn(val); persist(); editBirth = false; S.render();   /* review life-13: the birth ends the pregnancy, as the stage sheet's does */
     });
   }
 
@@ -700,6 +709,7 @@
     v.innerHTML = S.backRow(T('f_h'), R.hub, false) + '<p class="small">' + esc(T('f_p')) + '</p>' + log + (S.canSave() ? '' : '<p class="small">' + esc(T('tmp_note')) + '</p>' + S.needDiary()) + listHtml +
       '<div class="flag urgent pst-col"><strong>' + esc(T('baby_h')) + '</strong><ul class="pst-ul">' + li(G.baby) + '</ul><span>' + esc(tx(G.babyNote)) + '</span><div class="pst-row">' + copyBtn('108', 'pst-onDark') + copyBtn('102', 'pst-onDark') + '</div></div>' +
       acc(T('latch_h'), '<ol class="steps">' + li(G.latch) + '</ol>', true) +
+      acc(T('bf_food_h'), '<ul class="pst-ul">' + li(G.food) + '</ul>' + (S.routeOwner && S.routeOwner('periods-fasting') ? '<button type="button" class="btn sm" data-go="periods-fasting">' + esc(T('bf_fast')) + '</button>' : ''), true, 'bf-food') +   /* Version 39.9; the plan's food step opens here (V39.9 review FOOD-02) */
       acc(T('enough_h'), '<ul class="pst-ul">' + li(G.enough) + '</ul>') +
       acc(T('sore_h'), '<ul class="pst-ul">' + li(G.sore) + '</ul>') +
       acc(T('eng_h'), '<ul class="pst-ul">' + li(G.eng) + '</ul>') +
@@ -900,7 +910,21 @@
   /* ---------- hooks ---------- */
   function stopAll() { stopFeedTick(); stopPfTick(); }
   /* Version 38: her plan's daily recovery check (plan.js, every after-birth goal until day 42) is done only by this check */
-  S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]) });
+  S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]),
+    /* Version 39.5: pelvic floor sets on that day (a plan step counts from them) */
+    pelvicOn: (iso) => !!(S.canSave() && Number((store().pf || {})[iso] || 0) > 0) });
+  /* Version 39.0 (journey audit P0 2 and 2.1): today's and yesterday's recovery-check warning signs reach Today and her diary,
+     at their own level (112 now, or a doctor today) and in the check's own reviewed words */
+  const LP = (k) => ({ en: P[k][0].charAt(0).toUpperCase() + P[k][0].slice(1), hi: P[k][1] });
+  S.post.flags = () => {
+    if (!S.canSave()) return []; const b = (S.state.situation || {}).deliveredOn; if (!b || (S.cycle && S.cycle.isPregnant && S.cycle.isPregnant())) return [];
+    const rec = store().rec || {}; const out = [];
+    const lead = (f) => (f.k === 'fl_harm' ? null : P[f.lvl === 'u' ? 'fl_112' : 'fl_today']);
+    (rec[todayISO()] ? [0] : [0, 1]).forEach((k) => { const iso = S.toISO(S.addDays(S.today(), -k)); const v = rec[iso]; if (!v) return; const n = S.diffDays(S.fromISO(b), S.fromISO(iso)); if (n < 0 || n > 84) return;
+      flagsOf(v, n).filter((f) => (f.lvl === 'u' || f.lvl === 'd') && f.s).forEach((f) => { if (out.some((o) => o.id === 'pp_' + f.k)) return; const ld = lead(f);
+        out.push({ id: 'pp_' + f.k, lv: f.lvl === 'u' ? 'now' : 'today', at: iso, t: LP(f.s), see: { en: (ld ? ld[0] + '. ' : '') + P[f.k][0], hi: (ld ? ld[1] + '। ' : '') + P[f.k][1] }, go: R.rec, call: f.k === 'fl_harm' ? '14416' : '112' }); }); });
+    return out;
+  };
   function home() {
     if (!S.canSave()) return ''; const n = dayN(); if (n == null || n > 42) return '';
     if (S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'post') return '';   /* her plan's step is this card */

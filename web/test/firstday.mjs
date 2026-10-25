@@ -100,7 +100,9 @@ async function signUp(page) {
 /* walks the plan's cards to the Start screen, collecting their words */
 async function cardsToStart(page) {
   let words = '';
-  for (let i = 0; i < 8; i++) { words += '\n' + (await view(page)); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
+  /* Version 39.8: a step's reason sits behind "Why?"; read it too (a shared phone must show no health words there either) */
+  const why = () => page.$$eval('#view details.pl-why-d', (xs) => xs.map((x) => 'Why: ' + x.textContent.replace(/^\s*\S+\s*/, '')).join('\n'));
+  for (let i = 0; i < 8; i++) { words += '\n' + (await view(page)) + '\n' + (await why()); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
   return words;
 }
 const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan.startFromIntake(x); S.save(); }, a);
@@ -127,16 +129,16 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   for (const q of ['gap:g45', 'skips:y', 'dx:ns']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '[data-pl-m="signs:acne"]'); await tap(page, '#pl-in-next');
   v = await view(page);
   check('3 her day: why Sakhi asks, and no reminder question', /So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
-  for (const q of ['act:0', 'food:veg', 'bed:late', 'work:day']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '#pl-in-next');
+  for (const q of ['act:0', 'food:veg', 'bed:late', 'work:day']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '[data-pl-m="lim:none"]'); await tap(page, '#pl-in-next');
   check('3 her walk time says what Sakhi does with it', /Sakhi puts your walk at this time each day/.test(await view(page)));
-  await tap(page, '[data-pl-when="dinner"]'); await tap(page, '#pl-in-skip');
+  await tap(page, '[data-pl-when="dinner"]');   /* Version 39.3: no body screen unless her goal is her weight */
   v = await view(page);
   check('3 the summary shows what she told Sakhi', /Here’s what you told Sakhi/.test(v) && /Irregular or late periods/.test(v) && /36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /After dinner/.test(v), v.slice(0, 700));
   check('3 the summary is part 3, "Your plan"', /Your plan/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts .on'));
   await shot(page, '01-summary');
   await tap(page, '[data-pl-edit="when"]');
   check('3 "Change" opens that question', await has(page, '[data-pl-when]'));
-  await tap(page, '[data-pl-when="evening"]'); await tap(page, '#pl-in-skip');
+  await tap(page, '[data-pl-when="evening"]');
   check('3 the changed answer shows on the summary', /In the evening/.test(await view(page)), (await view(page)).slice(0, 600));
   await tap(page, '#pl-in-make');
   check('3 "Make my plan" goes on to the phone question', await has(page, '[data-ob-sh]'));
@@ -225,7 +227,9 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   const { ctx, page, errs } = await open({ seed: { events: [{ d: ago(100), t: 'start', approx: true }], mods: { plan: planOf('cycle', 'irregular', TODAY, { intake: IK, started: TODAY }) }, intake: IK } });
   await closeTips(page);
   check('8 a 100-day gap (a month card) shows on day 1', await has(page, '#view [data-xp-lv="month"]'));
-  check('8 her plan still leads', (await slotFirst(page)) === 'Day 1 of your plan', await slotFirst(page));
+  /* Version 39.0 (journey audit P1-09): a "see a doctor this month" signal from her records comes before her plan's day card,
+     so it never folds under "More from Sakhi"; her plan still heads Today, and its day-1 card waits one tap down */
+  check('8 the month card leads the slot, and her plan still heads Today', (await slotFirst(page)) !== 'Day 1 of your plan' && await has(page, '#view .slot [data-xp-lv="month"]') && /Day 1/.test(await view(page)) && /Day 1 of your plan/.test(await page.$eval('#view .slot-more', (e) => e.textContent).catch(() => '')), await slotFirst(page));
   check('16 no page errors (month card)', errs.length === 0, errs);
   await ctx.close();
 }
@@ -408,7 +412,9 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('16 discreet: "Your plan is ready" still shows, in plain words', (await slotFirst(page)) === 'Your plan is ready', await slotFirst(page));
   await go(page, 'plan-reveal');
   const words = await cardsToStart(page);
-  check('16 discreet: no health words on her plan cards', !/period|PMOS|PCOS|insulin|acne|hormone|cycle|doctor check/i.test(words), words.match(/.{0,40}(period|PMOS|PCOS|insulin|acne|hormone|cycle|doctor check).{0,40}/i));
+  check('16 discreet: no health words on her plan cards', !/period|PMOS|PCOS|insulin|acne|hormone|cycle/i.test(words), words.match(/.{0,40}(period|PMOS|PCOS|insulin|acne|hormone|cycle).{0,40}/i));
+  /* Version 39.0: the doctor check is part of every plan, on a shared phone too, in plain words */
+  check('16 discreet: the doctor check shows in plain words', !/doctor check/.test(words) || /A doctor’s check is part of your plan/.test(words), words.match(/.{0,60}doctor.{0,60}/i));
   await tap(page, '#pl-rv-go'); await settle(page, 1200); await closeTips(page);
   const v = await view(page);
   check('16 discreet: Today says "My plan · Day 1"', /My plan/i.test(v) && /Day 1 · 0 of 3 done today/.test(v) && !/My cycle plan/i.test(v), v.slice(0, 700));

@@ -112,14 +112,17 @@ await diary({ situation: { breastfeeding: true, deliveredOn: '2026-09-27' }, che
 check('explain: heavy bleeding after birth -> call 112 now', await F(), ['pp_lochia:now']);
 await diary({ situation: { pregnant: true, pregnantSince: '2026-05-02' }, events: [] });
 await page.evaluate(() => { const S = window.Saathi; S.state.daily['2026-10-17'] = ['d_pbleed']; S.state.daily['2026-10-18'] = ['d_swell', 'd_headache']; S.save(); });
-check('explain: logged bleeding, or headache with swelling, in pregnancy -> see a doctor today', (await F()).sort(), ['p_bleed:today', 'p_headswell:today']);
+/* Version 39.0 (Mohit's decision 2): bleeding in pregnancy leads with "call 112", Help's stricter reviewed line */
+check('explain: logged bleeding in pregnancy -> call 112 now; headache with swelling -> see a doctor today', (await F()).sort(), ['p_bleed:now', 'p_headswell:today']);
 await diary({ periods: [['2026-09-23', '2026-09-27']] });
 await page.evaluate(() => { const S = window.Saathi; S.state.daily['2026-10-16'] = ['d_itch']; S.save(); });
 check('explain: itching logged on a day -> see a doctor this week', (await F()).filter((x) => x.startsWith('disch')), ['disch:week']);
 await page.evaluate(() => { const S = window.Saathi; S.loadSample('priya'); });
 check('explain: Priya (sample)', await F(), ['flow_heavy:week', 'gap_long:month:43', 'androgen:month', 'spot_between:watch']);
 await page.evaluate(() => { const S = window.Saathi; S.loadSample('kamla'); });
-check('explain: Kamla (sample, 48)', (await F()).sort(), ['gap_long:month:74', 'm_hot:month', 'mood:month']);
+/* Version 39.1: her sample heavy-bleeding chart (PBAC 150) gives the heavy-flow card too */
+/* Version 39.6: her sample Hb of 9.8 on 1 Oct is under the 12 to 15 printed on her report */
+check('explain: Kamla (sample, 48)', (await F()).sort(), ['flow_heavy:week', 'gap_long:month:74', 'hb_low:month', 'm_hot:month', 'mood:month']);
 await page.evaluate(() => { const S = window.Saathi; S.loadSample('asha'); });
 check('explain: Asha (sample, regular)', await F(), ['gap_usual:ok:30']);
 
@@ -246,3 +249,5 @@ const bad = results.filter((r) => !r.pass);
 results.forEach((r) => console.log((r.pass ? 'PASS ' : 'FAIL ') + r.name + (r.pass ? '' : '  got ' + JSON.stringify(r.got) + ', want ' + JSON.stringify(r.want))));
 if (errs.length) console.log('PAGE ERRORS: ' + errs.join(' / '));
 console.log(bad.length ? bad.length + ' of ' + results.length + ' failed' : 'MATHS OK: all ' + results.length + ' checks pass');
+/* a failed check fails the run, so npm test stops here (Version 39.0) */
+if (bad.length || errs.length) process.exitCode = 1;

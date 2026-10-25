@@ -143,7 +143,8 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
 {
   const { ctx, page, errs } = await open({ hash: '#preg-plan', lang: 'hi', seed: pregSeed(24, { lang: 'hi' }) });
   const v = await view(page);
-  check('1 Hindi: the plan', /मेरा गर्भावस्था प्लान/.test(v) && /अभी का/.test(v) && /शुगर टेस्ट \(75 g\)/.test(v) && /अगला PMSMA दिन/.test(v), v.slice(0, 500));
+  /* Version 39.2: the checklist page is "Check-ups and tests" (जाँचें और टेस्ट); "My pregnancy plan" is the My plan tab */
+  check('1 Hindi: the plan', /जाँचें और टेस्ट/.test(v) && /अभी का/.test(v) && /शुगर टेस्ट \(75 g\)/.test(v) && /अगला PMSMA दिन/.test(v), v.slice(0, 500));
   await go(page, 'home'); check('1 Hindi: Home\'s row', /अभी: Td के टीके और 5 अन्य/.test(await view(page)));
   check('1 Hindi: no errors', errs.length === 0, errs);
   await ctx.close();
@@ -195,10 +196,11 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   check('2 pregnancy list: the birth-cost card, with its official source', /₹37,600/.test(await view(page)) && !!(await page.$('#view a[href^="https://static.pib.gov.in/"]')));
   await page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await tap(page, '[data-claim-start="pmmvy"]'); await sleep(300);
   const blk = await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText);
-  check('2 pregnant, after two check-ups: she can apply for the first part now', /You have had two check-ups, so you can apply for the first part \(₹3,000\) now/.test(blk) && !/Register by/.test(blk) && !(await rem(page, 'access-pmmvy')), blk);
+  /* Version 39.7 (sources check): the 2022 guidelines ask for one check-up; the line says some offices still ask for two */
+  check('2 pregnant, after her check-ups: she can apply for the first part now', /You have had a check-up, so once your pregnancy is registered you can apply for the first part \(₹3,000\) now/.test(blk) && /Some offices still ask for two check-ups/.test(blk) && !/Register by/.test(blk) && !(await rem(page, 'access-pmmvy')), blk);
   await page.evaluate((d) => { const S = window.Saathi; S.state.mods.preg.mcp.anc = [d]; S.save(); S.render(); }, isoAgo(14)); await sleep(250);
   await page.$eval('#sch-pmmvy', (d) => { d.open = true; });
-  check('2 after one check-up: no "apply now" line yet (the ministry\'s FAQ asks for one in one answer, two in another)', !/first part/.test(await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText)));
+  check('2 after one check-up: the "apply now" line already shows (Version 39.7: the 2022 guidelines need one)', /first part/.test(await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText)));
   check('2 pregnant: no errors', errs.length === 0, errs);
   await ctx.close();
 }

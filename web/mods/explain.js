@@ -17,16 +17,18 @@
   const MOOD_SEE = L('Talk to a doctor this month. Tele-MANAS on 14416 is free, at any hour. If you think about harming yourself, call 14416 or 112 now.', 'इसी महीने डॉक्टर से बात करें। Tele-MANAS 14416 मुफ़्त है, किसी भी समय। ख़ुद को नुक़सान पहुँचाने के विचार आएँ तो अभी 14416 या 112 पर कॉल करें।');
   const X = {
     gap_usual: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), w: L('That is within the usual 21 to {b} days. Gaps can move by a few days from month to month, and that is normal too.', 'यह आम 21 से {b} दिन के दायरे में है। अंतर हर महीने कुछ दिन आगे-पीछे हो सकता है, और यह भी सामान्य है।'), go: 'diary' },
-    gap_short: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), w: L('That is shorter than the usual 21 days. One short gap is often nothing, but it is worth watching.', 'यह आम 21 दिन से कम है। एक बार छोटा अंतर अक्सर कुछ नहीं होता, पर इस पर ध्यान रखना ठीक है।'),
+    gap_short: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), tOld: L('One of your recent gaps was {n} days', 'आपका एक हाल का अंतर {n} दिन का था'), w: L('That is shorter than the usual 21 days. One short gap is often nothing, but it is worth watching.', 'यह आम 21 दिन से कम है। एक बार छोटा अंतर अक्सर कुछ नहीं होता, पर इस पर ध्यान रखना ठीक है।'),
       why: [L('Gaps change a little from month to month.', 'अंतर हर महीने थोड़ा बदलता है।'), L('Bleeding between periods can look like an early period.', 'पीरियड के बीच की ब्लीडिंग जल्दी आए पीरियड जैसी लग सकती है।'), L('Stress and thyroid problems can bring a period early.', 'तनाव और थायरॉइड की समस्या से पीरियड जल्दी आ सकता है।'), L('In your 40s, cycles often get shorter for a while.', '40 की उम्र के बाद कुछ समय के लिए चक्र अक्सर छोटे हो जाते हैं।')],
       todo: [L('Log your next period start. A few months show the pattern better than one.', 'अगले पीरियड की शुरुआत दर्ज करें। एक महीने से ज़्यादा, कुछ महीनों का पैटर्न बताता है।')],
       see: L('If it happens again, or you bleed between periods, see a doctor.', 'अगर दोबारा हो, या पीरियड के बीच ब्लीडिंग हो, तो डॉक्टर को दिखाएँ।'),
       see2: L('{k} of your last 6 gaps were shorter than 21 days. See a doctor this month and ask for a thyroid test (TSH) and a blood count (Hb).', 'आपके पिछले 6 में से {k} अंतर 21 दिन से छोटे थे। इसी महीने डॉक्टर को दिखाएँ और थायरॉइड (TSH) और खून की जाँच (Hb) करवाएँ।'), go: 'periods', ask: L('Short gaps between my periods', 'पीरियड के बीच छोटा अंतर') },
-    gap_long: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), w: L('That is longer than the usual 21 to {b} days.', 'यह आम 21 से {b} दिन से ज़्यादा है।'),
+    gap_long: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), tOld: L('One of your recent gaps was {n} days', 'आपका एक हाल का अंतर {n} दिन का था'), w: L('That is longer than the usual 21 to {b} days.', 'यह आम 21 से {b} दिन से ज़्यादा है।'),
       why: [L('Stress, illness, travel, or a big change in weight or exercise.', 'तनाव, बीमारी, सफ़र, या वज़न या कसरत में बड़ा बदलाव।'), L('Breastfeeding and some medicines.', 'दूध पिलाना और कुछ दवाएँ।'), L('PMOS and thyroid problems, the most common causes when it keeps happening. Both can be treated.', 'बार-बार हो तो PMOS और थायरॉइड सबसे आम कारण हैं। दोनों का इलाज होता है।'), L('From your mid-40s, longer gaps are part of the change before menopause.', '45 के आसपास से लंबे अंतर मेनोपॉज़ से पहले के बदलाव का हिस्सा हैं।')],
       todo: [L('Keep logging. Two or three months show the pattern.', 'दर्ज करती रहें। दो-तीन महीने में पैटर्न दिखता है।')],
       see: L('If it happens twice in 6 months, see a doctor.', '6 महीने में दो बार हो तो डॉक्टर को दिखाएँ।'),
       see2: L('{k} of your last 6 gaps were longer than {b} days. See a doctor this month. Blood tests for thyroid and hormones help find the cause.', 'आपके पिछले 6 में से {k} अंतर {b} दिन से लंबे थे। इसी महीने डॉक्टर को दिखाएँ। थायरॉइड और हॉर्मोन की खून की जाँच से कारण पता चलता है।'), go: 'topic-cond', ask: L('Long gaps between my periods', 'पीरियड के बीच लंबा अंतर') },
+    /* Version 39.1: Trends' "Irregular" (every gap in the usual range, but they vary more than usual), in the verdict's own words */
+    gap_vary: { t: L('Your gaps vary by {n} days', 'आपके अंतर में {n} दिन तक का फ़र्क़ है'), w: L('Usual: 21 to {b} days apart, varying by {v} days or less.', 'सामान्य: 21 से {b} दिन का अंतर, जो {v} दिन से ज़्यादा ऊपर-नीचे न हो।'), go: 'a-cycle.why-cycles-become-irregular' },
     late_now: { t: L('Day {n}, and no period yet', 'दिन {n}, और अभी तक पीरियड नहीं'), w: L('Your period is later than the usual 21 to {b} days.', 'आपका पीरियड आम 21 से {b} दिन से देर से है।'),
       wOwn: L('Your period is later than your own likely dates.', 'आपका पीरियड आपकी अपनी संभावित तारीख़ों से देर से है।'),
       /* Version 37.2: from 40, long gaps are expected in the years before menopause (ux-gaps B1; wording-review section 15) */
@@ -37,11 +39,16 @@
         L('Period late or a positive test, with pain on one side of the lower belly, pain at the tip of the shoulder, bleeding, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which can bleed inside.', 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, ब्लीडिंग, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसमें अंदर ही अंदर ख़ून बह सकता है।')],
       see: L('No period for 90 days, and not pregnant or breastfeeding: see a doctor.', '90 दिन तक पीरियड न आए, और आप गर्भवती या दूध पिलाने वाली नहीं हैं: डॉक्टर को दिखाएँ।'),
       see2: L('It has been {d} days. See a doctor this month. Long gaps can be treated, so the cause is worth finding.', '{d} दिन हो गए हैं। इसी महीने डॉक्टर को दिखाएँ। लंबे अंतर का इलाज होता है, इसलिए कारण जानना ज़रूरी है।'), go: 'pregtest-when', ask: L('My period is late', 'मेरा पीरियड देर से है') },
-    period_long: { t: L('Your last period lasted {n} days', 'आपका पिछला पीरियड {n} दिन चला'), w: L('Bleeding for more than 8 days is longer than usual.', '8 दिन से ज़्यादा ब्लीडिंग आम से लंबी है।'), why: BLEED_WHY,
+    period_long: { t: L('Your last period lasted {n} days', 'आपका पिछला पीरियड {n} दिन चला'), tOld: L('One of your recent periods lasted {n} days', 'आपका एक हाल का पीरियड {n} दिन चला'), w: L('Bleeding for more than 8 days is longer than usual.', '8 दिन से ज़्यादा ब्लीडिंग आम से लंबी है।'), why: BLEED_WHY,
       todo: [L('Note how many pads you need on your heaviest day.', 'सबसे भारी दिन कितने pad लगते हैं, यह लिख लें।'), IRON],
       see: L('See a doctor this week and ask for a haemoglobin (Hb) test. It is free at government hospitals.', 'इसी हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन (Hb) की जाँच करवाएँ। यह सरकारी अस्पताल में मुफ़्त है।'), go: 'cond-anaemia', ask: L('Long periods', 'लंबे पीरियड') },
-    flow_heavy: { t: L('Heavy flow in your last period', 'पिछले पीरियड में भारी ब्लीडिंग'), w: L('Soaking a pad every 1 to 2 hours, clots the size of a ₹10 coin or bigger, or leaking through your clothes all mean heavy bleeding.', 'हर 1 से 2 घंटे में pad भीगना, ₹10 के सिक्के जितने या बड़े थक्के, या कपड़ों पर दाग़ लगना, ये सब भारी ब्लीडिंग है।'), why: BLEED_WHY,
+    flow_heavy: { t: L('Heavy flow in your last period', 'पिछले पीरियड में भारी ब्लीडिंग'), tOld: L('Heavy flow in one of your recent periods', 'हाल के एक पीरियड में भारी ब्लीडिंग'), w: L('Soaking a pad every 1 to 2 hours, clots the size of a ₹10 coin or bigger, or leaking through your clothes all mean heavy bleeding.', 'हर 1 से 2 घंटे में pad भीगना, ₹10 के सिक्के जितने या बड़े थक्के, या कपड़ों पर दाग़ लगना, ये सब भारी ब्लीडिंग है।'), why: BLEED_WHY,
       todo: [IRON], see: L('See a doctor this week and ask for an Hb test. If you feel dizzy or faint, or soak a pad every hour: call 112 now.', 'इसी हफ़्ते डॉक्टर को दिखाएँ और Hb की जाँच करवाएँ। चक्कर या बेहोशी लगे, या हर घंटे pad भीगे: अभी 112 पर कॉल करें।'), go: 'cond-anaemia', ask: L('Heavy periods', 'भारी पीरियड') },
+    /* Version 39.6: her Hb below the range printed on her own lab report (cond.js labs), not a number Sakhi picks */
+    hb_low: { t: L('Your Hb was below your report’s range', 'आपका Hb आपकी रिपोर्ट की सीमा से कम था'),
+      w: L('Hb carries oxygen in your blood. When it is low (anaemia), you can feel tired or breathless. Heavy periods are a common cause.', 'Hb ख़ून में ऑक्सीजन ले जाता है। कम हो (ख़ून की कमी), तो थकान या साँस फूल सकती है। भारी पीरियड इसकी आम वजह हैं।'),
+      todo: [IRON], see: L('See a doctor this month. Low Hb is usually treated with iron tablets and a repeat test. If you feel dizzy or faint, or breathless at rest: call 112 now.', 'इसी महीने डॉक्टर को दिखाएँ। कम Hb का इलाज आम तौर पर आयरन की गोलियों और दोबारा जाँच से होता है। चक्कर या बेहोशी लगे, या आराम में भी साँस फूले: अभी 112 पर कॉल करें।'),
+      go: 'cond-anaemia', ask: L('My Hb result', 'मेरा Hb') },
     pain_severe: { t: L('Period pain that stopped your day', 'पीरियड का दर्द जिसने आपका दिन रोक दिया'), w: L('Some cramping is common. But pain that keeps you in bed or away from work is not something to put up with.', 'थोड़ी ऐंठन आम है। पर ऐसा दर्द जो आपको बिस्तर पर रखे या काम से रोके, सहने की चीज़ नहीं है।'),
       why: [L('Endometriosis, where tissue like the womb lining grows outside the womb.', 'endometriosis, जिसमें बच्चेदानी की परत जैसा ऊतक बच्चेदानी के बाहर बढ़ता है।'), L('Fibroids or adenomyosis.', 'fibroid या adenomyosis।'), L('An infection in the pelvis.', 'पेट के निचले हिस्से में इन्फ़ेक्शन।')],
       todo: [L('Heat on your lower belly helps many women.', 'पेट के निचले हिस्से पर सेंक से कई महिलाओं को आराम मिलता है।'), L('Note which days hurt most, and whether it hurts during sex or when you pee.', 'किन दिनों ज़्यादा दर्द होता है, और क्या संबंध या पेशाब के समय दर्द होता है, यह लिख लें।')],
@@ -73,12 +80,15 @@
     androgen: { t: L('Signs that can come with PMOS', 'संकेत जो PMOS के साथ आ सकते हैं'), w: L('Extra hair, acne or thinning scalp hair can come from higher levels of male-type hormones.', 'ज़्यादा बाल, मुँहासे या सिर के बाल पतले होना, पुरुष-जैसे हॉर्मोन बढ़ने से हो सकता है।'),
       w2: L(' Together with your long gaps, PMOS is worth checking.', ' आपके लंबे अंतरों के साथ मिलाकर PMOS की जाँच करवाना ठीक है।'),
       why: [L('PMOS (also called PCOS), the most common cause.', 'PMOS (जिसे PCOS भी कहते हैं), सबसे आम कारण।'), L('Thyroid problems.', 'थायरॉइड की समस्या।'), L('Some medicines.', 'कुछ दवाएँ।')],
-      see: L('See a doctor this month. A blood test helps find the cause.', 'इसी महीने डॉक्टर को दिखाएँ। खून की जाँच से कारण पता चलता है।'), go: 'pattern', ask: L('Could I have PMOS?', 'क्या मुझे PMOS हो सकता है?') },
+      see: L('See a doctor this month. A blood test helps find the cause.', 'इसी महीने डॉक्टर को दिखाएँ। खून की जाँच से कारण पता चलता है।'), go: 'a-pmos.what-pmos-is', ask: L('Could I have PMOS?', 'क्या मुझे PMOS हो सकता है?') },
     neck: { t: L('Dark, velvety skin on the neck or underarms', 'गर्दन या बगल पर गहरी, मख़मली त्वचा'), w: L('This can be a sign of insulin resistance, when the body needs extra insulin to keep blood sugar normal. It is common with PMOS and weight gain.', 'यह insulin resistance का संकेत हो सकता है, जब शरीर को शुगर सामान्य रखने के लिए ज़्यादा insulin चाहिए। यह PMOS और वज़न बढ़ने के साथ आम है।'),
       see: L('Ask a doctor for a sugar test (fasting sugar or HbA1c) this month.', 'इसी महीने डॉक्टर से शुगर की जाँच (fasting sugar या HbA1c) करवाएँ।'), go: 'cond-labs', ask: L('Dark skin on my neck', 'गर्दन पर गहरी त्वचा') },
     mood: { t: L('Low mood or anxiety most days', 'ज़्यादातर दिन उदासी या घबराहट'), w: L('Feeling low or anxious most days is common, and it can be treated.', 'ज़्यादातर दिन उदास या घबराया हुआ महसूस करना आम है, और इसका इलाज होता है।'), see: MOOD_SEE, go: 'help', ask: L('Low mood', 'उदासी') },
     p_bleed: { t: L('Bleeding in pregnancy', 'गर्भ में ब्लीडिंग'), w: L('Some spotting can happen in early pregnancy, but any bleeding needs a check.', 'शुरुआती गर्भ में थोड़ी spotting हो सकती है, पर किसी भी ब्लीडिंग की जाँच ज़रूरी है।'),
-      see: L('See a doctor today. Heavy bleeding, or bleeding with pain or fainting: call 112 now.', 'आज ही डॉक्टर को दिखाएँ। भारी ब्लीडिंग, या दर्द या बेहोशी के साथ ब्लीडिंग: अभी 112 पर कॉल करें।'), go: 'help' },
+      see: L('See a doctor today. Heavy bleeding, or bleeding with pain or fainting: call 112 now.', 'आज ही डॉक्टर को दिखाएँ। भारी ब्लीडिंग, या दर्द या बेहोशी के साथ ब्लीडिंग: अभी 112 पर कॉल करें।'), seeNow: 's1c', go: 'help' },
+    /* Version 39.0: baby moving less from 28 weeks (pregtools k_today's reviewed words; Help s1c's call-now level) */
+    p_moves: { t: L('Baby moving less than usual', 'बच्चे की हलचल आम से कम'), w: L("Fewer or weaker movements than usual: call your hospital or doctor straight away and get checked today, even if it is the middle of the night. Don't wait until tomorrow, and don't go to sleep on it.", 'आम दिनों से कम या हल्की हलचल: तुरंत अस्पताल या डॉक्टर को फ़ोन करें और आज ही जाँच कराएँ, चाहे आधी रात हो। कल तक इंतज़ार न करें, और इसे टालकर सो न जाएँ।'),
+      seeNow: 's1c', go: 'help' },
     p_headswell: { t: L('Headache with swelling', 'सिरदर्द के साथ सूजन'), w: L('Together these can be signs of high blood pressure in pregnancy, called pre-eclampsia.', 'ये दोनों साथ हों तो गर्भ में हाई BP (pre-eclampsia) के संकेत हो सकते हैं।'),
       see: L('Get your BP checked today. A very bad headache, blurred vision or fits: call 112 now.', 'आज ही BP जँचवाएँ। बहुत तेज़ सिरदर्द, धुंधला दिखना या दौरे: अभी 112 पर कॉल करें।'), go: 'help' },
     p_nausea: { t: L('Nausea or vomiting', 'जी मिचलाना या उल्टी'), w: L('Common in the first months, and it usually eases by 16 to 20 weeks.', 'शुरुआती महीनों में आम है, और आमतौर पर 16 से 20 हफ़्ते तक कम हो जाता है।'),
@@ -119,8 +129,9 @@
     const counting = cyclesOn && !sit.hormones;   /* on hormones, a late or missing bleed is expected with the injection, implant or hormonal IUD */
     const evs = (st.events || []).slice().sort((a, b) => (a.d < b.d ? -1 : 1));
     const raw = c.rawStarts(); const ls = c.lastStart();
+    const vg = counting && c.verdict ? c.verdict() : null;
     if (counting && ls) {
-      const ga = c.gapsAll(); const lg = ga[ga.length - 1]; const six = c.usable().slice(-6);
+      const ga = c.gapsAll(); const lg = ga[ga.length - 1]; const six = vg ? vg.days : c.usable().slice(-6);   /* the verdict's own gaps (one engine) */
       /* a long last gap stays on screen until the 90-day card takes over, so no stretch goes without one */
       if (lg && lg.usable && (daysAgo(lg.to) <= 60 || (lg.days > hiB && daysAgo(lg.to) < 90))) {
         const n = lg.days;
@@ -128,6 +139,20 @@
         else if (n > hiB) { const k = six.filter((x) => x > hiB).length; add({ id: 'gap_long', lv: k >= 2 ? 'month' : 'watch', at: lg.to, vars: { n: n, k: k, b: hiB }, strong: k >= 2, no45: age == null || age < 43 }); }
         else add({ id: 'gap_usual', lv: 'ok', at: lg.to, vars: { n: n, b: hiB } });
       }
+      /* Version 39.1 (one engine): when Trends' verdict says "Outside the usual" or "Irregular", the gap behind it has a card
+         here too. It can be months old, so it stays off Today ("quiet") unless 2 or more of her last 6 gaps are outside. */
+      if (vg && vg.cls === 'outside') {
+        const mk = (lng, g, k) => Object.assign({ id: lng ? 'gap_long' : 'gap_short', lv: k >= 2 ? 'month' : 'watch', at: g.to, vars: { n: g.days, k: k, b: hiB }, strong: k >= 2, old: true, quiet: k < 2 }, lng ? { no45: age == null || age < 43 } : { no40: age == null || age < 40 });
+        const lastOf = (f) => { const l = vg.outside.filter(f); return l[l.length - 1]; };
+        /* review ENGINE-01: 2 or more long (or short) gaps get "this month", whatever the other gaps are */
+        [[true, vg.longN, lastOf((x) => x.days > hiB)], [false, vg.shortN, lastOf((x) => x.days < 21)]].forEach((r) => {
+          const id = r[0] ? 'gap_long' : 'gap_short'; if (!r[2] || r[1] < 2 || out.some((f) => f.id === id && f.lv === 'month')) return;
+          for (let i = out.length - 1; i >= 0; i--) if (out[i].id === id) out.splice(i, 1);
+          add(mk(r[0], r[2], r[1]));
+        });
+        if (!out.some((f) => f.id === 'gap_short' || f.id === 'gap_long')) { const g = vg.outside[vg.outside.length - 1]; const lng = g.days > hiB; add(mk(lng, g, lng ? vg.longN : vg.shortN)); }
+      }
+      if (vg && vg.cls === 'irregular') add({ id: 'gap_vary', lv: 'watch', at: vg.gaps[vg.gaps.length - 1].to, vars: { n: vg.spread, b: hiB, v: vg.tol }, quiet: true });
       const ri = c.rangeInfo(); const since = S.diffDays(ls, S.today());
       /* past her own range (or 21 to 35 days), and always at 90 days, whatever her range says */
       /* Version 32: at the end of her own likely range, however short her cycles (it waited until day 37: field-test audit 2.3) */
@@ -137,13 +162,25 @@
     const lastRaw = raw[raw.length - 1];
     /* Version 32: also while she breastfeeds with her periods back (field-test audit 3.2) */
     const bleedOn = !c.isPregnant() && !sit.hysterectomy && !sit.stopped && !(c.afterBirth && c.afterBirth());
+    /* Version 39.1 (one engine): while her cycles count, a period longer than 8 days is the one Trends' verdict shows (any in
+       the last 6 months; off Today after 75 days) */
+    const vp = c.verdict ? c.verdict() : null;
+    if (bleedOn && vp && vp.longP.length) { const p = vp.longP[vp.longP.length - 1]; add({ id: 'period_long', lv: 'week', at: p.d, vars: { n: p.n }, old: p.d !== (ls ? S.toISO(ls) : ''), quiet: daysAgo(p.d) > 75 }); }
+    const flowOf = (d0) => (c.periodFlow ? c.periodFlow(d0) : evs.filter((e) => (e.t === 'start' || e.t === 'start_detail') && e.d >= d0 && S.diffDays(S.fromISO(d0), S.fromISO(e.d)) <= 10));
+    const heavy = (e) => e.pads === 'pads_4' || e.clots === 'clots_2' || e.leaked || e.two;
     if (bleedOn && lastRaw && daysAgo(lastRaw) <= 75) {
-      const end = evs.filter((e) => e.t === 'end' && e.d >= lastRaw && daysAgo(e.d) >= 0 && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 20).pop();   /* the latest end, like the calendar */
-      if (end) { const len = S.diffDays(S.fromISO(lastRaw), S.fromISO(end.d)) + 1; if (len > 8) add({ id: 'period_long', lv: 'week', at: lastRaw, vars: { n: len } }); }
-      const det = evs.filter((e) => (e.t === 'start' || e.t === 'start_detail') && e.d >= lastRaw && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 10);
-      if (det.some((e) => e.pads === 'pads_4' || e.clots === 'clots_2' || e.leaked || e.two)) add({ id: 'flow_heavy', lv: 'week', at: lastRaw, vars: {} });
+      if (!vp) { const end = evs.filter((e) => e.t === 'end' && e.d >= lastRaw && daysAgo(e.d) >= 0 && S.diffDays(S.fromISO(lastRaw), S.fromISO(e.d)) <= 20).pop();   /* the latest end, like the calendar */
+        if (end) { const len = S.diffDays(S.fromISO(lastRaw), S.fromISO(end.d)) + 1; if (len > 8) add({ id: 'period_long', lv: 'week', at: lastRaw, vars: { n: len } }); } }
+      /* Version 39.1 (journey audit P1-05): flow and pain from any day of her period, and from its end */
+      const det = flowOf(ls ? S.toISO(ls) : lastRaw);   /* review ENGINE-04 */
+      if (det.some(heavy)) add({ id: 'flow_heavy', lv: 'week', at: lastRaw, vars: {} });
       if (det.some((e) => e.pain === 'pain_3')) add({ id: 'pain_severe', lv: 'month', at: lastRaw, vars: {} });
     }
+    /* Version 39.1 (journey audit P1-07): pain that stopped her day in 2 of her last 3 periods, even if the latest was easier */
+    if (bleedOn && !out.some((f) => f.id === 'pain_severe')) { const l3 = (c.starts ? c.starts() : raw).slice(-3).filter((d0) => daysAgo(d0) <= 120); const hit = l3.filter((d0) => flowOf(d0).some((e) => e.pain === 'pain_3')); if (hit.length >= 2) add({ id: 'pain_severe', lv: 'month', at: hit[hit.length - 1], vars: {} }); }
+    /* Version 39.1 (journey audit P1-06): the doctors' heavy-bleeding chart (PBAC) at 100 or more is the same heavy-flow card */
+    const pb = S.cond && S.cond.pbacLatest ? (() => { try { return S.cond.pbacLatest(); } catch (e) { return null; } })() : null;
+    if (bleedOn && pb && pb.pts >= 100 && daysAgo(pb.d) >= 0 && daysAgo(pb.d) <= 75 && !out.some((f) => f.id === 'flow_heavy')) add({ id: 'flow_heavy', lv: 'week', at: pb.d, vars: {}, old: !!ls && pb.d < S.toISO(ls) });
     /* starts less than 10 days apart */
     for (let i = 1; i < raw.length; i++) { const gap = S.diffDays(S.fromISO(raw[i - 1]), S.fromISO(raw[i])); if (gap < 10 && daysAgo(raw[i]) <= 90) add({ id: 'dup_start', lv: 'watch', at: raw[i], vars: { n: gap } }); }
     /* spotting outside a period */
@@ -152,6 +189,16 @@
       const sp = evs.filter((e) => e.t === 'spot' && daysAgo(e.d) <= 45 && daysAgo(e.d) >= 0 && !near(e.d)); const inCycle = ls ? sp.filter((e) => e.d >= S.toISO(ls)).length : sp.length;
       if (sp.length) add({ id: 'spot_between', lv: inCycle >= 3 ? 'month' : 'watch', at: sp[sp.length - 1].d, vars: { k: sp.length }, strong: inCycle >= 3, vars2: { k: inCycle } });
     }
+    /* Version 39.0 (journey audit P0 1): at 45 or in midlife, bleeding that comes a year or more after the one before is
+       bleeding after menopause, whether or not she ticked "periods stopped" */
+    const midAge = (age != null && age >= 45) || (c.isMidlife && c.isMidlife());
+    /* review XS-2: not on hormones (or stopped them since), and not a first bleed after a pregnancy or a birth */
+    const between = (iso, a, b) => /^\d{4}-\d{2}-\d{2}$/.test(iso || '') && iso > a && iso <= b;
+    if (!sit.stopped && midAge && !c.isPregnant() && !sit.hysterectomy && !sit.hormones && !sit.breastfeeding) {
+      const bl = evs.filter((e) => e.t === 'start' || e.t === 'spot' || e.t === 'end');
+      const late = bl.filter((e) => (e.t === 'start' || e.t === 'spot') && daysAgo(e.d) <= 60 && daysAgo(e.d) >= 0 && (() => { const prev = bl.filter((x) => x.d < e.d).map((x) => x.d).sort().pop(); return !!prev && S.diffDays(S.fromISO(prev), S.fromISO(e.d)) >= 365 && !between(sit.deliveredOn, prev, e.d) && !between(sit.pregEndedOn, prev, e.d) && !between(sit.hormonesUntil, prev, e.d); })());
+      if (late.length) add({ id: 'bleed_after_stop', lv: 'week', at: late[late.length - 1].d, vars: {} });
+    }
     /* Version 32: only bleeding logged after the day she said her periods stopped (field-test audit 3.2) */
     if (sit.stopped && !c.isPregnant()) { const from = /^\d{4}-\d{2}-\d{2}$/.test(sit.stoppedOn || '') ? sit.stoppedOn : ''; const b = evs.filter((e) => (e.t === 'start' || e.t === 'spot') && daysAgo(e.d) <= 60 && daysAgo(e.d) >= 0 && (!from || e.d > from)); if (b.length) add({ id: 'bleed_after_stop', lv: 'week', at: b[b.length - 1].d, vars: {} }); }
     /* the latest check-in */
@@ -159,7 +206,7 @@
     if (ci) {
       const has = (k) => (ci.chips || []).indexOf(k) >= 0; const at = ci.at; const kind = ci.kind || kindNow();
       if (kind === 'preg') {
-        if (has('pbleed')) add({ id: 'p_bleed', lv: 'today', at: at, vars: {} });
+        if (has('pbleed')) add({ id: 'p_bleed', lv: daysAgo(at) <= 2 ? 'now' : 'today', at: at, vars: {} });   /* review XS-3 */
         if (has('head') && has('swell')) add({ id: 'p_headswell', lv: 'today', at: at, vars: {} });
         if (has('nausea')) add({ id: 'p_nausea', lv: 'watch', at: at, vars: {} });
       }
@@ -193,11 +240,22 @@
     const dOf = (keys, n) => recentDays(n).filter((k) => keys.some((x) => (daily[k] || []).indexOf(x) >= 0));
     let dd = dOf(['d_disch_bad', 'd_itch'], 7); if (dd.length && !seen('disch')) add({ id: 'disch', lv: 'week', at: dd[dd.length - 1], vars: {} });
     if (c.isPregnant()) {
-      dd = dOf(['d_pbleed'], 3); if (dd.length && !seen('p_bleed')) add({ id: 'p_bleed', lv: 'today', at: dd[dd.length - 1], vars: {} });
-      dd = recentDays(3).filter((k) => (daily[k] || []).indexOf('d_swell') >= 0 && (daily[k] || []).indexOf('d_headache') >= 0); if (dd.length && !seen('p_headswell')) add({ id: 'p_headswell', lv: 'today', at: dd[dd.length - 1], vars: {} });
+      dd = dOf(['d_pbleed'], 3); if (dd.length && !seen('p_bleed')) add({ id: 'p_bleed', lv: 'now', at: dd[dd.length - 1], vars: {} });
+      dd = dOf(['d_moveless'], 2); if (dd.length && !seen('p_moves')) add({ id: 'p_moves', lv: 'now', at: dd[dd.length - 1], vars: {} });
+      /* Version 39.0: headache and swelling within 3 days of each other, in either order */
+      const sw = dOf(['d_swell'], 3), hd = dOf(['d_headache'], 3); if (sw.length && hd.length && !seen('p_headswell')) add({ id: 'p_headswell', lv: 'today', at: [sw[sw.length - 1], hd[hd.length - 1]].sort().pop(), vars: {} });
       dd = dOf(['d_nausea'], 7); if (dd.length && !seen('p_nausea')) add({ id: 'p_nausea', lv: 'watch', at: dd[dd.length - 1], vars: {} });
     }
-    return out.map((f) => Object.assign(f, { key: f.id + ':' + f.at })).sort((a, b) => LV.indexOf(a.lv) - LV.indexOf(b.lv) || (a.at < b.at ? 1 : -1));
+    /* Version 39.0 (journey audit P0 2): the warning lines her stage's own records already show (pregnancy BP, Hb and sugar in
+       the last 3 days; the after-birth recovery check today or yesterday) reach Today, in their own reviewed words */
+    [S.preg, S.post].forEach((m) => { if (m && m.flags) (() => { try { return m.flags() || []; } catch (e) { return []; } })().forEach((x) => { if (x && X[x.id] == null && LV.indexOf(x.lv) >= 0) add({ id: x.id, lv: x.lv, at: x.at, vars: {}, ext: x }); }); });
+    /* Version 39.6: her latest Hb from her own report, below the range printed on it, in the last 6 months (pregnancy has its own Hb lines) */
+    const hb = !c.isPregnant() && S.cond && S.cond.hbLatest ? (() => { try { return S.cond.hbLatest(); } catch (e) { return null; } })() : null;
+    const toldHb = S.plan && S.plan.saidHbAt ? S.plan.saidHbAt() : null;   /* review DOCTOR-03: the result the doctor just told her about (a newer one still shows) */
+    if (hb && hb.lo != null && hb.lo !== '' && isFinite(+hb.lo) && +hb.v < +hb.lo && daysAgo(hb.d) >= 0 && daysAgo(hb.d) <= 180 && !(toldHb && hb.d <= S.toISO(S.addDays(S.fromISO(toldHb), 7)))) { const gdl = /g\/L/i.test(hb.u || '') ? +hb.v / 10 : +hb.v; add({ id: 'hb_low', lv: gdl < 7 ? 'week' : 'month', at: hb.d, vars: { v: hb.v } }); }
+    /* Version 39.6 review: the 90-day "no period yet" has a key of its own, so resting the early card ("Got it", or the
+       plan's doctor check) never hides it */
+    return out.map((f) => Object.assign(f, { key: f.id + ':' + f.at + (f.id === 'late_now' && f.lv !== 'watch' ? ':' + f.lv : '') })).sort((a, b) => LV.indexOf(a.lv) - LV.indexOf(b.lv) || (a.at < b.at ? 1 : -1));
   }
   const open = (list) => list.filter((f) => f.lv !== 'ok');
 
@@ -205,24 +263,64 @@
   const LV_HUE = { now: 'rose', today: 'rose', week: 'rose', month: 'gold', watch: 'gold', ok: 'green' };
   /* English plural for a count of one ("1 day", not "1 days"). */
   const one = (str) => (S.state.lang === 'en' ? str.replace(/\b1 days\b/g, '1 day') : str);
-  const title = (f) => one(tx(fill(f.mid && X[f.id].tMid ? X[f.id].tMid : X[f.id].t, f.vars)));
+  const xOf = (f) => X[f.id] || f.ext || {};
+  const title = (f) => { const x = xOf(f); return one(tx(fill(f.mid && x.tMid ? x.tMid : (f.old && x.tOld ? x.tOld : x.t), f.vars))); };
+  /* Version 39.0: at "Call 112 now", Help's own call-now line leads (the stricter reviewed line) */
+  const lc1 = (str) => (S.state.lang === 'en' ? str.charAt(0).toLowerCase() + str.slice(1) : str);
+  const seeOf = (f) => { const x = xOf(f); if (f.lv === 'now' && x.seeNow) return t('call_now') + ' ' + lc1(t(x.seeNow)); return f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : ''); };
+  /* Version 39.1 (journey audit J-03, P1-07): the same buttons on every signal, in this order: free care first, her report
+     for the doctor (with this card's question first), then a Qura doctor (never on a "call 112" or "today" card). "Check the
+     signs" where a validated self-check exists (where the build shows it), until she has done it in the last 90 days. A long
+     gap that needs a doctor this month also offers the irregular-periods plan. */
+  const CHECK = { pain_severe: 'endo', flow_heavy: 'fibroids', period_long: 'fibroids', gap_long: 'pmos', androgen: 'pmos', neck: 'pmos' };
+  const RPQ = { gap_long: 'rp_q_gap', flow_heavy: 'rp_q_heavy', period_long: 'rp_q_heavy', pain_severe: 'rp_q_pain' };
+  const PLAN_FOR = { gap_long: 'irregular' };
+  function actsHtml(f, compact) {
+    const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
+    const goOk = x.go && (S.routeOwner(x.go) || ['diary', 'help', 'care', 'learn'].indexOf(x.go) >= 0 || x.go.indexOf('topic-') === 0 || x.go.indexOf('a-') === 0);
+    const main = [], more = [];
+    if (f.lv === 'now') { if (x.call === '14416') main.push('<a class="btn sm xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>'); main.push('<a class="btn sm xp-call" href="tel:112">' + esc(t('call_b')) + ' 112</a>'); main.push(b('data-go="help"', t('explain_numbers'))); }
+    else if (f.lv === 'today' || f.lv === 'week' || f.lv === 'month') {
+      /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
+      if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), 'primary'));
+      else if (S.routeOwner('access-doctor')) main.push(b('data-go="access-doctor"', t('explain_free_gov'), 'primary'));
+      if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
+      if (f.lv !== 'today' && x.ask) main.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
+    } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
+    const ck = CHECK[f.id];
+    if (ck && f.lv !== 'now' && S.toolShown && S.toolShown('selfcheck-' + ck)) {
+      const last = S.selfcheck && S.selfcheck.last ? S.selfcheck.last(ck) : null;
+      more.unshift(last && daysAgo(last.d) <= 90 ? '<button type="button" class="linkbtn xp-did" data-go="selfcheck-' + ck + '">' + esc(tf('explain_did', { d: S.fmtD(S.fromISO(last.d)), n: last.n, m: last.m })) + '</button>' : b('data-go="selfcheck-' + ck + '" data-xp-check="' + ck + '"', t('explain_check')));
+    }
+    const pg = PLAN_FOR[f.id]; if (pg && f.lv === 'month' && S.plan && S.plan.offerOk && S.plan.offerOk(pg)) more.push(b('data-xp-plan="' + pg + '"', t('explain_plan')));
+    if (compact) more.push(b('data-go="explain"', t('explain_means')));
+    else if (goOk && !(f.lv === 'now' && x.go === 'help')) more.push(b('data-go="' + esc(x.go) + '"', t('explain_more')));   /* review XS-12: one way to Help */
+    if (f.lv !== 'ok' && !compact) more.push(b('data-xp-got="' + esc(f.key) + '"', t('explain_got'), 'ghost'));
+    return (main.length ? '<div class="row wrap xp-acts">' + main.join('') + '</div>' : '') + (more.length ? '<div class="row wrap xp-acts xp-more">' + more.join('') + '</div>' : '');
+  }
   function cardHtml(f) {
-    const x = X[f.id]; const what = one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : ''));
+    const x = xOf(f); const what = x.w ? one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : '')) : '';
     const why = (x.why || []).filter((r, i) => !(f.id === 'gap_short' && i === 3 && f.no40) && !(f.id === 'gap_long' && i === 3 && f.no45));
-    const see = f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : '');
+    const see = seeOf(f);
     const list = (arr) => '<ul>' + arr.map((r) => '<li>' + esc(tx(r)) + '</li>').join('') + '</ul>';
-    const goOk = x.go && (S.routeOwner(x.go) || ['diary', 'help', 'care', 'learn', 'pattern'].indexOf(x.go) >= 0 || x.go.indexOf('topic-') === 0);
     return '<div class="card xp-card xp-' + f.lv + '" data-key="' + esc(f.key) + '"><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(t('explain_lv_' + f.lv)) + '</span><span class="small">' + esc(S.fmtD(S.fromISO(f.at))) + '</span></div>' +
-      '<h3>' + esc(title(f)) + '</h3><p class="xp-what">' + esc(what) + '</p>' +
+      '<h3>' + esc(title(f)) + '</h3>' + (what ? '<p class="xp-what">' + esc(what) + '</p>' : '') +
       (see ? '<div class="xp-see"><b>' + esc(t('explain_see')) + '</b><p>' + esc(one(see)) + '</p></div>' : '') +
       (why.length ? '<div class="xp-sec"><b>' + esc(t('explain_why')) + '</b>' + list(why) + '</div>' : '') +
-      (x.todo && x.todo.length ? '<div class="xp-sec"><b>' + esc(t('explain_do')) + '</b>' + list(x.todo) + '</div>' : '') +
-      '<div class="row wrap xp-acts">' + (goOk ? '<button type="button" class="btn sm" data-go="' + esc(x.go) + '">' + esc(t('explain_more')) + '</button>' : '') +
-      (f.lv === 'now' ? '<button type="button" class="btn sm" data-go="help">' + esc(t('explain_numbers')) + '</button>' :
-        /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
-        (f.lv === 'today' && S.routeOwner('access-free') ? '<button type="button" class="btn sm" data-go="access-free">' + esc(t('explain_free')) + '</button>' :
-          (x.ask ? '<button type="button" class="btn sm" data-ask="' + esc(tx(x.ask)) + '">' + esc(t('ask_qura')) + '</button>' : ''))) +
-      (f.lv !== 'ok' ? '<button type="button" class="btn sm ghost" data-xp-got="' + esc(f.key) + '">' + esc(t('explain_got')) + '</button>' : '') + '</div></div>';
+      (x.todo && x.todo.length ? '<div class="xp-sec"><b>' + esc(t('explain_do')) + '</b>' + list(x.todo) + '</div>' : '') + actsHtml(f, false) + '</div>';
+  }
+  /* Version 39.1: Diary's What it shows draws the same cards, short: how soon, what, when to see a doctor, the buttons */
+  function diaryCard(f) {
+    const see = seeOf(f);
+    return '<div class="card xp-card xp-dcard xp-' + f.lv + '" data-key="' + esc(f.key) + '"><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(t('explain_lv_' + f.lv)) + '</span><span class="small">' + esc(S.fmtD(S.fromISO(f.at))) + '</span></div>' +
+      '<h3>' + esc(title(f)) + '</h3>' + (see ? '<p class="small xp-dsee">' + esc(one(see)) + '</p>' : '') + actsHtml(f, true) + '</div>';
+  }
+  const diaryCards = () => { if (!S.canSave() || S.state.settings.discreet) return ''; const list = open(findings()); return list.length ? '<section class="xp-diary" aria-label="' + esc(t('explain_h')) + '">' + list.map(diaryCard).join('') + '</section>' : ''; };
+  /* the buttons only explain draws: her report (with this card's question first), the plan offer, and "Got it" */
+  function wireActs(v) {
+    v.querySelectorAll('[data-xp-rp]').forEach((b) => b.addEventListener('click', () => { const f = findings().find((x) => x.key === b.dataset.xpRp); S.mem.rpFirst = f ? (RPQ[f.id] ? { k: RPQ[f.id] } : { f: f.key }) : null; S.setHash('report'); }));
+    v.querySelectorAll('[data-xp-plan]').forEach((b) => b.addEventListener('click', () => { if (S.plan && S.plan.offer) S.plan.offer(b.dataset.xpPlan); }));
+    v.querySelectorAll('[data-xp-got]').forEach((b) => b.addEventListener('click', () => { D().seen[b.dataset.xpGot] = S.toISO(S.today()); S.saveQuiet(); S.toast(t('explain_got_toast')); }));
   }
   /* How Sakhi works out her numbers, with her own dates */
   function howHtml() {
@@ -242,20 +340,19 @@
   }
   function renderPage(v) {
     const all = findings(); const nonOk = open(all); const ok = all.filter((f) => f.lv === 'ok');
-    v.innerHTML = S.backRow(t('explain_h'), 'home', true) + '<div class="tour-qrow"><p class="small">' + esc(t('explain_p')) + '</p>' + (S.canSave() ? '<button type="button" class="tour-q" data-tour-q="explain" aria-label="' + esc(t('tour_q')) + '">?</button>' : '') + '</div>' +
+    v.innerHTML = S.backRow(t('explain_h'), 'diary', true) + '<div class="tour-qrow"><p class="small">' + esc(t('explain_p')) + '</p>' + (S.canSave() ? '<button type="button" class="tour-q" data-tour-q="explain" aria-label="' + esc(t('tour_q')) + '">?</button>' : '') + '</div>' +
       (S.canSave() ? '' : S.needDiary()) +
       (S.canSave() && !nonOk.length ? '<div class="card ok"><p>' + esc(t('explain_none')) + '</p></div>' : '') +
       nonOk.map(cardHtml).join('') + ok.map(cardHtml).join('') + (S.canSave() ? howHtml() : '') + '<p class="footnote">' + esc(t('explain_foot')) + '</p>';
-    S.wire(v);
-    v.querySelectorAll('[data-xp-got]').forEach((b) => b.addEventListener('click', () => { D().seen[b.dataset.xpGot] = S.toISO(S.today()); S.saveQuiet(); S.toast(t('explain_got_toast')); }));
+    S.wire(v); wireActs(v);
   }
   /* Home: the most urgent thing she has not yet marked "Got it" */
   function home() {
     if (!S.canSave()) return '';
     /* Version 37.2: while her plan's own doctor check for late periods shows, "no period yet" (before 90 days) is that card */
     const planDoc = !!(S.plan && S.plan.docShowing && S.plan.docShowing());
-    const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !(planDoc && x.id === 'late_now' && x.lv === 'watch'))[0]; if (!f) return '';
-    if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(tx(X[f.id].see)) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div>';
+    const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !x.quiet && !(planDoc && x.id === 'late_now' && x.lv === 'watch'))[0]; if (!f) return '';
+    if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(seeOf(f)) + '</p><div class="row wrap">' + (f.ext && f.ext.call === '14416' ? '<a class="btn sm xp-call" href="tel:14416" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm xp-call" href="tel:112" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 112</a><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div></div>';
     return '<button type="button" class="action xp-home" data-go="explain" data-xp-lv="' + f.lv + '"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
   }
 
@@ -286,7 +383,8 @@
         explain_h_preg: 'Pregnancy weeks: counted from the due date on your scan report, or from the first day of your last period. The due date is 280 days after that first day.', explain_h_preg_now: 'You are {w} weeks {d} days; due {e}.',
         explain_h_fertile: 'Fertile days: an estimate, shown only after 6 gaps that stay within 7 days of each other.',
         explain_th_start: 'Period started', explain_th_gap: 'Gap (days)', explain_th_used: 'Counted', explain_r_same: 'Same period', explain_r_first: 'First one', explain_r_hormones: 'Left out: hormones', explain_r_pregnancy: 'Left out: pregnancy', explain_r_birth: 'Left out: after birth', explain_r_long: 'Left out: too long', explain_r_guess: 'Left out: a guessed date',
-        explain_foot: 'Fixed rules, the same for every woman. Not a diagnosis.'
+        explain_foot: 'Fixed rules, the same for every woman. Not a diagnosis.',
+        explain_check: 'Check the signs (2 minutes)', explain_free_gov: 'Free government doctor', explain_report: 'My report for the doctor', explain_plan: 'A 12-week plan for your periods', explain_did: 'You did this check on {d}: yes to {n} of {m}'
       },
       hi: {
         explain_h: 'आपकी डायरी क्या बताती है', explain_th_h: 'Sakhi ने कुछ देखा', explain_th_p: 'जब आपकी डायरी में कुछ अलग दिखे, Sakhi यहाँ समझाती है। इसका मतलब और डॉक्टर को कब दिखाएँ, जानने के लिए दबाएँ।', explain_t1_h: 'Sakhi ने क्या देखा', explain_t1_p: 'हर कार्ड आपकी डायरी की एक बात आसान शब्दों में समझाता है: क्या हो रहा है, आम वजहें, और आप क्या कर सकती हैं।', explain_t2_h: 'डॉक्टर को कब दिखाएँ', explain_t2_p: 'यह लेबल बताता है कितनी जल्दी: “{a}” से लेकर “{b}” तक।', explain_t3_h: 'आपके अपने नंबर', explain_t3_p: 'Sakhi ने आपकी दर्ज की गई तारीख़ों से नंबर कैसे निकाले, यह देखने के लिए यहाँ दबाएँ।',
@@ -301,7 +399,8 @@
         explain_h_preg: 'गर्भ के हफ़्ते: स्कैन रिपोर्ट की डिलीवरी तारीख़ से, या पिछले पीरियड के पहले दिन से। डिलीवरी की तारीख़ उस पहले दिन के 280 दिन बाद होती है।', explain_h_preg_now: 'आप {w} हफ़्ते {d} दिन की हैं; डिलीवरी लगभग {e}।',
         explain_h_fertile: 'fertile दिन: अंदाज़ा, तभी दिखते हैं जब 6 अंतर हों और वे आपस में 7 दिन के अंदर रहें।',
         explain_th_start: 'पीरियड शुरू हुआ', explain_th_gap: 'अंतर (दिन)', explain_th_used: 'गिना गया', explain_r_same: 'वही पीरियड', explain_r_first: 'पहला', explain_r_hormones: 'बाहर: हॉर्मोन', explain_r_pregnancy: 'बाहर: गर्भ', explain_r_birth: 'बाहर: डिलीवरी के बाद', explain_r_long: 'बाहर: बहुत लंबा', explain_r_guess: 'बाहर: अंदाज़े की तारीख़',
-        explain_foot: 'तय नियम, हर महिला के लिए एक जैसे। यह diagnosis नहीं है।'
+        explain_foot: 'तय नियम, हर महिला के लिए एक जैसे। यह diagnosis नहीं है।',
+        explain_check: 'संकेत जाँचें (2 मिनट)', explain_free_gov: 'मुफ़्त सरकारी डॉक्टर', explain_report: 'डॉक्टर के लिए मेरी रिपोर्ट', explain_plan: 'आपके पीरियड के लिए 12 हफ़्ते का प्लान', explain_did: 'आपने यह जाँच {d} को की: {m} में से {n} पर हाँ'
       }
     },
     routes: { 'explain': renderPage },
@@ -315,18 +414,32 @@
       '.xp-see { border-left: 3px solid var(--accent); padding-left: 10px; } .xp-see p { color: var(--fg); }',
       '.xp-watch .xp-see, .xp-month .xp-see { border-left-color: var(--gold); } .xp-ok .xp-see { border-left-color: var(--ok); }',
       '.xp-how { background: var(--card); border-radius: 16px; padding: 4px 14px 12px; box-shadow: var(--shadow); } .xp-how ul { padding-left: 18px; } .xp-how li { font-size: 14px; color: var(--text); }',
-      '.xp-home .body strong { font-size: 15px; } .xp-home-now h3 { color: var(--bg); }'
+      '.xp-home .body strong { font-size: 15px; } .xp-home-now h3 { color: var(--bg); }',
+      '.xp-more { margin-top: -2px; } .xp-did { text-align: left; } .xp-dcard { gap: 8px; } .xp-dcard h3 { margin: 0; } .xp-dsee { color: var(--fg) !important; margin: 0; } .xp-diary { display: grid; gap: 12px; margin-bottom: 14px; }',
+      '.xp-now .xp-call, .xp-now .btn { background: var(--bg); color: var(--fg); border: none; }',
+      '.xp-card.xp-now, .diary-paper .xp-card.xp-now { background: var(--ink); } .xp-now h3, .xp-now .xp-top .small, .xp-now .xp-dsee, .xp-now .xp-see p, .xp-now .xp-see b, .xp-now .xp-what { color: var(--ink-text) !important; }'
     ].join('\n'),
     home: home,
     summary: () => { const f = open(findings()); return f.length ? [{ title: t('explain_h'), lines: f.map((x) => t('explain_lv_' + x.lv) + ': ' + title(x)) }] : []; },
     afterRender: (v, route) => {
-      /* On the diary, a one-line note when something needs a look */
       if (route !== 'diary' || !S.canSave() || S.flags.discreet) return;
-      const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key])[0]; if (!f) return;
-      const el = document.createElement('button'); el.type = 'button'; el.className = 'action xp-home'; el.dataset.go = 'explain';
+      /* Version 39.1: What it shows has the cards themselves */
+      if (S.mem.diaryTab === 'tr') { wireActs(v); return; }
+      /* on the calendar and Days, a one-line note when something needs a look; it opens What it shows */
+      const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !x.quiet)[0]; if (!f) return;
+      const el = document.createElement('button'); el.type = 'button'; el.className = 'action xp-home xp-banner';
       el.innerHTML = '<span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span>';
-      v.insertBefore(el, v.firstChild); S.wire(v);
+      el.addEventListener('click', () => { S.mem.diaryTab = 'tr'; S.render(); window.scrollTo(0, 0); });
+      v.insertBefore(el, v.firstChild);
     }
   });
-  S.explain = { findings: findings };
+  /* Version 39.0: the most urgent open finding she hasn't marked "Got it" (core's discreet line reads it) */
+  const topOpen = () => { if (!S.canSave()) return null; const seen = D().seen; return open(findings()).filter((x) => !seen[x.key] && !x.quiet)[0] || null; };
+  /* Version 39.1: Diary's What it shows draws the cards (diaryCards); My plan shows the top one as a row (label) */
+  /* Version 39.6 (journey audit P2-14): her plan's doctor check is done, so today's cards about the same thing rest
+     (a late period of 90 days or more always shows) */
+  const seenIds = (ids) => { if (!S.canSave()) return; const d = D(); findings().forEach((f) => { if (ids.indexOf(f.id) >= 0 && !(f.id === 'late_now' && f.lv !== 'watch')) d.seen[f.key] = S.toISO(S.today()); }); S.saveQuiet(); };
+  S.explain = { findings: findings, top: topOpen, diaryCards: diaryCards, seenIds: seenIds, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
+    /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
+    question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };
 })(window.Saathi);

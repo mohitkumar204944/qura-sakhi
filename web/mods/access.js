@@ -15,7 +15,7 @@
 
   /* ---------- sources (each one opened and checked, Oct 2026) ---------- */
   const SRC = {
-    pmmvyfaq: { url: 'https://www.spniwcd.wcd.gov.in/pradhan-mantri-matru-vandana-yojna/faqs', en: 'Ministry of Women and Child Development, PMMVY FAQs', hi: 'महिला एवं बाल विकास मंत्रालय, PMMVY के सवाल-जवाब' },
+    pmmvyfaq: { url: 'https://pmmvy.wcd.gov.in/Home/FrequentlyAskedQuestions', en: 'PMMVY portal, Frequently asked questions', hi: 'PMMVY portal, अक्सर पूछे जाने वाले सवाल' },
     pmmvypib: { url: 'https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/aug/doc2025825619601.pdf', en: 'PIB, Pradhan Mantri Matru Vandana Yojana, 24 Aug 2025', hi: 'PIB, प्रधानमंत्री मातृ वंदना योजना, 24 अगस्त 2025' },
     jsy: { url: 'https://nhm.gov.in/index1.php?lang=1&level=3&lid=309&sublinkid=841', en: 'National Health Mission, Janani Suraksha Yojana', hi: 'राष्ट्रीय स्वास्थ्य मिशन, जननी सुरक्षा योजना' },
     jssk: { url: 'https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=842&lid=308', en: 'National Health Mission, JSSK', hi: 'राष्ट्रीय स्वास्थ्य मिशन, JSSK' },
@@ -231,11 +231,11 @@
   };
   const OPT = { y: L('Yes', 'हाँ'), n: L('No', 'नहीं'), u: L('Not sure', 'पता नहीं'), 1: L('First', 'पहला'), 2: L('Second', 'दूसरा'), 3: L('Third or more', 'तीसरा या ज़्यादा') };
   const TAGS = {
-    all: { title: 'access_schemes', qs: ['preg', 'baby', 'child', 'job', 'girl', 'card', 'ration'], list: ['pmmvy', 'jsy', 'jssk', 'pmsma', 'thr', 'matben', 'amb', 'rksk', 'contra', 'steril', 'suvidha', 'pmjay', 'nikshay', 'osc'] },
+    all: { title: 'access_schemes', qs: ['preg', 'baby', 'child', 'job', 'girl', 'card', 'ration'], list: ['pmmvy', 'jsy', 'jssk', 'pmsma', 'thr', 'matben', 'amb', 'rksk', 'contra', 'steril', 'pads', 'suvidha', 'pmjay', 'osc'] },   /* Version 39.7: Ni-kshay (TB) only on the genital TB page */
     preg: { title: 'access_schemes_preg', qs: ['preg', 'child', 'job', 'card', 'ration'], list: ['pmmvy', 'jsy', 'jssk', 'pmsma', 'thr', 'amb', 'matben', 'pmjay'], preset: { preg: 'y' } },
-    post: { title: 'access_schemes_post', qs: ['baby', 'child', 'job', 'card', 'ration'], list: ['pmmvy', 'jssk', 'thr', 'contra', 'amb', 'matben', 'steril', 'pmjay'], preset: { baby: 'y' } },
-    period: { title: 'access_schemes_period', qs: ['girl', 'card'], list: ['suvidha', 'amb', 'rksk', 'pmjay'] },
-    teen: { title: 'access_schemes_teen', qs: ['girl'], list: ['rksk', 'amb', 'suvidha', 'osc'], preset: { girl: 'y' } },
+    post: { title: 'access_schemes_post', qs: ['baby', 'child', 'job', 'card', 'ration'], list: ['pmmvy', 'jsy', 'jssk', 'thr', 'contra', 'amb', 'matben', 'steril', 'pmjay'], preset: { baby: 'y' } },   /* JSY is paid after the birth */
+    period: { title: 'access_schemes_period', qs: ['girl', 'card'], list: ['pads', 'suvidha', 'amb', 'rksk', 'pmjay'] },
+    teen: { title: 'access_schemes_teen', qs: ['girl'], list: ['pads', 'rksk', 'amb', 'suvidha', 'osc'], preset: { girl: 'y' } },
     family: { title: 'access_schemes_family', qs: ['card', 'ration'], list: ['contra', 'steril', 'pmjay'] }
   };
   const TAG_ORDER = ['all', 'preg', 'post', 'period', 'teen', 'family'];
@@ -247,9 +247,9 @@
     pmmvy: {
       name: L('PMMVY: Pradhan Mantri Matru Vandana Yojana', 'PMMVY: प्रधानमंत्री मातृ वंदना योजना'),
       line: L('₹5,000 for the first child; ₹6,000 if the second child is a girl', 'पहले बच्चे पर ₹5,000; दूसरा बच्चा बेटी हो तो ₹6,000'),
-      benefit: L('₹5,000 for your first child, in two parts: ₹3,000 after at least one antenatal check-up, and ₹2,000 after the birth is registered and the baby has had the vaccines due by 14 weeks. If your second child is a girl: ₹6,000 in one payment after the birth and the 14-week vaccines. The money comes straight to your bank or post office account.', 'पहले बच्चे पर ₹5,000, दो हिस्सों में: कम से कम एक ANC जाँच के बाद ₹3,000, और जन्म का पंजीकरण और 14 हफ़्ते तक के टीके लगने के बाद ₹2,000। दूसरा बच्चा बेटी हो तो: जन्म और 14 हफ़्ते के टीकों के बाद एक बार में ₹6,000। पैसा सीधे आपके बैंक या डाकघर खाते में आता है।'),
-      who: L('Women aged 18 years 7 months to 55 years at the birth, from any one of these groups: SC or ST; disability of 40% or more; BPL or NFSA ration card; Ayushman (PM-JAY) card; e-Shram card; PM-KISAN farmer family; MGNREGA job card; family income under ₹8 lakh a year; Anganwadi workers and helpers, and ASHAs. Women in regular government or PSU jobs with paid maternity leave are not covered. The scheme is not run in Telangana and Odisha; ask your Anganwadi worker what your state offers.', 'जन्म के समय 18 साल 7 महीने से 55 साल की महिलाएँ, इनमें से किसी एक समूह से: SC या ST; 40% या ज़्यादा विकलांगता; BPL या NFSA राशन कार्ड; आयुष्मान (PM-JAY) card; e-Shram card; PM-KISAN किसान परिवार; MGNREGA job card; परिवार की आमदनी साल में ₹8 लाख से कम; आंगनवाड़ी कार्यकर्ता, सहायिका और ASHA। सरकारी या PSU की पक्की नौकरी में सवेतन मातृत्व छुट्टी वाली महिलाएँ इसमें नहीं आतीं। तेलंगाना और ओडिशा में यह योजना नहीं चलती; आंगनवाड़ी कार्यकर्ता से पूछें कि आपके राज्य में क्या मिलता है।'),
-      how: L('Your Anganwadi worker or ASHA can fill the form online for you, or you can register yourself on the PMMVY portal. Register any time up to 270 days after the birth. Helpline 1515. If a pregnancy is lost, you can still apply in a later pregnancy.', 'आपकी आंगनवाड़ी कार्यकर्ता या ASHA आपके लिए online फ़ॉर्म भर सकती हैं, या आप ख़ुद PMMVY portal पर पंजीकरण कर सकती हैं। जन्म के 270 दिन तक कभी भी पंजीकरण करें। हेल्पलाइन 1515। अगर गर्भ नहीं रहा, तो अगले गर्भ में फिर से आवेदन कर सकती हैं।'),
+      benefit: L('₹5,000 for your first child, in two parts: ₹3,000 once your pregnancy is registered and you have had at least one antenatal check-up within 6 months of your last period, and ₹2,000 after the birth is registered and the baby has had the vaccines due by 14 weeks. If your second child is a girl: ₹6,000 in one payment after the birth and the 14-week vaccines; for this, register during the pregnancy. The money comes straight to your bank or post office account.', 'पहले बच्चे पर ₹5,000, दो हिस्सों में: गर्भ का पंजीकरण और आख़िरी पीरियड के 6 महीने के अंदर कम से कम एक ANC जाँच के बाद ₹3,000, और जन्म का पंजीकरण और 14 हफ़्ते तक के टीके लगने के बाद ₹2,000। दूसरा बच्चा बेटी हो तो: जन्म और 14 हफ़्ते के टीकों के बाद एक बार में ₹6,000; इसके लिए गर्भ के दौरान ही पंजीकरण करें। पैसा सीधे आपके बैंक या डाकघर खाते में आता है।'),
+      who: L('Women aged 18 years 7 months to 55 years at the birth, from any one of these groups: SC or ST; disability of 40% or more; BPL or NFSA ration card; Ayushman (PM-JAY) card; e-Shram card; a woman farmer who gets PM-KISAN in her own name; MGNREGA job card; family income under ₹8 lakh a year; Anganwadi workers and helpers, and ASHAs. Women in regular central or state government or PSU jobs, and women who already get paid maternity benefit under another law, are not covered. In Odisha, PMMVY is paid together with the state\'s MAMATA scheme, as MAMATA-PMMVY. Telangana does not run PMMVY yet: ask your ASHA or ANM about the state\'s MCH Kit (earlier called KCR Kit).', 'जन्म के समय 18 साल 7 महीने से 55 साल की महिलाएँ, इनमें से किसी एक समूह से: SC या ST; 40% या ज़्यादा विकलांगता; BPL या NFSA राशन कार्ड; आयुष्मान (PM-JAY) card; e-Shram card; अपने नाम से PM-KISAN पाने वाली महिला किसान; MGNREGA job card; परिवार की आमदनी साल में ₹8 लाख से कम; आंगनवाड़ी कार्यकर्ता, सहायिका और ASHA। केंद्र या राज्य सरकार या PSU की पक्की नौकरी वाली महिलाएँ, और जिन्हें किसी और क़ानून के तहत पहले से सवेतन मातृत्व लाभ मिलता है, इसमें नहीं आतीं। ओडिशा में PMMVY राज्य की ममता योजना के साथ, MAMATA-PMMVY के नाम से मिलती है। तेलंगाना में PMMVY अभी नहीं चलती: अपनी ASHA या ANM से राज्य की MCH Kit (पहले KCR Kit) के बारे में पूछें।'),
+      how: L('Your Anganwadi worker or ASHA can fill the form online for you, or you can register yourself on the PMMVY portal. Register any time up to 270 days after the birth (for a second child who is a girl, during the pregnancy). Helpline 1515. If a pregnancy is lost, you can still apply in a later pregnancy.', 'आपकी आंगनवाड़ी कार्यकर्ता या ASHA आपके लिए online फ़ॉर्म भर सकती हैं, या आप ख़ुद PMMVY portal पर पंजीकरण कर सकती हैं। जन्म के 270 दिन तक कभी भी पंजीकरण करें (दूसरी संतान बेटी हो तो गर्भ के दौरान)। हेल्पलाइन 1515। अगर गर्भ नहीं रहा, तो अगले गर्भ में फिर से आवेदन कर सकती हैं।'),
       docs: L('Aadhaar; a bank or post office account linked to Aadhaar; your mobile number; the MCP card with your last period date and check-up dates; one proof from the groups above (for example a ration card or job card). Later: the birth registration and the baby’s vaccine record.', 'आधार; आधार से जुड़ा बैंक या डाकघर खाता; आपका मोबाइल नंबर; MCP card जिसमें पिछले पीरियड और जाँच की तारीख़ें हों; ऊपर के समूहों में से एक का सबूत (जैसे राशन कार्ड या job card)। बाद में: जन्म का पंजीकरण और बच्चे के टीकों का रिकॉर्ड।'),
       links: [['https://pmmvy.wcd.gov.in/', L('PMMVY portal (official)', 'PMMVY portal (सरकारी)')]], src: ['pmmvyfaq', 'pmmvypib'],
       note: (a) => (a.child === '2' ? L('For a second child, only if the baby is a girl.', 'दूसरे बच्चे के लिए, सिर्फ़ तब जब बेटी हो।') : null),
@@ -294,7 +294,7 @@
     matben: {
       name: L('Paid maternity leave for working women', 'नौकरी करने वाली महिलाओं के लिए सवेतन मातृत्व छुट्टी'),
       line: L('Up to 26 weeks of paid leave, nursing breaks, crèche', '26 हफ़्ते तक सवेतन छुट्टी, दूध पिलाने का समय, crèche'),
-      benefit: L('Up to 26 weeks of leave paid at your average daily wage, of which up to 8 weeks can be before the due date. 12 weeks if you adopt a baby under 3 months or become a mother through surrogacy. Two nursing breaks a day until the baby is 15 months old. A ₹3,500 medical bonus if your employer does not give free care before and after the birth. A crèche at workplaces with 50 or more workers. Work from home after the leave, if the job allows it and you both agree.', 'औसत रोज़ की मज़दूरी पर 26 हफ़्ते तक की सवेतन छुट्टी, जिसमें से 8 हफ़्ते तक डिलीवरी की तारीख़ से पहले ले सकती हैं। 3 महीने से छोटा बच्चा गोद लें या surrogacy से माँ बनें तो 12 हफ़्ते। बच्चे के 15 महीने का होने तक रोज़ दूध पिलाने के दो ब्रेक। मालिक जन्म से पहले और बाद में मुफ़्त इलाज न दे तो ₹3,500 का मेडिकल बोनस। 50 या ज़्यादा कर्मचारियों वाली जगह पर crèche। छुट्टी के बाद, काम ऐसा हो और दोनों राज़ी हों तो घर से काम।'),
+      benefit: L('Up to 26 weeks of leave paid at your average daily wage, of which up to 8 weeks can be before the due date. 12 weeks from the day the child is handed over to you if you legally adopt a child of any age, or if you become a mother through surrogacy. Two nursing breaks a day until the baby is 15 months old. A ₹3,500 medical bonus if your employer does not give free care before and after the birth. A crèche at workplaces with 50 or more workers. Work from home after the leave, if the job allows it and you both agree.', 'औसत रोज़ की मज़दूरी पर 26 हफ़्ते तक की सवेतन छुट्टी, जिसमें से 8 हफ़्ते तक डिलीवरी की तारीख़ से पहले ले सकती हैं। क़ानूनी रूप से किसी भी उम्र का बच्चा गोद लें, या surrogacy से माँ बनें, तो बच्चा सौंपे जाने के दिन से 12 हफ़्ते। बच्चे के 15 महीने का होने तक रोज़ दूध पिलाने के दो ब्रेक। मालिक जन्म से पहले और बाद में मुफ़्त इलाज न दे तो ₹3,500 का मेडिकल बोनस। 50 या ज़्यादा कर्मचारियों वाली जगह पर crèche। छुट्टी के बाद, काम ऐसा हो और दोनों राज़ी हों तो घर से काम।'),
       who: L('Women who worked at least 80 days for the employer in the 12 months before the due date. Since 21 November 2025 this comes under the Code on Social Security, 2020 (earlier the Maternity Benefit Act, 1961). Daily-wage and home-based work may not be covered; PMMVY is meant for many of these women.', 'जिन्होंने डिलीवरी की तारीख़ से पहले के 12 महीनों में उस मालिक के यहाँ कम से कम 80 दिन काम किया हो। 21 नवंबर 2025 से यह सामाजिक सुरक्षा संहिता, 2020 में आता है (पहले मातृत्व लाभ अधिनियम, 1961)। दिहाड़ी और घर से होने वाला काम शायद इसमें न आए; ऐसी कई महिलाओं के लिए PMMVY है।'),
       how: L('Tell your employer in writing, with your due date, and ask HR for the form. If it is refused, contact your state labour department.', 'अपने मालिक को लिखकर बताएँ, डिलीवरी की तारीख़ के साथ, और HR से फ़ॉर्म माँगें। मना करें तो अपने राज्य के श्रम विभाग से संपर्क करें।'),
       docs: L('Proof of pregnancy, delivery or miscarriage can now come from a doctor, an ASHA, an ANM or a midwife.', 'गर्भ, डिलीवरी या गर्भपात का सबूत अब डॉक्टर, ASHA, ANM या दाई से भी मिल सकता है।'),
@@ -336,6 +336,16 @@
       docs: L('Usually Aadhaar and bank account details.', 'आम तौर पर आधार और बैंक खाते की जानकारी।'),
       links: [], src: ['cho', 'fpis'], go: ['contra-m-nsv'],
       match: () => 'maybe' },
+    /* Version 39.7 (journey audit P3-09): the pads the girls' guides already name, on the schemes page too (sources check, 24 Oct) */
+    pads: {
+      name: L('Free and ₹6 pads for girls', 'लड़कियों के लिए मुफ़्त और ₹6 के पैड'),
+      line: L('Free pads at school; in villages, a pack of 6 for ₹6 from the ASHA', 'स्कूल में मुफ़्त पैड; गाँव में ASHA से 6 पैड का पैकेट ₹6 में'),
+      benefit: L('At school: in January 2026 the Supreme Court directed every school, government or private, in villages and cities, to give girl students sanitary pads free, ideally from a machine in the girls\' toilet, or else from a named teacher or place. In September 2026 it said the pads must be biodegradable and compostable. In villages: under the Menstrual Hygiene Scheme, girls aged 10–19 can get a pack of 6 pads for ₹6 from their ASHA, where the state runs it; some states now give them free.', 'स्कूल में: जनवरी 2026 में सुप्रीम कोर्ट ने निर्देश दिया कि गाँव हो या शहर, हर स्कूल, सरकारी हो या प्राइवेट, छात्राओं को सैनिटरी pad मुफ़्त दे, हो सके तो लड़कियों के toilet में मशीन से, नहीं तो किसी तय टीचर या जगह से। सितंबर 2026 में कोर्ट ने कहा कि pad biodegradable और compostable हों। गाँव में: मासिक धर्म स्वच्छता योजना में 10–19 साल की लड़कियों को, जहाँ राज्य यह चलाता है, ASHA से 6 pad का पैकेट ₹6 में मिल सकता है; कुछ राज्य अब ये मुफ़्त देते हैं।'),
+      who: L('Girls aged 10–19, and every girl at school.', '10–19 साल की लड़कियाँ, और स्कूल की हर छात्रा।'),
+      how: L('At school, ask the head teacher. In a village, ask your ASHA.', 'स्कूल में प्रधानाध्यापक से पूछें। गाँव में अपनी ASHA से पूछें।'),
+      docs: L('None.', 'कुछ नहीं।'),
+      links: [['https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=1021&lid=391', L('Menstrual Hygiene Scheme (NHM, official)', 'मासिक धर्म स्वच्छता योजना (NHM, सरकारी)')]], src: [],
+      match: (a) => (a.girl === 'y' ? 'yes' : (a.girl === 'n' ? ((S.cycle.ageYears() || 99) <= 19 ? 'maybe' : 'no') : 'maybe')) },   /* review FACTS-11: never 'For everyone' */
     suvidha: {
       name: L('Suvidha pads at ₹1', 'Suvidha पैड ₹1 में'),
       line: L('Sanitary pads at ₹1 each at Jan Aushadhi Kendras', 'जन औषधि केंद्रों पर ₹1 का एक सैनिटरी पैड'),
@@ -387,15 +397,30 @@
   const claimOf = (k) => (S.canSave() ? AD().claims[k] || null : null);
   const docList = (s) => { const a = s.docs.en.split(/;\s*/), b = s.docs.hi.split(/;\s*/); return a.length >= 2 && a.length === b.length ? a.map((x, i) => L(x.charAt(0).toUpperCase() + x.slice(1), b[i])) : null; };   /* a list item starts with a capital */
   const birthISO = () => { const b = (S.state.situation || {}).deliveredOn; return typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) ? b : null; };
-  const pmmvyBy = () => { const b = birthISO(); return b ? S.addDays(S.fromISO(b), 270) : null; };
+  /* V39.9 review FIXES-05: in a new pregnancy, an older baby's birth is not this claim's birth */
+  const claimBirth = () => { const b = birthISO(); const lmp = (S.state.situation || {}).pregnantSince; return b && S.cycle.isPregnant() && typeof lmp === 'string' && b < lmp ? null : b; };
+  /* review FACTS-09: a second child is registered during the pregnancy and paid once (if the baby is a girl): no 270-day
+     deadline, no reminders for it and no second part. She says which child it is on the claim itself (c.second). */
+  const pmmvyBy = (c) => { const b = claimBirth(); return b && !(c && c.second) ? S.addDays(S.fromISO(b), 270) : null; };
   const fmtL = (d) => S.fmtD(d, { day: 'numeric', month: 'short', year: 'numeric' });
-  const stepOf = (c) => (c.got ? 'got' : (c.applied ? 'applied' : 'ready'));
+  const stepOf = (c) => (c.got2 ? 'got2' : (c.got ? 'got' : (c.applied ? 'applied' : 'ready')));
+  /* Version 39.7 (journey audit P3-07): PMMVY's first child is paid in two parts, so its claim has two "received" steps */
+  const stepsOf = (k, c) => (k === 'pmmvy' && !(c && c.second) ? STEPS.concat(['got2']) : STEPS);
+  const stepT = (k, x, c) => t(k === 'pmmvy' && x === 'got' && !(c && c.second) ? 'access_step_got1' : 'access_step_' + x);
+  const part2Due = (c) => { const b = claimBirth(); return !!(b && c && !c.second && c.got && !c.got2 && S.diffDays(S.fromISO(b), S.today()) >= 98); };
+  /* Version 39.0: read-only, for the pregnancy plan's "Scheme money" step (it is done once she has applied) */
+  /* review life-12: with `since`, only a claim started on or after it (a claim from an earlier baby isn't this pregnancy's) */
+  /* Version 39.7 (journey audit P3-18): the husband's page as cards for "For my family", her stage first */
+  const PART_ST = [['cycle', 'ttc', 'meno'], ['preg'], ['post'], ['meno'], ['cycle', 'post'], ['ttc'], [], ['post', 'preg', 'meno']];   /* consent and respect: for everyone, in More cards */
+  S.access = Object.assign(S.access || {}, { partner: () => PARTNER.map((p, i) => ({ id: 'p' + i, st: PART_ST[i] || [], h: p.h, items: p.items, go: p.go || [] })), claimed: (k, since) => { const c = claimOf(k); return c && !(since && /^\d{4}-\d{2}-\d{2}$/.test(since) && !(c.started && c.started >= since)) ? stepOf(c) : null; } });
   function claimSync() {
-    S.reminders.remove('access-pmmvy');
-    const c = claimOf('pmmvy'); const by = pmmvyBy();
-    if (!c || c.applied || c.got || !by) return;
-    const ds = [S.addDays(by, -30), S.addDays(by, -7)].filter((d) => d > S.today()).map(S.toISO);
-    if (ds.length) S.reminders.upsert({ id: 'access-pmmvy', mod: 'access', title: L('PMMVY: register soon', 'PMMVY: जल्द पंजीकरण करें'), kind: 'custom', dates: ds, start: null, every: null, weekdays: null, time: '10:00', on: true });
+    /* V39.9 review FIXES-02: Sakhi moves only the dates; a reminder she switched off stays off */
+    const keep = (r) => { const was = S.reminders.get(r.id); S.reminders.upsert(Object.assign(r, { on: was ? was.on !== false : true }), was ? { quiet: true } : undefined); };
+    const c = claimOf('pmmvy'); const by = pmmvyBy(c);
+    const b = claimBirth(); if (c && !c.second && c.got && !c.got2 && b) { const d2 = S.addDays(S.fromISO(b), 98); if (d2 > S.today()) keep({ id: 'access-pmmvy2', mod: 'access', title: L('PMMVY: the second part', 'PMMVY: दूसरा हिस्सा'), kind: 'custom', dates: [S.toISO(d2)], start: null, every: null, weekdays: null, time: '10:00' }); else S.reminders.remove('access-pmmvy2'); } else S.reminders.remove('access-pmmvy2');   /* the 14-week vaccines */
+    const ds = !c || c.applied || c.got || !by ? [] : [S.addDays(by, -30), S.addDays(by, -7)].filter((d) => d > S.today()).map(S.toISO);
+    if (ds.length) keep({ id: 'access-pmmvy', mod: 'access', title: L('PMMVY: register soon', 'PMMVY: जल्द पंजीकरण करें'), kind: 'custom', dates: ds, start: null, every: null, weekdays: null, time: '10:00' });
+    else S.reminders.remove('access-pmmvy');
   }
   function claimBlock(k) {
     if (!S.canSave() || TRACK.indexOf(k) < 0) return '';
@@ -404,22 +429,26 @@
     const docs = docList(s); const st = stepOf(c);
     let extra = '';
     if (k === 'pmmvy') {
-      const by = pmmvyBy();
+      const by = pmmvyBy(c);
+      extra += '<div class="access-q"><span class="access-ql">' + esc(t('access_pmmvy_which')) + '</span><div class="chips">' + [['1', 'access_pmmvy_c1'], ['2', 'access_pmmvy_c2']].map((o) => '<button type="button" class="chip' + (c.second != null && (o[0] === '2') === !!c.second ? ' on' : '') + '" data-claim-child="' + o[0] + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>';
+      if (c.second) extra += '<p class="small" style="color:var(--fg)">' + esc(t('access_pmmvy_second')) + '</p>';
       if (by && !c.applied && !c.got) extra += '<div class="flag">' + esc(tf('access_pmmvy_by', { d: fmtL(by) })) + '</div>';
-      const anc = S.pregAnc ? S.pregAnc() : [];
-      /* The ministry's FAQ asks for one check-up in one answer and two in another (read 22 Oct 2026), so the line waits for two:
-         true either way. docs/wording-review-v28.md, section 5, asks which is right. */
-      if (!by && S.cycle.isPregnant() && anc.length >= 2 && !c.applied && !c.got) extra += '<p class="small" style="color:var(--fg)">' + esc(t('access_pmmvy_part1')) + '</p>';
+      /* review FACTS-09: a check-up within 6 months of her last period (182 days), as the rule says */
+      const lmp = (S.state.situation || {}).pregnantSince; const anc = (S.pregAnc ? S.pregAnc() : []).map((x) => (typeof x === 'string' ? x : (x && x.d) || '')).filter((x) => lmp && /^\d{4}-\d{2}-\d{2}$/.test(x) && S.diffDays(S.fromISO(lmp), S.fromISO(x)) >= 0 && S.diffDays(S.fromISO(lmp), S.fromISO(x)) <= 182);   /* V39.9 review FIXES-05: this pregnancy's check-ups only */
+      /* Version 39.7 (sources check): the 2022 guidelines ask for one check-up within 6 months of her last period; the portal's FAQ
+         still says two, so the line says to ask */
+      if (!by && !c.second && S.cycle.isPregnant() && anc.length >= 1 && !c.applied && !c.got) extra += '<p class="small" style="color:var(--fg)">' + esc(t('access_pmmvy_part1')) + '</p>';
+      if (part2Due(c)) extra += '<div class="flag">' + esc(t('access_pmmvy_part2')) + '</div>';
     }
     return '<div class="access-claim" data-claim="' + k + '"><h4>' + esc(t('access_claim_h')) + '</h4>' + extra +
       (docs ? '<p class="small">' + esc(t('access_claim_docs')) + '</p><div class="checklist">' + docs.map((x, i) => '<label class="' + ((c.docs || {})[i] ? 'done' : '') + '"><input type="checkbox" data-claim-doc="' + k + '|' + i + '"' + ((c.docs || {})[i] ? ' checked' : '') + '> <span>' + E(x) + '</span></label>').join('') + '</div>' : '') +
-      '<div class="access-steps">' + STEPS.map((x) => '<button type="button" class="chip' + (x === st ? ' on' : '') + '" data-claim-step="' + k + '|' + x + '">' + esc(t('access_step_' + x)) + (x !== 'ready' && c[x] ? ' · ' + esc(S.fmtD(S.fromISO(c[x]), { day: 'numeric', month: 'short' })) : '') + '</button>').join('') + '</div>' +
+      '<div class="access-steps">' + stepsOf(k, c).map((x) => '<button type="button" class="chip' + (x === st ? ' on' : '') + '" data-claim-step="' + k + '|' + x + '">' + esc(stepT(k, x, c)) + (x !== 'ready' && c[x] ? ' · ' + esc(S.fmtD(S.fromISO(c[x]), { day: 'numeric', month: 'short' })) : '') + '</button>').join('') + '</div>' +
       '<button type="button" class="linkbtn" data-claim-stop="' + k + '">' + esc(t('access_claim_stop')) + '</button></div>';
   }
   function myClaims() {
     if (!S.canSave()) return ''; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return '';
-    return '<div class="card access-my"><h3>' + esc(t('access_my_h')) + '</h3><div class="list">' + ks.map((k) => { const c = cl[k]; const st = stepOf(c); const by = k === 'pmmvy' && st === 'ready' ? pmmvyBy() : null;
-      return '<button type="button" class="item" data-claim-open="' + k + '"><span class="body"><strong>' + E(SCH[k].name) + '</strong><span>' + esc(t('access_step_' + st)) + (c[st] && st !== 'ready' ? ' · ' + esc(fmtL(S.fromISO(c[st]))) : '') + (by ? ' · ' + esc(tf('access_pmmvy_by', { d: fmtL(by) })) : '') + '</span></span><span class="chev">' + S.I.chev + '</span></button>'; }).join('') + '</div></div>';
+    return '<div class="card access-my"><h3>' + esc(t('access_my_h')) + '</h3><div class="list">' + ks.map((k) => { const c = cl[k]; const st = stepOf(c); const by = k === 'pmmvy' && st === 'ready' ? pmmvyBy(c) : null;
+      return '<button type="button" class="item" data-claim-open="' + k + '"><span class="body"><strong>' + E(SCH[k].name) + '</strong><span>' + esc(stepT(k, st, c)) + (c[st] && st !== 'ready' ? ' · ' + esc(fmtL(S.fromISO(c[st]))) : '') + (by ? ' · ' + esc(tf('access_pmmvy_by', { d: fmtL(by) })) : '') + (k === 'pmmvy' && part2Due(c) ? ' · ' + esc(t('access_step_got2')) + '?' : '') + '</span></span><span class="chev">' + S.I.chev + '</span></button>'; }).join('') + '</div></div>';
   }
 
   function schemeCard(k, st, a) {
@@ -474,15 +503,21 @@
   /* ---------- Get care free (Version 30; docs/ux-value-audit-2026-10-22.md, rec 3) ----------
      One page for every free doctor, scheme and helper. Each row opens a page that already exists, so nothing here is new health
      wording. Care's first row and Help's doctor card open it. Opening it ticks "look at free care" in her setup (app.js). */
+  /* Version 39.7 (journey audit P3-13): the Learn guides that explain how to use free care, on the page that offers it */
+  const HOW_FREE = ['services.see-gynaecologist-government-hospital', 'services.doctor-visit-bring-and-ask', 'services.reading-prescription-tests'];
+  function howFree() {
+    const arts = S.article ? HOW_FREE.map((k) => S.article(k)).filter(Boolean) : []; if (!arts.length) return '';
+    return '<h2>' + esc(t('access_howfree')) + '</h2><div class="list">' + arts.map((a) => '<button type="button" class="item" data-go="a-' + esc(a.key) + '"><span class="ico-sm hue hue-sky">' + S.icon('learn') + '</span><span class="body"><strong>' + esc(a.title) + '</strong><span>' + esc(a.summary) + '</span></span><span class="chev">' + S.I.chev + '</span></button>').join('') + '</div>';
+  }
   function renderFree(v) {
     if (S.canSave()) { const d = S.data('access'); if (!d.seenFree) { d.seenFree = S.toISO(S.today()); S.saveQuiet(); } }
     const n = S.canSave() ? TRACK.filter((k) => AD().claims[k]).length : 0;
     const row = (go, ic, hue, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-' + hue + '">' + S.icon(ic) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';
     v.innerHTML = S.backRow(t('access_free'), 'care', false) + '<p class="small">' + esc(t('access_free_p')) + '</p>' +
       '<div class="list">' + row('access-doctor', 'steth', 'purple', t('access_doctor'), t('access_doctor_s')) +
-        row('access-care', 'map', 'teal', t('access_care'), t('access_care_s')) + row('access-schemes', 'file', 'gold', t('access_schemes'), n ? tf('access_free_claims', { n: n }) : t('access_schemes_s')) +
+        row('access-care', 'map', 'teal', t('access_care'), t('access_care_s')) + row(S.cycle.isPregnant() ? 'access-schemes-preg' : (birthISO() && S.diffDays(S.fromISO(birthISO()), S.today()) <= 365 ? 'access-schemes-post' : 'access-schemes'), 'file', 'gold', t('access_schemes'), n ? tf('access_free_claims', { n: n }) : t('access_schemes_s')) +
         row('access-online', 'file', 'sky', t('access_online'), t('access_online_s')) + (S.routeOwner('asha') ? row('asha', 'person', 'green', t('asha_h'), t('asha_help_s')) : '') + '</div>' +
-      '<div class="flag urgent">' + E(EMERG) + '</div>';
+      howFree() + '<div class="flag urgent">' + E(EMERG) + '</div>';
     S.wire(v);
   }
 
@@ -550,11 +585,21 @@
 
   function renderSchemes(v, tag) {
     if (S.canSave()) { const d0 = S.data('access'); if (!d0.seenSchemes) { d0.seenSchemes = S.toISO(S.today()); S.saveQuiet(); } }   /* ticks "check scheme money" in her setup */
-    const tg = TAGS[tag] ? tag : 'all'; const T = TAGS[tg]; const a = mem.ans;
-    Object.keys(T.preset || {}).forEach((k) => { if (a[k] == null) a[k] = T.preset[k]; });
-    const qs = T.qs.filter((k) => !Q[k].mom || isMom(a));
+    const tg = TAGS[tag] ? tag : 'all'; const T = TAGS[tg]; const ans = mem.ans;
+    /* Version 39.7 (journey audit P3-08): pregnant and a baby this year come from her diary, so those questions go (she can still
+       answer them); the answers are still not saved */
+    const sit = S.state.situation || {}; const fromDiary = S.canSave() && S.state.stage === 'app' && !mem.askAll;
+    /* review FACTS-06: worked out on every render (her stage can change in the same session), never kept in mem.ans */
+    const dia = fromDiary ? { preg: S.cycle.isPregnant() ? 'y' : 'n', baby: birthISO() && S.diffDays(S.fromISO(birthISO()), S.today()) <= 365 ? 'y' : 'n' } : {};
+    Object.keys(T.preset || {}).forEach((k) => { if (ans[k] == null) ans[k] = T.preset[k]; });
+    const a = Object.assign({}, ans, dia);
+    if (S.canSave() && claimOf('pmmvy')) claimSync();   /* review FACTS-07 */
+    /* review FACTS-12: a claim tracked before V39.7 (Ni-kshay) keeps its card on the all list, so she can update or stop it */
+    const list = T.list.concat(tg === 'all' ? TRACK.filter((k) => T.list.indexOf(k) < 0 && S.canSave() && AD().claims[k]) : []);
+    const qs = T.qs.filter((k) => (!Q[k].mom || isMom(a)) && !(fromDiary && (k === 'preg' || k === 'baby')));
+    const diaryNote = fromDiary && T.qs.some((k) => k === 'preg' || k === 'baby') ? '<p class="small access-diary">' + esc(tf('access_from_diary', { x: [t(a.preg === 'y' ? 'access_dy_preg' : 'access_dy_notpreg'), t(a.baby === 'y' ? 'access_dy_baby' : 'access_dy_nobaby')].join(' · ') })) + ' <button type="button" class="linkbtn" id="access-ask-all">' + esc(t('access_dy_change')) + '</button></p>' : '';
     const groups = { yes: [], maybe: [], all: [], no: [] };
-    T.list.forEach((k) => { groups[SCH[k].match(a)].push(k); });
+    list.forEach((k) => { groups[SCH[k].match(a)].push(k); });
     const head = (key, cls) => '<h2 class="access-gh">' + E(STATUS[key][1]) + ' <span class="pill ' + cls + '">' + groups[key].length + '</span></h2>';
     const block = (key) => (groups[key].length ? head(key, STATUS[key][0]) + '<div class="list">' + groups[key].map((k) => schemeCard(k, key, a)).join('') + '</div>' : '');
     const answered = qs.filter((k) => a[k] != null).length;
@@ -562,16 +607,17 @@
       P(L('Government money and free services for women and families, checked against official sources for 2025–26. Answer what you like; your answers stay on this screen and are not saved.', 'महिलाओं और परिवारों के लिए सरकारी पैसा और मुफ़्त सेवाएँ, 2025–26 के सरकारी स्रोतों से जाँची गई। जो चाहें उसका जवाब दें; आपके जवाब इसी screen पर रहते हैं, save नहीं होते।'), 'small') +
       myClaims() + (tg === 'preg' ? '<div class="card soft">' + P(L('In 2025, families paid about ₹37,600 of their own money on average for a birth in a private hospital, and about ₹2,300 in a government one (national survey, NSS 80th round). Under JSSK, birth at a government hospital is free and cashless.', 'साल 2025 में परिवारों ने निजी अस्पताल में एक डिलीवरी पर औसतन लगभग ₹37,600 अपनी जेब से दिए, और सरकारी अस्पताल में लगभग ₹2,300 (राष्ट्रीय सर्वे, NSS 80वाँ दौर)। JSSK में सरकारी अस्पताल में डिलीवरी मुफ़्त और बिना नक़द के होती है।'), 'small') + '<p class="sources"><a href="https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/apr/doc2026420852401.pdf" target="_blank" rel="noopener">' + E(L('PIB, NSS 80th round: household health spending, 2026', 'PIB, NSS 80वाँ दौर: परिवारों का स्वास्थ्य ख़र्च, 2026')) + '</a></p></div>' : '') +
       '<div class="chips access-tags" role="group" aria-label="' + esc(t('access_filter')) + '">' + TAG_ORDER.map((x) => '<button type="button" class="chip' + (x === tg ? ' on' : '') + '" data-go="access-schemes-' + x + '">' + E(TAG_CHIP[x]) + '</button>').join('') + '</div>' +
-      '<div class="card"><div class="row spread"><h3>' + esc(t('access_q_h')) + '</h3><span class="small num">' + answered + '/' + qs.length + '</span></div>' +
+      '<div class="card"><div class="row spread"><h3>' + esc(t('access_q_h')) + '</h3><span class="small num">' + answered + '/' + qs.length + '</span></div>' + diaryNote +
       qs.map((k) => '<div class="access-q"><span class="access-ql">' + E(Q[k].q) + '</span><div class="chips">' + Q[k].o.map((o) => '<button type="button" class="chip' + (a[k] === o ? ' on' : '') + '" data-q="' + k + '" data-o="' + o + '">' + E(OPT[o]) + '</button>').join('') + '</div></div>').join('') +
       (answered ? '<button type="button" class="btn ghost sm access-inline" id="access-q-reset">' + esc(t('access_q_reset')) + '</button>' : '') + '</div>' +
       block('yes') + block('maybe') + block('all') +
       (groups.no.length ? '<details class="access-later"><summary>' + E(STATUS.no[1]) + ' (' + groups.no.length + ')</summary><div class="list" style="margin-top:8px">' + groups.no.map((k) => schemeCard(k, 'no', a)).join('') + '</div></details>' : '') +
       '<div class="card soft">' + P(L('Amounts and rules can change, and states add their own schemes. Your ASHA, Anganwadi worker or the 104 helpline can confirm what applies to you. Nobody may charge you to fill a scheme form.', 'रक़म और नियम बदल सकते हैं, और राज्य अपनी योजनाएँ भी जोड़ते हैं। आप पर क्या लागू है, यह आपकी ASHA, आंगनवाड़ी कार्यकर्ता या 104 हेल्पलाइन बता सकती है। योजना का फ़ॉर्म भरने के पैसे कोई नहीं ले सकता।'), 'small', 'color:var(--fg)') + '<button type="button" class="btn sm access-inline" data-go="access-care">' + esc(t('access_care')) + '</button></div>';
     S.wire(v);
+    const aa = v.querySelector('#access-ask-all'); if (aa) aa.addEventListener('click', () => { mem.askAll = true; delete mem.ans.preg; delete mem.ans.baby; renderSchemes(v, tag); });
     v.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => {
-      const k = b.dataset.q, o = b.dataset.o; a[k] = a[k] === o ? undefined : o;
-      if (!isMom(a)) { delete a.child; delete a.job; }
+      const k = b.dataset.q, o = b.dataset.o; ans[k] = ans[k] === o ? undefined : o;
+      if (!isMom(Object.assign({}, ans, dia))) { delete ans.child; delete ans.job; }
       renderSchemes(v, tg);
     }));
     const rs = v.querySelector('#access-q-reset'); if (rs) rs.addEventListener('click', () => { mem.ans = {}; renderSchemes(v, tg); });
@@ -580,24 +626,31 @@
     v.querySelectorAll('[data-claim-start]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.claimStart; AD().claims[k] = { started: S.toISO(S.today()), docs: {} }; redo(k); }));
     v.querySelectorAll('[data-claim-doc]').forEach((c) => c.addEventListener('change', () => { const p = c.dataset.claimDoc.split('|'); const cl = AD().claims[p[0]]; if (!cl) return; cl.docs = cl.docs || {}; if (c.checked) cl.docs[p[1]] = 1; else delete cl.docs[p[1]]; redo(p[0]); }));
     v.querySelectorAll('[data-claim-step]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.claimStep.split('|'); const cl = AD().claims[p[0]]; if (!cl) return; const td = S.toISO(S.today());
-      if (p[1] === 'ready') { delete cl.applied; delete cl.got; } else if (p[1] === 'applied') { cl.applied = cl.applied || td; delete cl.got; } else { cl.applied = cl.applied || td; cl.got = cl.got || td; } redo(p[0]); }));
+      if (p[1] === 'ready') { delete cl.applied; delete cl.got; delete cl.got2; } else if (p[1] === 'applied') { cl.applied = cl.applied || td; delete cl.got; delete cl.got2; } else if (p[1] === 'got') { cl.applied = cl.applied || td; cl.got = cl.got || td; delete cl.got2; } else { cl.applied = cl.applied || td; cl.got = cl.got || td; cl.got2 = cl.got2 || td; } redo(p[0]); }));
     v.querySelectorAll('[data-claim-stop]').forEach((b) => b.addEventListener('click', () => { delete AD().claims[b.dataset.claimStop]; redo(null); }));
+    v.querySelectorAll('[data-claim-child]').forEach((b) => b.addEventListener('click', () => { const cl = AD().claims.pmmvy; if (!cl) return; cl.second = b.dataset.claimChild === '2'; if (cl.second) delete cl.got2; redo('pmmvy'); }));
+    if (S.redrawn) S.redrawn(v);   /* review KNOWLEDGE-09: "Read it in 1 minute" stays after an answer redraws the page */
     v.querySelectorAll('[data-claim-open]').forEach((b) => b.addEventListener('click', () => { mem.open = b.dataset.claimOpen; const el = v.querySelector('#sch-' + mem.open); if (el) { el.open = true; if (el.scrollIntoView) el.scrollIntoView({ block: 'start' }); } else renderSchemes(v, 'all'); }));
   }
 
   /* =====================================================================
      3. For your husband or partner
      ===================================================================== */
+  /* Version 39.7 (journey audit P3-15): the danger signs come from core's one list (Help reads it too) */
+  const dangerItem = () => (S.dangerLine ? L('Learn the danger signs: ' + S.dangerLine('preg', 'en') + '. Any of these: call 112 or 102 now and take her to hospital.', 'ख़तरे के लक्षण पहचानें: ' + S.dangerLine('preg', 'hi') + '। इनमें से कुछ भी हो: अभी 112 या 102 पर कॉल करें और अस्पताल ले जाएँ।')
+    : L('Learn the danger signs: bleeding, fits, severe headache with blurred vision, fluid leaking, or the baby moving less. Any of these: call 112 or 102 now and take her to hospital.', 'ख़तरे के लक्षण पहचानें: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, या बच्चे की हलचल कम होना। इनमें से कुछ भी हो: अभी 112 या 102 पर कॉल करें और अस्पताल ले जाएँ।'));
   const PARTNER = [
     { h: L('Her periods', 'उनके पीरियड'), go: ['periods-pain'], items: [
       L('Periods are normal and healthy. Nothing about them is dirty or impure; she can eat, cook, sleep and pray as she wishes.', 'पीरियड सामान्य और सेहत की निशानी हैं। इनमें कुछ भी गंदा या अपवित्र नहीं; वे जैसा चाहें खा, पका, सो और पूजा कर सकती हैं।'),
       L('Keep pads at home, help with heavy work on the first days, and give her space to rest. A hot water bottle helps cramps.', 'घर में pad रखें, पहले दिनों में भारी काम में हाथ बँटाएँ, और आराम करने दें। गरम पानी की थैली से ऐंठन में आराम मिलता है।'),
       L('Pain that stops her day, bleeding more than 8 days, or soaking a pad every 1–2 hours is not normal. Go with her to a doctor; the Hb test is free at government centres.', 'दर्द जो उनका दिन रोक दे, 8 दिन से ज़्यादा ब्लीडिंग, या हर 1–2 घंटे में pad भीगना सामान्य नहीं। उनके साथ डॉक्टर के पास जाएँ; Hb जाँच सरकारी केंद्रों पर मुफ़्त है।')] },
-    { h: L('In pregnancy', 'गर्भ में'), go: ['access-schemes-preg'], items: [
+    { h: L('In pregnancy', 'गर्भ में'), go: ['access-schemes-preg'], get items() {   /* review FACTS-01: built when shown, in her language */
+      return [
       L('Go with her to register the pregnancy and to her check-ups. A free doctor check-up happens on the 9th of every month (PMSMA).', 'गर्भ के पंजीकरण और जाँचों में उनके साथ जाएँ। हर महीने की 9 तारीख़ को डॉक्टर की मुफ़्त जाँच होती है (PMSMA)।'),
       L('She needs more food, rest and her iron and calcium tablets every day. Take on the heavy work. Keep smoke, bidi and tobacco away from her.', 'उन्हें ज़्यादा खाना, आराम और रोज़ आयरन और कैल्शियम की गोलियाँ चाहिए। भारी काम आप सँभालें। धुआँ, बीड़ी और तंबाकू उनसे दूर रखें।'),
-      L('Learn the danger signs: bleeding, fits, severe headache with blurred vision, fluid leaking, or the baby moving less. Any of these: call 112 or 102 now and take her to hospital.', 'ख़तरे के लक्षण पहचानें: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, या बच्चे की हलचल कम होना। इनमें से कुछ भी हो: अभी 112 या 102 पर कॉल करें और अस्पताल ले जाएँ।'),
-      L('Plan the hospital, the 102 ambulance number and money for the day in advance. Asking about or finding out the baby’s sex is a crime in India. A daughter is as welcome as a son.', 'अस्पताल, 102 एम्बुलेंस का नंबर और उस दिन के ख़र्च की योजना पहले से बनाएँ। बच्चे का लिंग पूछना या पता करना भारत में अपराध है। बेटी उतनी ही स्वागत योग्य है जितना बेटा।')] },
+      dangerItem(),
+      L('Plan the hospital, the 102 ambulance number and money for the day in advance. Asking about or finding out the baby’s sex is a crime in India. A daughter is as welcome as a son.', 'अस्पताल, 102 एम्बुलेंस का नंबर और उस दिन के ख़र्च की योजना पहले से बनाएँ। बच्चे का लिंग पूछना या पता करना भारत में अपराध है। बेटी उतनी ही स्वागत योग्य है जितना बेटा।')];
+    } },
     { h: L('After the birth', 'डिलीवरी के बाद'), go: ['post-recovery', 'post-mood'], items: [
       L('Her body needs about 6 weeks to recover. Share the night feeds you can (burping, changing, settling the baby), the cooking and the housework.', 'उनके शरीर को ठीक होने में लगभग 6 हफ़्ते लगते हैं। रात में जो हो सके सँभालें (डकार दिलाना, कपड़े बदलना, बच्चे को सुलाना), खाना और घर का काम भी।'),
       L('Take her to a doctor today for heavy bleeding, fever, smelly discharge, a severe headache, or pain in the chest or one leg.', 'भारी ब्लीडिंग, बुख़ार, बदबूदार स्राव, तेज़ सिरदर्द, या छाती या एक पैर में दर्द हो तो आज ही डॉक्टर के पास ले जाएँ।'),
@@ -635,147 +688,6 @@
   }
 
   /* =====================================================================
-     4. Today for you (gated)
-     ===================================================================== */
-  function feedCards() {
-    const st = S.state; const sit = st.situation || {}; const td = S.today(); const out = [];
-    const add = (c) => { if (out.length < 5 && !out.some((x) => x.go === c.go)) out.push(c); };
-    const app = S.canSave();
-    if (app) {
-      const due = S.reminders.upcoming(0);
-      if (due.length) add({ why: L('From your reminders', 'आपके रिमाइंडर से'), title: L('Due today: ' + S.reminders.text(due[0].r), 'आज: ' + S.reminders.text(due[0].r)), text: L(due.length > 1 ? 'And ' + (due.length - 1) + ' more due today.' : 'Tick it off in your reminders when it is done.', due.length > 1 ? 'और ' + (due.length - 1) + ' आज के।' : 'हो जाए तो रिमाइंडर में टिक करें।'), go: 'tools-reminders', btn: GUIDE['tools-reminders'] });
-      if (sit.pregnant) {
-        const pinfo = S.preg && S.preg.info(); const wk = pinfo ? pinfo.weeks : null;
-        if (wk != null && wk >= 4 && wk <= 42) {
-          const tri = wk < 14 ? 0 : (wk < 28 ? 1 : 2);
-          const txt = [L('Folic acid every day, and register your pregnancy for the MCP card before 12 weeks. Nausea is common; small, frequent meals help.', 'रोज़ फ़ोलिक एसिड, और 12 हफ़्ते से पहले गर्भ का पंजीकरण करवाकर MCP card लें। जी मिचलाना आम है; थोड़ा-थोड़ा, बार-बार खाना मदद करता है।'),
-            L('Iron and calcium tablets every day (not together), the Td vaccine, and the anomaly scan at 18–20 weeks. Many women first feel movements between 16 and 24 weeks.', 'रोज़ आयरन और कैल्शियम की गोलियाँ (एक साथ नहीं), Td टीका, और 18–20 हफ़्ते पर anomaly scan। कई महिलाओं को पहली हलचल 16 से 24 हफ़्ते के बीच महसूस होती है।'),
-            L('Know your baby’s usual pattern of movements; fewer than usual means a check the same day. Pack your bag and plan transport; the 102 ambulance is free.', 'बच्चे की हलचल का रोज़ का पैटर्न पहचानें; सामान्य से कम हो तो उसी दिन जाँच। अपना बैग तैयार रखें और आने-जाने की योजना बनाएँ; 102 एम्बुलेंस मुफ़्त है।')][tri];
-          add({ why: L('Because you set: pregnant', 'क्योंकि आपने चुना: गर्भवती'), title: L('About week ' + wk + ': what to do now', 'लगभग हफ़्ता ' + wk + ': अभी क्या करें'), text: txt, go: 'preg-w-' + wk, btn: L('Week ' + wk, 'हफ़्ता ' + wk) });
-          if (wk >= 13) {
-            const nine = td.getDate() <= 9 ? new Date(td.getFullYear(), td.getMonth(), 9) : new Date(td.getFullYear(), td.getMonth() + 1, 9);
-            const when = S.fmtD(nine, { day: 'numeric', month: 'short' });
-            add({ why: L('Months 4 to 9 of pregnancy', 'गर्भ के 4 से 9 महीने'), title: L('Free doctor check-up on ' + when, when + ' को डॉक्टर से मुफ़्त जाँच'), text: L('PMSMA: a full check-up by a doctor on the 9th of every month at government health centres. Take your MCP card.', 'PMSMA: हर महीने की 9 तारीख़ को सरकारी केंद्रों पर डॉक्टर से पूरी जाँच। अपना MCP card साथ ले जाएँ।'), go: 'access-schemes-preg', btn: GUIDE['access-schemes-preg'] });
-          }
-        }
-      }
-      if (sit.deliveredOn) {
-        const d = S.diffDays(S.fromISO(sit.deliveredOn), td);
-        if (d >= 0 && d <= 365) {
-          if (d <= 42) add({ why: L('Day ' + d + ' after the birth', 'डिलीवरी के बाद दिन ' + d), title: L('Recovery: what is normal, what is not', 'ठीक होना: क्या सामान्य, क्या नहीं'), text: L('Rest, eat well and keep taking iron. See a doctor today for heavy bleeding, fever, smelly discharge, a severe headache, or pain in the chest or one leg.', 'आराम करें, अच्छा खाएँ और आयरन लेती रहें। भारी ब्लीडिंग, बुख़ार, बदबूदार स्राव, तेज़ सिरदर्द, या छाती या एक पैर में दर्द हो तो आज ही डॉक्टर को दिखाएँ।'), go: 'post-recovery', btn: GUIDE['post-recovery'] });
-          if (d <= 120) add({ why: L('In the months after a birth', 'डिलीवरी के बाद के महीनों में'), title: L('How is your mood?', 'आपका मन कैसा है?'), text: L('Weepy days in the first 2 weeks are common and pass. Low mood that lasts longer is common too, and treatable. Tele-MANAS 14416 is free, any time.', 'पहले 2 हफ़्तों में रोना आना आम है और ठीक हो जाता है। उससे लंबी उदासी भी आम है, और उसका इलाज है। Tele-MANAS 14416 मुफ़्त है, कभी भी।'), go: 'post-mood', btn: GUIDE['post-mood'] });
-          if (d >= 21 && d <= 180) add({ why: L('Before 6 weeks after the birth', 'डिलीवरी के 6 हफ़्ते से पहले'), title: L('Pregnancy can happen before periods return', 'पीरियड लौटने से पहले भी गर्भ ठहर सकता है'), text: L('Choose a method by 6 weeks after the birth. Many are free and safe while breastfeeding.', 'डिलीवरी के 6 हफ़्ते तक कोई तरीक़ा चुन लें। कई तरीक़े मुफ़्त हैं और दूध पिलाते समय सुरक्षित।'), go: 'post-contra', btn: GUIDE['post-contra'] });
-        }
-      }
-      if (!sit.pregnant && !S.cycle.countsOff() && !sit.stopped) {
-        const ls = S.cycle.lastStart();
-        if (!ls) add({ why: L('Your diary', 'आपकी डायरी'), title: L('Log your last period', 'अपना पिछला पीरियड दर्ज करें'), text: L('A few months of start dates help your doctor more than any single day. One tap on Today.', 'कुछ महीनों की शुरुआत की तारीख़ें किसी एक दिन से ज़्यादा डॉक्टर की मदद करती हैं। “आज” पर एक टैप।'), go: 'diary', btn: GUIDE['diary'] });
-        else {
-          const cd = S.cycle.cycleDay(); const bd = S.cycle.bleedingDays()[S.toISO(td)];
-          if (bd && bd !== 'spot') add({ why: L('Period day ' + cd + ' in your diary', 'आपकी डायरी में पीरियड का दिन ' + cd), title: L('Cramps and flow', 'ऐंठन और ब्लीडिंग'), text: L('Heat, rest and gentle movement ease cramps. Soaking a pad every 1–2 hours is a reason to see a doctor this week.', 'गरमी, आराम और हल्की हलचल से ऐंठन में आराम मिलता है। हर 1–2 घंटे में pad भीगे तो इसी हफ़्ते डॉक्टर को दिखाएँ।'), go: 'periods-pain', btn: GUIDE['periods-pain'] });
-          else if (cd > 35) add({ why: L('Cycle day ' + cd + ' in your diary', 'आपकी डायरी में चक्र का दिन ' + cd), title: L('More than 35 days since your period started', 'पीरियड शुरू हुए 35 दिन से ज़्यादा'), text: L('If you could be pregnant, a home test is the first step. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो पहले घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'), go: 'pregtest-when', btn: GUIDE['pregtest-when'] });
-          else add({ why: L('Cycle day ' + cd + ' in your diary', 'आपकी डायरी में चक्र का दिन ' + cd), title: L('Your cycle, in plain words', 'आपका चक्र, आसान भाषा में'), text: L('A usual gap between periods is 21–35 days, and it can change a little each month. Log the start and end; the pattern helps more than any single date.', 'पीरियड के बीच आम अंतर 21–35 दिन होता है, और हर महीने थोड़ा बदल सकता है। शुरुआत और ख़त्म होना दर्ज करें; पैटर्न किसी एक तारीख़ से ज़्यादा मदद करता है।'), go: 'periods', btn: GUIDE['periods'] });
-        }
-      }
-    }
-    const m = td.getMonth();
-    if (m >= 6 && m <= 10) add({ why: L('Season: July to November', 'मौसम: जुलाई से नवंबर'), title: L('Dengue season', 'डेंगू का मौसम'), text: L('Empty standing water around the house every week and sleep under a net. For fever, see a doctor; doctors use paracetamol and advise against aspirin and ibuprofen. Go to hospital now with severe belly pain, repeated vomiting, or bleeding from the nose or gums.' + (sit.pregnant ? ' In pregnancy, see a doctor the same day for any fever.' : ''), 'घर के आसपास जमा पानी हर हफ़्ते ख़ाली करें और मच्छरदानी में सोएँ। बुख़ार हो तो डॉक्टर को दिखाएँ; डॉक्टर paracetamol देते हैं और aspirin या ibuprofen से मना करते हैं। तेज़ पेट दर्द, बार-बार उल्टी, या नाक या मसूड़ों से ख़ून आए तो अभी अस्पताल जाएँ।' + (sit.pregnant ? ' गर्भ में किसी भी बुख़ार पर उसी दिन डॉक्टर को दिखाएँ।' : '')), go: 'access-symptoms', btn: GUIDE['access-symptoms'] });
-    else if (m >= 2 && m <= 5) add({ why: L('Season: March to June', 'मौसम: मार्च से जून'), title: L('Heat season', 'गर्मी और लू का मौसम'), text: L('Drink water often, stay in the shade from 12 to 3 in the afternoon, and wear loose cotton. Pregnant women, babies and older people get heat illness faster. Confusion, fainting or a very hot, dry body: call 108 or 112.', 'बार-बार पानी पिएँ, दोपहर 12 से 3 बजे तक छाँव में रहें, और ढीले सूती कपड़े पहनें। गर्भवती महिलाएँ, बच्चे और बुज़ुर्ग जल्दी बीमार पड़ते हैं। उलझन, बेहोशी या बहुत गरम, सूखा शरीर: 108 या 112 पर कॉल करें।'), go: 'help', btn: GUIDE['help'] });
-    if (app) {
-      const age = S.cycle.ageYears();
-      if (age != null && age >= 30 && age <= 65) add({ why: L('Because you are ' + age, 'क्योंकि आपकी उम्र ' + age + ' है'), title: L('Free check-ups at your age', 'आपकी उम्र में मुफ़्त जाँचें'), text: L('From 30: BP and sugar every year, and cervical, breast and mouth checks every 5 years, free at your Ayushman Arogya Mandir.', '30 से: हर साल BP और शुगर, और हर 5 साल में बच्चेदानी के मुँह, स्तन और मुँह की जाँच, आयुष्मान आरोग्य मंदिर पर मुफ़्त।'), go: 'screen-mine', btn: GUIDE['screen-mine'] });
-      else if (age != null && age < 30) add({ why: L('Because you are ' + age, 'क्योंकि आपकी उम्र ' + age + ' है'), title: L('Tired, or heavy periods?', 'थकान, या भारी पीरियड?'), text: L('Anaemia is common in young Indian women. The Hb test is free at government centres, and so are iron tablets.', 'भारत की युवा महिलाओं में खून की कमी आम है। Hb जाँच सरकारी केंद्रों पर मुफ़्त है, और आयरन की गोलियाँ भी।'), go: 'cond-anaemia', btn: GUIDE['cond-anaemia'] });
-      if (age != null && age >= 45 && !sit.pregnant) add({ why: L('Because you are ' + age, 'क्योंकि आपकी उम्र ' + age + ' है'), title: L('Periods changing?', 'पीरियड बदल रहे हैं?'), text: L('Between about 45 and 55 periods change, then stop. Hot flushes and poor sleep are common, and treatable.', 'लगभग 45 से 55 के बीच पीरियड बदलते हैं, फिर बंद होते हैं। गर्मी के झोंके और ख़राब नींद आम हैं, और इनका इलाज है।'), go: 'meno', btn: GUIDE['meno'] });
-    }
-    add({ why: L('For every woman', 'हर महिला के लिए'), title: L('Scheme money you may be missing', 'योजना का पैसा जो शायद छूट रहा है'), text: L('Five quick questions show which government schemes may fit you, with the papers you need.', 'पाँच छोटे सवाल बताते हैं कि कौन सी सरकारी योजनाएँ आप पर लागू हो सकती हैं, ज़रूरी काग़ज़ों के साथ।'), go: 'access-schemes', btn: GUIDE['access-schemes'] });
-    add({ why: L('For every woman', 'हर महिला के लिए'), title: L('Free care near you', 'आपके पास मुफ़्त इलाज'), text: L('From your ASHA to the district hospital: what each one gives free, and the official way to find it.', 'ASHA से ज़िला अस्पताल तक: हर जगह क्या मुफ़्त है, और उसे खोजने का सरकारी तरीक़ा।'), go: 'access-care', btn: GUIDE['access-care'] });
-    return out;
-  }
-
-  function renderFeed(v) {
-    const cards = feedCards();
-    v.innerHTML = S.backRow(t('access_feed'), 'home', true) +
-      P(L('A few short cards picked for today from what you set yourself: diary dates, pregnancy or birth date, age, reminders and the month. Simple rules, the same for everyone. Not a diagnosis.', 'आज के लिए कुछ छोटे कार्ड, उन बातों से चुने गए जो आपने ख़ुद दर्ज कीं: डायरी की तारीख़ें, गर्भ या डिलीवरी की तारीख़, उम्र, रिमाइंडर और महीना। आसान नियम, सबके लिए एक जैसे। diagnosis नहीं।'), 'small') +
-      (S.canSave() ? '' : S.needDiary()) +
-      cards.map((c) => '<div class="card access-fc"><div class="eyebrow">' + E(c.why) + '</div><h3>' + E(c.title) + '</h3>' + P(c.text, 'small', 'color:var(--fg)') + '<button type="button" class="btn sm access-inline" data-go="' + esc(c.go) + '">' + E(c.btn) + ' ' + I.chev.replace('<svg', '<svg style="width:14px;height:14px"') + '</button></div>').join('') +
-      '<p class="footnote">' + esc(t('cadence')) + '</p>' + srcList(['pmsma', 'dengue', 'heat', 'aam']);
-    S.wire(v);
-  }
-
-  /* =====================================================================
-     5. Doctor videos (planned)
-     ===================================================================== */
-  const ROLE = { megha: L('Dr. Megha, Qura', 'Dr. Megha, Qura'), qdoc: L('A Qura doctor (BAMS)', 'Qura की एक डॉक्टर (BAMS)'), coord: L('A Qura care coordinator', 'Qura की एक care coordinator') };
-  const VIDEOS = [
-    { k: 'periods', mins: 6, who: 'megha', icon: 'drop', go: 'periods', title: L('Your period: what is normal and what is not', 'आपका पीरियड: क्या सामान्य है, क्या नहीं'), text: [
-      L('A usual gap between periods is 21–35 days, and bleeding lasts up to 8 days.', 'पीरियड के बीच आम अंतर 21–35 दिन होता है, और ब्लीडिंग 8 दिन तक चलती है।'),
-      L('Soaking a pad every 1–2 hours, clots the size of a ₹10 coin, or bleeding through clothes needs a doctor this week.', 'हर 1–2 घंटे में pad भीगना, ₹10 के सिक्के जितने थक्के, या कपड़ों तक ब्लीडिंग: इसी हफ़्ते डॉक्टर को दिखाएँ।'),
-      L('Pain that stops your day is not something to put up with. Keep a diary of dates and pain; it helps the doctor more than memory.', 'जो दर्द दिन रोक दे, उसे सहते न रहें। तारीख़ों और दर्द की डायरी रखें; यह याद से ज़्यादा डॉक्टर की मदद करती है।'),
-      L('No period for 90 days or more, and not pregnant or breastfeeding: take a pregnancy test first, then see a doctor.', '90 दिन या ज़्यादा पीरियड नहीं, और गर्भ या स्तनपान नहीं: पहले गर्भ test, फिर डॉक्टर।')] },
-    { k: 'pmos', mins: 8, who: 'megha', icon: 'leaf', go: 'cond-labs', title: L('PMOS (PCOS): first steps after the diagnosis', 'PMOS (PCOS): diagnosis के बाद पहले क़दम'), text: [
-      L('PMOS is common and long-term, and it can be managed. It is not your fault.', 'PMOS आम और लंबे समय की स्थिति है, और इसे सँभाला जा सकता है। यह आपकी ग़लती नहीं।'),
-      L('Ask for a sugar test and a lipid test; PMOS raises the chance of diabetes.', 'शुगर और lipid की जाँच माँगें; PMOS से diabetes का ख़तरा बढ़ता है।'),
-      L('Regular meals, daily movement and sleep help cycles and skin. Even a small weight loss, if you are overweight, can bring periods back.', 'समय पर खाना, रोज़ की हलचल और नींद से चक्र और त्वचा में मदद मिलती है। वज़न ज़्यादा हो तो थोड़ा कम होने से भी पीरियड लौट सकते हैं।'),
-      L('Going 90 days or more without a period needs a doctor; regular periods protect the womb lining. Hormone medicines are prescribed by a gynaecologist; Qura refers.', '90 दिन या ज़्यादा पीरियड न आएँ तो डॉक्टर को दिखाएँ; नियमित पीरियड बच्चेदानी की परत को सुरक्षित रखते हैं। हॉर्मोन की दवाएँ स्त्री रोग विशेषज्ञ लिखती हैं; Qura रेफ़र करता है।')] },
-    { k: 'schemes', mins: 7, who: 'coord', icon: 'file', go: 'access-schemes-preg', title: L('Free care in pregnancy: what the government gives you', 'गर्भ में मुफ़्त देखभाल: सरकार क्या देती है'), text: [
-      L('JSSK makes the delivery, a C-section, medicines, tests, blood, food and transport free at government hospitals.', 'JSSK से सरकारी अस्पतालों में डिलीवरी, C-section, दवा, जाँच, खून, खाना और आना-जाना मुफ़्त है।'),
-      L('PMMVY gives ₹5,000 for the first child and ₹6,000 if the second child is a girl, to eligible women.', 'PMMVY में पात्र महिलाओं को पहले बच्चे पर ₹5,000 और दूसरा बच्चा बेटी हो तो ₹6,000 मिलते हैं।'),
-      L('JSY gives cash after a birth in a government facility; the amount depends on your state and whether you live in a village or a town.', 'JSY में सरकारी केंद्र में डिलीवरी के बाद नक़द मिलता है; रक़म आपके राज्य और गाँव या शहर पर निर्भर है।'),
-      L('On the 9th of every month, a doctor checks pregnant women free (PMSMA). Your ASHA helps with every form.', 'हर महीने की 9 तारीख़ को डॉक्टर गर्भवती महिलाओं की मुफ़्त जाँच करते हैं (PMSMA)। हर फ़ॉर्म में ASHA मदद करती हैं।')] },
-    { k: 'danger', mins: 5, who: 'qdoc', icon: 'help', go: 'preg-symptoms', title: L('Danger signs in pregnancy: when to go now', 'गर्भ में ख़तरे के लक्षण: कब तुरंत जाएँ'), text: [
-      L('Call 112 or 102 now for bleeding, fits, a severe headache with blurred vision, fluid leaking, or the baby moving less.', 'ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, या बच्चे की हलचल कम हो तो अभी 112 या 102 पर कॉल करें।'),
-      L('Regular, painful tightening before 37 weeks: go to hospital now.', '37 हफ़्ते से पहले नियमित और दर्द वाला कसाव: अभी अस्पताल जाएँ।'),
-      L('Fever, vomiting that will not stop, or burning when you pee: see a doctor today.', 'बुख़ार, न रुकने वाली उल्टी, या पेशाब में जलन: आज ही डॉक्टर को दिखाएँ।'),
-      L('Keep the 102 number, your MCP card and some money ready from the 7th month.', '7वें महीने से 102 नंबर, MCP card और कुछ पैसे तैयार रखें।')] },
-    { k: 'after', mins: 7, who: 'qdoc', icon: 'baby', go: 'post-recovery', title: L('The first 6 weeks after birth', 'डिलीवरी के बाद पहले 6 हफ़्ते'), text: [
-      L('Bleeding slowly gets lighter over 4–6 weeks. Soaking a pad an hour, or large clots, needs a hospital now.', 'ब्लीडिंग 4–6 हफ़्ते में धीरे-धीरे कम होती है। एक घंटे में pad भीगना या बड़े थक्के: अभी अस्पताल।'),
-      L('Fever, smelly discharge, a painful red wound, or pain in the chest or one leg: see a doctor today.', 'बुख़ार, बदबूदार स्राव, दर्द वाला लाल घाव, या छाती या एक पैर में दर्द: आज ही डॉक्टर को दिखाएँ।'),
-      L('Keep taking iron for 180 days, eat well and rest when the baby sleeps.', '180 दिन तक आयरन लेती रहें, अच्छा खाएँ और बच्चा सोए तो आराम करें।'),
-      L('You can get pregnant before periods return; choose a method by 6 weeks.', 'पीरियड लौटने से पहले भी गर्भ ठहर सकता है; 6 हफ़्ते तक कोई तरीक़ा चुन लें।')] },
-    { k: 'contra', mins: 8, who: 'megha', icon: 'pill', go: 'contra-free', title: L('Contraception: all the free methods', 'गर्भनिरोध: सारे मुफ़्त तरीक़े'), text: [
-      L('Condoms, Mala-N, Chhaya and the emergency pill come free from your ASHA.', 'कंडोम, Mala-N, छाया और इमरजेंसी गोली ASHA से मुफ़्त मिलती हैं।'),
-      L('Copper-T, the Antara injection, tubectomy and NSV are free at government facilities.', 'Copper-T, अंतरा इंजेक्शन, महिला नसबंदी और NSV सरकारी केंद्रों पर मुफ़्त हैं।'),
-      L('The emergency pill works best within 72 hours of sex; sooner is better.', 'इमरजेंसी गोली संबंध के 72 घंटे के अंदर सबसे अच्छा काम करती है; जितनी जल्दी, उतना अच्छा।'),
-      L('No calendar method or “safe days” is a reliable way to avoid pregnancy. Pills and devices are prescribed after a check by a doctor, nurse or ANM.', 'कोई calendar तरीक़ा या “safe days” गर्भ रोकने का भरोसेमंद तरीक़ा नहीं। गोलियाँ और साधन डॉक्टर, नर्स या ANM की जाँच के बाद मिलते हैं।')] },
-    { k: 'discharge', mins: 5, who: 'qdoc', icon: 'lock', go: 'intimate-check', title: L('White discharge: normal or infection?', 'सफ़ेद पानी: सामान्य या इन्फ़ेक्शन?'), text: [
-      L('Clear or white discharge that changes through the month is normal and keeps the vagina healthy.', 'साफ़ या सफ़ेद पानी जो महीने भर बदलता रहे, सामान्य है और योनि को स्वस्थ रखता है।'),
-      L('A change in colour or smell, itching, or burning when you pee needs a check this week.', 'रंग या गंध बदले, खुजली हो, या पेशाब में जलन हो तो इसी हफ़्ते जाँच कराएँ।'),
-      L('Do not wash inside the vagina or use scented products; plain water outside is enough.', 'योनि के अंदर न धोएँ और ख़ुशबू वाली चीज़ें न लगाएँ; बाहर सादा पानी काफ़ी है।'),
-      L('Suraksha clinics test and treat infections free and in private, and can treat your partner too.', 'सुरक्षा क्लिनिक इन्फ़ेक्शन की जाँच और इलाज मुफ़्त और गोपनीय करते हैं, और साथी का इलाज भी।')] },
-    { k: 'meno', mins: 8, who: 'megha', icon: 'moon', go: 'meno', title: L('Menopause: hot flushes, sleep and bones', 'मेनोपॉज़: गर्मी के झोंके, नींद और हड्डियाँ'), text: [
-      L('Periods usually stop between 45 and 55. Changes can start years before.', 'पीरियड आम तौर पर 45 से 55 के बीच बंद होते हैं। बदलाव कई साल पहले शुरू हो सकते हैं।'),
-      L('Hot flushes that wake you at night have good treatments; hormone therapy is prescribed by a gynaecologist, and Qura refers.', 'रात में जगा देने वाले गर्मी के झोंकों का अच्छा इलाज है; हॉर्मोन थेरेपी स्त्री रोग विशेषज्ञ लिखती हैं, और Qura रेफ़र करता है।'),
-      L('Walking, calcium-rich food and sunlight help keep bones strong.', 'चलना, कैल्शियम वाला खाना और धूप हड्डियों को मज़बूत रखने में मदद करते हैं।'),
-      L('Any bleeding 12 months or more after your last period always needs a check.', 'आख़िरी पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग हो तो जाँच हमेशा ज़रूरी है।')] },
-    { k: 'mood', mins: 6, who: 'qdoc', icon: 'heart', go: 'post-mood', title: L('Low mood after the baby: you are not alone', 'बच्चे के बाद उदासी: आप अकेली नहीं हैं'), text: [
-      L('Feeling weepy in the first 2 weeks is common and passes.', 'पहले 2 हफ़्तों में रोना आना आम है और ठीक हो जाता है।'),
-      L('Low mood most days for 2 weeks or more is common too, and it is treatable. It does not make you a bad mother.', '2 हफ़्ते या ज़्यादा लगभग रोज़ उदासी भी आम है, और इसका इलाज है। इससे आप बुरी माँ नहीं बनतीं।'),
-      L('Tell someone you trust and see a doctor. Tele-MANAS 14416 is free, any time.', 'किसी भरोसे वाले को बताएँ और डॉक्टर को दिखाएँ। Tele-MANAS 14416 मुफ़्त है, कभी भी।'),
-      L('Thoughts of harming yourself or the baby: call 14416 or 112 now.', 'ख़ुद को या बच्चे को नुक़सान के विचार: अभी 14416 या 112 पर कॉल करें।')] },
-    { k: 'men', mins: 6, who: 'megha', icon: 'users', go: 'access-partner', title: L('For husbands: how to support her', 'पतियों के लिए: उनका साथ कैसे दें'), text: [
-      L('Go with her to check-ups, share the work, and learn the danger signs in pregnancy and after birth.', 'जाँचों में साथ जाएँ, काम बाँटें, और गर्भ और डिलीवरी के बाद के ख़तरे के लक्षण सीखें।'),
-      L('Condoms and NSV are your part in contraception. NSV does not affect strength or sex.', 'कंडोम और NSV गर्भनिरोध में आपकी भूमिका हैं। NSV से ताक़त या संबंध पर असर नहीं पड़ता।'),
-      L('If a baby is not coming, a semen test is a simple first step for you.', 'अगर बच्चा नहीं हो रहा, तो आपके लिए semen test आसान पहला क़दम है।'),
-      L('Her yes matters every time. Watch for signs that she needs help for her mind.', 'उनकी हाँ हर बार मायने रखती है। ध्यान दें कि कहीं उन्हें मन की मदद तो नहीं चाहिए।')] }
-  ];
-
-  function renderVideos(v) {
-    v.innerHTML = S.backRow(t('access_videos'), 'care', false) +
-      P(L('Short talks we plan to record in Hindi and English. Until they are ready, tap any card to read a short text version.', 'छोटी बातचीत जो हम हिंदी और English में रिकॉर्ड करने वाले हैं। तब तक किसी भी कार्ड पर टैप करके छोटा लिखित रूप पढ़ें।'), 'small') +
-      '<div class="list">' + VIDEOS.map((x) => '<button type="button" class="item access-vid" data-vid="' + x.k + '"><span class="ico-sm">' + S.icon(x.icon) + '</span><span class="body"><strong>' + E(x.title) + '</strong><span>' + esc(S.tf('access_mins', { n: x.mins })) + ' · ' + E(ROLE[x.who]) + '</span><span class="pill muted access-planned">' + esc(t('access_planned')) + '</span></span></button>').join('') + '</div>' +
-      '<p class="footnote">' + esc(t('access_vid_note')) + '</p>' + quraCard(t('access_videos'));
-    S.wire(v);
-    v.querySelectorAll('[data-vid]').forEach((b) => b.addEventListener('click', () => {
-      const x = VIDEOS.find((y) => y.k === b.dataset.vid); if (!x) return;
-      S.sheet('<div class="row wrap"><span class="pill muted">' + esc(t('access_planned')) + '</span><span class="small">' + esc(S.tf('access_mins', { n: x.mins })) + ' · ' + E(ROLE[x.who]) + '</span></div><h2>' + E(x.title) + '</h2><div class="eyebrow">' + esc(t('access_text_v')) + '</div><ul class="access-vt">' + x.text.map((p) => '<li>' + E(p) + '</li>').join('') + '</ul>' +
-        '<div class="grid2"><button type="button" class="btn" data-go="' + esc(x.go) + '">' + esc(t('access_read_guide')) + '</button><button type="button" class="btn primary" id="access-vclose">' + esc(t('access_close')) + '</button></div>', (sh) => {
-        sh.querySelectorAll('[data-go]').forEach((g) => g.addEventListener('click', () => S.closeSheet()));
-        const c = sh.querySelector('#access-vclose'); if (c) c.addEventListener('click', () => S.closeSheet());
-      });
-    }));
-  }
-
-  /* =====================================================================
      6. Symptom guide (gated)
      ===================================================================== */
   const LV = {
@@ -801,9 +713,9 @@
       { lv: 'now', s: K('s1a'), often: L('This can be an ectopic pregnancy (outside the womb), which can bleed inside. It needs a hospital now.', 'यह बच्चेदानी के बाहर का गर्भ हो सकता है, जिसमें अंदर ख़ून बह सकता है। अभी अस्पताल ज़रूरी है।'), go: ['loss-types'] },
       { lv: 'now', s: K('s1c'), often: L('These can be signs of a problem with the placenta, high BP of pregnancy (pre-eclampsia), early labour, or the baby needing help.', 'ये आँवल (placenta) की परेशानी, गर्भ का हाई BP (pre-eclampsia), समय से पहले प्रसव, या बच्चे को मदद की ज़रूरत के लक्षण हो सकते हैं।'), go: ['preg-symptoms', 'pregtools-kicks'] },
       { lv: 'now', s: L('Regular, painful tightening before 37 weeks', '37 हफ़्ते से पहले नियमित, दर्द वाला कसाव'), often: L('This can be early (preterm) labour. Go to hospital now; 102 is a free ambulance.', 'यह समय से पहले प्रसव हो सकता है। अभी अस्पताल जाएँ; 102 मुफ़्त एम्बुलेंस है।'), go: ['pregtools-contractions'] },
-      { lv: 'today', s: L('Sudden swelling of the face or hands, or a headache that will not go away', 'चेहरे या हाथों पर अचानक सूजन, या ऐसा सिरदर्द जो न जाए'), often: L('Often harmless, but it can be high BP of pregnancy. A BP check today settles it.', 'अक्सर मामूली, पर यह गर्भ का हाई BP हो सकता है। आज BP जाँच से पता चल जाएगा।'), go: ['preg-symptoms'] },
+      { lv: 'today', s: L('A headache that will not go away', 'ऐसा सिरदर्द जो न जाए'),   /* Version 39.7: swelling of face or hands is on the one danger list (Now) */ often: L('Often harmless, but it can be high BP of pregnancy. A BP check today settles it.', 'अक्सर मामूली, पर यह गर्भ का हाई BP हो सकता है। आज BP जाँच से पता चल जाएगा।'), go: ['preg-symptoms'] },
       { lv: 'today', s: L('Vomiting so much you cannot keep water down, or passing very little urine', 'इतनी उल्टी कि पानी भी न रुके, या बहुत कम पेशाब'), often: L('Often severe pregnancy sickness (hyperemesis). A drip and medicine help; do not wait.', 'अक्सर गर्भ की तेज़ उल्टी (hyperemesis)। ड्रिप और दवा से आराम मिलता है; इंतज़ार न करें।'), go: ['preg-symptoms'] },
-      { lv: 'today', s: L('Fever, or burning when you pee', 'बुख़ार, या पेशाब में जलन'), often: L('Often a urine infection, which needs quick treatment in pregnancy. From July to November, dengue or malaria too.', 'अक्सर पेशाब का इन्फ़ेक्शन, जिसका गर्भ में जल्दी इलाज ज़रूरी है। जुलाई से नवंबर में डेंगू या मलेरिया भी।'), go: ['preg-symptoms'] },
+      { lv: 'today', s: L('Burning when you pee', 'पेशाब में जलन'), often: L('Often a urine infection, which needs quick treatment in pregnancy.', 'अक्सर पेशाब का इन्फ़ेक्शन, जिसका गर्भ में जल्दी इलाज ज़रूरी है।'),   /* Version 39.7: fever is on the one danger list (Now) */ go: ['preg-symptoms'] },
       { lv: 'today', s: L('Itching all over, worse on the palms and soles, in the last months', 'आख़िरी महीनों में पूरे शरीर में खुजली, हथेलियों और तलवों में ज़्यादा'), often: L('Often harmless, but it can be a liver condition of pregnancy (cholestasis) that needs a blood test.', 'अक्सर मामूली, पर यह गर्भ में लिवर की एक स्थिति (cholestasis) हो सकती है, जिसके लिए खून की जाँच चाहिए।'), go: ['preg-symptoms'] },
       { lv: 'routine', s: L('Nausea, heartburn, backache, leg cramps or tiredness', 'जी मिचलाना, सीने में जलन, कमर दर्द, पैरों में ऐंठन या थकान'), often: L('Very common in pregnancy and usually normal. Mention them at your next check-up.', 'गर्भ में बहुत आम और आम तौर पर सामान्य। अगली जाँच में बताएँ।'), go: ['preg-symptoms', 'preg-diet'] }] },
     { k: 'breast', name: L('Breast', 'स्तन'), items: [
@@ -867,47 +779,7 @@
       '<button type="button" class="btn block" data-ask="' + esc(t('access_symptoms') + ': ' + tx(area.name)) + '">' + esc(t('ask_qura')) + '</button>';
     S.wire(v);
     v.querySelectorAll('[data-area]').forEach((b) => b.addEventListener('click', () => { mem.area = b.dataset.area; renderSymptoms(v); }));
-  }
-
-  /* ---------- today's stories: the same cards as "Today for you", one at a time, full screen. Tap the right side for the next,
-     the left side for the one before; they move on by themselves unless she pauses (or prefers less motion). ---------- */
-  let stI = 0, stTm = 0, stPaused = false;
-  const ST_MS = 7000;
-  const stTodayISO = () => S.toISO(S.today());
-  const stopStories = () => { clearTimeout(stTm); stTm = 0; };
-  const stReduced = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  function renderStories(v) {
-    const cards = feedCards(); stopStories(); if (stI > cards.length) stI = 0;
-    const end = stI >= cards.length; const c = cards[stI]; const look = (S.state.settings || {}).look;
-    if (end && S.canSave()) { const d = S.data('access'); if (d.storySeen !== stTodayISO()) { d.storySeen = stTodayISO(); S.saveQuiet(); } }
-    v.innerHTML = '<div class="st-wrap"><div class="st-bars" aria-hidden="true">' + cards.map((x, i) => '<i class="' + (i < stI || end ? 'done' : '') + '"><b' + (i === stI ? ' id="st-fill"' : '') + '></b></i>').join('') + '</div>' +
-      '<div class="st-top"><span class="st-av">' + (S.art ? S.art.sakhi({ pose: 'hi', look: look }) : '') + '</span><strong>' + esc(t('access_feed')) + '</strong>' +
-      (end ? '' : '<button type="button" class="iconbtn" id="st-pause" aria-label="' + esc(t(stPaused ? 'access_st_play' : 'access_st_pause')) + '">' + (stPaused ? I.play : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6v12M15 6v12"/></svg>') + '</button>') +
-      '<button type="button" class="iconbtn" id="st-close" aria-label="' + esc(t('access_st_close')) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
-      (end ? '<div class="card st-card st-end">' + (S.art ? S.art.sakhi({ pose: 'cheer', look: look }) : '') + '<h2>' + esc(t('access_st_end')) + '</h2><p class="small">' + esc(t('access_st_end_p')) + '</p><div class="stack"><button type="button" class="btn primary block" data-go="home">' + esc(t('access_st_home')) + '</button><button type="button" class="btn block" data-go="access-feed">' + esc(t('access_st_list')) + '</button></div></div>'
-        : '<div class="card st-card" id="st-card"><div class="eyebrow">' + E(c.why) + '</div><h2>' + E(c.title) + '</h2>' + P(c.text, 'st-text') + '<div class="row wrap"><button type="button" class="btn sm primary" data-go="' + esc(c.go) + '">' + E(c.btn) + '</button>' + (S.readAloud ? '<button type="button" class="btn sm" id="st-say">' + I.speaker.replace('<svg', '<svg style="width:16px;height:16px"') + ' ' + esc(t('access_st_listen')) + '</button>' : '') + '</div></div>' +
-          '<div class="grid2"><button type="button" class="btn" id="st-prev"' + (stI === 0 ? ' disabled' : '') + '>' + esc(t('access_st_prev')) + '</button><button type="button" class="btn" id="st-next">' + esc(t('access_st_next')) + '</button></div>') + '</div>';
-    S.wire(v);
-    const go = (i) => { stI = Math.max(0, i); renderStories(v); };
-    const cl = v.querySelector('#st-close'); if (cl) cl.addEventListener('click', () => { stopStories(); S.setHash('home'); });
-    const pv = v.querySelector('#st-prev'); if (pv) pv.addEventListener('click', () => go(stI - 1));
-    const nx = v.querySelector('#st-next'); if (nx) nx.addEventListener('click', () => go(stI + 1));
-    const ps = v.querySelector('#st-pause'); if (ps) ps.addEventListener('click', () => { stPaused = !stPaused; renderStories(v); });
-    const sy = v.querySelector('#st-say'); if (sy) sy.addEventListener('click', () => { stPaused = true; stopStories(); S.readAloud(v.querySelector('#st-card')); const p2 = v.querySelector('#st-pause'); if (p2) p2.innerHTML = I.play; });
-    const card = v.querySelector('#st-card');
-    if (card) card.addEventListener('click', (e) => { if (e.target.closest('button, a')) return; const r = card.getBoundingClientRect(); go(e.clientX < r.left + r.width * 0.3 ? stI - 1 : stI + 1); });
-    const fill = v.querySelector('#st-fill');
-    if (!end && fill && !stPaused && !stReduced()) {
-      fill.style.width = '0%'; requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.transition = 'width ' + ST_MS + 'ms linear'; fill.style.width = '100%'; }));
-      stTm = setTimeout(() => { if (document.getElementById('st-card')) go(stI + 1); }, ST_MS);
-    } else if (fill) fill.style.width = stPaused ? '50%' : '0%';
-  }
-  /* Home: one line with Sakhi, until she has seen today's cards (then it greys). Not in discreet mode. */
-  function storyRow() {
-    if (!S.canSave() || (S.state.settings || {}).discreet) return '';
-    const n = feedCards().length; if (!n) return '';
-    const seen = ((S.state.mods || {}).access || {}).storySeen === stTodayISO();
-    return '<button type="button" class="action st-home' + (seen ? ' seen' : '') + '" data-go="access-stories"><span class="ico st-ring">' + (S.art ? S.art.sakhi({ pose: 'hi', look: (S.state.settings || {}).look }) : I.sparkle) + '</span><span class="body"><strong>' + esc(t('access_feed')) + '</strong><span class="small">' + esc(S.tf(seen ? 'access_st_seen' : 'access_st_n', { n: n })) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
+    if (S.redrawn) S.redrawn(v);   /* review KNOWLEDGE-09: Help's tabs and core's rows come back after this page redraws itself */
   }
 
   /* ---------- Home's setup card (Version 30): look at free care; check scheme money in pregnancy and after a birth ---------- */
@@ -918,18 +790,21 @@
   }
 
   /* ---------- home hook ---------- */
-  /* The "Today for you" card used to sit among Home's module cards; the stories line at the top of Home (storyRow) replaces it. */
-  function home() { return ''; }
+  /* The "Today for you" card used to sit among Home's module cards; Version 39.7 removed its code with the stories (P3-09). */
+  /* review FACTS-07: the PMMVY reminders follow her claim and her baby's birth date: checked on Today once a day, and again
+     when the birth date changes */
+  function home() { if (S.canSave() && claimOf('pmmvy')) { const key = S.toISO(S.today()) + '|' + (claimBirth() || ''); if (mem.claimKey !== key) { mem.claimKey = key; claimSync(); } } return ''; }
 
   /* ---------- strings ---------- */
   const en = {
     access_setup_free: 'Look at free care near you', access_setup_free_s: 'Free doctors, schemes and helplines, before you need them', access_setup_sch: 'Check the scheme money you can get',
+    access_howfree: 'How to use free care', access_from_diary: 'From your diary: {x}.', access_dy_preg: 'pregnant', access_dy_notpreg: 'not pregnant', access_dy_baby: 'a baby in the last year', access_dy_nobaby: 'no baby in the last year', access_dy_change: 'Answer these myself',
     access_free: 'Govt. services', access_free_s: 'Free doctor, care near me, schemes, ASHA and online services', access_free_p: 'Government doctors, care near you, scheme money and your ASHA, all free, in one place. Each opens its own page.', access_free_claims: 'My claims: {n}',
     access_st_n: '{n} short cards for today', access_st_seen: 'Seen today · {n} cards', access_st_end: 'That’s all for today', access_st_end_p: 'New cards come as your days change.', access_st_list: 'See them as a list', access_st_home: 'Back to Today', access_st_close: 'Close', access_st_next: 'Next', access_st_prev: 'Back', access_st_pause: 'Pause', access_st_play: 'Play', access_st_listen: 'Listen',
     access_care: 'Care near me', access_care_s: 'Free government care by PIN code, and how to find it',
     access_claim_start: 'Track my claim', access_claim_h: 'My claim', access_claim_docs: 'Papers to keep ready. Tick each one you have.', access_claim_stop: 'Stop tracking',
     access_step_ready: 'Getting papers ready', access_step_applied: 'Applied', access_step_got: 'Money or card received', access_my_h: 'My claims',
-    access_pmmvy_by: 'Register by {d}', access_pmmvy_part1: 'You have had two check-ups, so you can apply for the first part (₹3,000) now.',
+    access_pmmvy_by: 'Register by {d}', access_pmmvy_part1: 'You have had a check-up, so once your pregnancy is registered you can apply for the first part (₹3,000) now. Some offices still ask for two check-ups; your Anganwadi worker will know.', access_pmmvy_part2: 'Your baby is 14 weeks old: once the birth is registered and the vaccines due by 14 weeks are done, you can claim the second part (₹2,000).', access_step_got1: 'Part 1 received', access_step_got2: 'Part 2 received', access_pmmvy_which: 'First or second child?', access_pmmvy_c1: 'First child', access_pmmvy_c2: 'Second child', access_pmmvy_second: 'For a second child, register during the pregnancy. If the baby is a girl, ₹6,000 comes in one payment after the birth and the 14-week vaccines.',
     access_online: 'Do it online: government services', access_online_s: 'ABHA, U-WIN, PMMVY, Ayushman card, eSanjeevani, Jan Aushadhi',
     access_doctor: 'Free doctor and care', access_doctor_s: 'A government doctor by video, hospital OPD slots, check-ups in pregnancy, ambulances', access_doc_foot: 'Official government sites and helplines, checked on 22 Oct 2026. Sakhi is not part of them.',
     access_online_need: 'You need:', access_online_open: 'Open the official site', access_online_who: 'Who gets it', access_online_foot: 'Official government sites, checked on 22 Oct 2026. Sakhi is not part of them.',
@@ -957,12 +832,13 @@
   };
   const hi = {
     access_setup_free: 'अपने पास का मुफ़्त इलाज देखें', access_setup_free_s: 'मुफ़्त डॉक्टर, योजनाएँ और हेल्पलाइन, ज़रूरत से पहले', access_setup_sch: 'देखें कि योजना का कितना पैसा मिल सकता है',
+    access_howfree: 'मुफ़्त इलाज कैसे लें', access_from_diary: 'आपकी डायरी से: {x}।', access_dy_preg: 'गर्भवती', access_dy_notpreg: 'गर्भवती नहीं', access_dy_baby: 'पिछले साल बच्चा हुआ', access_dy_nobaby: 'पिछले साल बच्चा नहीं हुआ', access_dy_change: 'ये ख़ुद बताऊँगी',
     access_free: 'सरकारी सेवाएँ', access_free_s: 'मुफ़्त डॉक्टर, आपके पास इलाज, योजनाएँ, ASHA और ऑनलाइन सेवाएँ', access_free_p: 'सरकारी डॉक्टर, आपके पास इलाज, योजनाओं का पैसा और आपकी ASHA, सब मुफ़्त, एक जगह। हर एक अपना पन्ना खोलता है।', access_free_claims: 'मेरे दावे: {n}',
     access_st_n: 'आज के {n} छोटे कार्ड', access_st_seen: 'आज देख लिए · {n} कार्ड', access_st_end: 'आज के लिए इतना ही', access_st_end_p: 'जैसे-जैसे आपके दिन बदलते हैं, नए कार्ड आते हैं।', access_st_list: 'सूची में देखें', access_st_home: '“आज” पर वापस', access_st_close: 'बंद करें', access_st_next: 'आगे', access_st_prev: 'पीछे', access_st_pause: 'रोकें', access_st_play: 'चलाएँ', access_st_listen: 'सुनें',
     access_care: 'मेरे आसपास इलाज', access_care_s: 'PIN code से मुफ़्त सरकारी इलाज, और उसे कैसे खोजें',
     access_claim_start: 'मेरा दावा ट्रैक करें', access_claim_h: 'मेरा दावा', access_claim_docs: 'तैयार रखने वाले काग़ज़। जो पास है, उसे टिक करें।', access_claim_stop: 'ट्रैक करना बंद करें',
     access_step_ready: 'काग़ज़ तैयार कर रही हूँ', access_step_applied: 'आवेदन किया', access_step_got: 'पैसा या कार्ड मिल गया', access_my_h: 'मेरे दावे',
-    access_pmmvy_by: '{d} तक पंजीकरण करें', access_pmmvy_part1: 'आपकी दो जाँचें हो चुकी हैं, इसलिए आप पहले हिस्से (₹3,000) के लिए अभी आवेदन कर सकती हैं।',
+    access_pmmvy_by: '{d} तक पंजीकरण करें', access_pmmvy_part1: 'आपकी एक जाँच हो चुकी है, इसलिए गर्भ का पंजीकरण होने पर आप पहले हिस्से (₹3,000) के लिए अभी आवेदन कर सकती हैं। कुछ दफ़्तर अब भी दो जाँचें माँगते हैं; आपकी आंगनवाड़ी कार्यकर्ता बता देंगी।', access_pmmvy_part2: 'आपका बच्चा 14 हफ़्ते का हो गया: जन्म का पंजीकरण और 14 हफ़्ते तक के टीके हो जाने पर आप दूसरे हिस्से (₹2,000) का दावा कर सकती हैं।', access_step_got1: 'पहला हिस्सा मिला', access_step_got2: 'दूसरा हिस्सा मिला', access_pmmvy_which: 'पहला या दूसरा बच्चा?', access_pmmvy_c1: 'पहला बच्चा', access_pmmvy_c2: 'दूसरा बच्चा', access_pmmvy_second: 'दूसरे बच्चे के लिए गर्भ के दौरान ही पंजीकरण कराएँ। बेटी हो तो जन्म और 14 हफ़्ते के टीकों के बाद ₹6,000 एक बार में मिलते हैं।',
     access_online: 'ऑनलाइन करें: सरकारी सेवाएँ', access_online_s: 'ABHA, U-WIN, PMMVY, आयुष्मान कार्ड, eSanjeevani, जन औषधि',
     access_doctor: 'मुफ़्त डॉक्टर और इलाज', access_doctor_s: 'वीडियो पर सरकारी डॉक्टर, अस्पताल OPD का समय, गर्भावस्था में मुफ़्त जाँच, एम्बुलेंस', access_doc_foot: 'सरकारी वेबसाइटें और हेल्पलाइन, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
     access_online_need: 'आपको चाहिए:', access_online_open: 'सरकारी साइट खोलें', access_online_who: 'किसे मिलता है', access_online_foot: 'सरकारी वेबसाइटें, 22 अक्टूबर 2026 को जाँची गईं। Sakhi इनका हिस्सा नहीं है।',
@@ -1037,10 +913,10 @@
     id: 'access',
     demoPersona: 'blank',
     strings: { en: en, hi: hi },
-    routes: { 'access-stories': (v) => { stI = 0; stPaused = false; renderStories(v); }, 'access-free': renderFree, 'access-care': renderCare, 'access-online': renderOnline, 'access-doctor': renderDoctor, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-feed': renderFeed, 'access-videos': renderVideos, 'access-symptoms': renderSymptoms },
+    routes: { 'access-free': renderFree, 'access-care': renderCare, 'access-online': renderOnline, 'access-doctor': renderDoctor, 'access-schemes': (v) => renderSchemes(v, 'all'), 'access-partner': renderPartner, 'access-symptoms': renderSymptoms },   /* Version 39.2: Today for you, Doctor videos and the stories page are gone */
     prefixes: { 'access-schemes-': (v, rest) => renderSchemes(v, rest) },
     testRoutes: ['access-schemes-preg', 'access-schemes-post', 'access-schemes-period', 'access-schemes-teen', 'access-schemes-family', 'access-schemes-all'],
-    open: ['access-stories', 'access-free', 'access-care', 'access-online', 'access-doctor', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-feed', 'access-videos', 'access-symptoms'],
+    open: ['access-free', 'access-care', 'access-online', 'access-doctor', 'access-schemes', 'access-schemes-*', 'access-partner', 'access-symptoms'],
     tiles: [
       { section: 'tools', route: 'access-free', title: 'access_free', sub: 'access_free_s', icon: 'steth', order: 1, gated: false, keywords: 'free care help doctor scheme money claim asha ambulance helpline muft sarkari मुफ़्त इलाज मदद सरकारी योजना' },
       { section: 'tools', route: 'access-doctor', title: 'access_doctor', sub: 'access_doctor_s', icon: 'steth', order: 19, gated: false, keywords: 'free doctor video consult call esanjeevani opd gynae obs gynaecologist appointment ors aiims aarogya setu scan share pmsma 9th u-win td injection ambulance 102 108 jssk ayushman hospital pm-jay tele-manas 14416 mood मुफ़्त डॉक्टर वीडियो अस्पताल एम्बुलेंस' },
@@ -1048,10 +924,9 @@
       { section: 'tools', route: 'access-care', title: 'access_care', sub: 'access_care_s', icon: 'map', order: 20, gated: false, keywords: 'care near me pin code phc chc district hospital asha anganwadi ayushman arogya mandir jan aushadhi ictc one stop centre afhc पास इलाज अस्पताल' },
       { section: 'tools', route: 'access-schemes', title: 'access_schemes', sub: 'access_schemes_s', icon: 'file', order: 21, gated: false, keywords: 'scheme yojana pmmvy jsy jssk pmsma pm-jay ayushman card maternity benefit ni-kshay suvidha 181 योजना पैसा' },
       { section: 'tools', route: 'access-online', title: 'access_online', sub: 'access_online_s', icon: 'file', order: 21, gated: false, keywords: 'online website portal app abha health id u-win vaccine certificate pmmvy apply ayushman card pm-jay esanjeevani video doctor jan aushadhi ऑनलाइन वेबसाइट आवेदन' },
-      { section: 'tools', route: 'access-partner', title: 'access_partner', sub: 'access_partner_s', icon: 'users', order: 22, gated: false, keywords: 'husband partner men nsv vasectomy condom semen test consent पति साथी' },
-      { section: 'tools', route: 'access-feed', title: 'access_feed', sub: 'access_feed_s', icon: 'sparkle', order: 23, gated: true, keywords: 'today for you feed tips insights आज' },
-      { section: 'tools', route: 'access-videos', title: 'access_videos', sub: 'access_videos_s', icon: 'play', order: 24, gated: false, keywords: 'video doctor talk dr megha वीडियो' },
-      { section: 'tools', route: 'access-symptoms', title: 'access_symptoms', sub: 'access_symptoms_s', icon: 'help', order: 25, gated: true, keywords: 'symptom checker pain bleeding discharge lump urgent लक्षण' },
+      /* Version 39.7 (journey audit P3-18): the husband's page is cards on "For my family" now; its route stays for links */
+      /* Version 39.1: the symptom guide sits in Help, beside the urgency lists (search still finds it) */
+      { section: 'tools', route: 'access-symptoms', title: 'access_symptoms', sub: 'access_symptoms_s', icon: 'help', order: 25, gated: true, place: 'help', keywords: 'symptom checker pain bleeding discharge lump urgent लक्षण' },
       { section: 'preg', route: 'access-schemes-preg', title: 'access_schemes_preg', sub: 'access_schemes_preg_s', icon: 'file', order: 70, gated: false, keywords: 'pmmvy jsy jssk pmsma money scheme maternity योजना' },
       { section: 'post', route: 'access-schemes-post', title: 'access_schemes_post', sub: 'access_schemes_post_s', icon: 'file', order: 70, gated: false, keywords: 'pmmvy jssk anganwadi ration scheme योजना' }
     ],
@@ -1060,9 +935,8 @@
       '.st-card { min-height: 46vh; justify-content: center; gap: 10px; cursor: pointer; } .st-card h2 { margin: 0; font-size: 24px; } .st-text { font-size: 17px; line-height: 1.5; color: var(--fg); } .st-end { align-items: center; text-align: center; cursor: default; } .st-end .sakhi { width: 76px; height: 76px; }' +
       '.st-ring { background: none !important; padding: 0; border: 2.5px solid var(--accent); } .st-home.seen .st-ring { border-color: var(--line); } .st-ring .sakhi { width: 100%; height: 100%; }',
     home: home,
-    homeMore: storyRow,
     setup: setup,
     summary: () => { if (!S.canSave()) return []; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return []; return [{ title: t('access_my_h'), lines: ks.map((k) => { const c = cl[k]; const st = stepOf(c); return tx(SCH[k].name).split(':')[0] + ': ' + t('access_step_' + st) + (c[st] && st !== 'ready' ? ' (' + fmtL(S.fromISO(c[st])) + ')' : ''); }) }]; },
-    afterRender: (v, route) => { if (route !== 'access-stories') stopStories(); }
+    afterRender: () => {}
   });
 })(window.Saathi);

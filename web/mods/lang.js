@@ -66,7 +66,6 @@
       under18: '18 पेक्षा कमी वय', mood: 'मन', after35: '35 नंतर',
       s1a: 'पाळी उशिरा किंवा टेस्ट पॉझिटिव्ह, आणि सोबत ओटीपोटात एका बाजूला दुखणं, खांद्याच्या टोकाशी दुखणं, चक्कर किंवा बेशुद्ध पडणं',
       s1b: 'दर 1–2 तासांनी पॅड भिजणं आणि चक्कर येणं किंवा धाप लागणं',
-      s1c: 'गरोदरपणात: रक्तस्राव, झटके (फिट्स), अंधुक दिसण्यासोबत तीव्र डोकेदुखी, पाणी जाणं, बाळाची हालचाल कमी होणं',
       s2a: 'दर 1–2 तासांनी पॅड भिजणं (हिमोग्लोबिन तपासणी मागा; सरकारी रुग्णालयात मोफत)',
       s2b: 'जास्त रक्तस्राव किंवा पोटात तीव्र दुखण्यासोबत ताप',
       s2c: 'लघवीला जळजळ आणि सोबत ताप, थंडी वाजून येणं किंवा बरगड्यांच्या खाली पाठीत दुखणं',
@@ -142,7 +141,6 @@
       under18: '18-র কম বয়স', mood: 'মন', after35: '35-এর পরে',
       s1a: 'মাসিক দেরিতে বা টেস্ট পজিটিভ, তার সঙ্গে তলপেটের এক দিকে ব্যথা, কাঁধের ডগায় ব্যথা, মাথা ঘোরা বা অজ্ঞান হয়ে যাওয়া',
       s1b: 'প্রতি 1–2 ঘণ্টায় প্যাড ভিজে যাওয়া, আর মাথা ঘোরা বা শ্বাসকষ্ট',
-      s1c: 'গর্ভাবস্থায়: রক্তপাত, খিঁচুনি, চোখে ঝাপসা দেখার সঙ্গে তীব্র মাথাব্যথা, জল বেরিয়ে আসা, বাচ্চার নড়াচড়া কমে যাওয়া',
       s2a: 'প্রতি 1–2 ঘণ্টায় প্যাড ভিজে যাওয়া (হিমোগ্লোবিন পরীক্ষা চান; সরকারি হাসপাতালে বিনামূল্যে)',
       s2b: 'বেশি রক্তপাত বা তীব্র পেটব্যথার সঙ্গে জ্বর',
       s2c: 'প্রস্রাবে জ্বালার সঙ্গে জ্বর, কাঁপুনি, বা পাঁজরের নিচে পিঠে ব্যথা',
@@ -219,7 +217,6 @@
       under18: '18 வயதுக்குக் கீழ்', mood: 'மனநிலை', after35: '35 வயதுக்குப் பிறகு',
       s1a: 'மாதவிடாய் தாமதம் அல்லது பரிசோதனை பாசிட்டிவ், அதோடு அடிவயிற்றில் ஒரு பக்க வலி, தோள்பட்டை நுனியில் வலி, தலைச்சுற்றல் அல்லது மயக்கம்',
       s1b: 'ஒவ்வொரு 1–2 மணி நேரத்திலும் பேட் நனைதல், அதோடு தலைச்சுற்றல் அல்லது மூச்சுத் திணறல்',
-      s1c: 'கர்ப்ப காலத்தில்: இரத்தப்போக்கு, வலிப்பு, மங்கலான பார்வையுடன் கடும் தலைவலி, நீர் கசிதல், குழந்தையின் அசைவு குறைதல்',
       s2a: 'ஒவ்வொரு 1–2 மணி நேரத்திலும் பேட் நனைதல் (ஹீமோகுளோபின் பரிசோதனை கேளுங்கள்; அரசு மருத்துவமனையில் இலவசம்)',
       s2b: 'அதிக இரத்தப்போக்கு அல்லது கடும் வயிற்று வலியுடன் காய்ச்சல்',
       s2c: 'சிறுநீர் கழிக்கும்போது எரிச்சலுடன் காய்ச்சல், நடுக்கம், அல்லது விலா எலும்புகளுக்குக் கீழே முதுகு வலி',
@@ -295,7 +292,6 @@
       under18: '18 ఏళ్ల లోపు', mood: 'మనసు', after35: '35 తర్వాత',
       s1a: 'నెలసరి ఆలస్యం లేదా టెస్ట్ పాజిటివ్, దానితో పాటు పొత్తికడుపులో ఒక వైపు నొప్పి, భుజం కొన వద్ద నొప్పి, తల తిరగడం లేదా స్పృహ తప్పడం',
       s1b: 'ప్రతి 1–2 గంటలకు ప్యాడ్ తడిసిపోవడం, దానితో తల తిరగడం లేదా ఆయాసం',
-      s1c: 'గర్భంలో: రక్తస్రావం, ఫిట్స్ (మూర్ఛ), మసకగా కనిపించడంతో తీవ్రమైన తలనొప్పి, నీరు కారడం, బిడ్డ కదలికలు తగ్గడం',
       s2a: 'ప్రతి 1–2 గంటలకు ప్యాడ్ తడిసిపోవడం (హిమోగ్లోబిన్ పరీక్ష అడగండి; ప్రభుత్వ ఆసుపత్రిలో ఉచితం)',
       s2b: 'ఎక్కువ రక్తస్రావం లేదా తీవ్రమైన కడుపు నొప్పితో జ్వరం',
       s2c: 'మూత్రం పోసేటప్పుడు మంటతో పాటు జ్వరం, వణుకు, లేదా పక్కటెముకల కింద వీపు నొప్పి',
@@ -495,6 +491,15 @@
   ['mr', 'bn', 'ta', 'te'].forEach((c) => Object.assign(OWN[c], hlKeys(HL[c])));
 
   const STRINGS = { en: OWN.en, hi: OWN.hi };
+  /* review FACTS-02, V39.8 SAFETY-01: the pregnancy danger signs in each language, all 7 in DANGER.preg's order (core reads
+     dg_w for Help's pictures; s1c is the Call-112 line and the symptom guide's). 5 reuse each language's earlier words. */
+  const DANGER_W = {
+    mr: { h: 'गरोदरपणात:', w: ['रक्तस्राव', 'पाणी जाणं', 'ताप', 'तीव्र डोकेदुखी किंवा अंधुक दिसणं', 'झटके (फिट्स)', 'चेहऱ्यावर किंवा हातांवर सूज', '28 आठवड्यांनंतर बाळाची हालचाल कमी होणं'], or: 'किंवा' },
+    bn: { h: 'গর্ভাবস্থায়:', w: ['রক্তপাত', 'জল বেরিয়ে আসা', 'জ্বর', 'তীব্র মাথাব্যথা বা চোখে ঝাপসা দেখা', 'খিঁচুনি', 'মুখ বা হাত ফুলে যাওয়া', '28 সপ্তাহের পরে বাচ্চার নড়াচড়া কমে যাওয়া'], or: 'বা' },
+    ta: { h: 'கர்ப்ப காலத்தில்:', w: ['இரத்தப்போக்கு', 'நீர் கசிதல்', 'காய்ச்சல்', 'கடும் தலைவலி அல்லது மங்கலான பார்வை', 'வலிப்பு', 'முகம் அல்லது கைகளில் வீக்கம்', '28 வாரங்களுக்குப் பிறகு குழந்தையின் அசைவு குறைதல்'], or: 'அல்லது' },
+    te: { h: 'గర్భంలో:', w: ['రక్తస్రావం', 'నీరు కారడం', 'జ్వరం', 'తీవ్రమైన తలనొప్పి లేదా మసకగా కనిపించడం', 'ఫిట్స్ (మూర్ఛ)', 'ముఖం లేదా చేతుల వాపు', '28 వారాల తర్వాత బిడ్డ కదలికలు తగ్గడం'], or: 'లేదా' }
+  };
+  Object.keys(DANGER_W).forEach((c) => { const x = DANGER_W[c]; CORE[c].dg_preg = x.h; CORE[c].dg_w = x.w.join('|'); CORE[c].s1c = x.h + ' ' + x.w.slice(0, -1).join(', ') + ', ' + x.or + ' ' + x.w[x.w.length - 1]; });
   ['mr', 'bn', 'ta', 'te'].forEach((c) => { STRINGS[c] = Object.assign({}, CORE[c], OWN[c]); });
 
   /* ---------- small helpers ---------- */
@@ -624,6 +629,7 @@
       b.setAttribute('aria-label', t(sp.on ? 'lang_stop' : 'lang_read_btn')); b.innerHTML = sp.on ? STOP_SVG : S.I.speaker;
     });
     document.querySelectorAll('[data-lang-test]').forEach((b) => { b.innerHTML = testInner(); b.setAttribute('aria-pressed', String(sp.on)); });
+    if (!sp.on) document.querySelectorAll('.say-b.on').forEach((b) => { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); b.innerHTML = S.I.speaker.replace('<svg', '<svg style="width:18px;height:18px"'); });
   }
   const testInner = () => '<span class="lang-ico" aria-hidden="true">' + (sp.on ? STOP_SVG : S.I.speaker) + '</span><span>' + esc(t(sp.on ? 'lang_stop' : 'lang_test')) + '</span>';
 
@@ -675,6 +681,7 @@
   }
 
   /* Read one element aloud (the quick-answer sheet), or stop if already reading. */
+  S.reading = () => !!sp.on;   /* V39.8 review PICTURES-08: for the card speakers' stop state */
   S.readAloud = (el) => { if (sp.on) { stop(); return; } if (el) speak(screenSegments(el, scriptOf(S.state.lang)), false); };
   /* For a guided routine: read this element now (stopping anything already being read), and stop. */
   S.speakEl = (el) => { if (sp.on) stop(); if (el) speak(screenSegments(el, scriptOf(S.state.lang)), false); };
@@ -768,7 +775,8 @@
         });
       }
     },
-    me: () => '<div class="list"><button type="button" class="item" data-go="lang"><span class="ico-sm">' + S.I.speaker + '</span><span class="body"><strong>' + esc(t('lang_tile')) + '</strong><span>' +
+    /* Version 39.2 (diet audit F15): an अ/A mark, and the row's name in English and Hindi, so the wrong language can't hide it */
+    me: () => '<div class="list"><button type="button" class="item" data-go="lang"><span class="ico-sm lang-aa" aria-hidden="true">अ/A</span><span class="body"><strong>' + esc(t('lang_tile')) + (S.state.lang === 'en' ? ' · भाषा' : ' · Language') + '</strong><span>' +
       esc(tf('lang_me_s', { lang: S.langMeta(S.state.lang).name || S.state.lang, speed: t('lang_' + rateKey()) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>'
   });
 })(window.Saathi);

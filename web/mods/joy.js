@@ -67,7 +67,7 @@
     C('gap', true, ['cycle'], 'periods', 'diary', 'For adults, a gap of 21 to 35 days between periods is usual.', 'वयस्क महिलाओं में दो पीरियड के बीच 21 से 35 दिन का अंतर आम है।',
       'Count from the first day of one period to the first day of the next. In the first few years after periods start, gaps up to 45 days are common too.', 'एक पीरियड के पहले दिन से अगले पीरियड के पहले दिन तक गिनें। पीरियड शुरू होने के पहले कुछ सालों में 45 दिन तक का अंतर भी आम है।'),
     C('impure', false, ['cycle', 'teen'], 'periods', 'periods-myths', 'Period blood is dirty blood that the body throws out.', 'पीरियड का खून गंदा खून है जिसे शरीर बाहर निकालता है।',
-      'It is ordinary blood and tissue from the lining of the womb. It is not dirty or impure, and it does not mean anything is wrong with you.', 'यह आम खून और बच्चेदानी की अंदरूनी परत का हिस्सा है। यह गंदा या अशुद्ध नहीं है, और इसका मतलब यह नहीं कि आपमें कुछ ख़राबी है।'),
+      "Period blood is ordinary blood mixed with the lining of the womb. It is not dirty and not poison. A period that stops is not \"bad blood stuck inside\": it needs a check-up.", "पीरियड का ख़ून आम ख़ून है जिसमें गर्भाशय की परत मिली होती है। यह न गंदा है, न ज़हर। पीरियड रुकने का मतलब \"गंदा ख़ून अंदर रुकना\" नहीं है: इसके लिए जाँच ज़रूरी है।"),
     C('pad', true, ['cycle', 'teen'], 'periods', 'periods-products', 'Changing your pad every 4 to 6 hours helps prevent infection.', 'हर 4 से 6 घंटे में pad बदलने से इन्फ़ेक्शन से बचाव होता है।',
       'Change sooner if it feels full or wet. Wash your hands before and after, and wrap the used pad in paper before you throw it away.', 'भरा या गीला लगे तो पहले ही बदल लें। पहले और बाद में हाथ धोएँ, और इस्तेमाल किया pad काग़ज़ में लपेटकर फेंकें।'),
     C('heavy', false, ['cycle', 'meno'], 'periods', 'help', 'Soaking through a pad every 1 to 2 hours is normal on a heavy day.', 'भारी दिन में हर 1 से 2 घंटे में pad भीग जाना सामान्य है।',
@@ -119,8 +119,36 @@
     C('teenirreg', true, ['teen'], 'teen', 'teen-puberty', 'Periods can be irregular for the first few years.', 'शुरू के कुछ सालों में पीरियड अनियमित हो सकते हैं।',
       'Periods can take 2 to 3 years to settle, and gaps up to 45 days are common. See a doctor if a period lasts more than 7 days or soaks a pad every 1 to 2 hours.', 'पीरियड को ठीक से सेट होने में 2 से 3 साल लग सकते हैं, और 45 दिन तक का अंतर आम है। पीरियड 7 दिन से ज़्यादा चले या हर 1 से 2 घंटे में pad भीग जाए तो डॉक्टर को दिखाएँ।'),
     C('pain', false, ['cycle', 'teen'], 'periods', 'periods-pain', 'Period pain bad enough to miss school or work every month is normal.', 'हर महीने इतना दर्द होना कि स्कूल या काम छूट जाए, सामान्य है।',
-      'Some cramping is common. But pain that keeps you home from school or work is not something to put up with. A doctor can look for the cause and help.', 'थोड़ी ऐंठन आम है। पर ऐसा दर्द जो आपको स्कूल या काम से घर पर रोक दे, सहने की चीज़ नहीं है। डॉक्टर कारण खोजकर मदद कर सकते हैं।')
+      'Some cramping is common. But pain that keeps you home from school or work is not something to put up with. A doctor can look for the cause and help.', 'थोड़ी ऐंठन आम है। पर ऐसा दर्द जो आपको स्कूल या काम से घर पर रोक दे, सहने की चीज़ नहीं है। डॉक्टर कारण खोजकर मदद कर सकते हैं।'),
+    /* Version 39.7 (journey audit P3-15): the periods myths page's own myths join the deck, in its reviewed words */
+    C('kitchen', false, ['cycle', 'teen'], 'periods', 'periods-myths', "A woman on her period should not enter the kitchen or touch food.", "पीरियड में महिला को रसोई में नहीं जाना चाहिए, खाना नहीं छूना चाहिए।",
+      "A period does not make food unsafe. Washing your hands before cooking keeps food clean on every day of the month. If you feel tired and want a day off from the kitchen, take it because you need the rest.", "पीरियड से खाना ख़राब नहीं होता। खाना बनाने से पहले हाथ धोने से खाना साफ़ रहता है, महीने के हर दिन। थकान हो और रसोई से एक दिन की छुट्टी चाहिए, तो ज़रूर लें, क्योंकि आपको आराम चाहिए।"),
+    C('temple', false, ['cycle', 'teen'], 'periods', 'periods-myths', "A period makes a woman impure, so she must stay away from the temple or puja.", "पीरियड में महिला अशुद्ध हो जाती है, इसलिए मंदिर या पूजा से दूर रहना चाहिए।",
+      "Medically, a period is the womb shedding its lining each month. It is a sign of a healthy body, and nothing about it is dirty. Whether you go to a temple or do puja is a matter of your faith and your choice.", "डॉक्टरी नज़र से पीरियड हर महीने गर्भाशय की परत का निकलना है। यह स्वस्थ शरीर की निशानी है, और इसमें कुछ भी गंदा नहीं। मंदिर जाना या पूजा करना आपकी आस्था और आपकी मर्ज़ी की बात है।"),
+    C('plant', false, ['cycle', 'teen'], 'periods', 'periods-myths', "If she touches a plant, such as tulsi, it will dry up.", "पौधा, जैसे तुलसी, छू लिया तो सूख जाएगा।",
+      "Plants are not affected by a period. They dry up from too little or too much water, too little sun, or pests.", "पीरियड का पौधों पर कोई असर नहीं होता। पौधे कम या ज़्यादा पानी, कम धूप या कीड़ों से सूखते हैं।"),
+    C('sour', false, ['cycle', 'teen'], 'periods', 'periods-myths', "Sour food like curd, tamarind or lemon makes cramps or bleeding worse.", "दही, इमली या नींबू जैसी खट्टी चीज़ों से ऐंठन या ब्लीडिंग बढ़ती है।",
+      "Sour food does not change your bleeding or cramps. Eat your normal meals, and add iron-rich food such as green leafy vegetables, chana, rajma, eggs or meat.", "खट्टा खाने से ब्लीडिंग या ऐंठन पर असर नहीं पड़ता। अपना सामान्य खाना खाएँ, और आयरन वाला खाना जोड़ें, जैसे हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडा या मांस।"),
+    C('sexperiod', false, ['cycle'], 'periods', 'periods-myths', "Sex during a period is harmful, and you cannot get pregnant then.", "पीरियड में संबंध बनाना नुक़सानदेह है, और उस समय गर्भ नहीं ठहरता।",
+      "Sex during a period is safe if you both want it. It is your choice, and saying no is your right too. Pregnancy is less likely but still possible, and infections can still pass. Use a condom if you do not want a pregnancy or are not sure about infections.", "अगर दोनों चाहें तो पीरियड में संबंध बनाना सुरक्षित है। यह आपकी मर्ज़ी है, और मना करना भी आपका हक़ है। गर्भ की संभावना कम है पर होती है, और संक्रमण भी फैल सकता है। गर्भ नहीं चाहतीं या संक्रमण को लेकर पक्का नहीं हैं, तो condom इस्तेमाल करें।"),
+    C('school', false, ['teen', 'cycle'], 'periods', 'periods-myths', "Girls should stay home from school or skip sport during periods.", "पीरियड में लड़कियों को स्कूल नहीं जाना चाहिए या खेल छोड़ देना चाहिए।",
+      "Girls can go to school, sit exams and play sport as usual. Carry a spare pad and a small bag to wrap the used one. A teacher can help if you need a pad or have pain. If the school has no clean toilet with water and a dustbin, parents can ask for one.", "लड़कियाँ हमेशा की तरह स्कूल जा सकती हैं, परीक्षा दे सकती हैं और खेल सकती हैं। एक extra pad और इस्तेमाल किया pad लपेटने के लिए छोटी थैली साथ रखें। pad चाहिए या दर्द हो तो किसी टीचर से कहें। स्कूल में पानी वाला साफ़ शौचालय और कूड़ादान न हो तो माता-पिता इसकी माँग कर सकते हैं।"),
+    /* Version 39.7 (journey audit P3-16): worries about contraception (new lines await doctor review, wording review 18.3) */
+    C('cutmove', false, ['cycle', 'post'], 'contra', 'contra-m-cut', "A Copper-T can move around inside the body, even up to the heart.", "Copper-T शरीर के अंदर घूम सकता है, दिल तक भी पहुँच सकता है।",
+      "A Copper-T stays inside the womb. It cannot travel to the heart, the brain or anywhere else in the body. Now and then it slips out, most often in the first months. If you see it on a pad or in the toilet, go back to the centre and use condoms meanwhile.", "Copper-T बच्चेदानी के अंदर ही रहता है। यह दिल, दिमाग़ या शरीर में कहीं और नहीं जा सकता। कभी-कभी यह बाहर निकल जाता है, ज़्यादातर पहले महीनों में। pad या शौचालय में दिखे तो केंद्र जाएँ और तब तक कंडोम इस्तेमाल करें।"),
+    C('pillweight', false, ['cycle', 'post'], 'contra', 'contra-m-pill', "Birth control pills make most women put on weight.", "गर्भनिरोधक गोलियों से ज़्यादातर औरतों का वज़न बढ़ जाता है।",
+      "Studies have not found that the pill makes women gain weight. Some notice a little bloating in the first months. If your weight worries you, a doctor can help you pick another method.", "शोध में यह नहीं पाया गया कि गोली से औरतों का वज़न बढ़ता है। कुछ को शुरू के महीनों में थोड़ा फूलापन लगता है। वज़न की चिंता हो तो डॉक्टर कोई और तरीक़ा चुनने में मदद कर सकती हैं।"),
+    C('pillinfert', false, ['cycle', 'post'], 'contra', 'contra-m-pill', "Taking the pill for years makes it hard to have a baby later.", "सालों तक गोली लेने से बाद में बच्चा होना मुश्किल हो जाता है।",
+      "The pill does not make a woman infertile. Most women can get pregnant soon after they stop taking it.", "गोली से औरत बाँझ नहीं होती। ज़्यादातर औरतों में गोली बंद करने के कुछ ही समय बाद गर्भ ठहर सकता है।"),
+    C('antara', false, ['cycle', 'post'], 'contra', 'contra-m-antara', "The Antara injection makes a woman unable to have children.", "अंतरा इंजेक्शन से औरत को बच्चा नहीं हो पाता।",
+      "Antara does not cause infertility. Fertility comes back more slowly than with other methods: on average about 7–10 months after the last injection. It does come back.", "अंतरा से बाँझपन नहीं होता। गर्भ ठहरने की क्षमता दूसरे तरीक़ों से धीरे लौटती है: औसतन आख़िरी इंजेक्शन के लगभग 7–10 महीने बाद। लौटती ज़रूर है।"),
+    C('nsv', false, ['cycle', 'post'], 'contra', 'contra-m-nsv', "NSV, the operation for men, makes a man weak.", "NSV, पुरुषों का ऑपरेशन, आदमी को कमज़ोर बना देता है।",
+      "NSV does not affect strength, manliness or sex. Semen still comes out, but without sperm.", "NSV से ताक़त, मर्दानगी या संबंध पर कोई असर नहीं पड़ता। वीर्य निकलता रहता है, पर उसमें शुक्राणु नहीं होते।")
   ];
+  /* Version 39.7 (journey audit P3-15, P3-16): one myths deck. Sach ya Myth, the periods myths page and the contraception
+     hub's "Worries and facts" read the same cards (S.joy.deck), so a doctor's correction is made once. */
+  const TOPIC = { period: ['kitchen', 'temple', 'pickle', 'bath', 'exercise', 'plant', 'sour', 'impure', 'sexperiod', 'school', 'pain', 'heavy', 'pad', 'gap', 'teenirreg'], contra: ['periodpreg', 'cut', 'cutmove', 'pillweight', 'pillinfert', 'antara', 'nsv', 'ec', 'condom', 'pppreg'] };
+  const deck = (topic) => (TOPIC[topic] || []).map((id) => CARDS.find((c) => c.id === id)).filter(Boolean).map((c) => ({ id: c.id, a: c.a, s: c.s, w: c.w, go: c.go }));
   function stageTags() {
     const st = S.state; const sit = st.situation || {}; const age = S.cycle.ageYears(); const out = [];
     if (st.stage !== 'app') return ['teen', 'all'];
@@ -201,7 +229,7 @@
 
   /* Version 37.1: her first check-in shows what she earned on her plan's first day, once. If the check-in just celebrated a
      petal of its own, only a waiting badge follows. */
-  S.joy = { petals: () => (S.canSave() ? monthPetals(D(), S.monthKey(S.today())) : 0), release: () => {
+  S.joy = { deck: deck, petals: () => (S.canSave() ? monthPetals(D(), S.monthKey(S.today())) : 0), release: () => {
     const h = held; held = null; if (!h) return false;
     const just = Date.now() - (celebrate.at || 0) < 1000;
     if (h.n && !just) celebrate(h.bloom ? 'bloom' : 'petal', { mk: h.mk, n: h.n });
@@ -345,6 +373,34 @@
     stamp(d);
   }
 
+  /* Version 39.7 (journey audit P3-02): one "Did you know?" card a week in Today's "Sakhi says", from her stage's cards she
+     hasn't answered. She answers it there; it rests the day after. Never on a shared phone, after a loss, or without a diary. */
+  const weekOf = (d0) => S.toISO(S.addDays(d0, -((d0.getDay() + 6) % 7)));
+  function dykCard() {
+    if (!S.canSave() || S.state.stage !== 'app' || (S.state.settings || {}).discreet || (S.cycle.afterLoss && S.cycle.afterLoss())) return null;
+    const d = D(); const wk = weekOf(S.today()); const td = todayISO();
+    if (!d.dyk || d.dyk.wk !== wk) {
+      const c = pool().find((x) => !(x.id in d.quiz)); if (!c) return null;
+      d.dyk = { wk: wk, id: c.id }; S.saveQuiet();
+    }
+    if (d.dyk.on && d.dyk.on < td) return null;   /* answered: it rests until next week */
+    const c = CARDS.find((x) => x.id === d.dyk.id); return c ? { c: c, d: d } : null;
+  }
+  function dykHtml() {
+    const k = dykCard(); if (!k) return ''; const c = k.c; const a = k.d.dyk.ans;
+    const more = S.routeOwner(c.go) || ['diary', 'help', 'care', 'learn'].indexOf(c.go) >= 0 || c.go.indexOf('topic-') === 0 || c.go.indexOf('contra-m-') === 0;
+    return '<div class="card soft joy-dyk" data-nofold="1"><span class="eyebrow">' + esc(t('joy_dyk_h')) + '</span><p class="joy-stmt">' + esc(tx(c.s)) + '</p>' +
+      (a == null ? '<div class="grid2"><button type="button" class="btn joy-ans" data-dyk="1">' + esc(t('joy_sach')) + '</button><button type="button" class="btn joy-ans" data-dyk="0">' + esc(t('joy_myth')) + '</button></div>'
+        : '<div class="joy-verdict ' + (c.a ? 'sach' : 'myth') + '"><b>' + esc(c.a ? t('joy_is_sach') : t('joy_is_myth')) + '</b><span>' + esc(((a === 1) === c.a) ? t('joy_right') : t('joy_wrong')) + '</span></div><p class="small">' + esc(tx(c.w)) + '</p><div class="row wrap">' + (more ? '<button type="button" class="btn sm" data-go="' + esc(c.go) + '">' + esc(t('joy_more')) + '</button>' : '') + '<button type="button" class="linkbtn" data-go="joy-quiz">' + esc(t('joy_quiz_h')) + '</button></div>') + '</div>';
+  }
+  function wireDyk(v) {
+    v.querySelectorAll('[data-dyk]').forEach((b) => b.addEventListener('click', () => {
+      const k = dykCard(); if (!k) return; const d = k.d; const ans = +b.dataset.dyk; const right = (ans === 1) === k.c.a;
+      d.dyk.ans = ans; d.dyk.on = todayISO(); d.quiz[k.c.id] = right ? 1 : 0; const L = d.qday[todayISO()] || (d.qday[todayISO()] = []); if (L.indexOf(k.c.id) < 0) L.push(k.c.id);
+      S.saveQuiet(); S.render(); S.emit('quiz', {});
+    }));
+  }
+
   S.register({
     id: 'joy',
     demoPersona: 'priya',
@@ -374,7 +430,7 @@
         joy_b_friend: 'Good friend', joy_b_friend_h: 'Send a card to a friend.', joy_b_planner: 'Planner', joy_b_planner_h: 'Set a reminder.', joy_b_steady: 'Steady', joy_b_steady_h: 'Earn a petal 4 weeks in a row.',
         joy_b_brave: 'Brave step', joy_b_brave_h: 'Ask a Qura doctor for a free call.',
         joy_quiz_h: 'Sach ya Myth?', joy_quiz_tile_s: 'One card a day about common beliefs, with the real answer', joy_quiz_p: 'One card a day. Tap Sach or Myth, then see why.',
-        joy_sach: 'Sach', joy_myth: 'Myth', joy_is_sach: 'Sach: this is true', joy_is_myth: 'Myth: this is not true', joy_right: 'You knew this one.', joy_wrong: 'Many women think so.',
+        joy_dyk_h: 'Did you know?', joy_sach: 'Sach', joy_myth: 'Myth', joy_is_sach: 'Sach: this is true', joy_is_myth: 'Myth: this is not true', joy_right: 'You knew this one.', joy_wrong: 'Many women think so.',
         joy_share: 'Send to a friend', joy_next: 'Next card', joy_more: 'Read more', joy_card_n: 'Card {n} of {m} today', joy_done_h: "That's all for today. More cards tomorrow.", joy_to_garden: 'See my garden',
         joy_quiz_foot: 'These cards follow official health guidance. They are general information. For your own health, talk to a doctor.', joy_share_from: 'From Qura Sakhi, a free health app for women.',
         joy_seen_all: "You've seen every card. Here they are again."
@@ -399,7 +455,7 @@
         joy_b_friend: 'अच्छी सहेली', joy_b_friend_h: 'किसी सहेली को एक कार्ड भेजें।', joy_b_planner: 'योजना वाली', joy_b_planner_h: 'एक रिमाइंडर लगाएँ।', joy_b_steady: 'लगातार', joy_b_steady_h: 'लगातार 4 हफ़्ते पंखुड़ी पाएँ।',
         joy_b_brave: 'हिम्मत भरा क़दम', joy_b_brave_h: 'Qura डॉक्टर से मुफ़्त कॉल माँगें।',
         joy_quiz_h: 'सच या भ्रम?', joy_quiz_tile_s: 'आम मान्यताओं पर रोज़ एक कार्ड, सही जवाब के साथ', joy_quiz_p: 'रोज़ एक कार्ड। सच या भ्रम चुनें, फिर जानें क्यों।',
-        joy_sach: 'सच', joy_myth: 'भ्रम', joy_is_sach: 'सच: यह सही है', joy_is_myth: 'भ्रम: यह सही नहीं है', joy_right: 'आपको यह पता था।', joy_wrong: 'बहुत-सी महिलाएँ ऐसा ही सोचती हैं।',
+        joy_dyk_h: 'क्या आप जानती हैं?', joy_sach: 'सच', joy_myth: 'भ्रम', joy_is_sach: 'सच: यह सही है', joy_is_myth: 'भ्रम: यह सही नहीं है', joy_right: 'आपको यह पता था।', joy_wrong: 'बहुत-सी महिलाएँ ऐसा ही सोचती हैं।',
         joy_share: 'सहेली को भेजें', joy_next: 'अगला कार्ड', joy_more: 'और पढ़ें', joy_card_n: 'आज का कार्ड {n} / {m}', joy_done_h: 'आज के लिए इतना ही। कल और कार्ड।', joy_to_garden: 'मेरा बगीचा देखें',
         joy_quiz_foot: 'ये कार्ड आधिकारिक स्वास्थ्य सलाह पर आधारित हैं। यह आम जानकारी है। अपनी सेहत के लिए डॉक्टर से बात करें।', joy_share_from: 'Qura Sakhi से, महिलाओं के लिए मुफ़्त हेल्थ ऐप।',
         joy_seen_all: 'आपने सभी कार्ड देख लिए। ये फिर से हैं।'
@@ -413,13 +469,14 @@
       { section: 'tools', route: 'joy', title: 'joy_h', sub: 'joy_tile_s', icon: 'flower', order: 1, gated: false, keywords: 'garden petals flower badges rewards bagicha phool पंखुड़ी बगीचा' },
       { section: 'tools', route: 'joy-quiz', title: 'joy_quiz_h', sub: 'joy_quiz_tile_s', icon: 'sparkle', order: 2, gated: false, keywords: 'myth fact quiz sach bhram card सच भ्रम' }
     ],
-    homeMore: () => recapCard() + stripHtml(),   /* Home's "More for you" (Version 30); the first-week card gave way to the setup card */
     event: (name, payload) => onEvent(name, payload || {}),
     me: () => (S.canSave() && S.art ? '<h2>' + esc(t('joy_h')) + '</h2><div class="list"><button type="button" class="item" data-go="joy"><span class="ico-sm hue hue-orange">' + S.I.flower + '</span><span class="body"><strong>' + esc(t('joy_h')) + '</strong><span>' + esc(tf('joy_petals_n', { n: monthPetals(D(), S.monthKey(S.today())) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : ''),
     under18: () => '<button type="button" class="btn block" data-go="joy-quiz">' + esc(t('joy_quiz_h')) + '</button>',
     sample: (id) => sample(id),
+    homeLast: () => dykHtml(),   /* Version 39.7: after setup and Coming up, never ahead of them */
     afterRender: (v, route) => {
       if (route !== 'joy-quiz') q = { id: null, ans: null };
+      if (route === 'home') wireDyk(v);
     }
   });
 })(window.Saathi);

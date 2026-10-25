@@ -27,12 +27,14 @@
   /* From her diary, a line under a question (never an answer chosen for her). */
   const hint = {
     gaps: () => { const g = S.cycle.usable().slice(-6); if (g.length < 3) return null; return tf('selfcheck_h_gaps', { n: g.filter((x) => x > longDays() || x < 21).length, m: g.length, d: longDays() }); },
-    heavy: () => { const n = (S.state.events || []).filter((e) => e.t === 'start' && (e.pads === 'pads_4' || e.clots === 'clots_2' || e.leaked)).length; return n ? tf('selfcheck_h_heavy', { n: n }) : null; },
+    /* Version 39.1: a heavy period is one with heavy details on any of its days (core's periodFlow), as explain and the report count it */
+    heavy: () => { const c = S.cycle; const n = c.periodFlow ? c.starts().filter((d0) => c.periodFlow(d0).some(c.heavyEv)).length : (S.state.events || []).filter((e) => e.t === 'start' && (e.pads === 'pads_4' || e.clots === 'clots_2' || e.leaked)).length; return n ? tf('selfcheck_h_heavy', { n: n }) : null; },
+    stops: () => { const c = S.cycle; if (!c.periodFlow) return null; const l6 = c.starts().slice(-6); const n = l6.filter((d0) => c.periodFlow(d0).some((e) => e.pain === 'pain_3')).length; return n ? tf('selfcheck_h_stops', { n: n, m: l6.length }) : null; },
     pain: () => { let n = 0; for (let k = 0; k < 90; k++) { if (((S.state.daily || {})[S.toISO(S.addDays(S.today(), -k))] || []).indexOf('d_cramps') >= 0) n++; } return n ? tf('selfcheck_h_pain', { n: n }) : null; }
   };
   /* A question: [key, text (or a function giving it), diary hint, 'done' when the third answer means "not done" (a test or scan)]. */
   const C = {
-    pmos: { t: 'selfcheck_pmos_t', more: 'pattern', hue: 'purple',
+    pmos: { t: 'selfcheck_pmos_t', more: 'a-pmos.what-pmos-is', hue: 'purple',
       q: [['gaps', GAPS, 'gaps'],
         ['few', FEW],
         ['hair', L('Extra hair on the face, chin, chest or belly.', 'चेहरे, ठुड्डी, छाती या पेट पर ज़्यादा बाल।')],
@@ -47,7 +49,7 @@
       /* Fast-growing hair or a deeper voice is not typical of PMOS: tumours that make androgens must be ruled out (guideline 1.3.7). */
       soon: L('Hair that grew fast over a few months, or a voice that got deeper: see a doctor within 2 weeks. This isn’t typical of PMOS and needs tests.', 'कुछ महीनों में तेज़ी से बढ़े बाल, या आवाज़ भारी होना: 2 हफ़्ते के अंदर डॉक्टर को दिखाएँ। यह PMOS में आम नहीं है और इसकी जाँच ज़रूरी है।') },
     endo: { t: 'selfcheck_endo_t', more: 'cond-endo', hue: 'rose', urgentKey: 'heavy', strongKeys: ['stops', 'sex', 'toilet'],
-      q: [['stops', L('Period pain that stops your day: work, school or housework.', 'पीरियड का दर्द जो दिन का काम रोक दे: काम, स्कूल या घर का काम।'), 'pain'],
+      q: [['stops', L('Period pain that stops your day: work, school or housework.', 'पीरियड का दर्द जो दिन का काम रोक दे: काम, स्कूल या घर का काम।'), 'stops'],
         ['pills', L('Pain that a simple painkiller doesn’t help.', 'ऐसा दर्द जिसमें सामान्य दर्द की गोली काम न करे।')],
         ['sex', L('Pain during or after sex, deep inside.', 'सेक्स के दौरान या बाद में, अंदर गहराई में दर्द।')],
         ['toilet', L('Pain when passing stool or urine during your period.', 'पीरियड के दौरान मल या पेशाब करते समय दर्द।')],
@@ -72,7 +74,8 @@
   const IDS = Object.keys(C);
   const qText = (q) => tx(typeof q[1] === 'function' ? q[1]() : q[1]);
   let ans = {};   /* answers in progress, per check: { key: 'y' | 'n' | 'u' }; cleared when the diary changes hands */
-  if (S.onOwnerChange) S.onOwnerChange(() => { ans = {}; });
+  let nipAns = {};   /* Version 39.1: the nipple question, on screen only (never saved), as on Pattern check */
+  if (S.onOwnerChange) S.onOwnerChange(() => { ans = {}; nipAns = {}; });
   const preg = () => !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
   const TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
@@ -144,6 +147,9 @@
     const a = ans[id] || (ans[id] = prefill(id)); const can = S.canSave(); const pg = preg();
     const done = c.q.every((q) => a[q[0]]); const yes = c.q.filter((q) => a[q[0]] === 'y'); const n = yes.length, m = c.q.length;
     const vd = id === 'pmos' && done && !pg ? pmosVerdict(a) : null;
+    const nip = nipAns[id] || ''; const dx = sit().pcos === true ? 'y' : (sit().pcos === false ? 'n' : '');
+    /* Version 39.1: irregular periods in her answers or diary lead to the 12-week plan for her periods (never "A plan for you") */
+    const planGoal = vd && vd.od && can && !S.state.settings.discreet && S.plan && S.plan.offerOk ? (['pmos', 'irregular'].find((g) => (g === 'pmos' ? vd.level === 'match' || vd.known : true) && S.plan.offerOk(g)) || null) : null;
     let when = c.urgentKey && a[c.urgentKey] === 'y' ? t('selfcheck_w_week') : (n >= 2 || (c.strongKeys || []).some((k) => a[k] === 'y') ? t('selfcheck_w_month') : (n === 1 ? t('selfcheck_w_watch') : t('selfcheck_w_none')));
     /* the line under the count agrees with the verdict: "at risk" in the early years is "keep noting it", not "this month" */
     if (vd && vd.level) when = vd.level === 'match' ? t('selfcheck_w_month') : (vd.level === 'risk' ? t('selfcheck_w_watch') : (vd.od || vd.ha ? t('selfcheck_w_month') : (n ? t('selfcheck_w_watch') : t('selfcheck_w_none'))));
@@ -152,13 +158,20 @@
       (id === 'pmos' && sit().hormones && !pg ? '<div class="card soft"><p class="small">' + esc(t('selfcheck_horm')) + '</p></div>' : '') +
       (c.now ? '<div class="flag urgent">' + esc(t('selfcheck_now_h')) + ': ' + esc(tx(c.now)) + '</div>' : '') +
       (c.soon ? '<div class="flag">' + esc(t('selfcheck_soon_h')) + ': ' + esc(tx(c.soon)) + '</div>' : '') +
+      /* Version 39.1 (journey audit MIN-02): Pattern check's first question, kept as her PMOS line (the same as Me's) */
+      (id === 'pmos' && can && !pg && (!(S.state.settings || {}).pinHash || S.mem.healthOk) ? '<div class="card sc-q sc-dx"><p>' + esc(t('pc_q1')) + '</p><div class="chips" role="group">' + [['y', 'selfcheck_yes'], ['n', 'selfcheck_no']].map((o) => '<button type="button" class="chip' + (dx === o[0] ? ' on' : '') + '" data-sc-dx="' + o[0] + '" aria-pressed="' + (dx === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
       c.q.map((q, i) => { const hv = can && q[2] && hint[q[2]] ? hint[q[2]]() : null;
         return '<div class="card sc-q"><p><b class="num">' + (i + 1) + '.</b> ' + esc(qText(q)) + '</p>' + (hv ? '<p class="small sc-hint">' + esc(t('selfcheck_from')) + ' ' + esc(hv) + '</p>' : '') +
           '<div class="chips" role="group">' + [['y', 'selfcheck_yes'], ['n', 'selfcheck_no'], ['u', q[3] === 'done' ? 'selfcheck_notdone' : 'selfcheck_unsure']].map((o) => '<button type="button" class="chip' + (a[q[0]] === o[0] ? ' on' : '') + '" data-sc="' + q[0] + '" data-v="' + o[0] + '" aria-pressed="' + (a[q[0]] === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>'; }).join('') +
+      /* Version 39.1: Pattern check's second question, one more cause doctors rule out (prolactin); not one of the signs counted */
+      (id === 'pmos' && !pg ? '<div class="card sc-q sc-nip"><p>' + esc(t('selfcheck_also')) + ' ' + esc(t('pc_q2')) + '</p><div class="chips" role="group">' + [['y', 'selfcheck_yes'], ['n', 'selfcheck_no']].map((o) => '<button type="button" class="chip' + (nip === o[0] ? ' on' : '') + '" data-sc-nip="' + o[0] + '" aria-pressed="' + (nip === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div>' + (nip === 'y' && !sit().breastfeeding ? '<p class="small sc-nip-y">' + esc(t('pc_q2_y')) + '</p>' : '') + '</div>' : '') +
       (done ? (vd ? verdictHTML(vd) : '') + '<div class="card sc-res" id="sc-res" data-nofold="1"><h3>' + esc(tf('selfcheck_count', { n: n, m: m })) + '</h3>' + (n ? '<ul class="sc-yes">' + yes.map((q) => '<li>' + esc(qText(q)) + '</li>').join('') + '</ul>' : '') + '<p class="lead">' + esc(when) + '</p><p class="small">' + esc(t('selfcheck_nd')) + '</p></div>' +
         '<div class="card"><h3>' + esc(t('selfcheck_doc_h')) + '</h3><p class="small">' + esc(tx(c.doc)) + '</p><h3>' + esc(t('selfcheck_where_h')) + '</h3><p class="small">' + esc(tx(c.where)) + '</p></div>' +
-        '<div class="grid2">' + (S.routeOwner(c.more) || c.more === 'pattern' ? '<button type="button" class="btn" data-go="' + c.more + '">' + esc(t('selfcheck_more')) + '</button>' : '') + (can ? '<button type="button" class="btn" data-go="report">' + esc(t('selfcheck_report')) + '</button>' : '') + '</div>' +
-        '<button type="button" class="btn primary block" data-ask="' + esc(t(c.t)) + '">' + esc(t('selfcheck_ask')) + '</button><button type="button" class="linkbtn" id="sc-redo">' + esc(t('selfcheck_redo')) + '</button>'
+        /* Version 39.1 (journey audit J-03): free care first, her report, then a Qura doctor; the PMOS result offers the plan */
+        (S.routeOwner('access-doctor') ? '<button type="button" class="btn primary block" data-go="access-doctor">' + esc(t('selfcheck_free')) + '</button>' : '') +
+        '<div class="grid2">' + (can ? '<button type="button" class="btn" data-go="report">' + esc(t('selfcheck_report')) + '</button>' : '') + '<button type="button" class="btn" data-ask="' + esc(t(c.t)) + '">' + esc(t('selfcheck_ask')) + '</button></div>' +
+        (planGoal ? '<button type="button" class="btn block sc-plan" id="sc-plan">' + esc(t('selfcheck_plan')) + '</button>' : '') +
+        '<div class="row wrap sc-more">' + (S.routeOwner(c.more) || c.more.indexOf('a-') === 0 ? '<button type="button" class="linkbtn" data-go="' + c.more + '">' + esc(t('selfcheck_more')) + '</button>' : '') + '<button type="button" class="linkbtn" id="sc-redo">' + esc(t('selfcheck_redo')) + '</button></div>'
         : '<p class="small sc-left">' + esc(t('selfcheck_answer_all')) + '</p>') +
       '<p class="footnote">' + esc(t('selfcheck_foot')) + '</p>';
     S.wire(v);
@@ -173,7 +186,10 @@
       renderCheck(v, id); window.scrollTo(0, y);
       if (nowDone && !wasDone) { const r = document.getElementById(id === 'pmos' && !preg() ? 'sc-verdict' : 'sc-res'); if (r) r.scrollIntoView({ block: 'start' }); }
     }));
-    const rd = v.querySelector('#sc-redo'); if (rd) rd.addEventListener('click', () => { ans[id] = {}; renderCheck(v, id); window.scrollTo(0, 0); });
+    const rd = v.querySelector('#sc-redo'); if (rd) rd.addEventListener('click', () => { ans[id] = {}; nipAns[id] = ''; renderCheck(v, id); window.scrollTo(0, 0); });
+    v.querySelectorAll('[data-sc-dx]').forEach((b) => b.addEventListener('click', () => { const y = window.scrollY; if (S.state.situation) { S.state.situation.pcos = b.dataset.scDx === 'y'; S.save(); } renderCheck(v, id); window.scrollTo(0, y); }));
+    v.querySelectorAll('[data-sc-nip]').forEach((b) => b.addEventListener('click', () => { const y = window.scrollY; nipAns[id] = nipAns[id] === b.dataset.scNip ? '' : b.dataset.scNip; renderCheck(v, id); window.scrollTo(0, y); }));
+    const sp = v.querySelector('#sc-plan'); if (sp) sp.addEventListener('click', () => S.plan.offer(planGoal));
   }
   /* For the doctor summary and her report: her last answers, in her words, and for PMOS what they matched. */
   function summary() {
@@ -182,6 +198,9 @@
     return lines.length ? [{ title: t('selfcheck_h'), lines: lines }] : [];
   }
 
+  /* Version 39.1: her last result per check, for Diary's "Checks you did" and explain's "Check the signs" */
+  S.selfcheck = { last: (id) => { const r = ((S.state.mods && S.state.mods.selfcheck) || {})[id]; return r && r.d ? r : null; },
+    list: () => { const d = (S.state.mods && S.state.mods.selfcheck) || {}; return IDS.filter((id) => d[id] && d[id].d).map((id) => Object.assign({ id: id, title: t(C[id].t) }, d[id])); } };
   S.register({
     id: 'selfcheck',
     demoPersona: 'priya',
@@ -198,6 +217,7 @@
         selfcheck_nd: 'This is not a diagnosis. These signs have many causes, and only a doctor’s exam and tests can tell what is going on.',
         selfcheck_doc_h: 'What a doctor checks', selfcheck_where_h: 'Where to go', selfcheck_now_h: 'Go now if', selfcheck_soon_h: 'See a doctor soon if',
         selfcheck_more: 'Read about it', selfcheck_report: 'My report for the doctor', selfcheck_ask: 'Talk to a Qura doctor about this', selfcheck_redo: 'Start again',
+        selfcheck_free: 'Free government doctor', selfcheck_plan: 'A 12-week plan for your periods', selfcheck_also: 'One more question:', selfcheck_h_stops: 'pain stopped your day in {n} of your last {m} periods.',
         selfcheck_preg: 'You are marked as pregnant. These checks are about periods. For anything that worries you in pregnancy, use the pregnancy symptoms guide.', selfcheck_preg_b: 'Pregnancy symptoms guide',
         selfcheck_horm: 'You are on a hormonal method (like the pill), which changes your periods and can hide signs. Answer about how things were before you started it.',
         selfcheck_v_eye: 'PMOS (PCOS): what your answers match',
@@ -238,6 +258,7 @@
         selfcheck_nd: 'यह जाँच का नतीजा नहीं है। इन संकेतों की कई वजहें होती हैं, और क्या हो रहा है, यह सिर्फ़ डॉक्टर की जाँच और टेस्ट से पता चलता है।',
         selfcheck_doc_h: 'डॉक्टर क्या जाँचते हैं', selfcheck_where_h: 'कहाँ जाएँ', selfcheck_now_h: 'तुरंत जाएँ अगर', selfcheck_soon_h: 'जल्दी डॉक्टर को दिखाएँ अगर',
         selfcheck_more: 'इसके बारे में पढ़ें', selfcheck_report: 'डॉक्टर के लिए मेरी रिपोर्ट', selfcheck_ask: 'इस बारे में Qura की डॉक्टर से बात करें', selfcheck_redo: 'फिर से शुरू करें',
+        selfcheck_free: 'मुफ़्त सरकारी डॉक्टर', selfcheck_plan: 'आपके पीरियड के लिए 12 हफ़्ते का प्लान', selfcheck_also: 'एक और सवाल:', selfcheck_h_stops: 'पिछले {m} में से {n} पीरियड में दर्द ने आपका दिन रोक दिया।',
         selfcheck_preg: 'आपने गर्भवती चुना है। ये जाँचें पीरियड के बारे में हैं। प्रेग्नेंसी में किसी भी चिंता के लिए प्रेग्नेंसी लक्षण गाइड देखें।', selfcheck_preg_b: 'प्रेग्नेंसी लक्षण गाइड',
         selfcheck_horm: 'आप हॉर्मोन वाला तरीक़ा (जैसे गोली) ले रही हैं, जिससे पीरियड बदलते हैं और संकेत छिप सकते हैं। इसे शुरू करने से पहले जैसा था, उसके हिसाब से जवाब दें।',
         selfcheck_v_eye: 'PMOS (PCOS): आपके जवाब किससे मेल खाते हैं',
@@ -279,6 +300,7 @@
       ' .sc-feat .body { display: flex; flex-direction: column; min-width: 0; } .sc-feat strong { color: var(--fg); font-size: 14px; } .sc-feat .small { color: var(--muted); }' +
       ' .sc-tick { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1.5px var(--line); }' +
       ' .sc-feat li.on .sc-tick { background: var(--accent-strong); box-shadow: none; color: #FFFFFF; } .sc-tick svg { width: 14px; height: 14px; }' +
-      ' .sc-rule { color: var(--fg) !important; font-weight: 600; } .sc-known { color: var(--fg) !important; }'
+      ' .sc-rule { color: var(--fg) !important; font-weight: 600; } .sc-known { color: var(--fg) !important; }' +
+      ' .sc-more { justify-content: space-between; } .sc-nip-y { color: var(--fg) !important; margin: 0; }'
   });
 })(window.Saathi);

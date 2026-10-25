@@ -1,6 +1,9 @@
 /* Qura Sakhi pictures. Everything is inline SVG drawn here (no image files, so the app works offline), and every colour is an
    --art-* or --h-* token from app.css, so the pictures follow light and dark mode.
      S.art.produce(week)           the fruit, vegetable or kitchen staple for a pregnancy week (64x64)
+     S.art.food(key)               a food or kitchen measure by name (Version 39.8): roti, dal, dahi, milk, egg, saag, the
+                                   produce drawings and more (64x64); S.art.hasFood(key)
+     S.art.sign(key)               a danger-sign pictogram for Help (Version 39.8): bleed, water, fever, head, fits, swell, moves...
      S.art.flower(month, petals)   that month's flower with 0-12 petals (the petal garden)
      S.art.spot(key)               a small coloured picture for a Care topic or a Learn group
      S.art.badge(icon, hue, on)    a rosette badge
@@ -145,6 +148,120 @@
     return wrap('0 0 64 64', e ? scaled(e[1], P[e[0]](e[2])) : P.sprout(), 'produce', label);
   }
 
+  /* ---------- Version 39.8 (diet audit DIET-10, VD-01 to VD-03, VD-08, VD-10): food, kitchen measures and the danger signs,
+     drawn in the same 64x64 style. A food picture is neutral, so it shows on a shared phone too. ---------- */
+  const rim = (c) => '<ellipse cx="32" cy="36" rx="20.5" ry="5.6"' + fill(c) + '/>';
+  const katori = (inner) => shadow(18) + '<path d="M11.5 36h41c-1.2 10-9.6 17.4-20.5 17.4S12.7 46 11.5 36Z"' + fill('steel') + '/>' +
+    '<path d="M15 41.5c3.4 5.6 9.4 8.8 17 8.8"' + line('white', 1.6, 'opacity:.55') + '/>' + (inner || rim('steel-2')) + '<ellipse cx="32" cy="36" rx="20.5" ry="5.6"' + line('steel-2', 1.2) + '/>';
+  const plate = (inner) => shadow(22) + '<ellipse cx="32" cy="42" rx="25" ry="10"' + fill('steel') + '/><ellipse cx="32" cy="41" rx="19" ry="7"' + fill('steel-2', 'opacity:.35') + '/>' + (inner || '');
+  const glass = (c, top) => shadow(11) + '<path d="M21 14h22l-3 39.5c-.1 1.4-1.3 2.5-2.7 2.5H26.7c-1.4 0-2.6-1.1-2.7-2.5Z"' + fill('water', 'opacity:.35') + '/>' +
+    (c ? '<path d="M22.2 ' + (top || 24) + 'h19.6l-2.3 29.4c-.1 1-1 1.8-2 1.8H26.5c-1 0-1.9-.8-2-1.8Z"' + fill(c) + '/>' : '') +
+    '<path d="M21 14h22l-3 39.5c-.1 1.4-1.3 2.5-2.7 2.5H26.7c-1.4 0-2.6-1.1-2.7-2.5Z"' + line('glass', 1.6) + '/><path d="M25 18.5l1.8 31"' + line('white', 1.8, 'opacity:.6') + '/>';
+  const F = {
+    roti: () => shadow(20) + '<circle cx="32" cy="35" r="19"' + fill('tan') + '/><circle cx="32" cy="35" r="19"' + line('tan-2', 1.2) + '/>' +
+      dots([[25, 29], [37, 27], [30, 39], [41, 38], [24, 41], [34, 46], [42, 31]], 1.9, 'brown', 'opacity:.55') + dots([[28, 33], [39, 43], [33, 30]], 1.2, 'brown-2', 'opacity:.5') + shine(26, 28, 6, 2.6, -30),
+    bhakri: () => shadow(20) + '<circle cx="32" cy="35" r="18.5"' + fill('tan-2') + '/><circle cx="32" cy="35" r="18.5"' + line('brown', 1.3) + '/>' +
+      '<path d="M22 30c4 1.4 7.4 1 10-1.2M30 44c3-1.8 7-2 10-.4M38 30.5c1.8 2 2 4.6 1 6.8"' + line('brown-2', 1.2, 'opacity:.6') + '/>' + dots([[27, 37], [36, 39], [33, 25]], 1.6, 'brown-2', 'opacity:.6'),
+    ragi: () => shadow(19) + '<circle cx="24.5" cy="39" r="11"' + fill('brown') + '/><circle cx="40" cy="39.5" r="11"' + fill('brown') + '/><circle cx="32.4" cy="28" r="10"' + fill('brown-2') + '/>' + shine(28.6, 24.6, 3.4, 1.6, -30) + shine(21, 35.4, 3.2, 1.5, -30) + shine(36.6, 35.6, 3.2, 1.5, -30),
+    chawal_k: () => katori('<path d="M12.6 36c2-8.4 10.4-13.2 19.4-13.2S49.4 27.6 51.4 36Z"' + fill('white') + '/>' + rim('white') +
+      '<path d="M22 31l2 .8M29 27.4l2 .3M37 29l2-.6M27 33l2 .6M41 33.4l1.8-.8M33.6 31.6l1.6.8"' + line('cream-2', 1.4) + '/>'),
+    dal: () => katori(rim('yellow') + dots([[24, 36], [31, 34.6], [38, 36.4], [44, 35], [28, 38.2]], 1.3, 'yellow-2') + '<path d="M22 34.4c2-1 4.6-1.2 6.6-.4"' + line('white', 1.2, 'opacity:.5') + '/>'),
+    dahi: () => katori(rim('white') + '<path d="M22 35.6c4.6-2.4 10.6-2.6 15.4-.8 3 1.2 5.6 1.2 7.6.2"' + line('cream-2', 1.4) + '/>'),
+    sabzi: () => katori(rim('leaf') + dots([[24, 35.4], [36, 34], [42, 36.6]], 2.1, 'orange') + dots([[30, 37], [39, 37.6], [27, 33.6]], 1.7, 'lime') + dots([[33, 35.4]], 1.6, 'yellow')),
+    khichdi: () => katori(rim('yellow') + dots([[25, 35.2], [37, 36.6], [42, 34.4]], 1.6, 'lime-2') + '<path d="M28 34.4l1.8.6M33 37l1.8.2M39 33.6l1.6.6M23 37.4l1.6-.2"' + line('white', 1.3) + '/>'),
+    sprouts: () => katori(rim('lime') + '<path d="M24 34.6c-1.2-2.6-.6-4.6 1.2-5.6M31 33.6c.4-2.8 1.8-4.4 3.8-4.6M38 35c1-2.4 2.8-3.4 4.8-3.2M28 37.4c-1.6-1.6-1.8-3.4-.8-5"' + line('cream', 1.4) + '/>' + dots([[24, 36], [31, 35], [38, 36.4], [28, 38], [43, 36.4], [34.6, 37.6]], 1.9, 'lime-2')),
+    poha: () => plate('<path d="M14 41c3-6.4 10.4-10 18-10s15 3.6 18 10c-4 4-10.4 6-18 6s-14-2-18-6Z"' + fill('yellow') + '/>' + dots([[22, 39], [30, 36], [38, 38], [44, 41], [27, 43]], 1.8, 'lime-2') + dots([[34, 42], [41, 36], [25, 36]], 1.6, 'brown') + leaf('M36 33c2-2.6 5-3 7-1.6-2 2.4-4.6 2.8-7 1.6Z')),
+    upma: () => plate('<path d="M15 41c2.4-8 9.6-12.6 17-12.6S46.6 33 49 41c-4 3.6-10 5.4-17 5.4S19 44.6 15 41Z"' + fill('cream') + '/>' + dots([[24, 37], [36, 34], [42, 39], [30, 41]], 1.7, 'orange') + dots([[28, 35], [39, 38]], 1.5, 'lime-2')),
+    idli: () => plate('<path d="M14 40c0-6.8 4.8-11 10.4-11S34.6 33.2 34.6 40Z"' + fill('white') + '/><path d="M14 40c0-6.8 4.8-11 10.4-11S34.6 33.2 34.6 40Z"' + line('cream-2', 1.5) + '/><path d="M30 40.6c0-6.8 4.8-11 10.4-11s10.4 4.2 10.4 11Z"' + fill('white') + '/><path d="M30 40.6c0-6.8 4.8-11 10.4-11s10.4 4.2 10.4 11Z"' + line('cream-2', 1.5) + '/>' + dots([[20, 35], [26, 33.6], [36, 36], [43, 34.4]], 0.8, 'cream-2')),
+    dosa: () => plate('<path d="M9 42.4C18 33 34 29.6 55 31.4 47.6 39.2 30 44.6 9 42.4Z"' + fill('yellow-2') + '/><path d="M12 41.6c13.6-.6 27-4.4 39.4-9.4"' + line('orange-2', 1.3, 'opacity:.6') + '/>' + shine(26, 38, 7, 1.6, -12)),
+    milk: () => glass('white', 22),
+    chaas: () => glass('cream', 23) + leaf('M37 19.6c2.6-4.6 7-6 10.6-4.6-2.4 4.4-6.6 5.8-10.6 4.6Z'),
+    water: () => glass('water', 25),
+    ors: () => glass('orange', 25) + '<path d="M28.6 33.6h6.8M32 30.2v6.8"' + line('white', 1.6, 'opacity:.7') + '/>',
+    egg: () => shadow(19) + '<ellipse cx="23.5" cy="38" rx="10.4" ry="13"' + fill('white') + '/><circle cx="23.5" cy="39" r="5.6"' + fill('yellow') + '/>' +
+      '<ellipse cx="41" cy="38" rx="10.4" ry="13"' + fill('white') + '/><circle cx="41" cy="39" r="5.6"' + fill('yellow') + '/>' + '<ellipse cx="23.5" cy="38" rx="10.4" ry="13"' + line('cream-2', 1.2) + '/><ellipse cx="41" cy="38" rx="10.4" ry="13"' + line('cream-2', 1.2) + '/>' + shine(21.6, 37.2, 1.8, 1, -30),
+    fish: () => shadow(19) + '<path d="M10 35c6-8.6 18-11.6 28-7.6l9-6.4-1.6 10.6 4 3.2-4 3.2 1.6 10.6-9-6.4c-10 4-22 1-28-7.2Z"' + fill('orange') + '/>' +
+      '<circle cx="18.4" cy="33" r="1.8"' + fill('seed') + '/><path d="M25 30.4c1.6 3 1.6 6.4 0 9.4M31 30c1.4 3.2 1.4 6.8 0 10"' + line('orange-2', 1.3) + '/>' + shine(20, 29.6, 4, 1.4, -18),
+    chicken: () => shadow(17) + '<path d="M38.6 38.8 46.4 46.6"' + line('cream', 5.2) + '/><circle cx="48" cy="48.2" r="3.4"' + fill('cream') + '/><circle cx="45.4" cy="50.6" r="3"' + fill('cream') + '/>' +
+      '<path d="M16 23.8c4-6.8 14-8 20.4-2.6 6.2 5.2 6 14.6-.4 19-5.6 3.8-13.4 2.8-17.8-2.2C15 34.4 13.8 28 16 23.8Z"' + fill('brown') + '/>' + shine(22.6, 22.6, 4.6, 2, -30),
+    paneer: () => shadow(20) + [[0, 0], [22, 3]].map((o) => '<g transform="translate(' + o[0] + ' ' + o[1] + ')"><path d="M11 30l9-4.6 9 4.6-9 4.6Z"' + fill('cream') + '/><path d="M11 30v11l9 4.6v-11Z"' + fill('cream-2') + '/><path d="M29 30v11l-9 4.6v-11Z"' + fill('tan', 'opacity:.7') + '/><path d="M11 30l9-4.6 9 4.6v11l-9 4.6-9-4.6Z"' + line('tan-2', 1.1) + '/></g>').join(''),
+    saag: () => shadow(18) + '<path d="M32 54V34M32 46l-7-9M32 42l8-10"' + line('leaf-2', 2) + '/>' + leaf('M32 36c-9-1-15-9-13-20 9 1 15 9 13 20Z', 'leaf') + leaf('M32 36c1-10 8-17 18-17 0 10-7 16-18 17Z', 'leaf-2') +
+      leaf('M25 37c-8 2-14-1-17-8 7-3 14 0 17 8Z', 'lime-2') + leaf('M40 32.6c7-4.6 14-3.4 17 2.6-6.6 4-13.4 2.6-17-2.6Z', 'lime-2'),
+    salad: () => plate('<circle cx="24" cy="39" r="6.4"' + fill('lime') + '/><circle cx="24" cy="39" r="4"' + fill('lime-2', 'opacity:.35') + '/>' +
+      '<circle cx="38" cy="37" r="6.6"' + fill('red') + '/><path d="M38 31v12M32 37h12"' + line('red-2', 1, 'opacity:.6') + '/><circle cx="33" cy="45" r="5"' + fill('lime') + '/>' + dots([[44, 43], [19, 45]], 2.2, 'white')),
+    moongfali: () => shadow(19) + [[20, 40, -20], [33, 31, 10], [43, 42, 35]].map((p) => '<g transform="translate(' + p[0] + ' ' + p[1] + ') rotate(' + p[2] + ')"><path d="M-9 0c0-3.4 2.4-5.4 5-5.4 2 0 3.2 1.2 4 1.2s2-1.2 4-1.2c2.6 0 5 2 5 5.4s-2.4 5.4-5 5.4c-2 0-3.2-1.2-4-1.2s-2 1.2-4 1.2C-6.6 5.4-9 3.4-9 0Z"' + fill('tan') + '/><path d="M-5-1.6v3.2M0-2v4M5-1.6v3.2"' + line('tan-2', 1) + '/></g>').join(''),
+    til: () => shadow(19) + '<path d="M12 50c3-9.6 11-15.6 20-15.6S49 40.4 52 50Z"' + fill('cream-2') + '/>' +
+      dots([[20, 47], [26, 43.6], [32, 41], [38, 43.6], [44, 47], [29, 47.6], [35, 47.4], [23, 49.6], [41, 49.6], [32, 45]], 1.1, 'seed') + dots([[24, 46], [36, 44.6], [30, 43.4], [40, 46.6]], 1, 'white', 'opacity:.8'),
+    kela: () => shadow(17) + '<path d="M13 30c3 12 13 19 26 18 6-.4 10-3 12-7-6 3-12 3.6-18 1.4C24.6 39.6 18.6 34.4 16 27Z"' + fill('yellow') + '/>' +
+      '<path d="M16 27c-.8-2.4-.6-4.4.6-6"' + line('brown', 2.4) + '/><path d="M18 33c4 5.6 9.6 9 16.4 9.6"' + line('yellow-2', 1.4) + '/>',
+    gud: () => shadow(17) + '<path d="M16 30l14-8 18 6v15l-14 8-18-6Z"' + fill('brown') + '/><path d="M16 30l18 6 14-8M34 36v15"' + line('brown-2', 1.6) + '/>' + dots([[24, 40], [28, 44], [40, 42]], 1.1, 'yellow-2', 'opacity:.6'),
+    khajur: () => shadow(18) + [[22, 40, -20], [34, 36, 8], [44, 42, 30]].map((p) => '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="6.4" ry="10.6" transform="rotate(' + p[2] + ' ' + p[0] + ' ' + p[1] + ')"' + fill('brown-2') + '/>' + shine(p[0] - 2, p[1] - 4, 1.6, 3.4, p[2])).join(''),
+    thali: () => shadow(26) + '<ellipse cx="32" cy="37" rx="28" ry="17"' + fill('steel') + '/><ellipse cx="32" cy="37" rx="28" ry="17"' + line('steel-2', 1.4) + '/>' +
+      '<circle cx="19" cy="34" r="7"' + fill('steel-2') + '/><circle cx="19" cy="33" r="5.4"' + fill('yellow') + '/>' + '<circle cx="34" cy="28" r="6.4"' + fill('steel-2') + '/><circle cx="34" cy="27.2" r="5"' + fill('leaf') + '/>' +
+      '<circle cx="45" cy="40" r="9"' + fill('tan') + '/>' + dots([[42, 38], [47, 42], [44, 43]], 1.1, 'brown', 'opacity:.5') + '<ellipse cx="26" cy="44.4" rx="8" ry="4.4"' + fill('white') + '/>',
+    /* kitchen measures */
+    katori: () => katori(),
+    karchi: () => shadow(13) + '<path d="M44 12 30.6 34.6"' + line('steel-2', 3.2) + '/><path d="M18 34h19c0 6.4-4.2 11.6-9.5 11.6S18 40.4 18 34Z"' + fill('steel') + '/><ellipse cx="27.5" cy="34" rx="9.5" ry="2.8"' + fill('steel-2') + '/>',
+    chammach: () => shadow(12) + '<path d="M40.6 13.4 30 38"' + line('steel-2', 2.6) + '/><ellipse cx="27" cy="44.6" rx="6.4" ry="8.6" transform="rotate(22 27 44.6)"' + fill('steel') + '/><ellipse cx="26.2" cy="43.2" rx="2.4" ry="4" transform="rotate(22 26.2 43.2)"' + fill('white', 'opacity:.5') + '/>',
+    gilas: () => glass(null),
+    /* the iron tablet: one red tablet, and a strip with some taken */
+    tablet: () => shadow(15) + '<ellipse cx="32" cy="35" rx="15" ry="9.4"' + fill('red') + '/><ellipse cx="32" cy="35" rx="15" ry="9.4"' + line('red-2', 1.2) + '/><path d="M20 35h24"' + line('red-2', 1.2, 'opacity:.6') + '/>' + shine(26, 31.4, 5, 1.8, -10),
+    strip: () => shadow(22) + '<rect x="9" y="20" width="46" height="30" rx="4"' + fill('steel') + '/>' +
+      [[18, 29], [32, 29], [46, 29], [18, 41], [32, 41], [46, 41]].map((p, i) => '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4.6"' + fill(i < 2 ? 'steel-2' : 'red') + '/>').join(''),   /* two taken, four left */
+    /* the foods to have less often, or not at all, so every plate tile has a picture */
+    laddoo: () => plate([[24, 40], [40, 40], [32, 30]].map((p) => '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="8.4"' + fill('yellow-2') + '/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="8.4"' + line('orange-2', 1.1) + '/>' + dots([[p[0] - 3, p[1] - 2], [p[0] + 2.4, p[1] + 1.6], [p[0] - .6, p[1] + 3.6]], 0.9, 'orange-2', 'opacity:.7')).join('') + shine(29, 27, 1.6, 2.6, -20)),
+    chai: () => shadow(16) + '<path d="M44 31.5c4.6 0 7 2.4 7 5.4s-2.6 5.6-7.4 5.6"' + line('cream-2', 3) + '/><path d="M16 28h28v12c0 7-5.6 12-14 12s-14-5-14-12Z"' + fill('white') + '/>' +
+      '<ellipse cx="30" cy="28" rx="14" ry="3.6"' + fill('tan-2') + '/><path d="M16 28h28v12c0 7-5.6 12-14 12s-14-5-14-12Z"' + line('cream-2', 1.2) + '/>' +
+      '<path d="M24 22c-1.6-2 1.6-4 0-6.4M31 21c-1.6-2 1.6-4 0-6.4M38 22c-1.6-2 1.6-4 0-6.4"' + line('steel-2', 1.4, 'opacity:.7') + '/>',
+    bread: () => shadow(20) + '<path d="M12 26c0-6 5-9 10-9 3 0 4.6 1 6 1s3-1 6-1c5 0 10 3 10 9 0 3-2 4.6-3 5.4V50H15V31.4C14 30.6 12 29 12 26Z"' + fill('cream') + '/>' +
+      '<path d="M12 26c0-6 5-9 10-9 3 0 4.6 1 6 1s3-1 6-1c5 0 10 3 10 9 0 3-2 4.6-3 5.4V50H15V31.4C14 30.6 12 29 12 26Z"' + line('tan', 2.2) + '/>' +
+      '<circle cx="45" cy="45" r="9"' + fill('tan') + '/><circle cx="45" cy="45" r="9"' + line('tan-2', 1.1) + '/>' + dots([[42, 42], [48, 43], [44, 48], [47.6, 48.4]], 1.1, 'brown-2', 'opacity:.6'),
+    colddrink: () => shadow(12) + '<path d="M27 10h10v5c0 2 4 4.4 4 9v27.4c0 2-1.6 3.6-3.6 3.6H26.6c-2 0-3.6-1.6-3.6-3.6V24c0-4.6 4-7 4-9Z"' + fill('plum-2') + '/>' +
+      '<rect x="23" y="30" width="18" height="10"' + fill('red') + '/><rect x="26.6" y="7" width="10.8" height="4.4" rx="1"' + fill('red-2') + '/>' + shine(27, 24, 1.4, 5, 0) + dots([[30, 46], [34, 50], [33, 44.4]], 1, 'white', 'opacity:.55'),
+    samosa: () => shadow(20) + '<path d="M32 15 51 47H13Z"' + fill('yellow-2') + '/><path d="M32 15 51 47H13Z"' + line('orange-2', 1.6) + '/><path d="M32 15 29 47M32 15l3 32"' + line('orange-2', 1, 'opacity:.35') + '/>' +
+      dots([[24, 41], [38, 40], [31, 31], [42, 44.6]], 1.1, 'orange-2', 'opacity:.5') + shine(26.6, 34, 1.8, 5, 30),
+    chips: () => shadow(16) + '<path d="M17 13h30l-1.6 3.4L47 20v26l-1.6 3.6L47 53H17l1.6-3.4L17 46V20l1.6-3.6Z"' + fill('orange') + '/><rect x="17" y="20" width="30" height="3.4"' + fill('red') + '/>' +
+      '<ellipse cx="32" cy="35" rx="10" ry="7.6"' + fill('yellow') + '/><path d="M25.6 35.4c2-3 4.2-3.6 6.4-2.4M31 38.6c2-3 4.2-3.6 6.4-2.4"' + line('orange-2', 1.3) + '/>',
+    achaar: () => shadow(15) + '<rect x="19" y="20" width="26" height="33" rx="6"' + fill('glass', 'opacity:.45') + '/><path d="M20 30h24v17c0 3.4-2.6 6-6 6H26c-3.4 0-6-2.6-6-6Z"' + fill('orange') + '/>' +
+      dots([[26, 38], [34, 36], [38, 44], [29, 46.4], [24.6, 43.6]], 2.2, 'red-2', 'opacity:.7') + '<rect x="21" y="13" width="22" height="8" rx="2"' + fill('red') + '/><rect x="19" y="20" width="26" height="33" rx="6"' + line('glass', 1.4) + '/>' + shine(24, 27, 1.4, 3.6, 0),
+    dalda: () => shadow(17) + '<path d="M17 18h30v32c0 2.4-6.6 4.4-15 4.4S17 52.4 17 50Z"' + fill('yellow') + '/><path d="M17 30c4 1.6 9.6 2.4 15 2.4s11-.8 15-2.4v12c-4 1.6-9.6 2.4-15 2.4s-11-.8-15-2.4Z"' + fill('leaf') + '/>' +
+      '<ellipse cx="32" cy="18" rx="15" ry="4.4"' + fill('steel') + '/><ellipse cx="32" cy="18" rx="15" ry="4.4"' + line('steel-2', 1.2) + '/><path d="M28 39c1.6-3 4.4-4.4 7.4-4"' + line('yellow', 1.6) + '/>',
+    sattu: () => katori('<path d="M12.6 36c2-7 10.4-11 19.4-11S49.4 29 51.4 36Z"' + fill('tan') + '/>' + rim('tan') + dots([[24, 33], [30, 30], [38, 32], [44, 34.6], [34, 34]], 0.9, 'tan-2', 'opacity:.7')),
+    khali: () => plate('<ellipse cx="32" cy="41" rx="11" ry="3.6"' + fill('steel-2', 'opacity:.25') + '/>'),
+    pills: () => shadow(15) + '<rect x="18" y="22" width="24" height="31" rx="4"' + fill('white') + '/><rect x="18" y="22" width="24" height="31" rx="4"' + line('cream-2', 1.3) + '/>' +
+      '<rect x="16" y="14" width="28" height="9" rx="2"' + fill('purple') + '/><rect x="22" y="31" width="16" height="12" rx="2"' + fill('plum', 'opacity:.35') + '/>' +
+      '<rect x="42" y="44" width="14" height="6.4" rx="3.2" transform="rotate(-30 49 47.2)"' + fill('red') + '/>'
+  };
+  /* the danger signs (Help's pictograms): plain shapes that read on a shared phone */
+  const D = {
+    bleed: () => '<path d="M32 10C24 22 19 30 19 37a13 13 0 0 0 26 0c0-7-5-15-13-27Z"' + fill('red') + '/>' + shine(27, 34, 2.6, 4.6, -12),
+    water: () => [[24, 18], [40, 26], [28, 38]].map((p) => '<path d="M' + p[0] + ' ' + (p[1] - 10) + 'c-4 6.4-6.4 10.4-6.4 14a6.4 6.4 0 0 0 12.8 0c0-3.6-2.4-7.6-6.4-14Z"' + fill('water') + '/><path d="M' + p[0] + ' ' + (p[1] - 10) + 'c-4 6.4-6.4 10.4-6.4 14a6.4 6.4 0 0 0 12.8 0c0-3.6-2.4-7.6-6.4-14Z"' + line('water-2', 1.4) + '/>').join('') + '<path d="M18 54h28"' + line('water-2', 2.4, 'opacity:.7') + '/>',
+    fever: () => '<rect x="27" y="8" width="10" height="34" rx="5"' + fill('white') + '/><rect x="27" y="8" width="10" height="34" rx="5"' + line('glass', 1.6) + '/><rect x="30" y="20" width="4" height="24"' + fill('red') + '/>' +
+      '<circle cx="32" cy="47" r="8.4"' + fill('red') + '/><path d="M42 16h5M42 22h4M42 28h5"' + line('glass', 1.6) + '/>',
+    head: () => '<circle cx="28" cy="30" r="15"' + fill('skin-2') + '/><path d="M16 22c2-9 9-13 15-13 8 0 13 5 14 11-6-3-17-3-29 2Z"' + fill('hair') + '/><path d="M16 22c2-9 9-13 15-13 8 0 13 5 14 11-6-3-17-3-29 2Z"' + line('hair-edge', 1.4) + '/>' +
+      '<path d="M47 14l-5 9h6l-6 10"' + line('red', 2.6) + '/><path d="M22 31.6c1.4-1 3-1 4.4 0M30 31.6c1.4-1 3-1 4.4 0"' + line('seed', 1.6) + '/>' +
+      '<path d="M8 50c2-5 6-7.6 11-7.6M48 50c-2-5-6-7.6-11-7.6"' + line('glass', 2, 'opacity:.5') + '/>',
+    fits: () => '<circle cx="32" cy="32" r="20"' + fill('halo') + '/><path d="M36 10 24 33h9l-6 21 15-27h-9Z"' + fill('yellow-2') + '/><path d="M36 10 24 33h9l-6 21 15-27h-9Z"' + line('orange-2', 1.4) + '/>',
+    swell: () => '<path d="M20 52V30c0-2.4 1.8-4.2 4.2-4.2s4.2 1.8 4.2 4.2V22c0-2.4 1.8-4.2 4.2-4.2s4.2 1.8 4.2 4.2v5c0-2.4 1.8-4.2 4.2-4.2s4.2 1.8 4.2 4.2V40c0 7.8-6.2 13.8-14 13.8h-3c-4.4 0-8.2-.8-8.2-1.8Z"' + fill('skin-2') + '/>' +
+      '<path d="M14 34c-2 4-2 8 0 12M50 30c2.4 4 2.6 8.4.4 12.6"' + line('red', 2.2) + '/>',
+    moves: () => '<circle cx="28" cy="35" r="19"' + fill('pink') + '/><circle cx="23" cy="29.6" r="5.4"' + fill('skin-2') + '/><path d="M26.4 34c4 1.4 7.6 4.6 8.6 9.4-3.6 3-9.4 3.4-13.4.6"' + fill('skin-2') + '/><path d="M55 16v18M50 29l5 5.6 5-5.6"' + line('red', 2.8) + '/>',
+    breath: () => '<path d="M32 12v14"' + line('pink-2', 3) + '/><path d="M30 24c-8-2-15 4-16 16-.6 7 2 12 7 12 6 0 9-6 9-14Z"' + fill('pink') + '/><path d="M34 24c8-2 15 4 16 16 .6 7-2 12-7 12-6 0-9-6-9-14Z"' + fill('pink') + '/>' +
+      '<path d="M22 34c2 4 2 8 0 12M42 34c-2 4-2 8 0 12"' + line('pink-2', 1.6, 'opacity:.7') + '/>',
+    dizzy: () => '<path d="M32 32c0-1.6 1.6-2.4 3-1.6 2.6 1.4 2 5.2-.8 6.2-4 1.4-7.8-1.6-7.8-5.8 0-5.6 5.6-9.2 10.8-7.8 7 1.8 10 9.6 7 15.8-3.6 7.6-13.4 10.2-20.4 6"' + line('purple', 2.6) + '/>' + dots([[48, 14], [14, 18], [50, 48]], 2.2, 'yellow-2'),
+    belly: () => '<path d="M21 9c-1.6 9-6 16.6-6 27 0 10.4 7.4 18 17 18s17-7.6 17-18c0-10.4-4.4-18-6-27Z"' + fill('skin-2') + '/><circle cx="32" cy="34" r="1.7"' + fill('skin-2s') + '/><path d="M39 41l7-4M40 46h8M39 51l7 4"' + line('red', 2.6) + '/><circle cx="36" cy="46" r="3.4"' + fill('red', 'opacity:.75') + '/>',
+    phone: () => '<rect x="20" y="8" width="24" height="46" rx="5"' + fill('steel-2') + '/><rect x="23" y="13" width="18" height="32" rx="2"' + fill('water') + '/><circle cx="32" cy="49.4" r="2"' + fill('steel') + '/>'
+  };
+  /* her plate's foods: an id of mods/food.js (or a produce name) to a drawing */
+  const FOOD_ART = { roti: 'roti', atta: 'roti', bajra: 'bhakri', jowar: 'bhakri', bhakri: 'bhakri', nachni: 'ragi', ragi: 'ragi', rice: 'chawal_k', chawal: 'chawal_k', brown_rice: 'chawal_k', dal: 'dal', moong: 'dal', toor: 'dal', masoor_dal: 'dal', dahi: 'dahi', curd: 'dahi', raita: 'dahi', sabzi: 'sabzi', veg: 'sabzi', khichdi: 'khichdi', sprouts: 'sprouts', poha: 'poha', upma: 'upma', idli: 'idli', dosa: 'dosa', milk: 'milk', doodh: 'milk', chaas: 'chaas', buttermilk: 'chaas', water: 'water', ors: 'ors', egg: 'egg', anda: 'egg', fish: 'fish', chicken: 'chicken', meat: 'chicken', paneer: 'paneer', tofu: 'paneer', saag: 'saag', palak: 'saag', methi: 'saag', greens: 'saag', salad: 'salad', peanuts: 'moongfali', moongfali: 'moongfali', til: 'til', sesame: 'til', banana: 'kela', kela: 'kela', gud: 'gud', jaggery: 'gud', dates: 'khajur', khajur: 'khajur', thali: 'thali', tea: 'chai', biscuit: 'bread', pickle: 'achaar', vanaspati: 'dalda' };
+  function food(key, label) {
+    const k = FOOD_ART[key] || key;
+    if (F[k]) return wrap('0 0 64 64', F[k](), 'produce food', label);
+    if (P[k]) return wrap('0 0 64 64', P[k](), 'produce food', label);
+    return '';
+  }
+  const hasFood = (key) => !!(F[FOOD_ART[key] || key] || P[FOOD_ART[key] || key]);
+  function sign(key, label) { return D[key] ? wrap('0 0 64 64', D[key](), 'sign', label) : ''; }
+
   /* ---------- the petal garden: one Indian flower for each month ---------- */
   const PETAL = {
     round: 'M0-7C-11-12-13.5-33 0-41 13.5-33 11-12 0-7Z',
@@ -263,5 +380,5 @@
     return wrap('0 0 100 100', s, 'sakhi ' + pose, o.label);
   }
 
-  S.art = { produce: produce, produceKey: (w) => (WEEK[Math.round(w)] || ['sprout'])[0], flower: flower, flowers: FLOWERS, flowerName: flowerName, spot: spot, hueOf: hueOf, badge: badge, sakhi: sakhi, looks: LOOKS.length };
+  S.art = { food: food, hasFood: hasFood, sign: sign, produce: produce, produceKey: (w) => (WEEK[Math.round(w)] || ['sprout'])[0], flower: flower, flowers: FLOWERS, flowerName: flowerName, spot: spot, hueOf: hueOf, badge: badge, sakhi: sakhi, looks: LOOKS.length };
 })(window.Saathi);

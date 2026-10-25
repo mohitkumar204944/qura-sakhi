@@ -6,7 +6,8 @@ don't read, search or change them from a Sakhi session. The one exception is the
 planned link between the two products is the doctor-call hand-off in `server/SERVER_SPEC.md` section 10.1.
 
 ## Layout
-- `web/`: the app (vanilla JS, no build step): `app.js` core, `mods/*.js` care areas, `content.json` Learn library.
+- `web/`: the app (vanilla JS, no build step): `app.js` core, `mods/*.js` care areas, `progs/*.js` the plans as data
+  (Version 39.4), `content.json` Learn library.
   Module contract and every version's rules: `web/MODULE_API.md`.
 - `android/`: WebView wrapper. `build-apk.sh` builds `QuraSakhi-prototype.apk` from `web/`.
 - `server/`: the accounts server, a Supabase Edge Function (`supabase/functions/sakhi-api`) with its migration and tests.
@@ -60,6 +61,39 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/goals.mjs` (Version 38, a plan that fits every goal: one pregnancy plan, the after-birth check, a
     trying-for-a-baby plan, iron by diet, the midlife Today, the calm week, "This month", For you by goal). Contract:
     `web/MODULE_API.md`, section 42; wording: section 16 of the review (waits for doctor review).
+  - `node test/protect.mjs` (Version 39.0, fix and protect: signals her records already hold, the stricter line in
+    pregnancy and after a birth, discreet mode's urgent line, a loss pauses the plan, neutral reminder titles, the pill
+    question at joining). Contract: `web/MODULE_API.md`, section 43; the gynaecologist's 3 confirmations:
+    `docs/wording-review-v28.md`, section 18.0.
+  - `node test/records.mjs` (Version 39.1, one home for what her records say: one engine for Trends' verdict and the
+    cards, Diary's "What it shows", flow details on any bleeding day, Pattern check gone). Contract: MODULE_API section 44.
+  - `node test/places.mjs` (Version 39.2, fewer places to look: topics by her stage, one Contents row, Me's one Reminders
+    row, Back that leaves the app from Today). Contract: MODULE_API section 45.
+  - `node test/food.mjs` (Version 39.3, food and search in her words: `mods/food.js`, My food, the plate by how she eats,
+    joining asks only what the plan uses). Contract: MODULE_API section 46; wording: sections 17.1 and 19.3 of the review.
+  - `node test/carryon.mjs` (Version 39.5, one plan page and plans that carry on: the hero and 4 tiles, rest days, welcome
+    back, the hold rule, "Your plan has changed", her last plan, a fair new 12 weeks, pause, steps from their tools).
+    Contract: MODULE_API section 48; wording: section 19.5 of the review.
+  - `node test/results.mjs` (Version 39.6, results and the doctor loop: the end page, month summaries, Keep it light, a
+    doctor path in every plan, "Yes, done" and what the doctor said, her Hb below her report's range). Contract:
+    MODULE_API section 49; wording: section 18.2 of the review (waits for doctor review).
+  - `node test/knowledge.mjs` (Version 39.7, knowledge that leads somewhere: each article's tool and guide, the book's ticks
+    and Continue, dos and don'ts, quick answers in search, one danger list, Help's tabs, one myths deck, a weekly "Did you
+    know?", "Why it helps", For my family, schemes checked at the official source). Contract: MODULE_API section 50; wording:
+    sections 18.3 and 19.7 of the review (new lines wait for doctor review).
+  - `node test/pictures.mjs` (Version 39.8, pictures first: food tiles and strips, Today's one-line cycle card, the plan
+    screen with pictures, Help's danger-sign pictures, a speaker per card, Hindi type, the plate she can tap, the picture check
+    for the field-test coordinator, the Android 10 floor and the APK size ceiling). Contract: MODULE_API section 51; wording:
+    section 19.8 of the review.
+  - `node test/foodsteps.mjs` (Version 39.9, food steps that change: the 7-day iron rotation by region and diet, an earlier
+    habit back once a week, a calcium food for 40+ bones, pregnancy food by trimester, food while she breastfeeds, "Fasting
+    today?" and the fasting step, fasting in pregnancy and while breastfeeding). Contract: MODULE_API section 52; wording:
+    sections 17.4 and 19.9 of the review (new lines wait for doctor review).
+  - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
+    a plan re-records it with `npm run golden:record` and says so.
+  - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
+    routes, drafts, `d.pv`, and each live plan's hash in `web/progs/baseline.json`, re-recorded with `npm run progs:record`
+    when a plan or a line it shows changes). Contract: MODULE_API section 47.
   - Walks, not pass/fail (screens to `web/test/shots/`, gitignored): `node test/firstday-walk.mjs`,
     `node test/weeks-walk.mjs` (12 weeks, fast-forwarded) and `node test/stages-walk.mjs` (every goal and stage). Run them
     before and after a change to compare.
@@ -68,6 +102,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/check.mjs all --quick`
   - Server, from the repo root: `npm run test:server`. `npm test` runs everything.
 - APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`.
+  - The APK needs Android 10 or newer (min SDK 29). Mohit, 25 Oct: build for newer phones, not very cheap ones, so don't trade
+    quality for old phones. The build refuses an APK over 30 MB unless `MAX_APK_MB` is raised on purpose.
   - VERSION_CODE is required and may not go below the last APK built (testers' phones refuse it, and uninstalling deletes
     the diary). A missing `sakhi-prototype.keystore` stops the build: restore it from Mohit's backup; `NEW_KEYSTORE=1` only for
     a first build that no phone has.
@@ -91,6 +127,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   `web/index.html` and the changed files to the session scratchpad and publish to that URL.
   - The published `index.html` adds `window.SAKHI_CONFIG = Object.assign({ care: 'care/' }, window.SAKHI_CONFIG || {});` before
     `app.js`.
+  - `progs/*.js` (the plans as data, Version 39.4) go up with every publish, beside `mods/*.js`.
   - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
     with a script that checks each record.
 - Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy

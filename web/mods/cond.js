@@ -535,7 +535,10 @@
         { en: 'Severe vomiting, belly pain that does not settle, rash, swelling or trouble breathing: stop and see a doctor.', hi: 'तेज़ उल्टी, पेट दर्द जो न रुके, चकत्ते, सूजन या साँस में तकलीफ़: गोली रोकें और डॉक्टर को दिखाएँ।' }]) +
       (S.routeOwner('iron') ? '<button type="button" class="btn sm" style="align-self:flex-start" data-go="iron">' + h({ en: 'Iron tablets: tick and reminder', hi: 'आयरन की गोलियाँ: टिक और रिमाइंडर' }) + '</button>' : '') + '</div>';
 
-    const food = '<div class="card"><h2>' + h({ en: 'Food that builds blood', hi: 'ख़ून बढ़ाने वाला खाना' }) + '</h2>' +
+    /* Version 39.8 (diet audit VD-02): the card's own foods as pictures first; the card never folds */
+    const dt = S.food && S.food.diet ? S.food.diet() : { type: 'veg' };
+    const ironPics = S.food && S.food.strip ? S.food.strip([['saag', { en: 'Green leafy sabzi', hi: 'हरी पत्तेदार सब्ज़ी' }], ['ragi', { en: 'Ragi', hi: 'रागी' }], ['dal', { en: 'Chana dal', hi: 'चना दाल' }], ['sprouts', { en: 'Sprouts', hi: 'स्प्राउट्स' }, 'j', { en: 'Sprouts, cooked', hi: 'पकाए हुए अंकुरित अनाज' }],   /* V39.8 review SAFETY-02 */ ['til', { en: 'Til', hi: 'तिल' }], ['gud', { en: 'Gur', hi: 'गुड़' }], ['khajur', { en: 'Dates', hi: 'खजूर' }]].concat(dt.type === 'nonveg' ? [['fish', { en: 'Fish', hi: 'मछली' }]] : []).concat([['amla', { en: 'Amla', hi: 'आँवला' }], ['amrood', { en: 'Guava', hi: 'अमरूद' }], ['nimbu', { en: 'Lemon', hi: 'नींबू' }]]), t('foods_help')) : '';
+    const food = '<div class="card" data-nofold="1"><h2>' + h({ en: 'Food that builds blood', hi: 'ख़ून बढ़ाने वाला खाना' }) + '</h2>' + ironPics +
       ul([{ en: 'Green leafy vegetables such as chaulai, methi, gongura, beet greens and pumpkin leaves', hi: 'हरी पत्तेदार सब्ज़ियाँ, जैसे चौलाई, मेथी, गोंगुरा, चुकंदर के पत्ते और कद्दू के पत्ते' },
         { en: 'Ragi, bajra and rajgira', hi: 'रागी, बाजरा और राजगिरा' },
         { en: 'Chana dal, urad dal, lobia, moth and kulthi', hi: 'चना दाल, उड़द दाल, लोबिया, मोठ और कुलथी' },
@@ -557,7 +560,7 @@
     v.innerHTML = S.backRow(t('cond_anaemia'), 'cond', true) +
       intro({ en: 'Anaemia is easy to test for and usually easy to treat. Heavy periods are a common cause. This page has your Hb results, a heavy-bleeding chart to fill during your period, and what is free. Not a diagnosis.', hi: 'ख़ून की कमी की जाँच आसान है और इलाज भी अक्सर आसान है। भारी पीरियड इसकी आम वजह हैं। इस पन्ने पर आपके Hb नतीजे, पीरियड के दिनों में भरने वाला ब्लीडिंग चार्ट, और मुफ़्त सुविधाएँ हैं। यह diagnosis नहीं है।' }) +
       flagLead('urgent', t('call_now'), t('s1b')) +
-      hbCard + pbCard + about + free + food + doctor +
+      [hbCard, pbCard, about, free, food, doctor].map((x) => x.replace(/^<div class="card([^"]*)"/, '<div class="card$1" data-jump="1"')).join('') +   /* Version 39.8: one tap to each section */
       askCard({ en: 'Anaemia and heavy periods', hi: 'ख़ून की कमी और भारी पीरियड' }, { en: 'Bring your Hb report and this chart to a free call. A Qura doctor helps with diet and tablets, orders tests, and refers you to a gynaecologist when bleeding needs treatment.', hi: 'अपनी Hb report और यह चार्ट लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर खाने और गोलियों में मदद करती हैं, जाँचें लिखती हैं, और ब्लीडिंग के इलाज के लिए स्त्री रोग विशेषज्ञ के पास refer करती हैं।' }) +
       sources(['amb', 'pbac']);
     S.wire(v);
@@ -675,7 +678,8 @@
     v.innerHTML = S.backRow(t('cond_hub'), 'care', false) +
       intro({ en: 'Guides for women\'s health conditions other than PMOS: what they are, which tests help, what a gynaecologist may offer, and what is free. Not a diagnosis.', hi: 'PMOS के अलावा महिलाओं की दूसरी बीमारियों की गाइड: ये क्या हैं, कौन सी जाँच काम आती है, स्त्री रोग विशेषज्ञ क्या इलाज दे सकती हैं, और क्या मुफ़्त है। यह diagnosis नहीं है।' }) +
       '<div class="list">' + SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]), x[4] && S.flags.proto ? t('gated_short') : '')).join('') +
-      (S.canSave() ? linkItem('pattern', 'check', t('pattern'), t('pattern_d'), S.flags.proto ? t('gated_short') : '') : '') + '</div>' +
+      /* Version 39.1: Pattern check is gone; the PMOS self-check (Should I get this checked?) asks its questions */
+      (S.canSave() && S.toolShown && S.toolShown('selfcheck') ? linkItem('selfcheck', 'check', t('selfcheck_h'), t('selfcheck_tile_s'), S.flags.proto ? t('gated_short') : '') : '') + '</div>' +
       '<div class="card"><h3 style="color:var(--accent)">' + esc(t('see_doctor')) + '</h3>' +
       flagLead('urgent', t('call_now'), t('s1a')) + flag('urgent', TORSION) +
       flagLead('', t('today_if'), t('s2b')) +
@@ -747,6 +751,11 @@
     }
   }
 
+  /* Version 39.1 (journey audit P1-06): her latest heavy-bleeding chart and its total, for What your diary shows (which uses
+     the doctors' line of 100 for its own reviewed heavy-flow card). The chart stays hers, here. */
+  S.cond = Object.assign(S.cond || {}, { /* Version 39.6: her latest Hb result, with the range printed on her report (read only) */
+    hbLatest: () => { const l = labsR().filter((x) => x.k === 'hb' && /^\d{4}-\d{2}-\d{2}$/.test(x.d || '')).sort((a, b) => (a.d < b.d ? -1 : (a.d > b.d ? 1 : 0))); return l[l.length - 1] || null; },
+    pbacLatest: () => { const ks = Object.keys(pbR()).filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort(); const k = ks[ks.length - 1]; if (!k) return null; const tot = pbTotals(k); return tot.n ? { d: k, pts: tot.pts, n: tot.n } : null; } });
   S.register({
     id: ID,
     demoPersona: 'kamla',

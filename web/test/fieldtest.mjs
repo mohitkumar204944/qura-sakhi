@@ -62,7 +62,8 @@ const cleanup = async (x) => { check(x.name + ': no page errors', !x.errs.length
 {
   const T = await open({ seed: { events: regular(69, 8), situation: { pregnant: true, pregnantSince: ago(69) } } });
   const { page } = T;
-  await tap(page, '#stage-btn'); await page.$eval('[data-stage="cycle"]', (b) => b.click()); await settle(page); await tap(page, '#st-save');
+  /* Version 39.0 review: leaving "Pregnant" asks whether the pregnancy ended (or was marked by mistake) */
+  await tap(page, '#stage-btn'); await page.$eval('[data-stage="cycle"]', (b) => b.click()); await settle(page); await page.$eval('[data-st-end="ended"]', (b) => b.click()); await settle(page); await tap(page, '#st-save');
   const home = await view(page);
   check('1 after a loss: Home waits for her next period, with no late card or test advice', /Sakhi counts your cycle again from your next period/.test(home) && !/no period yet|past your likely range|home test/i.test(home), home.slice(0, 400));
   const s = await st(page);
@@ -206,7 +207,8 @@ const cleanup = async (x) => { check(x.name + ': no page errors', !x.errs.length
   const { page } = T;
   await tap(page, '#stage-btn'); await page.$eval('[data-stage="meno"]', (b) => b.click()); await settle(page); await tap(page, '#st-save');
   await go(page, '#explain');
-  check('6 "periods stopped" right after a period: no "bleeding after your periods stopped"', !/Bleeding after your periods stopped/.test(await view(page)) && (await st(page)).situation.stoppedOn === TODAY);
+  /* Version 39.0 review (XS-1): the stop is dated to her last period's end, so later bleeding stays flagged */
+  check('6 "periods stopped" right after a period: no "bleeding after your periods stopped"', !/Bleeding after your periods stopped/.test(await view(page)) && (await st(page)).situation.stoppedOn === ago(9), (await st(page)).situation.stoppedOn);
   await page.evaluate(() => { const S = window.Saathi; S.state.events.push({ d: S.toISO(S.addDays(S.today(), 0)), t: 'spot' }); S.state.situation.stoppedOn = S.toISO(S.addDays(S.today(), -1)); S.save(); S.render(); }); await settle(page);
   check('6 bleeding logged after that day is flagged', /Bleeding after your periods stopped/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '6c' }));
@@ -341,7 +343,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const { page } = T;
   check('13 no chance of pregnancy in a tester\'s APK', !/chance of pregnancy/i.test(await view(page)));
   const tiles = await page.evaluate(() => window.Saathi.tiles ? null : null);
-  await go(page, '#pattern');
+  await go(page, '#selfcheck-pmos');   /* Version 39.1: Pattern check is gone; the PMOS self-check is the held-back tool */
   check('13 a held-back tool says it is not in this version', /Not in this version/.test(await view(page)));
   await go(page, '#care');
   const care = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
@@ -349,7 +351,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   await go(page, '#explain');
   check('13 What your diary shows stays', !/Not in this version/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '13' }));
-  const D = await open({ seed: { events: regular(10, 8) }, hash: '#pattern' });
+  const D = await open({ seed: { events: regular(10, 8) }, hash: '#selfcheck-pmos' });
   check('13 a demo build still has them', !/Not in this version/.test(await view(D.page)));
   await cleanup(Object.assign(D, { name: '13 demo' }));
 }
@@ -369,7 +371,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const T = await open({ app: 'test-0.33-pilot', seed: { events: regular(10, 8) } });
   const { page } = T;
   check('19 pilot: the chance of pregnancy shows, for a woman not trying for a baby', /Medium chance of pregnancy from sex today|High chance of pregnancy from sex today/.test(await view(page)), (await view(page)).slice(0, 500));
-  await go(page, '#pattern');
+  await go(page, '#selfcheck-pmos');   /* Version 39.1: Pattern check is gone; the PMOS self-check is the held-back tool */
   check('19 pilot: the self-checks are back', !/Not in this version/.test(await view(page)));
   await go(page, '#topic-ttc');
   const ttc = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));

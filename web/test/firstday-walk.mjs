@@ -66,11 +66,11 @@ await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) 
   await snap('goal'); await tap('[data-pl-goal="irregular"]');
   await snap('periods-q'); for (const s of ['[data-pl-q="gap:g45"]', '[data-pl-q="skips:y"]', '[data-pl-q="dx:ns"]', '[data-pl-m="signs:acne"]']) await tap(s);
   await snap('periods-q-answered'); await tap('#pl-in-next');
-  await snap('your-day'); for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
+  await snap('your-day'); for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
   if (await page.$('[data-pl-q="remind:20:00"]')) await tap('[data-pl-q="remind:20:00"]');   /* before Version 37.1 only */
   await tap('#pl-in-next');
   await snap('when-move'); await tap('[data-pl-when="dinner"]');
-  await snap('body'); await tap('#pl-in-skip');
+  if (await page.$('#pl-in-skip')) { await snap('body'); await tap('#pl-in-skip'); }   /* Version 39.3: only for a weight goal */
   if (await page.$('#pl-in-make')) { await snap('summary'); await tap('#pl-in-make'); }
   await snap('shared-phone'); await tap('[data-ob-sh="me"]'); await settle(600);
   await snap('signup-number'); await page.fill('#su-num', '9876543210'); await tap('#su-send'); await settle(400);
@@ -116,9 +116,9 @@ await run('B', '2026-10-24T01:20:00+05:30', async ({ page, snap, tap, settle }) 
   await tap('[data-pl-goal="irregular"]'); await snap('periods-q');
   for (const s of ['[data-pl-q="gap:g45"]', '[data-pl-q="skips:y"]', '[data-pl-q="dx:y"]', '[data-pl-m="signs:acne"]']) await tap(s);
   await tap('#pl-in-next'); await snap('your-day');
-  for (const s of ['[data-pl-q="act:1"]', '[data-pl-q="food:veg"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
+  for (const s of ['[data-pl-q="act:1"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
   if (await page.$('[data-pl-q="remind:20:00"]')) await tap('[data-pl-q="remind:20:00"]');   /* before Version 37.1 only */
-  await tap('#pl-in-next'); await tap('[data-pl-when="dinner"]'); await tap('#pl-in-skip'); await settle(600);
+  await tap('#pl-in-next'); await tap('[data-pl-when="dinner"]'); if (await page.$('#pl-in-skip')) await tap('#pl-in-skip'); await settle(600);
   if (await page.$('#pl-in-make')) { await snap('summary'); await tap('#pl-in-make'); await settle(600); }
   await snap('reveal');
   await page.evaluate(() => document.querySelector('#tabbar [data-go="home"]').click()); await settle(1500);
