@@ -4,11 +4,14 @@
 // it: Today, Diary, Explore, Help and Me, the last step on each screen saying "Next: <screen>". Also: Not now and using a lit
 // feature stop it, past the day's three tours it still runs, tours switched off keep it from starting, "Show the tours again"
 // brings it back, Hindi words, a 360 px phone, the reading-only version, and a shared phone's PIN before Today's tip.
+// Version 39.10: after joining and sign-up, "Your Sakhi" offers a 3-step first-day tour (Today, the tabs, Diary) that ends in
+// Diary with her first log; Today's own tip is then done, and Diary's waits until that first log is saved.
 // Usage: node test/tours.mjs [dir]   (dir defaults to this app folder). Screenshots go to test/shots/tours-*.png.
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { join } from './join.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', process.argv[2] || '.');
@@ -52,23 +55,28 @@ const st = (page) => page.evaluate(() => ({ tours: window.Saathi.state.tours, fu
 const toast = (page) => page.$eval('.toast', (e) => e.innerText).catch(() => '');
 const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1994-07-01', consent: { c1: true, c2: true, c4: null }, situation: { stage: 'cycle' }, events: [], daily: {}, notes: {}, settings: {} }, extra || {});
 
-/* ---------- 1. A new woman: first run, signup, then Today's own short tip, not the full tour (Version 37) ---------- */
+/* ---------- 1. A new woman (Version 39.10): first run, sign-up, "Your Sakhi", then the first-day tour: Today, the tabs, Diary ---------- */
 {
   const { ctx, page, errs } = await open();
-  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1994"]', '[data-ob-st="cycle"]', '[data-ob-lp="7"]', '[data-pl-goal="track"]', '[data-ob-sh="me"]']) { await page.waitForSelector(s); await tap(page, s); }
+  await join(page, { name: 'Asha' });
   await page.waitForSelector('#su-num'); await page.fill('#su-num', '9876543210'); await tap(page, '#su-send');
   await page.waitForSelector('#su-code'); await page.fill('#su-code', '123456');
-  await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Asha'); await page.fill('#su-pin', '560001'); await tap(page, '#su-done');
-  await page.waitForSelector('.card.hero');
+  await page.waitForSelector('#su-done'); await page.fill('#su-pin', '560001'); await tap(page, '#su-done');
+  await page.waitForSelector('#ys-tour'); await sleep(1200);
+  check('1 "Your Sakhi" first, with no tip on top of it', !(await now(page)) && (await page.evaluate(() => location.hash)) === '#your-sakhi');
+  await page.screenshot({ path: path.join(shots, 'tours-1-yoursakhi.png') });
+  await tap(page, '#ys-tour');
   const seen = []; let s = await waitTour(page);
-  check('1 her first Today runs its own short tip, not the full tour', s && s.hash === '#home' && s.n === '1 of 2' && s.h === 'Your week', s);
+  check('1 "Show me around" starts the first-day tour on Today', s && s.hash === '#home' && s.n === '1 of 3' && s.h === 'This is your day', s);
   await page.screenshot({ path: path.join(shots, 'tours-1-home.png') });
   for (let k = 0; s && k < 10; k++) { seen.push(s); s = await next(page); }
-  check('1 it stays on Today: two steps, then Done', seen.length === 2 && seen.every((x) => x.hash === '#home') && seen[1].go === 'Done', seen.map((x) => x.hash + ' ' + x.n + ' ' + x.go));
+  check('1 three steps on Today: her day, the tabs, Diary; the last button says "Start my diary"', seen.length === 3 && seen.every((x) => x.hash === '#home') && seen.map((x) => x.h).join('|') === 'This is your day|Your plan and Explore|Your diary starts here' && seen[2].go === 'Start my diary', seen.map((x) => x.hash + ' ' + x.n + ' ' + x.h + ' ' + x.go));
+  await sleep(1500);
+  check('1 it opens Diary on her first log, and Diary\'s own tip waits for it', (await page.evaluate(() => location.hash)) === '#diary' && !!(await page.$('#fl-card')) && !(await now(page)));
   const after = await st(page);
-  check('1 Today\'s tip is done and the full tour never started', after.tours.home && after.tours.home.st === 'done' && after.full && after.full.st === 'reveal' && !after.tours.diary, after);
-  await page.evaluate(() => { location.hash = '#diary'; }); await sleep(800); await page.evaluate(() => { location.hash = '#home'; }); await sleep(1500);
-  check('1 it never runs on its own again', !(await now(page)));
+  check('1 Today\'s own tip is done and the full tour never started', after.tours.home && after.tours.home.st === 'done' && after.full && after.full.st === 'first' && !after.tours.diary, after);
+  await page.evaluate(() => { location.hash = '#home'; }); await sleep(1500);
+  check('1 no tip on Today again', !(await now(page)));
   check('1 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -221,20 +229,22 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await page.goto(PAGE + '#home', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => !!window.Saathi);
   check('9 a new install opens on the first-run screens, not Today', !(await page.$('.card.hero')) && !!(await page.waitForSelector('[data-ob-lang="en"]')));
-  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1994"]', '[data-ob-st="cycle"]', '[data-ob-lp="7"]', '[data-pl-goal="track"]', '[data-ob-sh="me"]']) { await page.waitForSelector(s); await tap(page, s); }
+  await join(page);
   await page.waitForSelector('#su-num'); await page.fill('#su-num', '9876543210'); await tap(page, '#su-send');
   await page.waitForSelector('#su-code'); await page.fill('#su-code', '424242');
   await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Asha'); await page.fill('#su-pin', '560001'); await tap(page, '#su-done');
-  await page.waitForSelector('.card.hero');
+  await page.waitForSelector('#ys-tour');
   check('9 signup went through the server: a code, the check, her details', ['POST otp/start', 'POST otp/verify', 'PATCH me'].every((k) => hits.includes(k)), hits);
+  await tap(page, '#ys-tour');
   const seen = []; let s = await waitTour(page, 6000);
-  check('9 her first Today runs its own tip, not the full tour', s && s.hash === '#home' && s.n === '1 of 2', s);
-  await sleep(1800);   /* she reads it: the reminders question's moment comes and goes while the tip is up */
+  check('9 "Show me around": the first-day tour on her first Today, not the full tour', s && s.hash === '#home' && s.n === '1 of 3', s);
+  await sleep(1800);   /* she reads it: the reminders question's moment comes and goes while the tour is up */
   for (let k = 0; s && k < 10; k++) { seen.push(s); const sh = await page.$eval('#sheet-root', (e) => e.innerText).catch(() => ''); if (/Get a heads-up|Ring on time/.test(sh)) seen.push({ hash: 'SHEET', n: sh.slice(0, 40) }); s = await next(page); }
-  check('9 two steps on Today, with nothing popping up in between', seen.length === 2 && seen.every((x) => x.hash === '#home'), seen.map((x) => x.hash + ' ' + x.n));
-  check('9 it wasn\'t asked about reminders during the tip', !(await page.evaluate(() => (window.Saathi.state.prompts || {}).notifyIntro)));
-  check('9 the full tour didn\'t start', (await st(page)).full.st === 'reveal');
-  await page.evaluate(() => { location.hash = '#diary'; }); await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
+  check('9 three steps on Today, with nothing popping up in between', seen.length === 3 && seen.every((x) => x.hash === '#home'), seen.map((x) => x.hash + ' ' + x.n));
+  check('9 it wasn\'t asked about reminders during the tour', !(await page.evaluate(() => (window.Saathi.state.prompts || {}).notifyIntro)));
+  check('9 the full tour didn\'t start', (await st(page)).full.st === 'first');
+  await page.waitForSelector('#fl-save'); await tap(page, '#fl-save');   /* the tour ends on her first log; she saves it */
+  await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
   check('9 back on Today afterwards: no tip again, and the reminders question comes once', !(await now(page)) && /Get a heads-up before your period\?/.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')));
   await tap(page, '#ni-no'); await page.evaluate(() => { location.hash = '#diary'; }); await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
   check('9 and never again after "Not now"', !/Get a heads-up/.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')) && !(await now(page)));
@@ -257,8 +267,9 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await ctx.close();
 }
 
-/* A new install the pilot APK's way, through first-run and sign-up. o.stage, o.sh (who uses the phone), o.kitOff (privacy
-   options to untick), o.pin ('set', 'cancel' or 'outside', done when the PIN box shows). */
+/* A new install the pilot APK's way, through first-run and sign-up. o.stage (a tile: cycle, ttc, preg), o.sh (who uses the
+   phone), o.kitOff (privacy options to untick), o.pin ('set', 'cancel' or 'outside', done when the PIN box shows), o.ys ('tour':
+   "Show me around" on "Your Sakhi"; otherwise Skip), o.firstLog (then her first log in Diary). */
 async function pilotInstall(o = {}) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'en-IN', timezoneId: 'Asia/Kolkata' });
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
@@ -278,21 +289,17 @@ async function pilotInstall(o = {}) {
   page.on('pageerror', (e) => errs.push(String(e.message).slice(0, 200)));
   await page.goto(PAGE + '#home', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => !!window.Saathi);
-  const t1 = async (sel) => { await page.waitForSelector(sel); await tap(page, sel); };
-  for (const sel of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="' + (o.dec || 1990) + '"]', '[data-ob-y="' + (o.y || 1994) + '"]', '[data-ob-st="' + (o.stage || 'cycle') + '"]']) await t1(sel);
-  if (o.stage === 'preg') { await t1('[data-ob-pq="lmp"]'); await page.fill('#ob-lmp', '2026-06-20'); await page.$eval('#ob-lmp', (e) => e.dispatchEvent(new Event('change'))); await sleep(200); const nb = await page.$('#ob-next'); if (nb) await nb.click(); await sleep(300); }
-  else if (o.stage !== 'learn') await t1('[data-ob-lp="7"]');
-  if (o.stage !== 'learn') await t1('[data-pl-goal="track"]');   /* Version 37: what she wants to work on ("Just keeping track") */
-  await t1('[data-ob-sh="' + (o.sh || 'me') + '"]');
+  const lmp = new Date(Date.now() - 127 * 864e5).toISOString().slice(0, 10);
+  await join(page, { tile: o.stage || 'cycle', dec: o.dec, y: o.y, lmp: o.stage === 'preg' ? lmp : undefined, share: o.sh, kitOff: o.kitOff });
   let pinBeforeSignup = false;
-  if (o.sh && o.sh !== 'me') {
-    for (const k of (o.kitOff || [])) await page.$eval('[data-ob-kit="' + k + '"]', (c) => { c.checked = false; c.dispatchEvent(new Event('change')); });
-    await t1('#ob-done'); await sleep(800); pinBeforeSignup = !!(await page.$('#pinsheet .key'));
-  }
+  if (o.sh && o.sh !== 'me') { await sleep(800); pinBeforeSignup = !!(await page.$('#pinsheet .key')); }
   await page.waitForSelector('#su-num'); await page.fill('#su-num', '9876543210'); await tap(page, '#su-send');
   await page.waitForSelector('#su-code'); await page.fill('#su-code', '424242');
   await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Asha'); await page.fill('#su-pin', '560001'); await tap(page, '#su-done');
-  await page.waitForSelector('.card.hero');
+  /* Version 39.10: "Your Sakhi" (not on a shared phone in plain words): o.ys 'tour' starts the first-day tour, else Skip */
+  await page.waitForSelector('#ys-tour, .card.hero');
+  if (await page.$('#ys-tour')) { await tap(page, o.ys === 'tour' ? '#ys-tour' : '#ys-skip'); if (o.ys !== 'tour') await page.waitForSelector('.card.hero'); }
+  if (o.firstLog) { await page.evaluate(() => { location.hash = '#diary'; }); await page.waitForSelector('#fl-save, [data-fl-go]'); await tap(page, (await page.$('#fl-save')) ? '#fl-save' : '[data-fl-go]'); await sleep(500); }
   let pinOnHome = false;
   if (o.sh && o.sh !== 'me') {
     await sleep(700); pinOnHome = !!(await page.$('#pinsheet .key'));
@@ -312,15 +319,16 @@ async function replay(page) {
 
 /* ---------- 10. A stray tap doesn't end a tip; Back steps back; the full tour stopped part-way is offered again once ---------- */
 {
-  const T = await pilotInstall();
+  const T = await pilotInstall({ ys: 'tour' });
   let s = await waitTour(T.page, 6000);
   await T.page.$eval('.tour-dim', (d) => d.click()); await sleep(400);
   check('10 a tap on the dimmed screen does nothing: the tip is still there', JSON.stringify(await now(T.page)) === JSON.stringify(s), await now(T.page));
   s = await next(T.page);
-  check('10 on step 2', s && s.n === '2 of 2', s);
+  check('10 on step 2', s && s.n === '2 of 3', s);
   await T.page.evaluate(() => window.__sakhiBack());  await sleep(400);
-  check('10 Android Back goes back a step, not out', (await now(T.page)) && (await now(T.page)).n === '1 of 2', await now(T.page));
-  await next(T.page); await next(T.page);
+  check('10 Android Back goes back a step, not out', (await now(T.page)) && (await now(T.page)).n === '1 of 3', await now(T.page));
+  await next(T.page); await next(T.page); await next(T.page);
+  await T.page.waitForSelector('#fl-save'); await tap(T.page, '#fl-save'); await sleep(400);   /* the first-day tour ends on her first log */
   await T.page.evaluate(() => { location.hash = '#me-help'; }); await T.page.waitForSelector('[data-tour-full]'); await tap(T.page, '[data-tour-full]');
   s = await waitTour(T.page, 5000); await next(T.page); s = await next(T.page);
   check('10 the full tour from How to use Sakhi, into Diary', s && s.hash === '#diary', s);
@@ -352,17 +360,13 @@ async function replay(page) {
   await T.ctx.close();
 }
 
-/* ---------- 12. Pregnant: Diary's words have no periods in them; a learner's one-tap step ---------- */
+/* ---------- 12. Pregnant: Diary's words have no periods in them (Version 39.10: no "here to learn" joining any more) ---------- */
 {
-  const T = await pilotInstall({ stage: 'preg' });
+  const T = await pilotInstall({ stage: 'preg', firstLog: true });
   const seen = await replay(T.page);
   const diary = seen.filter((x) => x.hash === '#diary').map((x) => x.p);
   check('12 pregnant: Diary\'s steps don\'t talk about periods', diary.length === 3 && !diary.some((p) => /period/i.test(p)) && /symptoms, mood or a note/.test(diary[2]), diary);
   await T.ctx.close();
-  const L = await pilotInstall({ stage: 'learn' });
-  const ls = await walk(L.page);
-  check('12 here to learn: the one-tap step says she can start whenever she wants', ls[1] && /Whenever you want to/.test(ls[1].p), ls[1]);
-  await L.ctx.close();
 }
 
 /* ---------- 13. A family phone: the PIN is chosen on her first Today, after sign-up; then Today's own tip ---------- */

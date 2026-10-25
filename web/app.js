@@ -38,7 +38,7 @@
       consent_yes: 'Yes, start my diary', consent_no: 'Not now', listen: 'Listen in Dr. Megha\'s voice · 30 sec', notice: 'Notice: who stores what, for how long',
       cycle_day: 'Cycle day', period_day: 'Period · day', next_likely: 'Your next period is likely', past_range: '{n} days past your likely range', dy_paused: 'Cycle count paused', wait_eyebrow: 'Your next period', wait_p: 'Sakhi counts your cycle again from your next period. When it comes, log the day it started.', wait_log: 'Log my period', bf_note: 'While you breastfeed, periods often come at odd times, so Sakhi doesn’t predict them.', np_h: 'A new period?', np_p: 'Your last period started on {d}, {n} days ago, and no end is logged.', np_new: 'Yes, a new period started today', np_end: 'No, the same one: it ended today', entry_deleted: 'Entry deleted', fe_disc: 'Hidden while discreet mode is on.', fe_late: 'Your period is due or late, so Sakhi doesn’t estimate fertile days now. If you could be pregnant, take a home test.', su_send_fail: 'We couldn’t send a code right now. Try again in a few minutes, or continue for now.', su_down: 'Qura’s server isn’t answering right now. Try again in a few minutes, or continue for now.', su_wait: 'Too many codes were asked for on this number or network. Try again in {n} min, or continue for now.', su_newcode: 'Too many wrong tries for this code. Ask for a new code below.', pin_forgot_p2: 'If you made a backup code, restore from it: your diary comes back and the lock comes off. Otherwise the only way in is to delete everything on this phone and start fresh.', pin_forgot_restore: 'Restore from my backup code', bk_done_unlock: 'Your diary is back. The app lock is off; set a new PIN in Me if you want one.', ny_h: 'Not in this version', ny_p: 'This tool comes once Qura’s doctors have finished checking it. For anything worrying now, open Help.', nq_h: 'Turn on phone reminders?', nq_p: 'Phone reminders are off, so this reminder won’t ring. Turn them on to get it as a notification.', nq_on: 'Turn on', nq_later: 'Not now', ask_cost: 'Qura’s doctors are Ayurveda (BAMS) doctors. The first call is free; tests and plans cost money.', demo_wipe_sure: 'This deletes everything on this phone and starts again from the welcome screen.', last_gaps: 'Your last gaps:', days: 'days', usual_gap: 'A usual gap is 21–35 days.', usual_gap_teen: 'A usual gap is 21–45 days in the first years.',
       no_contra: 'These dates are estimates from your diary. They are not a way to avoid pregnancy.', gap_mode_note: 'When gaps change a lot we show counts, not a guessed date.', first_log: 'Log the day your last period started. Sakhi then shows your cycle day, your gaps, and when your next period is likely.',
-      last6: 'Last 6 gaps (days)', band_note: 'Shaded band: usual gap, same for everyone', topics_you: 'Topics for you', topics_all: 'All topics ({n})', topics_less: 'Fewer topics', contents_h: 'Contents: all guides and articles', bb_born: 'My baby is born', preg_checks_b: 'Check-ups and tests', me_rem_one: 'Reminders', me_rem_one_s: 'Your reminders, medicines and tablets, and this phone’s alerts', rem_lists_h: 'What Sakhi reminds you about', me_setup: 'Set up Sakhi', intended_use: 'A period diary, a guide and habit plans. Sakhi doesn’t diagnose; a doctor does.', wis_records: 'My records', stage_end_q: 'Did your pregnancy end?', stage_end_y: 'Yes, it ended', stage_end_n: 'No, I marked it by mistake', tab_keep_hd: 'Keep your daily reminder?', tab_keep_pd: 'A daily reminder is still on. Keep it if your doctor told you to carry on.', trends: 'What it shows', wis_ci_h: 'This month’s signs', wis_ci_s: 'About a minute. It helps Sakhi notice what repeats.', wis_ci_done: 'Done for {m}. Tap to change.', wis_checks_h: 'Checks you did', wis_check_row: '{d}: yes to {n} of {m}', period_started: 'Period started', ended: 'Ended', spotting: 'Spotting',
+      last6: 'Last 6 gaps (days)', band_note: 'Shaded band: usual gap, same for everyone', topics_you: 'Topics for you', topics_all: 'All topics ({n})', topics_less: 'Fewer topics', contents_h: 'Contents: all guides and articles', bb_born: 'My baby is born', preg_checks_b: 'Check-ups and tests', me_rem_one: 'Reminders', me_rem_one_s: 'Your reminders, medicines and tablets, and this phone’s alerts', rem_lists_h: 'What Sakhi reminds you about', me_setup: 'Set up Sakhi', intended_use: 'A period diary, a guide and habit plans. Sakhi doesn’t diagnose; a doctor does.', wis_records: 'My records', stage_end_q: 'Did your pregnancy end?', stage_end_y: 'Yes, it ended', stage_end_n: 'No, I marked it by mistake', tab_keep_hd: 'Keep your daily reminder?', tab_keep_pd: 'A daily reminder is still on. Keep it if your doctor told you to carry on.', trends: 'Cycles', wis_ci_h: 'This month’s signs', wis_ci_s: 'About a minute. It helps Sakhi notice what repeats.', wis_ci_done: 'Done for {m}. Tap to change.', wis_checks_h: 'Checks you did', wis_check_row: '{d}: yes to {n} of {m}', period_started: 'Period started', ended: 'Ended', spotting: 'Spotting',
       checkin_t: 'check-in', checkin_sub: '8 taps, about 1 minute. Once a month.', checkin_done: 'Done this month. Thank you.', start_b: 'Start', edit: 'Edit',
       safety: 'Safety guide', safety_sub: 'When to see a doctor. Same for everyone.', tell: 'Tell a person', tell_sub: 'Write to Qura’s team on WhatsApp.',
       qura_h: 'Talk to a Qura doctor', qura_p: 'Free 20-minute call with a BAMS (Ayurveda) doctor. Have your doctor report ready to show her.', qura_b: 'Book a free call',
@@ -153,7 +153,17 @@
       look_h: 'Sakhi’s look', look_n: 'Look {n}', sakhi_alt: 'Sakhi, your diary friend',
       noted_h: 'What you noted', noted_p: 'Last 90 days. Each line counts the days you noted it.', noted_empty: 'Tap + to note pain, mood or anything else. What comes up most will show here.', k_days: '{n} days', k_day1: '1 day', add_today: 'Add today', cal_a_noted: 'noted',
       ob_lang_h: 'Choose your language', ob_phone: 'Phone language', ob_partly: 'Partly translated', ob_hear: 'Tap the speaker at the top to hear any screen.',
-      ob_hello_h: 'Your period diary, and a plan made for you', ob_v1: 'Tell Sakhi what you want to work on. Get a 12-week plan.', ob_v2: 'Small steps each day, and a 1-minute check-in each evening.', ob_v3: 'Your diary stays on this phone. Free. No ads.', ob_start: 'Start · about 3 minutes', ob_part_1: 'About you', ob_part_2: 'What you want', ob_part_3: 'Your plan', ob_p1: 'Your diary stays on this phone.', ob_p2: 'Plain answers based on official health guidance.', ob_p3: 'Free. No ads.',
+      ob_hello_h: 'Your period diary, and a plan made for you', ob_v1: 'Tell Sakhi what you want to work on. Get a 12-week plan.', ob_v2: 'Small steps each day, and a 1-minute check-in each evening.', ob_v3: 'Your diary stays on this phone. Free. No ads.', ob_start: 'Start · about 3 minutes', ob_part_1: 'About you', ob_part_2: 'What you want', ob_part_3: 'Your plan', ob_about_h: 'First, about you', ob_name_l: 'What should Sakhi call you?', ob_name_ph: 'Your name', ob_p4_1: 'About you', ob_p4_2: 'Your stage', ob_p4_3: 'Your goals', ob_p4_4: 'Details', ob_s7_cycle: 'Regular periods', ob_s7_pmos: 'PMOS (PCOS / PCOD) / Irregular periods', ob_s7_ttc: 'Trying for a baby', ob_s7_preg: 'I am pregnant', ob_s7_post: 'Recently had a baby', ob_s7_mid: 'Periods changing after 40', ob_s7_meno: 'Menopause', ob_ss_cycle: 'Just tracking', ob_ss_pmos: 'Manage my symptoms', ob_ss_ttc: 'Know my best days', ob_ss_preg: 'Week by week', ob_ss_post: 'Postpartum journey', ob_ss_mid: 'Menopause transition', ob_ss_meno: 'Periods stopped: almost a year with no periods', ob_goal_h: 'What would you like help with?', ob_goal_p: 'Pick up to 3. They come first everywhere.', ob_goal_n: 'Continue · {n} picked', ob_goal_need: 'Pick at least one.', ob_goal_max: 'Up to 3. Tap one to remove it first.', ob_gs_track: 'Your cycle, and when the next period may come', ob_gs_pain: 'A cramps routine, and when to see a doctor', ob_gs_heavy: 'Track your flow, and iron from food', ob_gs_pms: 'A mood log, and calm routines', ob_gs_irregular: 'A 12-week plan, and your cycle pattern', ob_gs_weight: 'Small daily steps, food from your region', ob_gs_skin: 'Track what changes, and when to see a doctor', ob_gs_ready: 'A checklist before pregnancy, and your best days', ob_gs_food: 'Food for each month of pregnancy', ob_gs_nausea: 'What helps, and when to see a doctor', ob_gs_iron: 'Your tablets, and iron-rich food', ob_gs_sleep: 'A calmer evening routine', ob_gs_mood: 'A quick check on how you feel', ob_gs_recovery: 'A daily recovery check, with the warning signs', ob_gs_feed: 'Feeds, and help when it is hard', ob_gs_pelvic: 'Pelvic floor exercises, step by step', ob_gs_hot: 'What helps hot flushes and sleep', ob_gs_bones: 'Calcium food, and strength moves', ob_det_h: 'A few things about your periods', ob_det_why: 'Why we ask: Sakhi marks your next period, and notices longer gaps.', ob_lp_need: 'Pick one, or “I don’t remember”.', ob_dx_why: 'Sakhi uses it only to choose your guides and plan.', ob_meno_h: 'When was your last period?', ob_mp_1: 'About a year ago', ob_mp_2: '1 to 2 years ago', ob_mp_3: 'More than 2 years ago', ob_meno_why: 'Why we ask: bleeding after menopause needs a doctor, so Sakhi watches for it.', ys_h: '{name}, here’s your Sakhi', ys_h0: 'Here’s your Sakhi', ys_helps: 'How Sakhi helps you', ys_log: 'Log your day · 1 minute', ys_log_s: 'Sakhi learns your pattern', ys_today: 'Today shows your next 3 steps', ys_today_s: 'Each says why it helps', ys_plan: 'Your plan, after your first log', ys_plan_s: 'Built from your answers and your diary', ys_learn: 'Guides for your stage', ys_learn_s: 'Short, in your language', ys_preg: 'Your weeks and check-ups', ys_preg_s: 'What is due, week by week', ys_post: 'A daily recovery check', ys_meno: 'Note your symptoms each week', ys_meno_s: 'See what changes over time', ys_hid_cycle: 'Out of your way: pregnancy, baby and menopause pages.', ys_hid_preg: 'Out of your way: period plans and menopause pages.', ys_hid_post: 'Out of your way: pregnancy and menopause pages.', ys_hid_meno: 'Out of your way: pregnancy and baby pages.', ys_hid_more: 'Change your stage any time in Me.', ys_tour: 'Show me around · 30 seconds', ys_skip: 'Skip the tour', tour_first: 'Your first day', fd1_h: 'This is your day', fd1_p: 'Only your next few steps, each with why it helps.', fd2_h: 'Your plan and Explore', fd2_p: 'My plan holds your plan. Explore has guides for your stage.', fd3_h: 'Your diary starts here', fd3_p: 'A minute a day. The more you log, the more Sakhi can tell you.', fd_start: 'Start my diary', fl_why_h: 'Why log every day?', fl_w1: 'Know when your next period may come', fl_w2: 'See what repeats: pain, mood, skin', fl_w3: 'A one-page report your doctor can read', fl_h: 'Your first log', fl_last: 'Your last period started', fl_change: 'Change', fl_lp_q: 'When did your last period start?', fl_days: 'How many days did it last?', fl_anything: 'Anything today?', fl_none: 'Nothing', fl_save: 'Save my first log', fl_saved: 'First log saved. Day 1 of your diary.', fl_ago: '{n} days ago', fl_preg_h: 'Your pregnancy', fl_pw1: 'Your check-ups and tests, on time', fl_pw2: 'What is normal this week, and the signs that mean go now', fl_pw3: 'One record for your doctor and ASHA', fl_preg_b: 'See this week', fl_post_h: 'Looking after you', fl_bw1: 'Warning signs caught early, in the first 6 weeks', fl_bw2: 'Your 6-week check and your baby’s vaccines, on time', fl_bw3: 'Feeds, sleep and how you feel, in one place', fl_post_b: 'Start my recovery check', fl_meno_h: 'Your diary', fl_mw1: 'See how your body is changing', fl_mw2: 'Know which changes are common, and which need a doctor', fl_mw3: 'A clear record for your doctor', fl_meno_b: 'Note this week', td_log: 'Log today · 1 minute', td_log_s: 'So Sakhi learns your pattern', td_read_s: 'A short read', fx_h: 'Tell Sakhi your stage and goals', fx_p: 'A few taps. Then Sakhi shows only what fits you.', fx_b: 'Tell Sakhi', fx_saved: 'Saved. Sakhi now fits your goals.', sx_h: 'Sex', sx_priv: 'Only on this phone', sx_no: 'Without a method', sx_yes: 'With a method',
+      sx_ec_h: 'Don’t want a pregnancy now?', sx_ec_p: 'The emergency pill: take it as soon as you can, within 72 hours (3 days). The sooner, the better.', sx_ec_b: 'What to do', sx_ec_free: 'Where it’s free',
+      sx_fw_h: 'On a fertile day (estimate)', sx_fw_p: 'Sex every 2–3 days, all through the cycle, gives the best chance. There is no need to aim for one exact day.',
+      sx_hearts: 'Hearts show on your days only while you’re trying for a baby.', dy_sx_n: 'Sex without a method', dy_sx_y: 'Sex with a method',
+      day_flow_q: 'Flow: pads in the day', day_clots: 'Clots and pain', day_month: 'Open the month', prev_week: 'Week before', next_week: 'Next week',
+      dy_fw_in1: 'Fertile window tomorrow (estimate)', dy_ov_in1: 'Ovulation tomorrow (estimate)', dy_next1: '1 day until your next period (estimate)', dy_before1: '1 day before the next period',
+      charts_h: 'Charts', charts_s: 'Your last 12 gaps and periods', mc_edit: 'Edit dates', ed_h: 'Fix these dates', ed_sub: 'Your period from {d} · {n} days', ed_sub0: 'Your period from {d}',
+      ed_note: 'Sakhi updates your next period and fertile days when you save.', ed_del: 'This wasn’t a period', ed_del_s: 'Removes these dates. Your notes stay.',
+      ed_bad: 'Check the dates: the end comes before the start, or it runs into another period.',
+      fw_few: 'Fertile days show after 6 cycles.', fw_few_n: '{n} more periods to log.', fw_few_1: '1 more period to log.', fw_why: 'Why?', fw_why_h: 'Why 6 cycles?',
+      fw_why_p: 'Sakhi estimates fertile days from your own dates. With fewer than 6 cycles, that estimate isn’t reliable yet. There is no safe day: without a method, pregnancy can happen at any time of the month.', ob_p1: 'Your diary stays on this phone.', ob_p2: 'Plain answers based on official health guidance.', ob_p3: 'Free. No ads.',
       ob_read: 'Just read', ob_notice_link: 'How Sakhi keeps your data', w_restore: 'Moving from another phone? Restore your diary',
       su_phone_h: 'Your mobile number', su_phone_p: 'We send a code to check the number is yours. Your diary stays on this phone: Qura gets only your account details.', su_plan_wait: 'Your plan is ready. Sign up, and Sakhi shows it next.', su_phone_l: 'Mobile number', su_year_l: 'Year you were born', su_year_u18: 'Under 18', su_choose: 'Choose', su_phone_bad: 'Enter a 10-digit mobile number.', su_year_bad: 'Choose the year you were born.', su_send: 'Send code', su_agree: 'By continuing, you agree to this:', su_code_h: 'Enter the code', su_code_p: 'We sent a 6-digit code to {p}.', su_code_wa: 'We sent a 6-digit code on WhatsApp to {p}.', su_code_sms: 'We sent a 6-digit code by SMS to {p}.', su_sms_instead: 'Not on WhatsApp? Send by SMS', su_code_l: '6-digit code', su_change: 'Change number', su_resend: 'Send a new code', su_resend_in: 'New code in {n}', su_verify: 'Verify', su_wrong: 'That code didn’t match. Check the message and try again.', su_expired: 'That code has expired. Ask for a new one.', su_locked: 'Too many tries. Please wait a little and try again.', su_net: 'Couldn’t reach Qura. Check your internet and try again.', su_later: 'Continue for now', su_later_p: 'You can sign up later from Today or the Me page. Your diary works without it.', su_demo: 'Prototype: no message is sent. The code is 123456.', su_about_h: 'Almost done', su_about_p: 'Your first name and PIN code are needed; the rest is up to you. This helps Qura reach more women; your diary is never part of it.', su_name_l: 'First name', su_name_bad: 'Enter your first name.', su_pin_l: 'PIN code', su_pin_d: 'So Qura knows which areas Sakhi reaches.', su_pin_bad: 'Enter your 6-digit PIN code.', su_email_l: 'Email (optional)', su_email_d: 'Only for Qura to reach you about your account.', su_email_bad: 'That email doesn’t look right.', su_heard_l: 'How did you hear about Sakhi?', su_h_doc: 'Doctor or ASHA', su_h_fam: 'Friend or family', su_h_wa: 'WhatsApp', su_h_social: 'Instagram or YouTube', su_h_qura: 'Qura', su_h_other: 'Somewhere else', su_upd_h: 'Updates from Sakhi', su_upd_sms: 'Send me updates by SMS', su_upd_wa: 'Send me updates on WhatsApp', su_upd_d: 'New guides and health programme news. Never anything about your own health.', su_ok: 'You’re signed up.',
       acc_h: 'Your Sakhi account', acc_none: 'You haven’t signed up yet. It takes a minute: your number and a code.', acc_signup: 'Sign up', acc_num: 'Mobile number', acc_name: 'Name', acc_pin: 'PIN code', acc_email: 'Email', acc_heard: 'Heard about Sakhi from', acc_upd: 'Updates', acc_sms: 'SMS', acc_on: 'on', acc_off: 'off', acc_edit: 'Edit details', acc_logout: 'Log out', acc_del: 'Delete my account', acc_del_sure: 'Delete your Sakhi account? Qura deletes your number and details. Your diary on this phone stays; to remove it too, use Delete everything.', acc_del_yes: 'Yes, delete it', acc_del_done: 'Your account is deleted.', acc_out_done: 'You’re logged out. Your diary is still here.', acc_saved: 'Saved.', acc_pending: 'Not sent yet. Sakhi will try again when you’re online.', acc_card_h: 'Finish signing up', acc_card_p: 'Add your mobile number to keep your Sakhi account. Your diary stays on this phone.', acc_keeps: 'Qura keeps only these details. Your diary stays on this phone.', ob_notice_5: 'Your Sakhi account: Qura keeps your mobile number, birth year, first name and PIN code, and anything else you add (email, how you heard of Sakhi, whether you want updates). It also notes the last day you opened Sakhi and the app version. Nothing from your diary.',
@@ -180,7 +190,7 @@
       tour_to: 'Next: {s}', tour_full: 'The full tour', tour_full_d: '{n} screens, one after another', tour_full_done: 'That’s the whole tour. Replay it any time from How to use Sakhi in Me.',
       howto_h: 'How to use Sakhi', howto_p: 'Short tours you can replay any time.', tours_auto: 'Show a tour on new screens', tours_auto_d: 'A short tour the first time you open a screen', tour_voice: 'Read tours aloud', tour_voice_d: 'Sakhi reads each step. Off at first, for shared phones.', tours_again: 'Show the tours again', tours_again_done: 'The tours will show again.',
       tw1_h: 'Your week', tw1_p: 'Each circle is a day. Tap a day to note what happened.', tw2_h: 'One tap to note', tw2_p: 'These buttons save today in one tap. You can always undo.', tw3_h: 'Ask anything', tw3_p: 'Type a question in Hindi or English. Try it now: tap the box.', tw3_pm: 'Type a question, or tap the mic and speak in Hindi. Try it now.',
-      td1_h: 'Your calendar', td1_p: 'Tap any day to fill it in or fix a date. Dots show what you noted.', td1_pd: 'Tap any day to add or change a note.', td2_h: 'What it shows', td2_p: 'Anything to check, your gaps between periods and what you noted most, over the months.', td2_pd: 'Your notes over the months.', td3_h: 'Add for today', td3_p: 'Tap + for today’s period, symptoms, mood or a note. Try it now.', td3_pd: 'Tap + to add a note for today. Try it now.',
+      td1_h: 'Your calendar', td1_p: 'Tap any day to fill it in or fix a date. Dots show what you noted.', td1_pd: 'Tap any day to add or change a note.', td2_h: 'Cycles', td2_p: 'Your cycles first, then anything to check and what you noted most, over the months.', td2_pd: 'Your notes over the months.', td3_h: 'Add for today', td3_p: 'Tap + for today’s period, symptoms, mood or a note. Try it now.', td3_pd: 'Tap + to add a note for today. Try it now.',
       tc1_h: 'Explore', tc1_p: 'Every guide and tool, by topic: periods, pregnancy, after birth, midlife and more.', tc1_pd: 'Pick a topic to read.', tc2_h: 'Listen to any page', tc2_p: 'Tap the speaker and Sakhi reads the page aloud.', tc3_h: 'Help, any time', tc3_p: 'Tap Help any time: call 112, a free government doctor, or a call with a Qura doctor (the first call is free).', tw4_h: 'Your plan for today', tw4_p: 'Your steps for today. Tap Done as you go, and in the evening tell Sakhi how the day went.',
       th1_h: 'Talk to a doctor', th1_p: 'For questions that can wait a day or two: a free government doctor, or a call with a Qura doctor.', th2_h: 'In an emergency', th2_p: 'Call 112 straight away. Every emergency number is here.',
       tm1_h: 'Privacy on a shared phone', tm1_p: 'Lock Sakhi, use plain words, or show the app as Notes.', tm1_pw: 'Lock Sakhi with a PIN, or use plain words on Today.', tour_diary_d: 'Your notes', tm2_h: 'Delete everything', tm2_p: 'Removes everything Sakhi saved on this phone, after you confirm.',
@@ -261,7 +271,7 @@
       consent_yes: 'हाँ, डायरी शुरू करें', consent_no: 'अभी नहीं', listen: 'Dr. Megha की आवाज़ में सुनें · 30 सेकंड', notice: 'सूचना: कौन क्या रखता है, कितने समय तक',
       cycle_day: 'चक्र का दिन', period_day: 'पीरियड · दिन', next_likely: 'अगला पीरियड लगभग', past_range: 'पीरियड संभावित समय से {n} दिन देर से है', dy_paused: 'चक्र की गिनती रुकी है', wait_eyebrow: 'आपका अगला पीरियड', wait_p: 'अगले पीरियड से Sakhi फिर से आपका चक्र गिनेगी। जब पीरियड आए, उसके शुरू होने का दिन दर्ज करें।', wait_log: 'पीरियड दर्ज करें', bf_note: 'दूध पिलाने के दौरान पीरियड अक्सर बेसमय आते हैं, इसलिए Sakhi उनका अंदाज़ा नहीं लगाती।', np_h: 'नया पीरियड?', np_p: 'आपका पिछला पीरियड {d} को शुरू हुआ था, {n} दिन पहले, और उसका ख़त्म होना दर्ज नहीं है।', np_new: 'हाँ, आज नया पीरियड शुरू हुआ', np_end: 'नहीं, वही पीरियड: आज ख़त्म हुआ', entry_deleted: 'एंट्री हटा दी', fe_disc: 'गुप्त मोड चालू है, इसलिए छिपा है।', fe_late: 'आपका पीरियड आने वाला है या देर से है, इसलिए Sakhi अभी फ़र्टाइल दिनों का अंदाज़ा नहीं लगाती। अगर गर्भ की संभावना है, तो घर पर टेस्ट करें।', su_send_fail: 'अभी कोड नहीं भेज पाए। कुछ मिनट बाद फिर कोशिश करें, या अभी के लिए आगे बढ़ें।', su_down: 'Qura का सर्वर अभी जवाब नहीं दे रहा। कुछ मिनट बाद फिर कोशिश करें, या अभी के लिए आगे बढ़ें।', su_wait: 'इस नंबर या नेटवर्क से बहुत बार कोड माँगा गया। {n} मिनट बाद फिर कोशिश करें, या अभी के लिए आगे बढ़ें।', su_newcode: 'इस कोड के लिए बहुत बार ग़लत कोशिश हुई। नीचे से नया कोड माँगें।', pin_forgot_p2: 'अगर आपने बैकअप कोड बनाया था, तो उससे वापस लाएँ: डायरी लौट आएगी और लॉक हट जाएगा। नहीं तो अंदर जाने का एक ही तरीका है: इस फ़ोन से सब कुछ मिटाकर नए सिरे से शुरू करें।', pin_forgot_restore: 'बैकअप कोड से वापस लाएँ', bk_done_unlock: 'आपकी डायरी वापस आ गई। ऐप लॉक बंद है; चाहें तो “मैं” में नया PIN रखें।', ny_h: 'इस वर्ज़न में नहीं', ny_p: 'यह टूल Qura की डॉक्टरों की जाँच पूरी होने के बाद आएगा। अभी कोई चिंता की बात हो, तो “मदद” खोलें।', nq_h: 'फ़ोन रिमाइंडर चालू करें?', nq_p: 'फ़ोन रिमाइंडर बंद हैं, इसलिए यह रिमाइंडर नहीं बजेगा। नोटिफ़िकेशन पाने के लिए इन्हें चालू करें।', nq_on: 'चालू करें', nq_later: 'अभी नहीं', ask_cost: 'Qura की डॉक्टर आयुर्वेद (BAMS) डॉक्टर हैं। पहली कॉल मुफ़्त है; जाँच और प्लान के पैसे लगते हैं।', demo_wipe_sure: 'इससे इस फ़ोन पर सब कुछ मिट जाएगा और ऐप शुरुआत से खुलेगा।', last_gaps: 'आपके पिछले अंतर:', days: 'दिन', usual_gap: 'आम तौर पर अंतर 21–35 दिन होता है।', usual_gap_teen: 'शुरुआती सालों में आम अंतर 21–45 दिन होता है।',
       no_contra: 'ये तारीख़ें आपकी डायरी से अंदाज़ा हैं। ये गर्भ रोकने का तरीक़ा नहीं हैं।', gap_mode_note: 'जब अंतर बहुत बदलते हैं, हम तारीख़ का अंदाज़ा नहीं देते, सिर्फ़ गिनती दिखाते हैं।', first_log: 'पिछला पीरियड जिस दिन शुरू हुआ, वह दर्ज करें। फिर Sakhi आपके चक्र का दिन, पीरियड के बीच का अंतर और अगला पीरियड कब आ सकता है, दिखाएगी।',
-      last6: 'पिछले 6 अंतर (दिन)', band_note: 'छायादार पट्टी: आम अंतर, सबके लिए एक जैसी', topics_you: 'आपके लिए विषय', topics_all: 'सभी विषय ({n})', topics_less: 'कम विषय', contents_h: 'सूची: सभी गाइड और लेख', bb_born: 'मेरा बच्चा हो गया', preg_checks_b: 'जाँचें और टेस्ट', me_rem_one: 'रिमाइंडर', me_rem_one_s: 'आपके रिमाइंडर, दवाएँ और गोलियाँ, और इस फ़ोन के अलर्ट', rem_lists_h: 'Sakhi किन बातों की याद दिलाती है', me_setup: 'Sakhi सेट करें', intended_use: 'एक पीरियड डायरी, एक गाइड और आदतों के प्लान। Sakhi diagnosis नहीं करती; यह डॉक्टर करती हैं।', wis_records: 'मेरे रिकॉर्ड', stage_end_q: 'क्या आपकी प्रेग्नेंसी ख़त्म हुई?', stage_end_y: 'हाँ, ख़त्म हुई', stage_end_n: 'नहीं, ग़लती से चुना था', tab_keep_hd: 'रोज़ का रिमाइंडर रखें?', tab_keep_pd: 'रोज़ का एक रिमाइंडर अभी भी चालू है। अगर डॉक्टर ने जारी रखने को कहा है, तो इसे रखें।', trends: 'क्या दिखता है', wis_ci_h: 'इस महीने के संकेत', wis_ci_s: 'लगभग एक मिनट। इससे Sakhi देख पाती है कि क्या दोहराया जाता है।', wis_ci_done: '{m} का हो गया। बदलने के लिए दबाएँ।', wis_checks_h: 'आपकी की गई जाँचें', wis_check_row: '{d}: {m} में से {n} पर हाँ', period_started: 'पीरियड शुरू', ended: 'ख़त्म', spotting: 'स्पॉटिंग',
+      last6: 'पिछले 6 अंतर (दिन)', band_note: 'छायादार पट्टी: आम अंतर, सबके लिए एक जैसी', topics_you: 'आपके लिए विषय', topics_all: 'सभी विषय ({n})', topics_less: 'कम विषय', contents_h: 'सूची: सभी गाइड और लेख', bb_born: 'मेरा बच्चा हो गया', preg_checks_b: 'जाँचें और टेस्ट', me_rem_one: 'रिमाइंडर', me_rem_one_s: 'आपके रिमाइंडर, दवाएँ और गोलियाँ, और इस फ़ोन के अलर्ट', rem_lists_h: 'Sakhi किन बातों की याद दिलाती है', me_setup: 'Sakhi सेट करें', intended_use: 'एक पीरियड डायरी, एक गाइड और आदतों के प्लान। Sakhi diagnosis नहीं करती; यह डॉक्टर करती हैं।', wis_records: 'मेरे रिकॉर्ड', stage_end_q: 'क्या आपकी प्रेग्नेंसी ख़त्म हुई?', stage_end_y: 'हाँ, ख़त्म हुई', stage_end_n: 'नहीं, ग़लती से चुना था', tab_keep_hd: 'रोज़ का रिमाइंडर रखें?', tab_keep_pd: 'रोज़ का एक रिमाइंडर अभी भी चालू है। अगर डॉक्टर ने जारी रखने को कहा है, तो इसे रखें।', trends: 'चक्र', wis_ci_h: 'इस महीने के संकेत', wis_ci_s: 'लगभग एक मिनट। इससे Sakhi देख पाती है कि क्या दोहराया जाता है।', wis_ci_done: '{m} का हो गया। बदलने के लिए दबाएँ।', wis_checks_h: 'आपकी की गई जाँचें', wis_check_row: '{d}: {m} में से {n} पर हाँ', period_started: 'पीरियड शुरू', ended: 'ख़त्म', spotting: 'स्पॉटिंग',
       checkin_t: 'चेक-इन', checkin_sub: '8 टैप, लगभग 1 मिनट। महीने में एक बार।', checkin_done: 'इस महीने हो गया। धन्यवाद।', start_b: 'शुरू करें', edit: 'बदलें',
       safety: 'सुरक्षा गाइड', safety_sub: 'डॉक्टर को कब दिखाएँ। सबके लिए एक जैसी।', tell: 'किसी को बताएँ', tell_sub: 'Qura की टीम को WhatsApp पर लिखें।',
       qura_h: 'Qura की डॉक्टर से बात करें', qura_p: 'BAMS (आयुर्वेद) डॉक्टर से 20 मिनट की मुफ़्त कॉल। उन्हें दिखाने के लिए अपनी डॉक्टर रिपोर्ट तैयार रखें।', qura_b: 'मुफ़्त कॉल बुक करें',
@@ -376,7 +386,17 @@
       look_h: 'Sakhi का रूप', look_n: 'रूप {n}', sakhi_alt: 'Sakhi, आपकी डायरी की सहेली',
       noted_h: 'आपने क्या नोट किया', noted_p: 'पिछले 90 दिन। हर लाइन बताती है कि कितने दिन आपने इसे नोट किया।', noted_empty: '+ दबाकर दर्द, मन या कुछ और नोट करें। जो सबसे ज़्यादा होता है, वह यहाँ दिखेगा।', k_days: '{n} दिन', k_day1: '1 दिन', add_today: 'आज जोड़ें', cal_a_noted: 'नोट किया',
       ob_lang_h: 'अपनी भाषा चुनें', ob_phone: 'फ़ोन की भाषा', ob_partly: 'थोड़ा अनुवाद', ob_hear: 'कोई भी स्क्रीन सुनने के लिए ऊपर स्पीकर दबाएँ।',
-      ob_hello_h: 'आपकी पीरियड डायरी, और आपके लिए बना प्लान', ob_v1: 'Sakhi को बताएँ कि आप किस पर काम करना चाहती हैं। 12 हफ़्ते का प्लान पाएँ।', ob_v2: 'रोज़ छोटे क़दम, और हर शाम 1 मिनट का चेक-इन।', ob_v3: 'आपकी डायरी इसी फ़ोन पर रहती है। मुफ़्त। कोई विज्ञापन नहीं।', ob_start: 'शुरू करें · लगभग 3 मिनट', ob_part_1: 'आपके बारे में', ob_part_2: 'आप क्या चाहती हैं', ob_part_3: 'आपका प्लान', ob_p1: 'आपकी डायरी इसी फ़ोन पर रहती है।', ob_p2: 'सीधे-सादे जवाब, सरकारी और डॉक्टरी गाइडलाइन के आधार पर।', ob_p3: 'मुफ़्त। कोई विज्ञापन नहीं।',
+      ob_hello_h: 'आपकी पीरियड डायरी, और आपके लिए बना प्लान', ob_v1: 'Sakhi को बताएँ कि आप किस पर काम करना चाहती हैं। 12 हफ़्ते का प्लान पाएँ।', ob_v2: 'रोज़ छोटे क़दम, और हर शाम 1 मिनट का चेक-इन।', ob_v3: 'आपकी डायरी इसी फ़ोन पर रहती है। मुफ़्त। कोई विज्ञापन नहीं।', ob_start: 'शुरू करें · लगभग 3 मिनट', ob_part_1: 'आपके बारे में', ob_part_2: 'आप क्या चाहती हैं', ob_part_3: 'आपका प्लान', ob_about_h: 'पहले, आपके बारे में', ob_name_l: 'Sakhi आपको किस नाम से बुलाए?', ob_name_ph: 'आपका नाम', ob_p4_1: 'आपके बारे में', ob_p4_2: 'आपकी स्थिति', ob_p4_3: 'आपके लक्ष्य', ob_p4_4: 'जानकारी', ob_s7_cycle: 'नियमित पीरियड', ob_s7_pmos: 'PMOS (PCOS / PCOD) / अनियमित पीरियड', ob_s7_ttc: 'बच्चे की कोशिश', ob_s7_preg: 'मैं गर्भवती हूँ', ob_s7_post: 'हाल ही में बच्चा हुआ', ob_s7_mid: '40 के बाद पीरियड में बदलाव', ob_s7_meno: 'मेनोपॉज़', ob_ss_cycle: 'बस हिसाब रखना', ob_ss_pmos: 'अपने लक्षण सँभालना', ob_ss_ttc: 'अपने सबसे अच्छे दिन जानना', ob_ss_preg: 'हफ़्ते दर हफ़्ते', ob_ss_post: 'डिलीवरी के बाद का सफ़र', ob_ss_mid: 'मेनोपॉज़ की ओर', ob_ss_meno: 'पीरियड बंद: लगभग एक साल से पीरियड नहीं', ob_goal_h: 'आपको किस बात में मदद चाहिए?', ob_goal_p: '3 तक चुनें। ये हर जगह सबसे पहले आएँगे।', ob_goal_n: 'आगे · {n} चुने', ob_goal_need: 'कम से कम एक चुनें।', ob_goal_max: '3 तक। पहले किसी एक को हटाने के लिए उस पर टैप करें।', ob_gs_track: 'आपका चक्र, और अगला पीरियड कब आ सकता है', ob_gs_pain: 'ऐंठन के लिए तरीक़ा, और डॉक्टर कब दिखाएँ', ob_gs_heavy: 'ब्लीडिंग का हिसाब, और खाने से आयरन', ob_gs_pms: 'मूड का हिसाब, और शांत करने वाले तरीक़े', ob_gs_irregular: '12 हफ़्ते का प्लान, और आपके चक्र का पैटर्न', ob_gs_weight: 'रोज़ के छोटे क़दम, आपके इलाक़े का खाना', ob_gs_skin: 'क्या बदलता है, और डॉक्टर कब दिखाएँ', ob_gs_ready: 'गर्भ से पहले की सूची, और आपके सबसे अच्छे दिन', ob_gs_food: 'गर्भ के हर महीने का खाना', ob_gs_nausea: 'क्या मदद करता है, और डॉक्टर कब दिखाएँ', ob_gs_iron: 'आपकी गोलियाँ, और आयरन वाला खाना', ob_gs_sleep: 'शाम का शांत तरीक़ा', ob_gs_mood: 'आप कैसा महसूस करती हैं, एक छोटी जाँच', ob_gs_recovery: 'रोज़ की रिकवरी जाँच, ख़तरे के संकेतों के साथ', ob_gs_feed: 'दूध पिलाने का हिसाब, और मुश्किल हो तो मदद', ob_gs_pelvic: 'पेल्विक फ़्लोर व्यायाम, क़दम दर क़दम', ob_gs_hot: 'गर्मी के झोंकों और नींद में क्या मदद करता है', ob_gs_bones: 'कैल्शियम वाला खाना, और ताक़त के व्यायाम', ob_det_h: 'अपने पीरियड के बारे में कुछ बातें', ob_det_why: 'क्यों पूछते हैं: Sakhi आपका अगला पीरियड बताती है, और लंबे अंतर पहचानती है।', ob_lp_need: 'कोई एक चुनें, या “याद नहीं”।', ob_dx_why: 'Sakhi इसे बस आपकी गाइड और प्लान चुनने में इस्तेमाल करती है।', ob_meno_h: 'आपका आख़िरी पीरियड कब था?', ob_mp_1: 'लगभग एक साल पहले', ob_mp_2: '1 से 2 साल पहले', ob_mp_3: '2 साल से ज़्यादा पहले', ob_meno_why: 'क्यों पूछते हैं: मेनोपॉज़ के बाद ब्लीडिंग पर डॉक्टर ज़रूरी है, इसलिए Sakhi इस पर नज़र रखती है।', ys_h: '{name}, यह रही आपकी Sakhi', ys_h0: 'यह रही आपकी Sakhi', ys_helps: 'Sakhi आपकी मदद कैसे करेगी', ys_log: 'अपना दिन लिखें · 1 मिनट', ys_log_s: 'Sakhi आपका पैटर्न समझती है', ys_today: 'आज में बस अगले 3 क़दम', ys_today_s: 'हर क़दम बताता है कि वह कैसे मदद करता है', ys_plan: 'पहली एंट्री के बाद आपका प्लान', ys_plan_s: 'आपके जवाबों और डायरी से बना', ys_learn: 'आपकी स्थिति के लिए गाइड', ys_learn_s: 'छोटी, आपकी भाषा में', ys_preg: 'आपके हफ़्ते और जाँचें', ys_preg_s: 'हर हफ़्ते क्या ज़रूरी है', ys_post: 'रोज़ की रिकवरी जाँच', ys_meno: 'हर हफ़्ते अपने लक्षण लिखें', ys_meno_s: 'समय के साथ क्या बदलता है, देखें', ys_hid_cycle: 'आपके रास्ते से हटे: गर्भ, बच्चे और मेनोपॉज़ के पेज।', ys_hid_preg: 'आपके रास्ते से हटे: पीरियड प्लान और मेनोपॉज़ के पेज।', ys_hid_post: 'आपके रास्ते से हटे: गर्भ और मेनोपॉज़ के पेज।', ys_hid_meno: 'आपके रास्ते से हटे: गर्भ और बच्चे के पेज।', ys_hid_more: 'Me में कभी भी अपनी स्थिति बदलें।', ys_tour: 'मुझे दिखाएँ · 30 सेकंड', ys_skip: 'टूर छोड़ें', tour_first: 'आपका पहला दिन', fd1_h: 'यह आपका दिन है', fd1_p: 'बस अगले कुछ क़दम, हर एक के साथ वह कैसे मदद करता है।', fd2_h: 'आपका प्लान और खोजें', fd2_p: 'My plan में आपका प्लान है। खोजें में आपकी स्थिति की गाइड हैं।', fd3_h: 'आपकी डायरी यहाँ से शुरू होती है', fd3_p: 'रोज़ एक मिनट। जितना ज़्यादा लिखेंगी, Sakhi उतना ज़्यादा बता पाएगी।', fd_start: 'मेरी डायरी शुरू करें', fl_why_h: 'रोज़ क्यों लिखें?', fl_w1: 'जानें कि अगला पीरियड कब आ सकता है', fl_w2: 'देखें क्या दोहराता है: दर्द, मूड, त्वचा', fl_w3: 'एक पन्ने की रिपोर्ट जो डॉक्टर पढ़ सकें', fl_h: 'आपकी पहली एंट्री', fl_last: 'आपका पिछला पीरियड शुरू हुआ', fl_change: 'बदलें', fl_lp_q: 'आपका पिछला पीरियड कब शुरू हुआ?', fl_days: 'कितने दिन चला?', fl_anything: 'आज कुछ?', fl_none: 'कुछ नहीं', fl_save: 'मेरी पहली एंट्री सेव करें', fl_saved: 'पहली एंट्री सेव हो गई। आपकी डायरी का पहला दिन।', fl_ago: '{n} दिन पहले', fl_preg_h: 'आपकी प्रेग्नेंसी', fl_pw1: 'आपकी जाँचें और टेस्ट, समय पर', fl_pw2: 'इस हफ़्ते क्या सामान्य है, और कौन से संकेत मतलब तुरंत जाएँ', fl_pw3: 'डॉक्टर और आशा के लिए एक रिकॉर्ड', fl_preg_b: 'इस हफ़्ते देखें', fl_post_h: 'आपकी देखभाल', fl_bw1: 'पहले 6 हफ़्तों में ख़तरे के संकेत जल्दी पकड़ में', fl_bw2: 'आपकी 6 हफ़्ते की जाँच और बच्चे के टीके, समय पर', fl_bw3: 'दूध, नींद और आपका मन, एक जगह', fl_post_b: 'मेरी रिकवरी जाँच शुरू करें', fl_meno_h: 'आपकी डायरी', fl_mw1: 'देखें कि आपका शरीर कैसे बदल रहा है', fl_mw2: 'जानें कौन से बदलाव आम हैं, और किनके लिए डॉक्टर', fl_mw3: 'डॉक्टर के लिए साफ़ रिकॉर्ड', fl_meno_b: 'इस हफ़्ते लिखें', td_log: 'आज लिखें · 1 मिनट', td_log_s: 'ताकि Sakhi आपका पैटर्न समझे', td_read_s: 'छोटी-सी पढ़ाई', fx_h: 'Sakhi को अपनी स्थिति और लक्ष्य बताएँ', fx_p: 'कुछ टैप। फिर Sakhi बस वही दिखाएगी जो आपके लिए है।', fx_b: 'बताएँ', fx_saved: 'सेव हो गया। अब Sakhi आपके लक्ष्यों के हिसाब से है।', sx_h: 'संबंध', sx_priv: 'सिर्फ़ इसी फ़ोन पर', sx_no: 'बिना गर्भनिरोधक', sx_yes: 'गर्भनिरोधक के साथ',
+      sx_ec_h: 'अभी गर्भ नहीं चाहतीं?', sx_ec_p: 'इमरजेंसी गोली: जितनी जल्दी हो सके लें, 72 घंटे (3 दिन) के अंदर। जितनी जल्दी, उतना बेहतर।', sx_ec_b: 'क्या करें', sx_ec_free: 'मुफ़्त कहाँ मिलेगी',
+      sx_fw_h: 'फ़र्टाइल दिन पर (अंदाज़ा)', sx_fw_p: 'पूरे चक्र में हर 2–3 दिन में संबंध सबसे अच्छी संभावना देता है। किसी एक ख़ास दिन को पकड़ने की ज़रूरत नहीं।',
+      sx_hearts: 'दिल के निशान सिर्फ़ तब दिखते हैं जब आप बच्चे की कोशिश कर रही हों।', dy_sx_n: 'बिना गर्भनिरोधक संबंध', dy_sx_y: 'गर्भनिरोधक के साथ संबंध',
+      day_flow_q: 'ब्लीडिंग: दिन में कितने pad', day_clots: 'थक्के और दर्द', day_month: 'महीना खोलें', prev_week: 'पिछला हफ़्ता', next_week: 'अगला हफ़्ता',
+      dy_fw_in1: 'फ़र्टाइल दिन कल से (अंदाज़ा)', dy_ov_in1: 'ओव्यूलेशन कल (अंदाज़ा)', dy_next1: 'अगले पीरियड में 1 दिन (अंदाज़ा)', dy_before1: 'अगले पीरियड से 1 दिन पहले',
+      charts_h: 'चार्ट', charts_s: 'आपके पिछले 12 अंतर और पीरियड', mc_edit: 'तारीख़ें बदलें', ed_h: 'ये तारीख़ें ठीक करें', ed_sub: '{d} से आपका पीरियड · {n} दिन', ed_sub0: '{d} से आपका पीरियड',
+      ed_note: 'सेव करने पर Sakhi आपका अगला पीरियड और फ़र्टाइल दिन बदल देगी।', ed_del: 'यह पीरियड नहीं था', ed_del_s: 'ये तारीख़ें हट जाएँगी। आपके नोट रहेंगे।',
+      ed_bad: 'तारीख़ें देखें: ख़त्म होने की तारीख़ शुरू से पहले है, या दूसरे पीरियड में जा रही है।',
+      fw_few: 'फ़र्टाइल दिन 6 चक्र के बाद दिखेंगे।', fw_few_n: 'अभी {n} और पीरियड लिखने हैं।', fw_few_1: 'अभी 1 और पीरियड लिखना है।', fw_why: 'क्यों?', fw_why_h: '6 चक्र क्यों?',
+      fw_why_p: 'Sakhi आपकी अपनी तारीख़ों से फ़र्टाइल दिनों का अंदाज़ा लगाती है। 6 चक्र से कम में यह अंदाज़ा अभी भरोसे लायक़ नहीं होता। कोई दिन सुरक्षित नहीं: बिना गर्भनिरोधक के, महीने के किसी भी दिन गर्भ ठहर सकता है।', ob_p1: 'आपकी डायरी इसी फ़ोन पर रहती है।', ob_p2: 'सीधे-सादे जवाब, सरकारी और डॉक्टरी गाइडलाइन के आधार पर।', ob_p3: 'मुफ़्त। कोई विज्ञापन नहीं।',
       ob_read: 'सिर्फ़ पढ़ना है', ob_notice_link: 'Sakhi आपका डेटा कैसे रखती है', w_restore: 'दूसरे फ़ोन से आ रही हैं? अपनी डायरी वापस लाएँ',
       su_phone_h: 'आपका मोबाइल नंबर', su_phone_p: 'नंबर आपका ही है, यह जाँचने के लिए हम एक कोड भेजते हैं। आपकी डायरी इसी फ़ोन पर रहती है: Qura को सिर्फ़ आपके अकाउंट की जानकारी मिलती है।', su_plan_wait: 'आपका प्लान तैयार है। साइन-अप करें, फिर Sakhi आपको प्लान दिखाएगी।', su_phone_l: 'मोबाइल नंबर', su_year_l: 'आपका जन्म किस साल हुआ', su_year_u18: '18 से कम', su_choose: 'चुनें', su_phone_bad: '10 अंकों का मोबाइल नंबर डालें।', su_year_bad: 'अपने जन्म का साल चुनें।', su_send: 'कोड भेजें', su_agree: 'आगे बढ़कर आप इससे सहमत हैं:', su_code_h: 'कोड डालें', su_code_p: 'हमने {p} पर 6 अंकों का कोड भेजा है।', su_code_wa: 'हमने {p} पर WhatsApp से 6 अंकों का कोड भेजा है।', su_code_sms: 'हमने {p} पर SMS से 6 अंकों का कोड भेजा है।', su_sms_instead: 'WhatsApp नहीं है? SMS से भेजें', su_code_l: '6 अंकों का कोड', su_change: 'नंबर बदलें', su_resend: 'नया कोड भेजें', su_resend_in: 'नया कोड {n} में', su_verify: 'जाँचें', su_wrong: 'कोड मेल नहीं खाया। WhatsApp या SMS पर आया कोड देखकर फिर से डालें।', su_expired: 'इस कोड का समय ख़त्म हो गया। नया कोड मँगाएँ।', su_locked: 'बहुत बार कोशिश हो गई। थोड़ी देर रुककर फिर कोशिश करें।', su_net: 'Qura तक नहीं पहुँच पाए। इंटरनेट देखकर फिर कोशिश करें।', su_later: 'अभी आगे बढ़ें', su_later_p: 'साइन-अप बाद में “आज” या "मैं" पेज से कर सकती हैं। डायरी उसके बिना भी चलती है।', su_demo: 'Prototype: कोई message नहीं भेजा जाता। कोड 123456 है।', su_about_h: 'बस, थोड़ा और', su_about_p: 'पहला नाम और पिन कोड ज़रूरी हैं; बाक़ी आपकी मर्ज़ी। इससे Qura ज़्यादा महिलाओं तक पहुँच पाता है; आपकी डायरी इसमें कभी शामिल नहीं होती।', su_name_l: 'पहला नाम', su_name_bad: 'अपना पहला नाम डालें।', su_pin_l: 'पिन कोड', su_pin_d: 'ताकि Qura जान सके कि Sakhi किन इलाक़ों तक पहुँच रही है।', su_pin_bad: 'अपना 6 अंकों का पिन कोड डालें।', su_email_l: 'ईमेल (वैकल्पिक)', su_email_d: 'सिर्फ़ इसलिए कि Qura आपके अकाउंट के बारे में आपसे संपर्क कर सके।', su_email_bad: 'यह ईमेल सही नहीं लग रहा।', su_heard_l: 'आपको Sakhi के बारे में कहाँ से पता चला?', su_h_doc: 'डॉक्टर या आशा दीदी', su_h_fam: 'दोस्त या परिवार', su_h_wa: 'WhatsApp', su_h_social: 'Instagram या YouTube', su_h_qura: 'Qura', su_h_other: 'कहीं और', su_upd_h: 'Sakhi से अपडेट', su_upd_sms: 'मुझे SMS से अपडेट भेजें', su_upd_wa: 'मुझे WhatsApp पर अपडेट भेजें', su_upd_d: 'नई गाइड और सरकारी स्वास्थ्य योजनाओं की ख़बरें। आपकी अपनी सेहत के बारे में कभी कुछ नहीं।', su_ok: 'आपका साइन-अप हो गया।',
       acc_h: 'आपका Sakhi अकाउंट', acc_none: 'आपने अभी साइन-अप नहीं किया है। एक मिनट लगता है: आपका नंबर और एक कोड।', acc_signup: 'साइन-अप करें', acc_num: 'मोबाइल नंबर', acc_name: 'नाम', acc_pin: 'पिन कोड', acc_email: 'ईमेल', acc_heard: 'Sakhi के बारे में पता चला', acc_upd: 'अपडेट', acc_sms: 'SMS', acc_on: 'चालू', acc_off: 'बंद', acc_edit: 'जानकारी बदलें', acc_logout: 'लॉग-आउट', acc_del: 'मेरा अकाउंट मिटाएँ', acc_del_sure: 'अपना Sakhi अकाउंट मिटाएँ? Qura आपका नंबर और जानकारी मिटा देगा। इस फ़ोन पर आपकी डायरी बनी रहेगी; उसे भी हटाना हो तो "सब कुछ delete करें" दबाएँ।', acc_del_yes: 'हाँ, मिटाएँ', acc_del_done: 'आपका अकाउंट मिटा दिया गया।', acc_out_done: 'आप लॉग-आउट हो गईं। आपकी डायरी यहीं है।', acc_saved: 'सेव हो गया।', acc_pending: 'अभी भेजा नहीं गया। इंटरनेट मिलने पर Sakhi फिर कोशिश करेगी।', acc_card_h: 'साइन-अप पूरा करें', acc_card_p: 'अपना Sakhi अकाउंट रखने के लिए मोबाइल नंबर जोड़ें। आपकी डायरी इसी फ़ोन पर रहती है।', acc_keeps: 'Qura सिर्फ़ यही जानकारी रखता है। आपकी डायरी इसी फ़ोन पर रहती है।', ob_notice_5: 'आपका Sakhi अकाउंट: Qura आपका मोबाइल नंबर, जन्म का साल, पहला नाम और पिन कोड रखता है, और जो कुछ आप ख़ुद जोड़ें (ईमेल, Sakhi के बारे में कहाँ से पता चला, अपडेट चाहिए या नहीं)। साथ में आख़िरी बार Sakhi कब खोली और ऐप का version। आपकी डायरी से कुछ नहीं।',
@@ -403,7 +423,7 @@
       tour_to: 'आगे: {s}', tour_full: 'पूरा टूर', tour_full_d: '{n} स्क्रीन, एक के बाद एक', tour_full_done: 'पूरा टूर हो गया। "मैं" में "Sakhi कैसे इस्तेमाल करें" से इसे कभी भी फिर देख सकती हैं।',
       howto_h: 'Sakhi कैसे इस्तेमाल करें', howto_p: 'छोटे टूर, जिन्हें कभी भी फिर देख सकती हैं।', tours_auto: 'नई स्क्रीन पर टूर दिखाएँ', tours_auto_d: 'किसी स्क्रीन को पहली बार खोलने पर एक छोटा टूर', tour_voice: 'टूर पढ़कर सुनाएँ', tour_voice_d: 'Sakhi हर क़दम पढ़कर सुनाती है। शेयर्ड फ़ोन के लिए यह शुरू में बंद रहता है।', tours_again: 'टूर फिर से दिखाएँ', tours_again_done: 'टूर फिर से दिखेंगे।',
       tw1_h: 'आपका हफ़्ता', tw1_p: 'हर गोला एक दिन है। जो हुआ, नोट करने के लिए दिन पर टैप करें।', tw2_h: 'एक टैप में नोट', tw2_p: 'ये बटन आज का हाल एक टैप में सेव करते हैं। ग़लती हो तो वापस ले सकती हैं।', tw3_h: 'कुछ भी पूछें', tw3_p: 'हिंदी या अंग्रेज़ी में सवाल लिखें। अभी आज़माएँ: बॉक्स पर टैप करें।', tw3_pm: 'सवाल लिखें, या माइक दबाकर हिंदी में बोलें। अभी आज़माएँ।',
-      td1_h: 'आपका कैलेंडर', td1_p: 'किसी भी दिन को भरने या तारीख़ ठीक करने के लिए उस पर टैप करें। बिंदु बताते हैं कि आपने क्या नोट किया।', td1_pd: 'नोट जोड़ने या बदलने के लिए किसी भी दिन पर टैप करें।', td2_h: 'क्या दिखता है', td2_p: 'जिसकी जाँच करनी है, पीरियड के बीच के अंतर और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ।', td2_pd: 'महीनों के साथ आपके नोट।', td3_h: 'आज के लिए जोड़ें', td3_p: 'आज का पीरियड, लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', td3_pd: 'आज के लिए नोट जोड़ने को + दबाएँ। अभी आज़माएँ।',
+      td1_h: 'आपका कैलेंडर', td1_p: 'किसी भी दिन को भरने या तारीख़ ठीक करने के लिए उस पर टैप करें। बिंदु बताते हैं कि आपने क्या नोट किया।', td1_pd: 'नोट जोड़ने या बदलने के लिए किसी भी दिन पर टैप करें।', td2_h: 'चक्र', td2_p: 'पहले आपके चक्र, फिर जिसकी जाँच करनी है और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ।', td2_pd: 'महीनों के साथ आपके नोट।', td3_h: 'आज के लिए जोड़ें', td3_p: 'आज का पीरियड, लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', td3_pd: 'आज के लिए नोट जोड़ने को + दबाएँ। अभी आज़माएँ।',
       tc1_h: 'खोजें', tc1_p: 'हर गाइड और टूल, विषय के हिसाब से: पीरियड, प्रेग्नेंसी, डिलीवरी के बाद, 40 के बाद और भी।', tc1_pd: 'पढ़ने के लिए कोई विषय चुनें।', tc2_h: 'कोई भी पन्ना सुनें', tc2_p: 'स्पीकर दबाएँ, Sakhi पन्ना पढ़कर सुनाएगी।', tc3_h: 'मदद, कभी भी', tc3_p: 'कभी भी "मदद" दबाएँ: 112 पर कॉल, मुफ़्त सरकारी डॉक्टर, या Qura की डॉक्टर से कॉल (पहली कॉल मुफ़्त)।', tw4_h: 'आज का आपका प्लान', tw4_p: 'आज के आपके क़दम। करते जाएँ और "हो गया" दबाएँ, और शाम को Sakhi को बताएँ कि दिन कैसा रहा।',
       th1_h: 'डॉक्टर से बात', th1_p: 'जो सवाल एक-दो दिन रुक सकते हैं: मुफ़्त सरकारी डॉक्टर, या Qura की डॉक्टर से कॉल।', th2_h: 'इमरजेंसी में', th2_p: 'तुरंत 112 पर कॉल करें। सारे इमरजेंसी नंबर यहाँ हैं।',
       tm1_h: 'शेयर्ड फ़ोन पर निजता', tm1_p: 'Sakhi को लॉक करें, सादे शब्द चुनें, या ऐप को Notes जैसा दिखाएँ।', tm1_pw: 'Sakhi पर PIN लगाएँ, या “आज” पर सादे शब्द रखें।', tour_diary_d: 'आपके नोट्स', tm2_h: 'सब कुछ मिटाएँ', tm2_p: 'पुष्टि करने के बाद, Sakhi ने इस फ़ोन पर जो भी सेव किया, सब मिट जाता है।',
@@ -515,7 +535,7 @@
 
   /* ---------- state ---------- */
   const KEY = 'qura-saathi-v1';
-  const defaults = () => ({ lang: 'en', stage: 'welcome', consent: { c1: null, c2: null, c4: null }, dob: null, situation: {}, events: [], daily: {}, notes: {}, checkins: {}, strips: {}, settings: { discreet: false, shared: false, proto: false, pinHash: null, notify: false, theme: 'light', look: 0, toursAuto: true, tourVoice: false }, goals: [], requests: [], leads: [], askTopics: [], calls: [], sample: null, created: toISO(today()), mods: {}, reminders: [], tours: {}, tourDay: null, langChosen: false, prompts: {} });
+  const defaults = () => ({ lang: 'en', stage: 'welcome', consent: { c1: null, c2: null, c4: null }, dob: null, situation: {}, events: [], daily: {}, notes: {}, checkins: {}, strips: {}, sex: {}, settings: { discreet: false, shared: false, proto: false, pinHash: null, notify: false, theme: 'light', look: 0, toursAuto: true, tourVoice: false }, goals: [], requests: [], leads: [], askTopics: [], calls: [], sample: null, created: toISO(today()), mods: {}, reminders: [], tours: {}, tourDay: null, langChosen: false, prompts: {} });
   let state = defaults();
   /* A diary from an older version or a damaged backup must never break a screen (22 Oct audit, item 12): daily entries are
      lists of tags, and every logged day needs a date and a type. */
@@ -524,7 +544,9 @@
      day she logged (period dates can be from before she joined, so they come last) */
   function joinedFrom() { const c1 = (state.consent || {}).c1, ft = (state.fullTour || {}).d; if (isISO(c1)) return c1; if (isISO(ft)) return ft;
     const l = Object.keys(state.daily || {}).concat((state.events || []).map((e) => e && e.d)).filter(isISO).sort(); return l[0] || null; }
-  function tidyState() { if (!isISO(state.joined) && state.stage === 'app') { const j = joinedFrom(); if (j) state.joined = j; } state.daily = cleanDaily(state.daily); state.events = (Array.isArray(state.events) ? state.events : []).filter((e) => e && typeof e.d === 'string' && typeof e.t === 'string'); }
+  /* Version 39.11: the sex log, one entry a day: 'n' without a method, 'y' with one (only on this phone) */
+  function cleanSex(o) { const out = {}; if (o && typeof o === 'object' && !Array.isArray(o)) Object.keys(o).forEach((k) => { if (isISO(k) && (o[k] === 'n' || o[k] === 'y')) out[k] = o[k]; }); return out; }
+  function tidyState() { if (!isISO(state.joined) && state.stage === 'app') { const j = joinedFrom(); if (j) state.joined = j; } state.daily = cleanDaily(state.daily); state.sex = cleanSex(state.sex); state.events = (Array.isArray(state.events) ? state.events : []).filter((e) => e && typeof e.d === 'string' && typeof e.t === 'string'); }
   /* Version 32 (field-test audit 2.6): the WebView writes localStorage to disk in batches, up to a minute late, so an entry made
      just before Android closes Sakhi could be lost. The Android app keeps a second copy, written at once on every save; at
      start the newer of the two wins (savedAt). A copy that can't be read is set aside under KEY-rescue, never silently
@@ -538,9 +560,17 @@
     try { if (p && typeof p === 'object') { state = Object.assign(defaults(), p); state.settings = Object.assign(defaults().settings, state.settings || {}); tidyState(); } } catch (e) { state = defaults(); }
   };
   let holdSave = false;
+  /* Version 39.10: whatever she logs first (the first-log card, the day sheet, the calendar, a check-in) counts as her first log */
+  const noteFirstLog = () => {
+    const f = state.focus, p = state.prompts; if (!f || !p || p.firstLog || state.stage !== 'app' || typeof f.at !== 'string') return;
+    const at = f.at; const since = (o, fn) => Object.keys(o || {}).some((k) => fn(k, o[k]));
+    const any = since(state.daily, (k, x) => k >= at && Object.keys(x || {}).length > 0) || since(state.checkins, (k, x) => ((x || {}).at || '') >= at) ||
+      since(state.notes, (k, x) => k >= at && !!x) || since(state.sex, (k) => k >= at) || (state.events || []).some((e) => e.d >= at && !(e.t === 'start' && e.d === f.lp));
+    if (any) p.firstLog = toISO(today());
+  };
   const save = () => {
     if (holdSave || mem.teen) return; if (sheetUp()) sheetDirty = true;
-    state.savedAt = Date.now(); const js = JSON.stringify(state);
+    noteFirstLog(); state.savedAt = Date.now(); const js = JSON.stringify(state);
     try { localStorage.setItem(KEY, js); } catch (e) { /* storage may be blocked; the page still works */ }
     const B = nativeStore(); if (B) safe(() => B.saveState(js));
     syncNotifications();
@@ -905,11 +935,12 @@
   function openHelpSheet() {
     const row = (id, ico, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>';
     sheet('<h2>' + esc(t('help')) + '</h2><div class="list hs-list"><button type="button" class="item hs-sos" id="hs-sos"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('hs_112')) + '</strong><span>' + esc(t('hs_112_s')) + '</span></span><span class="chev">' + I.chev + '</span></button>' +
-      row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + row('hs-doc', I.steth, t('hs_doc'), t('hs_doc_s')) + row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
+      row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t('hs_doc'), t('hs_doc_s')) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
       (modRoute('asha') && state.stage === 'app' ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '') + '</div>', (sh) => {
       $('#hs-sos', sh).addEventListener('click', () => { closeSheet(true); openSOS(); });
       $('#hs-harm', sh).addEventListener('click', () => { closeSheet(true); openHarm(); });
       $('#hs-doc', sh).addEventListener('click', () => { closeSheet(true); ask(''); });
+      const hl = $('#hs-loss', sh); if (hl) hl.addEventListener('click', () => { closeSheet(true); setHash('loss'); });
       $('#hs-guide', sh).addEventListener('click', () => { closeSheet(true); setHash('help'); });
       const ha = $('#hs-asha', sh); if (ha) ha.addEventListener('click', () => { closeSheet(true); setHash('asha'); });
       const ht = $('#hs-tell', sh); if (ht) ht.addEventListener('click', () => { closeSheet(true); setHash('tell'); });
@@ -932,7 +963,7 @@
     return r;
   }
   function renderTabbar() {
-    const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !signupGate(route()); navEl.hidden = !inApp; if (!inApp) return;
+    const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !signupGate(route()) && ['your-sakhi', 'join-update'].indexOf(route()) < 0; navEl.hidden = !inApp; if (!inApp) return;
     const cur = tabOf(route());
     const tabs = state.stage === 'app'
       ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])
@@ -986,7 +1017,7 @@
     if (mem.under18) return renderUnder18(v);
     if (state.stage === 'welcome') return renderWelcome(v);
     if (state.stage === 'onboard') return renderOnboard(v);
-    const map = { account: renderAccount, home: renderHome, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, tell: renderTell, care: renderCare, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, tell: renderTell, care: renderCare, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) renderArticle(v, r.slice(2));
     else if (r.startsWith('learn-')) { const g = r.slice(6); if ((CONTENT.groups || []).some((x) => x.group === g)) { mem.learnGroup = g; mem.learnSet = true; } safe(() => location.replace('#learn')); }   /* Version 39.7: a chapter of the book, from a module's link */
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
@@ -1332,10 +1363,9 @@
     }
     if (!q) body += '<button type="button" class="item quiet" data-go="help"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('help_h')) + '</strong><span>' + esc(t('hs_guide_s')) + '</span></span><span class="chev">' + I.chev + '</span></button>';
     /* Version 39.2: Contents (every guide and article) sits right under search */
-    const contents = q ? '' : '<div class="list care-contents"><button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('contents_h')) + '</strong><span>' + esc(tf('all_articles_d', { n: allArticles().length })) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
+    const contents = q ? '' : '<div class="list care-contents"><button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('contents_h')) + '</strong><span>' + esc(tf('all_articles_d', { n: learnGroups().reduce((n, g) => n + (g.articles || []).length, 0) })) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
     v.innerHTML = '<h1>' + esc(t('care_h')) + '</h1><p class="small care-p">' + esc(t('care_p')) + '</p>' + searchBox('care-q', mem.careQ, true) + contents + body;
     wire(v); wireSearch(v, 'care-q', 'careQ'); wireOneTap(v);
-    const ta = $('#topics-all', v); if (ta) ta.addEventListener('click', () => { mem.allTopics = !mem.allTopics; render(); });
     const mic = $('#care-q-mic', v);
     if (mic) mic.addEventListener('click', () => {
       window.__sakhiHeard = (txt) => { if (!txt) { toast(t('voice_none')); return; } mem.careQ = txt; usageMark('search'); render(); };
@@ -1346,14 +1376,12 @@
     return '<button type="button" class="topic-card hue-' + hueOf(sec) + '" data-go="topic-' + sec + '">' + (api.art ? api.art.spot(sec) : '<span class="ico-sm hue">' + icon(SECTION_ICONS[sec]) + '</span>') + '<strong>' + esc(t('sec_' + sec)) + '</strong><span class="small">' + esc(tf('topic_count', { n: n })) + '</span></button>'; };
   function topicGrid(all) {
     const full = SECTIONS.filter((sec) => DRAWERS.indexOf(sec) < 0); const disc = !!state.settings.discreet;
-    const mine = disc ? full : topicsFor().filter((sec) => full.indexOf(sec) >= 0); const open = disc || !!mem.allTopics;
-    const shown = open ? mine.concat(full.filter((sec) => mine.indexOf(sec) < 0)) : mine;
-    const total = full.filter((sec) => topicCard(all, sec)).length;
+    const shown = disc ? full : topicsFor().filter((sec) => full.indexOf(sec) >= 0);   /* Version 39.10: other stages stay out of her way (a shared phone keeps the full grid) */
     const foodCard = !disc && ROUTES.food ? '<button type="button" class="topic-card hue-green topic-food" data-go="food">' + (api.food && api.food.plate ? '<span class="ico-sm hue">' + api.food.plate + '</span>' : '') + '<strong>' + esc(t('food_h')) + '</strong><span class="small">' + esc(t('food_tile_s')) + '</span></button>' : '';   /* Version 39.3 */
     /* her stage's own topic stays first (pregnancy, a loss); My food comes next */
     const cards = shown.map((sec) => topicCard(all, sec)).filter(Boolean); if (foodCard) cards.splice(Math.min(1, cards.length), 0, foodCard);
     return '<section class="care-sec"><h2>' + esc(t(disc ? 'care_topics' : 'topics_you')) + '</h2><div class="topic-grid">' + cards.join('') + '</div>' +
-      (disc ? '' : '<button type="button" class="linkbtn topics-all" id="topics-all">' + esc(open ? t('topics_less') : tf('topics_all', { n: total })) + '</button>') + '</section>';
+      '' + '</section>';
   }
   /* One page per topic: its tools and guides, then the Learn articles on the same subject. */
   function renderTopic(v, sec) {
@@ -1391,10 +1419,9 @@
     }
     v.innerHTML = '<div class="welcome ob ob-hello">' + (api.art ? '<div class="ob-av big" id="ob-sakhi">' + api.art.sakhi({ pose: 'hi', look: state.settings.look, label: t('sakhi_alt') }) + '</div>' : '') + '<h1>' + esc(t('ob_hello_h')) + '</h1>' +
       '<div class="ob-prom">' + [['target', 'ob_v1'], ['heart', 'ob_v2'], ['lock', 'ob_v3']].map((x) => '<div><span class="ob-pi">' + I[x[0]] + '</span><span>' + esc(t(x[1])) + '</span></div>').join('') + '</div>' +
-      '<button type="button" class="btn primary block" id="w-start">' + esc(t('ob_start')) + '</button><button type="button" class="btn block" id="w-browse">' + esc(t('ob_read')) + '</button>' +
+      '<button type="button" class="btn primary block" id="w-start">' + esc(t('ob_start')) + '</button>' +
       '<button type="button" class="linkbtn" id="w-notice">' + esc(t('ob_notice_link')) + '</button>' + (canBackup() ? '<button type="button" class="linkbtn" id="w-restore">' + esc(t('w_restore')) + '</button>' : '') + (state.settings.proto ? '<button type="button" class="linkbtn" id="w-demo">' + esc(t('demo_h')) + '</button>' : '') + '</div>';
     $('#w-start', v).addEventListener('click', () => { state.stage = 'onboard'; mem.ob = { step: 1 }; save(); render(); });
-    $('#w-browse', v).addEventListener('click', () => { state.stage = 'onboard'; mem.ob = { step: 1, read: true }; save(); render(); });
     $('#w-notice', v).addEventListener('click', openNotice);
     const wr = $('#w-restore', v); if (wr) wr.addEventListener('click', openRestore);
     const wd = $('#w-demo', v); if (wd) wd.addEventListener('click', openDemo);
@@ -1448,55 +1475,102 @@
   const obLoad = () => { try { const o = JSON.parse(localStorage.getItem(OB_KEY) || 'null'); return o && typeof o === 'object' && o.step ? o : null; } catch (e) { return null; } };
   /* the plan module's intake: what she wants to work on, and what her plan needs (Version 37) */
   const planIntake = () => (api.plan && api.plan.intake && safe(() => !!api.plan.on(), false) ? api.plan.intake : null);
+  /* Version 39.10 (Mohit, 25 Oct: joining that personalises Sakhi; docs: MODULE_API section 53): about you, her stage (7 tiles),
+     up to 3 goals, a few details for her stage, and who uses this phone. Then sign-up, "Your Sakhi", Home with a short tour, and
+     her first log in Diary. Her plan is offered on Today after that first log (her first goal chooses it). */
+  const OB_TILES = [['cycle', 'periods'], ['pmos', 'pmos'], ['ttc', 'ttc'], ['preg', 'preg'], ['post', 'post'], ['mid', 'meno'], ['meno', 'meno']];
+  const OB_ENGINE = { cycle: 'cycle', pmos: 'cycle', ttc: 'ttc', preg: 'preg', post: 'post', mid: 'meno', meno: 'meno' };
+  const OB_GOALS = { cycle: ['track', 'pain', 'heavy', 'pms'], pmos: ['irregular', 'weight', 'skin', 'pms', 'pain', 'heavy'], ttc: ['ready', 'irregular', 'weight'], preg: ['food', 'nausea', 'iron', 'sleep', 'mood'], post: ['recovery', 'feed', 'pelvic', 'mood', 'sleep', 'weight'], mid: ['hot', 'sleep', 'mood', 'heavy', 'bones', 'weight'], meno: ['hot', 'sleep', 'mood', 'bones', 'weight'] };
+  const OB_GAPS = ['n', 'g45', 'g60', 'gt60', 'vary', 'lt21'];
+  const OB_TOKEN = { cycle: 'track', ttc: 'ttc', preg: 'preg', post: 'baby', meno: 'meno' };
+  /* her tile now (a diary from before Version 39.10, or after a stage change) */
+  const obTileOf = () => { const s = stageNow(); const sit = state.situation || {}; const g = state.goals || [];
+    if (s === 'cycle') return sit.pcos || g.indexOf('pmos') >= 0 || g.indexOf('irregular') >= 0 ? 'pmos' : 'cycle';
+    if (s === 'meno') return sit.stopped ? 'meno' : 'mid'; return OB_ENGINE[s] ? s : 'cycle'; };
+  /* state.goals: her stage first, then her goals (PMOS by its own name once a doctor has said so) */
+  const goalsList = (st, goals, pcos) => [OB_TOKEN[st] || 'track'].concat(goals.filter((k) => k !== 'track').map((k) => (k === 'irregular' && pcos ? 'pmos' : k))).concat(pcos && goals.indexOf('irregular') < 0 ? ['pmos'] : []);
+  const goalLabel = (k) => t(k === 'ready' ? 'plan_gl_ready' : 'ob_h_' + k);
   function renderOnboard(v) {
     const ob = mem.ob || (mem.ob = obLoad() || { step: 1 }); obSave();
-    const learn = ob.stage === 'learn'; const pin = planIntake(); const nIn = !learn && pin ? pin.count(ob.intake || {}) : 0;
-    const total = ob.read ? 1 : (learn ? 3 : 4 + nIn); const num = ob.read ? 1 : (ob.step <= 3 ? Math.min(ob.step, learn ? 2 : 3) : (ob.step === 4 ? 4 + ((ob.intake || {}).iq || 0) : total));
-    /* Version 37.1: the bar is named in three parts, so she knows where she is (about you, what you want, your plan) */
-    const part = ob.step <= 3 ? 0 : (ob.step === 4 ? (pin && pin.part ? safe(() => pin.part(ob.intake || {}), 1) : 1) : 2);
-    const parts = ob.read ? '' : '<div class="ob-parts" aria-hidden="true">' + [1, 2, 3].map((k) => '<span class="' + (k - 1 === part ? 'on' : (k - 1 < part ? 'done' : '')) + '">' + esc(t('ob_part_' + k)) + '</span>').join('') + '</div>';
-    const head = (title, p) => '<div class="ob-top"><button type="button" class="iconbtn" id="ob-back" aria-label="' + esc(t('back')) + '">' + I.back + '</button><div class="progress" role="img" aria-label="' + esc(t('step') + ' ' + num + ' ' + t('of') + ' ' + total) + '">' + Array.from({ length: total }, (x, i) => '<i class="' + (i < num ? 'on' : '') + '"></i>').join('') + '</div></div>' + parts + '<h1>' + esc(title) + '</h1>' + (p ? '<p>' + esc(p) + '</p>' : '');
+    const upd = !!ob.update; const sn = Math.min(ob.step, 4);
+    const head = (title, p) => '<div class="ob-top"><button type="button" class="iconbtn" id="ob-back" aria-label="' + esc(t('back')) + '">' + I.back + '</button>' + (upd ? '' : '<div class="progress" role="img" aria-label="' + esc(t('step') + ' ' + sn + ' ' + t('of') + ' 4') + '">' + [1, 2, 3, 4].map((i) => '<i class="' + (i <= sn ? 'on' : '') + '"></i>').join('') + '</div>') + '</div>' +
+      (upd ? '' : '<div class="ob-parts ob-p4" aria-hidden="true">' + [1, 2, 3, 4].map((i) => '<span class="' + (i === sn ? 'on' : (i < sn ? 'done' : '')) + '">' + esc(t('ob_p4_' + i)) + '</span>').join('') + '</div>') + '<h1>' + esc(title) + '</h1>' + (p ? '<p>' + esc(p) + '</p>' : '');
     const back = (fn) => $('#ob-back', v).addEventListener('click', fn);
     const nowY = today().getFullYear(); const curM = today().getMonth() + 1;
     const inRange = (val, a, b) => !!val && fromISO(val) >= addDays(today(), a) && fromISO(val) <= addDays(today(), b);
     const chip = (attr, val, label, on) => '<button type="button" class="chip ob-c' + (on ? ' on' : '') + '" ' + attr + '="' + esc(String(val)) + '" aria-pressed="' + !!on + '">' + esc(label) + '</button>';
+    const why = (k) => '<p class="small ob-why">' + esc(t(k)) + '</p>';
     if (ob.step === 1) {
-      /* Age: decade, then year. No keyboard. The month only for someone who may be 17 or 18. */
+      /* About you: her name, then her age (decade, then year; no keyboard). The month only for someone who may be 17 or 18. */
       const decs = [['pre', t('ob_before')]].concat([1950, 1960, 1970, 1980, 1990, 2000].map((d) => [d, d + '–' + String(d + 9).slice(2)])).concat([['post', t('ob_after')]]);
       const years = typeof ob.dec === 'number' ? '<div class="ob-grid5">' + Array.from({ length: 10 }, (x, i) => ob.dec + i).filter((y) => y <= nowY).map((y) => chip('data-ob-y', y, String(y), ob.y === y)).join('') + '</div>' : '';
       const months = ob.y && nowY - ob.y === 18 ? '<h2 class="ob-h2">' + esc(t('ob_month_h')) + '</h2><div class="ob-grid4">' + t('months').map((mn, i) => chip('data-ob-m', i + 1, mn, ob.m === i + 1)).join('') + '</div>' : '';
-      v.innerHTML = '<div class="stack ob" style="gap:14px">' + head(t('ob_age_h'), t('ob_age_p')) + '<div class="ob-grid4">' + decs.map((d) => chip('data-ob-dec', d[0], d[1], String(ob.dec) === String(d[0]))).join('') + '</div>' + years + months + '<p class="small">' + esc(t('ob_u18')) + '</p></div>';
+      v.innerHTML = '<div class="stack ob" style="gap:14px">' + head(t('ob_about_h'), '') + '<label class="ob-name">' + esc(t('ob_name_l')) + '<input type="text" id="ob-name" autocomplete="given-name" maxlength="40" placeholder="' + esc(t('ob_name_ph')) + '" value="' + esc(ob.name || '') + '"></label>' +
+        '<h2 class="ob-h2">' + esc(t('ob_age_h')) + '</h2><div class="ob-grid4">' + decs.map((d) => chip('data-ob-dec', d[0], d[1], String(ob.dec) === String(d[0]))).join('') + '</div>' + years + months + why('ob_age_p') + '</div>';
+      $('#ob-name', v).addEventListener('input', (e) => { ob.name = String(e.target.value || '').trim().slice(0, 40); obSave(); });
       const decide = () => {
         const age = nowY - ob.y;
         if (age < 18 || (age === 18 && ob.m && ob.m > curM)) { mem.under18 = true; mem.ob = null; obClear(); render(); return; }
         if (age === 18 && !ob.m) { render(); return; }
-        mem.teen = false; ob.dob = toISO(new Date(ob.y, (ob.m || 7) - 1, 1)); if (ob.read) { finishRead(); return; } ob.step = 2; render();
+        mem.teen = false; ob.dob = toISO(new Date(ob.y, (ob.m || 7) - 1, 1)); ob.step = 2; render();
       };
       v.querySelectorAll('[data-ob-dec]').forEach((b) => b.addEventListener('click', () => { const d = b.dataset.obDec; if (d === 'post') { mem.under18 = true; mem.ob = null; obClear(); render(); return; } if (d === 'pre') { ob.dec = 'pre'; ob.y = 1945; ob.m = null; decide(); return; } ob.dec = +d; ob.y = null; ob.m = null; render(); }));
       v.querySelectorAll('[data-ob-y]').forEach((b) => b.addEventListener('click', () => { ob.y = +b.dataset.obY; ob.m = null; decide(); }));
       v.querySelectorAll('[data-ob-m]').forEach((b) => b.addEventListener('click', () => { ob.m = +b.dataset.obM; decide(); }));
       back(() => { state.stage = 'welcome'; mem.ob = null; obClear(); save(); render(); });
     } else if (ob.step === 2) {
-      /* Her stage: one choice. It decides Home, the buttons, the questions and the check-in. */
-      const tiles = [['cycle', 'ob_st_cycle', 'periods'], ['ttc', 'ob_st_ttc', 'ttc'], ['preg', 'ob_st_preg', 'preg'], ['post', 'ob_st_post', 'post'], ['meno', 'ob_st_meno', 'meno'], ['learn', 'ob_st_learn', 'learn']];
-      const pic = (x) => (!api.art ? '' : (x[0] === 'learn' ? api.art.spot('learn', { hue: 'sky', icon: 'learn', blob: 'var(--card)' }) : api.art.spot(x[2], { blob: 'var(--card)' })));
-      v.innerHTML = '<div class="stack ob" style="gap:14px">' + head(t('ob_stage_h'), t('ob_stage_p')) + '<div class="ob-stages">' + tiles.map((x) => '<button type="button" class="qa-tile hue-' + (x[0] === 'learn' ? 'sky' : hueOf(x[2])) + (ob.stage === x[0] ? ' on' : '') + '" data-ob-st="' + x[0] + '" aria-pressed="' + (ob.stage === x[0]) + '">' + pic(x) + '<span>' + esc(t(x[1])) + '</span></button>').join('') + '</div></div>';
-      v.querySelectorAll('[data-ob-st]').forEach((b) => b.addEventListener('click', () => { if (ob.stage !== b.dataset.obSt) { ob.lp = null; ob.lpk = null; ob.approx = false; ob.stopped = false; } ob.stage = b.dataset.obSt; ob.step = ob.stage === 'learn' ? 5 : 3; render(); }));
-      back(() => { ob.step = 1; render(); });
+      /* Her stage: one of 7 tiles, in life order. It decides Home, Explore, the questions and the check-in. */
+      const pic = (x) => (!api.art ? '' : api.art.spot(x[1], x[0] === 'meno' ? { hue: 'teal', icon: 'leaf', blob: 'var(--card)' } : { blob: 'var(--card)' }));
+      v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_stage_h'), t('ob_stage_p')) + '<div class="ob-stages ob-st7">' + OB_TILES.map((x) => '<button type="button" class="qa-tile ob-t7 hue-' + (x[0] === 'meno' ? 'teal' : hueOf(x[1])) + (x[0] === 'meno' ? ' wide' : '') + (ob.tile === x[0] ? ' on' : '') + '" data-ob-st="' + x[0] + '" aria-pressed="' + (ob.tile === x[0]) + '">' + pic(x) + '<span class="ob-tt"><strong>' + esc(t('ob_s7_' + x[0])) + '</strong><span>' + esc(t('ob_ss_' + x[0])) + '</span></span></button>').join('') + '</div></div>';
+      v.querySelectorAll('[data-ob-st]').forEach((b) => b.addEventListener('click', () => {
+        const k = b.dataset.obSt;
+        /* a woman already using Sakhi who picks another stage: the stage sheet moves her (her dates, a pregnancy ending) */
+        if (upd && OB_ENGINE[k] !== stageNow()) { mem.ob = null; obClear(); setHash('home'); setTimeout(() => openStage(k === 'pmos' ? 'cycle' : k), 60); return; }
+        if (ob.tile !== k) { ob.lp = null; ob.lpk = null; ob.lpm = null; ob.approx = false; ob.goals = []; ob.gap = null; ob.dx = null; ob.menoAgo = null; }
+        ob.tile = k; ob.stage = OB_ENGINE[k]; ob.stopped = k === 'meno'; ob.step = 3; render();
+      }));
+      back(() => { if (upd) { mem.ob = null; obClear(); setHash('home'); return; } ob.step = 1; render(); });
     } else if (ob.step === 3) {
-      const st = ob.stage;
+      /* Up to 3 goals. Her first pick chooses her plan; the others shape Today's tips and Explore. */
+      const list = OB_GOALS[ob.tile] || OB_GOALS.cycle; ob.goals = (ob.goals || []).filter((k) => list.indexOf(k) >= 0);
+      const gi = (k) => (api.plan && api.plan.goalIco ? safe(() => api.plan.goalIco(k), '') : '');
+      v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_goal_h'), t('ob_goal_p')) + '<div class="list ob-goals">' + list.map((k) => { const on = ob.goals.indexOf(k) >= 0; const n = on ? ob.goals.indexOf(k) + 1 : 0;
+        return '<button type="button" class="item ob-opt ob-goal' + (on ? ' on' : '') + '" data-ob-goal="' + k + '" aria-pressed="' + on + '">' + gi(k) + '<span class="body"><strong>' + esc(goalLabel(k)) + '</strong><span>' + esc(t('ob_gs_' + k)) + '</span></span><span class="ob-tick" aria-hidden="true">' + (n ? n : '') + '</span></button>'; }).join('') + '</div>' +
+        '<p class="small pl-err" id="ob-goal-err" hidden>' + esc(t('ob_goal_need')) + '</p><button type="button" class="btn primary block" id="ob-next">' + esc(ob.goals.length ? tf('ob_goal_n', { n: ob.goals.length }) : t('continue')) + '</button></div>';
+      v.querySelectorAll('[data-ob-goal]').forEach((b) => b.addEventListener('click', () => {
+        const k = b.dataset.obGoal; const i = ob.goals.indexOf(k);
+        if (i >= 0) ob.goals.splice(i, 1);
+        else if (k === 'track') ob.goals = ['track'];
+        else { ob.goals = ob.goals.filter((x) => x !== 'track'); if (ob.goals.length >= 3) { toast(t('ob_goal_max')); return; } ob.goals.push(k); }
+        render();
+      }));
+      $('#ob-next', v).addEventListener('click', () => {
+        if (!ob.goals.length) { $('#ob-goal-err', v).hidden = false; return; }
+        if (upd && ob.tile !== 'pmos') { finishUpdate(); return; }
+        ob.step = 4; render();
+      });
+      back(() => { ob.step = 2; render(); });
+    } else if (ob.step === 4) {
+      const st = ob.tile;
+      const next = () => { if (upd) { finishUpdate(); return; } ob.step = 5; render(); };
+      if (upd) {
+        /* a woman already using Sakhi: only the PMOS question (her diary already holds her dates) */
+        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('plan_in_dx'), '') + '<div class="chips">' + [['y', 'plan_yes'], ['n', 'plan_no'], ['ns', 'plan_dx_ns']].map((x) => chip('data-ob-dx', x[0], t(x[1]), ob.dx === x[0])).join('') + '</div>' + why('ob_dx_why') + '</div>';
+        v.querySelectorAll('[data-ob-dx]').forEach((b) => b.addEventListener('click', () => { ob.dx = b.dataset.obDx; next(); }));
+        back(() => { ob.step = 3; render(); }); return;
+      }
       if (st === 'preg') {
         const field = (k, id, lab, extra) => ob.pq === k ? '<div class="card"><label for="' + id + '">' + esc(t(lab)) + '</label><input type="date" id="' + id + '"' + extra + ' value="' + esc(ob[k] || '') + '"><button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>' : '';
         v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_preg_h'), t('ob_preg_p')) +
           '<button type="button" class="btn' + (ob.pq === 'edd' ? ' on' : '') + '" data-ob-pq="edd">' + esc(t('ob_preg_edd')) + '</button>' + field('edd', 'ob-edd', 'scan_edd', '') +
           '<button type="button" class="btn' + (ob.pq === 'lmp' ? ' on' : '') + '" data-ob-pq="lmp">' + esc(t('ob_preg_lmp')) + '</button>' + field('lmp', 'ob-lmp', 'lmp', ' max="' + toISO(today()) + '"') +
           '<button type="button" class="btn ghost" data-ob-pq="later">' + esc(t('ob_later')) + '</button></div>';
-        v.querySelectorAll('[data-ob-pq]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.obPq; if (k === 'later') { ob.edd = null; ob.lmp = null; ob.step = 4; render(); return; } ob.pq = k; render(); const f = $('#ob-' + k, v); if (f) safe(() => f.focus()); }));
+        v.querySelectorAll('[data-ob-pq]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.obPq; if (k === 'later') { ob.edd = null; ob.lmp = null; next(); return; } ob.pq = k; render(); const f = $('#ob-' + k, v); if (f) safe(() => f.focus()); }));
         const nx = $('#ob-next', v); if (nx) nx.addEventListener('click', () => {
           const val = ($('#ob-' + ob.pq, v) || {}).value || '';
           if (ob.pq === 'edd' && !inRange(val, -28, 280)) { toast(t('date_bad')); return; }
           if (ob.pq === 'lmp' && !inRange(val, -310, 0)) { toast(t('date_bad')); return; }
-          ob[ob.pq] = val; ob[ob.pq === 'edd' ? 'lmp' : 'edd'] = null; ob.step = 4; render();
+          ob[ob.pq] = val; ob[ob.pq === 'edd' ? 'lmp' : 'edd'] = null; next();
         });
       } else if (st === 'post') {
         if (!ob.bf) ob.bf = 'yes';
@@ -1505,32 +1579,41 @@
           '<button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>';
         $('#ob-birth', v).addEventListener('change', (e) => { ob.birth = e.target.value || null; });
         v.querySelectorAll('[data-ob-bf]').forEach((b) => b.addEventListener('click', () => { ob.bf = b.dataset.obBf; v.querySelectorAll('[data-ob-bf]').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); }); }));
-        $('#ob-next', v).addEventListener('click', () => { const b = $('#ob-birth', v).value; if (!inRange(b, -730, 0)) { toast(t('date_bad')); return; } ob.birth = b; ob.step = 4; render(); });
+        $('#ob-next', v).addEventListener('click', () => { const b = $('#ob-birth', v).value; if (!inRange(b, -730, 0)) { toast(t('date_bad')); return; } ob.birth = b; next(); });
+      } else if (st === 'meno') {
+        /* Menopause: when was her last period (nothing to predict, so no date picker) */
+        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_meno_h'), '') + '<div class="grid2 ob-lp">' + [['1', 'ob_mp_1'], ['2', 'ob_mp_2'], ['3', 'ob_mp_3'], ['none', 'dont_remember']].map((x) => chip('data-ob-mp', x[0], t(x[1]), ob.menoAgo === x[0])).join('') + '</div>' + why('ob_meno_why') + '</div>';
+        v.querySelectorAll('[data-ob-mp]').forEach((b) => b.addEventListener('click', () => { ob.menoAgo = b.dataset.obMp; next(); }));
       } else {
-        /* Periods, trying or midlife: when did the last one start? A guess is welcome and saved as a guess. */
-        const opts = [['0', 'today_b'], ['1', 'yesterday'], ['7', 'ob_lp_w1'], ['14', 'ob_lp_w2'], ['24', 'ob_lp_w34'], ['more', 'ob_lp_more']].concat(st === 'meno' ? [['stop', 'ob_lp_stop']] : []).concat([['pick', 'pick'], ['none', 'dont_remember']]);
-        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('lp_h'), t('ob_lp_p')) + (st === 'cycle' ? '<div class="list"><label class="item ob-pill"><span class="body"><strong>' + esc(t('pill_q')) + '</strong></span><input type="checkbox" id="ob-pill"' + (ob.pill ? ' checked' : '') + '></label></div>' : '') + '<div class="grid2 ob-lp">' + opts.map((x) => chip('data-ob-lp', x[0], t(x[1]), ob.lpk === x[0])).join('') + '</div>' +
-          (ob.lpk === 'pick' ? '<div class="card"><label for="ob-lpd">' + esc(t('pick')) + '</label><input type="date" id="ob-lpd" max="' + toISO(today()) + '" value="' + esc(ob.lpk === 'pick' && ob.lp ? ob.lp : '') + '"><button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>' : '') +
-          /* Version 37.1: "more than a month" is the usual answer when periods come 40 to 60 days apart; a guess is better than nothing */
-          (ob.lpk === 'more' ? '<div class="card ob-lpm"><h2 class="ob-h2">' + esc(t('ob_lp_more_h')) + '</h2><div class="grid2">' + [['38', 'ob_lp_m1'], ['60', 'ob_lp_m2'], ['90', 'ob_lp_m3']].map((x) => chip('data-ob-lpm', x[0], t(x[1]), ob.lpm === x[0])).join('') + '</div></div>' : '') + '</div>';
+        /* Periods, PMOS, trying or after 40: when did the last one start, and how far apart they usually are. A guess is
+           welcome and saved as a guess. */
+        const opts = [['0', 'today_b'], ['1', 'yesterday'], ['7', 'ob_lp_w1'], ['14', 'ob_lp_w2'], ['24', 'ob_lp_w34'], ['more', 'ob_lp_more'], ['pick', 'pick'], ['none', 'dont_remember']];
+        const gapQ = st !== 'mid' ? '<h2 class="ob-h2">' + esc(t('plan_in_gap')) + '</h2><div class="chips ob-gaps">' + OB_GAPS.map((k) => chip('data-ob-gap', k, t('plan_gap_' + k), ob.gap === k)).join('') + '</div>' : '';
+        const dxQ = st === 'pmos' ? '<h2 class="ob-h2">' + esc(t('plan_in_dx')) + '</h2><div class="chips">' + [['y', 'plan_yes'], ['n', 'plan_no'], ['ns', 'plan_dx_ns']].map((x) => chip('data-ob-dx', x[0], t(x[1]), ob.dx === x[0])).join('') + '</div>' : '';
+        const pillQ = st === 'cycle' || st === 'pmos' ? '<div class="list"><label class="item ob-pill"><span class="body"><strong>' + esc(t('pill_q')) + '</strong></span><input type="checkbox" id="ob-pill"' + (ob.pill ? ' checked' : '') + '></label></div>' : '';
+        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t(st === 'mid' ? 'lp_h' : 'ob_det_h'), '') + (st !== 'mid' ? '<h2 class="ob-h2">' + esc(t('lp_h')) + '</h2>' : '') + '<div class="grid2 ob-lp">' + opts.map((x) => chip('data-ob-lp', x[0], t(x[1]), ob.lpk === x[0])).join('') + '</div>' +
+          (ob.lpk === 'pick' ? '<div class="card"><label for="ob-lpd">' + esc(t('pick')) + '</label><input type="date" id="ob-lpd" max="' + toISO(today()) + '" value="' + esc(ob.lp || '') + '"></div>' : '') +
+          (ob.lpk === 'more' ? '<div class="card ob-lpm"><h2 class="ob-h2">' + esc(t('ob_lp_more_h')) + '</h2><div class="grid2">' + [['38', 'ob_lp_m1'], ['60', 'ob_lp_m2'], ['90', 'ob_lp_m3']].map((x) => chip('data-ob-lpm', x[0], t(x[1]), ob.lpm === x[0])).join('') + '</div></div>' : '') +
+          gapQ + dxQ + pillQ + why('ob_det_why') + '<p class="small pl-err" id="ob-lp-err" hidden>' + esc(t('ob_lp_need')) + '</p><button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>';
         const obp = $('#ob-pill', v); if (obp) obp.addEventListener('change', () => { ob.pill = obp.checked; });   /* Version 39.0 */
+        const pressOne = (sel, b) => v.querySelectorAll(sel).forEach((x) => { const on1 = x === b; x.classList.toggle('on', on1); x.setAttribute('aria-pressed', String(on1)); });
         v.querySelectorAll('[data-ob-lp]').forEach((b) => b.addEventListener('click', () => {
           const k = b.dataset.obLp; ob.lpk = k; ob.lpm = null;
-          if (k === 'pick') { render(); const f = $('#ob-lpd', v); if (f) safe(() => f.focus()); return; }
-          if (k === 'more') { render(); return; }
-          const n = parseInt(k, 10); ob.lp = isNaN(n) ? null : toISO(addDays(today(), -n)); ob.approx = n >= 7; ob.stopped = k === 'stop'; ob.step = 4; render();
+          if (k === 'pick' || k === 'more') { render(); const f = $('#ob-lpd', v); if (f) safe(() => f.focus()); return; }
+          const n = parseInt(k, 10); ob.lp = isNaN(n) ? null : toISO(addDays(today(), -n)); ob.approx = n >= 7; pressOne('[data-ob-lp]', b);
         }));
-        v.querySelectorAll('[data-ob-lpm]').forEach((b) => b.addEventListener('click', () => { ob.lpm = b.dataset.obLpm; ob.lp = toISO(addDays(today(), -(+b.dataset.obLpm))); ob.approx = true; ob.stopped = false; ob.step = 4; render(); }));
-        const nx = $('#ob-next', v); if (nx) nx.addEventListener('click', () => { const d = $('#ob-lpd', v).value; if (!inRange(d, -730, 0)) { toast(t('date_bad')); return; } ob.lp = d; ob.approx = false; ob.stopped = false; ob.step = 4; render(); });
+        v.querySelectorAll('[data-ob-lpm]').forEach((b) => b.addEventListener('click', () => { ob.lpm = b.dataset.obLpm; ob.lp = toISO(addDays(today(), -(+b.dataset.obLpm))); ob.approx = true; pressOne('[data-ob-lpm]', b); }));
+        v.querySelectorAll('[data-ob-gap]').forEach((b) => b.addEventListener('click', () => { ob.gap = ob.gap === b.dataset.obGap ? null : b.dataset.obGap; pressOne('[data-ob-gap]', ob.gap ? b : null); }));
+        v.querySelectorAll('[data-ob-dx]').forEach((b) => b.addEventListener('click', () => { ob.dx = b.dataset.obDx; pressOne('[data-ob-dx]', b); }));
+        $('#ob-next', v).addEventListener('click', () => {
+          if (ob.lpk === 'pick') { const d = ($('#ob-lpd', v) || {}).value; if (!inRange(d, -730, 0)) { toast(t('date_bad')); return; } ob.lp = d; ob.approx = false; }
+          if (!ob.lpk || (ob.lpk === 'more' && !ob.lpm)) { $('#ob-lp-err', v).hidden = false; return; }
+          next();
+        });
       }
-      back(() => { ob.step = 2; render(); });
-    } else if (ob.step === 4) {
-      /* Version 37: what she wants to work on first, and what her plan needs (the plan module draws these screens) */
-      if (!pin) { ob.step = 5; renderOnboard(v); return; }
-      const a = ob.intake = ob.intake || { iq: 0 }; a.stage = ob.stage; a.stopped = !!ob.stopped;
-      pin.render(v, a, { head: head, chip: chip, back: back, redraw: render, done: () => { ob.step = 5; render(); }, prev: () => { ob.step = 3; render(); } });
+      back(() => { ob.step = 3; render(); });
     } else {
-      /* A shared phone: offer the privacy kit right here. "Only me" goes straight to Home. */
+      /* A shared phone: offer the privacy kit right here. "Only me" goes straight on. */
       const B = window.SakhiAndroid; const canDisguise = !!(B && B.setDisguise);
       if (!ob.kit) ob.kit = { lock: true, plain: true, notes: false };
       const showKit = !!ob.share && ob.share !== 'me';
@@ -1540,35 +1623,123 @@
       v.querySelectorAll('[data-ob-sh]').forEach((b) => b.addEventListener('click', () => { ob.share = b.dataset.obSh; if (ob.share === 'me') finishOnboard(); else render(); }));
       v.querySelectorAll('[data-ob-kit]').forEach((c) => c.addEventListener('change', () => { ob.kit[c.dataset.obKit] = c.checked; }));
       const dn = $('#ob-done', v); if (dn) dn.addEventListener('click', finishOnboard);
-      back(() => { ob.step = learn ? 2 : (pin ? 4 : 3); render(); });
+      back(() => { ob.step = 4; render(); });
     }
   }
-  /* What onboarding saves: her birth month and year, her stage as situation flags, and her last period if she gave one. */
+  /* What joining saves: her birth month and year, her stage as situation flags, her last period if she gave one, and her goals.
+     No plan yet: Today offers it after her first log (prompts.planOffer). */
   function finishOnboard() {
-    const ob = mem.ob || {}; const st = ob.stage || 'cycle'; const sit = {};
+    const ob = mem.ob || {}; const tile = OB_ENGINE[ob.tile] ? ob.tile : 'cycle'; const st = OB_ENGINE[tile]; const sit = {};
     state.dob = ob.dob || null;
     if (st === 'preg') { sit.pregnant = true; if (ob.edd) { sit.scanEdd = ob.edd; sit.pregnantSince = toISO(addDays(fromISO(ob.edd), -280)); } if (ob.lmp) sit.pregnantSince = ob.lmp; }
     else if (st === 'post') { sit.deliveredOn = ob.birth; sit.breastfeeding = ob.bf !== 'no'; }
     else if (st === 'ttc') sit.planning = true;
-    else if (st === 'meno') { sit.midlife = true; if (ob.stopped) { sit.stopped = true; sit.stoppedOn = toISO(today()); } }
-    if (st === 'cycle' && ob.pill) { sit.hormones = true; sit.hormonesSince = toISO(today()); }   /* Version 39.0: on the pill or another hormone, a late or missing bleed is expected (review XS-10: with its start date) */
-    const a = ob.intake && ob.intake.goal && st !== 'learn' ? Object.assign({}, ob.intake, { stage: st }) : null;
-    if (a && (a.goal === 'pmos' || a.dx === 'y') && st !== 'preg') sit.pcos = true;
-    state.situation = sit; state.goals = [{ cycle: 'track', ttc: 'ttc', preg: 'preg', post: 'baby', meno: 'meno', learn: 'learn' }[st]].concat(a && a.goal !== 'track' ? [a.goal] : []);
+    else if (st === 'meno') { sit.midlife = true; if (tile === 'meno') { sit.stopped = true; sit.stoppedOn = toISO(today()); } }
+    if ((tile === 'cycle' || tile === 'pmos') && ob.pill) { sit.hormones = true; sit.hormonesSince = toISO(today()); }   /* Version 39.0: on the pill or another hormone, a late or missing bleed is expected (review XS-10: with its start date) */
+    if (tile === 'pmos' && ob.dx === 'y') sit.pcos = true;
+    const picked = (ob.goals || []).slice(); const g0 = picked[0] || 'track'; const g1 = g0 === 'irregular' && sit.pcos ? 'pmos' : g0;
+    state.situation = sit; state.goals = goalsList(st, picked, !!sit.pcos);
+    state.focus = { tile: tile, goals: picked, at: toISO(today()) }; if (ob.lp && (st === 'cycle' || st === 'ttc' || st === 'meno')) state.focus.lp = ob.lp;   /* her joining answer is not a log */
+    state.intake = { at: toISO(today()), stage: st, goal: g1, gap: ob.gap || null, dx: tile === 'pmos' ? ob.dx || null : null, stopped: tile === 'meno' };
     if (ob.lp && (st === 'cycle' || st === 'ttc' || st === 'meno')) state.events.push(ob.approx ? { d: ob.lp, t: 'start', approx: true } : { d: ob.lp, t: 'start' });
     const kit = ob.share && ob.share !== 'me' ? ob.kit : null;
     if (kit) { state.settings.discreet = !!kit.plain; if (kit.notes) safe(() => window.SakhiAndroid.setDisguise(true)); }
     state.stage = 'app'; state.langChosen = true;
-    /* Version 37: her plan starts from what she told Sakhi, and its reveal is her welcome, so the full tour no longer starts on
-       its own (each screen still has its own first-visit tips, and Me > How to use Sakhi replays the full tour) */
-    if (!state.fullTour) state.fullTour = { st: 'reveal', d: toISO(today()) };
+    /* the first-day tour runs from "Your Sakhi"; the full tour stays in Me > How to use Sakhi */
+    if (!state.fullTour) state.fullTour = { st: 'first', d: toISO(today()) };
     state.whatsNew = WHATS_NEW; state.joined = state.joinedAs === 'browse' || !state.joined ? toISO(today()) : state.joined; delete state.joinedAs;   /* review PLACES-02: the day she joined (V39.5 review ENGINE-11: not the day she first read) */
-    if (a && api.plan && api.plan.startFromIntake) safe(() => api.plan.startFromIntake(a));
-    mem.ob = null; obClear(); save(); setHash((state.prompts || {}).reveal ? 'plan-reveal' : 'home');
-    if (kit && kit.lock) { state.prompts = state.prompts || {}; state.prompts.pinDue = true; save(); }   /* asked on her first Home (Version 34.1) */
+    state.prompts = state.prompts || {}; delete state.prompts.firstLog;
+    if (g1 !== 'track' && api.plan && api.plan.packFor && safe(() => api.plan.packFor(g1, st), null)) state.prompts.planOffer = toISO(today());
+    if (ob.name) { mem.suName = ob.name; if (!acct.name) acct.name = ob.name; }
+    mem.ob = null; obClear(); save(); setHash(state.settings.discreet ? 'home' : 'your-sakhi');
+    if (kit && kit.lock) { state.prompts.pinDue = true; save(); }   /* asked on her first Home (Version 34.1) */
+  }
+  /* a woman already using Sakhi tells it her stage and goals (Today's card, once; and after a stage change) */
+  function finishUpdate() {
+    const ob = mem.ob || {}; const tile = OB_ENGINE[ob.tile] ? ob.tile : obTileOf(); const st = stageNow(); const sit = state.situation || (state.situation = {});
+    if (tile === 'pmos' && ob.dx === 'y') sit.pcos = true;
+    const picked = (ob.goals || []).slice(); const run = api.plan && safe(() => api.plan.running && api.plan.running() && api.plan.goal ? api.plan.goal() : null, null);
+    const goals = run && picked.indexOf(run) < 0 ? [run].concat(picked).slice(0, 3) : picked;   /* a running plan keeps its goal first */
+    state.goals = goalsList(st, goals, !!sit.pcos); state.focus = { tile: tile, goals: goals, at: toISO(today()) };
+    state.prompts = state.prompts || {}; state.prompts.exAsked = toISO(today());
+    if ((state.events || []).length || Object.keys(state.daily || {}).length) state.prompts.firstLog = state.prompts.firstLog || toISO(today());   /* her diary is not new: no first-log card */
+    mem.ob = null; obClear(); save(); setHash('home'); toast(t('fx_saved'));
   }
   /* "Just read": only her birth year (for the under-18 rule and the account), then the guides. */
   function finishRead() { const ob = mem.ob || {}; state.dob = ob.dob || state.dob || null; state.stage = 'browse'; state.whatsNew = WHATS_NEW; state.joined = state.joined || toISO(today()); state.joinedAs = 'browse'; state.langChosen = true; mem.ob = null; obClear(); save(); setHash('care'); }
+  /* Version 39.10: "Your Sakhi", after sign-up: what Sakhi will do for her, and what stays out of her way. Then the tour. */
+  const YS_ROWS = { cycle: ['log', 'today', 'plan'], ttc: ['log', 'today', 'plan'], preg: ['preg', 'today', 'plan'], post: ['post', 'today', 'plan'], meno: ['meno', 'today', 'plan'] };
+  const YS_ICO = { log: ['diary', 'rose'], today: ['home', 'sky'], plan: ['target', 'gold'], learn: ['learn', 'teal'], preg: ['check', 'orange'], post: ['heart', 'plum'], meno: ['moon', 'purple'] };
+  function renderYourSakhi(v) {
+    if (!canSave() || state.settings.discreet) { setHash('home'); return; }
+    const f = state.focus || {}; const st = stageNow(); const tile = f.tile || obTileOf(); const nm = String(acct.name || mem.suName || '').trim().split(/\s+/)[0];
+    const plan = !!(state.prompts || {}).planOffer;
+    const rows = (YS_ROWS[st] || YS_ROWS.cycle).map((k) => (k === 'plan' && !plan ? 'learn' : k));
+    const sub = (k) => (k === 'post' ? t('plan_a_rcheck_s') : t('ys_' + k + '_s'));
+    const hid = st === 'preg' ? 'ys_hid_preg' : (st === 'post' ? 'ys_hid_post' : (st === 'meno' ? 'ys_hid_meno' : 'ys_hid_cycle'));
+    v.innerHTML = '<div class="stack ob ys" style="gap:14px"><h1>' + esc(nm ? tf('ys_h', { name: nm }) : t('ys_h0')) + '</h1>' +
+      '<div class="chips ys-chips"><span class="pill ys-st hue-' + (tile === 'meno' ? 'teal' : hueOf(tile === 'pmos' ? 'pmos' : (OB_TILES.find((x) => x[0] === tile) || ['', 'periods'])[1])) + '">' + esc(t('ob_s7_' + tile)) + '</span>' + (f.goals || []).filter((k) => k !== 'track').map((k) => '<span class="pill muted">' + esc(goalLabel(k)) + '</span>').join('') + '</div>' +
+      '<p class="eyebrow">' + esc(t('ys_helps')) + '</p><div class="list ys-rows">' + rows.map((k) => '<div class="item quiet"><span class="ico-sm hue hue-' + YS_ICO[k][1] + '">' + icon(YS_ICO[k][0]) + '</span><span class="body"><strong>' + esc(t('ys_' + k)) + '</strong><span>' + esc(sub(k)) + '</span></span></div>').join('') + '</div>' +
+      '<p class="small ys-hid">' + esc(t(hid) + ' ' + t('ys_hid_more')) + '</p>' +
+      '<button type="button" class="btn primary block" id="ys-tour">' + esc(t('ys_tour')) + '</button><button type="button" class="btn ghost block" id="ys-skip">' + esc(t('ys_skip')) + '</button></div>';
+    const seen = () => { state.tours = state.tours || {}; state.tours.home = { st: 'done', d: toISO(today()) }; save(); };   /* one tour on her first day (the full tour stays in Me > How to use Sakhi) */
+    $('#ys-tour', v).addEventListener('click', () => { seen(); startTour('first-day', true); });
+    $('#ys-skip', v).addEventListener('click', () => { seen(); setHash('home'); });
+  }
+  /* Version 39.10: her first log in Diary, with why it helps (once, for a woman who joined with Version 39.10) */
+  const FL_SIGNS = ['d_cramps', 'd_acne', 'd_mood', 'd_tired'];
+  const firstLogDue = () => canSave() && !state.sample && !!state.focus && !(state.prompts || {}).firstLog && state.stage === 'app' && !state.settings.discreet;   /* a shared phone keeps Notes plain: she logs the usual way */
+  function firstLogCard() {
+    if (!firstLogDue()) return '';
+    const st = stageNow(); const why = (ks) => '<div class="list fl-why">' + ks.map((k, i) => '<div class="item quiet"><span class="fl-n">' + (i + 1) + '</span><span class="body"><span>' + esc(t(k)) + '</span></span></div>').join('') + '</div>';
+    const card = (h, ks, inner) => '<section class="card fl-card" id="fl-card" data-nofold="1"><h3>' + esc(t(h)) + '</h3>' + why(ks) + inner + '</section>';
+    if (st === 'preg') return card('fl_preg_h', ['fl_pw1', 'fl_pw2', 'fl_pw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['preg-week'] ? 'preg-week' : 'preg-plan') + '">' + esc(t('fl_preg_b')) + '</button>');
+    if (st === 'post') return card('fl_post_h', ['fl_bw1', 'fl_bw2', 'fl_bw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['post-recovery'] ? 'post-recovery' : 'post') + '">' + esc(t('fl_post_b')) + '</button>');
+    if (st === 'meno' && (state.situation || {}).stopped) return card('fl_meno_h', ['fl_mw1', 'fl_mw2', 'fl_mw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['meno-diary'] ? 'meno-diary' : 'meno') + '">' + esc(t('fl_meno_b')) + '</button>');
+    const ls = lastStart(); const m = mem.fl || (mem.fl = { days: null, signs: [] });
+    const lp = ls ? '<div class="item quiet fl-lp"><span class="body"><span>' + esc(t('fl_last')) + '</span><strong>' + esc(fmtD(ls, { day: 'numeric', month: 'short' }) + ' · ' + (diffDays(ls, today()) === 0 ? t('today_b') : (diffDays(ls, today()) === 1 ? t('yesterday') : tf('fl_ago', { n: diffDays(ls, today()) })))) + '</strong></span><button type="button" class="linkbtn" data-fl-lp="1">' + esc(t('fl_change')) + '</button></div>'
+      : '<button type="button" class="btn block" data-fl-lp="1">' + esc(t('fl_lp_q')) + '</button>';
+    const days = ls ? '<p class="fl-q">' + esc(t('fl_days')) + '</p><div class="chips" role="group" aria-label="' + esc(t('fl_days')) + '">' + ['3', '4', '5', '6', '7'].map((n) => '<button type="button" class="chip' + (m.days === n ? ' on' : '') + '" data-fl-days="' + n + '" aria-pressed="' + (m.days === n) + '">' + esc(n === '7' ? '7+' : n) + '</button>').join('') + '</div>' : '';
+    const signs = '<p class="fl-q">' + esc(t('fl_anything')) + '</p><div class="chips" role="group" aria-label="' + esc(t('fl_anything')) + '">' + FL_SIGNS.concat(['none']).map((k) => '<button type="button" class="chip' + ((k === 'none' ? m.none : m.signs.indexOf(k) >= 0) ? ' on' : '') + '" data-fl-sign="' + k + '" aria-pressed="' + !!(k === 'none' ? m.none : m.signs.indexOf(k) >= 0) + '">' + esc(t(k === 'none' ? 'fl_none' : k)) + '</button>').join('') + '</div>';
+    return card('fl_why_h', ['fl_w1', 'fl_w2', 'fl_w3'], '<p class="eyebrow fl-h">' + esc(t('fl_h')) + '</p><div class="list">' + lp + '</div>' + days + signs + '<button type="button" class="btn primary block" id="fl-save">' + esc(t('fl_save')) + '</button>');
+  }
+  function wireFirstLog(v) {
+    const c = $('#fl-card', v); if (!c) return; const m = mem.fl || (mem.fl = { days: null, signs: [] });
+    const done = () => { state.prompts = state.prompts || {}; state.prompts.firstLog = toISO(today()); mem.fl = null; save(); };
+    c.querySelectorAll('[data-fl-go]').forEach((b) => b.addEventListener('click', () => { done(); setHash(b.dataset.flGo); }));
+    c.querySelectorAll('[data-fl-lp]').forEach((b) => b.addEventListener('click', () => { const ls = lastStart(); openLog('start', ls ? toISO(ls) : toISO(today()), null); }));
+    c.querySelectorAll('[data-fl-days]').forEach((b) => b.addEventListener('click', () => { m.days = m.days === b.dataset.flDays ? null : b.dataset.flDays; render(); }));
+    c.querySelectorAll('[data-fl-sign]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.flSign; if (k === 'none') { m.none = !m.none; if (m.none) m.signs = []; } else { m.none = false; const i = m.signs.indexOf(k); if (i >= 0) m.signs.splice(i, 1); else m.signs.push(k); } render(); }));
+    const sv = $('#fl-save', c); if (sv) sv.addEventListener('click', () => {
+      const ls = lastStart(); const tdS = toISO(today());
+      if (ls && m.days) { const end = addDays(ls, +m.days - 1); const open = state.events.some((e) => e.t === 'end' && e.d >= toISO(ls)); if (!open && end < today()) state.events.push({ d: toISO(end), t: 'end' }); }
+      if (m.signs.length) { const cur = (state.daily[tdS] || []).slice(); m.signs.forEach((k) => { if (cur.indexOf(k) < 0) cur.push(k); }); state.daily[tdS] = cur; }
+      done(); toast(t('fl_saved')); setHash('home');
+    });
+  }
+  /* Version 39.10: on Today in her first 30 days (before her plan): log today, and one read for her stage */
+  function firstDaysRows(disc) {
+    const f = state.focus; if (disc || !f || !canSave() || state.sample) return [];
+    if (diffDays(fromISO(f.at), today()) > 30) return [];
+    if (api.plan && safe(() => (api.plan.running && api.plan.running()) || (api.plan.pending && api.plan.pending()), false)) return [];
+    const out = []; const st = stageNow(); const tdS = toISO(today());
+    const logged = (state.daily[tdS] || []).length || state.events.some((e) => e.d === tdS) || (state.prompts || {}).firstLog === tdS;
+    if ((st === 'cycle' || st === 'ttc' || (st === 'meno' && !(state.situation || {}).stopped)) && !logged) out.push({ id: 'core-log', order: 20, icon: 'drop', hue: 'rose', title: t('td_log'), sub: t('td_log_s'), go: 'diary' });
+    const g = stageGroup(); const rd = readsOf();
+    const a = g ? allArticles().filter((x) => x.group === g).find((x) => !rd[x.group + '.' + x.id]) : null;
+    if (a) out.push({ id: 'core-read', order: 30, icon: GROUP_ICONS[a.group] || 'learn', hue: hueOf(a.group), title: L(a, 'title'), sub: t('td_read_s'), go: 'a-' + a.group + '.' + a.id });
+    return out;
+  }
+  /* Version 39.10: a woman who joined before it tells Sakhi her stage and goals, once (and again after a stage change) */
+  function exCard(disc) {
+    if (disc || !canSave() || state.sample || state.focus || (state.prompts || {}).exAsked || state.stage !== 'app') return '';
+    return '<div class="card soft ex-card" data-nofold="1"><h3>' + esc(t('fx_h')) + '</h3><p class="small">' + esc(t('fx_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="ex-go">' + esc(t('fx_b')) + '</button><button type="button" class="btn sm" id="ex-not">' + esc(t('tour_later')) + '</button></div></div>';
+  }
+  function wireExCard(v) {
+    const g = $('#ex-go', v); if (g) g.addEventListener('click', () => { const tile = obTileOf(); mem.ob = { step: 2, update: true, tile: tile, stage: OB_ENGINE[tile], goals: (state.goals || []).slice(1).filter((k) => (OB_GOALS[tile] || []).indexOf(k) >= 0) }; setHash('join-update'); });
+    const n = $('#ex-not', v); if (n) n.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.exAsked = toISO(today()); save(); render(); });
+  }
+  function renderJoinUpdate(v) { if (!mem.ob || !mem.ob.update) { setHash('home'); return; } renderOnboard(v); }
   function renderBrowseHome(v) { v.innerHTML = acctCard() + '<div class="card"><h2>' + esc(t('browse_h')) + '</h2><p>' + esc(t('browse_p')) + '</p><button type="button" class="btn primary block" id="b-start">' + esc(t('start')) + '</button><button type="button" class="btn block" data-go="care">' + esc(t('all_tools')) + '</button></div>' + acctItem(); wire(v); $('#b-start', v).addEventListener('click', () => { state.stage = 'onboard'; mem.ob = { step: 1 }; render(); }); }
 
   /* ---------- account: every woman signs up with her mobile number; her diary never leaves the phone ----------
@@ -1651,7 +1822,7 @@
     }, 250));
   }
   const profileOf = (a) => ({ name: String(a.name || '').trim().slice(0, 40), pincode: String(a.pin || '').trim(), email: String(a.email || '').trim().toLowerCase().slice(0, 254), heard: a.heard || '', upd_sms: !!a.sms, upd_wa: !!a.wa });
-  const aboutOf = () => ({ name: acct.name || '', pin: acct.pincode || '', email: acct.email || '', heard: acct.heard || '', sms: !!acct.upd_sms, wa: !!acct.upd_wa });
+  const aboutOf = () => ({ name: acct.name || mem.suName || '', pin: acct.pincode || '', email: acct.email || '', heard: acct.heard || '', sms: !!acct.upd_sms, wa: !!acct.upd_wa });
   /* The same rules as the server (SERVER_SPEC 5.3): a first name with a letter in it, a 6-digit PIN code, and an email only if
      it looks like one. */
   /* A letter in any script. The \p{L} pattern is built at run time: written as a literal, it stops older WebViews (before
@@ -2048,11 +2219,11 @@
     /* Version 39.7: each module's card is its own entry (so "More from Sakhi (n)" counts them), and homeLast waits behind all */
     const slot = [vc].concat(items.filter((h) => h !== cu), planEarly() ? [] : [hu].concat(runHook('homeTop', [api]), [su, cu], runHook('homeLast', [api]))).filter(Boolean);
     const slotHtml = slot.length ? '<section class="slot"><p class="eyebrow slot-h">' + esc(t('slot_h')) + '</p>' + slot[0] + (slot.length > 1 ? '<details class="slot-more"' + (mem.slotMore ? ' open' : '') + '><summary class="linkbtn">' + esc(tf('slot_more', { n: slot.length - 1 })) + '</summary><div class="slot-in">' + slot.slice(1).join('') + '</div></details>' : '') + '</section>' : '';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' mini' : '') + '" style="gap:10px">' + main + (mini0 ? '' : stageLink) + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact"') : actionsHtml(showLog, disc, inPeriod)) + td   /* V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' mini' : '') + '" style="gap:10px">' + main + (mini0 ? '' : stageLink) + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact"') : actionsHtml(showLog, disc, inPeriod)) + td + exCard(disc)   /* Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
-    wireOneTap(v); wireHomeV30(v);
+    wireOneTap(v); wireHomeV30(v); wireExCard(v);   /* Version 39.10 */
     const hg = $('#hu-got', v); if (hg) hg.addEventListener('click', () => { const ri = rangeInfo(); state.prompts = state.prompts || {}; if (ri) state.prompts.heads = toISO(ri.from); save(); render(); });
     const sbtn = $('#stage-btn', v); if (sbtn) sbtn.addEventListener('click', openStage);
     const ll = $('#log-last', v); if (ll) ll.addEventListener('click', () => openLog('start', toISO(today()), null));
@@ -2163,6 +2334,7 @@
   function todayHtml(disc) {
     todayItems = []; if (!canSave()) return '';
     const items = []; HOOKS.today.forEach((h) => { const x = safe(() => h.fn(api), null); (Array.isArray(x) ? x : [x]).forEach((y) => { if (y && y.id && y.title) items.push(y); }); });
+    firstDaysRows(disc).forEach((y) => items.push(y));   /* Version 39.10 */
     const tdS = toISO(today());
     reminders.list().forEach((r) => {
       if (r.on === false || (r.mod && r.mod !== 'tools') || r.kind === 'visit' || r.kind === 'checkup') return;
@@ -2175,7 +2347,7 @@
     const isMed = (x) => x.icon === 'pill' || x.id === 'iron' || !!x.med; const isPlan = (x) => /^plan-/.test(x.id);
     if (list.length > 4 && list.filter(isPlan).length > 1) { const pl = list.filter(isPlan); list = list.filter((x) => !isPlan(x)).concat([{ id: 'plan-all', order: pl[0].order, icon: 'check', hue: 'purple', title: tf('today_plan_n', { n: pl.length }), sub: '', go: 'plan' }]).sort(byOrder); }
     const keep = (x) => isMed(x) || /^rem-/.test(x.id);   /* review life-11: tablets and her own reminders never drop out */
-    const meds = list.filter(keep), rest = list.filter((x) => !keep(x)).slice(0, Math.max(0, 4 - meds.length));
+    const meds = list.filter(keep), rest = list.filter((x) => !keep(x)).slice(0, Math.max(0, Math.min(3, 4 - meds.length)));   /* Version 39.10: 3 steps at most */
     todayItems = list.filter((x) => meds.indexOf(x) >= 0 || rest.indexOf(x) >= 0);
     const head = runHook('todayHead', [api], true);   /* Version 37.1: in discreet mode too; the plan writes it in plain words */
     if (!todayItems.length && !head) return '';
@@ -2335,17 +2507,23 @@
       const midlife = (ageYears() || 0) >= 40 || state.situation.stopped || state.situation.midlife; const preg = isPregnant(); const note = (state.notes || {})[d] || '';
       /* Version 39.1 (journey audit P1-05): flow and pain on every bleeding day, not only the day it started */
       const bdk = bleedingDays()[d]; const bleedOn = !preg && (bdk === 'start' || bdk === 'bleed' || has('end'));
-      const periodSec = preg ? '' : '<div class="symcat hue-rose" data-cat="period"><b>' + esc(t('day_period')) + '</b><div class="symchips">' + [['start', 'period_started', 'drop'], ['end', 'period_ended', 'check'], ['spot', 'spotting', 'dropx']].map((x) => '<button type="button" class="symchip' + (has(x[0]) ? ' on' : '') + '" data-pev="' + x[0] + '" aria-pressed="' + has(x[0]) + '"><span class="si">' + sIco(x[2]) + '</span>' + esc(t(x[1])) + '</button>').join('') + '</div>' + (has('start') || bleedOn ? '<button type="button" class="linkbtn" id="day-flow">' + esc(t('day_flow')) + '</button>' : '') + '</div>';
+      const periodSec = preg ? '' : '<div class="symcat hue-rose" data-cat="period"><b>' + esc(t('day_period')) + '</b><div class="symchips">' + [['start', 'period_started', 'drop'], ['end', 'period_ended', 'check'], ['spot', 'spotting', 'dropx']].map((x) => '<button type="button" class="symchip' + (has(x[0]) ? ' on' : '') + '" data-pev="' + x[0] + '" aria-pressed="' + has(x[0]) + '"><span class="si">' + sIco(x[2]) + '</span>' + esc(t(x[1])) + '</button>').join('') + '</div>' + (has('start') || bleedOn ? flowTiles(d) : '') + '</div>';   /* Version 39.11: her flow in one tap */
       const rel = isToday && api.relief ? api.relief.pick(got) : null;
       const relCta = rel ? '<button type="button" class="relief-cta" id="day-relief"><span class="ico-sm hue hue-' + rel.hue + '">' + I.leaf + '</span><span class="body"><strong>' + esc(rel.h) + '</strong><span>' + esc(rel.sub) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '';
       const w28 = preg && !!pregInfo() && pregInfo().weeks >= 28;
       const cats = SYM.map((c) => { const chips = c[2].filter((x) => !(x[2] === 'preg' && !preg) && !(x[2] === 'preg28' && !w28) && !(x[2] === 'mid' && !midlife)); return '<div class="symcat hue-' + c[1] + '" data-cat="' + c[0].slice(4) + '"><b>' + esc(t(c[0])) + '</b><div class="symchips">' + chips.map((x) => '<button type="button" class="symchip' + (got.indexOf(x[0]) >= 0 ? ' on' : '') + '" data-sym="' + x[0] + '" aria-pressed="' + (got.indexOf(x[0]) >= 0) + '"><span class="si">' + sIco(x[1]) + '</span>' + esc(t(x[0])) + '</button>').join('') + '</div></div>' + (rel && c[2].some((x) => x[0] === rel.key) ? relCta : ''); }).join('');
       const noteSec = '<div class="symcat note hue-' + KINDS.note.hue + '" data-cat="note"><label for="day-note"><b>' + esc(t('note_h')) + '</b></label><textarea id="day-note" maxlength="600" rows="3" placeholder="' + esc(t('note_ph')) + '">' + esc(note) + '</textarea><span class="small">' + esc(t('note_p')) + '</span></div>';
-      sheet('<div class="day-top" data-nosay="1"><button type="button" class="iconbtn" data-dstep="-1" aria-label="' + esc(t('prev_day')) + '"' + (addDays(dt, -1) < addDays(today(), -90) ? ' disabled' : '') + '>' + I.back + '</button><div class="day-tt"><h2 class="hand">' + esc(isToday ? t('today_short') : (isYday ? t('yesterday_l') : fmtD(dt, { weekday: 'short', day: 'numeric', month: 'short' }))) + '</h2>' + (cd ? '<span class="small">' + esc(t('cycle_day')) + ' ' + cd + '</span>' : '') + '</div><button type="button" class="iconbtn" data-dstep="1" aria-label="' + esc(t('next_day')) + '"' + (isToday ? ' disabled' : '') + ' style="transform:scaleX(-1)">' + I.back + '</button></div>' +
-        periodSec + cats + noteSec + '<div class="sheet-foot"><button type="button" class="btn primary block" id="day-done">' + esc(t('sym_done')) + '</button></div>', (sh) => {
+      /* Version 39.11: a week at a time, with the week strip under the date (which opens the month) and the day's facts */
+      sheet('<div class="day-top" data-nosay="1"><button type="button" class="iconbtn" data-dweek="-7" aria-label="' + esc(t('prev_week')) + '"' + (addDays(dt, -1) < addDays(today(), -90) ? ' disabled' : '') + '>' + I.back + '</button><div class="day-tt"><button type="button" class="day-mo" id="day-month" aria-label="' + esc(t('day_month')) + '"><h2 class="hand">' + esc(isToday ? t('today_short') : (isYday ? t('yesterday_l') : fmtD(dt, { weekday: 'short', day: 'numeric', month: 'short' }))) + '</h2>' + CHEV_D + '</button>' + (cd && state.settings.discreet ? '<span class="small">' + esc(t('cycle_day')) + ' ' + cd + '</span>' : '') + '</div><button type="button" class="iconbtn" data-dweek="7" aria-label="' + esc(t('next_week')) + '"' + (isToday ? ' disabled' : '') + ' style="transform:scaleX(-1)">' + I.back + '</button></div>' +
+        dayStrip(d) + (state.settings.discreet ? '' : dayFactsHtml(d)) + periodSec + sexHtml(d) + cats + noteSec + '<div class="sheet-foot"><button type="button" class="btn primary block" id="day-done">' + esc(t('sym_done')) + '</button></div>', (sh) => {
         sh.classList.add('paper');
         const dr = $('#day-relief', sh); if (dr) dr.addEventListener('click', () => { closeSheet(); setHash('relief-' + rel.id); });
-        sh.querySelectorAll('[data-dstep]').forEach((b) => b.addEventListener('click', () => { const nd = addDays(fromISO(d), +b.dataset.dstep); if (nd > today() || nd < addDays(today(), -90)) return; d = toISO(nd); draw(); }));
+        sh.querySelectorAll('[data-dweek]').forEach((b) => b.addEventListener('click', () => { let nd = addDays(fromISO(d), +b.dataset.dweek); if (nd > today()) nd = today(); if (nd < addDays(today(), -90)) nd = addDays(today(), -90); if (toISO(nd) === d) return; d = toISO(nd); draw(); }));
+        sh.querySelectorAll('[data-wsel]').forEach((b) => b.addEventListener('click', () => { d = b.dataset.wsel; draw(); }));
+        const dmo = $('#day-month', sh); if (dmo) dmo.addEventListener('click', () => { mem.diaryTab = 'cal'; mem.calMonth = toISO(new Date(dt.getFullYear(), dt.getMonth(), 1)); closeSheet(); if (route() === 'diary') render(); else setHash('diary'); });
+        sh.querySelectorAll('[data-pads]').forEach((b) => b.addEventListener('click', () => { setPads(d, b.dataset.pads); save(); emit('log', { type: 'flow' }); draw(); }));
+        sh.querySelectorAll('[data-sx]').forEach((b) => b.addEventListener('click', () => { state.sex = state.sex || {}; if (state.sex[d] === b.dataset.sx) delete state.sex[d]; else state.sex[d] = b.dataset.sx; save(); draw(); }));
+        sh.querySelectorAll('[data-sgo]').forEach((b) => b.addEventListener('click', () => { closeSheet(); setHash(b.dataset.sgo); }));
         sh.querySelectorAll('[data-pev]').forEach((b) => b.addEventListener('click', () => {
           const tp = b.dataset.pev; const ex = state.events.filter((e) => e.d === d && e.t === tp);
           if (ex.length) state.events = state.events.filter((e) => ex.indexOf(e) < 0); else { if (tp === 'start') dropGuesses(d); if (tp === 'end') dropEnds(d); state.events.push({ d: d, t: tp }); emit('log', { type: tp }); }   /* an end replaces an earlier one of the same period (Version 32) */
@@ -2589,6 +2767,7 @@
           if (pick !== 'meno') s0.breastfeeding = false;
           if (s0.stopped && !wasStopped) s0.stoppedOn = lastBleedISO() || toISO(today()); if (!s0.stopped) delete s0.stoppedOn;   /* review XS-1: bleeding after her last period still counts */
         }
+        state.focus = null; if (state.prompts) delete state.prompts.exAsked;   /* Version 39.10: Today asks her goals for her new stage */
         save(); closeSheet(); toast(t('stage_saved'));
         const ls = lastStart();
         if ((pick === 'cycle' || pick === 'ttc') && s0.deliveredOn && diffDays(fromISO(s0.deliveredOn), today()) <= 365 && !(ls && ls > fromISO(s0.deliveredOn))) { setHash('home'); toast(t('stage_log_first')); openLog('start', toISO(today()), null); return; }
@@ -2612,7 +2791,7 @@
   const fabRoot = () => { let r = document.getElementById('fab-root'); if (!r) { r = document.createElement('div'); r.id = 'fab-root'; document.body.appendChild(r); } return r; };
   function renderFab(r) {
     const root = fabRoot(); fabOpen = false; if (fabIO) { fabIO.disconnect(); fabIO = null; }
-    const on = !!r && state.stage === 'app' && !mem.locked && (r === 'diary' || r === 'home');
+    const on = !!r && state.stage === 'app' && !mem.locked && (r === 'diary' || r === 'home') && !(r === 'diary' && firstLogDue());   /* Version 39.10: the first log card has its own Save */
     document.body.classList.toggle('has-fab', on && r === 'diary');
     if (!on) { root.innerHTML = ''; return; }
     root.innerHTML = '<button type="button" class="fab' + (r === 'home' ? ' away' : '') + '" id="fab" aria-expanded="false" aria-label="' + esc(t('fab_add')) + '">' + PLUS + '</button>';
@@ -2661,18 +2840,21 @@
   /* a quick answer to replay the answer tour on: the first ordinary one for her stage (never danger signs) */
   const answerToShow = () => { const x = (QA[stageNow()] || []).concat(QA.cycle).find((y) => y[1].charAt(0) !== '#' && !/danger-signs|did-not-want/.test(y[1]) && findArticle(y[1])); return x ? x[1] : null; };
   const TOURS = [
+    /* Version 39.10: her first day, from "Your Sakhi": Today, then My plan and Explore, then Diary (its last button opens it) */
+    { id: 'first-day', kind: 'first', route: 'home', title: 'tour_first', hue: 'rose', order: 1, menu: false, auto: () => false, doneLabel: 'fd_start', done: () => setHash('diary'),
+      steps: [{ sel: '#view .today-card', h: 'fd1_h', p: 'fd1_p' }, { sel: '#tabbar', h: 'fd2_h', p: 'fd2_p' }, { sel: '#tabbar [data-go="diary"]', h: 'fd3_h', p: 'fd3_p' }] },
     /* screens; Home has one per stage, and the plain one in discreet mode */
     /* Version 37.1: on her plan's first three days, one tip only, on her plan (a replay from How to use Sakhi still shows them all) */
-    { id: 'home-plan', kind: 'feature', route: 'home', order: 5, menu: false, title: 'tw4_h', hue: 'rose', when: () => notDisc() && !!(api.plan && api.plan.running && safe(() => api.plan.running(), false)), auto: () => planEarly(), steps: [{ sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p' }] },
-    { id: 'home', route: 'home', title: 'tour_home', hue: 'rose', order: 10, auto: () => !planEarly(), when: () => !notDisc() || ['preg', 'post'].indexOf(stageNow()) < 0, steps: [{ sel: '.wkstrip', h: 'tw1_h', p: 'tw1_p' }, { sel: '.ract-row', h: 'tw2_h', p: () => (learnerNow() ? 'tw2_pl' : 'tw2_p') }, { sel: '.today-card', h: 'tw4_h', p: 'tw4_p' }] },   /* Version 37: the ask box moved to Explore; Today's plan takes its step */
+    { id: 'home-plan', kind: 'feature', route: 'home', order: 5, menu: false, title: 'tw4_h', hue: 'rose', when: () => notDisc() && !!(api.plan && api.plan.running && safe(() => api.plan.running(), false)), auto: () => planEarly(), steps: [{ sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p', when: () => !firstDaysOnly() }] },
+    { id: 'home', route: 'home', title: 'tour_home', hue: 'rose', order: 10, auto: () => !planEarly(), when: () => !notDisc() || ['preg', 'post'].indexOf(stageNow()) < 0, steps: [{ sel: '.wkstrip', h: 'tw1_h', p: 'tw1_p' }, { sel: '.ract-row', h: 'tw2_h', p: () => (learnerNow() ? 'tw2_pl' : 'tw2_p') }, { sel: '.today-card', h: 'tw4_h', p: 'tw4_p', when: () => !firstDaysOnly() }] },   /* Version 37: the ask box moved to Explore; Today's plan takes its step */
     { id: 'home-preg', route: 'home', auto: () => !planEarly(), title: 'tour_hpreg', hue: 'sky', order: 10, when: () => notDisc() && stageNow() === 'preg', steps: [
       { sel: '#view .card.hero', h: 'thp1_h', p: 'thp1_p', vars: () => ({ b: t('this_week') }) },
       { sel: '#view .ract-row', h: 'thp2_h', p: 'thp2_p', vars: () => ({ a: t('this_week'), b: t('my_logs') }) },
-      { sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p' }] },   /* Version 37: the quick answers moved to Explore */
+      { sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p', when: () => !firstDaysOnly() }] },   /* Version 37: the quick answers moved to Explore */
     { id: 'home-post', route: 'home', auto: () => !planEarly(), title: 'tour_hpost', hue: 'plum', order: 10, when: () => notDisc() && stageNow() === 'post', steps: [
       { sel: '#view .card.hero', h: () => (earlyPost() ? 'tpp1_h' : 'tpp1_hl'), p: () => (earlyPost() ? 'tpp1_p' : 'tpp1_pl'), vars: () => ({ b: t('pp_go') }) },
       { sel: '#view .ract-row', h: 'thp2_h', p: () => (earlyPost() ? 'tpp2_p' : 'tpp2_pl'), vars: () => ({ a: t('pp_rec_b'), b: t('pp_feed_b') }) },
-      { sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p' }] },
+      { sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p', when: () => !firstDaysOnly() }] },
     { id: 'home-ttc', route: 'home', auto: () => !planEarly(), title: 'tour_httc', hue: 'green', order: 20, when: () => notDisc() && stageNow() === 'ttc', steps: [
       /* Version 34.1: Home no longer links to her trying tools (they're in Care), so the second step points there */
       { sel: '#view .qa-grid', h: 'tht2_h', p: 'tht2_p' }, { sel: '#tabbar [data-go="care"]', h: 'tht3_h', p: 'tht3_p' }] },
@@ -2700,6 +2882,8 @@
   let tour = null, tourTm = 0, tourEnded = 0, tourOpening = false;
   const kv = (x) => (typeof x === 'function' ? x() : x);
   const stepOk = (s) => !s.when || s.when();
+  /* Version 39.10: Today holds only her first days' rows (log today, one read), not plan steps: its "Your plan for today" step waits */
+  const firstDaysOnly = () => { const c = document.querySelector('#view .today-card'); if (!c) return false; const its = [...c.querySelectorAll('.today-it')]; return its.length > 0 && its.every((x) => /\btoday-core-/.test(x.className)) && c.children.length === 2; };
   /* the element a step lights: its feature, or the block around it (wrap), e.g. the ring together with its legend */
   const stepEl = (s) => { const e = document.querySelector(s.sel); const fold = e && e.closest('details:not([open])'); if (fold) fold.open = true; return e && s.wrap ? e.closest(s.wrap) || e : e; };
   const tourRoot = () => { let r = document.getElementById('tour-root'); if (!r) { r = document.createElement('div'); r.id = 'tour-root'; document.body.appendChild(r); } return r; };
@@ -2709,7 +2893,7 @@
   const autoOk = (d) => (typeof d.auto === 'function' ? !!d.auto() : d.auto !== false);
   const unseen = (d) => { const st = tourSt(d.id); return !st || st.st === 'later'; };
   const hasTarget = (d) => d.steps.some((x) => stepOk(x) && document.querySelector(x.sel));
-  const URGENT = '#view .xp-home-now, #view [data-xp-urgent], #view .flag.urgent, #view .xp-card.xp-now, #view .xp-card.xp-today, #view .xp-card.xp-week';
+  const URGENT = '#view .xp-home-now, #view [data-xp-urgent], #view .flag.urgent, #view .xp-card.xp-now, #view .xp-card.xp-today, #view .xp-card.xp-week, #view #fl-card';   /* Version 39.10: Diary's tip waits for her first log */
   /* The gate for every tour that starts on its own: switched on, her own diary, unlocked, a minute after the last one, three a day. */
   function autoGate() {
     if (state.settings.toursAuto === false || state.sample || mem.locked || Date.now() - tourEnded < 60000) return false;
@@ -2792,6 +2976,7 @@
         if (first && first.route === 'home' && hasTarget(first)) { countTour(); startFullTour(false, legs); return; }
       }
       if (!autoGate()) return;
+      if (r === 'home' && api.plan && safe(() => api.plan.offering && api.plan.offering(), false)) return;   /* Version 39.10: while her plan's offer is up, Today's tips wait */
       const def = TOURS.filter((x) => x.route === r && autoOk(x) && tourFits(x) && unseen(x)).sort((x, y) => (x.order || 50) - (y.order || 50)).find(hasTarget);
       if (def) { countTour(); startTour(def.id, false); }
     }, force ? 250 : 650);
@@ -2848,7 +3033,7 @@
     /* in the full tour: the count names the screen, and the last step goes on to the next screen */
     const ch = tour.chain; const nextDef = ch && ch.i < ch.legs.length - 1 ? tourDef(ch.legs[ch.i + 1]) : null;
     const count = (ch ? screenName(tour.def.route) + ' · ' : '') + tf('hint_n', { i: i + 1, n: n });
-    const go = last ? (nextDef ? (nextDef.route === tour.def.route ? t('tour_next') : tf('tour_to', { s: screenName(nextDef.route) })) : t('tour_done')) : t('tour_next');
+    const go = last ? (nextDef ? (nextDef.route === tour.def.route ? t('tour_next') : tf('tour_to', { s: screenName(nextDef.route) })) : t(tour.def.doneLabel || 'tour_done')) : t('tour_next');
     const root = tourRoot();
     root.innerHTML = ['t', 'b', 'l', 'r'].map((k) => '<div class="tour-dim" data-dim="' + k + '"></div>').join('') + '<div class="tour-ring' + (s.tryIt ? ' try' : '') + '"></div>' +
       '<div class="tour-pop" role="dialog" aria-modal="false" aria-labelledby="tour-h" aria-describedby="tour-body" tabindex="-1"><div class="tour-top">' + (api.art ? api.art.sakhi({ pose: 'hi', look: state.settings.look }) : '') + '<strong id="tour-h">' + esc(t(kv(s.h))) + '</strong>' +
@@ -2861,7 +3046,7 @@
     $('#tour-x', root).addEventListener('click', () => endTour('later'));
     const lt = $('#tour-later', root); if (lt) lt.addEventListener('click', () => endTour('later'));
     const bk = $('#tour-back', root); if (bk) bk.addEventListener('click', () => { tour.i = Math.max(0, tour.i - 1); showTourStep(true); });
-    $('#tour-next', root).addEventListener('click', () => { if (last) { const c = tour.chain; endTour('done'); if (c) nextLeg(c); } else { tour.i++; showTourStep(true); } });
+    $('#tour-next', root).addEventListener('click', () => { if (last) { const c = tour.chain; const dn = tour.def.done; endTour('done'); if (c) nextLeg(c); else if (dn) safe(dn); } else { tour.i++; showTourStep(true); } });
     const sy = $('#tour-say', root); if (sy) sy.addEventListener('click', () => api.readAloud($('.tour-pop', root)));
     safe(() => $('.tour-pop', root).focus({ preventScroll: true }));
     if (state.settings.tourVoice && api.readAloud) setTimeout(() => { if (tour) api.readAloud($('.tour-pop', root)); }, 300);
@@ -2964,10 +3149,13 @@
   /* ---------- diary: calendar + trends ---------- */
   /* The diary is paper: a warm sheet, handwritten headings, dotted rules. The + button stays at hand on both tabs. */
   function renderDiary(v) {
-    const tab = mem.diaryTab; v.innerHTML = '<div class="tabs dtabs"><button type="button" class="' + (tab === 'cal' ? 'on' : '') + '" data-tab="cal">' + esc(t('calendar')) + '</button><button type="button" class="' + (tab === 'tr' ? 'on' : '') + '" data-tab="tr">' + esc(t('trends')) + '</button><button type="button" class="' + (tab === 'days' ? 'on' : '') + '" data-tab="days">' + esc(t('tab_days')) + '</button></div><div id="diary-body" class="view diary-paper"></div>';
+    const tab = mem.diaryTab; v.innerHTML = firstLogCard() + '<div class="tabs dtabs"><button type="button" class="' + (tab === 'cal' ? 'on' : '') + '" data-tab="cal">' + esc(t('calendar')) + '</button><button type="button" class="' + (tab === 'tr' ? 'on' : '') + '" data-tab="tr">' + esc(t('trends')) + '</button><button type="button" class="' + (tab === 'days' ? 'on' : '') + '" data-tab="days">' + esc(t('tab_days')) + '</button></div><div id="diary-body" class="view diary-paper"></div>';
     v.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => { mem.diaryTab = b.dataset.tab; render(); }));
     const body = $('#diary-body', v); if (tab === 'cal') renderCalendar(body); else if (tab === 'days') renderDays(body); else renderTrends(body);
+    wireFirstLog(v);   /* Version 39.10 */
   }
+  /* Version 39.11: fewer than 6 cycles yet: say when her fertile days will show (other reasons stay as they were) */
+  const fwFew = () => { if (state.settings.discreet || fertWhy() !== 'few') return ''; const n = Math.max(1, 6 - usable().length); return '<div class="fw-few"><span class="ico-sm hue hue-purple">' + I.clock + '</span><span class="fwf-t">' + esc(t('fw_few')) + ' <strong>' + esc(n === 1 ? t('fw_few_1') : tf('fw_few_n', { n: n })) + '</strong></span><button type="button" class="linkbtn" id="fw-why">' + esc(t('fw_why')) + '</button></div>'; };
   function renderCalendar(v) {
     const base = mem.calMonth ? fromISO(mem.calMonth) : new Date(today().getFullYear(), today().getMonth(), 1); const y = base.getFullYear(), m = base.getMonth();
     const first = new Date(y, m, 1); const offset = (first.getDay() + 6) % 7; const daysIn = new Date(y, m + 1, 0).getDate(); const bd = bleedingDays(); const ri = rangeInfo(); const tStr = toISO(today());
@@ -2975,19 +3163,22 @@
        estimated fertile window and ovulation day. None in discreet mode. */
     const pr = predictInfo(); const fz = pr && !state.settings.discreet ? [pr.fert, pr.fertNext].filter(Boolean) : []; const predSet = {};
     if (pr && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
-    let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
+    const hearts = sexHearts(); let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
     for (let d = 1; d <= daysIn; d++) {
       const dt = new Date(y, m, d); const s = toISO(dt); const k = bd[s]; const inR = ri && dt >= ri.from && dt <= ri.to; const fut = dt > today(); const ks = fut ? [] : kindsOn(s);
       const pred = !k && !!predSet[s]; const ov = !k && fz.some((f) => toISO(f.ov) === s); const fw = !k && !ov && fz.some((f) => dt >= f.fwFrom && dt <= f.fwTo);
       const cls = ['day', k === 'start' ? 'bleed' : (k === 'bleed' ? 'bleed light' : ''), k === 'spot' ? 'spot' : '', inR ? 'range' : '', pred ? 'pred' : '', fw ? 'fw' : '', ov ? 'ov' : '', s === tStr ? 'today' : '', fut ? 'other' : ''].join(' ');
       const aria = fmtD(dt, { day: 'numeric', month: 'long' }) + (k === 'start' || k === 'bleed' ? ', ' + t('cal_a_period') : '') + (k === 'spot' ? ', ' + t('cal_a_spot') : '') + (inR ? ', ' + t('cal_a_range') : '') + (pred ? ', ' + t('cal_a_pred') : '') + (ov ? ', ' + t('cal_a_ov') : '') + (fw ? ', ' + t('cal_a_fw') : '') + (s === tStr ? ', ' + t('today_l') : '') + (ks.length ? ', ' + t('cal_a_noted') + ': ' + ks.map((x) => t(KINDS[x].label)).join(', ') : '');
-      cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (ks.length ? kdots(s) : '') + '</button>';
+      const ht = hearts && !fut && !!(state.sex || {})[s];   /* Version 39.11 */
+      cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (ks.length || ht ? '<span class="kd" aria-hidden="true">' + dotsIn(s) + (ht ? HEART_I : '') + '</span>' : '') + '</button>';
     }
     const lk = (k) => '<span class="lk"><i class="hue-' + KINDS[k].hue + '"></i>' + esc(t(KINDS[k].label)) + '</span>';
     v.innerHTML = '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div></div>' +
+      fwFew() +   /* Version 39.11: when her fertile days will start */
       '<div class="legend"><span><i class="sw" style="background:var(--bleed)"></i>' + esc(t('bleeding')) + '</span><span><i class="sw" style="background:transparent;box-shadow:inset 0 0 0 2px var(--bleed)"></i>' + esc(t('spotting')) + '</span><span><i class="sw" style="background:transparent;border:2px dashed var(--accent-2)"></i>' + esc(t('likely_range')) + '</span>' + (pr && !state.settings.discreet ? '<span><i class="sw sw-pred"></i>' + esc(t('cal_pred')) + '</span>' : '') + '<span><i class="sw" style="box-shadow:inset 0 0 0 2px var(--ink)"></i>' + esc(t('today_l')) + '</span></div>' +
       (fz.length ? '<div class="legend"><span><i class="sw sw-fw"></i>' + esc(t('cal_fw')) + '</span><span><i class="sw sw-ov"></i>' + esc(t('cal_ov')) + '</span>' + gate() + '</div>' : '') +
-      '<div class="legend">' + ['pain', 'body', 'mood', 'disch', 'note'].concat(api.plan && api.plan.packOf && safe(() => api.plan.packOf(), null) ? ['plan'] : []).map(lk).join('') + '</div><p class="small">' + esc(t('cal_note')) + ' ' + esc(t(fz.length ? 'fert_note' : 'no_contra')) + '</p>';
+      '<div class="legend">' + ['pain', 'body', 'mood', 'disch', 'note'].concat(api.plan && api.plan.packOf && safe(() => api.plan.packOf(), null) ? ['plan'] : []).map(lk).join('') + (hearts ? '<span class="lk lk-sx">' + HEART_I + esc(t('sx_h')) + '</span>' : '') + '</div><p class="small">' + esc(t('cal_note')) + ' ' + esc(t(fz.length ? 'fert_note' : 'no_contra')) + '</p>';
+    const fwy = $('#fw-why', v); if (fwy) fwy.addEventListener('click', () => sheet('<h2>' + esc(t('fw_why_h')) + '</h2><p>' + esc(t('fw_why_p')) + '</p><div class="sheet-foot"><button type="button" class="btn primary block" id="fw-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#fw-ok', sh).addEventListener('click', () => closeSheet()); }));
     $('#cal-prev', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m - 1, 1)); render(); }); $('#cal-next', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m + 1, 1)); render(); });
     /* A day opens the same day sheet as the week strip on Home; flow details stay one tap away inside it. */
     v.querySelectorAll('[data-day]').forEach((b) => b.addEventListener('click', () => { const s = b.dataset.day; if (fromISO(s) > today()) return; openDay(s); }));
@@ -3266,7 +3457,7 @@
       const title = c.next ? fmtD(c.start) + ' – ' + fmtD(addDays(c.next, -1)) : tf('mc_now', { d: fmtD(c.start) });
       const sub = (c.next ? (c.plen != null ? tf('mc_row', { p: c.plen, c: c.gap }) : tf('mc_row_nop', { c: c.gap })) : (c.plen != null ? tf('mc_row_now', { p: c.plen, c: c.days }) : tf('mc_row_now_nop', { c: c.days }))) +
         (c.why && c.why !== 'now' ? ' · ' + t('mc_x_' + c.why) : '') + (c.approx ? ' · ' + t('mc_approx') : '');
-      return '<button type="button" class="mc-row" data-cy="' + toISO(c.start) + '"><span class="row spread"><strong>' + esc(title) + '</strong><span class="chev">' + I.chev + '</span></span><span class="mc-pills' + (c.days > 45 ? ' more' : '') + '" aria-hidden="true">' + pills + '</span><span class="small">' + esc(sub) + '</span></button>';
+      return '<div class="mc-row"><span class="row spread"><button type="button" class="mc-open" data-cy="' + toISO(c.start) + '"><strong>' + esc(title) + '</strong></button><button type="button" class="linkbtn mc-edit" data-cyedit="' + toISO(c.start) + '">' + PEN_I + esc(t('mc_edit')) + '</button></span><span class="mc-pills' + (c.days > 45 ? ' more' : '') + '" aria-hidden="true">' + pills + '</span><span class="small">' + esc(sub) + '</span></div>';   /* Version 39.11: Edit dates */
     };
     const rest = cs.slice(4);
     return '<div class="card mc-card" data-nofold="1"><div class="row spread"><h2 class="hand">' + esc(t('mc_h')) + '</h2>' + (anyF ? gate() : '') + '</div>' +
@@ -3275,33 +3466,116 @@
   }
   /* Days: every day she noted in the last year, newest first, with where it sat in her cycle and, when fertile days show, the
      estimates around it. Plain in discreet mode: only the cycle day and what she noted. */
+  /* ---------- Version 39.11: the day page's facts, week strip, flow and sex log; Cycles' Edit dates (MODULE_API section 54) ---------- */
+  const HEART_I = '<svg class="sx-ht" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 21S1 14 1 7a5.5 5.5 0 0 1 11-1 5.5 5.5 0 0 1 11 1c0 7-11 14-11 14z"/></svg>';
+  const SHIELD_I = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>';
+  const DROP_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c4 4.8 7 8.5 7 12a7 7 0 0 1-14 0c0-3.5 3-7.2 7-12z"/></svg>';
+  const PEN_I = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
+  const CHEV_D = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  /* hearts on her days only while she is trying for a baby, and never on a shared phone */
+  const sexHearts = () => stageNow() === 'ttc' && !state.settings.discreet;
+  const cycleOf = (d, cs) => (cs || cycleList(40)).find((x) => x.start <= d && (!x.next || d < x.next)) || null;
+  /* one day's place in her cycle, for the day page and Days: [{ k, text }] (pday, cday, x, fw_in, ov_in, ov, fw, ch, next, before) */
+  function dayFacts(ds, o) {
+    o = o || {}; const disc = !!state.settings.discreet; const cs = o.cs || cycleList(40); const bd = o.bd || bleedingDays(); const pr = o.pr === undefined ? predictInfo() : o.pr;
+    const d = fromISO(ds); const c = cycleOf(d, cs); if (!c) return [];
+    const k = diffDays(c.start, d) + 1; const bk = bd[ds]; const inP = bk === 'start' || bk === 'bleed';
+    /* Version 32: a pregnancy, the year after a birth, hormones or a pause is not a cycle day (field-test audit 3.2) */
+    if (c.why && !(inP && c.why === 'hormones')) return [{ k: 'x', text: t(c.why === 'now' ? 'dy_paused' : 'mc_x_' + c.why) }];
+    const out = [{ k: inP ? 'pday' : 'cday', text: tf(inP ? 'dy_pday' : 'dy_cday', { n: k }) }];
+    if (disc) return out;
+    const n1 = (key, n) => (n === 1 ? t(key + '1') : tf(key, { n: n }));
+    /* no chance after the predicted day of a period that hasn't come, and never a "low" label (audit 2.1, 2.3) */
+    const f = c.fert && !(pr && pr.late && !c.next && d >= pr.next) ? c.fert : null;
+    if (f) {
+      const ch = chanceShown(f, d);
+      if (d < f.fwFrom) { out.push({ k: 'fw_in', text: n1('dy_fw_in', diffDays(d, f.fwFrom)) }); out.push({ k: 'ov_in', text: n1('dy_ov_in', diffDays(d, f.ov)) }); }
+      else if (toISO(d) === toISO(f.ov)) out.push({ k: 'ov', text: t('dy_ov') + ' · ' + t('chd_high') });
+      else if (d <= f.fwTo) out.push({ k: 'fw', text: t('dy_fw') + (ch ? ' · ' + t('chd_' + ch) : '') });
+      else if (ch) out.push({ k: 'ch', text: t('chd_' + ch) });
+    }
+    if (c.next) out.push({ k: 'before', text: n1('dy_before', diffDays(d, c.next)) }); else if (pr && diffDays(d, pr.next) > 0) out.push({ k: 'next', text: n1('dy_next', diffDays(d, pr.next)) });
+    return out;
+  }
+  /* the facts card at the top of the day page (none when the day isn't a cycle day: a pregnancy, after a birth, a pause) */
+  const dayFactsHtml = (ds) => { const fs = dayFacts(ds); if (!fs.length || fs[0].k === 'x') return ''; return '<div class="day-facts">' + fs.map((x, i) => '<div class="df df-' + x.k + '"><i class="df-i" aria-hidden="true"></i>' + (i ? '<span>' + esc(x.text) + '</span>' : '<strong>' + esc(x.text) + '</strong>') + '</div>').join('') + '</div>'; };
+  const dotsIn = (ds) => kindsOn(ds).slice(0, 4).map((k) => '<i class="hue-' + KINDS[k].hue + '"></i>').join('');
+  /* the week on the day page, Monday to Sunday, with her marks; tapping a day opens it in place */
+  function dayStrip(ds) {
+    const disc = !!state.settings.discreet; const d0 = fromISO(ds); const mon = addDays(d0, -((d0.getDay() + 6) % 7)); const bd = bleedingDays(); const tS = toISO(today());
+    const cs = disc ? [] : cycleList(40); const pr = disc ? null : predictInfo(); const hearts = sexHearts(); let h = '';
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(mon, i); const s0 = toISO(d); const k = bd[s0]; const fut = d > today(); const old = d < addDays(today(), -90);
+      const c = disc ? null : cycleOf(d, cs); const f = c && c.fert ? c.fert : (pr && pr.fertNext && d >= pr.next ? pr.fertNext : null);
+      const ov = !k && !!f && toISO(f.ov) === s0; const fw = !k && !ov && !!f && d >= f.fwFrom && d <= f.fwTo;
+      const cls = ['wd', s0 === ds ? 'sel' : '', s0 === tS ? 'today' : '', !disc && (k === 'start' || k === 'bleed') ? 'bleed' : '', !disc && k === 'spot' ? 'spot' : '', fw ? 'fw' : '', ov ? 'ov' : '', fut ? 'fut' : ''].filter(Boolean).join(' ');
+      const marks = (disc || fut ? '' : dotsIn(s0)) + (hearts && !fut && (state.sex || {})[s0] ? HEART_I : '');
+      h += '<button type="button" class="' + cls + '"' + (fut || old ? ' disabled' : ' data-wsel="' + s0 + '"') + ' aria-label="' + esc(fmtD(d, { weekday: 'long', day: 'numeric', month: 'long' })) + '"' + (s0 === ds ? ' aria-current="date"' : '') + '><span class="wdn">' + esc(fmtD(d, { weekday: 'narrow' })) + '</span><span class="wdc num">' + d.getDate() + '</span><span class="kd" aria-hidden="true">' + marks + '</span></button>';
+    }
+    return '<div class="wkstrip day-wk">' + h + '</div>';
+  }
+  /* her flow on one bleeding day, in one tap: kept on the day's start or end, else as a day detail (Version 39.1) */
+  const flowEvOn = (ds) => state.events.find((e) => e.d === ds && e.t === 'start') || state.events.find((e) => e.d === ds && e.t === 'start_detail') || state.events.find((e) => e.d === ds && e.t === 'end') || null;
+  function setPads(ds, k) {
+    const ev = flowEvOn(ds); const nv = ev && ev.pads === k ? '' : k;
+    if (!ev) { if (nv) state.events.push({ d: ds, t: 'start_detail', pads: nv }); return; }
+    ev.pads = nv;
+    if (ev.t === 'start_detail' && !ev.pads && !ev.clots && !ev.pain && !ev.leaked && !ev.two) state.events = state.events.filter((e) => e !== ev);
+  }
+  const flowTiles = (ds) => {
+    const ev = flowEvOn(ds); const pads = ev ? ev.pads || '' : '';
+    return '<div class="day-flowq"><span class="small dfq">' + esc(t('day_flow_q')) + '</span><div class="flow-tiles">' + ['pads_1', 'pads_2', 'pads_3', 'pads_4'].map((k, i) => '<button type="button" class="flow-t' + (pads === k ? ' on' : '') + '" data-pads="' + k + '" aria-pressed="' + (pads === k) + '"><span class="drops" aria-hidden="true">' + DROP_I.repeat(i + 1) + '</span><span>' + esc(t(k)) + '</span></button>').join('') + '</div>' +
+      (pads === 'pads_4' ? '<div class="card warn" style="gap:4px"><p class="small" style="color:var(--fg)">' + esc(t('r2')) + '</p></div>' : '') + '<button type="button" class="linkbtn" id="day-flow">' + esc(t('day_clots')) + '</button></div>';
+  };
+  /* the sex log: two choices, only on this phone. Never on a shared phone, in a pregnancy or after menopause; never in the
+     doctor's report, a reminder or anything sent. Not trying: the emergency pill, within 3 days. Trying: her fertile days. */
+  const sexShown = () => state.stage === 'app' && !state.settings.discreet && !mem.teen && !isPregnant() && !state.situation.stopped;
+  function sexHtml(ds) {
+    if (!sexShown()) return '';
+    const sx = (state.sex || {})[ds] || ''; const dt = fromISO(ds); const ttc = stageNow() === 'ttc'; let card = '';
+    if (sx === 'n' && !ttc && diffDays(dt, today()) <= 2 && modRoute('contra-ec')) card = '<div class="card soft sx-ec"><strong>' + esc(t('sx_ec_h')) + '</strong><p class="small">' + esc(t('sx_ec_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" data-sgo="contra-ec">' + esc(t('sx_ec_b')) + '</button>' + (modRoute('contra-free') ? '<button type="button" class="btn sm" data-sgo="contra-free">' + esc(t('sx_ec_free')) + '</button>' : '') + '</div></div>';
+    if (sx && ttc) { const c = cycleOf(dt); const f = c && c.fert; if (f && dt >= f.fwFrom && dt <= f.fwTo) card = '<div class="card sx-fw"><strong>' + esc(t('sx_fw_h')) + '</strong><p class="small">' + esc(t('sx_fw_p')) + '</p></div>'; }
+    return '<div class="symcat hue-plum sx-sec" data-cat="sex"><div class="row spread sx-head"><b>' + esc(t('sx_h')) + '</b><span class="small sx-priv">' + I.lock + esc(t('sx_priv')) + '</span></div><div class="symchips">' +
+      [['n', 'sx_no', I.heart], ['y', 'sx_yes', SHIELD_I]].map((x) => '<button type="button" class="symchip' + (sx === x[0] ? ' on' : '') + '" data-sx="' + x[0] + '" aria-pressed="' + (sx === x[0]) + '"><span class="si">' + x[2] + '</span>' + esc(t(x[1])) + '</button>').join('') + '</div>' + card +
+      (ttc ? '<p class="small sx-note">' + esc(t('sx_hearts')) + '</p>' : '') + '</div>';
+  }
+  /* the charts behind one row on the Cycles tab (her cycles come first) */
+  const chartsRow = (inner) => '<details class="charts-d"' + (mem.chartsOpen ? ' open' : '') + '><summary class="item"><span class="ico-sm hue hue-rose">' + I.chart + '</span><span class="body"><strong>' + esc(t('charts_h')) + '</strong><span>' + esc(t('charts_s')) + '</span></span><span class="chev">' + I.chev + '</span></summary>' + inner + '</details>';
+  /* fix a period's dates from My cycles: its start and end, or "This wasn't a period" */
+  function openCycleEdit(s0) {
+    const st = starts(); const i = st.indexOf(s0); if (i < 0) return; const prev = st[i - 1] || null, nx = st[i + 1] || null;
+    const endIn = (a, b) => state.events.filter((e) => e.t === 'end' && e.d >= a && (!b || e.d < b) && diffDays(fromISO(a), fromISO(e.d)) <= 20).sort((x, y) => (x.d < y.d ? -1 : 1))[0] || null;
+    const sEv = state.events.find((e) => e.t === 'start' && e.d === s0); const eEv = endIn(s0, nx); const pEnd = prev ? endIn(prev, s0) : null; const n = periodLen(s0);
+    sheet('<h2 class="hand">' + esc(t('ed_h')) + '</h2><p class="small">' + esc(n != null ? tf('ed_sub', { d: fmtD(fromISO(s0)), n: n }) : tf('ed_sub0', { d: fmtD(fromISO(s0)) })) + '</p>' +
+      '<div class="stack" style="gap:6px"><label for="ed-s">' + esc(t('period_started')) + '</label><input type="date" id="ed-s" value="' + esc(s0) + '" max="' + toISO(today()) + '"></div>' +
+      '<div class="stack" style="gap:6px"><label for="ed-e">' + esc(t('period_ended')) + '</label><input type="date" id="ed-e" value="' + esc(eEv ? eEv.d : '') + '" max="' + toISO(today()) + '"></div>' +
+      '<p class="small pl-err" id="ed-err" hidden>' + esc(t('ed_bad')) + '</p><p class="small">' + esc(t('ed_note')) + '</p>' +
+      '<div class="sheet-foot stack" style="gap:8px"><button type="button" class="btn primary block" id="ed-save">' + esc(t('save')) + '</button><button type="button" class="btn block ed-del" id="ed-del"><strong>' + esc(t('ed_del')) + '</strong><span class="small">' + esc(t('ed_del_s')) + '</span></button><button type="button" class="linkbtn" id="ed-cancel">' + esc(t('cancel')) + '</button></div>', (sh) => {
+      $('#ed-cancel', sh).addEventListener('click', () => closeSheet());
+      $('#ed-save', sh).addEventListener('click', () => {
+        const ns = $('#ed-s', sh).value, ne = $('#ed-e', sh).value; const after = pEnd ? pEnd.d : prev;
+        const bad = !isISO(ns) || fromISO(ns) > today() || (after && ns <= after) || (nx && ns >= nx) || (ne && (!isISO(ne) || ne < ns || fromISO(ne) > today() || diffDays(fromISO(ns), fromISO(ne)) > 20 || (nx && ne >= nx)));
+        if (bad) { $('#ed-err', sh).hidden = false; return; }
+        if (sEv) { sEv.d = ns; delete sEv.approx; }
+        if (eEv) { if (ne) eEv.d = ne; else state.events = state.events.filter((e) => e !== eEv); } else if (ne) state.events.push({ d: ne, t: 'end' });
+        save(); closeSheet(); toast(t('saved')); render();
+      });
+      $('#ed-del', sh).addEventListener('click', () => {
+        const before = state.events.slice(); state.events = state.events.filter((e) => e !== sEv && e !== eEv);
+        save(); closeSheet(); render(); toastAct(t('entry_deleted'), [{ label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } }]);
+      });
+    });
+  }
   function renderDays(v) {
     const disc = !!state.settings.discreet; const tS = toISO(today()); const lim = toISO(addDays(today(), -365)); const keys = {};
     state.events.forEach((e) => { if (e.d >= lim && e.d <= tS) keys[e.d] = true; });
     Object.keys(state.daily || {}).forEach((d) => { if (d >= lim && d <= tS && (state.daily[d] || []).length) keys[d] = true; });
     Object.keys(state.notes || {}).forEach((d) => { if (d >= lim && d <= tS && state.notes[d]) keys[d] = true; });
+    if (sexHearts()) Object.keys(state.sex || {}).forEach((d) => { if (d >= lim && d <= tS) keys[d] = true; });   /* Version 39.11: only while trying for a baby */
     const days = Object.keys(keys).sort().reverse();
     if (!days.length) { v.innerHTML = emptyCard(t('dy_none'), '<button type="button" class="btn sm primary" id="dy-log">' + esc(t('add_today')) + '</button>'); const lb = $('#dy-log', v); if (lb) lb.addEventListener('click', () => openDay(tS)); return; }
     const N = mem.daysN || 20; const cs = cycleList(40); const bd = bleedingDays(); const pr = predictInfo();
-    const ctx = (ds) => {
-      const d = fromISO(ds); const c = cs.find((x) => x.start <= d && (!x.next || d < x.next)); if (!c) return [];
-      const k = diffDays(c.start, d) + 1; const bk = bd[ds]; const inP = bk === 'start' || bk === 'bleed';
-      /* Version 32: a pregnancy, the year after a birth, hormones or a pause is not a cycle day (field-test audit 3.2) */
-      if (c.why && !(inP && c.why === 'hormones')) return [t(c.why === 'now' ? 'dy_paused' : 'mc_x_' + c.why)];
-      const out = [tf(inP ? 'dy_pday' : 'dy_cday', { n: k })];
-      if (disc) return out;
-      /* no chance after the predicted day of a period that hasn't come, and never a "low" label (audit 2.1, 2.3) */
-      const f = c.fert && !(pr && pr.late && !c.next && d >= pr.next) ? c.fert : null;
-      if (f) {
-        const ch = chanceShown(f, d);
-        if (d < f.fwFrom) { out.push(tf('dy_fw_in', { n: diffDays(d, f.fwFrom) })); out.push(tf('dy_ov_in', { n: diffDays(d, f.ov) })); }
-        else if (toISO(d) === toISO(f.ov)) out.push(t('dy_ov') + ' · ' + t('chd_high'));
-        else if (d <= f.fwTo) out.push(t('dy_fw') + (ch ? ' · ' + t('chd_' + ch) : ''));
-        else if (ch) out.push(t('chd_' + ch));
-      }
-      if (c.next) out.push(tf('dy_before', { n: diffDays(d, c.next) })); else if (pr && diffDays(d, pr.next) > 0) out.push(tf('dy_next', { n: diffDays(d, pr.next) }));
-      return out;
-    };
+    const ctx = (ds) => dayFacts(ds, { cs: cs, bd: bd, pr: pr }).map((x) => x.text);   /* Version 39.11: shared with the day page */
     const kindOf = (key) => { const cat = SYM.find((x) => x[2].some((y) => y[0] === key)); return KINDS[cat ? cat[0].slice(4) : 'body'] || KINDS.body; };
     const ent = (ds) => {
       const parts = [];
@@ -3313,6 +3587,7 @@
         else if (e.t === 'spot') parts.push('<span class="dy-tag p">' + esc(t('spotting')) + '</span>');
       });
       (state.daily[ds] || []).forEach((key) => { parts.push('<span class="dy-tag"><i class="hue-' + kindOf(key).hue + '"></i>' + esc(t(key)) + '</span>'); });
+      if (sexHearts() && (state.sex || {})[ds]) parts.push('<span class="dy-tag dy-sx">' + HEART_I + esc(t(state.sex[ds] === 'n' ? 'dy_sx_n' : 'dy_sx_y')) + '</span>');
       const note = String((state.notes || {})[ds] || ''); if (note) parts.push('<span class="dy-note">' + esc(note.slice(0, 140)) + (note.length > 140 ? '…' : '') + '</span>');
       return parts.join('');
     };
@@ -3330,9 +3605,11 @@
     if (!ga.length) { v.innerHTML = signalCards() + emptyCard(t('no_data'), '<button type="button" class="btn sm primary" id="tr-log">' + esc(t('add_today')) + '</button>') + tail; wire(v); const lb = $('#tr-log', v); if (lb) lb.addEventListener('click', () => openDay(toISO(today()))); wireAdd(); return; }
     const mx = Math.max(60, Math.max.apply(null, ga.map((x) => Math.min(x.days, 130)))); const h = 120; const hiB = bandHi();
     const vdc = verdictCard(); const nums = vdc || !usable().length ? '' : '<div class="card vd-nums-card">' + numbersHtml().replace('<details class="vd-nums">', '<details class="vd-nums" open>') + '</div>';   /* review ENGINE-08 */
-    v.innerHTML = signalCards() + vdc + nums + '<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart() + cyclesCard() +
+    v.innerHTML = signalCards() + cyclesCard() + vdc + nums + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) +
       patternsCard() + tail;
     wire(v); wireAdd(); v.querySelectorAll('[data-cy]').forEach((b) => b.addEventListener('click', () => openDay(b.dataset.cy)));
+    v.querySelectorAll('[data-cyedit]').forEach((b) => b.addEventListener('click', () => openCycleEdit(b.dataset.cyedit)));
+    const chd = $('.charts-d', v); if (chd) chd.addEventListener('toggle', () => { mem.chartsOpen = chd.open; });
   }
 
   /* ---------- check-in ---------- */
@@ -3384,8 +3661,11 @@
     return '<div class="list learn-next"><button type="button" class="item" data-go="a-' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><span class="eyebrow">' + esc(t(any ? 'learn_next' : 'learn_start')) + '</span><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>';
   }
   const freeRow = () => (ROUTES['access-free'] ? '<div class="list learn-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('learn_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
+  /* Version 39.10: other stages' chapters stay out of her way (search still finds every guide) */
+  const LEARN_OK = { cycle: ['cycle', 'pmos', 'conceive', 'intimate', 'mind_body', 'services'], ttc: ['conceive', 'cycle', 'pmos', 'intimate', 'mind_body', 'services'], preg: ['pregnancy', 'intimate', 'mind_body', 'services'], post: ['pregnancy', 'cycle', 'intimate', 'mind_body', 'services'], meno: ['midlife', 'cycle', 'intimate', 'mind_body', 'services'] };
+  const learnGroups = () => { const all = CONTENT.groups || []; const ok = state.stage === 'app' && !state.settings.discreet ? LEARN_OK[stageNow()] : null; return ok ? all.filter((g) => ok.indexOf(g.group) >= 0) : all; };
   function renderLearn(v) {
-    const groups = CONTENT.groups || []; const q = (mem.learnQ || '').trim(); let body;
+    const groups = learnGroups(); const q = (mem.learnQ || '').trim(); let body; if (mem.learnGroup && mem.learnGroup !== 'all' && !groups.some((g) => g.group === mem.learnGroup)) mem.learnGroup = 'all';
     if (!mem.learnSet && groups.length) { mem.learnSet = true; const sg = stageGroup(); if (sg && groups.some((g) => g.group === sg)) mem.learnGroup = sg; }
     const rd = readsOf(); const nRead = (arts) => arts.filter((a) => rd[a.group + '.' + a.id]).length; const cnt = (arts) => (canSave() ? '<span class="small learn-count">' + esc(tf('learn_read_n', { a: nRead(arts), b: arts.length })) + '</span>' : '');
     /* Version 39.2: Sach ya Myth lives with the library, not in an Explore drawer */

@@ -1,7 +1,8 @@
 // Version 37.1: her first day (docs/first-days-audit-2026-10-24.md, section 8; MODULE_API section 40). Mohit, 24 Oct: "i just
 // entered details while onboarding and i am straight on to program, i felt i am not sure whats happening my expectations were
 // not set". This file checks the acceptance criteria:
-//   1 the welcome names the plan, the daily steps, the evening check-in and "about 3 minutes"; the joining bar has 3 named parts;
+//   1 the welcome names the plan, the daily steps, the evening check-in and "about 3 minutes"; the joining bar has 4 named parts
+//     (Version 39.10: about you, her stage, her goals, details; then "Your Sakhi", her first log, and the plan offered on Today);
 //   2 "More than a month ago" asks how long ago, and saves a guessed date;
 //   3 before her plan she sees what she told Sakhi, and can change it; the reminder question has left joining;
 //   4 the plan as cards: what she does each day, how long, when Sakhi checks in, a missed day, weeks 1, 4 and 12; no percentage;
@@ -23,6 +24,7 @@ import fs from 'node:fs';
 import { chromium } from './pw.mjs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { join } from './join.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', process.argv[2] || '.');
@@ -76,27 +78,7 @@ const slotFirst = (page) => page.$eval('#view .slot', (s) => { const c = s.child
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: true });
 const noScroll = (page) => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
 const closeTips = async (page) => { for (let k = 0; k < 6; k++) { const did = await page.evaluate(() => { const b = document.querySelector('#tour-root #tour-later, #tour-root #tour-next'); if (b) { b.click(); return true; } return false; }); if (!did) break; await settle(page, 300); } };
-/* joining, from the language screen to the shared-phone question; answers per question key, the summary's "Make my plan" last */
-async function join(page, stage, goal, ans, opt = {}) {
-  for (const s of ['[data-ob-lang="' + (opt.lang || 'en') + '"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="' + stage + '"]']) await tap(page, s);
-  if (opt.lp) await opt.lp(); else await tap(page, '[data-ob-lp="24"]');
-  await tap(page, '[data-pl-goal="' + goal + '"]');
-  for (let i = 0; i < 9; i++) {
-    if (await has(page, '[data-ob-sh]')) return;
-    if (await has(page, '#pl-in-make')) { if (opt.atSum) await opt.atSum(); await tap(page, '#pl-in-make'); continue; }
-    if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="' + ((ans || {}).when || 'dinner') + '"]'); continue; }
-    if (await has(page, '#pl-in-skip')) { await tap(page, '#pl-in-skip'); continue; }
-    const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
-    for (const g of groups) { const [k, kind] = g.split('|'); const want = (ans || {})[k]; await tap(page, want ? '[data-pl-' + kind + '="' + k + ':' + want + '"]' : '[data-pl-' + kind + '^="' + k + ':"]'); }
-    await tap(page, '#pl-in-next');
-  }
-}
-async function signUp(page) {
-  await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
-  await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.fill('#su-code', '123456'); await settle(page, 900);
-  if (await has(page, '#su-done')) { await page.fill('#su-name', 'Riya Sharma'); await page.fill('#su-pin', '302001'); await tap(page, '#su-done'); }
-  await settle(page, 900);
-}
+/* Version 39.10: joining, from the language screen to the shared-phone question (test/join.mjs) */
 /* walks the plan's cards to the Start screen, collecting their words */
 async function cardsToStart(page) {
   let words = '';
@@ -107,7 +89,8 @@ async function cardsToStart(page) {
 }
 const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan.startFromIntake(x); S.save(); }, a);
 
-/* ---------- 1–6, 8. A new woman: welcome, joining, her plan's cards, Start, her first day ---------- */
+/* ---------- 1–6, 8. A new woman: welcome, joining, her first log, her plan's cards, Start, her first day (Version 39.10: the
+   plan is offered on Today after her first log) ---------- */
 {
   const { ctx, page, errs } = await open({ seed: null, notif: false });
   await tap(page, '[data-ob-lang="en"]');
@@ -115,18 +98,46 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('1 the welcome names the plan made for her', /Your period diary, and a plan made for you/.test(v) && /12-week plan/.test(v), v.slice(0, 300));
   check('1 the welcome names the daily steps and the evening check-in', /Small steps each day, and a 1-minute check-in each evening/.test(v), v.slice(0, 300));
   check('1 the start button says how long joining takes', /Start · about 3 minutes/.test(await txt(page, '#w-start')), await txt(page, '#w-start'));
-  for (const s of ['#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]']) await tap(page, s);
-  check('1 the joining bar names 3 parts, "About you" first', (await txt(page, '.ob-parts')).replace(/\n/g, '|') === 'About you|What you want|Your plan' && /About you/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts'));
-  await tap(page, '[data-ob-st="cycle"]');
+  check('1 Version 39.10: one way in, no "I just want to read"', !(await has(page, '#w-browse')));
+  await tap(page, '#w-start');
+  check('1 the joining bar names 4 parts, "About you" first', (await txt(page, '.ob-parts')).replace(/\n/g, '|') === 'About you|Your stage|Your goals|Details' && /About you/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts'));
+  await page.fill('#ob-name', 'Riya');
+  for (const x of ['[data-ob-dec="1990"]', '[data-ob-y="1999"]']) await tap(page, x);
+  check('1 part 2, "Your stage": 7 tiles', /Your stage/.test(await txt(page, '.ob-parts .on')) && (await page.$$('[data-ob-st]')).length === 7, await txt(page, '.ob-parts .on'));
+  await tap(page, '[data-ob-st="pmos"]');
+  check('1 part 3, "Your goals"', /Your goals/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts .on'));
+  await tap(page, '[data-ob-goal="irregular"]'); await tap(page, '#ob-next');
+  v = await view(page);
+  check('3 her details say why Sakhi asks', /Why we ask: Sakhi marks your next period, and notices longer gaps./.test(v) && /Details/.test(await txt(page, '.ob-parts .on')), v.slice(0, 300));
   await tap(page, '[data-ob-lp="more"]');
   v = await view(page);
   check('2 "More than a month ago" asks how long ago', /About how long ago\?/.test(v) && /5 to 6 weeks/.test(v) && /About 2 months/.test(v) && /3 months or more/.test(v), v.slice(0, 400));
-  await tap(page, '[data-ob-lpm="60"]');
-  check('1 the goal screen is part 2, "What you want"', /What you want/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts .on'));
-  await tap(page, '[data-pl-goal="irregular"]');
+  for (const x of ['[data-ob-lpm="60"]', '[data-ob-gap="g45"]', '[data-ob-dx="ns"]']) await tap(page, x);
+  await tap(page, '#ob-next');
+  check('3 no reminder question while joining: next is who uses this phone', await has(page, '[data-ob-sh]') && !/When should Sakhi remind you/.test(await view(page)));
+  await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
+  let s = await st(page);
+  check('2 the guessed date is saved as a guess, about 2 months ago', s.events.some((e) => e.t === 'start' && e.approx && e.d === ago(60)), s.events);
+  check('5 sign-up promises no plan yet (it comes after her first log)', !/Your plan is ready/.test(await view(page)) && !(s.mods.plan || {}).next, (await view(page)).slice(0, 300));
+  check('5 no tabs behind sign-up', await page.$eval('#tabbar', (e) => e.hidden).catch(() => true));
+  await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.fill('#su-code', '123456'); await settle(page, 900);
+  if (await has(page, '#su-done')) { await page.fill('#su-pin', '302001'); await tap(page, '#su-done'); }
+  await settle(page, 900);
+  check('4 after sign-up, "Your Sakhi" by her name, not straight into a plan', (await page.evaluate(() => location.hash)) === '#your-sakhi' && /Riya, here’s your Sakhi/.test(await view(page)) && !(s.mods.plan || {}).next, (await view(page)).slice(0, 300));
+  await shot(page, '01-your-sakhi');
+  await tap(page, '#ys-skip'); await closeTips(page);
+  check('5 Today before her first log: no plan offer yet', !(await has(page, '#pl-off-go')), (await view(page)).slice(0, 600));
+  await go(page, 'diary'); await closeTips(page);
+  check('4 Diary opens on her first log, with why logging helps', await has(page, '#fl-card') && /Why log every day\?/.test(await view(page)), (await view(page)).slice(0, 400));
+  await tap(page, '[data-fl-days="5"]'); await tap(page, '[data-fl-sign="d_acne"]'); await tap(page, '#fl-save'); await settle(page, 600);
+  s = await st(page);
+  check('4 her first log: her last period\'s end and today\'s acne', s.events.some((e) => e.t === 'end' && e.d === ago(56)) && (s.daily[TODAY] || []).indexOf('d_acne') >= 0 && !!s.prompts.firstLog, [s.events, s.daily]);
+  await go(page, 'home'); await closeTips(page);
+  check('4 then Today offers her plan, first in "Sakhi says"', /^Ready for you$/i.test(await slotFirst(page)) && await has(page, '#pl-off-go'), [await slotFirst(page), (await st(page)).prompts]);
+  await tap(page, '#pl-off-go');
   v = await view(page);
-  check('3 her periods screen says why Sakhi asks', /So Sakhi knows where you’re starting, and can show you what changes/.test(v), v.slice(0, 300));
-  for (const q of ['gap:g45', 'skips:y', 'dx:ns']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '[data-pl-m="signs:acne"]'); await tap(page, '#pl-in-next');
+  check('3 her periods screen says why Sakhi asks, and doesn\'t ask again what she said while joining (the gap, a diagnosis)', /So Sakhi knows where you’re starting, and can show you what changes/.test(v) && !(await has(page, '[data-pl-q^="gap:"]')) && !(await has(page, '[data-pl-q^="dx:"]')) && await has(page, '[data-pl-q="skips:y"]'), v.slice(0, 300));
+  await tap(page, '[data-pl-q="skips:y"]'); await tap(page, '[data-pl-m="signs:acne"]'); await tap(page, '#pl-in-next');
   v = await view(page);
   check('3 her day: why Sakhi asks, and no reminder question', /So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
   for (const q of ['act:0', 'food:veg', 'bed:late', 'work:day']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '[data-pl-m="lim:none"]'); await tap(page, '#pl-in-next');
@@ -134,23 +145,17 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '[data-pl-when="dinner"]');   /* Version 39.3: no body screen unless her goal is her weight */
   v = await view(page);
   check('3 the summary shows what she told Sakhi', /Here’s what you told Sakhi/.test(v) && /Irregular or late periods/.test(v) && /36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /After dinner/.test(v), v.slice(0, 700));
-  check('3 the summary is part 3, "Your plan"', /Your plan/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts .on'));
   await shot(page, '01-summary');
+  await tap(page, '[data-pl-edit="cyc"]');
+  check('3 "Change" on her periods shows every question again, her joining answers in', await has(page, '[data-pl-q="gap:g45"].on') && await has(page, '[data-pl-q="dx:ns"].on'));
+  await tap(page, '#pl-in-next'); await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="dinner"]');   /* her day and her time are kept */
+  check('3 ... and back on the summary, nothing lost', /Here’s what you told Sakhi/.test(await view(page)) && /36 to 45 days apart · some months skipped/.test(await view(page)), (await view(page)).slice(0, 500));
   await tap(page, '[data-pl-edit="when"]');
   check('3 "Change" opens that question', await has(page, '[data-pl-when]'));
   await tap(page, '[data-pl-when="evening"]');
   check('3 the changed answer shows on the summary', /In the evening/.test(await view(page)), (await view(page)).slice(0, 600));
-  await tap(page, '#pl-in-make');
-  check('3 "Make my plan" goes on to the phone question', await has(page, '[data-ob-sh]'));
-  await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
-  let s = await st(page);
-  check('2 the guessed date is saved as a guess, about 2 months ago', s.events.some((e) => e.t === 'start' && e.approx && e.d === ago(60)), s.events);
-  check('5 sign-up says her plan is ready and comes next', /Your plan is ready. Sign up, and Sakhi shows it next./.test(await view(page)), (await view(page)).slice(0, 300));
-  check('5 no tabs behind sign-up', await page.$eval('#tabbar', (e) => e.hidden).catch(() => true));
-  await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.fill('#su-code', '123456'); await settle(page, 900);
-  if (await has(page, '#su-done')) { await page.fill('#su-name', 'Riya Sharma'); await page.fill('#su-pin', '302001'); await tap(page, '#su-done'); }
-  await settle(page, 900);
-  check('4 after sign-up, her plan opens', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /Your plan is ready, Riya/.test(await view(page)), (await view(page)).slice(0, 300));
+  await tap(page, '#pl-in-make'); await settle(page, 600);
+  check('4 "Make my plan" opens her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /Your plan is ready, Riya/.test(await view(page)), [await page.evaluate(() => location.hash), (await view(page)).slice(0, 300)]);
   v = await view(page);
   check('4 card 1: her goal, what it is made from, and how long it takes', /Your goal: more regular periods/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /12 weeks · from about 10 minutes a day/.test(v), v.slice(0, 500));
   await shot(page, '02-card1');
@@ -180,8 +185,8 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await closeTips(page);
   await tap(page, '#pl-rv-go'); await settle(page, 1500);
   let p = await pop(page);
-  check('6 after Start: Today, one tip on her plan, no sheet', (await page.evaluate(() => location.hash)) === '#home' && !p.sheet && /Your plan for today/.test(p.tour) && /1 of 1/.test(p.tour), p);
-  check('8 no petal on Start', !p.joy, p);
+  check('6 after Start: Today, one tip on her plan, no sheet', (await page.evaluate(() => location.hash)) === '#home' && !p.sheet && /Your plan for today/.test(p.tour) && /1 of 1/.test(p.tour), [p, (await st(page)).tours, (await st(page)).tourDay]);
+  check('8 no petal on Start', !p.joy, [p, await page.evaluate(() => (document.querySelector('#joy-root') || {}).innerText || ''), (await st(page)).mods.joy]);
   await closeTips(page); await settle(page, 2500);
   p = await pop(page);
   check('6 no other pop-up after the tip', !p.sheet && !p.tour && !p.joy, p);
@@ -288,11 +293,10 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
 }
 {
   const { ctx, page, errs } = await open({ seed: null });
-  await join(page, 'cycle', 'track', {});
-  await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
+  await join(page, { tile: 'cycle', goals: ['track'], y: 1999, lp: '24' }); await settle(page, 400);
   const s = await st(page);
   check('10 a new woman never sees it', s.whatsNew === '0.37');
-  check('3 "Just keeping track" makes no plan', !(s.mods.plan || {}).next && !(s.mods.plan || {}).start && (s.intake || {}).goal === 'track', s.mods.plan);
+  check('3 "Just keeping track" makes no plan, and none is offered', !(s.mods.plan || {}).next && !(s.mods.plan || {}).start && (s.intake || {}).goal === 'track' && !(s.prompts || {}).planOffer, [s.mods.plan, s.prompts]);
   check('16 no page errors (just tracking)', errs.length === 0, errs);
   await ctx.close();
 }

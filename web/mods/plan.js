@@ -1088,7 +1088,18 @@
     });
   }
   /* Home: the best suggestion, when she has no plan going, until she says "Not now" (back after 14 days) */
+  /* Version 39.10 (MODULE_API 53): after her first log, Today offers the plan her first goal chooses. "See my plan" asks the
+     plan's own questions (from her answers at joining), then the plan screen and Start, as in Version 37.1. */
+  function offerCard() {
+    const p = S.state.prompts || {}; if (!on() || !S.canSave() || disc() || lossNow() || !p.planOffer || !p.firstLog) return '';
+    const d = raw(); if (packOf(d) || pendingOk(d) || upcoming(d)) return '';
+    if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), S.today()) < 3) return '';
+    const ik = S.state.intake || {}; const pk = ik.goal ? packFor(ik.goal, stageNowKey()) : null; if (!pk) return '';
+    return '<div class="card pl-offer" data-nofold="1"><span class="eyebrow">' + esc(t('plan_off_eye')) + '</span><h3>' + esc(packTitle({ pack: pk, goalKey: ik.goal, pv: 1 })) + '</h3><p class="small">' + esc(t('plan_off_p')) + '</p>' +
+      '<div class="row wrap"><button type="button" class="btn sm primary" id="pl-off-go">' + esc(t('plan_off_b')) + '</button><button type="button" class="btn sm" id="pl-off-not">' + esc(t('plan_off_later')) + '</button></div></div>';
+  }
   function homeRec() {
+    if ((S.state.prompts || {}).planOffer && !(S.state.prompts || {}).firstLog) return '';   /* Version 39.10: her first log comes first */
     if (!on() || !S.canSave() || disc() || lossNow() || packOf(raw()) || pendingOk(raw()) || upcoming(raw())) return '';   /* Version 37: a plan going (or waiting) is her plan; no second suggestion (review life-4: none after a loss) */
     const c = catalogue(); if (c.some((x) => x.active)) return '';
     const top = recsOf(c)[0]; if (!top || top.score < 3) return '';
@@ -1099,6 +1110,8 @@
       '<div class="row spread"><button type="button" class="linkbtn" id="pl-rec-not">' + esc(t('plan_rec_not')) + '</button><button type="button" class="linkbtn" data-go="plan">' + esc(t('plan_rec_all')) + '</button></div></div>';
   }
   function afterHome(v) {
+    const og = v.querySelector('#pl-off-go'); if (og) og.addEventListener('click', () => { const ik = S.state.intake || {}; S.mem.planIntake = { stage: stageNowKey(), goal: ik.goal, iq: 1, gap: ik.gap || null, dx: ik.dx || null, known: ['gap', 'dx'].filter((k) => ik[k]) }; S.setHash('plan-goal'); });   /* Version 39.10: what she said while joining isn't asked again */
+    const on1 = v.querySelector('#pl-off-not'); if (on1) on1.addEventListener('click', () => { S.state.prompts = S.state.prompts || {}; S.state.prompts.planOfferNot = todayISO(); S.saveQuiet(); S.render(); });
     const b = v.querySelector('#pl-rec-not'); if (b) b.addEventListener('click', () => { S.state.prompts = S.state.prompts || {}; S.state.prompts.planRec = todayISO(); S.saveQuiet(); S.render(); });
   }
 
@@ -1430,7 +1443,7 @@
         '<label>' + esc(t('plan_cm')) + '<input type="number" inputmode="decimal" id="pl-in-cm" min="120" max="210" value="' + esc(a.h || '') + '"></label><label>' + esc(t('plan_weight')) + '<input type="number" inputmode="decimal" id="pl-in-w" min="25" max="250" step="0.1" value="' + esc(a.w || '') + '"></label><label>' + esc(t('plan_waist')) + '<input type="number" inputmode="decimal" id="pl-in-waist" min="40" max="200" value="' + esc(a.waist || '') + '"></label></div>' +
         '<p class="small pl-err" id="pl-in-err" hidden>' + esc(t('plan_body_bad')) + '</p><div class="grid2"><button type="button" class="btn" id="pl-in-skip">' + esc(t('plan_in_skip')) + '</button><button type="button" class="btn primary" id="pl-in-next">' + esc(t('plan_in_save')) + '</button></div>';
     } else {
-      const qs = qsOf(id, a); const w = warnOf(id, a);
+      const qs = qsOf(id, a).filter((k) => a.edit || (a.known || []).indexOf(k) < 0); const w = warnOf(id, a);
       html = ctx.head(t(SCREEN_H[id][0]), SCREEN_H[id][1] ? t(SCREEN_H[id][1]) : '') + (dg ? '<p class="small pl-in-from">' + esc(tf('plan_in_from', { n: dg.n, a: dg.lo, b: dg.hi }) + (dg.open ? ' ' + tf('plan_in_from_open', { n: dg.open }) : '')) + '</p>' : '') + qs.map(ask).join('') +
         '<div class="card warn" id="pl-in-warn"' + (w ? '' : ' hidden') + '><p class="small">' + (w ? esc(t(w)) : '') + '</p></div>' +
         '<p class="small pl-err" id="pl-in-err" hidden>' + esc(t('plan_s_need')) + '</p><button type="button" class="btn primary block" id="pl-in-next">' + esc(t('continue')) + '</button>';
@@ -1439,7 +1452,7 @@
     ctx.back(prev);
     v.querySelectorAll('[data-pl-goal]').forEach((b) => b.addEventListener('click', () => { a.goal = b.dataset.plGoal; if (a.goal === 'track') { ctx.done(); return; } a.iq = 0; next(); }));
     v.querySelectorAll('[data-pl-when]').forEach((b) => b.addEventListener('click', () => { a.when = b.dataset.plWhen; next(); }));
-    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; ctx.redraw(); } }));
+    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
     const mk = v.querySelector('#pl-in-make'); if (mk) mk.addEventListener('click', () => ctx.done());
     v.querySelectorAll('[data-pl-q]').forEach((b) => b.addEventListener('click', () => {
       const kv = kv2(b.dataset.plQ); a[kv[0]] = kv[1];
@@ -1537,9 +1550,10 @@
     const n = nextOf(d); return !!(n && pendingOk(d) && n.at && S.diffDays(S.fromISO(n.at), S.today()) <= 2);
   }
   /* her plan leads Today while it waits, runs, or has just finished (its end card) */
-  const leads = () => { if (!planOn()) return false; const d = raw(); return !!((runningD() && !selfPaused(d)) || pendingOk(d) || upcoming(d) || (packOf(d) && !pausedFor(d) && finished(fullD(d)))); };
+  const leads = () => { if (!planOn()) return false; const d = raw(); return !!((runningD() && !selfPaused(d)) || pendingOk(d) || upcoming(d) || (packOf(d) && !pausedFor(d) && finished(fullD(d))) || offerCard()); };   /* Version 39.10: her plan's offer leads too */
   /* from "Start my plan" until her first check-in (at most to day 3), petals and badges wait for that check-in (joy.js) */
   function holdJoy() {
+    if (planOn() && /^plan-(goal|reveal|start)$/.test(S.route()) && !runningD()) return true;   /* Version 39.10: while she sets up her plan on Today's offer, what she earns waits for her first check-in */
     const d = raw(); if (!planOn() || !d || !d.go || !d.start || !d.started) return false;
     if (todayISO() > S.toISO(S.addDays(S.fromISO(d.start), 2))) return false;
     return !Object.keys(d.log || {}).some((k) => k >= d.started && (d.log[k] || {}).ci);
@@ -2046,7 +2060,7 @@
     const chip = (attr, val, label, on1) => '<button type="button" class="chip ob-c' + (on1 ? ' on' : '') + '" ' + attr + '="' + esc(String(val)) + '" aria-pressed="' + !!on1 + '">' + esc(label) + '</button>';
     const headF = (title, p) => '<div class="ob-top"><button type="button" class="iconbtn" id="pl-in-back" aria-label="' + esc(t('back')) + '">' + S.I.back + '</button><div class="progress" aria-hidden="true">' + Array.from({ length: total }, (x, i) => '<i class="' + (i <= (a.iq || 0) ? 'on' : '') + '"></i>').join('') + '</div></div><h1>' + esc(title) + '</h1>' + (p ? '<p>' + esc(p) + '</p>' : '');
     renderIntake(v, a, { head: headF, chip: chip, back: (fn) => { const b = v.querySelector('#pl-in-back'); if (b) b.addEventListener('click', fn); },
-      done: () => { const ans = Object.assign({}, a); S.mem.planIntake = null; const dd = startFromIntake(ans); S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
+      done: () => { const ans = Object.assign({}, a); delete ans.known; delete ans.edit; S.mem.planIntake = null; const dd = startFromIntake(ans); S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
       prev: () => { S.mem.planIntake = null; S.setHash('plan'); }, redraw: () => S.render() });
   }
 
@@ -2177,12 +2191,14 @@
     progs: { list: () => progs().map((p) => ({ id: p.id, ver: p.ver, status: p.status })), spec: specOf, adapters: () => Object.keys(ADAPT) }, daySuggest: daySuggest, stepsOf: stepsOf, routineMins: routineMins, habitsOn: habitsOn, poses: () => Object.keys(P), anims: () => Object.keys(ANIM), on: on,
     catalogue: () => (on() ? catalogue() : []), recs: recs, signals: signals,
     /* Version 37: joining's intake screens (core onboarding draws them), the plan they start, and her plan now */
+    goalIco: goalIco,   /* Version 39.10: joining's goals screen */
     intake: { render: renderIntake, count: (a) => (a && a.goal ? screensOf(a).length : 5), goals: (st) => GOALS[stKey(st)].slice(),
       part: (a) => { const l = a && a.goal ? screensOf(a) : []; return l[S.clamp((a && a.iq) || 0, 0, Math.max(0, l.length - 1))] === 'sum' ? 2 : 1; } },
     startFromIntake: startFromIntake, packFor: packFor, packOf: () => packOf(raw()), dayDone: (iso) => { const d = raw(); return !!(packOf(d) && iso >= d.start && dayDone(fullD(d), iso)); }, actions: () => (packOf(raw()) ? actionsFor(fullD(raw())) : []),
     /* Version 37.1: a plan waits to be started; core orders Today by these, and joy holds its petals for the first check-in */
     /* Version 39.1: a signal (a long gap) or a PMOS result offers the plan for her periods; it opens the goal's questions */
     offerOk: (g) => on() && S.canSave() && !disc() && !pregnant() && goalsFor({ stage: stageNowKey() }).indexOf(g) >= 0 && !(packOf(raw()) && !pausedFor(raw())) && !pendingOk(raw()) && !upcoming(raw()),   /* review FLOWS-02 */
+    offering: () => !!offerCard(),   /* Version 39.10: Today's "Ready for you" card is up (other tips wait) */
     offer: (g) => { S.mem.planIntake = { stage: stageNowKey(), goal: g, iq: 1 }; S.setHash('plan-goal'); },
     pending: () => planOn() && pendingOk(raw()), running: () => !!runningD() && !selfPaused(raw()),   /* review PAGES-01: during her week's pause, her stage's own cards come back */ saidHbAt: () => { const d = raw(); if (!planOn() || !d) return null; const xs = [d.docSaid && d.docSaid.k === 'hb' ? (d.docAt || d.docSaid.at || null) : null].concat((Array.isArray(d.past) ? d.past : []).map((p) => p.hbAt || null)).filter(Boolean).sort(); return xs.length ? xs[xs.length - 1] : null; },   /* review FIXES-07: the latest, this plan or a past one */   /* review DOCTOR-03 */ docShowing: () => planOn() && !pendingOk(raw()) && cardKind(raw()) === 'doc' && docCase(fullD(raw())) === 'plan_rv_doc_cyc',   /* review SAFETY-01: only the cycle plan's check covers a late period */ goal: () => { const d = raw(); return planOn() && packOf(d) && !pausedFor(d) ? d.goalKey || null : null; }, leads: leads, early: early, holdJoy: holdJoy, start: (when, at) => { const d = commitStart(when, at); if (d) S.saveQuiet(); return !!d; } };
 
@@ -2301,6 +2317,7 @@
         plan_all_diary: 'Start your diary, and Sakhi suggests plans from what you log.',
         plan_all_foot: 'Suggestions come from what you logged and what you told Sakhi. They are not a diagnosis. For medicines or supplements, ask a doctor.',
         plan_help_h: 'What you want help with', plan_help_none: 'Nothing picked yet.', plan_help_save: 'Save', plan_help_saved: 'Saved. Your suggestions are updated.', plan_cancel_b: 'Cancel',
+        plan_off_eye: 'Ready for you', plan_off_p: 'Made from your answers and your first log.', plan_off_b: 'See my plan', plan_off_later: 'Later',
         plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_rec_all: 'All plans', plan_paused_pill: 'After your 6-week check',
         plan_d_12w: '12 weeks', plan_d_21d: '21 days', plan_d_3m: '3 minutes', plan_d_2m: '2 minutes', plan_d_daily: 'Every day',
         plan_sc_t: 'Could it be PMOS?', plan_sc_s: 'The signs doctors ask about, with your diary',
@@ -2511,6 +2528,7 @@
         plan_all_diary: 'अपनी डायरी शुरू करें, और Sakhi आपकी entries से प्लान सुझाएगी।',
         plan_all_foot: 'सुझाव आपकी entries और आपके बताए जवाबों से आते हैं। ये कोई निदान नहीं हैं। दवा या सप्लीमेंट के लिए डॉक्टर से पूछें।',
         plan_help_h: 'आपको किस बात में मदद चाहिए', plan_help_none: 'अभी कुछ नहीं चुना।', plan_help_save: 'सेव करें', plan_help_saved: 'सेव हो गया। आपके सुझाव बदल गए हैं।', plan_cancel_b: 'रद्द करें',
+        plan_off_eye: 'आपके लिए तैयार', plan_off_p: 'आपके जवाबों और पहली एंट्री से बना।', plan_off_b: 'मेरा प्लान देखें', plan_off_later: 'बाद में',
         plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_rec_all: 'सभी प्लान', plan_paused_pill: '6 हफ़्ते की जाँच के बाद',
         plan_d_12w: '12 हफ़्ते', plan_d_21d: '21 दिन', plan_d_3m: '3 मिनट', plan_d_2m: '2 मिनट', plan_d_daily: 'रोज़',
         plan_sc_t: 'क्या यह PMOS हो सकता है?', plan_sc_s: 'डॉक्टर जिन संकेतों के बारे में पूछते हैं, आपकी डायरी के साथ',
@@ -2622,7 +2640,7 @@
     setup: setup,
     summary: summary,
     sample: sample,
-    home: () => planCard() || homeRec(),
+    home: () => planCard() || offerCard() || homeRec(),
     afterHome: (v) => { afterHome(v); afterHomePlan(v); },
     todayHead: todayHead,
     event: onLog,

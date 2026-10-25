@@ -244,14 +244,14 @@ const errsAll = [];
 /* ---------- 9. Joining, Today's list ---------- */
 {
   const a = await open({ seed: null, hash: '#home' });
-  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="cycle"]']) await tap(a.page, s);
-  check('9 joining asks "I take the pill or another hormone medicine" with the last period', await has(a.page, '#ob-pill'));
+  /* Version 39.10: about you, her stage, her goals, then the details screen with her last period and the pill question */
+  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="cycle"]', '[data-ob-goal="track"]', '#ob-next']) await tap(a.page, s);
+  check('9 joining asks "I take the pill or another hormone medicine" with the last period', await has(a.page, '#ob-pill') && await has(a.page, '[data-ob-lp="24"]'));
   await a.page.$eval('#ob-pill', (x) => { x.checked = true; x.dispatchEvent(new Event('change', { bubbles: true })); });
   await tap(a.page, '[data-ob-lp="24"]');
   const ob = await a.page.evaluate(() => (window.Saathi.mem.ob || {}).pill);
   check('9 ... and remembers her answer', ob === true, ob);
-  await tap(a.page, '[data-pl-goal="track"]');
-  for (let i = 0; i < 6 && !(await has(a.page, '[data-ob-sh]')); i++) { if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make'); else if (await has(a.page, '#pl-in-next')) await tap(a.page, '#pl-in-next'); else break; }
+  await tap(a.page, '#ob-next');
   if (await has(a.page, '[data-ob-sh]')) {
     await tap(a.page, '[data-ob-sh="me"]'); await settle(a.page, 400);
     await a.page.fill('#su-num', '9876543210'); await tap(a.page, '#su-send'); await a.page.fill('#su-code', '123456'); await settle(a.page, 900);

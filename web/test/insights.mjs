@@ -105,7 +105,7 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   check('3 My cycles: each cycle shows its fertile window and one ovulation day', rows.slice(0, 3).every((r) => r.f === 5 && r.o === 1), rows.slice(0, 3));
   check('3 My cycles: a past cycle shows its own length', /29-day cycle/.test(rows[1].t), rows[1]);
   check('3 My cycles: four rows open, the rest under Show all', rows.length === 11 && (await page.$$('#view .mc-card > .mc-list > .mc-row')).length === 4 && /Show all 11/.test(await card(page, '#view .mc-more summary')), rows.length);
-  await page.$eval('#view .mc-row', (b) => b.click()); await sleep(250);
+  await page.$eval('#view .mc-row .mc-open', (b) => b.click()); await sleep(250);   /* Version 39.11: the row's date opens it; Edit dates sits beside it */
   check('3 a cycle opens its first day', !!(await page.$('#sheet-root .sheet')));
   check('3 no page errors', !errs.length, errs);
   await ctx.close();

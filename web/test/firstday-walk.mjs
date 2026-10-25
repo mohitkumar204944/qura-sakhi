@@ -52,31 +52,32 @@ async function run(name, when, steps) {
   await ctx.close();
 }
 
-/* A. A new woman, the field test's case: periods 36-45 days apart, some months skipped (Mohit's example) */
+/* A. A new woman, the field test's case: periods 36-45 days apart, some months skipped (Mohit's example). Version 39.10: about
+   you, her stage, her goals, a few details, who uses the phone, sign-up, "Your Sakhi", the first-day tour, her first log in
+   Diary, then Today's plan offer and the plan's own questions */
 await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) => {
   await snap('language'); await tap('[data-ob-lang="en"]');
   await snap('hello'); await tap('#w-start');
-  await snap('age-decade'); await tap('[data-ob-dec="1990"]'); await snap('age-year'); await tap('[data-ob-y="1996"]');
-  await snap('stage'); await tap('[data-ob-st="cycle"]');
-  await snap('last-period'); await tap('[data-ob-lp="more"]').catch(() => {});
-  if (await page.$('[data-ob-lp]')) { await snap('last-period-more'); }
-  /* Version 37.1: "About how long ago?"; before it, the answer saved nothing and she had to pick again */
-  if (await page.$('[data-ob-lpm="60"]')) await tap('[data-ob-lpm="60"]');
-  else if (await page.$('[data-ob-lp="24"]') && !(await page.$('[data-pl-goal]'))) await tap('[data-ob-lp="24"]');
-  await snap('goal'); await tap('[data-pl-goal="irregular"]');
-  await snap('periods-q'); for (const s of ['[data-pl-q="gap:g45"]', '[data-pl-q="skips:y"]', '[data-pl-q="dx:ns"]', '[data-pl-m="signs:acne"]']) await tap(s);
-  await snap('periods-q-answered'); await tap('#pl-in-next');
-  await snap('your-day'); for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
-  if (await page.$('[data-pl-q="remind:20:00"]')) await tap('[data-pl-q="remind:20:00"]');   /* before Version 37.1 only */
-  await tap('#pl-in-next');
-  await snap('when-move'); await tap('[data-pl-when="dinner"]');
-  if (await page.$('#pl-in-skip')) { await snap('body'); await tap('#pl-in-skip'); }   /* Version 39.3: only for a weight goal */
-  if (await page.$('#pl-in-make')) { await snap('summary'); await tap('#pl-in-make'); }
+  await snap('about-you'); await page.fill('#ob-name', 'Riya'); await tap('[data-ob-dec="1990"]'); await snap('about-you-year'); await tap('[data-ob-y="1996"]');
+  await snap('stage'); await tap('[data-ob-st="pmos"]');
+  await snap('goals'); await tap('[data-ob-goal="irregular"]'); await tap('[data-ob-goal="skin"]'); await snap('goals-picked'); await tap('#ob-next');
+  await snap('details'); await tap('[data-ob-lp="more"]'); await tap('[data-ob-lpm="60"]'); await tap('[data-ob-gap="g45"]'); await tap('[data-ob-dx="ns"]'); await snap('details-answered'); await tap('#ob-next');
   await snap('shared-phone'); await tap('[data-ob-sh="me"]'); await settle(600);
   await snap('signup-number'); await page.fill('#su-num', '9876543210'); await tap('#su-send'); await settle(400);
   await snap('signup-code'); await page.fill('#su-code', '123456'); await settle(1200);
-  await snap('signup-details'); if (await page.$('#su-done')) { await page.fill('#su-name', 'Riya Sharma'); await page.fill('#su-pin', '302001'); await tap('#su-done'); }
+  await snap('signup-details'); if (await page.$('#su-done')) { await page.fill('#su-pin', '302001'); await tap('#su-done'); }
   await settle(1200);
+  await snap('your-sakhi'); await tap('#ys-tour'); await settle(900);
+  for (let k = 0; k < 4 && (await page.$('#tour-root #tour-next')); k++) { await snap('first-day-tour-' + (k + 1)); await tap('#tour-root #tour-next'); await settle(600); }
+  await snap('diary-first-log'); await tap('[data-fl-days="5"]'); await tap('[data-fl-sign="d_acne"]'); await snap('first-log-answered'); await tap('#fl-save'); await settle(900);
+  await snap('today-plan-offer'); await tap('#pl-off-go');
+  await snap('periods-q'); for (const s of ['[data-pl-q="skips:y"]', '[data-pl-m="signs:acne"]']) await tap(s);
+  await snap('periods-q-answered'); await tap('#pl-in-next');
+  await snap('your-day'); for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(s);
+  await tap('#pl-in-next');
+  await snap('when-move'); await tap('[data-pl-when="dinner"]');
+  if (await page.$('#pl-in-skip')) { await snap('body'); await tap('#pl-in-skip'); }   /* Version 39.3: only for a weight goal */
+  if (await page.$('#pl-in-make')) { await snap('summary'); await tap('#pl-in-make'); await settle(800); }
   /* Version 37.1: the plan's cards, then the Start screen */
   for (let k = 0; k < 8 && (await page.$('#pl-rv-next')) && !(await page.$('#pl-rv-go')); k++) { await snap('reveal-card-' + (k + 1)); await tap('#pl-rv-next'); }
   await snap(await page.$('#pl-rv-next') ? 'reveal' : 'start-screen');

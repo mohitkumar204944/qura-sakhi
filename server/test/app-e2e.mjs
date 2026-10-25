@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from '../../web/test/pw.mjs';
+import { join } from '../../web/test/join.mjs';
 import { createApi, ALLOW } from '../supabase/functions/sakhi-api/api.js';
 import { pgStore } from '../supabase/functions/sakhi-api/store-pg.js';
 import { pgliteDb, pgQuery, fakeSender, fakeClock, ENV, HANDOFF_ENV } from './harness.mjs';
@@ -41,8 +42,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 await page.goto(pathToFileURL(path.join(web, 'index.html')).href + '#home', { waitUntil: 'domcontentloaded' });
 await page.waitForFunction(() => !!window.Saathi);
 
-/* First run, then signup with a code the server really generated */
-for (const sel of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1994"]', '[data-ob-st="cycle"]', '[data-ob-lp="7"]', '[data-pl-goal="track"]', '[data-ob-sh="me"]']) { await page.waitForSelector(sel); await tap(sel); }
+/* First run (Version 39.10's joining, web/test/join.mjs), then signup with a code the server really generated */
+await join(page, { tile: 'cycle', goals: ['track'] });
 await page.waitForSelector('#su-num');
 await page.evaluate(() => { window.Saathi.state.settings.toursAuto = false; window.Saathi.save(); });
 await page.fill('#su-num', '98765 43210'); await tap('#su-send');
@@ -57,6 +58,7 @@ await tap('#su-done'); await page.waitForSelector('#view .flag[role="alert"]');
 check('the details screen needs her first name before anything is sent', /first name/.test(await text('#view .flag')) && !reqs.some((r) => r.method === 'PATCH'));
 await page.fill('#su-name', 'Asha'); await page.fill('#su-pin', '560001'); await page.fill('#su-email', ' Asha@Example.in '); await tap('[data-heard="fam"]'); await tap('#su-sms');
 await tap('#su-done');
+await page.waitForSelector('#ys-skip'); await tap('#ys-skip');   /* Version 39.10: "Your Sakhi", then Today */
 await page.waitForSelector('.card.hero');
 await sleep(700);
 

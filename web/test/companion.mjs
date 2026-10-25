@@ -1,6 +1,7 @@
 // Version 37: Sakhi as her companion (docs/companion-journey-2026-10-23.md, section 12.1; MODULE_API section 39). This file
 // checks the acceptance criteria:
-//   1 goal first: joining asks what she wants to work on, then what her plan needs, for her goal;
+//   1 goal first: joining asks what she wants help with (Version 39.10: up to 3 goals for her stage; her plan's own questions
+//     come from Today's offer, after her first log), then what her plan needs, for her goal;
 //   2 the reveal (Version 37.1: cards, then "Start my plan"): her goal as the change she wants, what it is made from, her
 //     steps, what happens when (never a percentage), the doctor check when her periods skip; Today then shows her steps;
 //   3 joining survives a restart;
@@ -12,12 +13,13 @@
 //   10 the tabs (Today, My plan, Diary, Explore) and the Help button, and Explore keeping the old fold's quick answers, voice
 //   search and "Ask a Qura doctor"; 11 a shared phone; 12 every sample woman's Today;
 //   and: every goal and stage starts the right plan, a woman who joined before Version 37 picks a goal in My plan, "Just
-//   keeping track" and "Just learning" start no plan, Hindi, and no page errors.
+//   keeping track" starts no plan (and joining has no "Just learning" since Version 39.10), Hindi, and no page errors.
 // Usage: node test/companion.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { join as joinAs } from './join.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', process.argv[2] || '.');
@@ -65,57 +67,58 @@ const gos = (page, sel) => page.$$eval(sel, (b) => b.map((x) => x.dataset.go));
 const st = (page) => page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state)));
 const setPlan = (page, p, intake) => page.evaluate((a) => { const S = window.Saathi; S.state.mods.plan = a[0]; if (a[1]) S.state.intake = a[1]; S.save(); S.render(); }, [p, intake || null]);
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: true });
-/* joining, from the language screen to the shared-phone question */
-async function join(page, stage, goal, answer) {
-  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="' + (stage === 'meno' ? 1970 : 1990) + '"]', '[data-ob-y="' + (stage === 'meno' ? 1978 : 1999) + '"]', '[data-ob-st="' + stage + '"]']) await tap(page, s);
-  if (stage === 'preg') { await tap(page, '[data-ob-pq="lmp"]'); await page.fill('#ob-lmp', '2026-06-20'); await tap(page, '#ob-next'); }
-  else if (stage === 'post') { await page.fill('#ob-birth', ago(21)); await page.$eval('#ob-birth', (e) => e.dispatchEvent(new Event('change'))); await tap(page, '#ob-next'); }
-  else if (stage !== 'learn') await tap(page, '[data-ob-lp="24"]');
-  if (stage === 'learn') return;
-  await tap(page, '[data-pl-goal="' + goal + '"]');
-  for (let i = 0; i < 9; i++) {
-    if (await has(page, '[data-ob-sh]')) return;
-    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); continue; }
-    if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="' + ((answer || {}).when || 'dinner') + '"]'); continue; }
-    if (await has(page, '#pl-in-skip')) { await tap(page, '#pl-in-skip'); continue; }
-    const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
-    for (const g of groups) { const [k, kind] = g.split('|'); const want = (answer || {})[k]; await tap(page, want ? '[data-pl-' + kind + '="' + k + ':' + want + '"]' : '[data-pl-' + kind + '^="' + k + ':"]'); }
-    await tap(page, '#pl-in-next');
-  }
-}
-/* from the stage screen (after a restart back to it), joining for a cycle goal */
-async function join2(page, goal, answer) {
-  if (await has(page, '[data-ob-st="cycle"]')) { await tap(page, '[data-ob-st="cycle"]'); await tap(page, '[data-ob-lp="24"]'); }
-  if (await has(page, '[data-pl-goal]')) await tap(page, '[data-pl-goal="' + goal + '"]');
-  for (let i = 0; i < 9; i++) {
-    if (await has(page, '[data-ob-sh]')) return;
-    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); continue; }
-    if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="dinner"]'); continue; }
-    if (await has(page, '#pl-in-skip')) { await tap(page, '#pl-in-skip'); continue; }
-    const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
-    for (const g of groups) { const [k, kind] = g.split('|'); const want = (answer || {})[k]; await tap(page, want ? '[data-pl-' + kind + '="' + k + ':' + want + '"]' : '[data-pl-' + kind + '^="' + k + ':"]'); }
-    await tap(page, '#pl-in-next');
-  }
-}
+/* Version 39.10: joining (test/join.mjs), then sign-up, "Your Sakhi" (Skip), her first log in Diary, and Today's plan offer,
+   which opens her plan's own questions */
+const TILE_AGE = { mid: { dec: 1970, y: 1978 }, meno: { dec: 1970, y: 1972 } };
 async function signUp(page) {
-  await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
+  await settle(page, 400);
   await page.fill('#su-num', '9876543210'); await tap(page, '#su-send'); await page.fill('#su-code', '123456'); await settle(page, 900);
   if (await has(page, '#su-done')) { await page.fill('#su-name', 'Riya Sharma'); await page.fill('#su-pin', '302001'); await tap(page, '#su-done'); }
   await settle(page, 900);
+  if (await has(page, '#ys-skip')) { await tap(page, '#ys-skip'); await settle(page, 400); }
+}
+async function firstLog(page) { await go(page, 'diary'); await page.waitForSelector('#fl-save, [data-fl-go]'); await tap(page, (await has(page, '#fl-save')) ? '#fl-save' : '[data-fl-go]'); await settle(page, 400); }
+async function toOffer(page, tile, goal) {
+  await joinAs(page, Object.assign({ tile: tile, goals: [goal], dec: 1990, y: 1999, lp: '24', birth: ago(21), lmp: '2026-06-20' }, TILE_AGE[tile] || {}));
+  await signUp(page); await firstLog(page); await go(page, 'home');
+  await tap(page, '#pl-off-go');
+}
+/* her plan's own questions, to its cards (an answer she already gave is kept) */
+async function answer(page, ans) {
+  for (let i = 0; i < 10; i++) {
+    if ((await page.evaluate(() => location.hash)) === '#plan-reveal') return;
+    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); await settle(page, 400); continue; }
+    if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="' + ((ans || {}).when || 'dinner') + '"]'); continue; }
+    if (await has(page, '#pl-in-skip')) { await tap(page, '#pl-in-skip'); continue; }
+    const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
+    for (const g of groups) { const [k, kind] = g.split('|'); const want = (ans || {})[k]; if (!want && await has(page, '[data-pl-' + kind + '^="' + k + ':"].on')) continue; await tap(page, want ? '[data-pl-' + kind + '="' + k + ':' + want + '"]' : '[data-pl-' + kind + '^="' + k + ':"]'); }
+    await tap(page, '#pl-in-next');
+  }
 }
 const LOCAL = { app: '0.37-pilot', platform: 'android' };   /* no server address: the stand-in server, whose code is 123456 */
 /* Version 37.1: her plan's cards, from the one on screen to the Start screen; their words */
 /* V39.8 review REGRESSIONS-07: each step's reason sits behind "Why?" (a closed details), so its words are read too */
 async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w += '\n' + (await view(page)) + '\n' + (await page.$$eval('#view details.pl-why-d', (xs) => xs.map((x) => x.textContent).join('\n'))); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); } return w; }
 
-/* ---------- 1–4. Riya joins with periods 36 to 45 days apart, some months skipped ---------- */
+/* ---------- 1–4. Riya joins with periods 36 to 45 days apart, some months skipped (Version 39.10: her goals while joining; her
+   plan's own questions after her first log, from Today's offer) ---------- */
 {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
-  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="cycle"]', '[data-ob-lp="24"]']) await tap(page, s);
+  for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="pmos"]']) await tap(page, s);
   let v = await view(page);
-  check('1 after her stage and last period: "What do you want to work on first?" with her stage\'s goals', /What do you want to work on first\?/.test(v) && (await page.$$('[data-pl-goal]')).length === 8 && /Just keeping track/.test(v), v.slice(0, 300));
+  check('1 after her stage: "What would you like help with?", her stage\'s 6 goals, up to 3', /What would you like help with\?/.test(v) && (await page.$$('[data-ob-goal]')).length === 6 && /Pick up to 3/.test(v) && /Irregular or late periods/.test(v), v.slice(0, 300));
   await shot(page, '1-goal');
-  await tap(page, '[data-pl-goal="irregular"]');
+  await tap(page, '[data-ob-goal="irregular"]'); await tap(page, '#ob-next');
+  /* 3. a restart in the middle of joining keeps her answers */
+  await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await settle(page, 600);
+  check('3 the app restarts mid-way: she is back on her details', /A few things about your periods/.test(await view(page)), (await view(page)).slice(0, 200));
+  await tap(page, '#ob-back');
+  check('3 ... and her goal is kept', await has(page, '[data-ob-goal="irregular"].on'));
+  await tap(page, '#ob-next'); await tap(page, '[data-ob-lp="24"]'); await tap(page, '#ob-next'); await tap(page, '[data-ob-sh="me"]');
+  await signUp(page);
+  check('1 no plan straight after joining: Today, and her first log first', (await page.evaluate(() => location.hash)) === '#home' && !(await has(page, '#pl-off-go')) && !((await st(page)).mods.plan || {}).next);
+  await firstLog(page); await go(page, 'home');
+  await tap(page, '#pl-off-go');
   v = await view(page);
   check('1 "Irregular or late periods" asks about her periods: the gap, skipped months, a diagnosis, signs', /About your periods/.test(v) && (await page.$$('[data-pl-q^="gap:"]')).length === 6 && (await has(page, '[data-pl-q="skips:y"]')) && (await has(page, '[data-pl-q="dx:ns"]')) && (await has(page, '[data-pl-m="signs:acne"]')), v.slice(0, 300));
   await tap(page, '#pl-in-next');
@@ -124,12 +127,6 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await tap(page, '#pl-in-next');
   /* Version 39.3: milk, and knees or back (for the moves), join her day */
   check('1 then her day: activity, food, milk, knees or back, sleep and work (Version 37.1: the check-in time moved to the Start screen)', /Your day/.test(await view(page)) && ['act', 'food', 'milk', 'bed', 'work'].join() === (await page.$$eval('[data-pl-q]', (b) => Array.from(new Set(b.map((x) => x.dataset.plQ.replace(/:.*/, '')))).join())) && (await has(page, '[data-pl-m="lim:none"]')) && !(await has(page, '[data-pl-q^="remind:"]')));
-  /* 3. a restart in the middle keeps her answers */
-  await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await settle(page, 600);
-  check('3 the app restarts mid-way: she is back on "Your day"', /Your day/.test(await view(page)), (await view(page)).slice(0, 200));
-  await tap(page, '#ob-back');
-  check('3 ... and her earlier answers are kept (36 to 45 days)', await has(page, '[data-pl-q="gap:g45"].on'));
-  await tap(page, '#pl-in-next');
   for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(page, s);
   await tap(page, '#pl-in-next');
   check('1 "When can you move for 10 minutes?"', /When can you move for 10 minutes\?/.test(await view(page)));
@@ -137,10 +134,9 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   /* Version 39.3 (diet audit F2): her height and weight are asked only when her goal is her weight */
   check('1 no body question when her goal isn\'t her weight', !/Your body \(optional\)/.test(await view(page)) && !(await has(page, '#pl-in-skip')));
   check('1 last, what she told Sakhi, to check', /Here’s what you told Sakhi/.test(await view(page)) && (await has(page, '#pl-in-make')));
-  await tap(page, '#pl-in-make');
-  await signUp(page);
+  await tap(page, '#pl-in-make'); await settle(page, 600);
   /* 2. the reveal */
-  check('2 after sign-up she lands on her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal');
+  check('2 "Make my plan" opens her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal');
   v = await view(page);
   check('2 the reveal: her first name and her goal as the change she wants', /Your plan is ready, Riya\b/.test(v) && !/Riya Sharma/.test(v) && /Your goal: more regular periods/i.test(v), v.slice(0, 300));
   check('2 what it is made from, in her words, with the sign she ticked', /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 300));
@@ -154,7 +150,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; document.getElementById('tour-root') && (document.getElementById('tour-root').innerHTML = ''); }); await go(page, 'home');
   let s = await st(page);
   check('2 what joining saved: her goal, gap, skipped months and day; the plan; the 8 pm reminder', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '20:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
-  check('2 the full tour did not start on its own (the reveal is her welcome)', s.fullTour && s.fullTour.st === 'reveal');
+  check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
   check('2 Today: a greeting by name, her plan and day, and her three steps', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /Day 1 · 0 of 3 done today/.test(td) && /Move 10 minutes today/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
   await shot(page, '2-today');
@@ -246,12 +242,11 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
 /* ---------- 9, 2. The reveal's doctor checks for heavy bleeding and for pain that stops her day ---------- */
 for (const [goal, ans, re, sel, now] of [['heavy', { pads: 'p12', clots: 'y', tired: 'y' }, /Bleeding this heavy needs a doctor’s check and an Hb test/, '[data-pl-q="pads:p12"]', 'Made from what you told Sakhi: a pad every 1 to 2 hours, or two pads at once · clots · often tired or dizzy'], ['pain', { pain: 'stop', painDays: '23' }, /Pain that stops your day needs a doctor’s check/, '[data-pl-q="pain:stop"]', 'Made from what you told Sakhi: It stops my day · for 2 to 3 days']]) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
-  for (const x of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="cycle"]', '[data-ob-lp="24"]', '[data-pl-goal="' + goal + '"]']) await tap(page, x);
+  await toOffer(page, 'cycle', goal);
   check('9 ' + goal + ': no warning until she answers', await page.$eval('#pl-in-warn', (e) => e.hidden));
   await tap(page, sel);
   check('9 ' + goal + ': the doctor warning shows on the question itself', !(await page.$eval('#pl-in-warn', (e) => e.hidden)) && re.test(await page.$eval('#pl-in-warn', (e) => e.innerText)));
-  await join2(page, goal, ans);
-  await signUp(page);
+  await answer(page, ans);
   const w = await revealWords(page);
   check('9 ' + goal + ': the reveal asks for a doctor check', re.test(w) && /Please see a doctor soon/.test(w), w.slice(0, 1200));
   check('2 ' + goal + ': the reveal says back every answer she gave', w.indexOf(now) >= 0, w.slice(0, 300));
@@ -260,20 +255,21 @@ for (const [goal, ans, re, sel, now] of [['heavy', { pads: 'p12', clots: 'y', ti
 }
 
 /* ---------- every goal and stage starts the right plan ---------- */
-for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'A calmer cycle', /Calm breath/], ['cycle', 'heavy', 'heavy', 'Stronger blood', /iron/i], ['cycle', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Your before-pregnancy checklist, once a week/],   /* Version 38: its own plan */
-  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Pelvic floor trainer/], ['meno', 'hot', 'meno', 'My midlife plan', /For hot flushes/]]) {
+for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'A calmer cycle', /Calm breath/], ['cycle', 'heavy', 'heavy', 'Stronger blood', /iron/i], ['pmos', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Your before-pregnancy checklist, once a week/],   /* Version 38: its own plan */
+  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Pelvic floor trainer/], ['mid', 'hot', 'meno', 'My midlife plan', /For hot flushes/]]) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
-  await join(page, stage, goal, { dx: 'n' }); await signUp(page);
+  await toOffer(page, stage, goal); await answer(page, { dx: 'n' });
   const v = await revealWords(page); await tap(page, '#pl-rv-go'); const s = await st(page);
   check('goal ' + stage + '/' + goal + ': the "' + title + '" plan starts, and its first step shows', s.mods.plan && s.mods.plan.pack === pack && s.mods.plan.goalKey === goal && v.indexOf(title) >= 0 && step.test(v), [s.mods.plan && s.mods.plan.pack, v.slice(0, 600)]);
   check('goal ' + stage + '/' + goal + ': no page errors', !errs.length, errs);
   await ctx.close();
 }
-for (const [stage, goal] of [['cycle', 'track'], ['learn', null]]) {
+for (const [stage, goal] of [['cycle', 'track']]) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
-  await join(page, stage, goal); await signUp(page);
+  await joinAs(page, { tile: stage, goals: [goal], dec: 1990, y: 1999, lp: '24' }); await signUp(page);
+  await firstLog(page); await go(page, 'home');
   const s = await st(page);
-  check((goal || stage) + ': no plan starts and Today opens (no reveal)', (await page.evaluate(() => location.hash)) === '#home' && !(s.mods.plan && s.mods.plan.start), [s.mods.plan, await page.evaluate(() => location.hash)]);
+  check((goal || stage) + ': no plan starts, none is offered after her first log, and Today opens (no reveal)', (await page.evaluate(() => location.hash)) === '#home' && !(s.mods.plan && s.mods.plan.start) && !(await has(page, '#pl-off-go')), [s.mods.plan, await page.evaluate(() => location.hash)]);
   await go(page, 'plan');
   check((goal || stage) + ': My plan offers "What do you want to work on?"', /What do you want to work on\?/.test(await view(page)) && (goal !== 'track' || /You’re keeping track/.test(await view(page))));
   check((goal || stage) + ': no page errors', !errs.length, errs);

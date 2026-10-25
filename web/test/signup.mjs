@@ -1,7 +1,8 @@
 // Signup walk against a stand-in server (Playwright routes that follow SERVER_SPEC.md), plus the promise that the diary
 // never leaves the phone: every request the page makes is recorded and checked against the allowlist.
 // Covers: first run, wrong code, her details (first name and PIN code needed, email optional; the screen comes back after a
-// restart and for an older account without them), daily "last active", under 18, offline + "Continue for now", "Just read",
+// restart and for an older account without them; Version 39.10: her name from joining, then "Your Sakhi"), daily "last
+// active", under 18, offline + "Continue for now", a reader's diary from before Version 39.10 (the welcome has no "Just read"),
 // account page (edit, log out, sign back in, delete), expired session (401), an older diary with no birth year,
 // the prototype mode with no server, Hindi, Help during the gate, and a scan of the code for other network calls.
 // Usage: node test/signup.mjs [dir]   (dir defaults to this app folder). Screenshots go to test/shots/signup-*.png.
@@ -9,6 +10,7 @@ import fs from 'node:fs';
 import { chromium } from './pw.mjs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { join } from './join.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', process.argv[2] || '.');
@@ -17,7 +19,7 @@ const API = 'https://api.sakhi.test';
 const PAGE = pathToFileURL(path.join(root, 'index.html')).href;
 const CONTENT = fs.readFileSync(path.join(root, 'content.json'), 'utf8');
 const MARK = ['MARKER-NOTE-7731', 'MARKER-CHECKIN-5520', 'MARKER-TOPIC-9043'];
-const HEALTH_KEYS = ['events', 'daily', 'notes', 'situation', 'checkins', 'pregnant', 'symptoms', 'dob', 'cycle', 'period', 'mods', 'leads'];
+const HEALTH_KEYS = ['events', 'daily', 'notes', 'situation', 'checkins', 'pregnant', 'symptoms', 'dob', 'cycle', 'period', 'mods', 'leads', 'sex'];   /* Version 39.11: the sex log */
 const ALLOWED = {
   'POST otp/start': ['phone', 'channel', 'lang', 'app', 'platform'],
   'POST otp/verify': ['challenge', 'code', 'birth_year', 'notice', 'lang', 'app', 'platform'],
@@ -94,18 +96,10 @@ const text = (page, sel) => page.$eval(sel, (el) => el.innerText).catch(() => ''
 const h1 = (page) => text(page, '#view h1');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function noTours(page) { await page.evaluate(() => { const S = window.Saathi; S.state.settings.toursAuto = false; S.save(); }); }
-async function firstRun(page, o = {}) {
-  await page.waitForSelector(o.lang === 'hi' ? '[data-ob-lang="hi"]' : '[data-ob-lang="en"]'); await tap(page, o.lang === 'hi' ? '[data-ob-lang="hi"]' : '[data-ob-lang="en"]');
-  await page.waitForSelector(o.read ? '#w-browse' : '#w-start'); await tap(page, o.read ? '#w-browse' : '#w-start');
-  await page.waitForSelector('[data-ob-dec="1990"]');
-  if (o.under18) { await tap(page, '[data-ob-dec="post"]'); return; }
-  await tap(page, '[data-ob-dec="1990"]'); await page.waitForSelector('[data-ob-y="1994"]'); await tap(page, '[data-ob-y="1994"]');
-  if (o.read) return;
-  await page.waitForSelector('[data-ob-st="cycle"]'); await tap(page, '[data-ob-st="cycle"]');
-  await page.waitForSelector('[data-ob-lp="7"]'); await tap(page, '[data-ob-lp="7"]');
-  await page.waitForSelector('[data-pl-goal="track"]'); await tap(page, '[data-pl-goal="track"]');   /* Version 37: what she wants to work on ("Just keeping track" skips the plan questions) */
-  await page.waitForSelector('[data-ob-sh="me"]'); await tap(page, '[data-ob-sh="me"]');
-}
+/* Version 39.10: joining (about you, her stage, her goals, a few details, who uses this phone), test/join.mjs */
+const firstRun = (page, o = {}) => join(page, { lang: o.lang || 'en', name: o.name, under18: o.under18 });
+/* after sign-up she meets "Your Sakhi" (Version 39.10); "Skip the tour" goes to Today */
+async function toHome(page) { await page.waitForSelector('#ys-skip, .card.hero'); if (await page.$('#ys-skip')) await tap(page, '#ys-skip'); await page.waitForSelector('.card.hero'); }
 async function signIn(page, num, o = {}) {
   await page.waitForSelector('#su-num');
   await page.fill('#su-num', num); await tap(page, '#su-send');
@@ -156,7 +150,9 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.fill('#su-pin', '560001'); await page.fill('#su-email', 'asha@'); await tap(page, '#su-done'); await sleep(150);
   check('1 an email that isn\'t one is refused', /email doesn’t look right/.test(await text(page, '#view .flag')) && !srv.calls.some((c) => c.key === 'PATCH me'));
   await page.fill('#su-email', ' Asha@Example.IN '); await tap(page, '#su-done');
-  await page.waitForSelector('.card.hero');
+  await page.waitForSelector('#ys-tour');
+  check('1 Version 39.10: "Your Sakhi" after sign-up, by her name, with no tab bar', /Asha, here’s your Sakhi/.test(await h1(page)) && await page.evaluate(() => { const n = document.getElementById('tabbar'); return !n || n.hidden || !n.offsetHeight; }), await h1(page));
+  await tap(page, '#ys-skip'); await page.waitForSelector('.card.hero');
   await sleep(400);
   const pt = srv.calls.find((c) => c.key === 'PATCH me');
   check('1 details sent with the session token', pt && pt.auth.startsWith('tok') && pt.body.name === 'Asha' && pt.body.pincode === '560001' && pt.body.heard === 'fam' && pt.body.upd_sms === true && pt.body.upd_wa === false, pt && pt.body);
@@ -244,21 +240,24 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.fill('#su-num', '9123456789'); await tap(page, '#su-send'); await page.waitForSelector('#su-later');
   check('5 offline explained with a way on', /Couldn’t reach Qura/.test(await text(page, '#view .flag')));
   await shot(page, '5-offline');
-  await tap(page, '#su-later'); await page.waitForSelector('.card.hero');
+  await tap(page, '#su-later'); await toHome(page);
   check('5 Home keeps a reminder card', /Finish signing up/.test(await text(page, '#view')));
   srv.down = false;
-  await tap(page, '#view [data-su-go]'); await signIn(page, '9123456789'); await page.waitForSelector('.card.hero');
+  await tap(page, '#view [data-su-go]'); await signIn(page, '9123456789'); await toHome(page);
   check('5 signed up later, card gone', await page.evaluate(() => window.Saathi.account.signedIn()) && !/Finish signing up/.test(await text(page, '#view')));
   check('5 no page errors', !errs.length, errs);
   await ctx.close();
 }
 
-/* ---------- 6. "Just read": birth year, signup, then the guides ---------- */
+/* ---------- 6. Version 39.10: the welcome has no "Just read"; a reader's diary from before it: the gate, then the guides ---------- */
 {
-  const { ctx, page, srv, errs } = await open({ name: 'reader' });
-  await firstRun(page, { read: true });
+  const w = await open({ name: 'welcome' });
+  await w.page.waitForSelector('[data-ob-lang="en"]'); await tap(w.page, '[data-ob-lang="en"]'); await w.page.waitForSelector('#w-start');
+  check('6 the welcome offers Start only: no "I just want to read"', !(await w.page.$('#w-browse')));
+  await w.ctx.close();
+  const { ctx, page, srv, errs } = await open({ name: 'reader', seed: { lang: 'en', langChosen: true, stage: 'browse', dob: '1994-07-01', consent: {}, situation: {}, events: [], daily: {}, settings: { toursAuto: false } }, hash: '#care' });
   await page.waitForSelector('#su-num');
-  check('6 reader asked the birth year, then the gate', await page.evaluate(() => window.Saathi.state.stage === 'browse' && window.Saathi.state.dob === '1994-07-01'));
+  check('6 reader with her birth year meets the gate', await page.evaluate(() => window.Saathi.state.stage === 'browse' && window.Saathi.state.dob === '1994-07-01'));
   await signIn(page, '9000012345');
   await page.waitForFunction(() => !document.querySelector('#su-done'));
   check('6 reader lands on the guides', await page.evaluate(() => location.hash === '#care'));
@@ -275,7 +274,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
 /* ---------- 7. Session ended on the server (401) brings the gate back ---------- */
 {
   const { ctx, page, srv, errs } = await open({ name: 'expired' });
-  await firstRun(page); await noTours(page); await signIn(page, '9811111111'); await page.waitForSelector('.card.hero');
+  await firstRun(page); await noTours(page); await signIn(page, '9811111111'); await toHome(page);
   srv.sessions = {};
   await page.evaluate(() => { const a = JSON.parse(localStorage.getItem('qura-sakhi-account-v1')); a.activeOn = '2000-01-01'; localStorage.setItem('qura-sakhi-account-v1', JSON.stringify(a)); });
   await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await sleep(600);
@@ -313,7 +312,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   await page.fill('#su-num', '9876500000'); await tap(page, '#su-send'); await page.waitForSelector('#su-code');
   check('9 prototype says no SMS is sent and gives the code', /Prototype: no message is sent\. The code is 123456\./.test(await text(page, '#view')));
   await page.fill('#su-code', '424242'); await page.waitForSelector('#view .flag[role="alert"]');
-  await page.fill('#su-code', '123456'); await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Meera'); await page.fill('#su-pin', '110001'); await tap(page, '#su-done'); await page.waitForSelector('.card.hero');
+  await page.fill('#su-code', '123456'); await page.waitForSelector('#su-done'); await page.fill('#su-name', 'Meera'); await page.fill('#su-pin', '110001'); await tap(page, '#su-done'); await toHome(page);
   check('9 signed in on the stand-in server', await page.evaluate(() => window.Saathi.account.signedIn()));
   check('9 prototype makes no network requests at all', !reqs.length, reqs);
   check('9 no page errors', !errs.length, errs);
@@ -336,6 +335,18 @@ const shot = (page, name) => page.screenshot({ path: path.join(shots, 'signup-' 
   check('10 Hindi asks for the first name', /अपना पहला नाम डालें/.test(await text(page, '#view .flag')));
   await shot(page, '7-hindi-about');
   check('10 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+
+/* ---------- 10b. Version 39.10: the name she gave when joining is filled in on "Almost done" ---------- */
+{
+  const { ctx, page, errs } = await open({ name: 'named' });
+  await firstRun(page, { name: 'Riya' }); await page.waitForSelector('#su-num'); await noTours(page);
+  await signIn(page, '9855555555', { fill: false });
+  check('10b her name from joining is in the field, PIN code still hers to give', (await page.$eval('#su-name', (e) => e.value)) === 'Riya' && (await page.$eval('#su-pin', (e) => e.value)) === '');
+  await page.fill('#su-pin', '560001'); await tap(page, '#su-done'); await page.waitForSelector('#ys-tour');
+  check('10b "Your Sakhi" greets her by it', /Riya, here’s your Sakhi/.test(await h1(page)));
+  check('10b no page errors', !errs.length, errs);
   await ctx.close();
 }
 

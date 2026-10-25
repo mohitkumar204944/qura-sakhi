@@ -89,6 +89,14 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     habit back once a week, a calcium food for 40+ bones, pregnancy food by trimester, food while she breastfeeds, "Fasting
     today?" and the fasting step, fasting in pregnancy and while breastfeeding). Contract: MODULE_API section 52; wording:
     sections 17.4 and 19.9 of the review (new lines wait for doctor review).
+  - `node test/joining.mjs` (Version 39.10, joining that personalises Sakhi: 7 stage tiles, up to 3 goals, a few details,
+    "Your Sakhi" and the first-day tour, the first log in Diary, the plan offered on Today after it, other stages out of
+    Explore and Learn, safety within 2 taps; every stage in English and Hindi at 360 px). `test/join.mjs` is the shared
+    joining helper. Contract: MODULE_API section 53; wording: section 19.10 of the review (new lines wait for doctor review).
+  - `node test/diary.mjs` (Version 39.11, the diary: the day's facts and a week strip on the day page, flow in one tap, a
+    private sex log (the emergency pill line when she isn't trying, hearts only while trying, never on a shared phone or in
+    the report), the Cycles tab with Edit dates, and when fertile days start). Contract: MODULE_API section 54; wording:
+    section 19.11 of the review (new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

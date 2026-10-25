@@ -108,7 +108,7 @@ const POST = { situation: { deliveredOn: ago(20), breastfeeding: true }, events:
   check('2 a tick on what she has read', await has(page, '#view .art-read[data-go="a-pregnancy.register-by-12-weeks"] .art-tick'));
   check('2 the chapter ends with "Where to get it free" (Govt. services)', (await gos(page, '#view .learn-free [data-go]')).indexOf('access-free') >= 0);
   await tap(page, '#view .tabs [data-g="all"]');
-  check('2 All: every chapter shows its count; Periods and cycles 1 of 11', /Periods and cycles\s*1 of 11 read/.test(await view(page)), (await view(page)).slice(0, 700));
+  check('2 All: every chapter of her stage shows its count (Version 39.10: no Periods and cycles in pregnancy)', /Pregnancy and schemes\s*1 of 10 read/.test(await view(page)) && !/Periods and cycles/.test(await view(page)), (await view(page)).slice(0, 700));
   await go(page, 'learn');
   check('2 her own choice of chapter stays for the session', await page.$eval('#view .tabs button.on', (e) => e.dataset.g === 'all').catch(() => false));
   await page.evaluate(() => { location.hash = 'learn-services'; }); await settle(page, 600);

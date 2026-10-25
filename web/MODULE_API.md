@@ -3488,3 +3488,174 @@ fixed and tested inline:
 - An after-birth plan's end (`endAt`) is never later than the baby's first birthday, even when she opens Sakhi months later.
 
 Both checks are in foodsteps.mjs section 8. Each fails on the earlier fixed copy and passes now.
+
+## 53. Version 39.10: joining that personalises Sakhi; a first day that starts with the diary (Mohit, 25 Oct)
+
+Mohit's request: joining should learn her stage and goals and shape the whole app, the way HealthifyMe does, and she should
+no longer see "too many things, not knowing what to do". After joining: Today, a short tour, then Diary, where she starts
+logging and hears why. Her plan comes after that first log. The design was approved on the canvas
+(claude.ai/artifact/Psm8Y1BNf92T2d7qj2Ecxw), with his answers to every design question (25 Oct).
+
+**Joining (app.js `renderOnboard`, `finishOnboard`).** The welcome has one way in (Start); "I just want to read" is gone.
+Then 5 screens:
+1. **About you:** her first name (optional; it fills sign-up's "Almost done"), then her age as a decade, then the year (the
+   month only at 18). Under 18: the girls' reading path (`mem.under18`), with no account.
+2. **Her stage:** 7 tiles in life order (`OB_TILES`). They are Regular periods, PMOS (PCOS / PCOD) / Irregular periods, Trying
+   for a baby, I am pregnant, Recently had a baby, Periods changing after 40, and Menopause. Sakhi's stages (`OB_ENGINE`) are
+   cycle, cycle, ttc, preg, post, meno and meno; Menopause sets `situation.stopped`.
+3. **Her goals:** up to 3 from her tile's list (`OB_GOALS`), numbered in the order she picks them.
+   - A 4th is refused with a line, and "Just tracking" stands alone.
+   - Period pain, heavy periods and mood before periods are under both period tiles.
+   - Her first goal chooses her plan; the others shape Today's tips and Explore.
+4. **A few details, only what her stage needs:**
+   - Periods, PMOS, trying and after 40: her last period (a guess is saved as a guess) and the usual gap (not after 40).
+   - PMOS also asks "Has a doctor said you have PMOS (PCOS)?". Yes writes `situation.pcos`, and her goal "irregular" becomes
+     "pmos".
+   - Periods and PMOS also ask the V39.0 pill question.
+   - Pregnant: her due date or last period (or later). After a birth: the birth date and breastfeeding. Menopause: when her
+     periods stopped (chips, no date).
+5. **Who uses this phone?** Unchanged (the shared-phone kit).
+
+`finishOnboard` saves:
+- `state.dob` and `state.situation`;
+- `state.goals`: her stage token first, then her goals (`goalsList`);
+- `state.focus` `{ tile, goals, at, lp }`;
+- `state.intake` `{ at, stage, goal (her first), gap, dx, stopped }`;
+- her last period as an event, and `state.fullTour` `{ st: 'first' }`;
+- `prompts.planOffer`, when her first goal has a plan (`packFor`).
+
+No plan is made while joining (no `startFromIntake`). `mem.ob` is still kept in localStorage, so joining survives a restart.
+
+**"Your Sakhi", after sign-up (route `your-sakhi`, no tab bar).** It shows:
+- her name, and her stage and goal chips;
+- 3 rows on how Sakhi helps, by stage: logging, Today, and her plan (or Learn when her goals have no plan);
+- "Out of your way: …" (the stages hidden), with "Change your stage any time in Me".
+
+"Show me around · 30 seconds" starts the first-day tour; "Skip the tour" goes to Today. Both mark Today's own tip done. A
+shared phone in plain words skips this screen (Today first, the PIN first).
+
+**The first-day tour (`TOURS` `first-day`, kind `first`).** 3 steps on Today: her day (the Today card), My plan and Explore
+(the tab bar), and Diary. Its last button, "Start my diary", opens Diary (`def.doneLabel`, `def.done`). It is not part of
+the full tour or the tours menu; the full tour stays in Me > How to use Sakhi.
+
+**Her first log (Diary, `firstLogCard`).** It shows at the top of Diary while `firstLogDue()`: she joined with Version 39.10
+(`state.focus`), has no first log yet, isn't a sample, and the phone isn't shared in plain words.
+- "Why log every day?": 3 numbered reasons for her stage.
+- Periods, PMOS, trying and after 40: her last period (Change opens the period log), how many days it lasted (3 to 7+; saves
+  the end), today's signs (cramps, acne, low mood, tired, nothing), and "Save my first log".
+- Pregnant, after a birth, menopause: one button to her stage's own log (this week, the recovery check, the menopause diary).
+- Diary's own tip and the + button wait while it shows (`URGENT` holds `#fl-card`).
+- Whatever she logs first counts (`noteFirstLog` in `save()`). That is a day's signs, a note, a check-in, or a period date
+  after joining, but not the date she gave while joining.
+- A woman whose diary already had entries when she answers the Today card gets no first-log card.
+
+**Her plan, after her first log (plan.js `offerCard`).**
+- The card says "Ready for you", with the name of her first goal's plan, "Made from your answers and your first log", and
+  See my plan or Later (3 days).
+- It leads "Sakhi says" (`leads()`), and Today's tips wait while it is up (`S.plan.offering()`).
+- See my plan opens the plan's own questions from screen 2 (`S.mem.planIntake`, `iq: 1`). The gap and the PMOS answer from
+  joining are not asked again (`known`), unless she taps Change on the summary (`edit`).
+- Then the V37.1 cards and Start, unchanged.
+- While she sets it up, petals wait for her first check-in (`holdJoy` on `plan-goal`, `plan-reveal` and `plan-start`).
+- If the app restarts during the plan's questions, she starts those 2 or 3 screens again from Today's card.
+
+**Today.**
+- At most 3 steps besides her tablets and reminders.
+- In her first 30 days, before a plan, Today has "Log today" (periods-type stages, until she has logged today) and one read
+  for her stage (the first she hasn't read).
+- Today's own tip skips its "Your plan for today" step when Today holds only these rows (`firstDaysOnly`).
+
+**Explore and Learn: other stages out of her way.**
+- Explore shows only her stage's topics (`STAGE_TOPICS`); "All topics" is gone.
+- Learn shows her stage's chapters and the ones for every woman (`LEARN_OK`), and Contents counts what she sees.
+- A shared phone keeps the full grid and every chapter. Search still finds everything.
+- Safety stays within 2 taps. Help (on every screen) holds 112, "Is someone hurting you?" and, new, Pregnancy loss
+  (`#hs-loss`). STIs and safety are under Explore > Intimate health. Abortion is under Explore > Missed period in every stage
+  but pregnancy, where search finds it.
+
+**Women who joined before Version 39.10.**
+- A card on Today, in its own row, not in "Sakhi says": "Tell Sakhi your stage and goals". It shows once.
+- It opens the stage tiles (route `join-update`), then her goals (her old ones ticked), then the PMOS question on that tile.
+- Her diary and her plan are untouched; a running plan keeps its goal first. Picking another stage opens the stage change
+  sheet. "Not now" hides it for good.
+- A stage change in Me asks again (`state.focus` is cleared).
+
+**State.** `state.focus`, `prompts.planOffer`, `prompts.firstLog`, `prompts.planOfferNot` and `prompts.exAsked`. No new server
+fields and nothing new leaves the phone; sign-up's name field is filled in from joining (`aboutOf`).
+
+**Strings.** About 120 new English and Hindi keys (`ob_*`, `ys_*`, `fd*`, `fl_*`, `td_*`, `fx_*`, `plan_off_*`). The new health
+lines are in the wording review, section 19.10: what each goal gives her (`ob_gs_*`), the "why we ask" lines, and the
+reasons to log. Pilot builds carry them; they wait for the doctor.
+
+**Tests.**
+- `node test/joining.mjs`: 297 checks, including all 7 stages in English and Hindi at 360 px, the goal rules, a shared phone,
+  a girl under 18 and a woman from before.
+- `test/join.mjs` is the shared joining helper; signup, tours, firstday, companion, goals and protect use it.
+- places and knowledge follow the new Explore and Learn.
+- firstday-walk: the distinct screens before Today went from 20 to 11, and joining itself from 9 screens to 5.
+
+## 54. Version 39.11: the diary's day page, a private sex log, the Cycles tab (Mohit, 25 Oct)
+
+Mohit shared another tracker's screens and asked what our diary lacks. Of the 6 gaps found, he approved all 6, including the
+sex log and the Cycles tab, and the mockup (claude.ai/artifact/MWM56ZYQU4GoBh3esJavbJ), then "go with your recommendations".
+Principle-level only: nothing was copied from the other app.
+
+**The day page (`openDay`).**
+- **A week at a time.** The arrows move 7 days (never past today, never more than 90 days back). Under the date sits the week,
+  Monday to Sunday (`dayStrip`), with her marks: period, spotting, fertile window, ovulation and symptom dots. Tapping a day
+  opens it in place. Tapping the date opens that month in Diary.
+- **The day's facts** (`dayFacts`, shared with the Days tab). These are the day of her period or cycle, the fertile window
+  and ovulation (estimates, only where fertile days show), the chance of pregnancy that day, and the days to her next period.
+  "Tomorrow" replaces "in 1 days". There's no card for a day that isn't a cycle day (pregnancy, after a birth, a pause). A
+  shared phone keeps "Cycle day N" only.
+- **Flow in one tap** on every bleeding day (`flowTiles`, `setPads`). There are 4 tiles by pads in the day (1–2, 3–5, 6 or
+  more, soaked one every 1–2 hours). It is kept on the period's start, its end, or a day detail (V39.1's `start_detail`). A
+  second tap clears it, and an empty day detail goes. Soaked every 1–2 hours shows the heavy-bleeding warning (`r2`). "Clots
+  and pain" opens the details sheet as before.
+
+**The sex log (`sexHtml`, `state.sex`).**
+- **Two choices only:** "Without a method" (`'n'`) and "With a method" (`'y'`), one a day in `state.sex[iso]`. A second tap
+  clears it. It is cleaned on load (`cleanSex`).
+- **Only on this phone.** It is a key of its own (not `daily`), so the doctor's report, What you noted, What repeats,
+  reminders and `net()` never see it; the sign-up leak check lists `sex` as a health key. It counts as a log for her first
+  log.
+- **Never shown** on a shared phone (plain words), to a girl under 18, in a pregnancy, or after menopause.
+- **Not trying for a baby, without a method, within 3 days:** the emergency pill line, from the contraception guide's
+  reviewed words ("take it as soon as you can, within 72 hours (3 days)"), with What to do (`contra-ec`) and Where it's free
+  (`contra-free`).
+- **Trying for a baby:**
+  - On a fertile day it shows "On a fertile day (estimate)" and the trying-for-a-baby guide's line: "Sex every 2–3 days,
+    all through the cycle, gives the best chance".
+  - Hearts mark her days on the week strip and the calendar, with "Sex" in the legend.
+  - The Days tab tags them.
+  - Hearts never show when she isn't trying (`sexHearts`).
+
+**The Cycles tab.** Diary's tabs are Calendar · Cycles · Days (the `trends` string, English and Hindi; the other 4 languages
+keep their old word until a native speaker checks). The order is:
+- her signal cards, if any;
+- My cycles, where each cycle has "Edit dates";
+- the glance, with her numbers inside;
+- one Charts row, a `details` holding the gaps and period charts, which stays open once she opens it (`mem.chartsOpen`);
+- What repeats, then This month's signs, the checks, What you noted, the report and her records.
+
+The Diary tour's second tip says "Cycles".
+
+**Edit dates (`openCycleEdit`).**
+- **The sheet:** her period's start and end, Save, "This wasn't a period" and Cancel.
+- **Refused:** an end before the start, longer than 20 days, in the future, or into another period (shown with a line; nothing
+  changes).
+- **Save:** moves the start, so a guessed date becomes a real one, and moves, adds or removes the end.
+- **"This wasn't a period":** removes its start and end, with Undo.
+- **The date of a cycle** still opens its first day.
+
+**When fertile days start (`fwFew`).** With fewer than 6 cycles (`fertWhy() === 'few'`), the calendar says "Fertile days
+show after 6 cycles. N more periods to log." "Why?" explains in 3 sentences, ending with "There is no safe day". Other
+reasons (irregular cycles, hormones, a method, age) show nothing new, as before. There's nothing on a shared phone.
+
+**Strings.** About 40 new English and Hindi keys (`sx_*`, `dy_sx_*`, `day_flow_q`, `day_clots`, `day_month`, `prev_week`,
+`next_week`, `dy_*1`, `charts_*`, `mc_edit`, `ed_*`, `fw_*`). New wording is in the wording review, section 19.11. The
+emergency pill and every-2–3-days lines reuse reviewed text; the rest waits for the doctor.
+
+**Tests.** `node test/diary.mjs` checks the day page, flow, the sex log (including a shared phone, pregnancy, menopause and the
+report), the Cycles tab, Edit dates, the fertile-days line, Hindi and 360 px. records, insights, fieldtest and signup follow
+the new tab name, the cycle rows and the week arrows.

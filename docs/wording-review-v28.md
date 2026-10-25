@@ -1689,3 +1689,124 @@ whether she names it. The roadmap's bar is 85% for each drawing.
 | {n} days a week: {x} (the plan screen, for a step that comes on some days) | हफ़्ते में {n} दिन: {x} |
 | On your fast today: a proper sargi or sehri, water when you can, and break the fast gently (My plan, on a day she fasts: the line from 17.4, moved here from under Today's step) | आज आपका व्रत है: सरगी या सेहरी ठीक से, जब हो सके पानी, और व्रत धीरे से खोलें |
 | If you are pregnant or breastfeeding (the fasting page) | अगर आप गर्भवती हैं या स्तनपान करा रही हैं |
+
+### 19.10 Version 39.10: joining that personalises Sakhi (MODULE_API section 53)
+
+New words for joining, "Your Sakhi", the first-day tour, the first log and the plan offer. **The doctor should check the
+health lines** (marked ★): what each goal gives her, the "why we ask" lines and the reasons to log. Pilot builds carry
+them until then.
+
+**Her stage (7 tiles)**
+
+| English | Hindi |
+|---|---|
+| Regular periods · Just tracking | नियमित पीरियड · बस हिसाब रखना |
+| PMOS (PCOS / PCOD) / Irregular periods · Manage my symptoms | PMOS (PCOS / PCOD) / अनियमित पीरियड · अपने लक्षण सँभालना |
+| Trying for a baby · Know my best days | बच्चे की कोशिश · अपने सबसे अच्छे दिन जानना |
+| I am pregnant · Week by week | मैं गर्भवती हूँ · हफ़्ते दर हफ़्ते |
+| Recently had a baby · Postpartum journey | हाल ही में बच्चा हुआ · डिलीवरी के बाद का सफ़र |
+| Periods changing after 40 · Menopause transition | 40 के बाद पीरियड में बदलाव · मेनोपॉज़ की ओर |
+| Menopause · Periods stopped: almost a year with no periods ★ | मेनोपॉज़ · पीरियड बंद: लगभग एक साल से पीरियड नहीं |
+
+**What each goal gives her (the line under each goal) ★**
+
+| English | Hindi |
+|---|---|
+| Just tracking: Your cycle, and when the next period may come | आपका चक्र, और अगला पीरियड कब आ सकता है |
+| Painful periods: A cramps routine, and when to see a doctor | ऐंठन के लिए तरीक़ा, और डॉक्टर कब दिखाएँ |
+| Heavy periods: Track your flow, and iron from food | ब्लीडिंग का हिसाब, और खाने से आयरन |
+| Mood before periods: A mood log, and calm routines | मूड का हिसाब, और शांत करने वाले तरीक़े |
+| Irregular or late periods: A 12-week plan, and your cycle pattern | 12 हफ़्ते का प्लान, और आपके चक्र का पैटर्न |
+| Weight: Small daily steps, food from your region | रोज़ के छोटे क़दम, आपके इलाक़े का खाना |
+| Acne and extra hair: Track what changes, and when to see a doctor | क्या बदलता है, और डॉक्टर कब दिखाएँ |
+| Getting ready: A checklist before pregnancy, and your best days | गर्भ से पहले की सूची, और आपके सबसे अच्छे दिन |
+| Food in pregnancy: Food for each month of pregnancy | गर्भ के हर महीने का खाना |
+| Nausea: What helps, and when to see a doctor | क्या मदद करता है, और डॉक्टर कब दिखाएँ |
+| Iron: Your tablets, and iron-rich food | आपकी गोलियाँ, और आयरन वाला खाना |
+| Sleep: A calmer evening routine | शाम का शांत तरीक़ा |
+| Mood: A quick check on how you feel | आप कैसा महसूस करती हैं, एक छोटी जाँच |
+| Recovery: A daily recovery check, with the warning signs | रोज़ की रिकवरी जाँच, ख़तरे के संकेतों के साथ |
+| Feeding: Feeds, and help when it is hard | दूध पिलाने का हिसाब, और मुश्किल हो तो मदद |
+| Pelvic floor: Pelvic floor exercises, step by step | पेल्विक फ़्लोर व्यायाम, क़दम दर क़दम |
+| Hot flushes: What helps hot flushes and sleep | गर्मी के झोंकों और नींद में क्या मदद करता है |
+| Bones: Calcium food, and strength moves | कैल्शियम वाला खाना, और ताक़त के व्यायाम |
+
+**Joining's screens**
+
+| English | Hindi |
+|---|---|
+| First, about you · What should Sakhi call you? · What year were you born? | पहले, आपके बारे में · Sakhi आपको किस नाम से बुलाए? · आपका जन्म किस साल हुआ? |
+| The diary is for women 18 and over. Qura keeps only the year, with your account. | डायरी 18 साल और उससे बड़ी महिलाओं के लिए है। Qura आपके अकाउंट के साथ सिर्फ़ साल रखता है। |
+| What would you like help with? · Pick up to 3. They come first everywhere. · Continue · {n} picked | आपको किस बात में मदद चाहिए? · 3 तक चुनें। ये हर जगह सबसे पहले आएँगे। · आगे · {n} चुने |
+| Up to 3. Tap one to remove it first. | 3 तक। पहले किसी एक को हटाने के लिए उस पर टैप करें। |
+| A few things about your periods | अपने पीरियड के बारे में कुछ बातें |
+| Why we ask: Sakhi marks your next period, and notices longer gaps. ★ | क्यों पूछते हैं: Sakhi आपका अगला पीरियड बताती है, और लंबे अंतर पहचानती है। |
+| Sakhi uses it only to choose your guides and plan. (after "Has a doctor said you have PMOS?") | Sakhi इसे बस आपकी गाइड और प्लान चुनने में इस्तेमाल करती है। |
+| When was your last period? · About a year ago · 1 to 2 years ago · More than 2 years ago | आपका आख़िरी पीरियड कब था? · लगभग एक साल पहले · 1 से 2 साल पहले · 2 साल से ज़्यादा पहले |
+| Why we ask: bleeding after menopause needs a doctor, so Sakhi watches for it. ★ | क्यों पूछते हैं: मेनोपॉज़ के बाद ब्लीडिंग पर डॉक्टर ज़रूरी है, इसलिए Sakhi इस पर नज़र रखती है। |
+
+**"Your Sakhi", after sign-up**
+
+| English | Hindi |
+|---|---|
+| {name}, here's your Sakhi · How Sakhi helps you | {name}, यह रही आपकी Sakhi · Sakhi आपकी मदद कैसे करेगी |
+| Log your day · 1 minute: Sakhi learns your pattern | अपना दिन लिखें · 1 मिनट: Sakhi आपका पैटर्न समझती है |
+| Today shows your next 3 steps: Each says why it helps | आज में बस अगले 3 क़दम: हर क़दम बताता है कि वह कैसे मदद करता है |
+| Your plan, after your first log: Built from your answers and your diary | पहली एंट्री के बाद आपका प्लान: आपके जवाबों और डायरी से बना |
+| Your weeks and check-ups: What is due, week by week (pregnant) | आपके हफ़्ते और जाँचें: हर हफ़्ते क्या ज़रूरी है |
+| A daily recovery check (after a birth) · Note your symptoms each week: See what changes over time (menopause) | रोज़ की रिकवरी जाँच · हर हफ़्ते अपने लक्षण लिखें: समय के साथ क्या बदलता है, देखें |
+| Guides for your stage: Short, in your language | आपकी स्थिति के लिए गाइड: छोटी, आपकी भाषा में |
+| Out of your way: pregnancy, baby and menopause pages. / pregnancy and baby pages. / pregnancy and menopause pages. / period plans and menopause pages. · Change your stage any time in Me. | आपके रास्ते से हटे: गर्भ, बच्चे और मेनोपॉज़ के पेज। / गर्भ और बच्चे के पेज। / गर्भ और मेनोपॉज़ के पेज। / पीरियड प्लान और मेनोपॉज़ के पेज। · Me में कभी भी अपनी स्थिति बदलें। |
+| Show me around · 30 seconds · Skip the tour | मुझे दिखाएँ · 30 सेकंड · टूर छोड़ें |
+
+**The first-day tour**
+
+| English | Hindi |
+|---|---|
+| This is your day: Only your next few steps, each with why it helps. | यह आपका दिन है: बस अगले कुछ क़दम, हर एक के साथ वह कैसे मदद करता है। |
+| Your plan and Explore: My plan holds your plan. Explore has guides for your stage. | आपका प्लान और खोजें: My plan में आपका प्लान है। खोजें में आपकी स्थिति की गाइड हैं। |
+| Your diary starts here: A minute a day. The more you log, the more Sakhi can tell you. · Start my diary | आपकी डायरी यहाँ से शुरू होती है: रोज़ एक मिनट। जितना ज़्यादा लिखेंगी, Sakhi उतना ज़्यादा बता पाएगी। · मेरी डायरी शुरू करें |
+
+**Her first log, in Diary: the reasons ★**
+
+| English | Hindi |
+|---|---|
+| Why log every day? 1 Know when your next period may come. 2 See what repeats: pain, mood, skin. 3 A one-page report your doctor can read. | रोज़ क्यों लिखें? 1 जानें कि अगला पीरियड कब आ सकता है। 2 देखें क्या दोहराता है: दर्द, मूड, त्वचा। 3 एक पन्ने की रिपोर्ट जो डॉक्टर पढ़ सकें। |
+| Your pregnancy: Your check-ups and tests, on time. What is normal this week, and the signs that mean go now. One record for your doctor and ASHA. · See this week | आपकी प्रेग्नेंसी: आपकी जाँचें और टेस्ट, समय पर। इस हफ़्ते क्या सामान्य है, और कौन से संकेत मतलब तुरंत जाएँ। डॉक्टर और आशा के लिए एक रिकॉर्ड। · इस हफ़्ते देखें |
+| Looking after you: Warning signs caught early, in the first 6 weeks. Your 6-week check and your baby's vaccines, on time. Feeds, sleep and how you feel, in one place. · Start my recovery check | आपकी देखभाल: पहले 6 हफ़्तों में ख़तरे के संकेत जल्दी पकड़ में। आपकी 6 हफ़्ते की जाँच और बच्चे के टीके, समय पर। दूध, नींद और आपका मन, एक जगह। · मेरी रिकवरी जाँच शुरू करें |
+| Your diary: See how your body is changing. Know which changes are common, and which need a doctor. A clear record for your doctor. · Note this week | आपकी डायरी: देखें कि आपका शरीर कैसे बदल रहा है। जानें कौन से बदलाव आम हैं, और किनके लिए डॉक्टर। डॉक्टर के लिए साफ़ रिकॉर्ड। · इस हफ़्ते लिखें |
+| Your first log · Your last period started · How many days did it last? · Anything today? · Nothing · Save my first log | आपकी पहली एंट्री · आपका पिछला पीरियड शुरू हुआ · कितने दिन चला? · आज कुछ? · कुछ नहीं · मेरी पहली एंट्री सेव करें |
+| First log saved. Day 1 of your diary. | पहली एंट्री सेव हो गई। आपकी डायरी का पहला दिन। |
+
+**Today, and the plan offer**
+
+| English | Hindi |
+|---|---|
+| Log today · 1 minute: So Sakhi learns your pattern · A short read | आज लिखें · 1 मिनट: ताकि Sakhi आपका पैटर्न समझे · छोटी-सी पढ़ाई |
+| Ready for you: {her plan} · Made from your answers and your first log. · See my plan · Later | आपके लिए तैयार: {her plan} · आपके जवाबों और पहली एंट्री से बना। · मेरा प्लान देखें · बाद में |
+| Tell Sakhi your stage and goals: A few taps. Then Sakhi shows only what fits you. · Tell Sakhi · Saved. Sakhi now fits your goals. | Sakhi को अपनी स्थिति और लक्ष्य बताएँ: कुछ टैप। फिर Sakhi बस वही दिखाएगी जो आपके लिए है। · बताएँ · सेव हो गया। अब Sakhi आपके लक्ष्यों के हिसाब से है। |
+
+### 19.11 Version 39.11: the diary's day page, the sex log, the Cycles tab (MODULE_API section 54)
+
+Two lines reuse reviewed text: the emergency pill line (the contraception guide) and "Sex every 2–3 days…" (the
+trying-for-a-baby guide). **The doctor should check the lines marked ★.** Pilot builds carry them until then.
+
+| English | Hindi |
+|---|---|
+| Sex · Only on this phone · Without a method · With a method | संबंध · सिर्फ़ इसी फ़ोन पर · बिना गर्भनिरोधक · गर्भनिरोधक के साथ |
+| Don't want a pregnancy now? ★ | अभी गर्भ नहीं चाहतीं? |
+| The emergency pill: take it as soon as you can, within 72 hours (3 days). The sooner, the better. (reused) · What to do · Where it's free | इमरजेंसी गोली: जितनी जल्दी हो सके लें, 72 घंटे (3 दिन) के अंदर। जितनी जल्दी, उतना बेहतर। · क्या करें · मुफ़्त कहाँ मिलेगी |
+| On a fertile day (estimate) ★ | फ़र्टाइल दिन पर (अंदाज़ा) |
+| Sex every 2–3 days, all through the cycle, gives the best chance. There is no need to aim for one exact day. (reused) | पूरे चक्र में हर 2–3 दिन में संबंध सबसे अच्छी संभावना देता है। किसी एक ख़ास दिन को पकड़ने की ज़रूरत नहीं। |
+| Hearts show on your days only while you're trying for a baby. · Sex without a method · Sex with a method (Days tags) | दिल के निशान सिर्फ़ तब दिखते हैं जब आप बच्चे की कोशिश कर रही हों। · बिना गर्भनिरोधक संबंध · गर्भनिरोधक के साथ संबंध |
+| Flow: pads in the day · Clots and pain | ब्लीडिंग: दिन में कितने pad · थक्के और दर्द |
+| Open the month · Week before · Next week | महीना खोलें · पिछला हफ़्ता · अगला हफ़्ता |
+| Fertile window tomorrow (estimate) · Ovulation tomorrow (estimate) · 1 day until your next period (estimate) · 1 day before the next period | फ़र्टाइल दिन कल से (अंदाज़ा) · ओव्यूलेशन कल (अंदाज़ा) · अगले पीरियड में 1 दिन (अंदाज़ा) · अगले पीरियड से 1 दिन पहले |
+| Cycles (the Diary tab, was "What it shows") · Charts · Your last 12 gaps and periods | चक्र · चार्ट · आपके पिछले 12 अंतर और पीरियड |
+| Your cycles first, then anything to check and what you noted most, over the months. (the Diary tour's second tip) | पहले आपके चक्र, फिर जिसकी जाँच करनी है और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ। |
+| Edit dates · Fix these dates · Your period from {d} · {n} days | तारीख़ें बदलें · ये तारीख़ें ठीक करें · {d} से आपका पीरियड · {n} दिन |
+| Sakhi updates your next period and fertile days when you save. | सेव करने पर Sakhi आपका अगला पीरियड और फ़र्टाइल दिन बदल देगी। |
+| This wasn't a period · Removes these dates. Your notes stay. | यह पीरियड नहीं था · ये तारीख़ें हट जाएँगी। आपके नोट रहेंगे। |
+| Check the dates: the end comes before the start, or it runs into another period. | तारीख़ें देखें: ख़त्म होने की तारीख़ शुरू से पहले है, या दूसरे पीरियड में जा रही है। |
+| Fertile days show after 6 cycles. {n} more periods to log. / 1 more period to log. ★ | फ़र्टाइल दिन 6 चक्र के बाद दिखेंगे। अभी {n} और पीरियड लिखने हैं। / अभी 1 और पीरियड लिखना है। |
+| Why 6 cycles? Sakhi estimates fertile days from your own dates. With fewer than 6 cycles, that estimate isn't reliable yet. There is no safe day: without a method, pregnancy can happen at any time of the month. ★ | 6 चक्र क्यों? Sakhi आपकी अपनी तारीख़ों से फ़र्टाइल दिनों का अंदाज़ा लगाती है। 6 चक्र से कम में यह अंदाज़ा अभी भरोसे लायक़ नहीं होता। कोई दिन सुरक्षित नहीं: बिना गर्भनिरोधक के, महीने के किसी भी दिन गर्भ ठहर सकता है। |

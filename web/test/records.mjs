@@ -80,10 +80,10 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   const a = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) } });
   check('1 Today has no "This month" round button any more', !(await has(a.page, '#view .ract-row [data-go="checkin"]')));
   await go(a.page, 'diary');
-  check('1 the Diary tab is called "What it shows"', /What it shows/.test(await txt(a.page, '#view .tabs')), await txt(a.page, '#view .tabs'));
+  check('1 the Diary tab is called "Cycles" (Version 39.11; it was "What it shows")', /Cycles/.test(await txt(a.page, '#view .tabs')) && !/What it shows/.test(await txt(a.page, '#view .tabs')), await txt(a.page, '#view .tabs'));
   await diaryShows(a.page);
   const order = await a.page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => e.className.split(' ').filter((c) => /^(xp-diary|vd-card|mc-card|pat-card|wis-ci|wis-checks|rp-btn|card)$/.test(c)).join('.') || e.tagName));
-  check('1 her signals come first, then the verdict', /^xp-diary/.test(order[0] || '') && /vd-card/.test(order[1] || ''), order);
+  check('1 her signals come first, then her cycles (Version 39.11), then the verdict', /^xp-diary/.test(order[0] || '') && /mc-card/.test(order[1] || '') && /vd-card/.test(order[2] || ''), order);
   const v = await view(a.page);
   check('1 "Your numbers" sits inside the verdict card, once', (v.match(/Your numbers/g) || []).length === 1 && await has(a.page, '#view .vd-card details.vd-nums'), (v.match(/Your numbers/g) || []).length);
   check('1 "This month\'s signs" is a row here, with the report button after it', await has(a.page, '#view .wis-ci [data-go="checkin"]') && order.indexOf('rp-btn') > order.indexOf('wis-ci'), order);
@@ -277,7 +277,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { lang: 'hi', events: cyc([40, 29, 42, 30, 28, 29], 10) }, lang: 'hi', w: 360, h: 800 });
   await go(b.page, 'diary');
-  check('12 Hindi: the tab is "क्या दिखता है"', /क्या दिखता है/.test(await txt(b.page, '#view .tabs')));
+  check('12 Hindi: the tab is "चक्र" (Version 39.11: Cycles)', /चक्र/.test(await txt(b.page, '#view .tabs')) && !/क्या दिखता है/.test(await txt(b.page, '#view .tabs')), await txt(b.page, '#view .tabs'));
   await diaryShows(b.page);
   check('12 Hindi: the buttons read "मुफ़्त सरकारी डॉक्टर" and "डॉक्टर के लिए मेरी रिपोर्ट"', /मुफ़्त सरकारी डॉक्टर/.test(await view(b.page)) && /डॉक्टर के लिए मेरी रिपोर्ट/.test(await view(b.page)));
   check('12 360 px: no sideways scroll on What it shows', await noScroll(b.page));
@@ -391,7 +391,7 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
   /* FLOWS-12, PRIVACY-09: the Diary tour names the tab as it reads */
   const tr = await open({ seed: { events: cyc([28, 29, 28], 10) }, hash: '#diary' });
   await tr.page.evaluate(() => window.Saathi.startTour('diary')); await settle(tr.page, 600); await tap(tr.page, '#tour-next');
-  check('13 FLOWS-12 the Diary tour\'s second tip is "What it shows"', /What it shows/.test(await txt(tr.page, '#tour-root #tour-h')), await txt(tr.page, '#tour-root #tour-h'));
+  check('13 FLOWS-12 the Diary tour\'s second tip names the tab: "Cycles" (Version 39.11)', /Cycles/.test(await txt(tr.page, '#tour-root #tour-h')), await txt(tr.page, '#tour-root #tour-h'));
   errsAll.push(...tr.errs); await tr.ctx.close();
   /* PRIVACY-03: on a shared phone with a PIN, the report asks for it too */
   const a3 = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10), settings: { discreet: true, toursAuto: false, notify: true, pinHash: PINH('2468') } } });

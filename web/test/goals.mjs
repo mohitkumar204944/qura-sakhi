@@ -274,8 +274,10 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   check('10 discreet: a pregnancy plan\'s cards have no pregnancy words', !/baby|danger|pregnan/i.test(w), w.match(/.{0,50}(baby|danger|pregnan).{0,30}/i));
   await e.ctx.close();
   const f = await open({ seed: null });
-  for (const x of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1970"]', '[data-ob-y="1975"]', '[data-ob-st="meno"]', '[data-ob-lp="stop"]']) await tap(f.page, x);
-  check('10 periods stopped: no "Heavy periods" plan to pick (bleeding then needs a doctor)', !(await has(f.page, '[data-pl-goal="heavy"]')) && (await has(f.page, '[data-pl-goal="hot"]')));
+  for (const x of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1970"]', '[data-ob-y="1975"]', '[data-ob-st="meno"]']) await tap(f.page, x);   /* Version 39.10: the "Menopause" tile, periods stopped */
+  check('10 periods stopped: no "Heavy periods" goal to pick (bleeding then needs a doctor)', !(await has(f.page, '[data-ob-goal="heavy"]')) && (await has(f.page, '[data-ob-goal="hot"]')));
+  await tap(f.page, '#ob-back'); await tap(f.page, '[data-ob-st="mid"]');
+  check('10 periods changing after 40: "Heavy periods" is there', await has(f.page, '[data-ob-goal="heavy"]') && await has(f.page, '[data-ob-goal="hot"]'));
   await f.ctx.close();
   const g = await open({ seed: Object.assign({}, PREG, { goals: ['ttc', 'ready'] }), hash: '#care' });
   const fy = await g.page.$$eval('#view section.care-sec:first-of-type [data-go]', (x) => x.map((y) => y.dataset.go));

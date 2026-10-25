@@ -428,7 +428,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   await cleanup(Object.assign(T, { name: '17a' }));
   const D = await open({ seed: { events: regular(10, 3) } });
   await D.page.evaluate(() => window.Saathi.openDay(window.Saathi.toISO(window.Saathi.today()))); await settle(D.page);
-  check('17 the day sheet has no speaker on top of its next-day arrow', !(await D.page.$('#sheet-say')) && !!(await D.page.$('[data-dstep="1"]')));
+  check('17 the day sheet has no speaker on top of its next-day arrow', !(await D.page.$('#sheet-say')) && !!(await D.page.$('[data-dweek="7"]')));   /* Version 39.11: the day page moves a week at a time */
   await cleanup(Object.assign(D, { name: '17b' }));
 }
 

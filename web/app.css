@@ -740,6 +740,37 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .ob-lp .chip { width: 100%; }
 .ob-opt.on { outline: 2px solid var(--accent); outline-offset: -2px; background: var(--accent-soft); }
 .ob-kit { gap: 10px; }
+/* Version 39.10: joining that personalises Sakhi (7 stage tiles with a tagline, up to 3 goals, a why line), "Your Sakhi",
+   her first log in Diary, the card for a woman who joined before, and the plan offered after her first log */
+.ob-name { display: flex; flex-direction: column; gap: 8px; font-weight: 600; color: var(--fg); }
+.ob-name input { min-height: 52px; font-size: 18px; }
+.ob-why { color: var(--muted); margin: 0; }
+.ob-st7 .qa-tile { min-height: 104px; align-items: flex-start; text-align: left; padding: 12px; }
+.ob-st7 .qa-tile .spot { width: 40px; height: 40px; }
+.ob-st7 .qa-tile.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; min-height: 64px; }
+.ob-tt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ob-tt strong { font-size: 15px; line-height: 1.25; color: var(--fg); overflow-wrap: anywhere; }
+.ob-tt span { font-size: 13px; color: var(--muted); }
+.ob-goal { gap: 12px; min-height: 64px; }
+.ob-goal .body span { font-size: 13px; color: var(--muted); }
+.ob-tick { flex: none; width: 28px; height: 28px; border-radius: 14px; border: 2px solid var(--line); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #FFFFFF; }
+.ob-goal.on .ob-tick { background: var(--accent); border-color: var(--accent); }
+.ob-gaps .chip { min-height: 44px; }
+.ys h1 { margin: 0; }
+.ys-chips { gap: 6px; }
+.ys-st { font-weight: 700; background: var(--hue-soft, var(--accent-soft)); color: var(--fg); }
+.ys-rows { display: flex; flex-direction: column; gap: 8px; }
+.ys-rows .item { box-shadow: var(--shadow); }
+.ys-hid { margin: 0; padding: 10px 12px; border-radius: 14px; border: 1px dashed var(--line); color: var(--text); }
+.fl-card { gap: 10px; margin-bottom: 12px; }
+.fl-why { display: flex; flex-direction: column; gap: 4px; }
+.fl-why .item { min-height: 40px; padding: 4px 0; box-shadow: none; background: none; }
+.fl-n { flex: none; width: 30px; height: 30px; border-radius: 15px; background: var(--accent-soft); color: var(--accent); font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.fl-h { margin: 4px 0 0; }
+.fl-q { margin: 2px 0 0; font-weight: 700; color: var(--fg); font-size: 14px; }
+.fl-lp .body span { font-size: 13px; color: var(--muted); }
+.ex-card, .pl-offer { gap: 8px; }
+.pl-offer h3 { margin: 0; }
 .ob-kit .list { display: flex; flex-direction: column; gap: 8px; }
 .ob-kit .item { box-shadow: none; background: var(--card-2); }
 .ob-ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--fg); }
@@ -1045,3 +1076,60 @@ body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span
 .jump-row { margin: 0 0 4px; }
 .jump-row .chip { font-size: 14px; }
 [data-jump], [data-at] { scroll-margin-top: 88px; }   /* V39.9 review FOOD-02: a step's link that opens at its card */
+
+/* ===================== Version 39.11: the day page's week, facts, flow and sex log; Cycles' Edit dates and charts row ===================== */
+.day-mo { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 2px 8px; border: none; background: none; color: var(--fg); }
+.day-mo h2 { margin: 0; }
+.day-mo svg { width: 16px; height: 16px; color: var(--muted); flex-shrink: 0; }
+.day-wk { margin: 4px 0 10px; padding: 6px 4px; border-radius: 18px; background: var(--card); }
+.day-wk .wd { min-height: 60px; }
+.day-wk .wd:disabled { opacity: 0.45; }
+.wkstrip .wd.sel .wdc { box-shadow: inset 0 0 0 2px var(--ink); }
+.wkstrip .wd.today.sel .wdc { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--ink); }
+.wkstrip .wd.fw .wdc { background: var(--h-purple-soft); color: var(--h-purple); }
+.wkstrip .wd.ov .wdc { background: var(--h-purple); color: #FFFFFF; }
+.sx-ht { width: 9px; height: 8px; fill: var(--h-plum); flex-shrink: 0; }
+.day-facts { display: flex; flex-direction: column; gap: 8px; margin: 0 0 10px; padding: 14px 16px; border-radius: 18px; background: var(--card); box-shadow: var(--shadow); }
+.day-facts .df { display: flex; align-items: center; gap: 10px; font-size: 15px; line-height: 1.35; color: var(--text); }
+.day-facts .df strong { font-size: 16px; color: var(--fg); }
+.df-i { flex: none; width: 14px; height: 14px; margin: 0 2px; border-radius: 7px; box-sizing: border-box; }
+.df-pday .df-i { background: var(--bleed); }
+.df-cday .df-i { box-shadow: inset 0 0 0 2px var(--muted); }
+.df-fw_in .df-i, .df-fw .df-i { background: var(--h-purple-soft); box-shadow: inset 0 0 0 1.5px var(--h-purple); }
+.df-ov_in .df-i, .df-ov .df-i { background: var(--h-purple); }
+.df-ch .df-i { background: var(--h-plum); }
+.df-next .df-i, .df-before .df-i { border: 2px dashed var(--accent-2); }
+.day-flowq { display: flex; flex-direction: column; gap: 8px; }
+.day-flowq .dfq { font-weight: 600; color: var(--muted); }
+.flow-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.flow-t { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border-radius: 14px; border: 2px solid transparent; background: var(--h-rose-soft); color: var(--fg); font: inherit; font-weight: 500; text-align: left; }
+.flow-t.on { border-color: var(--bleed); background: var(--card); font-weight: 700; }
+.flow-t .drops { display: inline-flex; gap: 1px; flex: none; }
+.flow-t .drops svg { width: 11px; height: 13px; fill: var(--bleed); }
+.day-flowq .linkbtn { align-self: flex-start; }
+.sx-head { align-items: center; }
+.sx-priv { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+.sx-priv svg { width: 14px; height: 14px; }
+.sx-sec .symchip .si svg { width: 16px; height: 16px; }
+.sx-ec { gap: 8px; background: var(--accent-soft); box-shadow: none; }
+.sx-ec p { margin: 0; }
+.sx-fw { gap: 6px; background: var(--h-purple-soft); box-shadow: none; }
+.sx-fw strong { color: var(--h-purple); }
+.sx-fw p { margin: 0; }
+.sx-note { margin: 0; color: var(--muted); }
+.cal .day .kd .sx-ht, .wkstrip .kd .sx-ht { margin-left: 1px; }
+.legend .lk-sx { display: inline-flex; align-items: center; gap: 6px; }
+.legend .lk-sx .sx-ht { width: 11px; height: 10px; }
+.dy-tag.dy-sx { display: inline-flex; align-items: center; gap: 5px; }
+.charts-d { display: flex; flex-direction: column; gap: 12px; }
+.charts-d > summary { list-style: none; cursor: pointer; }
+.charts-d > summary::-webkit-details-marker { display: none; }
+.charts-d[open] > summary .chev { transform: rotate(90deg); }
+.mc-row .mc-open { display: inline-flex; align-items: center; min-height: 36px; padding: 0; border: none; background: none; color: var(--fg); font: inherit; text-align: left; }
+.mc-row .mc-edit { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; font-size: 14px; }
+.mc-row .mc-edit svg { width: 14px; height: 14px; }
+.fw-few { display: flex; align-items: center; gap: 10px; margin: 12px 0 4px; padding: 12px 14px; border-radius: 16px; background: var(--h-purple-soft); color: var(--fg); font-size: 15px; line-height: 1.4; }
+.fw-few .fwf-t { flex: 1; min-width: 0; }
+.fw-few .linkbtn { color: var(--h-purple); flex-shrink: 0; }
+.ed-del { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--accent); }
+.ed-del .small { color: var(--muted); }

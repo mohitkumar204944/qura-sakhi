@@ -1,10 +1,10 @@
 // Version 39.2: fewer places to look (docs/roadmap-v39-2026-10-24.md, section 3; MODULE_API section 45). This file checks:
-//   1 Explore by stage, with All topics and Contents; a shared phone keeps the full grid; after a loss, its own topic first;
+//   1 Explore by stage (Version 39.10: only her stage, no All topics) and Contents; a shared phone keeps the full grid; after a loss, its own topic first;
 //   2 a topic opens its own guide;  3 the tool drawers' tools have homes (Me, Diary, Learn, My plan);
 //   4 Today for you, Doctor videos and the stories page are gone;  5 one pregnancy checklist page; "My baby is born";
 //   6 one picker on My plan, journeys as reading;  7 the setup card retires after 30 days;  8 one name for each thing;
-//   9 Back goes to Today;  10 Me's label and the intended-use line;  11 the gate: Help, 112, loss, violence, STI and
-//   abortion within 2 taps of Explore and in search;  12 Hindi, 360 px, no page errors.
+//   9 Back goes to Today;  10 Me's label and the intended-use line;  11 the gate: Help, 112, loss (Help, then Pregnancy loss),
+//   violence, STI and abortion within 2 taps of Explore and in search;  12 Hindi, 360 px, no page errors.
 // Usage: node test/places.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -66,16 +66,17 @@ const errsAll = [];
 const cyc = (gaps, last) => { const ds = [last]; let x = last; for (let i = gaps.length - 1; i >= 0; i--) { x += gaps[i]; ds.unshift(x); } const out = []; ds.forEach((a) => out.push({ d: ago(a), t: 'start' }, { d: ago(a - 4), t: 'end' })); return out; };
 const topics = (page) => page.$$eval('#view .topic-grid [data-go]', (x) => x.map((y) => y.dataset.go.replace('topic-', '')));
 
-/* ---------- 1. Explore by stage, with All topics and Contents (journey audit MIN-07, P3-11) ---------- */
+/* ---------- 1. Explore by stage, and Contents (journey audit MIN-07, P3-11; Version 39.10: no All topics) ---------- */
 {
   const a = await open({ seed: { events: regular(10) }, hash: '#care' });
   const t1 = await topics(a.page);
   check('1 a woman tracking her periods sees her own topics first, no pregnancy or menopause', t1.indexOf('periods') >= 0 && t1.indexOf('contra') >= 0 && t1.indexOf('preg') < 0 && t1.indexOf('meno') < 0 && t1.indexOf('post') < 0, t1);
   check('1 no tool drawers among the topics', !t1.some((x) => ['plans', 'records', 'support', 'fun'].indexOf(x) >= 0), t1);
   check('1 "Contents: all guides and articles" sits right under search', /Contents: all guides and articles/.test(await txt(a.page, '#view .care-contents')) && await a.page.evaluate(() => { const s = document.querySelector('#view .searchbox'); return !!s && s.nextElementSibling && s.nextElementSibling.classList.contains('care-contents'); }));
-  await tap(a.page, '#topics-all');
-  const t2 = await topics(a.page);
-  check('1 "All topics" shows every topic, hers first', t2.length > t1.length && t2.slice(0, t1.length).join() === t1.join() && t2.indexOf('meno') >= 0 && t2.indexOf('loss') >= 0, t2);
+  check('1 Version 39.10: no "All topics": other stages stay out of her way', !(await has(a.page, '#topics-all')) && t1.indexOf('loss') < 0, t1);
+  const nC = +((await txt(a.page, '#view .care-contents')).match(/\d+/) || [0])[0];
+  await go(a.page, 'learn'); await tap(a.page, '#view .tabs [data-g="all"]'); const nL = ((await vtext(a.page)).match(/\d+ of \d+ read/g) || []).reduce((n, x) => n + +x.match(/of (\d+)/)[1], 0);
+  check('1 Contents counts the articles in her own chapters (the same as Learn shows)', nC > 0 && nC === nL, [nC, nL]);
   await shot(a.page, '01-explore-cycle'); errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: PREG(20), hash: '#care' });
   const t3 = await topics(b.page);
@@ -220,13 +221,14 @@ const topics = (page) => page.$$eval('#view .topic-grid [data-go]', (x) => x.map
   await tap(a.page, '#hs-sos');
   check('11 112: 2 taps (Help, then emergency numbers)', /112/.test(await txt(a.page, '#sheet-root')));
   await a.page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await go(a.page, 'care');
-  const reach = async (topic, route) => { await go(a.page, 'care'); if (!(await has(a.page, '#view [data-go="topic-' + topic + '"]')) && await has(a.page, '#topics-all')) await tap(a.page, '#topics-all');
+  const reach = async (topic, route) => { await go(a.page, 'care');
     if (!(await has(a.page, '#view [data-go="topic-' + topic + '"]'))) return false; await tap(a.page, '#view [data-go="topic-' + topic + '"]'); return has(a.page, '#view [data-go="' + route + '"]') || (await a.page.evaluate(() => location.hash)) === '#' + route; };
   check('11 STI: 2 taps (Intimate health, then STIs)', await reach('intimate', 'intimate-sti'));
   check('11 violence: 2 taps (Intimate health, then Safety)', await reach('intimate', 'intimate-safety'));
   check('11 abortion: 2 taps (Missed period, then Abortion)', await reach('pregtest', 'pregtest-abortion'));
-  await go(a.page, 'care'); const viaAll = await has(a.page, '#view [data-go="topic-loss"]');
-  check('11 pregnancy loss: under All topics (2 taps: All topics, then Pregnancy loss)', !viaAll && await reach('loss', 'loss-types'));
+  await go(a.page, 'care'); const inGrid = await has(a.page, '#view [data-go="topic-loss"]');
+  await tap(a.page, '#help-btn'); await tap(a.page, '#hs-loss');
+  check('11 pregnancy loss: 2 taps from any screen (Help, then Pregnancy loss), not in her grid', !inGrid && (await a.page.evaluate(() => location.hash)) === '#loss' && await has(a.page, '#view [data-go="loss-types"]'));
   for (const [q, r] of [['miscarriage', /^loss/], ['violence', /intimate-safety/], ['sti', /intimate-sti/], ['abortion', /pregtest-abortion/]]) {
     const res = await search(a.page, q); check('11 search "' + q + '" finds it', res.some((x) => r.test(x)), res.slice(0, 5));
   }
@@ -236,7 +238,7 @@ const topics = (page) => page.$$eval('#view .topic-grid [data-go]', (x) => x.map
 /* ---------- 12. Hindi, 360 px, no page errors ---------- */
 {
   const a = await open({ seed: { lang: 'hi', events: regular(10) }, lang: 'hi', w: 360, h: 800, hash: '#care' });
-  check('12 Hindi: "आपके लिए विषय" and "सभी विषय"', /आपके लिए विषय/.test(await vtext(a.page)) && /सभी विषय/.test(await txt(a.page, '#topics-all')));
+  check('12 Hindi: "आपके लिए विषय"', /आपके लिए विषय/.test(await vtext(a.page)));
   check('12 360 px: no sideways scroll on Explore', await noScroll(a.page));
   await go(a.page, 'home');
   check('12 360 px: the top bar fits with Me labelled', await noScroll(a.page));
