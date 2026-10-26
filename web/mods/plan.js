@@ -167,7 +167,7 @@
   function prune(d) { const keys = Object.keys(d.log); if (keys.length <= 400) return; keys.sort().slice(0, keys.length - 400).forEach((k) => { delete d.log[k]; }); }
   function addMin(d, n) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.min = S.clamp((x.min || 0) + n, 0, 600); prune(d); remSync(d); }
   function setHabit(d, id, val) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.plate = x.plate || {}; x.plate[id] = !!val; }
-  const remSync = (d) => { nudgeSync(d); const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = !!(x.ci || x.rest || allDoneToday(d)); S.reminders.upsert({ id: 'plan', doneOn: ok ? todayISO() : null }, { quiet: true }); };   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
+  const remSync = (d) => { nudgeSync(d); windSync(d); const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = !!(x.ci || x.rest || allDoneToday(d)); S.reminders.upsert({ id: 'plan', doneOn: ok ? todayISO() : null }, { quiet: true }); };   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
   /* a pregnancy plan's reminder ends two weeks after her due date, in case nobody tells Sakhi the baby came */
   const remEnd = (d) => { if (planWeeks(d)) return S.toISO(S.addDays(S.fromISO(d.start), (d.keep ? keepUntil(d) : planWeeks(d)) * 7 - 1));   /* Version 39.6: a kept plan's reminder ends at month 12 */ const pi = S.preg && S.preg.info ? S.preg.info() : null; return pi && pi.edd ? S.toISO(S.addDays(S.fromISO(pi.edd), 14)) : null; };
   /* paused (pregnancy, the first 6 weeks after a birth): its daily reminder stops too */
@@ -183,7 +183,7 @@
     if (r && !gone && packOf(d) === 'preg') { const u = remEnd(d); if (u && r.until !== u) { S.reminders.upsert({ id: 'plan', until: u }, { quiet: true }); S.saveQuiet(); } }
     if (r && !gone && d.keep && planWeeks(d) && r.until == null) { S.reminders.upsert({ id: 'plan', until: remEnd(d) }, { quiet: true }); S.saveQuiet(); }   /* review RESULTS-02: kept before Version 39.6 (no end) */
   } catch (e) { /* nothing to stop */ } };
-  const pauseSync = () => { pauseSync0(); const d = raw(); if (d && (d.nudge || S.reminders.get('plan-nudge'))) nudgeSync(d); };   /* Version 39.12: her nudge follows her plan */
+  const pauseSync = () => { pauseSync0(); const d = raw(); if (d) { nudgeSync(d); windSync(d); } };   /* Version 39.12: her nudge follows her plan; 39.22: on by default, and her wind-down too */
 
   /* ---------- the moving drawings: one figure, its joints moved between two positions (looping like a GIF) ----------
      h head, n neck, p pelvis; a = arms [far, near] from the neck; l = legs [far, near] from the pelvis; side view faces right */
@@ -432,14 +432,14 @@
   function tilesHtml(d, tiles) {
     const ok = (x) => !(disc() && x.priv) && S.routeOwner(x.go) && (!S.toolShown || S.toolShown(x.go));
     const l = (tiles || []).filter(ok); if (!l.length) return '';
-    return '<div class="pl-tiles">' + l.map((x) => '<button type="button" class="pl-tile hue-' + x.hue + '" data-go="' + x.go + '"><span class="ico-sm hue">' + progIco(x.icon) + '</span><strong>' + esc(ptx(x.text)) + '</strong>' +
-      (x.go === 'plan-progress' ? '<span class="small">' + esc(tf('plan_res_tile', { n: followedDays(d) })) + '</span>' : '') + '</button>').join('') + '</div>';
+    return '<div class="pl-tiles pl-tiles4">' + l.map((x) => '<button type="button" class="pl-tile hue-' + x.hue + '" data-go="' + x.go + '"><span class="ico-sm hue">' + progIco(x.icon) + '</span><strong>' + esc(ptx(x.text)) + '</strong>' + (x.go === 'plan-progress' ? '<span class="small">' + esc(tf('plan_res_tile_s', { n: followedDays(d) })) + '</span>' : '') + '</button>').join('') + '</div>';   /* Version 39.22: one row of four */
   }
   const pauseBanner = (d) => (selfPaused(d) ? '<div class="card soft pl-pausecard" data-nofold="1"><p>' + esc(tf('plan_paused_til', { d: S.fmtD(S.fromISO(d.pauseUntil), { weekday: 'long', day: 'numeric', month: 'short' }) })) + '</p><button type="button" class="btn sm primary" id="pl-unpause">' + esc(t('plan_unpause')) + '</button></div>' : '');
   function renderProgramme(v, d, isTab) {
-    const hd = isTab ? '<h1>' + esc(packTitle(d)) + '</h1>' : S.backRow(packTitle(d), 'plan', false);
-    if (finished(d)) { renderFinished(v, d, hd); return; }
-    const sp = specD(d) || {}; const wk = weekNo(d);
+    const hd0 = isTab ? '<h1>' + esc(packTitle(d)) + '</h1>' : S.backRow(packTitle(d), 'plan', false);
+    if (finished(d)) { renderFinished(v, d, hd0); return; }
+    const hd = '<div class="pl-head">' + hd0 + (S.canSave() && d.start ? '<button type="button" class="iconbtn pl-gear" data-go="plan-settings" aria-label="' + esc(t('plan_set_h')) + '">' + S.icon('gear') + '</button>' : '') + '</div>';   /* Version 39.22: her settings by her title */
+    const sp = specD(d) || {}; const wk = weekNo(d); if (S.canSave() && d.start) pauseSync();   /* Version 39.22 */
     const clock = ownWeek(d) || (wk > N && d.keep ? t('plan_wk_keep') : (planWeeks(d) ? tf('plan_wk', { n: Math.min(wk, N) }) : tf('plan_wk_n', { n: wk })));
     const gk = d.goalKey || (packOf(d) === 'cycle' ? 'irregular' : '');   /* Version 39.15 (audit R7): her goal, never a diagnosis line */
     const acts = selfPaused(d) ? [] : actionsFor(d);
@@ -447,13 +447,15 @@
        one line each: how her plan works, her steps' reasons (behind "Why?"), what consistency brings, the weeks ahead and her care
        team. Her steps, this week, the garden, the tools and her settings stay open. */
     const fold = weekNo(d) > 1;
-    v.innerHTML = hd + '<p class="small pl-clock">' + esc(disc() || !gk ? clock : tf('plan_goal_l', { g: t('plan_gv_' + gk), w: clock })) + '</p>' +
-      pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts, fold) + stepsCard(d, acts, fold) + weekCard(d) + gardenRow() + reviewCard(d) + mcRow(d) + consCard(d, fold) + pathHtml(d, fold) +
-      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + settingsRow() + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
+    const one = fold && weeksOne(d);   /* Version 39.22: her 12 weeks and what consistency brings, one card */
+    v.innerHTML = hd + '<p class="small pl-clock">' + esc(disc() || !gk ? clock : tf('plan_goal_l', { g: t('plan_gv_' + gk), w: clock })) + (fold && acts.length ? ' · <button type="button" class="linkbtn pl-howlink" id="pl-howlink">' + esc(t('plan_how_link')) + '</button>' : '') + '</p>' +
+      pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts, fold) + stepsCard(d, acts, fold) + weekCard(d, fold) + (fold ? '' : gardenRow()) + reviewCard(d) + (one ? weeksCard(d) : mcRow(d) + consCard(d, fold) + pathHtml(d, fold)) +
+      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
     S.wire(v); wireReview(v); wirePause(v); wireSteps(v, acts);
     v.querySelectorAll('[data-pl-fold]').forEach((dt) => dt.addEventListener('toggle', () => { S.mem.plFold = S.mem.plFold || {}; S.mem.plFold[dt.dataset.plFold] = dt.open; }));   /* Version 39.19 */
     const fq = v.querySelector('#pl-fast-tog'); if (fq) fq.addEventListener('click', () => { const dd = D(); setFast(dd, todayISO(), !fastOn(dd)); remSync(dd); S.save(); S.render(); });   /* Version 39.9 */
     const wp = v.querySelector('#pl-wp'); if (wp) wp.addEventListener('click', () => { S.mem.planWkFrom = 'plan'; S.setHash('plan-week'); });   /* Version 39.12 */
+    const hl = v.querySelector('#pl-howlink'); if (hl) hl.addEventListener('click', () => openHow(d, acts));   /* Version 39.22 */
   }
   /* ---------- Version 39.15 (audit R7 to R10, R15; the mockup's After 7): My plan explains the plan, top to bottom. Her goal and
      week; how her plan works; her daily steps, each with its reviewed reason and today's tick; this week as rings (a part for
@@ -462,28 +464,50 @@
   /* Version 39.19: a folded card: its title and one line, and what it holds one tap away */
   const foldOpen = (k) => !!(S.mem.plFold && S.mem.plFold[k]);
   const foldCard = (cls, title, line, inner) => '<div class="card ' + cls + ' pl-fold"><details data-pl-fold="' + cls + '"' + (foldOpen(cls) ? ' open' : '') + '><summary><span class="pl-fold-t"><strong>' + esc(title) + '</strong>' + (line ? '<span class="small">' + esc(line) + '</span>' : '') + '</span><span class="pl-fold-c" aria-hidden="true">' + S.I.chev + '</span></summary><div class="pl-fold-in">' + inner + '</div></details></div>';
-  function rhythmCard(d, acts, fold) {
-    if (!acts.length) return ''; const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc(); const at = timeOf(d.remAt || '20:00');
+  function rhythmGrid(d, acts) {
+    const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc(); const at = timeOf(d.remAt || '20:00');
     const cols = [['plan_rh_day', acts.length === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: acts.length, t: at })], ['plan_rh_wk', t(movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
-    const grid = '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
-    if (fold) return foldCard('pl-rh', t('plan_how_h2'), t(cols[0][0]) + ': ' + cols[0][1], grid);
-    return '<div class="card pl-rh"><span class="eyebrow">' + esc(t('plan_how_h2')) + '</span>' + grid + '</div>';
+    return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
+  }
+  /* Version 39.22: her first week reads how her plan works; after it, "How it works" by her week opens it */
+  function rhythmCard(d, acts, fold) {
+    if (!acts.length || fold) return '';
+    return '<div class="card pl-rh"><span class="eyebrow">' + esc(t('plan_how_h2')) + '</span>' + rhythmGrid(d, acts) + '</div>';
+  }
+  function openHow(d, acts) { if (!S.sheet) return; S.sheet('<div class="pl-why-sh pl-how-sh"><h2>' + esc(t('plan_how_h2')) + '</h2>' + rhythmGrid(d, acts) + '<button type="button" class="btn primary block" id="pl-why-ok">' + esc(t('plan_got')) + '</button></div>', (sh) => { const ok = sh.querySelector('#pl-why-ok'); if (ok) ok.addEventListener('click', () => S.closeSheet()); }); }
+  /* Version 39.22: every step's reason in one sheet (her first week shows them under each step) */
+  function openWhyAll(acts) {
+    const d0 = raw(); if (!d0 || !S.sheet) return; const d = fullD(d0); const xs = acts.filter((a) => a.why);
+    S.sheet('<div class="pl-why-sh pl-whyall-sh"><h2>' + esc(xs.length === 1 ? t('plan_why_all1') : tf('plan_why_all', { n: xs.length })) + '</h2>' + xs.map((a) => { const how = howOf(a, d); return '<div class="pl-why-one"><div class="pl-why-top"><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><h3>' + esc(a.title) + '</h3></div><p class="pl-why-p">' + esc(t(a.why)) + '</p>' + (how ? '<p class="small pl-why-how">' + esc(how) + '</p>' : '') + '</div>'; }).join('') +
+      '<button type="button" class="btn primary block" id="pl-why-ok">' + esc(t('plan_got')) + '</button></div>', (sh) => { const ok = sh.querySelector('#pl-why-ok'); if (ok) ok.addEventListener('click', () => S.closeSheet()); });
   }
   /* R7.2: her daily steps, each with its reviewed reason (always shown), how to do it, and today's tick, the same tick as
      Today's; R9: the check-in button only once it is due */
   function stepsCard(d, acts, fold) {
     if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const all = done === acts.length;
-    const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r));
-      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons behind "Why?" */
+    const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r)); const pl = !!a.play && !ok && !rest;   /* Version 39.22: her wind-down plays where the tick goes */
+      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
+      const sub = fold && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
       const tk = sb && !ok ? '<button type="button" class="btn sm pl-st-start" data-pl-start="' + i + '">' + esc(t('plan_start_b')) + '</button>'
+        : (pl ? '<button type="button" class="btn sm pl-st-play" data-pl-play="' + i + '">' + PLAY_SVG + esc(tf('calm_min', { n: a.playMin })) + '</button>'
         : (tick ? '<button type="button" class="today-tick' + (ok ? ' on' : '') + '" ' + (ok ? 'data-pl-un' : 'data-pl-tk') + '="' + i + '" aria-pressed="' + ok + '" aria-label="' + esc(tf(ok ? 'today_untick' : 'today_tick', { x: nm })) + '"><span class="tk">' + (ok ? SVG_TICK : '') + '</span></button>'
-          : (ok ? '<span class="today-tick on" aria-hidden="true"><span class="tk">' + SVG_TICK + '</span></span>' : '<button type="button" class="today-open" data-go="' + esc(a.go) + '" aria-label="' + esc(nm) + '">' + S.I.chev + '</button>'));
-      return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t(fold ? 'today_why' : 'plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
+          : (ok ? '<span class="today-tick on" aria-hidden="true"><span class="tk">' + SVG_TICK + '</span></span>' : '<button type="button" class="today-open" data-go="' + esc(a.go) + '" aria-label="' + esc(nm) + '">' + S.I.chev + '</button>')));
+      return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb || pl ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (sub ? '<span class="pl-step-sub">' + esc(sub) + '</span>' : '') + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() && !fold ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t('plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
+    const whyN = acts.filter((a) => a.why).length;
+    const ciB = due ? '<button type="button" class="btn ' + (fold ? 'sm' : 'primary block') + ' pl-ci-go" data-go="plan-checkin">' + esc(t('plan_ci_b')) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>';   /* Version 39.22: Today keeps the pink button */
     return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(acts.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: acts.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, acts.length)) + '</span></div>' +
       '<div class="pl-t4-bar" aria-hidden="true">' + acts.map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
-      '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>' +
+      (fold ? '' : '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>') +
       (!disc() && !ci && !rest && foodDay(d, todayISO()) && !acts.some((a) => FOOD_IDS.indexOf(a.id) >= 0 || a.id === 'fast') ? '<button type="button" class="linkbtn pl-fast-tog" id="pl-fast-tog">' + esc(t('plan_fast_q')) + '</button>' : '') +   /* no food step to ask in (V39.9 review FOOD-01) */
-      (due ? '<button type="button" class="btn primary block pl-ci-go" data-go="plan-checkin">' + esc(t('plan_ci_b')) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>') + '</div>';
+      (fold ? '<div class="pl-steps-f">' + (whyN && !disc() ? '<button type="button" class="linkbtn pl-whyall" id="pl-whyall">' + esc(whyN === 1 ? t('plan_why_all1') : tf('plan_why_all', { n: whyN })) + '</button>' : '<span></span>') + ciB + '</div>' : ciB) + '</div>';
+  }
+  /* Version 39.22: the line under a step: when to do yoga (before a meal), her time to walk, her meal, tonight's session */
+  const YOGA_R = ['cycle', 'gentle', 'sun'];
+  const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
+  function stepSub(a, d) {
+    if (a.wound && S.calm) return tf('plan_ci_n_wind', { s: S.calm.short(a.wound) });
+    if (a.kind === 'routine' && a.r) return YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') : '';
+    return a.sub || '';
   }
   function wireSteps(v, acts) {
     const upd = (fn) => { const dd = D(); fn(dd); remSync(dd); S.saveQuiet(); S.render(); };
@@ -491,11 +515,13 @@
     v.querySelectorAll('[data-pl-un]').forEach((b) => b.addEventListener('click', () => { const a = acts[+b.dataset.plUn]; if (a) upd((dd) => unmark(dd, a)); }));
     v.querySelectorAll('[data-pl-start]').forEach((b) => b.addEventListener('click', () => { const a = acts[+b.dataset.plStart]; if (a) S.setHash(a.go); }));
     v.querySelectorAll('[data-pl-how]').forEach((b) => b.addEventListener('click', () => { const a = acts[+b.dataset.plHow]; if (a) openWhy(a); }));
-    v.querySelectorAll('[data-pl-row]').forEach((r) => r.addEventListener('click', (e) => { if (e.target.closest('button, a')) return; const b = r.querySelector('[data-pl-start], [data-pl-tk], [data-pl-un]'); if (b) b.click(); }));
+    v.querySelectorAll('[data-pl-play]').forEach((b) => b.addEventListener('click', () => { const a = acts[+b.dataset.plPlay]; if (a && a.play) S.setHash(a.play); }));   /* Version 39.22 */
+    const wa = v.querySelector('#pl-whyall'); if (wa) wa.addEventListener('click', () => openWhyAll(acts));
+    v.querySelectorAll('[data-pl-row]').forEach((r) => r.addEventListener('click', (e) => { if (e.target.closest('button, a')) return; const b = r.querySelector('[data-pl-start], [data-pl-play], [data-pl-tk], [data-pl-un]'); if (b) b.click(); }));
   }
   /* R7.3: this week, each day a ring with a part for each step (today ringed, a rest day dashed), the strength days ahead marked;
      her minutes as a line; "+ Add minutes" and Plan this week right here */
-  function weekCard(d) {
+  function weekCard(d, fold) {
     if (selfPaused(d)) return ''; const wk = wkNow(d); const td = todayISO(); const cyc = packOf(d) === 'cycle';
     const tp = cyc && !careTime(d) && !lightOn(d) ? todayPlan(d) : null; const sd = tp && Array.isArray(tp.strDays) ? tp.strDays : []; const now = actionsFor(d); const n0 = Math.max(1, now.length);
     const r = 13, C = 2 * Math.PI * r;
@@ -508,6 +534,13 @@
     const legend = cyc && !disc() && now.every((a) => ['yoga', 'move', 'food', 'sleep'].indexOf(a.id) >= 0) ? tf('plan_wk_legend', { n: now.length, x: now.map((a) => t('plan_pt_' + a.id)).join(', ') }) : t('plan_wk_legend0');
     const fdn = fullDays(d, wk); const s = strNext(d); const st = s && !s.tp.str && s.a < s.t && s.iso ? (s.tom ? t('plan_wk_str_tom') : tf('plan_wk_str', { d: weekdayOf(s.iso) })) : '';
     const mins = tp ? (() => { const m = weekMin(d, wkNow(d)); const tg = target(d, tp.wk); return '<div class="pl-wk-min"><div class="row spread"><span class="small">' + esc(t('plan_wk_min')) + '</span><strong class="small">' + esc(tf('plan_min_of2', { a: m, t: tg })) + '</strong></div><span class="pl-wk-bar"><i style="width:' + Math.min(100, Math.round((m / Math.max(1, tg)) * 100)) + '%"></i></span></div>'; })() : '';
+    if (fold) {   /* Version 39.22: Plan the week in its title, her minutes with + Add, her garden at its foot */
+      const pt = S.joy && S.joy.petals ? S.joy.petals() : 0; const gd = S.routeOwner('joy') && !disc() ? '<button type="button" class="item quiet pl-garden-in" data-go="joy"><span class="ico-sm hue hue-green">' + S.icon('flower') + '</span><span class="body"><strong>' + esc(pt ? tf(pt === 1 ? 'plan_garden_1' : 'plan_garden_n', { n: pt }) : t('joy_h')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>' : '';
+      const mins2 = mins && movesOn(d) && cyc ? mins.replace('<span class="small">' + esc(t('plan_wk_min')) + '</span>', '<span class="small">' + esc(t('plan_wk_min')) + ' · <button type="button" class="linkbtn pl-addmin" data-go="plan-moves">+ ' + esc(t('plan_add_s')) + '</button></span>') : mins;
+      return '<div class="card pl-wkc"><div class="row spread"><h3>' + esc(t('plan_wk_h')) + '</h3>' + (movesOn(d) ? '<button type="button" class="linkbtn pl-wp-link" id="pl-wp">' + esc(t('plan_wp_link')) + ' ' + S.I.chev + '</button>' : '<span class="small">' + esc(tf('plan_wk_days', { a: (wk - 1) * 7 + 1, b: wk * 7 })) + '</span>') + '</div>' +
+        '<div class="pl-r7" role="img" aria-label="' + esc(tf('plan_d7_aria', { w: wk, n: fdn })) + '">' + days + '</div><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' +
+        (movesOn(d) && wpOf(d) ? '<p class="small pl-wp-sum">' + esc(wpRowSub(d)) + '</p>' : '') + mins2 + gd + '</div>';   /* what she planned, in one line */
+    }
     return '<div class="card pl-wkc"><div class="row spread"><h3>' + esc(t('plan_wk_h')) + '</h3><span class="small">' + esc(tf('plan_wk_days', { a: (wk - 1) * 7 + 1, b: wk * 7 })) + '</span></div>' +
       '<div class="pl-r7" role="img" aria-label="' + esc(tf('plan_d7_aria', { w: wk, n: fdn })) + '">' + days + '</div><p class="small pl-wk-leg">' + esc(legend) + '</p><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' + mins +
       (movesOn(d) && cyc ? '<button type="button" class="linkbtn pl-addmin" data-go="plan-moves">+ ' + esc(t('plan_add')) + '</button>' : '') +
@@ -539,6 +572,7 @@
   const settingsRow = () => '<div class="list pl-set-row"><button type="button" class="item" data-go="plan-settings"><span class="ico-sm hue hue-plum">' + S.icon('gear') + '</span><span class="body"><strong>' + esc(t('plan_set_h')) + '</strong><span>' + esc(t('plan_set_row_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>';
   function renderSettings(v) {
     const d0 = raw(); if (!on() || !S.canSave() || !d0 || !d0.start) { renderMyPlan(v); return; }
+    pauseSync();   /* Version 39.22: her reminders as they stand, the nudge and the wind-down on by default */
     v.innerHTML = S.backRow(t('plan_set_h'), 'plan', false) + settingsHtml(fullD(d0), true) + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
     S.wire(v); wireSettings(v); wirePause(v);
   }
@@ -761,11 +795,26 @@
   }
 
   /* ---------- Yoga and moves ---------- */
+  /* Version 39.22 (Mohit, 27 Oct: "make meditation part of plan along with exercises"): Moves and calm. Calm holds Dr. Megha's
+     three sessions (where each fits: AYUSH's protocol for Bhramari, the yoga nidra trials), Calm breath, and the sounds for sleep */
+  const calmOn = () => !!(S.calm && S.calm.short && S.routeOwner('calm'));
+  const movesTabs = (calm) => (calmOn() ? '<div class="pl-seg" role="tablist" aria-label="' + esc(t('plan_moves_h')) + '">' + [['plan-moves', 'plan_moves_tab', !calm], ['plan-calm', 'plan_calm_tab', !!calm]].map((x) => '<button type="button" role="tab" class="pl-seg-b' + (x[2] ? ' on' : '') + '" aria-selected="' + x[2] + '"' + (x[2] ? '' : ' data-go="' + x[0] + '"') + '>' + esc(t(x[1])) + '</button>').join('') + '</div>' : '');
+  function renderCalm(v) {
+    if (!on() || !calmOn()) { renderMoves(v); return; }
+    const d = S.canSave() && raw() ? D() : null; const tn = d && packOf(d) && !pausedFor(d) && actionsFor(fullD(d)).some((a) => !!a.play) ? windPick(fullD(d)) : null;
+    const card = (go, pose, hue, title, sub, pill) => '<button type="button" class="item pl-ritem pl-calm-it" data-go="' + go + '"><span class="pl-rfig hue-' + hue + '">' + figSvg(pose) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span>' + (pill ? '<span class="pill accent">' + esc(pill) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>';
+    const sess = ['breaths', 'bhramari', 'nidra'].map((id) => card('calm-' + id, id === 'nidra' ? 'rest' : 'sit', id === 'nidra' ? 'purple' : (id === 'bhramari' ? 'gold' : 'sky'), t('calm_' + id), t('plan_calm_s_' + id) + ' · ' + tf('calm_min', { n: S.calm.mins(id) }), tn === id ? t('plan_tonight_pill') : '')).join('');
+    v.innerHTML = head('plan_moves_h') + movesTabs(true) + '<p class="small">' + esc(t('plan_calm_p')) + '</p>' +
+      '<div class="list">' + sess + (routineOk('calm', d) ? card('plan-r-calm', R.calm.first, R.calm.hue, rName('calm'), rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }), '') : '') + '</div>' +
+      '<div class="list pl-calm-snd"><button type="button" class="item" data-go="calm"><span class="ico-sm hue hue-purple">' + S.icon('moon') + '</span><span class="body"><strong>' + esc(t('calm_sounds')) + '</strong><span>' + esc(t('plan_calm_snd_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' +
+      '<div class="card warn"><h3>' + esc(t('plan_calm_safe_h')) + '</h3><p class="small">' + esc(t('plan_calm_safe_p') + (pregnant() ? ' ' + t('calm_preg') : '')) + '</p></div>';
+    S.wire(v);
+  }
   function renderMoves(v) {
     if (!on()) { offScreen(v); return; }
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
-    v.innerHTML = head('plan_moves_h') + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d)).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + '">' + figSvg(R[id].first) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tp && tp.routine === id ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+    v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
+      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + '">' + figSvg(R[id].first) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tp && tp.routine === id ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
       '<div class="card pl-walkcard"><span class="pl-mfig" id="pl-walkfig">' + figSvg('walk') + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       (d && d.start && !finished(d) ? '<div class="chips pl-add">' + [10, 15, 20, 30].map((n) => '<button type="button" class="chip" data-pl-add="' + n + '">+' + n + '</button>').join('') + '</div>' : '') +
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
@@ -980,12 +1029,12 @@
     const full = !rest && acts.length > 0 && !left.length; const nx = left[0] || null; const ciNow = ciDueNow(dd, acts);
     return acts.map((a, i) => { const sb = startOf(a); const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0;
       const rt = a.kind === 'routine' && a.r && !disc();   /* a routine: its name, and its minutes in the line under it (so the row stays one line at 360 px) */
-      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : a.title));
-      const sub0 = disc() && a.priv ? '' : (rt ? tf('plan_min_n', { n: routineMins(a.r, dd) }) : (a.id === 'fast' && !fastCare() ? '' : a.sub));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
+      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : (a.titleT || a.title)));   /* Version 39.22: Today keeps the short bedtime name; tonight's session is its line */
+      const sub0 = disc() && a.priv ? '' : (rt ? (YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') + ' · ' : '') + tf('plan_min_n', { n: routineMins(a.r, dd) }) :   /* Version 39.22: when first, so a cut line keeps it */ (a.id === 'fast' && !fastCare() ? '' : (a.subT || a.sub)));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
       return { id: ids[a.id] || 'plan-' + a.id, order: 25 + i, plan: true, icon: a.icon, hue: a.hue, title: nm,
-        sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a === nx && !ciNow && !sb ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : (a.state === 'p' ? t('plan_t_part') : sub0)),
+        sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : (a.state === 'p' ? t('plan_t_part') : sub0)),
         go: tick ? null : a.go, at: a.at || null, tick: tick, ok: ok, next: a === nx, fold: full,
-        nav: !ok && sb ? a.go : null, actLabel: sb ? t('plan_start_b') : null, primary: !ok && sb && a === nx && !ciNow,   /* R1, R14: one pink button, the next step's Start or the evening check-in */
+        nav: !ok && sb ? a.go : (!ok && a.play && !rest ? a.play : null), actLabel: sb ? t('plan_start_b') : (a.play ? tf('calm_min', { n: a.playMin }) : null), night: !!a.play, primary: !ok && sb && a === nx && !ciNow,   /* R1, R14: one pink button, the next step's Start or the evening check-in */
         act: tick && !ok ? () => { const d2 = D(); markAction(d2, a, 'd'); closeDay(d2); remSync(d2); } : null,
         undo: tick && ok ? () => { const d2 = D(); unmark(d2, a); remSync(d2); } : null,
         why: a.why && !disc() ? () => openWhy(a) : null,
@@ -1345,7 +1394,12 @@
       return h ? [{ id: 'food', icon: ICO.plate, hue: 'green', kind: 'habit', habit: h.id, title: back ? tf('plan_a_still', { h: lowFirst(tx(h.h)) }) : tx(h.h), name: tx(nw.h), sub: t('plan_meal_' + h.id), go: 'plan-plate', state: st('food', !!(c.lg.plate || {})[h.id] || th), why: x.why }] : []; },
     bed: (d, c, x, st) => {
       if (d.work === 'night') return [{ id: 'sleep', icon: S.icon('moon'), hue: 'purple', kind: 'tick', title: t('plan_a_shift'), sub: t('plan_a_shift_s'), go: 'plan', state: st('sleep'), why: 'plan_fb_sleep' }];
-      const bt = bedTarget(d, c.day); return bt ? [{ id: 'sleep', icon: S.icon('moon'), hue: 'purple', kind: 'tick', title: tf('plan_a_bed', { t: clockOf(bt) }), sub: t('plan_a_bed_s'), go: 'plan', state: st('sleep'), why: 'plan_fb_sleep', bed: bedTarget(d, S.toISO(S.addDays(S.fromISO(c.day), -1))) || bt }] : [];   /* Version 39.12: bed, last night's target */
+      const bt = bedTarget(d, c.day); if (!bt) return [];
+      const a = { id: 'sleep', icon: S.icon('moon'), hue: 'purple', kind: 'tick', title: tf('plan_a_bed', { t: clockOf(bt) }), sub: t('plan_a_bed_s'), go: 'plan', state: st('sleep'), why: 'plan_fb_sleep', bed: bedTarget(d, S.toISO(S.addDays(S.fromISO(c.day), -1))) || bt };
+      /* Version 39.22 (Mohit, 27 Oct: "make meditation part of plan"): the bedtime step winds down with Dr. Megha first, tonight's
+         session chosen from her day; one she played for 30 seconds that day counts the step, as a tick at bedtime does */
+      const wp = windPick(d, c.day); if (wp) { const wd = S.calm.doneOn(c.day); Object.assign(a, { title: tf('plan_a_wind', { t: clockOf(bt) }), sub: tf('plan_a_wind_s', { s: S.calm.short(wp) }), subT: tf('plan_a_wind_t', { s: S.calm.short(wp) }), titleT: tf('plan_a_bed', { t: clockOf(bt) }), how: t('plan_a_wind_how'), play: 'calm-' + wp, playMin: S.calm.mins(wp), state: st('sleep', !!wd), wound: wd ? wd.id : null }); }
+      return [a];   /* Version 39.12: bed, last night's target */
     },
     /* Version 38 (ux-gaps E4): the 21 iron days fit what she eats; after them, one iron food a day, from her own food.
        Version 39.3 (diet audit 2.4): an iron step opens My food (her iron foods and the reviewed page) */
@@ -1705,6 +1759,7 @@
   const perNow = (d) => !!(d && d.per && d.per.at && S.diffDays(S.fromISO(d.per.at), S.today()) <= 1 && !disc() && d.per.d === latestStart());   /* undone or replaced: gone */
   const perLine = (d) => (d.per.days ? tf(d.per.guess ? 'plan_per_ab' : 'plan_per', { n: d.per.days }) : t('plan_per0')) + (packOf(d) === 'pain' ? ' ' + t('plan_per_pain') : '');
   function onLog(name, p) {
+    if (name === 'tool' && p && p.type === 'calm') { const dc = raw(); if (dc && packOf(dc)) setTimeout(() => { const dd = D(); closeDay(dd); remSync(dd); S.saveQuiet(); }, 0); return; }   /* Version 39.22: she wound down (after this event: a full day's petal is an event too) */
     if (name !== 'log' || !p || p.type !== 'start' || !runningD()) return;
     const d = D(); const st = (S.state.events || []).filter((e) => e.t === 'start').map((e) => e.d).sort(); const last = st[st.length - 1];
     if (!last || last < d.start || (d.per && d.per.d === last) || S.diffDays(S.fromISO(last), S.today()) > 3) return;   /* already noted, or an old one filled in */
@@ -1960,6 +2015,7 @@
   function renderCheckin(v) {
     const d0 = raw(); if (!on() || !S.canSave() || !packOf(d0) || pausedFor(d0) || finished(fullD(d0))) { renderMyPlan(v); return; }
     const d = D(); const acts = actionsFor(d); const m = S.mem.planCi = S.mem.planCi && S.mem.planCi.day === todayISO() ? S.mem.planCi : { day: todayISO(), sel: {}, bar: null, saved: null, edit: false };
+    if (m.slp === undefined) m.slp = dayLog(d, todayISO()).slp || null;   /* Version 39.22: how she slept last night */
     const firstCi = !Object.keys(d.log).some((k) => k >= d.start && k < todayISO() && (d.log[k] || {}).ci);
     acts.forEach((a) => { if (!m.sel[a.id] && a.state) m.sel[a.id] = a.state; });
     const asked = acts.filter((a) => a.kind !== 'check');
@@ -1981,18 +2037,20 @@
       const goal = s.goal && !disc() ? '<span class="eyebrow">' + esc(t('plan_ci_goal_h')) + '</span><p class="lead pl-ci-goal">' + esc(s.goal) + '</p>' : '';   /* her goal */
       v.innerHTML = hd + '<div class="card ok pl-fb" id="pl-ci-fb">' + goal + '<p class="' + (goal ? 'pl-ci-why' : 'lead') + '">' + esc(s.line) + '</p>' + (disc() ? '' : whyBtn(s.why, 'pl-why', packOf(d))) + '<p class="small">' + esc(countLine(s.dn, s.pn, s.n) + ' · ' + tf('plan_ci_week', { w: s.w })) + '</p>' + (s.add ? '<p class="small pl-ci-add">' + esc(s.add) + '</p>' : '') +
         (s.str ? '<p class="small pl-ci-str">' + esc(s.str) + '</p>' : '') + (s.tom ? '<p class="small pl-ci-tomr">' + esc(s.tom) + '</p>' : '') +
-        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(d.remAt) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' +
+        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(d.remAt) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + nightHtml(s) +
         '<div class="grid2"><button type="button" class="btn primary" data-go="home">' + esc(t('plan_ci_home')) + '</button><button type="button" class="btn" data-go="plan">' + esc(t('plan_ci_plan')) + '</button></div>';
       S.wire(v); wireWhy(v); return;
     }
     const opt = (a, val, key) => '<button type="button" class="chip' + (m.sel[a.id] === val ? ' on' : '') + '" data-ci="' + a.id + ':' + val + '" aria-pressed="' + (m.sel[a.id] === val) + '">' + CI_SYM[val] + esc(t(key)) + '</button>';
     const anyMiss = () => asked.some((a) => m.sel[a.id] === 'n' || m.sel[a.id] === 'p');
     const nm = (a, done) => (disc() && a.priv ? t('plan_today_d') : (a.bed ? tf(done ? 'plan_ci_last_d' : 'plan_ci_last', { t: clockOf(a.bed) }) : a.title));
+    /* Version 39.22: with last night's bedtime, how she slept (if she likes; a hard night brings a sound for tonight) */
+    const slpQ = (a) => (a.bed ? '<div class="pl-ci-slp"><span class="small pl-ci-slp-h">' + esc(t('plan_ci_slp')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_ci_slp')) + '">' + ['well', 'ok', 'bad'].map((k) => '<button type="button" class="chip' + (m.slp === k ? ' on' : '') + '" data-ci-slp="' + k + '" aria-pressed="' + (m.slp === k) + '">' + esc(t('plan_slp_' + k)) + '</button>').join('') + '</div></div>' : '');
     const left = open.length; const leftTxt = left ? tf(left === 1 ? 'plan_ci_left1' : 'plan_ci_left', { n: left }) : t('plan_ci_left0');
     const ico = (a) => '<span class="ico-sm hue hue-' + a.hue + '">' + a.icon + '</span>';
-    const preRow = (a) => '<div class="pl-ci-row pl-ci-pre"><div class="row" style="gap:10px">' + ico(a) + '<span class="body"><strong>' + esc(nm(a, true)) + '</strong><span class="small pl-ci-ok">' + CI_SYM.d + esc(ciNote(a, lg)) + '</span></span></div></div>';
+    const preRow = (a) => '<div class="pl-ci-row pl-ci-pre"><div class="row" style="gap:10px">' + ico(a) + '<span class="body"><strong>' + esc(nm(a, true)) + '</strong><span class="small pl-ci-ok">' + CI_SYM.d + esc(ciNote(a, lg)) + '</span></span></div>' + slpQ(a) + '</div>';
     const askRow = (a) => '<div class="pl-ci-row"><div class="row" style="gap:10px">' + ico(a) + '<strong>' + esc(nm(a)) + '</strong></div><div class="chips" role="group" aria-label="' + esc(nm(a)) + '">' +
-      (a.bed ? opt(a, 'd', 'plan_ci_yes') + opt(a, 'p', 'plan_ci_close') + opt(a, 'n', 'plan_ci_no') : opt(a, 'd', 'plan_ci_d') + (a.once ? '' : opt(a, 'p', 'plan_ci_p')) + opt(a, 'n', 'plan_ci_n')) + '</div></div>';
+      (a.bed ? opt(a, 'd', 'plan_ci_yes') + opt(a, 'p', 'plan_ci_close') + opt(a, 'n', 'plan_ci_no') : opt(a, 'd', 'plan_ci_d') + (a.once ? '' : opt(a, 'p', 'plan_ci_p')) + opt(a, 'n', 'plan_ci_n')) + '</div>' + slpQ(a) + '</div>';
     v.innerHTML = hd + '<p class="small pl-ci-date">' + esc(S.fmtD(S.today(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' + leftTxt) + '</p>' +
       (firstCi && !ciDone(d) ? '<p class="small pl-ci-first">' + esc(t('plan_ci_first')) + '</p>' : '') +
       (!ciDone(d) && restLeft(d) > 0 && !acts.some((a) => a.state === 'd' || a.state === 'p' || (SAFE.indexOf(a.id) >= 0 && a.state !== 'd')) ? '<button type="button" class="btn block pl-rest-b" id="pl-ci-rest">' + esc(t('plan_rest_b')) + ' <span class="small">· ' + esc(tf('plan_rest_left', { n: restLeft(d) })) + '</span></button>' : '') +
@@ -2009,6 +2067,8 @@
       v.querySelectorAll('[data-ci^="' + kv[0] + ':"]').forEach((x) => { const on1 = x === b; x.classList.toggle('on', on1); x.setAttribute('aria-pressed', String(on1)); });
       const bc = v.querySelector('#pl-ci-bar'); if (bc) bc.hidden = !anyMiss(); }));
     const ce = v.querySelector('#pl-ci-edit'); if (ce) ce.addEventListener('click', () => { m.edit = true; S.render(); });
+    v.querySelectorAll('[data-ci-slp]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ciSlp; m.slp = m.slp === k ? null : k;
+      v.querySelectorAll('[data-ci-slp]').forEach((x) => { const on1 = x.dataset.ciSlp === m.slp; x.classList.toggle('on', on1); x.setAttribute('aria-pressed', String(on1)); }); }));
     v.querySelectorAll('[data-feel]').forEach((b) => b.addEventListener('click', () => { if (S.feel) S.feel.toggle(todayISO(), b.dataset.feel); S.render(); }));
     const ft = v.querySelector('#pl-ci-fast-today'); if (ft) ft.addEventListener('click', () => { const dd = D(); setFast(dd, todayISO(), !fastOn(dd)); S.save(); S.render(); });
     const fm = v.querySelector('#pl-ci-fast-tom'); if (fm) fm.addEventListener('click', () => { const dd = D(); const tm = S.toISO(S.addDays(S.today(), 1)); setFast(dd, tm, !fastOn(dd, tm)); S.save(); S.render(); });
@@ -2018,12 +2078,15 @@
       if (asked.some((a) => !m.sel[a.id])) { v.querySelector('#pl-ci-err').hidden = false; return; }
       const dd = D(); asked.forEach((a) => { if (pre.indexOf(a.id) >= 0 && m.sel[a.id] === 'd') return; markAction(dd, a, m.sel[a.id]); });   /* what counted already stays as it was counted */
       const x = dd.log[todayISO()] = dd.log[todayISO()] || {}; x.ci = 1; if (m.bar && anyMiss()) x.bar = m.bar; else delete x.bar;
+      if (m.slp) x.slp = m.slp; else delete x.slp;   /* Version 39.22: a hard night goes in her diary as Poor sleep */
+      if (m.slp === 'bad' && S.feel && ((S.state.daily || {})[todayISO()] || []).indexOf('d_sleep') < 0) S.feel.toggle(todayISO(), 'd_sleep');
       const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0;
       const done = acts.filter((a) => m.sel[a.id] === 'd' || m.sel[a.id] === 'p'); const dl = done.filter((a) => m.sel[a.id] === 'd'); const pool = dl.length ? dl : done;
       const first = pool.length ? pool[(planDay(dd) - 1) % pool.length] : null;   /* Version 39.6 (P2-01): each evening, the reason of another step she did */
       const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : t('plan_tip_' + b));   /* Version 39.12: her own if-then plan first */
       m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: acts.length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
         goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: ciTom(fullD(dd)),
+        slp: m.slp || null, wind: windPick(dd), windOn: acts.some((a) => !!a.play) && !(S.calm && S.calm.doneOn(todayISO())),
         add: done.length ? (function () { const miss = acts.filter((a) => m.sel[a.id] === 'n'); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? t('plan_today_d') : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.13 */
       remSync(dd); S.save();
       const rel = S.joy && S.joy.release ? S.joy.release() : false;   /* what her plan's first day earned, celebrated now */
@@ -2032,6 +2095,16 @@
     });
   }
 
+  /* Version 39.22: after the check-in, tonight's session; after a hard night, yoga nidra or a sound for sleep */
+  function nightHtml(s) {
+    if (!calmOn()) return '';
+    if (s.slp === 'bad') return '<div class="card pl-night"><div class="row pl-night-h"><span class="pl-night-i" aria-hidden="true">' + S.icon('moon') + '</span><h3>' + esc(t('plan_night_h')) + '</h3></div><p class="small">' + esc(tf('plan_night_p', { n: S.calm.timer() })) + '</p>' +
+      '<button type="button" class="btn block pl-night-a" data-go="calm-nidra">' + PLAY_SVG + esc(t('calm_nidra') + ' · ' + tf('calm_min', { n: S.calm.mins('nidra') })) + '</button>' +
+      '<button type="button" class="btn block pl-night-b" data-go="calm-bowl">' + PLAY_SVG + esc(t('calm_bowl') + ' · ' + tf('calm_min', { n: S.calm.timer() })) + '</button>' +
+      '<p class="small pl-night-n">' + esc(t('plan_night_noted')) + '</p></div>';
+    if (!s.windOn || !s.wind) return '';
+    return '<div class="list pl-tonight"><button type="button" class="item" data-go="calm-' + s.wind + '"><span class="ico-sm hue hue-purple">' + S.icon('moon') + '</span><span class="body"><strong>' + esc(t('plan_tonight')) + '</strong><span>' + esc(S.calm.short(s.wind) + ' · ' + tf('calm_min', { n: S.calm.mins(s.wind) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>';
+  }
   /* ---------- My plan: the 12-week path, today's steps, the look-back, results and her care team ---------- */
   function pathHtml(d, fold) {
     const kept = !!(d.keep && weekNo(d) > N); const wk = kept ? weekNo(d) : Math.max(1, Math.min(weekNo(d), N)); const pk = packOf(d);
@@ -2060,6 +2133,23 @@
       '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div><ol class="pl-steps">' +
       (fold && !kept ? ks.filter((k) => k <= wk) : ks).map(li).join('') + '</ol>' +
       (ahead.length ? '<details class="pl-path-more" data-pl-fold="path"' + (foldOpen('path') ? ' open' : '') + '><summary class="linkbtn">' + esc(t('plan_path_ahead')) + '</summary><ol class="pl-steps">' + ahead.map(li).join('') + '</ol></details>' : '') + '</div>';
+  }
+  /* Version 39.22: after her first week, her 12 weeks and what consistency brings are one card: this week and next, her stage in
+     one line, her 4-week check when it is due, and every week, the timeline and her own signs one tap away */
+  const weeksOne = (d) => { const pk = packOf(d); return !!(pk && pk !== 'preg' && pk !== 'post' && planWeeks(d) === N && !(d.keep && weekNo(d) > N)); };
+  function weeksCard(d) {
+    const wk = Math.max(1, Math.min(weekNo(d), N)); const pk = packOf(d); const mc = !disc() && !careTime(d) && !pregnant();
+    const focus = (k) => { if (k === 4) return t(mc ? 'plan_path_r4' : 'plan_path_m4'); if (k === 8) return t(mc ? 'plan_path_r8' : 'plan_path_m8'); if (k === N) return t('plan_path_r12');
+      if (pk === 'cycle') { const h = HABITS.find((x) => x.wk === k + 2 * (d.hab0 || 0)); return tf('plan_path_cyc', { m: target(d, k) }) + (h ? ' · ' + tf('plan_path_new', { h: tx(h.h) }) : ''); }
+      return t('plan_path_light'); };
+    const now = wk <= 4 ? 0 : 1; const stage = pk === 'cycle' && !disc() ? '<p class="small pl-wk-stage">' + esc(t('plan_ex_' + (now + 1)) + ': ' + t('plan_ex_' + (now + 1) + '_p')) + '</p>' : '';
+    const li = (k) => '<li class="' + (k < wk ? 'past' : (k === wk ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true">' + (k < wk ? '✓' : '') + '</span><span class="body"><strong>' + esc(k === wk ? t('plan_path_now') + ' · ' + tf('plan_wk_s', { n: k }) : tf('plan_wk_s', { n: k })) + '</strong><span class="small">' + esc(focus(k)) + '</span></span></li>';
+    const all = []; for (let k = 1; k <= N; k++) all.push(k); const cons = consCard(d, false);
+    const mr = mcRow(d).replace('<div class="list pl-mc-rowl">', '<div class="list pl-mc-rowl pl-mc-in">');
+    return '<div class="card pl-path pl-weeks"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(tf('plan_wk', { n: wk })) + '</span></div>' +
+      '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div>' +
+      '<dl class="pl-kv"><dt>' + esc(t('plan_kv_this')) + '</dt><dd>' + esc(focus(wk)) + '</dd>' + (wk < N ? '<dt>' + esc(t('plan_kv_next')) + '</dt><dd>' + esc(focus(wk + 1)) + '</dd>' : '') + '</dl>' + stage + mr +
+      '<details class="pl-path-more" data-pl-fold="path"' + (foldOpen('path') ? ' open' : '') + '><summary class="linkbtn">' + esc(t('plan_path_all')) + '</summary><ol class="pl-steps">' + all.map(li).join('') + '</ol>' + cons.replace('<div class="card pl-cons">', '<div class="pl-cons pl-cons-in">') + '</details></div>';
   }
   function careTeam(fold) {
     const row = (go, ico, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button>';
@@ -2113,6 +2203,7 @@
       (movesOn(d) ? '<div class="list pl-wp-set">' +   /* Version 39.15: Plan this week is in My plan's This week */
         '<label class="item"><span class="body"><strong>' + esc(t('plan_nudge')) + '</strong><span>' + esc(d.when && NUDGE_AT[d.when] ? tf('plan_nudge_s', { w: t('plan_w_' + d.when), t: timeOf(NUDGE_AT[d.when]) }) : t('plan_nudge_none')) + '</span></span><input type="checkbox" id="pl-nudge"' + (nudgeOn() ? ' checked' : '') + '></label></div>' +
         '<p class="small pl-nudge-n">' + esc(t('plan_nudge_n')) + '</p>' : '') +
+      (windOk(d) && windAt(d) ? '<div class="list pl-wind-set"><label class="item"><span class="body"><strong>' + esc(t('plan_wind_rem')) + '</strong><span>' + esc(windNear(d, windAt(d)) ? t('plan_wind_rem_ci') : tf('plan_wind_rem_s', { t: timeOf(windAt(d)) })) + '</span></span><input type="checkbox" id="pl-wind"' + (d.wind !== false ? ' checked' : '') + '></label></div>' : '') +   /* Version 39.22 */
       (selfPaused(d) ? '<div class="list"><button type="button" class="item" id="pl-unpause"><span class="body"><strong>' + esc(t('plan_unpause')) + '</strong><span>' + esc(tf('plan_paused_til', { d: S.fmtD(S.fromISO(d.pauseUntil), { day: 'numeric', month: 'short' }) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>'
         : (careTime(d) || !d.start || d.start > todayISO() ? '' : '<div class="list"><button type="button" class="item" id="pl-pause"><span class="body"><strong>' + esc(t('plan_pause')) + '</strong><span>' + esc(t('plan_pause_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>')) +
       (S.mem.planStop ? '<div class="card warn"><p>' + esc(t('plan_stop_q')) + '</p><div class="grid2"><button type="button" class="btn" id="pl-stop-no">' + esc(t('plan_cancel')) + '</button><button type="button" class="btn primary" id="pl-stop-yes">' + esc(t('plan_stop_yes')) + '</button></div>' + (selfPaused(d) || careTime(d) || !d.start || d.start > todayISO() ? '' : '<button type="button" class="linkbtn" id="pl-pause-alt">' + esc(t('plan_stop_or')) + '</button>') + '</div>' : '<button type="button" class="linkbtn" id="pl-stop">' + esc(t('plan_stop')) + '</button>') + '</section>';
@@ -2126,6 +2217,7 @@
     const ng = v.querySelector('#pl-nudge'); if (ng) ng.addEventListener('change', () => { const dd = D();
       if (ng.checked && !(dd.when && NUDGE_AT[dd.when])) { ng.checked = false; S.mem.planNudgeAsk = true; S.mem.planWkFrom = 'plan'; S.setHash('plan-week'); return; }   /* her time first */
       dd.nudge = ng.checked; delete dd.nudgeHeld; if (ng.checked) nudgeSync(dd, true); else S.reminders.remove('plan-nudge'); S.saveQuiet(); S.render(); });
+    const wn = v.querySelector('#pl-wind'); if (wn) wn.addEventListener('change', () => { const dd = D(); dd.wind = wn.checked; delete dd.windGone; if (wn.checked) windSync(dd, true); else S.reminders.remove('plan-wind'); S.saveQuiet(); S.render(); });   /* Version 39.22 */
     const sp = v.querySelector('#pl-stop'); if (sp) sp.addEventListener('click', () => { S.mem.planStop = true; S.render(); });
     const sn = v.querySelector('#pl-stop-no'); if (sn) sn.addEventListener('click', () => { S.mem.planStop = false; S.render(); });
     const sy = v.querySelector('#pl-stop-yes'); if (sy) sy.addEventListener('click', () => { closePlan(D()); S.mem.planStop = false; S.saveQuiet(); if (S.route() === 'plan-settings') S.setHash('plan'); else S.render(); });   /* Version 39.5: her results stay as "Your last plan" */
@@ -2171,7 +2263,7 @@
     el.innerHTML = '<button type="button" class="item"><span class="ico-sm hue hue-' + esc(lb.hue) + '">' + S.I.help + '</span><span class="body"><strong>' + esc(lb.t) + '</strong><span>' + esc(lb.lv) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' +
       (lb.call ? '<div class="row wrap pl-xp-call">' + (lb.call === '14416' ? '<a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>' : '');   /* review PRIVACY-04 */
     el.querySelector('button').addEventListener('click', () => S.setHash('explain'));
-    const h = v.querySelector('h1'); if (h && h.parentNode === v) h.insertAdjacentElement('afterend', el); else v.insertBefore(el, v.firstChild);
+    const h = v.querySelector('.pl-head') || v.querySelector('h1'); if (h && h.parentNode === v) h.insertAdjacentElement('afterend', el); else v.insertBefore(el, v.firstChild);   /* Version 39.22: after her title and its gear */
   }
   /* Version 39.2 (journey audit J-11): the goal her own records point to, marked "Suggested" (never on a shared phone) */
   const suggestedGoal = (st) => { if (disc() || !S.canSave()) return null; const s = signals(); const ok = (g) => goalsFor({ stage: st }).indexOf(g) >= 0 ? g : null;
@@ -2370,29 +2462,72 @@
   /* gap 3: where a step that already counted today was counted from */
   function ciNote(a, lg) {
     const ck = lg.ck || {}; if (ck[a.id] === 'd') return t('plan_ci_n_today');
+    if (a.wound && S.calm) return tf('plan_ci_n_wind', { s: S.calm.short(a.wound) });   /* Version 39.22 */
     if (a.id === 'move' && a.kind === 'minutes') { const wm = (lg.min || 0) - (lg.rmin || 0); if (wm > 0) return tf('plan_ci_n_min', { n: wm }); }
     if (a.kind === 'habit') return t('plan_ci_n_plate');
     if (a.kind === 'routine') { const rs = (lg.r || []).filter((r) => r !== 'calm'); return t(a.r === 'strength' && rs.indexOf('strength') >= 0 ? 'plan_ci_n_str' : (a.id === 'yoga' && rs.some((r) => r !== 'strength') ? 'plan_ci_n_r' : 'plan_ci_n_rt')); }
     return t('plan_ci_n_tool');
   }
 
+  /* Version 39.22: tonight's wind-down: yoga nidra after a hard night (her check-in or Poor sleep in her diary), Bhramari after a
+     low, anxious or irritable day, slow breaths otherwise. Only where Wind down is in this build. */
+  function windPick(d, iso) {
+    if (!S.calm || !S.calm.short || !S.routeOwner('calm')) return null; const day = iso || todayISO(); const dl = (S.state.daily || {})[day] || [];
+    if ((dayLog(d, day) || {}).slp === 'bad' || dl.indexOf('d_sleep') >= 0) return 'nidra';
+    return ['d_mood', 'd_anxious', 'd_irritable'].some((k) => dl.indexOf(k) >= 0) ? 'bhramari' : 'breaths';
+  }
+  /* Version 39.22 (research: docs/myplan-and-sleep-advice-2026-10-26.md, "Timing"): the wind-down reminder 30 minutes before her
+     bedtime (NHS: time to relax before bed). On unless she turns it off; none once she has wound down that day or on a rest day,
+     or while her plan rests. When her check-in comes less than an hour before it, the check-in carries tonight's session instead
+     (reminders at least an hour apart). It opens tonight's session. */
+  const WIND_T = L('Time to wind down. Tap for tonight’s session.', 'सुकून के पल का समय। आज रात का सत्र शुरू करने के लिए टैप करें।');
+  const hmMin = (hm) => +String(hm).slice(0, 2) * 60 + +String(hm).slice(3, 5);
+  const hmOf = (n) => { n = ((n % 1440) + 1440) % 1440; return S.pad2(Math.floor(n / 60)) + ':' + S.pad2(n % 60); };
+  const windAt = (d) => { const bt = d && d.work !== 'night' ? bedTarget(d, todayISO()) : null; return bt ? hmOf(hmMin(bt) - 30) : null; };
+  const windNear = (d, at) => { const g = hmMin(at) - hmMin(d.remAt || '20:00'); return g >= 0 && g < 60; };
+  const windOk = (d) => !!(d && planOn() && packOf(d) && d.start && d.start <= todayISO() && !pausedFor(d) && !finished(fullD(d)) && !careTime(d) && actionsFor(fullD(d)).some((a) => !!a.play));
+  function windSync(d, loud) {
+    try {
+      if (!d || !S.reminders) return; const r = S.reminders.get('plan-wind'); const at = d.wind !== false && windOk(d) ? windAt(d) : null;
+      if (!at || windNear(d, at)) { if (r) { S.reminders.remove('plan-wind'); if (d.wind !== false) d.windGone = true; } return; }
+      if (!r && d.windMade && !d.windGone && !loud) { d.wind = false; S.saveQuiet(); return; }   /* she deleted it in Reminders: it stays off */
+      delete d.windGone;
+      const dd = fullD(d); const td = todayISO(); const done = !!(S.calm.doneOn(td) || dayLog(dd, td).rest); const st = selfPaused(d) ? d.pauseUntil : (r && r.start && r.start <= td ? r.start : td);
+      const w = { id: 'plan-wind', mod: 'plan', title: WIND_T, start: st, until: remEnd(dd), every: 1, time: at, doneOn: done ? td : null };
+      if (r && r.time === w.time && r.start === w.start && (r.until || null) === (w.until || null) && (r.doneOn || null) === w.doneOn) return;
+      S.reminders.upsert(r ? w : Object.assign({ on: true }, w), loud ? undefined : { quiet: true }); d.windMade = true;
+    } catch (e) { /* no reminders in this build */ }
+  }
+  /* tonight's session from a reminder: the session, at its own address */
+  function renderWind(v) {
+    const d = raw(); const w = d && packOf(d) ? windPick(fullD(d)) : null; if (!w) { renderMyPlan(v); return; }
+    v.innerHTML = '<div class="card pl-wind-open"><span class="eyebrow">' + esc(t('plan_tonight')) + '</span><p class="lead">' + esc(S.calm.short(w) + ' · ' + tf('calm_min', { n: S.calm.mins(w) })) + '</p><button type="button" class="btn primary block" data-go="calm-' + w + '">' + PLAY_SVG + esc(t('calm_play')) + '</button></div>';
+    S.wire(v); try { history.replaceState(null, '', '#calm-' + w); setTimeout(() => S.render(), 0); } catch (e) { /* she taps Play */ }
+  }
   /* gap 5: a nudge at her time to move. Off unless she turns it on (Plan settings); one a day at most; none once she has moved or
      checked in, on a rest day, or while her plan rests; on a shared phone core's notification says only "A reminder" */
   const NUDGE_AT = { morning: '07:30', breakfast: '09:30', lunch: '14:00', evening: '18:00', dinner: '21:15' };
   const NUDGE_T = L('Your time to move. Tap to start.', 'चलने-फिरने का समय। शुरू करने के लिए टैप करें।');
+  /* Version 39.22: yoga on an empty or light stomach (AYUSH Common Yoga Protocol), a walk right after a meal (Reynolds et al.
+     2016: blood sugar fell most after the evening meal); the nudge is on unless she turns it off (Mohit, 27 Oct: "set
+     reminders accordingly") */
+  const NUDGE_YOGA = L('Yoga before you eat, then your walk. Tap to start.', 'खाने से पहले योग, फिर सैर। शुरू करने के लिए टैप करें।');
+  const NUDGE_WALK = L('Time for your walk, right after the meal. Tap to start.', 'खाने के ठीक बाद सैर का समय। शुरू करने के लिए टैप करें।');
+  const AFTER_MEAL = ['breakfast', 'lunch', 'dinner'];
+  const nudgeT = (d) => (AFTER_MEAL.indexOf(d.when) >= 0 ? NUDGE_WALK : (actionsFor(d).some((a) => a.id === 'yoga') ? NUDGE_YOGA : NUDGE_T));
   const movesOn = (d) => !!(d && planOn() && packOf(d) && (specD(d) || {}).moves && !pausedFor(d) && !finished(fullD(d)) && !careTime(d) && d.start <= todayISO());
   const nudgeOn = () => { const r = S.reminders.get('plan-nudge'); return !!(r && r.on !== false); };
   function nudgeSync(d, loud) {
     try {
       if (!d || !S.reminders) return; const r = S.reminders.get('plan-nudge');
-      if (!(d.nudge && d.when && NUDGE_AT[d.when] && movesOn(d))) { if (r) { if (d.nudge) d.nudgeHeld = true; S.reminders.remove('plan-nudge'); } return; }
-      if (!r && !loud && !d.nudgeHeld) { d.nudge = false; S.saveQuiet(); return; }   /* she deleted it in Reminders: it stays off */
+      if (!(d.nudge !== false && d.when && NUDGE_AT[d.when] && movesOn(d))) { if (r) { if (d.nudge !== false) d.nudgeHeld = true; S.reminders.remove('plan-nudge'); } return; }
+      if (!r && !loud && !d.nudgeHeld && (d.nudgeMade || d.nudge === true)) { d.nudge = false; S.saveQuiet(); return; }   /* she deleted it in Reminders: it stays off */
       delete d.nudgeHeld;
       const dd = fullD(d); const td = todayISO(); const x = dayLog(dd, td); const mvs = actionsFor(dd).filter((a) => a.id === 'move' || a.id === 'yoga');
       const done = !!(x.rest || x.ci || (mvs.length && mvs.every((a) => a.state === 'd')));   /* Version 39.13: her yoga and her walk */ const st = selfPaused(d) ? d.pauseUntil : (r && r.start && r.start <= td ? r.start : td);
-      const w = { id: 'plan-nudge', mod: 'plan', title: NUDGE_T, start: st, until: remEnd(dd), every: 1, time: NUDGE_AT[d.when], doneOn: done ? td : null };
-      if (r && r.time === w.time && r.start === w.start && (r.until || null) === (w.until || null) && (r.doneOn || null) === w.doneOn && (r.title || {}).en === NUDGE_T.en) return;
-      S.reminders.upsert(r ? w : Object.assign({ on: true }, w), loud ? undefined : { quiet: true });
+      const w = { id: 'plan-nudge', mod: 'plan', title: nudgeT(dd), start: st, until: remEnd(dd), every: 1, time: NUDGE_AT[d.when], doneOn: done ? td : null };
+      if (r && r.time === w.time && r.start === w.start && (r.until || null) === (w.until || null) && (r.doneOn || null) === w.doneOn && (r.title || {}).en === w.title.en) return;
+      S.reminders.upsert(r ? w : Object.assign({ on: true }, w), loud ? undefined : { quiet: true }); d.nudgeMade = true;
     } catch (e) { /* no reminders in this build */ }
   }
 
@@ -2603,6 +2738,7 @@
   }
   /* R3: how to do a step: a food habit's own line, the walk's pace, a routine's moves, the bedtime tip, else its line */
   function howOf(a, d) {
+    if (a.how) return a.how;   /* Version 39.22: the wind-down's own */
     if (a.kind === 'habit') { const h = HABITS.find((x) => x.id === a.habit); return h && h.p ? tx(h.p) : ''; }
     if (a.kind === 'minutes' && !a.r) return t('plan_walk_s');
     if (a.r && (a.r === 'sun' || R[a.r])) { const seen = {}; const ns = []; stepsOf(a.r, d).forEach((s) => { const nm = s.n ? tx(s.n) : ''; if (nm && !seen[nm]) { seen[nm] = 1; ns.push(nm); } });
@@ -2709,7 +2845,7 @@
         plan_path_post_h: 'After the birth', plan_pp_1: 'Weeks 1 to 6', plan_pp_1_p: 'Rest, your daily recovery check, and your 6-week check', plan_pp_2: 'Weeks 7 to 12', plan_pp_2_p: 'Short walks and your pelvic floor', plan_pp_3: 'Months 4 to 12', plan_pp_3_p: 'At your own pace',
         plan_today: 'Today', plan_walk: 'Walk or move {n} minutes', plan_walk_s: 'Brisk: you can talk, but not sing', plan_add: 'Add minutes', plan_today_n: 'Today: {n} min',
         plan_yoga: 'Today’s yoga', plan_strength_day: 'Strength day', plan_plate_today: 'Your plate today', plan_habit_new: 'New this week',
-        plan_tiles_plate: 'My plate', plan_tiles_moves: 'Yoga and moves', plan_tiles_body: 'My body', plan_tiles_prog: 'My progress',
+        plan_tiles_plate: 'My plate', plan_tiles_moves: 'Moves and calm', plan_tiles_body: 'My body', plan_tiles_prog: 'My progress',
         plan_remind: 'Remind me every day', plan_remind_at: 'At', plan_stop: 'Stop my plan', plan_stop_q: 'Stop your plan? What you logged stays on your phone.', plan_stop_yes: 'Yes, stop it', plan_cancel: 'Keep it',
         plan_foot: 'Everyday habits from national guidelines, the same for every woman. No supplements, herbs or medicines here: your doctor decides those.',
         plan_done: 'Done', plan_yes: 'Yes', plan_well: 'Well done.', plan_today_d: 'Your plan for today', plan_today_move: 'Move {n} minutes today',
@@ -2746,7 +2882,7 @@
         plan_hist: 'What you noted', plan_body_del: 'Delete my body notes', plan_body_del_q: 'Delete all your height, weight and waist notes?', plan_body_del_yes: 'Yes, delete them',
         plan_body_show: 'Show my numbers', plan_body_hidden: 'Hidden because others use this phone.',
         plan_body_foot: 'BMI is a rough guide: build, muscle and age matter too. The limits for Indian women come from the 2009 national consensus: BMI 23 and waist 80 cm.',
-        plan_moves_h: 'Yoga and moves', plan_moves_p: 'Do what you can. Every minute counts towards your week.',
+        plan_moves_h: 'Moves and calm', plan_moves_p: 'Do what you can. Every minute counts towards your week.',
         plan_r_gentle: 'Gentle start', plan_r_cycle: 'Cycle care yoga', plan_r_sun: 'Sun salutation, slow', plan_r_strength: 'Strength at home', plan_r_calm: 'Calm breath',
         plan_r_gentle_s: 'Stretch and balance, easy on the knees', plan_r_cycle_s: 'Hips, belly and back', plan_r_sun_s: 'Surya namaskar, one breath a pose', plan_r_strength_s: 'Chair, wall and stairs, 2 days a week', plan_r_calm_s: 'Anulom vilom and bhramari',
         plan_mins: 'About {n} min', plan_today_pill: 'Today', plan_walk_h: 'Walking', plan_walk_p: 'Brisk walking is the easiest way to add minutes: fast enough that you can talk, but not sing.',
@@ -2916,6 +3052,17 @@
         plan_if_pain_cramps: 'try the cramps routine', plan_if_pain_rest: 'rest today and walk slowly tomorrow',
         plan_if_family_ask: 'ask someone to walk with me', plan_if_family_home: 'do yoga at home while the children play', plan_if_family_dinner: 'walk with my family after dinner',
         plan_if_out_march: 'march on the spot at home', plan_if_out_stairs: 'walk up and down the stairs', plan_if_out_yoga: 'do a yoga routine at home',
+        /* Version 39.22: meditation in the plan, sleep in the check-in, reminders by the research, a calmer My plan */
+        plan_a_wind: 'Wind down, in bed by {t}', plan_a_wind_s: 'Tonight: {s} with Dr. Megha', plan_a_wind_t: 'Tonight: {s}', plan_a_wind_how: 'Press play, put the phone face down and close your eyes. Keep the room dark and quiet.', plan_ci_n_wind: 'Wound down: {s}', plan_yoga_when: 'Before a meal',
+        plan_ci_slp: 'How did you sleep?', plan_slp_well: 'Well', plan_slp_ok: 'Okay', plan_slp_bad: 'Badly',
+        plan_night_h: 'A hard night. Tonight, let a sound help you sleep.', plan_night_p: 'Dr. Megha’s yoga nidra relaxes you part by part. Or play a calm sound that fades out after {n} minutes.',
+        plan_night_noted: 'Noted in your diary as poor sleep. Sleeping badly most nights for 2 weeks? Tell your doctor.', plan_tonight: 'Tonight’s wind-down', plan_tonight_pill: 'Tonight',
+        plan_wind_rem: 'Wind-down reminder', plan_wind_rem_s: 'Every night at {t}, 30 minutes before bed', plan_wind_rem_ci: 'Your evening check-in brings tonight’s session',
+        plan_how_link: 'How it works', plan_why_all: 'Why these {n} steps?', plan_why_all1: 'Why this step?', plan_wp_link: 'Plan the week', plan_add_s: 'Add',
+        plan_res_tile_s: '{n} days', plan_garden_n: 'My garden · {n} petals', plan_garden_1: 'My garden · 1 petal', plan_kv_this: 'This week', plan_kv_next: 'Next week', plan_path_all: 'All 12 weeks',
+        plan_moves_tab: 'Yoga and moves', plan_calm_tab: 'Calm', plan_calm_p: 'Dr. Megha guides you in her own voice, in English or Hindi. Any one of these is tonight’s wind-down.',
+        plan_calm_s_breaths: 'In for 4, out for 6, sitting or lying', plan_calm_s_bhramari: 'A soft hum, sitting up', plan_calm_s_nidra: 'Lying in bed, part by part',
+        plan_calm_snd_s: 'Singing bowl and waves, Wandering, Dunes, with a timer', plan_calm_safe_h: 'For rest and sleep, not treatment', plan_calm_safe_p: 'Stop if you feel dizzy or unwell.',
         plan_nudge: 'Nudge at my time to move', plan_nudge_s: '{w}, about {t}', plan_nudge_none: 'Pick your time in Plan this week', plan_nudge_n: 'One nudge a day at most, and none once you have moved or on a rest day.',
         plan_mc_h: 'Your {n}-week check', plan_mc_p: '1 minute · only on this phone', plan_mc_since: 'Since you started, how is your…', plan_mc_e: 'Energy', plan_mc_s: 'Sleep', plan_mc_m: 'Mood', plan_mc_sk: 'Skin and hair',
         plan_mc_better: 'Better', plan_mc_same: 'Same', plan_mc_worse: 'Worse', plan_mc_meas: 'Measure, if you like', plan_mc_opt: 'Optional', plan_mc_waist: 'Waist (cm)', plan_mc_skip: 'Skip', plan_mc_save: 'Save my check',
@@ -2965,7 +3112,7 @@
         plan_path_post_h: 'जन्म के बाद', plan_pp_1: 'हफ़्ता 1 से 6', plan_pp_1_p: 'आराम, रोज़ की रिकवरी जाँच, और 6 हफ़्ते की जाँच', plan_pp_2: 'हफ़्ता 7 से 12', plan_pp_2_p: 'थोड़ी सैर और आपका पेल्विक फ़्लोर', plan_pp_3: 'महीना 4 से 12', plan_pp_3_p: 'अपनी रफ़्तार से',
         plan_today: 'आज', plan_walk: '{n} मिनट तेज़ चलें या व्यायाम करें', plan_walk_s: 'तेज़ चाल: बात कर सकें, पर गा न सकें', plan_add: 'मिनट जोड़ें', plan_today_n: 'आज: {n} मिनट',
         plan_yoga: 'आज का योग', plan_strength_day: 'ताक़त का दिन', plan_plate_today: 'आज आपकी थाली', plan_habit_new: 'इस हफ़्ते नई',
-        plan_tiles_plate: 'मेरी थाली', plan_tiles_moves: 'योग और व्यायाम', plan_tiles_body: 'मेरा शरीर', plan_tiles_prog: 'मेरी प्रगति',
+        plan_tiles_plate: 'मेरी थाली', plan_tiles_moves: 'योग, व्यायाम और सुकून', plan_tiles_body: 'मेरा शरीर', plan_tiles_prog: 'मेरी प्रगति',
         plan_remind: 'मुझे रोज़ याद दिलाएँ', plan_remind_at: 'समय', plan_stop: 'मेरा प्लान रोकें', plan_stop_q: 'प्लान रोकें? जो आपने दर्ज किया, वह आपके फ़ोन पर रहेगा।', plan_stop_yes: 'हाँ, रोकें', plan_cancel: 'रहने दें',
         plan_foot: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, हर महिला के लिए एक जैसी। यहाँ कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।',
         plan_done: 'हो गया', plan_yes: 'हाँ', plan_well: 'बहुत अच्छा।', plan_today_d: 'आज का आपका प्लान', plan_today_move: 'आज {n} मिनट चलें या व्यायाम करें',
@@ -3002,7 +3149,7 @@
         plan_hist: 'आपने क्या दर्ज किया', plan_body_del: 'मेरे शरीर के आँकड़े मिटाएँ', plan_body_del_q: 'लंबाई, वज़न और कमर के सभी आँकड़े मिटाएँ?', plan_body_del_yes: 'हाँ, मिटाएँ',
         plan_body_show: 'मेरे आँकड़े दिखाएँ', plan_body_hidden: 'छिपे हैं, क्योंकि यह फ़ोन और लोग भी इस्तेमाल करते हैं।',
         plan_body_foot: 'BMI एक मोटा अंदाज़ा है: बनावट, मांसपेशियाँ और उम्र भी मायने रखती हैं। भारतीय महिलाओं के लिए सीमाएँ 2009 की राष्ट्रीय सहमति से हैं: BMI 23 और कमर 80 सेमी।',
-        plan_moves_h: 'योग और व्यायाम', plan_moves_p: 'जितना हो सके, करें। हर मिनट आपके हफ़्ते में जुड़ता है।',
+        plan_moves_h: 'योग, व्यायाम और सुकून', plan_moves_p: 'जितना हो सके, करें। हर मिनट आपके हफ़्ते में जुड़ता है।',
         plan_r_gentle: 'आसान शुरुआत', plan_r_cycle: 'पीरियड के लिए योग', plan_r_sun: 'सूर्य नमस्कार, धीरे', plan_r_strength: 'घर पर ताक़त', plan_r_calm: 'शांत साँस',
         plan_r_gentle_s: 'खिंचाव और संतुलन, घुटनों पर हल्का', plan_r_cycle_s: 'कूल्हे, पेट और पीठ', plan_r_sun_s: 'सूर्य नमस्कार, हर आसन में एक साँस', plan_r_strength_s: 'कुर्सी, दीवार और सीढ़ी, हफ़्ते में 2 दिन', plan_r_calm_s: 'अनुलोम-विलोम और भ्रामरी',
         plan_mins: 'लगभग {n} मिनट', plan_today_pill: 'आज', plan_walk_h: 'सैर', plan_walk_p: 'तेज़ चलना मिनट जोड़ने का सबसे आसान तरीक़ा है: इतना तेज़ कि बात कर सकें, पर गा न सकें।',
@@ -3165,6 +3312,16 @@
         plan_if_pain_cramps: 'ऐंठन वाला तरीक़ा आज़माऊँगी', plan_if_pain_rest: 'आज आराम करूँगी और कल धीरे टहलूँगी',
         plan_if_family_ask: 'किसी को साथ टहलने को कहूँगी', plan_if_family_home: 'बच्चे खेलें, तब घर पर योग कर लूँगी', plan_if_family_dinner: 'रात के खाने के बाद परिवार के साथ टहलूँगी',
         plan_if_out_march: 'घर पर एक जगह क़दमताल कर लूँगी', plan_if_out_stairs: 'सीढ़ियाँ चढ़-उतर लूँगी', plan_if_out_yoga: 'घर पर योग कर लूँगी',
+        plan_a_wind: 'सुकून के पल, फिर {t} तक बिस्तर पर', plan_a_wind_s: 'आज रात: डॉ. मेघा के साथ {s}', plan_a_wind_t: 'आज रात: {s}', plan_a_wind_how: 'चलाएँ, फ़ोन उल्टा रख दें और आँखें बंद करें। कमरा अँधेरा और शांत रखें।', plan_ci_n_wind: 'सुकून के पल: {s}', plan_yoga_when: 'खाने से पहले',
+        plan_ci_slp: 'नींद कैसी रही?', plan_slp_well: 'अच्छी', plan_slp_ok: 'ठीक-ठाक', plan_slp_bad: 'ख़राब',
+        plan_night_h: 'रात मुश्किल रही। आज रात, किसी शांत आवाज़ के सहारे सोएँ।', plan_night_p: 'डॉ. मेघा की योग निद्रा शरीर के हर हिस्से को आराम देती है। या कोई शांत आवाज़ चलाएँ, जो {n} मिनट बाद धीमी होकर बंद हो जाएगी।',
+        plan_night_noted: 'डायरी में “नींद ख़राब” लिख दिया है। 2 हफ़्ते तक ज़्यादातर रातें नींद ख़राब रहे, तो डॉक्टर को बताएँ।', plan_tonight: 'आज रात के सुकून के पल', plan_tonight_pill: 'आज रात',
+        plan_wind_rem: 'सुकून के पल का रिमाइंडर', plan_wind_rem_s: 'हर रात {t}, सोने से 30 मिनट पहले', plan_wind_rem_ci: 'शाम का चेक-इन ही आज रात का सत्र दिखाएगा',
+        plan_how_link: 'कैसे चलता है', plan_why_all: 'ये {n} क़दम क्यों?', plan_why_all1: 'यह क़दम क्यों?', plan_wp_link: 'हफ़्ते की योजना', plan_add_s: 'जोड़ें',
+        plan_res_tile_s: '{n} दिन', plan_garden_n: 'मेरा बगीचा · {n} पंखुड़ियाँ', plan_garden_1: 'मेरा बगीचा · 1 पंखुड़ी', plan_kv_this: 'इस हफ़्ते', plan_kv_next: 'अगले हफ़्ते', plan_path_all: 'सभी 12 हफ़्ते',
+        plan_moves_tab: 'योग और व्यायाम', plan_calm_tab: 'सुकून', plan_calm_p: 'डॉ. मेघा अपनी आवाज़ में, हिंदी या अंग्रेज़ी में साथ देती हैं। इनमें से कोई भी आज रात के सुकून के पल गिना जाएगा।',
+        plan_calm_s_breaths: '4 तक अंदर, 6 तक बाहर, बैठकर या लेटकर', plan_calm_s_bhramari: 'धीमी गुनगुनाहट, बैठकर', plan_calm_s_nidra: 'बिस्तर में लेटकर, एक-एक हिस्सा',
+        plan_calm_snd_s: 'सिंगिंग बाउल और लहरें, धीमा संगीत, गहरा संगीत, टाइमर के साथ', plan_calm_safe_h: 'आराम और नींद के लिए, इलाज नहीं', plan_calm_safe_p: 'चक्कर आए या ठीक न लगे, तो रुक जाएँ।',
         plan_nudge: 'चलने-फिरने के समय याद दिलाएँ', plan_nudge_s: '{w}, लगभग {t}', plan_nudge_none: '“इस हफ़्ते की योजना” में अपना समय चुनें', plan_nudge_n: 'दिन में ज़्यादा से ज़्यादा एक बार, और चलने-फिरने के बाद या आराम के दिन बिल्कुल नहीं।',
         plan_mc_h: 'आपका {n} हफ़्ते का चेक-इन', plan_mc_p: '1 मिनट · सिर्फ़ इसी फ़ोन पर', plan_mc_since: 'शुरू करने के बाद से ये कैसे हैं?', plan_mc_e: 'ऊर्जा', plan_mc_s: 'नींद', plan_mc_m: 'मूड', plan_mc_sk: 'त्वचा और बाल',
         plan_mc_better: 'बेहतर', plan_mc_same: 'वैसा ही', plan_mc_worse: 'ख़राब', plan_mc_meas: 'चाहें तो नापें', plan_mc_opt: 'अपनी मर्ज़ी से', plan_mc_waist: 'कमर (सेमी)', plan_mc_skip: 'छोड़ें', plan_mc_save: 'मेरा चेक-इन सेव करें',
@@ -3176,10 +3333,10 @@
         plan_q_light_ok: 'अगले 7 दिन हल्के रहेंगे। उसके बाद आपका प्लान वैसे ही चलेगा।', plan_q_fam: 'परिवार से साथ टहलने को कहें', plan_q_fam_s: 'आपका अपना संदेश, सेहत की कोई बात नहीं', plan_q_msg: 'क्या आप {w} मेरे साथ टहलने चलेंगे? इस हफ़्ते रोज़ {n} मिनट।', plan_q_share: 'भेजें', plan_q_edit: 'बदलें'
       }
     },
-    routes: { plan: renderMyPlan, 'plan-settings': renderSettings, 'plan-pmos': renderHub, 'plan-reveal': renderReveal, 'plan-checkin': renderCheckin, 'plan-goal': renderGoalFlow, 'plan-start': renderStart, 'plan-plate': renderPlate, 'plan-body': renderBody, 'plan-moves': renderMoves, 'plan-progress': renderProgress, 'plan-week': renderWeek, 'plan-check': renderCheck, 'plan-now': renderNow },
+    routes: { plan: renderMyPlan, 'plan-settings': renderSettings, 'plan-pmos': renderHub, 'plan-reveal': renderReveal, 'plan-checkin': renderCheckin, 'plan-goal': renderGoalFlow, 'plan-start': renderStart, 'plan-plate': renderPlate, 'plan-body': renderBody, 'plan-moves': renderMoves, 'plan-calm': renderCalm, 'plan-progress': renderProgress, 'plan-week': renderWeek, 'plan-check': renderCheck, 'plan-now': renderNow, 'plan-wind': renderWind },
     prefixes: { 'plan-r-': (v, rest) => renderPlayer(v, rest) },
     testRoutes: ['plan-r-gentle', 'plan-r-cycle', 'plan-r-sun', 'plan-r-strength', 'plan-r-calm'],
-    open: ['plan', 'plan-pmos', 'plan-plate', 'plan-moves', 'plan-r-*'],
+    open: ['plan', 'plan-pmos', 'plan-plate', 'plan-moves', 'plan-calm', 'plan-r-*'],
     /* Version 39.3 (diet audit 5.3, 5.4): Yoga and moves, Strength at home and My plate can be found by search (not in pregnancy) */
     tiles: [{ section: 'tools', route: 'plan-moves', title: 'plan_moves_h', sub: 'plan_moves_tile_s', icon: ICO.move, order: 6, gated: false, hidden: () => !on() || pregnant() || earlyPost(), keywords: 'yoga yog exercise vyayam kasrat workout asana stretch stretching moves योग व्यायाम कसरत आसन' },
       { section: 'tools', route: 'plan-r-strength', title: 'plan_r_strength', sub: 'plan_r_strength_s', icon: ICO.move, order: 7, gated: false, hidden: () => !on() || pregnant() || earlyPost(), keywords: 'strength strong bones muscle chair wall stairs taqat ताक़त ताकत हड्डी' },
@@ -3320,7 +3477,19 @@
       '.pl-fold-c { display: inline-flex; flex-shrink: 0; width: 18px; height: 18px; color: var(--accent); transition: transform .2s; } .pl-fold-c svg { width: 18px; height: 18px; } .pl-fold > details[open] > summary .pl-fold-c { transform: rotate(90deg); } .pl-fold-in { display: grid; gap: 8px; margin-top: 12px; } .pl-fold-in .pl-tl { margin: 0; }',
       '.pl-path-more > summary { list-style: none; cursor: pointer; padding: 8px 0; min-height: 40px; } .pl-path-more > summary::-webkit-details-marker { display: none; } .pl-path-more[open] > summary { margin-bottom: 4px; }',
       '.pl-why-fast { justify-self: start; margin-top: 4px; } .pl-why-b { margin-top: 8px; } .pl-why-wide { grid-column: 1 / -1; } .pl-why-more { justify-self: center; }',
-      '.pl-q-fam .body { display: grid; gap: 2px; min-width: 0; } .pl-q-msg { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--card); color: var(--fg); } .pl-q-fam textarea { width: 100%; box-sizing: border-box; font: inherit; }'
+      '.pl-q-fam .body { display: grid; gap: 2px; min-width: 0; } .pl-q-msg { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--card); color: var(--fg); } .pl-q-fam textarea { width: 100%; box-sizing: border-box; font: inherit; }',
+      /* Version 39.22: a calmer My plan, tonight's wind-down, Moves and calm */
+      '.pl-head { display: flex; align-items: center; gap: 10px; } .pl-head > :first-child { flex: 1; min-width: 0; } .pl-gear { flex-shrink: 0; } .pl-howlink { display: inline; min-height: 0; padding: 0; font-size: inherit; vertical-align: baseline; }',
+      '.pl-steps-card .pl-step { background: transparent; box-shadow: none; border-radius: 0; padding: 10px 0; } .pl-steps-card .pl-step + .pl-step { border-top: 1px solid var(--line); } .pl-steps-card .list { gap: 0; }',
+      '.pl-step-sub { font-size: 13px; color: var(--muted); line-height: 1.35; } .pl-steps-f { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; } .pl-steps-f .pl-t-at { margin: 0; }',
+      '.pl-st-play, .today-start.night { background: #2F2240; color: #FFFFFF; border-color: #2F2240; padding: 0 10px; gap: 4px; } .pl-st-play svg, .today-start.night svg { width: 14px; height: 14px; }',
+      '.pl-tiles4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .pl-tiles4 .pl-tile { justify-items: center; text-align: center; padding: 10px 4px; gap: 6px; min-height: 84px; align-content: center; } .pl-tiles4 .pl-tile strong { font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; } .pl-tiles4 .pl-tile .small { font-size: 12px; margin-top: -4px; }',
+      '.pl-wkc .pl-garden-in { border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; padding: 10px 0 0; background: transparent; } .pl-wp-link { display: inline-flex; align-items: center; gap: 2px; min-height: 0; padding: 0; } .pl-wp-link svg { width: 16px; height: 16px; }',
+      '.pl-kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0; font-size: 14px; } .pl-kv dt { color: var(--muted); } .pl-kv dd { margin: 0; color: var(--fg); font-weight: 600; } .pl-wk-stage { margin: 0; } .pl-cons-in { display: grid; gap: 8px; margin-top: 8px; }',
+      '.pl-night { background: linear-gradient(160deg, #2A1F45 0%, #1B1530 100%); color: #F4ECF6; } .pl-night h3 { color: #FFFFFF; margin: 0; } .pl-night .small { color: #D9CCE4; } .pl-night-h { gap: 10px; align-items: center; } .pl-night-i { width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: rgba(242,167,203,0.16); color: #F2A7CB; } .pl-night-i svg { width: 22px; height: 22px; }',
+      '.pl-night-a { background: #F2A7CB; color: #2A1430; border: none; } .pl-night-b { background: rgba(255,255,255,0.08); color: #FFFFFF; border-color: rgba(255,255,255,0.22); } .pl-night-a svg, .pl-night-b svg { width: 16px; height: 16px; }',
+      '.pl-ci-slp { display: grid; gap: 6px; margin-top: 8px; } .pl-ci-slp-h { color: var(--fg); font-weight: 500; }',
+      '.pl-seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; background: var(--card-2); border-radius: 16px; padding: 4px; } .pl-seg-b { min-height: 44px; border-radius: 12px; border: none; background: transparent; color: var(--muted); font: inherit; font-weight: 600; } .pl-seg-b.on { background: var(--card); color: var(--fg); box-shadow: var(--shadow); }'
     ].join('\n')
   });
 })(window.Saathi);

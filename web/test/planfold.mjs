@@ -2,10 +2,11 @@
 // collapsable so the page doesnt look cluttered" and "just advise you can chant these or any devotional mantra you like to chant
 // for soothing sleep"; docs/myplan-and-sleep-advice-2026-10-26.md; MODULE_API sections 62 and 63). This file checks:
 //   1 her first week: My plan as it was, every part open;
-//   2 after it, what she reads once folds to one line each: how her plan works, her steps' reasons (behind "Why?"), what
-//     consistency brings (her stage now in one line), the weeks ahead and her care team; her steps, this week, the garden,
-//     the tools and her settings stay open; the page about 2.9 screens at 360 x 780 (it was 4.6), her 4 steps on the first;
-//   3 each fold opens to what it held;
+//   2 after it (Version 39.22 carried this further): how her plan works is a link by her week, her steps' reasons sit behind
+//     one "Why these 4 steps?", what consistency brings sits in her 12 weeks (this week and next), her care team folds; her
+//     steps, this week (her garden in it), the tools and her settings (a gear) stay open; the page about 2.5 screens at
+//     360 x 780 (it was 4.6), her 4 steps on the first;
+//   3 each opens to what it held;
 //   4 a shared phone and Hindi at 360 px;
 //   5 the sleep routine's last step: a mantra or prayer, if she likes (no recordings), still about 3 minutes; no page errors.
 // Usage: node test/planfold.mjs [dir]   (dir defaults to this app folder)
@@ -80,27 +81,30 @@ const pageH = (page) => page.$eval('#view', (v) => v.scrollHeight);
   await done(a);
 }
 
-/* ---------- 2 and 3 after her first week ---------- */
+/* ---------- 2 and 3 after her first week (Version 39.22 carried the folds further: MODULE_API section 65) ---------- */
 {
   const a = await open({ w: 360, h: 780, seed: cyc(ago(9), { log: logged(9, 5), weeks: SEEN1 }), now: at(0, '09:30'), hash: '#plan' });
   await go(a.page, 'plan');
   const h = await pageH(a.page);
-  check('2 week 2: about 2.9 screens (it was 3,580 px, 4.6 screens)', h > 0 && h <= 2400, h);
+  check('2 week 2: about 2.5 screens (it was 3,580 px, 4.6 screens)', h > 0 && h <= 2000, h);
   const folds = await a.page.$$eval('#view .pl-fold', (f) => f.map((x) => x.className.split(' ').filter((c) => /^pl-(rh|cons|care)$/.test(c))[0]));
-  check('2 three cards fold: how her plan works, what consistency brings, her care team', folds.join() === 'pl-rh,pl-cons,pl-care', folds);
-  check('2 ... each closed, with its one line: "Every day: 4 steps, check-in 8 pm", her stage now, "Doctors, your report, help"', await a.page.$$eval('#view .pl-fold details', (d) => d.every((x) => !x.open)) &&
-    /Every day: 4 steps, check-in 8 pm/.test(await txt(a.page, '#view .pl-rh summary')) && /Weeks 1 to 4: Many women feel more energy and sleep better\./.test(await txt(a.page, '#view .pl-cons summary')) && /Doctors, your report, help/.test(await txt(a.page, '#view .pl-care summary')));
-  check('2 her steps keep their names and ticks; the reasons go behind "Why?"', (await a.page.$$('#view .pl-step-why')).length === 0 && (await a.page.$$eval('#view .pl-step-how', (b) => b.map((x) => x.innerText.trim()))).every((x) => x === 'Why?') && (await a.page.$$('#view [data-pl-tk]')).length === 3);
+  check('2 how her plan works is a link by her week; what consistency brings sits in her 12 weeks; her care team folds', folds.join() === 'pl-care' && await has(a.page, '#pl-howlink') && !(await has(a.page, '#view .pl-rh')) && !(await has(a.page, '#view .card.pl-cons')), folds);
+  check('2 ... closed, with its one line: "Doctors, your report, help"; her stage now in her 12 weeks', await a.page.$$eval('#view .pl-fold details', (d) => d.every((x) => !x.open)) &&
+    /Doctors, your report, help/.test(await txt(a.page, '#view .pl-care summary')) && /Weeks 1 to 4: Many women feel more energy and sleep better./.test(await txt(a.page, '#view .pl-weeks')));
+  check('2 her steps keep their names, ticks and one line each; the reasons go behind "Why these 4 steps?"', (await a.page.$$('#view .pl-step-why')).length === 0 && (await a.page.$$('#view .pl-step-how')).length === 0 && /Why these 4 steps\?/.test(await txt(a.page, '#pl-whyall')) && (await a.page.$$('#view [data-pl-tk]')).length === 2 && await has(a.page, '#view [data-pl-play]'));
   check('2 ... and all 4 fit on the first screen', await a.page.$eval('#view .pl-steps-card', (c) => c.getBoundingClientRect().bottom <= 780));
   const path = await txt(a.page, '#view .pl-path');
-  check('2 the 12 weeks: last week and this week, then "The weeks ahead"', /Week 1/.test(path) && /This week · Week 2/.test(path) && !/Week 3\b/.test(path) && /The weeks ahead/.test(path), path);
-  check('2 this week, the garden, the tools and her settings stay open', await has(a.page, '#view .pl-wkc .pl-r7') && await has(a.page, '#view .pl-garden') && await has(a.page, '#view [data-go="plan-settings"]'));
-  await a.page.$eval('#view .pl-step-how', (b) => b.click()); await settle(a.page, 300);
-  check('3 "Why?" opens the reason and how to do it', /WHY IT HELPS/.test(await sheetTxt(a.page)) && /HOW/.test(await sheetTxt(a.page)), (await sheetTxt(a.page)).slice(0, 200));
+  check('2 the 12 weeks: this week and next, then "All 12 weeks"', /This week\s+60 minutes a week/.test(path) && /Next week\s+70 minutes a week/.test(path) && /All 12 weeks/.test(path), path);
+  check('2 this week (her garden at its foot), the tools and her settings (a gear by her title) stay open', await has(a.page, '#view .pl-wkc .pl-r7') && await has(a.page, '#view .pl-wkc .pl-garden-in') && await has(a.page, '#view .pl-gear[data-go="plan-settings"]'));
+  await a.page.$eval('#pl-whyall', (b) => b.click()); await settle(a.page, 300);
+  check('3 "Why these 4 steps?" opens every reason and how to do it', /Why these 4 steps\?/.test(await sheetTxt(a.page)) && /A regular bedtime helps your body clock/.test(await sheetTxt(a.page)), (await sheetTxt(a.page)).slice(0, 200));
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 200);
-  for (const s of ['.pl-rh', '.pl-cons', '.pl-care']) await a.page.$eval('#view ' + s + ' summary', (x) => x.click());
+  await a.page.$eval('#pl-howlink', (b) => b.click()); await settle(a.page, 300);
+  check('3 "How it works" opens how her plan works', /How your plan works[\s\S]*Every week/.test(await sheetTxt(a.page)));
+  await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 200);
+  await a.page.$eval('#view .pl-care summary', (x) => x.click());
   await a.page.$eval('#view .pl-path-more summary', (x) => x.click()); await settle(a.page, 200);
-  check('3 each fold opens to what it held', /Every week/.test(await txt(a.page, '#view .pl-rh')) && /Weeks 4 to 12/.test(await txt(a.page, '#view .pl-cons')) && /YOUR OWN SIGNS/i.test(await txt(a.page, '#view .pl-cons')) && /Report for my doctor/.test(await txt(a.page, '#view .pl-care')) && /Week 12/.test(await txt(a.page, '#view .pl-path')));
+  check('3 each fold opens to what it held', /Weeks 4 to 12/.test(await txt(a.page, '#view .pl-weeks')) && /YOUR OWN SIGNS/i.test(await txt(a.page, '#view .pl-weeks')) && /Report for my doctor/.test(await txt(a.page, '#view .pl-care')) && /Week 12/.test(await txt(a.page, '#view .pl-path')));
   await shot(a.page, 'w2-open');
   await done(a);
 }
@@ -115,7 +119,7 @@ const pageH = (page) => page.$eval('#view', (v) => v.scrollHeight);
 {
   const a = await open({ w: 360, h: 780, lang: 'hi', seed: cyc(ago(9), { log: logged(9, 5), weeks: SEEN1 }, { lang: 'hi' }), now: at(0, '09:30'), hash: '#plan' });
   await go(a.page, 'plan');
-  check('4 Hindi: the folded page fits at 360 px, with "आगे के हफ़्ते" and "डॉक्टर, आपकी रिपोर्ट, मदद"', await noScroll(a.page) && /आगे के हफ़्ते/.test(await txt(a.page, '#view .pl-path')) && /डॉक्टर, आपकी रिपोर्ट, मदद/.test(await txt(a.page, '#view .pl-care')));
+  check('4 Hindi: the folded page fits at 360 px, with "सभी 12 हफ़्ते" and "डॉक्टर, आपकी रिपोर्ट, मदद"', await noScroll(a.page) && /सभी 12 हफ़्ते/.test(await txt(a.page, '#view .pl-path')) && /डॉक्टर, आपकी रिपोर्ट, मदद/.test(await txt(a.page, '#view .pl-care')));
   await shot(a.page, 'w2-hi');
   await done(a);
 }

@@ -74,7 +74,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const { ctx, page, errs } = await open({ seed: extra });
   await page.evaluate((a) => { const S = window.Saathi; S.plan.startFromIntake(a); S.plan.start('today', '20:00'); S.save(); }, { stage: stage, goal: goal, gap: 'n', act: 0, bed: 'b23', work: 'day', when: 'evening', pain: 'pk', painDays: '23', pads: 'p23', clots: 'n', tired: 'n', pms: ['mood'], pmsLevel: 'lot' });
   await go(page, 'home');
-  const r = await rings(page);
+  const r = (await rings(page)).filter((x) => x.rid === 'plan');   /* Version 39.22: the move nudge and the wind-down ring too */
   check('1 ' + stage + '/' + goal + ': the evening alarm opens the check-in, on "Your plan", at 8 pm', r.length > 0 && r.every((x) => x.go === 'plan-checkin' && x.ch === 'sakhi_plan' && x.chname === 'Your plan' && x.hh === 20 && /How did today go\? 1 minute/.test(x.body)), r.slice(0, 1));
   check('1 ' + stage + '/' + goal + ': no page errors', errs.length === 0, errs);
   await ctx.close();

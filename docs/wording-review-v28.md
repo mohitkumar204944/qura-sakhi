@@ -2111,3 +2111,27 @@ relief routines' clips are not new wording: each one says the reviewed step, wor
 | `yn13` | Now picture a calm place that you love. Perhaps a garden, early in the morning. A riverbank, with the sound of flowing water. Or the courtyard of your childhood home. Notice the colours, the sounds, the soft air. Stay there, and rest. | अब किसी ऐसी शांत जगह की कल्पना करें, जो आपको प्यारी हो। शायद सुबह-सुबह का कोई बगीचा। बहते पानी की आवाज़ वाला नदी का किनारा। या बचपन के घर का आँगन। वहाँ के रंग, आवाज़ें, और हल्की हवा महसूस करें। वहीं रहें, और आराम करें। |
 | `yn14` | Now remember your wish. Say it again, three times, in your mind. | अब अपनी इच्छा याद करें। उसे मन में फिर से, तीन बार दोहराएँ। |
 | `yn15` | Your yoga nidra is complete. If you are going to sleep, stay as you are, and let yourself drift off. Sleep well. | आपकी योग निद्रा पूरी हुई। अगर सोने जा रही हैं, तो ऐसे ही लेटी रहें, और नींद को आने दें। शुभ रात्रि। |
+
+### 19.22 Version 39.22: meditation in the plan, a hard night, reminders (MODULE_API section 65)
+
+**Please review.** These are new lines. Questions for the doctor:
+1. Is the night card's line right: "Sleeping badly most nights for 2 weeks? Tell your doctor."?
+2. Is "Before a meal" right for the yoga step? This follows AYUSH's empty or light stomach.
+
+| English | Hindi |
+|---|---|
+| Wind down, in bed by {t} | सुकून के पल, फिर {t} तक बिस्तर पर |
+| Tonight: {session} with Dr. Megha | आज रात: डॉ. मेघा के साथ {session} |
+| Before a meal (the yoga step) | खाने से पहले |
+| Press play, put the phone face down and close your eyes. Keep the room dark and quiet. (the wind-down's tip) | चलाएँ, फ़ोन उल्टा रख दें और आँखें बंद करें। कमरा अँधेरा और शांत रखें। |
+| How did you sleep? Well / Okay / Badly | नींद कैसी रही? अच्छी / ठीक-ठाक / ख़राब |
+| A hard night. Tonight, let a sound help you sleep. | रात मुश्किल रही। आज रात, किसी शांत आवाज़ के सहारे सोएँ। |
+| Dr. Megha’s yoga nidra relaxes you part by part. Or play a calm sound that fades out after {n} minutes. | डॉ. मेघा की योग निद्रा शरीर के हर हिस्से को आराम देती है। या कोई शांत आवाज़ चलाएँ, जो {n} मिनट बाद धीमी होकर बंद हो जाएगी। |
+| Noted in your diary as poor sleep. Sleeping badly most nights for 2 weeks? Tell your doctor. | डायरी में “नींद ख़राब” लिख दिया है। 2 हफ़्ते तक ज़्यादातर रातें नींद ख़राब रहे, तो डॉक्टर को बताएँ। |
+| Sit up and breathe through your nose; lie down after. Skip it if you have a nose or ear infection. | सीधी बैठें और नाक से साँस लें; बाद में लेट जाएँ। नाक या कान में इंफ़ेक्शन हो, तो इसे न करें। |
+| In bed, with the lights off. Press play, then put the phone face down. | बिस्तर में, बत्ती बंद करके। चलाएँ, फिर फ़ोन उल्टा रख दें। |
+| Sitting or lying down. Press play, then put the phone face down and close your eyes. | बैठकर या लेटकर। चलाएँ, फिर फ़ोन उल्टा रख दें और आँखें बंद करें। |
+| For rest and sleep, not treatment. Stop if you feel dizzy or unwell. | आराम और नींद के लिए, इलाज नहीं। चक्कर आए या ठीक न लगे, तो रुक जाएँ। |
+| Yoga before you eat, then your walk. (reminder) | खाने से पहले योग, फिर सैर। |
+| Time for your walk, right after the meal. (reminder) | खाने के ठीक बाद सैर का समय। |
+| Time to wind down. Tap for tonight’s session. (reminder) | सुकून के पल का समय। आज रात का सत्र शुरू करने के लिए टैप करें। |

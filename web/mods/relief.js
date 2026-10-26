@@ -26,7 +26,8 @@
   /* The routine for a symptom she noted (the first that fits her stage), for the day page, Home and the heads-up card. */
   const forSym = (key) => IDS.find((id) => R[id].syms.indexOf(key) >= 0 && R[id].ok()) || null;
   function pick(got) {
-    for (let i = 0; i < (got || []).length; i++) { const id = forSym(got[i]); if (id) return { id: id, key: got[i], hue: R[id].hue, h: t('relief_cta_h'), sub: t('relief_' + id + '_t') + ' · ' + tf('relief_mins', { n: mins(id) }) }; }
+    for (let i = 0; i < (got || []).length; i++) { const id = forSym(got[i]); if (id) return { id: id, key: got[i], hue: R[id].hue, h: t('relief_cta_h'), sub: t('relief_' + id + '_t') + ' · ' + tf('relief_mins', { n: mins(id) }),
+      alt: id === 'sleep' && S.routeOwner('calm') ? { go: 'calm', h: t('calm_row'), sub: t('calm_row_s') } : null }; }   /* Version 39.22: poor sleep also offers Wind down */
     return null;
   }
   /* What she said helped in a month ('YYYY-MM'), for her month card. */

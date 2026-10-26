@@ -28,6 +28,11 @@ chant for soothing sleep rest i will proceed with your recommendations".
   - A native player keeps it going with the screen off.
   - There is no Om track: Mohit's three picks replaced it.
 - **Tests:** `test/planfold.mjs` and `test/calm.mjs`.
+- **Version 39.22** (Mohit, 27 Oct; the mockup claude.ai/artifact/PZZQiSgZdz8KGMR1UfKwgG; MODULE_API section 65):
+  - meditation in the plan (the bedtime step winds down first);
+  - "How did you sleep?" in the check-in, with a sound after a hard night;
+  - Moves and calm, a calmer My plan, and reminders by the timing research (section 3).
+  - Tests: `test/winddown.mjs`.
 
 ## The short answer
 
@@ -164,6 +169,41 @@ evidence shows, and without leaving out a Muslim, Christian or Sikh woman.
 - which ones she replays;
 - her "Poor sleep" days in the Diary;
 - whether she keeps the bedtime step.
+
+## 3. Timing: when each part of the plan fits her day (27 Oct)
+
+Mohit: "research timing for yoga and other activities and set reminders accordingly". Built as Version 39.22 (MODULE_API
+section 65).
+
+| Part of the plan | Best time | Evidence |
+|---|---|---|
+| Yoga (asanas) | Before a meal, on an empty or light stomach: the morning before breakfast, or before dinner | AYUSH Common Yoga Protocol: "on an empty stomach or light stomach"; eat 20 to 30 minutes after |
+| Walk | Right after a meal; after dinner helps most | Reynolds et al. 2016 (41 adults with type 2 diabetes): 10 minutes after each meal lowered blood sugar after meals 12% more than 30 minutes at any time, 22% after the evening meal |
+| Strength | Any time of day, not in the last hour before bed | Stutz et al. 2019 (23 studies): moderate evening exercise doesn't harm sleep; hard exercise ending within an hour of bed might |
+| Bhramari | Sitting up, on an empty or light stomach: in the evening, 15 to 30 minutes before bed, or when tense in the day | AYUSH Common Yoga Protocol: any comfortable sitting posture, 5 rounds; avoid with nose or ear infections |
+| Yoga nidra | In bed, lights off, as the last thing before sleep; or as rest in the afternoon | Datta et al. 2021 (insomnia, randomised): beginners learn it in the daytime, so they stay awake, then practise at home; Rani et al. 2011: 35 minutes, 5 days a week |
+| Check-in | At the end of her day, after her last step | Self-monitoring; her own time, 6 to 9 pm |
+| Wind-down | 30 minutes before her bedtime | NHS: give yourself time to relax before bed, put the phone away |
+
+**Reminders, from this:**
+- **Move nudge** at her time to move, on unless she turns it off:
+  - after a meal: "Time for your walk, right after the meal";
+  - in the morning or evening: "Yoga before you eat, then your walk".
+  - One a day at most. None once she has moved, on a rest day, or while her plan rests.
+- **Evening check-in** at her time (unchanged).
+- **Wind-down** 30 minutes before her bedtime. It opens tonight's session, and none comes once she has wound down.
+  - When her check-in comes less than an hour before it, the check-in carries tonight's session instead.
+  - HeartSteps (Klasnja et al.) spaced suggestions at least 90 minutes apart, at times people chose.
+- **On screen:** yoga's line on Today and My plan says "Before a meal", and her walk keeps her own time ("After dinner").
+
+**Sources for timing:**
+- AYUSH Common Yoga Protocol: https://www.mea.gov.in/images/pdf/common-yoga-protocol-english.pdf
+- Reynolds A. N. et al. (2016), Diabetologia: https://www.otago.ac.nz/cvd/news/archive/short-walks-after-meals-may-prove-important-tool-in-managing-diabetes
+- Stutz J. et al. (2019), Effects of evening exercise on sleep, Sports Medicine: https://pubmed.ncbi.nlm.nih.gov/30374942/
+- Datta K. et al. (2021), yoga nidra in chronic insomnia, Natl Med J India: https://nmji.in/yoga-nidra-practice-shows-improvement-in-sleep-in-patients-with-chronic-insomnia-a-randomized-controlled-trial/
+- Trivedi G. Y., Saboo B. (2021), Bhramari pranayama review, J Ayurveda Integr Med: https://pmc.ncbi.nlm.nih.gov/articles/PMC8377171/
+- NHS Every Mind Matters, sleep: https://www.nhs.uk/every-mind-matters/mental-health-issues/sleep/
+- HeartSteps micro-randomised trial: https://clinicaltrials.gov/study/NCT03225521
 
 ## Build order
 

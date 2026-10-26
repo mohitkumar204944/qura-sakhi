@@ -793,6 +793,7 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .today-sub { font-size: 13px; color: var(--muted); display: flex; align-items: baseline; gap: 4px; min-width: 0; white-space: nowrap; }
 .today-sub-t { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .today-sub .today-why { flex: none; }
+.today-sub.wrap { white-space: normal; flex-wrap: wrap; } .today-sub.wrap .today-sub-t { overflow: visible; text-overflow: clip; }
 .today-why { display: inline; padding: 0; min-height: 0; font-size: 13px; font-weight: 600; vertical-align: baseline; }
 .today-tick { flex: none; width: 44px; height: 44px; border: none; background: none; padding: 0; display: grid; place-items: center; cursor: pointer; }
 .today-tick .tk { width: 30px; height: 30px; border-radius: 15px; box-sizing: border-box; border: 2.5px solid var(--line); display: grid; place-items: center; color: #FFFFFF; }

@@ -49,6 +49,7 @@ async function open(o = {}) {
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
   await ctx.addInitScript('window.SAKHI_CONFIG = ' + JSON.stringify(Object.assign({}, LOCAL, o.config || {})) + ';');
   await ctx.addInitScript(ANDROID);
+  await ctx.addInitScript('window.Audio = class { constructor(src) { this.src = src; this.paused = true; this.ended = false; this.currentTime = 0; this.duration = NaN; } play() { this.paused = false; return Promise.resolve(); } pause() { this.paused = true; } };');   /* Version 39.22: tonight\'s session, without sound */
   await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + '); localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(ACCT)) + '); }');
   await ctx.route(/^https?:/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{}' }));
   const page = await ctx.newPage(); const errs = [];
@@ -117,7 +118,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   await tap(a.page, '#view .today-plan-fast [data-today-why]'); await tap(a.page, '#pl-why-fast');
   check('2 ... and "Not fasting" there brings her food step back', (await has(a.page, '#view .today-plan-plate')) && !(await has(a.page, '#view .today-plan-fast')));
   await tap(a.page, '#view .today-plan-sleep [data-today-why]'); const ws = await sheetTxt(a.page);
-  check('2 bedtime\'s "Why?": its reason and its tip, no tool', /A regular bedtime helps your body clock/.test(ws) && /Phone away half an hour before/.test(ws) && !(await has(a.page, '#sheet-root .pl-why-b [data-go]')), ws);
+  check('2 bedtime\'s "Why?": its reason and its tip, no tool', /A regular bedtime helps your body clock/.test(ws) && /Press play, put the phone face down and close your eyes/.test(ws) && !(await has(a.page, '#sheet-root .pl-why-b [data-go]')), ws);   /* Version 39.22: the wind-down's tip */
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 200);
   await done(a);
 }
@@ -127,10 +128,10 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const a = await open({ seed: cyc(ago(9), { log: l, weeks: SEEN1 }, { reminders: REM }), now: at(0, '20:30') });
   check('3 the evening: the check-in is the one pink button while a step is left', JSON.stringify(await pinks(a.page, '#view .today-card')) === JSON.stringify(['How did today go?']));
   await tap(a.page, '#view .today-plan-move [data-today-act]');
-  check('3 "One more: In bed by 11:30 pm"', /One more: In bed by 11:30 pm/.test(await txt(a.page, '#view .today-card')));
-  await tap(a.page, '#view .today-plan-sleep [data-today-act]'); await settle(a.page, 300);
+  check('3 "One more: Wind down, in bed by 11:30 pm"', /One more: Wind down, in bed by 11:30 pm/.test(await txt(a.page, '#view .today-card')));
+  await tap(a.page, '#view .today-plan-sleep [data-today-nav]'); await settle(a.page, 31000); await go(a.page, 'home');   /* Version 39.22: tonight's session, 30 seconds of it */
   const dc = await txt(a.page, '#view .today-card'); const lg = (await plan(a.page)).log[TODAY];
-  check('3 the last tick closes the day: "Day complete", "All 4 done today"', /Day complete\nAll 4 done today/.test(dc), dc);
+  check('3 the last step (tonight\'s wind-down) closes the day: "Day complete", "All 4 done today"', /Day complete\nAll 4 done today/.test(dc), dc);
   check('3 ... her goal, her week and tomorrow', /A step towards more regular periods\./.test(dc) && /This week: 1 full day/.test(dc) && /TOMORROW\n/.test(dc), dc);
   check('3 ... a petal for her garden, once', lg.fd === 1 && lg.petal === 1 && (await has(a.page, '#view .today-card .pl-dc-pet[data-go="joy"]')), lg);
   check('3 ... no check-in needed: the reminder rests, "Add how it went (optional)" is a quiet link', (await remDone(a.page)) === TODAY && !(await has(a.page, '#view .today-card .btn.primary')) && (await has(a.page, '#view .today-card .pl-dc-how[data-go="plan-checkin"]')), await remDone(a.page));
@@ -138,7 +139,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   await shot(a.page, '3-day-complete');
   /* undo from the folded list: the day opens again */
   await a.page.$eval('#view details.today-fold', (d) => { d.open = true; }); await settle(a.page, 200);
-  await tap(a.page, '#view .today-plan-sleep [data-today-undo]');
+  await tap(a.page, '#view .today-plan-move [data-today-undo]');
   check('3 a tick undone in the folded list reopens the day', /3 of 4 done today/.test(await txt(a.page, '#view .today-card')) && !(await remDone(a.page)) && !/Day complete/.test(await txt(a.page, '#view .today-card')));
   await done(a);
 }
@@ -185,24 +186,25 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const v = await view(a.page);
   check('5 her goal and her week, never a diagnosis line', /Goal: feeling better with PMOS · Week 2 of 12/.test(v) && !/I have PMOS/.test(v), v.slice(0, 300));
   /* Version 39.19: after her first week these fold to one line each; opened, they read as before (and stay open) */
-  check('5 Version 39.19: how her plan works, what consistency brings and her care team are folded after week 1', (await a.page.$$('#view .pl-fold details:not([open])')).length === 3);
-  await a.page.$$eval('#view .pl-fold summary', (s) => s.forEach((x) => x.click())); await settle(a.page, 200);
-  const rh = await txt(a.page, '#view .pl-rh');
+  check('5 Version 39.22: how her plan works is a link by her week, what consistency brings in her 12 weeks, her care team folded', (await a.page.$$('#view .pl-fold details:not([open])')).length === 1 && await has(a.page, '#pl-howlink') && await has(a.page, '#view .pl-weeks'));
+  await tap(a.page, '#pl-howlink');
+  const rh = await sheetTxt(a.page); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150);
   check('5 how her plan works: every day, every week, every 4 weeks, after 12 weeks', /Every day\n4 steps, check-in 8 pm\nEvery week\nLook back, plan the week\nEvery 4 weeks\nA 1-minute check\nAfter 12 weeks\nYour results/.test(rh), rh);
-  const why = []; for (let i = 0; i < 4; i++) { await a.page.$$eval('#view .pl-step-how', (b, k) => b[k].click(), i); await settle(a.page, 300); why.push(await sheetTxt(a.page)); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150); }
-  check('5 her 4 daily steps, each with its reviewed reason (behind "Why?" after week 1)', /Your 4 daily steps/.test(v) && /Moving most days lifts your energy and mood\./.test(why[0]) && /Moving most days helps your body use insulin better/.test(why[1]) && /Small food changes add up/.test(why[2]) && /A regular bedtime helps your body clock/.test(why[3]), why.map((x) => x.slice(0, 140)));
+  await tap(a.page, '#pl-whyall'); const wa = await sheetTxt(a.page); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150);
+  check('5 her 4 daily steps, each with its reviewed reason (behind "Why these 4 steps?" after week 1)', /Your 4 daily steps/.test(v) && /Moving most days lifts your energy and mood\./.test(wa) && /Moving most days helps your body use insulin better/.test(wa) && /Small food changes add up/.test(wa) && /A regular bedtime helps your body clock/.test(wa), wa.slice(0, 400));
   check('5 the check-in only when it is due: in the morning its time, no pink button', /Check-in at 8 pm/.test(await txt(a.page, '#view .pl-steps-card')) && !(await has(a.page, '#view .pl-steps-card .btn.primary')));
   await tap(a.page, '#view .pl-steps-card [data-pl-tk="1"]');
   check('5 a tick on My plan is the same tick as Today\'s', ((await plan(a.page)).log[TODAY].ck || {}).move === 'd' && (await has(a.page, '#view .pl-steps-card .today-ok')) && /1 of 4 done today/.test(await txt(a.page, '#view .pl-steps-card')));
-  check('5 ... and then the check-in is due there too', await has(a.page, '#view .pl-steps-card .btn.primary[data-go="plan-checkin"]'));
+  check('5 ... and then the check-in is due there too (a plain button: Today keeps the pink one)', await has(a.page, '#view .pl-steps-card .pl-ci-go[data-go="plan-checkin"]'));
   await tap(a.page, '#view .pl-steps-card [data-pl-un="1"]');
   check('5 ... and undone there too', ((await plan(a.page)).log[TODAY].ck || {}).move === 'n');
   const wk = await txt(a.page, '#view .pl-wkc');
   const rings = await a.page.$$eval('#view .pl-wkc .pl-r4', (x) => x.map((s) => ({ n: s.querySelectorAll('circle').length, d: s.querySelectorAll('circle.d').length })));
   check('5 this week as rings, a part for each step (Monday all 4, Sunday 3)', rings.length === 7 && rings[0].n === 4 && rings[0].d === 3 && rings[1].d === 4, rings);
-  check('5 ... the legend, her full days, her minutes, and Plan this week right here', /Each ring has 4 parts: yoga, walk, food, sleep\./.test(wk) && /This week: 1 full day · strength on Thursday/.test(wk) && /Active minutes/.test(wk) && (await has(a.page, '#view .pl-wkc #pl-wp')), wk);
-  check('5 her garden sits right under her week', await a.page.evaluate(() => { const w = document.querySelector('#view .pl-wkc'); const g = document.querySelector('#view .pl-garden'); return !!(w && g && w.nextElementSibling === g); }));
-  const cs = await txt(a.page, '#view .pl-cons');
+  check('5 ... her full days, her minutes, and Plan the week right here (the legend is week 1\'s, Version 39.22)', !/Each ring has 4 parts/.test(wk) && /This week: 1 full day · strength on Thursday/.test(wk) && /Active minutes/.test(wk) && (await has(a.page, '#view .pl-wkc #pl-wp')), wk);
+  check('5 her garden sits at the foot of her week (Version 39.22)', await has(a.page, '#view .pl-wkc .pl-garden-in[data-go="joy"]'));
+  await a.page.$eval('#view .pl-weeks .pl-path-more summary', (x) => x.click()); await settle(a.page, 200);   /* Version 39.22: in her 12 weeks, behind "All 12 weeks" */
+  const cs = await txt(a.page, '#view .pl-cons-in');
   check('5 what consistency brings: the reviewed timeline, "You are here" at weeks 1 to 4', /What consistency brings/.test(cs) && /Weeks 1 to 4\nYou are here\nMany women feel more energy and sleep better\./.test(cs) && /3 to 6 months/.test(cs), cs);
   check('5 ... and her own signs: her energy, her 4-week check, her days between periods', /Your energy\nWeek 1: Good/.test(cs) && /Your 4-week check\nIn 19 days/.test(cs) && /Days between periods\n28 before your plan/.test(cs), cs);
   check('5 "Fasting today?" is no longer on My plan (it is in her food step)', !/Fasting today\?/.test(await view(a.page)));
@@ -269,7 +271,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('7 Hindi "Why?": its reason and how', /यह क्यों मदद करता है|क्यों/.test(await sheetTxt(h.page)) && /कैसे/.test(await sheetTxt(h.page)), await sheetTxt(h.page));
   await h.page.evaluate(() => window.Saathi.closeSheet()); await settle(h.page, 200);
   await go(h.page, 'plan'); const v = await view(h.page);
-  check('7 Hindi My plan at 360 px: her goal, her steps, her week, what consistency brings', /लक्ष्य: /.test(v) && /आपके रोज़ के 4 क़दम/.test(v) && /इस हफ़्ते/.test(v) && /लगातार करने से क्या मिलता है/.test(v) && await noScroll(h.page), v.slice(0, 500));
+  check('7 Hindi My plan at 360 px: her goal, her steps, her week, her 12 weeks', /लक्ष्य: /.test(v) && /आपके रोज़ के 4 क़दम/.test(v) && /इस हफ़्ते/.test(v) && /सभी 12 हफ़्ते/.test(v) && await noScroll(h.page), v.slice(0, 500));   /* Version 39.22: what consistency brings sits in her 12 weeks */
   await shot(h.page, '7-myplan-hi');
   await done(h);
   const s = await open({ seed: cyc(ago(9), { log: logged(9, 5), weeks: SEEN1 }, { settings: { discreet: true } }), now: at(0, '09:30') });

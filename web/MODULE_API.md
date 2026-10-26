@@ -4194,3 +4194,83 @@ pictures ("We just need some animation along with it"). He approved the sessions
 **Wording.** The spoken scripts and the new lines wait for doctor review (wording review, section 19.21).
 
 **Tests.** `test/calm.mjs`.
+
+## 65. Version 39.22: meditation in the plan, a sound after a hard night, reminders by the research, a calmer My plan
+
+Mohit, 27 Oct: "make meditation part of plan along with exercises and add sound helping you to sleep if facing sleep
+difficulty when asking to log sleep schedule quality and my plan page still feels a little cluttered". He saw the mockup
+(claude.ai/artifact/PZZQiSgZdz8KGMR1UfKwgG), then said "go ahead and build it with these changes and also research timing for
+yoga and other activities and set reminders accordingly". The timing research is in
+`docs/myplan-and-sleep-advice-2026-10-26.md`, section 3.
+
+**The bedtime step winds down first** (`plan.js`, the `bed` adapter, where Wind down is in the build).
+- My plan: "Wind down, in bed by {t}", with "Tonight: {session} with Dr. Megha" and a play button where the tick goes.
+- Today keeps the short bedtime name ("In bed by {t}") with "Tonight: {session}" as its line, so the row fits at 360 px in
+  Hindi. The same play button sits there in a night style. The pink button stays the next step's or the check-in's.
+- **Its tip** (the "Why?" sheet's How): "Press play, put the phone face down and close your eyes. Keep the room dark and
+  quiet." This replaces "Phone away half an hour before", which the session contradicts.
+- **Tonight's session** (`windPick`): yoga nidra after a hard night (the check-in's Badly, or Poor sleep in her diary that
+  day); Bhramari after a low, anxious or irritable day; slow breaths otherwise.
+- **What counts:** a session or sound she listens to for 30 seconds counts the step that day (`S.calm.doneOn(iso)`), as a
+  tick at bedtime does. She may fall asleep before it ends.
+  - When it is her day's last step, the day closes as with a tick: Day complete, and her garden's petal.
+  - The evening check-in still records last night's bedtime (section 55).
+  - calm.js keeps `mods.calm.done[day] = { id, at }` for 60 days, on her phone only.
+  - It emits a quiet `tool` event: her garden counts it without a pop-up, and her plan updates its reminders.
+- **The step's line:** "Wound down: {session}" once done.
+- **Yoga's line:** "Before a meal" (AYUSH: an empty or light stomach). On Today it comes first ("Before a meal · 8 min"),
+  so a cut line keeps it. Her walk keeps her own time.
+- **Wrapping on Today:** a row may set `wrap` to show its line whole (`today-sub.wrap`); no step uses it yet.
+
+**Moves and calm** (`plan-moves` and the new `plan-calm`, two tabs).
+- The Calm tab holds:
+  - Dr. Megha's three sessions, each with where it fits: slow breaths sitting or lying, Bhramari sitting up, yoga nidra
+    in bed;
+  - Calm breath, moved from the moves list;
+  - the sounds for sleep;
+  - a safety card ("For rest and sleep, not treatment"), with the left-side line in pregnancy.
+- Tonight's session carries "Tonight".
+- Each session screen in Wind down has its own tip:
+  - Bhramari: sit up, breathe through the nose, and skip it with a nose or ear infection (AYUSH);
+  - yoga nidra: in bed, lights off, phone face down.
+- The Wind down list says "3 min · sitting up" and "9 min · in bed".
+
+**A hard night.**
+- The check-in's bedtime row adds "How did you sleep? Well, Okay, Badly". It is optional, and kept as `log[day].slp`.
+- Badly does three things:
+  - notes Poor sleep (`d_sleep`) in her diary that day;
+  - makes tonight's session yoga nidra;
+  - after Save, shows a night card with yoga nidra and the singing bowl at her timer. Its line "Sleeping badly most nights
+    for 2 weeks? Tell your doctor" waits for review.
+- Otherwise, after Save, one row offers tonight's session.
+- The Diary's Poor sleep shows Wind down beside the sleep routine (relief's `pick` returns `alt`, which core draws).
+
+**Reminders by the research.**
+- **The move nudge** (`plan-nudge`) is on unless she turns it off: `d.nudge !== false`. One she turned off, or deleted in
+  Reminders, stays off (`nudgeMade`).
+  - After a meal: "Time for your walk, right after the meal".
+  - In the morning or evening, on a plan with yoga: "Yoga before you eat, then your walk".
+- **The wind-down** (`plan-wind`) comes 30 minutes before her bedtime target, every day. It opens tonight's session (core's
+  `notifGo` → `plan-wind` → `calm-<id>`).
+  - It is on unless she turns it off (`d.wind`), and one she deletes stays off (`windMade`, `windGone`).
+  - None comes once she has wound down that day, or on a rest day.
+  - It is skipped when her check-in comes less than an hour before it; the check-in's saved screen carries the session.
+  - A shared phone or discreet mode gets the plain words, as for every reminder.
+- **Sync:** Plan settings has both switches. My plan and Plan settings sync the reminders as they open.
+
+**My plan after her first week** (week 1 keeps everything open, as in section 62).
+- **Title:** her settings move to a gear by the title, and the Plan settings row goes. "How it works" sits by her week and
+  opens the rhythm in a sheet.
+- **Steps:** one line under each, and one "Why these N steps?" sheet with every reason. The check-in button is plain here
+  (Today keeps the pink one), and the "same tick" line goes.
+- **This week:** "Plan the week" in its title, and what she planned in one line ("Strength: Thu, Sun · After dinner").
+  + Add sits by her minutes, and her garden at its foot. No ring legend.
+- **Her 12 weeks:** one card with what consistency brings. It holds this week, next week, her stage in one line and her
+  4-week check when due. Every week, the timeline and her signs sit behind "All 12 weeks".
+- **Tiles:** four small ones in one row; My progress keeps its count ("27 days"). "Yoga and moves" is now "Moves and
+  calm".
+- **Length:** week 6 went from 2,598 px to about 1,950 px at 390 px.
+
+**Wording:** the wording review, section 19.22. The night card's doctor line and the session tips wait for doctor review.
+
+**Tests:** `test/winddown.mjs`.

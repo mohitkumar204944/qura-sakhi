@@ -152,7 +152,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 what joining saved: her goal, gap, skipped months and day; the plan; the 8 pm reminder', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '20:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
   check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('2 Today: a greeting by name, her plan and day, and her four steps (Version 39.13: yoga and the walk apart)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /PLAN DAY 1/.test(td) && /0 of 4 done today/.test(td) && /Cycle care yoga\n\d+ min[\s\S]*?Start/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
+  check('2 Today: a greeting by name, her plan and day, and her four steps (Version 39.13: yoga and the walk apart)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /PLAN DAY 1/.test(td) && /0 of 4 done today/.test(td) && /Cycle care yoga\n(Before a meal · )?\d+ min[\s\S]*?Start/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight\nTonight: slow breaths/.test(td), td);   /* Version 39.22: tonight's session under her bedtime */
   await shot(page, '2-today');
   /* 4. the evening check-in */
   check('4 in the evening Today offers "How did today go?"', await has(page, '#view .today-card [data-go="plan-checkin"].primary'));
@@ -165,7 +165,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('4 a "Not today" asks what got in the way', !(await page.$eval('#pl-ci-bar', (e) => e.hidden)));
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   v = await view(page);
-  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 4 done today · 1 of 7 days this week/.test(v) && /Tomorrow, add: Yoga, In bed by midnight\./.test(v) && /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
+  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 4 done today · 1 of 7 days this week/.test(v) && /Tomorrow, add: Yoga, Wind down, in bed by midnight\./.test(v) && /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
   check('4 and when Sakhi asks again', /Tomorrow: the same steps. See you at 8 pm./.test(v), v.slice(0, 500));
   check('4 no "streak" anywhere', !/streak/i.test(v));
   await shot(page, '4-feedback');

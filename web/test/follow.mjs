@@ -4,7 +4,7 @@
 //   3 strength days show ahead on Today;  4 a food habit has its meal, and her plate counts;
 //   5 the check-in shows what already counted, asks only the rest, and asks about last night's bedtime;
 //   6 the feedback names her goal, her strength days and tomorrow's routine;  7 Plan your week, with an if-then plan;
-//   8 the nudge at her time to move (off by default, at most one a day, plain words on a shared phone);
+//   8 the nudge at her time to move (Version 39.22: on unless she turns it off; at most one a day, plain words on a shared phone);
 //   9 the 4-week check (waist and weight optional, asked last, never judged);  10 help after two quiet weeks;
 //  11 Hindi, a 360 px screen, no page errors.
 // Version 39.13 (Mohit, 26 Oct: "walk and yoga should be separate and we need to make sure user did all daily activities"):
@@ -46,6 +46,7 @@ async function open(o = {}) {
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
   await ctx.addInitScript('window.SAKHI_CONFIG = ' + JSON.stringify(Object.assign({}, LOCAL, o.config || {})) + ';');
   await ctx.addInitScript(ANDROID);
+  await ctx.addInitScript('window.Audio = class { constructor(src) { this.src = src; this.paused = true; this.ended = false; this.currentTime = 0; this.duration = NaN; } play() { this.paused = false; return Promise.resolve(); } pause() { this.paused = true; } };');   /* Version 39.22: tonight\'s session, without sound */
   await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + '); localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(ACCT)) + '); }');
   await ctx.route(/^https?:/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{}' }));
   const page = await ctx.newPage(); const errs = [];
@@ -73,7 +74,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* day 10 of her PMOS plan (plan day index 2): cycle care yoga today; strength on Thursday (index 4) */
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }) });
   const td = await txt(a.page, '#view .today-card'); const cm = await rmins(a.page, 'cycle');
-  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\n' + cm + ' min') && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
+  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name; 39.22: before a meal first)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\nBefore a meal · ' + cm + ' min') && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
   check('1 ... yoga has Start, the walk a tick (Version 39.14)', (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === 'Start' && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await a.page.$eval('#view .today-plan-move [data-today-act]', (b) => b.getAttribute('aria-label')).catch(() => '')) === 'Mark done: Walk 10 minutes');
   await tap(a.page, '#view .today-plan-move [data-today-why]'); const wsh = await a.page.$eval('#sheet-root', (e) => e.innerText).catch(() => '');
   check('1 ... the walk\'s "Why?" opens its reason, how to do it and Yoga and moves (Version 39.14)', /WHY IT HELPS\n\nMoving most days helps your body use insulin better/.test(wsh) && /Brisk: you can talk, but not sing/.test(wsh) && (await has(a.page, '#sheet-root [data-go="plan-moves"]')), wsh);
@@ -180,7 +181,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('7 the check-in reminds her of her own plan for that barrier', /You planned: “I’ll split it into two short walks\.”/.test(await view(a.page)), await view(a.page));
   /* "Plan this week" shows what she planned (Version 39.15: in My plan's This week); "Same as last week" next week */
   await go(a.page, 'plan');
-  check('7 This week: "Plan this week", with her days and time', /Plan this week\nStrength: Thu, Sun · After dinner/.test(await view(a.page)), (await view(a.page)).slice(-900));
+  check('7 This week: "Plan the week" in its title, what she planned in one line (Version 39.22)', /This week\s*Plan the week/.test(await txt(a.page, '#view .pl-wkc')) && /Strength: Thu, Sun · After dinner/.test(await txt(a.page, '#view .pl-wkc')), await txt(a.page, '#view .pl-wkc'));
   await a.page.clock.setFixedTime(at(7, '10:00')); await go(a.page, 'plan-week');
   await tap(a.page, '#pl-wp-same');
   const d2 = await plan(a.page);
@@ -200,12 +201,12 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
 /* ---------- 8: the nudge ---------- */
 {
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }), now: at(0, '10:00'), hash: '#plan-settings' });   /* Version 39.15: Plan settings is a page of its own */
-  check('8 off by default: no nudge until she turns it on', !(await a.page.evaluate(() => !!window.Saathi.reminders.get('plan-nudge'))) && !(await a.page.$eval('#pl-nudge', (c) => c.checked)));
+  check('8 on by default (Version 39.22; Mohit, 27 Oct: "set reminders accordingly")', (await a.page.evaluate(() => !!window.Saathi.reminders.get('plan-nudge'))) && (await a.page.$eval('#pl-nudge', (c) => c.checked)));
   check('8 Plan settings say when, and that it is one a day at most', /Nudge at my time to move\nAfter dinner, about 9:15 pm/.test(await view(a.page)) && /One nudge a day at most, and none once you have moved or on a rest day\./.test(await view(a.page)));
-  await a.page.$eval('#pl-nudge', (c) => c.click()); await settle(a.page, 1500);
+  await a.page.evaluate(() => window.Saathi.save()); await settle(a.page, 1500);
   const r = await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge'));
   const sc = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => [x.id, x.body, x.go]));
-  check('8 on: a daily reminder at her time, which opens today\'s routine', r && r.time === '21:15' && r.every === 1 && r.mod === 'plan' && sc.length && sc[0][0] === 'r-plan-nudge-' + TODAY && sc[0][1] === 'Your time to move. Tap to start.' && sc[0][2] === 'plan-now', [r, sc.slice(0, 2)]);
+  check('8 on: a daily reminder at her time, which opens today\'s routine', r && r.time === '21:15' && r.every === 1 && r.mod === 'plan' && sc.length && sc[0][0] === 'r-plan-nudge-' + TODAY && sc[0][1] === 'Time for your walk, right after the meal. Tap to start.' && sc[0][2] === 'plan-now', [r, sc.slice(0, 2)]);   /* Version 39.22: a walk right after her meal */
   /* her walk (a +10) alone: the nudge still comes, for her yoga (Version 39.13) */
   await go(a.page, 'plan-moves'); await tap(a.page, '[data-pl-add="10"]'); await settle(a.page, 1200);
   check('12 after her walk alone, the nudge still comes: her yoga is left', !(await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)));
@@ -356,9 +357,9 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('12 her yoga adds its own minutes; her walk is still counted as walked', lg.rmin >= 5 && lg.min === 10 + lg.rmin && (await has(a.page, '#view .today-plan-yoga.today-ok')) && /2 of 4 done today/.test(await txt(a.page, '#view .today-card')), [lg, await txt(a.page, '#view .today-card')]);
   await tap(a.page, '#view .today-plan-plate [data-today-act]');
   const one = await txt(a.page, '#view .today-card');
-  check('12 one step left: "One more: In bed by 11:30 pm", in bold', /3 of 4 done today/.test(one) && /One more: In bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
+  check('12 one step left: "One more: Wind down, in bed by 11:30 pm", in bold', /3 of 4 done today/.test(one) && /One more: Wind down, in bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
   check('12 ... and the evening check-in still comes', !(await remDone(a.page)));
-  await tap(a.page, '#view .today-plan-sleep [data-today-act]');
+  await tap(a.page, '#view .today-plan-sleep [data-today-nav]'); await settle(a.page, 31000); await go(a.page, 'home');   /* Version 39.22: tonight's session, 30 seconds of it */
   const all = await txt(a.page, '#view .today-card');
   check('12 every step done: "Day complete", "All 4 done today", her steps folded, and the check-in rests', /Day complete\nAll 4 done today/.test(all) && (await has(a.page, '#view .today-card details.today-fold:not([open])')) && !(await has(a.page, '#view .today-card [data-go="plan-checkin"].primary')) && (await remDone(a.page)) === TODAY, [all, await remDone(a.page)]);
   await shot(a.page, '12-all-done');

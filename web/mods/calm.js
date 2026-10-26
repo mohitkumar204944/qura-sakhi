@@ -18,6 +18,8 @@
     { id: 'dunes', kind: 'waves', tone: 'warm', file: 'sounds/music/dunes.ogg' }
   ];
   const item = (id) => ITEMS.find((x) => x.id === id) || null;
+  /* Version 39.22 (AYUSH Common Yoga Protocol; the yoga nidra trials): where each session fits */
+  const WHERE = { bhramari: 1, nidra: 1 };
   const D = () => S.data('calm');
   const saved = () => (S.state.mods && S.state.mods.calm) || {};
   /* her voice: Hindi or English (the app's language first; she can switch) */
@@ -111,7 +113,7 @@
 
   /* ---------- the list ---------- */
   function renderList(v) {
-    const tile = (it) => '<button type="button" class="cm-tile" data-go="calm-' + it.id + '"><span class="cm-ti" aria-hidden="true">' + S.icon(it.guided ? (it.id === 'nidra' ? 'moon' : 'leaf') : (it.id === 'bowl' ? 'bell' : 'sparkle')) + '</span><strong>' + esc(t('calm_' + it.id)) + '</strong><span>' + esc(it.guided ? S.tf('calm_min', { n: it.min }) : t('calm_timer_s')) + '</span></button>';
+    const tile = (it) => '<button type="button" class="cm-tile" data-go="calm-' + it.id + '"><span class="cm-ti" aria-hidden="true">' + S.icon(it.guided ? (it.id === 'nidra' ? 'moon' : 'leaf') : (it.id === 'bowl' ? 'bell' : 'sparkle')) + '</span><strong>' + esc(t('calm_' + it.id)) + '</strong><span>' + esc(it.guided ? S.tf('calm_min', { n: it.min }) + (WHERE[it.id] ? ' · ' + t('calm_where_' + it.id) : '') : t('calm_timer_s')) + '</span></button>';
     v.innerHTML = S.backRow(t('calm_h'), 'care', false) + '<div class="cm-list"><p class="small">' + esc(t('calm_p')) + '</p>' +
       '<div class="cm-vl" role="group" aria-label="' + esc(t('calm_voice')) + '"><span class="small">' + esc(t('calm_voice')) + '</span>' + [['en', 'English'], ['hi', 'हिंदी']].map((l) => '<button type="button" class="chip' + (vlang() === l[0] ? ' on' : '') + '" data-vl="' + l[0] + '" aria-pressed="' + (vlang() === l[0]) + '">' + l[1] + '</button>').join('') + '</div>' +
       '<h2 class="cm-sh">' + esc(t('calm_guided')) + '</h2><div class="cm-grid">' + ITEMS.filter((x) => x.guided).map(tile).join('') + '</div>' +
@@ -123,11 +125,21 @@
 
   /* ---------- the player ---------- */
   let cur = null;   /* { id, it, anim, raf, st, at } : what is playing, and the last state the player read */
-  function stopAll() { if (cur) cancelAnimationFrame(cur.raf); cur = null; if (S.sound) S.sound.stop(); awake(false); }
+  let doneT = 0;
+  function stopAll() { clearTimeout(doneT); doneT = 0; if (cur) cancelAnimationFrame(cur.raf); cur = null; if (S.sound) S.sound.stop(); awake(false); }
+  /* Version 39.22: her plan's wind-down step counts a session or a sound she has listened to for 30 seconds (she may fall asleep
+     before it ends). Kept 60 days, on her phone only. */
+  function markDone(id) {
+    if (!S.canSave()) return; const d = D(); const td = S.toISO(S.today()); const now = new Date();
+    d.done = Object.assign({}, d.done || {}); d.done[td] = { id: id, at: S.pad2(now.getHours()) + ':' + S.pad2(now.getMinutes()) };
+    const ks = Object.keys(d.done).sort(); ks.slice(0, Math.max(0, ks.length - 60)).forEach((k) => { delete d.done[k]; });
+    S.saveQuiet(); if (S.emit) S.emit('tool', { type: 'calm', id: id, quiet: true });   /* her garden counts it, without a pop-up at night; her plan updates its reminders */
+  }
   function start(it) {
     const hide = !!(S.state.settings.discreet || S.state.settings.shared);   /* like her reminders: off the lock screen, a plain title */
     S.sound.play(srcOf(it), { loop: !it.guided, mins: it.guided ? 0 : mins(), title: hide ? t('calm_h') : t('calm_' + it.id), text: t('calm_notif'), stop: t('calm_stop'), secret: hide });
     if (it.guided) awake(true);
+    clearTimeout(doneT); doneT = setTimeout(() => { if (!cur || cur.it !== it) return; const st = S.sound.state(); if (st.playing || Math.max(st.played || 0, st.pos || 0) >= 25) markDone(it.id); }, 30000);
   }
   function renderPlayer(v, id) {
     const it = item(id); if (!it) { renderList(v); return; }
@@ -135,7 +147,7 @@
     if (fresh) { stopAll(); cur = { id: id, it: it, st: null, at: 0, ended: false }; start(it); }   /* a render of the same page keeps her session playing */
     const tl = it.guided ? TL()[it.id + '-' + vlang()] : null;
     v.innerHTML = '<div class="cm-night" data-scene=""><div class="cm-top"><button type="button" class="iconbtn cm-x" id="cm-x" aria-label="' + esc(t('calm_close')) + '">' + S.I.back + '</button><h2>' + esc(t('calm_' + id)) + '</h2></div>' +
-      '<div class="cm-stage" id="cm-stage"></div>' + (it.id === 'nidra' && preg() ? '<p class="small cm-note">' + esc(t('calm_preg')) + '</p>' : '') + '<p class="small cm-off">' + esc(t('calm_off')) + '</p>' +   /* her session says "on your back" */
+      '<div class="cm-stage" id="cm-stage"></div>' + (it.guided ? '<p class="small cm-tip">' + esc(t('calm_tip_' + it.id)) + '</p>' : '') + (it.id === 'nidra' && preg() ? '<p class="small cm-note">' + esc(t('calm_preg')) + '</p>' : '') + '<p class="small cm-off">' + esc(t('calm_off')) + '</p>' +   /* her session says "on your back" */
       '<div class="cm-bar"><span class="cm-track" aria-hidden="true"><i id="cm-prog"></i></span><div class="cm-ctrl"><span id="cm-time" class="num">0:00</span>' +
       '<button type="button" class="cm-play" id="cm-play" aria-label="' + esc(t('calm_pause')) + '">' + PAUSE_I + '</button><span id="cm-len" class="num"></span></div>' +
       (it.guided ? '' : '<div class="cm-timer" role="group" aria-label="' + esc(t('calm_timer')) + '"><span class="small">' + esc(t('calm_timer')) + '</span>' + [15, 30, 45].map((m) => '<button type="button" class="chip' + (mins() === m ? ' on' : '') + '" data-min="' + m + '" aria-pressed="' + (mins() === m) + '">' + esc(S.tf('calm_min', { n: m })) + '</button>').join('') + '</div>') +
@@ -165,7 +177,9 @@
   const PLAY_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
   const PAUSE_I = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>';
 
-  S.calm = { items: () => ITEMS.map((x) => x.id), playing: () => (cur ? cur.id : null) };
+  S.calm = { items: () => ITEMS.map((x) => x.id), playing: () => (cur ? cur.id : null),
+    /* Version 39.22: for her plan's wind-down step: the session she played that day, a session's short name and minutes, her timer */
+    doneOn: (iso) => ((saved().done || {})[iso] || null), short: (id) => t('calm_short_' + id), mins: (id) => ((item(id) || {}).min || 0), timer: () => mins() };
 
   S.register({
     id: 'calm',
@@ -179,7 +193,11 @@
         calm_off: 'It keeps playing with the screen off.', calm_notif: 'Playing. Tap to open.',
         calm_foot: 'For rest and sleep, not treatment. Stop if you feel dizzy or unwell.', calm_preg: 'In pregnancy, lie on your left side with a pillow, not flat on your back.',
         calm_in: 'Breathe in', calm_out: 'Breathe out', calm_hum: 'Hum… mmm', calm_own: 'At your own pace',
-        calm_row: 'Wind down', calm_row_s: 'Dr. Megha’s voice, and sounds for sleep', calm_more: 'Keep going: sounds for sleep and yoga nidra'
+        calm_row: 'Wind down', calm_row_s: 'Dr. Megha’s voice, and sounds for sleep', calm_more: 'Keep going: sounds for sleep and yoga nidra',
+        calm_short_breaths: 'slow breaths', calm_short_bhramari: 'Bhramari', calm_short_nidra: 'yoga nidra', calm_where_bhramari: 'sitting up', calm_where_nidra: 'in bed',
+        calm_tip_breaths: 'Sitting or lying down. Press play, then put the phone face down and close your eyes.',
+        calm_tip_bhramari: 'Sit up and breathe through your nose; lie down after. Skip it if you have a nose or ear infection.',
+        calm_tip_nidra: 'In bed, with the lights off. Press play, then put the phone face down.'
       },
       hi: {
         calm_h: 'सुकून के पल', calm_p: 'सुकून और नींद के लिए डॉ. मेघा की आवाज़। एक चुनें, फिर फ़ोन रख दें और आराम करें।',
@@ -190,7 +208,11 @@
         calm_off: 'स्क्रीन बंद होने पर भी यह चलता रहेगा।', calm_notif: 'चल रहा है। खोलने के लिए टैप करें।',
         calm_foot: 'आराम और नींद के लिए, इलाज नहीं। चक्कर आए या ठीक न लगे, तो रुक जाएँ।', calm_preg: 'गर्भ में पीठ के बल सीधी न लेटें। तकिया लेकर बाईं करवट लेटें।',
         calm_in: 'साँस अंदर', calm_out: 'साँस बाहर', calm_hum: 'गुनगुनाएँ… म्म्म', calm_own: 'अपनी गति से',
-        calm_row: 'सुकून के पल', calm_row_s: 'डॉ. मेघा की आवाज़, और नींद के लिए आवाज़ें', calm_more: 'आगे जारी रखें: नींद की आवाज़ें और योग निद्रा'
+        calm_row: 'सुकून के पल', calm_row_s: 'डॉ. मेघा की आवाज़, और नींद के लिए आवाज़ें', calm_more: 'आगे जारी रखें: नींद की आवाज़ें और योग निद्रा',
+        calm_short_breaths: 'धीमी साँसें', calm_short_bhramari: 'भ्रामरी', calm_short_nidra: 'योग निद्रा', calm_where_bhramari: 'बैठकर', calm_where_nidra: 'बिस्तर में',
+        calm_tip_breaths: 'बैठकर या लेटकर। चलाएँ, फिर फ़ोन उल्टा रख दें और आँखें बंद करें।',
+        calm_tip_bhramari: 'सीधी बैठें और नाक से साँस लें; बाद में लेट जाएँ। नाक या कान में इंफ़ेक्शन हो, तो इसे न करें।',
+        calm_tip_nidra: 'बिस्तर में, बत्ती बंद करके। चलाएँ, फिर फ़ोन उल्टा रख दें।'
       }
     },
     routes: { calm: renderList },
@@ -213,7 +235,7 @@
       '.cm-orb, .cm-bowl { width: min(78vw, 340px); height: auto; } .cm-label { margin: 6px 0 0; font-size: 22px; font-weight: 600; min-height: 1.5em; text-align: center; } .cm-count { margin: 0; font-size: 40px; font-weight: 300; min-height: 1.3em; color: #F2A7CB; font-variant-numeric: tabular-nums; }' +
       '.cm-nidra { height: min(58vh, 520px); width: auto; } .cm-mat { fill: #251C3B; stroke: #3A2E58; stroke-width: 1.5; } .cm-body { transition: transform 1.2s ease, opacity 1.2s; } .cm-body > * { fill: #6E5A93; transition: fill .6s; } .cm-body > .lit { fill: #F2C98A; }' +
       '.cm-waves { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent), linear-gradient(#000 72%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent), linear-gradient(#000 72%, transparent); mask-composite: intersect; }' +   /* soft edges: no hard sides or bottom */
-      '.cm-night .cm-off { color: #B8A9C6; text-align: center; } .cm-night .cm-note { color: #F2C98A; text-align: center; margin: 0; max-width: 520px; }' +
+      '.cm-night .cm-off { color: #B8A9C6; text-align: center; } .cm-night .cm-note { color: #F2C98A; text-align: center; margin: 0; max-width: 520px; } .cm-night .cm-tip { color: #E6DCEE; text-align: center; margin: 0; max-width: 460px; }' +
       '.cm-bar { width: 100%; max-width: 520px; display: grid; gap: 10px; } .cm-track { display: block; height: 4px; border-radius: 2px; background: #3A2E52; overflow: hidden; } .cm-track i { display: block; height: 100%; width: 0; background: #F2A7CB; }' +
       '.cm-ctrl { display: flex; align-items: center; justify-content: space-between; color: #B8A9C6; font-size: 14px; }' +
       '.cm-play { width: 64px; height: 64px; border-radius: 50%; border: none; background: #F2A7CB; color: #2A1430; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; } .cm-play svg { width: 26px; height: 26px; }' +

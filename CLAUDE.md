@@ -135,6 +135,13 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Files: `web/sounds/` (credits in `web/sounds/CREDITS.md`); scripts and tools: `web/tools/voice/` (the Replicate key and
     voice IDs stay in `~/Desktop/megha-voice`, never in the repo). A changed relief step needs a new clip: the test checks the
     words match. Contract: MODULE_API section 64; wording: section 19.21 of the review (waits for doctor review).
+  - `node test/winddown.mjs` (Version 39.22; Mohit, 27 Oct; mockup claude.ai/artifact/PZZQiSgZdz8KGMR1UfKwgG):
+    - meditation in the plan: the bedtime step winds down first, tonight's session from her day;
+    - "How did you sleep?" in the check-in, with a sound after a hard night;
+    - Moves and calm, with a Calm tab;
+    - reminders by the timing research: the move nudge on by default, the wind-down 30 minutes before bed;
+    - a calmer My plan after week 1.
+    Research: `docs/myplan-and-sleep-advice-2026-10-26.md`, section 3. Contract: MODULE_API section 65; wording: section 19.22.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

@@ -155,7 +155,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
      the minutes and My plate the food habits */
   check('3 week 1: 0 of 50 minutes in her week, and her steps with their reasons (Version 39.15)', /Week 1 of 12/i.test(hub) && /Active minutes\n0 of 50/.test(hub) && (await has(page, '#view .pl-steps-card')) && (await has(page, '#view .pl-wkc')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 900));
   await go(page, 'home');
-  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13)', /Cycle care yoga\n\d+ min[\s\S]*?Start\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13)', /Cycle care yoga\n(Before a meal · )?\d+ min[\s\S]*?Start\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   await go(page, 'plan-plate');
   check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
   await go(page, 'plan-moves');

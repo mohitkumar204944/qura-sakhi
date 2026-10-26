@@ -101,7 +101,9 @@
     "plan-body",
     "plan-moves",
     "plan-progress",
-    "food"
+    "food",
+    "plan-calm",
+    "plan-wind"
   ],
   "prefixes": {
     "contra-m-": [
