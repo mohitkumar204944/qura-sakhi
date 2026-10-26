@@ -97,6 +97,10 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     private sex log (the emergency pill line when she isn't trying, hearts only while trying, never on a shared phone or in
     the report), the Cycles tab with Edit dates, and when fertile days start). Contract: MODULE_API section 54; wording:
     section 19.11 of the review (new lines wait for doctor review).
+  - `node test/follow.mjs` (Version 39.12, plan follow-through: Today names the day's yoga or strength with Start, strength
+    days ahead, a food habit's meal, a check-in that shows what already counted and asks about last night's bedtime, her goal
+    in the feedback, Plan your week, the nudge at her time to move (off by default), the 4-week check, and two quiet weeks).
+    Contract: MODULE_API section 55; wording: section 19.12 of the review (the goal lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

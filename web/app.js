@@ -2353,7 +2353,7 @@
     if (!todayItems.length && !head) return '';
     const hr = new Date().getHours(); const g = t(hr < 5 ? 'today_hi_0' : (hr < 12 ? 'today_hi_m' : (hr < 17 ? 'today_hi_a' : 'today_hi_e'))); const nm = String(acct.name || '').trim().split(/\s+/)[0];
     return '<div class="card today-card" data-nofold="1"><h3>' + esc(disc ? t('today_h') : (nm ? tf('today_hi_n', { g: g, name: nm }) : g)) + '</h3>' + head + (todayItems.length || head ? '' : '<p class="small">' + esc(t('today_all')) + '</p>') + '<div class="list">' + todayItems.map((x, i) => '<div class="item quiet today-it today-' + esc(x.id) + '"><button type="button" class="today-go" data-go="' + esc(x.go) + '"' + (x.at ? ' data-go-at="' + esc(x.at) + '"' : '') + '><span class="ico-sm hue hue-' + esc(x.hue || 'rose') + '">' + icon(x.icon || 'bell') + '</span><span class="body"><strong>' + esc(x.title) + '</strong>' + (x.sub ? '<span>' + esc(x.sub) + '</span>' : '') + '</span></button>' +
-      (x.act ? '<button type="button" class="btn sm primary" data-today-act="' + i + '">' + esc(x.actLabel || t('today_done')) + '</button>' : '<span class="chev">' + I.chev + '</span>') + '</div>').join('') + '</div></div>';
+      (x.act ? '<button type="button" class="btn sm primary" data-today-act="' + i + '">' + esc(x.actLabel || t('today_done')) + '</button>' : (x.nav ? '<button type="button" class="btn sm primary" data-today-nav="' + i + '">' + esc(x.actLabel || t('today_done')) + '</button>' : '<span class="chev">' + I.chev + '</span>')) + '</div>').join('') + '</div></div>';   /* Version 39.12: nav, a button that opens a screen (her plan's Start) */
   }
   /* A check-up or visit today (her reminders of kind "visit": PMSMA day, an injection, a Copper-T visit, her own): the report, which
      carries her questions, one tap away. Not in discreet mode. "Not today" hides it until tomorrow. */
@@ -2389,6 +2389,7 @@
   }
   function wireHomeV30(v) {
     v.querySelectorAll('[data-today-act]').forEach((b) => b.addEventListener('click', () => { const it = todayItems[+b.dataset.todayAct]; if (!it || !it.act) return; safe(() => it.act()); usageMark('today'); save(); toast(it.done || t('saved')); render(); }));
+    v.querySelectorAll('[data-today-nav]').forEach((b) => b.addEventListener('click', () => { const it = todayItems[+b.dataset.todayNav]; if (!it || !it.nav) return; usageMark('today'); setHash(it.nav); }));
     v.querySelectorAll('[data-setup]').forEach((b) => b.addEventListener('click', () => { const x = setupSteps[+b.dataset.setup]; if (!x || x.done) return; usageMark('setup'); if (x.act) x.act(); else setHash(x.go); }));
     const sh = $('#setup-hide', v); if (sh) sh.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.setup = 'off'; save(); render(); });
     const vn = $('#visit-not', v); if (vn) vn.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.visit = toISO(today()); save(); render(); });
@@ -4236,7 +4237,7 @@
      - go: the screen a tap opens (the pill, the plan, the check-in), not Home.
      Android keeps 60 at most, soonest first. Only if some were left out, a last alarm asks her to open Sakhi. */
   const NOTIF_GO = { contra: 'contra-mine', iron: 'iron', post: 'post', screen: 'screen-mine', journey: 'journey', plan: 'plan-checkin', access: 'access-schemes-preg', checkin: 'checkin', backup: 'backup' };   /* plan: Version 37.2, its evening check-in (Version 36 opened the PMOS page, Version 35 the reminders list) */
-  const notifGo = (r) => (r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
+  const notifGo = (r) => (r.id === 'plan-nudge' ? 'plan-now' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
   const notifCh = (r) => (r.kind === 'med' || ['contra', 'iron'].indexOf(r.mod) >= 0 || /^preg-(ifa|ca)$/.test(r.id) ? 'meds' : ['preg', 'post', 'screen', 'access'].indexOf(r.mod) >= 0 ? 'care' : r.mod === 'plan' ? 'plan' : 'other');
   const notifQuiet = () => !!(state.settings.discreet || state.settings.shared);
   /* Version 39.0 (plans review): the words on the lock screen are plain unless she turns them on. Her own reminders keep her

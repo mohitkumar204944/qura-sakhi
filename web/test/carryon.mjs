@@ -232,10 +232,15 @@ const errsAll = [];
   check('9 after the week, it carries on and the reminder comes back', !s.mods.plan.pauseUntil && s.reminders.find((r) => r.id === 'plan').on !== false, [s.mods.plan.pauseUntil, (s.reminders.find((r) => r.id === 'plan') || {}).on]);
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(25), { log: { [ago(18)]: { ck: { move: 'd' }, min: 15 } } }) } } });
-  check('9 after 14 quiet days: one "Take a week off?" card instead of the restart card', /Take a week off\?/.test(await txt(b.page, '#view .pl-sl-pause')), await txt(b.page, '#view .today-card'));
-  await tap(b.page, '#view #pl-pause-not');
-  check('9 ... "Not now" asks once', !(await has(b.page, '#view .pl-sl-pause')));
+  check('9 after 14 quiet days: one card with a week off instead of the restart card (Version 39.12: "Two quiet weeks")', /Two quiet weeks/.test(await txt(b.page, '#view .pl-sl-quiet')) && /Pause for a week/.test(await txt(b.page, '#view .pl-sl-quiet')) && !(await has(b.page, '#view .pl-sl-pause')) && !(await has(b.page, '#view .pl-sl-lapse')), await txt(b.page, '#view .slot'));
+  await tap(b.page, '#view #pl-q-not');
+  check('9 ... "Not now" asks once (the quiet card was the week-off offer)', !(await has(b.page, '#view .pl-sl-quiet')) && !(await has(b.page, '#view .pl-sl-pause')) && !!(await st(b.page)).mods.plan.pauseAsk);
   errsAll.push(...b.errs); await b.ctx.close();
+  const b2 = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(25), { quietAt: ago(20), log: { [ago(18)]: { ck: { move: 'd' }, min: 15 } } }) } } });   /* a quiet card seen without a week-off answer */
+  check('9 ... otherwise the one "Take a week off?" card', /Take a week off\?/.test(await txt(b2.page, '#view .pl-sl-pause')), await txt(b2.page, '#view .slot'));
+  await tap(b2.page, '#view #pl-pause-not');
+  check('9 ... "Not now" asks once', !(await has(b2.page, '#view .pl-sl-pause')));
+  errsAll.push(...b2.errs); await b2.ctx.close();
   const c = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan' });
   await tap(c.page, '#view #pl-stop');
   check('9 the stop card offers "Or pause it for a week instead"', await has(c.page, '#view #pl-pause-alt'));
@@ -263,7 +268,7 @@ const errsAll = [];
   const s1 = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(8)) } } });   /* plan day 9: a strength day */
   const ok = await s1.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions().find((x) => x.id === 'move'); return a ? a.go : null; });
   if (ok === 'plan-r-strength') {
-    await tap(s1.page, '#view .today-plan-move [data-today-act]');
+    await go(s1.page, 'plan-checkin'); for (const g of await s1.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(s1.page, '[data-ci="' + g + ':' + (g === 'move' ? 'd' : 'n') + '"]'); await tap(s1.page, '#pl-ci-save');   /* Version 39.12: Today\'s button opens the routine; the check-in\'s Done counts it */
     check('10 a strength day: "Done" on the step counts the strength day', await s1.page.evaluate(() => { const d = window.Saathi.state.mods.plan; return Object.keys(d.log).some((k) => d.log[k].str); }));
   } else check('10 a strength day: (seed lands on a strength day)', false, ok);
   errsAll.push(...s1.errs); await s1.ctx.close();

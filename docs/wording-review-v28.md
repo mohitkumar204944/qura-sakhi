@@ -1810,3 +1810,93 @@ trying-for-a-baby guide). **The doctor should check the lines marked ★.** Pilo
 | Check the dates: the end comes before the start, or it runs into another period. | तारीख़ें देखें: ख़त्म होने की तारीख़ शुरू से पहले है, या दूसरे पीरियड में जा रही है। |
 | Fertile days show after 6 cycles. {n} more periods to log. / 1 more period to log. ★ | फ़र्टाइल दिन 6 चक्र के बाद दिखेंगे। अभी {n} और पीरियड लिखने हैं। / अभी 1 और पीरियड लिखना है। |
 | Why 6 cycles? Sakhi estimates fertile days from your own dates. With fewer than 6 cycles, that estimate isn't reliable yet. There is no safe day: without a method, pregnancy can happen at any time of the month. ★ | 6 चक्र क्यों? Sakhi आपकी अपनी तारीख़ों से फ़र्टाइल दिनों का अंदाज़ा लगाती है। 6 चक्र से कम में यह अंदाज़ा अभी भरोसे लायक़ नहीं होता। कोई दिन सुरक्षित नहीं: बिना गर्भनिरोधक के, महीने के किसी भी दिन गर्भ ठहर सकता है। |
+
+### 19.12 Version 39.12: plan follow-through (MODULE_API section 55)
+
+Most lines are labels or reuse reviewed text: the if-then choices come from the plan's reviewed tips, and "Periods often take 3
+to 6 months to change…" is the plan's reviewed line. **The doctor should check the lines marked ★** (what each check-in is a
+step towards, and what to do when something feels worse). Pilot builds carry them until then.
+
+**Today and the check-in**
+
+| English | Hindi |
+|---|---|
+| Cycle care yoga · 8 min · Or walk 10 minutes · Start · Yoga or a walk | पीरियड के लिए योग · 8 मिनट · या 10 मिनट सैर · शुरू करें · योग या सैर |
+| At lunch or dinner · Dal or besan cheela, for example · At one meal today · When you want something to drink · At snack time · When you cook | दोपहर या रात के खाने में · जैसे दाल या बेसन चीला · आज किसी एक खाने में · जब कुछ पीने का मन हो · बीच के नाश्ते में · खाना बनाते समय |
+| Thursday: strength day · 0 of 2 this week · Tomorrow: strength day · … | गुरुवार: ताक़त का दिन · इस हफ़्ते 2 में से 0 · कल: ताक़त का दिन · … |
+| A lighter week: 10 minutes a day until Monday. | सोमवार तक हल्का हफ़्ता: रोज़ 10 मिनट। |
+| Last night: in bed by 11:30 pm? · Yes · Close · No | कल: रात 11:30 तक बिस्तर पर गईं? · हाँ · लगभग · नहीं |
+| 1 question left · 2 questions left · All counted. Just save. · Change an answer | 1 सवाल बाक़ी · 2 सवाल बाक़ी · सब गिना जा चुका है। बस सेव करें। · कोई जवाब बदलें |
+| Counted from your yoga · Counted from Strength at home · Counted from the routine you did · Counted: 20 minutes today · From your plate today · Ticked on Today · Counted from where you did it | आपके योग से गिना गया · “घर पर ताक़त” से गिना गया · आपके किए अभ्यास से गिना गया · गिना गया: आज 20 मिनट · आज की आपकी थाली से · “आज” पर टिक किया · जहाँ किया, वहीं से गिना गया |
+| Your goal · Strength: 0 of 2 this week · next: Thursday · Tomorrow: Sun salutation, slow · 7 min | आपका लक्ष्य · ताक़त: इस हफ़्ते 2 में से 0 · अगला: गुरुवार · कल: सूर्य नमस्कार, धीरे · 7 मिनट |
+| You planned: “I’ll split it into two short walks.” | आपने तय किया था: “दो छोटी सैर में बाँट लूँगी।” |
+
+**What each check-in is a step towards ★**
+
+| Goal | English | Hindi |
+|---|---|---|
+| Irregular periods, PMOS | A step towards more regular periods. | पीरियड नियमित होने की ओर एक क़दम। |
+| Skin | A step towards clearer skin. | साफ़ त्वचा की ओर एक क़दम। |
+| Weight | A step towards a healthier weight. | सेहतमंद वज़न की ओर एक क़दम। |
+| Getting ready for a baby | A step in getting ready for a baby. | गर्भ की तैयारी में एक क़दम। |
+| Period pain | A step towards easier periods. | आसान पीरियड की ओर एक क़दम। |
+| Heavy periods | A step towards feeling stronger. | ज़्यादा ताक़त की ओर एक क़दम। |
+| Mood before periods | A step towards calmer days before your period. | पीरियड से पहले के शांत दिनों की ओर एक क़दम। |
+| Pregnancy: food | A step for a healthy pregnancy. | सेहतमंद प्रेग्नेंसी के लिए एक क़दम। |
+| Pregnancy: nausea | A step towards easier days. | आसान दिनों की ओर एक क़दम। |
+| Iron | A step towards healthy iron levels. | आयरन ठीक रखने की ओर एक क़दम। |
+| Sleep | A step towards better sleep. | बेहतर नींद की ओर एक क़दम। |
+| Mood, worry | A step towards calmer days. | शांत मन की ओर एक क़दम। |
+| After the birth: recovery | A step in your recovery. | ठीक होने की ओर एक क़दम। |
+| Pelvic floor | A step towards a stronger pelvic floor. | मज़बूत पेल्विक फ़्लोर की ओर एक क़दम। |
+| Breastfeeding | A step for you and your baby. | आपके और आपके बच्चे के लिए एक क़दम। |
+| Hot flushes | A step towards more comfortable days. | ज़्यादा आरामदायक दिनों की ओर एक क़दम। |
+| Bones | A step towards stronger bones. | मज़बूत हड्डियों की ओर एक क़दम। |
+
+**Plan your week**
+
+| English | Hindi |
+|---|---|
+| Plan your week · Week 2 · 27 Oct to 2 Nov · 30 seconds | अपना हफ़्ता तय करें · हफ़्ता 2 · 27 अक्टू॰ से 2 नव॰ · 30 सेकंड |
+| Your 2 strength days · Your strength day · Strength at home, about 11 minutes. Not two days in a row. | आपके 2 ताक़त के दिन · आपका ताक़त का दिन · “घर पर ताक़त”, लगभग 11 मिनट। लगातार दो दिन नहीं। |
+| Your time to move · If something gets in the way · Last week, “No time” got in the way on 2 days. | चलने-फिरने का आपका समय · अगर कोई रुकावट आए · पिछले हफ़्ते 2 दिन “समय नहीं” की वजह से रुकावट आई। |
+| If I’m short of time, I’ll… do 5 minutes instead · split it into two short walks · walk while I talk on the phone | अगर समय कम हो, तो मैं… 5 मिनट ही कर लूँगी · दो छोटी सैर में बाँट लूँगी · फ़ोन पर बात करते हुए टहल लूँगी |
+| If I’m too tired, I’ll… do the 5-minute calm breath · take a slow 10-minute walk · do the Gentle start yoga | अगर बहुत थकान हो, तो मैं… 5 मिनट की शांत साँस कर लूँगी · 10 मिनट धीरे टहल लूँगी · “आसान शुरुआत” वाला योग कर लूँगी |
+| If I’m in pain, I’ll… try the cramps routine · rest today and walk slowly tomorrow | अगर दर्द हो, तो मैं… ऐंठन वाला तरीक़ा आज़माऊँगी · आज आराम करूँगी और कल धीरे टहलूँगी |
+| If family or work gets in the way, I’ll… ask someone to walk with me · do yoga at home while the children play · walk with my family after dinner | अगर घर या काम की वजह से न हो पाए, तो मैं… किसी को साथ टहलने को कहूँगी · बच्चे खेलें, तब घर पर योग कर लूँगी · रात के खाने के बाद परिवार के साथ टहलूँगी |
+| If I can’t go out, I’ll… march on the spot at home · walk up and down the stairs · do a yoga routine at home | अगर बाहर न जा सकूँ, तो मैं… घर पर एक जगह क़दमताल कर लूँगी · सीढ़ियाँ चढ़-उतर लूँगी · घर पर योग कर लूँगी |
+| This week: 70 minutes · new: Protein at breakfast · This week: walk 15 minutes a day | इस हफ़्ते: 70 मिनट · नया: नाश्ते में प्रोटीन · इस हफ़्ते: रोज़ 15 मिनट सैर |
+| Save my week · Same as last week · Your week is planned. · Pick 2 days, not two in a row. · Pick your time to move. | मेरा हफ़्ता सेव करें · पिछले हफ़्ते जैसा · आपका हफ़्ता तय हो गया। · 2 दिन चुनें, लगातार दो दिन नहीं। · चलने-फिरने का अपना समय चुनें। |
+| Plan this week · Strength days, your time, and a plan B · Strength: Thu, Sun | इस हफ़्ते की योजना · ताक़त के दिन, आपका समय, और दूसरा रास्ता · ताक़त: गुरु, रवि |
+
+**The nudge**
+
+| English | Hindi |
+|---|---|
+| Nudge at my time to move · After dinner, about 9:15 pm · Pick your time in Plan this week | चलने-फिरने के समय याद दिलाएँ · रात के खाने के बाद, लगभग रात 9:15 · “इस हफ़्ते की योजना” में अपना समय चुनें |
+| One nudge a day at most, and none once you have moved or on a rest day. | दिन में ज़्यादा से ज़्यादा एक बार, और चलने-फिरने के बाद या आराम के दिन बिल्कुल नहीं। |
+| (the phone) Your time to move. Tap to start. | चलने-फिरने का समय। शुरू करने के लिए टैप करें। |
+
+**The 4-week check**
+
+| English | Hindi |
+|---|---|
+| Your 4-week check · 1 minute · only on this phone · Do your 4-week check · 1 minute: how you feel since you started | आपका 4 हफ़्ते का चेक-इन · 1 मिनट · सिर्फ़ इसी फ़ोन पर · अपना 4 हफ़्ते का चेक-इन करें · 1 मिनट: शुरू करने के बाद से आप कैसा महसूस करती हैं |
+| Since you started, how is your… Energy · Sleep · Mood · Skin and hair · Better · Same · Worse | शुरू करने के बाद से ये कैसे हैं? ऊर्जा · नींद · मूड · त्वचा और बाल · बेहतर · वैसा ही · ख़राब |
+| Measure, if you like · Optional · Waist (cm) · Weight (kg) · Skip · Save my check | चाहें तो नापें · अपनी मर्ज़ी से · कमर (सेमी) · वज़न (किलो) · छोड़ें · मेरा चेक-इन सेव करें |
+| Check the numbers: waist 40 to 200 cm, weight 25 to 250 kg. | नंबर जाँचें: कमर 40 से 200 सेमी, वज़न 25 से 250 किलो। |
+| Your first 4 weeks · Your 12 weeks · What you did · days you moved · strength days · food habits going · days you followed your plan · 285 minutes of yoga and walking in all. | आपके पहले 4 हफ़्ते · आपके 12 हफ़्ते · आपने क्या किया · दिन व्यायाम किया · ताक़त के दिन · खाने की आदतें जारी · दिन प्लान माना · कुल 285 मिनट योग और सैर। |
+| What you noticed · Waist 86 → 84 cm · Weight 66.4 → 65.8 kg (numbers only, no judging word) | आपने क्या महसूस किया · कमर 86 → 84 सेमी · वज़न 66.4 → 65.8 किलो |
+| Something feels worse? A doctor can help you find out why. ★ | कुछ पहले से ख़राब लग रहा है? डॉक्टर इसकी वजह जानने में मदद कर सकती हैं। |
+| Your next check: in 4 weeks. · How do you feel after 12 weeks? · How you felt · After 4 weeks: | अगला चेक-इन: 4 हफ़्ते बाद। · 12 हफ़्ते बाद आप कैसा महसूस करती हैं? · आपने कैसा महसूस किया · 4 हफ़्ते बाद: |
+| (her report) Since starting (her 4-week check): energy better, sleep same, mood better | शुरू करने के बाद से (4 हफ़्ते का चेक-इन): ऊर्जा बेहतर, नींद वैसा ही, मूड बेहतर |
+
+**Two quiet weeks**
+
+| English | Hindi |
+|---|---|
+| Two quiet weeks · Life gets busy. Your plan is waiting, and nothing you did is lost. What would help? | दो शांत हफ़्ते · ज़िंदगी में व्यस्तता आ जाती है। आपका प्लान इंतज़ार कर रहा है, और आपने जो किया वह कहीं नहीं गया। किस चीज़ से मदद मिलेगी? |
+| Make next week lighter · 10 minutes a day and one food habit · 10 minutes a day and fewer steps | अगला हफ़्ता हल्का करें · रोज़ 10 मिनट और खाने की एक आदत · रोज़ 10 मिनट और कम क़दम |
+| The next 7 days are lighter. Your plan carries on after that. | अगले 7 दिन हल्के रहेंगे। उसके बाद आपका प्लान वैसे ही चलेगा। |
+| Ask family to walk with me · Your own message, with no health words · Share · Change it | परिवार से साथ टहलने को कहें · आपका अपना संदेश, सेहत की कोई बात नहीं · भेजें · बदलें |
+| Will you walk with me after dinner? 15 minutes, every day this week. | क्या आप रात के खाने के बाद मेरे साथ टहलने चलेंगे? इस हफ़्ते रोज़ 15 मिनट। |

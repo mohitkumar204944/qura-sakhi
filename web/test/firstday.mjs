@@ -193,7 +193,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   s = await st(page);
   check('5 Start starts it: day 1 today, the 8 pm reminder', s.mods.plan.start === TODAY && s.mods.plan.go === true && !s.mods.plan.next && (s.reminders || []).some((r) => r.id === 'plan' && r.time === '20:00' && r.start === TODAY), [s.mods.plan.start, s.reminders]);
   v = await view(page);
-  check('8 day 1: her plan leads "Sakhi says"', (await slotFirst(page)) === 'Day 1 of your plan' && /Your first step: Walk or move 10 minutes. At 8 pm, a 1-minute check-in./.test(v), [await slotFirst(page), v.slice(0, 900)]);
+  check('8 day 1: her plan leads "Sakhi says"', (await slotFirst(page)) === 'Day 1 of your plan' && /Your first step: Cycle care yoga · \d+ min\. At 8 pm, a 1-minute check-in\./.test(v), [await slotFirst(page), v.slice(0, 900)]);
   check('8 day 1: Today counts her plan by day, and the check-in waits for the evening', /Day 1 · 0 of 3 done today/.test(v) && /Check-in at 8 pm/.test(v) && !(await has(page, '#view .pl-th [data-go="plan-checkin"]')), v.slice(0, 900));
   check('8 day 1: the "keep an eye on it" card waits (no period for 60 days)', !(await has(page, '#view [data-xp-lv="watch"]')));
   check('8 day 1: the heads-up, setup and Coming up wait', !(await has(page, '#view .hu-card')) && !(await has(page, '#view .setup-card')) && !(await has(page, '#view .cu-empty')));
@@ -267,7 +267,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   const first = rings.filter((r) => /^r-plan-/.test(r.id)).map((r) => r.id).sort()[0];
   check('9 no ring tonight: the first plan alarm is tomorrow', first === 'r-plan-' + iso(TODAY, 1), rings.map((r) => r.id));
   let v = await view(page);
-  check('9 Today says when it starts, and its first step, with no steps yet', /Your plan starts tomorrow · Your first step: Walk or move 10 minutes/.test(v) && !/Half the plate sabzi|Day 1 ·/.test(v), v.slice(0, 900));
+  check('9 Today says when it starts, and its first step, with no steps yet', /Your plan starts tomorrow · Your first step: Cycle care yoga · \d+ min/.test(v) && !/Half the plate sabzi|Day 1 ·/.test(v), v.slice(0, 900));
   check('9 no "All done for today" under it', !/All done for today/.test(v));
   await go(page, 'plan');
   check('9 My plan says when, with "Start today instead"', /Your plan starts tomorrow/.test(await view(page)) && (await has(page, '#pl-soon-now')));

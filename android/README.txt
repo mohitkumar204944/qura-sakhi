@@ -17,8 +17,8 @@ Rebuild after changing the prototype
   deletes the diary. Testers get a build without "demo" in its name (it needs SAKHI_API, the server's https address):
     SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=34 VERSION_NAME=0.32-test ./build-apk.sh
   The pilot build (Version 33) has every tool on, fertile days and the self-checks included, with no sample women. The
-  last one built is versionCode 45 (0.39.11-pilot, Version 39.10 joining and Version 39.11 the diary), built without installing:
-    PATH=/usr/bin:/bin:/usr/sbin:/sbin SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=45 VERSION_NAME=0.39.11-pilot ./build-apk.sh
+  last one built is versionCode 46 (0.39.12-pilot, Version 39.12 plan follow-through), built without installing:
+    PATH=/usr/bin:/bin:/usr/sbin:/sbin SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=46 VERSION_NAME=0.39.12-pilot ./build-apk.sh
   It needs Android 10 or newer (min SDK 29; Mohit, 25 Oct: newer phones only). The build stops above 30 MB unless
   MAX_APK_MB is raised on purpose.
 

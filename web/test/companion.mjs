@@ -152,7 +152,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 what joining saved: her goal, gap, skipped months and day; the plan; the 8 pm reminder', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '20:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
   check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('2 Today: a greeting by name, her plan and day, and her three steps', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /Day 1 · 0 of 3 done today/.test(td) && /Move 10 minutes today/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
+  check('2 Today: a greeting by name, her plan and day, and her three steps', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /Day 1 · 0 of 3 done today/.test(td) && /Cycle care yoga · \d+ min\nOr walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
   await shot(page, '2-today');
   /* 4. the evening check-in */
   check('4 in the evening Today offers "How did today go?"', await has(page, '#view .today-card [data-go="plan-checkin"].primary'));
@@ -173,7 +173,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('4 the day is kept: each answer, the minutes and the food habit', lg.ci === 1 && lg.ck.move === 'd' && lg.ck.sleep === 'n' && lg.min === 10 && lg.plate.half === true && lg.bar === 'time', lg);
   await go(page, 'home');
   const td2 = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('4 Today: checked in, with the day\'s count; the steps leave Today (Version 37.2)', /Checked in today/.test(td2) && /2 of 3 done today/.test(td2) && !/Move 10 minutes today/.test(td2) && !/In bed by midnight/.test(td2), td2);
+  check('4 Today: checked in, with the day\'s count; the steps leave Today (Version 37.2)', /Checked in today/.test(td2) && /2 of 3 done today/.test(td2) && !/Cycle care yoga/.test(td2) && !/In bed by midnight/.test(td2), td2);
   await go(page, 'diary'); if (await has(page, '[data-tab="cal"]:not(.on)')) await tap(page, '[data-tab="cal"]');
   check('4 the diary calendar marks the day she followed her plan', (await has(page, '#view .day.today .kd i.hue-plum')) && /Your plan/.test(await view(page)));
   check('1-4 no page errors', !errs.length, errs);
@@ -198,7 +198,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   const log = {}; log[ago(9)] = { ci: 1 }; log[ago(8)] = { min: 10 };
   await setPlan(page, planOf('cycle', 'irregular', ago(10), { doc: 'done', log: log }), intake); await go(page, 'home');
   let sl = await page.$eval('#view .slot', (e) => e.innerText).catch(() => '');
-  check('7 after quiet days: "Shall we start again, small?", just today\'s first step, no catching up', /Shall we start again, small\?/.test(sl) && /No catching up needed\. Just today: Walk or move \d+ minutes/.test(sl) && !/streak/i.test(sl), sl);
+  check('7 after quiet days: "Shall we start again, small?", just today\'s first step, no catching up', /Shall we start again, small\?/.test(sl) && /No catching up needed\. Just today: Yoga or a walk\./.test(sl) && !/streak/i.test(sl), sl);
   await tap(page, '#pl-lapse-not');
   check('7 "Not now" puts it away for today', !(await has(page, '#view .pl-sl-lapse')));
   await ctx.close();

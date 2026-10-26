@@ -194,7 +194,7 @@ const errsAll = [];
     const ids = await a.page.$$eval('#view [data-ci$=":d"]', (x) => x.map((y) => y.dataset.ci));
     for (const k of ids) await tap(a.page, '#view [data-ci="' + k + '"]');
     await tap(a.page, '#view #pl-ci-save');
-    lines.push(await txt(a.page, '#view #pl-ci-fb .lead'));
+    lines.push((await txt(a.page, '#view #pl-ci-fb .pl-ci-why')) || (await txt(a.page, '#view #pl-ci-fb .lead')));   /* Version 39.12: her goal leads; the reason follows */
     errsAll.push(...a.errs); await a.ctx.close();
   }
   check('8 two evenings, the same steps done: two different lines', lines[0] && lines[1] && lines[0] !== lines[1], lines);

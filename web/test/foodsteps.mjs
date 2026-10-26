@@ -222,7 +222,7 @@ const errsAll = [];
   const remOff = async (page, id) => { await go(page, 'tools-reminders'); await page.$eval('[data-rtog="' + id + '"]', (c) => { c.checked = false; c.dispatchEvent(new Event('change')); }); await settle(page, 300); };
   const ticks = (ids, days) => { const log = {}; days.forEach((n) => { log[ago(n)] = { ck: Object.fromEntries(ids.map((i) => [i, 'd'])) }; }); return log; };
   const best = async (page) => { await go(page, 'plan'); return page.$eval('#view .pl-best', (e) => e.textContent).catch(() => ''); };
-  const doneBottoms = (page) => page.evaluate(() => ({ nav: Math.round(document.querySelector('#tabbar').getBoundingClientRect().top), done: Array.from(document.querySelectorAll('#view .today-card [data-today-act]')).map((x) => Math.round(x.getBoundingClientRect().bottom)) }));
+  const doneBottoms = (page) => page.evaluate(() => ({ nav: Math.round(document.querySelector('#tabbar').getBoundingClientRect().top), done: Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav]')).map((x) => Math.round(x.getBoundingClientRect().bottom)) }));   /* Version 39.12: her yoga's Start counts as its button */
   const fits = (m, n) => m.done.length >= n && m.done.slice(0, n).every((y) => y <= m.nav);
   const Q = { preg: 'pregnancy.dos-and-donts', post: 'pregnancy.after-birth-dos-and-donts', cycle: 'cycle.period-dos-and-donts', loss: 'conceive.after-a-pregnancy-loss-care-and-support', danger: 'pregnancy.danger-signs-call-112' };
   const askAll = async (page, qs) => { const o = {}; for (const q of qs) { await searchQ(page, q); o[q] = await quick(page); } return o; };

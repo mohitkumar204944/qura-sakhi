@@ -3659,3 +3659,106 @@ emergency pill and every-2–3-days lines reuse reviewed text; the rest waits fo
 **Tests.** `node test/diary.mjs` checks the day page, flow, the sex log (including a shared phone, pregnancy, menopause and the
 report), the Cycles tab, Edit dates, the fertile-days line, Hindi and 360 px. records, insights, fieldtest and signup follow
 the new tab name, the cycle rows and the week arrows.
+
+## 55. Version 39.12: plan follow-through (Mohit, 26 Oct)
+
+Mohit: "we have yoga and diet etc. but it only asks did you ate, 10 minute walk and sleep". The audit kept the 3 daily steps and
+found 7 gaps. Mohit approved the mockup (claude.ai/artifact/WYGamiymeknKbDL4nbVpFT), then "go with your recommendations". His 6
+decisions:
+- the nudge is off by default;
+- bedtime is asked about last night;
+- weight is optional, asked last and never judged;
+- the family message goes from her own phone, with no health words;
+- Qura's call is offered after 2 quiet weeks, at most once a month;
+- the weekly plan can be skipped.
+
+Everything stays on the phone; nothing new goes to the server.
+
+**1. Today names the day's yoga or strength** (the `walk.cycle` adapter, the cycle plan only).
+- The move step's title is the day's routine and its length ("Cycle care yoga · 8 min", "Strength at home · 11 min"). Its
+  second line is "Or walk N minutes". Its `name` is "Yoga or a walk", used by the look-back's best step and the restart
+  cards.
+- On Today the step has **Start**: `nav`, a new Today item field for a button that opens a screen (`data-today-nav` in core).
+  Start opens the routine; the row opens Yoga and moves. A `routine` step (the PMS plan's calm breath, 40+ strength days) has
+  Start too.
+- A routine that moves her (any but the calm breath) makes the step done by itself, as enough minutes do. Her own answer in
+  the check-in still wins.
+
+**2. Strength days she can see.** From her plan's day 4, Today's plan line shows the week's next strength day ("Thursday:
+strength day · 0 of 2 this week", or "Tomorrow: …"). As in the mockup, it takes the place of the plain "Yesterday: N done"
+line. Welcome back, the day-3 line, a rest day, a lighter week, the calm week and her period still come first. Once the week's
+strength days are done, the line goes.
+
+**3. The check-in asks only what it doesn't know.**
+- A step that already counted today shows as done, with where it came from: "Counted from your yoga", "From your plate today",
+  "Ticked on Today" or "Counted: N minutes today". It isn't asked. The date line says how many questions are left, and
+  "Change an answer" opens every step. Saving leaves what counted as it was: 8 minutes of yoga stay 8.
+- Half the plate sabzi tapped on today's thali counts the half-plate habit.
+- Each food habit's second line is its meal: "At lunch or dinner", "Dal or besan cheela, for example", "At snack time",
+  "When you cook" and so on.
+
+**Bedtime is asked about last night.** "Last night: in bed by 11:30 pm?", with Yes, Close and No (d, p, n), kept on today's step.
+The time is last night's target: `bed` on the step, from `bedTarget(d, iso)` by that day's week. A night shift keeps its own
+question.
+
+**4. Plan your week** (`plan-week`; `d.wplan[week] = { str, when, ifb, ift, at }`, kept 6 weeks).
+- It takes 30 seconds and asks three things:
+  - her strength days (the cycle plan only): as many as the week's target, not two in a row, and past days fixed;
+  - her time to move;
+  - one if-then plan for what got in the way last week (`IFT`: 2 or 3 choices for each barrier, from the reviewed tips).
+- "Same as last week" copies last week's. Saving sets `d.when` too, and `todayPlan()` reads her strength days from
+  `d.wplan[week].str` (else days 2 and 5 of her plan week, as before).
+- It's offered on the weekly look-back once she has answered it ("Plan your week · 30 seconds"). It's always in Plan settings
+  as "Plan this week", for plans that move (`moves`), but not in pregnancy or the first 6 weeks after a birth.
+- When she names that barrier in the check-in, the tip is her own plan: "You planned: “I’ll split it into two short walks.”"
+
+**5. A nudge at her time to move** (`nudgeSync`, the reminder `plan-nudge`).
+- Plan settings has "Nudge at my time to move", off by default. Her time (`d.when`) sets the hour (`NUDGE_AT`: morning 7:30, after
+  breakfast 9:30, after lunch 2 pm, evening 6 pm, after dinner 9:15 pm). If she hasn't picked a time, the switch opens Plan your
+  week, and saving her time turns the nudge on.
+- At most one a day. None once she has moved, checked in or taken a rest day (`doneOn`). During her week's pause it starts again
+  when the pause ends. It goes when her plan stops, finishes, or pauses for a pregnancy, a birth or a loss, and comes back
+  with the plan (`nudgeHeld`). If she deletes it in Reminders, it stays off.
+- The phone says "Your time to move. Tap to start." On a shared phone, core says only "A reminder". A tap opens `plan-now`,
+  which draws today's routine (or Yoga and moves, for a plan that walks) and takes its address.
+
+**6. The 4-week check** (`plan-check`, `d.mcheck[1 to 3]`).
+- It's due in weeks 5 to 6, weeks 9 to 10, and from week 13 (the end page asks "How do you feel after 12 weeks?"). It's offered on
+  the month card, as a row on My plan, and on the end page. "Not now" waits 3 days. It's only for 12-week plans, and never on
+  a shared phone, in pregnancy or in the first 6 weeks after a birth.
+- It asks how her energy, sleep and mood are since she started (Better, Same, Worse), plus skin and hair for PMOS or skin. Then,
+  in the cycle plan only, it asks for her waist and weight, both optional and last. They go into My body too.
+- The result shows what she did beside what she noticed. What she did is the days she moved, strength days, food habits going
+  and minutes; for light plans, the days she followed her plan. Waist and weight show as numbers only ("86 → 84 cm"). Anything
+  "Worse" brings the free government doctor and a Qura doctor. My progress shows "How you felt", and her report carries her
+  latest check.
+
+**7. Two quiet weeks** (`cardKind` 'quiet', before the week-off offer).
+- When it shows: from week 3, when her last 2 weeks and this one each have under 3 days, and she hasn't been asked about a week
+  off in 4 weeks. It's one card, with no health words.
+- "Make next week lighter": 7 days of a 10-minute walk or the gentle routine, and 2 steps at most (never a safety step), said on
+  Today (`d.light`).
+- "Ask family to walk with me": her own message, which she can change ("Will you walk with me after dinner? 15 minutes, every
+  day this week."). It goes through her phone's share sheet (`S.share`), never a wa.me link.
+- "Talk to a Qura doctor" (the first 20-minute call is free), "Pause for a week" and "Not now". Any answer counts as the plan's
+  week-off offer (`pauseAsk`).
+
+**Her goal in the feedback.** On a day she did something, the feedback leads with "Your goal · A step towards more regular
+periods." (one line per goal, `plan_cg_*`). Then come the reason and the count, then two cycle-plan lines: "Strength: 0 of 2
+this week · next: Thursday" and "Tomorrow: Sun salutation, slow · 7 min". The goal line never shows on a shared phone.
+
+**Stopping and starting.** Stop clears the nudge and her weeks, checks and lighter week, and a new plan starts without them.
+
+**Strings.** About 150 new English and Hindi keys (`plan_a_r*`, `plan_meal_*`, `plan_th_str*`, `plan_ci_*`, `plan_cg_*`,
+`plan_wp_*`, `plan_ifq_*`, `plan_if_*`, `plan_nudge*`, `plan_mc_*`, `plan_q_*`, `plan_sum_mc`). New wording is in the wording
+review, section 19.12. The goal lines and the "Worse" line wait for the doctor.
+
+**Tests.**
+- `node test/follow.mjs` checks all 7 gaps, the bedtime question, a shared phone, Hindi and 360 px.
+- companion, firstday, notices, pmosplan, results, goals, carryon, foodsteps and pictures follow the new step words, Start and
+  the goal line.
+- golden.mjs was re-recorded. Only these changed:
+  - the food step's second line (88 plan-days);
+  - the cycle plan's move step (72);
+  - My plan's two new settings rows (140);
+  - the end page's 12-week check (23).

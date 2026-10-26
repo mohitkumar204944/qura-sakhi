@@ -171,7 +171,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const m = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(28), { log: one, doc: 'done' }) } } });
   await go(m.page, 'home');
   const mv = await view(m.page);
-  check('4 month 1 shows even after a lapse, with the restart in its words', (await slotFirst(m.page)) === 'Month 1 done' && /You started on \d+ \w+\. Start again small today: Walk or move/.test(mv), [await slotFirst(m.page), mv.slice(0, 900)]);
+  check('4 month 1 shows even after a lapse, with the restart in its words', (await slotFirst(m.page)) === 'Month 1 done' && /You started on \d+ \w+\. Start again small today: Yoga or a walk/.test(mv), [await slotFirst(m.page), mv.slice(0, 900)]);
   check('4 no page errors', errs.length === 0 && m.errs.length === 0, errs.concat(m.errs));
   await m.ctx.close();
 }
