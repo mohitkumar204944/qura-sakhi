@@ -155,7 +155,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
      the minutes and My plate the food habits */
   check('3 week 1: 0 of 50 minutes and one strength day, with one row for today', /Week 1 of 12/i.test(hub) && /0 of 50 minutes/.test(hub) && /Strength days: 0 of 1/.test(hub) && (await has(page, '#view .pl-trow')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 600));
   await go(page, 'home');
-  check('3 ... and Today has her yoga, or a 10-minute walk (Version 39.12)', /Cycle care yoga · \d+ min\nOr walk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13)', /Cycle care yoga · \d+ min\nStart\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   await go(page, 'plan-plate');
   check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
   await go(page, 'plan-moves');
@@ -176,8 +176,10 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   await setPlan(page, started({ start: ago(15), level: 1 }));
   await go(page, 'home');
   const tv = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('3 Home\'s Today: today\'s strength, or a 20-minute walk, and the newest food habit', /Strength at home · \d+ min\nOr walk 20 minutes/.test(tv) && /Protein at breakfast/.test(tv), tv);
-  await tap(page, '.today-plan-move [data-today-nav]');
+  check('3 Home\'s Today: today\'s strength, her walk for the rest of the day\'s minutes, and the newest food habit', /Strength at home · \d+ min\nStart\nWalk 10 minutes/.test(tv) && /Protein at breakfast/.test(tv), tv);
+  await tap(page, '.today-plan-move [data-today-act]');
+  check('3 one tap logs today\'s walk and the item goes', (await plan(page)).log[TODAY].min === 10 && !(await has(page, '.today-plan-move')));
+  await tap(page, '.today-plan-yoga [data-today-nav]');
   check('3 Start opens today\'s routine (Version 39.12)', (await page.evaluate(() => location.hash)) === '#plan-r-strength');
   await go(page, 'home');
   await tap(page, '.today-plan-plate [data-today-act]');

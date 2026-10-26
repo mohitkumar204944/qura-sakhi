@@ -81,7 +81,7 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 /* ---------- 2. The closed vocabulary (mods/plan.js implements each word once) ---------- */
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
-const ADAPTERS = ['walk.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food'];   /* Version 39.9 */
+const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food'];   /* Version 39.9; yoga.cycle: Version 39.13 */
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
@@ -119,7 +119,7 @@ specs.forEach((p) => {
   if (['weeks', 'pregWeek', 'birthWeek'].indexOf(p.clock) < 0 || !p.length || !(p.length.weeks >= 0)) bad.push(w + ': clock or length');
   const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
   if (p.moves && (ik.day || []).indexOf('lim') < 0) bad.push(w + ': a plan with moves asks about knees and back');
-  if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 3)) bad.push(w + ': at most 3 steps a day');
+  if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 4)) bad.push(w + ': at most 4 steps a day');   /* Version 39.13: the cycle plan's yoga and walk */
   if (p.hero != null && ['ring', 'week', 'timeline'].indexOf(p.hero) < 0) bad.push(w + ': hero');
   if (p.rest != null && !(p.rest >= 0 && p.rest <= 3)) bad.push(w + ': rest');
   if (p.tiles != null && !(Array.isArray(p.tiles) && p.tiles.length === 4 && p.tiles.every((x) => x.go && keyOk(x.text) && x.text !== '@tile' && x.icon && HUES.indexOf(x.hue) >= 0 && Object.keys(x).every((k) => ['go', 'text', 'icon', 'hue', 'priv'].indexOf(k) >= 0)))) bad.push(w + ': 4 tiles');

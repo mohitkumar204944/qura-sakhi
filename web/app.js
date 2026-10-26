@@ -2345,9 +2345,10 @@
     const byOrder = (a, b) => (a.order || 50) - (b.order || 50); let list = items.sort(byOrder);
     /* Version 39.0 (journey audit MIN-05): past 4 rows her plan's steps fold into one row, and tablets never drop out */
     const isMed = (x) => x.icon === 'pill' || x.id === 'iron' || !!x.med; const isPlan = (x) => /^plan-/.test(x.id);
-    if (list.length > 4 && list.filter(isPlan).length > 1) { const pl = list.filter(isPlan); list = list.filter((x) => !isPlan(x)).concat([{ id: 'plan-all', order: pl[0].order, icon: 'check', hue: 'purple', title: tf('today_plan_n', { n: pl.length }), sub: '', go: 'plan' }]).sort(byOrder); }
+    const cap = list.filter(isPlan).length >= 4 ? 4 : 3;   /* Version 39.13: her plan's 4 steps (yoga, walk, food, bedtime); else 3 rows (Version 39.10) */
+    if (list.length > cap + 1 && list.filter(isPlan).length > 1) { const pl = list.filter(isPlan); list = list.filter((x) => !isPlan(x)).concat([{ id: 'plan-all', order: pl[0].order, icon: 'check', hue: 'purple', title: tf('today_plan_n', { n: pl.length }), sub: '', go: 'plan' }]).sort(byOrder); }
     const keep = (x) => isMed(x) || /^rem-/.test(x.id);   /* review life-11: tablets and her own reminders never drop out */
-    const meds = list.filter(keep), rest = list.filter((x) => !keep(x)).slice(0, Math.max(0, Math.min(3, 4 - meds.length)));   /* Version 39.10: 3 steps at most */
+    const meds = list.filter(keep), rest = list.filter((x) => !keep(x)).slice(0, Math.max(0, Math.min(cap, cap + 1 - meds.length)));   /* Version 39.10: 3 steps at most; 39.13: her plan's 4 */
     todayItems = list.filter((x) => meds.indexOf(x) >= 0 || rest.indexOf(x) >= 0);
     const head = runHook('todayHead', [api], true);   /* Version 37.1: in discreet mode too; the plan writes it in plain words */
     if (!todayItems.length && !head) return '';

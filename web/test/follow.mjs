@@ -7,6 +7,9 @@
 //   8 the nudge at her time to move (off by default, at most one a day, plain words on a shared phone);
 //   9 the 4-week check (waist and weight optional, asked last, never judged);  10 help after two quiet weeks;
 //  11 Hindi, a 360 px screen, no page errors.
+// Version 39.13 (Mohit, 26 Oct: "walk and yoga should be separate and we need to make sure user did all daily activities"):
+//  12 four steps in the cycle plan (yoga, walk, food, bedtime), each counted on its own; "One more", "All 4 done today";
+//     the evening check-in until every step is done; "Tomorrow, add"; the look-back's full days; 4 buttons at 360 x 780.
 // Usage: node test/follow.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -70,26 +73,26 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* day 10 of her PMOS plan (plan day index 2): cycle care yoga today; strength on Thursday (index 4) */
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }) });
   const td = await txt(a.page, '#view .today-card'); const cm = await rmins(a.page, 'cycle');
-  check('1 Today names the day\'s yoga, with the walk as the other way', td.includes('Cycle care yoga · ' + cm + ' min\nOr walk 10 minutes') && !/Move 10 minutes today/.test(td), td);
-  check('1 ... with Start, not Done', (await txt(a.page, '#view .today-plan-move [data-today-nav]')) === 'Start' && !(await has(a.page, '#view .today-plan-move [data-today-act]')));
-  check('1 ... the row opens Yoga and moves', (await a.page.$eval('#view .today-plan-move .today-go', (b) => b.dataset.go).catch(() => '')) === 'plan-moves');
+  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga · ' + cm + ' min') && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
+  check('1 ... yoga has Start, the walk Done', (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === 'Start' && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await txt(a.page, '#view .today-plan-move [data-today-act]')) === 'Done');
+  check('1 ... the yoga row opens Yoga and moves', (await a.page.$eval('#view .today-plan-yoga .today-go', (b) => b.dataset.go).catch(() => '')) === 'plan-moves');
   check('3 strength days show ahead: "Thursday: strength day · 0 of 2 this week"', /Thursday: strength day · 0 of 2 this week/.test(td), td);
   check('4 the food habit has its meal', /Half the plate sabzi\nAt lunch or dinner/.test(td), td);
   await shot(a.page, '1-today');
-  await tap(a.page, '#view .today-plan-move [data-today-nav]');
+  await tap(a.page, '#view .today-plan-yoga [data-today-nav]');
   check('1 Start opens today\'s routine', (await a.page.evaluate(() => location.hash)) === '#plan-r-cycle');
   /* she finishes it: the routine logs its minutes, and the step counts by itself */
   await tap(a.page, '#pl-pstart'); for (let i = 0; i < 40 && (await has(a.page, '#pl-next')); i++) await tap(a.page, '#pl-next');
   const lg = (await plan(a.page)).log[TODAY] || {};
   await go(a.page, 'home'); const td2 = await txt(a.page, '#view .today-card');
-  check('2 a routine she finishes counts by itself: the step leaves Today', (lg.r || []).indexOf('cycle') >= 0 && !(await has(a.page, '#view .today-plan-move')) && /1 of 3 done today/.test(td2), [lg, td2]);
+  check('2 a routine she finishes counts by itself: yoga leaves Today, her walk stays (its minutes are the walk\'s)', (lg.r || []).indexOf('cycle') >= 0 && lg.rmin === lg.min && !(await has(a.page, '#view .today-plan-yoga')) && (await has(a.page, '#view .today-plan-move')) && /1 of 4 done today/.test(td2), [lg, td2]);
   await done(a);
 
   /* a strength day (index 1): strength at home, with Start; no "strength day ahead" line */
   const s = await open({ seed: cyc(ago(8), { log: logged(8, 5) }) });
   const ts = await txt(s.page, '#view .today-card'); const sm = await rmins(s.page, 'strength');
-  check('1 a strength day: "Strength at home · N min", "Or walk 10 minutes"', ts.includes('Strength at home · ' + sm + ' min\nOr walk 10 minutes') && !/: strength day ·/.test(ts), ts);
-  check('1 ... Start opens Strength at home', (await s.page.$eval('#view .today-plan-move [data-today-nav]', (b) => { b.click(); return true; }).then(() => settle(s.page, 300)).then(() => s.page.evaluate(() => location.hash))) === '#plan-r-strength');
+  check('1 a strength day: "Strength at home · N min" as the yoga step', (await txt(s.page, '#view .today-plan-yoga')).startsWith('Strength at home · ' + sm + ' min') && !/: strength day ·/.test(ts), ts);
+  check('1 ... Start opens Strength at home', (await s.page.$eval('#view .today-plan-yoga [data-today-nav]', (b) => { b.click(); return true; }).then(() => settle(s.page, 300)).then(() => s.page.evaluate(() => location.hash))) === '#plan-r-strength');
   await done(s);
   /* the day before a strength day: "Tomorrow: strength day"; a week whose strength is done: no line */
   const t1 = await open({ seed: cyc(ago(10), { log: logged(10, 5) }) });
@@ -102,7 +105,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   await done(t2);
   /* her plate: half sabzi tapped on the thali counts the habit */
   const p = await open({ seed: cyc(ago(9), { log: logged(9, 5), thali: { d: TODAY, on: ['veg', 'grain'] } }) });
-  check('4 half sabzi on the plate she tapped counts the habit: the row leaves Today', !(await has(p.page, '#view .today-plan-plate')) && /1 of 3 done today/.test(await txt(p.page, '#view .today-card')), await txt(p.page, '#view .today-card'));
+  check('4 half sabzi on the plate she tapped counts the habit: the row leaves Today', !(await has(p.page, '#view .today-plan-plate')) && /1 of 4 done today/.test(await txt(p.page, '#view .today-card')), await txt(p.page, '#view .today-card'));
   await done(p);
 }
 
@@ -112,24 +115,25 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const a = await open({ seed: cyc(ago(9), { log: l, thali: { d: TODAY, on: ['veg'] } }), hash: '#plan-checkin' });
   const v = await view(a.page);
   check('5 what already counted shows as done, with where it came from', /Cycle care yoga · \d+ min\nCounted from your yoga/.test(v) && /Half the plate sabzi\nFrom your plate today/.test(v), v);
-  check('5 ... only the rest is asked: "1 question left"', /Tuesday, 27 October · 1 question left/.test(v) && !(await has(a.page, '[data-ci="move:d"]')) && !(await has(a.page, '[data-ci="food:d"]')), v);
+  check('5 ... only the rest is asked: "2 questions left" (the walk and last night)', /Tuesday, 27 October · 2 questions left/.test(v) && !(await has(a.page, '[data-ci="yoga:d"]')) && !(await has(a.page, '[data-ci="food:d"]')) && (await has(a.page, '[data-ci="move:d"]')), v);
   check('5 bedtime is asked about last night, Yes / Close / No', /Last night: in bed by 11:30 pm\?\nYes\nClose\nNo/.test(v), v);
   await shot(a.page, '5-checkin');
   await tap(a.page, '#pl-ci-edit');
-  check('5 "Change an answer" opens every step', /3 questions left/.test(await view(a.page)) && (await has(a.page, '[data-ci="move:d"].on')) && (await has(a.page, '[data-ci="food:d"].on')));
+  check('5 "Change an answer" opens every step', /4 questions left/.test(await view(a.page)) && (await has(a.page, '[data-ci="yoga:d"].on')) && (await has(a.page, '[data-ci="food:d"].on')));
   await a.page.evaluate(() => { window.Saathi.mem.planCi.edit = false; window.Saathi.render(); }); await settle(a.page, 300);
-  await tap(a.page, '[data-ci="sleep:p"]'); await tap(a.page, '[data-ci-b="tired"]'); await tap(a.page, '#pl-ci-save');
+  await tap(a.page, '[data-ci="move:n"]'); await tap(a.page, '[data-ci="sleep:p"]'); await tap(a.page, '[data-ci-b="tired"]'); await tap(a.page, '#pl-ci-save');
   const x = (await plan(a.page)).log[TODAY]; const fb = await view(a.page);
-  check('5 saving keeps what counted as it was counted (8 minutes stay 8), and last night\'s bedtime on today', x.min === 8 && x.ck.sleep === 'p' && x.ci === 1 && !x.ck.move, x);
+  check('5 saving keeps what counted as it was counted (8 minutes stay 8), and last night\'s bedtime on today', x.min === 8 && x.ck.sleep === 'p' && x.ck.move === 'n' && x.ci === 1 && !x.ck.yoga, x);
   check('6 the feedback names her goal', /YOUR GOAL\n\nA step towards more regular periods\./.test(fb), fb);
   check('6 ... her strength days and tomorrow\'s routine', /Strength: 0 of 2 this week · next: Thursday/.test(fb) && /Tomorrow: Gentle start · \d+ min/.test(fb), fb);
+  check('12 ... and the step she missed, for tomorrow: "Tomorrow, add: Walk 10 minutes."', /2 done, 1 partly today/.test(fb) && /Tomorrow, add: Walk 10 minutes\./.test(fb), fb);
   await shot(a.page, '6-feedback');
   await done(a);
   /* nothing done: no goal line */
   const n = await open({ seed: cyc(ago(9), { log: logged(9, 5) }), hash: '#plan-checkin' });
-  for (const g of ['move', 'food', 'sleep']) await tap(n.page, '[data-ci="' + g + ':n"]');
+  for (const g of ['yoga', 'move', 'food', 'sleep']) await tap(n.page, '[data-ci="' + g + ':n"]');
   await tap(n.page, '#pl-ci-save'); const nf = await view(n.page);
-  check('6 a day with nothing done: no goal line, the kind word instead', !/YOUR GOAL/.test(nf) && /Some days are like that/.test(nf), nf);
+  check('6 a day with nothing done: no goal line, the kind word instead (and no list to add)', !/YOUR GOAL/.test(nf) && /Some days are like that/.test(nf) && !/Tomorrow, add/.test(nf), nf);
   await done(n);
   /* night shift: her sleep step stays about today */
   const ns = await open({ seed: cyc(ago(9), { log: logged(9, 5), work: 'night' }), hash: '#plan-checkin' });
@@ -199,12 +203,16 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const r = await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge'));
   const sc = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => [x.id, x.body, x.go]));
   check('8 on: a daily reminder at her time, which opens today\'s routine', r && r.time === '21:15' && r.every === 1 && r.mod === 'plan' && sc.length && sc[0][0] === 'r-plan-nudge-' + TODAY && sc[0][1] === 'Your time to move. Tap to start.' && sc[0][2] === 'plan-now', [r, sc.slice(0, 2)]);
-  /* she moves (a +10): today's nudge stops */
+  /* her walk (a +10) alone: the nudge still comes, for her yoga (Version 39.13) */
   await go(a.page, 'plan-moves'); await tap(a.page, '[data-pl-add="10"]'); await settle(a.page, 1200);
-  const sc2 = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => x.id));
-  check('8 once she has moved, none today', (await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)) === TODAY && sc2[0] === 'r-plan-nudge-' + iso(TODAY, 1), sc2.slice(0, 2));
+  check('12 after her walk alone, the nudge still comes: her yoga is left', !(await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)));
   await go(a.page, 'plan-now');
   check('8 the nudge opens today\'s routine', (await a.page.evaluate(() => location.hash)) === '#plan-r-cycle');
+  /* she does her yoga too: none today */
+  await tap(a.page, '#pl-pstart'); for (let i = 0; i < 40 && (await has(a.page, '#pl-next')); i++) await tap(a.page, '#pl-next');
+  await settle(a.page, 1200);
+  const sc2 = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => x.id));
+  check('8 once she has done her yoga and her walk, none today', (await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)) === TODAY && sc2[0] === 'r-plan-nudge-' + iso(TODAY, 1), sc2.slice(0, 2));
   /* a shared phone: plain words */
   await a.page.evaluate(() => { window.Saathi.state.settings.discreet = true; window.Saathi.save(); }); await settle(a.page, 1200);
   const sc3 = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => x.body));
@@ -287,15 +295,15 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   await shot(a.page, '10-quiet');
   await tap(a.page, '#pl-q-share');
   const sh = await a.page.evaluate(() => window.__shared);
-  check('10 the family message goes through her phone\'s share sheet, with no health words', sh && sh[1] === 'Will you walk with me after dinner? 15 minutes, every day this week.' && !/period|pmos|pcos|weight|health|plan|doctor|sakhi/i.test(sh[1]), sh);
+  check('10 the family message goes through her phone\'s share sheet, with no health words', sh && /^Will you walk with me after dinner\? \d+ minutes, every day this week\.$/.test(sh[1]) && !/period|pmos|pcos|weight|health|plan|doctor|sakhi/i.test(sh[1]), sh);
   await tap(a.page, '#pl-q-edit'); await a.page.fill('#pl-q-ta', 'Shall we walk to the temple each evening?'); await tap(a.page, '#pl-q-share');
   check('10 ... in her own words when she changes it', ((await a.page.evaluate(() => window.__shared)) || [])[1] === 'Shall we walk to the temple each evening?');
   await tap(a.page, '#pl-q-light');
   const d = await plan(a.page); const td = await txt(a.page, '#view .today-card');
-  check('10 a lighter week: 7 days of 10 minutes and one food habit, said on Today', JSON.stringify(d.light) === JSON.stringify({ from: TODAY, until: iso(TODAY, 7) }) && d.quietAt === TODAY && /A lighter week: 10 minutes a day until Tuesday\./.test(td) && /0 of 2 done today/.test(td) && /Gentle start · \d+ min/.test(td) && /walk 10 minutes/.test(td) && !/In bed by/.test(td), [d.light, td]);
+  check('10 a lighter week: 7 days of a 10-minute walk and one food habit, said on Today', JSON.stringify(d.light) === JSON.stringify({ from: TODAY, until: iso(TODAY, 7) }) && d.quietAt === TODAY && /A lighter week: 10 minutes a day until Tuesday\./.test(td) && /0 of 2 done today/.test(td) && /Walk 10 minutes/.test(td) && !(await has(a.page, '#view .today-plan-yoga')) && !/In bed by/.test(td), [d.light, td]);
   check('10 ... and the card is gone', !(await has(a.page, '#view .pl-sl-quiet')));
   await a.page.clock.setFixedTime(at(7, '10:00')); await go(a.page, 'home');
-  check('10 ... a week later, her plan as before', /3 done today|0 of 3 done today/.test(await txt(a.page, '#view .today-card')) && !(await has(a.page, '#view .pl-sl-quiet')), await txt(a.page, '#view .today-card'));
+  check('10 ... a week later, her plan as before', /of 4 done today|All 4 done today/.test(await txt(a.page, '#view .today-card')) && !(await has(a.page, '#view .pl-sl-quiet')), await txt(a.page, '#view .today-card'));
   await done(a);
   /* Qura's free call; Not now waits 4 weeks; a pause; a shared phone */
   const c = await open({ seed: cyc(ago(21), { log: l, weeks: W }), now: at(0, '10:00') });
@@ -329,6 +337,55 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const cv = await view(c.page);
   check('11 Hindi 4-week check, at 360 px', /आपका 4 हफ़्ते का चेक-इन/.test(cv) && /बेहतर\nवैसा ही\nख़राब/.test(cv) && await noScroll(c.page), cv);
   await done(c);
+}
+/* ---------- 12: Version 39.13, four steps, each on its own, and a day with all of them done ---------- */
+{
+  const REM = [{ id: 'plan', mod: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज का दिन कैसा रहा? 1 मिनट' }, time: '20:00', every: 1, start: ago(9), on: true }];
+  const remDone = (page) => page.evaluate(() => (window.Saathi.reminders.get('plan') || {}).doneOn || null);
+  const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }, { reminders: REM }), now: at(0, '10:00') });
+  const rows = await a.page.$$eval('#view .today-card .today-it', (x) => x.map((y) => (y.className.match(/today-plan-[a-z]+/) || [''])[0]));
+  check('12 four steps on Today, in order: yoga, walk, food, bedtime', JSON.stringify(rows) === JSON.stringify(['today-plan-yoga', 'today-plan-move', 'today-plan-plate', 'today-plan-sleep']) && /0 of 4 done today/.test(await txt(a.page, '#view .today-card')), rows);
+  await tap(a.page, '#view .today-plan-move [data-today-act]');
+  let lg = (await plan(a.page)).log[TODAY];
+  check('12 the walk\'s Done counts walking minutes, and yoga stays to do', lg.min === 10 && lg.ck.move === 'd' && !(await has(a.page, '#view .today-plan-move')) && (await has(a.page, '#view .today-plan-yoga')), lg);
+  await tap(a.page, '#view .today-plan-yoga [data-today-nav]'); await tap(a.page, '#pl-pstart'); await a.page.clock.runFor(12 * 60 * 1000); await settle(a.page, 500);   /* the whole routine, on its timers */
+  await go(a.page, 'home'); lg = (await plan(a.page)).log[TODAY];
+  check('12 her yoga adds its own minutes; her walk is still counted as walked', lg.rmin >= 5 && lg.min === 10 + lg.rmin && !(await has(a.page, '#view .today-plan-yoga')) && /2 of 4 done today/.test(await txt(a.page, '#view .today-card')), [lg, await txt(a.page, '#view .today-card')]);
+  await tap(a.page, '#view .today-plan-plate [data-today-act]');
+  const one = await txt(a.page, '#view .today-card');
+  check('12 one step left: "One more: In bed by 11:30 pm", in bold', /3 of 4 done today/.test(one) && /One more: In bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
+  check('12 ... and the evening check-in still comes', !(await remDone(a.page)));
+  await tap(a.page, '#view .today-plan-sleep [data-today-act]');
+  const all = await txt(a.page, '#view .today-card');
+  check('12 every step done: "All 4 done today", and the check-in rests', /All 4 done today/.test(all) && !(await has(a.page, '#view .today-card .today-it')) && (await remDone(a.page)) === TODAY, [all, await remDone(a.page)]);
+  await shot(a.page, '12-all-done');
+  await done(a);
+  /* yoga first: its minutes don't do the walk */
+  const y = await open({ seed: cyc(ago(9), { log: logged(9, 5) }, { reminders: REM }), now: at(0, '10:00'), hash: '#plan-r-cycle' });
+  await tap(y.page, '#pl-pstart'); await y.page.clock.runFor(12 * 60 * 1000); await settle(y.page, 500);
+  await go(y.page, 'home');
+  check('12 yoga\'s minutes never count as her walk', ((await plan(y.page)).log[TODAY] || {}).rmin >= 5 && (await has(y.page, '#view .today-plan-move')) && !(await has(y.page, '#view .today-plan-yoga')) && /1 of 4 done today/.test(await txt(y.page, '#view .today-card')) && !(await remDone(y.page)), await txt(y.page, '#view .today-card'));
+  await done(y);
+  /* the look-back counts the days with every step done (only when there were some) */
+  const w1 = {}; for (let i = 7; i >= 1; i--) { const di = 7 - i; w1[ago(i)] = { min: 15, ci: 1, ck: { move: 'd' } }; }
+  [7, 4, 2].forEach((i) => { const di = 7 - i; w1[ago(i)] = { min: 18, rmin: 8, r: [di === 3 ? 'strength' : 'cycle'], str: di === 3 ? true : undefined, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }; });
+  const lb = await open({ seed: cyc(ago(7), { log: w1 }), now: at(0, '10:00') });
+  check('12 the look-back: "All your steps on 3 of 7 days."', /You followed your plan on 7 of 7 days\./.test(await txt(lb.page, '#view .pl-review')) && /All your steps on 3 of 7 days\./.test(await txt(lb.page, '#view .pl-review')), await txt(lb.page, '#view .pl-review'));
+  await done(lb);
+  const lb0 = await open({ seed: cyc(ago(7), { log: logged(7, 5) }), now: at(0, '10:00') });
+  check('12 ... and no such line when there were none', /You followed your plan on 5 of 7 days\./.test(await txt(lb0.page, '#view .pl-review')) && !/All your steps/.test(await txt(lb0.page, '#view .pl-review')), await txt(lb0.page, '#view .pl-review'));
+  await done(lb0);
+  /* the other plans keep their own steps */
+  const pn = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9), { log: logged(9, 4) }) } }, now: at(0, '10:00') });
+  check('12 a pain plan keeps its steps (no yoga step)', !(await has(pn.page, '#view .today-plan-yoga')) && /0 of 2 done today/.test(await txt(pn.page, '#view .today-card')), await txt(pn.page, '#view .today-card'));
+  await done(pn);
+  /* all 4 buttons above the tab bar on a 360 x 780 phone (Galaxy S23, S24), in English and Hindi */
+  for (const lang of ['en', 'hi']) {
+    const f = await open({ seed: cyc(ago(9), { log: logged(9, 5) }, { lang }), lang, w: 360, h: 780, now: at(0, '10:00') });
+    const m = await f.page.evaluate(() => ({ nav: Math.round(document.querySelector('#tabbar').getBoundingClientRect().top), btn: Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav]')).map((x) => Math.round(x.getBoundingClientRect().bottom)) }));
+    check('12 ' + lang + ' at 360 x 780: all 4 step buttons above the tab bar', m.btn.length === 4 && m.btn.every((b) => b <= m.nav), m);
+    await done(f);
+  }
 }
 check('11 no page errors', errsAll.length === 0, errsAll.slice(0, 5));
 

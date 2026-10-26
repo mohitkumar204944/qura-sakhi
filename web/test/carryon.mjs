@@ -1,7 +1,7 @@
 // Version 39.5: one plan page, and plans that carry on (docs/roadmap-v39-2026-10-24.md, section 3; journey audit P2-04,
 // P2-07, P2-09, P2-10, P2-15, P2-16, P2-17, P2-19, P2-25, MIN-10; MODULE_API section 48). This file checks:
 //   1 one page for every plan: her clock, a hero (ring, week or timeline), one row for today, 4 tiles, results on My progress;
-//   2 Today's budget: at most 3 plan steps and one plan card;  3 rest days she taps, and the offer on a hard day she logged;
+//   2 Today's budget: at most 3 plan steps (the cycle plan's 4: Version 39.13) and one plan card;  3 rest days she taps, and the offer on a hard day she logged;
 //   4 welcome back after quiet days;  5 the hold rule on the light plans (the cycle plan's ladder is unchanged);
 //   6 "Your plan has changed" when a pregnancy or a birth stops her plan;  7 her last plan is kept, on My plan and the report;
 //   8 a fair new 12 weeks on the same goal;  9 pause for a week, and the one-time offer after 14 quiet days;
@@ -106,7 +106,7 @@ const errsAll = [];
   for (const [pk, goal, sd] of [['cycle', 'irregular', {}], ['pain', 'pain', {}], ['ttc', 'ready', { situation: { planning: true } }], ['post', 'recovery', { situation: { deliveredOn: ago(36) }, events: [] }], ['meno', 'bones', { dob: '1976-03-01', situation: { midlife: true } }]]) {
     const a = await open({ seed: Object.assign({ intake: { goal: goal }, mods: { plan: planOf(pk, goal, ago(15)) } }, sd), now: at(0, '19:00') });
     const n = await a.page.evaluate(() => ({ rows: document.querySelectorAll('#view .today-card .today-it[class*="today-plan-"]').length, cards: document.querySelectorAll('#view .pl-slot').length }));
-    check('2 ' + pk + ': Today has at most 3 plan steps and one plan card', n.rows <= 3 && n.cards <= 1, n);
+    check('2 ' + pk + ': Today has at most ' + (pk === 'cycle' ? 4 : 3) + ' plan steps and one plan card', n.rows <= (pk === 'cycle' ? 4 : 3) && n.cards <= 1, n);   /* Version 39.13: the cycle plan's yoga and walk */
     errsAll.push(...a.errs); await a.ctx.close();
   }
 }
@@ -163,8 +163,8 @@ const errsAll = [];
   check('5 the look-back after a week with fewer than 3 days: "the same pace"', /the same pace/.test(await view(c.page)), (await view(c.page)).slice(0, 500));
   errsAll.push(...c.errs); await c.ctx.close();
   const d = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(28)) } } });
-  const cyc = await walk(d.page);
-  check('5 the cycle plan keeps its approved ladder (week 5: 20 minutes even after quiet weeks)', cyc === 20, cyc);
+  const cyc = await d.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions(); const w = (a.find((x) => x.id === 'move') || {}).mins; const y = a.find((x) => x.id === 'yoga'); return { w: w, y: y ? S.plan.routineMins(y.r, S.state.mods.plan) : 0 }; });
+  check('5 the cycle plan keeps its approved ladder (week 5: 20 minutes even after quiet weeks; Version 39.13: her yoga, then her walk for the rest)', cyc.w === Math.max(10, Math.ceil((20 - cyc.y) / 5) * 5) && cyc.w + cyc.y >= 20, cyc);
   errsAll.push(...d.errs); await d.ctx.close();
 }
 
@@ -213,8 +213,8 @@ const errsAll = [];
   const d = await a.page.evaluate(() => window.Saathi.state.mods.plan);
   check('8 the same goal again starts at her last 4 weeks\' minutes, with the habits she kept', d.base >= 200 && d.hab0 === 2 && (d.past || [])[0].pack === 'cycle', { base: d.base, hab0: d.hab0 });
   await go(a.page, 'home');
-  const mins = await a.page.evaluate(() => (window.Saathi.plan.actions().find((x) => x.id === 'move') || {}).mins);
-  check('8 ... so day 1 is her level (30 minutes, the most the plan asks), not back to 10', mins === 30, mins);
+  const mins = await a.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions(); const y = a.find((x) => x.id === 'yoga'); return ((a.find((x) => x.id === 'move') || {}).mins || 0) + (y ? S.plan.routineMins(y.r, S.state.mods.plan) : 0); });
+  check('8 ... so day 1 is her level (30 minutes, the most the plan asks, as her yoga and her walk), not back to 10', mins >= 30 && mins < 40, mins);
   errsAll.push(...a.errs); await a.ctx.close();
 }
 
@@ -266,9 +266,9 @@ const errsAll = [];
   errsAll.push(...p1.errs); await p1.ctx.close();
   /* a strength day's Done counts the strength day (journey audit P2-16) */
   const s1 = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(8)) } } });   /* plan day 9: a strength day */
-  const ok = await s1.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions().find((x) => x.id === 'move'); return a ? a.go : null; });
+  const ok = await s1.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions().find((x) => x.id === 'yoga'); return a ? a.go : null; });   /* Version 39.13: strength is the yoga step */
   if (ok === 'plan-r-strength') {
-    await go(s1.page, 'plan-checkin'); for (const g of await s1.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(s1.page, '[data-ci="' + g + ':' + (g === 'move' ? 'd' : 'n') + '"]'); await tap(s1.page, '#pl-ci-save');   /* Version 39.12: Today\'s button opens the routine; the check-in\'s Done counts it */
+    await go(s1.page, 'plan-checkin'); for (const g of await s1.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(s1.page, '[data-ci="' + g + ':' + (g === 'yoga' ? 'd' : 'n') + '"]'); await tap(s1.page, '#pl-ci-save');   /* Version 39.12: Today\'s button opens the routine; the check-in\'s Done counts it (39.13: on the yoga step) */
     check('10 a strength day: "Done" on the step counts the strength day', await s1.page.evaluate(() => { const d = window.Saathi.state.mods.plan; return Object.keys(d.log).some((k) => d.log[k].str); }));
   } else check('10 a strength day: (seed lands on a strength day)', false, ok);
   errsAll.push(...s1.errs); await s1.ctx.close();

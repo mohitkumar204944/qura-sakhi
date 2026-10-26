@@ -102,10 +102,10 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':p"]');
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   let v = await view(page);
-  check('2 the check-in counts Partly as partly', /0 done, 3 partly today · 1 of 7 days this week/.test(v), v.slice(0, 400));
+  check('2 the check-in counts Partly as partly', /0 done, 4 partly today · 1 of 7 days this week/.test(v), v.slice(0, 400));
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
-  check('2 Today says the same count, and that she checked in', /0 done, 3 partly today/.test(td) && /Checked in today/.test(td), td);
+  check('2 Today says the same count, and that she checked in', /0 done, 4 partly today/.test(td) && /Checked in today/.test(td), td);
   check('2 the plan\'s rows are gone once she checked in, with no "All done for today"', !(await has(page, '#view .today-plan-move')) && !(await has(page, '#view [data-today-act]')) && !/All done for today/.test(td), td);
   await shot(page, '2-today-after-partly');
   check('2 no page errors', errs.length === 0, errs);
@@ -113,7 +113,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
 }
 {
   const { ctx, page } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(2)) } }, now: at(0, '20:30') });
-  await go(page, 'plan-checkin'); await tap(page, '[data-ci="move:d"]'); await tap(page, '[data-ci="food:p"]'); await tap(page, '[data-ci="sleep:n"]'); await tap(page, '[data-ci-b="tired"]'); await tap(page, '#pl-ci-save');
+  await go(page, 'plan-checkin'); await tap(page, '[data-ci="yoga:n"]'); await tap(page, '[data-ci="move:d"]'); await tap(page, '[data-ci="food:p"]'); await tap(page, '[data-ci="sleep:n"]'); await tap(page, '[data-ci-b="tired"]'); await tap(page, '#pl-ci-save');
   check('2 a mixed day: "1 done, 1 partly today"', /1 done, 1 partly today/.test(await view(page)), (await view(page)).slice(0, 300));
   await go(page, 'home');
   check('2 ... and Today agrees', /1 done, 1 partly today/.test(await txt(page, '#view .today-card')));
@@ -171,7 +171,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const m = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(28), { log: one, doc: 'done' }) } } });
   await go(m.page, 'home');
   const mv = await view(m.page);
-  check('4 month 1 shows even after a lapse, with the restart in its words', (await slotFirst(m.page)) === 'Month 1 done' && /You started on \d+ \w+\. Start again small today: Yoga or a walk/.test(mv), [await slotFirst(m.page), mv.slice(0, 900)]);
+  check('4 month 1 shows even after a lapse, with the restart in its words', (await slotFirst(m.page)) === 'Month 1 done' && /You started on \d+ \w+\. Start again small today: Walk \d+ minutes/.test(mv), [await slotFirst(m.page), mv.slice(0, 900)]);
   check('4 no page errors', errs.length === 0 && m.errs.length === 0, errs.concat(m.errs));
   await m.ctx.close();
 }
@@ -278,7 +278,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(b.page, 'plan-checkin');
   for (const g of await b.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(b.page, '[data-ci="' + g + ':p"]');
   await tap(b.page, '[data-ci-b="time"]'); await tap(b.page, '#pl-ci-save');
-  check('8 Hindi: one count', /आज 0 हो गए, 3 थोड़े · इस हफ़्ते 7 में से 1 दिन/.test(await view(b.page)), (await view(b.page)).slice(0, 300));
+  check('8 Hindi: one count', /आज 0 हो गए, 4 थोड़े · इस हफ़्ते 7 में से 1 दिन/.test(await view(b.page)), (await view(b.page)).slice(0, 300));
   check('8 360 px: the check-in doesn\'t scroll sideways', await noScroll(b.page));
   check('8 no page errors (Hindi)', errs.length === 0 && b.errs.length === 0, errs.concat(b.errs));
   await b.ctx.close();

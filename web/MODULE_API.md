@@ -3674,7 +3674,8 @@ decisions:
 
 Everything stays on the phone; nothing new goes to the server.
 
-**1. Today names the day's yoga or strength** (the `walk.cycle` adapter, the cycle plan only).
+**1. Today names the day's yoga or strength** (the `walk.cycle` adapter, the cycle plan only). Version 39.13 made yoga and the
+walk two steps (section 56).
 - The move step's title is the day's routine and its length ("Cycle care yoga · 8 min", "Strength at home · 11 min"). Its
   second line is "Or walk N minutes". Its `name` is "Yoga or a walk", used by the look-back's best step and the restart
   cards.
@@ -3762,3 +3763,47 @@ review, section 19.12. The goal lines and the "Worse" line wait for the doctor.
   - the cycle plan's move step (72);
   - My plan's two new settings rows (140);
   - the end page's 12-week check (23).
+
+## 56. Version 39.13: yoga and the walk as two steps; a day with every step done (Mohit, 26 Oct)
+
+Mohit, after Version 39.12: "instead of 3 option we can have 4 options walk and yoga should be separate and we need to make
+sure user did all daily activities for the day".
+
+**Four steps in the cycle plan.** In `progs/v1.js`: `slots.max` is 4, the new adapter `yoga.cycle` comes first, and the
+changelog has R5. `progs.mjs` now allows 4 steps a day.
+- **Yoga** (`yoga.cycle`; id `yoga`, kind `routine`). The day's routine: "Cycle care yoga · 8 min", or "Strength at home · 11
+  min" on a strength day. Today shows it with Start. It's done when she finishes a routine that moves her (on a strength day,
+  Strength at home) or answers Done in the check-in.
+- **Walk** (`walk.cycle`; id `move`). "Walk N minutes", with Done. N is the rest of the day's minutes after the yoga, 10 at
+  least: `max(10, ceil5(daySuggest − routine minutes))`. That way the week's minutes still grow as the plan intends.
+  - Only walking minutes count. A routine keeps its own minutes in `rmin` (`logRoutine`).
+  - The walk's Done tops up the walking minutes (`markAction`); the weekly ring still counts all minutes.
+- Then the food habit and bedtime, as before.
+- A lighter week keeps the walk and the food habit (`stepsFor`).
+- The other plans keep their own steps, since only the cycle plan has a daily yoga routine.
+- Version 39.12's "Or walk 10 minutes" and "Yoga or a walk" are gone (section 55, gap 1). The restart cards now name her walk.
+
+**Making sure she does them all.**
+- **Today:**
+  - all 4 steps show (5 rows with a tablet); every other case keeps Version 39.10's 3 rows;
+  - the count reads "x of 4";
+  - when one step is left, "One more: In bed by 11:30 pm" shows in bold, in the plain "Yesterday" line's place;
+  - a full day reads "All 4 done today".
+- **The evening check-in reminder keeps coming until every step is done**, or she checks in or rests. This applies to every
+  plan (`remSync`, `allDoneToday`). Before, one step (or the cycle plan's minutes) put it away for the day.
+- **The nudge waits** for both her yoga and her walk.
+- **The check-in asks each step on its own.** Its feedback names what she missed: "Tomorrow, add: Walk 10 minutes."
+- **The weekly look-back** adds "All your steps on N of 7 days." when N is 1 or more (`fullDays`). It isn't shown at 0, since
+  the weeks before this version had no yoga step.
+
+**Fit.** On a 360 × 780 phone (Galaxy S23, S24) all 4 buttons sit above the tab bar, in English and Hindi. Three things make
+the room:
+- the yoga row has no second line;
+- below 380 px, Today hides the bedtime tip (it stays on My plan);
+- the gap under the plan line is 4 px.
+
+**Tests.**
+- follow.mjs section 12 (91 checks in all).
+- companion, firstday, notices, pmosplan and carryon follow the 4 steps and the reminder rule.
+- golden re-recorded: only the 9 cycle-plan variants changed (4 steps, "0 of 4").
+- The progs baseline is re-recorded for cycle@1.

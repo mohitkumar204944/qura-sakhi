@@ -1821,7 +1821,7 @@ step towards, and what to do when something feels worse). Pilot builds carry the
 
 | English | Hindi |
 |---|---|
-| Cycle care yoga · 8 min · Or walk 10 minutes · Start · Yoga or a walk | पीरियड के लिए योग · 8 मिनट · या 10 मिनट सैर · शुरू करें · योग या सैर |
+| Cycle care yoga · 8 min · Start (Version 39.13 removed "Or walk 10 minutes" and "Yoga or a walk": section 19.13) | पीरियड के लिए योग · 8 मिनट · शुरू करें |
 | At lunch or dinner · Dal or besan cheela, for example · At one meal today · When you want something to drink · At snack time · When you cook | दोपहर या रात के खाने में · जैसे दाल या बेसन चीला · आज किसी एक खाने में · जब कुछ पीने का मन हो · बीच के नाश्ते में · खाना बनाते समय |
 | Thursday: strength day · 0 of 2 this week · Tomorrow: strength day · … | गुरुवार: ताक़त का दिन · इस हफ़्ते 2 में से 0 · कल: ताक़त का दिन · … |
 | A lighter week: 10 minutes a day until Monday. | सोमवार तक हल्का हफ़्ता: रोज़ 10 मिनट। |
@@ -1900,3 +1900,17 @@ step towards, and what to do when something feels worse). Pilot builds carry the
 | The next 7 days are lighter. Your plan carries on after that. | अगले 7 दिन हल्के रहेंगे। उसके बाद आपका प्लान वैसे ही चलेगा। |
 | Ask family to walk with me · Your own message, with no health words · Share · Change it | परिवार से साथ टहलने को कहें · आपका अपना संदेश, सेहत की कोई बात नहीं · भेजें · बदलें |
 | Will you walk with me after dinner? 15 minutes, every day this week. | क्या आप रात के खाने के बाद मेरे साथ टहलने चलेंगे? इस हफ़्ते रोज़ 15 मिनट। |
+
+### 19.13 Version 39.13: yoga and the walk as two steps; a day with every step done (MODULE_API section 56)
+
+Labels only. The yoga step's reason reuses the reviewed line "Moving most days lifts your energy and mood."; there is no new
+health wording.
+
+| English | Hindi |
+|---|---|
+| Walk 10 minutes | 10 मिनट सैर करें |
+| Yoga at home every day, with moving pictures (the plan's card "Your 4 steps") | रोज़ घर पर योग, चलती तस्वीरों के साथ |
+| All 4 done today | आज के सभी 4 क़दम हो गए |
+| One more: In bed by 11:30 pm | बस एक और: रात 11:30 तक बिस्तर पर |
+| Tomorrow, add: Walk 10 minutes. | कल यह भी करें: 10 मिनट सैर करें। |
+| All your steps on 3 of 7 days. (the weekly look-back) | हफ़्ते के 7 में से 3 दिन सारे क़दम पूरे हुए। |
