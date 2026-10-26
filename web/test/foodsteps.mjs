@@ -154,19 +154,27 @@ const errsAll = [];
   errsAll.push(...b.errs); await b.ctx.close();
 }
 
+/* Version 39.15: "Fasting today?" lives in her food step's "Why?" on Today; a plan with no food step keeps it on My plan */
+const FOODQ = ['plate', 'iron', 'ca', 'bfood', 'fast'].map((k) => '#view .today-plan-' + k + ' [data-today-why]').join(', ');
+async function fastTog(page) {
+  await go(page, 'home');
+  if (await has(page, FOODQ)) { await tap(page, FOODQ); if (await has(page, '#pl-why-fast')) { await tap(page, '#pl-why-fast'); return true; } await page.evaluate(() => window.Saathi.closeSheet()); }
+  await go(page, 'plan'); if (await has(page, '#view #pl-fast-tog')) { await tap(page, '#view #pl-fast-tog'); return true; } return false;
+}
+const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page, FOODQ))) return ''; await tap(page, FOODQ); const x = await page.$eval('#pl-why-fast', (e) => e.textContent).catch(() => ''); await page.evaluate(() => window.Saathi.closeSheet()); return x; };
+
 /* ---------- 6. Fasting ---------- */
 {
   const a = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
   check('6 Today keeps to her 3 steps: no fasting question there', !(await has(a.page, '#view #pl-fast-tog')));
-  await go(a.page, 'plan');
-  check('6 My plan: "Fasting today?" under today\'s row', (await a.page.$eval('#view #pl-fast-tog', (e) => e.textContent).catch(() => '')) === 'Fasting today?');
-  await tap(a.page, '#view #pl-fast-tog');
+  check('6 her food step\'s "Why?" asks "Fasting today?" (Version 39.15: not on My plan any more)', (await fastLabel(a.page)) === 'Fasting today?' && (await go(a.page, 'plan').then(() => has(a.page, '#view #pl-fast-tog'))) === false);
+  await fastTog(a.page);
   const f = await acts(a.page);
   check('6 ... tapped: her food step makes way for "On your fast today"', f.some((x) => x.id === 'fast' && x.title === 'On your fast today' && /sargi or sehri/.test(x.sub)) && !f.some((x) => x.id === 'food'), f);
-  check('6 ... the fasting step opens the fasting page, and the link now says "Not fasting today"', (f.find((x) => x.id === 'fast') || {}).go === 'periods-fasting' && (await a.page.$eval('#view #pl-fast-tog', (e) => e.textContent).catch(() => '')) === 'Not fasting today');
+  check('6 ... the fasting step opens the fasting page, and its "Why?" now says "Not fasting today"', (f.find((x) => x.id === 'fast') || {}).go === 'periods-fasting' && (await fastLabel(a.page)) === 'Not fasting today');
   await a.page.evaluate(() => { const S = window.Saathi; const d = S.data('plan'); d.log[S.toISO(S.today())] = { ck: { fast: 'd' } }; S.save(); });
   check('6 ... a fasting day she ticks counts as a day she followed her plan', await a.page.evaluate((x) => window.Saathi.plan.dayDone(x), TODAY));
-  await tap(a.page, '#view #pl-fast-tog');
+  await fastTog(a.page);
   check('6 ... "Not fasting today" brings her food step back', (await acts(a.page)).some((x) => x.id === 'food'));
   /* the evening check-in: today and tomorrow */
   await a.page.clock.setSystemTime(at(0, '20:30')); await go(a.page, 'plan-checkin');
@@ -204,7 +212,7 @@ const errsAll = [];
   const a = await open({ lang: 'hi', seed: { lang: 'hi', intake: { goal: 'heavy' }, mods: { plan: planOf('heavy', 'heavy', ago(25)) } } });
   const s = (await acts(a.page)).find((x) => x.id === 'iron') || {};
   check('7 Hindi: "आज का आयरन वाला खाना" with a Hindi food name', /^आज का आयरन वाला खाना: [ऀ-ॿ]/.test(s.title || '') && s.sub === 'इसे नींबू, आँवला या अमरूद के साथ खाएँ।', s);
-  await go(a.page, 'plan'); await tap(a.page, '#view #pl-fast-tog'); await go(a.page, 'home');
+  await fastTog(a.page); await go(a.page, 'home');
   check('7 Hindi: the fasting step', ((await acts(a.page)).find((x) => x.id === 'fast') || {}).title === 'आज आपका व्रत है');
   check('7 Hindi, 360 px: no sideways scroll on Today', await noScroll(a.page));
   await go(a.page, 'periods-fasting');
@@ -284,7 +292,7 @@ const errsAll = [];
   /* FIXES-04: a pause never switches back on a plan reminder she switched off, even after a time change during it */
   const REM = [{ id: 'plan', kind: 'custom', mod: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज कैसा रहा? 1 मिनट' }, time: '20:00', every: 1, on: true, start: ago(30) }];
   for (const end of ['button', 'week']) {
-    const a = await open({ seed: { reminders: REM, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20)) } }, hash: '#plan' });
+    const a = await open({ seed: { reminders: REM, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20)) } }, hash: '#plan-settings' });   /* Version 39.15: Plan settings is a page of its own */
     await tap(a.page, '#view #pl-pause'); await tap(a.page, '#view [data-pl-at="21:00"]'); await go(a.page, 'plan');
     await remOff(a.page, 'plan');
     if (end === 'button') { await go(a.page, 'plan'); await tap(a.page, '#view #pl-unpause'); } else { await a.page.clock.setSystemTime(at(8, '10:00')); await go(a.page, 'home'); await go(a.page, 'plan'); }
@@ -318,9 +326,9 @@ const errsAll = [];
       errsAll.push(...a.errs); await a.ctx.close();
     }
     const f = await open({ lang, seed: { lang, intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-    await go(f.page, 'plan'); await tap(f.page, '#view #pl-fast-tog');
+    await fastTog(f.page); await go(f.page, 'plan');
     const tips = await view(f.page); await go(f.page, 'home'); const fm = await doneBottoms(f.page);
-    check('8 SAFETY-03 ' + lang + ', a fasting day: all 3 Done buttons above the tab bar, and her fasting tips on My plan', fits(fm, 3) && (lang === 'en' ? /On your fast today: a proper sargi or sehri/.test(tips) : /आज आपका व्रत है: सरगी या सेहरी/.test(tips)), [fm, tips.slice(0, 400)]);
+    check('8 SAFETY-03 ' + lang + ', a fasting day: all 3 Done buttons above the tab bar, and her fasting tips on My plan', fits(fm, 3) && (lang === 'en' ? /On your fast today\n[^\n]*sargi or sehri/i.test(tips) : /आज आपका व्रत है\n[^\n]*सरगी या सेहरी/.test(tips)), [fm, tips.slice(0, 400)]);
     errsAll.push(...f.errs); await f.ctx.close();
     const c = await open({ lang, seed: { lang, events: ev7(12), intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
     const ct = await c.page.$eval('#view .hero.mini', (e) => e.textContent).catch(() => ''); const cm = await doneBottoms(c.page);
@@ -346,7 +354,8 @@ const errsAll = [];
   const bf = await open({ seed: { situation: { deliveredOn: ago(1), breastfeeding: true }, events: [], intake: { goal: 'feed', stage: 'post' }, mods: { plan: planOf('post', 'feed', ago(0)) } } });
   await dayTo(bf.page, 2); await go(bf.page, 'home'); const ba = await acts(bf.page);
   check('8 FOOD-02 the 3rd day of her plan, 3 days after the birth: "Food while you breastfeed" with the recovery check', ba.some((x) => x.id === 'bfood') && ba.some((x) => x.id === 'rcheck'), ba);
-  if (await has(bf.page, '#view .today-go[data-go-at="bf-food"]')) await tap(bf.page, '#view .today-go[data-go-at="bf-food"]');
+  /* Version 39.14: her food step's "Why?" has its page as the tool, opened at that card */
+  if (await has(bf.page, '#view .today-plan-bfood [data-today-why]')) { await tap(bf.page, '#view .today-plan-bfood [data-today-why]'); if (await has(bf.page, '#sheet-root [data-go-at="bf-food"]')) await tap(bf.page, '#sheet-root [data-go-at="bf-food"]'); }
   const at1 = await bf.page.evaluate(() => { const e = document.querySelector('#view [data-at="bf-food"]'); return { hash: location.hash, open: !!(e && e.open), top: e ? Math.round(e.getBoundingClientRect().top) : null, vh: window.innerHeight }; });
   check('8 FOOD-02 ... it opens the feeding page at that card, open', at1.hash === '#post-feed' && at1.open && at1.top != null && at1.top >= 0 && at1.top < at1.vh / 2, at1);
   errsAll.push(...bf.errs); await bf.ctx.close();
@@ -386,7 +395,7 @@ const errsAll = [];
   errsAll.push(...ca7.errs); await ca7.ctx.close();
   /* FOOD-08: a fasting day is cleared after a week even if she never taps a fasting chip again */
   const pr = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-  await go(pr.page, 'plan'); await tap(pr.page, '#view #pl-fast-tog'); const f0 = (await st(pr.page)).mods.plan.fast || {};
+  await fastTog(pr.page); const f0 = (await st(pr.page)).mods.plan.fast || {};
   await dayTo(pr.page, 9); await go(pr.page, 'home'); const f9 = (await st(pr.page)).mods.plan.fast || {};
   check('8 FOOD-08 "Fasting today?" is kept on the phone for a week at most', f0[TODAY] === 1 && !(TODAY in f9), [f0, f9]);
   errsAll.push(...pr.errs); await pr.ctx.close();

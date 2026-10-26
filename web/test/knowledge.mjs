@@ -520,7 +520,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   /* FIXES-03: the pause leaves her reminder choice alone */
   {
     const rem = [{ id: 'plan', kind: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज कैसा रहा? 1 मिनट' }, time: '20:00', repeat: 'daily', on: true, start: ago(30) }];
-    const { ctx, page, errs } = await open({ seed: { reminders: rem, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20)) } }, hash: '#plan' });
+    const { ctx, page, errs } = await open({ seed: { reminders: rem, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20)) } }, hash: '#plan-settings' });   /* Version 39.15: Plan settings is a page of its own */
     await tap(page, '#view #pl-pause'); if (await has(page, '#view #pl-pause-go')) await tap(page, '#view #pl-pause-go');
     await page.evaluate(() => { window.Saathi.reminders.upsert({ id: 'plan', on: false }); window.Saathi.save(); }); await go(page, 'plan');
     if (await has(page, '#view #pl-unpause')) await tap(page, '#view #pl-unpause');
@@ -531,7 +531,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   /* FIXES-04: after Stop, the same goal within a month starts where she was */
   {
     const lg = {}; for (let k = 1; k <= 70; k++) if (k % 7) lg[ago(k)] = { min: 25, ck: { move: 'd' } };
-    const { ctx, page, errs } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(70), { log: lg }) } }, hash: '#plan' });
+    const { ctx, page, errs } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(70), { log: lg }) } }, hash: '#plan-settings' });
     await tap(page, '#view #pl-stop'); await tap(page, '#view #pl-stop-yes');
     await page.evaluate((x) => { const S = window.Saathi; S.plan.startFromIntake(x); S.save(); S.mem.rvCard = 0; }, IK); await go(page, 'plan-reveal');
     for (let i = 0; i < 6 && !(await has(page, '#pl-rv-go')); i++) await tap(page, '#pl-rv-next');
@@ -559,7 +559,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   }
   /* FIXES-07: "My Hb was low" stays after her plan ends */
   {
-    const { ctx, page, errs } = await open({ seed: { intake: { goal: 'heavy' }, mods: { plan: planOf('heavy', 'heavy', ago(30), { docSaid: { k: 'hb', at: ago(3) }, docAt: ago(5), doc: 'done' }) } }, hash: '#plan' });
+    const { ctx, page, errs } = await open({ seed: { intake: { goal: 'heavy' }, mods: { plan: planOf('heavy', 'heavy', ago(30), { docSaid: { k: 'hb', at: ago(3) }, docAt: ago(5), doc: 'done' }) } }, hash: '#plan-settings' });
     await tap(page, '#view #pl-stop'); await tap(page, '#view #pl-stop-yes');
     check('14 after Stop, the doctor\'s "My Hb was low" still rests her Hb card (FIXES-07)', (await page.evaluate(() => window.Saathi.plan.saidHbAt())) === ago(5), await page.evaluate(() => window.Saathi.plan.saidHbAt()));
     errsAll.push(...errs); await ctx.close();

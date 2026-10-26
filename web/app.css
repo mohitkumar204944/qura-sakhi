@@ -785,6 +785,31 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .today-go .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .today-go .body strong { overflow-wrap: anywhere; }
 .today-it > .btn { flex-shrink: 0; }
+/* Version 39.14 (audit R1, R3): her plan's steps as a checklist that stays. The row is the tap target; a round tick on the right
+   (filled when done, a tap undoes it); the next step ringed; "Why?" in the line under it; Start for a routine. */
+.today-chk { cursor: pointer; align-items: center; min-height: 52px; padding-top: 4px; padding-bottom: 4px; }
+.today-chk .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.today-chk .body strong { overflow-wrap: anywhere; }
+.today-sub { font-size: 13px; color: var(--muted); display: flex; align-items: baseline; gap: 4px; min-width: 0; white-space: nowrap; }
+.today-sub-t { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.today-sub .today-why { flex: none; }
+.today-why { display: inline; padding: 0; min-height: 0; font-size: 13px; font-weight: 600; vertical-align: baseline; }
+.today-tick { flex: none; width: 44px; height: 44px; border: none; background: none; padding: 0; display: grid; place-items: center; cursor: pointer; }
+.today-tick .tk { width: 30px; height: 30px; border-radius: 15px; box-sizing: border-box; border: 2.5px solid var(--line); display: grid; place-items: center; color: #FFFFFF; }
+.today-tick.next .tk { border-color: var(--accent); }
+.today-tick.on .tk { background: var(--ok); border-color: var(--ok); }
+.today-tick .tk svg { width: 16px; height: 16px; stroke-width: 2.6; }
+.today-ok { background: var(--ok-soft); }
+.today-ok .body strong { color: var(--text); font-weight: 600; }
+.today-ok .today-sub { color: var(--ok); font-weight: 600; }
+.today-next { box-shadow: inset 0 0 0 2px var(--accent-soft); }
+.today-start { flex: none; display: inline-flex; align-items: center; gap: 6px; }
+.today-start svg { width: 16px; height: 16px; }
+.today-open { flex: none; width: 44px; height: 44px; border: none; background: none; padding: 0; display: grid; place-items: center; color: var(--muted); cursor: pointer; }
+.today-open svg { width: 18px; height: 18px; }
+.today-fold > summary { list-style: none; cursor: pointer; padding: 6px 0; }
+.today-fold > summary::-webkit-details-marker { display: none; }
+.today-fold[open] > summary { margin-bottom: 4px; }
 .setup-it { min-height: 48px; }
 .setup-tick { width: 26px; height: 26px; border-radius: 13px; border: 2px solid var(--line); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFFFFF; }
 .setup-tick svg { width: 16px; height: 16px; }
@@ -1133,3 +1158,27 @@ body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span
 .fw-few .linkbtn { color: var(--h-purple); flex-shrink: 0; }
 .ed-del { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--accent); }
 .ed-del .small { color: var(--muted); }
+
+/* Version 39.16 (audit R11 to R13): the 10-second daily note, the notes meter, the calendar key in two lines */
+.feel-card { gap: 10px; } .feel-card h3 { margin: 0; } .feel-card .eyebrow { margin-bottom: -6px; }
+.feel-g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.feel-c { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; padding: 8px 4px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--card); color: var(--fg); font: inherit; font-size: 14px; font-weight: 600; line-height: 1.2; cursor: pointer; min-width: 0; text-align: center; overflow-wrap: anywhere; }
+.feel-c .si { width: 26px; height: 26px; display: grid; place-items: center; font-size: 22px; line-height: 1; color: var(--muted); } .feel-c .si svg { width: 24px; height: 24px; }
+.feel-c.on { border-color: var(--accent); background: var(--accent-soft); } .feel-more { border-style: dashed; color: var(--text); }
+.feel-card .feel-ok { color: var(--ok); font-weight: 600; } .feel-card > p { margin: 0; }
+.meter { display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; background: var(--card-2); } .meter .row { flex-wrap: wrap; gap: 2px 10px; } .meter .row strong { color: var(--fg); font-size: 15px; } .meter .small { margin: 0; }
+.meter-bar { display: block; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; } .meter-bar i { display: block; height: 100%; background: var(--accent); border-radius: 4px; } .meter-nx { color: var(--fg); }
+.legend-dots { align-items: center; } .legend .lk-dots { display: inline-flex; gap: 3px; } .legend-dots .tour-q { margin-left: auto; }
+/* Version 39.17 (Diary audit R1, R4, R10) and 39.18 (R7, R9): the short day page, the Today strip, Days by period */
+.symchip.day-more-b { border: 2px dashed var(--line); background: transparent; color: var(--text); }
+.symchip.day-more-b .si { background: var(--card); color: var(--muted); font-size: 22px; font-weight: 600; line-height: 1; }
+.day-more { display: flex; flex-direction: column; gap: 12px; }
+.symcat.has-say { padding-top: 14px; } .symcat.has-say > b { padding-right: 52px; min-height: 40px; display: flex; align-items: center; }
+.day-facts.has-say { padding-right: 58px; }
+.cal-today .ct-cyc { margin: 0; font-size: 15px; line-height: 1.4; color: var(--text); overflow-wrap: anywhere; } .cal-today .ct-cyc strong { color: var(--fg); } .cal-today h3 { margin: 0; }
+.cal-today.has-say > .ct-cyc { padding-right: 52px; min-height: 40px; }
+.cal-today .meter .linkbtn { padding: 0 4px; }
+.cal-pw { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 10px; } .cal-pw strong { flex: 1; min-width: 0; color: var(--fg); overflow-wrap: anywhere; }
+.dy-grp { display: flex; flex-direction: column; gap: 8px; } .dy-gh { margin: 8px 2px 0; font-size: 15px; color: var(--muted); font-weight: 600; overflow-wrap: anywhere; }
+.pp-bleed > .small { color: var(--muted); }
+.meter .meter-nx { display: flex; align-items: center; gap: 8px; } .meter-nx > span { flex: 1; min-width: 0; } .meter-nx .linkbtn { flex-shrink: 0; }

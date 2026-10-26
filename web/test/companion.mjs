@@ -152,7 +152,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 what joining saved: her goal, gap, skipped months and day; the plan; the 8 pm reminder', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '20:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
   check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('2 Today: a greeting by name, her plan and day, and her four steps (Version 39.13: yoga and the walk apart)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /Day 1 · 0 of 4 done today/.test(td) && /Cycle care yoga · \d+ min\nStart/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
+  check('2 Today: a greeting by name, her plan and day, and her four steps (Version 39.13: yoga and the walk apart)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /PLAN DAY 1/.test(td) && /0 of 4 done today/.test(td) && /Cycle care yoga\n\d+ min[\s\S]*?Start/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight/.test(td), td);
   await shot(page, '2-today');
   /* 4. the evening check-in */
   check('4 in the evening Today offers "How did today go?"', await has(page, '#view .today-card [data-go="plan-checkin"].primary'));
@@ -173,9 +173,11 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('4 the day is kept: each answer, the minutes and the food habit', lg.ci === 1 && lg.ck.yoga === 'n' && lg.ck.move === 'd' && lg.ck.sleep === 'n' && lg.min === 10 && lg.plate.half === true && lg.bar === 'time', lg);
   await go(page, 'home');
   const td2 = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('4 Today: checked in, with the day\'s count; the steps leave Today (Version 37.2)', /Checked in today/.test(td2) && /2 of 4 done today/.test(td2) && !/Cycle care yoga/.test(td2) && !/In bed by midnight/.test(td2), td2);
+  check('4 Today: checked in, with the day\'s count; her steps stay, ticked or not (Version 39.14)', /Checked in today/.test(td2) && /2 of 4 done today/.test(td2) && /Cycle care yoga/.test(td2) && /In bed by midnight/.test(td2), td2);
   await go(page, 'diary'); if (await has(page, '[data-tab="cal"]:not(.on)')) await tap(page, '[data-tab="cal"]');
-  check('4 the diary calendar marks the day she followed her plan', (await has(page, '#view .day.today .kd i.hue-plum')) && /Your plan/.test(await view(page)));
+  await tap(page, '#cal-key');   /* Version 39.16: the full key is behind "?" */
+  check('4 the diary calendar marks the day she followed her plan', (await has(page, '#view .day.today .kd i.hue-plum')) && /Your plan/.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')));
+  await page.evaluate(() => window.Saathi.closeSheet()); await settle(page, 200);
   check('1-4 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -219,7 +221,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await go(page, 'plan');
   let v = await view(page);
   /* Version 39.2 (diet audit F11): every plan's results are "My progress" */
-  check('8 My plan for period pain: its name, today\'s steps and her progress', /Easier periods/.test(v) && /Today’s steps/.test(v) && /My progress/.test(v), v.slice(0, 300));
+  check('8 My plan for period pain: its name, today\'s steps and her progress', /Easier periods/.test(v) && /Your 2 daily steps/.test(v) && /My progress/.test(v), v.slice(0, 300));
   await go(page, 'plan-progress'); v = await view(page);   /* Version 39.5: My plan's "My progress" tile opens every plan's results */
   check('8 results from her own diary: days between periods and painkiller periods, before and since', /Days between periods/.test(v) && /Periods that needed a painkiller/.test(v) && /Before/.test(v) && /Since you started/.test(v), v.slice(0, 400));
   await go(page, 'plan'); v = await view(page);
@@ -290,7 +292,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   await tap(page, '#pl-rv-go'); await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; });
   let s = await st(page);
   check('existing woman: the plan is on, with a 6 pm reminder', s.mods.plan.pack === 'pain' && s.mods.plan.remAt === '18:00' && s.reminders.some((r) => r.id === 'plan' && r.time === '18:00'));
-  await go(page, 'plan'); await tap(page, '#pl-chg');
+  await go(page, 'plan-settings'); await tap(page, '#pl-chg');   /* Version 39.15 */
   check('Change what I work on: the goal screen again', /What do you want to work on first\?/.test(await view(page)));
   check('existing woman: no page errors', !errs.length, errs);
   await ctx.close();
@@ -387,7 +389,7 @@ for (const who of ['priya', 'asha', 'meera', 'sunita', 'kamla']) {
   const raw = [];
   for (const r of ['home', 'plan', 'plan-checkin', 'plan-reveal']) { await go(page, r); const v = await view(page); const m = v.match(/plan_[a-z0-9_]+|slot_[a-z]+|hs_[a-z0-9]+|today_hi_[a-z]/); if (m) raw.push(r + ': ' + m[0]); }
   await go(page, 'plan');
-  check('Hindi: My plan in Hindi', /ख़ून की ताक़त/.test(await view(page)) && /आज के क़दम/.test(await view(page)), (await view(page)).slice(0, 200));
+  check('Hindi: My plan in Hindi', /ख़ून की ताक़त/.test(await view(page)) && /आपके रोज़ के \d क़दम/.test(await view(page)), (await view(page)).slice(0, 200));
   check('Hindi: no raw string keys', !raw.length, raw);
   await shot(page, 'hi-plan');
   check('heavy/Hindi: no page errors', !errs.length, errs);

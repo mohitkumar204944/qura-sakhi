@@ -3807,3 +3807,265 @@ the room:
 - companion, firstday, notices, pmosplan and carryon follow the 4 steps and the reminder rule.
 - golden re-recorded: only the 9 cycle-plan variants changed (4 steps, "0 of 4").
 - The progs baseline is re-recorded for cycle@1.
+
+## 57. Version 39.14: Today is her checklist (Mohit, 26 Oct)
+
+Mohit, 26 Oct: "maximum clarity on what needs to be done and why user should do it and what will impact of consistently
+doing". The audit is `docs/home-plan-diary-audit-2026-10-26.md` (R1 to R6, R14). The mockup is
+claude.ai/artifact/6CVQhWJnZmJFZ9sNcapHdr. He answered "go with your recommendations": done steps stay ticked, a full day
+closes itself, plan weeks keep her start day and show as dots, and the order is Today, My plan, Diary.
+
+**The checklist (R1).** The plan's `today` hook returns every step of the day, not only the ones left. Each item carries:
+- `plan: true`, `tick` (a tick, habit, minutes or routine step; a link or a check is done in its own tool), `ok` (done),
+  `next` (the first step left), `fold` (every step done);
+- `act` to tick it (`markAction`, then `closeDay`) and `undo` to untick it (`unmark`);
+- `why`, which opens the step's sheet (R3);
+- `nav` and `primary` for a routine's Start.
+
+Core's `todayHtml` draws the plan's items as their own list, `.today-plan-list`:
+- A tick row (`.today-chk`, `data-today-row`): a tap anywhere on the row ticks it. The round tick on the right is
+  `data-today-act`; once done, `data-today-undo` undoes it. A done row stays, soft green (`.today-ok`), and says where it
+  counted ("Ticked on Today", "From your plate today", "Counted from your yoga").
+- A routine not done yet has Start where its tick goes. A tap on the row starts it, and finishing the routine ticks it.
+- A link or check step (pregnancy's Due now, the recovery check, a checklist) keeps its one-tap `.today-go` row to its tool,
+  with a static tick once done there.
+- "Why?" sits in the line under the name (`data-today-why`). A long line is cut, so "Why?" stays.
+- Her plan's rows never fold into one row any more (Version 39.0's `plan-all` is gone). Tablets and her own reminders always
+  show; beside a plan, one other row at most.
+
+**One pink button (R14).** In the Today card it's the next step's Start, or the evening check-in once it is due (from 5 pm, her
+check-in time, or once she has done a step). Other rows' Done buttons are plain. The check-in moved under her steps (the new
+`todayFoot` hook). Before it is due, that place says "Check-in at 8 pm"; after it, "Checked in today".
+
+**Undo.** `unmark(d, a)` sets the step's answer to `n`. For the walk, it takes away only the minutes the tick added
+(`log.tkm`, written by `markAction`), never the ones she walked. A habit clears its plate habit, and a strength tick its
+strength mark.
+
+**A full day closes itself (R2).** The tick that completes her day (`closeDay`):
+- sets `log.fd` and earns a petal through `S.emit('checkin', { quiet: true })`, once a day (`log.petal` when one was earned);
+- puts the evening reminder away (`remSync` already counts `allDoneToday`).
+
+The card then shows:
+- "Day complete" and "All 4 done today";
+- her goal line ("A step towards more regular periods.", wording review 19.12);
+- her week, and "Tomorrow" with tomorrow's first two steps;
+- "A petal for your garden ›" and "Add how it went (optional)", which opens the check-in.
+
+Her ticked steps fold under "Your 4 steps" (`details.today-fold`), so a tick can still be undone.
+
+**"Why?" (R3).** `openWhy(a)` opens a half sheet:
+- the step's reviewed reason (`a.why`);
+- how to do it: a food habit's own line, the walk's pace, a routine's minutes and moves, else the step's line;
+- for the cycle plan's daily steps, "What keeping to your plan can bring", the reviewed timeline (`plan_ex_1` to `_3`; it is
+  about her plan as a whole, so the heading says so);
+- its tool (Start, Yoga and moves, My plate, My food, its page), and "Read more" (the Learn guide, Version 39.7).
+
+A food step's sheet also has "Fasting today?" (Version 39.9's chip, moved from My plan). It isn't on a shared phone.
+
+**"Plan day" (R4).** The plan line is the eyebrow "MY PMOS PLAN · WEEK 2 · PLAN DAY 10" (`ebLine`). A pregnancy or after-birth
+plan keeps its own week, and "Cycle day" stays the only plain day count. Version 37.2's "Day 3" line is gone.
+
+**Her week (R5).** Seven small dots for her plan week (her start day, as he chose), with today's count on the same line:
+- a full day (every step) is filled; a day with some steps is outlined; a rest day is dashed;
+- today is ringed, and a strength day ahead is gold;
+- each dot's title gives that day's count ("Monday: 3 of 4 steps").
+
+Under them, a notice ("One more: …", "Welcome back", a lighter week, a rest day, her period), or else her week line: "This week: 2
+full days · strength on Thursday". It is never "0 full days": then only the strength day shows. The Version 37.2 "Yesterday:
+…" line is gone; the dots carry it.
+
+**The weekly moment (R6).** On the first 3 days of a new week, the look-back is inside the Today card (not the slot), right
+under her steps:
+- It starts as one line, "Week 1 is done · 5 of 7 days on your plan" with "Look back" (`#pl-rev-open`). A tap opens it in
+  place (`reviewCard(d, true, true)`, `S.mem.planRevOpen`): what she did, the week's barrier, then her energy.
+- After her answer: her tip, Plan your week and Got it, all plain buttons (her steps keep the pink one).
+- The slot no longer shows it, unless she has no steps today.
+
+The audit (R6) put it above her steps. It sits under them so her first 3 steps keep the first screen at 360 × 800 on the
+tightest days: a late period, a fertile day, the trying plan (review FIXES-06, REGRESSIONS-08).
+
+**Fit.** The plan line is two short lines, as Version 39.13's was. So on a 360 × 780 phone all 4 steps sit above the tab bar
+in English and Hindi, on a day with no look-back. A routine row shows its name, with its minutes in the line under it.
+
+**Tests.** `test/daily.mjs` sections 1 to 4 and 7. follow, companion, firstday, notices, goals, pmosplan, carryon, protect,
+pictures, foodsteps and value follow the checklist. golden is re-recorded.
+
+## 58. Version 39.15: My plan explains the plan (Mohit, 26 Oct)
+
+The audit's R7 to R10 and R15, and the mockup's After 7. The page (`renderProgramme`, on My plan and at `plan-pmos`) now
+reads top to bottom:
+1. **Her goal and week.** "Goal: feeling better with PMOS · Week 2 of 12" (`plan_gv_*`). The diagnosis-style line ("I have PMOS
+   (PCOS)") is gone. A shared phone sees only her week.
+2. **How her plan works (R15).** Four columns: every day (N steps, check-in at her time); every week (look back, plan the
+   week); every 4 weeks (a 1-minute check); after 12 weeks (your results). A plan with no 12 weeks shows the first two.
+3. **Her daily steps (R7.2).** Each step shows:
+   - its reviewed reason, always (not on a shared phone);
+   - "How to do it", which opens the same sheet as Today's "Why?";
+   - the same tick as Today's (`data-pl-tk`, `data-pl-un`), or Start for a routine.
+   Under them: "Tick here or on Today: it's the same tick". The check-in button appears only when it is due (R9); before
+   that, "Check-in at 8 pm".
+4. **This week (R7.3).** Seven rings, one per day, with a part for each step. A full ring is a full day; a rest day is dashed;
+   today is ringed, and a strength day ahead is marked. Then:
+   - the legend ("Each ring has 4 parts: yoga, walk, food, sleep.");
+   - her week line;
+   - her minutes ("Active minutes 36 of 60", the cycle plan);
+   - "+ Add minutes", and Plan this week (moved here from settings).
+5. **Her garden (R10)**, right under her week.
+6. **What consistency brings (R7.4, R8).**
+   - The cycle plan's reviewed timeline, with "You are here". A trying plan has its reviewed line, a pregnancy plan its own.
+   - Her own signs as they arrive: her energy from the look-backs ("Week 1: Good"); her 4-week check ("In 19 days", "Due
+     now", "Done"); her days between periods ("28 before your plan · 30 since").
+   - The reviewed "Periods often take 3 to 6 months to change" line.
+   - Not on a shared phone. R8's line linking effort to results is not built: it is new health wording, and waits for the
+     doctor.
+7. **The rest.** The 12 weeks (the path's weeks 4 and 8 now read "Your 4-week check", "Your 8-week check"); the plan's tiles;
+   her last plan; her care team; then **one row, Plan settings**. That row opens `plan-settings`: her reminder and its time,
+   the nudge, pause, change what I work on, and stop (stopping there returns to My plan).
+
+Gone from the page: the minutes ring hero, the "Today's steps" row and its morning check-in button, "Fasting today?" (now in
+her food step's sheet), and the garden at the bottom. `heroRing`, `heroWeek`, `todayRow` and `wpRowSub` are removed.
+
+**Tests.** `test/daily.mjs` section 5. carryon, foodsteps, follow, knowledge and pmosplan reach settings through its row.
+
+## 59. Version 39.16: the 10-second daily note; My ASHA off Home, My plan and Diary (Mohit, 26 Oct)
+
+**"How do you feel today?" (R11).** Five of the Diary's own words: Calm, Tired, Cramps, Low mood, Bloating (`FEEL`; no new
+symptom). A tap saves it as that day's entry (`state.daily`), on the phone, and the garden counts it as a log. It appears:
+- **on Home**, for every woman at the cycle, trying or midlife stage, in the card `feel-card`.
+  - With no plan it's her daily job: "Today · 10 seconds", the 5 chips and More (which opens today's day sheet), why it helps,
+    and the notes meter (R12).
+  - With a plan it's short: the question and the chips, under her Today card.
+  - The first days' "Log today" row makes way for it.
+  - Never on a shared phone's Home, for a girl under 18, in pregnancy or after a birth (her stage's own checks lead there).
+- **At the top of today's day sheet** (`feel-sec`), as the same entries as the chips below (`data-sym`).
+- **In her plan's evening check-in** (`S.feel.on / chips / toggle`), so one evening ritual fills her plan and her Diary.
+
+**The notes meter (R12).** "Noted on 9 of 27 days" for this month: a day counts with any symptom, note or period mark. Under
+it, what her next entries unlock:
+- "Next: 2 more periods, and your fertile days show." This shows only where fertile days can show, never on a shared phone.
+- Else "Next: 1 more period with notes, and Sakhi shows what repeats for you." (the `patterns` rule).
+
+There is no streak, and nothing is lost on a quiet day. The meter is on Home (no plan) and at the top of Cycles.
+
+**The calendar's key (R13).** Two lines:
+- the period marks (bleeding, spotting, likely range, predicted);
+- "Dots: what you noted", with a "?" (`#cal-key`) that opens the full key: today's ring, every kind of dot, and hearts.
+
+The fertile-days line stays when fertile days show.
+
+**My ASHA (Mohit, 26 Oct: "Remove My Asha/ANM from home my plan and diary").**
+- Home's setup card skips the ASHA step (`setupCard`; Me's setup card keeps it).
+- My plan's care team has no My ASHA row.
+- The pregnancy checklist's "ASHA and ambulance numbers" item never becomes Today's or My plan's "Due now" step (`preg.due`).
+  It stays in her pregnancy checklist.
+- The Diary had none.
+- My ASHA stays in Help, Me, Explore (Care near me) and Search.
+
+**Tests.** `test/daily.mjs` sections 4 and 6; value.mjs section 6 (the setup card).
+
+## 60. Version 39.17: the daily note in 10 seconds (Mohit, 26 Oct: "proceed with your recommendation")
+
+From the Diary audit (`docs/diary-audit-2026-10-26.md`, R1 to R5, R10). Labels only, no new health advice. The new lines are in
+the wording review, section 19.17.
+
+**One quick set (R3).** `FEEL` is Feeling okay, Tired, Cramps, Low mood, Bloating (`feelSet()`: her periods stopped, hot
+flushes in place of cramps). The same 5 show in every place:
+- Home's card, and the Diary's Today strip (`calToday`);
+- the day page (`feel-sec`);
+- her first log (in place of Cramps, Acne, Low mood, Tired and "Nothing");
+- the period sheet (`openLog`, in place of its own 6);
+- the plan's evening check-in (`S.feel.chips`).
+
+Each place shows her answer once she has given it. The + menu's Symptoms and Mood are one "How I feel" (focus `feel`), so it
+has 4 doors: Period started (or ended), Spotting, How I feel, Note.
+
+**"Feeling okay" (R2).** A new entry, `d_ok`, in the Diary's mood group. It is a word, not a symptom:
+- it counts in the notes meter and the garden;
+- it shows in Days, the calendar's dots and "What you noted";
+- it is never in the doctor's report or the month's summary (`joy.js`);
+- it is never a pattern (not in `PAT_KEYS`).
+
+`patterns()` counts a period only when she noted something from 8 days before to 4 days after it. So a period she felt fine in
+now stays in the count: "in 3 of the 5 periods with notes", not "3 of 3".
+
+**The short day page (R1).** At the cycle, trying and midlife stages (`feelStage()`, not pregnant), the page is:
+- the day's facts;
+- "How do you feel today?" (another day: "How did you feel?") with the 5 and "More signs" (`#day-more`);
+- her period, sex and her note.
+
+"More signs" (`#day-more-sec`) holds the other signs, never one of the 5 again. It opens:
+- on a tap ("Fewer signs" folds it);
+- by itself on a day that has one of them (no fold button then, so her answer stays in sight);
+- from Home's More and Cycles' empty state (focus `more` or `sym`).
+
+In a pregnancy and after a birth every group stays open as before, since their danger signs are among them. Measured at
+360 × 780: today's page went from 2,128 px with 30 choices to 1,188 px with 10.
+
+**Today on the Diary's first screen (R4).** `calToday()` is the Calendar's first card. It holds:
+- her cycle day and next period in one line (the day page's own `dayFacts`);
+- the 5 and More;
+- the notes meter.
+
+The meter moved here from Cycles. It carries the "Why?" link that the Calendar's own "Fertile days show after 6 cycles" line
+had; that line (`fwFew`) shows only where the strip doesn't. The strip is not shown before her first log, on a shared phone,
+for a girl under 18, or in a pregnancy.
+
+**What a note counted towards (R5).**
+- A note on today: "Noted · 9 of 27 days this month" (`notedToast`, the meter's own count `notedMonth`), with "What helps"
+  where a sign has one.
+- Another day: "Noted".
+- The note, or the day page's period start, that completes her third period with notes: "What repeats for you is ready" with
+  "See it" (`readyToast`). This shows only where that card shows.
+
+**Read aloud (R10).** The day's facts, how she felt and the Today strip carry the card speaker (`data-say`; the day page calls
+`sayButtons` on its sheet). The smoke test's 200% text check now includes the day page (with More signs open), Cycles and Days.
+
+**Tests.** `test/daynote.mjs` sections 1 to 5 and 9; `test/smoke.mjs`.
+
+## 61. Version 39.18: what her notes show, the doctor, her stage (Mohit, 26 Oct)
+
+From the Diary audit (R6 to R9).
+
+**Cycles in the order of her questions (R6).**
+1. What repeats for you (or how many more periods with notes it needs);
+2. My cycles;
+3. Your cycle at a glance;
+4. Report for my doctor (moved up from the bottom);
+5. then the charts, What you noted, the monthly signs and My records.
+
+Her records' signal cards stay on top.
+
+**Days by period (R7).**
+- A heading per period: "Period from 17 Oct · 28-day cycle", "· this cycle", or why it isn't counted. On a shared phone:
+  "From 17 Oct".
+- Each day shows "Day 9" (or "Day 2 of your period") and her notes.
+- The estimates went; the day page keeps them. "N days before the next period" stays only in the 8 days before a period, the
+  window "What repeats" reads. The fertile-days note at the foot went with them.
+
+**The monthly signs, named by what they ask (R8).** `ciKind()` picks one of:
+
+| Who | Row title | Line under it |
+|---|---|---|
+| Pregnant | "Pregnancy signs, once a month" | "The signs to tell your doctor about" |
+| Up to a year after a birth | "Signs after the birth, once a month" | "The signs to tell your doctor about" |
+| Midlife (`isMidlife`) | "Midlife signs, once a month" | "The signs a doctor asks about after 40" |
+| PMOS or irregular periods (`obTileOf() === 'pmos'`), or her plan for them (`S.plan.goal()`) | "Skin and hair signs, once a month" | "The signs a doctor asks about in PMOS" |
+
+These follow `checkinSet()`'s own sets. Any other woman sees no row: her daily note covers her mood and flow. The check-in page
+and its reminder are unchanged.
+
+**The Diary at her stage (R9).**
+- **In a pregnancy:**
+  - the Calendar shows "Week 21 of your pregnancy" with This week (not on a shared phone);
+  - the period key, likely range, estimates and contraception line are gone;
+  - there is no Today strip.
+- **In the first 6 weeks after a birth, before any period (`earlyPost`):**
+  - the day page's period row is "Bleeding after the birth", which opens the recovery check and its reviewed warning signs;
+  - "Period started" doesn't show, as on Home and in the + menu;
+  - nothing shows there on a shared phone;
+  - "Period started" returns after 6 weeks or with her first period.
+- **The key:** "Likely range" shows only when the calendar has one.
+
+"Bleeding after the birth" is new wording on a safety path, so it waits for the doctor (wording review, section 19.18).
+
+**Tests.** `test/daynote.mjs` sections 6 to 8.

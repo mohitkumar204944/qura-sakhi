@@ -153,9 +153,9 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const hub = await view(page);
   /* Version 39.5 (journey audit MIN-10): her plan's page has the week's ring and one row for today; Today has the steps, My moves
      the minutes and My plate the food habits */
-  check('3 week 1: 0 of 50 minutes and one strength day, with one row for today', /Week 1 of 12/i.test(hub) && /0 of 50 minutes/.test(hub) && /Strength days: 0 of 1/.test(hub) && (await has(page, '#view .pl-trow')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 600));
+  check('3 week 1: 0 of 50 minutes in her week, and her steps with their reasons (Version 39.15)', /Week 1 of 12/i.test(hub) && /Active minutes\n0 of 50/.test(hub) && (await has(page, '#view .pl-steps-card')) && (await has(page, '#view .pl-wkc')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 900));
   await go(page, 'home');
-  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13)', /Cycle care yoga · \d+ min\nStart\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13)', /Cycle care yoga\n\d+ min[\s\S]*?Start\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   await go(page, 'plan-plate');
   check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
   await go(page, 'plan-moves');
@@ -166,7 +166,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   check('3 Undo takes the 20 minutes back', !(await plan(page)).log[TODAY].min);
   await tap(page, '[data-pl-add="20"]');
   await go(page, 'plan-pmos');
-  check('3 ... and the week\'s ring counts them', /20 of 50 minutes/.test(await view(page)));
+  check('3 ... and her week counts them', /Active minutes\n20 of 50/.test(await view(page)));
   await go(page, 'plan-plate');
   await page.$eval('[data-pl-hab="half"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(page, 300);
   check('3 ticking the food habit saves it for today', (await plan(page)).log[TODAY].plate.half === true);
@@ -176,14 +176,14 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   await setPlan(page, started({ start: ago(15), level: 1 }));
   await go(page, 'home');
   const tv = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('3 Home\'s Today: today\'s strength, her walk for the rest of the day\'s minutes, and the newest food habit', /Strength at home · \d+ min\nStart\nWalk 10 minutes/.test(tv) && /Protein at breakfast/.test(tv), tv);
+  check('3 Home\'s Today: today\'s strength, her walk for the rest of the day\'s minutes, and the newest food habit', /Strength at home\n\d+ min[\s\S]*?Start\nWalk 10 minutes/.test(tv) && /Protein at breakfast/.test(tv), tv);
   await tap(page, '.today-plan-move [data-today-act]');
-  check('3 one tap logs today\'s walk and the item goes', (await plan(page)).log[TODAY].min === 10 && !(await has(page, '.today-plan-move')));
+  check('3 one tap logs today\'s walk, and the step stays, ticked (Version 39.14)', (await plan(page)).log[TODAY].min === 10 && (await has(page, '.today-plan-move.today-ok')));
   await tap(page, '.today-plan-yoga [data-today-nav]');
   check('3 Start opens today\'s routine (Version 39.12)', (await page.evaluate(() => location.hash)) === '#plan-r-strength');
   await go(page, 'home');
   await tap(page, '.today-plan-plate [data-today-act]');
-  check('3 one tap keeps today\'s food habit', (await plan(page)).log[TODAY].plate.protein === true && !(await has(page, '.today-plan-plate')));
+  check('3 one tap keeps today\'s food habit', (await plan(page)).log[TODAY].plate.protein === true && (await has(page, '.today-plan-plate.today-ok')));
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.state.mods.plan.log = {}; S.save(); }); await go(page, 'learn'); await go(page, 'home');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
   check('3 discreet mode: Today says "Your plan for today", never PMOS', /Your plan for today/.test(td) && !/PMOS/.test(td), td);
@@ -251,7 +251,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const v = await view(page);
   /* Version 37.2: it leads with what she did, asks only her energy, and takes what got in the way from her check-ins */
   check('5 a new week opens with last week\'s look-back: what she did, the week\'s barrier, one question', /Week 1 is done/.test(v) && /You followed your plan on 7 of 7 days\. You moved 70 minutes\./.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v.slice(v.indexOf('Week 1 is done'), v.indexOf('Week 1 is done') + 200)) && (await has(page, '[data-pl-e="ok"]')) && !(await has(page, '[data-pl-b]')), v.slice(0, 900));
-  check('5 the look-back sits under the row for today, not above it', await page.evaluate(() => { const a = document.querySelector('#view .pl-trow'), b = document.querySelector('#view .pl-review'); return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); }));   /* Version 39.5: one row for today */
+  check('5 the look-back sits under her steps, not above them (Version 39.15)', await page.evaluate(() => { const a = document.querySelector('#view .pl-steps-card'), b = document.querySelector('#view .pl-review'); return !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); }));   /* Version 39.5: one row for today */
   await tap(page, '#view .pl-review [data-pl-e="ok"]');
   check('5 her answer brings one tip and next week\'s target', /Split it up: two 10-minute walks count/.test(await view(page)) && /Next week: 60 minutes/.test(await view(page)));
   await tap(page, '#pl-rev-ok');
@@ -370,7 +370,7 @@ for (const [days, paused] of [[21, true], [50, false]]) {
 /* ---------- 10. The daily reminder, and stopping the plan ---------- */
 {
   const { ctx, page, errs } = await open();
-  await setPlan(page, started()); await go(page, 'plan-pmos');
+  await setPlan(page, started()); await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   await page.$eval('#pl-rem', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(page, 300);
   let r = await page.evaluate(() => window.Saathi.reminders.get('plan'));
   check('10 the reminder: every day at 8 pm (Version 37.1: her evening check-in), until the 12 weeks end', r && r.time === '20:00' && r.every === 1 && r.until === iso(TODAY, 83) && r.mod === 'plan', r);
@@ -583,10 +583,11 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
 {
   const { ctx, page, errs } = await open();
   await setPlan(page, started()); await go(page, 'plan-pmos');
-  const r0 = await page.$eval('#view .pl-routine', (b) => b.dataset.go.replace('plan-r-', ''));
+  const r0 = await page.evaluate(() => (window.Saathi.plan.actions().find((x) => x.id === 'yoga') || {}).r);
   await page.evaluate((r) => { const S = window.Saathi; S.state.mods.plan.log['2026-10-23'] = { r: [r] }; S.save(); S.render(); }, r0); await settle(page, 300);
-  check('15 today\'s routine done: the row says so', (await has(page, '#view .pl-routine.done')) && /Done today/.test(await page.$eval('#view .pl-routine', (e) => e.innerText)));
-  check('15 the routine row names the routine once (no "yoga: ... yoga")', !/yoga.*:.*yoga/i.test(await page.$eval('#view .pl-routine strong', (e) => e.innerText)));
+  check('15 today\'s routine done: her step says so (Version 39.15: ticked on My plan)', (await has(page, '#view .pl-steps-card .today-ok .today-tick.on')) && /1 of \d done today/.test(await page.$eval('#view .pl-steps-card', (e) => e.innerText)), await page.$eval('#view .pl-steps-card', (e) => e.innerText).catch(() => ''));
+  check('15 the routine row names the routine once (no "yoga: ... yoga")', !/yoga.*:.*yoga/i.test(await page.$eval('#view .pl-steps-card .today-ok .body strong', (e) => e.innerText).catch(() => '')));
+  await go(page, 'plan-settings');
   await page.evaluate(() => { const S = window.Saathi; S.state.settings.notify = false; S.reminders.upsert({ id: 'plan', mod: 'plan', title: { en: 'Your plan for today', hi: 'आज का आपका प्लान' }, start: '2026-10-23', every: 1, time: '18:00', on: true }); S.save(); S.render(); }); await settle(page, 300);
   check('15 the reminder is on but phone notifications are off: it says so, with a button', /Phone notifications are off for Sakhi/.test(await view(page)) && (await has(page, '#pl-notif')));
   await tap(page, '#pl-notif'); await settle(page, 600);
@@ -595,7 +596,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   const rings = await page.evaluate(() => JSON.parse(window.__sched || '[]').filter((x) => /^r-plan-/.test(String(x.id))));
   check('15 a tap on the plan\'s reminder opens its evening check-in (Version 37.2; it opened the PMOS page, and before that the reminders list)', rings.length > 0 && rings.every((x) => x.go === 'plan-checkin'), rings.slice(0, 2));
   await setPlan(page, started({ start: ago(90), keep: true })); await go(page, 'home');
-  check('15 after week 12, Home says "Keep it light" (Version 39.6), not "Week 12 of 12"', /Keep it light/.test(await page.$eval('#view .today-card .pl-th', (e) => e.innerText).catch(() => '')) && !/Week 12 of 12/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('15 after week 12, Home says "Keep it light" (Version 39.6), not "Week 12 of 12"', /keep it light/i.test(await page.$eval('#view .today-card .pl-th', (e) => e.innerText).catch(() => '')) && !/Week 12 of 12/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   check('15 no page errors', !errs.length, errs);
   await ctx.close();
 }

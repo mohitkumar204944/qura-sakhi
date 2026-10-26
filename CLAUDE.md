@@ -103,6 +103,24 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Version 39.13: the cycle plan's 4 steps (yoga and the walk apart), "One more", "All 4 done today", the evening check-in
     until every step is done. Contracts: MODULE_API sections 55 and 56; wording: sections 19.12 and 19.13 of the review (the
     goal lines wait for doctor review).
+  - `node test/daily.mjs` (Versions 39.14 to 39.16, the daily job made clear (Mohit, 26 Oct; the Home, My plan and Diary audit):
+    - Today as her checklist: a tick that stays and undoes, one pink button, "plan day", her week as dots, the look-back
+      inside the card, "Why?" with how and her tool, and a full day that closes itself;
+    - My plan explaining the plan: her goal, how it works, her steps with their reasons, this week as rings, what consistency
+      brings, settings on their own page;
+    - "How do you feel today?" on Home, the day sheet and the check-in, the notes meter, the calendar key in two lines;
+    - My ASHA off Home, My plan and Diary.
+    Contracts: MODULE_API sections 57 to 59; wording: sections 19.14 to 19.16 of the review.
+  - `node test/daynote.mjs` (Versions 39.17 and 39.18, the Diary at its best (Mohit, 26 Oct; `docs/diary-audit-2026-10-26.md`):
+    - the short day page with "More signs";
+    - "Feeling okay" and one quick set everywhere (the + menu's one "How I feel");
+    - today on the Diary's first screen, and a note that says what it counted towards;
+    - Cycles in the order of her questions, with the report up; the monthly signs only where they fit;
+    - Days grouped by period;
+    - a pregnancy's week, and "Bleeding after the birth" opening the recovery check;
+    - speakers on the day page.
+    Contracts: MODULE_API sections 60 and 61; wording: sections 19.17 and 19.18 of the review ("Bleeding after the birth"
+    waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

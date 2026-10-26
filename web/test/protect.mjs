@@ -265,7 +265,7 @@ const errsAll = [];
   const b = await open({ seed: { reminders: rem, mods: { plan: planOf('cycle', 'irregular', ago(3)), iron: { plan: 'weekly', start: ago(20), days: {} }, contra: { method: 'pill', start: ago(40), pill: { time: '21:00' } } } } });
   const rows = await b.page.$$eval('#view .today-card .today-it', (x) => x.map((y) => y.className + ' ' + y.textContent.slice(0, 40)));
   check('9 Today keeps her tablets and medicine reminders on a busy day', rows.some((r) => /today-rem-mine-1/.test(r)), rows);
-  check('9 ... and folds her plan\'s steps into one row when the list is long', rows.length <= 4 || rows.some((r) => /today-plan-all/.test(r)), rows);
+  check('9 ... and keeps her plan\'s 4 steps as her checklist beside them (Version 39.14: never folded into one row)', rows.filter((r) => /today-plan-/.test(r)).length === 4 && !rows.some((r) => /today-plan-all/.test(r)), rows);
   errsAll.push(...b.errs); await b.ctx.close();
 }
 
@@ -293,7 +293,7 @@ const errsAll = [];
   const b = await open({ seed: Object.assign({}, PREG(30), { mods: { plan: planOf('preg', 'food', ago(20)) } }) });
   const acts = await b.page.evaluate(() => (window.Saathi.plan.actions ? window.Saathi.plan.actions() : []).map((x) => x.id));
   check('11 the pregnancy plan has no kick-count step at 30 weeks', acts.indexOf('kicks') < 0, acts);
-  await go(b.page, 'plan');
+  await go(b.page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   check('11 the pregnancy plan\'s settings say "Starts a new plan", not "a new 12 weeks"', /Starts a new plan/.test(await vtext(b.page)) && !/Starts a new 12 weeks/.test(await vtext(b.page)));
   errsAll.push(...b.errs); await b.ctx.close();
   const c = await open({ seed: { situation: { pcos: true }, mods: { plan: planOf('cycle', 'pmos', ago(40)) } }, hash: '#plan-progress' });

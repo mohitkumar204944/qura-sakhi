@@ -51,6 +51,22 @@ for (const lang of ['en', 'hi']) {
     }, r);
     if (over) problems.push(lang + ' #' + r + ': scrolls sideways with the phone\'s text at 200%');
   }
+  /* Version 39.17 (Diary audit R10): the Diary's Cycles and Days tabs and the day page (with "More signs" open), at 200% too */
+  for (const step of ['tr', 'days', 'day']) {
+    const over = await page.evaluate((step) => {
+      const S = window.Saathi; location.hash = '#diary'; S.mem.diaryTab = step === 'day' ? 'cal' : step; S.render();
+      if (step === 'day') S.openDay(S.toISO(S.today()), 'more');
+      const els = Array.from(document.querySelectorAll('#app, #app *, #sheet-root, #sheet-root *')).filter((el) => !(el instanceof SVGElement));
+      const sizes = els.map((el) => parseFloat(getComputedStyle(el).fontSize));
+      els.forEach((el, i) => el.style.setProperty('font-size', sizes[i] * 2 + 'px', 'important'));
+      const sh = document.querySelector('#sheet-root .sheet');
+      const o = document.documentElement.scrollWidth > window.innerWidth + 1 || (!!sh && sh.scrollWidth > sh.clientWidth + 1);
+      els.forEach((el) => el.style.removeProperty('font-size'));
+      if (sh) S.closeSheet(); S.mem.diaryTab = 'cal';
+      return o;
+    }, step);
+    if (over) problems.push(lang + ' diary ' + step + ': scrolls sideways with the phone\'s text at 200%');
+  }
 }
 await browser.close();
 /* Every article key the code names (group.id, quoted, e.g. 'pregnancy.danger-signs-call-112') must be in content.json */

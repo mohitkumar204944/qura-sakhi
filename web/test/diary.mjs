@@ -82,7 +82,7 @@ const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.p
   check('1 the date opens its month in Diary', !(await has(page, '#sheet-root .sheet')) && /October 2026/.test(await txt(page, '#view .cal-mo')), await txt(page, '#view .cal-mo'));
   await go(page, 'diary'); await page.evaluate(() => { window.Saathi.mem.diaryTab = 'days'; window.Saathi.render(); }); await settle(page, 300);
   const dl = await page.$eval('#view [data-dy="2026-10-01"]', (e) => e.innerText).catch(() => '');
-  check('1 the same facts as the Days tab', /Fertile window in 10 days \(estimate\)/.test(dl) && /Ovulation in 15 days \(estimate\)/.test(dl) && /29 days until your next period/.test(dl), dl);
+  check('1 Days shows the same day without its estimates (Version 39.18: they stay on the day page)', /Day 2 of your period/.test(dl) && !/estimate/.test(dl), dl);
   await dayOpen(page, '2026-10-10');
   check('1 the day before her fertile window says "tomorrow", not "1 days"', /Fertile window tomorrow \(estimate\)/.test(await txt(page, '#sheet-root .day-facts')) && !/\b1 days\b/.test(await sheetTxt(page)), (await txt(page, '#sheet-root .day-facts')));
   check('1 no page errors', !errs.length, errs);
@@ -159,7 +159,9 @@ const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.p
   check('3 trying: hearts on her days in the week, with a line saying when they show', (await page.$$('#sheet-root .day-wk .sx-ht')).length === 2 && /Hearts show on your days only while you’re trying for a baby/.test(await txt(page, '#sheet-root .sx-sec')));
   await shot(page, '3-sex-ttc');
   await page.evaluate(() => window.Saathi.closeSheet()); await settle(page, 200);
-  check('3 trying: hearts on the calendar too, with "Sex" in the legend', (await page.$$('#view .cal .sx-ht')).length === 2 && await has(page, '#view .legend .lk-sx'));
+  await page.$eval('#cal-key', (b) => b.click()); await sleep(250);   /* Version 39.16: the full key is behind "?" */
+  check('3 trying: hearts on the calendar too, with "Sex" in the key', (await page.$$('#view .cal .sx-ht')).length === 2 && await has(page, '#sheet-root .legend .lk-sx'));
+  await page.evaluate(() => window.Saathi.closeSheet()); await sleep(150);
   await tap(page, '[data-day="2026-10-20"]'); await tap(page, '#sheet-root [data-sx="n"]');
   check('3 trying, after her fertile days: no card', !(await has(page, '#sheet-root .sx-fw')) && !(await has(page, '#sheet-root .sx-ec')));
   await page.evaluate(() => { window.Saathi.closeSheet(); window.Saathi.mem.diaryTab = 'days'; window.Saathi.render(); }); await settle(page, 300);
@@ -181,8 +183,9 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
   const { ctx, page, errs } = await open(seedOf(8));
   await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 400);
   check('4 the tab is called "Cycles"', /Cycles/.test(await txt(page, '#view .dtabs [data-tab="tr"]')) && !/What it shows/.test(await txt(page, '#view .dtabs')), await txt(page, '#view .dtabs'));
-  const order = await page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => (e.className || e.tagName).split(' ')[0]));
-  check('4 her cycles first, then the glance, then one Charts row', order[0] === 'card' && (await page.$eval('#diary-body > *', (e) => e.classList.contains('mc-card'))) && order.indexOf('charts-d') > 1, order);
+  /* Version 39.18 (Diary audit R6): in the order of her questions; the notes meter moved to the Calendar (Version 39.17) */
+  const order = await page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => e.className.split(' ').filter((c) => ['pat-card', 'mc-card', 'vd-card', 'rp-btn', 'charts-d'].indexOf(c) >= 0)[0]).filter(Boolean));
+  check('4 what repeats, her cycles, the glance, the report for her doctor, then one Charts row; no meter', order.join() === 'pat-card,mc-card,vd-card,rp-btn,charts-d' && !(await has(page, '#diary-body .meter')), order);
   check('4 the charts are folded behind the row', !(await page.$eval('#view .charts-d', (d) => d.open)) && await has(page, '#view .charts-d .bars'));
   await page.$eval('#view .charts-d', (d) => { d.open = true; d.dispatchEvent(new Event('toggle')); }); await settle(page, 200);
   await page.evaluate(() => window.Saathi.render()); await settle(page, 300);
@@ -211,21 +214,22 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
 /* ---------- 5. When fertile days start ---------- */
 {
   const a = await open(seedOf(5));
-  const few = await txt(a.page, '#view .fw-few');
-  check('5 four cycles: "Fertile days show after 6 cycles. 2 more periods to log."', /Fertile days show after 6 cycles\. 2 more periods to log\./.test(few), few);
+  /* Version 39.17 (Diary audit R4): the Today strip's notes meter says it, with the same "Why?" */
+  const few = await txt(a.page, '#view .cal-today .meter-nx');
+  check('5 four cycles: "Next: 2 more periods, and your fertile days show." (the Calendar\'s own line has gone)', /Next: 2 more periods, and your fertile days show\./.test(few) && !(await has(a.page, '#view .fw-few')), few);
   await tap(a.page, '#view #fw-why');
   check('5 "Why?" says why, and that there is no safe day', /Why 6 cycles\?/.test(await txt(a.page, '#sheet-root')) && /There is no safe day/.test(await txt(a.page, '#sheet-root')));
   await shot(a.page, '5-few');
   check('5 no page errors', !a.errs.length, a.errs); await a.ctx.close();
   const b = await open(seedOf(6));
-  check('5 one more to go: "1 more period to log."', /1 more period to log\./.test(await txt(b.page, '#view .fw-few')), await txt(b.page, '#view .fw-few'));
+  check('5 one more to go: "Next: 1 more period, and your fertile days show."', /Next: 1 more period, and your fertile days show\./.test(await txt(b.page, '#view .cal-today .meter-nx')), await txt(b.page, '#view .cal-today'));
   await b.ctx.close();
   const c = await open(seedOf(8));
-  check('5 with her fertile days showing, no line', !(await has(c.page, '#view .fw-few')) && await has(c.page, '#view .cal .day.ov'));
+  check('5 with her fertile days showing, no line', !(await has(c.page, '#view .fw-few')) && !/fertile days show/.test(await txt(c.page, '#view')) && await has(c.page, '#view .cal .day.ov'));
   await c.ctx.close();
   for (const [name, x] of [['on hormones', { situation: { hormones: true, hormonesSince: '2026-01-01' } }], ['a shared phone', { settings: { discreet: true } }]]) {
     const d = await open(seedOf(5, x));
-    check('5 ' + name + ': no line', !(await has(d.page, '#view .fw-few')));
+    check('5 ' + name + ': no line', !(await has(d.page, '#view .fw-few')) && !/fertile days show/.test(await txt(d.page, '#view')));
     await d.ctx.close();
   }
 }
@@ -233,7 +237,7 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
 /* ---------- 6. Hindi, 360 px ---------- */
 {
   const { ctx, page, errs } = await open(seedOf(5, { lang: 'hi' }), { w: 360 });
-  check('6 Hindi: the tab is "चक्र" and the line says when fertile days start', /चक्र/.test(await txt(page, '#view .dtabs')) && /फ़र्टाइल दिन 6 चक्र के बाद दिखेंगे/.test(await txt(page, '#view .fw-few')), [await txt(page, '#view .dtabs'), await txt(page, '#view .fw-few')]);
+  check('6 Hindi: the tab is "चक्र" and the meter says when fertile days start', /चक्र/.test(await txt(page, '#view .dtabs')) && /फ़र्टाइल दिन दिखेंगे/.test(await txt(page, '#view .cal-today .meter-nx')), [await txt(page, '#view .dtabs'), await txt(page, '#view .cal-today')]);
   await dayOpen(page, '2026-10-01');
   const sh = await sheetTxt(page);
   check('6 Hindi day page: flow, the sex log and no untranslated words', /ब्लीडिंग: दिन में कितने pad/.test(sh) && /संबंध/.test(sh) && /बिना गर्भनिरोधक/.test(sh) && /सिर्फ़ इसी फ़ोन पर/.test(sh) && !/\b(sx|fw|ed|dy|day|mc|charts)_[a-z0-9_]+\b/.test(sh), sh.slice(0, 400));

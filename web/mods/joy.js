@@ -259,7 +259,7 @@
     Object.keys(st.daily || {}).forEach((k) => { if (inM(k) && (st.daily[k] || []).length) days[k] = 1; });
     Object.keys(st.notes || {}).forEach((k) => { if (inM(k) && st.notes[k]) days[k] = 1; });
     (st.events || []).forEach((e) => { if (inM(e.d) && !e.approx) days[e.d] = 1; });
-    const counts = {}; Object.keys(st.daily || {}).forEach((k) => { if (inM(k)) (st.daily[k] || []).forEach((x) => { if (x !== 'd_calm' && x !== 'd_happy') counts[x] = (counts[x] || 0) + 1; }); });
+    const counts = {}; Object.keys(st.daily || {}).forEach((k) => { if (inM(k)) (st.daily[k] || []).forEach((x) => { if (x !== 'd_calm' && x !== 'd_happy' && x !== 'd_ok') counts[x] = (counts[x] || 0) + 1; }); });
     const d = D(); const kindDays = (k) => Object.keys(d.days).filter((day) => inM(day) && (d.days[day] || []).indexOf(k) >= 0).length;
     return {
       noted: Object.keys(days).length, periods: S.cycle.starts().filter((d0) => inM(d0) && !S.cycle.approxStarts()[d0]).length,

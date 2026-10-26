@@ -69,7 +69,7 @@ await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) 
   await settle(1200);
   await snap('your-sakhi'); await tap('#ys-tour'); await settle(900);
   for (let k = 0; k < 4 && (await page.$('#tour-root #tour-next')); k++) { await snap('first-day-tour-' + (k + 1)); await tap('#tour-root #tour-next'); await settle(600); }
-  await snap('diary-first-log'); await tap('[data-fl-days="5"]'); await tap('[data-fl-sign="d_acne"]'); await snap('first-log-answered'); await tap('#fl-save'); await settle(900);
+  await snap('diary-first-log'); await tap('[data-fl-days="5"]'); await tap('[data-fl-sign="d_tired"]'); await snap('first-log-answered'); await tap('#fl-save'); await settle(900);
   await snap('today-plan-offer'); await tap('#pl-off-go');
   await snap('periods-q'); for (const s of ['[data-pl-q="skips:y"]', '[data-pl-m="signs:acne"]']) await tap(s);
   await snap('periods-q-answered'); await tap('#pl-in-next');

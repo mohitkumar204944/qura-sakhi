@@ -118,17 +118,25 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   await tab(page, 'days');
   const cards = await page.$$eval('#view .dy-card', (cs) => cs.map((c) => ({ d: c.dataset.dy, t: c.innerText })));
   check('4 newest first, today on top', cards[0].d === isoAgo(0) && cards[1].d === isoAgo(3), cards.slice(0, 3).map((c) => c.d));
-  check('4 today: day 24, medium chance, 6 days to the next period, and what she noted', /Day 24 of your cycle/.test(cards[0].t) && /Medium chance of pregnancy from sex that day \(estimate\)/.test(cards[0].t) && /6 days until your next period \(estimate\)/.test(cards[0].t) && /Bloating/.test(cards[0].t), cards[0].t);
+  /* Version 39.18 (Diary audit R7): Days shows "Day 24" and what she noted, under its period; the estimates stay on the day page */
+  check('4 today: day 24 and what she noted, with no estimates in Days', /Day 24\b/.test(cards[0].t) && !/estimate/.test(cards[0].t) && /Bloating/.test(cards[0].t), cards[0].t);
   check('4 a note shows', /Slept badly/.test(cards[1].t), cards[1].t);
   const start = cards.find((c) => c.d === isoAgo(23));
-  check('4 the day her period started: day 1 of her period, the window and ovulation ahead, the pads she logged', !!start && /Day 1 of your period/.test(start.t) && /Fertile window in \d+ days \(estimate\)/.test(start.t) && /Ovulation in \d+ days \(estimate\)/.test(start.t) && /Period started/.test(start.t) && /Pads: 3–5/.test(start.t), start);
+  check('4 the day her period started: day 1 of her period and the pads she logged', !!start && /Day 1 of your period/.test(start.t) && !/estimate/.test(start.t) && /Period started/.test(start.t) && /Pads: 3–5/.test(start.t), start);
+  await page.evaluate((d) => window.Saathi.openDay(d), isoAgo(0)); await sleep(250);
+  const sd = await page.$eval('#sheet-root .day-facts', (e) => e.innerText).catch(() => '');
+  check('4 ... today\'s day page keeps the estimates: medium chance and 6 days to the next period', /Day 24 of your cycle/.test(sd) && /Medium chance of pregnancy from sex that day \(estimate\)/.test(sd) && /6 days until your next period \(estimate\)/.test(sd), sd);
+  await page.evaluate((d) => { window.Saathi.closeSheet(); window.Saathi.openDay(d); }, isoAgo(23)); await sleep(250);
+  const sd1 = await page.$eval('#sheet-root .day-facts', (e) => e.innerText).catch(() => '');
+  check('4 ... and so does the day her period started: the window and ovulation ahead', /Fertile window in \d+ days \(estimate\)/.test(sd1) && /Ovulation in \d+ days \(estimate\)/.test(sd1), sd1);
+  await page.evaluate(() => window.Saathi.closeSheet()); await sleep(150);
   check('4 twenty at a time, then Show more', cards.length === 20 && !!(await page.$('#dy-more')));
   await page.$eval('#dy-more', (b) => b.click()); await sleep(250);
   check('4 Show more shows the next twenty', (await page.$$('#view .dy-card')).length === 40);
   await page.$eval('#view .dy-card', (b) => b.click()); await sleep(250);
   check('4 a day opens its day sheet', !!(await page.$('#sheet-root .sheet')));
   await page.evaluate(() => window.Saathi.closeSheet()); await page.evaluate(() => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); S.render(); }); await sleep(250);
-  check('4 discreet mode: the cycle day only, no chance or ovulation', !/chance|ovulation|fertile/i.test(await view(page)) && /Day 24 of your cycle/.test(await view(page)));
+  check('4 discreet mode: the cycle day only, no chance or ovulation', !/chance|ovulation|fertile/i.test(await view(page)) && /Day 24\b/.test(await view(page)));
   check('4 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -199,7 +207,7 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   await tab(page, 'tr');
   check('7 Hindi: the verdict and My cycles', /आपका चक्र एक नज़र में/.test(await view(page)) && /नियमित/.test(await view(page)) && /मेरे चक्र/.test(await view(page)));
   await tab(page, 'days');
-  check('7 Hindi: the Days tab', /चक्र का दिन 24/.test(await view(page)) && (await page.$eval('[data-tab="days"]', (b) => b.innerText)) === 'दिन');
+  check('7 Hindi: the Days tab', /दिन 24/.test(await view(page)) && /से पीरियड · यह चक्र/.test(await view(page)) && (await page.$eval('[data-tab="days"]', (b) => b.innerText)) === 'दिन');
   await go(page, 'a-conceive.why-no-app-can-name-your-fertile-day');
   check('7 the library article no longer says Sakhi never names fertile days', /सिर्फ़ आपकी तारीख़ों से अंदाज़े के रूप में/.test(await view(page)) && !/दो चीज़ें यह ऐप कभी नहीं करेगा/.test(await view(page)));
   check('7 no page errors', !errs.length, errs);

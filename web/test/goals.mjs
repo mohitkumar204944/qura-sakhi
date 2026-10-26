@@ -74,7 +74,7 @@ const count = (s, re) => (String(s).match(re) || []).length;
   const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { mods: { plan: planOf('preg', 'food', ago(5)), journey: { active: 'iron', start: ago(2), done: {}, finished: {} } } }) });
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
-  check('1 pregnancy: her plan names her own week, not "of 12"', /My pregnancy plan/i.test(td) && /Week 8 of pregnancy/.test(td) && !/of 12/.test(td), td);
+  check('1 pregnancy: her plan names her own week, not "of 12"', /My pregnancy plan/i.test(td) && /week 8 of pregnancy/i.test(td) && !/of 12/.test(td), td);
   check('1 pregnancy: "Due now" is her plan\'s first step, once', count(td, /Due now/g) === 1 && !(await has(page, '#view .today-preg-plan')) && /Due now: Register your pregnancy/.test(td), td);
   check('1 the due step opens her pregnancy plan, with no Done of its own', (await page.$eval('#view .today-plan-pdue .today-go', (b) => b.dataset.go).catch(() => '')) === 'preg-plan' && !(await has(page, '#view .today-plan-pdue [data-today-act]')));
   check('1 a running plan leaves no 21-day journey row on Today', !(await has(page, '#view .today-journey')));
@@ -98,7 +98,7 @@ for (const goal of ['feed', 'weight', 'recovery']) {
   const { ctx, page, errs } = await open({ seed: Object.assign({}, POST(14), { mods: { plan: planOf('post', goal, ago(3)) } }), now: at(0, '20:30') });
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
-  check('2 ' + goal + ': the daily recovery check comes first, with its warning signs', /Week 3 after the birth/.test(td) && /Daily recovery check/.test(td) && /1 minute, with the warning signs/.test(td) && count(td, /Daily recovery check/g) === 1, td);
+  check('2 ' + goal + ': the daily recovery check comes first, with its warning signs', /week 3 after the birth/i.test(td) && /Daily recovery check/.test(td) && /1 minute, with the warning signs/.test(td) && count(td, /Daily recovery check/g) === 1, td);
   check('2 ' + goal + ': no Done for it on Today (it is done by doing the check)', !(await has(page, '#view .today-plan-rcheck [data-today-act]')));
   check('2 ' + goal + ': the after-birth card steps aside for it', !/after birth: how are you today/i.test(await view(page)));
   await go(page, 'plan-checkin');
@@ -195,13 +195,15 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
 {
   const ik = { at: ago(30), stage: 'cycle', goal: 'irregular', gap: 'g45', skips: 'y', dx: 'ns', signs: ['acne'] };
   const { ctx, page, errs } = await open({ seed: { intake: ik, mods: { plan: planOf('cycle', 'irregular', ago(20), { intake: ik }) } } });
-  /* Version 39.1: the monthly check-in is a row in Diary's What it shows, "This month's signs" */
+  /* Version 39.1: the monthly check-in is a row in Diary's What it shows. Version 39.18: named by what it asks; on a plan for
+     irregular periods, "Skin and hair signs, once a month" */
   await go(page, 'diary'); await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 300);
-  check('7 the monthly check-in is "This month\'s signs", in Diary\'s What it shows', /This month’s signs/.test(await txt(page, '#view .wis-ci [data-go="checkin"]')) && !/Check-in$/m.test(await txt(page, '#view .wis-ci')), await txt(page, '#view .wis-ci'));
+  check('7 the monthly check-in is "Skin and hair signs, once a month", in Diary\'s Cycles', /Skin and hair signs, once a month/.test(await txt(page, '#view .wis-ci [data-go="checkin"]')) && !/Check-in$/m.test(await txt(page, '#view .wis-ci')), await txt(page, '#view .wis-ci'));
   await go(page, 'checkin');
   check('7 ... and so is its page', /This month: October/.test(await view(page)));
   await go(page, 'plan');
-  check('7 while a plan runs, no "Other plans" (Change what I work on stays)', !/Other plans/.test(await view(page)) && (await has(page, '#pl-chg')));
+  const noOther = !/Other plans/.test(await view(page)) && (await has(page, '#view [data-go="plan-settings"]')); await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
+  check('7 while a plan runs, no "Other plans" (Change what I work on stays, in Plan settings)', noOther && (await has(page, '#pl-chg')));
   await go(page, 'selfcheck-pmos');
   const on = (k, v) => page.$eval('[data-sc="' + k + '"][data-v="' + v + '"]', (b) => b.getAttribute('aria-pressed') === 'true').catch(() => false);
   check('7 the PMOS self-check opens with what she told Sakhi', (await on('gaps', 'y')) && !(await on('few', 'y')) && !(await on('few', 'n')) && (await on('acne', 'y')) && (await on('hair', 'n')) && /Some answers come from what you told Sakhi for your plan/.test(await view(page)));
@@ -314,19 +316,22 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   const bv = await view(b.page);
   check('11 pregnant: a plan made before is not "ready"; My plan says her plan changed', /Your plan has changed/.test(bv) && !/Your plan is ready/.test(bv) && !(await b.page.evaluate(() => window.Saathi.plan.pending())), bv.slice(0, 400));
   await b.ctx.close();
+  /* Version 39.14: "Yesterday" is her week's dot (its title gives the day's count), and S.plan.dayCount counts it the same way */
+  const ydot = (page) => page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? y.title : ''; }).catch(() => '');
+  const ycnt = (page) => page.evaluate((x) => window.Saathi.plan.dayCount(x), ago(1));
   /* "Yesterday" counts what Today counted that day */
   const c = await open({ seed: { mods: { plan: planOf('pms', 'pms', ago(4), { log: { [yd]: { r: ['calm'], min: 5 } } }) } } });
-  check('11 Yesterday: a 5-minute calm breath is one step on the PMS plan, not two', /Yesterday: 1 done\./.test(await txt(c.page, '#view .today-card')), await txt(c.page, '#view .today-card'));
+  check('11 Yesterday: a 5-minute calm breath is one step on the PMS plan, not two', /: 1 of 3 steps$/.test(await ydot(c.page)) && (await ycnt(c.page)).a === 1, [await ydot(c.page), await ycnt(c.page)]);
   await c.ctx.close();
   const c2 = await open({ seed: { mods: { plan: planOf('cycle', 'irregular', ago(4), { log: { [yd]: { r: ['calm'], min: 5 } } }) } } });
-  check('11 Yesterday: a routine that isn\'t one of her steps, and minutes short of the walk, count nothing', /No steps yesterday/.test(await txt(c2.page, '#view .today-card')), await txt(c2.page, '#view .today-card'));
+  check('11 Yesterday: a routine that isn\'t one of her steps, and minutes short of the walk, count nothing', /: 0 of 4 steps$/.test(await ydot(c2.page)) && (await ycnt(c2.page)).a === 0, [await ydot(c2.page), await ycnt(c2.page)]);
   await c2.ctx.close();
   const c3 = await open({ seed: Object.assign({}, POST(60), { mods: { post: { rec: { [yd]: REC } }, plan: planOf('post', 'feed', ago(10)) } }) });
   /* Version 39.5: after quiet days the line is "Welcome back"; either way the recovery check isn't counted as a step */
-  check('11 Yesterday: after 6 weeks the recovery check is no longer a step to count', /No steps yesterday|Welcome back/.test(await txt(c3.page, '#view .today-card')) && !/Yesterday: 1/.test(await txt(c3.page, '#view .today-card')), await txt(c3.page, '#view .today-card'));
+  check('11 Yesterday: after 6 weeks the recovery check is no longer a step to count', (await ycnt(c3.page)).a === 0 && !/: 1 of/.test(await ydot(c3.page)), [await ydot(c3.page), await ycnt(c3.page)]);
   await c3.ctx.close();
   const c4 = await open({ seed: Object.assign({}, POST(20), { mods: { post: { rec: { [yd]: REC } }, plan: planOf('post', 'feed', ago(10)) } }) });
-  check('11 Yesterday: before 6 weeks her recovery check counts', /Yesterday: 1 done\./.test(await txt(c4.page, '#view .today-card')), await txt(c4.page, '#view .today-card'));
+  check('11 Yesterday: before 6 weeks her recovery check counts', /: 1 of \d steps$/.test(await ydot(c4.page)) && (await ycnt(c4.page)).a === 1, [await ydot(c4.page), await ycnt(c4.page)]);
   await c4.ctx.close();
   /* a reminder Sakhi took away for a pregnancy comes back when the plan applies again */
   const e = await open({ seed: { situation: { planning: true }, reminders: rem(), mods: { plan: planOf('ttc', 'ready', ago(20)) } } });
@@ -403,12 +408,12 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   check('12 a waiting plan paused by a birth says why on My plan', /6-week check/.test(await view(c2.page)) && !/Your plan is ready/.test(await view(c2.page)), (await view(c2.page)).slice(0, 400));
   await c2.ctx.close();
   const d = await open({ seed: { mods: { plan: planOf('cycle', 'irregular', ago(14), { log: { [ago(1)]: { min: 10, plate: { half: true } } }, wplan: { 3: { str: [0, 3], when: 'evening' } } })   /* Version 39.12: today a strength day she planned, so the line is yesterday's */ } } });
-  check('12 Yesterday on the first day of a new week counts yesterday\'s walk and food habit', /Yesterday: 2 done\./.test(await txt(d.page, '#view .today-card')), await txt(d.page, '#view .today-card'));
+  check('12 Yesterday on the first day of a new week counts yesterday\'s walk and food habit', (await d.page.evaluate((x) => window.Saathi.plan.dayCount(x), ago(1))).a === 2, await d.page.evaluate((x) => window.Saathi.plan.dayCount(x), ago(1)));
   await d.ctx.close();
   const pd = { done: Object.fromEntries(['reg', 'folic', 'anc1', 'td', 'scheme'].map((k) => [k, true])), pmsma: [] };   /* week 9: everything due is done */
   const d2 = await open({ seed: Object.assign({}, PREG, { mods: { preg: { plan: pd }, plan: planOf('preg', 'food', ago(30), { log: { [ago(1)]: { ci: 1, ck: { pdue: 'd', food: 'd' } } } }) } }) });
   const due2 = await d2.page.evaluate(() => window.Saathi.preg.plan.due().map((x) => x.id));
-  check('12 Yesterday keeps a pregnancy plan\'s "Due now" tick when nothing is due today', due2.length === 0 && /Yesterday: 2 done\./.test(await txt(d2.page, '#view .today-card')), { td: await txt(d2.page, '#view .today-card'), due2 });
+  check('12 Yesterday keeps a pregnancy plan\'s "Due now" tick when nothing is due today', due2.length === 0 && (await d2.page.evaluate((x) => window.Saathi.plan.dayCount(x), ago(1))).a === 2 && /: 2 of 2 steps$/.test(await d2.page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); return x[i - 1] ? x[i - 1].title : ''; })), { td: await txt(d2.page, '#view .today-card'), due2 });
   await d2.ctx.close();
   const e = await open({ seed: { situation: { deliveredOn: ago(60), breastfeeding: true }, events: [], mods: { plan: planOf('cycle', 'weight', ago(200), { keep: true }) } }, hash: '#care' });
   const ef = await e.page.$$eval('#view section.care-sec:first-of-type [data-go]', (x) => x.map((y) => y.dataset.go));

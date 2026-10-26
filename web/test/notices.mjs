@@ -85,7 +85,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   await go(page, 'plan'); await go(page, 'home');
   const r = (await st(page)).reminders.find((x) => x.id === 'plan');
   check('1 a Version 37 morning check-in moves to 8 pm, with the evening words', r && r.time === '20:00' && r.title.en === 'How did today go? 1 minute', r);
-  await go(page, 'plan');
+  await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   check('1 My plan offers evening times only', !(await has(page, '[data-pl-at="08:00"]')) && (await has(page, '[data-pl-at="18:00"]')) && (await has(page, '[data-pl-at="21:00"]')));
   await ctx.close();
   const b = await open({ seed: { intake: IK, reminders: [REM()], settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('cycle', 'irregular', ago(5)) } } });
@@ -106,7 +106,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
   check('2 Today says the same count, and that she checked in', /0 done, 4 partly today/.test(td) && /Checked in today/.test(td), td);
-  check('2 the plan\'s rows are gone once she checked in, with no "All done for today"', !(await has(page, '#view .today-plan-move')) && !(await has(page, '#view [data-today-act]')) && !/All done for today/.test(td), td);
+  check('2 her steps stay once she checked in, each marked partly (Version 39.14), with no "All done for today"', (await has(page, '#view .today-plan-move')) && /Walk 10 minutes\nPartly done/.test(td) && !/All done for today/.test(td), td);
   await shot(page, '2-today-after-partly');
   check('2 no page errors', errs.length === 0, errs);
   await ctx.close();
@@ -157,8 +157,9 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const { ctx, page, errs } = await open({ seed: { intake: IK, mods: { plan: planOf('pain', 'pain', ago(7), { goal: 'pain', log: log }) } } });
   await go(page, 'home');
   let v = await view(page);
-  check('4 a new week: the look-back is first on Today', (await slotFirst(page)) === 'Week 1 is done', await slotFirst(page));
-  check('4 it leads with what she did, and the week\'s own barrier', /You followed your plan on \d of 7 days\./.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v), v.slice(0, 1200));
+  check('4 a new week: the look-back is inside her Today card (Version 39.14), one line until she taps it', /^Week 1 is done/.test(await txt(page, '#view .today-card .pl-sl-rev')) && !(await has(page, '#view .slot .pl-sl-rev')), await txt(page, '#view .today-card'));
+  await tap(page, '#pl-rev-open'); v = await view(page);
+  check('4 it leads with what she did, and the week\'s own barrier', /Week 1 is done · \d of 7 days on your plan/.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v), v.slice(0, 1200));
   check('4 one question: her energy (what got in the way comes from the check-ins)', (await page.$$('#view .pl-sl-rev [data-pl-e]')).length === 3 && !(await has(page, '#view [data-pl-b]')));
   await tap(page, '#view .pl-sl-rev [data-pl-e="ok"]');
   check('4 her answer brings the tip for that barrier', /Split it up/.test(await view(page)));
@@ -241,7 +242,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   const { ctx, page, errs } = await open({ seed: { intake: IK, settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('cycle', 'irregular', ago(14), { log: log, intake: IK }) } }, now: at(0, '20:30') });
   await go(page, 'plan');
   let v = await view(page);
-  check('7 discreet: My plan has no goal label or health words', !HEALTH.test(v) && /Today’s yoga/.test(v), v.match(/.{0,60}(period|PMOS|PCOS|insulin|hormone|cramp|iron|cycle care|regular periods|waist|acne).{0,40}/i));
+  check('7 discreet: My plan has no goal label or health words', !HEALTH.test(v) && /Yoga · \d+ min/.test(v), v.match(/.{0,60}(period|PMOS|PCOS|insulin|hormone|cramp|iron|cycle care|regular periods|waist|acne).{0,40}/i));
   await go(page, 'plan-progress');
   v = await view(page);
   check('7 discreet: My progress shows no period or waist words', !/Days between periods|What to expect|waist|period/i.test(v), v.match(/.{0,60}(Days between periods|What to expect|waist|period).{0,40}/i));

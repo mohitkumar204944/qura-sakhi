@@ -396,7 +396,7 @@ for (const lang of ['en', 'hi']) {
   }
   /* SAFETY-03, PICTURES-02, REGRESSIONS-03, PICTURES-10, REGRESSIONS-08: the one-line card */
   const c = await open({ seed: { intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-  const m = await c.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const done = Array.from(document.querySelectorAll('#view .today-card button')).filter((x) => /^(Done|Start)$/.test(x.textContent.trim())).map((x) => Math.round(x.getBoundingClientRect().bottom)); return { nav: nav, done: done, stage: !!document.querySelector('#view .hero.mini #stage-btn') }; });
+  const m = await c.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const done = Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav], #view .today-card [data-today-undo]')).map((x) => Math.round(x.getBoundingClientRect().bottom)); return { nav: nav, done: done, stage: !!document.querySelector('#view .hero.mini #stage-btn') }; });
   check('16 a plan running: "Change stage" stays on the one-line card (SAFETY-03)', m.stage);
   check('16 ... and all 3 of her steps\' buttons (Done, or Start for her yoga: Version 39.12) sit above the tab bar at 360 x 800 (REGRESSIONS-08)', m.done.length >= 3 && m.done.slice(0, 3).every((y) => y <= m.nav), m);
   errsAll.push(...c.errs); await c.ctx.close();

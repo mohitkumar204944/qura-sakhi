@@ -71,15 +71,15 @@ const errsAll = [];
   const a = await open({ seed: { events: regular(10), intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } }, hash: '#plan' });
   let v = await view(a.page);
   check('1 cycle plan: her clock line ("Week 2 of 12")', /Week 2 of 12/.test(await txt(a.page, '#view .pl-clock')), await txt(a.page, '#view .pl-clock'));
-  check('1 cycle plan: the ring hero with today\'s yoga and "Add minutes"', await has(a.page, '#view .pl-weekcard svg') && await has(a.page, '#view .pl-weekcard .pl-routine') && await has(a.page, '#view .pl-addmin[data-go="plan-moves"]'));
-  check('1 cycle plan: one row for today, and no second copy of Today\'s controls', await has(a.page, '#view .pl-trow [data-go="home"]') && !(await has(a.page, '#view [data-pl-add]')) && !(await has(a.page, '#view .pl-hab')) && !(await has(a.page, '#view .pl-today')));
+  check('1 cycle plan: her week as rings, her minutes and "+ Add minutes" (Version 39.15)', await has(a.page, '#view .pl-wkc .pl-r4') && /Active minutes/.test(await txt(a.page, '#view .pl-wkc')) && await has(a.page, '#view .pl-wkc .pl-addmin[data-go="plan-moves"]'));
+  check('1 cycle plan: her steps with their reasons and today\'s Start or tick, and no quick-add chips or plate habits', await has(a.page, '#view .pl-steps-card [data-pl-start]') && await has(a.page, '#view .pl-steps-card .pl-step-why') && !(await has(a.page, '#view [data-pl-add]')) && !(await has(a.page, '#view .pl-hab')) && !(await has(a.page, '#view .pl-today')));
   check('1 cycle plan: 4 tiles (My plate, Yoga and moves, My body, My progress)', (await tiles(a.page)).join() === 'plan-plate,plan-moves,plan-body,plan-progress', await tiles(a.page));
   check('1 ... and My progress says how many days so far', /days so far/.test(await txt(a.page, '#view .pl-tile[data-go="plan-progress"]')));
   check('1 her care team ends with Help (danger signs, who to call)', await has(a.page, '#view .pl-care [data-go="help"]'));
   await shot(a.page, '01-cycle');
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { events: regular(10), intake: { goal: 'pain', stage: 'cycle' }, mods: { plan: planOf('pain', 'pain', ago(9), { log: logged(9, 1, 3) }) } }, hash: '#plan' });
-  check('1 pain plan: the week hero ("3 of 7 days this week" style)', await has(b.page, '#view .pl-hero-week') && /of 7 days this week/.test(await txt(b.page, '#view .pl-hero-week')), await txt(b.page, '#view .pl-hero-week'));
+  check('1 pain plan: her week as rings (Version 39.15)', await has(b.page, '#view .pl-wkc .pl-r4') && /This week/.test(await txt(b.page, '#view .pl-wkc')), await txt(b.page, '#view .pl-wkc'));
   check('1 pain plan: 4 tiles (My food, Yoga and moves, For period cramps, My progress)', (await tiles(b.page)).join() === 'food,plan-moves,relief-cramps,plan-progress', await tiles(b.page));
   check('1 pain plan: her results live on My progress, not in a long section here', !/Days you followed your plan, each week/.test(await view(b.page)));
   await shot(b.page, '01-pain');
@@ -118,7 +118,7 @@ const errsAll = [];
   await tap(a.page, '#pl-ci-rest');
   check('3 ... she taps it: "Rest well", and it counts as a day she followed her plan', /Rest well/.test(await view(a.page)) && await a.page.evaluate(() => { const d = window.Saathi.state.mods.plan; return !!(d.log[Object.keys(d.log).sort().pop()] || {}).rest; }));
   await go(a.page, 'home');
-  check('3 Today says "Rest day"', /Rest day/.test(await txt(a.page, '#view .pl-th')), await txt(a.page, '#view .pl-th'));
+  check('3 Today says "Rest day"', /Rest day/.test(await txt(a.page, '#view .today-card')), await txt(a.page, '#view .today-card'));
   check('3 ... and Today shows none of the plan\'s steps', !(await has(a.page, '#view .today-card [class*="today-plan-"]')));
   /* two rest days used this week: no third */
   await a.page.evaluate(() => { const S = window.Saathi; const d = S.state.mods.plan; const k = Object.keys(d.log).sort().pop(); d.log[S.toISO(S.addDays(S.fromISO(k), -1))] = { rest: true, ci: 1 }; S.save(); });
@@ -193,7 +193,7 @@ const errsAll = [];
 
 /* ---------- 7. Her last plan is kept ---------- */
 {
-  const a = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20), { log: logged(20, 3, 3) }) } }, hash: '#plan' });
+  const a = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(20), { log: logged(20, 3, 3) }) } }, hash: '#plan-settings' });   /* Version 39.15: Plan settings is a page of its own */
   await tap(a.page, '#view #pl-stop'); await tap(a.page, '#view #pl-stop-yes');
   const s = await st(a.page);
   check('7 stopping keeps the plan in d.past, with the days she followed', (s.mods.plan.past || [])[0] && s.mods.plan.past[0].pack === 'pain' && s.mods.plan.past[0].days === 9, s.mods.plan.past);
@@ -220,7 +220,7 @@ const errsAll = [];
 
 /* ---------- 9. Pause for a week ---------- */
 {
-  const a = await open({ seed: { intake: { goal: 'pain' }, reminders: REM(), mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan' });
+  const a = await open({ seed: { intake: { goal: 'pain' }, reminders: REM(), mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan-settings' });
   await tap(a.page, '#view #pl-pause');
   let s = await st(a.page);
   /* Version 39.5 review (ENGINE-03): the reminder stays on and starts again the day the pause ends, so the phone rings then */
@@ -241,7 +241,7 @@ const errsAll = [];
   await tap(b2.page, '#view #pl-pause-not');
   check('9 ... "Not now" asks once', !(await has(b2.page, '#view .pl-sl-pause')));
   errsAll.push(...b2.errs); await b2.ctx.close();
-  const c = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan' });
+  const c = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan-settings' });
   await tap(c.page, '#view #pl-stop');
   check('9 the stop card offers "Or pause it for a week instead"', await has(c.page, '#view #pl-pause-alt'));
   errsAll.push(...c.errs); await c.ctx.close();
@@ -293,7 +293,7 @@ const errsAll = [];
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { lang: 'hi', intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9)) } }, lang: 'hi', w: 360, h: 800, hash: '#plan' });
   const v = await view(b.page);
-  check('12 Hindi: the hero, today\'s row and the tiles in Hindi', /इस हफ़्ते 7 में से/.test(v) && /आज के क़दम/.test(v) && /मेरी प्रगति|अब तक/.test(v), v.slice(0, 400));
+  check('12 Hindi: her week, her steps and the tiles in Hindi (Version 39.15)', /इस हफ़्ते/.test(v) && /आपके रोज़ के \d क़दम/.test(v) && /मेरी प्रगति|अब तक/.test(v), v.slice(0, 400));
   check('12 360 px: no sideways scroll on My plan', await noScroll(b.page));
   await shot(b.page, '12-hindi-360');
   await go(b.page, 'plan-checkin');
@@ -313,8 +313,8 @@ const errsAll = [];
   check('13 after the check-in, the daily recovery check is still on Today', await has(a.page, '#view .today-plan-rcheck'), await txt(a.page, '#view .today-card'));
   errsAll.push(...a.errs); await a.ctx.close();
   /* SAFETY-01, PAGES-01: no pause in pregnancy; a week's pause hands Today back to her stage's own cards */
-  const p = await open({ seed: Object.assign(PREG(20), { mods: { plan: planOf('preg', 'food', ago(30)) } }), hash: '#plan' });
-  check('13 pregnancy: no "Pause for a week" on My plan', !(await has(p.page, '#view #pl-pause')));
+  const p = await open({ seed: Object.assign(PREG(20), { mods: { plan: planOf('preg', 'food', ago(30)) } }), hash: '#plan-settings' });
+  check('13 pregnancy: no "Pause for a week" in her plan settings', !(await has(p.page, '#view #pl-pause')));
   errsAll.push(...p.errs); await p.ctx.close();
   const q = await open({ seed: Object.assign(PREG(24), { mods: { plan: planOf('preg', 'food', ago(30)) } }) });
   check('13 pregnancy, 30 quiet days: no "Take a week off?"', !(await has(q.page, '#view .pl-sl-pause')));
@@ -328,7 +328,7 @@ const errsAll = [];
   check('13 pelvic floor sets done in their trainer count as days she followed her plan', (await b.page.evaluate((d) => window.Saathi.plan.dayDone(d), ago(1))) === true && !(await has(b.page, '#view .pl-sl-pause')) && !/Welcome back/.test(await txt(b.page, '#view .pl-th')));
   errsAll.push(...b.errs); await b.ctx.close();
   /* ENGINE-03: a reminder she deleted during the pause stays deleted */
-  const c = await open({ seed: { intake: { goal: 'pain' }, reminders: REM(), mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan' });
+  const c = await open({ seed: { intake: { goal: 'pain' }, reminders: REM(), mods: { plan: planOf('pain', 'pain', ago(10)) } }, hash: '#plan-settings' });
   await tap(c.page, '#view #pl-pause');
   await c.page.evaluate(() => { window.Saathi.reminders.remove('plan'); window.Saathi.save(); });
   await c.page.clock.setFixedTime(at(8, '10:00')); await go(c.page, 'plan'); await go(c.page, 'home');
@@ -355,7 +355,7 @@ const errsAll = [];
   /* PAGES-05: the 6-week check is a one-time step */
   const h = await open({ seed: Object.assign(POST(37), { mods: { plan: planOf('post', 'recovery', ago(30), { log: { [ago(1)]: { ci: 1, ck: { six: 'd' } } } }) } }) });
   const ha = await acts(h.page);
-  check('13 the 6-week check, done yesterday, stays done today', ha.some((x) => /^six:link:d/.test(x)) && !(await has(h.page, '#view .today-plan-six')), ha);
+  check('13 the 6-week check, done yesterday, stays done today', ha.some((x) => /^six:link:d/.test(x)) && (await has(h.page, '#view .today-plan-six.today-ok')), ha);   /* Version 39.14: a done step stays, ticked */
   errsAll.push(...h.errs); await h.ctx.close();
   /* PAGES-06: the trying plan's checklist step rests once the checklist is complete */
   const tk = await open({ seed: { situation: { planning: true }, mods: { plan: planOf('ttc', 'ready', ago(7)) } } });

@@ -82,11 +82,12 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   await go(a.page, 'diary');
   check('1 the Diary tab is called "Cycles" (Version 39.11; it was "What it shows")', /Cycles/.test(await txt(a.page, '#view .tabs')) && !/What it shows/.test(await txt(a.page, '#view .tabs')), await txt(a.page, '#view .tabs'));
   await diaryShows(a.page);
-  const order = await a.page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => e.className.split(' ').filter((c) => /^(xp-diary|vd-card|mc-card|pat-card|wis-ci|wis-checks|rp-btn|card)$/.test(c)).join('.') || e.tagName));
-  check('1 her signals come first, then her cycles (Version 39.11), then the verdict', /^xp-diary/.test(order[0] || '') && /mc-card/.test(order[1] || '') && /vd-card/.test(order[2] || ''), order);
+  check('1 Version 39.17: the notes meter moved to the Calendar (Cycles has none)', !(await has(a.page, '#diary-body .meter')));
+  const order = await a.page.evaluate(() => [...document.querySelectorAll('#diary-body > *:not(.meter)')].map((e) => e.className.split(' ').filter((c) => /^(xp-diary|vd-card|mc-card|pat-card|wis-ci|wis-checks|rp-btn|card)$/.test(c)).join('.') || e.tagName));
+  check('1 her signals come first, then what repeats, her cycles and the verdict (Version 39.18, in the order of her questions)', /^xp-diary/.test(order[0] || '') && /pat-card/.test(order[1] || '') && /mc-card/.test(order[2] || '') && /vd-card/.test(order[3] || ''), order);
   const v = await view(a.page);
   check('1 "Your numbers" sits inside the verdict card, once', (v.match(/Your numbers/g) || []).length === 1 && await has(a.page, '#view .vd-card details.vd-nums'), (v.match(/Your numbers/g) || []).length);
-  check('1 "This month\'s signs" is a row here, with the report button after it', await has(a.page, '#view .wis-ci [data-go="checkin"]') && order.indexOf('rp-btn') > order.indexOf('wis-ci'), order);
+  check('1 the report for her doctor comes right after the verdict, and no monthly signs for a woman without PMOS (Version 39.18)', order.indexOf('rp-btn') === order.findIndex((x) => /vd-card/.test(x)) + 1 && !(await has(a.page, '#view .wis-ci')), order);
   await go(a.page, 'explain');
   check('1 What your diary shows is lit as Diary', /Diary/.test(await txt(a.page, '#tabbar .on')), await txt(a.page, '#tabbar .on'));
   await shot(a.page, '01-what-it-shows'); errsAll.push(...a.errs); await a.ctx.close();
@@ -369,7 +370,7 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
   check('13 FLOWS-02 on her PMOS plan, no card offers "A 12-week plan for your periods"', o2.join() === 'false,false' && !/A 12-week plan for your periods/.test(await view(a2.page)), o2);
   errsAll.push(...a2.errs); await a2.ctx.close();
   /* FLOWS-07: saving "This month's signs" goes back to What it shows */
-  const a7 = await open({ seed: { events: cyc([28, 29, 28], 10) } });
+  const a7 = await open({ seed: { events: cyc([28, 29, 28], 10), situation: { pcos: true } } });   /* Version 39.18: the monthly signs show with PMOS */
   await diaryShows(a7.page); await tap(a7.page, '#view .wis-ci [data-go="checkin"]'); await tap(a7.page, '#view #ci-save');
   check('13 FLOWS-07 saving "This month\'s signs" goes back to Diary', (await a7.page.evaluate(() => location.hash)) === '#diary', await a7.page.evaluate(() => location.hash));
   errsAll.push(...a7.errs); await a7.ctx.close();
@@ -409,7 +410,7 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
   check('13 PRIVACY-06 with a PIN, the PMOS self-check hides her diagnosis', !(await has(a6b.page, '#view .sc-dx')) && /PMOS|PCOS/.test(await view(a6b.page)));
   errsAll.push(...a6b.errs); await a6b.ctx.close();
   /* PRIVACY-08, PRIVACY-10: at 360 px the Diary's three tabs fit, and "This month's signs" keeps its dot */
-  const a8c = await open({ seed: { events: cyc([28, 29, 28], 10) }, w: 360, h: 800 });
+  const a8c = await open({ seed: { events: cyc([28, 29, 28], 10), situation: { pcos: true } }, w: 360, h: 800 });
   await go(a8c.page, 'diary');
   check('13 PRIVACY-08 at 360 px the Diary\'s three tabs fit', await a8c.page.evaluate(() => { const tb = document.querySelector('#view .tabs'); return !!tb && tb.scrollWidth <= tb.clientWidth + 1 && [...tb.querySelectorAll('button')].every((b) => b.getBoundingClientRect().right <= window.innerWidth + 1); }));
   await diaryShows(a8c.page);

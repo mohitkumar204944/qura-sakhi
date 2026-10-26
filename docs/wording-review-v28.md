@@ -1914,3 +1914,113 @@ health wording.
 | One more: In bed by 11:30 pm | बस एक और: रात 11:30 तक बिस्तर पर |
 | Tomorrow, add: Walk 10 minutes. | कल यह भी करें: 10 मिनट सैर करें। |
 | All your steps on 3 of 7 days. (the weekly look-back) | हफ़्ते के 7 में से 3 दिन सारे क़दम पूरे हुए। |
+
+### 19.14 Version 39.14: Today is her checklist (MODULE_API section 57)
+
+Labels only. Each step's "Why?" shows lines that are already reviewed:
+- the step's reason (`plan_fb_*`);
+- the food habit's own line (Version 35);
+- the walk's pace ("Brisk: you can talk, but not sing").
+
+For the cycle plan's daily steps it also shows the reviewed timeline (`plan_ex_1` to `_3`). Please glance at one thing: that
+timeline is about the whole plan, so in a step's sheet its heading says "What keeping to your plan can bring", not "keeping
+this step up". The day-complete line reuses her goal line from 19.12.
+
+| English | Hindi |
+|---|---|
+| MY PMOS PLAN · WEEK 2 · PLAN DAY 10 | मेरा PMOS प्लान · हफ़्ता 2 · प्लान का दिन 10 |
+| Next step · Why? | अगला क़दम · क्यों? |
+| Next · after dinner | अगला · रात के खाने के बाद |
+| Partly done | थोड़ा हुआ |
+| Day complete. Well done. (after the last tick) | आज का दिन पूरा। शाबाश। |
+| Tapped by mistake? Tap the tick again. | ग़लती से टैप हुआ? टिक पर फिर से टैप करें। |
+| WHY IT HELPS · HOW · WHAT KEEPING TO YOUR PLAN CAN BRING | यह क्यों मदद करता है · कैसे · प्लान पर लगातार चलने से क्या मिल सकता है |
+| About 8 minutes: Butterfly, Cat-cow, … (a routine's moves) | लगभग 8 मिनट: … |
+| Read more | और पढ़ें |
+| This week: 2 full days · strength on Thursday | इस हफ़्ते: 2 दिन सारे क़दम पूरे · गुरुवार को ताक़त का दिन |
+| Strength tomorrow / strength today | कल ताक़त का दिन / आज ताक़त का दिन |
+| Monday: 3 of 4 steps (each dot's label) | सोमवार: 4 में से 3 क़दम |
+| Day complete · All 4 done today | आज का दिन पूरा · आज के सभी 4 क़दम हो गए |
+| TOMORROW | कल |
+| Add how it went (optional) | आज कैसा रहा, बताएँ (चाहें तो) |
+| Your 4 steps (the folded list) | आपके 4 क़दम |
+| Week 1 is done · 5 of 7 days on your plan, all steps on 2 | हफ़्ता 1 पूरा हुआ · 7 में से 5 दिन प्लान पर, 2 दिन सारे क़दम |
+| Mark done: Walk 10 minutes (read aloud by a screen reader) | हो गया पर टिक करें: 10 मिनट सैर करें |
+
+### 19.15 Version 39.15: My plan explains the plan (MODULE_API section 58)
+
+Labels only. The steps' reasons, the timeline ("You are here") and "Periods often take 3 to 6 months to change" are the
+reviewed lines. R8's line linking her effort to her results ("Weeks with 4 or more full days: energy Good 3 of 3") is **not
+built**: it is new health wording, and waits for the doctor.
+
+| English | Hindi |
+|---|---|
+| Goal: more regular periods · Week 2 of 12 | लक्ष्य: ज़्यादा नियमित पीरियड · 12 में से हफ़्ता 2 |
+| HOW YOUR PLAN WORKS | आपका प्लान कैसे चलता है |
+| Every day: 4 steps, check-in 8 pm | हर दिन: 4 क़दम, चेक-इन रात 8 बजे |
+| Every week: Look back, plan the week | हर हफ़्ते: पीछे देखें, हफ़्ता तय करें |
+| Every 4 weeks: A 1-minute check | हर 4 हफ़्ते: 1 मिनट का चेक-इन |
+| After 12 weeks: Your results | 12 हफ़्ते बाद: आपके नतीजे |
+| Your 4 daily steps · How to do it | आपके रोज़ के 4 क़दम · कैसे करें |
+| Tick here or on Today: it’s the same tick. | यहाँ टिक करें या “आज” पर: दोनों एक ही हैं। |
+| This week · Plan days 8 to 14 | इस हफ़्ते · प्लान के दिन 8 से 14 |
+| Each ring has 4 parts: yoga, walk, food, sleep. | हर गोले में 4 हिस्से: योग, सैर, खाना, नींद। |
+| Active minutes · 36 of 60 | सक्रिय मिनट · 60 में से 36 |
+| What consistency brings | लगातार करने से क्या मिलता है |
+| YOUR OWN SIGNS: Your energy · Week 1: Good | आपके अपने संकेत: आपकी ऊर्जा · हफ़्ता 1: अच्छी |
+| Your 4-week check · In 19 days / Due now / Done | आपका 4 हफ़्ते का चेक-इन · 19 दिन में / अभी करें / हो गया |
+| Days between periods · 41 before your plan · 35 since | पीरियड के बीच के दिन · प्लान से पहले 41 · प्लान के बाद 35 |
+| Plan settings · Reminder, nudge, pause, change or stop | प्लान की सेटिंग · रिमाइंडर, याद दिलाना, रोकना, बदलना या बंद करना |
+| Your 4-week check / Your 8-week check (the 12-week path; was "Month 1 look-back") | आपका 4 हफ़्ते का चेक-इन / आपका 8 हफ़्ते का चेक-इन |
+
+### 19.16 Version 39.16: the 10-second daily note (MODULE_API section 59)
+
+Labels only. The chips are the Diary's own words (Calm, Tired, Cramps, Low mood, Bloating), so there is no new symptom and
+no new advice. The "next" lines restate rules the app already has: fertile days after 6 cycles, and patterns after 3 periods
+with notes.
+
+| English | Hindi |
+|---|---|
+| TODAY · 10 SECONDS | आज · 10 सेकंड |
+| How do you feel today? | आज आप कैसा महसूस कर रही हैं? |
+| More | और |
+| A note a day shows what repeats in your cycle. | रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है। |
+| Noted today. Tap again to change it. | आज का नोट हो गया। बदलने के लिए फिर टैप करें। |
+| Noted on 9 of 27 days | 27 में से 9 दिन नोट किए |
+| Next: 2 more periods, and your fertile days show. | अगला: 2 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे। |
+| Next: 1 more period with notes, and Sakhi shows what repeats for you. | अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है। |
+| Dots: what you noted · What the marks mean | बिंदु: आपने जो नोट किया · निशानों का मतलब |
+
+### 19.17 Version 39.17: the daily note in 10 seconds (MODULE_API section 60)
+
+Labels only, with no new advice. "Feeling okay" is a new word in the Diary, not a symptom: it stays out of the doctor's report.
+The count restates the notes meter.
+
+| English | Hindi |
+|---|---|
+| Feeling okay | ठीक हूँ |
+| How did you feel? | उस दिन कैसा लगा? |
+| More signs · Fewer signs | और लक्षण · कम लक्षण |
+| How I feel (the + menu) | मैं कैसी हूँ |
+| Noted · 9 of 27 days this month | दर्ज · इस महीने 27 में से 9 दिन |
+| What repeats for you is ready · See it | आपके साथ क्या दोहराता है, अब तैयार है · देखें |
+
+### 19.18 Version 39.18: what her notes show, the doctor, her stage (MODULE_API section 61)
+
+**Please review before it ships:** "Bleeding after the birth" is on a safety path. In the first 6 weeks after a birth it opens
+the recovery check, with its reviewed warning signs, in place of "Period started". The monthly lines say who asks about these
+signs; please confirm they're fair.
+
+| English | Hindi |
+|---|---|
+| Bleeding after the birth | डिलीवरी के बाद ब्लीडिंग |
+| Opens your recovery check, with its warning signs | आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ |
+| Skin and hair signs, once a month | त्वचा और बालों के लक्षण, महीने में एक बार |
+| About a minute. The signs a doctor asks about in PMOS. | लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं। |
+| Midlife signs, once a month | 40 के बाद के लक्षण, महीने में एक बार |
+| About a minute. The signs a doctor asks about after 40. | लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं। |
+| Pregnancy signs, once a month · Signs after the birth, once a month | गर्भावस्था के लक्षण, महीने में एक बार · डिलीवरी के बाद के लक्षण, महीने में एक बार |
+| About a minute. The signs to tell your doctor about. | लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं। |
+| Week 21 of your pregnancy | गर्भावस्था का 21वाँ हफ़्ता |
+| Period from 17 Oct · 28-day cycle · this cycle | 17 Oct से पीरियड · 28 दिन का चक्र · यह चक्र |
+| From 17 Oct (a shared phone) · Earlier · Day 9 | 17 Oct से · पहले के दिन · दिन 9 |

@@ -193,7 +193,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 {
   const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [] } });
   const su = await text(page, '#view .setup-card');
-  check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 3/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
+  check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 2/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
   check('6 the web prototype has no phone-reminders step', !/reminders on this phone/.test(su));
   check('6 the first-week petals card is gone', !/first three petals/.test(await view(page)));
   await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
@@ -201,12 +201,16 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   await page.evaluate(() => window.Saathi.closeSheet()); await sleep(150);
   await setState(page, (d) => { const S = window.Saathi; S.state.events.push({ d, t: 'start' }); S.save(); }, isoAgo(10)); await go(page, 'learn'); await go(page, 'home');
   const su2 = await text(page, '#view .setup-card');
-  check('6 her period noted: the count goes up and the next step is her ASHA\'s number', /1 \/ 3/.test(su2) && /Save your ASHA or ANM’s number/.test(su2) && !/Log your last period/.test(su2), su2);
+  check('6 her period noted: the count goes up and the next step is free care near her (Mohit, 26 Oct: My ASHA stays off Today)', /1 \/ 2/.test(su2) && /Look at free care near you/.test(su2) && !/ASHA/.test(su2) && !/Log your last period/.test(su2), su2);
+  await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
+  check('6 that step opens Get care free', await page.evaluate(() => location.hash === '#access-free'));
+  await go(page, 'home');
+  check('6 every step on Today done: the card is gone from Today', !(await page.$('#view .setup-card')));
+  await go(page, 'me'); const su3 = await text(page, '#view .setup-card');
+  check('6 Me keeps her ASHA\'s number as a step', /2 \/ 3/.test(su3) && /Save your ASHA or ANM’s number/.test(su3), su3);
   await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
   check('6 that step opens My ASHA', await page.evaluate(() => location.hash === '#asha'));
-  await go(page, 'access-free'); await go(page, 'home');
-  const su3 = await text(page, '#view .setup-card');
-  check('6 Get care free opened elsewhere: that step is done too, and her ASHA is still next', /2 \/ 3/.test(su3) && /ASHA/.test(su3) && !/Look at free care near you/.test(su3), su3);
+  await go(page, 'me');
   await tap(page, '#setup-hide'); await sleep(250);
   check('6 "Hide this" hides it, and it stays hidden', !(await page.$('#view .setup-card')) && (await page.evaluate(() => window.Saathi.state.prompts.setup)) === 'off');
   check('6 no page errors', !errs.length, errs);

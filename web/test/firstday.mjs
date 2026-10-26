@@ -129,9 +129,9 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 Today before her first log: no plan offer yet', !(await has(page, '#pl-off-go')), (await view(page)).slice(0, 600));
   await go(page, 'diary'); await closeTips(page);
   check('4 Diary opens on her first log, with why logging helps', await has(page, '#fl-card') && /Why log every day\?/.test(await view(page)), (await view(page)).slice(0, 400));
-  await tap(page, '[data-fl-days="5"]'); await tap(page, '[data-fl-sign="d_acne"]'); await tap(page, '#fl-save'); await settle(page, 600);
+  await tap(page, '[data-fl-days="5"]'); await tap(page, '[data-fl-sign="d_tired"]'); await tap(page, '#fl-save');   /* Version 39.17: the same 5 as everywhere */ await settle(page, 600);
   s = await st(page);
-  check('4 her first log: her last period\'s end and today\'s acne', s.events.some((e) => e.t === 'end' && e.d === ago(56)) && (s.daily[TODAY] || []).indexOf('d_acne') >= 0 && !!s.prompts.firstLog, [s.events, s.daily]);
+  check('4 her first log: her last period\'s end and today\'s tiredness', s.events.some((e) => e.t === 'end' && e.d === ago(56)) && (s.daily[TODAY] || []).indexOf('d_tired') >= 0 && !!s.prompts.firstLog, [s.events, s.daily]);
   await go(page, 'home'); await closeTips(page);
   check('4 then Today offers her plan, first in "Sakhi says"', /^Ready for you$/i.test(await slotFirst(page)) && await has(page, '#pl-off-go'), [await slotFirst(page), (await st(page)).prompts]);
   await tap(page, '#pl-off-go');
@@ -194,14 +194,14 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 Start starts it: day 1 today, the 8 pm reminder', s.mods.plan.start === TODAY && s.mods.plan.go === true && !s.mods.plan.next && (s.reminders || []).some((r) => r.id === 'plan' && r.time === '20:00' && r.start === TODAY), [s.mods.plan.start, s.reminders]);
   v = await view(page);
   check('8 day 1: her plan leads "Sakhi says"', (await slotFirst(page)) === 'Day 1 of your plan' && /Your first step: Cycle care yoga · \d+ min\. At 8 pm, a 1-minute check-in\./.test(v), [await slotFirst(page), v.slice(0, 900)]);
-  check('8 day 1: Today counts her plan by day, and the check-in waits for the evening', /Day 1 · 0 of 4 done today/.test(v) && /Check-in at 8 pm/.test(v) && !(await has(page, '#view .pl-th [data-go="plan-checkin"]')), v.slice(0, 900));
+  check('8 day 1: Today counts her plan by plan day (Version 39.14), and the check-in waits for the evening', /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && /Check-in at 8 pm/.test(v) && !(await has(page, '#view .today-card .pl-t-ci')), v.slice(0, 900));
   check('8 day 1: the "keep an eye on it" card waits (no period for 60 days)', !(await has(page, '#view [data-xp-lv="watch"]')));
   check('8 day 1: the heads-up, setup and Coming up wait', !(await has(page, '#view .hu-card')) && !(await has(page, '#view .setup-card')) && !(await has(page, '#view .cu-empty')));
   await shot(page, '04-day1-today');
   /* a Done before the evening: still no petal, and now the check-in shows */
   await tap(page, '#view .today-card [data-today-act]'); await settle(page, 1500);
   check('8 a Done on day 1: no petal yet', !(await pop(page)).joy);
-  check('8 after her first Done, the check-in button shows', await has(page, '#view .pl-th [data-go="plan-checkin"]'));
+  check('8 after her first Done, the check-in button shows', await has(page, '#view .today-card .pl-t-ci[data-go="plan-checkin"]'));
   await jump(page, 0, '20:05', 'plan-checkin');
   check('8 the first check-in says it takes a minute and stays on the phone', /This takes a minute. Your answers stay on this phone./.test(await view(page)), (await view(page)).slice(0, 300));
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':d"]');
@@ -213,11 +213,13 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   /* day 2: yesterday */
   await jump(page, 1, '09:00'); await closeTips(page);
   v = await view(page);
-  check('8 day 2: Today says what she did yesterday', /Day 2 · /.test(v) && /Yesterday: 4 done./.test(v), v.slice(0, 900));
+  const yd = await page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? { c: y.querySelector('i').className, t: y.title } : null; });
+  check('8 day 2: Today shows what she did yesterday (Version 39.14: her week\'s dots)', /PLAN DAY 2/.test(v) && yd && yd.c === 'full' && /: 4 of 4 steps$/.test(yd.t), [yd, v.slice(0, 900)]);
   check('8 day 2: no first-day card', (await slotFirst(page)) !== 'Day 1 of your plan', await slotFirst(page));
   await jump(page, 2, '09:00'); await closeTips(page);
   v = await view(page);
-  check('8 day 3: small steps add up', /3 days in: small steps add up./.test(v) && /No steps yesterday/.test(v), v.slice(0, 900));
+  const yd3 = await page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? { c: y.querySelector('i').className, t: y.title } : null; });
+  check('8 day 3: small steps add up', /3 days in: small steps add up./.test(v) && yd3 && yd3.c === '' && /: 0 of 4 steps$/.test(yd3.t), [yd3, v.slice(0, 900)]);
   await jump(page, 3, '09:00'); await closeTips(page);
   check('8 day 4: the cards that waited come back (setup, Coming up)', /Set up Sakhi for you/.test(await page.$eval('#view .slot', (e) => e.textContent).catch(() => '')));
   check('8 day 4: "no period yet" is folded into the plan\'s doctor check (Version 37.2)', (await page.$eval('#view .slot', (s) => s.children[1] ? s.children[1].innerText.split('\n')[0] : '').catch(() => '')) === 'Did you get the doctor check?' && !(await has(page, '#view [data-xp-lv="watch"]')));
@@ -273,7 +275,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('9 My plan says when, with "Start today instead"', /Your plan starts tomorrow/.test(await view(page)) && (await has(page, '#pl-soon-now')));
   await jump(page, 1, '10:00'); await closeTips(page);
   v = await view(page);
-  check('9 tomorrow, day 1 begins', /Day 1 · 0 of 4 done today/.test(v) && (await slotFirst(page)) === 'Day 1 of your plan', v.slice(0, 900));
+  check('9 tomorrow, day 1 begins', /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && (await slotFirst(page)) === 'Day 1 of your plan', v.slice(0, 900));
   check('16 no page errors (tomorrow)', errs.length === 0, errs);
   await ctx.close();
 }
@@ -304,7 +306,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
 /* ---------- 11. A goal change keeps the old plan until the new one starts ---------- */
 {
   const { ctx, page, errs } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(20), { intake: IK }) } } });
-  await go(page, 'plan'); await tap(page, '#pl-chg');
+  await go(page, 'plan-settings'); await tap(page, '#pl-chg');   /* Version 39.15: Plan settings is a page of its own */
   await tap(page, '[data-pl-goal="pain"]');
   for (let i = 0; i < 6; i++) {
     if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); break; }
@@ -318,12 +320,12 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('11 the cards say it replaces the old plan when she starts it', /It replaces the plan you are on when you start it. What you logged stays./.test(await view(page)), (await view(page)).slice(0, 500));
   await go(page, 'home'); await closeTips(page);
   let v = await view(page);
-  check('11 Today still shows the plan she is on', /Week 3 of 12/.test(v) && (await slotFirst(page)) === 'Your new plan is ready', [await slotFirst(page), v.slice(0, 900)]);
+  check('11 Today still shows the plan she is on', /week 3 · plan day/i.test(v) && (await slotFirst(page)) === 'Your new plan is ready', [await slotFirst(page), v.slice(0, 900)]);
   await tap(page, '#pl-next-drop');
   s = await st(page);
   check('11 "Keep my plan" drops the new one', !s.mods.plan.next && s.mods.plan.pack === 'cycle');
   /* again, and this time she starts it */
-  await go(page, 'plan'); await tap(page, '#pl-chg'); await tap(page, '[data-pl-goal="pain"]');
+  await go(page, 'plan-settings'); await tap(page, '#pl-chg');   /* Version 39.15: Plan settings is a page of its own */ await tap(page, '[data-pl-goal="pain"]');
   for (let i = 0; i < 6; i++) {
     if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); break; }
     if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
@@ -355,7 +357,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   const v35 = planOf('cycle', null, ago(10), { go: undefined, pack: undefined });
   const { ctx, page, errs } = await open({ seed: { situation: { pcos: true }, mods: { plan: v35 } } });
   await closeTips(page);
-  check('12 a Version 35 plan keeps running', (await page.evaluate(() => window.Saathi.plan.packOf())) === 'cycle' && /Week 2 of 12/.test(await view(page)), (await view(page)).slice(0, 600));
+  check('12 a Version 35 plan keeps running', (await page.evaluate(() => window.Saathi.plan.packOf())) === 'cycle' && /week 2 · plan day/i.test(await view(page)), (await view(page)).slice(0, 600));
   check('16 no page errors (migration)', errs.length === 0, errs);
   await ctx.close();
 }
@@ -421,7 +423,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('16 discreet: the doctor check shows in plain words', !/doctor check/.test(words) || /A doctor’s check is part of your plan/.test(words), words.match(/.{0,60}doctor.{0,60}/i));
   await tap(page, '#pl-rv-go'); await settle(page, 1200); await closeTips(page);
   const v = await view(page);
-  check('16 discreet: Today says "My plan · Day 1"', /My plan/i.test(v) && /Day 1 · 0 of 4 done today/.test(v) && !/My cycle plan/i.test(v), v.slice(0, 700));
+  check('16 discreet: Today says "My plan · plan day 1"', /My plan/i.test(v) && /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && !/My cycle plan/i.test(v), v.slice(0, 700));
   check('16 discreet: the day-1 card shows, in plain words', (await slotFirst(page)) === 'Day 1 of your plan', await slotFirst(page));
   check('16 no page errors (discreet)', errs.length === 0, errs);
   await ctx.close();
@@ -438,7 +440,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('16 360 px: no card scrolls sideways', ok360);
   await shot(page, '06-hindi-start-360');
   await tap(page, '#pl-rv-go'); await settle(page, 1200); await closeTips(page);
-  check('16 Hindi: Today says day 1 and the check-in time', /दिन 1 ·/.test(await view(page)) && /चेक-इन रात 8 बजे/.test(await view(page)), (await view(page)).slice(0, 700));
+  check('16 Hindi: Today says plan day 1 and the check-in time', /प्लान का दिन 1/.test(await view(page)) && /चेक-इन रात 8 बजे/.test(await view(page)), (await view(page)).slice(0, 700));
   check('16 360 px: Today does not scroll sideways', await noScroll(page));
   check('16 no page errors (Hindi)', errs.length === 0, errs);
   await ctx.close();
