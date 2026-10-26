@@ -14,7 +14,7 @@
   const R = {
     cramps: { syms: ['d_cramps'], ok: () => !preg(), hue: 'rose', more: 'periods-pain', steps: [['c1', 60], ['c2', 40], ['c3', 40], ['c4', 40, 'b46']] },
     nausea: { syms: ['d_nausea'], ok: preg, hue: 'green', more: 'preg-symptoms', steps: [['n1', 40], ['n2', 40], ['n3', 50], ['n4', 50, 'b46']] },
-    sleep: { syms: ['d_sleep'], ok: () => true, hue: 'purple', steps: [['s1', 30], ['s2', 60, 'b46'], ['s3', 60], ['s4', 30]] },
+    sleep: { syms: ['d_sleep'], ok: () => true, hue: 'purple', steps: [['s1', 30], ['s2', 60, 'b46'], ['s3', 60], ['s4', 30], ['s5', 25]] },   /* Version 39.20: a mantra or prayer, if she likes */
     calm: { syms: ['d_anxious', 'd_mood', 'd_irritable'], ok: () => true, hue: 'sky', noAsk: true, steps: [['m1', 40], ['m2', 64, 'box'], ['m3', 50], ['m4', 30]] },
     hot: { syms: ['d_hotflush'], ok: () => true, hue: 'orange', more: 'meno', steps: [['h1', 40], ['h2', 40], ['h3', 80, 'b55']] }
   };
@@ -37,7 +37,8 @@
 
   function renderList(v) {
     const ids = IDS.filter((id) => R[id].ok());
-    v.innerHTML = S.backRow(t('relief_h'), 'care', false) + '<p class="small">' + esc(t('relief_p')) + '</p><div class="list">' +
+    const wind = calmRow();
+    v.innerHTML = S.backRow(t('relief_h'), 'care', false) + '<p class="small">' + esc(t('relief_p')) + '</p>' + wind + '<div class="list">' +
       ids.map((id) => '<button type="button" class="item" data-go="relief-' + id + '"><span class="ico-sm hue hue-' + R[id].hue + '">' + S.I.leaf + '</span><span class="body"><strong>' + esc(t('relief_' + id + '_t')) + '</strong><span>' + esc(tf('relief_mins', { n: mins(id) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button>').join('') +
       '</div><p class="footnote">' + esc(t('relief_foot')) + '</p>';
     S.wire(v);
@@ -45,7 +46,12 @@
 
   /* ---------- the player: intro, steps with a timer (or a breathing guide), then "Did this help?" ---------- */
   let run = null, tm = 0;
-  const stopRun = () => { clearInterval(tm); tm = 0; if (S.stopSpeech) S.stopSpeech(); };
+  const stopRun = () => { clearInterval(tm); tm = 0; if (S.stopSpeech) S.stopSpeech(); if (S.sound) S.sound.stopClip(); };
+  /* Version 39.21: each step in Dr. Megha's voice (sounds/voice/<lang>/rl-<step>.ogg, the same reviewed words); in other languages
+     the phone reads the step aloud, as before */
+  /* Version 39.21: Wind down, on the list and on the sleep routine's first and last screens */
+  const calmRow = () => (S.routeOwner('calm') ? '<div class="list rl-calm"><button type="button" class="item" data-go="calm"><span class="ico-sm hue hue-purple">' + S.icon('moon') + '</span><span class="body"><strong>' + esc(t('calm_row')) + '</strong><span>' + esc(t('calm_row_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : '');
+  const clipFor = (key) => (S.sound && (S.state.lang === 'en' || S.state.lang === 'hi') ? 'sounds/voice/' + S.state.lang + '/rl-' + key + '.ogg' : null);
   if (S.onOwnerChange) S.onOwnerChange(() => { stopRun(); run = null; });
   const voiceDefault = () => { const d = S.state.mods && S.state.mods.relief; if (d && d.voice != null) return !!d.voice; return !(S.state.settings.discreet || S.state.settings.shared); };
   const RING = 339.3;   /* 2πr for r = 54 */
@@ -63,8 +69,8 @@
     if (run.i < 0) {
       body = '<div class="card rl-stage">' + art('calm') + '<p class="lead">' + esc(tf('relief_mins', { n: mins(run.id) })) + '</p><p class="small">' + esc(t('relief_intro')) + '</p></div>' +
         '<ol class="steps">' + r.steps.map((s) => '<li>' + esc(t('relief_' + s[0] + '_h')) + '</li>').join('') + '</ol>' +
-        (S.speakEl ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('relief_voice')) + '</strong><span>' + esc(t('relief_voice_d')) + '</span></span><input type="checkbox" id="rl-voice" ' + (run.voice ? 'checked' : '') + '></label></div>' : '') +
-        '<button type="button" class="btn primary block" id="rl-start">' + esc(t('relief_start')) + '</button>' + doc(run.id);
+        (S.speakEl || clipFor('c1') ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('relief_voice')) + '</strong><span>' + esc(t('relief_voice_d')) + '</span></span><input type="checkbox" id="rl-voice" ' + (run.voice ? 'checked' : '') + '></label></div>' : '') +
+        '<button type="button" class="btn primary block" id="rl-start">' + esc(t('relief_start')) + '</button>' + (run.id === 'sleep' ? calmRow() : '') + doc(run.id);   /* Version 39.21: one tap from her plan's bedtime step */
     } else if (run.i < n) {
       const s = r.steps[run.i];
       body = '<div class="rl-dots" aria-hidden="true">' + r.steps.map((x, k) => '<i class="' + (k < run.i ? 'done' : (k === run.i ? 'on' : '')) + '"></i>').join('') + '</div>' +
@@ -77,6 +83,7 @@
       body = '<div class="card rl-stage">' + art('cheer') + '<h2>' + esc(t('relief_done_h')) + '</h2><p class="small">' + esc(t('relief_done_p')) + '</p></div>' +
         (S.canSave() ? (run.rated ? '<div class="card ok"><p>' + esc(t(run.rated === 'no' ? 'relief_thanks_no' : 'relief_thanks')) + '</p></div>'
           : '<h2>' + esc(t('relief_q')) + '</h2><div class="rl-rate">' + ['yes', 'some', 'no'].map((k) => '<button type="button" class="btn" data-rl-rate="' + k + '">' + esc(t('relief_r_' + k)) + '</button>').join('') + '</div>') : '') +
+        (run.id === 'sleep' && S.routeOwner('calm') ? '<button type="button" class="btn primary block rl-calm-go" data-go="calm">' + S.icon('moon') + ' ' + esc(t('calm_more')) + '</button>' : '') +   /* Version 39.21 */
         doc(run.id) +
         '<div class="grid2"><button type="button" class="btn" id="rl-again">' + esc(t('relief_again')) + '</button>' + (r.more && S.routeOwner(r.more) ? '<button type="button" class="btn" data-go="' + r.more + '">' + esc(t('relief_more')) + '</button>' : '<button type="button" class="btn" data-go="relief">' + esc(t('relief_all')) + '</button>') + '</div>' +
         (r.noAsk ? '' : '<button type="button" class="btn ghost block" data-ask="' + esc(t('relief_' + run.id + '_t')) + '">' + esc(t('relief_ask')) + '</button>');
@@ -87,7 +94,7 @@
   function wire(v) {
     const vs = v.querySelector('#rl-voice'); if (vs) vs.addEventListener('change', () => { run.voice = vs.checked; if (S.canSave()) { S.data('relief').voice = run.voice; S.saveQuiet(); } });
     const st = v.querySelector('#rl-start'); if (st) st.addEventListener('click', () => go(0));
-    const ps = v.querySelector('#rl-pause'); if (ps) ps.addEventListener('click', () => { run.paused = !run.paused; if (run.paused && S.stopSpeech) S.stopSpeech(); ps.textContent = t(run.paused ? 'relief_resume' : 'relief_pause'); });
+    const ps = v.querySelector('#rl-pause'); if (ps) ps.addEventListener('click', () => { run.paused = !run.paused; if (run.paused && S.stopSpeech) S.stopSpeech(); if (run.paused && S.sound) S.sound.stopClip(); ps.textContent = t(run.paused ? 'relief_resume' : 'relief_pause'); });
     const nx = v.querySelector('#rl-next'); if (nx) nx.addEventListener('click', () => go(run.i + 1));
     const ag = v.querySelector('#rl-again'); if (ag) ag.addEventListener('click', () => { run.rated = null; go(0); });
     v.querySelectorAll('[data-rl-rate]').forEach((b) => b.addEventListener('click', () => {
@@ -101,7 +108,7 @@
     stopRun(); run.i = i; run.paused = false; run.at = Date.now();
     if (i < n) { run.left = R[run.id].steps[i][1]; run.el = 0; }
     buzz(); draw(v); window.scrollTo(0, 0);
-    if (i < n && run.voice && S.speakEl) { const el = v.querySelector('#rl-step'); if (el) setTimeout(() => { if (run && run.i === i && !run.paused) S.speakEl(el); }, 150); }
+    if (i < n && run.voice) { const src = clipFor(R[run.id].steps[i][0]); setTimeout(() => { if (!run || run.i !== i || run.paused) return; if (src && S.sound.clip(src)) return; const el = v.querySelector('#rl-step'); if (el && S.speakEl) S.speakEl(el); }, 150); }
   }
   function tick(v) {
     clearInterval(tm);
@@ -161,7 +168,7 @@
         relief_s1_h: 'Get comfortable', relief_s1_p: 'Lie down and dim the light. When this ends, put the phone away, face down.',
         relief_s2_h: 'Long breaths out', relief_s2_p: 'Breathe in for 4, and out slowly for 6. Longer breaths out help many people settle.',
         relief_s3_h: 'Let go, part by part', relief_s3_p: 'Squeeze your toes for 5 seconds, then let go. Do the same with your legs, your hands, then your shoulders.',
-        relief_s4_h: 'Park your thoughts', relief_s4_p: 'If thoughts keep coming, tell yourself: I can think about this tomorrow. Writing it in your diary note can help.',
+        relief_s4_h: 'Park your thoughts', relief_s4_p: 'If thoughts keep coming, tell yourself: I can think about this tomorrow. Writing it in your diary note can help.', relief_s5_h: 'A mantra or prayer, if you like', relief_s5_p: 'Chant softly, or in your mind: Om, the Gayatri mantra, the Hanuman Chalisa, or any prayer or devotional mantra you like. When thoughts come, gently go back to it.',
         relief_sleep_doc: 'Still awake after about 20 minutes? Get up and sit somewhere quiet in dim light until you feel sleepy, then go back to bed. Getting up at the same time every day helps too. Poor sleep most nights for a few weeks, or loud snoring with gasping, is worth a doctor’s visit. Low mood with poor sleep: Tele-MANAS 14416 is free, any time.',
         relief_m1_h: 'Feel your feet', relief_m1_p: 'Press your feet into the floor. Name 5 things you can see and 3 things you can hear.',
         relief_m2_h: 'Box breathing', relief_m2_p: 'Breathe in for 4, hold for 4, out for 4, hold for 4. Then again, slowly.',
@@ -196,7 +203,7 @@
         relief_s1_h: 'आराम से लेटें', relief_s1_p: 'लेट जाएँ और रोशनी धीमी कर दें। यह ख़त्म हो जाए, तो फ़ोन उल्टा करके रख दें।',
         relief_s2_h: 'लंबी साँस बाहर', relief_s2_p: '4 गिनते हुए साँस अंदर, फिर धीरे-धीरे 6 गिनते हुए बाहर। लंबी साँस छोड़ने से बहुत लोगों को सुकून मिलता है।',
         relief_s3_h: 'एक-एक करके ढीला छोड़ें', relief_s3_p: 'पैरों की उँगलियाँ 5 सेकंड कसें, फिर छोड़ दें। ऐसा ही पैरों, हाथों और फिर कंधों के साथ करें।',
-        relief_s4_h: 'विचार कल पर छोड़ें', relief_s4_p: 'विचार आते रहें, तो ख़ुद से कहें: इस बारे में कल सोचूँगी। डायरी के नोट में लिख देना भी मदद करता है।',
+        relief_s4_h: 'विचार कल पर छोड़ें', relief_s4_p: 'विचार आते रहें, तो ख़ुद से कहें: इस बारे में कल सोचूँगी। डायरी के नोट में लिख देना भी मदद करता है।', relief_s5_h: 'चाहें तो कोई मंत्र या प्रार्थना', relief_s5_p: 'धीरे से या मन में जपें: ॐ, गायत्री मंत्र, हनुमान चालीसा, या कोई भी प्रार्थना या भक्ति मंत्र जो आपको पसंद हो। विचार आएँ, तो धीरे से फिर जप पर लौट आएँ।',
         relief_sleep_doc: 'लगभग 20 मिनट बाद भी नींद न आए? उठकर किसी शांत जगह हल्की रोशनी में बैठें, नींद आने लगे तब फिर लेटें। रोज़ एक ही समय उठना भी मदद करता है। कुछ हफ़्तों से ज़्यादातर रातें नींद ठीक न आए, या ज़ोर के खर्राटों के साथ साँस अटके, तो डॉक्टर को दिखाएँ। उदासी के साथ नींद न आए: Tele-MANAS 14416, मुफ़्त, कभी भी।',
         relief_m1_h: 'पैरों को महसूस करें', relief_m1_p: 'पैरों को ज़मीन पर दबाएँ। 5 चीज़ें जो दिख रही हैं और 3 आवाज़ें जो सुनाई दे रही हैं, उनके नाम लें।',
         relief_m2_h: 'चौकोर साँस', relief_m2_p: '4 तक साँस अंदर, 4 तक रोकें, 4 तक बाहर, 4 तक रोकें। फिर से, धीरे-धीरे।',

@@ -169,7 +169,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5), weeks: SEEN1 }, { prompts: { notifyIntro: ago(3), planCall: ago(3), firstLog: ago(30) }, joined: ago(5) }), now: at(0, '09:30') });
   check('4 Today has no My ASHA step', !/ASHA/.test(await view(a.page)));
   await go(a.page, 'plan');
-  check('4 My plan\'s care team has no My ASHA', !(await has(a.page, '#view [data-go="asha"]')) && /Your care team/.test(await view(a.page)) && /A Qura doctor/.test(await view(a.page)));
+  check('4 My plan\'s care team has no My ASHA', !(await has(a.page, '#view [data-go="asha"]')) && /Your care team/.test(await view(a.page)) && /A Qura doctor/.test(await a.page.$eval('#view .pl-care', (e) => e.textContent)));   /* Version 39.19: folded after week 1 */
   await go(a.page, 'diary');
   check('4 the Diary has no My ASHA', !/ASHA/.test(await view(a.page)));
   await go(a.page, 'access-free');
@@ -184,8 +184,13 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const a = await open({ seed: cyc(ago(9), { log: l, weeks: SEEN1 }, { reminders: REM }), now: at(0, '09:30'), hash: '#plan' });
   const v = await view(a.page);
   check('5 her goal and her week, never a diagnosis line', /Goal: feeling better with PMOS · Week 2 of 12/.test(v) && !/I have PMOS/.test(v), v.slice(0, 300));
-  check('5 how her plan works: every day, every week, every 4 weeks, after 12 weeks', /HOW YOUR PLAN WORKS\nEvery day\n4 steps, check-in 8 pm\nEvery week\nLook back, plan the week\nEvery 4 weeks\nA 1-minute check\nAfter 12 weeks\nYour results/.test(v), v.slice(0, 600));
-  check('5 her 4 daily steps, each with its reviewed reason', /Your 4 daily steps/.test(v) && /Moving most days lifts your energy and mood\./.test(v) && /Moving most days helps your body use insulin better/.test(v) && /Small food changes add up/.test(v) && /A regular bedtime helps your body clock/.test(v), v);
+  /* Version 39.19: after her first week these fold to one line each; opened, they read as before (and stay open) */
+  check('5 Version 39.19: how her plan works, what consistency brings and her care team are folded after week 1', (await a.page.$$('#view .pl-fold details:not([open])')).length === 3);
+  await a.page.$$eval('#view .pl-fold summary', (s) => s.forEach((x) => x.click())); await settle(a.page, 200);
+  const rh = await txt(a.page, '#view .pl-rh');
+  check('5 how her plan works: every day, every week, every 4 weeks, after 12 weeks', /Every day\n4 steps, check-in 8 pm\nEvery week\nLook back, plan the week\nEvery 4 weeks\nA 1-minute check\nAfter 12 weeks\nYour results/.test(rh), rh);
+  const why = []; for (let i = 0; i < 4; i++) { await a.page.$$eval('#view .pl-step-how', (b, k) => b[k].click(), i); await settle(a.page, 300); why.push(await sheetTxt(a.page)); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150); }
+  check('5 her 4 daily steps, each with its reviewed reason (behind "Why?" after week 1)', /Your 4 daily steps/.test(v) && /Moving most days lifts your energy and mood\./.test(why[0]) && /Moving most days helps your body use insulin better/.test(why[1]) && /Small food changes add up/.test(why[2]) && /A regular bedtime helps your body clock/.test(why[3]), why.map((x) => x.slice(0, 140)));
   check('5 the check-in only when it is due: in the morning its time, no pink button', /Check-in at 8 pm/.test(await txt(a.page, '#view .pl-steps-card')) && !(await has(a.page, '#view .pl-steps-card .btn.primary')));
   await tap(a.page, '#view .pl-steps-card [data-pl-tk="1"]');
   check('5 a tick on My plan is the same tick as Today\'s', ((await plan(a.page)).log[TODAY].ck || {}).move === 'd' && (await has(a.page, '#view .pl-steps-card .today-ok')) && /1 of 4 done today/.test(await txt(a.page, '#view .pl-steps-card')));

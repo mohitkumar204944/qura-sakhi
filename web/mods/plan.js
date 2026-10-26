@@ -443,10 +443,15 @@
     const clock = ownWeek(d) || (wk > N && d.keep ? t('plan_wk_keep') : (planWeeks(d) ? tf('plan_wk', { n: Math.min(wk, N) }) : tf('plan_wk_n', { n: wk })));
     const gk = d.goalKey || (packOf(d) === 'cycle' ? 'irregular' : '');   /* Version 39.15 (audit R7): her goal, never a diagnosis line */
     const acts = selfPaused(d) ? [] : actionsFor(d);
+    /* Version 39.19 (Mohit, 26 Oct: "some information can be collapsable"): after her first week, what she reads once folds to
+       one line each: how her plan works, her steps' reasons (behind "Why?"), what consistency brings, the weeks ahead and her care
+       team. Her steps, this week, the garden, the tools and her settings stay open. */
+    const fold = weekNo(d) > 1;
     v.innerHTML = hd + '<p class="small pl-clock">' + esc(disc() || !gk ? clock : tf('plan_goal_l', { g: t('plan_gv_' + gk), w: clock })) + '</p>' +
-      pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts) + stepsCard(d, acts) + weekCard(d) + gardenRow() + reviewCard(d) + mcRow(d) + consCard(d) + pathHtml(d) +
-      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam() + settingsRow() + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
+      pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts, fold) + stepsCard(d, acts, fold) + weekCard(d) + gardenRow() + reviewCard(d) + mcRow(d) + consCard(d, fold) + pathHtml(d, fold) +
+      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + settingsRow() + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
     S.wire(v); wireReview(v); wirePause(v); wireSteps(v, acts);
+    v.querySelectorAll('[data-pl-fold]').forEach((dt) => dt.addEventListener('toggle', () => { S.mem.plFold = S.mem.plFold || {}; S.mem.plFold[dt.dataset.plFold] = dt.open; }));   /* Version 39.19 */
     const fq = v.querySelector('#pl-fast-tog'); if (fq) fq.addEventListener('click', () => { const dd = D(); setFast(dd, todayISO(), !fastOn(dd)); remSync(dd); S.save(); S.render(); });   /* Version 39.9 */
     const wp = v.querySelector('#pl-wp'); if (wp) wp.addEventListener('click', () => { S.mem.planWkFrom = 'plan'; S.setHash('plan-week'); });   /* Version 39.12 */
   }
@@ -454,21 +459,26 @@
      week; how her plan works; her daily steps, each with its reviewed reason and today's tick; this week as rings (a part for
      each step), her minutes and Plan this week; her garden; what consistency brings (the reviewed timeline, "You are here") with
      her own signs beside it; then her 12 weeks, the tools, her care team and one row for her settings. ---------- */
-  function rhythmCard(d, acts) {
+  /* Version 39.19: a folded card: its title and one line, and what it holds one tap away */
+  const foldOpen = (k) => !!(S.mem.plFold && S.mem.plFold[k]);
+  const foldCard = (cls, title, line, inner) => '<div class="card ' + cls + ' pl-fold"><details data-pl-fold="' + cls + '"' + (foldOpen(cls) ? ' open' : '') + '><summary><span class="pl-fold-t"><strong>' + esc(title) + '</strong>' + (line ? '<span class="small">' + esc(line) + '</span>' : '') + '</span><span class="pl-fold-c" aria-hidden="true">' + S.I.chev + '</span></summary><div class="pl-fold-in">' + inner + '</div></details></div>';
+  function rhythmCard(d, acts, fold) {
     if (!acts.length) return ''; const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc(); const at = timeOf(d.remAt || '20:00');
     const cols = [['plan_rh_day', acts.length === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: acts.length, t: at })], ['plan_rh_wk', t(movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
-    return '<div class="card pl-rh"><span class="eyebrow">' + esc(t('plan_how_h2')) + '</span><div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div></div>';
+    const grid = '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
+    if (fold) return foldCard('pl-rh', t('plan_how_h2'), t(cols[0][0]) + ': ' + cols[0][1], grid);
+    return '<div class="card pl-rh"><span class="eyebrow">' + esc(t('plan_how_h2')) + '</span>' + grid + '</div>';
   }
   /* R7.2: her daily steps, each with its reviewed reason (always shown), how to do it, and today's tick, the same tick as
      Today's; R9: the check-in button only once it is due */
-  function stepsCard(d, acts) {
+  function stepsCard(d, acts, fold) {
     if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const all = done === acts.length;
     const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r));
-      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : t(a.why || 'plan_fb_any'));   /* her fasting step: its tips (V39.9 review SAFETY-03) */
+      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons behind "Why?" */
       const tk = sb && !ok ? '<button type="button" class="btn sm pl-st-start" data-pl-start="' + i + '">' + esc(t('plan_start_b')) + '</button>'
         : (tick ? '<button type="button" class="today-tick' + (ok ? ' on' : '') + '" ' + (ok ? 'data-pl-un' : 'data-pl-tk') + '="' + i + '" aria-pressed="' + ok + '" aria-label="' + esc(tf(ok ? 'today_untick' : 'today_tick', { x: nm })) + '"><span class="tk">' + (ok ? SVG_TICK : '') + '</span></button>'
           : (ok ? '<span class="today-tick on" aria-hidden="true"><span class="tk">' + SVG_TICK + '</span></span>' : '<button type="button" class="today-open" data-go="' + esc(a.go) + '" aria-label="' + esc(nm) + '">' + S.I.chev + '</button>'));
-      return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t('plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
+      return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t(fold ? 'today_why' : 'plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
     return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(acts.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: acts.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, acts.length)) + '</span></div>' +
       '<div class="pl-t4-bar" aria-hidden="true">' + acts.map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
       '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>' +
@@ -507,9 +517,9 @@
   const gardenRow = () => (S.routeOwner('joy') && !disc() ? '<div class="list pl-garden"><button type="button" class="item" data-go="joy"><span class="ico-sm hue hue-green">' + S.icon('flower') + '</span><span class="body"><strong>' + esc(t('joy_h')) + '</strong><span>' + esc(t('joy_tile_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : '');
   /* R7.4, R8: what consistency brings (the cycle plan's reviewed timeline, "You are here"), and her own signs beside it as they
      arrive: her energy from the look-backs, her 4-week check, her days between periods before and since. Not on a shared phone. */
-  function consCard(d) {
-    if (disc()) return ''; const pk = packOf(d); const wk = weekNo(d); const sit = S.state.situation || {}; let tl = '';
-    if (pk === 'cycle') { const now = wk <= 4 ? 0 : (wk <= 12 ? 1 : 2); tl = '<ol class="pl-tl">' + [1, 2, 3].map((k, i) => '<li class="' + (i === now ? 'now' : (i < now ? 'past' : '')) + '"><strong>' + esc(t('plan_ex_' + k)) + '</strong>' + (i === now ? ' <span class="pill accent">' + esc(t('plan_ex_now')) + '</span>' : '') + '<span class="small">' + esc(t('plan_ex_' + k + '_p')) + '</span></li>').join('') + '</ol>'; }
+  function consCard(d, fold) {
+    if (disc()) return ''; const pk = packOf(d); const wk = weekNo(d); const sit = S.state.situation || {}; let tl = ''; const now = wk <= 4 ? 0 : (wk <= 12 ? 1 : 2);
+    if (pk === 'cycle') { tl = '<ol class="pl-tl">' + [1, 2, 3].map((k, i) => '<li class="' + (i === now ? 'now' : (i < now ? 'past' : '')) + '"><strong>' + esc(t('plan_ex_' + k)) + '</strong>' + (i === now ? ' <span class="pill accent">' + esc(t('plan_ex_now')) + '</span>' : '') + '<span class="small">' + esc(t('plan_ex_' + k + '_p')) + '</span></li>').join('') + '</ol>'; }
     else if (pk === 'ttc') tl = '<p class="small">' + esc(t('plan_rv_ttc')) + '</p>';
     else if (pk === 'preg') tl = '<p class="small">' + esc(t('plan_rv_exp_preg')) + '</p>';
     const rows = []; const es = []; for (let k = Math.max(1, wk - 3); k < wk; k++) { const e = (d.weeks[k] || {}).e; if (e) es.push(tf('plan_sg_e_v', { n: k, e: t('plan_e_' + e) })); }
@@ -521,7 +531,9 @@
     if (per && S.cycle && S.cycle.gapsAll) { const cc = cycleCompare(d); const bl = cc.before.length ? cc.before[cc.before.length - 1] : null; const sl = cc.since.length ? cc.since[cc.since.length - 1] : null;
       if (bl != null || sl) rows.push([t('plan_sg_gap'), [bl != null ? tf('plan_sg_gap_b', { n: bl }) : '', sl ? tf(sl.guess ? 'plan_sg_gap_sa' : 'plan_sg_gap_s', { n: sl.days }) : ''].filter(Boolean).join(' · ')]); }
     if (!tl && !rows.length && !per) return '';
-    return '<div class="card pl-cons"><h3>' + esc(t('plan_cons_h')) + '</h3>' + tl + (rows.length ? '<span class="eyebrow">' + esc(t('plan_signs_h')) + '</span><div class="pl-signs">' + rows.map((x) => '<div class="pl-mc-row"><span>' + esc(x[0]) + '</span><strong class="pl-mc-v">' + esc(x[1]) + '</strong></div>').join('') + '</div>' : '') + (per ? '<p class="small">' + esc(t('plan_rv_cyc')) + '</p>' : '') + '</div>';
+    const inner = tl + (rows.length ? '<span class="eyebrow">' + esc(t('plan_signs_h')) + '</span><div class="pl-signs">' + rows.map((x) => '<div class="pl-mc-row"><span>' + esc(x[0]) + '</span><strong class="pl-mc-v">' + esc(x[1]) + '</strong></div>').join('') + '</div>' : '') + (per ? '<p class="small">' + esc(t('plan_rv_cyc')) + '</p>' : '');
+    if (fold) return foldCard('pl-cons', t('plan_cons_h'), pk === 'cycle' ? t('plan_ex_' + (now + 1)) + ': ' + t('plan_ex_' + (now + 1) + '_p') : '', inner);   /* Version 39.19: her stage now, in one line */
+    return '<div class="card pl-cons"><h3>' + esc(t('plan_cons_h')) + '</h3>' + inner + '</div>';
   }
   /* her settings: one row on My plan, a page of their own */
   const settingsRow = () => '<div class="list pl-set-row"><button type="button" class="item" data-go="plan-settings"><span class="ico-sm hue hue-plum">' + S.icon('gear') + '</span><span class="body"><strong>' + esc(t('plan_set_h')) + '</strong><span>' + esc(t('plan_set_row_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>';
@@ -2021,7 +2033,7 @@
   }
 
   /* ---------- My plan: the 12-week path, today's steps, the look-back, results and her care team ---------- */
-  function pathHtml(d) {
+  function pathHtml(d, fold) {
     const kept = !!(d.keep && weekNo(d) > N); const wk = kept ? weekNo(d) : Math.max(1, Math.min(weekNo(d), N)); const pk = packOf(d);
     if (pk === 'preg') {
       if (disc()) return '';   /* trimesters are pregnancy words; a pregnancy has no 12-week path either */
@@ -2041,16 +2053,21 @@
       return t('plan_path_light'); };
     const ks = kept ? [wk] : [wk - 1, wk, wk + 1, wk < 4 ? 4 : (wk < 8 ? 8 : N)].filter((k, i, l) => k >= 1 && k <= N && l.indexOf(k) === i);   /* after 12 weeks: this week */
     if (!kept && ks.indexOf(N) < 0) ks.push(N);
+    const li = (k) => '<li class="' + (k < wk ? 'past' : (k === wk ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true">' + (k < wk ? '✓' : '') + '</span><span class="body"><strong>' + esc(k === wk ? t('plan_path_now') + ' · ' + tf('plan_wk_s', { n: k }) : tf('plan_wk_s', { n: k })) + '</strong><span class="small">' + esc(focus(k)) + '</span></span></li>';
+    /* Version 39.19: after her first week, last week and this week; every week ahead one tap away */
+    const ahead = []; if (fold && !kept) for (let k = wk + 1; k <= N; k++) ahead.push(k);
     return '<div class="card pl-path"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(kept ? t('plan_wk_keep') : tf('plan_wk', { n: wk })) + '</span></div>' +
       '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div><ol class="pl-steps">' +
-      ks.map((k) => '<li class="' + (k < wk ? 'past' : (k === wk ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true">' + (k < wk ? '✓' : '') + '</span><span class="body"><strong>' + esc(k === wk ? t('plan_path_now') + ' · ' + tf('plan_wk_s', { n: k }) : tf('plan_wk_s', { n: k })) + '</strong><span class="small">' + esc(focus(k)) + '</span></span></li>').join('') + '</ol></div>';
+      (fold && !kept ? ks.filter((k) => k <= wk) : ks).map(li).join('') + '</ol>' +
+      (ahead.length ? '<details class="pl-path-more" data-pl-fold="path"' + (foldOpen('path') ? ' open' : '') + '><summary class="linkbtn">' + esc(t('plan_path_ahead')) + '</summary><ol class="pl-steps">' + ahead.map(li).join('') + '</ol></details>' : '') + '</div>';
   }
-  function careTeam() {
+  function careTeam(fold) {
     const row = (go, ico, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button>';
-    return '<section class="care-sec pl-sec pl-care"><h2>' + esc(t('plan_ct_h')) + '</h2><div class="list">' +
+    const sec = (list) => (fold ? foldCard('pl-care', t('plan_ct_h'), t('plan_ct_sum'), list) : '<section class="care-sec pl-sec pl-care"><h2>' + esc(t('plan_ct_h')) + '</h2>' + list + '</section>');   /* Version 39.19: one row after her first week */
+    return sec('<div class="list">' +
       (S.routeOwner('access-doctor') ? row('access-doctor', S.icon('steth'), t('plan_rv_free'), t('plan_ct_free_s')) : '') +
       (disc() ? row('ask', S.icon('steth'), t('plan_ct_qura'), t('plan_ct_qura_s')) : '<button type="button" class="item" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(raw() || {}) })) + '"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('plan_ct_qura')) + '</strong><span>' + esc(t('plan_ct_qura_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>') +   /* Version 39.6 (P2-11) */
-      row('report', S.icon('file'), t('plan_ct_report'), '') + row('help', S.I.help, t('help'), t('plan_ct_help_s')) + '</div></section>';
+      row('report', S.icon('file'), t('plan_ct_report'), '') + row('help', S.I.help, t('help'), t('plan_ct_help_s')) + '</div>');
   }
   function lightResults(d) {
     const wk = wkNow(d); const out = [];
@@ -2815,10 +2832,10 @@
         plan_fb_recov: 'Checking each day helps you spot early anything that needs a doctor.', plan_fb_hot: 'Cooling down and slow breathing can make hot flushes easier to get through.',
         plan_fb_bones: 'Strength work two days a week helps keep bones and muscles strong after 40.', plan_fb_move_g: 'Moving most days lifts your energy and mood.', plan_fb_any: 'Every small step counts.',
         plan_my_h: 'My plan', plan_my_pick_h: 'What do you want to work on?', plan_my_pick_p: 'Pick one, answer a few questions, and Sakhi makes your 12-week plan.', plan_my_track: 'You’re keeping track. Pick a goal whenever you like.',
-        plan_path_h: 'Your 12 weeks', plan_path_now: 'This week', plan_path_cyc: '{m} minutes a week', plan_path_new: 'new: {h}', plan_path_r4: 'Your 4-week check', plan_path_m4: 'Month 1 look-back', plan_path_r8: 'Your 8-week check', plan_path_m8: 'Month 2 look-back', plan_path_r12: 'Your results', plan_path_light: 'Your daily steps',
+        plan_path_h: 'Your 12 weeks', plan_path_ahead: 'The weeks ahead', plan_path_now: 'This week', plan_path_cyc: '{m} minutes a week', plan_path_new: 'new: {h}', plan_path_r4: 'Your 4-week check', plan_path_m4: 'Month 1 look-back', plan_path_r8: 'Your 8-week check', plan_path_m8: 'Month 2 look-back', plan_path_r12: 'Your results', plan_path_light: 'Your daily steps',
         plan_today_h: 'Today’s steps', plan_res_h: 'My progress', plan_suggested: 'Suggested', plan_f_jain: 'Jain: no onion, garlic or root vegetables', plan_plate_prot_v: 'A quarter: dal, chana or paneer', plan_plate_prot_vn: 'A quarter: dal, chana or soybean', plan_plate_prot_e: 'A quarter: dal, chana, paneer or egg', plan_plate_prot_en: 'A quarter: dal, chana or egg', plan_plate_bowl_n: 'On the side: a bowl of dal or salad', plan_moves_tile_s: 'Yoga and simple moves, with moving pictures', plan_plate_tile_s: 'Half your plate sabzi, and foods from your region', plan_in_milk: 'Do you have milk, curd or paneer?', plan_in_from: 'From your diary: your last {n} gaps were {a} to {b} days. Change it if this isn’t right.', plan_rv_days_h: 'Your days and weeks', plan_preg_moves: 'In pregnancy, start moves only after your doctor says it’s OK for you.', plan_res_days: 'Days you followed your plan, each week', plan_res_first: 'Your first bar fills in as you follow your plan this week.', plan_th_h: 'What was on your plate today?', plan_th_p: 'Tap what you ate, and the plate fills in.', plan_th_add: 'Next meal, you could add {x}.', plan_th_full: 'A full plate today.', plan_a_iron_rot: 'Today’s iron food: {x}', plan_a_iron_c: 'Eat it with lemon, amla or guava.', plan_a_still: 'Still doing {h}?', plan_a_ca: 'Today’s calcium food: {x}', plan_a_ca_s: 'Calcium from your kitchen, for your bones', plan_a_pfood: 'This week: {x}', plan_a_bfood: 'Food while you breastfeed', plan_a_fast: 'On your fast today', plan_a_fast_s: 'A proper sargi or sehri, water when you can, and break the fast gently', plan_a_fast_pb: 'Talk to your doctor before a fast without water', plan_fast_q: 'Fasting today?', plan_fast_undo: 'Not fasting today', plan_fast_h: 'Fasting?', plan_fast_today: 'Fasting today', plan_fast_tom: 'Fasting tomorrow', plan_res_low: 'Low, anxious or irritable days', plan_res_low_b: '30 days before you started', plan_res_low_s: 'Last 30 days', plan_res_heavy: 'Periods with heavy flow',
         plan_rev_days: 'You followed your plan on {n} of 7 days.', plan_rev_keep: 'Next week: keep going, one day at a time.',
-        plan_ct_h: 'Your care team', plan_ct_free_s: 'At the PHC or district hospital', plan_ct_qura: 'A Qura doctor', plan_ct_qura_s: 'The first 20-minute call is free', plan_ct_report: 'Report for my doctor',
+        plan_ct_h: 'Your care team', plan_ct_sum: 'Doctors, your report, help', plan_ct_free_s: 'At the PHC or district hospital', plan_ct_qura: 'A Qura doctor', plan_ct_qura_s: 'The first 20-minute call is free', plan_ct_report: 'Report for my doctor',
         plan_set_h: 'Plan settings', plan_set_goal: 'Change what I work on', plan_set_goal_s: 'Starts a new 12 weeks. What you logged stays.', plan_other_h: 'Other plans',
         plan_sl_go_h: 'Your plan is ready', plan_sl_go_p: 'Your first step: {a}.', plan_sl_doc_h: 'Did you get the doctor check?', plan_sl_doc_p: 'One check for skipped or late periods: thyroid, prolactin and PMOS. If your period is late and you could be pregnant, do a pregnancy test first.', plan_sl_doc_yes: 'Yes, done',
         plan_sl_lapse_h: 'Shall we start again, small?', plan_sl_lapse_p: 'No catching up needed. Just today: {a}.', plan_sl_lapse_mon: 'A new week is a fresh start.', plan_sl_lapse_b: 'Today’s steps',
@@ -3071,10 +3088,10 @@
         plan_fb_recov: 'रोज़ जाँचने से डॉक्टर वाली बात जल्दी पकड़ में आ जाती है।', plan_fb_hot: 'ठंडक और धीमी साँस से गर्मी के झोंके झेलना आसान हो सकता है।',
         plan_fb_bones: 'हफ़्ते में दो दिन ताक़त के व्यायाम से 40 के बाद हड्डियाँ और मांसपेशियाँ मज़बूत रखने में मदद मिलती है।', plan_fb_move_g: 'ज़्यादातर दिन चलने-फिरने से ताक़त और मन दोनों अच्छे रहते हैं।', plan_fb_any: 'हर छोटा क़दम मायने रखता है।',
         plan_my_h: 'मेरा प्लान', plan_my_pick_h: 'आप किस पर काम करना चाहती हैं?', plan_my_pick_p: 'एक चुनें, कुछ सवालों के जवाब दें, और Sakhi आपका 12 हफ़्तों का प्लान बनाएगी।', plan_my_track: 'आप हिसाब रख रही हैं। जब चाहें, कोई लक्ष्य चुनें।',
-        plan_path_h: 'आपके 12 हफ़्ते', plan_path_now: 'यह हफ़्ता', plan_path_cyc: 'हफ़्ते में {m} मिनट', plan_path_new: 'नया: {h}', plan_path_r4: 'आपका 4 हफ़्ते का चेक-इन', plan_path_m4: 'पहले महीने पर नज़र', plan_path_r8: 'आपका 8 हफ़्ते का चेक-इन', plan_path_m8: 'दूसरे महीने पर नज़र', plan_path_r12: 'आपके नतीजे', plan_path_light: 'आपके रोज़ के क़दम',
+        plan_path_h: 'आपके 12 हफ़्ते', plan_path_ahead: 'आगे के हफ़्ते', plan_path_now: 'यह हफ़्ता', plan_path_cyc: 'हफ़्ते में {m} मिनट', plan_path_new: 'नया: {h}', plan_path_r4: 'आपका 4 हफ़्ते का चेक-इन', plan_path_m4: 'पहले महीने पर नज़र', plan_path_r8: 'आपका 8 हफ़्ते का चेक-इन', plan_path_m8: 'दूसरे महीने पर नज़र', plan_path_r12: 'आपके नतीजे', plan_path_light: 'आपके रोज़ के क़दम',
         plan_today_h: 'आज के क़दम', plan_res_h: 'मेरी प्रगति', plan_suggested: 'सुझाया गया', plan_f_jain: 'जैन: प्याज़, लहसुन या ज़मीन के नीचे की सब्ज़ी नहीं', plan_plate_prot_v: 'एक चौथाई: दाल, चना या पनीर', plan_plate_prot_vn: 'एक चौथाई: दाल, चना या सोयाबीन', plan_plate_prot_e: 'एक चौथाई: दाल, चना, पनीर या अंडा', plan_plate_prot_en: 'एक चौथाई: दाल, चना या अंडा', plan_plate_bowl_n: 'साथ में: एक कटोरी दाल या सलाद', plan_moves_tile_s: 'योग और आसान व्यायाम, चलती तस्वीरों के साथ', plan_plate_tile_s: 'आधी थाली सब्ज़ी, और आपके इलाक़े का खाना', plan_in_milk: 'क्या आप दूध, दही या पनीर लेती हैं?', plan_in_from: 'आपकी डायरी से: आपके पिछले {n} अंतर {a} से {b} दिन के थे। सही न हो तो बदल दें।', plan_rv_days_h: 'आपके दिन और हफ़्ते', plan_preg_moves: 'प्रेग्नेंसी में व्यायाम तभी शुरू करें जब डॉक्टर कहें कि आपके लिए ठीक है।', plan_res_days: 'हर हफ़्ते, जितने दिन आपने प्लान माना', plan_res_first: 'इस हफ़्ते जैसे-जैसे आप प्लान मानेंगी, पहली पट्टी भरती जाएगी।', plan_th_h: 'आज आपकी थाली में क्या था?', plan_th_p: 'जो खाया उस पर टैप करें, थाली भरती जाएगी।', plan_th_add: 'अगली बार थाली में {x} भी रख सकती हैं।', plan_th_full: 'आज की थाली पूरी है।', plan_a_iron_rot: 'आज का आयरन वाला खाना: {x}', plan_a_iron_c: 'इसे नींबू, आँवला या अमरूद के साथ खाएँ।', plan_a_still: 'क्या अब भी: {h}?', plan_a_ca: 'आज का कैल्शियम वाला खाना: {x}', plan_a_ca_s: 'हड्डियों के लिए, रसोई से कैल्शियम', plan_a_pfood: 'इस हफ़्ते: {x}', plan_a_bfood: 'स्तनपान के दिनों का खाना', plan_a_fast: 'आज आपका व्रत है', plan_a_fast_s: 'सरगी या सेहरी ठीक से, जब हो सके पानी, और व्रत धीरे से खोलें', plan_a_fast_pb: 'बिना पानी के व्रत से पहले डॉक्टर से बात करें', plan_fast_q: 'आज व्रत है?', plan_fast_undo: 'आज व्रत नहीं', plan_fast_h: 'व्रत?', plan_fast_today: 'आज व्रत है', plan_fast_tom: 'कल व्रत है', plan_res_low: 'उदासी, घबराहट या चिड़चिड़ेपन के दिन', plan_res_low_b: 'शुरू करने से पहले के 30 दिन', plan_res_low_s: 'पिछले 30 दिन', plan_res_heavy: 'ज़्यादा ब्लीडिंग वाले पीरियड',
         plan_rev_days: 'आपने 7 में से {n} दिन प्लान माना।', plan_rev_keep: 'अगले हफ़्ते: ऐसे ही, एक-एक दिन।',
-        plan_ct_h: 'आपकी देखभाल टीम', plan_ct_free_s: 'PHC या ज़िला अस्पताल में', plan_ct_qura: 'Qura की डॉक्टर', plan_ct_qura_s: 'पहली 20 मिनट की कॉल मुफ़्त', plan_ct_report: 'डॉक्टर के लिए मेरी रिपोर्ट',
+        plan_ct_h: 'आपकी देखभाल टीम', plan_ct_sum: 'डॉक्टर, आपकी रिपोर्ट, मदद', plan_ct_free_s: 'PHC या ज़िला अस्पताल में', plan_ct_qura: 'Qura की डॉक्टर', plan_ct_qura_s: 'पहली 20 मिनट की कॉल मुफ़्त', plan_ct_report: 'डॉक्टर के लिए मेरी रिपोर्ट',
         plan_set_h: 'प्लान की सेटिंग', plan_set_goal: 'जिस पर काम कर रही हूँ, उसे बदलें', plan_set_goal_s: 'नए 12 हफ़्ते शुरू होंगे। आपकी entries रहेंगी।', plan_other_h: 'और प्लान',
         plan_sl_go_h: 'आपका प्लान तैयार है', plan_sl_go_p: 'आपका पहला क़दम: {a}।', plan_sl_doc_h: 'क्या डॉक्टर से जाँच करवा ली?', plan_sl_doc_p: 'छूटे या देर से आने वाले पीरियड के लिए एक जाँच: थायरॉइड, प्रोलैक्टिन और PMOS। अगर पीरियड देर से है और गर्भ हो सकता है, तो पहले प्रेग्नेंसी टेस्ट करें।', plan_sl_doc_yes: 'हाँ, हो गई',
         plan_sl_lapse_h: 'चलिए, फिर से छोटे से शुरू करें?', plan_sl_lapse_p: 'पिछला पूरा करने की ज़रूरत नहीं। बस आज: {a}।', plan_sl_lapse_mon: 'नया हफ़्ता, नई शुरुआत।', plan_sl_lapse_b: 'आज के क़दम',
@@ -3298,6 +3315,10 @@
       '.pl-wk-leg { margin: 0; } .pl-wk-line { margin: 0; color: var(--fg); font-weight: 600; } .pl-wk-min { display: grid; gap: 6px; } .pl-wk-min .small { margin: 0; } .pl-wk-bar { display: block; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; } .pl-wk-bar i { display: block; height: 100%; background: var(--h-purple); border-radius: 4px; }',
       '.pl-cons { gap: 8px; } .pl-cons h3 { margin: 0; } .pl-cons .pl-tl { margin: 0; } .pl-signs { display: grid; } .pl-cons p { margin: 0; }',
       '.pl-ci-feel { gap: 8px; }',
+      /* Version 39.19: folded cards on My plan */
+      '.pl-fold > details > summary { list-style: none; display: flex; align-items: center; gap: 10px; cursor: pointer; min-height: 40px; } .pl-fold > details > summary::-webkit-details-marker { display: none; } .pl-fold-t { flex: 1; min-width: 0; display: grid; gap: 2px; overflow-wrap: anywhere; } .pl-fold-t strong { color: var(--fg); font-size: 16px; } .pl-fold-t .small { margin: 0; }',
+      '.pl-fold-c { display: inline-flex; flex-shrink: 0; width: 18px; height: 18px; color: var(--accent); transition: transform .2s; } .pl-fold-c svg { width: 18px; height: 18px; } .pl-fold > details[open] > summary .pl-fold-c { transform: rotate(90deg); } .pl-fold-in { display: grid; gap: 8px; margin-top: 12px; } .pl-fold-in .pl-tl { margin: 0; }',
+      '.pl-path-more > summary { list-style: none; cursor: pointer; padding: 8px 0; min-height: 40px; } .pl-path-more > summary::-webkit-details-marker { display: none; } .pl-path-more[open] > summary { margin-bottom: 4px; }',
       '.pl-why-fast { justify-self: start; margin-top: 4px; } .pl-why-b { margin-top: 8px; } .pl-why-wide { grid-column: 1 / -1; } .pl-why-more { justify-self: center; }',
       '.pl-q-fam .body { display: grid; gap: 2px; min-width: 0; } .pl-q-msg { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--card); color: var(--fg); } .pl-q-fam textarea { width: 100%; box-sizing: border-box; font: inherit; }'
     ].join('\n')

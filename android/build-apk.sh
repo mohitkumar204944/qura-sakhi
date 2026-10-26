@@ -63,6 +63,9 @@ cp "$WEB/app.js" "$WEB/art.js" "$WEB/app.css" build/assets/www/
 cp "$WEB"/mods/*.js build/assets/www/mods/
 # the plans as data (Version 39.4): progs/*.js, loaded before the modules
 mkdir -p build/assets/www/progs && cp "$WEB"/progs/*.js build/assets/www/progs/
+# Wind down and the relief routines in Dr. Megha's voice (Version 39.21): Opus sounds, kept uncompressed (-0 ogg below) so
+# Android plays them straight from the APK; web/sounds/CREDITS.md says where each came from.
+mkdir -p build/assets/www/sounds && cp -R "$WEB"/sounds/voice "$WEB"/sounds/music "$WEB"/sounds/timelines.js build/assets/www/sounds/
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/
@@ -107,7 +110,7 @@ PY
 
 # 2. Resources and manifest.
 "$BT/aapt2" compile --dir res -o build/res.zip
-"$BT/aapt2" link -o build/base.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets --java build/gen \
+"$BT/aapt2" link -o build/base.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets --java build/gen -0 ogg \
   --min-sdk-version 29 --target-sdk-version 34 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
 
 # 3. Java -> dex.

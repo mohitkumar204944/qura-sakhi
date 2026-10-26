@@ -841,7 +841,7 @@
   /* Modules still file their tools under 'tools'; the Care hub shows them in five named groups (Version 30). */
   const TOOLS_SPLIT = { 'access-free': 'free', 'access-doctor': 'free', 'access-care': 'free', 'access-schemes': 'free', 'access-online': 'free', asha: 'free', ask: 'support',
     'tools-reminders': 'plans', 'tools-meds': 'plans', iron: 'plans', journey: 'plans', report: 'records', 'tools-reports': 'records', 'tools-summary': 'records',
-    relief: 'periods', family: 'teen', 'access-partner': 'contra',   /* review PLACES-06: a home in a topic */ 'access-videos': 'support', 'access-feed': 'support', 'access-symptoms': 'support', lang: 'support',
+    relief: 'periods', calm: 'periods', family: 'teen', 'access-partner': 'contra',   /* review PLACES-06: a home in a topic */ 'access-videos': 'support', 'access-feed': 'support', 'access-symptoms': 'support', lang: 'support',
     joy: 'fun', 'joy-quiz': 'fun', docportal: 'fun' };
   const sectionOf = (x) => (x.section === 'tools' ? TOOLS_SPLIT[x.route] || 'support' : x.section);
   /* Version 39.2 (journey audit MIN-07, MIN-12, P3-11): the four tool drawers leave Explore's topics (their tools live in Me,
@@ -1221,6 +1221,8 @@
     [['diet', 'khana', 'khaana', 'thali', 'kya khaye', 'kya khayein', 'kya khana', 'nashta', 'nashtaa', 'breakfast', 'tiffin', 'recipe', 'resipi', 'sabzi', 'sabji', 'dal', 'daal', 'doodh', 'sattu', 'protein', 'calcium', 'jain', 'veg', 'vegetarian', 'ahar', 'aahar', 'bhojan', 'food', 'खाना', 'डाइट', 'थाली', 'क्या खाएं', 'क्या खाएँ', 'नाश्ता', 'रेसिपी', 'सब्ज़ी', 'सब्जी', 'दाल', 'दूध', 'सत्तू', 'आहार', 'भोजन', 'जैन'], ['food', 'plan-plate']],
     [['vrat', 'upvas', 'upwas', 'roza', 'roze', 'iftar', 'sehri', 'fasting', 'व्रत', 'उपवास', 'रोज़ा', 'रोजा', 'इफ़्तार', 'इफ्तार', 'सेहरी'], ['periods-fasting', 'food'], 'whole'],   /* review FOOD-09: whole words ("moving fast" isn't fasting) */
     [['yoga', 'yog', 'exercise', 'vyayam', 'kasrat', 'workout', 'योग', 'व्यायाम', 'कसरत'], ['plan-moves', 'plan-pmos']],
+    /* Version 39.21: Wind down's own words */
+    [['yoga nidra', 'yog nidra', 'योग निद्रा', 'nidra', 'निद्रा', 'bhramari', 'भ्रामरी', 'sleep music', 'sleep sounds', 'singing bowl', 'wind down', 'सुकून के पल'], ['calm']],
     [['bmi', 'vajan', 'wajan', 'motapa', 'weight loss', 'वज़न', 'वजन', 'मोटापा', 'बीएमआई'], ['plan-body', 'plan-pmos']],
     /* Version 39.3 (journey audit P3-06): scheme names in English and Hindi ("जननी सुरक्षा" is a scheme, not a safety page) */
     [['janani suraksha', 'janani', 'jssk', 'matru vandana', 'matru', 'pmsma', 'जननी सुरक्षा', 'जननी', 'मातृ वंदना', 'मातृत्व वंदना', 'जेएसवाई', 'पीएमएमवीवाई'], ['access-schemes', 'access-schemes-preg', 'access-schemes-post']],
@@ -1314,6 +1316,7 @@
     TOOL_SYN.forEach((row) => { if (!synStage(row[3])) return; if (row[0].some((v) => { const vv = norm(v); return vv.indexOf(' ') > 0 ? (' ' + qq + ' ').indexOf(' ' + vv + ' ') >= 0 : words.some((w) => w === vv || (row[2] !== 'whole' && w.length >= 3 && vv.indexOf(w) === 0)); })) row[1].forEach((rt, i) => { b[rt] = (b[rt] || 0) + 100 - 20 * i; }); });
     /* review FOOD-09: a tablet or a medicine is not a food question; after a birth, milk words are about breastfeeding first */
     if (/(^|\s)(tablet|tablets|goli|गोली|medicine|dawai|dawa|dava|दवा|दवाई|capsule|syrup|injection)(\s|$)/.test(qq)) ['food', 'plan-plate', 'preg-diet'].forEach((k) => { delete b[k]; });
+    if (b.calm && /(^|\s)(nidra|निद्रा)(\s|$)/.test(qq)) ['plan-moves', 'plan-pmos'].forEach((k) => { delete b[k]; });   /* Version 39.21: yoga nidra is rest, not exercise */
     if (afterBirthNow() && ROUTES['post-feed'] && /(doodh|dudh|दूध|milk|feed|feeding)/.test(qq)) b['post-feed'] = Math.max(b['post-feed'] || 0, (b.food || 0) + 20);
     const mine = state.stage !== 'app' ? '' : (isPregnant() ? 'access-schemes-preg' : (afterBirthNow() ? 'access-schemes-post' : ''));
     if (mine && b[mine] && b['access-schemes']) b[mine] = b['access-schemes'] + 30;   /* in pregnancy or after a birth, her own schemes page first */
@@ -4590,6 +4593,46 @@
   }
   function loadSample(id) { if (!samples[id]) return; state = samples[id](); runHook('sample', [id, api]); save(); }
 
+  /* ---------- Version 39.21: sounds bundled with the app: Wind down (mods/calm.js) and the relief routines in Dr. Megha's
+     voice. On the phone Android plays them (SoundService), so a session goes on with the screen off and a sound stops after
+     her timer, fading over its last minute; a relief step's short clip plays in the app itself (no tap needed between steps).
+     In a browser an <audio> element does the same. Only the app's own files under sounds/. ---------- */
+  const SND_OK = /^sounds\/[a-z0-9_/-]+\.ogg$/;
+  const sound = (() => {
+    const B = () => window.SakhiAndroid; const nat = () => !!(B() && B().soundPlay);
+    let el = null, clipEl = null, tick = 0, played = 0, mins = 0, last = 0;
+    const stopHtml = () => { clearInterval(tick); tick = 0; if (el) { el.pause(); el = null; } };
+    const s = {
+      native: nat,
+      /* o: { loop, mins (0: no timer), title, text and stop: the phone's "playing" notification; secret: kept off the lock screen } */
+      play(src, o) {
+        o = o || {}; if (!SND_OK.test(src)) return false; stopHtml();
+        if (nat()) { safe(() => B().soundPlay(src, !!o.loop, o.mins | 0, String(o.title || ''), String(o.text || ''), String(o.stop || ''), !!o.secret)); return true; }   /* the player replaces what was playing */
+        el = new Audio(src); el.loop = !!o.loop; mins = o.mins | 0; played = 0; last = Date.now(); safe(() => { const p = el.play(); if (p && p.catch) p.catch(() => {}); });
+        tick = setInterval(() => { const now = Date.now(); if (el && !el.paused) played += (now - last) / 1000; last = now;
+          if (el && mins) { const left = mins * 60 - played; el.volume = Math.max(0, Math.min(1, left / 60)); if (left <= 0) stopHtml(); } }, 250);
+        return true;
+      },
+      timer(m) { if (nat()) { if (B().soundTimer) safe(() => B().soundTimer(m | 0)); } else { mins = m | 0; if (el) el.volume = 1; } },
+      pause() { if (nat()) safe(() => B().soundPause()); else if (el) el.pause(); },
+      resume() { if (nat()) safe(() => B().soundResume()); else if (el) safe(() => { const p = el.play(); if (p && p.catch) p.catch(() => {}); }); },
+      stop() { if (nat()) safe(() => B().soundStop()); stopHtml(); },
+      /* { playing, pos and dur of the track in seconds, left: seconds of her timer (-1: none), played: seconds it has played } */
+      state() {
+        if (nat()) { const j = safe(() => JSON.parse(B().soundState() || 'null'), null); return j || { playing: false, pos: 0, dur: 0, left: -1, played: 0 }; }
+        if (!el) return { playing: false, pos: 0, dur: 0, left: -1, played: 0 };
+        return { playing: !el.paused && !el.ended, pos: el.currentTime, dur: isFinite(el.duration) ? el.duration : 0, left: mins ? Math.max(0, mins * 60 - played) : -1, played: played };
+      },
+      clip(src) {
+        if (!SND_OK.test(src)) return false; s.stopClip();
+        if (B() && B().clip) { safe(() => B().clip(src)); return true; }
+        clipEl = new Audio(src); safe(() => { const p = clipEl.play(); if (p && p.catch) p.catch(() => {}); }); return true;
+      },
+      stopClip() { if (B() && B().clipStop) safe(() => B().clipStop()); if (clipEl) { clipEl.pause(); clipEl = null; } }
+    };
+    return s;
+  })();
+
   /* ---------- public API for modules ---------- */
   const api = {
     version: 1, register: register,
@@ -4602,6 +4645,7 @@
     data: data, reminders: reminders, canSave: canSave, needDiary: needDiary, ask: ask, goBack: goBack, backBtn: backBtn, share: shareText,
     cycle: { predict: predictInfo, cycleList: cycleList, fertWhy: fertWhy, chanceOn: chanceOn, chanceShown: chanceShown, phaseOn: phaseOn, afterLoss: afterLossNow, afterHormones: afterHormonesNow, setHormones: (on) => { setHormones(on); save(); }, longOpen: longOpen, starts: starts, gapsAll: gapsAll, usable: usable, lastStart: lastStart, cycleDay: cycleDay, bleedingDays: bleedingDays, rangeInfo: rangeInfo, bandHi: bandHi, isPregnant: isPregnant, countsOff: countsOff, afterBirth: afterBirthNow, ageYears: ageYears, lastCheckins: lastCheckins, fertileInfo: fertileInfo, midlifeStage: midlifeStage, excludedWhy: excludedWhy, isMidlife: isMidlife, approxStarts: approxStarts, periodLen: periodLen, rawStarts: () => liveStartEvents().map((e) => e.d).sort(), verdict: cycleVerdict, periodFlow: periodFlow, heavyEv: heavyEv, counting: countingNow },
     preg: { info: pregInfo },
+    sound: sound,   /* Version 39.21 */
     feel: { on: () => feelOn(), chips: (d) => feelChips(d, false), toggle: (d, k) => feelToggle(d, k) },   /* Version 39.16: the plan's evening check-in */
     /* review KNOWLEDGE-09: a module that redraws its own page in place gets core's rows back (all of them check first) */
     redrawn: (v) => { const r = route(); safe(() => guideRow(v, r)); safe(() => helpTabsOn(v, r)); safe(() => sayButtons(v)); safe(() => jumpRow(v)); },

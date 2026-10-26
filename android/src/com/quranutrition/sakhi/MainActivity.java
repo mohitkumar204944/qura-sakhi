@@ -11,6 +11,9 @@ import android.content.Context;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.hardware.biometrics.BiometricManager;
 import android.hardware.biometrics.BiometricPrompt;
 import android.net.Uri;
@@ -422,6 +425,48 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             });
         }
 
+        /* Wind down (Version 39.21): her session or sleep sound in SoundService, so it goes on with the screen off */
+        @JavascriptInterface
+        public void soundPlay(String path, boolean loop, int minutes, String title, String text, String stop, boolean secret) {
+            if (!SoundService.okPath(path)) return;
+            Intent i = new Intent(MainActivity.this, SoundService.class).setAction(SoundService.PLAY).putExtra("path", path).putExtra("loop", loop)
+                    .putExtra("minutes", minutes).putExtra("title", title).putExtra("text", text).putExtra("stop", stop).putExtra("secret", secret);
+            startForegroundService(i);
+        }
+        @JavascriptInterface
+        public void soundPause() { sendSound(SoundService.PAUSE, -1); }
+        @JavascriptInterface
+        public void soundResume() { sendSound(SoundService.RESUME, -1); }
+        @JavascriptInterface
+        public void soundStop() { sendSound(SoundService.STOP, -1); }
+        @JavascriptInterface
+        public void soundTimer(int minutes) { sendSound(SoundService.TIMER, minutes); }
+        @JavascriptInterface
+        public String soundState() { return SoundService.state(); }
+
+        /* a relief step in Dr. Megha's voice: a short clip in the app itself (steps move on by timer, with no tap to start sound) */
+        @JavascriptInterface
+        public void clip(final String path) {
+            if (!SoundService.okPath(path)) return;
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    stopClip();
+                    try {
+                        AssetFileDescriptor afd = getAssets().openFd("www/" + path);
+                        clipMp = new MediaPlayer();
+                        clipMp.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build());
+                        clipMp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                        afd.close();
+                        clipMp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() { @Override public void onCompletion(MediaPlayer m) { stopClip(); } });
+                        clipMp.prepare();
+                        clipMp.start();
+                    } catch (Exception e) { stopClip(); }
+                }
+            });
+        }
+        @JavascriptInterface
+        public void clipStop() { runOnUiThread(new Runnable() { @Override public void run() { stopClip(); } }); }
+
         @JavascriptInterface
         public boolean copy(String text) {
             ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -546,17 +591,31 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (web != null) web.evaluateJavascript("window.__sakhiResume && window.__sakhiResume()", null);
     }
 
+    private MediaPlayer clipMp;   // a relief step's clip (Version 39.21)
+    private void stopClip() {
+        if (clipMp == null) return;
+        try { clipMp.stop(); } catch (Exception e) { /* not started */ }
+        clipMp.release(); clipMp = null;
+    }
+    private void sendSound(String action, int minutes) {
+        Intent i = new Intent(this, SoundService.class).setAction(action);
+        if (minutes >= 0) i.putExtra("minutes", minutes);
+        try { startService(i); } catch (Exception e) { /* not allowed in the background: the page only calls this on screen */ }
+    }
+
     /** Leaving the screen: the page notes the time, so coming back can tell how long she was away. */
     @Override
     protected void onPause() {
         super.onPause();
         if (ttsReady) tts.stop();
+        stopClip();   // a relief step's voice stops with the screen, like the phone's own voice (her Wind down session goes on)
         if (web != null) web.evaluateJavascript("window.__sakhiPause && window.__sakhiPause()", null);
     }
 
     @Override
     protected void onDestroy() {
         if (tts != null) tts.shutdown();
+        stopClip();
         web.destroy();
         super.onDestroy();
     }

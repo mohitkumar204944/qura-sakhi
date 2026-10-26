@@ -112,7 +112,7 @@
     const rel = (r, icon, title) => (S.routeOwner(r) ? linkItem(r, icon, title, '') : '');
     v.innerHTML = S.backRow(t('meno_tl_h'), 'meno', false) + '<p class="small">' + esc(t('meno_tl_p')) + '</p>' + facts +
       '<div class="meno-tl">' + stage('s1', false) + stage('s2', mDone) + stage('s3', false) + '</div>' +
-      '<h2>' + esc(t('meno_tl_relief')) + '</h2><div class="list">' + rel('relief-hot', 'leaf', t('meno_tl_hot')) + rel('relief-sleep', 'moon', t('meno_tl_sleep')) +
+      '<h2>' + esc(t('meno_tl_relief')) + '</h2><div class="list">' + rel('relief-hot', 'leaf', t('meno_tl_hot')) + rel('relief-sleep', 'moon', t('meno_tl_sleep')) + rel('calm', 'moon', t('calm_row')) +   /* Version 39.21: Wind down */
       linkItem('meno-diary', 'chart', t('meno_diary'), t('meno_diary_s')) + linkItem('meno-score', 'check', t('meno_sc_h'), t('meno_sc_s')) + linkItem('meno-hrt', 'pill', t('meno_hrt'), t('meno_hrt_s')) + linkItem('meno-bones', 'heart', t('meno_bones'), t('meno_bones_s')) + linkItem('meno-intimate', 'flower', t('meno_intimate'), t('meno_intimate_s')) + '</div>' +
       '<button type="button" class="btn primary block" data-ask="' + esc(t('meno_hub')) + '">' + esc(t('meno_tl_ask')) + '</button><p class="footnote">' + esc(t('meno_tl_foot')) + '</p>';
     S.wire(v);
@@ -585,6 +585,7 @@
     const items = [];
     if (S.routeOwner('relief-hot') && (a[0] >= 1)) items.push(linkItem('relief-hot', 'leaf', t('meno_tl_hot'), ''));
     if (S.routeOwner('relief-sleep') && (a[2] >= 1)) items.push(linkItem('relief-sleep', 'moon', t('meno_tl_sleep'), ''));
+    if (S.routeOwner('calm') && (a[2] >= 1)) items.push(linkItem('calm', 'moon', t('calm_row'), ''));   /* Version 39.21: Wind down */
     if (b >= 2 || bandOf('body', s.body) >= 2) items.push(linkItem('meno-hrt', 'pill', t('meno_hrt'), t('meno_hrt_s')));
     if (bandOf('uro', s.uro) >= 2) items.push(linkItem('meno-intimate', 'flower', t('meno_intimate'), t('meno_intimate_s')));
     if (bandOf('body', s.body) >= 1 || bandOf('mind', s.mind) >= 1) items.push(linkItem('meno-bones', 'heart', t('meno_bones'), t('meno_bones_s')));

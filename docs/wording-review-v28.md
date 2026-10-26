@@ -2024,3 +2024,90 @@ signs; please confirm they're fair.
 | Week 21 of your pregnancy | गर्भावस्था का 21वाँ हफ़्ता |
 | Period from 17 Oct · 28-day cycle · this cycle | 17 Oct से पीरियड · 28 दिन का चक्र · यह चक्र |
 | From 17 Oct (a shared phone) · Earlier · Day 9 | 17 Oct से · पहले के दिन · दिन 9 |
+
+### 19.19 Version 39.19: My plan folded after week 1 (MODULE_API section 62)
+
+Labels only. The folded lines reuse reviewed words ("Every day: 4 steps, check-in 8 pm" and the timeline's stage line).
+
+| English | Hindi |
+|---|---|
+| The weeks ahead | आगे के हफ़्ते |
+| Doctors, your report, help | डॉक्टर, आपकी रिपोर्ट, मदद |
+
+### 19.20 Version 39.20: a mantra or prayer at bedtime (MODULE_API section 63)
+
+**Please glance:** this is new wording at the end of the reviewed sleep routine. It advises; it claims nothing.
+
+| English | Hindi |
+|---|---|
+| A mantra or prayer, if you like | चाहें तो कोई मंत्र या प्रार्थना |
+| Chant softly, or in your mind: Om, the Gayatri mantra, the Hanuman Chalisa, or any prayer or devotional mantra you like. When thoughts come, gently go back to it. | धीरे से या मन में जपें: ॐ, गायत्री मंत्र, हनुमान चालीसा, या कोई भी प्रार्थना या भक्ति मंत्र जो आपको पसंद हो। विचार आएँ, तो धीरे से फिर जप पर लौट आएँ। |
+
+### 19.21 Version 39.21: Wind down, in Dr. Megha's voice (MODULE_API section 64)
+
+**Please review before the field test.** These are new spoken words in Dr. Megha's voice, made from a clone of her voice. The
+relief routines' clips are not new wording: each one says the reviewed step, word for word (`test/calm.mjs` checks this).
+
+**Questions for the doctor:**
+1. Bhramari: should it say who should skip it (for example, with an ear infection or ear pain)?
+2. Yoga nidra says "lie down on your back". In pregnancy, Sakhi now adds the line below. Is that right, or should yoga nidra be
+   hidden in pregnancy?
+3. Is "For rest and sleep, not treatment. Stop if you feel dizzy or unwell." enough as the safety line?
+
+**On the screen:**
+
+| English | Hindi |
+|---|---|
+| Dr. Megha's voice for calm and for sleep. Choose one, then put the phone down and rest. | सुकून और नींद के लिए डॉ. मेघा की आवाज़। एक चुनें, फिर फ़ोन रख दें और आराम करें। |
+| For rest and sleep, not treatment. Stop if you feel dizzy or unwell. | आराम और नींद के लिए, इलाज नहीं। चक्कर आए या ठीक न लगे, तो रुक जाएँ। |
+| In pregnancy, lie on your left side with a pillow, not flat on your back. | गर्भ में पीठ के बल सीधी न लेटें। तकिया लेकर बाईं करवट लेटें। |
+| It keeps playing with the screen off. | स्क्रीन बंद होने पर भी यह चलता रहेगा। |
+| Keep going: sounds for sleep and yoga nidra | आगे जारी रखें: नींद की आवाज़ें और योग निद्रा |
+
+**Spoken** (each line in the order she hears it; `web/tools/voice/sessions.json`):
+
+**Slow breaths (about 4 minutes)**
+
+| Line | English | Hindi |
+|---|---|---|
+| `sb1` | Lie down, or sit comfortably. Let your shoulders drop, and close your eyes if you like. | लेट जाएँ, या आराम से बैठें। कंधे ढीले छोड़ दें, और चाहें तो आँखें बंद कर लें। |
+| `sb2` | We will breathe slowly together. Breathe in through your nose for a count of four, and out slowly for a count of six. Let your belly go soft as you breathe out. | हम साथ में धीरे-धीरे साँस लेंगे। नाक से चार गिनती तक साँस लें, और छह गिनती तक धीरे-धीरे छोड़ें। साँस छोड़ते हुए पेट को ढीला छोड़ दें। |
+| `in4` | Breathe in, two, three, four. | साँस अंदर, दो, तीन, चार। |
+| `out6` | And out, two, three, four, five, six. | और बाहर, दो, तीन, चार, पाँच, छह। |
+| `sb3` | Good. Keep going on your own: in for four, out for six. | बहुत अच्छा। अब अपने आप ऐसे ही करती रहें: चार तक अंदर, छह तक बाहर। |
+| `sb4` | Now a little slower. Breathe in for four, and out for eight. | अब थोड़ा और धीरे। चार तक साँस अंदर, और आठ तक बाहर। |
+| `out8` | And out, two, three, four, five, six, seven, eight. | और बाहर, दो, तीन, चार, पाँच, छह, सात, आठ। |
+| `sb5` | Keep going on your own, in for four, and out for eight. | अब अपने आप ऐसे ही करती रहें, चार तक अंदर, और आठ तक बाहर। |
+| `sb6` | Now let your breath find its own pace. Notice how calm your body feels. Stay here as long as you like. | अब साँस को अपनी गति से चलने दें। महसूस करें कि शरीर कितना शांत है। जब तक चाहें, ऐसे ही रहें। |
+
+**Bhramari, the humming breath (about 3 minutes)**
+
+| Line | English | Hindi |
+|---|---|---|
+| `bh1` | Sit comfortably, with your back straight. Close your eyes. If you like, rest your index fingers lightly on the soft flaps of your ears. | पीठ सीधी रखकर आराम से बैठें। आँखें बंद करें। चाहें तो तर्जनी उँगलियाँ हल्के से कानों के नरम हिस्से पर रखें। |
+| `bh2a` | Breathe in slowly through your nose. As you breathe out, hum softly with your lips closed, like a bee. Like this: | नाक से धीरे-धीरे साँस लें। साँस छोड़ते हुए, होंठ बंद रखकर, भौंरे की तरह धीरे से गुनगुनाएँ। ऐसे: |
+| `bh2b` | Feel the gentle hum in your face and head. Now you try. | चेहरे और सिर में हल्की-सी गूँज महसूस करें। अब आप कीजिए। |
+| `in` | Breathe in. | साँस अंदर। |
+| `bh3` | Good. Now continue on your own, at your own pace, a few more times. | बहुत अच्छा। अब अपनी गति से, कुछ बार और ऐसे ही करें। |
+| `bh4` | Now let your breath become natural. Sit still, and notice the quiet, and the calm inside you. | अब साँस को सहज होने दें। शांत बैठें, और भीतर की शांति महसूस करें। |
+| `bh5` | When you are ready, gently open your eyes. If you are going to sleep, lie down, and rest. | जब मन करे, धीरे से आँखें खोलें। अगर सोने जा रही हैं, तो लेट जाएँ, और आराम करें। |
+
+**Yoga nidra (about 8 to 9 minutes)**
+
+| Line | English | Hindi |
+|---|---|---|
+| `yn1` | Lie down on your back. Let your arms rest by your sides, palms facing up, and let your feet fall gently apart. Close your eyes. For the next few minutes, try to keep still. | पीठ के बल लेट जाएँ। हाथ शरीर के पास रखें, हथेलियाँ ऊपर की ओर, और पैरों को धीरे से थोड़ा खुला छोड़ दें। आँखें बंद करें। अगले कुछ मिनट, कोशिश करें कि शरीर स्थिर रहे। |
+| `yn2` | Take a slow breath in, and let it out. Again, a slow breath in, and out. Let your body grow heavy on the bed. | धीरे से एक लंबी साँस लें, और छोड़ दें। फिर से, धीरे से साँस लें, और छोड़ें। शरीर को बिस्तर पर भारी होने दें। |
+| `yn3` | Now think of a short, kind wish for yourself. For example: I will sleep well. Or: I am calm and healthy. Say your wish three times in your mind. | अब अपने लिए एक छोटी, अच्छी इच्छा सोचें। जैसे: मुझे अच्छी नींद आएगी। या: मैं शांत और स्वस्थ हूँ। अपनी इच्छा को मन में तीन बार दोहराएँ। |
+| `yn4` | Now take your attention to each part of your body as I name it. Just notice it, and move on. Stay awake, and listen. | अब मैं शरीर के जिस हिस्से का नाम लूँ, वहाँ ध्यान ले जाएँ। बस उसे महसूस करें, और आगे बढ़ें। जागती रहें, और सुनती रहें। |
+| `yn5` | Right hand thumb. First finger. Second finger. Third finger. Fourth finger. Palm of the hand. Back of the hand. Wrist. Elbow. Shoulder. Armpit. Right side of the waist. Right hip. Thigh. Knee. Calf. Ankle. Heel. Sole of the foot. Top of the foot. The toes. | दाहिने हाथ का अँगूठा। पहली उँगली। दूसरी उँगली। तीसरी उँगली। चौथी उँगली। हथेली। हाथ का पिछला हिस्सा। कलाई। कोहनी। कंधा। बगल। कमर का दाहिना हिस्सा। दाहिना कूल्हा। जाँघ। घुटना। पिंडली। टखना। एड़ी। तलवा। पैर का ऊपरी हिस्सा। पैर की उँगलियाँ। |
+| `yn6` | Left hand thumb. First finger. Second finger. Third finger. Fourth finger. Palm of the hand. Back of the hand. Wrist. Elbow. Shoulder. Armpit. Left side of the waist. Left hip. Thigh. Knee. Calf. Ankle. Heel. Sole of the foot. Top of the foot. The toes. | बाएँ हाथ का अँगूठा। पहली उँगली। दूसरी उँगली। तीसरी उँगली। चौथी उँगली। हथेली। हाथ का पिछला हिस्सा। कलाई। कोहनी। कंधा। बगल। कमर का बायाँ हिस्सा। बायाँ कूल्हा। जाँघ। घुटना। पिंडली। टखना। एड़ी। तलवा। पैर का ऊपरी हिस्सा। पैर की उँगलियाँ। |
+| `yn7` | Now the back of the body. The back of the head. The upper back. The whole spine. The lower back. The whole back, together. | अब शरीर का पिछला हिस्सा। सिर का पिछला हिस्सा। पीठ का ऊपरी हिस्सा। पूरी रीढ़। पीठ का निचला हिस्सा। पूरी पीठ, एक साथ। |
+| `yn8` | Now the front of the body. The top of the head. The forehead. The right eyebrow. The left eyebrow. The space between the eyebrows. The right eye. The left eye. The right ear. The left ear. The right cheek. The left cheek. The nose. The lips. The chin. The throat. The chest. The navel. The whole belly. | अब शरीर का अगला हिस्सा। सिर का ऊपरी हिस्सा। माथा। दाहिनी भौंह। बाईं भौंह। दोनों भौंहों के बीच की जगह। दाहिनी आँख। बाईं आँख। दाहिना कान। बायाँ कान। दाहिना गाल। बायाँ गाल। नाक। होंठ। ठुड्डी। गला। छाती। नाभि। पूरा पेट। |
+| `yn9` | Now the whole right leg. The whole left leg. Both legs together. The whole right arm. The whole left arm. Both arms together. The whole back. The whole front. The head. The whole body. The whole body, together. | अब पूरा दाहिना पैर। पूरा बायाँ पैर। दोनों पैर एक साथ। पूरा दाहिना हाथ। पूरा बायाँ हाथ। दोनों हाथ एक साथ। पूरी पीठ। शरीर का पूरा अगला हिस्सा। सिर। पूरा शरीर। पूरा शरीर, एक साथ। |
+| `yn10` | Now notice your natural breath. Don't change it. Feel your belly rise, and fall. Now count your breaths backwards, from twenty-seven down to one. Twenty-seven, breathing in and out. Twenty-six, breathing in and out. Carry on by yourself. If you lose count, start again at twenty-seven. | अब अपनी सहज साँस को महसूस करें। उसे बदलें नहीं। पेट का उठना, और गिरना महसूस करें। अब सत्ताईस से एक तक, उल्टी गिनती गिनें। सत्ताईस, साँस अंदर और बाहर। छब्बीस, साँस अंदर और बाहर। ऐसे ही आगे गिनती रहें। गिनती भूल जाएँ, तो फिर सत्ताईस से शुरू करें। |
+| `yn11` | Stop counting. Feel your body becoming heavy. Very heavy. Sinking into the bed. | गिनती छोड़ दें। महसूस करें कि शरीर भारी हो रहा है। बहुत भारी। बिस्तर में धँसता हुआ। |
+| `yn12` | Now feel your body becoming light. As light as cotton. Floating. | अब महसूस करें कि शरीर हल्का हो रहा है। रुई जैसा हल्का। जैसे तैर रहा हो। |
+| `yn13` | Now picture a calm place that you love. Perhaps a garden, early in the morning. A riverbank, with the sound of flowing water. Or the courtyard of your childhood home. Notice the colours, the sounds, the soft air. Stay there, and rest. | अब किसी ऐसी शांत जगह की कल्पना करें, जो आपको प्यारी हो। शायद सुबह-सुबह का कोई बगीचा। बहते पानी की आवाज़ वाला नदी का किनारा। या बचपन के घर का आँगन। वहाँ के रंग, आवाज़ें, और हल्की हवा महसूस करें। वहीं रहें, और आराम करें। |
+| `yn14` | Now remember your wish. Say it again, three times, in your mind. | अब अपनी इच्छा याद करें। उसे मन में फिर से, तीन बार दोहराएँ। |
+| `yn15` | Your yoga nidra is complete. If you are going to sleep, stay as you are, and let yourself drift off. Sleep well. | आपकी योग निद्रा पूरी हुई। अगर सोने जा रही हैं, तो ऐसे ही लेटी रहें, और नींद को आने दें। शुभ रात्रि। |

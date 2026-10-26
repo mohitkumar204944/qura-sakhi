@@ -4069,3 +4069,128 @@ and its reminder are unchanged.
 "Bleeding after the birth" is new wording on a safety path, so it waits for the doctor (wording review, section 19.18).
 
 **Tests.** `test/daynote.mjs` sections 6 to 8.
+
+## 62. Version 39.19: My plan with less clutter (Mohit, 26 Oct: "some information can be collapsable")
+
+From `docs/myplan-and-sleep-advice-2026-10-26.md`, M1 to M5. In her first week My plan is as before. After it
+(`weekNo(d) > 1`), what she reads once folds to one line each:
+- **How your plan works** (`foldCard`): "Every day: 4 steps, check-in 8 pm".
+- **Her steps' reasons:** behind "Why?" (`data-pl-how`, the same sheet as Today). Her fasting step's tips stay open (SAFETY-03).
+- **What consistency brings:** her stage now, for example "Weeks 1 to 4: Many women feel more energy and sleep better."
+- **Your 12 weeks:** last week and this week, then "The weeks ahead" (`.pl-path-more`). The pregnancy and after-birth paths
+  stay as they were.
+- **Your care team:** "Doctors, your report, help". Help stays in the top bar.
+
+Her steps, this week, the garden, the tools and her settings stay open. A card she opens stays open while she uses the app
+(`S.mem.plFold`, so a tick doesn't close it). Measured at 360 × 780: week 2 went from 3,580 px to 2,248 px (4.6 screens to
+2.9; 431 words to 229), and week 6 from 5.0 screens to 3.3. Her 4 steps fit on the first screen.
+
+**Tests.** `test/planfold.mjs` sections 1 to 4; daily and carryon updated; golden re-recorded (only the `myplan` text changed:
+127 differences).
+
+## 63. Version 39.20: a mantra or prayer at bedtime (Mohit, 26 Oct)
+
+Mohit: "We dont need to record mantras as audio files just advise you can chant these or any devotional mantra you like to
+chant for soothing sleep".
+
+Relief's sleep routine gains a 5th step, `s5`, of 25 seconds, read aloud like the others: "A mantra or prayer, if you like".
+It reads: "Chant softly, or in your mind: Om, the Gayatri mantra, the Hanuman Chalisa, or any prayer or devotional mantra you
+like. When thoughts come, gently go back to it."
+- The routine is still about 3 minutes, and step 1 still says to put the phone away when it ends.
+- It has no recordings and makes no health claim for any one mantra (the evidence is for repetition: Benson's relaxation
+  response).
+- It's reached from the bedtime step on Today and My plan, which already opens this routine.
+
+The recorded sessions came next, as Wind down (section 64).
+
+**Tests.** `test/planfold.mjs` section 5.
+
+## 64. Version 39.21: Wind down, in Dr. Megha's voice (Mohit, 26 Oct: "build it into the app")
+
+Mohit chose the voice ("the selected one is a sample of megha voice lets use this everywhere"), the real hum for Bhramari
+("keep the same length its a proper length for hmmm sound"), the three Freesound recordings ("use these 3") and the moving
+pictures ("We just need some animation along with it"). He approved the sessions: "yes these are perfect".
+
+**What she gets.** `mods/calm.js` adds Wind down (`calm`), with a player at `calm-<id>`:
+- 3 guided sessions in Dr. Megha's voice, in English or Hindi:
+  - Slow breaths (`breaths`, about 4 minutes): in for 4, out for 6, then out for 8.
+  - Bhramari (`bhramari`, about 3 minutes): the real 9.8-second hum.
+  - Yoga nidra (`nidra`, about 8 to 9 minutes).
+- 3 sounds for sleep: a singing bowl with waves (`bowl`), Wandering (`wandering`) and Dunes (`dunes`).
+  - They loop, and stop after her timer: 15, 30 or 45 minutes (30 unless she picks), kept as `mods.calm.mins`.
+  - The last minute fades out. Only the time the sound played counts.
+- Her voice language is `mods.calm.vl`. With none saved, it is the app's language (Hindi if the app is in Hindi, English
+  otherwise).
+
+**The player.**
+- It is a dark screen (`.cm-night`, z-index 60) over everything, the tabs and the Help button included. Close (back arrow)
+  returns to the list.
+- Each session moves with her voice:
+  - Slow breaths and Bhramari: a light that grows as she breathes in and shrinks as she breathes out. "Breathe in" and the
+    count follow Dr. Megha's own count. While she hums, rings go out. When the session says "on your own", it keeps the last
+    rhythm, marked "At your own pace", with no count.
+  - Yoga nidra: a body on a mat, seen from above. A warm light goes to each part she names, and the whole limb lights up for
+    "the whole right leg". The body sinks for heavy and floats for light. Then dawn for the calm place, and night at the end.
+  - The sounds: slow waves of light (warm ones for Dunes), or the bowl's glow with rings going out.
+- The pictures have no timers of their own. The player reads the sound's position 5 times a second and draws from it. The
+  times come from `sounds/timelines.js` (`window.SAKHI_CALM.tl['<id>-<lang>']`: `len`, and `cues` with `k`, `t`, `d` and
+  `items`). `web/tools/voice/timeline.mjs` measured them from the files.
+- In pregnancy, yoga nidra (whose recording says "lie down on your back") shows: "In pregnancy, lie on your left side with a
+  pillow, not flat on your back."
+- Leaving the player any way stops the sound. A new draw of the same page keeps it playing.
+
+**Core: `S.sound`** (app.js). Only the app's own files play: `sounds/<path>.ogg` (`SND_OK`). Nothing is fetched from a server.
+- `play(src, { loop, mins, title, text, stop, secret })`: replaces what was playing.
+- `timer(m)`, `pause()`, `resume()`, `stop()`.
+- `state()` returns `{ playing, pos, dur, left, played }`.
+- `clip(src)` and `stopClip()`: a relief step's short clip.
+- In a browser an `<audio>` element plays. On the phone the bridge does (`soundPlay`, `soundPause`, `soundResume`,
+  `soundStop`, `soundTimer`, `soundState`, `clip`, `clipStop`).
+
+**Android.**
+- `SoundService` is a foreground service of type `mediaPlayback`. It plays from the APK's assets, so a session goes on with
+  the screen off.
+  - It holds a partial wake lock only while playing.
+  - A call or another app's sound pauses it. It carries on after a short interruption.
+  - Her timer counts only the time it played, and fades over the last minute.
+- Its notification:
+  - It says the session's name and "Playing. Tap to open.", with a Stop button. The lock screen shows only "Playing. Tap to
+    open.".
+  - On a shared phone or in discreet mode, like her reminders, it says only "Wind down" and stays off the lock screen
+    (`secret`).
+  - Swiping it away when paused stops it.
+- The manifest adds `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_MEDIA_PLAYBACK` and `WAKE_LOCK`. All three are granted at
+  install, with no prompt.
+- `build-apk.sh` bundles `web/sounds` (voice, music, timelines.js) and links with `-0 ogg`, so the sounds stay uncompressed
+  and play straight from the APK. The sounds add about 17 MB, which keeps the APK under its 30 MB ceiling.
+
+**The relief routines speak in her voice.**
+- Each step plays its clip, `sounds/voice/<lang>/rl-<step>.ogg` (20 steps, English and Hindi). The phone's own voice is the
+  fallback.
+- The clip stops on Pause, Next and leaving.
+- The voice is on to start with, except on a shared phone or in discreet mode (as before). Her switch is kept.
+- Each clip says the routine's reviewed words exactly: the heading, then the step. A changed step needs a new recording, and
+  `test/calm.mjs` says so.
+
+**Where she finds it.**
+- Explore's Periods topic, beside "Feel better now" (`TOOLS_SPLIT`).
+- Search. Its own words find it first ("yoga nidra", "bhramari", "sleep music", "wind down", "योग निद्रा"). "Yoga nidra" is
+  rest, not exercise, so the yoga plan isn't boosted for it.
+- The relief list.
+- The sleep routine: on its first screen, one tap from her plan's bedtime step, and at its end ("Keep going: sounds for sleep
+  and yoga nidra").
+- Midlife: the relief list, and the check's sleep answer.
+
+**Files.**
+- `web/sounds/voice/{en,hi}`: 3 sessions and 20 relief clips each, mono Opus at 32 kbps.
+- `web/sounds/music`: 3 tracks, mono Opus at 48 kbps, -23 LUFS.
+- `web/sounds/timelines.js`.
+- `web/sounds/CREDITS.md`: the Freesound recordings (CC0), Dr. Megha's voice and the hum.
+- `web/tools/voice`:
+  - `sessions.json`: the scripts and the order of each session.
+  - `gen.py`: makes the clips. It needs the Replicate key and voice IDs, kept outside the repo.
+  - `assemble.mjs`, `padcount.mjs` and `timeline.mjs`: join and time the clips.
+
+**Wording.** The spoken scripts and the new lines wait for doctor review (wording review, section 19.21).
+
+**Tests.** `test/calm.mjs`.

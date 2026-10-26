@@ -7,7 +7,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 
 ## Layout
 - `web/`: the app (vanilla JS, no build step): `app.js` core, `mods/*.js` care areas, `progs/*.js` the plans as data
-  (Version 39.4), `content.json` Learn library.
+  (Version 39.4), `content.json` Learn library, `sounds/` Wind down's audio and the relief routines' voice (Version 39.21).
   Module contract and every version's rules: `web/MODULE_API.md`.
 - `android/`: WebView wrapper. `build-apk.sh` builds `QuraSakhi-prototype.apk` from `web/`.
 - `server/`: the accounts server, a Supabase Edge Function (`supabase/functions/sakhi-api`) with its migration and tests.
@@ -121,6 +121,20 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - speakers on the day page.
     Contracts: MODULE_API sections 60 and 61; wording: sections 19.17 and 19.18 of the review ("Bleeding after the birth"
     waits for doctor review).
+  - `node test/planfold.mjs` (Versions 39.19 and 39.20; Mohit, 26 Oct; `docs/myplan-and-sleep-advice-2026-10-26.md`):
+    - My plan folded after her first week: how it works, the steps' reasons (behind "Why?"), what consistency brings, the weeks
+      ahead and the care team;
+    - the sleep routine's last step, "A mantra or prayer, if you like" (advice only, no recordings).
+    Contracts: MODULE_API sections 62 and 63; wording: sections 19.19 and 19.20 of the review.
+  - `node test/calm.mjs` (Version 39.21, Wind down; Mohit, 26 Oct: "build it into the app"):
+    - slow breaths, Bhramari (Mohit's real hum recording) and yoga nidra in Dr. Megha's cloned voice, in English and Hindi;
+    - 3 CC0 Freesound sounds for sleep with a 15, 30 or 45 minute timer that fades out;
+    - pictures that move with her voice;
+    - the relief routines' steps in her voice;
+    - on the phone, `SoundService` plays on with the screen off.
+    Files: `web/sounds/` (credits in `web/sounds/CREDITS.md`); scripts and tools: `web/tools/voice/` (the Replicate key and
+    voice IDs stay in `~/Desktop/megha-voice`, never in the repo). A changed relief step needs a new clip: the test checks the
+    words match. Contract: MODULE_API section 64; wording: section 19.21 of the review (waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
@@ -160,6 +174,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - The published `index.html` adds `window.SAKHI_CONFIG = Object.assign({ care: 'care/' }, window.SAKHI_CONFIG || {});` before
     `app.js`.
   - `progs/*.js` (the plans as data, Version 39.4) go up with every publish, beside `mods/*.js`.
+  - `sounds/` (Version 39.21, about 17 MB: `timelines.js`, `voice/`, `music/`) goes up too, or Wind down and the relief
+    voice stay silent there.
   - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
     with a script that checks each record.
 - Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy

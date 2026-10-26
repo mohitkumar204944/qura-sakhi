@@ -1,0 +1,380 @@
+{
+  "clips": {
+    "en": {
+      "bh1": "Sit comfortably, with your back straight. Close your eyes. If you like, rest your index fingers lightly on the soft flaps of your ears.",
+      "bh2": "Breathe in slowly through your nose. As you breathe out, hum softly with your lips closed, like a bee. Feel the gentle hum in your face and head.",
+      "in": "Breathe in.",
+      "hum": "And hum.",
+      "bh3": "Good. Now continue on your own, at your own pace, a few more times.",
+      "bh4": "Now let your breath become natural. Sit still, and notice the quiet, and the calm inside you.",
+      "bh5": "When you are ready, gently open your eyes. If you are going to sleep, lie down, and rest.",
+      "yn1": "Lie down on your back. Let your arms rest by your sides, palms facing up, and let your feet fall gently apart. Close your eyes. For the next few minutes, try to keep still.",
+      "yn2": "Take a slow breath in, <#2#> and let it out. <#2#> Again, a slow breath in, <#2#> and out. <#2#> Let your body grow heavy on the bed.",
+      "yn3": "Now think of a short, kind wish for yourself. For example: I will sleep well. Or: I am calm and healthy. Say your wish three times in your mind.",
+      "yn4": "Now take your attention to each part of your body as I name it. Just notice it, and move on. Stay awake, and listen.",
+      "yn5": "Right hand thumb. <#1.2#> First finger. <#1.2#> Second finger. <#1.2#> Third finger. <#1.2#> Fourth finger. <#1.2#> Palm of the hand. <#1.2#> Back of the hand. <#1.2#> Wrist. <#1.2#> Elbow. <#1.2#> Shoulder. <#1.2#> Armpit. <#1.2#> Right side of the waist. <#1.2#> Right hip. <#1.2#> Thigh. <#1.2#> Knee. <#1.2#> Calf. <#1.2#> Ankle. <#1.2#> Heel. <#1.2#> Sole of the foot. <#1.2#> Top of the foot. <#1.2#> The toes.",
+      "yn6": "Left hand thumb. <#1.2#> First finger. <#1.2#> Second finger. <#1.2#> Third finger. <#1.2#> Fourth finger. <#1.2#> Palm of the hand. <#1.2#> Back of the hand. <#1.2#> Wrist. <#1.2#> Elbow. <#1.2#> Shoulder. <#1.2#> Armpit. <#1.2#> Left side of the waist. <#1.2#> Left hip. <#1.2#> Thigh. <#1.2#> Knee. <#1.2#> Calf. <#1.2#> Ankle. <#1.2#> Heel. <#1.2#> Sole of the foot. <#1.2#> Top of the foot. <#1.2#> The toes.",
+      "yn7": "Now the back of the body. <#1.5#> The back of the head. <#1.5#> The upper back. <#1.5#> The whole spine. <#1.5#> The lower back. <#1.5#> The whole back, together.",
+      "yn8": "Now the front of the body. <#1.2#> The top of the head. <#1.2#> The forehead. <#1.2#> The right eyebrow. <#1.2#> The left eyebrow. <#1.2#> The space between the eyebrows. <#1.2#> The right eye. <#1.2#> The left eye. <#1.2#> The right ear. <#1.2#> The left ear. <#1.2#> The right cheek. <#1.2#> The left cheek. <#1.2#> The nose. <#1.2#> The lips. <#1.2#> The chin. <#1.2#> The throat. <#1.2#> The chest. <#1.2#> The navel. <#1.2#> The whole belly.",
+      "yn9": "Now the whole right leg. <#1.5#> The whole left leg. <#1.5#> Both legs together. <#1.5#> The whole right arm. <#1.5#> The whole left arm. <#1.5#> Both arms together. <#1.5#> The whole back. <#1.5#> The whole front. <#1.5#> The head. <#1.5#> The whole body. <#2#> The whole body, together.",
+      "yn10": "Now notice your natural breath. Don't change it. Feel your belly rise, and fall. <#3#> Now count your breaths backwards, from twenty-seven down to one. Twenty-seven, breathing in and out. Twenty-six, breathing in and out. Carry on by yourself. If you lose count, start again at twenty-seven.",
+      "yn11": "Stop counting. <#1.5#> Feel your body becoming heavy. Very heavy. Sinking into the bed.",
+      "yn12": "Now feel your body becoming light. As light as cotton. Floating.",
+      "yn13": "Now picture a calm place that you love. <#2#> Perhaps a garden, early in the morning. <#2#> A riverbank, with the sound of flowing water. <#2#> Or the courtyard of your childhood home. <#2#> Notice the colours, the sounds, the soft air. <#2#> Stay there, and rest.",
+      "yn14": "Now remember your wish. Say it again, three times, in your mind.",
+      "yn15": "Your yoga nidra is complete. If you are going to sleep, stay as you are, and let yourself drift off. Sleep well.",
+      "bh2a": "Breathe in slowly through your nose. As you breathe out, hum softly with your lips closed, like a bee. Like this:",
+      "bh2b": "Feel the gentle hum in your face and head. Now you try.",
+      "sb1": "Lie down, or sit comfortably. Let your shoulders drop, and close your eyes if you like.",
+      "sb2": "We will breathe slowly together. Breathe in through your nose for a count of four, and out slowly for a count of six. Let your belly go soft as you breathe out.",
+      "in4": "Breathe in, two, three, four.",
+      "out6": "And out, two, three, four, five, six.",
+      "sb3": "Good. Keep going on your own: in for four, out for six.",
+      "sb4": "Now a little slower. Breathe in for four, and out for eight.",
+      "out8": "And out, two, three, four, five, six, seven, eight.",
+      "sb5": "Keep going on your own, in for four, and out for eight.",
+      "sb6": "Now let your breath find its own pace. Notice how calm your body feels. Stay here as long as you like.",
+      "rl-c1": "Warmth. <#0.6#> Put warmth on your lower belly: a hot water bag, or a bottle of warm water wrapped in a cloth. Warm, not hot.",
+      "rl-c2": "Child’s pose. <#0.6#> Kneel, sit back on your heels and stretch your arms forward on the floor. Rest your forehead down and breathe slowly.",
+      "rl-c3": "Knees to chest. <#0.6#> Lie on your back and hug your knees to your chest. Rock gently from side to side.",
+      "rl-c4": "Slow breaths. <#0.6#> Breathe in for 4, and out for 6. Let your belly go soft each time you breathe out.",
+      "rl-n1": "Fresh air. <#0.6#> Open a window or step outside for a moment. Loosen anything tight around your waist.",
+      "rl-n2": "Small sips. <#0.6#> Take small, slow sips of cool water, or coconut water or nimbu pani if you like them.",
+      "rl-n3": "Something plain. <#0.6#> If you can, eat a little something dry and plain, like a few biscuits, khakhra or roasted chana. An empty stomach can make nausea worse.",
+      "rl-n4": "Slow breaths. <#0.6#> Sit comfortably. Breathe in through your nose for 4, and out through your mouth for 6.",
+      "rl-s1": "Get comfortable. <#0.6#> Lie down and dim the light. When this ends, put the phone away, face down.",
+      "rl-s2": "Long breaths out. <#0.6#> Breathe in for 4, and out slowly for 6. Longer breaths out help many people settle.",
+      "rl-s3": "Let go, part by part. <#0.6#> Squeeze your toes for 5 seconds, then let go. Do the same with your legs, your hands, then your shoulders.",
+      "rl-s4": "Park your thoughts. <#0.6#> If thoughts keep coming, tell yourself: I can think about this tomorrow. Writing it in your diary note can help.",
+      "rl-s5": "A mantra or prayer, if you like. <#0.6#> Chant softly, or in your mind: Om, the Gayatri mantra, the Hanuman Chalisa, or any prayer or devotional mantra you like. When thoughts come, gently go back to it.",
+      "rl-m1": "Feel your feet. <#0.6#> Press your feet into the floor. Name 5 things you can see and 3 things you can hear.",
+      "rl-m2": "Box breathing. <#0.6#> Breathe in for 4, hold for 4, out for 4, hold for 4. Then again, slowly.",
+      "rl-m3": "A kind word. <#0.6#> Put a hand on your chest and tell yourself: this is hard, and it will pass.",
+      "rl-m4": "One small step. <#0.6#> Pick one small thing for the next hour: a glass of water, a short walk, or a call to someone you trust.",
+      "rl-h1": "Cool down. <#0.6#> Loosen your clothes or take off a layer. Splash cool water on your face and wrists.",
+      "rl-h2": "Sip something cool. <#0.6#> Sip cool water slowly. For some women hot tea or spicy food sets off flushes; notice what does it for you.",
+      "rl-h3": "Slow breathing. <#0.6#> Breathe slowly: in for 5, out for 5. Tell yourself: this will pass in a few minutes, I can let it pass. Keep going until the heat passes."
+    },
+    "hi": {
+      "bh1": "पीठ सीधी रखकर आराम से बैठें। आँखें बंद करें। चाहें तो तर्जनी उँगलियाँ हल्के से कानों के नरम हिस्से पर रखें।",
+      "bh2": "नाक से धीरे-धीरे साँस लें। साँस छोड़ते हुए, होंठ बंद रखकर, भौंरे की तरह धीरे से गुनगुनाएँ। चेहरे और सिर में हल्की-सी गूँज महसूस करें।",
+      "in": "साँस अंदर।",
+      "hum": "और गुनगुनाएँ।",
+      "bh3": "बहुत अच्छा। अब अपनी गति से, कुछ बार और ऐसे ही करें।",
+      "bh4": "अब साँस को सहज होने दें। शांत बैठें, और भीतर की शांति महसूस करें।",
+      "bh5": "जब मन करे, धीरे से आँखें खोलें। अगर सोने जा रही हैं, तो लेट जाएँ, और आराम करें।",
+      "yn1": "पीठ के बल लेट जाएँ। हाथ शरीर के पास रखें, हथेलियाँ ऊपर की ओर, और पैरों को धीरे से थोड़ा खुला छोड़ दें। आँखें बंद करें। अगले कुछ मिनट, कोशिश करें कि शरीर स्थिर रहे।",
+      "yn2": "धीरे से एक लंबी साँस लें, <#2#> और छोड़ दें। <#2#> फिर से, धीरे से साँस लें, <#2#> और छोड़ें। <#2#> शरीर को बिस्तर पर भारी होने दें।",
+      "yn3": "अब अपने लिए एक छोटी, अच्छी इच्छा सोचें। जैसे: मुझे अच्छी नींद आएगी। या: मैं शांत और स्वस्थ हूँ। अपनी इच्छा को मन में तीन बार दोहराएँ।",
+      "yn4": "अब मैं शरीर के जिस हिस्से का नाम लूँ, वहाँ ध्यान ले जाएँ। बस उसे महसूस करें, और आगे बढ़ें। जागती रहें, और सुनती रहें।",
+      "yn5": "दाहिने हाथ का अँगूठा। <#1.2#> पहली उँगली। <#1.2#> दूसरी उँगली। <#1.2#> तीसरी उँगली। <#1.2#> चौथी उँगली। <#1.2#> हथेली। <#1.2#> हाथ का पिछला हिस्सा। <#1.2#> कलाई। <#1.2#> कोहनी। <#1.2#> कंधा। <#1.2#> बगल। <#1.2#> कमर का दाहिना हिस्सा। <#1.2#> दाहिना कूल्हा। <#1.2#> जाँघ। <#1.2#> घुटना। <#1.2#> पिंडली। <#1.2#> टखना। <#1.2#> एड़ी। <#1.2#> तलवा। <#1.2#> पैर का ऊपरी हिस्सा। <#1.2#> पैर की उँगलियाँ।",
+      "yn6": "बाएँ हाथ का अँगूठा। <#1.2#> पहली उँगली। <#1.2#> दूसरी उँगली। <#1.2#> तीसरी उँगली। <#1.2#> चौथी उँगली। <#1.2#> हथेली। <#1.2#> हाथ का पिछला हिस्सा। <#1.2#> कलाई। <#1.2#> कोहनी। <#1.2#> कंधा। <#1.2#> बगल। <#1.2#> कमर का बायाँ हिस्सा। <#1.2#> बायाँ कूल्हा। <#1.2#> जाँघ। <#1.2#> घुटना। <#1.2#> पिंडली। <#1.2#> टखना। <#1.2#> एड़ी। <#1.2#> तलवा। <#1.2#> पैर का ऊपरी हिस्सा। <#1.2#> पैर की उँगलियाँ।",
+      "yn7": "अब शरीर का पिछला हिस्सा। <#1.5#> सिर का पिछला हिस्सा। <#1.5#> पीठ का ऊपरी हिस्सा। <#1.5#> पूरी रीढ़। <#1.5#> पीठ का निचला हिस्सा। <#1.5#> पूरी पीठ, एक साथ।",
+      "yn8": "अब शरीर का अगला हिस्सा। <#1.2#> सिर का ऊपरी हिस्सा। <#1.2#> माथा। <#1.2#> दाहिनी भौंह। <#1.2#> बाईं भौंह। <#1.2#> दोनों भौंहों के बीच की जगह। <#1.2#> दाहिनी आँख। <#1.2#> बाईं आँख। <#1.2#> दाहिना कान। <#1.2#> बायाँ कान। <#1.2#> दाहिना गाल। <#1.2#> बायाँ गाल। <#1.2#> नाक। <#1.2#> होंठ। <#1.2#> ठुड्डी। <#1.2#> गला। <#1.2#> छाती। <#1.2#> नाभि। <#1.2#> पूरा पेट।",
+      "yn9": "अब पूरा दाहिना पैर। <#1.5#> पूरा बायाँ पैर। <#1.5#> दोनों पैर एक साथ। <#1.5#> पूरा दाहिना हाथ। <#1.5#> पूरा बायाँ हाथ। <#1.5#> दोनों हाथ एक साथ। <#1.5#> पूरी पीठ। <#1.5#> शरीर का पूरा अगला हिस्सा। <#1.5#> सिर। <#1.5#> पूरा शरीर। <#2#> पूरा शरीर, एक साथ।",
+      "yn10": "अब अपनी सहज साँस को महसूस करें। उसे बदलें नहीं। पेट का उठना, और गिरना महसूस करें। <#3#> अब सत्ताईस से एक तक, उल्टी गिनती गिनें। सत्ताईस, साँस अंदर और बाहर। छब्बीस, साँस अंदर और बाहर। ऐसे ही आगे गिनती रहें। गिनती भूल जाएँ, तो फिर सत्ताईस से शुरू करें।",
+      "yn11": "गिनती छोड़ दें। <#1.5#> महसूस करें कि शरीर भारी हो रहा है। बहुत भारी। बिस्तर में धँसता हुआ।",
+      "yn12": "अब महसूस करें कि शरीर हल्का हो रहा है। रुई जैसा हल्का। जैसे तैर रहा हो।",
+      "yn13": "अब किसी ऐसी शांत जगह की कल्पना करें, जो आपको प्यारी हो। <#2#> शायद सुबह-सुबह का कोई बगीचा। <#2#> बहते पानी की आवाज़ वाला नदी का किनारा। <#2#> या बचपन के घर का आँगन। <#2#> वहाँ के रंग, आवाज़ें, और हल्की हवा महसूस करें। <#2#> वहीं रहें, और आराम करें।",
+      "yn14": "अब अपनी इच्छा याद करें। उसे मन में फिर से, तीन बार दोहराएँ।",
+      "yn15": "आपकी योग निद्रा पूरी हुई। अगर सोने जा रही हैं, तो ऐसे ही लेटी रहें, और नींद को आने दें। शुभ रात्रि।",
+      "bh2a": "नाक से धीरे-धीरे साँस लें। साँस छोड़ते हुए, होंठ बंद रखकर, भौंरे की तरह धीरे से गुनगुनाएँ। ऐसे:",
+      "bh2b": "चेहरे और सिर में हल्की-सी गूँज महसूस करें। अब आप कीजिए।",
+      "sb1": "लेट जाएँ, या आराम से बैठें। कंधे ढीले छोड़ दें, और चाहें तो आँखें बंद कर लें।",
+      "sb2": "हम साथ में धीरे-धीरे साँस लेंगे। नाक से चार गिनती तक साँस लें, और छह गिनती तक धीरे-धीरे छोड़ें। साँस छोड़ते हुए पेट को ढीला छोड़ दें।",
+      "in4": "साँस अंदर, दो, तीन, चार।",
+      "out6": "और बाहर, दो, तीन, चार, पाँच, छह।",
+      "sb3": "बहुत अच्छा। अब अपने आप ऐसे ही करती रहें: चार तक अंदर, छह तक बाहर।",
+      "sb4": "अब थोड़ा और धीरे। चार तक साँस अंदर, और आठ तक बाहर।",
+      "out8": "और बाहर, दो, तीन, चार, पाँच, छह, सात, आठ।",
+      "sb5": "अब अपने आप ऐसे ही करती रहें, चार तक अंदर, और आठ तक बाहर।",
+      "sb6": "अब साँस को अपनी गति से चलने दें। महसूस करें कि शरीर कितना शांत है। जब तक चाहें, ऐसे ही रहें।",
+      "rl-c1": "गर्माहट। <#0.6#> पेट के निचले हिस्से पर गर्माहट रखें: गर्म पानी की थैली, या कपड़े में लपेटी गर्म पानी की बोतल। गुनगुना, ज़्यादा गर्म नहीं।",
+      "rl-c2": "बालासन। <#0.6#> घुटनों के बल बैठें, एड़ियों पर पीछे की ओर बैठ जाएँ और बाँहें आगे ज़मीन पर फैलाएँ। माथा नीचे टिकाएँ और धीरे-धीरे साँस लें।",
+      "rl-c3": "घुटने सीने से। <#0.6#> पीठ के बल लेटें और घुटनों को सीने से लगाकर पकड़ें। धीरे-धीरे दाएँ-बाएँ झूलें।",
+      "rl-c4": "धीमी साँसें। <#0.6#> 4 गिनते हुए साँस अंदर लें, 6 गिनते हुए बाहर छोड़ें। हर बार साँस छोड़ते हुए पेट ढीला छोड़ दें।",
+      "rl-n1": "ताज़ी हवा। <#0.6#> खिड़की खोलें या थोड़ी देर बाहर निकलें। कमर पर कुछ कसा हो तो ढीला कर लें।",
+      "rl-n2": "छोटे घूँट। <#0.6#> ठंडा पानी छोटे-छोटे घूँट में धीरे पिएँ, या अच्छा लगे तो नारियल पानी या नींबू पानी।",
+      "rl-n3": "कुछ सादा। <#0.6#> हो सके तो कुछ सूखा और सादा खाएँ, जैसे दो-चार बिस्किट, खाखरा या भुने चने। ख़ाली पेट जी ज़्यादा मिचला सकता है।",
+      "rl-n4": "धीमी साँसें। <#0.6#> आराम से बैठें। नाक से 4 गिनते हुए साँस अंदर लें, मुँह से 6 गिनते हुए बाहर छोड़ें।",
+      "rl-s1": "आराम से लेटें। <#0.6#> लेट जाएँ और रोशनी धीमी कर दें। यह ख़त्म हो जाए, तो फ़ोन उल्टा करके रख दें।",
+      "rl-s2": "लंबी साँस बाहर। <#0.6#> 4 गिनते हुए साँस अंदर, फिर धीरे-धीरे 6 गिनते हुए बाहर। लंबी साँस छोड़ने से बहुत लोगों को सुकून मिलता है।",
+      "rl-s3": "एक-एक करके ढीला छोड़ें। <#0.6#> पैरों की उँगलियाँ 5 सेकंड कसें, फिर छोड़ दें। ऐसा ही पैरों, हाथों और फिर कंधों के साथ करें।",
+      "rl-s4": "विचार कल पर छोड़ें। <#0.6#> विचार आते रहें, तो ख़ुद से कहें: इस बारे में कल सोचूँगी। डायरी के नोट में लिख देना भी मदद करता है।",
+      "rl-s5": "चाहें तो कोई मंत्र या प्रार्थना। <#0.6#> धीरे से या मन में जपें: ॐ, गायत्री मंत्र, हनुमान चालीसा, या कोई भी प्रार्थना या भक्ति मंत्र जो आपको पसंद हो। विचार आएँ, तो धीरे से फिर जप पर लौट आएँ।",
+      "rl-m1": "पैरों को महसूस करें। <#0.6#> पैरों को ज़मीन पर दबाएँ। 5 चीज़ें जो दिख रही हैं और 3 आवाज़ें जो सुनाई दे रही हैं, उनके नाम लें।",
+      "rl-m2": "चौकोर साँस। <#0.6#> 4 तक साँस अंदर, 4 तक रोकें, 4 तक बाहर, 4 तक रोकें। फिर से, धीरे-धीरे।",
+      "rl-m3": "अपने लिए अच्छे शब्द। <#0.6#> सीने पर हाथ रखें और ख़ुद से कहें: यह मुश्किल है, और यह गुज़र जाएगा।",
+      "rl-m4": "एक छोटा क़दम। <#0.6#> अगले एक घंटे के लिए एक छोटी चीज़ चुनें: एक गिलास पानी, थोड़ी देर टहलना, या किसी भरोसेमंद को फ़ोन।",
+      "rl-h1": "ठंडक। <#0.6#> कपड़े ढीले करें या एक परत उतार दें। चेहरे और कलाइयों पर ठंडे पानी के छींटे मारें।",
+      "rl-h2": "कुछ ठंडा पिएँ। <#0.6#> ठंडा पानी धीरे-धीरे पिएँ। कुछ महिलाओं को गर्म चाय या तीखे खाने से फ़्लश होते हैं; ध्यान दें कि आपको किससे होते हैं।",
+      "rl-h3": "धीमी साँस। <#0.6#> धीरे-धीरे साँस लें: 5 तक अंदर, 5 तक बाहर। ख़ुद से कहें: यह कुछ मिनट में उतर जाएगी, मैं इसे जाने दूँगी। गर्मी उतरने तक ऐसे ही करती रहें।"
+    }
+  },
+  "sessions": {
+    "bhramari": [
+      [
+        "bh1",
+        4
+      ],
+      [
+        "bh2a",
+        0.4
+      ],
+      [
+        "humreal",
+        1
+      ],
+      [
+        "bh2b",
+        2
+      ],
+      [
+        "in",
+        4
+      ],
+      [
+        "humreal",
+        3
+      ],
+      [
+        "in",
+        4
+      ],
+      [
+        "humreal",
+        3
+      ],
+      [
+        "in",
+        4
+      ],
+      [
+        "humreal",
+        3
+      ],
+      [
+        "bh3",
+        45
+      ],
+      [
+        "bh4",
+        20
+      ],
+      [
+        "bh5",
+        2
+      ]
+    ],
+    "nidra": [
+      [
+        "yn1",
+        5
+      ],
+      [
+        "yn2",
+        6
+      ],
+      [
+        "yn3",
+        12
+      ],
+      [
+        "yn4",
+        2
+      ],
+      [
+        "yn5",
+        3
+      ],
+      [
+        "yn6",
+        3
+      ],
+      [
+        "yn7",
+        3
+      ],
+      [
+        "yn8",
+        3
+      ],
+      [
+        "yn9",
+        8
+      ],
+      [
+        "yn10",
+        60
+      ],
+      [
+        "yn11",
+        10
+      ],
+      [
+        "yn12",
+        10
+      ],
+      [
+        "yn13",
+        30
+      ],
+      [
+        "yn14",
+        12
+      ],
+      [
+        "yn15",
+        2
+      ]
+    ],
+    "breaths": [
+      [
+        "sb1",
+        3
+      ],
+      [
+        "sb2",
+        2
+      ],
+      [
+        "in4",
+        0
+      ],
+      [
+        "out6",
+        0.5
+      ],
+      [
+        "in4",
+        0
+      ],
+      [
+        "out6",
+        0.5
+      ],
+      [
+        "in4",
+        0
+      ],
+      [
+        "out6",
+        1
+      ],
+      [
+        "sb3",
+        60
+      ],
+      [
+        "sb4",
+        2
+      ],
+      [
+        "in4",
+        0
+      ],
+      [
+        "out8",
+        0.5
+      ],
+      [
+        "in4",
+        0
+      ],
+      [
+        "out8",
+        1
+      ],
+      [
+        "sb5",
+        60
+      ],
+      [
+        "sb6",
+        4
+      ]
+    ],
+    "reliefprev": [
+      [
+        "rl-c1",
+        1.5
+      ],
+      [
+        "rl-c2",
+        1.5
+      ],
+      [
+        "rl-c3",
+        1.5
+      ],
+      [
+        "rl-c4",
+        4
+      ],
+      [
+        "rl-n1",
+        1.5
+      ],
+      [
+        "rl-n2",
+        1.5
+      ],
+      [
+        "rl-n3",
+        1.5
+      ],
+      [
+        "rl-n4",
+        4
+      ],
+      [
+        "rl-s1",
+        1.5
+      ],
+      [
+        "rl-s2",
+        1.5
+      ],
+      [
+        "rl-s3",
+        1.5
+      ],
+      [
+        "rl-s4",
+        1.5
+      ],
+      [
+        "rl-s5",
+        4
+      ],
+      [
+        "rl-m1",
+        1.5
+      ],
+      [
+        "rl-m2",
+        1.5
+      ],
+      [
+        "rl-m3",
+        1.5
+      ],
+      [
+        "rl-m4",
+        4
+      ],
+      [
+        "rl-h1",
+        1.5
+      ],
+      [
+        "rl-h2",
+        1.5
+      ],
+      [
+        "rl-h3",
+        4
+      ]
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 {
   "exact": [
+    "calm",
     "periods",
     "periods-pms",
     "periods-pain",
@@ -179,6 +180,14 @@
       "sun",
       "strength",
       "calm"
+    ],
+    "calm-": [
+      "breaths",
+      "bhramari",
+      "nidra",
+      "bowl",
+      "wandering",
+      "dunes"
     ]
   }
 }
