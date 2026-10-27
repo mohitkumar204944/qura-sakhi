@@ -2135,3 +2135,33 @@ relief routines' clips are not new wording: each one says the reviewed step, wor
 | Yoga before you eat, then your walk. (reminder) | खाने से पहले योग, फिर सैर। |
 | Time for your walk, right after the meal. (reminder) | खाने के ठीक बाद सैर का समय। |
 | Time to wind down. Tap for tonight’s session. (reminder) | सुकून के पल का समय। आज रात का सत्र शुरू करने के लिए टैप करें। |
+
+### 19.23 Version 39.23: her cycle first, a plan day that ends at 4 am, period dates (MODULE_API section 66)
+
+**Reused, already reviewed:**
+- The countdown: "{n} days until your next period" and "Likely {r} · from your last {n} cycles".
+- "Typical gap {a}–{b} days".
+- "Period late?" and "A week or more late and you could be pregnant? A home test is the first step."
+- "A guess is fine. You can fix it later." and "How many days did it last?"
+- "Log two period starts to see the gap between them."
+- "These dates are estimates from your diary. They are not a way to avoid pregnancy."
+- "How I feel" (the + menu's name since Version 39.17).
+
+**Please review.** These lines are new on these screens. Question for the doctor:
+1. On Today, "Your period is {n} days late" counts from the end of her likely range (the latest day her period was likely),
+   as "{n} days past your likely range" did. The pregnancy test guide counts from the predicted day. Is the end of the range
+   the right day to count from on Today?
+
+| English | Hindi |
+|---|---|
+| Your period is {n} days late (Today's headline) | पीरियड {n} दिन देर से है |
+| Edit period dates | पीरियड की तारीख़ें बदलें |
+| Tap the days you bled. Tap a day again to take it off. | जिन दिनों ब्लीडिंग हुई, उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें। |
+| Tap the days to mark them. Tap a day again to take it off. (discreet mode) | दिन चुनने के लिए उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें। |
+| Days after today can’t be marked. | आज के बाद के दिन नहीं चुने जा सकते। |
+| Add a past period | पिछला पीरियड जोड़ें |
+| When did it start? | यह कब शुरू हुआ था? |
+| Example (her numbers before two period starts) | उदाहरण |
+| Still {d}’s plan (12 am to 4 am) | अभी भी {d} का प्लान |
+| Your plan day ends at 4 am, so this counts for {d}. | आपके प्लान का दिन सुबह 4 बजे ख़त्म होता है, इसलिए यह {d} में गिना जाएगा। |
+| How did {d} go? (the check-in, 12 am to 4 am) | {d} कैसा रहा? |

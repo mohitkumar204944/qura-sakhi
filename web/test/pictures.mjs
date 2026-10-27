@@ -122,31 +122,31 @@ async function page2tiles(page) {
   }
 }
 
-/* ---------- 3. Today's cycle card on one line while a plan runs ---------- */
+/* ---------- 3. Today's cycle card while a plan runs: Version 39.23's headline (it replaced Version 39.8's one line) ---------- */
 {
   const a = await open({ seed: { intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-  const m = await a.page.evaluate(() => { const h = document.querySelector('#view .hero.mini'); const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const rows = Array.from(document.querySelectorAll('#view .today-card .pl-row, #view .today-card .item')).filter((x) => x.querySelector('button')); return { mini: !!h, ht: h ? Math.round(h.getBoundingClientRect().height) : 0, text: h ? h.innerText : '', nav: nav, tops: rows.map((x) => Math.round(x.getBoundingClientRect().top)) }; });
+  const m = await a.page.evaluate(() => { const h = document.querySelector('#view .hero.head'); const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const rows = Array.from(document.querySelectorAll('#view .today-card .pl-row, #view .today-card .item')).filter((x) => x.querySelector('button')); return { mini: !!h, ht: h ? Math.round(h.getBoundingClientRect().height) : 0, text: h ? h.innerText : '', nav: nav, tops: rows.map((x) => Math.round(x.getBoundingClientRect().top)) }; });
   /* V39.8 review SAFETY-03: "Change stage" sits under her cycle day, so the card is two short lines high */
   /* V39.8 review SAFETY-03, REGRESSIONS-08: one row, "Cycle day N ›" opening her cycle (named "See my cycle") and Change stage */
-  const goName = await a.page.$eval('#view .hero.mini [data-go="diary"]', (e) => e.getAttribute('aria-label')).catch(() => '');
-  check('3 a plan running: the cycle card is one line (a small ring, "Cycle day N", See my cycle, Change stage)', m.mini && m.ht <= 72 && /Cycle day \d+/.test(m.text) && goName === 'See my cycle' && /Change stage/.test(m.text) && !/Your last gaps/.test(m.text), { m, goName });
-  check('3 ... and her plan\'s steps start on the first screen at 360 x 800, the third one too', m.tops.length >= 3 && m.tops.slice(0, 3).every((y) => y < m.nav), m);
-  await tap(a.page, '#view .hero.mini [data-go="diary"]');
+  const goName = await a.page.$eval('#view .hero.head .hl-go', (e) => e.getAttribute('aria-label')).catch(() => '');
+  check('3 a plan running: her cycle heads Today (the ring, "Cycle day", See my cycle, Change stage; Version 39.23)', m.mini && m.ht <= 300 && /Cycle day/.test(m.text) && goName === 'See my cycle' && /Change stage/.test(m.text), { m, goName });
+  check('3 ... and her plan\'s first 2 steps start on the first screen at 360 x 800', m.tops.length >= 2 && m.tops.slice(0, 2).every((y) => y < m.nav), m);
+  await tap(a.page, '#view .hero.head .hl-go');
   check('3 ... "See my cycle" opens the diary', (await a.page.evaluate(() => location.hash)) === '#diary');
-  await shot(a.page, '03-today-mini');
+  await shot(a.page, '03-today-head');
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({});
-  check('3 no plan: the full cycle card, with its estimate line', !(await has(b.page, '#view .hero.mini')) && /not a way to avoid pregnancy/.test(await view(b.page)));
+  check('3 no plan: the full cycle card, with its estimate line', !(await has(b.page, '#view .hero.head')) && /not a way to avoid pregnancy/.test(await view(b.page)));
   errsAll.push(...b.errs); await b.ctx.close();
   /* her likely days are 2 days away: the week strip shows them, so the estimate line stays */
   const c = await open({ seed: { events: regular(26), intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9)) } } });
-  check('3 a plan running and her likely days on the week strip: the estimate line stays under the one-line card', (await has(c.page, '#view .hero.mini')) && /not a way to avoid pregnancy/.test(await view(c.page)), (await view(c.page)).slice(0, 400));
+  check('3 a plan running and her likely days on the week strip: the estimate line stays in the headline', (await has(c.page, '#view .hero.head')) && /not a way to avoid pregnancy/.test(await view(c.page)), (await view(c.page)).slice(0, 400));
   errsAll.push(...c.errs); await c.ctx.close();
   const d = await open({ seed: { events: regular(10), intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9)) } } });
-  check('3 ... and no dates near: no estimate line under the one-line card', (await has(d.page, '#view .hero.mini')) && !/not a way to avoid pregnancy/.test(await txt(d.page, '#view .hero')), await txt(d.page, '#view .hero'));
+  check('3 ... and with her dates further off: the headline still shows them, so the estimate line too (Version 39.23)', (await has(d.page, '#view .hero.head')) && /not a way to avoid pregnancy/.test(await txt(d.page, '#view .hero')), await txt(d.page, '#view .hero'));
   errsAll.push(...d.errs); await d.ctx.close();
   const e = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9)) }, settings: { discreet: true, toursAuto: false } } });
-  check('3 a shared phone (discreet mode): no cycle card on one line, nothing new shown', !(await has(e.page, '#view .hero.mini')));
+  check('3 a shared phone (discreet mode): no cycle headline, nothing new shown', !(await has(e.page, '#view .hero.head')));
   errsAll.push(...e.errs); await e.ctx.close();
 }
 
@@ -396,21 +396,21 @@ for (const lang of ['en', 'hi']) {
   }
   /* SAFETY-03, PICTURES-02, REGRESSIONS-03, PICTURES-10, REGRESSIONS-08: the one-line card */
   const c = await open({ seed: { intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-  const m = await c.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const done = Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav], #view .today-card [data-today-undo]')).map((x) => Math.round(x.getBoundingClientRect().bottom)); return { nav: nav, done: done, stage: !!document.querySelector('#view .hero.mini #stage-btn') }; });
-  check('16 a plan running: "Change stage" stays on the one-line card (SAFETY-03)', m.stage);
-  check('16 ... and all 3 of her steps\' buttons (Done, or Start for her yoga: Version 39.12) sit above the tab bar at 360 x 800 (REGRESSIONS-08)', m.done.length >= 3 && m.done.slice(0, 3).every((y) => y <= m.nav), m);
+  const m = await c.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const done = Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav], #view .today-card [data-today-undo]')).map((x) => Math.round(x.getBoundingClientRect().bottom)); return { nav: nav, done: done, stage: !!document.querySelector('#view .hero.head #stage-btn') }; });
+  check('16 a plan running: "Change stage" stays in the cycle headline (SAFETY-03)', m.stage);
+  check('16 ... and her first step\'s button (Done, or Start for her yoga: Version 39.12) sits above the tab bar at 360 x 800 (REGRESSIONS-08; Version 39.23 puts her cycle first)', m.done.length >= 1 && m.done[0] <= m.nav, m);
   errsAll.push(...c.errs); await c.ctx.close();
   /* the ring tour, not yet seen, with tours on: it waits for the full card */
   const T2 = Object.assign({}, TOURS_DONE); delete T2.ring;
   const rt = await open({ seed: { tours: T2, settings: { toursAuto: true }, intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
   await settle(rt.page, 1500);
   const pop = await rt.page.evaluate(() => (document.querySelector('.tour-pop') || {}).textContent || '');
-  check('16 ... the ring tour doesn\'t open on the one-line card (PICTURES-10)', !/cycle ring/i.test(pop), pop.slice(0, 120));
+  check('16 ... the ring tour doesn\'t open on the headline, which has no key (PICTURES-10)', !/cycle ring/i.test(pop), pop.slice(0, 120));
   errsAll.push(...rt.errs); await rt.ctx.close();
   const ttcEv = []; for (let k = 6; k >= 0; k--) ttcEv.push({ d: ago(12 + k * 28), t: 'start' }, { d: ago(12 + k * 28 - 5), t: 'end' });
   const tt = await open({ seed: { situation: { planning: true }, goals: ['ttc'], events: ttcEv, intake: { goal: 'ready', stage: 'ttc' }, mods: { plan: planOf('ttc', 'ready', ago(9)) } } });
-  const tv = await tt.page.evaluate(() => { const h = document.querySelector('#view .hero'); return { mini: !!document.querySelector('#view .hero.mini'), text: h ? h.innerText : '' }; });
-  check('16 trying for a baby, her plan running, a fertile day: today\'s chance stays on the one-line card, with the estimate line (PICTURES-02)', tv.mini && /chance/i.test(tv.text) && /not a way to avoid pregnancy/.test(tv.text), tv);
+  const tv = await tt.page.evaluate(() => { const h = document.querySelector('#view .hero'); return { mini: !!document.querySelector('#view .hero.head'), text: h ? h.innerText : '' }; });
+  check('16 trying for a baby, her plan running, a fertile day: today\'s chance stays in the headline, with the estimate line (PICTURES-02)', tv.mini && /chance/i.test(tv.text) && /not a way to avoid pregnancy/.test(tv.text), tv);
   errsAll.push(...tt.errs); await tt.ctx.close();
   /* SAFETY-04, PICTURES-03, REGRESSIONS-05: the picture check's results */
   for (const lang of ['en', 'hi']) {

@@ -142,6 +142,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - reminders by the timing research: the move nudge on by default, the wind-down 30 minutes before bed;
     - a calmer My plan after week 1.
     Research: `docs/myplan-and-sleep-advice-2026-10-26.md`, section 3. Contract: MODULE_API section 65; wording: section 19.22.
+  - `node test/cyclefirst.mjs` (Version 39.23; Mohit, 27 Oct; mockup claude.ai/artifact/RTA92ajojk5uXeLtgVC5jm):
+    - her cycle as Today's headline while her plan runs, her logs in the same card, "Period late?" when it is late;
+    - the plan day ends at 4 am, so a check-in after midnight counts for the evening before;
+    - "Edit period dates" under the calendar, and "Add a past period" on Cycles.
+    Contract: MODULE_API section 66; wording: section 19.23 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

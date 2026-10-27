@@ -14,6 +14,10 @@
   const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
   const diffDays = (a, b) => Math.round((fromISO(toISO(b)) - fromISO(toISO(a))) / 86400000);
   const today = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  /* Version 39.23 (Mohit, 27 Oct): her plan's day ends at 4 am, so a check-in after midnight counts for the evening before.
+     Period and diary dates keep the calendar day. */
+  const planToday = () => { const d = new Date(); if (d.getHours() < 4) d.setDate(d.getDate() - 1); d.setHours(0, 0, 0, 0); return d; };
+  const dayKey = () => toISO(today()) + '|' + toISO(planToday());   /* a new calendar day, or 4 am, redraws */
   const monthKey = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1);
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
@@ -239,7 +243,7 @@
       qa_six: 'First 6 weeks', qa_feed: 'Breastfeeding', qa_ppmood: 'Mood after birth', qa_ppcontra: 'Contraception', qa_heal: 'Bleeding and healing',
       qa_hot: 'Hot flushes', qa_after40: 'Periods after 40', qa_hrt: 'HRT', qa_bones: 'Bones and heart', qa_sleep: 'Sleep and mood', qa_pmb: 'Bleeding after menopause',
       qa_first: 'First periods', qa_myths: 'Period myths', qa_pads: 'Pads and cups', qa_moodcycle: 'Mood and cycle', qa_lines: 'Helplines',
-      foods_help: 'Foods that help', jump_h: 'On this page', mini_cycle: 'See my cycle', dg_preg: 'In pregnancy:', say_b: 'Listen to this', listen_all: 'Listen', learn_read: 'Read', learn_read_n: '{a} of {b} read', learn_next: 'Continue reading', learn_start: 'Start here', learn_free: 'Where to get it free', ans_first: 'Quick answer', qa_dos: "Dos and don'ts", art_tool_h: 'Use it in Sakhi', art_guide: 'The full guide', art_min: 'Read it in 1 minute', htab_urg: 'By urgency', htab_body: 'By body part', htab_screen: 'Screening signs',
+      foods_help: 'Foods that help', jump_h: 'On this page', mini_cycle: 'See my cycle', late_n: 'Your period is {n} days late', late_n1: 'Your period is 1 day late', ce_b: 'Edit period dates', ce_p: 'Tap the days you bled. Tap a day again to take it off.', ce_p_d: 'Tap the days to mark them. Tap a day again to take it off.', ce_fut: 'Days after today can’t be marked.', ap_b: 'Add a past period', ap_q: 'When did it start?', ex_tag: 'Example', dg_preg: 'In pregnancy:', say_b: 'Listen to this', listen_all: 'Listen', learn_read: 'Read', learn_read_n: '{a} of {b} read', learn_next: 'Continue reading', learn_start: 'Start here', learn_free: 'Where to get it free', ans_first: 'Quick answer', qa_dos: "Dos and don'ts", art_tool_h: 'Use it in Sakhi', art_guide: 'The full guide', art_min: 'Read it in 1 minute', htab_urg: 'By urgency', htab_body: 'By body part', htab_screen: 'Screening signs',
       sos_h: 'Need help now?', sos_p: 'Tap a number to call. For any emergency, call 112.', call_b: 'Call', sos_signs: 'Danger signs: when to go now',
       stage_change: 'Change stage', stage_h: 'Where are you right now?', stage_cycle: 'Tracking my periods', stage_ttc: 'Trying for a baby', stage_preg: 'I am pregnant', stage_post: 'I had a baby', stage_meno: 'My periods have stopped',
       stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
@@ -472,7 +476,7 @@
       qa_six: 'पहले 6 हफ़्ते', qa_feed: 'दूध पिलाना', qa_ppmood: 'डिलीवरी के बाद मन', qa_ppcontra: 'गर्भनिरोध', qa_heal: 'ब्लीडिंग और घाव',
       qa_hot: 'गर्मी के झोंके', qa_after40: '40 के बाद पीरियड', qa_hrt: 'HRT इलाज', qa_bones: 'हड्डियाँ और दिल', qa_sleep: 'नींद और मन', qa_pmb: 'मेनोपॉज़ के बाद ब्लीडिंग',
       qa_first: 'पहला पीरियड', qa_myths: 'पीरियड के भ्रम', qa_pads: 'pad और cup', qa_moodcycle: 'मन और चक्र', qa_lines: 'हेल्पलाइन',
-      foods_help: 'मदद करने वाला खाना', jump_h: 'इस पेज पर', mini_cycle: 'मेरा चक्र देखें', dg_preg: 'गर्भ में:', say_b: 'यह सुनें', listen_all: 'सुनें', learn_read: 'पढ़ लिया', learn_read_n: '{b} में से {a} पढ़े', learn_next: 'आगे पढ़ें', learn_start: 'यहाँ से शुरू करें', learn_free: 'मुफ़्त कहाँ मिलेगा', ans_first: 'छोटा जवाब', qa_dos: 'क्या करें, क्या न करें', art_tool_h: 'Sakhi में इस्तेमाल करें', art_guide: 'पूरी गाइड', art_min: '1 मिनट में पढ़ें', htab_urg: 'कितनी जल्दी', htab_body: 'शरीर के हिस्से से', htab_screen: 'जाँच के लक्षण',
+      foods_help: 'मदद करने वाला खाना', jump_h: 'इस पेज पर', mini_cycle: 'मेरा चक्र देखें', late_n: 'पीरियड {n} दिन देर से है', late_n1: 'पीरियड 1 दिन देर से है', ce_b: 'पीरियड की तारीख़ें बदलें', ce_p: 'जिन दिनों ब्लीडिंग हुई, उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें।', ce_p_d: 'दिन चुनने के लिए उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें।', ce_fut: 'आज के बाद के दिन नहीं चुने जा सकते।', ap_b: 'पिछला पीरियड जोड़ें', ap_q: 'यह कब शुरू हुआ था?', ex_tag: 'उदाहरण', dg_preg: 'गर्भ में:', say_b: 'यह सुनें', listen_all: 'सुनें', learn_read: 'पढ़ लिया', learn_read_n: '{b} में से {a} पढ़े', learn_next: 'आगे पढ़ें', learn_start: 'यहाँ से शुरू करें', learn_free: 'मुफ़्त कहाँ मिलेगा', ans_first: 'छोटा जवाब', qa_dos: 'क्या करें, क्या न करें', art_tool_h: 'Sakhi में इस्तेमाल करें', art_guide: 'पूरी गाइड', art_min: '1 मिनट में पढ़ें', htab_urg: 'कितनी जल्दी', htab_body: 'शरीर के हिस्से से', htab_screen: 'जाँच के लक्षण',
       sos_h: 'अभी मदद चाहिए?', sos_p: 'कॉल करने के लिए नंबर पर टैप करें। किसी भी आपातकाल में 112 पर कॉल करें।', call_b: 'कॉल करें', sos_signs: 'ख़तरे के संकेत: कब तुरंत जाएँ',
       stage_change: 'स्थिति बदलें', stage_h: 'आप अभी किस दौर में हैं?', stage_cycle: 'पीरियड का हिसाब रख रही हूँ', stage_ttc: 'बच्चे की कोशिश कर रही हूँ', stage_preg: 'मैं गर्भवती हूँ', stage_post: 'मेरा बच्चा हुआ है', stage_meno: 'मेरे पीरियड बंद हो गए हैं',
       stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
@@ -1035,7 +1039,8 @@
     else if (r === 'home' && whatsNewDue()) setTimeout(openWhatsNew, 900);   /* Version 37.1: a diary from before Version 37 hears what changed, once */
     else if (r === 'home' && state.fullTour && state.fullTour.st !== 'on') setTimeout(() => { if (!offerTourResume() && !(state.prompts || {}).notifyIntro) askNotifyIntro(); }, 1500);   /* after the first-run tour, never during it */
     const y = r === curRoute ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0);
-    curRoute = r; window.scrollTo(0, y); shownDay = toISO(today());
+    if (r !== 'diary') mem.calEdit = null;   /* Version 39.23: editing period dates ends when she leaves */
+    curRoute = r; window.scrollTo(0, y); shownDay = dayKey();
     if (mem.goAt) { const at = mem.goAt; mem.goAt = null; const el = v.querySelector('[data-at="' + at + '"]'); if (el) { if (el.tagName === 'DETAILS') el.open = true; try { el.scrollIntoView({ block: 'start' }); } catch (e) { el.scrollIntoView(); } } }
     renderFab(r);
     if (keepTour) setTimeout(() => { const def = tourDef(keepTour.id); if (!def || route() !== r) return; const steps = def.steps.filter((x) => document.querySelector(x.sel)); if (!steps.length) return; tour = { def: def, steps: steps, i: Math.min(keepTour.i, steps.length - 1), forced: keepTour.forced, chain: keepTour.chain || null, el: null }; showTourStep(false); }, 120);
@@ -2237,16 +2242,25 @@
         else if (last6.length) side += '<p class="lead">' + esc(t('last_gaps')) + ' <span class="hl num">' + last6.slice(-3).join(', ') + ' ' + esc(t('days')) + '</span></p>';
         side += '<div class="ring-key">' + keyDot('var(--bleed)', t('ring_period')) + keyDot('var(--peach)', tf('ring_usual', { a: 21, b: hiB })) + (ri ? keyDot('var(--accent-2)', t('ring_likely')) : '') + '<button type="button" class="tour-q" data-tour-q="ring" aria-label="' + esc(t('tour_q')) + '">?</button></div>';
         const rb = ringBox(ringSvg(M, parts, daysSince + 0.5), num, inPeriod ? t('period_day') : t('cycle_day'), tf('ring_aria', { n: num, a: 21, b: hiB }));
-        /* Version 39.8 (diet audit 4.9): while her plan runs, the cycle card is one line, so her steps sit on the first screen */
+        /* Version 39.23 (Mohit, 27 Oct; mockup claude.ai/artifact/RTA92ajojk5uXeLtgVC5jm): while her plan runs, her cycle is
+           Today's headline again (Version 39.8's one line hid it): the ring, the days to her next period or how late it is, the
+           likely dates, her logs in the same card, then her plan. A shared phone sees her cycle day only. It keeps today's chance
+           when fertile days show and "Change stage" (V39.8 review SAFETY-03). */
         const mini = !disc && api.plan && api.plan.running && safe(() => api.plan.running(), false);
-        const late0 = ri && today() > ri.to;   /* one line: the ring and her cycle day; a late period keeps its line */
-        /* V39.8 review SAFETY-03: the one-line card keeps today's chance when fertile days show, and "Change stage" (and its tour) */
+        const late0 = ri && today() > ri.to; const lateN = late0 ? diffDays(ri.to, today()) : 0; const shp = !!state.settings.shared;
         const chance0 = (side.match(/<p class="small chance[^"]*">[\s\S]*?<\/p>/) || [''])[0];
-        /* one row: "Cycle day N ›" opens her cycle (its name for a screen reader: See my cycle), and Change stage on the right */
-        if (mini) { mini0 = true; main = '<div class="hero-mini">' + rb + '<div class="hero-main"><button type="button" class="mini-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '"><strong>' + esc((inPeriod ? t('period_day') : t('cycle_day')) + ' ' + num) + '</strong><span class="chev" aria-hidden="true">' + I.chev + '</span></button></div><button type="button" class="linkbtn mini-stage" id="stage-btn">' + esc(t('stage_change')) + '</button>' + (late0 || chance0 ? '<div class="mini-x">' + (late0 ? '<p class="small">' + esc(tf('past_range', { n: diffDays(ri.to, today()) })) + '</p>' : '') + chance0 + '</div>' : '') + '</div>'; }   /* V39.9 review FIXES-06: a late line or today's chance spans the card, under its row */
+        if (mini) {
+          mini0 = true; const dayL = '<p class="lead hl-day">' + esc((inPeriod ? t('period_day') : t('cycle_day')) + ' ' + num) + '</p>';
+          const say = shp ? dayL + (late0 ? '<p class="small">' + esc(tf('past_range', { n: lateN })) + '</p>' : '') + chance0
+            : (late0 ? '<p class="hl-late">' + esc(lateN === 1 ? t('late_n1') : tf('late_n', { n: lateN })) + '</p><p class="small">' + esc(tf('ring_usual', { a: 21, b: hiB })) + '</p>'
+              : (side.replace(/<div class="ring-key">[\s\S]*$/, '').replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') || dayL));
+          /* the row opens her cycle: the chevron for a screen reader (See my cycle), the whole row for a finger */
+          main = '<div class="hl-row">' + rb + '<div class="hl-say">' + (chance0 ? say.replace(chance0, '') : say) + '</div><button type="button" class="hl-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '">' + I.chev + '</button></div>' + (chance0 ? '<div class="hl-x">' + chance0 + '</div>' : '') +   /* today's chance spans the card (V39.9 review FIXES-06) */
+            (late0 && !shp ? '<button type="button" class="action hl-late-go" data-go="' + (ROUTES['pregtest'] ? 'pregtest' : 'explain') + '"><span class="ico hue hue-gold">' + I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(t('late_p')) + '</span></span><span class="go">' + I.chev + '</span></button>' : '');
+        }
         else main = twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>');
-        const soon0 = ri && ri.from <= addDays(today(), 3) && ri.to >= today();   /* the one-line card shows no dates; the week strip may */
-        if (!mini || soon0 || chance0) main += '<p class="small">' + (sit0.breastfeeding ? esc(t('bf_note')) + ' ' : (!ri && last6.length >= 2 ? esc(t('gap_mode_note')) + ' ' : '')) + esc(t('no_contra')) + '</p>';   /* breastfeeding: the real reason (Version 32) */
+        const soon0 = ri && ri.from <= addDays(today(), 3) && ri.to >= today();   /* a shared phone's headline shows no dates; the week strip may */
+        if (!mini || (!shp && ri && !late0) || soon0 || chance0) main += '<p class="small">' + (sit0.breastfeeding ? esc(t('bf_note')) + ' ' : (!ri && last6.length >= 2 ? esc(t('gap_mode_note')) + ' ' : '')) + esc(t('no_contra')) + '</p>';   /* breastfeeding: the real reason (Version 32) */
         if (approxStarts()[toISO(ls)] && approxDue()) main += '<p class="small approx-note">' + esc(t('approx_note')) + '</p>';
         if (ROUTES['explain']) { /* the explanation card on Home covers late and missing periods */ } else if (!countsOff() && !sit0.stopped && daysSince >= 90) main += '<div class="card dark" style="gap:4px"><h3>' + esc(t('r6_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('r6_p')) + '</p></div>';
         else if (ri && today() > addDays(ri.to, 7)) main += '<div class="card soft" style="gap:4px"><h3>' + esc(t('late_h')) + '</h3><p class="small">' + esc(t('late_p')) + '</p></div>';
@@ -2281,10 +2295,11 @@
     /* Version 39.7: each module's card is its own entry (so "More from Sakhi (n)" counts them), and homeLast waits behind all */
     const slot = [vc].concat(items.filter((h) => h !== cu), planEarly() ? [] : [hu].concat(runHook('homeTop', [api]), [su, cu], runHook('homeLast', [api]))).filter(Boolean);
     const slotHtml = slot.length ? '<section class="slot"><p class="eyebrow slot-h">' + esc(t('slot_h')) + '</p>' + slot[0] + (slot.length > 1 ? '<details class="slot-more"' + (mem.slotMore ? ' open' : '') + '><summary class="linkbtn">' + esc(tf('slot_more', { n: slot.length - 1 })) + '</summary><div class="slot-in">' + slot.slice(1).join('') + '</div></details>' : '') + '</section>' : '';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' mini' : '') + '" style="gap:10px">' + main + (mini0 ? '' : stageLink) + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact"') : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + exCard(disc)   /* Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + exCard(disc)   /* Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
+    const hlr = $('.hl-row', v); if (hlr) hlr.addEventListener('click', (e) => { if (!e.target.closest('button, a')) setHash('diary'); });   /* Version 39.23 */
     wireOneTap(v); wireHomeV30(v); wireExCard(v); wireFeel(v);   /* Version 39.10; 39.16 */
     const hg = $('#hu-got', v); if (hg) hg.addEventListener('click', () => { const ri = rangeInfo(); state.prompts = state.prompts || {}; if (ri) state.prompts.heads = toISO(ri.from); save(); render(); });
     const sbtn = $('#stage-btn', v); if (sbtn) sbtn.addEventListener('click', openStage);
@@ -2552,7 +2567,7 @@
     if (showLog) out.push(R('data-log="' + (open ? 'end' : 'start') + '"', I.drop, disc ? (open ? t('d_end') : t('d_start')) : (open ? t('period_ended') : t('period_started')), 'primary'));
     if (showLog) out.push(R('data-log="spot"', SPOTS, disc ? t('d_spot') : t('spotting'), 'hue-rose'));
     else if (isPregnant() && ROUTES['preg-week'] && !disc) out.push(R('data-go="preg-week"', I.baby, t('this_week'), 'hue-sky'));
-    out.push(R('data-symlog="1"', sIco('clip'), disc ? t('sym_h_d') : t('sym_h'), 'hue-' + KINDS.pain.hue));
+    out.push(R('data-symlog="1"', sIco(KINDS.mood.ico), disc ? t('sym_h_d') : t('fab_feel'), 'hue-' + KINDS.mood.hue));   /* Version 39.23: the + menu's name and picture for the same page (V39.17 R3) */
     /* Version 39.1: "This month's signs" moved to Diary's What it shows */
     if (out.length < 4 && isPregnant() && ROUTES['preg-logs'] && !disc) out.push(R('data-go="preg-logs"', I.chart, t('my_logs'), 'hue-purple'));
     return '<div class="ract-row">' + out.join('') + '</div>';
@@ -2986,7 +3001,7 @@
       { sel: '#ans-listen', h: 'tan1_h', p: 'tan1_p', vars: () => ({ b: t('listen_b') }) }, { sel: '#sheet-root .ans [data-ask]', h: 'tan2_h', p: 'tan2_p' }] },
     { id: 'checkin', kind: 'feature', route: 'checkin', title: 'tour_ci', hue: 'green', steps: [
       { sel: '#view > .chips', h: 'tci1_h', p: 'tci1_p' }, { sel: '#ci-save', h: 'tci2_h', p: 'tci2_p', vars: () => ({ b: t('ci_save') }) }] },
-    { id: 'ring', kind: 'feature', route: 'home', order: 40, title: 'tour_ring', hue: 'rose', auto: () => !planEarly(), when: () => notDisc() && ['cycle', 'ttc'].indexOf(stageNow()) >= 0 && !!lastStart() && !document.querySelector('#view .hero.mini'), steps: [   /* V39.8 review PICTURES-10: the full ring only */
+    { id: 'ring', kind: 'feature', route: 'home', order: 40, title: 'tour_ring', hue: 'rose', auto: () => !planEarly(), when: () => notDisc() && ['cycle', 'ttc'].indexOf(stageNow()) >= 0 && !!lastStart() && !document.querySelector('#view .hero.head'), steps: [   /* V39.8 review PICTURES-10: the full ring only (Version 39.23: the headline has no key) */
       { sel: '#view .card.hero .ringwrap', wrap: '.hero-row', h: 'tr1_h', p: 'tr1_p' }] },
     { id: 'stage', kind: 'feature', route: 'home', order: 70, title: 'stage_change', hue: 'purple', when: notDisc, auto: () => diffDays(fromISO(state.created || toISO(today())), today()) >= 1 && !planEarly(), steps: [
       { sel: '#stage-btn', h: 'stage_change', p: 'tst1_p' }] }
@@ -3262,7 +3277,7 @@
   /* The diary is paper: a warm sheet, handwritten headings, dotted rules. The + button stays at hand on both tabs. */
   function renderDiary(v) {
     const tab = mem.diaryTab; v.innerHTML = firstLogCard() + '<div class="tabs dtabs"><button type="button" class="' + (tab === 'cal' ? 'on' : '') + '" data-tab="cal">' + esc(t('calendar')) + '</button><button type="button" class="' + (tab === 'tr' ? 'on' : '') + '" data-tab="tr">' + esc(t('trends')) + '</button><button type="button" class="' + (tab === 'days' ? 'on' : '') + '" data-tab="days">' + esc(t('tab_days')) + '</button></div><div id="diary-body" class="view diary-paper"></div>';
-    v.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => { mem.diaryTab = b.dataset.tab; render(); }));
+    v.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => { mem.diaryTab = b.dataset.tab; mem.calEdit = null; render(); }));
     const body = $('#diary-body', v); if (tab === 'cal') renderCalendar(body); else if (tab === 'days') renderDays(body); else renderTrends(body);
     wireFirstLog(v);   /* Version 39.10 */
   }
@@ -3291,7 +3306,9 @@
     const pr = preg ? null : predictInfo(); const fz = pr && !state.settings.discreet ? [pr.fert, pr.fertNext].filter(Boolean) : []; const predSet = {};
     if (pr && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
     const hearts = sexHearts(); let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
+    const ce = mem.calEdit && !preg ? mem.calEdit : null;   /* Version 39.23: editing her period dates */
     for (let d = 1; d <= daysIn; d++) {
+      if (ce) { const d0 = new Date(y, m, d); const s0 = toISO(d0); cells += d0 > today() ? '<span class="day other ce-fut"><span class="num">' + d + '</span></span>' : '<button type="button" class="day ce-d' + (ce.sel[s0] ? ' bleed' : '') + (s0 === tStr ? ' today' : '') + '" data-ed="' + s0 + '" aria-pressed="' + !!ce.sel[s0] + '" aria-label="' + esc(fmtD(d0, { day: 'numeric', month: 'long' })) + '"><span class="num">' + d + '</span></button>'; continue; }
       const dt = new Date(y, m, d); const s = toISO(dt); const k = bd[s]; const inR = ri && dt >= ri.from && dt <= ri.to; const fut = dt > today(); const ks = fut ? [] : kindsOn(s);
       const pred = !k && !!predSet[s]; const ov = !k && fz.some((f) => toISO(f.ov) === s); const fw = !k && !ov && fz.some((f) => dt >= f.fwFrom && dt <= f.fwTo);
       const cls = ['day', k === 'start' ? 'bleed' : (k === 'bleed' ? 'bleed light' : ''), k === 'spot' ? 'spot' : '', inR ? 'range' : '', pred ? 'pred' : '', fw ? 'fw' : '', ov ? 'ov' : '', s === tStr ? 'today' : '', fut ? 'other' : ''].join(' ');
@@ -3300,9 +3317,10 @@
       cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (ks.length || ht ? '<span class="kd" aria-hidden="true">' + dotsIn(s) + (ht ? HEART_I : '') + '</span>' : '') + '</button>';
     }
     const lk = (k) => '<span class="lk"><i class="hue-' + KINDS[k].hue + '"></i>' + esc(t(KINDS[k].label)) + '</span>';
+    if (ce) { renderCalEdit(v, y, m, cells); return; }
     const strip = calToday();
     const pw = pgi && pgi.weeks != null && !state.settings.discreet ? '<div class="card soft cal-pw" data-nofold="1"><span class="ico-sm hue hue-sky">' + I.baby + '</span><strong>' + esc(tf('cal_pw', { n: pgi.weeks })) + '</strong>' + (ROUTES['preg-week'] ? '<button type="button" class="btn sm" data-go="preg-week">' + esc(t('this_week')) + '</button>' : '') + '</div>' : '';
-    v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div></div>' +
+    v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div>' + (preg ? '' : '<button type="button" class="btn block cal-edit-b" id="cal-edit">' + PEN_I + esc(t(state.settings.discreet ? 'mc_edit' : 'ce_b')) + '</button>') + '</div>' +   /* Version 39.23 */
       (strip ? '' : fwFew()) +   /* Version 39.11: when her fertile days will start (Version 39.17: the strip's meter says it) */
       (preg ? '' : '<div class="legend">' + periodKey(pr, false, ri) + '</div>') + (fz.length ? fertKey() : '') +
       /* Version 39.16 (R13): the period marks, then her notes' dots in one line; "?" opens the full key */
@@ -3311,8 +3329,83 @@
     const ck = $('#cal-key', v); if (ck) ck.addEventListener('click', () => sheet('<h2>' + esc(t('legend_key')) + '</h2><div class="legend legend-full">' + periodKey(pr, true, ri) + '</div>' + (fz.length ? fertKey() : '') + '<div class="legend legend-full">' + ['pain', 'body', 'mood', 'disch', 'note'].concat(api.plan && api.plan.packOf && safe(() => api.plan.packOf(), null) ? ['plan'] : []).map(lk).join('') + (hearts ? '<span class="lk lk-sx">' + HEART_I + esc(t('sx_h')) + '</span>' : '') + '</div><div class="sheet-foot"><button type="button" class="btn primary block" id="ck-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#ck-ok', sh).addEventListener('click', () => closeSheet()); }));
     const fwy = $('#fw-why', v); if (fwy) fwy.addEventListener('click', () => sheet('<h2>' + esc(t('fw_why_h')) + '</h2><p>' + esc(t('fw_why_p')) + '</p><div class="sheet-foot"><button type="button" class="btn primary block" id="fw-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#fw-ok', sh).addEventListener('click', () => closeSheet()); }));
     $('#cal-prev', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m - 1, 1)); render(); }); $('#cal-next', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m + 1, 1)); render(); });
+    const ceb = $('#cal-edit', v); if (ceb) ceb.addEventListener('click', () => { const bd0 = bleedingDays(); const b0 = {}; Object.keys(bd0).forEach((x) => { if ((bd0[x] === 'start' || bd0[x] === 'bleed') && x <= tStr) b0[x] = true; }); mem.calEdit = { base: b0, sel: Object.assign({}, b0) }; render(); window.scrollTo(0, 0); });
     /* A day opens the same day sheet as the week strip on Home; flow details stay one tap away inside it. */
     v.querySelectorAll('[data-day]').forEach((b) => b.addEventListener('click', () => { const s = b.dataset.day; if (fromISO(s) > today()) return; openDay(s); }));
+  }
+  /* Version 39.23 (Mohit, 27 Oct): "Edit period dates": she taps the days she bled, in any month up to today; Save rewrites only
+     the periods she changed (a start on each run of days, an end once it is over), and Undo puts them back */
+  function renderCalEdit(v, y, m, cells) {
+    const disc = !!state.settings.discreet;
+    v.innerHTML = '<div class="card cal-edit" data-nofold="1"><h2 class="hand">' + esc(t(disc ? 'mc_edit' : 'ce_b')) + '</h2><p class="small">' + esc(t(disc ? 'ce_p_d' : 'ce_p')) + '</p>' +
+      '<div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div>' +
+      '<div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div><p class="small ce-fut-n">' + esc(t('ce_fut')) + '</p>' +
+      '<div class="grid2"><button type="button" class="btn" id="ce-cancel">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="ce-save">' + esc(t('save')) + '</button></div></div>';
+    $('#cal-prev', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m - 1, 1)); render(); });
+    $('#cal-next', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m + 1, 1)); render(); });
+    v.querySelectorAll('[data-ed]').forEach((b) => b.addEventListener('click', () => { const s0 = b.dataset.ed; const on = !mem.calEdit.sel[s0]; if (on) mem.calEdit.sel[s0] = true; else delete mem.calEdit.sel[s0]; b.classList.toggle('bleed', on); b.setAttribute('aria-pressed', String(on)); }));
+    $('#ce-cancel', v).addEventListener('click', () => { mem.calEdit = null; render(); });
+    $('#ce-save', v).addEventListener('click', saveCalEdit);
+  }
+  function saveCalEdit() {
+    const ce = mem.calEdit; mem.calEdit = null; const tS = toISO(today()); if (!ce) { render(); return; }
+    const was = ce.base, now = ce.sel; const changed = Object.keys(Object.assign({}, was, now)).filter((x) => !!was[x] !== !!now[x]);
+    if (!changed.length) { render(); return; }
+    const runs = (set) => { const out = []; Object.keys(set).filter((x) => set[x] && x <= tS).sort().forEach((x) => { const r = out[out.length - 1]; if (r && diffDays(fromISO(r.b), fromISO(x)) === 1) r.b = x; else out.push({ a: x, b: x }); }); return out; };
+    const near = (r) => changed.some((x) => diffDays(fromISO(r.a), fromISO(x)) >= -1 && diffDays(fromISO(x), fromISO(r.b)) >= -1);   /* a run she changed, or one a changed day touches */
+    const old = runs(was).filter(near), neu = runs(now).filter(near); const inR = (x, rs) => rs.some((r) => x >= r.a && x <= r.b);
+    const before = state.events.slice();
+    state.events = state.events.filter((e) => !((e.t === 'start' || e.t === 'end') && (inR(e.d, old) || inR(e.d, neu))));
+    /* a run that reaches today stays open (her period may go on) until it is 6 days long */
+    neu.forEach((r) => { dropGuesses(r.a); state.events.push({ d: r.a, t: 'start' }); if (r.b < tS || diffDays(fromISO(r.a), fromISO(r.b)) >= 5) state.events.push({ d: r.b, t: 'end' }); });
+    usageMark('diary'); save(); render();
+    toastAct(t('saved'), [{ label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } }]);
+  }
+  /* Version 39.23: "Add a past period" (in place of "Add today", which could start a period today by mistake): the day it
+     started (a guess is fine) and how many days it lasted. Days inside a period she has, or within 9 days of one's start (they
+     would join it), can't be picked; it can't run into a period she has or past today. */
+  const CALPLUS_I = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M16 2.5v4M8 2.5v4M3 10h18M12 13v5M9.5 15.5h5"/></svg>';
+  const apBtn = (main) => '<button type="button" class="btn ' + (main ? 'primary ' : '') + 'block ap-btn" id="ap-add">' + CALPLUS_I + esc(t('ap_b')) + '</button>';
+  /* before two period starts: what Cycles will show (faded, an example), what it needs, and the button when no card has it */
+  const exampleCard = (btn) => '<div class="card ex-card" data-nofold="1"><div class="row spread"><h3>' + esc(t('stats')) + '</h3><span class="ex-tag">' + esc(t('ex_tag')) + '</span></div><div class="ex-tiles" aria-hidden="true"><div><b class="num">29</b><span>' + esc(t('avg_gap')) + '</span></div><div><b class="num">2</b><span>' + esc(t('spread6')) + '</span></div></div><p class="small">' + esc(t('no_data')) + '</p>' + (btn ? apBtn(true) : '') + '</div>';
+  function openPastPeriod() {
+    const st0 = starts(); const bd = bleedingDays(); const tS = toISO(today()); const lens = st0.map(periodLen).filter((n) => n != null && n >= 1 && n <= 14);
+    const f0 = st0.length ? addDays(fromISO(st0[0]), -20) : today();
+    const ap = { m: toISO(new Date(f0.getFullYear(), f0.getMonth(), 1)), d: null, n: lens.length ? Math.round(avgOf(lens)) : 5 };
+    const blocked = (x) => x > tS || (!!bd[x] && bd[x] !== 'spot') || st0.some((z) => Math.abs(diffDays(fromISO(z), fromISO(x))) < 10);
+    const maxLen = (x) => { let n = Math.min(14, diffDays(fromISO(x), today()) + 1); for (let k = 1; k < n; k++) { const z = toISO(addDays(fromISO(x), k)); if ((bd[z] && bd[z] !== 'spot') || st0.indexOf(z) >= 0) { n = k; break; } } return Math.max(1, n); };
+    const lenNow = () => (ap.d ? Math.min(ap.n, maxLen(ap.d)) : ap.n);
+    const body = () => {
+      const b = fromISO(ap.m); const y = b.getFullYear(), m = b.getMonth(); const off = (new Date(y, m, 1).getDay() + 6) % 7; const dim = new Date(y, m + 1, 0).getDate();
+      const n = lenNow(); const last = ap.d ? toISO(addDays(fromISO(ap.d), n - 1)) : ''; let cells = '';
+      for (let i = 0; i < off; i++) cells += '<span></span>';
+      for (let d = 1; d <= dim; d++) {
+        const x = toISO(new Date(y, m, d)); const no = blocked(x); const on = x === ap.d; const lt = !!ap.d && x > ap.d && x <= last;
+        cells += '<button type="button" class="day ap-d' + (on ? ' bleed' : (lt ? ' bleed light' : '')) + (no && !on && !lt ? ' other' : '') + (x === tS ? ' today' : '') + '" data-ap="' + x + '"' + (no ? ' disabled' : '') + ' aria-pressed="' + on + '" aria-label="' + esc(fmtD(fromISO(x), { day: 'numeric', month: 'long' })) + '"><span class="num">' + d + '</span></button>';
+      }
+      const canNext = new Date(y, m + 1, 1) <= today(); const canPrev = new Date(y, m - 1, 1) >= addDays(today(), -1100);
+      return '<div class="row spread"><button type="button" class="iconbtn" id="ap-prev" aria-label="prev"' + (canPrev ? '' : ' disabled') + '>' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="ap-next" aria-label="next" style="transform:scaleX(-1)"' + (canNext ? '' : ' disabled') + '>' + I.back + '</button></div>' +
+        '<div class="cal ap-cal">' + t('dows').map((z) => '<span class="dow">' + esc(z) + '</span>').join('') + cells + '</div>' +
+        '<div class="row spread ap-len"><strong>' + esc(t('fl_days')) + '</strong><span class="ap-step"><button type="button" class="iconbtn" id="ap-minus" aria-label="-"' + (n <= 1 ? ' disabled' : '') + '>−</button><b class="num">' + esc(n === 1 ? t('k_day1') : tf('k_days', { n: n })) + '</b><button type="button" class="iconbtn" id="ap-plus" aria-label="+"' + (n >= (ap.d ? maxLen(ap.d) : 14) ? ' disabled' : '') + '>+</button></span></div>';
+    };
+    sheet('<h2 class="hand">' + esc(t('ap_b')) + '</h2><div class="stack" style="gap:2px"><strong>' + esc(t('ap_q')) + '</strong><span class="small">' + esc(t('ob_lp_p')) + '</span></div><div id="ap-body" class="stack" style="gap:10px"></div><div class="sheet-foot stack" style="gap:8px"><button type="button" class="btn primary block" id="ap-save" disabled>' + esc(t('save')) + '</button><button type="button" class="linkbtn" id="ap-cancel">' + esc(t('cancel')) + '</button></div>', (sh) => {
+      const paint = () => {
+        $('#ap-body', sh).innerHTML = body(); $('#ap-save', sh).disabled = !ap.d;
+        const mv = (k) => { const b = fromISO(ap.m); ap.m = toISO(new Date(b.getFullYear(), b.getMonth() + k, 1)); paint(); };
+        $('#ap-prev', sh).addEventListener('click', () => mv(-1)); $('#ap-next', sh).addEventListener('click', () => mv(1));
+        sh.querySelectorAll('[data-ap]').forEach((b) => b.addEventListener('click', () => { ap.d = b.dataset.ap; ap.n = lenNow(); paint(); }));
+        $('#ap-minus', sh).addEventListener('click', () => { ap.n = Math.max(1, lenNow() - 1); paint(); });
+        $('#ap-plus', sh).addEventListener('click', () => { ap.n = Math.min(ap.d ? maxLen(ap.d) : 14, lenNow() + 1); paint(); });
+      };
+      paint();
+      $('#ap-cancel', sh).addEventListener('click', () => closeSheet());
+      $('#ap-save', sh).addEventListener('click', () => {
+        if (!ap.d) return; const n = lenNow(); const before = state.events.slice();
+        dropGuesses(ap.d); state.events.push({ d: ap.d, t: 'start' }, { d: toISO(addDays(fromISO(ap.d), n - 1)), t: 'end' });
+        usageMark('diary'); save(); closeSheet(true); render();
+        toastAct(t('saved'), [{ label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } }]);
+      });
+    });
   }
   /* Sakhi with a line of help, for screens that have nothing to show yet. */
   const emptyCard = (msg, btn) => '<div class="card empty">' + (api.art ? api.art.sakhi({ pose: 'calm', look: state.settings.look }) : '') + '<div class="body"><p>' + esc(msg) + '</p>' + (btn || '') + '</div></div>';
@@ -3585,7 +3678,7 @@
   }
   /* Each cycle as one row of days: period days, and the estimated fertile window and ovulation when fertile days show */
   function cyclesCard() {
-    const cs = cycleList(PRED_N + 1); if (cs.length < 2) return '';
+    const cs = cycleList(PRED_N + 1); if (!cs.length) return '';   /* Version 39.23: from her first period, with "Add a past period" */
     const disc = !!state.settings.discreet; const anyF = !disc && cs.some((c) => c.fert);
     const row = (c) => {
       const n = Math.min(c.days, 45); const f = disc ? null : c.fert; let pills = '';
@@ -3598,7 +3691,7 @@
     const rest = cs.slice(4);
     return '<div class="card mc-card" data-nofold="1"><div class="row spread"><h2 class="hand">' + esc(t('mc_h')) + '</h2>' + (anyF ? gate() : '') + '</div>' +
       '<div class="legend"><span><i class="sw" style="background:var(--bleed)"></i>' + esc(t('bleeding')) + '</span>' + (anyF ? '<span><i class="sw sw-fw"></i>' + esc(t('cal_fw')) + '</span><span><i class="sw sw-ov"></i>' + esc(t('cal_ov')) + '</span>' : '') + '</div>' +
-      '<div class="mc-list">' + cs.slice(0, 4).map(row).join('') + (rest.length ? '<details class="mc-more"><summary>' + esc(tf('mc_all', { n: cs.length })) + '</summary>' + rest.map(row).join('') + '</details>' : '') + '</div></div>';
+      '<div class="mc-list">' + cs.slice(0, 4).map(row).join('') + (rest.length ? '<details class="mc-more"><summary>' + esc(tf('mc_all', { n: cs.length })) + '</summary>' + rest.map(row).join('') + '</details>' : '') + '</div>' + apBtn(cs.length < 2) + '</div>';
   }
   /* Days: every day she noted in the last year, newest first, with where it sat in her cycle and, when fertile days show, the
      estimates around it. Plain in discreet mode: only the cycle day and what she noted. */
@@ -3747,12 +3840,13 @@
        doctor; then the charts, what she noted, the monthly signs and her records. The notes meter moved to the Calendar (R4). */
     const rp = canSave() ? '<button type="button" class="btn block rp-btn" data-go="report">' + I.file + ' ' + esc(t('rp_h')) + '</button>' : '';
     const tail = notedCard() + monthRow() + checksCard() + (canSave() && ROUTES['tools-reports'] && !state.settings.discreet ? '<div class="list wis-records"><button type="button" class="item" data-go="tools-reports"><span class="ico-sm hue hue-sky">' + I.file + '</span><span class="body"><strong>' + esc(t('wis_records')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>' : '');
-    if (!ga.length) { v.innerHTML = signalCards() + emptyCard(t('no_data'), '<button type="button" class="btn sm primary" id="tr-log">' + esc(t('add_today')) + '</button>') + patternsCard() + rp + tail; wire(v); const lb = $('#tr-log', v); if (lb) lb.addEventListener('click', () => openDay(toISO(today()))); wireAdd(); return; }
+    const wireMc = () => { v.querySelectorAll('[data-cy]').forEach((b) => b.addEventListener('click', () => openDay(b.dataset.cy))); v.querySelectorAll('[data-cyedit]').forEach((b) => b.addEventListener('click', () => openCycleEdit(b.dataset.cyedit))); const ab = $('#ap-add', v); if (ab) ab.addEventListener('click', openPastPeriod); };
+    /* Version 39.23: before two period starts: her first period with "Add a past period", and what her numbers will look like */
+    if (!ga.length) { const mc = cyclesCard(); v.innerHTML = signalCards() + patternsCard() + mc + exampleCard(!mc) + rp + tail; wire(v); wireMc(); wireAdd(); return; }
     const mx = Math.max(60, Math.max.apply(null, ga.map((x) => Math.min(x.days, 130)))); const h = 120; const hiB = bandHi();
     const vdc = verdictCard(); const nums = vdc || !usable().length ? '' : '<div class="card vd-nums-card">' + numbersHtml().replace('<details class="vd-nums">', '<details class="vd-nums" open>') + '</div>';   /* review ENGINE-08 */
     v.innerHTML = signalCards() + patternsCard() + cyclesCard() + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
-    wire(v); wireAdd(); v.querySelectorAll('[data-cy]').forEach((b) => b.addEventListener('click', () => openDay(b.dataset.cy)));
-    v.querySelectorAll('[data-cyedit]').forEach((b) => b.addEventListener('click', () => openCycleEdit(b.dataset.cyedit)));
+    wire(v); wireAdd(); wireMc();
     const chd = $('.charts-d', v); if (chd) chd.addEventListener('toggle', () => { mem.chartsOpen = chd.open; });
   }
 
@@ -4638,7 +4732,7 @@
   const api = {
     version: 1, register: register,
     get state() { return state; }, get mem() { return mem; },
-    $: $, esc: esc, pad2: pad2, toISO: toISO, fromISO: fromISO, addDays: addDays, diffDays: diffDays, today: today, monthKey: monthKey, clamp: clamp, addMonths: addMonths,
+    $: $, esc: esc, pad2: pad2, toISO: toISO, fromISO: fromISO, addDays: addDays, diffDays: diffDays, today: today, planToday: planToday, monthKey: monthKey, clamp: clamp, addMonths: addMonths,
     t: t, tf: tf, tx: tx, one: one, fmtD: fmtD, fmtRange: fmtRange, I: I, icon: icon,
     save: modSave, saveQuiet: save, emit: emit, render: render, setHash: setHash, route: route, wire: wire, toast: toast, toastAct: toastAct, sheet: sheet, closeSheet: closeSheet, backRow: backRow, gate: gate,
     pregEnded: () => { endPregnancy(); save(); },   /* Version 39.2: "The pregnancy ended" on the check-ups page (preg.js) */
@@ -4710,7 +4804,7 @@
     const cameBack = () => {
       const away = mem.hiddenAt ? Date.now() - mem.hiddenAt : 0; mem.hiddenAt = 0;
       if ((state.settings.pinHash || (state.settings.shared && state.stage === 'app')) && away > 30000 && !mem.locked) { mem.locked = true; mem.bioAuto = false; closeSheet(); render(); }
-      else if ((route() === 'me' || route() === 'me-reminders' || route() === 'plan-reveal' || shownDay !== toISO(today())) && !sheetUp()) render();   /* back from a phone setting (exact alarms), or on a new day */
+      else if ((route() === 'me' || route() === 'me-reminders' || route() === 'plan-reveal' || shownDay !== dayKey()) && !sheetUp()) render();   /* back from a phone setting (exact alarms), or on a new day */
       syncNotifications(); acctSync(); usageLater();
     };
     document.addEventListener('visibilitychange', () => { if (document.hidden) wentAway(); else cameBack(); });
@@ -4724,7 +4818,7 @@
     ['click', 'change'].forEach((e) => document.addEventListener(e, () => { lastTap = Date.now(); }, true));
     if (state.settings.shared && state.stage === 'app') mem.locked = true;
     armShared();
-    setInterval(() => { if (!document.hidden && shownDay && shownDay !== toISO(today()) && !sheetUp() && !mem.locked && ['home', 'diary'].indexOf(route()) >= 0) render(); }, 60000);
+    setInterval(() => { if (!document.hidden && shownDay && shownDay !== dayKey() && !sheetUp() && !mem.locked && ['home', 'diary', 'plan'].indexOf(route()) >= 0 && !mem.calEdit) render(); }, 60000);   /* Version 39.23: and at 4 am, her plan day */
     render();
     acctSync(); window.addEventListener('online', acctSync); usageLater();
   };

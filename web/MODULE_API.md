@@ -4274,3 +4274,83 @@ yoga and other activities and set reminders accordingly". The timing research is
 **Wording:** the wording review, section 19.22. The night card's doctor line and the session tips wait for doctor review.
 
 **Tests:** `test/winddown.mjs`.
+
+## 66. Version 39.23: her cycle first on Today, a plan day that ends at 4 am, period dates easy to fix
+
+Mohit, 27 Oct, on his phone: "What time will app show next day i logged last night and its next day 11:40 AM still i am on
+same day". A check-in after midnight had marked the next day done. After a walkthrough he saw the mockup
+(claude.ai/artifact/RTA92ajojk5uXeLtgVC5jm) and said "go ahead and build it".
+
+**The plan day ends at 4 am.**
+- Core `planToday()` is today before 4 am and the calendar day after; `api.planToday` gives it to modules. Her diary, periods
+  and the week strip keep the calendar day (a period that starts at 1 am starts that day).
+- `plan.js`: `pToday()` replaces `S.today()` everywhere, so `todayISO()` is her plan day for steps, ticks, the check-in, the
+  log, rest days, her week and its dots, and the plan reminder's `doneOn`. A check-in at 12:30 am closes Tuesday, and
+  Wednesday's reminder still rings.
+- The check-in is due from midnight to 4 am (`ciDueNow`), as after 5 pm.
+- From midnight to 4 am, Today's plan card and My plan's steps card show a night note (`.pl-night-day`): "Still {d}’s plan"
+  and "Your plan day ends at 4 am, so this counts for {d}." The check-in button and the check-in page say "How did {d} go?"
+  ({d} her plan day's weekday).
+- `calm.js`: a session after midnight counts for her plan day (`markDone`), so it ticks the night before's bedtime step.
+- `joy.js`: an event may carry `day`. The plan's `checkin` and Wind down's `tool` carry the plan day, so the garden counts
+  them for that day.
+- Core redraws on a new calendar day or at 4 am (`dayKey()`): on resume, and each minute on Today, Diary and My plan (not
+  while she edits her period dates).
+
+**Her cycle first on Today** (`renderHome`, while her plan runs; it replaces Version 39.8's one-line card).
+- **The headline card** (`.card.hero.head`):
+  - the ring at 88 px with her cycle day;
+  - the days to her next period, big, with "Likely {r} · from your last {n} cycles" (Version 31's countdown, `.cd-big`);
+  - the dates line ("These dates are estimates…");
+  - her 3 logs (`.ract-row.compact.hl-logs`);
+  - "Change stage" (`#stage-btn`, V39.8 review SAFETY-03).
+- **Taps:** a tap anywhere on the row opens her cycle (the Diary). The chevron (`.hl-go`, "See my cycle") is the button for a
+  screen reader.
+- **Today's chance** stays in the headline when fertile days show, on its own line across the card (V39.9 review FIXES-06).
+- **The ring tour** stays off the headline, which has no key (V39.8 review PICTURES-10).
+- **A late period** (past her likely range):
+  - "Your period is {n} days late", {n} counted from the end of the range, as "{n} days past your likely range" was;
+  - "Typical gap 21–{hi} days";
+  - a "Period late?" row with the home-test line, which opens `pregtest` (`explain` where that module is held back).
+- **A shared phone:** her cycle day only, with no dates or countdown; a late line stays.
+- **Unchanged:** discreet mode keeps its hidden number, and with no plan running the full hero is as it was.
+- **Plan card:** her plan's card comes under the headline, so fewer of her steps fit on the first screen. This was Mohit's choice
+  (cycle first); Version 39.8's rule was all 3 or 4 steps.
+  - At 360 x 800: two on a usual day, one on a late day; on a fertile-window day her plan's card starts there.
+  - At 390 x 844: three on a usual day, two on a late day.
+  - `pictures`, `foodsteps`, `daily` and `follow` check the new first screen.
+- **"How I feel":** the third round button is now "How I feel" with the mood picture, the + menu's name for the same page (it
+  was "Symptoms"). Discreet mode keeps its plain word.
+
+**"Edit period dates"** (the Diary's calendar).
+- **The button** (`#cal-edit`) sits under the month grid. Discreet mode says "Edit dates". There is none in a pregnancy.
+- **Edit mode** (`mem.calEdit = { base, sel }`, `renderCalEdit`):
+  - the month's days up to today are toggles, her bleeding days marked;
+  - she can move between months;
+  - days after today can't be marked;
+  - Cancel and Save.
+  - Changing Diary tab or leaving the Diary ends it.
+- **Save** (`saveCalEdit`) rewrites only the periods she changed: each run of marked days that a changed day touches gets a
+  start on its first day and an end on its last. The old start and end events inside the runs go, and a guessed start
+  nearby too (`dropGuesses`).
+  - A run that reaches today stays open until it is 6 days long.
+  - Undo puts every event back.
+
+**"Add a past period"** (Cycles).
+- **Where:** My cycles shows from her first period (it needed two), with "Add a past period" (`#ap-add`, the main button while
+  she has one period). It replaces the empty card's "Add today", which could start a period today by mistake. "What you
+  noted" keeps its own "Add today" for notes.
+- **Before two period starts:** "Your numbers" shows a faded example (`.ex-card`, "Example", `aria-hidden` tiles) and "Log two
+  period starts to see the gap between them.".
+- **The sheet** (`openPastPeriod`):
+  - "When did it start?" and "A guess is fine. You can fix it later.", over a month calendar that starts 20 days before her
+    first period;
+  - "How many days did it last?" (1 to 14, from her average length);
+  - Save is ready once she picks a day.
+  - **Days she can't pick:** after today, inside a period, or within 9 days of a period's start (they would join it). A
+    period can't run into one she has, or past today.
+  - **Save** adds a start and an end; Undo takes them away.
+
+**Wording:** the wording review, section 19.23.
+
+**Tests:** `test/cyclefirst.mjs`. For the first screen: `pictures` 3 and 16, `foodsteps` 8, `daily` 7 and `follow` 12.

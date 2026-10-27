@@ -130,10 +130,10 @@
   /* Version 39.22: her plan's wind-down step counts a session or a sound she has listened to for 30 seconds (she may fall asleep
      before it ends). Kept 60 days, on her phone only. */
   function markDone(id) {
-    if (!S.canSave()) return; const d = D(); const td = S.toISO(S.today()); const now = new Date();
+    if (!S.canSave()) return; const d = D(); const td = S.toISO(S.planToday ? S.planToday() : S.today()); const now = new Date();   /* Version 39.23: a session after midnight counts for the evening before */
     d.done = Object.assign({}, d.done || {}); d.done[td] = { id: id, at: S.pad2(now.getHours()) + ':' + S.pad2(now.getMinutes()) };
     const ks = Object.keys(d.done).sort(); ks.slice(0, Math.max(0, ks.length - 60)).forEach((k) => { delete d.done[k]; });
-    S.saveQuiet(); if (S.emit) S.emit('tool', { type: 'calm', id: id, quiet: true });   /* her garden counts it, without a pop-up at night; her plan updates its reminders */
+    S.saveQuiet(); if (S.emit) S.emit('tool', { type: 'calm', id: id, quiet: true, day: td });   /* her garden counts it, without a pop-up at night; her plan updates its reminders */
   }
   function start(it) {
     const hide = !!(S.state.settings.discreet || S.state.settings.shared);   /* like her reminders: off the lock screen, a plain title */

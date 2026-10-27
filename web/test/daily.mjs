@@ -266,7 +266,8 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const h = await open({ seed: cyc(ago(9), { log: l, weeks: SEEN1 }, { lang: 'hi' }), lang: 'hi', w: 360, h: 780, now: at(0, '09:30') });
   const td = await txt(h.page, '#view .today-card');
   check('7 Hindi Today: प्लान का दिन, the count, her week', /हफ़्ता 2 · प्लान का दिन 10/.test(td) && /आज 4 में से 0 हो गए/.test(td) && /इस हफ़्ते: 1 दिन सारे क़दम पूरे/.test(td) && await noScroll(h.page), td);
-  check('7 Hindi: all 4 steps above the tab bar at 360 x 780', await h.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const b = Array.from(document.querySelectorAll('#view .today-plan-list [data-today-act], #view .today-plan-list [data-today-nav]')); return b.length === 4 && b.every((x) => x.getBoundingClientRect().bottom <= nav); }));
+  /* Version 39.23: her cycle heads Today again, so at 360 x 780 her first step (not all 4) is on the first screen */
+  check('7 Hindi: her 4 steps, the first above the tab bar at 360 x 780', await h.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const b = Array.from(document.querySelectorAll('#view .today-plan-list [data-today-act], #view .today-plan-list [data-today-nav]')); return b.length === 4 && b[0].getBoundingClientRect().bottom <= nav; }));
   await tap(h.page, '#view .today-plan-move [data-today-why]');
   check('7 Hindi "Why?": its reason and how', /यह क्यों मदद करता है|क्यों/.test(await sheetTxt(h.page)) && /कैसे/.test(await sheetTxt(h.page)), await sheetTxt(h.page));
   await h.page.evaluate(() => window.Saathi.closeSheet()); await settle(h.page, 200);

@@ -316,23 +316,25 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   check('8 FIXES-08 the call form keeps her own words after a general "Speak to a doctor"', (await q.page.$eval('#ac-topic', (e) => e.value).catch(() => '')) === 'About my periods, and pain during sex');
   errsAll.push(...q.errs); await q.ctx.close();
 
-  /* FIXES-06, SAFETY-03: at 360 x 800 her 3 Done buttons sit above the tab bar on the trying plan, a late period and a
-     fasting day; on a day the card carries today's chance, the chance and its estimate line come first */
+  /* FIXES-06, SAFETY-03: at 360 x 800 her Done buttons sit above the tab bar on the trying plan, a late period and a
+     fasting day; on a day the card carries today's chance, the chance and its estimate line come first. Version 39.23: her
+     cycle heads Today again, so her first Done button (not all 3) is on the first screen, and on a fertile-window day her
+     plan's card starts there (test/cyclefirst.mjs, section 1) */
   const ev7 = (last) => { const out = []; for (let i = 6; i >= 0; i--) out.push({ d: ago(last + i * 28), t: 'start' }, { d: ago(last + i * 28 - 5), t: 'end' }); return out; };
   for (const lang of ['en', 'hi']) {
     for (const [name, seed] of [['trying plan', { situation: { planning: true }, goals: ['ttc'], intake: { goal: 'ready', stage: 'ttc' }, mods: { plan: planOf('ttc', 'ready', ago(9)) } }], ['a late period', { events: regular(46), intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } }]]) {
       const a = await open({ lang, seed: Object.assign({ lang }, seed) }); const m = await doneBottoms(a.page);
-      check('8 FIXES-06 ' + lang + ', ' + name + ': all 3 Done buttons above the tab bar', fits(m, 3), m);
+      check('8 FIXES-06 ' + lang + ', ' + name + ': her first Done button above the tab bar', fits(m, 1), m);
       errsAll.push(...a.errs); await a.ctx.close();
     }
     const f = await open({ lang, seed: { lang, intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
     await fastTog(f.page); await go(f.page, 'plan');
     const tips = await view(f.page); await go(f.page, 'home'); const fm = await doneBottoms(f.page);
-    check('8 SAFETY-03 ' + lang + ', a fasting day: all 3 Done buttons above the tab bar, and her fasting tips on My plan', fits(fm, 3) && (lang === 'en' ? /On your fast today\n[^\n]*sargi or sehri/i.test(tips) : /आज आपका व्रत है\n[^\n]*सरगी या सेहरी/.test(tips)), [fm, tips.slice(0, 400)]);
+    check('8 SAFETY-03 ' + lang + ', a fasting day: her first Done button above the tab bar, and her fasting tips on My plan', fits(fm, 1) && (lang === 'en' ? /On your fast today\n[^\n]*sargi or sehri/i.test(tips) : /आज आपका व्रत है\n[^\n]*सरगी या सेहरी/.test(tips)), [fm, tips.slice(0, 400)]);
     errsAll.push(...f.errs); await f.ctx.close();
     const c = await open({ lang, seed: { lang, events: ev7(12), intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'irregular', ago(9)) } } });
-    const ct = await c.page.$eval('#view .hero.mini', (e) => e.textContent).catch(() => ''); const cm = await doneBottoms(c.page);
-    check('8 FIXES-06 ' + lang + ', a fertile-window day: today\'s chance and "not a way to avoid pregnancy" in the card, then her steps (' + (lang === 'en' ? 2 : 1) + ' Done above the tab bar)', (lang === 'en' ? /High chance of pregnancy/.test(ct) && /not a way to avoid pregnancy/.test(ct) : /गर्भ ठहरने की संभावना/.test(ct) && /गर्भ रोकने का/.test(ct)) && fits(cm, lang === 'en' ? 2 : 1), [cm, ct.slice(0, 200)]);
+    const ct = await c.page.$eval('#view .hero.head', (e) => e.textContent).catch(() => ''); const cm = await doneBottoms(c.page); const ctop = await c.page.$eval('#view .today-card', (e) => Math.round(e.getBoundingClientRect().top)).catch(() => 9999);
+    check('8 FIXES-06 ' + lang + ', a fertile-window day: today\'s chance and "not a way to avoid pregnancy" in the card, then her plan\'s card on the first screen', (lang === 'en' ? /High chance of pregnancy/.test(ct) && /not a way to avoid pregnancy/.test(ct) : /गर्भ ठहरने की संभावना/.test(ct) && /गर्भ रोकने का/.test(ct)) && ctop < cm.nav, [cm, ctop, ct.slice(0, 200)]);
     errsAll.push(...c.errs); await c.ctx.close();
   }
 

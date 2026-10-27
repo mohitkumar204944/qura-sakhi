@@ -211,7 +211,7 @@
   /* ---------- what she does (from app.js, and from this module's cards) ---------- */
   function onEvent(name, p) {
     if (!S.canSave() || KINDS.indexOf(name) < 0) return;
-    const d = D(); const day = todayISO(); const mk = S.monthKey(S.today());
+    const d = D(); const day = p && p.day ? p.day : todayISO(); const mk = S.monthKey(p && p.day ? S.fromISO(p.day) : S.today());   /* Version 39.23: a plan check-in after midnight counts for its plan day */
     if (name === 'read' && p.key) d.reads[p.key] = 1;
     if (name === 'share') d.shares = (d.shares || 0) + 1;
     const before = monthPetals(d, mk); const L = d.days[day] || (d.days[day] = []);

@@ -1042,25 +1042,49 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .food-sum .fs-it { width: 72px; display: grid; justify-items: center; gap: 2px; text-align: center; font-size: 13px; line-height: 1.25; color: var(--fg); }
 .food-sum .fs-it svg { width: 52px; height: 52px; }
 .food-sum .fsum-p { font-size: 22px; font-weight: 700; color: var(--muted); }
-.hero.mini { padding: 8px 12px; }
-.hero-mini { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; }
-.hero-mini .ringwrap { width: 44px; height: 44px; }
-.hero-mini .ringwrap svg { width: 44px; height: 44px; }
-.hero-mini .ringc { display: none; }
-.hero-mini .hero-main { min-width: 0; gap: 2px; }
-.hero-mini .hero-main .lead { margin: 0; font-size: 16px; }
-.hero-mini .hero-main .cd-lead, .hero-mini .hero-main .cd-from, .hero-mini .hero-main .chance { font-size: 13px; margin: 0; }
-.hero-mini .mini-x { grid-column: 1 / -1; display: grid; gap: 4px; justify-items: start; margin-top: 2px; }   /* V39.9 review FIXES-06 */
-.hero-mini .mini-x .small, .hero-mini .mini-x .chance { font-size: 13px; margin: 0; }
-.hero-mini .mini-x .chance { padding: 3px 10px; }
-.hero-mini .linkbtn { min-height: 44px; padding: 0 4px; font-size: 14px; }
-.hero-mini .hero-main .small { margin: 0; font-size: 13px; }
-.hero-mini .mini-stage { min-height: 44px; padding: 0 2px; font-size: 13px; }
-.hero-mini .mini-go { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; background: none; border: none; padding: 0; color: var(--fg); font: inherit; font-size: 16px; text-align: left; }
-.hero-mini .mini-go .chev { display: inline-flex; color: var(--accent); } .hero-mini .mini-go .chev svg { width: 18px; height: 18px; }
-/* the quick-log circles at 44 px while the one-line cycle card shows */
+/* Version 39.23: her cycle as Today's headline while her plan runs (it replaces Version 39.8's one line) */
+.hero.head { padding: 12px 14px 4px; }
+.hl-row { position: relative; display: flex; align-items: center; gap: 12px; padding-right: 26px; cursor: pointer; }
+.hl-row .ringwrap, .hl-row .ringwrap .ring { width: 88px; height: 88px; }
+.hl-row .ringc b { font-size: 30px; letter-spacing: -1px; }
+.hl-row .ringc span { font-size: 12px; max-width: 70px; }
+.hl-say { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.hl-say .lead, .hl-say .small { margin: 0; }
+.hl-say .cd-lead { font-size: 16px; font-weight: 600; color: var(--fg); line-height: 1.3; }
+.hl-say .cd-big { display: flex; align-items: center; gap: 8px; }
+.hl-say .cd-big .cd-n { font-family: var(--font-display); font-size: 50px; line-height: 0.9; margin: 0; flex-shrink: 0; }
+.hl-say .cd-from { font-size: 13px; }
+.hl-x { display: flex; } .hl-x .chance { margin: 0; font-size: 13px; padding: 3px 10px; }
+.hl-day { font-size: 17px; font-weight: 600; color: var(--fg); }
+.hl-late { margin: 0; font-family: var(--font-display); font-size: 25px; line-height: 1.12; font-weight: 700; color: var(--fg); }
+.hl-go { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); width: 40px; height: 48px; display: flex; align-items: center; justify-content: center; background: none; border: none; padding: 0; color: var(--accent); }
+.hl-go svg { width: 22px; height: 22px; }
+.hl-late-go { box-shadow: none; background: var(--h-gold-soft); padding: 10px 12px; border-radius: 16px; }
+.hl-late-go .ico { width: 36px; height: 36px; background: var(--card); color: var(--h-gold); }
+.hl-late-go .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.hl-late-go .body .small { margin: 0; font-size: 13px; color: var(--text); }
+.hl-late-go .go { color: var(--accent); display: flex; } .hl-late-go .go svg { width: 18px; height: 18px; }
+.hl-logs { border-top: 1px solid var(--line); padding-top: 8px; } .ract-row.compact.hl-logs .ract .rico { width: 40px; height: 40px; border-radius: 20px; } .ract-row.compact.hl-logs .ract .rico svg { width: 20px; height: 20px; }
+@media (max-width: 380px) { .hl-late-go .ico { display: none; } }   /* its line in two lines at 360 px */
+.hero.head > .small { font-size: 13px; margin: 0; }
+.hero.head .hero-foot { margin: -12px -2px -8px 0; }
+/* Version 39.23: "Edit period dates" under the calendar, its edit mode, "Add a past period" and the example numbers */
+.cal-edit-b { margin-top: 6px; gap: 8px; } .cal-edit-b svg, .ap-btn svg { width: 18px; height: 18px; }
+.cal .day.ce-d:not(.bleed) { box-shadow: inset 0 0 0 1.5px var(--line); }
+.cal .day.ce-d.today:not(.bleed) { box-shadow: inset 0 0 0 2px var(--ink); }
+.cal-edit .ce-fut-n { margin: 0; }
+.ap-btn { gap: 8px; margin-top: 4px; }
+.ap-cal .day[disabled] { cursor: default; }
+.ap-len { border-top: 1px solid var(--line); padding-top: 8px; }
+.ap-step { display: inline-flex; align-items: center; gap: 8px; } .ap-step b { min-width: 64px; text-align: center; font-weight: 600; color: var(--fg); }
+.ap-step .iconbtn { width: 44px; height: 44px; border-radius: 22px; box-shadow: inset 0 0 0 1.5px var(--line); font-size: 20px; color: var(--fg); }
+.ex-card { gap: 8px; } .ex-card h3 { margin: 0; }
+.ex-tag { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--accent-soft); border-radius: 10px; padding: 2px 8px; letter-spacing: 0.3px; }
+.ex-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; opacity: 0.45; }
+.ex-tiles > div { display: flex; flex-direction: column; background: var(--card-2); border-radius: 14px; padding: 10px 12px; }
+.ex-tiles b { font-size: 24px; font-weight: 600; color: var(--fg); line-height: 1.2; } .ex-tiles span { font-size: 13px; color: var(--muted); }
+/* the quick-log circles at 44 px inside the cycle headline (Version 39.23) */
 .ract-row.compact { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }   /* V39.9 review: one line per label */ .ract-row.compact .ract { gap: 4px; font-size: 12px; } .ract-row.compact .ract .rico { width: 44px; height: 44px; border-radius: 22px; } .ract-row.compact .ract .rico svg { width: 22px; height: 22px; }
-.hero.mini > .small { font-size: 13px; margin: 0; }
 .pl-pic-row { align-items: flex-start; }
 .pl-pic { width: 52px; height: 52px; flex-shrink: 0; border-radius: 16px; background: var(--hue-soft); color: var(--hue); display: inline-flex; align-items: center; justify-content: center; }
 .pl-pic svg { width: 30px; height: 30px; }

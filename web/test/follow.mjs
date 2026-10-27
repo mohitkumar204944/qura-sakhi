@@ -389,7 +389,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   for (const lang of ['en', 'hi']) {
     const f = await open({ seed: cyc(ago(11), { log: logged(11, 5), weeks: { 1: { e: 'ok', seen: true } } }, { lang }), lang, w: 360, h: 780, now: at(0, '10:00') });   /* Version 39.14: a day with no look-back above her steps */
     const m = await f.page.evaluate(() => ({ nav: Math.round(document.querySelector('#tabbar').getBoundingClientRect().top), btn: Array.from(document.querySelectorAll('#view .today-card [data-today-act], #view .today-card [data-today-nav]')).map((x) => Math.round(x.getBoundingClientRect().bottom)) }));
-    check('12 ' + lang + ' at 360 x 780: all 4 step buttons above the tab bar', m.btn.length === 4 && m.btn.every((b) => b <= m.nav), m);
+    check('12 ' + lang + ' at 360 x 780: her 4 step buttons, the first 2 above the tab bar (Version 39.23: her cycle heads Today)', m.btn.length === 4 && m.btn.slice(0, 2).every((b) => b <= m.nav), m);
     await done(f);
   }
 }
