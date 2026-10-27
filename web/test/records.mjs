@@ -83,8 +83,9 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   check('1 the Diary tab is called "Cycles" (Version 39.11; it was "What it shows")', /Cycles/.test(await txt(a.page, '#view .tabs')) && !/What it shows/.test(await txt(a.page, '#view .tabs')), await txt(a.page, '#view .tabs'));
   await diaryShows(a.page);
   check('1 Version 39.17: the notes meter moved to the Calendar (Cycles has none)', !(await has(a.page, '#diary-body .meter')));
-  const order = await a.page.evaluate(() => [...document.querySelectorAll('#diary-body > *:not(.meter)')].map((e) => e.className.split(' ').filter((c) => /^(xp-diary|vd-card|mc-card|pat-card|wis-ci|wis-checks|rp-btn|card)$/.test(c)).join('.') || e.tagName));
-  check('1 her signals come first, then what repeats, her cycles and the verdict (Version 39.18, in the order of her questions)', /^xp-diary/.test(order[0] || '') && /pat-card/.test(order[1] || '') && /mc-card/.test(order[2] || '') && /vd-card/.test(order[3] || ''), order);
+  const order = await a.page.evaluate(() => [...document.querySelectorAll('#diary-body > *:not(.meter)')].map((e) => e.className.split(' ').filter((c) => /^(xp-diary|vd-card|mc-card|pat-card|kn-card|wis-ci|wis-checks|rp-btn|card)$/.test(c)).join('.') || e.tagName));
+  /* Version 39.25: with notes on fewer than 3 periods, "What Sakhi can tell you" counts them in place of the waiting "What repeats" card */
+  check('1 her signals come first, then what Sakhi can tell her (what repeats, still to come), her cycles and the verdict (Version 39.18, in the order of her questions)', /^xp-diary/.test(order[0] || '') && /kn-card/.test(order[1] || '') && /mc-card/.test(order[2] || '') && /vd-card/.test(order[3] || '') && !order.some((x) => /pat-card/.test(x)), order);
   const v = await view(a.page);
   check('1 "Your numbers" sits inside the verdict card, once', (v.match(/Your numbers/g) || []).length === 1 && await has(a.page, '#view .vd-card details.vd-nums'), (v.match(/Your numbers/g) || []).length);
   check('1 the report for her doctor comes right after the verdict, and no monthly signs for a woman without PMOS (Version 39.18)', order.indexOf('rp-btn') === order.findIndex((x) => /vd-card/.test(x)) + 1 && !(await has(a.page, '#view .wis-ci')), order);
@@ -162,8 +163,9 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   const a = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) } });
   await diaryShows(a.page);
   const b = await a.page.$$eval('#view .xp-dcard.xp-month .xp-acts:not(.xp-more) .btn', (x) => x.map((y) => y.textContent.trim()));
-  check('5 a "this month" card: free care, her report, a Qura doctor, in that order', b.join(' | ') === 'Free government doctor | My report for the doctor | Ask a Qura doctor about this', b);
-  check('5 ... and "Check the signs", the plan and "What this means"', /Check the signs \(2 minutes\)/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /A 12-week plan for your periods/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')));
+  /* Version 39.25 (Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a Qura doctor first */
+  check('5 a "this month" card: a Qura doctor, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a Qura doctor about this | My report for the doctor', b);
+  check('5 ... and "Check the signs", a free plan beside it and "What this means"', /Check the signs \(2 minutes\)/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
   await tap(a.page, '#view .xp-dcard.xp-month [data-xp-rp]');
   const q = await a.page.$$eval('#view ol.steps li', (x) => x.map((y) => y.textContent));
   check('5 her report opens with that card\'s question first', /^#report/.test(await a.page.evaluate(() => location.hash)) && /gaps between periods are often longer than 35 days/.test(q[0] || ''), q);
@@ -280,7 +282,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   await go(b.page, 'diary');
   check('12 Hindi: the tab is "चक्र" (Version 39.11: Cycles)', /चक्र/.test(await txt(b.page, '#view .tabs')) && !/क्या दिखता है/.test(await txt(b.page, '#view .tabs')), await txt(b.page, '#view .tabs'));
   await diaryShows(b.page);
-  check('12 Hindi: the buttons read "मुफ़्त सरकारी डॉक्टर" and "डॉक्टर के लिए मेरी रिपोर्ट"', /मुफ़्त सरकारी डॉक्टर/.test(await view(b.page)) && /डॉक्टर के लिए मेरी रिपोर्ट/.test(await view(b.page)));
+  check('12 Hindi: the buttons read "इस बारे में Qura की डॉक्टर से पूछें" and "डॉक्टर के लिए मेरी रिपोर्ट" (Version 39.25: no "मुफ़्त सरकारी डॉक्टर")', /इस बारे में Qura की डॉक्टर से पूछें/.test(await view(b.page)) && /डॉक्टर के लिए मेरी रिपोर्ट/.test(await view(b.page)) && !/मुफ़्त सरकारी डॉक्टर/.test(await view(b.page)));
   check('12 360 px: no sideways scroll on What it shows', await noScroll(b.page));
   await shot(b.page, '12-hindi-360'); errsAll.push(...b.errs); await b.ctx.close();
 }

@@ -157,6 +157,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - one Wind down page (also My plan's Calm tab), and Wind down near the top of Explore's For you;
     - a softer yoga nidra.
     Contract: MODULE_API section 67; wording: section 19.24 of the review.
+  - `node test/whynot.mjs` (Version 39.25, insights she can find; Mohit, 27 Oct; audit `docs/insights-audit-2026-10-27.md`;
+    mockup claude.ai/artifact/GkhV6csPv6vqrrQMt34sbw):
+    - one line on Today and the Calendar saying why no date shows, with its fix (hormones, a guessed start, too few gaps,
+      gaps too far apart);
+    - "What Sakhi can tell you" on Cycles, or the pill card on hormones;
+    - "Is 1 Oct your real start?" for a guessed start;
+    - "Period late?" with or without a plan;
+    - on What your diary shows, "Ask a Qura doctor" first, no "Free government doctor" (it stays in Explore), and the free
+      12-week plan beside the doctor step while no plan runs.
+    Contract: MODULE_API section 68; wording: section 19.25 of the review (waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

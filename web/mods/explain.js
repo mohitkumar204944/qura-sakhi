@@ -268,35 +268,52 @@
   /* Version 39.0: at "Call 112 now", Help's own call-now line leads (the stricter reviewed line) */
   const lc1 = (str) => (S.state.lang === 'en' ? str.charAt(0).toLowerCase() + str.slice(1) : str);
   const seeOf = (f) => { const x = xOf(f); if (f.lv === 'now' && x.seeNow) return t('call_now') + ' ' + lc1(t(x.seeNow)); return f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : ''); };
-  /* Version 39.1 (journey audit J-03, P1-07): the same buttons on every signal, in this order: free care first, her report
-     for the doctor (with this card's question first), then a Qura doctor (never on a "call 112" or "today" card). "Check the
-     signs" where a validated self-check exists (where the build shows it), until she has done it in the last 90 days. A long
-     gap that needs a doctor this month also offers the irregular-periods plan. */
+  /* Version 39.1 (journey audit J-03, P1-07): the same buttons on every signal: the doctor step, her report for the doctor
+     (with this card's question first), "Check the signs" where a validated self-check exists (where the build shows it), until
+     she has done it in the last 90 days.
+     Version 39.25 (insights audit; Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a week or
+     month card's doctor step is a Qura doctor; free government care stays in Explore. A "see a doctor today" card keeps "Free
+     doctor or hospital": a call-back can't be that soon. */
   const CHECK = { pain_severe: 'endo', flow_heavy: 'fibroids', period_long: 'fibroids', gap_long: 'pmos', androgen: 'pmos', neck: 'pmos' };
   const RPQ = { gap_long: 'rp_q_gap', flow_heavy: 'rp_q_heavy', period_long: 'rp_q_heavy', pain_severe: 'rp_q_pain' };
-  const PLAN_FOR = { gap_long: 'irregular' };
+  /* Version 39.25 (G6, G7; Mohit, 27 Oct: "if user is not on any plan but symptoms show then advise to start a relevant free
+     plan along with doctor advise"): beside the doctor step, the free 12-week plan for what the card shows, while no plan runs
+     or waits (S.plan.offerOk: never in a pregnancy, in discreet mode or for a goal her stage doesn't have). Never on a "call
+     112" or "today" card. Low mood pairs only in midlife (the midlife plan has a mood goal); otherwise it stays with the doctor. */
+  const PAIR = { gap_long: 'irregular', gap_short: 'irregular', gap_vary: 'irregular', period_long: 'heavy', flow_heavy: 'heavy', hb_low: 'heavy', pain_severe: 'pain', androgen: 'pmos', neck: 'pmos', mood: 'mood', m_hot: 'hot' };
+  const PAIR_T = { irregular: 'plan_pk_cycle', pmos: 'plan_h', heavy: 'plan_pk_heavy', pain: 'plan_pk_pain', hot: 'plan_pk_meno', mood: 'plan_pk_meno' };
+  function pairGoal(f) {
+    let g = PAIR[f.id]; if (!g || ['week', 'month', 'watch'].indexOf(f.lv) < 0 || !S.plan || !S.plan.offerOk) return null;
+    const st = S.stageNow ? S.stageNow() : 'cycle';
+    if (g === 'mood' && st !== 'meno') return null;
+    if (g === 'irregular' && (S.state.situation || {}).pcos) g = 'pmos';
+    return S.plan.offerOk(g) ? g : null;
+  }
+  function planPair(f) {
+    const g = pairGoal(f); if (!g) return '';
+    return '<p class="xp-or">' + esc(t('explain_pair_h')) + '</p><div class="xp-plan">' + (S.plan.goalIco ? S.plan.goalIco(g) : '') + '<span class="body"><strong>' + esc(t(PAIR_T[g])) + '</strong><span>' + esc(tf('explain_pair_s', { g: t('plan_gv_' + g) })) + '</span></span><button type="button" class="btn sm xp-start" data-xp-plan="' + g + '">' + esc(t('explain_pair_go')) + '</button></div>';
+  }
   function actsHtml(f, compact) {
     const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
     const goOk = x.go && (S.routeOwner(x.go) || ['diary', 'help', 'care', 'learn'].indexOf(x.go) >= 0 || x.go.indexOf('topic-') === 0 || x.go.indexOf('a-') === 0);
-    const main = [], more = [];
+    const main = [], more = [], tail = [];
     if (f.lv === 'now') { if (x.call === '14416') main.push('<a class="btn sm xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>'); main.push('<a class="btn sm xp-call" href="tel:112">' + esc(t('call_b')) + ' 112</a>'); main.push(b('data-go="help"', t('explain_numbers'))); }
     else if (f.lv === 'today' || f.lv === 'week' || f.lv === 'month') {
       /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
       if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), 'primary'));
-      else if (S.routeOwner('access-doctor')) main.push(b('data-go="access-doctor"', t('explain_free_gov'), 'primary'));
+      if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), 'primary'));
       if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
-      if (f.lv !== 'today' && x.ask) main.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
     } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
     const ck = CHECK[f.id];
     if (ck && f.lv !== 'now' && S.toolShown && S.toolShown('selfcheck-' + ck)) {
       const last = S.selfcheck && S.selfcheck.last ? S.selfcheck.last(ck) : null;
       more.unshift(last && daysAgo(last.d) <= 90 ? '<button type="button" class="linkbtn xp-did" data-go="selfcheck-' + ck + '">' + esc(tf('explain_did', { d: S.fmtD(S.fromISO(last.d)), n: last.n, m: last.m })) + '</button>' : b('data-go="selfcheck-' + ck + '" data-xp-check="' + ck + '"', t('explain_check')));
     }
-    const pg = PLAN_FOR[f.id]; if (pg && f.lv === 'month' && S.plan && S.plan.offerOk && S.plan.offerOk(pg)) more.push(b('data-xp-plan="' + pg + '"', t('explain_plan')));
-    if (compact) more.push(b('data-go="explain"', t('explain_means')));
-    else if (goOk && !(f.lv === 'now' && x.go === 'help')) more.push(b('data-go="' + esc(x.go) + '"', t('explain_more')));   /* review XS-12: one way to Help */
-    if (f.lv !== 'ok' && !compact) more.push(b('data-xp-got="' + esc(f.key) + '"', t('explain_got'), 'ghost'));
-    return (main.length ? '<div class="row wrap xp-acts">' + main.join('') + '</div>' : '') + (more.length ? '<div class="row wrap xp-acts xp-more">' + more.join('') + '</div>' : '');
+    if (compact) tail.push(b('data-go="explain"', t('explain_means')));
+    else if (goOk && !(f.lv === 'now' && x.go === 'help')) tail.push(b('data-go="' + esc(x.go) + '"', t('explain_more')));   /* review XS-12: one way to Help */
+    if (f.lv !== 'ok' && !compact) tail.push(b('data-xp-got="' + esc(f.key) + '"', t('explain_got'), 'ghost'));
+    const rowOf = (arr, cls) => (arr.length ? '<div class="row wrap xp-acts' + cls + '">' + arr.join('') + '</div>' : '');
+    return rowOf(main, '') + rowOf(more, ' xp-more') + planPair(f) + rowOf(tail, ' xp-more');
   }
   function cardHtml(f) {
     const x = xOf(f); const what = x.w ? one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : '')) : '';
@@ -384,7 +401,7 @@
         explain_h_fertile: 'Fertile days: an estimate, shown only after 6 gaps that stay within 7 days of each other.',
         explain_th_start: 'Period started', explain_th_gap: 'Gap (days)', explain_th_used: 'Counted', explain_r_same: 'Same period', explain_r_first: 'First one', explain_r_hormones: 'Left out: hormones', explain_r_pregnancy: 'Left out: pregnancy', explain_r_birth: 'Left out: after birth', explain_r_long: 'Left out: too long', explain_r_guess: 'Left out: a guessed date',
         explain_foot: 'Fixed rules, the same for every woman. Not a diagnosis.',
-        explain_check: 'Check the signs (2 minutes)', explain_free_gov: 'Free government doctor', explain_report: 'My report for the doctor', explain_plan: 'A 12-week plan for your periods', explain_did: 'You did this check on {d}: yes to {n} of {m}'
+        explain_check: 'Check the signs (2 minutes)', explain_report: 'My report for the doctor', explain_pair_h: 'And meanwhile, a free plan', explain_pair_s: 'For {g} · 12 weeks', explain_pair_go: 'Start', explain_did: 'You did this check on {d}: yes to {n} of {m}'
       },
       hi: {
         explain_h: 'आपकी डायरी क्या बताती है', explain_th_h: 'Sakhi ने कुछ देखा', explain_th_p: 'जब आपकी डायरी में कुछ अलग दिखे, Sakhi यहाँ समझाती है। इसका मतलब और डॉक्टर को कब दिखाएँ, जानने के लिए दबाएँ।', explain_t1_h: 'Sakhi ने क्या देखा', explain_t1_p: 'हर कार्ड आपकी डायरी की एक बात आसान शब्दों में समझाता है: क्या हो रहा है, आम वजहें, और आप क्या कर सकती हैं।', explain_t2_h: 'डॉक्टर को कब दिखाएँ', explain_t2_p: 'यह लेबल बताता है कितनी जल्दी: “{a}” से लेकर “{b}” तक।', explain_t3_h: 'आपके अपने नंबर', explain_t3_p: 'Sakhi ने आपकी दर्ज की गई तारीख़ों से नंबर कैसे निकाले, यह देखने के लिए यहाँ दबाएँ।',
@@ -400,7 +417,7 @@
         explain_h_fertile: 'fertile दिन: अंदाज़ा, तभी दिखते हैं जब 6 अंतर हों और वे आपस में 7 दिन के अंदर रहें।',
         explain_th_start: 'पीरियड शुरू हुआ', explain_th_gap: 'अंतर (दिन)', explain_th_used: 'गिना गया', explain_r_same: 'वही पीरियड', explain_r_first: 'पहला', explain_r_hormones: 'बाहर: हॉर्मोन', explain_r_pregnancy: 'बाहर: गर्भ', explain_r_birth: 'बाहर: डिलीवरी के बाद', explain_r_long: 'बाहर: बहुत लंबा', explain_r_guess: 'बाहर: अंदाज़े की तारीख़',
         explain_foot: 'तय नियम, हर महिला के लिए एक जैसे। यह diagnosis नहीं है।',
-        explain_check: 'संकेत जाँचें (2 मिनट)', explain_free_gov: 'मुफ़्त सरकारी डॉक्टर', explain_report: 'डॉक्टर के लिए मेरी रिपोर्ट', explain_plan: 'आपके पीरियड के लिए 12 हफ़्ते का प्लान', explain_did: 'आपने यह जाँच {d} को की: {m} में से {n} पर हाँ'
+        explain_check: 'संकेत जाँचें (2 मिनट)', explain_report: 'डॉक्टर के लिए मेरी रिपोर्ट', explain_pair_h: 'और तब तक, एक मुफ़्त प्लान', explain_pair_s: '{g} के लिए · 12 हफ़्ते', explain_pair_go: 'शुरू करें', explain_did: 'आपने यह जाँच {d} को की: {m} में से {n} पर हाँ'
       }
     },
     routes: { 'explain': renderPage },
@@ -417,6 +434,12 @@
       '.xp-home .body strong { font-size: 15px; } .xp-home-now h3 { color: var(--bg); }',
       '.xp-more { margin-top: -2px; } .xp-did { text-align: left; } .xp-dcard { gap: 8px; } .xp-dcard h3 { margin: 0; } .xp-dsee { color: var(--fg) !important; margin: 0; } .xp-diary { display: grid; gap: 12px; margin-bottom: 14px; }',
       '.xp-now .xp-call, .xp-now .btn { background: var(--bg); color: var(--fg); border: none; }',
+      /* Version 39.25: a free plan beside the doctor step */
+      '.xp-or { display: flex; align-items: center; gap: 10px; margin: 2px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--h-green); }',
+      '.xp-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }',
+      '.xp-plan { display: flex; align-items: center; gap: 12px; background: var(--h-green-soft); border-radius: 16px; padding: 10px 10px 10px 12px; }',
+      '.xp-plan .ico-sm { flex-shrink: 0; } .xp-plan .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; } .xp-plan .body strong { color: var(--fg); font-size: 15px; overflow-wrap: anywhere; } .xp-plan .body span { font-size: 13px; color: var(--text); overflow-wrap: anywhere; }',
+      '.xp-plan .xp-start { flex-shrink: 0; background: var(--h-green); color: var(--card); border: none; font-weight: 700; }',
       '.xp-card.xp-now, .diary-paper .xp-card.xp-now { background: var(--ink); } .xp-now h3, .xp-now .xp-top .small, .xp-now .xp-dsee, .xp-now .xp-see p, .xp-now .xp-see b, .xp-now .xp-what { color: var(--ink-text) !important; }'
     ].join('\n'),
     home: home,

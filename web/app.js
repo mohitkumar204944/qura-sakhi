@@ -244,6 +244,15 @@
       qa_hot: 'Hot flushes', qa_after40: 'Periods after 40', qa_hrt: 'HRT', qa_bones: 'Bones and heart', qa_sleep: 'Sleep and mood', qa_pmb: 'Bleeding after menopause',
       qa_first: 'First periods', qa_myths: 'Period myths', qa_pads: 'Pads and cups', qa_moodcycle: 'Mood and cycle', qa_lines: 'Helplines',
       foods_help: 'Foods that help', jump_h: 'On this page', mini_cycle: 'See my cycle', late_n: 'Your period is {n} days late', late_n1: 'Your period is 1 day late', ce_b: 'Edit period dates', ce_p: 'Tap the days you bled. Tap a day again to take it off.', ce_p_d: 'Tap the days to mark them. Tap a day again to take it off.', ce_fut: 'Days after today can’t be marked.', ap_b: 'Add a past period', ap_q: 'When did it start?', ex_tag: 'Example', dg_preg: 'In pregnancy:', say_b: 'Listen to this', listen_all: 'Listen', learn_read: 'Read', learn_read_n: '{a} of {b} read', learn_next: 'Continue reading', learn_start: 'Start here', learn_free: 'Where to get it free', ans_first: 'Quick answer', qa_dos: "Dos and don'ts", art_tool_h: 'Use it in Sakhi', art_guide: 'The full guide', art_min: 'Read it in 1 minute', htab_urg: 'By urgency', htab_body: 'By body part', htab_screen: 'Screening signs',
+      why_horm: 'You take the pill or another hormone medicine. Your bleeds follow it, so Sakhi doesn’t predict periods or fertile days.', why_horm_b: 'Not on it now? Change it',
+      why_guess: 'Your {d} start is a guess, so it isn’t counted. One real date and Sakhi can count this gap.', why_guess_b: 'Fix the date', why_few1: '1 more period start and your next period date shows.', why_few: '{n} more period starts and your next period date shows.',
+      why_irr: 'Your gaps vary from {a} to {b} days, so Sakhi shows counts, not a date.', why_irr_b: 'What this means',
+      kn_h: 'What Sakhi can tell you', kn_next: 'Next period date', kn_next_ok: 'Likely {r}', kn_next_need: 'Needs 2 regular gaps · you have {n}', kn_next_irr: 'Your gaps vary from {a} to {b} days · counts, not a date',
+      kn_fert: 'Fertile days and ovulation (estimate)', kn_fert_ok: 'On your calendar', kn_fert_need: 'Needs 6 regular gaps of 21–35 days · you have {n}', kn_fert_irr: 'Needs gaps of 21–35 days that vary by 7 days or less',
+      kn_rep: 'What repeats for you', kn_rep_ok: 'Below', kn_rep_need: 'Notes on 3 periods · {n} so far',
+      pill_h: 'Your pill and your bleeds', pill_note: 'Still worth noting in your diary: bleeding between packs, spotting, headaches or mood changes.', pill_rem: 'Pill reminder', pill_mine: 'My method', pill_missed: 'Missed a pill?',
+      pill_doc: 'Bleeding between packs for 3 months, or side effects that worry you?', pill_ask: 'Ask a Qura doctor', pill_ask_topic: 'My pill and my bleeding', pill_chg: 'Not on it now? Change it in Me',
+      guess_q: 'Is {d} your real start?', guess_p: 'It’s saved as a guess, so it isn’t counted in your gaps.', guess_ok: 'Yes, it’s right', guess_link: 'Is it right?', guess_saved: 'Saved. Sakhi counts this date now.',
       sos_h: 'Need help now?', sos_p: 'Tap a number to call. For any emergency, call 112.', call_b: 'Call', sos_signs: 'Danger signs: when to go now',
       stage_change: 'Change stage', stage_h: 'Where are you right now?', stage_cycle: 'Tracking my periods', stage_ttc: 'Trying for a baby', stage_preg: 'I am pregnant', stage_post: 'I had a baby', stage_meno: 'My periods have stopped',
       stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
@@ -477,6 +486,15 @@
       qa_hot: 'गर्मी के झोंके', qa_after40: '40 के बाद पीरियड', qa_hrt: 'HRT इलाज', qa_bones: 'हड्डियाँ और दिल', qa_sleep: 'नींद और मन', qa_pmb: 'मेनोपॉज़ के बाद ब्लीडिंग',
       qa_first: 'पहला पीरियड', qa_myths: 'पीरियड के भ्रम', qa_pads: 'pad और cup', qa_moodcycle: 'मन और चक्र', qa_lines: 'हेल्पलाइन',
       foods_help: 'मदद करने वाला खाना', jump_h: 'इस पेज पर', mini_cycle: 'मेरा चक्र देखें', late_n: 'पीरियड {n} दिन देर से है', late_n1: 'पीरियड 1 दिन देर से है', ce_b: 'पीरियड की तारीख़ें बदलें', ce_p: 'जिन दिनों ब्लीडिंग हुई, उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें।', ce_p_d: 'दिन चुनने के लिए उन पर टैप करें। किसी दिन को हटाने के लिए उस पर फिर टैप करें।', ce_fut: 'आज के बाद के दिन नहीं चुने जा सकते।', ap_b: 'पिछला पीरियड जोड़ें', ap_q: 'यह कब शुरू हुआ था?', ex_tag: 'उदाहरण', dg_preg: 'गर्भ में:', say_b: 'यह सुनें', listen_all: 'सुनें', learn_read: 'पढ़ लिया', learn_read_n: '{b} में से {a} पढ़े', learn_next: 'आगे पढ़ें', learn_start: 'यहाँ से शुरू करें', learn_free: 'मुफ़्त कहाँ मिलेगा', ans_first: 'छोटा जवाब', qa_dos: 'क्या करें, क्या न करें', art_tool_h: 'Sakhi में इस्तेमाल करें', art_guide: 'पूरी गाइड', art_min: '1 मिनट में पढ़ें', htab_urg: 'कितनी जल्दी', htab_body: 'शरीर के हिस्से से', htab_screen: 'जाँच के लक्षण',
+      why_horm: 'आप गोली या कोई और हार्मोन वाली दवा लेती हैं। आपकी ब्लीडिंग उसी के हिसाब से होती है, इसलिए सखी पीरियड या फ़र्टाइल दिनों का अंदाज़ा नहीं लगाती।', why_horm_b: 'अब नहीं लेतीं? बदलें',
+      why_guess: 'आपकी {d} की शुरुआत अंदाज़े से है, इसलिए वह गिनी नहीं जाती। एक सही तारीख़ दें, तो सखी यह अंतर गिन लेगी।', why_guess_b: 'तारीख़ ठीक करें', why_few1: 'एक और पीरियड की शुरुआत जोड़ें, फिर अगले पीरियड की तारीख़ दिखेगी।', why_few: '{n} और पीरियड की शुरुआत जोड़ें, फिर अगले पीरियड की तारीख़ दिखेगी।',
+      why_irr: 'आपके अंतर {a} से {b} दिन तक बदलते हैं, इसलिए सखी तारीख़ नहीं, गिनती दिखाती है।', why_irr_b: 'इसका क्या मतलब है',
+      kn_h: 'सखी आपको क्या बता सकती है', kn_next: 'अगले पीरियड की तारीख़', kn_next_ok: 'शायद {r}', kn_next_need: '2 नियमित अंतर चाहिए · अभी {n}', kn_next_irr: 'आपके अंतर {a} से {b} दिन तक बदलते हैं · तारीख़ नहीं, गिनती',
+      kn_fert: 'फ़र्टाइल दिन और ओव्यूलेशन (अंदाज़ा)', kn_fert_ok: 'आपके कैलेंडर पर', kn_fert_need: '21–35 दिन के 6 नियमित अंतर चाहिए · अभी {n}', kn_fert_irr: '21–35 दिन के अंतर चाहिए, जो 7 दिन से ज़्यादा न बदलें',
+      kn_rep: 'आपके साथ क्या दोहराता है', kn_rep_ok: 'नीचे', kn_rep_need: '3 पीरियड पर नोट चाहिए · अभी {n}',
+      pill_h: 'आपकी गोली और आपकी ब्लीडिंग', pill_note: 'फिर भी डायरी में लिखना अच्छा है: पैक के बीच ब्लीडिंग, स्पॉटिंग, सिरदर्द या मूड में बदलाव।', pill_rem: 'गोली का रिमाइंडर', pill_mine: 'मेरा तरीक़ा', pill_missed: 'गोली छूट गई?',
+      pill_doc: '3 महीने से पैक के बीच ब्लीडिंग, या कोई साइड इफ़ेक्ट जिससे चिंता हो?', pill_ask: 'Qura की डॉक्टर से पूछें', pill_ask_topic: 'मेरी गोली और ब्लीडिंग', pill_chg: 'अब नहीं लेतीं? मैं में बदलें',
+      guess_q: 'क्या {d} आपकी सही शुरुआत है?', guess_p: 'यह अंदाज़े से सेव है, इसलिए आपके अंतर में नहीं गिनी जाती।', guess_ok: 'हाँ, सही है', guess_link: 'क्या यह सही है?', guess_saved: 'सेव हो गया। सखी अब यह तारीख़ गिनती है।',
       sos_h: 'अभी मदद चाहिए?', sos_p: 'कॉल करने के लिए नंबर पर टैप करें। किसी भी आपातकाल में 112 पर कॉल करें।', call_b: 'कॉल करें', sos_signs: 'ख़तरे के संकेत: कब तुरंत जाएँ',
       stage_change: 'स्थिति बदलें', stage_h: 'आप अभी किस दौर में हैं?', stage_cycle: 'पीरियड का हिसाब रख रही हूँ', stage_ttc: 'बच्चे की कोशिश कर रही हूँ', stage_preg: 'मैं गर्भवती हूँ', stage_post: 'मेरा बच्चा हुआ है', stage_meno: 'मेरे पीरियड बंद हो गए हैं',
       stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
@@ -725,6 +743,38 @@
     const late = daysTo < 0;
     return { gap: gap, n: g.length, next: next, daysTo: daysTo, late: late, plen: lens.length ? Math.round(avgOf(lens)) : null, from: ri.from, to: ri.to, gmin: gmin, gmax: gmax,
       fert: why ? null : fertFor(ls, gap, gmin, gmax), fertNext: why || late ? null : fertFor(next, gap, gmin, gmax), fertWhy: why };
+  }
+  /* ---------- Version 39.25 (insights audit, docs/insights-audit-2026-10-27.md; MODULE_API section 68) ----------
+     G1 (Mohit, 27 Oct: "i added past 3 months of period dates and i see no insights"): when her diary has periods but no
+     next-period date shows, one line says why and the one tap that fixes it, from one engine for Today and the Calendar:
+     hormones set her bleeds, a guessed start isn't counted, too few gaps, or gaps too far apart for a date. */
+  function whyNot() {
+    const sit = state.situation; if (!lastStart() || isPregnant() || countsOff() || sit.stopped || sit.hysterectomy || isMidlife()) return null;   /* midlife: Today shows no dates by design */
+    if (sit.hormones) return { k: 'hormones' };
+    if (rangeInfo()) return null;
+    const g = guessedStart(); if (g) return { k: 'guess', d: g };
+    const n = usable().length; if (n < 2) return { k: 'few', n: 2 - n };
+    const g6 = usable().slice(-6); return { k: 'irregular', a: minOf(g6), b: maxOf(g6) };
+  }
+  /* G4: the latest of her last 3 starts that is still a guess (its gaps aren't counted until she says it's right) */
+  const guessedStart = () => { const ap = approxStarts(); return starts().slice(-3).reverse().find((x) => ap[x]) || null; };
+  const WHY_B = { hormones: 'why_horm_b', guess: 'why_guess_b', few: 'ap_b', irregular: 'why_irr_b' };
+  const whyText = (w) => (w.k === 'hormones' ? t('why_horm') : (w.k === 'guess' ? tf('why_guess', { d: fmtD(fromISO(w.d)) }) : (w.k === 'few' ? (w.n === 1 ? t('why_few1') : tf('why_few', { n: w.n })) : tf('why_irr', { a: w.a, b: w.b }))));
+  const reasonHtml = (w) => (w ? '<div class="why-row" data-why-k="' + w.k + '"><span class="why-i" aria-hidden="true">i</span><div class="why-b"><p>' + esc(whyText(w)) + '</p><button type="button" class="linkbtn" data-why="' + w.k + '"' + (w.d ? ' data-why-d="' + w.d + '"' : '') + '>' + esc(t(WHY_B[w.k])) + '</button></div></div>' : '');
+  /* the fix: Me's health (hormones), that period's dates (a guess), a past period (too few gaps), how Sakhi counts (irregular) */
+  const wireWhy = (v) => v.querySelectorAll('[data-why]').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.why;
+    if (k === 'hormones') setHash('me-health'); else if (k === 'guess') openCycleEdit(b.dataset.whyD); else if (k === 'few') openPastPeriod();
+    else if (ROUTES['explain']) setHash('explain'); else { mem.diaryTab = 'tr'; setHash('diary'); }
+  }));
+  /* G4: "Is 1 Oct your real start?": Yes keeps the date and counts it; Fix the date opens that period's dates */
+  const guessBox = (d) => '<div class="guess-box" data-nofold="1"><strong>' + esc(tf('guess_q', { d: fmtD(fromISO(d)) })) + '</strong><p class="small">' + esc(t('guess_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" data-guess-ok="' + d + '">' + esc(t('guess_ok')) + '</button><button type="button" class="btn sm" data-guess-fix="' + d + '">' + esc(t('why_guess_b')) + '</button></div></div>';
+  const confirmGuess = (d) => { let n = 0; state.events.forEach((e) => { if (e.t === 'start' && e.d === d && e.approx) { delete e.approx; n++; } }); if (!n) return; save(); toast(t('guess_saved')); render(); };
+  const askGuess = (d) => sheet('<h2 class="hand">' + esc(tf('guess_q', { d: fmtD(fromISO(d)) })) + '</h2><p class="small">' + esc(t('guess_p')) + '</p><div class="sheet-foot stack" style="gap:8px"><button type="button" class="btn primary block" data-guess-ok="' + d + '">' + esc(t('guess_ok')) + '</button><button type="button" class="btn block" data-guess-fix="' + d + '">' + esc(t('why_guess_b')) + '</button><button type="button" class="linkbtn" id="gq-cancel">' + esc(t('cancel')) + '</button></div>', (sh) => { wireGuess(sh); $('#gq-cancel', sh).addEventListener('click', () => closeSheet()); });
+  function wireGuess(v) {
+    v.querySelectorAll('[data-guess-ok]').forEach((b) => b.addEventListener('click', () => { closeSheet(true); confirmGuess(b.dataset.guessOk); }));
+    v.querySelectorAll('[data-guess-fix]').forEach((b) => b.addEventListener('click', () => { closeSheet(true); openCycleEdit(b.dataset.guessFix); }));
+    v.querySelectorAll('[data-guess]').forEach((b) => b.addEventListener('click', () => askGuess(b.dataset.guess)));
   }
   /* Her cycles, newest first (the current one first): start, next start, length, bleeding days, whether it counts, and its
      estimated fertile window when fertile days show (from its own length; the prediction for the current one). */
@@ -2257,6 +2307,8 @@
         const mini = !disc && api.plan && api.plan.running && safe(() => api.plan.running(), false);
         const late0 = ri && today() > ri.to; const lateN = late0 ? diffDays(ri.to, today()) : 0; const shp = !!state.settings.shared;
         const chance0 = (side.match(/<p class="small chance[^"]*">[\s\S]*?<\/p>/) || [''])[0];
+        /* Version 39.25 (insights audit G5): "Period late?" under her cycle with or without a plan (not on a shared phone) */
+        const lateRow = late0 && !shp && !disc ? '<button type="button" class="action hl-late-go" data-go="' + (ROUTES['pregtest'] ? 'pregtest' : 'explain') + '"><span class="ico hue hue-gold">' + I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(t('late_p')) + '</span></span><span class="go">' + I.chev + '</span></button>' : '';
         if (mini) {
           mini0 = true; const dayL = '<p class="lead hl-day">' + esc((inPeriod ? t('period_day') : t('cycle_day')) + ' ' + num) + '</p>';
           const say = shp ? dayL + (late0 ? '<p class="small">' + esc(tf('past_range', { n: lateN })) + '</p>' : '') + chance0
@@ -2264,12 +2316,14 @@
               : (side.replace(/<div class="ring-key">[\s\S]*$/, '').replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') || dayL));
           /* the row opens her cycle: the chevron for a screen reader (See my cycle), the whole row for a finger */
           main = '<div class="hl-row">' + rb + '<div class="hl-say">' + (chance0 ? say.replace(chance0, '') : say) + '</div><button type="button" class="hl-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '">' + I.chev + '</button></div>' + (chance0 ? '<div class="hl-x">' + chance0 + '</div>' : '') +   /* today's chance spans the card (V39.9 review FIXES-06) */
-            (late0 && !shp ? '<button type="button" class="action hl-late-go" data-go="' + (ROUTES['pregtest'] ? 'pregtest' : 'explain') + '"><span class="ico hue hue-gold">' + I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(t('late_p')) + '</span></span><span class="go">' + I.chev + '</span></button>' : '');
+            lateRow;
         }
-        else main = twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>');
+        else main = twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>') + lateRow;
         const soon0 = ri && ri.from <= addDays(today(), 3) && ri.to >= today();   /* a shared phone's headline shows no dates; the week strip may */
-        if (!mini || (!shp && ri && !late0) || soon0 || chance0) main += '<p class="small">' + (sit0.breastfeeding ? esc(t('bf_note')) + ' ' : (!ri && last6.length >= 2 ? esc(t('gap_mode_note')) + ' ' : '')) + esc(t('no_contra')) + '</p>';   /* breastfeeding: the real reason (Version 32) */
-        if (approxStarts()[toISO(ls)] && approxDue()) main += '<p class="small approx-note">' + esc(t('approx_note')) + '</p>';
+        /* Version 39.25 (G1): why no date shows and the tap that fixes it, in place of the general note (not on a shared phone) */
+        const wn = disc || shp ? null : whyNot(); if (wn) main += reasonHtml(wn);
+        if (!mini || (!shp && ri && !late0) || soon0 || chance0) main += '<p class="small">' + (sit0.breastfeeding ? esc(t('bf_note')) + ' ' : (!ri && !wn && last6.length >= 2 ? esc(t('gap_mode_note')) + ' ' : '')) + esc(t('no_contra')) + '</p>';   /* breastfeeding: the real reason (Version 32) */
+        if (approxStarts()[toISO(ls)] && approxDue() && !(wn && wn.k === 'guess')) main += '<p class="small approx-note">' + esc(t('approx_note')) + '</p>';
         if (ROUTES['explain']) { /* the explanation card on Home covers late and missing periods */ } else if (!countsOff() && !sit0.stopped && daysSince >= 90) main += '<div class="card dark" style="gap:4px"><h3>' + esc(t('r6_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('r6_p')) + '</p></div>';
         else if (ri && today() > addDays(ri.to, 7)) main += '<div class="card soft" style="gap:4px"><h3>' + esc(t('late_h')) + '</h3><p class="small">' + esc(t('late_p')) + '</p></div>';
       }
@@ -2308,7 +2362,7 @@
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
     const hlr = $('.hl-row', v); if (hlr) hlr.addEventListener('click', (e) => { if (!e.target.closest('button, a')) setHash('diary'); });   /* Version 39.23 */
-    wireOneTap(v); wireHomeV30(v); wireExCard(v); wireFeel(v);   /* Version 39.10; 39.16 */
+    wireOneTap(v); wireHomeV30(v); wireExCard(v); wireFeel(v); wireWhy(v);   /* Version 39.10; 39.16; 39.25 */
     const hg = $('#hu-got', v); if (hg) hg.addEventListener('click', () => { const ri = rangeInfo(); state.prompts = state.prompts || {}; if (ri) state.prompts.heads = toISO(ri.from); save(); render(); });
     const sbtn = $('#stage-btn', v); if (sbtn) sbtn.addEventListener('click', openStage);
     const ll = $('#log-last', v); if (ll) ll.addEventListener('click', () => openLog('start', toISO(today()), null));
@@ -3301,7 +3355,8 @@
   function calToday() {
     if (!feelOn() || firstLogDue()) return '';
     const tS = toISO(today()); const fs = dayFacts(tS); const a = fs[0] && fs[0].k !== 'x' ? fs[0].text : ''; const nx = fs.find((x) => x.k === 'next' || x.k === 'before');
-    return '<div class="card cal-today" data-nofold="1" data-say="1">' + (a ? '<p class="ct-cyc"><strong>' + esc(a) + '</strong>' + (nx ? ' <span>· ' + esc(nx.text) + '</span>' : '') + '</p>' : '') +
+    const wn = state.settings.discreet || state.settings.shared ? null : whyNot();   /* Version 39.25 (G1): a guessed start has its own box on the calendar */
+    return '<div class="card cal-today" data-nofold="1" data-say="1">' + (a ? '<p class="ct-cyc"><strong>' + esc(a) + '</strong>' + (nx ? ' <span>· ' + esc(nx.text) + '</span>' : '') + '</p>' : '') + (wn && wn.k !== 'guess' ? reasonHtml(wn) : '') +
       '<h3>' + esc(t('feel_h')) + '</h3>' + feelChips(tS, true) + meterHtml(true, true) + '</div>';
   }
   function renderCalendar(v) {
@@ -3314,26 +3369,28 @@
     const pr = preg ? null : predictInfo(); const fz = pr && !state.settings.discreet ? [pr.fert, pr.fertNext].filter(Boolean) : []; const predSet = {};
     if (pr && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
     const hearts = sexHearts(); let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
+    const apS = preg ? {} : approxStarts(); const gq = preg || state.settings.discreet || state.settings.shared ? null : guessedStart();   /* Version 39.25 (G4) */
     const ce = mem.calEdit && !preg ? mem.calEdit : null;   /* Version 39.23: editing her period dates */
     for (let d = 1; d <= daysIn; d++) {
       if (ce) { const d0 = new Date(y, m, d); const s0 = toISO(d0); cells += d0 > today() ? '<span class="day other ce-fut"><span class="num">' + d + '</span></span>' : '<button type="button" class="day ce-d' + (ce.sel[s0] ? ' bleed' : '') + (s0 === tStr ? ' today' : '') + '" data-ed="' + s0 + '" aria-pressed="' + !!ce.sel[s0] + '" aria-label="' + esc(fmtD(d0, { day: 'numeric', month: 'long' })) + '"><span class="num">' + d + '</span></button>'; continue; }
       const dt = new Date(y, m, d); const s = toISO(dt); const k = bd[s]; const inR = ri && dt >= ri.from && dt <= ri.to; const fut = dt > today(); const ks = fut ? [] : kindsOn(s);
       const pred = !k && !!predSet[s]; const ov = !k && fz.some((f) => toISO(f.ov) === s); const fw = !k && !ov && fz.some((f) => dt >= f.fwFrom && dt <= f.fwTo);
-      const cls = ['day', k === 'start' ? 'bleed' : (k === 'bleed' ? 'bleed light' : ''), k === 'spot' ? 'spot' : '', inR ? 'range' : '', pred ? 'pred' : '', fw ? 'fw' : '', ov ? 'ov' : '', s === tStr ? 'today' : '', fut ? 'other' : ''].join(' ');
-      const aria = fmtD(dt, { day: 'numeric', month: 'long' }) + (k === 'start' || k === 'bleed' ? ', ' + t('cal_a_period') : '') + (k === 'spot' ? ', ' + t('cal_a_spot') : '') + (inR ? ', ' + t('cal_a_range') : '') + (pred ? ', ' + t('cal_a_pred') : '') + (ov ? ', ' + t('cal_a_ov') : '') + (fw ? ', ' + t('cal_a_fw') : '') + (s === tStr ? ', ' + t('today_l') : '') + (ks.length ? ', ' + t('cal_a_noted') + ': ' + ks.map((x) => t(KINDS[x].label)).join(', ') : '');
+      const gs = k === 'start' && !!apS[s];
+      const cls = ['day', k === 'start' ? 'bleed' : (k === 'bleed' ? 'bleed light' : ''), gs ? 'guess' : '', k === 'spot' ? 'spot' : '', inR ? 'range' : '', pred ? 'pred' : '', fw ? 'fw' : '', ov ? 'ov' : '', s === tStr ? 'today' : '', fut ? 'other' : ''].join(' ');
+      const aria = fmtD(dt, { day: 'numeric', month: 'long' }) + (k === 'start' || k === 'bleed' ? ', ' + t('cal_a_period') : '') + (gs ? ', ' + t('mc_approx') : '') + (k === 'spot' ? ', ' + t('cal_a_spot') : '') + (inR ? ', ' + t('cal_a_range') : '') + (pred ? ', ' + t('cal_a_pred') : '') + (ov ? ', ' + t('cal_a_ov') : '') + (fw ? ', ' + t('cal_a_fw') : '') + (s === tStr ? ', ' + t('today_l') : '') + (ks.length ? ', ' + t('cal_a_noted') + ': ' + ks.map((x) => t(KINDS[x].label)).join(', ') : '');
       const ht = hearts && !fut && !!(state.sex || {})[s];   /* Version 39.11 */
-      cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (ks.length || ht ? '<span class="kd" aria-hidden="true">' + dotsIn(s) + (ht ? HEART_I : '') + '</span>' : '') + '</button>';
+      cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (gs ? '<i class="gq" aria-hidden="true">?</i>' : '') + (ks.length || ht ? '<span class="kd" aria-hidden="true">' + dotsIn(s) + (ht ? HEART_I : '') + '</span>' : '') + '</button>';
     }
     const lk = (k) => '<span class="lk"><i class="hue-' + KINDS[k].hue + '"></i>' + esc(t(KINDS[k].label)) + '</span>';
     if (ce) { renderCalEdit(v, y, m, cells); return; }
     const strip = calToday();
     const pw = pgi && pgi.weeks != null && !state.settings.discreet ? '<div class="card soft cal-pw" data-nofold="1"><span class="ico-sm hue hue-sky">' + I.baby + '</span><strong>' + esc(tf('cal_pw', { n: pgi.weeks })) + '</strong>' + (ROUTES['preg-week'] ? '<button type="button" class="btn sm" data-go="preg-week">' + esc(t('this_week')) + '</button>' : '') + '</div>' : '';
-    v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div>' + (preg ? '' : '<button type="button" class="btn block cal-edit-b" id="cal-edit">' + PEN_I + esc(t(state.settings.discreet ? 'mc_edit' : 'ce_b')) + '</button>') + '</div>' +   /* Version 39.23 */
+    v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div>' + (gq ? guessBox(gq) : '') + (preg ? '' : '<button type="button" class="btn block cal-edit-b" id="cal-edit">' + PEN_I + esc(t(state.settings.discreet ? 'mc_edit' : 'ce_b')) + '</button>') + '</div>' +   /* Version 39.23 */
       (strip ? '' : fwFew()) +   /* Version 39.11: when her fertile days will start (Version 39.17: the strip's meter says it) */
       (preg ? '' : '<div class="legend">' + periodKey(pr, false, ri) + '</div>') + (fz.length ? fertKey() : '') +
       /* Version 39.16 (R13): the period marks, then her notes' dots in one line; "?" opens the full key */
       '<div class="legend legend-dots"><span class="lk lk-dots" aria-hidden="true"><i class="hue-' + KINDS.pain.hue + '"></i><i class="hue-' + KINDS.body.hue + '"></i><i class="hue-' + KINDS.mood.hue + '"></i></span><span>' + esc(t('legend_dots')) + '</span><button type="button" class="tour-q" id="cal-key" aria-label="' + esc(t('legend_key')) + '">?</button></div><p class="small">' + esc(t('cal_note')) + (preg ? '' : ' ' + esc(t(fz.length ? 'fert_note' : 'no_contra'))) + '</p>';
-    wire(v); wireFeel(v);
+    wire(v); wireFeel(v); wireWhy(v); wireGuess(v);
     const ck = $('#cal-key', v); if (ck) ck.addEventListener('click', () => sheet('<h2>' + esc(t('legend_key')) + '</h2><div class="legend legend-full">' + periodKey(pr, true, ri) + '</div>' + (fz.length ? fertKey() : '') + '<div class="legend legend-full">' + ['pain', 'body', 'mood', 'disch', 'note'].concat(api.plan && api.plan.packOf && safe(() => api.plan.packOf(), null) ? ['plan'] : []).map(lk).join('') + (hearts ? '<span class="lk lk-sx">' + HEART_I + esc(t('sx_h')) + '</span>' : '') + '</div><div class="sheet-foot"><button type="button" class="btn primary block" id="ck-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#ck-ok', sh).addEventListener('click', () => closeSheet()); }));
     const fwy = $('#fw-why', v); if (fwy) fwy.addEventListener('click', () => sheet('<h2>' + esc(t('fw_why_h')) + '</h2><p>' + esc(t('fw_why_p')) + '</p><div class="sheet-foot"><button type="button" class="btn primary block" id="fw-ok">' + esc(t('hint_ok')) + '</button></div>', (sh) => { $('#fw-ok', sh).addEventListener('click', () => closeSheet()); }));
     $('#cal-prev', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m - 1, 1)); render(); }); $('#cal-next', v).addEventListener('click', () => { mem.calMonth = toISO(new Date(y, m + 1, 1)); render(); });
@@ -3606,8 +3663,9 @@
   }
   const patWhen = (r) => (r <= -2 ? tf('pat_before', { n: -r }) : r === -1 ? t('pat_daybefore') : r === 0 ? t('pat_day1') : tf('pat_dayn', { n: r + 1 }));
   const symMeta = (key) => { for (let i = 0; i < SYM.length; i++) { const x = SYM[i][2].find((y) => y[0] === key); if (x) return { hue: SYM[i][1], ico: x[1] }; } return { hue: 'rose', ico: 'drop' }; };
-  function patternsCard() {
+  function patternsCard(quiet) {
     const p = patterns(); if (!p) return '';
+    if (!p.list.length && quiet && p.n < 3) return '';   /* Version 39.25: What Sakhi can tell you counts them */
     if (!p.list.length) return '<div class="card soft pat-card"><h2 class="hand">' + esc(t('pat_h')) + '</h2><p class="small">' + esc(p.n >= 3 ? t('pat_none') : t('pat_wait')) + '</p></div>';
     return '<div class="card pat-card"><h2 class="hand">' + esc(t('pat_h')) + '</h2><div class="list">' + p.list.map((x) => { const m = symMeta(x.key); return '<div class="item quiet"><span class="ico-sm hue hue-' + m.hue + '">' + sIco(m.ico) + '</span><span class="body"><strong>' + esc(t(x.key)) + '</strong><span>' + esc(patWhen(x.r)) + ' · ' + esc(tf('pat_count', { a: x.n, b: x.of })) + '</span></span></div>'; }).join('') + '</div><p class="small">' + esc(tf('pat_p', { n: p.n })) + '</p></div>';
   }
@@ -3685,7 +3743,7 @@
       L.map((n) => '<div class="col pcol' + (n > 8 ? ' long' : '') + '" style="height:' + ((n / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + L.map((n) => '<span class="num">' + n + '</span>').join('') + '</div><p class="small">' + esc(t('per_line')) + '</p></div>';
   }
   /* Each cycle as one row of days: period days, and the estimated fertile window and ovulation when fertile days show */
-  function cyclesCard() {
+  function cyclesCard(noAdd) {
     const cs = cycleList(PRED_N + 1); if (!cs.length) return '';   /* Version 39.23: from her first period, with "Add a past period" */
     const disc = !!state.settings.discreet; const anyF = !disc && cs.some((c) => c.fert);
     const row = (c) => {
@@ -3694,12 +3752,42 @@
       const title = c.next ? fmtD(c.start) + ' – ' + fmtD(addDays(c.next, -1)) : tf('mc_now', { d: fmtD(c.start) });
       const sub = (c.next ? (c.plen != null ? tf('mc_row', { p: c.plen, c: c.gap }) : tf('mc_row_nop', { c: c.gap })) : (c.plen != null ? tf('mc_row_now', { p: c.plen, c: c.days }) : tf('mc_row_now_nop', { c: c.days }))) +
         (c.why && c.why !== 'now' ? ' · ' + t('mc_x_' + c.why) : '') + (c.approx ? ' · ' + t('mc_approx') : '');
-      return '<div class="mc-row"><span class="row spread"><button type="button" class="mc-open" data-cy="' + toISO(c.start) + '"><strong>' + esc(title) + '</strong></button><button type="button" class="linkbtn mc-edit" data-cyedit="' + toISO(c.start) + '">' + PEN_I + esc(t('mc_edit')) + '</button></span><span class="mc-pills' + (c.days > 45 ? ' more' : '') + '" aria-hidden="true">' + pills + '</span><span class="small">' + esc(sub) + '</span></div>';   /* Version 39.11: Edit dates */
+      return '<div class="mc-row"><span class="row spread"><button type="button" class="mc-open" data-cy="' + toISO(c.start) + '"><strong>' + esc(title) + '</strong></button><button type="button" class="linkbtn mc-edit" data-cyedit="' + toISO(c.start) + '">' + PEN_I + esc(t('mc_edit')) + '</button></span><span class="mc-pills' + (c.days > 45 ? ' more' : '') + '" aria-hidden="true">' + pills + '</span><span class="small">' + esc(sub) + (c.approx && !disc ? ' · <button type="button" class="linkbtn mc-guess" data-guess="' + toISO(c.start) + '">' + esc(t('guess_link')) + '</button>' : '') + '</span></div>';   /* Version 39.11: Edit dates; 39.25: Is it right? */
     };
     const rest = cs.slice(4);
     return '<div class="card mc-card" data-nofold="1"><div class="row spread"><h2 class="hand">' + esc(t('mc_h')) + '</h2>' + (anyF ? gate() : '') + '</div>' +
       '<div class="legend"><span><i class="sw" style="background:var(--bleed)"></i>' + esc(t('bleeding')) + '</span>' + (anyF ? '<span><i class="sw sw-fw"></i>' + esc(t('cal_fw')) + '</span><span><i class="sw sw-ov"></i>' + esc(t('cal_ov')) + '</span>' : '') + '</div>' +
-      '<div class="mc-list">' + cs.slice(0, 4).map(row).join('') + (rest.length ? '<details class="mc-more"><summary>' + esc(tf('mc_all', { n: cs.length })) + '</summary>' + rest.map(row).join('') + '</details>' : '') + '</div>' + apBtn(cs.length < 2) + '</div>';
+      '<div class="mc-list">' + cs.slice(0, 4).map(row).join('') + (rest.length ? '<details class="mc-more"><summary>' + esc(tf('mc_all', { n: cs.length })) + '</summary>' + rest.map(row).join('') + '</details>' : '') + '</div>' + (noAdd ? '' : apBtn(cs.length < 2)) + '</div>';
+  }
+  /* Version 39.25 (insights audit G2): "What Sakhi can tell you" at the top of Cycles while one of them is missing: her next
+     period date, her fertile days (where this build shows them) and what repeats, each with what it still needs; "Add a past
+     period" when past dates would help. G3: on the pill or another hormone medicine, her pill card instead. Not on a shared
+     phone, in discreet mode, in midlife, or while her cycles aren't counted (a pregnancy, after a birth, a pause). */
+  function knowCard() {
+    const sit = state.situation;
+    if (!canSave() || state.settings.discreet || state.settings.shared || !lastStart() || isPregnant() || countsOff() || sit.stopped || sit.hysterectomy || isMidlife()) return '';
+    if (sit.hormones) return pillCard();
+    const n = usable().length; const ri = rangeInfo(); const fw = fertWhy(); const p = patterns(); const g6 = usable().slice(-6);
+    const fShow = !fw || fw === 'few' || fw === 'irregular'; const repOk = !p || p.n >= 3;
+    if (ri && (!fShow || !fw) && repOk) return '';
+    const row = (cls, ok, ico, hue, h, sub) => '<div class="item quiet kn-row ' + cls + (ok ? ' ok' : '') + '"><span class="ico-sm hue hue-' + (ok ? 'green' : hue) + '">' + (ok ? I.check : ico) + '</span><span class="body"><strong>' + esc(h) + '</strong><span>' + esc(sub) + '</span></span></div>';
+    const rows = [row('kn-next', !!ri, I.clock, 'rose', t('kn_next'), ri ? tf('kn_next_ok', { r: fmtRange(ri.from, ri.to) }) : (n >= 2 ? tf('kn_next_irr', { a: minOf(g6), b: maxOf(g6) }) : tf('kn_next_need', { n: n })))];
+    if (fShow) rows.push(row('kn-fert', !fw, I.flower, 'purple', t('kn_fert'), !fw ? t('kn_fert_ok') : (fw === 'few' ? tf('kn_fert_need', { n: n }) : t('kn_fert_irr'))));
+    if (p) rows.push(row('kn-rep', repOk, I.chart, 'gold', t('kn_rep'), repOk ? t('kn_rep_ok') : tf('kn_rep_need', { n: p.n })));
+    const add = (!ri && n < 2) || fw === 'few';
+    return '<div class="card kn-card" data-nofold="1"><h2 class="hand">' + esc(t('kn_h')) + '</h2><div class="list kn-list">' + rows.join('') + '</div>' + (add ? apBtn(true) : '') + '</div>';
+  }
+  /* G3: her bleeds follow the pill, so no dates: what is still worth noting, her pill's reminder and "Missed a pill?" (from
+     the contraception guide), a Qura doctor for bleeding between packs or worrying side effects, and Me's switch */
+  const PILLS = ['pill', 'chhaya', 'pop'];
+  function pillCard() {
+    const m = api.contra ? safe(() => api.contra.method(), null) : null; const pillish = !m || PILLS.indexOf(m) >= 0;
+    const b1 = modRoute('contra-mine') ? '<button type="button" class="btn sm" data-go="contra-mine">' + I.bell + esc(t(pillish ? 'pill_rem' : 'pill_mine')) + '</button>' : '';
+    const b2 = pillish && modRoute('contra-missed') ? '<button type="button" class="btn sm" data-go="contra-missed">' + I.help + esc(t('pill_missed')) + '</button>' : '';
+    return '<div class="card pill-card" data-nofold="1"><h2 class="hand">' + esc(t('pill_h')) + '</h2><p class="pill-lead">' + esc(t('why_horm')) + '</p><p class="small">' + esc(t('pill_note')) + '</p>' +
+      (b1 || b2 ? '<div class="' + (b1 && b2 ? 'grid2' : 'row') + ' pill-btns">' + b1 + b2 + '</div>' : '') +
+      '<div class="pill-doc"><p class="small">' + esc(t('pill_doc')) + '</p><button type="button" class="btn sm block" data-ask="' + esc(t('pill_ask_topic')) + '">' + I.steth + esc(t('pill_ask')) + '</button></div>' +
+      '<button type="button" class="linkbtn pill-chg" data-go="me-health">' + esc(t('pill_chg')) + '</button></div>';
   }
   /* Days: every day she noted in the last year, newest first, with where it sat in her cycle and, when fertile days show, the
      estimates around it. Plain in discreet mode: only the cycle day and what she noted. */
@@ -3848,12 +3936,14 @@
        doctor; then the charts, what she noted, the monthly signs and her records. The notes meter moved to the Calendar (R4). */
     const rp = canSave() ? '<button type="button" class="btn block rp-btn" data-go="report">' + I.file + ' ' + esc(t('rp_h')) + '</button>' : '';
     const tail = notedCard() + monthRow() + checksCard() + (canSave() && ROUTES['tools-reports'] && !state.settings.discreet ? '<div class="list wis-records"><button type="button" class="item" data-go="tools-reports"><span class="ico-sm hue hue-sky">' + I.file + '</span><span class="body"><strong>' + esc(t('wis_records')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>' : '');
-    const wireMc = () => { v.querySelectorAll('[data-cy]').forEach((b) => b.addEventListener('click', () => openDay(b.dataset.cy))); v.querySelectorAll('[data-cyedit]').forEach((b) => b.addEventListener('click', () => openCycleEdit(b.dataset.cyedit))); const ab = $('#ap-add', v); if (ab) ab.addEventListener('click', openPastPeriod); };
+    const wireMc = () => { v.querySelectorAll('[data-cy]').forEach((b) => b.addEventListener('click', () => openDay(b.dataset.cy))); v.querySelectorAll('[data-cyedit]').forEach((b) => b.addEventListener('click', () => openCycleEdit(b.dataset.cyedit))); const ab = $('#ap-add', v); if (ab) ab.addEventListener('click', openPastPeriod); wireGuess(v); };
+    /* Version 39.25 (G2, G3): what Sakhi can tell her, or her pill card, under the signal cards; one "Add a past period" */
+    const kn = knowCard(); const knAdd = kn.indexOf('id="ap-add"') >= 0; const knRep = kn.indexOf('kn-rep') >= 0;
     /* Version 39.23: before two period starts: her first period with "Add a past period", and what her numbers will look like */
-    if (!ga.length) { const mc = cyclesCard(); v.innerHTML = signalCards() + patternsCard() + mc + exampleCard(!mc) + rp + tail; wire(v); wireMc(); wireAdd(); return; }
+    if (!ga.length) { const mc = cyclesCard(knAdd); v.innerHTML = signalCards() + kn + patternsCard(knRep) + mc + exampleCard(!mc && !knAdd) + rp + tail; wire(v); wireMc(); wireAdd(); return; }
     const mx = Math.max(60, Math.max.apply(null, ga.map((x) => Math.min(x.days, 130)))); const h = 120; const hiB = bandHi();
     const vdc = verdictCard(); const nums = vdc || !usable().length ? '' : '<div class="card vd-nums-card">' + numbersHtml().replace('<details class="vd-nums">', '<details class="vd-nums" open>') + '</div>';   /* review ENGINE-08 */
-    v.innerHTML = signalCards() + patternsCard() + cyclesCard() + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
+    v.innerHTML = signalCards() + kn + patternsCard(knRep) + cyclesCard(knAdd) + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
     wire(v); wireAdd(); wireMc();
     const chd = $('.charts-d', v); if (chd) chd.addEventListener('toggle', () => { mem.chartsOpen = chd.open; });
   }

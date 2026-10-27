@@ -184,8 +184,9 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
   await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 400);
   check('4 the tab is called "Cycles"', /Cycles/.test(await txt(page, '#view .dtabs [data-tab="tr"]')) && !/What it shows/.test(await txt(page, '#view .dtabs')), await txt(page, '#view .dtabs'));
   /* Version 39.18 (Diary audit R6): in the order of her questions; the notes meter moved to the Calendar (Version 39.17) */
-  const order = await page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => e.className.split(' ').filter((c) => ['pat-card', 'mc-card', 'vd-card', 'rp-btn', 'charts-d'].indexOf(c) >= 0)[0]).filter(Boolean));
-  check('4 what repeats, her cycles, the glance, the report for her doctor, then one Charts row; no meter', order.join() === 'pat-card,mc-card,vd-card,rp-btn,charts-d' && !(await has(page, '#diary-body .meter')), order);
+  const order = await page.evaluate(() => [...document.querySelectorAll('#diary-body > *')].map((e) => e.className.split(' ').filter((c) => ['pat-card', 'kn-card', 'mc-card', 'vd-card', 'rp-btn', 'charts-d'].indexOf(c) >= 0)[0]).filter(Boolean));
+  /* Version 39.25: with notes on fewer than 3 periods, "What Sakhi can tell you" counts them in place of the waiting "What repeats" card */
+  check('4 what Sakhi can tell her, her cycles, the glance, the report for her doctor, then one Charts row; no meter', order.join() === 'kn-card,mc-card,vd-card,rp-btn,charts-d' && !(await has(page, '#diary-body .meter')), order);
   check('4 the charts are folded behind the row', !(await page.$eval('#view .charts-d', (d) => d.open)) && await has(page, '#view .charts-d .bars'));
   await page.$eval('#view .charts-d', (d) => { d.open = true; d.dispatchEvent(new Event('toggle')); }); await settle(page, 200);
   await page.evaluate(() => window.Saathi.render()); await settle(page, 300);

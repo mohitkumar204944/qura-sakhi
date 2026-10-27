@@ -4412,3 +4412,80 @@ order:
 **Wording:** the wording review, section 19.24.
 
 **Tests:** `test/sleepwell.mjs` stands in for the phone's player, which moves with the clock and stops at the track's end.
+
+## 68. Version 39.25: insights she can find, and a free plan beside the doctor
+
+Mohit, 27 Oct: "in diary i added past 3 months of period dates and i see no insights when is expected ovulation and fertile
+period when could be next period etc. can you audit and advise around all such gaps". Then "do a proper audit", and "also
+consider if user is not on any plan but symptoms show then advise to start a relevant free plan along with doctor advise". The
+audit is `docs/insights-audit-2026-10-27.md`. He saw the mockup (claude.ai/artifact/GkhV6csPv6vqrrQMt34sbw) and said "go ahead
+and build it and dont offer free government doctor let it be in explore section".
+
+**G1, why no date shows** (core `whyNot()`). One engine for Today and the Calendar. It returns:
+- `{ k: 'hormones' }`: she is on the pill or another hormone medicine, so her bleeds follow it;
+- `{ k: 'guess', d }`: the latest of her last 3 starts is still a guess (`guessedStart()`), so its gaps don't count;
+- `{ k: 'few', n }`: fewer than 2 counted gaps; `n` is how many more starts she needs;
+- `{ k: 'irregular', a, b }`: her last 6 counted gaps spread too far for a likely range (`rangeInfo`'s FIGO rule);
+- `null` when a date shows, before her first period, or while her cycles aren't counted (a pregnancy, after a birth, a pause,
+  periods stopped, a hysterectomy).
+
+`reasonHtml(w)` draws the line (`.why-row`) and `wireWhy(v)` its one tap:
+- hormones: Me's health (`me-health`);
+- a guess: that period's dates (`openCycleEdit(d)`);
+- too few: "Add a past period" (`openPastPeriod()`);
+- irregular: What your diary shows, which explains how Sakhi counts (`explain`; Cycles in a build without it).
+
+Where it shows:
+- Today's cycle card, with or without a plan. It takes the place of "When gaps change a lot we show counts" and of the old
+  guess note.
+- The Calendar's Today strip, except for a guess: the calendar has its own box (G4).
+- Never on a shared phone or in discreet mode.
+
+**G2, What Sakhi can tell you** (`knowCard()`). The top of Cycles, under the signal cards, while something is missing:
+- the next period date (`rangeInfo`);
+- fertile days and ovulation, only when `fertWhy` is `'few'`, `'irregular'` or nothing (the build's launch gate, her stage, a
+  method or her age hide the row);
+- what repeats (`patterns()`).
+
+Each row says what it still needs: "Needs 2 regular gaps · you have 1", "Needs 6 regular gaps of 21–35 days · you have 1", "Notes
+on 3 periods · 0 so far". There is one "Add a past period" (`#ap-add`) on the page:
+- in this card when past dates would help (fewer than 2 gaps, or fertile days need more);
+- otherwise in My cycles (`cyclesCard(noAdd)`).
+
+The "What repeats" waiting card gives way to its row (`patternsCard(quiet)`). The card is gone once nothing is missing.
+
+**G3, the pill card** (`pillCard()`). On hormones, in place of G2:
+- the pill reminder (`contra-mine`; "My method" for an injection, IUS or implant);
+- "Missed a pill?" (`contra-missed`, pills only);
+- a Qura doctor for bleeding between packs or side effects (`data-ask`);
+- "Not on it now? Change it in Me" (`me-health`).
+
+**G4, a guessed start.**
+- The calendar marks it with a dashed day and a "?" (`.day.guess .gq`).
+- "Is {d} your real start?" sits under the calendar for the latest guess (`guessBox`).
+- "Is it right?" sits on its row in My cycles (`askGuess`).
+- "Yes, it's right" drops `approx` from that start (`confirmGuess`), so its gaps count. "Fix the date" opens `openCycleEdit`.
+
+**G5, Period late?** The row under her cycle once it is past her likely range now shows with or without a plan (Version 39.23
+showed it only with a plan). Not on a shared phone or in discreet mode.
+
+**G6 and G7, What your diary shows** (`mods/explain.js`, `actsHtml`):
+- **A week or month card** leads with "Ask a Qura doctor about this" (the card's own topic, else its title), then "My report for
+  the doctor". "Free government doctor" (`access-doctor`) is gone from the cards: free government care stays in Explore.
+- **A "today" card** keeps "Free doctor or hospital" (`access-free`): a call-back can't come that soon.
+- **"And meanwhile, a free plan"** (`planPair`) shows the 12-week plan for what the card shows, with Start (`data-xp-plan` →
+  `S.plan.offer(goal)`, which opens that goal's questions). It replaces Version 39.1's "A 12-week plan for your periods" button.
+  The map (`PAIR`):
+  - long, short or varying gaps: My cycle plan (My PMOS plan when she has PMOS);
+  - a long period, heavy flow or a low Hb: Stronger blood;
+  - pain that stopped her day: Easier periods;
+  - PMOS signs: My PMOS plan;
+  - hot flushes, and low mood in midlife: My midlife plan. Low mood at other stages stays with the doctor.
+- **When the pair shows:** only on week, month and watch cards, and only when `S.plan.offerOk(goal)` allows it. That means no
+  plan running, waiting or set to start, not in a pregnancy or in discreet mode, and a goal her stage has.
+- **Where:** the same buttons show on Diary's What it shows (the short cards). Today's "Sakhi says" row is unchanged: it opens
+  the page.
+
+**Wording:** section 19.25 of the review.
+
+**Tests:** `test/whynot.mjs`.

@@ -5,7 +5,7 @@
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
   "type": "module",
   "scripts": {
-    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/insights.mjs && node test/fieldtest.mjs && node test/handoff.mjs && node test/notify.mjs && node test/pmosplan.mjs && node test/companion.mjs && node test/firstday.mjs && node test/notices.mjs && node test/goals.mjs && node test/protect.mjs && node test/records.mjs && node test/places.mjs && node test/food.mjs && node test/golden.mjs && node test/progs.mjs && node test/carryon.mjs && node test/results.mjs && node test/knowledge.mjs && node test/pictures.mjs && node test/foodsteps.mjs && node test/joining.mjs && node test/diary.mjs && node test/follow.mjs && node test/daily.mjs && node test/daynote.mjs && node test/planfold.mjs && node test/calm.mjs && node test/winddown.mjs && node test/cyclefirst.mjs && node test/sleepwell.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server && npm run test:android",
+    "test": "cd web && node test/signup.mjs && node test/tours.mjs && node test/me.mjs && node test/privacy.mjs && node test/companions.mjs && node test/plans.mjs && node test/value.mjs && node test/insights.mjs && node test/fieldtest.mjs && node test/handoff.mjs && node test/notify.mjs && node test/pmosplan.mjs && node test/companion.mjs && node test/firstday.mjs && node test/notices.mjs && node test/goals.mjs && node test/protect.mjs && node test/records.mjs && node test/places.mjs && node test/food.mjs && node test/golden.mjs && node test/progs.mjs && node test/carryon.mjs && node test/results.mjs && node test/knowledge.mjs && node test/pictures.mjs && node test/foodsteps.mjs && node test/joining.mjs && node test/diary.mjs && node test/follow.mjs && node test/daily.mjs && node test/daynote.mjs && node test/planfold.mjs && node test/calm.mjs && node test/winddown.mjs && node test/cyclefirst.mjs && node test/sleepwell.mjs && node test/whynot.mjs && node test/maths.mjs && node test/smoke.mjs . && node test/check.mjs all --quick && cd .. && npm run test:server && npm run test:android",
     "test:signup": "cd web && node test/signup.mjs",
     "apk": "cd android && ./build-apk.sh",
     "test:server": "node server/test/api.test.mjs && node server/test/app-e2e.mjs && node server/test/set-qura-keys.test.mjs",
@@ -46,6 +46,7 @@
     "test:winddown": "cd web && node test/winddown.mjs",
     "test:cyclefirst": "cd web && node test/cyclefirst.mjs",
     "test:sleepwell": "cd web && node test/sleepwell.mjs",
+    "test:whynot": "cd web && node test/whynot.mjs",
     "test:android": "android/test/run-reminder-math.sh"
   },
   "devDependencies": {

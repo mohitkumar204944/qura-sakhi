@@ -2192,3 +2192,52 @@ scripts, already in review with Version 39.21 (section 19.21), not new lines.
 | Your bedtime step is done for tonight | आज रात का सोने का क़दम हो गया |
 | Playing · {a} of {b} / Paused · {a} of {b} (the bar) | चल रहा है · {b} में से {a} / रुका है · {b} में से {a} |
 | Captions on / Captions off (for a screen reader) | कैप्शन चालू / कैप्शन बंद |
+
+### 19.25 Version 39.25: insights she can find, and a free plan beside the doctor (MODULE_API section 68)
+
+**Reused, already reviewed:**
+- "Add a past period"
+- "Ask a Qura doctor about this"
+- "My report for the doctor"
+- "Free doctor or hospital" (kept on "see a doctor today" cards)
+- The plan names and goals: "My cycle plan", "My PMOS plan", "Stronger blood", "Easier periods", "My midlife plan", "more regular
+  periods" and the others.
+
+"Free government doctor" no longer shows on the cards. Free government care stays in Explore.
+
+**Please review.** Questions for the doctor:
+1. The pill card sends her to a doctor for "Bleeding between packs for 3 months, or side effects that worry you". Is 3 months
+   the right line? Bleeding between packs is common in a pill's first months.
+2. A free plan now sits beside the doctor step on "See a doctor this week" cards (a period of more than 8 days, heavy flow).
+   The heavy flow plan is "Stronger blood" (iron-rich food). Is a plan beside a this-week doctor card right, or should it wait
+   until she has seen the doctor?
+
+| English | Hindi |
+|---|---|
+| You take the pill or another hormone medicine. Your bleeds follow it, so Sakhi doesn’t predict periods or fertile days. | आप गोली या कोई और हार्मोन वाली दवा लेती हैं। आपकी ब्लीडिंग उसी के हिसाब से होती है, इसलिए सखी पीरियड या फ़र्टाइल दिनों का अंदाज़ा नहीं लगाती। |
+| Not on it now? Change it | अब नहीं लेतीं? बदलें |
+| Your {d} start is a guess, so it isn’t counted. One real date and Sakhi can count this gap. | आपकी {d} की शुरुआत अंदाज़े से है, इसलिए वह गिनी नहीं जाती। एक सही तारीख़ दें, तो सखी यह अंतर गिन लेगी। |
+| Fix the date | तारीख़ ठीक करें |
+| 1 more period start and your next period date shows. / {n} more period starts and … | एक और पीरियड की शुरुआत जोड़ें, फिर अगले पीरियड की तारीख़ दिखेगी। / {n} और … |
+| Your gaps vary from {a} to {b} days, so Sakhi shows counts, not a date. | आपके अंतर {a} से {b} दिन तक बदलते हैं, इसलिए सखी तारीख़ नहीं, गिनती दिखाती है। |
+| What this means | इसका क्या मतलब है |
+| What Sakhi can tell you | सखी आपको क्या बता सकती है |
+| Next period date · Likely {r} · Needs 2 regular gaps · you have {n} | अगले पीरियड की तारीख़ · शायद {r} · 2 नियमित अंतर चाहिए · अभी {n} |
+| Your gaps vary from {a} to {b} days · counts, not a date | आपके अंतर {a} से {b} दिन तक बदलते हैं · तारीख़ नहीं, गिनती |
+| Fertile days and ovulation (estimate) · On your calendar | फ़र्टाइल दिन और ओव्यूलेशन (अंदाज़ा) · आपके कैलेंडर पर |
+| Needs 6 regular gaps of 21–35 days · you have {n} | 21–35 दिन के 6 नियमित अंतर चाहिए · अभी {n} |
+| Needs gaps of 21–35 days that vary by 7 days or less | 21–35 दिन के अंतर चाहिए, जो 7 दिन से ज़्यादा न बदलें |
+| What repeats for you · Below · Notes on 3 periods · {n} so far | आपके साथ क्या दोहराता है · नीचे · 3 पीरियड पर नोट चाहिए · अभी {n} |
+| Your pill and your bleeds | आपकी गोली और आपकी ब्लीडिंग |
+| Still worth noting in your diary: bleeding between packs, spotting, headaches or mood changes. | फिर भी डायरी में लिखना अच्छा है: पैक के बीच ब्लीडिंग, स्पॉटिंग, सिरदर्द या मूड में बदलाव। |
+| Pill reminder / My method / Missed a pill? | गोली का रिमाइंडर / मेरा तरीक़ा / गोली छूट गई? |
+| Bleeding between packs for 3 months, or side effects that worry you? | 3 महीने से पैक के बीच ब्लीडिंग, या कोई साइड इफ़ेक्ट जिससे चिंता हो? |
+| Ask a Qura doctor | Qura की डॉक्टर से पूछें |
+| Not on it now? Change it in Me | अब नहीं लेतीं? मैं में बदलें |
+| Is {d} your real start? | क्या {d} आपकी सही शुरुआत है? |
+| It’s saved as a guess, so it isn’t counted in your gaps. | यह अंदाज़े से सेव है, इसलिए आपके अंतर में नहीं गिनी जाती। |
+| Yes, it’s right / Is it right? | हाँ, सही है / क्या यह सही है? |
+| Saved. Sakhi counts this date now. | सेव हो गया। सखी अब यह तारीख़ गिनती है। |
+| And meanwhile, a free plan | और तब तक, एक मुफ़्त प्लान |
+| For {goal} · 12 weeks | {goal} के लिए · 12 हफ़्ते |
+| Start | शुरू करें |
