@@ -3,7 +3,7 @@
 // CC0 sounds play for sleep with a timer; each moves with an animation; the relief routines speak in her voice. This file checks:
 //   1 where she finds it: Explore's Periods topic beside "Feel better now", Explore's search ("yoga nidra" is rest, not the
 //     exercise plan), the relief list, the sleep routine's first and last screens (one tap from her plan's bedtime step), midlife;
-//   2 the list: 3 guided sessions and 3 sounds, her voice in English or Hindi, "keeps playing with the screen off";
+//   2 the list: 3 guided sessions and 3 sounds, her voice in English or Hindi, the safety card (Version 39.24: the light rows);
 //   3 a guided session in a browser: its file, a dark screen over everything, "Breathe in" and the count on her cue, her own
 //     pace after it, pause and play, the end, close;
 //   4 Bhramari's hum and yoga nidra's light on each part she names, the whole limb, dawn and night;
@@ -123,9 +123,9 @@ const careSearch = (page, q) => page.evaluate(async (q) => { const i = document.
   check('2 the list: 3 guided sessions with their minutes', /Slow breaths[\s\S]*4 min[\s\S]*Bhramari, the humming breath[\s\S]*3 min[\s\S]*Yoga nidra[\s\S]*9 min/.test(v), v.slice(0, 400));
   check('2 ... and 3 sounds for sleep, each with a timer', /Sounds for sleep[\s\S]*Singing bowl and waves[\s\S]*Wandering[\s\S]*Dunes/.test(v) && (v.match(/With a timer/g) || []).length === 3);
   check('2 ... her voice in English (pressed), Hindi beside it', (await attr(a.page, '[data-vl="en"]', 'aria-pressed')) === 'true' && (await attr(a.page, '[data-vl="hi"]', 'aria-pressed')) === 'false');
-  check('2 ... "It keeps playing with the screen off." and "not treatment"', /keeps playing with the screen off/.test(v) && /not treatment/.test(v));
+  check('2 ... the safety card: "not treatment" (Version 39.24: "it keeps playing" is on the session screen)', !/keeps playing with the screen off/.test(v) && /not treatment/.test(v));
   check('2 ... nothing plays on the list', (await audios(a.page)).length === 0);
-  check('2 ... every tile at least 44 px tall', await a.page.$$eval('#view .cm-tile', (t) => t.length === 6 && t.every((x) => x.getBoundingClientRect().height >= 44)));
+  check('2 ... every row at least 44 px tall (Version 39.24: rows that play)', await a.page.$$eval('#view .cm-it', (t) => t.length >= 6 && t.every((x) => x.getBoundingClientRect().height >= 44)));
   await shot(a.page, '2-list');
   await done(a);
 }
@@ -155,15 +155,17 @@ const careSearch = (page, q) => page.evaluate(async (q) => { const i = document.
   check('3 ... Play carries on from there', !(await audios(a.page))[0].paused && (await audios(a.page)).length === 1 && (await attr(a.page, '#cm-play', 'aria-label')) === 'Pause');
   await a.page.evaluate(() => window.Saathi.render()); await settle(a.page, 300);
   check('3 ... a new draw of the page keeps it playing', (await audios(a.page)).length === 1 && !(await audios(a.page))[0].paused);
-  await a.page.evaluate((len) => { const x = window.__audio[0]; x.currentTime = len; x.paused = true; x.ended = true; }, TL['breaths-en'].len); await settle(a.page, 300);
-  check('3 ... at the end the button says Play', (await attr(a.page, '#cm-play', 'aria-label')) === 'Play');
-  await tap(a.page, '#cm-play');
+  await a.page.evaluate((len) => { const x = window.__audio[0]; x.duration = len; x.currentTime = len; x.paused = true; x.ended = true; }, TL['breaths-en'].len); await settle(a.page, 300);
+  check('3 ... at the end: "Sleep well" (Version 39.24)', /Sleep well/.test(await txt(a.page, '.cm-end')));
+  await tap(a.page, '#cm-done'); await tap(a.page, '#view [data-go="calm-breaths"]');
   au = await audios(a.page);
-  check('3 ... and Play starts it again from the beginning', au.length === 2 && !au[1].paused && /breaths\.ogg$/.test(au[1].src));
+  check('3 ... and the next time it starts again from the beginning', au.length === 2 && !au[1].paused && /breaths\.ogg$/.test(au[1].src));
   await tap(a.page, '#cm-x');
   check('3 ... close stops it and goes back to the list', (await audios(a.page))[1].paused && (await a.page.evaluate(() => location.hash)) === '#calm' && (await a.page.evaluate(() => window.Saathi.calm.playing())) === null);
   await tap(a.page, '#view [data-go="calm-nidra"]'); await go(a.page, 'home');
-  check('3 ... leaving the player any other way stops it too', (await audios(a.page)).every((x) => x.paused));
+  check('3 ... leaving the player any other way keeps it playing, with the bar (Version 39.24)', (await audios(a.page)).some((x) => !x.paused) && await a.page.$('#cm-mini').then((x) => !!x));
+  await tap(a.page, '#cm-mi-x');
+  check('3 ... and the bar\'s ✕ stops it', (await audios(a.page)).every((x) => x.paused) && !(await a.page.$('#cm-mini')));
   await done(a);
 }
 
@@ -210,7 +212,7 @@ const careSearch = (page, q) => page.evaluate(async (q) => { const i = document.
   const b = await open({ hash: '#calm', w: 360, h: 780, seed: { lang: 'hi' } });
   const v = await view(b.page);
   check('5 a Hindi app: "सुकून के पल", her voice in Hindi to start with', /सुकून के पल/.test(v) && (await attr(b.page, '[data-vl="hi"]', 'aria-pressed')) === 'true' && /धीमी साँसें[\s\S]*भ्रामरी[\s\S]*योग निद्रा[\s\S]*नींद के लिए आवाज़ें/.test(v));
-  check('5 ... no sideways scroll at 360 px, every tile name inside its tile', await noScroll(b.page) && await b.page.$$eval('#view .cm-tile strong', (s) => s.every((x) => x.scrollWidth <= x.clientWidth + 1)));
+  check('5 ... no sideways scroll at 360 px, every tile name inside its tile', await noScroll(b.page) && await b.page.$$eval('#view .cm-it strong', (s) => s.length >= 6 && s.every((x) => x.scrollWidth <= x.clientWidth + 1)));
   await shot(b.page, '5-list-hi');
   await tap(b.page, '#view [data-go="calm-breaths"]');
   await seek(b.page, cue('breaths-hi', 'in4').t + 1.5, TL['breaths-hi'].len);
@@ -257,15 +259,17 @@ const careSearch = (page, q) => page.evaluate(async (q) => { const i = document.
   await tap(a.page, '#cm-play'); await tap(a.page, '#cm-play'); await tap(a.page, '[data-min="45"]');
   c = await calls(a.page);
   check('7 ... pause, play and her timer go to Android', c.some((x) => x[0] === 'pause') && c.some((x) => x[0] === 'resume') && c.some((x) => x[0] === 'timer' && x[1] === 45), c);
-  await go(a.page, 'home');
-  check('7 ... leaving the player stops it', (await calls(a.page)).slice(-3).some((x) => x[0] === 'stop'));
+  await a.page.evaluate(() => { window.__calls = []; }); await go(a.page, 'home');
+  check('7 ... leaving the player keeps it playing, with the bar (Version 39.24)', !(await calls(a.page)).some((x) => x[0] === 'stop') && await a.page.$('#cm-mini').then((x) => !!x));
+  await tap(a.page, '#cm-mi-x');
+  check('7 ... and the bar\'s ✕ stops it', (await calls(a.page)).some((x) => x[0] === 'stop') && !(await a.page.$('#cm-mini')));
   await a.page.evaluate(() => { window.__calls = []; }); await go(a.page, 'calm-nidra');
   c = await calls(a.page);
   check('7 a guided session: not looped, no timer, the screen kept on', JSON.stringify(c.find((x) => x[0] === 'play')) === JSON.stringify(['play', 'sounds/voice/en/nidra.ogg', false, 0, 'Yoga nidra', 'Playing. Tap to open.', 'Stop', false]) && c.some((x) => x[0] === 'awake' && x[1] === true), c);
   await a.page.evaluate((len) => { window.__st = { playing: false, pos: len, dur: len, left: -1, played: len }; }, TL['nidra-en'].len); await settle(a.page, 300);
-  check('7 ... when it ends: the screen may sleep, the button says Play', (await calls(a.page)).some((x) => x[0] === 'awake' && x[1] === false) && (await attr(a.page, '#cm-play', 'aria-label')) === 'Play');
-  await a.page.evaluate(() => { window.__calls = []; }); await tap(a.page, '#cm-play');
-  check('7 ... Play starts it again', (await calls(a.page)).some((x) => x[0] === 'play' && x[1] === 'sounds/voice/en/nidra.ogg'));
+  check('7 ... when it ends: the screen may sleep, and "Sleep well" (Version 39.24)', (await calls(a.page)).some((x) => x[0] === 'awake' && x[1] === false) && /Sleep well/.test(await txt(a.page, '.cm-end')));
+  await tap(a.page, '#cm-done'); await a.page.evaluate(() => { window.__calls = []; window.__st = null; }); await go(a.page, 'calm-nidra');
+  check('7 ... the next time starts it again', (await calls(a.page)).some((x) => x[0] === 'play' && x[1] === 'sounds/voice/en/nidra.ogg'));
   await done(a);
   const b = await open({ hash: '#calm-nidra', native: true, seed: { settings: { discreet: true } } });
   const bp = (await calls(b.page)).find((x) => x[0] === 'play');

@@ -1069,6 +1069,10 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .hero.head > .small { font-size: 13px; margin: 0; }
 .hero.head .hero-foot { margin: -12px -2px -8px 0; }
 /* Version 39.23: "Edit period dates" under the calendar, its edit mode, "Add a past period" and the example numbers */
+/* Version 39.24: Wind down in Explore's For you, in the night colour, with tonight's session */
+.item.tile-night { background: #2F2240; box-shadow: 0 8px 22px rgba(47, 34, 64, 0.22); }
+.item.tile-night .body strong { color: #FFFFFF; } .item.tile-night .body > span { color: #D9CCE6; } .item.tile-night .ico-sm { background: rgba(242, 167, 203, 0.16); color: #F2A7CB; } .item.tile-night .chev { color: #F2A7CB; }
+.tn-pill { display: inline-flex; align-self: flex-start; align-items: center; height: 22px; padding: 0 9px; border-radius: 11px; border: 1.5px solid #F2A7CB; color: #F2A7CB !important; font-size: 12px; font-weight: 600; margin-top: 4px; }
 .cal-edit-b { margin-top: 6px; gap: 8px; } .cal-edit-b svg, .ap-btn svg { width: 18px; height: 18px; }
 .cal .day.ce-d:not(.bleed) { box-shadow: inset 0 0 0 1.5px var(--line); }
 .cal .day.ce-d.today:not(.bleed) { box-shadow: inset 0 0 0 2px var(--ink); }

@@ -1114,9 +1114,17 @@
     const govt = (rt) => rt.indexOf('access-') === 0 || rt === 'asha';   /* Version 36: government services live in their own row */
     const gk = state.stage === 'app' ? goalNow() : null;
     (gk ? ['goal:' + gk] : []).concat(forYouKeys()).forEach((k) => ((k.indexOf('goal:') === 0 ? goalTools(k.slice(5)) : FOR_YOU[k]) || []).forEach((rt) => { const x = byRoute[rt]; if (x && !govt(rt) && res.indexOf(x) < 0 && res.length < 5) res.push(x); }));
+    /* Version 39.24 (Wind down audit): Wind down, in the night colour, right after her goal's first tool (that one leads, Version 38;
+       after a birth her recovery tools), when her plan has its bedtime step (with tonight's session) or her goals are sleep, mood
+       or PMS */
+    const tn = byRoute.calm && api.plan && api.plan.tonight ? safe(() => api.plan.tonight(), null) : null;
+    if (byRoute.calm && (tn || (state.goals || []).some((g) => ['sleep', 'mood', 'pms'].indexOf(g) >= 0))) {
+      const i0 = res.findIndex((y) => y.route === 'calm'); if (i0 >= 0) res.splice(i0, 1);
+      res.splice(Math.min(1, res.length), 0, Object.assign({}, byRoute.calm, { night: true, pill: tn && api.calm ? tf('plan_a_wind_t', { s: api.calm.short(tn) }) : '' })); if (res.length > 5) res.length = 5;
+    }
     return res;
   }
-  const tileHtml = (x) => '<button type="button" class="item tile" data-go="' + esc(x.route) + '"><span class="ico-sm hue hue-' + hueOf(x.section) + '">' + icon(x.icon) + '</span><span class="body"><strong>' + esc(tileText(x, 'title')) + '</strong>' + (x.sub ? '<span>' + esc(tileText(x, 'sub')) + '</span>' : '') + '</span>' + (x.gated && state.settings.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '<span class="chev">' + I.chev + '</span>') + '</button>';
+  const tileHtml = (x) => '<button type="button" class="item tile' + (x.night ? ' tile-night' : '') + '" data-go="' + esc(x.route) + '"><span class="ico-sm hue hue-' + hueOf(x.section) + '">' + icon(x.icon) + '</span><span class="body"><strong>' + esc(tileText(x, 'title')) + '</strong>' + (x.sub ? '<span>' + esc(tileText(x, 'sub')) + '</span>' : '') + (x.pill ? '<span class="tn-pill">' + esc(x.pill) + '</span>' : '') + '</span>' + (x.gated && state.settings.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '<span class="chev">' + I.chev + '</span>') + '</button>';
   const allArticles = () => (CONTENT.groups || []).reduce((acc, g) => acc.concat((g.articles || []).map((a) => Object.assign({ group: g.group }, a))), []);
   const articlesFor = (groups) => allArticles().filter((a) => groups.indexOf(a.group) >= 0);
   const GROUP_ICONS = { cycle: 'drop', mind_body: 'sparkle', pmos: 'chart', conceive: 'flower', pregnancy: 'baby', intimate: 'lock', midlife: 'moon', services: 'map' };

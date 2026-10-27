@@ -2165,3 +2165,30 @@ relief routines' clips are not new wording: each one says the reviewed step, wor
 | Still {d}’s plan (12 am to 4 am) | अभी भी {d} का प्लान |
 | Your plan day ends at 4 am, so this counts for {d}. | आपके प्लान का दिन सुबह 4 बजे ख़त्म होता है, इसलिए यह {d} में गिना जाएगा। |
 | How did {d} go? (the check-in, 12 am to 4 am) | {d} कैसा रहा? |
+
+### 19.24 Version 39.24: Wind down that comes up properly (MODULE_API section 67)
+
+**Captions.** The session screen shows Dr. Megha's own recorded words as captions, in English and Hindi. They are her
+scripts, already in review with Version 39.21 (section 19.21), not new lines.
+
+**Reused, already reviewed:**
+- "Tonight"
+- "Keep going: sounds for sleep and yoga nidra"
+- "Stop after"
+- "Sounds for sleep"
+- the session lines ("In for 4, out for 6, sitting or lying" and the others)
+- "For rest and sleep, not treatment" and "Stop if you feel dizzy or unwell."
+- "Tonight: {session} with Dr. Megha"
+
+**Please review.** These lines are new; none of them is health advice.
+
+| English | Hindi |
+|---|---|
+| Dr. Megha is starting. Settle in. | डॉ. मेघा शुरू कर रही हैं। आराम से बैठें या लेटें। |
+| Breathing starts in {n} s | साँसें {n} सेकंड में शुरू होंगी |
+| Leave this screen or lock the phone: it keeps playing. | यह स्क्रीन छोड़ें या फ़ोन लॉक करें: यह चलता रहेगा। |
+| Your wind-down · {n} min | आपका सुकून का समय · {n} मिनट |
+| Sleep well, {name} / Sleep well | शुभ रात्रि, {name} / शुभ रात्रि |
+| Your bedtime step is done for tonight | आज रात का सोने का क़दम हो गया |
+| Playing · {a} of {b} / Paused · {a} of {b} (the bar) | चल रहा है · {b} में से {a} / रुका है · {b} में से {a} |
+| Captions on / Captions off (for a screen reader) | कैप्शन चालू / कैप्शन बंद |

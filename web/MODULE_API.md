@@ -4354,3 +4354,61 @@ same day". A check-in after midnight had marked the next day done. After a walkt
 **Wording:** the wording review, section 19.23.
 
 **Tests:** `test/cyclefirst.mjs`. For the first screen: `pictures` 3 and 16, `foodsteps` 8, `daily` 7 and `follow` 12.
+
+## 67. Version 39.24: Wind down that comes up properly
+
+Mohit, 27 Oct: "can you check wind down sleep section its not properly coming up". His Flip5's log showed that he tapped "4
+min" and pressed Back 4 seconds later. The audit (memory: winddown-audit-oct27) found three causes:
+- every guided session shows a still picture with no words for its first 17 to 24 seconds;
+- Back stopped the session;
+- Wind down sits under Explore's Periods topic.
+
+He saw the mockup (claude.ai/artifact/EofEApr38Rojv8656FPSHt) and said "go ahead and build it".
+
+**The opening seconds** (`mods/calm.js`, `renderPlayer`). Until the picture first moves (`firstMove`: the first breath count,
+the hum, or yoga nidra's first slow breath), the screen says "Dr. Megha is starting. Settle in." with "Breathing starts in {n}
+s" and the session's tip.
+- Bhramari's tip stays in view after that, because it carries the nose or ear infection line.
+- When the session is tonight's (`S.plan.tonight()`), the screen also says "Tonight · Your wind-down · {n} min".
+
+**Captions.**
+- **Source:** `sounds/captions.js` (`window.SAKHI_CALM_CAP`) holds Dr. Megha's words, made by `tools/voice/captions.mjs` from
+  the scripts her recordings came from (`tools/voice/sessions.json`). Remake it whenever a script changes.
+- **What shows:** `capAt` shows the line she is saying. The counts and the hum keep her last words, and a list (yoga nidra's
+  body parts) shows its last four parts as she names them.
+- **The CC button** turns captions off, and it stays off (`mods.calm.cc`).
+- **Her voice** (English or हिंदी) switches on the session screen, and the session starts again in that voice.
+
+**Back keeps it playing.** Leaving the session screen no longer stops it (`afterRender` → `barSync`).
+- **The bar:** on any other screen, a bar above the tabs (`#cm-mini`) shows "Playing · {a} of {b}" (or "Paused").
+  - It has pause or play, and a tap opens the session where it is.
+  - Its ✕ stops the session. The ✕ on the session screen still stops it too.
+  - The bar goes when a session ends or a sound's timer runs out.
+- **Around it:** the Diary's + button and the page's end move up above it.
+
+**The end.** A guided session that ends shows:
+- "Sleep well, {name}" ("Sleep well" in discreet mode or on a shared phone);
+- "Your bedtime step is done for tonight" when her plan's bedtime step counted it;
+- the sounds and yoga nidra (the sounds only after yoga nidra), the timer and Done.
+
+The next tap on the same session starts it afresh.
+
+**One Wind down page** (`listBody`, `wireList`), in the app's own colours. My plan's Calm tab is the same page. It shows, in
+order:
+- tonight's session first, in the night colour;
+- the other sessions, and Calm breath where the plan has it (`S.plan.calmRow()`);
+- the sounds, as rows that play (with the timer);
+- the safety card.
+
+**Explore's For you.** Wind down comes right after her goal's first tool, in the night colour.
+- Her goal's first tool keeps the lead (Version 38's rule; after a birth, her recovery tools). The mockup had Wind down first.
+- It shows when her plan has the bedtime step (then with "Tonight: {session}"), or when her goals include sleep, mood or PMS.
+- None in discreet mode, as with all of For you.
+
+**My plan in week 1.** The bedtime step says "Tonight: {session} with Dr. Megha", as it did from week 2.
+
+**Yoga nidra.** A softer figure: rounded parts with a glow behind them. The same parts light as she names them.
+
+**Wording:** the wording review, section 19.24.
+
+**Tests:** `test/sleepwell.mjs` stands in for the phone's player, which moves with the clock and stops at the track's end.

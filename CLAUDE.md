@@ -147,6 +147,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the plan day ends at 4 am, so a check-in after midnight counts for the evening before;
     - "Edit period dates" under the calendar, and "Add a past period" on Cycles.
     Contract: MODULE_API section 66; wording: section 19.23 of the review.
+  - `node test/sleepwell.mjs` (Version 39.24, Wind down that comes up properly; Mohit, 27 Oct; mockup
+    claude.ai/artifact/EofEApr38Rojv8656FPSHt):
+    - the opening seconds, and Dr. Megha's words as captions (`sounds/captions.js`, remade with
+      `node tools/voice/captions.mjs` whenever a script changes);
+    - her voice switch on the session screen;
+    - Back keeps it playing, with a bar above the tabs;
+    - "Sleep well" at the end;
+    - one Wind down page (also My plan's Calm tab), and Wind down near the top of Explore's For you;
+    - a softer yoga nidra.
+    Contract: MODULE_API section 67; wording: section 19.24 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
@@ -186,7 +196,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - The published `index.html` adds `window.SAKHI_CONFIG = Object.assign({ care: 'care/' }, window.SAKHI_CONFIG || {});` before
     `app.js`.
   - `progs/*.js` (the plans as data, Version 39.4) go up with every publish, beside `mods/*.js`.
-  - `sounds/` (Version 39.21, about 17 MB: `timelines.js`, `voice/`, `music/`) goes up too, or Wind down and the relief
+  - `sounds/` (Version 39.21, about 17 MB: `timelines.js`, `captions.js`, `voice/`, `music/`) goes up too, or Wind down and the relief
     voice stay silent there.
   - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
     with a script that checks each record.

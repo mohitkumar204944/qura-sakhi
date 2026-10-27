@@ -490,7 +490,7 @@
     if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const all = done === acts.length;
     const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r)); const pl = !!a.play && !ok && !rest;   /* Version 39.22: her wind-down plays where the tick goes */
       const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
-      const sub = fold && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
+      const sub = (fold || a.play) && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.24: week 1 says what her wind-down plays */   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
       const tk = sb && !ok ? '<button type="button" class="btn sm pl-st-start" data-pl-start="' + i + '">' + esc(t('plan_start_b')) + '</button>'
         : (pl ? '<button type="button" class="btn sm pl-st-play" data-pl-play="' + i + '">' + PLAY_SVG + esc(tf('calm_min', { n: a.playMin })) + '</button>'
         : (tick ? '<button type="button" class="today-tick' + (ok ? ' on' : '') + '" ' + (ok ? 'data-pl-un' : 'data-pl-tk') + '="' + i + '" aria-pressed="' + ok + '" aria-label="' + esc(tf(ok ? 'today_untick' : 'today_tick', { x: nm })) + '"><span class="tk">' + (ok ? SVG_TICK : '') + '</span></button>'
@@ -804,14 +804,10 @@
   const movesTabs = (calm) => (calmOn() ? '<div class="pl-seg" role="tablist" aria-label="' + esc(t('plan_moves_h')) + '">' + [['plan-moves', 'plan_moves_tab', !calm], ['plan-calm', 'plan_calm_tab', !!calm]].map((x) => '<button type="button" role="tab" class="pl-seg-b' + (x[2] ? ' on' : '') + '" aria-selected="' + x[2] + '"' + (x[2] ? '' : ' data-go="' + x[0] + '"') + '>' + esc(t(x[1])) + '</button>').join('') + '</div>' : '');
   function renderCalm(v) {
     if (!on() || !calmOn()) { renderMoves(v); return; }
-    const d = S.canSave() && raw() ? D() : null; const tn = d && packOf(d) && !pausedFor(d) && actionsFor(fullD(d)).some((a) => !!a.play) ? windPick(fullD(d)) : null;
-    const card = (go, pose, hue, title, sub, pill) => '<button type="button" class="item pl-ritem pl-calm-it" data-go="' + go + '"><span class="pl-rfig hue-' + hue + '">' + figSvg(pose) + '</span><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span>' + (pill ? '<span class="pill accent">' + esc(pill) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>';
-    const sess = ['breaths', 'bhramari', 'nidra'].map((id) => card('calm-' + id, id === 'nidra' ? 'rest' : 'sit', id === 'nidra' ? 'purple' : (id === 'bhramari' ? 'gold' : 'sky'), t('calm_' + id), t('plan_calm_s_' + id) + ' · ' + tf('calm_min', { n: S.calm.mins(id) }), tn === id ? t('plan_tonight_pill') : '')).join('');
-    v.innerHTML = head('plan_moves_h') + movesTabs(true) + '<p class="small">' + esc(t('plan_calm_p')) + '</p>' +
-      '<div class="list">' + sess + (routineOk('calm', d) ? card('plan-r-calm', R.calm.first, R.calm.hue, rName('calm'), rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }), '') : '') + '</div>' +
-      '<div class="list pl-calm-snd"><button type="button" class="item" data-go="calm"><span class="ico-sm hue hue-purple">' + S.icon('moon') + '</span><span class="body"><strong>' + esc(t('calm_sounds')) + '</strong><span>' + esc(t('plan_calm_snd_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' +
-      '<div class="card warn"><h3>' + esc(t('plan_calm_safe_h')) + '</h3><p class="small">' + esc(t('plan_calm_safe_p') + (pregnant() ? ' ' + t('calm_preg') : '')) + '</p></div>';
-    S.wire(v);
+    /* Version 39.24: the Calm tab is the Wind down page (mods/calm.js): tonight's session, the sessions, Calm breath, the sounds that
+       play right here with the timer, and the safety card */
+    v.innerHTML = head('plan_moves_h') + movesTabs(true) + S.calm.listBody();
+    S.wire(v); S.calm.wireList(v);
   }
   function renderMoves(v) {
     if (!on()) { offScreen(v); return; }
@@ -2793,7 +2789,11 @@
   function renderNow(v) { const d = raw(); const r = movesOn(d) && packOf(d) === 'cycle' ? todayPlan(fullD(d)).routine : null; try { history.replaceState(null, '', '#' + (r ? 'plan-r-' + r : 'plan-moves')); } catch (e) { /* the address stays */ } if (r) renderPlayer(v, r); else renderMoves(v); }
 
   /* for the tests and other modules: the rules, without the screens */
-  S.plan = { regionOfPin: regionOfPin, target: target, dayCount: (iso) => { const d = raw(); return packOf(d) ? dayCount(fullD(d), iso) : null; },   /* Version 39.14 */
+  /* Version 39.24: for Wind down (its page, its session screen, Explore's For you): tonight's session when her bedtime step has
+     one, and the Calm breath row where her plan has it */
+  const planTonight = () => { const d = S.canSave() && raw() ? D() : null; return d && packOf(d) && !pausedFor(d) && !selfPaused(d) && actionsFor(fullD(d)).some((a) => !!a.play) ? windPick(fullD(d)) : null; };
+  const calmRow = () => { const d = S.canSave() && raw() ? D() : null; return routineOk('calm', d) ? { go: 'plan-r-calm', title: rName('calm'), sub: rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }) } : null; };
+  S.plan = { tonight: planTonight, calmRow: calmRow, regionOfPin: regionOfPin, target: target, dayCount: (iso) => { const d = raw(); return packOf(d) ? dayCount(fullD(d), iso) : null; },   /* Version 39.14 */
     /* Version 39.4: the plans as data (web/progs/*.js): what this build runs, each spec, and the engine's own words */
     progs: { list: () => progs().map((p) => ({ id: p.id, ver: p.ver, status: p.status })), spec: specOf, adapters: () => Object.keys(ADAPT) }, daySuggest: daySuggest, stepsOf: stepsOf, routineMins: routineMins, habitsOn: habitsOn, poses: () => Object.keys(P), anims: () => Object.keys(ANIM), on: on,
     catalogue: () => (on() ? catalogue() : []), recs: recs, signals: signals,

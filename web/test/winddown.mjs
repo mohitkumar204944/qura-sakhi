@@ -148,15 +148,15 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   await tap(a.page, '#view .pl-seg-b[data-go="plan-calm"]');
   const v = await view(a.page);
   check('3 Calm: Dr. Megha\'s three sessions, where each fits', /Slow breaths\s+In for 4, out for 6, sitting or lying · 4 min/.test(v) && /Bhramari, the humming breath\s+A soft hum, sitting up · 3 min/.test(v) && /Yoga nidra\s+Lying in bed, part by part · 9 min/.test(v), v.slice(0, 500));
-  check('3 ... tonight\'s session marked, Calm breath, the sounds, the safety card', /Tonight/.test(await txt(a.page, '#view .pl-calm-it[data-go="calm-breaths"]')) && await has(a.page, '#view .pl-calm-it[data-go="plan-r-calm"]') && await has(a.page, '#view .pl-calm-snd [data-go="calm"]') && /For rest and sleep, not treatment[\s\S]*dizzy/.test(await txt(a.page, '#view .card.warn')));
+  check('3 ... tonight\'s session marked, Calm breath, the sounds, the safety card (Version 39.24: the Wind down page, sounds that play here)', /Tonight/.test(await txt(a.page, '#view .cm-tn[data-go="calm-breaths"]')) && await has(a.page, '#view .cm-it[data-go="plan-r-calm"]') && await has(a.page, '#view .cm-it[data-go="calm-bowl"]') && /For rest and sleep, not treatment[\s\S]*dizzy/.test(await txt(a.page, '#view .card.warn')));
   await shot(a.page, '3-calm-tab');
   await go(a.page, 'calm-bhramari');
   check('3 Bhramari\'s screen: sit up, nose; not with a nose or ear infection', /Sit up and breathe through your nose[\s\S]*nose or ear infection/.test(await txt(a.page, '.cm-tip')));
   await go(a.page, 'calm-nidra');
   check('3 yoga nidra\'s screen: in bed, lights off, phone face down', /In bed, with the lights off\. Press play, then put the phone face down\./.test(await txt(a.page, '.cm-tip')));
   await go(a.page, 'calm');
-  const tl = await a.page.$$eval('#view .cm-tile', (b) => b.map((x) => x.innerText.replace(/\s+/g, ' ')));
-  check('3 the Wind down list says where: Bhramari sitting up, yoga nidra in bed', tl.some((x) => /Bhramari.*3 min · sitting up/.test(x)) && tl.some((x) => /Yoga nidra.*9 min · in bed/.test(x)) && tl.some((x) => /Slow breaths.*4 min$/.test(x)), tl);
+  const tl = await a.page.$$eval('#view .cm-it, #view .cm-tn', (b) => b.map((x) => x.innerText.replace(/\s+/g, ' ')));
+  check('3 the Wind down page says where: Bhramari sitting up, yoga nidra in bed (Version 39.24: as on the Calm tab)', tl.some((x) => /Bhramari.*sitting up · 3 min/.test(x)) && tl.some((x) => /Yoga nidra.*Lying in bed.* · 9 min/.test(x)) && tl.some((x) => /Slow breaths.*4 min/.test(x)), tl);
   await done(a);
 }
 

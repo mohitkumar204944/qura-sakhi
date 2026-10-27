@@ -65,7 +65,7 @@ cp "$WEB"/mods/*.js build/assets/www/mods/
 mkdir -p build/assets/www/progs && cp "$WEB"/progs/*.js build/assets/www/progs/
 # Wind down and the relief routines in Dr. Megha's voice (Version 39.21): Opus sounds, kept uncompressed (-0 ogg below) so
 # Android plays them straight from the APK; web/sounds/CREDITS.md says where each came from.
-mkdir -p build/assets/www/sounds && cp -R "$WEB"/sounds/voice "$WEB"/sounds/music "$WEB"/sounds/timelines.js build/assets/www/sounds/
+mkdir -p build/assets/www/sounds && cp -R "$WEB"/sounds/voice "$WEB"/sounds/music "$WEB"/sounds/timelines.js "$WEB"/sounds/captions.js build/assets/www/sounds/
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/
