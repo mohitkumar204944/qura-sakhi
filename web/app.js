@@ -253,6 +253,15 @@
       pill_h: 'Your pill and your bleeds', pill_note: 'Still worth noting in your diary: bleeding between packs, spotting, headaches or mood changes.', pill_rem: 'Pill reminder', pill_mine: 'My method', pill_missed: 'Missed a pill?',
       pill_doc: 'Bleeding between packs for 3 months, or side effects that worry you?', pill_ask: 'Ask a Qura doctor', pill_ask_topic: 'My pill and my bleeding', pill_chg: 'Not on it now? Change it in Me',
       guess_q: 'Is {d} your real start?', guess_p: 'It’s saved as a guess, so it isn’t counted in your gaps.', guess_ok: 'Yes, it’s right', guess_link: 'Is it right?', guess_saved: 'Saved. Sakhi counts this date now.',
+      jd_h: 'Your last 3 periods', jd_sub: 'Tap the day each period started. Your best memory is fine: you can change it later.', jd_pill_s: 'The pill, a hormonal IUD, an injection, an implant or HRT',
+      jd_n1: '1 period marked', jd_n: '{n} periods marked', jd_gap1: 'a gap of {g} days', jd_gaps: 'gaps of {g} days', jd_and: 'and', jd_rm: 'Remove {d}',
+      jd_none: 'I don’t remember the dates', jd_none_p: 'No problem. Pick roughly when your last period started. When your next one comes, log the day it starts, and Sakhi reads your gaps from there.', jd_cal: 'Mark dates on the calendar instead',
+      jd_len: 'How many days does it usually last?', jd_more: 'Anything else about your periods?', jd_more_pill: 'Anything else about your bleeds?', jd_heavy: 'Heavy', jd_heavy_s: 'I soak a pad in 1 to 2 hours, or pass big clots', jd_pain: 'Pain that stops my day', jd_pain_s: 'I stay in bed, or miss school or work',
+      jd_pill_p: 'Your bleeds follow the pill, so Sakhi doesn’t read dates from them or predict periods. It helps with your pill instead: a reminder, and what to do if you miss one.', jd_hfor_q: 'Since when have you taken it?', jd_hfor_lt3: 'Less than 3 months', jd_hfor_ge3: '3 months or more', jd_hfor_ns: 'Not sure', jd_hfor_p: 'If you stop, these months stay out of your averages.',
+      jd_need: 'Tap the day your last period started, or “I don’t remember the dates”.', jd_why: 'Why we ask: Sakhi reads your gaps from these dates, marks your next period, and notices signs worth a doctor’s look.',
+      ys_read: 'What your dates show', ys_early: 'An early read from the dates you gave. Not a diagnosis.', ys_ok: 'Your gaps are in the usual range', ys_ok_s: '21 to {b} days apart, and steady',
+      stop_h: 'When did you stop?', stop_p: 'So Sakhi counts your cycles from the right day.', stop_today: 'Today', stop_today_s: 'Sakhi counts your cycle again from your next period.', stop_early: 'Earlier', stop_early_s: 'Pick the day you stopped. The periods since then count.',
+      stop_never: 'I was never on it', stop_never_s: 'Ticked by mistake? It’s removed, and your dates count as they are.', stop_date: 'The day you stopped', stop_keep: 'Keep it on',
       sos_h: 'Need help now?', sos_p: 'Tap a number to call. For any emergency, call 112.', call_b: 'Call', sos_signs: 'Danger signs: when to go now',
       stage_change: 'Change stage', stage_h: 'Where are you right now?', stage_cycle: 'Tracking my periods', stage_ttc: 'Trying for a baby', stage_preg: 'I am pregnant', stage_post: 'I had a baby', stage_meno: 'My periods have stopped',
       stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
@@ -495,6 +504,15 @@
       pill_h: 'आपकी गोली और आपकी ब्लीडिंग', pill_note: 'फिर भी डायरी में लिखना अच्छा है: पैक के बीच ब्लीडिंग, स्पॉटिंग, सिरदर्द या मूड में बदलाव।', pill_rem: 'गोली का रिमाइंडर', pill_mine: 'मेरा तरीक़ा', pill_missed: 'गोली छूट गई?',
       pill_doc: '3 महीने से पैक के बीच ब्लीडिंग, या कोई साइड इफ़ेक्ट जिससे चिंता हो?', pill_ask: 'Qura की डॉक्टर से पूछें', pill_ask_topic: 'मेरी गोली और ब्लीडिंग', pill_chg: 'अब नहीं लेतीं? मैं में बदलें',
       guess_q: 'क्या {d} आपकी सही शुरुआत है?', guess_p: 'यह अंदाज़े से सेव है, इसलिए आपके अंतर में नहीं गिनी जाती।', guess_ok: 'हाँ, सही है', guess_link: 'क्या यह सही है?', guess_saved: 'सेव हो गया। सखी अब यह तारीख़ गिनती है।',
+      jd_h: 'आपके पिछले 3 पीरियड', jd_sub: 'हर पीरियड जिस दिन शुरू हुआ, उस दिन पर टैप करें। जितना याद हो, उतना काफ़ी है: बाद में बदल सकती हैं।', jd_pill_s: 'गोली, हार्मोन वाला IUD, इंजेक्शन, इम्प्लांट या HRT',
+      jd_n1: '1 पीरियड चुना', jd_n: '{n} पीरियड चुने', jd_gap1: '{g} दिन का अंतर', jd_gaps: '{g} दिन के अंतर', jd_and: 'और', jd_rm: '{d} हटाएँ',
+      jd_none: 'मुझे तारीख़ें याद नहीं', jd_none_p: 'कोई बात नहीं। अंदाज़े से चुनें कि पिछला पीरियड कब शुरू हुआ। अगला पीरियड आए, तो उसके शुरू होने का दिन दर्ज करें, और सखी वहीं से आपके अंतर गिनेगी।', jd_cal: 'इसके बजाय कैलेंडर पर तारीख़ें चुनें',
+      jd_len: 'आमतौर पर कितने दिन चलता है?', jd_more: 'पीरियड के बारे में कुछ और?', jd_more_pill: 'ब्लीडिंग के बारे में कुछ और?', jd_heavy: 'भारी', jd_heavy_s: '1 से 2 घंटे में पैड भीग जाता है, या बड़े थक्के आते हैं', jd_pain: 'ऐसा दर्द जो मेरा दिन रोक दे', jd_pain_s: 'बिस्तर पर रहती हूँ, या स्कूल या काम छूट जाता है',
+      jd_pill_p: 'आपकी ब्लीडिंग गोली के हिसाब से होती है, इसलिए सखी उससे तारीख़ें नहीं पढ़ती और पीरियड का अंदाज़ा नहीं लगाती। इसके बजाय यह आपकी गोली में मदद करती है: रिमाइंडर, और गोली छूट जाए तो क्या करें।', jd_hfor_q: 'आप इसे कब से ले रही हैं?', jd_hfor_lt3: '3 महीने से कम', jd_hfor_ge3: '3 महीने या ज़्यादा', jd_hfor_ns: 'पता नहीं', jd_hfor_p: 'अगर आप बंद करें, तो ये महीने आपके औसत में नहीं गिने जाएँगे।',
+      jd_need: 'पिछला पीरियड जिस दिन शुरू हुआ उस पर टैप करें, या “मुझे तारीख़ें याद नहीं” चुनें।', jd_why: 'क्यों पूछते हैं: सखी इन तारीख़ों से आपके अंतर पढ़ती है, अगला पीरियड बताती है, और ऐसे संकेत पहचानती है जो डॉक्टर को दिखाने लायक हों।',
+      ys_read: 'आपकी तारीख़ें क्या बताती हैं', ys_early: 'आपकी दी तारीख़ों से एक शुरुआती अंदाज़ा। यह diagnosis नहीं है।', ys_ok: 'आपके अंतर सामान्य दायरे में हैं', ys_ok_s: '21 से {b} दिन के अंतर पर, और एक जैसे',
+      stop_h: 'आपने कब बंद किया?', stop_p: 'ताकि सखी सही दिन से आपके चक्र गिने।', stop_today: 'आज', stop_today_s: 'सखी आपके अगले पीरियड से फिर चक्र गिनेगी।', stop_early: 'पहले', stop_early_s: 'जिस दिन बंद किया, वह चुनें। उसके बाद के पीरियड गिने जाएँगे।',
+      stop_never: 'मैं कभी इस पर नहीं थी', stop_never_s: 'ग़लती से चुना था? यह हट जाएगा, और आपकी तारीख़ें जैसी हैं वैसी गिनी जाएँगी।', stop_date: 'जिस दिन बंद किया', stop_keep: 'चालू रखें',
       sos_h: 'अभी मदद चाहिए?', sos_p: 'कॉल करने के लिए नंबर पर टैप करें। किसी भी आपातकाल में 112 पर कॉल करें।', call_b: 'कॉल करें', sos_signs: 'ख़तरे के संकेत: कब तुरंत जाएँ',
       stage_change: 'स्थिति बदलें', stage_h: 'आप अभी किस दौर में हैं?', stage_cycle: 'पीरियड का हिसाब रख रही हूँ', stage_ttc: 'बच्चे की कोशिश कर रही हूँ', stage_preg: 'मैं गर्भवती हूँ', stage_post: 'मेरा बच्चा हुआ है', stage_meno: 'मेरे पीरियड बंद हो गए हैं',
       stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
@@ -809,7 +827,7 @@
   /* review XS-1: the last day she bled (a period's end, or its start), so a stop dated to it keeps later bleeding flagged */
   const lastBleedISO = () => { const s = starts(); const ls = s[s.length - 1]; if (!ls) return ''; const e = periodEnd(ls); return e || ls; };
   const setHormones = (on) => { const sit = state.situation; if (!!sit.hormones === !!on) return; sit.hormones = !!on;
-    if (on) { if (isISO(sit.hormonesSince) && isISO(sit.hormonesUntil)) addSpan({ k: 'horm', a: sit.hormonesSince, b: sit.hormonesUntil }); if (!sit.hormonesSince || sit.hormonesUntil) sit.hormonesSince = toISO(today()); delete sit.hormonesUntil; }
+    if (on) { if (isISO(sit.hormonesSince) && isISO(sit.hormonesUntil)) addSpan({ k: 'horm', a: sit.hormonesSince, b: sit.hormonesUntil }); if (!sit.hormonesSince || sit.hormonesUntil) { sit.hormonesSince = toISO(today()); delete sit.hormonesAbout; delete sit.hormonesFor; } delete sit.hormonesUntil; }
     else if (sit.hormonesSince) sit.hormonesUntil = toISO(today()); };
   const setBirth = (b) => { const s0 = state.situation; if (isISO(s0.deliveredOn) && s0.deliveredOn !== b) addSpan({ k: 'birth', a: s0.deliveredOn }); s0.deliveredOn = b; };
 
@@ -1592,7 +1610,7 @@
         const k = b.dataset.obSt;
         /* a woman already using Sakhi who picks another stage: the stage sheet moves her (her dates, a pregnancy ending) */
         if (upd && OB_ENGINE[k] !== stageNow()) { mem.ob = null; obClear(); setHash('home'); setTimeout(() => openStage(k === 'pmos' ? 'cycle' : k), 60); return; }
-        if (ob.tile !== k) { ob.lp = null; ob.lpk = null; ob.lpm = null; ob.approx = false; ob.goals = []; ob.gap = null; ob.dx = null; ob.menoAgo = null; }
+        if (ob.tile !== k) { ob.lp = null; ob.lpk = null; ob.lpm = null; ob.approx = false; ob.goals = []; ob.gap = null; ob.dx = null; ob.menoAgo = null; ob.dates = []; ob.dlen = 5; ob.heavy = false; ob.pain = false; ob.nodates = false; ob.hfor = null; ob.calM = null; }
         ob.tile = k; ob.stage = OB_ENGINE[k]; ob.stopped = k === 'meno'; ob.step = 3; render();
       }));
       back(() => { if (upd) { mem.ob = null; obClear(); setHash('home'); return; } ob.step = 1; render(); });
@@ -1651,18 +1669,61 @@
         v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_meno_h'), '') + '<div class="grid2 ob-lp">' + [['1', 'ob_mp_1'], ['2', 'ob_mp_2'], ['3', 'ob_mp_3'], ['none', 'dont_remember']].map((x) => chip('data-ob-mp', x[0], t(x[1]), ob.menoAgo === x[0])).join('') + '</div>' + why('ob_meno_why') + '</div>';
         v.querySelectorAll('[data-ob-mp]').forEach((b) => b.addEventListener('click', () => { ob.menoAgo = b.dataset.obMp; next(); }));
       } else {
-        /* Periods, PMOS, trying or after 40: when did the last one start, and how far apart they usually are. A guess is
-           welcome and saved as a guess. */
+        /* Periods, PMOS, trying or after 40. Version 39.26 (Mohit, 27 Oct: "last three months cycle date collection should be
+           part of onboarding so patient has some symptomatic diagnosis and plan advise from start"; MODULE_API section 69):
+           the pill question first (her bleeds then follow the pill: "Since when?" in place of dates); then a calendar of her
+           last periods, where she taps the day each one started (real dates, counted at once), how many days they last, and
+           two ticks (heavy, pain that stops her day). "I don't remember the dates" keeps Version 39.10's quick choices, saved
+           as a guess. */
         const opts = [['0', 'today_b'], ['1', 'yesterday'], ['7', 'ob_lp_w1'], ['14', 'ob_lp_w2'], ['24', 'ob_lp_w34'], ['more', 'ob_lp_more'], ['pick', 'pick'], ['none', 'dont_remember']];
         const gapQ = st !== 'mid' ? '<h2 class="ob-h2">' + esc(t('plan_in_gap')) + '</h2><div class="chips ob-gaps">' + OB_GAPS.map((k) => chip('data-ob-gap', k, t('plan_gap_' + k), ob.gap === k)).join('') + '</div>' : '';
         const dxQ = st === 'pmos' ? '<h2 class="ob-h2">' + esc(t('plan_in_dx')) + '</h2><div class="chips">' + [['y', 'plan_yes'], ['n', 'plan_no'], ['ns', 'plan_dx_ns']].map((x) => chip('data-ob-dx', x[0], t(x[1]), ob.dx === x[0])).join('') + '</div>' : '';
-        const pillQ = st === 'cycle' || st === 'pmos' ? '<div class="list"><label class="item ob-pill"><span class="body"><strong>' + esc(t('pill_q')) + '</strong></span><input type="checkbox" id="ob-pill"' + (ob.pill ? ' checked' : '') + '></label></div>' : '';
-        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t(st === 'mid' ? 'lp_h' : 'ob_det_h'), '') + (st !== 'mid' ? '<h2 class="ob-h2">' + esc(t('lp_h')) + '</h2>' : '') + '<div class="grid2 ob-lp">' + opts.map((x) => chip('data-ob-lp', x[0], t(x[1]), ob.lpk === x[0])).join('') + '</div>' +
+        const pillOk = st === 'cycle' || st === 'pmos'; const onPill = pillOk && !!ob.pill;
+        if (!Array.isArray(ob.dates)) ob.dates = []; if (!ob.dlen) ob.dlen = 5;
+        const pillQ = pillOk ? '<div class="list"><label class="item ob-pill"><span class="body"><strong>' + esc(t('pill_q')) + '</strong><span>' + esc(t('jd_pill_s')) + '</span></span><input type="checkbox" id="ob-pill"' + (ob.pill ? ' checked' : '') + '></label></div>' : '';
+        const lenQ = '<div class="card row spread ap-len jd-len"><strong>' + esc(t('jd_len')) + '</strong><span class="ap-step"><button type="button" class="iconbtn" id="jd-minus" aria-label="−"' + (ob.dlen <= 1 ? ' disabled' : '') + '>−</button><b class="num">' + esc(ob.dlen === 1 ? t('k_day1') : tf('k_days', { n: ob.dlen })) + '</b><button type="button" class="iconbtn" id="jd-plus" aria-label="+"' + (ob.dlen >= 14 ? ' disabled' : '') + '>+</button></span></div>';
+        const ticks = '<h2 class="ob-h2">' + esc(t(onPill ? 'jd_more_pill' : 'jd_more')) + '</h2><div class="list jd-ticks">' + [['heavy', 'jd_heavy'], ['pain', 'jd_pain']].map((x) => '<label class="item jd-tick"><span class="body"><strong>' + esc(t(x[1])) + '</strong><span>' + esc(t(x[1] + '_s')) + '</span></span><input type="checkbox" data-jd-tick="' + x[0] + '"' + (ob[x[0]] ? ' checked' : '') + '></label>').join('') + '</div>';
+        const note = (k) => '<div class="jd-note"><span class="why-i" aria-hidden="true">i</span><p>' + esc(t(k)) + '</p></div>';
+        let body;
+        if (onPill) body = note('jd_pill_p') + '<h2 class="ob-h2">' + esc(t('jd_hfor_q')) + '</h2><div class="chips">' + [['lt3', 'jd_hfor_lt3'], ['ge3', 'jd_hfor_ge3'], ['ns', 'jd_hfor_ns']].map((x) => chip('data-ob-hfor', x[0], t(x[1]), ob.hfor === x[0])).join('') + '</div><p class="small">' + esc(t('jd_hfor_p')) + '</p>' + ticks + dxQ;
+        else if (ob.nodates) body = note('jd_none_p') + (st !== 'mid' ? '<h2 class="ob-h2">' + esc(t('lp_h')) + '</h2>' : '') + '<div class="grid2 ob-lp">' + opts.map((x) => chip('data-ob-lp', x[0], t(x[1]), ob.lpk === x[0])).join('') + '</div>' +
           (ob.lpk === 'pick' ? '<div class="card"><label for="ob-lpd">' + esc(t('pick')) + '</label><input type="date" id="ob-lpd" max="' + toISO(today()) + '" value="' + esc(ob.lp || '') + '"></div>' : '') +
           (ob.lpk === 'more' ? '<div class="card ob-lpm"><h2 class="ob-h2">' + esc(t('ob_lp_more_h')) + '</h2><div class="grid2">' + [['38', 'ob_lp_m1'], ['60', 'ob_lp_m2'], ['90', 'ob_lp_m3']].map((x) => chip('data-ob-lpm', x[0], t(x[1]), ob.lpm === x[0])).join('') + '</div></div>' : '') +
-          gapQ + dxQ + pillQ + why('ob_det_why') + '<p class="small pl-err" id="ob-lp-err" hidden>' + esc(t('ob_lp_need')) + '</p><button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>';
-        const obp = $('#ob-pill', v); if (obp) obp.addEventListener('change', () => { ob.pill = obp.checked; });   /* Version 39.0 */
+          gapQ + '<button type="button" class="linkbtn jd-link" id="jd-cal">' + CALPLUS_I + esc(t('jd_cal')) + '</button>' + lenQ + ticks + dxQ;
+        else {
+          const tS = toISO(today()); const m0 = isISO(ob.calM) ? fromISO(ob.calM) : new Date(today().getFullYear(), today().getMonth(), 1); const y = m0.getFullYear(), mo = m0.getMonth();
+          const ds = ob.dates.slice().sort(); const inP = (x) => ds.some((d0) => x > d0 && diffDays(fromISO(d0), fromISO(x)) < ob.dlen);
+          let cells = ''; for (let k = 0; k < (new Date(y, mo, 1).getDay() + 6) % 7; k++) cells += '<span></span>';
+          for (let d = 1; d <= new Date(y, mo + 1, 0).getDate(); d++) {
+            const x = toISO(new Date(y, mo, d)); const fut = x > tS; const on = ds.indexOf(x) >= 0; const lt = !on && !fut && inP(x);
+            cells += '<button type="button" class="day jd-d' + (on ? ' bleed' : (lt ? ' bleed light' : '')) + (x === tS ? ' today' : '') + (fut ? ' other' : '') + '" data-jd-day="' + x + '"' + (fut ? ' disabled' : '') + ' aria-pressed="' + on + '" aria-label="' + esc(fmtD(fromISO(x), { day: 'numeric', month: 'long' })) + '"><span class="num">' + d + '</span></button>';
+          }
+          const canNext = new Date(y, mo + 1, 1) <= today(); const canPrev = new Date(y, mo, 1) > new Date(today().getFullYear() - 1, today().getMonth(), 1);   /* up to a year back */
+          const gaps = []; for (let k = 1; k < ds.length; k++) gaps.push(diffDays(fromISO(ds[k - 1]), fromISO(ds[k])));
+          const andJ = (a) => (a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' ' + t('jd_and') + ' ' + a[a.length - 1]);
+          const gl = ds.length ? '<p class="jd-gl"><strong>' + esc(ds.length === 1 ? t('jd_n1') : tf('jd_n', { n: ds.length })) + '</strong>' + (gaps.length ? ' <span>· ' + esc(gaps.length === 1 ? tf('jd_gap1', { g: gaps[0] }) : tf('jd_gaps', { g: andJ(gaps) })) + '</span>' : '') + '</p>' +
+            '<div class="jd-mks">' + ds.map((x) => '<span class="jd-mk">' + esc(fmtD(fromISO(x))) + '<button type="button" class="jd-x" data-jd-x="' + x + '" aria-label="' + esc(tf('jd_rm', { d: fmtD(fromISO(x)) })) + '">' + X_I + '</button></span>').join('') + '</div>' : '';
+          body = '<div class="card jd-card"><div class="row spread"><button type="button" class="iconbtn" id="jd-prev" aria-label="' + esc(t('months')[(mo + 11) % 12]) + '"' + (canPrev ? '' : ' disabled') + '>' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[mo]) + ' ' + y + '</div><button type="button" class="iconbtn" id="jd-next" aria-label="' + esc(t('months')[(mo + 1) % 12]) + '" style="transform:scaleX(-1)"' + (canNext ? '' : ' disabled') + '>' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div>' +
+            '<div class="cal jd-cal">' + t('dows').map((z) => '<span class="dow">' + esc(z) + '</span>').join('') + cells + '</div>' + gl + '</div>' +
+            '<button type="button" class="linkbtn jd-link" id="jd-none">' + esc(t('jd_none')) + '</button>' + (ds.length < 2 ? gapQ : '') + lenQ + ticks + dxQ;
+        }
+        v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('jd_h'), '') + (onPill ? '' : '<p class="small jd-sub">' + esc(t('jd_sub')) + '</p>') + pillQ + body + (onPill ? '' : why(ob.nodates ? 'ob_det_why' : 'jd_why')) +
+          '<p class="small pl-err" id="ob-lp-err" hidden>' + esc(t(ob.nodates ? 'ob_lp_need' : 'jd_need')) + '</p><button type="button" class="btn primary block" id="ob-next">' + esc(t('continue')) + '</button></div>';
+        wire(v);
+        const redraw = () => { const y0 = window.scrollY; obSave(); render(); window.scrollTo(0, y0); };
+        const obp = $('#ob-pill', v); if (obp) obp.addEventListener('change', () => { ob.pill = obp.checked; redraw(); });   /* Version 39.0; 39.26: on the pill, "Since when?" */
         const pressOne = (sel, b) => v.querySelectorAll(sel).forEach((x) => { const on1 = x === b; x.classList.toggle('on', on1); x.setAttribute('aria-pressed', String(on1)); });
+        /* a tap marks the day a period started, or takes it off; a start within 9 days of another moves that one */
+        v.querySelectorAll('[data-jd-day]').forEach((b) => b.addEventListener('click', () => { const x = b.dataset.jdDay; if (ob.dates.indexOf(x) >= 0) ob.dates = ob.dates.filter((z) => z !== x); else { ob.dates = ob.dates.filter((z) => Math.abs(diffDays(fromISO(z), fromISO(x))) >= 10); ob.dates.push(x); ob.dates.sort(); } redraw(); }));
+        v.querySelectorAll('[data-jd-x]').forEach((b) => b.addEventListener('click', () => { ob.dates = ob.dates.filter((z) => z !== b.dataset.jdX); redraw(); }));
+        const mv = (n) => { const b0 = isISO(ob.calM) ? fromISO(ob.calM) : new Date(today().getFullYear(), today().getMonth(), 1); ob.calM = toISO(new Date(b0.getFullYear(), b0.getMonth() + n, 1)); redraw(); };
+        const jp = $('#jd-prev', v); if (jp) jp.addEventListener('click', () => mv(-1)); const jn = $('#jd-next', v); if (jn) jn.addEventListener('click', () => mv(1));
+        const jm = $('#jd-minus', v); if (jm) jm.addEventListener('click', () => { ob.dlen = Math.max(1, ob.dlen - 1); redraw(); });
+        const jpl = $('#jd-plus', v); if (jpl) jpl.addEventListener('click', () => { ob.dlen = Math.min(14, ob.dlen + 1); redraw(); });
+        v.querySelectorAll('[data-jd-tick]').forEach((c) => c.addEventListener('change', () => { ob[c.dataset.jdTick] = c.checked; obSave(); }));
+        const jno = $('#jd-none', v); if (jno) jno.addEventListener('click', () => { ob.nodates = true; redraw(); });
+        const jca = $('#jd-cal', v); if (jca) jca.addEventListener('click', () => { ob.nodates = false; redraw(); });
+        v.querySelectorAll('[data-ob-hfor]').forEach((b) => b.addEventListener('click', () => { ob.hfor = b.dataset.obHfor; pressOne('[data-ob-hfor]', b); obSave(); }));
         v.querySelectorAll('[data-ob-lp]').forEach((b) => b.addEventListener('click', () => {
           const k = b.dataset.obLp; ob.lpk = k; ob.lpm = null;
           if (k === 'pick' || k === 'more') { render(); const f = $('#ob-lpd', v); if (f) safe(() => f.focus()); return; }
@@ -1672,6 +1733,8 @@
         v.querySelectorAll('[data-ob-gap]').forEach((b) => b.addEventListener('click', () => { ob.gap = ob.gap === b.dataset.obGap ? null : b.dataset.obGap; pressOne('[data-ob-gap]', ob.gap ? b : null); }));
         v.querySelectorAll('[data-ob-dx]').forEach((b) => b.addEventListener('click', () => { ob.dx = b.dataset.obDx; pressOne('[data-ob-dx]', b); }));
         $('#ob-next', v).addEventListener('click', () => {
+          if (onPill) { next(); return; }
+          if (!ob.nodates) { if (!ob.dates.length) { $('#ob-lp-err', v).hidden = false; return; } next(); return; }
           if (ob.lpk === 'pick') { const d = ($('#ob-lpd', v) || {}).value; if (!inRange(d, -730, 0)) { toast(t('date_bad')); return; } ob.lp = d; ob.approx = false; }
           if (!ob.lpk || (ob.lpk === 'more' && !ob.lpm)) { $('#ob-lp-err', v).hidden = false; return; }
           next();
@@ -1701,13 +1764,32 @@
     else if (st === 'post') { sit.deliveredOn = ob.birth; sit.breastfeeding = ob.bf !== 'no'; }
     else if (st === 'ttc') sit.planning = true;
     else if (st === 'meno') { sit.midlife = true; if (tile === 'meno') { sit.stopped = true; sit.stoppedOn = toISO(today()); } }
-    if ((tile === 'cycle' || tile === 'pmos') && ob.pill) { sit.hormones = true; sit.hormonesSince = toISO(today()); }   /* Version 39.0: on the pill or another hormone, a late or missing bleed is expected (review XS-10: with its start date) */
+    if ((tile === 'cycle' || tile === 'pmos') && ob.pill) {   /* Version 39.0: on the pill or another hormone, a late or missing bleed is expected (review XS-10: with its start date) */
+      sit.hormones = true; sit.hormonesSince = toISO(today());
+      /* Version 39.26: "Since when?": less than 3 months (3 months back) or 3 months or more (a year back), so dates she adds
+         from her time on it stay out of her averages; Me shows no exact "since" date for an answer like this */
+      if (ob.hfor === 'lt3' || ob.hfor === 'ge3') { sit.hormonesSince = toISO(addDays(today(), ob.hfor === 'lt3' ? -90 : -365)); sit.hormonesAbout = true; }
+      if (ob.hfor) sit.hormonesFor = ob.hfor;
+    }
     if (tile === 'pmos' && ob.dx === 'y') sit.pcos = true;
     const picked = (ob.goals || []).slice(); const g0 = picked[0] || 'track'; const g1 = g0 === 'irregular' && sit.pcos ? 'pmos' : g0;
     state.situation = sit; state.goals = goalsList(st, picked, !!sit.pcos);
-    state.focus = { tile: tile, goals: picked, at: toISO(today()) }; if (ob.lp && (st === 'cycle' || st === 'ttc' || st === 'meno')) state.focus.lp = ob.lp;   /* her joining answer is not a log */
-    state.intake = { at: toISO(today()), stage: st, goal: g1, gap: ob.gap || null, dx: tile === 'pmos' ? ob.dx || null : null, stopped: tile === 'meno' };
-    if (ob.lp && (st === 'cycle' || st === 'ttc' || st === 'meno')) state.events.push(ob.approx ? { d: ob.lp, t: 'start', approx: true } : { d: ob.lp, t: 'start' });
+    /* Version 39.26: the days she tapped are her periods, counted at once (a start, and an end once it is over); the ticks go
+       on her latest one, where her day page shows them. "I don't remember" saves Version 39.10's answer, as a guess. */
+    const per = st === 'cycle' || st === 'ttc' || st === 'meno';
+    const ds = per && !ob.nodates && Array.isArray(ob.dates) ? ob.dates.filter((x) => isISO(x) && x <= toISO(today())).sort() : [];
+    const lp = ds.length ? ds[ds.length - 1] : (per && ob.nodates ? ob.lp : null);
+    state.focus = { tile: tile, goals: picked, at: toISO(today()) }; if (lp) state.focus.lp = lp;   /* her joining answer is not a log */
+    if (ds.length || ob.heavy || ob.pain || sit.hormones) { state.focus.read = true; state.focus.dates = ds.length; }   /* Your Sakhi shows what they say */
+    state.intake = { at: toISO(today()), stage: st, goal: g1, gap: ob.gap || gapFrom(ds) || null, dx: tile === 'pmos' ? ob.dx || null : null, stopped: tile === 'meno' };
+    if (ob.heavy) state.intake.heavy = true; if (ob.pain) state.intake.pain = true;
+    const flowOn = (ev) => { if (ob.heavy) ev.pads = 'pads_4'; if (ob.pain) ev.pain = 'pain_3'; return ev; };
+    if (ds.length) {
+      const n = clamp(+ob.dlen || 5, 1, 14); const tS = toISO(today());
+      ds.forEach((d0, k) => { state.events.push(k === ds.length - 1 ? flowOn({ d: d0, t: 'start' }) : { d: d0, t: 'start' });
+        const nx = ds[k + 1]; let e0 = toISO(addDays(fromISO(d0), n - 1)); if (nx && e0 >= nx) e0 = toISO(addDays(fromISO(nx), -1));
+        if (e0 < tS) state.events.push({ d: e0, t: 'end' }); });   /* one that may still be going stays open */
+    } else if (lp) state.events.push(flowOn(ob.approx ? { d: lp, t: 'start', approx: true } : { d: lp, t: 'start' }));
     const kit = ob.share && ob.share !== 'me' ? ob.kit : null;
     if (kit) { state.settings.discreet = !!kit.plain; if (kit.notes) safe(() => window.SakhiAndroid.setDisguise(true)); }
     state.stage = 'app'; state.langChosen = true;
@@ -1720,6 +1802,10 @@
     mem.ob = null; obClear(); save(); setHash(state.settings.discreet ? 'home' : 'your-sakhi');
     if (kit && kit.lock) { state.prompts.pinDue = true; save(); }   /* asked on her first Home (Version 34.1) */
   }
+  /* Version 39.26: the usual gap from the dates she tapped, in the plan's words (most apart, or "they change a lot") */
+  const gapFrom = (ds) => { if (!ds || ds.length < 2) return null; const g = []; for (let k = 1; k < ds.length; k++) g.push(diffDays(fromISO(ds[k - 1]), fromISO(ds[k]))); const mx = maxOf(g);
+    return maxOf(g) - minOf(g) > 7 ? 'vary' : (mx < 21 ? 'lt21' : (mx <= 35 ? 'n' : (mx <= 45 ? 'g45' : (mx <= 60 ? 'g60' : 'gt60')))); };
+  const X_I = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>';
   /* a woman already using Sakhi tells it her stage and goals (Today's card, once; and after a stage change) */
   function finishUpdate() {
     const ob = mem.ob || {}; const tile = OB_ENGINE[ob.tile] ? ob.tile : obTileOf(); const st = stageNow(); const sit = state.situation || (state.situation = {});
@@ -1736,6 +1822,25 @@
   /* Version 39.10: "Your Sakhi", after sign-up: what Sakhi will do for her, and what stays out of her way. Then the tour. */
   const YS_ROWS = { cycle: ['log', 'today', 'plan'], ttc: ['log', 'today', 'plan'], preg: ['preg', 'today', 'plan'], post: ['post', 'today', 'plan'], meno: ['meno', 'today', 'plan'] };
   const YS_ICO = { log: ['diary', 'rose'], today: ['home', 'sky'], plan: ['target', 'gold'], learn: ['learn', 'teal'], preg: ['check', 'orange'], post: ['heart', 'plum'], meno: ['moon', 'purple'] };
+  /* Version 39.26: "What your dates show" on Your Sakhi, after she gave her dates, the pill or a tick: her next period from
+     the same engine as Today (or the one reason it can't show), "in the usual range" or What your diary shows' own cards (a
+     Qura doctor first, and the free plan beside it), and when fertile days start. An early read, not a diagnosis. */
+  function ysRead() {
+    const f = state.focus || {}; if (!f.read || !canSave() || state.settings.discreet) return '';
+    const sit = state.situation || {}; const rows = []; const ri = rangeInfo(); const pr = predictInfo();
+    const fact = (ico, hue, h, sub) => '<div class="ys-fact"><span class="ico-sm hue hue-' + hue + '">' + ico + '</span><span class="body"><strong>' + h + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span></div>';
+    if (sit.hormones) rows.push(reasonHtml({ k: 'hormones' }));
+    else if (ri && pr && !isMidlife()) {
+      const late = today() > ri.to; const n = late ? diffDays(ri.to, today()) : 0; const dt = pr.daysTo;
+      const h = late ? esc(n === 1 ? t('late_n1') : tf('late_n', { n: n })) : (dt > 1 ? '<b class="num">' + dt + '</b> ' + esc(t('cdn_days')) : esc(t(dt === 1 ? 'cdn_tomorrow' : (dt === 0 ? 'cdn_today' : 'cdn_any'))));
+      rows.push(fact(I.diary, 'rose', h, tf('cdn_from', { r: fmtRange(ri.from, ri.to), n: pr.n })));
+    } else { const wn = whyNot(); if (wn) rows.push(reasonHtml(wn)); }
+    const cards = signalCards();
+    if (!sit.hormones && ri && !cards && usable().slice(-6).every((x) => x >= 21 && x <= bandHi())) rows.push(fact(I.check, 'green', esc(t('ys_ok')), tf('ys_ok_s', { b: bandHi() })));
+    if (!sit.hormones && fertWhy() === 'few') rows.push(fact(I.flower, 'purple', esc(t('kn_fert')), tf('kn_fert_need', { n: usable().length })));
+    if (!rows.length && !cards) return '';
+    return '<p class="eyebrow">' + esc(t('ys_read')) + '</p>' + (rows.length ? '<div class="card ys-read" data-nofold="1">' + rows.join('') + '</div>' : '') + cards + '<p class="small ys-early">' + esc(t('ys_early')) + '</p>';
+  }
   function renderYourSakhi(v) {
     if (!canSave() || state.settings.discreet) { setHash('home'); return; }
     const f = state.focus || {}; const st = stageNow(); const tile = f.tile || obTileOf(); const nm = String(acct.name || mem.suName || '').trim().split(/\s+/)[0];
@@ -1745,10 +1850,11 @@
     const hid = st === 'preg' ? 'ys_hid_preg' : (st === 'post' ? 'ys_hid_post' : (st === 'meno' ? 'ys_hid_meno' : 'ys_hid_cycle'));
     v.innerHTML = '<div class="stack ob ys" style="gap:14px"><h1>' + esc(nm ? tf('ys_h', { name: nm }) : t('ys_h0')) + '</h1>' +
       '<div class="chips ys-chips"><span class="pill ys-st hue-' + (tile === 'meno' ? 'teal' : hueOf(tile === 'pmos' ? 'pmos' : (OB_TILES.find((x) => x[0] === tile) || ['', 'periods'])[1])) + '">' + esc(t('ob_s7_' + tile)) + '</span>' + (f.goals || []).filter((k) => k !== 'track').map((k) => '<span class="pill muted">' + esc(goalLabel(k)) + '</span>').join('') + '</div>' +
-      '<p class="eyebrow">' + esc(t('ys_helps')) + '</p><div class="list ys-rows">' + rows.map((k) => '<div class="item quiet"><span class="ico-sm hue hue-' + YS_ICO[k][1] + '">' + icon(YS_ICO[k][0]) + '</span><span class="body"><strong>' + esc(t('ys_' + k)) + '</strong><span>' + esc(sub(k)) + '</span></span></div>').join('') + '</div>' +
+      ysRead() + '<p class="eyebrow">' + esc(t('ys_helps')) + '</p><div class="list ys-rows">' + rows.map((k) => '<div class="item quiet"><span class="ico-sm hue hue-' + YS_ICO[k][1] + '">' + icon(YS_ICO[k][0]) + '</span><span class="body"><strong>' + esc(t('ys_' + k)) + '</strong><span>' + esc(sub(k)) + '</span></span></div>').join('') + '</div>' +
       '<p class="small ys-hid">' + esc(t(hid) + ' ' + t('ys_hid_more')) + '</p>' +
       '<button type="button" class="btn primary block" id="ys-tour">' + esc(t('ys_tour')) + '</button><button type="button" class="btn ghost block" id="ys-skip">' + esc(t('ys_skip')) + '</button></div>';
     const seen = () => { state.tours = state.tours || {}; state.tours.home = { st: 'done', d: toISO(today()) }; save(); };   /* one tour on her first day (the full tour stays in Me > How to use Sakhi) */
+    wire(v); wireWhy(v); if (api.explain && api.explain.wire) safe(() => api.explain.wire(v));   /* Version 39.26: the read's buttons */
     $('#ys-tour', v).addEventListener('click', () => { seen(); startTour('first-day', true); });
     $('#ys-skip', v).addEventListener('click', () => { seen(); setHash('home'); });
   }
@@ -2323,7 +2429,7 @@
         /* Version 39.25 (G1): why no date shows and the tap that fixes it, in place of the general note (not on a shared phone) */
         const wn = disc || shp ? null : whyNot(); if (wn) main += reasonHtml(wn);
         if (!mini || (!shp && ri && !late0) || soon0 || chance0) main += '<p class="small">' + (sit0.breastfeeding ? esc(t('bf_note')) + ' ' : (!ri && !wn && last6.length >= 2 ? esc(t('gap_mode_note')) + ' ' : '')) + esc(t('no_contra')) + '</p>';   /* breastfeeding: the real reason (Version 32) */
-        if (approxStarts()[toISO(ls)] && approxDue() && !(wn && wn.k === 'guess')) main += '<p class="small approx-note">' + esc(t('approx_note')) + '</p>';
+        if (approxStarts()[toISO(ls)] && approxDue() && !wn) main += '<p class="small approx-note">' + esc(t('approx_note')) + '</p>';   /* the reason line says it, or says what matters more (hormones); the calendar still asks about the guess */
         if (ROUTES['explain']) { /* the explanation card on Home covers late and missing periods */ } else if (!countsOff() && !sit0.stopped && daysSince >= 90) main += '<div class="card dark" style="gap:4px"><h3>' + esc(t('r6_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('r6_p')) + '</p></div>';
         else if (ri && today() > addDays(ri.to, 7)) main += '<div class="card soft" style="gap:4px"><h3>' + esc(t('late_h')) + '</h3><p class="small">' + esc(t('late_p')) + '</p></div>';
       }
@@ -4349,6 +4455,26 @@
   /* Her stage (one row: the stage sheet sets pregnancy, a birth and breastfeeding, trying, after 40 and periods stopped, so
      they can never contradict each other) and the conditions she has been told about. With app lock on, the PIN first:
      someone may be holding her unlocked phone. Once it's in, it holds until Sakhi goes to the background. */
+  /* Version 39.26: switching hormones off asks when she stopped: today (her cycle counts again from her next period),
+     earlier (that day: the periods since then count), or never (ticked by mistake: removed, her dates count as they are) */
+  function openStopSheet() {
+    const sit = state.situation; let pick = 'today';
+    const opt = (k) => '<label class="item stop-opt' + (k === pick ? ' on' : '') + '"><input type="radio" name="stop-k" value="' + k + '"' + (k === pick ? ' checked' : '') + '><span class="body"><strong>' + esc(t('stop_' + k)) + '</strong><span>' + esc(t('stop_' + k + '_s')) + '</span></span></label>';
+    sheet('<h2 class="hand">' + esc(t('stop_h')) + '</h2><p class="small">' + esc(t('stop_p')) + '</p><div class="list stop-list">' + ['today', 'early', 'never'].map(opt).join('') + '</div>' +
+      '<div class="stack" id="stop-d" hidden style="gap:6px"><label for="stop-date">' + esc(t('stop_date')) + '</label><input type="date" id="stop-date" max="' + toISO(today()) + '" min="' + toISO(addDays(today(), -730)) + '" value="' + toISO(addDays(today(), -30)) + '"></div><p class="small pl-err" id="stop-err" hidden>' + esc(t('date_bad')) + '</p>' +
+      '<div class="sheet-foot stack" style="gap:8px"><button type="button" class="btn primary block" id="stop-save">' + esc(t('save')) + '</button><button type="button" class="linkbtn" id="stop-keep">' + esc(t('stop_keep')) + '</button></div>', (sh) => {
+      sh.querySelectorAll('input[name="stop-k"]').forEach((r) => r.addEventListener('change', () => { pick = r.value; sh.querySelectorAll('.stop-opt').forEach((l) => l.classList.toggle('on', l.querySelector('input').checked)); $('#stop-d', sh).hidden = pick !== 'early'; }));
+      $('#stop-keep', sh).addEventListener('click', () => closeSheet());
+      $('#stop-save', sh).addEventListener('click', () => {
+        if (pick === 'never') { sit.hormones = false; ['hormonesSince', 'hormonesUntil', 'hormonesAbout', 'hormonesFor'].forEach((x) => { delete sit[x]; }); }
+        else if (pick === 'early') {
+          const d = $('#stop-date', sh).value; if (!isISO(d) || d > toISO(today()) || d < toISO(addDays(today(), -730))) { $('#stop-err', sh).hidden = false; return; }
+          setHormones(false); sit.hormonesUntil = d; if (isISO(sit.hormonesSince) && sit.hormonesSince > d) sit.hormonesSince = d; delete sit.hormonesAbout;
+        } else setHormones(false);
+        save(); closeSheet(); toast(t('saved')); render();
+      });
+    });
+  }
   function renderMeHealth(v) {
     const title = t(state.settings.discreet ? 'me_health_hd' : 'me_health_h');
     if (state.settings.pinHash && !mem.healthOk) {
@@ -4364,16 +4490,19 @@
       return;
     }
     const sit = state.situation;
-    const tog = (key, label, desc, dateKey) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + (dateKey && sit[dateKey] ? ' · ' + esc(t('since')) + ' ' + esc(fmtD(fromISO(sit[dateKey]), { day: 'numeric', month: 'short', year: 'numeric' })) : '') + '</span></span><input type="checkbox" data-sit="' + key + '" ' + (sit[key] ? 'checked' : '') + '></label>';
+    const tog = (key, label, desc, dateKey) => '<label class="item"><span class="body"><strong>' + esc(t(label)) + '</strong><span>' + esc(t(desc)) + (dateKey && sit[dateKey] && !(dateKey === 'hormonesSince' && sit.hormonesAbout) ? ' · ' + esc(t('since')) + ' ' + esc(fmtD(fromISO(sit[dateKey]), { day: 'numeric', month: 'short', year: 'numeric' })) : '') + '</span></span><input type="checkbox" data-sit="' + key + '" ' + (sit[key] ? 'checked' : '') + '></label>';
     v.innerHTML = backRow(title, 'me', false) + '<p class="small">' + esc(t('sit_p2')) + '</p>' +
       '<div class="list"><button type="button" class="item" id="me-stage"><span class="ico-sm hue hue-rose">' + I.heart + '</span><span class="body"><strong>' + esc(stageName()) + '</strong><span>' + esc(t('stage_change')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' +
       '<h2>' + esc(t('situation')) + '</h2><div class="list">' + tog('hormones', 'hormones', 'horm_d', 'hormonesSince') + tog('pcos', 'pcos', 'pcos_d') + tog('thyroid', 'thyroid', 'thyroid_d') + tog('hysterectomy', 'hyst', 'hyst_d') + '</div>' +
       meRows('health');
     wire(v);
     $('#me-stage', v).addEventListener('click', () => openStage());
-    /* Unticking hormones keeps when they started and notes when they stopped, so those months stay out of her averages. */
+    /* Unticking hormones keeps when they started and notes when they stopped, so those months stay out of her averages.
+       Version 39.26: it asks when she stopped first (openStopSheet). */
     v.querySelectorAll('[data-sit]').forEach((c) => c.addEventListener('change', () => {
-      const k = c.dataset.sit; if (k === 'hormones') setHormones(c.checked); else sit[k] = c.checked;
+      const k = c.dataset.sit;
+      if (k === 'hormones' && !c.checked && sit.hormones) { c.checked = true; openStopSheet(); return; }
+      if (k === 'hormones') setHormones(c.checked); else sit[k] = c.checked;
       save(); render();
     }));
     runHook('afterMe', [v, api, 'health']);

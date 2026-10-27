@@ -167,6 +167,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - on What your diary shows, "Ask a Qura doctor" first, no "Free government doctor" (it stays in Explore), and the free
       12-week plan beside the doctor step while no plan runs.
     Contract: MODULE_API section 68; wording: section 19.25 of the review (waits for doctor review).
+  - `node test/joindates.mjs` (Version 39.26, her last periods at joining; Mohit, 27 Oct; mockup
+    claude.ai/artifact/MfYod5pV8wKtuDERCBjbWB):
+    - the Details step: the pill question first, a calendar where she taps each period's start, how long, two ticks (heavy,
+      pain that stops her day), and "I don't remember the dates" for the old quick choices;
+    - "Your Sakhi" opens with "What your dates show": her next period, her signs with a Qura doctor and a free plan, "an
+      early read, not a diagnosis";
+    - on the pill, "Since when?"; in Me, switching hormones off asks "When did you stop?" (today, earlier, never).
+    `test/join.mjs` takes `dates`; without them it opens "I don't remember the dates" first. Contract: MODULE_API section 69;
+    wording: section 19.26 of the review (waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

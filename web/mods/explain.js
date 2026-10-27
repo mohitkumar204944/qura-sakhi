@@ -462,7 +462,7 @@
   /* Version 39.6 (journey audit P2-14): her plan's doctor check is done, so today's cards about the same thing rest
      (a late period of 90 days or more always shows) */
   const seenIds = (ids) => { if (!S.canSave()) return; const d = D(); findings().forEach((f) => { if (ids.indexOf(f.id) >= 0 && !(f.id === 'late_now' && f.lv !== 'watch')) d.seen[f.key] = S.toISO(S.today()); }); S.saveQuiet(); };
-  S.explain = { findings: findings, top: topOpen, diaryCards: diaryCards, seenIds: seenIds, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
+  S.explain = { findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
     /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
     question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };
 })(window.Saathi);

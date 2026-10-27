@@ -111,10 +111,10 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await tap(page, '[data-ob-goal="irregular"]'); await tap(page, '#ob-next');
   /* 3. a restart in the middle of joining keeps her answers */
   await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !!window.Saathi); await settle(page, 600);
-  check('3 the app restarts mid-way: she is back on her details', /A few things about your periods/.test(await view(page)), (await view(page)).slice(0, 200));
+  check('3 the app restarts mid-way: she is back on her details (Version 39.26: "Your last 3 periods")', /Your last 3 periods/.test(await view(page)), (await view(page)).slice(0, 200));
   await tap(page, '#ob-back');
   check('3 ... and her goal is kept', await has(page, '[data-ob-goal="irregular"].on'));
-  await tap(page, '#ob-next'); await tap(page, '[data-ob-lp="24"]'); await tap(page, '#ob-next'); await tap(page, '[data-ob-sh="me"]');
+  await tap(page, '#ob-next'); await tap(page, '#jd-none'); await tap(page, '[data-ob-lp="24"]'); await tap(page, '#ob-next'); await tap(page, '[data-ob-sh="me"]');   /* Version 39.26: the quick choices sit behind "I don't remember the dates" */
   await signUp(page);
   check('1 no plan straight after joining: Today, and her first log first', (await page.evaluate(() => location.hash)) === '#home' && !(await has(page, '#pl-off-go')) && !((await st(page)).mods.plan || {}).next);
   await firstLog(page); await go(page, 'home');

@@ -4489,3 +4489,61 @@ showed it only with a plan). Not on a shared phone or in discreet mode.
 **Wording:** section 19.25 of the review.
 
 **Tests:** `test/whynot.mjs`.
+
+## 69. Version 39.26: her last periods at joining, and when she stopped hormones
+
+Mohit, 27 Oct: "last three months cycle date collection should be part of onboarding so patient has some symptomatic
+diagnosis and plan advise from start". Then "yes make a mockup first" (claude.ai/artifact/MfYod5pV8wKtuDERCBjbWB) and "go
+ahead and build it". Before this, joining asked only "When did your last period start?". Its quick choices save one guessed
+date, and a guess isn't counted, so a new woman began with nothing for Sakhi to read (section 68, G1).
+
+**The Details step** (`renderOnboard`, step 4, for the Regular periods, PMOS, Trying and Periods changing after 40 tiles):
+- "Your last 3 periods". The pill question comes first.
+- **A calendar** (`.jd-card`) opens on this month and goes back up to a year. Days after today can't be tapped.
+  - A tap marks the day a period started; a second tap takes it off.
+  - A start within 9 days of another moves that one.
+  - Under it: "{n} periods marked · gaps of {a} and {b} days", and each date as a chip with ✕.
+- **"How many days does it usually last?"**, 1 to 14 days, 5 at first.
+- **Two ticks:** "Heavy" (soaking a pad in 1 to 2 hours, or big clots) and "Pain that stops my day".
+- **"How far apart are your periods, usually?"** shows only until she has marked 2 dates. The PMOS question is unchanged.
+- **Continue** asks for a date first ("Tap the day your last period started, or 'I don't remember the dates'").
+- **"I don't remember the dates"** (`ob.nodates`) brings back Version 39.10's quick choices and why line, saved as a guess as
+  before. "Mark dates on the calendar instead" returns to the calendar.
+- **On the pill** (`ob.pill`, Regular periods and PMOS tiles): no calendar. Instead "Your bleeds follow the pill…", "Since
+  when have you taken it?" (less than 3 months, 3 months or more, not sure), and the two ticks.
+
+**What joining saves** (`finishOnboard`):
+- Each marked day becomes a real start (no `approx`). It gets an end at start + days − 1, kept before the next start, but
+  only once that day has passed: a period that may still be going stays open.
+- The ticks go on her latest period: `pads: 'pads_4'` and `pain: 'pain_3'`, which her day page shows and the findings read.
+  Without dates they go on the guessed start, and on `intake.heavy` and `intake.pain`.
+- `intake.gap` comes from her dates when she gave 2 or more (`gapFrom`): most days apart, or `vary` when they differ by more
+  than 7.
+- `focus.read` and `focus.dates` mark that she gave dates, a tick or the pill.
+- **On the pill:** "Less than 3 months" sets `hormonesSince` 90 days back, and "3 months or more" sets it 365 days back. Both
+  set `hormonesAbout`, so Me shows no exact "since" date. "Not sure", or no answer, keeps today, as before. The answer is kept
+  in `hormonesFor`. Dates she adds later from her time on it stay out of her averages.
+
+**"Your Sakhi"** (`ysRead`) opens with **"What your dates show"** when `focus.read` is set:
+- Her next period, the same countdown and likely dates as Today (or how late it is). Otherwise the one reason it can't show
+  (`whyNot`, section 68). On the pill, the hormones line.
+- What your diary shows' own short cards (`S.explain.diaryCards`, wired by the new `S.explain.wire`): a Qura doctor first,
+  her report, "Check the signs", and the free plan beside the doctor step (section 68, G6). Start opens that plan's questions.
+- "Your gaps are in the usual range" when her counted gaps are 21 to 35 days (45 in her first years) and no card shows.
+- When fertile days start (`fertWhy` is `few`).
+- "An early read from the dates you gave. Not a diagnosis." Nothing new shows for "I don't remember the dates" without a tick.
+
+**Me, "When did you stop?"** (`openStopSheet`): switching "On hormone medicine" off asks first:
+- **Today:** `setHormones(false)`, as before. Her cycle counts again from her next period.
+- **Earlier:** a day up to 2 years back becomes `hormonesUntil`. The periods since then count.
+- **I was never on it:** removes `hormones`, `hormonesSince`, `hormonesUntil`, `hormonesAbout` and `hormonesFor`. Earlier
+  spans stay.
+- **"Keep it on"** changes nothing.
+
+Switching it back on starts a new exact "since" (the about-flag goes).
+
+**Tests:** `test/joindates.mjs`. `test/join.mjs` takes `dates`, `dlen`, `heavy`, `pain` and `hfor`; without `dates` it opens "I
+don't remember the dates" first, so the suites that join keep their guessed start. companion, firstday, firstday-walk and
+protect tap "I don't remember the dates" before the quick choices.
+
+**Wording:** section 19.26 of the review.

@@ -246,9 +246,11 @@ const errsAll = [];
   const a = await open({ seed: null, hash: '#home' });
   /* Version 39.10: about you, her stage, her goals, then the details screen with her last period and the pill question */
   for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="cycle"]', '[data-ob-goal="track"]', '#ob-next']) await tap(a.page, s);
-  check('9 joining asks "I take the pill or another hormone medicine" with the last period', await has(a.page, '#ob-pill') && await has(a.page, '[data-ob-lp="24"]'));
+  /* Version 39.26: the pill question comes first, her last periods (a calendar) under it; on the pill, "Since when?" instead */
+  check('9 joining asks "I take the pill or another hormone medicine" with her last periods', await has(a.page, '#ob-pill') && await has(a.page, '[data-jd-day]') && await has(a.page, '#jd-none'));
   await a.page.$eval('#ob-pill', (x) => { x.checked = true; x.dispatchEvent(new Event('change', { bubbles: true })); });
-  await tap(a.page, '[data-ob-lp="24"]');
+  check('9 ... on the pill, "Since when have you taken it?" in place of dates', await has(a.page, '[data-ob-hfor="ge3"]') && !(await has(a.page, '[data-jd-day]')));
+  await tap(a.page, '[data-ob-hfor="ge3"]');
   const ob = await a.page.evaluate(() => (window.Saathi.mem.ob || {}).pill);
   check('9 ... and remembers her answer', ob === true, ob);
   await tap(a.page, '#ob-next');

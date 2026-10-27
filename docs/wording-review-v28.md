@@ -2241,3 +2241,45 @@ scripts, already in review with Version 39.21 (section 19.21), not new lines.
 | And meanwhile, a free plan | और तब तक, एक मुफ़्त प्लान |
 | For {goal} · 12 weeks | {goal} के लिए · 12 हफ़्ते |
 | Start | शुरू करें |
+
+### 19.26 Version 39.26: her last periods at joining, and when she stopped hormones (MODULE_API section 69)
+
+**Reused, already reviewed:**
+- The countdown and likely dates ("{n} days until your next period", "Likely {r} · from your last {n} cycles").
+- The signs and their doctor lines from What your diary shows, with "Ask a Qura doctor about this" and the free plans
+  (section 19.25).
+- "Fertile days and ovulation (estimate)" and "Needs 6 regular gaps of 21–35 days · you have {n}" (section 19.25).
+- "You take the pill or another hormone medicine…" (section 19.25).
+- Version 39.10's quick choices for the last period.
+
+**Please review.** Questions for the doctor:
+1. The "Heavy" tick at joining ("I soak a pad in 1 to 2 hours, or pass big clots") is saved on her latest period as "Soaked
+   one every 1–2 hours". That brings the reviewed "See a doctor this week" heavy-flow card on her first screen. Is that the
+   right level for a woman who says her periods are usually like this?
+2. The "Pain that stops my day" tick brings the "See a doctor this month" pain card the same way. Fine?
+
+| English | Hindi |
+|---|---|
+| Your last 3 periods | आपके पिछले 3 पीरियड |
+| Tap the day each period started. Your best memory is fine: you can change it later. | हर पीरियड जिस दिन शुरू हुआ, उस दिन पर टैप करें। जितना याद हो, उतना काफ़ी है: बाद में बदल सकती हैं। |
+| The pill, a hormonal IUD, an injection, an implant or HRT | गोली, हार्मोन वाला IUD, इंजेक्शन, इम्प्लांट या HRT |
+| {n} periods marked · gaps of {a} and {b} days | {n} पीरियड चुने · {a} और {b} दिन के अंतर |
+| I don’t remember the dates | मुझे तारीख़ें याद नहीं |
+| No problem. Pick roughly when your last period started. When your next one comes, log the day it starts, and Sakhi reads your gaps from there. | कोई बात नहीं। अंदाज़े से चुनें कि पिछला पीरियड कब शुरू हुआ। अगला पीरियड आए, तो उसके शुरू होने का दिन दर्ज करें, और सखी वहीं से आपके अंतर गिनेगी। |
+| Mark dates on the calendar instead | इसके बजाय कैलेंडर पर तारीख़ें चुनें |
+| How many days does it usually last? | आमतौर पर कितने दिन चलता है? |
+| Anything else about your periods? / … your bleeds? | पीरियड के बारे में कुछ और? / ब्लीडिंग के बारे में कुछ और? |
+| Heavy: I soak a pad in 1 to 2 hours, or pass big clots | भारी: 1 से 2 घंटे में पैड भीग जाता है, या बड़े थक्के आते हैं |
+| Pain that stops my day: I stay in bed, or miss school or work | ऐसा दर्द जो मेरा दिन रोक दे: बिस्तर पर रहती हूँ, या स्कूल या काम छूट जाता है |
+| Your bleeds follow the pill, so Sakhi doesn’t read dates from them or predict periods. It helps with your pill instead: a reminder, and what to do if you miss one. | आपकी ब्लीडिंग गोली के हिसाब से होती है, इसलिए सखी उससे तारीख़ें नहीं पढ़ती और पीरियड का अंदाज़ा नहीं लगाती। इसके बजाय यह आपकी गोली में मदद करती है: रिमाइंडर, और गोली छूट जाए तो क्या करें। |
+| Since when have you taken it? (Less than 3 months / 3 months or more / Not sure) | आप इसे कब से ले रही हैं? (3 महीने से कम / 3 महीने या ज़्यादा / पता नहीं) |
+| If you stop, these months stay out of your averages. | अगर आप बंद करें, तो ये महीने आपके औसत में नहीं गिने जाएँगे। |
+| Why we ask: Sakhi reads your gaps from these dates, marks your next period, and notices signs worth a doctor’s look. | क्यों पूछते हैं: सखी इन तारीख़ों से आपके अंतर पढ़ती है, अगला पीरियड बताती है, और ऐसे संकेत पहचानती है जो डॉक्टर को दिखाने लायक हों। |
+| What your dates show | आपकी तारीख़ें क्या बताती हैं |
+| An early read from the dates you gave. Not a diagnosis. | आपकी दी तारीख़ों से एक शुरुआती अंदाज़ा। यह diagnosis नहीं है। |
+| Your gaps are in the usual range · 21 to {b} days apart, and steady | आपके अंतर सामान्य दायरे में हैं · 21 से {b} दिन के अंतर पर, और एक जैसे |
+| When did you stop? So Sakhi counts your cycles from the right day. | आपने कब बंद किया? ताकि सखी सही दिन से आपके चक्र गिने। |
+| Today: Sakhi counts your cycle again from your next period. | आज: सखी आपके अगले पीरियड से फिर चक्र गिनेगी। |
+| Earlier: Pick the day you stopped. The periods since then count. | पहले: जिस दिन बंद किया, वह चुनें। उसके बाद के पीरियड गिने जाएँगे। |
+| I was never on it: Ticked by mistake? It’s removed, and your dates count as they are. | मैं कभी इस पर नहीं थी: ग़लती से चुना था? यह हट जाएगा, और आपकी तारीख़ें जैसी हैं वैसी गिनी जाएँगी। |
+| Keep it on | चालू रखें |

@@ -107,6 +107,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '[data-ob-st="pmos"]');
   check('1 part 3, "Your goals"', /Your goals/.test(await txt(page, '.ob-parts .on')), await txt(page, '.ob-parts .on'));
   await tap(page, '[data-ob-goal="irregular"]'); await tap(page, '#ob-next');
+  await tap(page, '#jd-none');   /* Version 39.26: the quick choices sit behind "I don't remember the dates" */
   v = await view(page);
   check('3 her details say why Sakhi asks', /Why we ask: Sakhi marks your next period, and notices longer gaps./.test(v) && /Details/.test(await txt(page, '.ob-parts .on')), v.slice(0, 300));
   await tap(page, '[data-ob-lp="more"]');

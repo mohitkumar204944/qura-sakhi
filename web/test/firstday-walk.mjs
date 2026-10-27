@@ -61,7 +61,7 @@ await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) 
   await snap('about-you'); await page.fill('#ob-name', 'Riya'); await tap('[data-ob-dec="1990"]'); await snap('about-you-year'); await tap('[data-ob-y="1996"]');
   await snap('stage'); await tap('[data-ob-st="pmos"]');
   await snap('goals'); await tap('[data-ob-goal="irregular"]'); await tap('[data-ob-goal="skin"]'); await snap('goals-picked'); await tap('#ob-next');
-  await snap('details'); await tap('[data-ob-lp="more"]'); await tap('[data-ob-lpm="60"]'); await tap('[data-ob-gap="g45"]'); await tap('[data-ob-dx="ns"]'); await snap('details-answered'); await tap('#ob-next');
+  await snap('details'); await tap('#jd-none'); await tap('[data-ob-lp="more"]'); await tap('[data-ob-lpm="60"]'); await tap('[data-ob-gap="g45"]'); await tap('[data-ob-dx="ns"]'); await snap('details-answered'); await tap('#ob-next');
   await snap('shared-phone'); await tap('[data-ob-sh="me"]'); await settle(600);
   await snap('signup-number'); await page.fill('#su-num', '9876543210'); await tap('#su-send'); await settle(400);
   await snap('signup-code'); await page.fill('#su-code', '123456'); await settle(1200);

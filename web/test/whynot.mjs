@@ -15,7 +15,8 @@
 //   6 G6, G7, What your diary shows: "Ask a Qura doctor about this" first, no "Free government doctor" on a week or month
 //     card, "Free doctor or hospital" kept on a "today" card, and "And meanwhile, a free plan" with the right 12-week plan
 //     while no plan runs (none with a plan, in discreet mode, or in a pregnancy); Start opens that plan's questions;
-//   7 English and Hindi at 360 px, and no page errors.
+//   7 English and Hindi at 360 px, and no page errors;
+//   8 with a plan running: the reason line in her cycle card, her plan's first step still on the first screen, no second plan.
 // Usage: node test/whynot.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -290,6 +291,27 @@ const longPeriod = () => { const ev = regular(30, 2); ev[ev.length - 1] = { d: a
   const tc = await txt(a.page, '#view .xp-card.xp-today');
   check('6 a today card keeps "Free doctor or hospital"', await has(a.page, '#view .xp-card.xp-today [data-go="access-free"]') && !(await has(a.page, '#view .xp-card.xp-today .xp-plan')), tc);
   await done(a);
+}
+
+/* ---------- 8 with a plan running ---------- */
+{
+  /* her plan runs: the reason line sits in her cycle card above it, and her plan's first step stays on the first screen at
+     360 x 800; her plan is untouched, and What your diary shows has the doctor but never a second plan */
+  const cases = [['gaps that vary', { events: periods(4, [34, 23]) }, 'irregular'],
+    ['hormones on and a guessed 1 Oct (Mohit’s diary)', { situation: { hormones: true, hormonesSince: ago(200) }, events: [{ d: '2026-08-05', t: 'start' }, { d: '2026-08-09', t: 'end' }, { d: '2026-09-08', t: 'start' }, { d: '2026-09-12', t: 'end' }, { d: '2026-10-01', t: 'start', approx: true }] }, 'hormones']];
+  for (const [name, seed, k] of cases) {
+    const a = await open({ w: 360, h: 800, seed: Object.assign({ mods: { plan: planOf(20) } }, seed) });
+    const run = await a.page.evaluate(() => !!(window.Saathi.plan && window.Saathi.plan.running()));
+    const f = await a.page.evaluate(() => { const nav = document.querySelector('#tabbar').getBoundingClientRect().top; const st = document.querySelector('#view .today-card .today-it'); const w = document.querySelector('#view .hero .why-row');
+      return { nav: Math.round(nav), step: st ? Math.round(st.getBoundingClientRect().top) : 9999, why: w ? w.dataset.whyK : null }; });
+    check('8 ' + name + ': her plan runs and the reason line is in her cycle card', run && f.why === k, { run, f });
+    check('8 ' + name + ': her plan’s first step still starts on the first screen (360 x 800)', f.step < f.nav, f);
+    check('8 ' + name + ': one line only (no second "Your start date is a guess" note under it)', !(await has(a.page, '#view .hero .approx-note')));
+    await shot(a.page, 'plan-' + k + '-360');
+    await go(a.page, 'explain');
+    check('8 ' + name + ': no free plan offered beside the doctor', !(await has(a.page, '#view .xp-plan')));
+    await done(a);
+  }
 }
 
 /* ---------- 7 Hindi at 360 px ---------- */

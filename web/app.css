@@ -1229,3 +1229,25 @@ body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span
 .cal .day.bleed.guess { background: var(--card); color: var(--bleed); border: 2px dashed var(--bleed); font-weight: 700; }
 .cal .day .gq { position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; border-radius: 9px; background: var(--h-purple); color: var(--card); font-style: normal; font-size: 11px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center; pointer-events: none; }
 .mc-row .mc-guess { min-height: 32px; font-size: 13px; padding: 0 2px; display: inline-flex; align-items: center; vertical-align: middle; }
+/* Version 39.26: her last periods at joining, What your dates show on Your Sakhi, and When did you stop? in Me */
+.jd-sub { margin: -4px 0 0; color: var(--muted); }
+.jd-card { gap: 8px; }
+.jd-gl { margin: 4px 0 0; font-size: 14px; color: var(--fg); overflow-wrap: anywhere; } .jd-gl span { color: var(--muted); font-weight: 500; }
+.jd-mks { display: flex; flex-wrap: wrap; gap: 8px; }
+.jd-mk { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 2px 0 14px; border-radius: 22px; background: var(--h-rose-soft); color: var(--fg); font-weight: 700; font-size: 14px; }
+.jd-x { width: 40px; height: 40px; border-radius: 20px; border: none; background: transparent; color: var(--fg); display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+.jd-x svg { width: 16px; height: 16px; }
+.jd-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; text-align: left; }
+.jd-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.jd-note { display: flex; gap: 10px; align-items: flex-start; background: var(--h-purple-soft); border-radius: 14px; padding: 10px 12px; }
+.jd-note .why-i { flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px; border-radius: 12px; background: var(--card); color: var(--h-purple); font: italic 700 14px/1 Georgia, 'Times New Roman', serif; display: inline-flex; align-items: center; justify-content: center; }
+.jd-note p { margin: 0; flex: 1; min-width: 0; font-size: 14px; color: var(--fg); line-height: 1.45; overflow-wrap: anywhere; }
+.jd-len { gap: 10px; } .jd-len strong { flex: 1; min-width: 0; color: var(--fg); }
+.ys-read { gap: 10px; }
+.ys-fact { display: flex; align-items: center; gap: 12px; } .ys-fact .ico-sm { flex-shrink: 0; }
+.ys-fact .body { display: flex; flex-direction: column; min-width: 0; } .ys-fact strong { color: var(--fg); font-size: 16px; overflow-wrap: anywhere; } .ys-fact strong .num { color: var(--accent); }
+.ys-fact .body span { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.ys-read > * + * { border-top: 1px solid var(--line); padding-top: 10px; } .ys-read > .why-row { border-top: none; }
+.ys-early { margin: -4px 2px 0; color: var(--muted); }
+.stop-list .stop-opt { align-items: flex-start; gap: 12px; } .stop-list .stop-opt.on { box-shadow: inset 0 0 0 2px var(--accent); }
+.stop-opt input[type=radio] { width: 22px; height: 22px; accent-color: var(--accent); flex-shrink: 0; margin: 2px 0 0; }
