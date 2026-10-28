@@ -117,7 +117,7 @@
     intake: { day: ['act', 'food', 'milk', 'lim'], when: true },
     slots: { max: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'meno-diary', text: '@meno_diary', icon: 'diary', hue: 'orange', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: a calcium food on 3 days a week for 40+ bones (food.calcium); the review\'s fix: no repeat inside a week' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: a calcium food on 3 days a week for 40+ bones (food.calcium); the review\'s fix: no repeat inside a week' }, { ver: 1, r: 'R5', at: '2026-10-28', what: 'Version 39.27 (minimalism audit R05): the hot-flush goal counts days with hot flushes from her quick chip; the weekly diary step is for her other goals (its tile stays for more detail)' }],
     steps: [
       { goal: {
         hot: [{ id: 'hot', kind: 'tick', go: 'relief-hot', title: '@relief_hot_t', icon: 'leaf', hue: 'orange', why: 'plan_fb_hot', priv: true, from: 'relief:hot' }],
@@ -129,7 +129,7 @@
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g' }
       ] },
       { goal: { weight: [{ id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food' }], bones: [{ id: 'ca', kind: 'adapter', use: 'food.calcium', when: 'days:0,2,5' }] } },
-      { id: 'diary', kind: 'tick', go: 'meno-diary', title: '@tile', icon: 'diary', hue: 'orange', why: 'plan_fb_any', priv: true, when: 'days:6', if: ['route'], from: 'meno-diary', check: true }
+      { id: 'diary', kind: 'tick', go: 'meno-diary', title: '@tile', icon: 'diary', hue: 'orange', why: 'plan_fb_any', priv: true, when: 'days:6', if: ['route', '!goal:hot'], from: 'meno-diary', check: true }
     ],
     list: [{ use: 'today' }],
     doctor: []

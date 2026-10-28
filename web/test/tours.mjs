@@ -241,13 +241,14 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await sleep(1800);   /* she reads it: the reminders question's moment comes and goes while the tour is up */
   for (let k = 0; s && k < 10; k++) { seen.push(s); const sh = await page.$eval('#sheet-root', (e) => e.innerText).catch(() => ''); if (/Get a heads-up|Ring on time/.test(sh)) seen.push({ hash: 'SHEET', n: sh.slice(0, 40) }); s = await next(page); }
   check('9 three steps on Today, with nothing popping up in between', seen.length === 3 && seen.every((x) => x.hash === '#home'), seen.map((x) => x.hash + ' ' + x.n));
-  check('9 it wasn\'t asked about reminders during the tour', !(await page.evaluate(() => (window.Saathi.state.prompts || {}).notifyIntro)));
+  check('9 it wasn\'t asked about reminders during the tour', !(await page.evaluate(() => (window.Saathi.state.prompts || {}).notifyAuto)) && !(await page.evaluate(() => window.__calls.some((c) => c[0] === 'askNotify'))));
   check('9 the full tour didn\'t start', (await st(page)).full.st === 'first');
   await page.waitForSelector('#fl-save'); await tap(page, '#fl-save');   /* the tour ends on her first log; she saves it */
   await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
-  check('9 back on Today afterwards: no tip again, and the reminders question comes once', !(await now(page)) && /Get a heads-up before your period\?/.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')));
-  await tap(page, '#ni-no'); await page.evaluate(() => { location.hash = '#diary'; }); await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
-  check('9 and never again after "Not now"', !/Get a heads-up/.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')) && !(await now(page)));
+  const asks = () => page.evaluate(() => window.__calls.filter((c) => c[0] === 'askNotify').length);
+  check('9 back on Today afterwards: no tip again, and Android\'s own "Allow" comes once, with no sheet (Version 39.27: reminders on by default)', !(await now(page)) && (await asks()) === 1 && !(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')));
+  await page.evaluate(() => { location.hash = '#diary'; }); await sleep(600); await page.evaluate(() => { location.hash = '#home'; }); await sleep(2500);
+  check('9 and never again', (await asks()) === 1 && !(await now(page)));
   /* How to use Sakhi: the full tour walks Today, Diary, Explore, Help and Me */
   await page.evaluate(() => { location.hash = '#me-help'; }); await page.waitForSelector('[data-tour-full]'); await tap(page, '[data-tour-full]');
   const full = await walk(page);

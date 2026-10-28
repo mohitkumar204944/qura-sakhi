@@ -687,7 +687,7 @@ body.hi .hand { font-family: 'Kalam', var(--font-hi); }
 .fab-it.primary .fi { background: var(--accent-strong); color: #FFFFFF; }
 .fab-it:active .fi { transform: scale(0.94); }
 @keyframes fab-in { from { opacity: 0; transform: translateY(10px); } }
-body.has-fab main { padding-bottom: 168px; }
+body.has-fab main, body.fab-page main { padding-bottom: 168px; }
 body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 @media (min-width: 600px) { .fab { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); } .fab-menu { bottom: calc(170px + env(safe-area-inset-bottom, 0px)); } }
 
@@ -987,7 +987,7 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .slot-more[open] > summary { margin-bottom: 8px; }
 .slot-in { display: grid; gap: 10px; }
 .care-p { margin: -6px 0 4px; }
-.hs-list .hs-sos { border: 1.5px solid var(--accent); }
+.hs-list .hs-sos { border: 1.5px solid var(--accent); } a.item { text-decoration: none; box-sizing: border-box; }   /* Version 39.27: Help's "Call 112 now" is a link to the dialer */
 
 /* Version 39.1 review: the Diary's three tabs fit a 360 px phone; "This month's signs" keeps its not-done dot */
 .tabs.dtabs { -webkit-mask-image: none; mask-image: none; overflow-x: visible; }

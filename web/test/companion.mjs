@@ -145,11 +145,11 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 her steps: walking from 10 minutes, one food change every two weeks, a bedtime', /Walking that grows from 10 minutes a day/.test(v) && /One food change every two weeks, starting with: Half the plate sabzi/.test(v) && /A regular bedtime: midnight/.test(v));
   check('2 what happens when, with no percentage or promise', /What happens when/.test(v) && /Week 4: a look at your first month/.test(v) && /It is different for every woman/.test(v) && !/%|guarantee|cure|fix your/i.test(v));
   check('2 skipped months: one doctor check, and a pregnancy test first if she could be pregnant', /Periods that skip months/.test(v) && /do a pregnancy test first/.test(v));
-  check('2 the Start screen: when to start, and the evening check-in time', /When do you want to start\?/.test(v) && (await has(page, '[data-rv-at="20:00"].on')));
+  check('2 the Start screen: when to start, and the evening check-in time (Version 39.27: 10 pm, after her 9:15 pm walk)', /When do you want to start\?/.test(v) && (await has(page, '[data-rv-at="22:00"].on')));
   await tap(page, '#pl-rv-go'); await settle(page, 600);
   await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; document.getElementById('tour-root') && (document.getElementById('tour-root').innerHTML = ''); }); await go(page, 'home');
   let s = await st(page);
-  check('2 what joining saved: her goal, gap, skipped months and day; the plan; the 8 pm reminder', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '20:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
+  check('2 what joining saved: her goal, gap, skipped months and day; the plan; the reminder after her walk (10 pm)', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '22:00') && JSON.stringify(s.goals) === '["track","irregular"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);
   check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
   check('2 Today: a greeting by name, her plan and day, and her four steps (Version 39.13: yoga and the walk apart)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /PLAN DAY 1/.test(td) && /0 of 4 done today/.test(td) && /Cycle care yoga\n(Before a meal · )?\d+ min[\s\S]*?Start/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && /In bed by midnight\nTonight: slow breaths/.test(td), td);   /* Version 39.22: tonight's session under her bedtime */
@@ -166,7 +166,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   v = await view(page);
   check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 4 done today · 1 of 7 days this week/.test(v) && /Tomorrow, add: Yoga, Wind down, in bed by midnight\./.test(v) && /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
-  check('4 and when Sakhi asks again', /Tomorrow: the same steps. See you at 8 pm./.test(v), v.slice(0, 500));
+  check('4 and when Sakhi asks again', /Tomorrow: the same steps. See you at 10 pm./.test(v), v.slice(0, 500));
   check('4 no "streak" anywhere', !/streak/i.test(v));
   await shot(page, '4-feedback');
   s = await st(page); const lg = s.mods.plan.log[TODAY] || {};
@@ -306,7 +306,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   check('10 Help is in the header, not a tab; the language button moved to Me', (await has(page, '#topbar #help-btn')) && !(await has(page, '#topbar [data-langs]')));
   await tap(page, '#help-btn');
   const hs = await page.$eval('#sheet-root', (e) => e.innerText);
-  check('10 Help: call 112, see a doctor, when to see a doctor', /Emergency: call 112/.test(hs) && /See a doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
+  check('10 Help: call 112, see a doctor, when to see a doctor', /Call 112 now/.test(hs) && /See a doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
   await tap(page, '#hs-doc');
   check('10 "See a doctor" opens the doctor page', (await page.evaluate(() => location.hash)) === '#ask');
   await tap(page, '#help-btn'); await tap(page, '#hs-guide');

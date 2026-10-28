@@ -4547,3 +4547,108 @@ don't remember the dates" first, so the suites that join keep their guessed star
 protect tap "I don't remember the dates" before the quick choices.
 
 **Wording:** section 19.26 of the review.
+
+## 70. Version 39.27: fix the loop and the truth
+
+Phase 1 of the minimalism audit (`docs/minimalism-audit-2026-10-27.md`, R01 to R07; mockup
+claude.ai/artifact/2a1AsJqHy4x9RyqR61GFQ8). Mohit, 28 Oct: "go ahead and build it and make reminders by default on no need
+to ask user and no need for 90 minute gap wherever needed have reminders". So reminders are on by default with no question in
+Sakhi's words, and R02 keeps only the order fix: no spacing rule and no cap.
+
+**R01, reminders on by default** (`autoNotify` in core):
+- Phone reminders (`settings.notify`) are on from the start. On Android 10 to 12 there is no prompt, so they are simply on,
+  at boot and whenever she comes back to the app.
+- Android 13 and newer still shows its own "Allow" once (`prompts.notifyAuto`). It comes at the first of:
+  - Today after her first-run tour (never during it);
+  - "Start my plan";
+  - a reminder she sets herself, which may ask again (`autoNotify(true, true)`).
+- "Don't allow" is final: Sakhi doesn't ask again on its own.
+- Off stays off. The Me > Reminders switch sets `settings.notifyOff`, and only she turns them on again (the switch, the
+  heads-up card's "Remind me", or a reminder she sets, which clears it with a "Phone reminders are on" toast).
+- **Gone:** the "Turn on phone reminders?" sheet (`askNotifyNow`), the "Get a heads-up before your period?" sheet
+  (`askNotifyIntro`), the setup card's reminder row, and the Start card's "Allow reminders" and "Ring on time?" cards.
+  "Ring on time?" now comes only when she sets a daily reminder herself (the pill, a medicine), as before.
+- **The Start card** names what will ring, in her evening's order (`remLine`): "Reminders are on: your 9:15 pm walk, your 10
+  pm check-in, your 10:30 pm wind-down and a note the day before your period. Nothing shows on the lock screen. Change them any
+  time in Me > Reminders." Discreet mode leaves the period note out. When she switched them off, or the phone said no
+  (`S.alerts.blocked`), the line says so and where to change it.
+- **The heads-up card's "Remind me"** (`#hu-rem`) turns them on in one tap.
+- **No period note while she is trying for a baby**, as the heads-up card already skipped her.
+- `S.alerts` gains `auto(ask)`, `off()`, `blocked()` and `period()`.
+- **Existing women:** a woman whose reminders were off without `notifyOff` gets them on once, on her next open. Sakhi can't
+  tell an old "Not now" from never being asked.
+
+**R02, the check-in after her last step** (`ciAt` in the plan):
+- The check-in rings at her time (8 pm unless she picked one), or 45 minutes after her time to move when that is later, but
+  not later than 45 minutes before her bedtime target. A walk after dinner (9:15 pm) puts it at 10 pm.
+- A time she picks herself stays exactly as picked (`remPick`). That covers the Start card's chips, her plan settings and an
+  evening time set in Reminders, which `pauseSync0` reads through `ciSet`.
+- An older plan's 8 pm reminder moves after her walk on its next open.
+- The times to pick gain 9:30 and 10 pm. Every screen that names the check-in time reads `ciAt`. Her settings say "10 pm,
+  after your walk".
+- **No spacing rule** (Mohit): the walk cue, the check-in and the wind-down each ring at their own time. Only a wind-down due
+  within 15 minutes of the check-in rides on it (`windNear`, before: 60 minutes).
+
+**R03, her steps carry on after week 12:**
+- From day 85 a 12-week plan carries on by itself: `d.keep` (section 49's "Keep it light") and `d.carried`. `carrySync` runs
+  in the plan's new `beforeRender` hook, so Today shows it at once.
+- It doesn't carry on for the after-birth plan (it keeps its own end page), for pregnancy (no end), or for a woman who
+  already saw her end page (`endSeen`).
+- **Today**, until she opens her results: "Your 12 weeks are done. Your steps carry on." with "See your results"
+  (`plan-end`) and a Stop that asks once. Her steps stay. No second card in "Sakhi says".
+- **`plan-end`** (`renderEnd`) is her 12 weeks' results page: her days out of 84, her result, the card for everyone, and
+  "Your steps carry on", "Work on something else" or "Stop my plan".
+- **Reminders** (`remEnd`): a plan that carries on books its reminders to 4 weeks past week 12 from the start (day 112), so
+  day 85 still rings. After that they run to 4 weeks past the last day she opened Sakhi, and never past month 12. Mohit wants
+  reminders wherever they are needed, so the audit's 4-week stop with a "keep going" question was not built.
+- A plan she leaves soon after day 85 counts to her last active week (`pastEntry`), so her next plan starts at her level.
+
+**R04, every line about her is true:**
+- Findings say "{k} of your last {m} gaps" with her real count (`vars.m`).
+- `fertWhy` checks gaps outside 21 to 35 days (or more than 7 days apart) before "too few", so long gaps never promise
+  fertile days. The notes meter then promises "what repeats for you, with a fuller report for your doctor" (`meter_rep`).
+  "Needs 6 regular gaps · you have {n}" counts only gaps of 21 to 35 days.
+- The ring legend says "Usual range 21–35 days".
+- The weekly quiz card is headed "Sach ya Myth?".
+- A period logged while she is trying for a baby counts for her garden quietly: no burst and no growing petal on screen.
+- Wording fixes:
+  - "Your step" for one step;
+  - "Tomorrow" lines without "today";
+  - a badge pop-up that says when she earned it, not "Earn your first petal.";
+  - the check-in's footnote says only "Nothing is scored here." until she saves;
+  - the current cycle in Cycles reads "cycle day 49", as Today counts it.
+- Today and Diary keep room under the last card wherever the + button can show (`body.fab-page`).
+
+**R05, each plan measures what it promises:**
+- **Pain plan:** "Pain today?" with the day page's 4 answers.
+  - It shows on the first 3 days of each period, once per period, in her plan line on Today, in place of "noted for your
+    results".
+  - If she skips it there, the evening check-in asks.
+  - One tap saves it on today's period entry (`S.cycle.setPain`), where `painCompare` reads it.
+  - Never on a shared phone or in discreet mode.
+- **Hot-flush goal** (the midlife plan):
+  - "Hot flushes" takes Bloating's place in her quick chips while the goal runs, before her periods stop too. This changes
+    section 60's one quick set for her.
+  - Her result is "Days with hot flushes", 30 days before her start against the last 30 days.
+  - The weekly symptom diary is no longer a step for this goal (`progs/v1.js` meno R5); its tile stays for more detail.
+- The golden plans and the plan baseline were re-recorded.
+
+**R06, her free plan never folded away:**
+- When a month or week doctor finding and her plan's offer (Today's "Ready for you", or a plan waiting to start) are due
+  together, they are one card (`.xp-pair`): the finding, a Qura doctor and her report first, then "And meanwhile, a free plan"
+  with "See my plan". The plan's own card steps aside (`S.explain.pairsPending`; `S.plan.offerPair`, `S.plan.offerGo`).
+- With no finding, the offer is the first card in "Sakhi says".
+- The journey recorder now fails on a tap inside a closed fold.
+
+**R07, safety one tap closer:**
+- The after-birth danger cards have "Call 108", "Call 102", "Call 112" (and 14416 where it applies). Each opens the phone's
+  dialer with the number filled in, and Copy stays small under them.
+- Help shows from the first joining screen. While she joins, its sheet holds only the rows that open on top: "Call 112 now",
+  "Other helplines" and "Thoughts of harming myself or my baby".
+- Help's first row is "Call 112 now" (a `tel:112` link), with "Other helplines" under it.
+
+**Tests:** `test/minimal.mjs`. Updated: notify, tours, fieldtest, value, firstday, companion, notices, goals, pmosplan,
+results, carryon, daily, winddown, follow, insights and cyclefirst, plus the re-recorded golden and progs baselines.
+
+**Wording:** section 19.27 of the review. New lines wait for the doctor: "Pain today?", "Days with hot flushes", the meter's
+promise, and the findings' "{k} of your last {m}".

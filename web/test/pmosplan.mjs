@@ -373,7 +373,7 @@ for (const [days, paused] of [[21, true], [50, false]]) {
   await setPlan(page, started()); await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   await page.$eval('#pl-rem', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(page, 300);
   let r = await page.evaluate(() => window.Saathi.reminders.get('plan'));
-  check('10 the reminder: every day at 8 pm (Version 37.1: her evening check-in), until the 12 weeks end', r && r.time === '20:00' && r.every === 1 && r.until === iso(TODAY, 83) && r.mod === 'plan', r);
+  check('10 the reminder: every day at 8 pm (Version 37.1: her evening check-in), past the 12 weeks by 4 more (Version 39.27: her steps carry on)', r && r.time === '20:00' && r.every === 1 && r.until === iso(TODAY, 111) && r.mod === 'plan', r);
   check('10 only evening times are offered for the check-in', !(await has(page, '[data-pl-at="07:00"]')) && (await has(page, '[data-pl-at="18:00"]')) && (await has(page, '[data-pl-at="21:00"]')));
   await tap(page, '[data-pl-at="19:00"]');
   r = await page.evaluate(() => window.Saathi.reminders.get('plan'));

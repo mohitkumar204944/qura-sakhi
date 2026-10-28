@@ -229,7 +229,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 }
 {
   const { ctx, page, errs } = await open({ android: true });
-  check('6 periods, on Android: turning on phone reminders is a step', /Turn on reminders on this phone/.test(await text(page, '#view .setup-card')));
+  check('6 periods, on Android: no reminder step, phone reminders are on already (Version 39.27)', !/Turn on reminders on this phone/.test(await text(page, '#view .setup-card')) && await page.evaluate(() => window.Saathi.state.settings.notify === true));
   check('6 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -255,13 +255,13 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 
 /* ---------- 8. Reminders everywhere they belong (rec 6) ---------- */
 {
-  const { ctx, page, errs } = await open({ hash: '#me', android: true, seed: { reminders: [{ id: 'tools-c-a', mod: 'tools', kind: 'custom', title: { en: 'A', hi: 'A' }, start: isoAgo(-3), time: '09:00', on: true }, { id: 'tools-c-b', mod: 'tools', kind: 'custom', title: { en: 'B', hi: 'B' }, start: isoAgo(-3), time: '09:00', on: false }] } });
+  const { ctx, page, errs } = await open({ hash: '#me', android: true, seed: { settings: { notifyOff: true }, reminders: [{ id: 'tools-c-a', mod: 'tools', kind: 'custom', title: { en: 'A', hi: 'A' }, start: isoAgo(-3), time: '09:00', on: true }, { id: 'tools-c-b', mod: 'tools', kind: 'custom', title: { en: 'B', hi: 'B' }, start: isoAgo(-3), time: '09:00', on: false }] } });
   /* Version 39.2 (diet audit F11): one Reminders row in Me; her lists and the phone's alerts are inside it */
   check('8 Me: Reminders, with how many are on', /Reminders/.test(await view(page)) && /1 on/.test(await card(page, '#me-rem-list')), await card(page, '#me-rem-list'));
   await tap(page, '#me-rem-list'); await sleep(250);
   check('8 it opens the one Reminders page, which lists her reminders', await page.evaluate(() => location.hash === '#me-reminders') && !!(await page.$('#view [data-go="tools-reminders"]')));
   await tap(page, '#view [data-go="tools-reminders"]'); await sleep(250);
-  check('8 Android with phone alerts off: the centre says they will not ring, with a way to turn them on', /will not ring/.test(await view(page)) && !!(await page.$('#tl-alerts [data-go="me-reminders"]')));
+  check('8 Android with phone alerts she turned off: the centre says they will not ring, with a way to turn them on', /will not ring/.test(await view(page)) && !!(await page.$('#tl-alerts [data-go="me-reminders"]')));
   await setState(page, () => { const S = window.Saathi; S.state.settings.notify = true; S.save(); }); await go(page, 'me'); await go(page, 'tools-reminders');
   check('8 alerts on: no warning', !(await page.$('#tl-alerts')));
   check('8 no page errors', !errs.length, errs);
@@ -276,9 +276,9 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 {
   /* regular 28-day cycles, the last start 23 days ago: the likely window opens in two days */
   const evs = [23, 51, 79, 107, 135, 163].flatMap((n) => [{ d: isoAgo(n), t: 'start' }, { d: isoAgo(n - 5), t: 'end' }]);
-  const { ctx, page, errs } = await open({ android: true, seed: { events: evs, prompts: { setup: 'off' } } });
+  const { ctx, page, errs } = await open({ android: true, seed: { events: evs, prompts: { setup: 'off' }, settings: { notifyOff: true } } });
   const hu = await card(page, '#view .hu-card');
-  check('8 the period heads-up offers phone reminders while they are off (Android)', /Remind me on this phone/.test(hu) && !!(await page.$('#view .hu-card [data-go="me-reminders"]')), hu);
+  check('8 the period heads-up offers phone reminders while she has them off (Android); one tap turns them on (Version 39.27)', /Remind me on this phone/.test(hu) && !!(await page.$('#view .hu-card #hu-rem')), hu);
   await setState(page, () => { const S = window.Saathi; S.state.settings.notify = true; S.save(); }); await go(page, 'learn'); await go(page, 'home');
   check('8 and not once they are on', !/Remind me on this phone/.test(await card(page, '#view .hu-card')));
   check('8 no page errors', !errs.length, errs);

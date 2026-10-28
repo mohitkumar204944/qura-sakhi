@@ -84,7 +84,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const { ctx, page, errs } = await open({ seed: { intake: IK, reminders: [REM('08:00', { en: 'Your plan for today', hi: 'आज का आपका प्लान' })], mods: { plan: planOf('cycle', 'irregular', ago(5), { remAt: '08:00' }) } } });
   await go(page, 'plan'); await go(page, 'home');
   const r = (await st(page)).reminders.find((x) => x.id === 'plan');
-  check('1 a Version 37 morning check-in moves to 8 pm, with the evening words', r && r.time === '20:00' && r.title.en === 'How did today go? 1 minute', r);
+  check('1 a Version 37 morning check-in moves to the evening, after her 9:15 pm walk (Version 39.27: 10 pm), with the evening words', r && r.time === '22:00' && r.title.en === 'How did today go? 1 minute', r);
   await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   check('1 My plan offers evening times only', !(await has(page, '[data-pl-at="08:00"]')) && (await has(page, '[data-pl-at="18:00"]')) && (await has(page, '[data-pl-at="21:00"]')));
   await ctx.close();
@@ -185,7 +185,8 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await page.$eval('[data-log="start"]', (b) => b.click()); await settle(page, 600);
   await page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await go(page, 'home');
   let v = await txt(page, '#view .today-card');
-  check('5 ' + pack + ': the day she logs it, her plan says it noticed', /Your period came after 40 days\. Sakhi noted it for your results\./.test(v) && (!extraLine || extraLine.test(v)), v);
+  /* Version 39.27 (R05): on the pain plan, "Pain today?" takes the place of "noted for your results" */
+  check('5 ' + pack + ': the day she logs it, her plan says it noticed', (pack === 'pain' ? /Your period came after 40 days\.\s+Pain today\?/.test(v) && !/noted it for your results/.test(v) : /Your period came after 40 days\. Sakhi noted it for your results\./.test(v)) && (!extraLine || extraLine.test(v)), v);
   await go(page, 'plan');
   check('5 ' + pack + ': My plan says so too', /Your period came after 40 days/.test(await view(page)));
   await page.clock.setSystemTime(at(3, '10:00')); await go(page, 'home');
@@ -201,29 +202,29 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   const { ctx, page, errs } = await open({ seed: { events: ev, intake: IK, reminders: [REM()], mods: { plan: planOf('cycle', 'irregular', ago(84), { log: log, intake: IK, doc: 'done' }) } } });
   await go(page, 'home');
   let v = await view(page);
-  check('6 after week 12, Today says it is done and opens her results', /Your 12 weeks are done/.test(await txt(page, '#view .today-card')) && (await has(page, '#view .today-card [data-go="plan"].primary')), await txt(page, '#view .today-card'));
-  check('6 ... and her plan\'s end card leads "Sakhi says", saying how many days she followed it', (await slotFirst(page)) === 'Your 12 weeks are done' && /You followed your plan on 3 of 84 days/.test(v), [await slotFirst(page), v.slice(0, 1200)]);
-  await go(page, 'plan');
+  /* Version 39.27 (minimalism audit R03): from day 85 her steps carry on; Today says her 12 weeks are done, with her results
+     and Stop; no second card in "Sakhi says" */
+  check('6 after week 12, Today says it is done, her steps carry on, her results one tap away', /Your 12 weeks are done\s+Your steps carry on\./.test(await txt(page, '#view .pl-carry')) && (await has(page, '#view .pl-carry [data-go="plan-end"].primary')) && (await has(page, '#view .pl-carry #pl-carry-stop')) && /Walk \d+ minutes/.test(await txt(page, '#view .today-card')), await txt(page, '#view .today-card'));
+  check('6 ... and no second "12 weeks are done" card in "Sakhi says"', (await slotFirst(page)) !== 'Your 12 weeks are done' && !(await has(page, '#view .pl-sl-end')), await slotFirst(page));
+  await go(page, 'plan-end');
   v = await view(page);
   check('6 the summary is honest, then her results', /You followed your plan on 3 of 84 days\./.test(v) && /Want to try again, smaller\?/.test(v) && !/You did 12 weeks/.test(v), v.slice(0, 600));
   check('6 results: her joining answer as "before", and the gap that ended during her plan', /You said: 36 to 45 days/.test(v) && /about 50/.test(v), v.match(/Days between periods.{0,200}/s));
   /* Version 39.6: one end card for every woman, with no judging word (MODULE_API section 49) */
   check('6 every plan ends with "Show this page to a doctor"', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc [data-go="report-show"]')) && !/If nothing has changed/.test(v));
-  check('6 what next: keep going, or a new 12 weeks', /What next\?/.test(v) && (await has(page, '#pl-keep')) && (await has(page, '#pl-again')));
+  check('6 what next: her steps carry on, a new 12 weeks, or Stop (no gate)', /What next\?/.test(v) && /Your steps carry on/.test(v) && !(await has(page, '#pl-keep')) && (await has(page, '#pl-again')) && (await has(page, '#pl-end-stop')));
   await shot(page, '6-end');
   await go(page, 'home');
-  check('6 once seen, the end card leaves the slot (the line on Today stays)', (await slotFirst(page)) !== 'Your 12 weeks are done' && /Your 12 weeks are done/.test(await txt(page, '#view .today-card')));
-  await go(page, 'plan'); await tap(page, '#pl-keep');
+  check('6 once seen, Today\'s row goes; her steps stay', !(await has(page, '#view .pl-carry')) && /Walk \d+ minutes/.test(await txt(page, '#view .today-card')));
   const s = await st(page); const r = s.reminders.find((x) => x.id === 'plan');
-  /* Version 39.6: "Keep it light" until month 12, and the evening check-in ends there too */
-  check('6 "Keep going": the plan carries on, and so does the evening check-in, until month 12', s.mods.plan.keep === true && r && r.on && r.until === iso(s.mods.plan.start, 52 * 7 - 1) && /Keep it light/.test(await view(page)), [s.mods.plan.keep, r]);
+  check('6 her plan carries on ("Keep it light"), and so does the evening check-in: 4 weeks past her last visit (Version 39.27)', s.mods.plan.keep === true && s.mods.plan.carried === TODAY && r && r.on && r.until === iso(TODAY, 28) && /KEEP IT LIGHT/.test(await view(page)), [s.mods.plan.keep, r]);
   check('6 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 {
   const log = {}; [70, 50].forEach((n) => { log[ago(n)] = { ci: 1, ck: { move: 'd' } }; });
   const { ctx, page, errs } = await open({ seed: { intake: Object.assign({}, IK, { goal: 'pain', pain: 'stop' }), mods: { plan: planOf('pain', 'pain', ago(90), { goal: 'pain', log: log, intake: { stage: 'cycle', goal: 'pain', pain: 'stop' } }) } } });
-  await go(page, 'plan');
+  await go(page, 'plan-end');
   const v = await view(page);
   check('6 a light plan ends the same way', /Your 12 weeks are done/.test(v) && /You followed your plan on 2 of 84 days/.test(v) && /What next\?/.test(v), v.slice(0, 500));
   check('6 pain that stopped her day: a doctor is offered at the end', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc [data-go="access-doctor"]')));
@@ -271,7 +272,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(page, 'home');
   check('8 Hindi: the end of 12 weeks', /आपके 12 हफ़्ते पूरे हुए/.test(await view(page)) && /अपने नतीजे देखें/.test(await view(page)), (await view(page)).slice(0, 600));
   check('8 360 px: Today doesn\'t scroll sideways', await noScroll(page));
-  await go(page, 'plan');
+  await go(page, 'plan-end');
   check('8 Hindi: the summary and what next', /आपने 84 में से 2 दिन प्लान पूरा किया/.test(await view(page)) && /आगे क्या\?/.test(await view(page)) && /आपने बताया: 36 से 45 दिन/.test(await view(page)), (await view(page)).slice(0, 600));
   check('8 360 px: the summary doesn\'t scroll sideways', await noScroll(page));
   await ctx.close();

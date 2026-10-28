@@ -501,7 +501,10 @@
   const sideName = (s) => T('side_' + (s === 'R' ? 'R' : 'L'));
   const other = (s) => (s === 'R' ? 'L' : 'R');
   const ageText = (n) => { if (n === 1) return T('age_d1'); if (n < 14) return TF('age_d', { n: n }); if (n < 70) { const w = Math.floor(n / 7); return w === 1 ? T('age_w1') : TF('age_w', { w: w }); } return TF('age_m', { m: Math.floor(n / 30.4) }); };
-  const copyBtn = (n, cls) => '<button type="button" class="btn sm ' + (cls || '') + '" data-pst-copy="' + n + '">' + esc(t('copy')) + ' ' + n + '</button>';
+  /* Version 39.27 (minimalism audit R07): a danger card's numbers are Call buttons that open the phone's dialer with the number
+     filled in (she still presses call, so a mistaken tap is harmless); Copy stays, small, under them */
+  const callRow = (ns, cls) => '<div class="pst-row pst-calls">' + ns.map((n) => '<a class="btn sm pst-call ' + (cls || '') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>' +
+    '<div class="pst-row pst-copies">' + ns.map((n) => '<button type="button" class="linkbtn pst-copy" data-pst-copy="' + n + '">' + esc(t('copy')) + ' ' + n + '</button>').join('') + '</div>';
   function wireCopy(v) {
     v.querySelectorAll('[data-pst-copy]').forEach((b) => { if (b._pst) return; b._pst = true; b.addEventListener('click', () => {
       const n = b.dataset.pstCopy; const done = () => S.toast(t('copied') + ' ' + n);
@@ -577,7 +580,7 @@
   const TIP_LINK = { tp_sore: R.feed, fl_redpatch: R.feed, tp_leak: R.pelvic, tp_mood: R.mood };
   function inlineHtml(list) {
     return list.map((f) => {
-      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T(f.k === 'fl_harm' ? 'fl_harm_h' : 'fl_112')) + '</strong><span>' + esc(T(f.k)) + '</span><div class="pst-row">' + copyBtn('112', 'pst-onDark') + (f.k === 'fl_harm' ? copyBtn('14416', 'pst-onDark') : copyBtn('108', 'pst-onDark')) + '</div></div>';
+      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T(f.k === 'fl_harm' ? 'fl_harm_h' : 'fl_112')) + '</strong><span>' + esc(T(f.k)) + '</span>' + callRow(f.k === 'fl_harm' ? ['112', '14416'] : ['112', '108'], 'pst-onDark') + '</div>';
       if (f.lvl === 'd') return '<div class="flag pst-col"><strong>' + esc(T('fl_today')) + '</strong><span>' + esc(T(f.k)) + '</span></div>';
       const go = TIP_LINK[f.k];
       return '<div class="pst-tip"><p>' + esc(T(f.k)) + '</p>' + (go ? '<button type="button" class="btn sm pst-self" data-go="' + go + '">' + esc(T(go === R.feed ? 't_feed' : (go === R.pelvic ? 't_pelvic' : 't_mood'))) + '</button>' : '') + '</div>';
@@ -587,7 +590,7 @@
   function summaryHtml(v, n) {
     const fl = flagsOf(v, n); const U = fl.filter((f) => f.lvl === 'u'), D = fl.filter((f) => f.lvl === 'd');
     let h = '';
-    if (U.length) h += '<div class="flag urgent pst-col"><strong>' + esc(T('fl_112')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(U.map((f) => T(f.s)).join(', ')) + '</span><div class="pst-row">' + copyBtn('112', 'pst-onDark') + copyBtn('108', 'pst-onDark') + (U.some((f) => f.k === 'fl_harm') ? copyBtn('14416', 'pst-onDark') : '') + '</div></div>';
+    if (U.length) h += '<div class="flag urgent pst-col"><strong>' + esc(T('fl_112')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(U.map((f) => T(f.s)).join(', ')) + '</span>' + callRow(['112', '108'].concat(U.some((f) => f.k === 'fl_harm') ? ['14416'] : []), 'pst-onDark') + '</div>';
     if (D.length) h += '<div class="flag pst-col"><strong>' + esc(T('fl_today')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(D.map((f) => T(f.s)).join(', ')) + '</span></div>';
     if (!U.length && !D.length) h += answered(v) ? '<div class="flag ok">' + fi(S.I.check) + '<span class="pst-ft">' + esc(T('ok_none')) + '</span></div>' : '<p class="small">' + esc(T('r_tap')) + '</p>';
     return h;
@@ -659,11 +662,11 @@
     const yn = (q) => '<div class="grid2">' + [['yes', 'yes'], ['no', 'no']].map((x) => '<button type="button" class="btn sm' + (moodQ[q] === x[0] ? ' on' : '') + '" data-pst-q="' + q + '" data-pst-a="' + x[0] + '" aria-pressed="' + (moodQ[q] === x[0] ? 'true' : 'false') + '">' + esc(t(x[1])) + '</button>').join('') + '</div>';
     let res = '';
     const anyYes = moodQ.q1 === 'yes' || moodQ.q2 === 'yes';
-    if (anyYes) res = '<div class="flag pst-col"><strong>' + esc(T('q_yes_h')) + '</strong><span>' + esc(T('q_yes_p')) + '</span><div class="pst-row">' + copyBtn('14416', 'pst-onLight') + '</div></div>';
+    if (anyYes) res = '<div class="flag pst-col"><strong>' + esc(T('q_yes_h')) + '</strong><span>' + esc(T('q_yes_p')) + '</span>' + callRow(['14416'], 'pst-onLight') + '</div>';
     else if (moodQ.q1 === 'no' && moodQ.q2 === 'no') res = '<div class="flag ok">' + fi(S.I.check) + '<span class="pst-ft">' + esc(T('q_no_p')) + '</span></div>';
     else res = '<p class="small">' + esc(T('q_wait')) + '</p>';
     v.innerHTML = S.backRow(T('m_h'), R.hub, true) + '<p class="small">' + esc(T('m_p')) + '</p>' +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('harm_h')) + '</strong><span>' + esc(T('harm_p')) + '</span><div class="pst-row">' + copyBtn('14416', 'pst-onDark') + copyBtn('112', 'pst-onDark') + '</div></div>' +
+      '<div class="flag urgent pst-col"><strong>' + esc(T('harm_h')) + '</strong><span>' + esc(T('harm_p')) + '</span>' + callRow(['14416', '112'], 'pst-onDark') + '</div>' +
       '<div class="card"><h3>' + esc(T('q_h')) + '</h3><p class="small">' + esc(T('q_p')) + '</p><p class="pst-q">' + esc(T('q1')) + '</p>' + yn('q1') + '<p class="pst-q">' + esc(T('q2')) + '</p>' + yn('q2') + '<div id="pst-qres">' + res + '</div></div>' +
       '<div class="card"><div class="row"><span class="pill ok">1</span><h3>' + esc(T('blues_h')) + '</h3></div><p class="small pst-txt">' + esc(T('blues_p')) + '</p></div>' +
       '<div class="card"><div class="row"><span class="pill">2</span><h3>' + esc(T('ppd_h')) + '</h3></div><p class="small pst-txt">' + esc(T('ppd_p')) + '</p></div>' +
@@ -707,7 +710,7 @@
     const store6 = '<dl class="kv pst-kv">' + G.store.map((x) => '<dt>' + esc(tx(x[0])) + '</dt><dd>' + esc(tx(x[1])) + '</dd>').join('') + '</dl>';
     const b = birth(); const six = b ? addMonths(b, 6) : null;
     v.innerHTML = S.backRow(T('f_h'), R.hub, false) + '<p class="small">' + esc(T('f_p')) + '</p>' + log + (S.canSave() ? '' : '<p class="small">' + esc(T('tmp_note')) + '</p>' + S.needDiary()) + listHtml +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('baby_h')) + '</strong><ul class="pst-ul">' + li(G.baby) + '</ul><span>' + esc(tx(G.babyNote)) + '</span><div class="pst-row">' + copyBtn('108', 'pst-onDark') + copyBtn('102', 'pst-onDark') + '</div></div>' +
+      '<div class="flag urgent pst-col"><strong>' + esc(T('baby_h')) + '</strong><ul class="pst-ul">' + li(G.baby) + '</ul><span>' + esc(tx(G.babyNote)) + '</span>' + callRow(['108', '102', '112'], 'pst-onDark') + '</div>' +
       acc(T('latch_h'), '<ol class="steps">' + li(G.latch) + '</ol>', true) +
       acc(T('bf_food_h'), '<ul class="pst-ul">' + li(G.food) + '</ul>' + (S.routeOwner && S.routeOwner('periods-fasting') ? '<button type="button" class="btn sm" data-go="periods-fasting">' + esc(T('bf_fast')) + '</button>' : ''), true, 'bf-food') +   /* Version 39.9; the plan's food step opens here (V39.9 review FOOD-02) */
       acc(T('enough_h'), '<ul class="pst-ul">' + li(G.enough) + '</ul>') +
@@ -901,7 +904,7 @@
     if (has('access-schemes-post')) tools.push(['access-schemes-post', 'schemes', 'schemes_s', S.I.file]);
     if (has('pregtools-birth') && n != null && n <= 7) tools.push(['pregtools-birth', 'birthprep', 'birthprep_s', S.I.heart]);
     v.innerHTML = S.backRow(T('h'), 'care', false) + '<p class="small">' + esc(T('p')) + '</p>' + hero +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span><div class="pst-row">' + copyBtn('112', 'pst-onDark') + copyBtn('108', 'pst-onDark') + copyBtn('14416', 'pst-onDark') + '</div></div>' +
+      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108', '14416'], 'pst-onDark') + '</div>' +
       '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
       askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v); wireCopy(v);
@@ -982,7 +985,7 @@
       '.pst-col strong { font-size: 14px; }',
       '.pst-col span, .pst-col li { overflow-wrap: anywhere; }',
       '.pst-col .pst-ul { margin: 0; }',
-      '.pst-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }',
+      '.pst-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; } .pst-call { min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; } .pst-copies { gap: 2px 14px; margin-top: 0; } .pst-copy { min-height: 36px; font-size: 13px; } .flag.urgent .pst-copy { color: inherit; }',
       '.pst-onDark { background: var(--bg); color: var(--fg); border: none; }',
       '.pst-onLight { background: var(--card); }',
       '.pst-self { align-self: flex-start; }',

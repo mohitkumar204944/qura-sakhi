@@ -309,15 +309,14 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   await cleanup(Object.assign(T, { name: '10c' }));
 }
 
-/* ---------- 11. Reminders: asked to turn on phone reminders the moment she sets one (audit 3.3) ---------- */
+/* ---------- 11. Reminders: the moment she sets one, phone reminders are on (audit 3.3; Version 39.27: no question in
+   Sakhi's words, only Android's own "Allow" when the phone needs it) ---------- */
 {
   const T = await open({ seed: { events: regular(10, 3) }, hash: '#contra-mine' });
   const { page } = T;
   await page.$eval('[data-pick="pill"]', (b) => b.click()); await settle(page, 1200);
-  check('11 setting the pill with phone reminders off asks to turn them on', /Turn on phone reminders\?/.test(await sheetText(page)));
-  await page.$eval('#nq-yes', (b) => b.click()); await settle(page, 600);
   const s = await st(page);
-  check('11 "Turn on" asks Android and turns phone reminders on', s.settings.notify === true && (await page.evaluate(() => window.__calls.some((c) => c[0] === 'askNotify'))));
+  check('11 setting the pill with phone reminders off turns them on: Android\'s "Allow", no sheet of Sakhi\'s own', s.settings.notify === true && (await page.evaluate(() => window.__calls.some((c) => c[0] === 'askNotify'))) && !/Turn on phone reminders\?/.test(await sheetText(page)), [s.settings, await sheetText(page)]);
   await go(page, '#tools-reminders');
   check('11 the Reminders page says they ring on this phone (no WhatsApp, no "prototype")', /ring as notifications/.test(await view(page)) && !/WhatsApp message|prototype/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '11' }));

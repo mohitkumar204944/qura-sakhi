@@ -2283,3 +2283,53 @@ scripts, already in review with Version 39.21 (section 19.21), not new lines.
 | Earlier: Pick the day you stopped. The periods since then count. | पहले: जिस दिन बंद किया, वह चुनें। उसके बाद के पीरियड गिने जाएँगे। |
 | I was never on it: Ticked by mistake? It’s removed, and your dates count as they are. | मैं कभी इस पर नहीं थी: ग़लती से चुना था? यह हट जाएगा, और आपकी तारीख़ें जैसी हैं वैसी गिनी जाएँगी। |
 | Keep it on | चालू रखें |
+
+### 19.27 Version 39.27: fix the loop and the truth (MODULE_API section 70)
+
+Phase 1 of the minimalism audit (`docs/minimalism-audit-2026-10-27.md`). Mohit, 28 Oct: reminders on by default, no question
+asked.
+
+**Reused, already reviewed:**
+- The day page's 4 pain answers: No pain · Mild · Needed a painkiller · Couldn't do my day.
+- The after-birth danger cards' words, with the same numbers (108, 102, 112, 14416).
+- "Nothing shows on the lock screen" (Version 34's reminder question).
+- "Your 12 weeks are done", "See your results", "Stop my plan", "Work on something else", "The same steps, and the evening
+  check-in carries on."
+- "Sach ya Myth?" (the quiz's own title), "Hot flushes" (the chip after menopause).
+
+**Please review.** Questions for the doctor:
+1. **"Pain today?"** On the first 3 days of each period, the pain plan asks this once, with the 4 reviewed answers. Her
+   result then counts "Periods that needed a painkiller". Is asking on days 1 to 3 right?
+2. **"Days with hot flushes."** For the hot-flush goal, "Hot flushes" replaces Bloating in her quick chips before her periods
+   stop. Her result counts the days she taps it, 30 days before her plan against the last 30 days. The weekly symptom diary
+   stays for more detail. Is a day count a fair result for this goal?
+3. **The findings' count.** "{k} of your last {m} gaps were longer than 35 days" (before: "of your last 6", even with 2 gaps).
+   Only the number changes. Fine?
+4. **The meter's promise for long gaps:** fertile days are no longer promised to a woman whose gaps fall outside 21 to 35
+   days. Instead: "…Sakhi shows what repeats for you, with a fuller report for your doctor." Fine?
+
+| English | Hindi |
+|---|---|
+| Reminders are on: {list}. Nothing shows on the lock screen. Change them any time in Me > Reminders. | रिमाइंडर चालू हैं: {list}। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें। |
+| your {t} walk · your {t} time to move · your {t} check-in · your {t} wind-down · a note the day before your period | {t} की सैर · {t} चलने-फिरने का समय · {t} का चेक-इन · {t} सुकून के पल · पीरियड से एक दिन पहले एक सूचना |
+| Your phone reminders are off, so nothing will ring. You can turn them on in Me > Reminders. | आपके फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं। |
+| Your phone isn’t letting Sakhi ring reminders. You can allow them in Me > Reminders. | आपका फ़ोन Sakhi को रिमाइंडर बजाने नहीं दे रहा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं। |
+| {t}, after your walk | {t}, आपकी सैर के बाद |
+| Your 12 weeks are done. Your steps carry on. (See your results · Stop) | आपके 12 हफ़्ते पूरे हुए। आपके क़दम जारी रहेंगे। (अपने नतीजे देखें · रोकें) |
+| Your steps carry on | आपके क़दम जारी हैं |
+| Your steps and their reminders end. What you logged stays on your phone. | आपके क़दम और उनके रिमाइंडर बंद हो जाएँगे। जो आपने लिखा, वह आपके फ़ोन पर रहेगा। |
+| Pain today? | आज दर्द है? |
+| Saved for your results | आपके नतीजों के लिए सेव हो गया |
+| Your period came after {n} days. / … about {n} days after the last one. / Your period is noted. | आपका पीरियड {n} दिन बाद आया। / … पिछले से लगभग {n} दिन बाद आया। / आपका पीरियड दर्ज हो गया। |
+| Days with hot flushes | गर्मी के झोंकों वाले दिन |
+| Tap “Hot flushes” on Today on the days you have them, to see this. | इसे देखने के लिए जिन दिनों गर्मी के झोंके आएँ, उन दिनों “आज” पर “गर्मी के झोंके” दबाएँ। |
+| {k} of your last {m} gaps were shorter than 21 days. / … longer than {b} days. | आपके पिछले {m} में से {k} अंतर 21 दिन से छोटे थे। / … {b} दिन से लंबे थे। |
+| Next: {n} more periods with notes, and Sakhi shows what repeats for you, with a fuller report for your doctor. | अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी। |
+| Usual range {a}–{b} days | आम दायरा {a}–{b} दिन |
+| {p} days period · cycle day {c} / Cycle day {c} | {p} दिन पीरियड · चक्र का दिन {c} / चक्र का दिन {c} |
+| Your step | आपका क़दम |
+| Nothing is scored here. (under Save; "Saved. Thank you." comes after) | यहाँ कुछ भी score नहीं होता। |
+| See my plan (in the doctor finding's card) | मेरा प्लान देखें |
+| Call 108 · Call 102 · Call 112 · Call 14416 (Copy, small, under them) | कॉल करें 108 · … |
+| Call 112 now · Emergency, any kind | 112 पर अभी कॉल करें · कोई भी इमरजेंसी |
+| Other helplines · Every emergency number, in one tap | दूसरी हेल्पलाइन · सभी इमरजेंसी नंबर, एक टैप में |

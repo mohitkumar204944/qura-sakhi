@@ -206,9 +206,9 @@ const errsAll = [];
 /* ---------- 8. A fair new 12 weeks ---------- */
 {
   const l = {}; for (let i = 0; i < 84; i++) l[ago(90 - i)] = { min: 30, ck: { move: 'd' }, plate: { half: true, protein: true } };
-  const a = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(90), { log: l }) } }, hash: '#plan' });
+  const a = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(90), { log: l }) } }, hash: '#plan-end' });
   const v = await view(a.page);
-  check('8 the end of 12 weeks: "Keep my habits" or "Work on something else"', /Keep my habits/.test(v) && /Work on something else/.test(v), v.slice(0, 500));
+  check('8 the end of 12 weeks: her steps carry on, or "Work on something else" (Version 39.27)', /Your steps carry on/.test(v) && /Work on something else/.test(v), v.slice(0, 500));
   await a.page.evaluate(() => { const S = window.Saathi; S.plan.startFromIntake({ stage: 'cycle', goal: 'irregular', gap: 'g45', skips: 'n', dx: 'n', signs: ['none'], act: 0, food: 'veg', milk: 'y', lim: [], bed: 'b23', work: 'day', when: 'evening' }); S.plan.start('today', '20:00'); S.save(); });
   const d = await a.page.evaluate(() => window.Saathi.state.mods.plan);
   check('8 the same goal again starts at her last 4 weeks\' minutes, with the habits she kept', d.base >= 200 && d.hab0 === 2 && (d.past || [])[0].pack === 'cycle', { base: d.base, hab0: d.hab0 });
@@ -256,9 +256,9 @@ const errsAll = [];
   a1 = await acts(t1.page);
   check('10 ... ticking an item today marks it done', a1.some((x) => /^prep:check:d/.test(x)), a1);
   errsAll.push(...t1.errs); await t1.ctx.close();
-  const m1 = await open({ seed: { dob: '1976-03-01', situation: { midlife: true }, intake: { goal: 'hot' }, mods: { plan: planOf('meno', 'hot', ago(6)) } } });
+  const m1 = await open({ seed: { dob: '1976-03-01', situation: { midlife: true }, intake: { goal: 'sleep' }, mods: { plan: planOf('meno', 'sleep', ago(6)) } } });
   const ma = await acts(m1.page);
-  check('10 midlife: the weekly diary step is a check (done by filling the diary)', ma.some((x) => /^diary:check::/.test(x)), ma);
+  check('10 midlife: the weekly diary step is a check (done by filling the diary; Version 39.27: not for the hot-flush goal, whose chip counts)', ma.some((x) => /^diary:check::/.test(x)), ma);
   errsAll.push(...m1.errs); await m1.ctx.close();
   const p1 = await open({ seed: { events: regular(1), intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(8)), relief: { log: [{ d: TODAY, id: 'cramps', r: 'yes' }] } } } });
   const pa = await acts(p1.page);
@@ -369,7 +369,7 @@ const errsAll = [];
   if (await has(m.page, '#view #pl-m-go')) { await tap(m.page, '#view #pl-m-go'); check('13 a light plan\'s month card opens My progress', (await m.page.evaluate(() => location.hash)) === '#plan-progress'); }
   else check('13 a light plan\'s month card opens My progress (card present)', false, await txt(m.page, '#view .slot'));
   errsAll.push(...m.errs); await m.ctx.close();
-  const n = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(90)) } }, hash: '#plan' });
+  const n = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(90)) } }, hash: '#plan-end' });   /* Version 39.27: her results page while her steps carry on */
   check('13 a pain plan\'s end page: "Pick a goal for your next plan."', /Pick a goal for your next plan\./.test(await view(n.page)) && !/starts from where you are now/.test(await view(n.page)));
   errsAll.push(...n.errs); await n.ctx.close();
   /* ENGINE-08, PAGES-10: after the pause offer, the restart card comes once a week (Mondays) */

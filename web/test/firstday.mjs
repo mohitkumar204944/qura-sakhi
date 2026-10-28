@@ -179,12 +179,11 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
   v = await view(page);
   check('6 the Start screen: today, tomorrow or Monday, and an evening check-in time', /When do you want to start\?/.test(v) && /Today/.test(v) && /Tomorrow/.test(v) && /Monday, 2 Nov/.test(v) && /6 pm/.test(v) && /9 pm/.test(v) && !/8 am|1 pm/.test(v), v.slice(0, 600));
-  check('6 reminders are offered on the Start screen', /Allow reminders, so your 8 pm check-in reaches you. It says only “How did today go\? 1 minute”./.test(v), v.slice(0, 700));
+  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default)', /Reminders are on: your 6 pm time to move, your 8 pm check-in and your 11:30 pm wind-down\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
   await shot(page, '03-start');
-  await tap(page, '#pl-st-allow'); await settle(page, 600);
-  check('6 "Allow reminders" asks the phone, there and then', (await page.evaluate(() => window.__asked)) === 1 && /Reminders are on/.test(await view(page)));
   await closeTips(page);
   await tap(page, '#pl-rv-go'); await settle(page, 1500);
+  check('6 Start brings the phone\'s own "Allow", once (Version 39.27)', (await page.evaluate(() => window.__asked)) === 1);
   let p = await pop(page);
   check('6 after Start: Today, one tip on her plan, no sheet', (await page.evaluate(() => location.hash)) === '#home' && !p.sheet && /Your plan for today/.test(p.tour) && /1 of 1/.test(p.tour), [p, (await st(page)).tours, (await st(page)).tourDay]);
   check('8 no petal on Start', !p.joy, [p, await page.evaluate(() => (document.querySelector('#joy-root') || {}).innerText || ''), (await st(page)).mods.joy]);
@@ -351,7 +350,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('12 a Version 37 plan never started now waits to be started', !!(await page.evaluate(() => window.Saathi.plan.pending())) && !(await page.evaluate(() => window.Saathi.plan.packOf())), s.mods.plan);
   check('12 Today: "Your plan is ready", no steps', (await slotFirst(page)) === 'Your plan is ready' && !/Day 1 ·|Week 1 of 12/.test(await view(page)), await slotFirst(page));
   await go(page, 'plan-reveal'); await cardsToStart(page);
-  check('12 its morning reminder time becomes an evening one', await page.$eval('[data-rv-at="20:00"]', (b) => b.classList.contains('on')).catch(() => false));
+  check('12 its morning reminder time becomes an evening one: after her 9:15 pm walk, 10 pm (Version 39.27)', await page.$eval('[data-rv-at="22:00"]', (b) => b.classList.contains('on')).catch(() => false));
   await ctx.close();
 }
 {
@@ -441,7 +440,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('16 360 px: no card scrolls sideways', ok360);
   await shot(page, '06-hindi-start-360');
   await tap(page, '#pl-rv-go'); await settle(page, 1200); await closeTips(page);
-  check('16 Hindi: Today says plan day 1 and the check-in time', /प्लान का दिन 1/.test(await view(page)) && /चेक-इन रात 8 बजे/.test(await view(page)), (await view(page)).slice(0, 700));
+  check('16 Hindi: Today says plan day 1 and the check-in time', /प्लान का दिन 1/.test(await view(page)) && /चेक-इन रात 10 बजे/.test(await view(page)), (await view(page)).slice(0, 700));
   check('16 360 px: Today does not scroll sideways', await noScroll(page));
   check('16 no page errors (Hindi)', errs.length === 0, errs);
   await ctx.close();

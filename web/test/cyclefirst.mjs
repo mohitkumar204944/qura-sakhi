@@ -100,7 +100,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* a late period: how late, the usual gap, and "Period late?" */
   const l = await open({ seed: { events: regular(36) } });
   const lt = await txt(l.page, '#view .card.hero');
-  check('1 a late period: "Your period is 5 days late" and the usual gap', /Your period is 5 days late/.test(lt) && /Typical gap 21–35 days/.test(lt), lt);
+  check('1 a late period: "Your period is 5 days late" and the usual range (Version 39.27)', /Your period is 5 days late/.test(lt) && /Usual range 21–35 days/.test(lt), lt);
   check('1 ... and "Period late?" with the home-test line, which opens the pregnancy test guide', (await txt(l.page, '#view .hl-late-go')).indexOf('Period late? A week or more late and you could be pregnant? A home test is the first step.') === 0 && (await l.page.$eval('#view .hl-late-go', (e) => e.dataset.go)) === 'pregtest');
   await shot(l.page, '1-late');
   await done(l);

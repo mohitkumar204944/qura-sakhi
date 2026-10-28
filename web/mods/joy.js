@@ -193,7 +193,7 @@
     celebrate.at = Date.now();   /* in a routine: no confetti while she is in pain or anxious (the petal still counts) */
     const m = monthIdx(o.mk || S.monthKey(S.today()));
     const title = kind === 'petal' ? t('joy_pop_petal') : kind === 'bloom' ? tf('joy_pop_bloom', { m: monthName(m) }) : tf('joy_pop_badge', { b: t('joy_b_' + o.b.id) });
-    const sub = kind === 'petal' ? tf('joy_pop_sub', { m: monthName(m), n: o.n }) : kind === 'bloom' ? tf('joy_pop_bloom_sub', { f: S.art ? S.art.flowerName(m) : '' }) : t('joy_b_' + o.b.id + '_h');
+    const sub = kind === 'petal' ? tf('joy_pop_sub', { m: monthName(m), n: o.n }) : kind === 'bloom' ? tf('joy_pop_bloom_sub', { f: S.art ? S.art.flowerName(m) : '' }) : tf('joy_earned_on', { d: S.fmtD(S.today(), { day: 'numeric', month: 'long' }) });
     if (reduced() || !S.art) { S.toast(title + ' · ' + sub); return; }
     buzz(); const r = host(); clearTimeout(celebrate.tm);
     if (kind === 'petal') {
@@ -218,7 +218,7 @@
     if (L.indexOf(name) < 0) L.push(name);
     const after = monthPetals(d, mk); const newB = stamp(d);
     S.saveQuiet();
-    if (after > before) fresh = { mk: mk, idx: after - 1 };
+    if (after > before && !p.quiet) fresh = { mk: mk, idx: after - 1 };   /* Version 39.27: a quiet one grows no petal on screen either */
     setTimeout(refreshStrip, 80);
     if (p.quiet) return;
     /* Version 37.1: on her plan's first day nothing pops up before her first check-in; what she earned waits for it (S.joy.release) */
@@ -389,7 +389,7 @@
   function dykHtml() {
     const k = dykCard(); if (!k) return ''; const c = k.c; const a = k.d.dyk.ans;
     const more = S.routeOwner(c.go) || ['diary', 'help', 'care', 'learn'].indexOf(c.go) >= 0 || c.go.indexOf('topic-') === 0 || c.go.indexOf('contra-m-') === 0;
-    return '<div class="card soft joy-dyk" data-nofold="1"><span class="eyebrow">' + esc(t('joy_dyk_h')) + '</span><p class="joy-stmt">' + esc(tx(c.s)) + '</p>' +
+    return '<div class="card soft joy-dyk" data-nofold="1"><span class="eyebrow">' + esc(t('joy_quiz_h')) + '</span><p class="joy-stmt">' + esc(tx(c.s)) + '</p>' +
       (a == null ? '<div class="grid2"><button type="button" class="btn joy-ans" data-dyk="1">' + esc(t('joy_sach')) + '</button><button type="button" class="btn joy-ans" data-dyk="0">' + esc(t('joy_myth')) + '</button></div>'
         : '<div class="joy-verdict ' + (c.a ? 'sach' : 'myth') + '"><b>' + esc(c.a ? t('joy_is_sach') : t('joy_is_myth')) + '</b><span>' + esc(((a === 1) === c.a) ? t('joy_right') : t('joy_wrong')) + '</span></div><p class="small">' + esc(tx(c.w)) + '</p><div class="row wrap">' + (more ? '<button type="button" class="btn sm" data-go="' + esc(c.go) + '">' + esc(t('joy_more')) + '</button>' : '') + '<button type="button" class="linkbtn" data-go="joy-quiz">' + esc(t('joy_quiz_h')) + '</button></div>') + '</div>';
   }
@@ -430,7 +430,7 @@
         joy_b_friend: 'Good friend', joy_b_friend_h: 'Send a card to a friend.', joy_b_planner: 'Planner', joy_b_planner_h: 'Set a reminder.', joy_b_steady: 'Steady', joy_b_steady_h: 'Earn a petal 4 weeks in a row.',
         joy_b_brave: 'Brave step', joy_b_brave_h: 'Ask a Qura doctor for a free call.',
         joy_quiz_h: 'Sach ya Myth?', joy_quiz_tile_s: 'One card a day about common beliefs, with the real answer', joy_quiz_p: 'One card a day. Tap Sach or Myth, then see why.',
-        joy_dyk_h: 'Did you know?', joy_sach: 'Sach', joy_myth: 'Myth', joy_is_sach: 'Sach: this is true', joy_is_myth: 'Myth: this is not true', joy_right: 'You knew this one.', joy_wrong: 'Many women think so.',
+        joy_sach: 'Sach', joy_myth: 'Myth', joy_is_sach: 'Sach: this is true', joy_is_myth: 'Myth: this is not true', joy_right: 'You knew this one.', joy_wrong: 'Many women think so.',
         joy_share: 'Send to a friend', joy_next: 'Next card', joy_more: 'Read more', joy_card_n: 'Card {n} of {m} today', joy_done_h: "That's all for today. More cards tomorrow.", joy_to_garden: 'See my garden',
         joy_quiz_foot: 'These cards follow official health guidance. They are general information. For your own health, talk to a doctor.', joy_share_from: 'From Qura Sakhi, a free health app for women.',
         joy_seen_all: "You've seen every card. Here they are again."
@@ -455,7 +455,7 @@
         joy_b_friend: 'अच्छी सहेली', joy_b_friend_h: 'किसी सहेली को एक कार्ड भेजें।', joy_b_planner: 'योजना वाली', joy_b_planner_h: 'एक रिमाइंडर लगाएँ।', joy_b_steady: 'लगातार', joy_b_steady_h: 'लगातार 4 हफ़्ते पंखुड़ी पाएँ।',
         joy_b_brave: 'हिम्मत भरा क़दम', joy_b_brave_h: 'Qura डॉक्टर से मुफ़्त कॉल माँगें।',
         joy_quiz_h: 'सच या भ्रम?', joy_quiz_tile_s: 'आम मान्यताओं पर रोज़ एक कार्ड, सही जवाब के साथ', joy_quiz_p: 'रोज़ एक कार्ड। सच या भ्रम चुनें, फिर जानें क्यों।',
-        joy_dyk_h: 'क्या आप जानती हैं?', joy_sach: 'सच', joy_myth: 'भ्रम', joy_is_sach: 'सच: यह सही है', joy_is_myth: 'भ्रम: यह सही नहीं है', joy_right: 'आपको यह पता था।', joy_wrong: 'बहुत-सी महिलाएँ ऐसा ही सोचती हैं।',
+        joy_sach: 'सच', joy_myth: 'भ्रम', joy_is_sach: 'सच: यह सही है', joy_is_myth: 'भ्रम: यह सही नहीं है', joy_right: 'आपको यह पता था।', joy_wrong: 'बहुत-सी महिलाएँ ऐसा ही सोचती हैं।',
         joy_share: 'सहेली को भेजें', joy_next: 'अगला कार्ड', joy_more: 'और पढ़ें', joy_card_n: 'आज का कार्ड {n} / {m}', joy_done_h: 'आज के लिए इतना ही। कल और कार्ड।', joy_to_garden: 'मेरा बगीचा देखें',
         joy_quiz_foot: 'ये कार्ड आधिकारिक स्वास्थ्य सलाह पर आधारित हैं। यह आम जानकारी है। अपनी सेहत के लिए डॉक्टर से बात करें।', joy_share_from: 'Qura Sakhi से, महिलाओं के लिए मुफ़्त हेल्थ ऐप।',
         joy_seen_all: 'आपने सभी कार्ड देख लिए। ये फिर से हैं।'

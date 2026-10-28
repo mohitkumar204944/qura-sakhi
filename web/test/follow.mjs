@@ -282,7 +282,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const dz = await open({ seed: cyc(ago(29), { log: logged(29, 5) }, { settings: { discreet: true } }), now: at(0, '10:00'), hash: '#plan-check' });
   check('9 a shared phone: no check', !/4-week check/.test(await view(dz.page)) && !(await has(dz.page, '#pl-mc-save')));
   await done(dz);
-  const e = await open({ seed: cyc(ago(90), { log: logged(90, 4) }), now: at(0, '10:00'), hash: '#plan' });
+  const e = await open({ seed: cyc(ago(90), { log: logged(90, 4) }), now: at(0, '10:00'), hash: '#plan-end' });   /* Version 39.27: her steps carry on; her results page asks */
   check('9 the end of 12 weeks: "How do you feel after 12 weeks?"', /How do you feel after 12 weeks\?/.test(await view(e.page)) && (await has(e.page, '#view .pl-mc-end [data-go="plan-check"]')));
   await done(e);
 }

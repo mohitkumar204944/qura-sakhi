@@ -297,7 +297,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   check('10 ... and the line goes when she takes the period back', !/Your period came after/.test(await txt(k.page, '#view .today-card')));
   await k.ctx.close();
   const m = await open({ seed: { mods: { plan: planOf('pain', 'pain', ago(90), { goal: 'pain' }) } }, hash: '#plan-checkin' });
-  check('10 after 12 weeks the check-in opens the end page', /Your 12 weeks are done/.test(await view(m.page)) && !(await has(m.page, '#pl-ci-save')));
+  check('10 after 12 weeks her steps carry on, and so does the evening check-in (Version 39.27)', (await has(m.page, '#pl-ci-save')) && (await m.page.evaluate(() => window.Saathi.state.mods.plan.keep === true)));
   await m.ctx.close();
 }
 

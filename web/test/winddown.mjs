@@ -224,8 +224,8 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   const ny = await rem(y.page, 'plan-nudge');
   check('5 her time is the morning: 7:30 am, yoga before she eats, then her walk', !!ny && ny.time === '07:30' && /Yoga before you eat, then your walk/.test(ny.title.en), ny);
   await done(y);
-  const c = await open({ hash: '#plan-settings', seed: { mods: { plan: planOf(37, { remAt: '22:00' }) } } });
-  check('5 a check-in less than an hour before bed brings tonight\'s session instead (no second reminder)', !(await rem(c.page, 'plan-wind')) && /Your evening check-in brings tonight’s session/.test(await txt(c.page, '#view .pl-wind-set')));
+  const c = await open({ hash: '#plan-settings', seed: { mods: { plan: planOf(37, { remAt: '22:30', remPick: true }) } } });
+  check('5 a check-in at her wind-down time brings tonight\'s session instead (no second reminder at the same moment; Version 39.27: no hour-apart rule)', !(await rem(c.page, 'plan-wind')) && /Your evening check-in brings tonight’s session/.test(await txt(c.page, '#view .pl-wind-set')));
   await done(c);
   const o = await open({ hash: '#home', seed: { mods: { plan: planOf(37, { nudge: false }) } } });
   check('5 a nudge she turned off before stays off', !(await rem(o.page, 'plan-nudge')) && !!(await rem(o.page, 'plan-wind')));

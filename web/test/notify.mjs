@@ -1,6 +1,7 @@
 // Version 34: phone notifications (docs/notifications-audit-2026-10-23.md). What the page hands Android: repeat rules so
 // daily reminders renew themselves, channels by kind in her language, neutral words on a shared phone, the late-period
-// nudge, the route a tap opens, and the asks (turn reminders on, ring on time). A fixed clock (Asia/Kolkata); a stand-in for
+// nudge, the route a tap opens, and reminders on by default (Version 39.27: Android's own "Allow" once, no question in
+// Sakhi's words; "Ring on time?" only for a daily reminder she sets). A fixed clock (Asia/Kolkata); a stand-in for
 // the Android bridge records every call; nothing leaves the machine. The Android side's repeat maths is in
 // android/test/ReminderMathTest.java.
 // Usage: node test/notify.mjs [dir]   (dir defaults to this app folder)
@@ -129,37 +130,39 @@ const VAX = { id: 'post-vax-9m', mod: 'post', kind: 'checkup', title: { en: "Bab
   await cleanup(Object.assign(T, { name: '5' }));
 }
 
-/* ---------- 6. Asked once, when it helps: on Home, after the first-run tour, once a period is logged ---------- */
+/* ---------- 6. Version 39.27 (minimalism audit R01; Mohit, 28 Oct: "reminders by default on, no need to ask"): on from the
+   start, with no question in Sakhi's words; Android 13's own "Allow" once, after the first-run tour ---------- */
 {
   const T = await open({ notify: false, exact: false, seed: { events: regular(10, 3) } });
-  check('6 Home asks once: a heads-up before her period', /Get a heads-up before your period\?/.test(await sheet(T.page)) && /Nothing shows on the lock screen/.test(await sheet(T.page)), await sheet(T.page));
-  await tap(T.page, '#ni-yes'); await settle(T.page, 800);
-  check('6 "Turn on" asks Android, and phone reminders are on', (await calls(T.page, 'askNotify')).length === 1 && (await st(T.page)).settings.notify === true);
-  check('6 then, with exact alarms off, "Ring on time?"', /Ring on time\?/.test(await sheet(T.page)) && /matters most for the pill/.test(await sheet(T.page)), await sheet(T.page));
-  await tap(T.page, '#ex-yes');
-  check('6 "Allow" opens Android\'s Alarms and reminders setting', (await calls(T.page, 'askExactAlarms')).length === 1);
+  await settle(T.page, 800);
+  check('6 Android 13+: the phone\'s own "Allow" once on Today, then reminders are on', (await calls(T.page, 'askNotify')).length === 1 && (await st(T.page)).settings.notify === true, [await calls(T.page, 'askNotify'), (await st(T.page)).settings]);
+  check('6 no sheet in Sakhi\'s words: no "Get a heads-up?", no "Ring on time?" after it', !(await sheet(T.page)), await sheet(T.page));
   check('6 and the reminders are booked at once', ((await lastSchedule(T.page)) || []).some((x) => /^period-|^late-/.test(x.id)));
   await go(T.page, '#diary'); await go(T.page, '#home'); await settle(T.page, 1800);
-  check('6 not asked again', !/Get a heads-up/.test(await sheet(T.page)));
+  check('6 not asked again', (await calls(T.page, 'askNotify')).length === 1 && !(await sheet(T.page)));
   await cleanup(Object.assign(T, { name: '6 yes' }));
-  const N = await open({ notify: false, seed: { events: regular(10, 3) } });
-  await tap(N.page, '#ni-no');
-  await go(N.page, '#diary'); await go(N.page, '#home'); await settle(N.page, 1800);
-  check('6 "Not now" is final', !/Get a heads-up/.test(await sheet(N.page)) && (await st(N.page)).prompts.notifyIntro === TODAY && !(await st(N.page)).settings.notify);
+  const N = await open({ notify: false, grant: false, seed: { events: regular(10, 3) } });
+  await settle(N.page, 800); await go(N.page, '#diary'); await go(N.page, '#home'); await settle(N.page, 1800);
+  check('6 "Don\'t allow" is final: asked once, off, no sheet', (await calls(N.page, 'askNotify')).length === 1 && (await st(N.page)).prompts.notifyAuto === TODAY && !(await st(N.page)).settings.notify && !(await sheet(N.page)));
   await cleanup(Object.assign(N, { name: '6 no' }));
   const F = await open({ notify: false, seed: { events: regular(10, 3), fullTour: { st: 'on', d: TODAY } } });
-  check('6 never during the first-run tour', !/Get a heads-up/.test(await sheet(F.page)));
+  check('6 never during the first-run tour', (await calls(F.page, 'askNotify')).length === 0);
   await cleanup(Object.assign(F, { name: '6 tour' }));
   const E = await open({ notify: false, seed: { events: [] } });
-  check('6 not before she has logged a period', !/Get a heads-up/.test(await sheet(E.page)));
+  await settle(E.page, 800);
+  check('6 on by default, so it doesn\'t wait for a logged period', (await calls(E.page, 'askNotify')).length === 1);
   await cleanup(Object.assign(E, { name: '6 empty' }));
+  const A = await open({ notify: true, exact: true, seed: { events: regular(10, 3) } });
+  check('6 Android 10 to 12 (no "Allow" exists): on at once, nothing asked', (await calls(A.page, 'askNotify')).length === 0 && (await st(A.page)).settings.notify === true && ((await lastSchedule(A.page)) || []).some((x) => /^period-/.test(x.id)));
+  await cleanup(Object.assign(A, { name: '6 android 12' }));
 }
 
-/* ---------- 7. Turning them on from Me also asks to ring on time ---------- */
+/* ---------- 7. Turning them on from Me: on, and the page's own card for ringing on time (no sheet after it) ---------- */
 {
-  const T = await open({ notify: false, exact: false, hash: '#me-reminders', seed: { prompts: { setup: 'off', notifyIntro: ago(5) } } });
+  const T = await open({ notify: false, exact: false, hash: '#me-reminders', seed: { prompts: { setup: 'off', notifyAuto: ago(5) }, settings: { notifyOff: true } } });
   await T.page.$eval('#me-notif', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(T.page, 1000);
-  check('7 the Me switch: reminders on, then "Ring on time?"', (await st(T.page)).settings.notify === true && /Ring on time\?/.test(await sheet(T.page)));
+  const s7 = await st(T.page);
+  check('7 the Me switch: reminders on, "off" forgotten, no "Ring on time?" sheet; the page offers it', s7.settings.notify === true && !s7.settings.notifyOff && !(await sheet(T.page)) && !!(await T.page.$('#me-exact')), [s7.settings, await sheet(T.page)]);
   await cleanup(Object.assign(T, { name: '7' }));
 }
 

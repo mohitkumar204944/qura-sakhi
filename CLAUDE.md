@@ -176,6 +176,18 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - on the pill, "Since when?"; in Me, switching hormones off asks "When did you stop?" (today, earlier, never).
     `test/join.mjs` takes `dates`; without them it opens "I don't remember the dates" first. Contract: MODULE_API section 69;
     wording: section 19.26 of the review (waits for doctor review).
+  - `node test/minimal.mjs` (Version 39.27, fix the loop and the truth; Mohit, 28 Oct: "make reminders by default on no need
+    to ask user and no need for 90 minute gap"; audit `docs/minimalism-audit-2026-10-27.md`, R01 to R07; mockup
+    claude.ai/artifact/2a1AsJqHy4x9RyqR61GFQ8):
+    - reminders on by default with no question in Sakhi's words (Android 13's own "Allow" once), and off in Me stays off;
+    - the Start card names what will ring;
+    - the check-in after her walk (10 pm after a 9:15 pm walk), with no spacing rule;
+    - day 85: her steps carry on, with her results (`plan-end`) and Stop on Today;
+    - true lines ("2 of your last 2 gaps", no fertile-days promise for long gaps, "Sach ya Myth?");
+    - "Pain today?" for the pain plan, and the hot-flush chip and its days;
+    - a doctor finding and her plan's offer in one card;
+    - Call buttons on the after-birth danger cards, "Call 112 now" first in Help, and Help while she joins.
+    Contract: MODULE_API section 70; wording: section 19.27 of the review (new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
@@ -183,7 +195,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     when a plan or a line it shows changes). Contract: MODULE_API section 47.
   - Walks, not pass/fail (screens to `web/test/shots/`, gitignored): `node test/firstday-walk.mjs`,
     `node test/weeks-walk.mjs` (12 weeks, fast-forwarded) and `node test/stages-walk.mjs` (every goal and stage). Run them
-    before and after a change to compare.
+    before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
+    install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
+    `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then
+    `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
+    `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`

@@ -69,14 +69,14 @@ const errsAll = [];
 /* ---------- 1. The end of 12 weeks ---------- */
 {
   const ev = cyc([45, 52, 30, 29], 5);   /* gaps before her plan 45 and 52; since 30 and 29 */
-  const a = await open({ seed: { events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86), { log: daily(86, 10), intake: { goal: 'irregular', gap: 'g45' } }) } }, hash: '#plan' });
+  const a = await open({ seed: { events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86), { log: daily(86, 10), intake: { goal: 'irregular', gap: 'g45' } }) } }, hash: '#plan-end' });   /* Version 39.27: her steps carry on; her results are their own page */
   const v = await view(a.page);
   const order = await a.page.evaluate(() => [...document.querySelectorAll('#view .pl-intro, #view .pl-head-res, #view .pl-end-doc, #view .pl-sec, #view details.pl-details')].map((e) => e.className.split(' ').find((c) => /^pl-/.test(c))));
   check('1 the end page: her days, her result, the card for everyone, what next, then the details', order.join() === 'pl-intro,pl-head-res,pl-end-doc,pl-sec,pl-details', order);
   check('1 her result is before and since, as counts (no judging word)', /Days between periods/.test(await txt(a.page, '#view .pl-head-res')) && /45/.test(await txt(a.page, '#view .pl-head-res')) && !/better|worse|improv/i.test(await txt(a.page, '#view .pl-head-res')), await txt(a.page, '#view .pl-head-res'));
   check('1 one card for everyone: "Show this page to a doctor", the free government doctor first, then "Show my doctor"', /Show this page to a doctor/.test(v) && (await a.page.$$eval('#view .pl-end-doc .btn', (x) => x.map((y) => y.dataset.go || 'ask'))).slice(0, 2).join() === 'access-doctor,report-show');
   check('1 no "If nothing has changed" judgement any more', !/If nothing has changed/.test(v));
-  check('1 what next: "Keep my habits" or "Work on something else"; details folded', /Keep my habits/.test(v) && /Work on something else/.test(v) && await a.page.evaluate(() => !document.querySelector('#view details.pl-details').open));
+  check('1 what next: her steps carry on, "Work on something else" or "Stop my plan" (Version 39.27, no gate); details folded', /Your steps carry on/.test(v) && !/Keep my habits/.test(v) && /Work on something else/.test(v) && /Stop my plan/.test(v) && await a.page.evaluate(() => !document.querySelector('#view details.pl-details').open));
   await shot(a.page, '01-end');
   await tap(a.page, '#view .pl-end-doc [data-go="report-show"]');
   check('1 "Show my doctor" opens the report she can show', (await a.page.evaluate(() => location.hash)) === '#report-show');
@@ -97,9 +97,8 @@ const errsAll = [];
 /* ---------- 3. Keep it light ---------- */
 {
   const a = await open({ seed: { events: regular(10), intake: { goal: 'pain' }, reminders: REM(), mods: { plan: planOf('pain', 'pain', ago(86), { log: daily(86, 10) }) } }, hash: '#plan' });
-  await tap(a.page, '#view #pl-keep');
   const s = await st(a.page);
-  check('3 "Keep my habits": Keep it light, and the reminder ends at month 12', s.mods.plan.keep === true && (s.reminders.find((r) => r.id === 'plan') || {}).until === iso(ago(86), 52 * 7 - 1), (s.reminders.find((r) => r.id === 'plan') || {}).until);
+  check('3 after week 12, Keep it light without a question (Version 39.27); the reminder runs 4 weeks past her last visit', s.mods.plan.keep === true && s.mods.plan.carried === TODAY && (s.reminders.find((r) => r.id === 'plan') || {}).until === iso(TODAY, 28), (s.reminders.find((r) => r.id === 'plan') || {}).until);
   check('3 ... her clock says "Keep it light"', /Keep it light/.test(await txt(a.page, '#view .pl-clock')), await txt(a.page, '#view .pl-clock'));
   errsAll.push(...a.errs); await a.ctx.close();
   /* week 15: a weekly look-back; week 19: none (one a month after month 4); week 21: the monthly one */
@@ -221,11 +220,11 @@ const errsAll = [];
 /* ---------- 10. A shared phone, Hindi, a small screen ---------- */
 {
   const ev = cyc([45, 52, 30, 29], 5);
-  const a = await open({ seed: { events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86)) }, settings: { discreet: true, toursAuto: false, notify: true } }, hash: '#plan' });
+  const a = await open({ seed: { events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86)) }, settings: { discreet: true, toursAuto: false, notify: true } }, hash: '#plan-end' });
   const v = await view(a.page);
   check('10 a shared phone: the end page has no result card and no Qura topic, but the card for everyone', !(await has(a.page, '#view .pl-head-res')) && !(await has(a.page, '#view .pl-end-doc [data-ask]')) && /Show this page to a doctor/.test(v));
   errsAll.push(...a.errs); await a.ctx.close();
-  const b = await open({ seed: { lang: 'hi', events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86)) } }, lang: 'hi', w: 360, h: 800, hash: '#plan' });
+  const b = await open({ seed: { lang: 'hi', events: ev, intake: { goal: 'irregular', gap: 'g45' }, mods: { plan: planOf('cycle', 'irregular', ago(86)) } }, lang: 'hi', w: 360, h: 800, hash: '#plan-end' });
   const hv = await view(b.page);
   check('10 Hindi: "यह पेज डॉक्टर को दिखाएँ" and "डॉक्टर को दिखाएँ"', /यह पेज डॉक्टर को दिखाएँ/.test(hv) && /डॉक्टर को दिखाएँ/.test(hv), hv.slice(0, 300));
   check('10 360 px: no sideways scroll on the end page', await noScroll(b.page));
@@ -253,7 +252,7 @@ const errsAll = [];
   const d = await open({ seed: { intake: { goal: 'pain' }, reminders: [{ id: 'plan', mod: 'plan', kind: 'custom', every: 1, time: '20:00', on: true, until: null, start: ago(100) }], mods: { plan: planOf('pain', 'pain', ago(100), { keep: true, endSeen: ago(16) }) } } });
   await go(d.page, 'plan'); await go(d.page, 'home');
   const dr = (await st(d.page)).reminders.find((x) => x.id === 'plan');
-  check('11 a reminder kept with no end (before V39.6) now ends at month 12', dr && dr.until === iso(ago(100), 52 * 7 - 1), dr);
+  check('11 a reminder kept with no end (before V39.6) now has one: 4 weeks past her last visit (Version 39.27), never past month 12', dr && dr.until === iso(TODAY, 28) && dr.until < iso(ago(100), 52 * 7 - 1), dr);
   errsAll.push(...d.errs); await d.ctx.close();
   /* RESULTS-03, DOCTOR-04, SAFETY-02: a new plan starts with its own doctor check and month 4 */
   const e = await open({ seed: { intake: { goal: 'heavy', pads: 'p12' }, mods: { plan: planOf('heavy', 'heavy', ago(90), { doc: 'done', docAt: ago(85), docSaid: { k: 'hb', at: ago(84) }, m4Seen: ago(1), dueSeen: '2026-10' }) } } });
