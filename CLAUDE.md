@@ -209,6 +209,17 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     positive strip on period day 1, hormones, pregnancy, after the birth, midlife, discreet mode, irregular and few gaps,
     "regular" beside "vary", "Low chance", "safe" days, and stale period reminders, in English and in Hindi at 360 px. Run it
     after any change to predictions, the calendar or reminders. Contract: MODULE_API section 74.
+  - `node test/baby.mjs` (Version 39.32, Getting ready for a baby, the full plan; Mohit, 28 Oct: "Build this plan personalised
+    to users who are planning for a baby"; mockup claude.ai/artifact/LYTf9jYeCMPfWw5ZYjMY4r):
+    - every trying-stage goal opens `ttc` version 2 (`web/progs/v1.js`; version 1 runs on for the women on it);
+    - "A few things first" chooses her version: medicines first, see a gynaecologist first, both or standard, and her food and
+      moves (PMOS or a healthier weight mixed; a BMI under 18.5 eats more);
+    - every day her folic acid tablet (`ttc-folic`, a 9 pm reminder), her move and one food habit, and a 4th step when one is
+      due (the ready check, strength from week 7, the calm few minutes, her Hb test, the checklist, his part);
+    - a lesson a week (`ttc-lesson`), the 1-minute ready check (`ttc-ready`), gentler yoga in the 2 weeks before her period,
+      her version's doctor card, a fresh start, a positive test ("Yes, move me on");
+    - every line for the doctor: `docs/baby-plan-review-packet-2026-10-28.md` (page claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt;
+      the new lines wait for doctor review). Contract: MODULE_API section 75; wording: section 19.32 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
@@ -275,3 +286,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 - Sakhi website or marketing copy: apply the humanizer in Dr. Megha's voice
   (`~/Desktop/qura_nutrition-version1/.claude/skills/humanizer/SKILL.md`).
 - Keep every test inside this repo. The session scratchpad is wiped when the Mac restarts.
+- Every plan build (a new plan, a new version, a plan feature) meets the minimalist baseline (Mohit, 28 Oct: "make this
+  minimalist approach a baseline for this project for future plan builds"; `docs/minimalism-audit-2026-10-27.md`, section 3
+  and the 10-second day in section 4). Check each point before building and again in the build summary:
+  - Her evening is Version 39.27's (MODULE_API section 70): reminders on by default wherever she needs one, no question in
+    Sakhi's words, no spacing rule and no cap, in the order she lives her evening (the check-in after her last step). A
+    medicine rings at its own time. Every new ring needs a reason in the build summary.
+  - Today: at most 4 steps a day, and a new plan starts day 1 with 3 or fewer. Anything else under her steps is one row at a
+    time. One "Sakhi says" card.
+  - Ask less: only what the plan uses, on the day it changes something. Reuse what joining and other pages already hold;
+    an optional question needs no answer. A new screen before her first step needs a reason in the build summary.
+  - One home for each fact: no row, card or tile that repeats a step, a tile or another card.
+  - Explanation she reads once folds after week 1; her steps, tools and settings stay open.
+  - No new tours, tips or celebrations. A lapse is never a broken streak.
+  - The shared-phone check: discreet titles, private steps hidden, private pages behind her PIN.
+  - Measure it: count taps with `web/test/taps/` (`join-run.mjs`, `days-run.mjs`, `jobs-run.mjs`) before and after, and
+    report the difference. `node test/progs.mjs` checks every live plan's evening order.

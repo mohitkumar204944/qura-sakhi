@@ -2573,7 +2573,7 @@
   /* a private screen: behind her PIN when one is set (the same PIN as her health details) */
   function privateGo(route) { mem.pinNext = route; setHash(state.settings.pinHash && !mem.healthOk && PIN_ROUTES.indexOf(route) < 0 ? 'pin' : route); }
   /* review DP-2, DP-10: a private screen asks for the PIN on the page itself, however she reaches it: one title, and Back */
-  const PIN_ROUTES = ['explain', 'report', 'report-show'];   /* review PRIVACY-03 */
+  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready'];   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
   const pinGated = (r) => state.stage === 'app' && !!state.settings.pinHash && !mem.healthOk && (r === 'pin' || (!!state.settings.discreet && PIN_ROUTES.indexOf(r) >= 0));
   function renderPinGate(v, r) {
     const next = r === 'pin' ? (mem.pinNext || 'home') : r;
@@ -4799,7 +4799,7 @@
        and nothing shows on the lock screen;
      - go: the screen a tap opens (the pill, the plan, the check-in), not Home.
      Android keeps 60 at most, soonest first. Only if some were left out, a last alarm asks her to open Sakhi. */
-  const NOTIF_GO = { contra: 'contra-mine', iron: 'iron', post: 'post', screen: 'screen-mine', journey: 'journey', plan: 'plan-checkin', access: 'access-schemes-preg', checkin: 'checkin', backup: 'backup' };   /* plan: Version 37.2, its evening check-in (Version 36 opened the PMOS page, Version 35 the reminders list) */
+  const NOTIF_GO = { ttc: 'home', contra: 'contra-mine', iron: 'iron', post: 'post', screen: 'screen-mine', journey: 'journey', plan: 'plan-checkin', access: 'access-schemes-preg', checkin: 'checkin', backup: 'backup' };   /* plan: Version 37.2, its evening check-in (Version 36 opened the PMOS page, Version 35 the reminders list) */
   const notifGo = (r) => (r.id === 'plan-nudge' ? 'plan-now' : r.id === 'plan-wind' ? 'plan-wind' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
   const notifCh = (r) => (r.kind === 'med' || ['contra', 'iron'].indexOf(r.mod) >= 0 || /^preg-(ifa|ca)$/.test(r.id) ? 'meds' : ['preg', 'post', 'screen', 'access'].indexOf(r.mod) >= 0 ? 'care' : r.mod === 'plan' ? 'plan' : 'other');
   const notifQuiet = () => !!(state.settings.discreet || state.settings.shared);

@@ -81,11 +81,11 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 /* ---------- 2. The closed vocabulary (mods/plan.js implements each word once) ---------- */
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
-const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food'];   /* Version 39.9; yoga.cycle: Version 39.13 */
+const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm'];   /* Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32 */
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
-const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|goal:[a-z]+|sit:[a-z]+|ans:[a-zA-Z]+=[a-zA-Z0-9]+|birth:\d+-\d+)$/.test(w);
+const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|goal:[a-z]+|sit:[a-z]+|ans:[a-zA-Z]+=[a-zA-Z0-9]+|birth:\d+-\d+|(week|pday):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32 */
 const whenOk = (w) => w == null || w === 'daily' || w === 'periodDays' || /^days:[0-6](,[0-6])*$/.test(w);
 const keyOk = (x) => typeof x === 'string' && /^@([a-z][a-z0-9_]*|tile)$/.test(x);
 const bad = [];
@@ -117,7 +117,7 @@ specs.forEach((p) => {
   if (!Array.isArray(p.goals) || p.goals.some((g) => Object.keys(g).some((x) => ['stage', 'goal'].indexOf(x) < 0))) bad.push(w + ': goals');
   const lf = p.life || {}; if ((lf.needs && !/^(pregnant|birth:\d+)$/.test(lf.needs)) || (lf.ends && lf.ends !== 'pregnant') || !Array.isArray(lf.pause) || lf.pause.some((x) => ['preg', 'post', 'loss'].indexOf(x) < 0) || lf.pause.indexOf('loss') < 0) bad.push(w + ': life (every plan pauses after a loss)');
   if (['weeks', 'pregWeek', 'birthWeek'].indexOf(p.clock) < 0 || !p.length || !(p.length.weeks >= 0)) bad.push(w + ': clock or length');
-  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
+  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
   if (p.moves && (ik.day || []).indexOf('lim') < 0) bad.push(w + ': a plan with moves asks about knees and back');
   if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 4)) bad.push(w + ': at most 4 steps a day');   /* Version 39.13: the cycle plan's yoga and walk */
   if (p.hero != null && ['ring', 'week', 'timeline'].indexOf(p.hero) < 0) bad.push(w + ': hero');
@@ -155,7 +155,9 @@ const wordsOf = (p) => { const keys = new Set(), routes = new Set(), tiles = new
     check('3 ' + p.id + '@' + p.ver + ': every "@tile" route has a tile', !info[i].noTile.length, info[i].noTile);
   });
   check('3 the engine has exactly the adapters this file knows', util.isDeepStrictEqual(await a.page.evaluate(() => window.Saathi.plan.progs.adapters().sort()), ADAPTERS.slice().sort()), await a.page.evaluate(() => window.Saathi.plan.progs.adapters()));
-  check('3 the app runs the 8 live plans, in their order', (await a.page.evaluate(() => window.Saathi.plan.progs.list().map((x) => x.id + '@' + x.ver))).join() === live.map((p) => p.id + '@' + p.ver).join());
+  /* Version 39.32: a plan with two live versions (Getting ready 1 and 2) runs its newest for a new start; version 1 runs on for the women on it */
+  const top = []; live.forEach((p) => { const i = top.findIndex((x) => x.id === p.id); if (i < 0) top.push(p); else if (p.ver > top[i].ver) top[i] = p; });
+  check('3 the app runs the 8 live plans, in their order, each at its newest version', (await a.page.evaluate(() => window.Saathi.plan.progs.list().map((x) => x.id + '@' + x.ver))).join() === top.map((p) => p.id + '@' + p.ver).join());
   /* the hash: the spec as sorted JSON, plus the words it shows in both languages, so editing a reviewed line anywhere shows */
   const canon = (x) => (Array.isArray(x) ? '[' + x.map(canon).join(',') + ']' : (x && typeof x === 'object' ? '{' + Object.keys(x).filter((k) => k !== '_file').sort().map((k) => JSON.stringify(k) + ':' + canon(x[k])).join(',') + '}' : JSON.stringify(x)));
   const hashes = {}; specs.forEach((p, i) => { if (p.status !== 'draft') hashes[p.id + '@' + p.ver] = crypto.createHash('sha256').update(canon(p) + '\n' + canon(info[i].text)).digest('hex'); });
@@ -197,6 +199,28 @@ const wordsOf = (p) => { const keys = new Set(), routes = new Set(), tiles = new
   const u = await open({ seed: { mods: { plan: planOf('nosuch', 'pain', ago(10)) } } });
   check('5 a saved plan no spec knows doesn\'t run, and Today still draws', (await u.page.evaluate(() => window.Saathi.plan.packOf())) === null && !u.errs.length, u.errs);
   errsAll.push(...u.errs); await u.ctx.close();
+}
+
+/* ---------- 5b. The minimalist baseline (Mohit, 28 Oct: "make this minimalist approach a baseline for this project for future
+   plan builds"; CLAUDE.md). Its evening rule is Version 39.27's (MODULE_API section 70): reminders on by default wherever she
+   needs one, no spacing rule and no cap, in the order she lives her evening. So every live plan, started with her check-in at
+   8 pm and her walk in the evening, rings its check-in after her move nudge. ---------- */
+{
+  const top2 = []; specs.filter((p) => p.status === 'live').forEach((p) => { const i = top2.findIndex((x) => x.id === p.id); if (i < 0) top2.push(p); else if (p.ver > top2[i].ver) top2[i] = p; });
+  const ST = { preg: { situation: { pregnant: true, pregnantSince: ago(120) }, events: [] }, post: { situation: { deliveredOn: ago(60) }, events: [] }, ttc: { situation: { planning: true } }, meno: { situation: { midlife: true }, dob: '1976-03-01' } };
+  const G = { preg: 'food', post: 'recovery', ttc: 'ready', meno: 'hot', heavy: 'heavy', pain: 'pain', pms: 'pms', cycle: 'irregular' };
+  const CI = { id: 'plan', mod: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज का दिन कैसा रहा? 1 मिनट' }, start: ago(3), every: 1, time: '20:00', on: true };
+  const over = []; const seen = [];
+  for (const p of top2) {
+    const stg = ['preg', 'post', 'ttc', 'meno'].indexOf(p.id) >= 0 ? p.id : 'cycle';
+    const x = await open({ seed: Object.assign({ intake: { goal: G[p.id], stage: stg } }, ST[p.id] || {}, { mods: { plan: planOf(p.id, G[p.id], ago(3), { pv: p.ver }), ttc: { folic: { has: ago(3) } } }, reminders: [CI] }) });
+    await go(x.page, 'plan'); await go(x.page, 'home');
+    const ev = await x.page.evaluate(() => window.Saathi.reminders.list().filter((r) => r.on !== false && String(r.time || '') >= '17:00' && ['plan', 'ttc'].indexOf(r.mod) >= 0).map((r) => r.id + '@' + r.time));
+    const ci = ev.find((x) => /^plan@/.test(x)), nu = ev.find((x) => /^plan-nudge@/.test(x));
+    seen.push(p.id + ':' + ev.length); if (ci && nu && ci.slice(5) < nu.slice(11)) over.push([p.id + '@' + p.ver, ev]);
+    await x.ctx.close();
+  }
+  check('5 the minimalist baseline: every live plan\'s check-in rings after her move nudge, in her evening\'s order (' + seen.join(' ') + ')', !over.length, over);
 }
 
 /* ---------- 6. --equiv <dir>: the same plans, goals and days as another build (once, for the port) ---------- */

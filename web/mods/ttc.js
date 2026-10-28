@@ -111,6 +111,218 @@
   const prepLast = () => { const at = (((S.state.mods || {}).ttc) || {}).prepAt || {}; return Object.keys(at).map((k) => at[k]).filter(Boolean).sort().pop() || null; };
   S.ttc = Object.assign(S.ttc || {}, { prepDone: () => ({ a: prepDone(store()), b: PREP_ALL.length }), prepOn: prepOn, prepLast: prepLast, tryingNow: tryingNow });
 
+  /* ---------- Version 39.32: Getting ready for a baby, the full plan (Mohit, 28 Oct: "Build this plan personalised to users
+     who are planning for a baby"; docs/baby-plan-review-packet-2026-10-28.md; MODULE_API section 75) ----------
+     plan.js runs the plan's steps. This module keeps what they need from these pages: her answers to the verified list on
+     Months of trying (FLAGS), her folic acid tablet, the 12 weekly lessons and the 1-minute ready check. Each health line is a
+     verified line of the app, word for word (VF; test/baby.mjs checks each against its page), or a line of the packet, which
+     waits for the doctor. */
+  const N2 = (en, hi) => ({ en: en, hi: hi });
+  const VF = {
+    /* the checklist's folic acid line, a sentence at a time */
+    folic1: N2('400 mcg (0.4 mg) once a day, until 12 weeks of pregnancy.', '400 mcg (0.4 mg) दिन में एक बार, गर्भ के 12 हफ़्ते पूरे होने तक।'),
+    folic2: N2("It protects the baby's spine and brain, which form before most women know they are pregnant.", 'यह बच्चे की रीढ़ और दिमाग़ को बचाता है, जो ज़्यादातर महिलाओं को गर्भ का पता चलने से पहले ही बनने लगते हैं।'),
+    folic3: N2('Some women need a higher dose, for example after a pregnancy with a spine defect; your doctor decides.', 'कुछ महिलाओं को ज़्यादा खुराक चाहिए, जैसे पिछले गर्भ में रीढ़ की ख़राबी रही हो; यह आपकी डॉक्टर तय करेंगी।'),
+    /* the Learn library's folic acid strip */
+    strip: N2('At a chemist, check the strip: the usual tablet sold is 5 mg, which is the higher dose. Ask for 400 mcg, or ask a doctor which one to take. Either costs a few rupees.', 'केमिस्ट से लें तो पत्ते पर ताक़त देखें: दुकान पर आम तौर पर 5 mg वाली गोली मिलती है, जो ज़्यादा डोज़ है। 400 mcg वाली माँगें, या डॉक्टर से पूछें कौन सी लेनी है। दोनों कुछ रुपये की हैं।'),
+    hb1: N2('Anaemia is common and is easier to fix before pregnancy than during it.', 'ख़ून की कमी आम है, और गर्भ से पहले इसे ठीक करना ज़्यादा आसान है।'),
+    /* the partner page */
+    male: N2("When a couple cannot conceive, a male factor is part of the reason in about 4 to 5 out of 10 couples. That is why doctors check the man from the start. It is nobody's fault, and it is often treatable.", 'जब किसी जोड़े को गर्भ नहीं ठहरता, तो लगभग 10 में से 4 से 5 जोड़ों में वजह का कुछ हिस्सा पुरुष की तरफ़ होता है। इसीलिए डॉक्टर शुरू से ही पुरुष की जाँच करते हैं। इसमें किसी की ग़लती नहीं, और अक्सर इलाज संभव है।'),
+    show: N2('Show him this page. It is written to him.', 'यह पन्ना उन्हें दिखाएँ। यह उन्हीं के लिए लिखा है।'),
+    sperm: N2('Sperm take about 2–3 months to form, so changes show in a test after that.', 'Sperm बनने में लगभग 2–3 महीने लगते हैं, इसलिए बदलाव का असर उसके बाद test में दिखता है।'),
+    semen: N2('The semen test: simple and early', 'Semen test: आसान और जल्दी'),
+    open: N2('Open the partner page', 'साथी वाला पन्ना खोलें'),
+    /* the fertility signs page, Months of trying and the tests page */
+    sex: N2('Sex every 2–3 days through the cycle works as well as timing it, without the stress. If your cycles are regular, the Fertile days estimate gives a date range; with PMOS or irregular cycles it stays hidden on purpose.', 'पूरे चक्र में हर 2–3 दिन में संबंध, समय मिलाने जितना ही कारगर है, और तनाव भी नहीं। चक्र नियमित हों तो “Fertile दिनों का अनुमान” तारीख़ों का दायरा देता है; PMOS या अनियमित चक्र में वह जान-बूझकर छिपा रहता है।'),
+    whenH: N2('When tests make sense', 'जाँच कब करानी चाहिए'),
+    when1: N2('Under 35: after 12 months of trying.', '35 से कम: 12 महीने की कोशिश के बाद।'),
+    when2: N2('35–39: after 6 months.', '35–39: 6 महीने के बाद।'),
+    when3: N2('Straight away: periods absent or very irregular, PMOS, endometriosis, fibroids, past pelvic infection or TB, a partner with a known issue, age 40 or over, or two or more miscarriages.', 'तुरंत: पीरियड न आएँ या बहुत अनियमित हों, PMOS, endometriosis, fibroids, पहले पेडू का infection या TB, साथी में कोई जानी हुई दिक़्क़त, उम्र 40 या ज़्यादा, या दो या ज़्यादा बार गर्भ गिरा हो।'),
+    both: N2("It is a question for both partners. The man's semen test is one of the first tests, not the last.", 'यह दोनों साथियों का सवाल है। पुरुष का semen test पहली जाँचों में से है, आख़िरी नहीं।'),
+    together: N2('Go together. His semen test is one of the first tests, not the last.', 'साथ जाएँ। उनका semen test पहली जाँचों में से है, आख़िरी नहीं।'),
+    ovu: N2("Ovulation tablets, IUI and IVF are started by an MBBS/MD gynaecologist after tests. Do not start them on a chemist's or a relative's advice.", 'ओव्यूलेशन की गोलियाँ, IUI और IVF जाँच के बाद MBBS/MD स्त्री रोग विशेषज्ञ ही शुरू करते हैं। केमिस्ट या रिश्तेदार की सलाह पर शुरू न करें।'),
+    artH: N2('IVF and IUI clinics: what the law says', 'IVF और IUI clinic: क़ानून क्या कहता है'),
+    art: N2('Under the ART (Regulation) Act, 2021, every IVF clinic and egg or sperm bank must be registered with the National ART & Surrogacy Registry.', 'ART (Regulation) Act, 2021 के तहत हर IVF clinic और अंडे या sperm bank का National ART & Surrogacy Registry में पंजीकरण ज़रूरी है।'),
+    /* where to start, and who checks: both read core's doctor route (her own doctor first, Version 39.29) */
+    start: { en: 'Start at the gynaecology OPD of your district hospital or a government medical college. Your ASHA or ANM can tell you the nearest one.', hi: 'ज़िला अस्पताल या सरकारी medical college की स्त्री रोग OPD से शुरू करें। आपकी ASHA या ANM सबसे पास वाली जगह बता सकती हैं।', doc: N2('Start with a gynaecologist, or the gynaecology OPD of your district hospital or a government medical college, which is free.', 'स्त्री रोग विशेषज्ञ से शुरू करें, या ज़िला अस्पताल या सरकारी medical college की स्त्री रोग OPD से, जो मुफ़्त है।') },
+    checks: { en: 'Your ASHA, the ANM and the Ayushman Arogya Mandir can do several of the checks free.', hi: 'आपकी ASHA, ANM और आयुष्मान आरोग्य मंदिर कई जाँचें मुफ़्त कर सकते हैं।', doc: N2('Your gynaecologist can do all of these checks; your ASHA, the ANM and the Ayushman Arogya Mandir can do several of them free.', 'आपकी गायनेकोलॉजिस्ट ये सब जाँचें कर सकती हैं; आपकी ASHA, ANM और आयुष्मान आरोग्य मंदिर इनमें से कई मुफ़्त कर सकते हैं।') },
+    /* the contraception pages: the Antara injection */
+    antara: N2('Slower than with other methods: on average about 7–10 months after the last injection. It does come back. Antara does not cause infertility.', 'दूसरे तरीक़ों से धीरे: औसतन आख़िरी इंजेक्शन के लगभग 7–10 महीने बाद। लौटती ज़रूर है। अंतरा से बाँझपन नहीं होता।')
+  };
+  const prepOf = (k) => PREP_ALL.find((x) => x.k === k);
+  const dl = (x) => N2(x.den, x.dhi);   /* a checklist item's own line under it */
+  /* packet I6: for women on fertility tablets or injections, here, on Months of trying and in week 11 (waits for the doctor) */
+  const OHSS = N2('Taking tablets or injections from your doctor to help eggs release? A swollen, painful belly, vomiting or breathlessness: go to hospital now.', 'अंडा निकलने के लिए डॉक्टर की दी हुई गोलियाँ या इंजेक्शन ले रही हैं? पेट फूला और दर्द वाला हो, उल्टी हो या साँस फूले: अभी अस्पताल जाएँ।');
+
+  /* her answers to the verified list (the plan's first screen asks it; Months of trying shows the same ticks) */
+  const flagsOn = () => { const st = store(); const sit = S.state.situation || {}; return FLAGS.filter((f) => !!((st.flags || {})[f.k] || (f.k === 'pcos' && sit.pcos))).map((f) => f.k); };
+  const setFlags = (keys) => { if (!S.canSave()) return; const st = store(); const ks = FLAGS.map((f) => f.k); st.flags = {}; (keys || []).forEach((k) => { if (ks.indexOf(k) >= 0) st.flags[k] = true; }); };
+  const prepAtOf = (k) => (((((S.state.mods || {}).ttc) || {}).prepAt) || {})[k] || null;
+
+  /* her folic acid tablet (packet D1 to D9): whether she has it, and her reminder at 9 pm, on once she has it (reminders are on
+     by default wherever she needs one: Mohit, 28 Oct, Version 39.27; a medicine rings at its own time and is never capped).
+     A tablet's reminder says only "Time for your tablet" on the lock screen, and "Reminder" in discreet mode (core's own
+     words). Her switch here or in Me stays as she leaves it. */
+  const FOLIC_R = 'ttc-folic';
+  const folic = () => store().folic || {};
+  const folicSet = (o) => { const st = store(); st.folic = Object.assign({}, st.folic || {}, o); };
+  /* plan.js says when the tablet step runs (her plan, or a pregnancy under 12 weeks after it); the reminder follows it */
+  function folicSync(run, doneToday) {
+    if (!S.canSave() || !S.reminders) return; const f = folic(); const r = S.reminders.get(FOLIC_R); const td = S.toISO(S.today());
+    const want = !!run && !!f.has;
+    if (want && !r && f.remSet) { if (f.rem !== false) folicSet({ rem: false }); return; }   /* she deleted it in Me: it stays off */
+    if (want && !r && f.rem !== false) { S.reminders.upsert({ id: FOLIC_R, mod: 'ttc', kind: 'med', title: N2('My folic acid tablet', 'मेरी folic acid की गोली'), start: td, every: 1, time: '21:00', on: true, doneOn: doneToday ? td : null }, { quiet: true }); folicSet({ remSet: true }); }
+    else if (!want && r) { S.reminders.remove(FOLIC_R); folicSet({ remSet: false }); }   /* her plan stopped (a loss, its end): it goes with it */
+    else if (want && r && r.on !== false && (r.doneOn === td) !== !!doneToday) S.reminders.upsert({ id: FOLIC_R, doneOn: doneToday ? td : null }, { quiet: true });   /* switched off (here or in Me): it stays as she left it */
+  }
+  const babyOn = () => !!(S.plan && S.plan.baby && S.plan.baby.on());
+  function renderFolic(v) {
+    const can = S.canSave(); const f = folic(); const disc = !!(S.state.settings || {}).discreet; const r = S.reminders && S.reminders.get(FOLIC_R);
+    const remOn = r ? r.on !== false : f.rem !== false;
+    v.innerHTML = S.backRow(t(disc ? 'ttc_folic_d' : 'ttc_folic'), 'home', false) + '<div class="stack">' +
+      '<div class="card" data-say="1"><h3>' + T(prepOf('folic')) + '</h3>' + P(VF.folic1, 'ttc-p') + P(VF.folic2, 'ttc-p') + P(VF.folic3, 'ttc-p') + '</div>' +
+      '<div class="card" data-say="1"><h3>' + esc(t('ttc_folic_where')) + '</h3>' + P(VF.strip, 'ttc-p') + '<p class="ttc-p">' + esc(t('ttc_folic_free')) + '</p></div>' +
+      (!can ? '' : (!f.has
+        ? '<div class="row wrap"><button type="button" class="btn primary" id="ttc-fo-has">' + esc(t('ttc_folic_has')) + '</button><button type="button" class="btn" id="ttc-fo-not">' + esc(t('ttc_folic_not')) + '</button></div>'
+        : '<div class="card"><label class="row spread ttc-fo-rem"><span class="ttc-lab"><strong>' + esc(t('ttc_folic_rem')) + '</strong>' + (disc ? '' : '<span class="small">' + esc(t('ttc_folic_lock')) + '</span>') + '</span><input type="checkbox" class="switch" id="ttc-fo-rem"' + (remOn ? ' checked' : '') + '></label></div>')) +
+      '</div>';
+    S.wire(v);
+    const hs = v.querySelector('#ttc-fo-has'); if (hs) hs.addEventListener('click', () => { folicSet({ has: S.toISO(S.today()), ask: null }); folicSync(babyOn()); persist(); S.toast(t('saved')); S.render(); });
+    const nt = v.querySelector('#ttc-fo-not'); if (nt) nt.addEventListener('click', () => { folicSet({ ask: S.toISO(S.today()) }); persist(); S.setHash('home'); });
+    const rm = v.querySelector('#ttc-fo-rem'); if (rm) rm.addEventListener('change', () => {
+      const r2 = S.reminders.get(FOLIC_R);
+      if (rm.checked) { folicSet({ rem: true, remSet: false }); if (r2) S.reminders.upsert({ id: FOLIC_R, on: true }); else folicSync(babyOn()); } else { folicSet({ rem: false, remSet: false }); if (r2) S.reminders.remove(FOLIC_R); }
+      persist();
+    });
+  }
+
+  /* the 12 weekly lessons and the monthly ones after them (packet section W). A card's lines are read together (its speaker
+     reads them); b is its heading, go a page it opens, u an urgent line with Call 112. A string is a reviewed key of any module.
+     priv: on a shared phone, behind her PIN (core's PIN_ROUTES has ttc-lesson). */
+  const LESSONS = {
+    w1: { h: N2('Week 1 · The first month counts', 'हफ़्ता 1 · पहला महीना भी मायने रखता है'), cards: [
+      { l: [N2('Rekha and Amit decided this was the year. Before they began, Rekha’s gynaecologist gave her three things to do: start a folic acid tablet now, get an Hb test, and know the few signs that mean: go to hospital now.', 'रेखा और अमित ने तय किया कि इसी साल कोशिश करेंगे। शुरू करने से पहले रेखा की स्त्री रोग विशेषज्ञ ने उन्हें तीन काम बताए: अभी से folic acid की गोली शुरू करें, Hb की जाँच करवाएँ, और वे कुछ लक्षण जान लें जिनमें तुरंत अस्पताल जाना है।')] },
+      { b: prepOf('folic'), l: [VF.folic2], go: 'ttc-folic', gol: 'ttc_folic' },
+      { b: prepOf('hb'), l: [VF.hb1], go: 'ttc-prep', gol: 'ttc_prep' },
+      { u: ECTOPIC }] },
+    w2: { h: N2('Week 2 · It’s for both of you', 'हफ़्ता 2 · यह आप दोनों के लिए है'), priv: true, cards: [
+      { l: [VF.male] }, { b: prepOf('p_tobacco'), l: [dl(prepOf('p_tobacco'))] }, { l: [VF.show], go: 'ttc-partner', gol: VF.open }] },
+    w3: { h: N2('Week 3 · Food that gets your body ready', 'हफ़्ता 3 · खाना जो शरीर को तैयार करे'), cards: [
+      { l: [N2('You don’t need special foods. Everyday food does the work: greens, dal, a fruit, and milk or curd.', 'ख़ास खाने की ज़रूरत नहीं। रोज़ का खाना ही काम करता है: हरी सब्ज़ी, दाल, एक फल, और दूध या दही।')], go: 'food', gol: 'food_h' },
+      { l: [N2('Tea with food blocks iron. Keep tea an hour away from meals; you don’t have to stop it.', 'खाने के साथ चाय आयरन को रोकती है। चाय को खाने से एक घंटा दूर रखें; छोड़नी नहीं है।')] },
+      { l: [N2('No food, herb, powder or ritual can promise a baby, or choose a boy or a girl. If someone sells you one, be careful.', 'कोई खाना, जड़ी-बूटी, चूर्ण या टोटका बच्चे का वादा नहीं कर सकता, न ही लड़का या लड़की चुन सकता है। कोई ऐसी चीज़ बेचे, तो सावधान रहें।')] }] },
+    w4: { h: N2('Week 4 · Tests before pregnancy', 'हफ़्ता 4 · गर्भ से पहले की जाँचें'), cards: [
+      { l: [prepOf('hb'), prepOf('bg'), prepOf('sugar'), prepOf('tsh'), prepOf('infect'), prepOf('thal'), prepOf('rubella')], go: 'ttc-prep', gol: 'ttc_prep' },
+      { l: [VF.checks] },
+      { b: prepOf('bg'), l: [dl(prepOf('bg'))] },
+      { b: prepOf('rubella'), l: [dl(prepOf('rubella'))] }] },
+    w5: { h: N2('Week 5 · Fertile days, without the stress', 'हफ़्ता 5 · फ़र्टाइल दिन, बिना तनाव के'), priv: true, cards: [
+      { l: [VF.sex], go: 'fertile', gol: 'fertile' }] },
+    w6: { h: N2('Week 6 · How long it usually takes', 'हफ़्ता 6 · आम तौर पर कितना समय लगता है'), cards: [
+      { l: ['plan_rv_ttc'] },
+      { b: VF.whenH, l: [VF.when1, VF.when2, VF.when3], go: 'ttc-trying', gol: 'ttc_trying' }] },
+    w7: { h: N2('Week 7 · Moving, and weight, gently', 'हफ़्ता 7 · चलना-फिरना और वज़न, आराम से'), cards: [
+      { l: [N2('Moving most days is enough: a walk, yoga, or housework that warms you up. Very hard exercise every day can upset periods in some slim women.', 'ज़्यादातर दिन चलना-फिरना काफ़ी है: सैर, योग, या घर का ऐसा काम जिससे शरीर गरम हो। रोज़ बहुत कड़ी कसरत से कुछ दुबली महिलाओं के पीरियड गड़बड़ा सकते हैं।')] },
+      { b: prepOf('bmi'), l: [dl(prepOf('bmi'))] },
+      { l: [N2('Your walk grows a little each week. Strength, twice a week, starts now.', 'आपकी सैर हर हफ़्ते थोड़ी बढ़ती है। हफ़्ते में दो बार स्ट्रेंथ अब शुरू होती है।')], go: 'plan-moves', gol: 'plan_tiles_moves' }] },
+    w8: { h: N2('Week 8 · The waiting week', 'हफ़्ता 8 · इंतज़ार का हफ़्ता'), cards: [
+      { l: [N2('The days before your period can feel long: hope one day, worry the next. That’s normal.', 'पीरियड से पहले के दिन लंबे लग सकते हैं: एक दिन उम्मीद, अगले दिन चिंता। यह आम बात है।')] },
+      { l: [N2('A kinder thought can help: “Whatever happens this month, I’m looking after my body.”', 'एक नरम सोच मदद कर सकती है: “इस महीने जो भी हो, मैं अपने शरीर का ख़्याल रख रही हूँ।”')] },
+      { l: [N2('You can switch on a calm few minutes for the week before your period. If worry stays heavy, Tele-MANAS 14416 is free, any time.', 'पीरियड से पहले वाले हफ़्ते के लिए कुछ शांत मिनट चालू कर सकती हैं। चिंता भारी बनी रहे, तो Tele-MANAS 14416 मुफ़्त है, किसी भी समय।')], calm: true }] },
+    w9: { h: N2('Week 9 · Steady first', 'हफ़्ता 9 · पहले सब क़ाबू में'), cards: [
+      { b: prepOf('control'), l: [dl(prepOf('control'))] },
+      { b: prepOf('meds'), l: [dl(prepOf('meds'))] },
+      { b: N2('Fertility after the Antara injection', 'अंतरा इंजेक्शन के बाद गर्भ ठहरना'), l: [VF.antara] }] },
+    w10: { h: N2('Week 10 · Sleep, and pressure from others', 'हफ़्ता 10 · नींद, और दूसरों का दबाव'), cards: [
+      { l: [N2('A regular bedtime helps your body clock. Aim for 7 to 9 hours when you can.', 'रोज़ एक तय समय पर सोना शरीर की घड़ी के लिए अच्छा है। जब हो सके, 7 से 9 घंटे सोएँ।')] },
+      { l: [N2('“When is the good news?” A short answer helps: “When there is news, you’ll hear it.”', '“ख़ुशख़बरी कब सुना रही हो?” छोटा जवाब काम आता है: “जब ख़बर होगी, आपको पता चल जाएगा।”'), N2('Decide together, the two of you, who you tell and when.', 'आप दोनों मिलकर तय करें कि किसे और कब बताना है।')] },
+      { l: [N2('If anyone hurts, threatens or blames you, the Women Helpline 181 is free.', 'अगर कोई आपको चोट पहुँचाए, धमकाए या दोष दे, तो महिला हेल्पलाइन 181 मुफ़्त है।')] }] },
+    w11: { h: N2('Week 11 · What elders may say', 'हफ़्ता 11 · बड़े-बुज़ुर्ग क्या कह सकते हैं'), cards: [
+      { l: [N2('“It’s always the woman.” It isn’t: doctors check both partners.', '“कमी हमेशा औरत में होती है।” ऐसा नहीं है: डॉक्टर दोनों की जाँच करते हैं।')] },
+      { l: [N2('“Don’t lift anything, just rest.” Ordinary daily work is fine; rest when you’re tired.', '“कुछ मत उठाओ, बस आराम करो।” रोज़ का आम काम ठीक है; थकान हो तो आराम करें।')] },
+      { l: [VF.ovu] }, { u: OHSS },
+      { b: VF.artH, l: [VF.art], go: 'ttc-tests', gol: 'ttc_tests' }] },
+    w12: { h: N2('Week 12 · Your plan, and when the test is positive', 'हफ़्ता 12 · आपका प्लान, और जब टेस्ट पॉज़िटिव हो'), cards: [
+      { l: [N2('Look back: the 2 steps that helped you most stay on.', 'पीछे देखें: जिन 2 क़दमों से सबसे ज़्यादा मदद मिली, वे जारी रहेंगे।')] },
+      { l: [N2('Keep taking folic acid until 12 weeks of pregnancy.', 'गर्भ के 12 हफ़्ते तक folic acid लेती रहें।')] },
+      { l: [N2('When a test is positive, see your gynaecologist within a few days. Tap the card, and Sakhi moves you to My pregnancy.', 'टेस्ट पॉज़िटिव आए, तो कुछ दिनों में अपनी स्त्री रोग विशेषज्ञ को दिखाएँ। कार्ड पर टैप करें, और Sakhi आपको ‘मेरी गर्भावस्था’ पर ले जाएगी।')] }] },
+    /* after week 12, one a month in turn */
+    m1: { h: N2('This month: the tests doctors do for both of you', 'इस महीने: डॉक्टर आप दोनों की कौन-सी जाँचें करते हैं'), cards: [{ l: [VF.both], go: 'ttc-tests', gol: 'ttc_tests' }] },
+    m2: { h: VF.artH, cards: [{ l: [VF.art], go: 'ttc-tests', gol: 'ttc_tests' }] },
+    m3: { h: N2('This month: his test, if it isn’t done yet', 'इस महीने: उनकी जाँच, अगर अभी तक नहीं हुई'), priv: true, cards: [{ b: VF.semen, l: [VF.show], go: 'ttc-partner', gol: VF.open }] },
+    m4: { h: VF.whenH, cards: [{ l: [VF.when1, VF.when2, VF.when3], go: 'ttc-trying', gol: 'ttc_trying' }] }
+  };
+  const lessonRead = (id) => !!((store().les || {})[id]);
+  const lsLine = (x) => (typeof x === 'string' ? esc(t(x)) : T(x));
+  const calmOn = () => !!store().calmOn;
+  const call112 = () => '<a class="btn danger sm" href="tel:112">' + esc(t('call_b')) + ' 112</a>';
+  function lessonHtml(id) {
+    const ls = LESSONS[id]; if (!ls) return '';
+    return ls.cards.map((c) => {
+      if (c.u) return '<div class="card ttc-les" data-say="1">' + urgent(c.u) + '<div class="row wrap">' + call112() + '</div></div>';
+      const go = c.go && S.routeOwner(c.go) && !(c.go === 'ttc-partner' && (S.state.settings || {}).discreet) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + lsLine(c.gol) + '</button>' : '';
+      const cm = c.calm && S.canSave() ? '<button type="button" class="btn sm" id="ttc-calm-sw">' + esc(t(calmOn() ? 'ttc_off' : 'ttc_on')) + '</button>' : '';
+      return '<div class="card ttc-les" data-say="1">' + (c.b ? '<h3>' + lsLine(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="ttc-p">' + lsLine(x) + '</p>').join('') + (go || cm ? '<div class="row wrap">' + go + cm + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  function renderLesson(v) {
+    const id0 = S.mem.ttcLes || (S.plan && S.plan.baby ? S.plan.baby.lesson() : null); const id = LESSONS[id0] ? id0 : 'w1'; const ls = LESSONS[id];
+    v.innerHTML = S.backRow(tx(ls.h), 'home', false) + '<div class="stack">' + lessonHtml(id) +
+      (S.canSave() ? '<button type="button" class="btn primary block" id="ttc-les-done">' + esc(t('ttc_les_done')) + '</button>' : '') + '</div>';
+    S.wire(v);
+    const cs = v.querySelector('#ttc-calm-sw'); if (cs) cs.addEventListener('click', () => { const st = store(); st.calmOn = !st.calmOn; persist(); S.toast(t('saved')); S.render(); });
+    const dn = v.querySelector('#ttc-les-done'); if (dn) dn.addEventListener('click', () => { const st = store(); st.les = Object.assign({}, st.les || {}); st.les[id] = S.toISO(S.today()); persist(); S.mem.ttcLes = null; S.setHash('home'); });
+  }
+
+  /* the 1-minute ready check (packet R1 to R11): 6 questions, her answers then and now, never a score. Her folic acid answer
+     starts from her ticks; his part is not asked on a shared phone. */
+  const READY = [
+    { k: 'veg', q: N2('Greens or other vegetables', 'हरी या दूसरी सब्ज़ियाँ'), o: ['most', 'some', 'rare'] },
+    { k: 'fruit', q: N2('Fruit', 'फल'), o: ['most', 'some', 'rare'] },
+    { k: 'folic', q: N2('Your folic acid tablet', 'आपकी folic acid की गोली'), o: ['every', 'some', 'not'] },
+    { k: 'tob', q: N2('Tobacco, gutka or alcohol', 'तंबाकू, गुटखा या शराब'), o: ['none', 'sometimes', 'daily'] },
+    { k: 'move', q: N2('Moving 30 minutes, or active work', '30 मिनट चलना-फिरना, या मेहनत वाला काम'), o: ['most', 'some', 'rare'] },
+    { k: 'his', q: N2('His part', 'उनका हिस्सा'), o: ['started', 'not', 'notus'] }
+  ];
+  const RO = { most: N2('Most days', 'ज़्यादातर दिन'), some: N2('Some days', 'कुछ दिन'), rare: N2('Rarely', 'कभी-कभार'), every: N2('Every day', 'रोज़'), not: N2('Not yet', 'अभी नहीं'),
+    none: N2('None', 'बिल्कुल नहीं'), sometimes: N2('Sometimes', 'कभी-कभी'), daily: N2('Daily', 'रोज़'), started: N2('Started', 'शुरू किया'), notus: N2('Not for us', 'हमारे लिए नहीं') };
+  const readyList = () => (Array.isArray(store().ready) ? store().ready : []);
+  let rmem = null;
+  const folicAuto = () => { if (!folic().has) return 'not'; const n = S.plan && S.plan.ckDays ? S.plan.ckDays('folic', 7) : null; return n == null ? null : (n >= 6 ? 'every' : (n >= 1 ? 'some' : 'not')); };
+  function renderReady(v) {
+    const can = S.canSave(); const disc = !!(S.state.settings || {}).discreet; const list = readyList();
+    if (!rmem || rmem.owner !== S.state) { rmem = { owner: S.state, a: {} }; const fa = folicAuto(); if (fa) rmem.a.folic = fa; }
+    const qs = READY.filter((q) => !(q.k === 'his' && (disc || (S.state.settings || {}).shared)));
+    const chip = (k, o) => '<button type="button" class="chip' + (rmem.a[k] === o ? ' on' : '') + '" data-rd="' + k + ':' + o + '" aria-pressed="' + (rmem.a[k] === o) + '">' + T(RO[o]) + '</button>';
+    const a0 = list[0], a1 = list[list.length - 1];
+    const tn = list.length >= 2 ? '<div class="card"><h3>' + esc(t('ttc_ready_tn')) + '</h3><dl class="kv ttc-tn"><dt></dt><dd><strong>' + esc(dayS(S.fromISO(a0.at))) + '</strong> · <strong>' + esc(dayS(S.fromISO(a1.at))) + '</strong></dd>' +
+      qs.map((q) => '<dt>' + T(q.q) + '</dt><dd>' + (a0.a[q.k] ? T(RO[a0.a[q.k]]) : '–') + ' · ' + (a1.a[q.k] ? T(RO[a1.a[q.k]]) : '–') + '</dd>').join('') + '</dl></div>' : '';
+    const tobTip = () => (rmem.a.tob === 'sometimes' || rmem.a.tob === 'daily' ? T(dl(prepOf('tobacco'))) : '');
+    v.innerHTML = S.backRow(t('ttc_ready'), 'home', false) + '<div class="stack">' + (disc ? '<span class="eyebrow">' + esc(t('ttc_ready_me')) + '</span>' : '') +
+      '<div class="card"><h2>' + esc(t('ttc_ready_q')) + '</h2><p class="ttc-p">' + esc(t('ttc_ready_p')) + '</p></div>' + tn +
+      qs.map((q) => '<div class="card"><h3>' + T(q.q) + '</h3><div class="chips" role="group" aria-label="' + T(q.q) + '">' + q.o.map((o) => chip(q.k, o)).join('') + '</div>' + (q.k === 'tob' ? '<p class="ttc-p" id="ttc-rd-tip"' + (tobTip() ? '' : ' hidden') + '>' + tobTip() + '</p>' : '') + '</div>').join('') +
+      (can ? '<p class="small" id="ttc-rd-err" hidden>' + esc(t('plan_s_need')) + '</p><button type="button" class="btn primary block" id="ttc-rd-save">' + esc(t('save')) + '</button>' : '') + '</div>';
+    S.wire(v);
+    v.querySelectorAll('[data-rd]').forEach((b) => b.addEventListener('click', () => {
+      const i = b.dataset.rd.indexOf(':'); const k = b.dataset.rd.slice(0, i); rmem.a[k] = b.dataset.rd.slice(i + 1);
+      v.querySelectorAll('[data-rd^="' + k + ':"]').forEach((x) => { const on1 = x === b; x.classList.toggle('on', on1); x.setAttribute('aria-pressed', String(on1)); });
+      const tp = v.querySelector('#ttc-rd-tip'); if (tp) { tp.innerHTML = tobTip(); tp.hidden = !tobTip(); }
+    }));
+    const sv = v.querySelector('#ttc-rd-save'); if (sv) sv.addEventListener('click', () => {
+      if (qs.some((q) => !rmem.a[q.k])) { const er = v.querySelector('#ttc-rd-err'); if (er) er.hidden = false; return; }
+      const st = store(); const td = S.toISO(S.today()); st.ready = readyList().filter((x) => x.at !== td).concat([{ at: td, a: Object.assign({}, rmem.a) }]).slice(-24);
+      persist(); rmem = null; S.toast(t('saved')); S.setHash('home');
+    });
+  }
+  S.ttc = Object.assign(S.ttc, {
+    flagList: () => FLAGS.map((f) => ({ k: f.k, en: f.en, hi: f.hi })), flagsOn: flagsOn, setFlags: setFlags, since: () => store().since || null,
+    prepHas: (k) => !!((store().prep || {})[k]), prepAt: prepAtOf, vf: (k) => VF[k] || null, ohss: () => OHSS,
+    folic: { has: () => !!folic().has, askedOn: () => folic().ask || null, sync: folicSync },
+    lesson: { title: (id) => (LESSONS[id] ? tx(LESSONS[id].h) : ''), read: lessonRead, priv: (id) => !!(LESSONS[id] && LESSONS[id].priv), ids: () => Object.keys(LESSONS) },
+    ready: { last: () => { const l = readyList(); return l.length ? l[l.length - 1].at : null; }, n: () => readyList().length },
+    calmOn: calmOn, setCalm: (on) => { if (S.canSave()) store().calmOn = !!on; }, prep: (k) => prepOf(k) || null
+  });
+
   const MUCUS = [
     { k: 'dry', en: 'Dry', hi: 'सूखा', den: 'nothing felt or seen', dhi: 'कुछ महसूस या दिखा नहीं' },
     { k: 'sticky', en: 'Sticky', hi: 'चिपचिपा', den: 'thick, breaks easily', dhi: 'गाढ़ा, आसानी से टूटता' },
@@ -244,7 +456,7 @@
         { en: 'Go together. His semen test is one of the first tests, not the last.', hi: 'साथ जाएँ। उनका semen test पहली जाँचों में से है, आख़िरी नहीं।' },
         { en: 'Take this diary, old reports, scan reports and a list of the medicines you both take.', hi: 'यह डायरी, पुरानी reports, scan reports और आप दोनों की दवाओं की सूची साथ ले जाएँ।' },
         { en: "Ovulation tablets, IUI and IVF are started by an MBBS/MD gynaecologist after tests. Do not start them on a chemist's or a relative's advice.", hi: 'ओव्यूलेशन की गोलियाँ, IUI और IVF जाँच के बाद MBBS/MD स्त्री रोग विशेषज्ञ ही शुरू करते हैं। केमिस्ट या रिश्तेदार की सलाह पर शुरू न करें।' }
-      ])) +
+      ])) + urgent(OHSS) +   /* Version 39.32 (packet I6) */
       goBtn('ttc-tests', { en: 'Which tests, and what they mean', hi: 'कौन-सी जाँचें, और उनका मतलब' }, 'block') +
       (S.canSave() ? '' : S.needDiary()) +
       askBtn(r.months != null ? fill(tx({ en: 'Trying for a baby for {n} months', hi: '{n} महीने से बच्चे की कोशिश' }), { n: r.months }) : { en: 'Trying for a baby', hi: 'बच्चे की कोशिश' }) +
@@ -563,7 +775,12 @@
         ttc_loss2: 'Two or more miscarriages', ttc_loss2_s: 'Not your fault. The tests that help, and where',
         ttc_month: 'Month {n} of trying', ttc_s_mucus_short: 'Mucus',
         ttc_home_s: 'Checklist {a} of {b} done · {c} temperatures this cycle',
-        ttc_sum_t: 'Trying for a baby'
+        ttc_sum_t: 'Trying for a baby',
+        /* Version 39.32: the Getting ready plan's pages (packet D1 to D9, R1, R8, R10, D14) */
+        ttc_folic: 'My folic acid tablet', ttc_folic_d: 'My tablet', ttc_folic_where: 'Where to get it: from your doctor, or any chemist.', ttc_folic_free: 'Free at the PHC or Ayushman Arogya Mandir.',
+        ttc_folic_has: 'I have my tablet', ttc_folic_not: 'Not yet: remind me tomorrow', ttc_folic_rem: 'Remind me at 9 pm', ttc_folic_lock: 'Your lock screen says only “Time for your tablet”.',
+        ttc_ready: '1-minute ready check', ttc_ready_q: 'How ready do you feel?', ttc_ready_p: '6 quick questions, just for you. There is no score.', ttc_ready_me: 'Just for me', ttc_ready_tn: 'Then and now',
+        ttc_les_done: 'Done', ttc_on: 'Switch on', ttc_off: 'Switch off'
       },
       hi: {
         ttc_hub: 'बच्चे की कोशिश', ttc_hub_s: 'शुरू करने से पहले, कोशिश के महीने, जाँचें, आपके साथी',
@@ -575,11 +792,15 @@
         ttc_loss2: 'दो या ज़्यादा बार गर्भ गिरना', ttc_loss2_s: 'आपकी ग़लती नहीं। कौन-सी जाँचें मदद करती हैं, और कहाँ',
         ttc_month: 'कोशिश का महीना {n}', ttc_s_mucus_short: 'म्यूकस',
         ttc_home_s: 'चेकलिस्ट {b} में से {a} पूरी · इस चक्र में {c} तापमान',
-        ttc_sum_t: 'बच्चे की कोशिश'
+        ttc_sum_t: 'बच्चे की कोशिश',
+        ttc_folic: 'मेरी folic acid की गोली', ttc_folic_d: 'मेरी गोली', ttc_folic_where: 'कहाँ मिलेगी: अपनी डॉक्टर से, या किसी भी केमिस्ट से।', ttc_folic_free: 'PHC या आयुष्मान आरोग्य मंदिर में मुफ़्त।',
+        ttc_folic_has: 'मेरे पास गोली है', ttc_folic_not: 'अभी नहीं: कल याद दिलाएँ', ttc_folic_rem: 'रात 9 बजे याद दिलाएँ', ttc_folic_lock: 'लॉक स्क्रीन पर सिर्फ़ “आपकी गोली का समय” दिखेगा।',
+        ttc_ready: '1 मिनट की तैयारी जाँच', ttc_ready_q: 'आप कितना तैयार महसूस करती हैं?', ttc_ready_p: '6 छोटे सवाल, सिर्फ़ आपके लिए। इसमें कोई नंबर नहीं।', ttc_ready_me: 'सिर्फ़ मेरे लिए', ttc_ready_tn: 'तब और अब',
+        ttc_les_done: 'हो गया', ttc_on: 'चालू करें', ttc_off: 'बंद करें'
       }
     },
-    routes: { 'ttc': renderHub, 'ttc-prep': renderPrep, 'ttc-trying': renderTrying, 'ttc-signs': renderSigns, 'ttc-tests': renderTests, 'ttc-partner': renderPartner, 'ttc-loss2': renderLoss2 },
-    open: ['ttc', 'ttc-prep', 'ttc-trying', 'ttc-signs', 'ttc-tests', 'ttc-partner', 'ttc-loss2'],
+    routes: { 'ttc': renderHub, 'ttc-prep': renderPrep, 'ttc-trying': renderTrying, 'ttc-signs': renderSigns, 'ttc-tests': renderTests, 'ttc-partner': renderPartner, 'ttc-loss2': renderLoss2, 'ttc-folic': renderFolic, 'ttc-lesson': renderLesson, 'ttc-ready': renderReady },
+    open: ['ttc', 'ttc-prep', 'ttc-trying', 'ttc-signs', 'ttc-tests', 'ttc-partner', 'ttc-loss2', 'ttc-folic', 'ttc-lesson', 'ttc-ready'],
     tiles: [
       { section: 'ttc', route: 'ttc', title: 'ttc_hub', sub: 'ttc_hub_s', icon: 'baby', order: 1, gated: false, keywords: 'trying to conceive planning pregnancy baby infertility fertility bachcha garbh' },
       { section: 'ttc', route: 'ttc-prep', title: 'ttc_prep', sub: 'ttc_prep_s', icon: 'check', order: 10, gated: false, keywords: 'preconception folic acid rubella thalassaemia hplc blood group checklist before pregnancy' },
@@ -659,6 +880,6 @@
       d.prep = { folic: true, hb: true, bg: true, tsh: true, infect: true, tobacco: true, dental: true, p_tobacco: true };
       d.flags = {}; d.unit = 'C'; d.signs = sampleSigns(S2);
     },
-    afterRender: (v, route) => { if (!mineRoute(route)) ui = null; }
+    afterRender: (v, route) => { if (!mineRoute(route)) ui = null; if (route !== 'ttc-ready') rmem = null; }
   });
 })(window.Saathi);

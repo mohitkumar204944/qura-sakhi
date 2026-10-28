@@ -4900,3 +4900,120 @@ period that didn't come) while Today said she was due or late. The Calendar now 
 `predictInfo().late` is false; her likely range still shows.
 
 **Wording:** none new.
+
+## 75. Version 39.32: Getting ready for a baby, the full plan
+
+Mohit, 28 Oct: "I need to have next plan for users who are planning for a baby", then "Build this plan personalised to users
+who are planning for a baby". Design: `docs/plans-design-and-build-2026-10-24-programmes.md` section 8, rewritten doctor first
+(sections 71 and 72); mockup claude.ai/artifact/LYTf9jYeCMPfWw5ZYjMY4r; every line for the doctor in
+`docs/baby-plan-review-packet-2026-10-28.md` (page: claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt).
+
+**The plan.** `web/progs/v1.js` gains `ttc` version 2 (live). Its `goals` are `[{ stage: 'ttc' }]`, so every goal of the trying
+stage opens it: ready, irregular periods, PMOS and weight (the last three opened the cycle plan before). Version 1 stays in the
+file and runs on for the women who started it (`d.pv`); they get version 2 at their next 12 weeks. `golden.mjs` is
+byte-identical (its plans are version 1); `progs/baseline.json` gains `ttc@2`.
+
+**A few things first** (the intake screen `baby`, after her goal; her body is asked only for the weight goal, as the PMOS plan
+asks):
+- 4 medicine lines (plan.js: a daily medicine, diabetes, a past pregnancy with a spine or brain defect, sickle cell or
+  thalassaemia) and the 9 lines of Months of trying's verified list (`S.ttc.flagList()`), as checkboxes, none needed;
+- ticked from Months of trying (`S.ttc.flagsOn()`) and from her goal (PMOS, very irregular periods);
+- "How long have you been trying?" (4 answers, optional), not asked when Months of trying has a date (`S.ttc.since()`);
+- on Start, Months of trying's own ticks become her answers (`S.ttc.setFlags`).
+
+**Her version** (`babyOf`, saved in `d.intake`):
+- `bdoc`: `meds` (any medicine line), `gyn` (any verified line, 40 or over, a year of trying under 35, 6 months at 35 to 39,
+  or Months of trying's own rule from its date), `both`, or `std`;
+- `bset`: `mix` for PMOS (her tick, Me's PMOS line or the PMOS goal) or the weight goal, else `std`; a BMI under 18.5 (My
+  body's, or the start answers' `bmi`) makes her food set `uw` whatever her answers;
+- `focus` stays `habits`, so her minutes stop at 150 a week (the packet's 250 waits for question 5).
+
+**Her day** (the spec's steps; at most 4):
+1. `ttc.folic`: "My folic acid tablet" ("My tablet" in discreet mode). Until she has it, done on its page (so the check-in doesn't ask): "Not got it yet? See where"
+   opens `ttc-folic`; "Not yet: remind me tomorrow" answers today's step. Then a daily tick.
+2. Her move: the ladder walk (cap 30 a day, the hold rule), or for `mix` the PMOS plan's yoga (`yoga.cycle`).
+3. Her food habit (`plate`) from her set, one new every 2 weeks, each with its own reason (`plan_fb_b*`) and meal line:
+   - `std`: greens, dal, fruit, the tea gap, milk or curd, half the plate sabzi;
+   - `mix`: half the plate, no sweet drinks, greens, protein at breakfast, a millet swap, the tea gap (the PMOS plan's 4 keep
+     their reviewed words);
+   - `uw`: an extra katori, greens, peanuts or chana, milk or curd, fruit, the tea gap.
+4. The first that is due: the ready check (`ttc.ready`: days 3 to 7, weeks 6 and 12, then every 4 weeks); strength at home on
+   days 2 and 5 of her week from week 7 (Gentle start within 182 days of a birth; not for `mix`, whose yoga has its strength
+   days); the calm few minutes (`ttc.calm`: from week 8, switched on, the 7 days before her likely period); her Hb test
+   (`ttc.hb`: days 2 to 14, until she ticks it on the checklist); the checklist (day 4 of her week, from day 2); his part
+   (`ttc.his`: from week 2, day 6 of her week, never on a shared phone). Day 1 has 3 steps.
+- New vocabulary: `if` words `week:a-b` and `pday:a-b` (b may be empty: from a on); adapters `ttc.folic`, `ttc.hb`,
+  `ttc.ready`, `ttc.his`, `ttc.calm`; intake screen `baby`.
+- The 4-week check (`mcDue`) stays off: the ready check takes its place. How it works says "A 2-minute lesson and a look back"
+  for every week.
+
+**Her doctor card** (`babyDoc`, the spec's one `start` entry, `@plan_bdoc`): in Sakhi says from day 1 to day 21 until "Yes,
+done" ("Remind me to book it" waits 3 days), and in the reveal for every version but the standard one:
+- `std`: "Before you start trying", her gynaecologist, and the free line (the PHC or Ayushman Arogya Mandir, or eSanjeevani);
+- `gyn`: "See a gynaecologist now", why, PMOS's own line when it applies, the trying page's start line (core's doctor route:
+  her gynaecologist first; the government OPD and her ASHA for a woman who picked them) and "Go together";
+- `meds`: "See your doctor before you start trying", the checklist's medicines line (if ticked), the higher-dose sentence of
+  its folic acid line, and the steady-first line for diabetes;
+- a birth under 24 months ago adds the spacing line; every card ends with the Qura doctor's line (food, sleep and habits).
+- The months-of-trying `due` card (`@plan_doc_ttc`) is unchanged.
+
+**ttc.js** keeps what the plan needs:
+- `ttc-folic`: the checklist's folic acid line a sentence at a time (`VF.folic1` to `folic3`, no ANM line), the Learn library's
+  strip line, "Where to get it", the free line; "I have my tablet" turns on her reminder `ttc-folic` (`mod: 'ttc'`,
+  `kind: 'med'`, 9 pm daily, so the lock screen says "Time for your tablet", and "Reminder" in discreet mode). Her switch here
+  or in Me stays as she leaves it; a reminder she deletes stays gone. It runs with the plan (`folicSync` from `remSync` and
+  `pauseSync`), stops after a loss or at the plan's end, and carries on in a pregnancy that follows until 12 weeks. A tap opens
+  Today (core `NOTIF_GO.ttc`).
+- `ttc-lesson`: the 12 weekly lessons and 4 monthly ones (`LESSONS`), each card read aloud (`data-say`), most lines reused from
+  these pages word for word (`VF`, the checklist's lines), urgent lines with Call 112. Today shows "This week's lesson · 2 min"
+  as one row under her steps until she taps Done (no title on a shared phone); it waits while the week's look-back row shows,
+  so there is one row at a time. My plan lists it. Week 8 has the calm switch.
+- `ttc-ready`: 6 questions with no score, her folic acid answer from her last 7 days of ticks (`S.plan.ckDays`), the
+  checklist's tobacco line after Sometimes or Daily, "Then and now" from her second check, "Just for me" and no "His part" on
+  a shared phone. Saved in `mods.ttc.ready`.
+- Core's `PIN_ROUTES` has `ttc-lesson` and `ttc-ready`: on a shared phone with a PIN, they open after it.
+- Months of trying gains the warning for women on fertility tablets or injections (packet I6), also in week 11's lesson.
+- `S.ttc` adds `flagList`, `flagsOn`, `setFlags`, `since`, `prepHas`, `prepAt`, `prep`, `vf`, `ohss`, `folic`, `lesson`,
+  `ready`, `calmOn`, `setCalm`. `S.pregtest.lastPos()` (pregtest.js) is her latest saved positive result.
+
+**Moves before her period** (`lutOn`): on this plan, in the 14 days before her likely period, all month when her dates can't
+say, and while it is late (never on her period days), `stepsOf` gives Tadasana for Bhujangasana and sitting quietly for
+Vakrasana (the routines' own reviewed moves), the sun salutation becomes Gentle start (`routineOk`, `todayPlan`), and Yoga and
+moves says so. Yoga and moves also says "Moving most days is enough".
+
+**Moments:**
+- her period: "A fresh start" (`perLine`, `perBanner`), no failure words;
+- a positive test she saved since her plan started (`posDue`): "Your test is positive" in Sakhi says; "Yes, move me on" marks
+  her pregnant from her last period start, as Me does (with no period date in 300 days, Me asks); "Not now" for that test;
+- a loss: the plan rests as before (section 43), with the line for after methotrexate or a molar pregnancy;
+- her 12 weeks: My progress and the results count her tablet's days, her checklist and her minutes a week; the end card says
+  her steps and her tablet carry on. Pregnancy is never a result.
+
+**My plan** (`babyCard`, under her steps): her 12 weeks in 4 parts (this one marked) and her doctor month (12 months after
+Months of trying's date, 6 at 35 to 39, none at 40 or over: a gynaecologist from the start), folded after week 1 to one line
+(her doctor month, or this part of her 12 weeks); then this week's lesson and the ready check (`.pl-baby-tools`), and from
+week 8 the calm switch. Her tablet is in her steps, so no row repeats it.
+
+**The minimalist baseline** (Mohit, 28 Oct: "make this minimalist approach a baseline for this project for future plan
+builds"; CLAUDE.md; `docs/minimalism-audit-2026-10-27.md`, sections 3 and 4). How this plan meets it:
+- her evening as Version 39.27 set it (reminders on by default wherever she needs one, no spacing rule, no cap): the walk
+  nudge, the check-in after it, her tablet as a medicine at 9 pm; no wind-down ring (no bedtime step);
+- day 1 has 3 steps, any day at most 4; one row under her steps at a time; one "Sakhi says" card (her doctor card takes the
+  first-day card's place);
+- one new screen before her first step, "A few things first": it decides her doctor card (medicines first is a safety
+  line), reuses Months of trying's answers and her goal, and needs no answer. "Your day" asks 2 questions fewer (no bedtime,
+  no work), and her body only for the weight goal;
+- one home for each fact; what she reads once folds after week 1; no new tours, tips or celebrations; the shared-phone
+  check ("My tablet", his part hidden, lessons and the ready check behind her PIN).
+- the reveal keeps a doctor card only for the versions that need a check first; the standard version's routine card shows
+  on Today from day 1 (one home);
+- measured with `web/test/taps/join-run.mjs ttc tour` (Neha, install to her plan started), against the committed build: 53
+  taps as before, 24 screens (+1: A few things first), 7 scrolls (+2 on its 13 lines);
+- `progs.mjs` 5b checks every live plan's evening order (the check-in after her move nudge).
+
+**Tests:** `node test/baby.mjs` (109 checks: starting, her version, day 1 and the doctor card, her tablet, her weeks, food,
+moves, lessons, the ready check, moments, every verified line word for word, Hindi at 360 px, version 1 running on, and the
+baseline: her evening's order, one row under her steps, no repeated row, the fold). progs.mjs knows the new words and the two
+live versions of `ttc`, and checks every live plan's evening order.
+
+**Wording:** section 19.32 of the review; every line in the packet, the new ones waiting for the doctor.

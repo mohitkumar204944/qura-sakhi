@@ -86,6 +86,42 @@
     ],
     doctor: [{ id: 'due', due: 'ttc-trying', text: '@plan_doc_ttc', go: 'ttc' }]
   },
+  /* Version 39.32 (Mohit, 28 Oct: "Build this plan personalised to users who are planning for a baby"): Getting ready, version
+     2, the full programme (docs/baby-plan-review-packet-2026-10-28.md; MODULE_API section 75). Every goal of the trying stage
+     opens it. A few things first (the baby screen) choose her version: her doctor card (bdoc), and her food and moves (bset:
+     mix for PMOS or a healthier weight; a BMI under 18.5 eats more, plan.js). Every day her tablet, her move and one food habit;
+     a 4th step when it is due. Version 1 runs on for the women who started it. */
+  {
+    id: 'ttc', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_ttc' }], discreetTitle: '@plan_h_d',
+    goals: [{ stage: 'ttc' }],
+    life: { ends: 'pregnant', pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    moves: true,
+    intake: { screens: [{ id: 'baby' }], day: ['act', 'food', 'milk', 'lim'], when: true },
+    slots: { max: 4 }, hero: 'week', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'ttc-prep', text: '@ttc_prep', icon: 'check', hue: 'green', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-28', what: 'Version 39.32: the full Getting ready programme: start questions and versions, her folic acid tablet, food by her situation, gentler yoga before her period, strength from week 7, a lesson a week, the ready check, her doctor card' }],
+    steps: [
+      { id: 'folic', kind: 'adapter', use: 'ttc.folic' },
+      { first: [
+        { id: 'yoga', kind: 'adapter', use: 'yoga.cycle', if: ['ans:bset=mix'] },
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g' }
+      ] },
+      { id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food_t' },
+      { first: [
+        { id: 'ready', kind: 'adapter', use: 'ttc.ready' },
+        { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:1,4', if: ['week:7-', '!birth:0-182', '!ans:bset=mix'] },
+        { id: 'str', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:yoga', hue: 'green', why: 'plan_fb_move_g', when: 'days:1,4', if: ['week:7-', 'birth:0-182', '!ans:bset=mix'] },
+        { id: 'calm', kind: 'adapter', use: 'ttc.calm' },
+        { id: 'hb', kind: 'adapter', use: 'ttc.hb' },
+        { id: 'prep', kind: 'link', go: 'ttc-prep', title: '@plan_a_prep', icon: 'check', hue: 'green', why: 'plan_fb_prep', priv: true, when: 'days:3', if: ['route', 'pday:2-'], from: 'ttc-prep', check: true },
+        { id: 'his', kind: 'adapter', use: 'ttc.his' }
+      ] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: [{ id: 'start', any: ['ans:bdoc=std', 'ans:bdoc=gyn', 'ans:bdoc=meds', 'ans:bdoc=both'], text: '@plan_bdoc' }, { id: 'due', due: 'ttc-trying', text: '@plan_doc_ttc', go: 'ttc' }]
+  },
   {
     id: 'heavy', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_heavy' }], discreetTitle: '@plan_h_d',

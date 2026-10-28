@@ -123,14 +123,15 @@ for (const goal of ['feed', 'weight', 'recovery']) {
   await go(page, 'plan-reveal');
   /* Version 39.8: each step's reason sits behind "Why?" */
   let w = ''; for (let i = 0; i < 8; i++) { w += '\n' + (await view(page)) + '\n' + (await page.$$eval('#view details.pl-why-d', (xs) => xs.map((x) => x.textContent).join('\n'))); if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
-  check('3 trying for a baby: its own plan and steps, with the checklist', /Getting ready for a baby/.test(w) && /Your before-pregnancy checklist, once a week/.test(w) && /Eating well before a pregnancy helps your body get ready/.test(w), w.slice(0, 900));
+  /* Version 39.32: version 2, the full programme (test/baby.mjs): her folic acid tablet, her move and a food habit with its own reason */
+  check('3 trying for a baby: its own plan and steps, with her tablet', /Getting ready for a baby/.test(w) && /Every day: My folic acid tablet/.test(w) && /Greens give folate and iron, which your body needs before a pregnancy\./.test(w), w.slice(0, 900));
   check('3 ... its own expectation, and no promise about periods or waist', /more than 8 in 10 couples get pregnant within a year/.test(w) && !/Periods often take|waist|regular periods/i.test(w));
-  check('3 no doses anywhere in the plan', !/\d+\s?(mg|mcg|µg)\b|tablet/i.test(w));
+  check('3 no doses anywhere in the plan (her tablet\'s dose is only on its own page, in the checklist\'s verified words)', !/\d+\s?(mg|mcg|µg)\b/i.test(w));
   await tap(page, '#pl-rv-go'); await settle(page, 800);
   check('3 it is its own pack', (await page.evaluate(() => window.Saathi.plan.packOf())) === 'ttc');
   await go(page, 'home');
   let td = await txt(page, '#view .today-card');
-  check('3 day 1: the checklist step, as a link (no Done)', /Your before-pregnancy checklist: tick what you’ve done/.test(td) && !(await has(page, '#view .today-plan-prep [data-today-act]')) && (await page.$eval('#view .today-plan-prep .today-go', (b) => b.dataset.go).catch(() => '')) === 'ttc-prep', td);
+  check('3 day 1: her tablet, opening where to get it (no Done until she has it)', /My folic acid tablet/.test(td) && /not got it yet\? See where/i.test(td) && !(await has(page, '#view .today-plan-folic [data-today-act]')) && (await page.$eval('#view .today-plan-folic .today-go', (b) => b.dataset.go).catch(() => '')) === 'ttc-folic', td);
   await page.clock.setSystemTime(at(1, '10:00')); await go(page, 'diary'); await go(page, 'home');
   check('3 day 2: once a week only', !/before-pregnancy checklist/.test(await txt(page, '#view .today-card')));
   await page.evaluate(() => { const S = window.Saathi; S.state.mods.ttc = Object.assign({}, S.state.mods.ttc || {}, { prep: { folic: true, hb: true } }); S.save(); });

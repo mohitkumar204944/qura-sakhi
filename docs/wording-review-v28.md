@@ -2454,3 +2454,23 @@ No new wording. Help's own lines, already reviewed, now also appear above the se
 One question for the doctor: these two signs show a card only together with dizziness, fainting or breathlessness (or, for a
 late period, one-sided or shoulder pain). Bleeding alone, or dizziness alone, shows the normal results. Is that the right line,
 or should heavy bleeding alone ("a pad every 1–2 hours") show Help's "See a doctor today if" card as well?
+
+### 19.32 Version 39.32: Getting ready for a baby, the full plan (MODULE_API section 75)
+
+Built on 28 Oct 2026 (Mohit: "Build this plan personalised to users who are planning for a baby"). Every line of the plan is in
+its own packet, as built: `docs/baby-plan-review-packet-2026-10-28.md`, also a page where the doctor can reply line by line
+(claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt; Mohit shares it). Signing the packet signs this section.
+
+- **New, please check:** 101 lines (about 1,270 English words), each with its Hindi: the start questions, the doctor cards
+  for each version, the tablet's page and step, the 7 new food habits and their reasons, the lines on Yoga and moves, the 12
+  weekly and 4 monthly lessons, the 1-minute ready check, My plan's 12 weeks, her doctor month, a positive test, a fresh start
+  and her results.
+- **How it works, please check:** 21 rules (her version, the 4th step, the food sets, the moves before her period, the ready
+  check's days, a loss).
+- **Verified on 20 Oct, word for word (no review):** 39 lines from the trying pages (the list on Months of trying, the
+  checklist's lines, the partner page, the tests page), the Learn library's folic acid strip and the contraception pages'
+  Antara line. `test/baby.mjs` checks each copy against its page.
+- **Already in review elsewhere:** 13 lines (sections 12.3, 12.4, 14.6, 16.1, 16.2, 18.2, 19.0 and 19.29).
+- **17 questions** at the end of the packet, for the gynaecologist, Dr. Megha (food) and a physiotherapist (moves).
+
+Until the doctor signs, the plan runs in demo and pilot builds as every Version 39 plan has.
