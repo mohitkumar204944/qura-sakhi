@@ -204,6 +204,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     fainting, a late period or positive test with one-sided pain, thoughts of harm) put one card above Explore's and Learn's
     results, at every stage, with Call 112 now (Tele-MANAS 14416 first for harm) and Help and safety. Help's own lines, no new
     wording. Contract: MODULE_API section 73; review section 19.30.
+  - `node test/traps.mjs` (Version 39.31, the Cykel traps; Mohit, 28 Oct): a competitor's failures replayed on Sakhi across
+    Today, the Calendar, Days, Cycles, the fertile-days page and the booked reminders. It checks late by 3, 16 and 60 days, a
+    positive strip on period day 1, hormones, pregnancy, after the birth, midlife, discreet mode, irregular and few gaps,
+    "regular" beside "vary", "Low chance", "safe" days, and stale period reminders, in English and in Hindi at 360 px. Run it
+    after any change to predictions, the calendar or reminders. Contract: MODULE_API section 74.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

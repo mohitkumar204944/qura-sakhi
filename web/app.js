@@ -3550,7 +3550,9 @@
     /* Version 31: her predicted period days (from today on) and, when fertile days show, this cycle's and the next one's
        estimated fertile window and ovulation day. None in discreet mode. */
     const pr = preg ? null : predictInfo(); const fz = pr && !state.settings.discreet ? [pr.fert, pr.fertNext].filter(Boolean) : []; const predSet = {};
-    if (pr && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
+    /* Version 39.31 (the Cykel traps): once the predicted start has passed she is late, so no predicted period days are drawn
+       (the tail of a period that didn't come); her likely range still shows */
+    if (pr && !pr.late && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
     const hearts = sexHearts(); let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
     const apS = preg ? {} : approxStarts(); const gq = preg || state.settings.discreet || state.settings.shared ? null : guessedStart();   /* Version 39.25 (G4) */
     const ce = mem.calEdit && !preg ? mem.calEdit : null;   /* Version 39.23: editing her period dates */

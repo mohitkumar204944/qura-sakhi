@@ -4863,3 +4863,40 @@ alone, the guide still the quick answer), after the birth, midlife, discreet mod
 without sideways scroll; no page errors.
 
 **Wording:** none new (section 19.30 of the review notes where Help's lines now also appear).
+
+## 74. Version 39.31: the Cykel traps
+
+Mohit, 28 Oct, after walking a competitor tracker ("build the trap suite first"). That app showed "Fertile window" and a
+"Low" chance of pregnancy to a woman 16 days late, drew a next period that never came, read "High" on the first day of a
+period because of a positive strip, said "regular" and "varies quite a bit" on one card, and kept a period reminder for a date
+her new period had already moved. `test/traps.mjs` replays those states on Sakhi and reads every screen with dates (Today,
+the Calendar this month and next, the Days tab's week, Cycles, the fertile-days page) and the reminders it books.
+
+**What it holds Sakhi to** (91 checks):
+- **The control:** steady cycles 2 days before ovulation show the chance (high), fertile days ahead, a predicted period and a
+  period reminder, so the checks below can fail.
+- **Late by 3, 16 and 60 days:**
+  - no chance and no phase on Today;
+  - no fertile days from today on;
+  - no predicted period drawn;
+  - the fertile-days page says "due or late";
+  - no "Fertile window in" or "Ovulation in" on Days;
+  - no period reminder for a range already past;
+  - "Period late?" under her cycle from 16 days.
+- **A period today with a positive strip:** no chance and today not fertile. **A positive strip** never changes the chance
+  or the fertile days.
+- **Hormones, a pregnancy, after the birth, midlife (46), discreet mode:** no chance and no fertile days anywhere. On hormones
+  and in a pregnancy, no predicted period and no period or late reminder.
+- **Gaps of 23 to 45 days, or only 2 gaps:** no chance or fertile days, and Cycles says what it needs.
+- **Every scenario:**
+  - no "Low chance";
+  - no day called safe (only "no safe day" wording);
+  - Cycles never shows "Regular" beside "Yours vary by".
+- **Logging her period:** the old period and late reminders go, and new ones follow her new range.
+- **Hindi:** the late case in Hindi at 360 px.
+
+**The one gap it found, fixed:** 3 days late, the Calendar still drew "Predicted period" on today and tomorrow (the tail of a
+period that didn't come) while Today said she was due or late. The Calendar now draws predicted period days only while
+`predictInfo().late` is false; her likely range still shows.
+
+**Wording:** none new.
