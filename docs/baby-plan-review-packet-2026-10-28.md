@@ -1,9 +1,9 @@
 # Getting ready for a baby: review packet (28 October 2026)
 
 For the gynaecologist (every section), Dr. Megha (food, section E) and the physiotherapist (moving, section F). Nothing in
-this plan is built until it is signed. The same packet as a page the doctor can reply on, line by line: https://claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt (private until Mohit shares it).
+this plan runs beyond the pilot until it is signed: since Version 39.32 it is built and runs in pilot and demo builds. The same packet as a page the doctor can reply on, line by line: https://claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt (private until Mohit shares it).
 
-Today "Getting ready for a baby" is a light habit plan (`web/progs/v1.js`, id `ttc`): a walk, a food habit, the
+Before Version 39.32, "Getting ready for a baby" was a light habit plan (`web/progs/v1.js`, id `ttc`): a walk, a food habit, the
 before-pregnancy checklist, bedtime, and one doctor line at 12 months. The new plan adds a folic acid record, a version chosen
 from a few start questions, a lesson a week, a 1-minute ready check, and cards for her period, a late period, a positive test
 and a loss. After 12 weeks it carries on once a month until her doctor month. Doctor first: her gynaecologist first, free
@@ -12,12 +12,12 @@ government care second; the Qura doctor helps with food, sleep and habits only. 
 **How to reply:** each line has a code. Reply with the code and OK, a change, or remove. The rules ("How it works") and the
 questions need an answer too.
 
-- **New** (101 lines, about 1270 English words): please check.
+- **New** (107 lines, about 1410 English words): please check.
 - **How it works** (21 rules): please check.
 - **Verified 20 Oct** (39 lines): in the app since the 20 Oct verification, reused word for word. No review needed.
 - **In review §x** (13 lines): already in the app and waiting in that section of `docs/wording-review-v28.md`.
   Signing them there covers them here.
-- 17 questions at the end.
+- 19 questions at the end.
 
 ## B. Starting: a few things first
 
@@ -270,6 +270,19 @@ Checked by: The gynaecologist (a glance). The end of the 12 weeks. The plan prom
 | K2 | 12 weeks of looking after yourself. Your steps carry on, and so does your tablet. | अपना ख़्याल रखते हुए 12 हफ़्ते। आपके क़दम जारी रहेंगे, और आपकी गोली भी। | New |
 | K3 | Pregnancy is never shown as the plan’s result, and week 12 never says the plan "didn’t work". | — | How it works |
 
+## X. Added 29 Oct: from the live test on Mohit’s phone
+
+Checked by: The gynaecologist. Mohit asked to use the recommended wording meanwhile ("use recommended wordings"), as every Version 39 line has been used in the pilot. In the app since 0.39.33-pilot (versionCode 64).
+
+| Code | English | Hindi | Status |
+|---|---|---|---|
+| X1 | Everyday habits from national guidelines, and the folic acid tablet they advise before a pregnancy. Your answers choose your version. No other supplements, herbs or medicines here: your doctor decides those. | राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ से पहले की folic acid की गोली, जिसकी वे सलाह देते हैं। आपके जवाबों से आपके प्लान का रूप चुना जाता है। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं। | New. The plan’s foot line, on My plan, Plan settings and the Start card. It replaces "the same for every woman. No supplements, herbs or medicines here", which sat beside her folic acid step. |
+| X2 | Your tablet every day: It protects the baby's spine and brain, which form before most women know they are pregnant. | रोज़ आपकी गोली: यह बच्चे की रीढ़ और दिमाग़ को बचाता है, जो ज़्यादातर महिलाओं को गर्भ का पता चलने से पहले ही बनने लगते हैं। | New. What consistency brings, on My plan. The reason is her tablet step’s; only the label is new. |
+| X3 | Your Hb test: Anaemia is common and is easier to fix before pregnancy than during it. | आपकी Hb जाँच: ख़ून की कमी आम है, और गर्भ से पहले इसे ठीक करना ज़्यादा आसान है। | New. What consistency brings. The reason is her Hb test step’s; only the label is new. Question Q19. |
+| X4 | How long it usually takes: When the woman is under 40, more than 8 in 10 couples get pregnant within a year of regular sex without contraception, and more than 9 in 10 within two years. | आम तौर पर कितना समय लगता है: जब महिला की उम्र 40 से कम हो, तो बिना गर्भनिरोध के नियमित संबंध से 10 में से 8 से ज़्यादा जोड़ों को एक साल में गर्भ ठहर जाता है, और 10 में से 9 से ज़्यादा को दो साल में। | New. What consistency brings. The figure is verified (20 Oct); only the label is new. Before, the figure stood alone under the heading, which keeping to the plan doesn’t bring. |
+| X5 | Everyday habits from national guidelines, and the iron tablets your doctor prescribes in pregnancy. No other supplements, herbs or medicines here: your doctor decides those. | राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ में आपकी डॉक्टर की लिखी आयरन की गोलियाँ। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं। | New. The pregnancy plan’s foot line (not this plan’s): it has an iron tablet step, so "No supplements" was wrong there too. Question Q18. |
+| X6 | Everyday habits from national guidelines. Any other tablet, herb or medicine: your doctor decides. | राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें। कोई और गोली, जड़ी-बूटी या दवा: वह आपकी डॉक्टर तय करती हैं। | New. Either plan’s foot line on a shared phone (discreet mode). |
+
 ## Q. Questions
 
 - **Q1.** Folic acid (D1, D4): a daily tick with no dose in the step, and the dose only on the tablet’s page, in the verified words. Right?
@@ -289,6 +302,8 @@ Checked by: The gynaecologist (a glance). The end of the 12 weeks. The plan prom
 - **Q15.** J3 and W12.3: after a positive test, see the gynaecologist "within a few days", or "in the next 1 to 2 weeks"? Sooner after a past ectopic? "Yes, move me on" counts her pregnancy from her last period: right?
 - **Q16.** J6: after a loss, the folic acid reminder stops with the plan. Should it carry on quietly for women who may try again soon?
 - **Q17.** Is anything missing that a woman getting ready for a baby should hear from Sakhi?
+- **Q18.** X5: is "the iron tablets your doctor prescribes" right for every pregnant woman, the free government IFA included?
+- **Q19.** X3: is the Hb line right as something keeping to the plan brings?
 
 ## Evidence behind the plan
 
@@ -306,16 +321,3 @@ From `docs/plans-design-and-build-2026-10-24-programmes.md`, section 8.
 - The waiting-week coping card rests on one IVF feasibility study (Lancastle and Boivin 2008); the later trial was not verified.
 - When to get checked (12 months under 35, 6 at 35 to 39, straight away at 40 or over and with the listed conditions): the verified card on the tests page.
 - The PMOS plan’s activity numbers: the 2023 international PCOS guideline (150 to 300 minutes a week, 250 for modest weight loss, strength on 2 days).
-
-## Added 29 Oct: two lines from the live test (in the app since 0.39.33-pilot, versionCode 64)
-
-Mohit asked to use the recommended wording meanwhile ("use recommended wordings"). The full text is in the wording review,
-section 19.33.1.
-1. **The plan's foot line** (My plan, Plan settings and the Start card): "Everyday habits from national guidelines, and the
-   folic acid tablet they advise before a pregnancy. Your answers choose your version. No other supplements, herbs or medicines
-   here: your doctor decides those." It replaces "the same for every woman. No supplements, herbs or medicines here", which sat
-   beside the folic acid step. OK / Change / Remove.
-2. **What consistency brings**: "Your tablet every day:" with its reviewed reason (the spine and brain line), "Your Hb test:"
-   with its reviewed reason (the anaemia line), then "How long it usually takes:" with the verified figure (8 in 10 within a
-   year, 9 in 10 within two). Before, the figure stood alone under the heading. OK / Change / Remove.
-
