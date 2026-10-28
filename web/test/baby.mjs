@@ -534,6 +534,36 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   await done(a);
 }
 
+/* ---------- 18 the recommended wordings (Mohit, 29 Oct: "use recommended wordings"; review section 19.33) ---------- */
+{
+  const FOOT = /Everyday habits from national guidelines, and the folic acid tablet they advise before a pregnancy\. Your answers choose your version\. No other supplements, herbs or medicines here: your doctor decides those\./;
+  const a = await open({ seed: withPlan(0), hash: 'plan' });
+  const v = await view(a);
+  check('18 My plan\'s foot line: her folic acid tablet and her version, not "the same for every woman"', FOOT.test(v) && !/the same for every woman/.test(v), (v.match(/Everyday habits[^.]*\.[^.]*\./) || [])[0]);
+  check('18 What consistency brings: her tablet, her Hb test (their reviewed reasons), then how long it usually takes', /Your tablet every day: It protects the baby.s spine and brain, which form before most women know they are pregnant\. Your Hb test: Anaemia is common and is easier to fix before pregnancy than during it\. How long it usually takes: When the woman is under 40, more than 8 in 10 couples get pregnant/.test(v), (v.match(/What consistency brings.{0,400}/) || [])[0]);
+  await go(a, 'plan-settings');
+  check('18 Plan settings: the same foot line', FOOT.test(await view(a)));
+  await done(a);
+  const b = await open({});
+  await b.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(b.page, 600);
+  await tap(b, '#pl-in-next'); await tap(b, '[data-pl-q="act:1"]'); await tap(b, '[data-pl-m="lim:none"]'); await tap(b, '#pl-in-next'); await tap(b, '[data-pl-when="evening"]');
+  await tap(b, '#pl-in-make'); for (let i = 0; i < 5 && (await has(b, '#pl-rv-next')); i++) await tap(b, '#pl-rv-next');
+  check('18 the Start card, before her plan has a version: the same foot line', (await has(b, '#pl-rv-go')) && FOOT.test(await view(b)));
+  await done(b);
+  const s = await open({ seed: withPlan(0, {}, { settings: { discreet: true } }), hash: 'plan' });
+  const sv = await view(s);
+  check('18 a shared phone: one neutral foot line', /Everyday habits from national guidelines\. Any other tablet, herb or medicine: your doctor decides\./.test(sv) && !/folic|pregnan/i.test(sv.slice(sv.indexOf('Everyday habits'))));
+  await done(s);
+  const pg = { pack: 'preg', goalKey: 'food', start: ago(3), started: ago(3), go: true, pv: 1, level: 0, limits: { knees: false, back: false }, food: 'veg', focus: 'habits', goal: 'food', remAt: '20:00', when: 'evening', log: {}, weeks: {}, body: [], intake: { at: ago(4), stage: 'preg', goal: 'food' } };
+  const p = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(120) }, goals: ['preg'], intake: { at: ago(4), stage: 'preg', goal: 'food' }, mods: { plan: pg } }, hash: 'plan' });
+  check('18 the pregnancy plan\'s foot line names her iron tablets', /Everyday habits from national guidelines, and the iron tablets your doctor prescribes in pregnancy\. No other supplements, herbs or medicines here: your doctor decides those\./.test(await view(p)), (await view(p)).slice(-400));
+  await done(p);
+  const h = await open({ w: 360, seed: withPlan(0, {}, { lang: 'hi' }), hash: 'plan' });
+  const hv = await view(h);
+  check('18 Hindi at 360 px: the foot line and the 3 lines', /और गर्भ से पहले की folic acid की गोली, जिसकी वे सलाह देते हैं/.test(hv) && /रोज़ आपकी गोली:/.test(hv) && /आपकी Hb जाँच:/.test(hv) && /आम तौर पर कितना समय लगता है:/.test(hv) && !KEYS.test(hv) && (await noScroll(h)), hv.slice(-500));
+  await done(h);
+}
+
 check('14 no page errors', !errsAll.length, errsAll.slice(0, 5));
 await browser.close();
 const failed = results.filter((r) => !r.pass);

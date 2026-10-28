@@ -2489,3 +2489,29 @@ UI words only; nothing about health is new. The key and Today reuse lines alread
   और हफ़्ते में लगभग {m} मिनट चलना-फिरना।" (a shortened copy of section 19.32's line, which waits for the doctor).
 - Removed: the "Noted." toast on "I have my tablet" (Version 39.32's live test).
 
+#### 19.33.1 The recommended wordings (Mohit, 29 Oct: "use recommended wordings")
+
+These are health lines, so they wait for the doctor. Mohit chose to use them in the pilot meanwhile, as every Version 39 line has been.
+- **The plan's foot line** (gap 4 of the live test: "No supplements" beside the folic acid tablet step, and "the same for
+  every woman" beside a plan with versions):
+  - Getting ready: "Everyday habits from national guidelines, and the folic acid tablet they advise before a pregnancy. Your
+    answers choose your version. No other supplements, herbs or medicines here: your doctor decides those." / "राष्ट्रीय
+    दिशानिर्देशों से रोज़ की आदतें, और गर्भ से पहले की folic acid की गोली, जिसकी वे सलाह देते हैं। आपके जवाबों से आपके प्लान का
+    रूप चुना जाता है। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।"
+  - The pregnancy plan (it has an iron tablet step, so the same contradiction): "Everyday habits from national guidelines, and
+    the iron tablets your doctor prescribes in pregnancy. No other supplements, herbs or medicines here: your doctor decides
+    those." / "राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ में आपकी डॉक्टर की लिखी आयरन की गोलियाँ। यहाँ और कोई सप्लीमेंट,
+    जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।"
+  - Either, on a shared phone: "Everyday habits from national guidelines. Any other tablet, herb or medicine: your doctor
+    decides." / "राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें। कोई और गोली, जड़ी-बूटी या दवा: वह आपकी डॉक्टर तय करती हैं।"
+  - The other plans keep "the same for every woman. No supplements, herbs or medicines here".
+- **What consistency brings, Getting ready** (gap 8: it showed only the conception figure, which keeping to the plan doesn't
+  bring). Three labelled lines, the first two being their steps' reviewed reasons and the third the verified figure:
+  "Your tablet every day: It protects the baby's spine and brain, which form before most women know they are pregnant." ·
+  "Your Hb test: Anaemia is common and is easier to fix before pregnancy than during it." · "How long it usually takes: When
+  the woman is under 40, more than 8 in 10 couples get pregnant within a year of regular sex without contraception, and more
+  than 9 in 10 within two years." New words: the labels "Your tablet every day:", "Your Hb test:", "How long it usually takes:"
+  / "रोज़ आपकी गोली:", "आपकी Hb जाँच:", "आम तौर पर कितना समय लगता है:".
+- **Questions for the doctor:** is "the iron tablets your doctor prescribes" right for every pregnant woman (the free government
+  IFA included)? Is the Hb line right as a benefit of keeping to the plan?
+

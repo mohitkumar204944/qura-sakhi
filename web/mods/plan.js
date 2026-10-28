@@ -138,6 +138,11 @@
   const habOf = (id) => ALLH.find((h) => h.id === id) || null;
   /* her plan is the Getting ready programme (ttc version 2); her food set, by her BMI (My body's, or the start answers') and her answers */
   const babyD = (d) => !!d && d.pack === 'ttc' && (d.pv || 1) >= 2;
+  /* Mohit, 29 Oct ("use recommended wordings"): the foot line says what the plan holds: Getting ready's folic acid tablet and
+     its versions, the pregnancy plan's iron tablets (one neutral line on a shared phone); a plan not started yet is read by
+     the version it will start */
+  const footT = (x) => { const pk = packOf(x) || (x && x.pack); const v2 = pk === 'ttc' && ((x && x.pv) || (specOf('ttc') || {}).ver || 1) >= 2;
+    return t(!v2 && pk !== 'preg' ? 'plan_foot' : (disc() ? 'plan_foot_d' : (v2 ? 'plan_foot_ttc' : 'plan_foot_preg'))); };
   const bsetOf = (d) => { const b0 = bmiNow(d); const b = b0 != null ? b0 : (ikOf(d).bmi || null); if (b != null && b < 18.5) return 'uw'; return ikOf(d).bset === 'mix' ? 'mix' : 'std'; };
   const habList = (d) => (babyD(d) ? BSETS[bsetOf(d)].map((id, i) => Object.assign({}, habOf(id), { wk: 1 + 2 * i })) : HABITS);
   const habitsOn = (wk, d) => habList(d).filter((h) => h.wk <= Math.max(1, Math.min(wk, N)));
@@ -526,7 +531,7 @@
     const one = fold && weeksOne(d);   /* Version 39.22: her 12 weeks and what consistency brings, one card */
     v.innerHTML = hd + '<p class="small pl-clock">' + esc(disc() || !gk ? clock : tf('plan_goal_l', { g: t('plan_gv_' + gk), w: clock })) + (fold && acts.length ? ' · <button type="button" class="linkbtn pl-howlink" id="pl-howlink">' + esc(t('plan_how_link')) + '</button>' : '') + '</p>' +
       pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts, fold) + stepsCard(d, acts, fold) + babyCard(d) + weekCard(d, fold) + (fold ? '' : gardenRow()) + reviewCard(d) + (one ? weeksCard(d) : mcRow(d) + consCard(d, fold) + pathHtml(d, fold)) +
-      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
+      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + '<p class="footnote">' + esc(footT(d)) + '</p>';
     S.wire(v); wireReview(v); wirePause(v); wireSteps(v, acts);
     v.querySelectorAll('[data-pl-fold]').forEach((dt) => dt.addEventListener('toggle', () => { S.mem.plFold = S.mem.plFold || {}; S.mem.plFold[dt.dataset.plFold] = dt.open; }));   /* Version 39.19 */
     const fq = v.querySelector('#pl-fast-tog'); if (fq) fq.addEventListener('click', () => { const dd = D(); setFast(dd, todayISO(), !fastOn(dd)); remSync(dd); S.save(); S.render(); });   /* Version 39.9 */
@@ -630,7 +635,7 @@
   function consCard(d, fold) {
     if (disc()) return ''; const pk = packOf(d); const wk = weekNo(d); const sit = S.state.situation || {}; let tl = ''; const now = wk <= 4 ? 0 : (wk <= 12 ? 1 : 2);
     if (pk === 'cycle') { tl = '<ol class="pl-tl">' + [1, 2, 3].map((k, i) => '<li class="' + (i === now ? 'now' : (i < now ? 'past' : '')) + '"><strong>' + esc(t('plan_ex_' + k)) + '</strong>' + (i === now ? ' <span class="pill accent">' + esc(t('plan_ex_now')) + '</span>' : '') + '<span class="small">' + esc(t('plan_ex_' + k + '_p')) + '</span></li>').join('') + '</ol>'; }
-    else if (pk === 'ttc') tl = '<p class="small">' + esc(t('plan_rv_ttc')) + '</p>';
+    else if (pk === 'ttc') tl = babyD(d) ? [['plan_cons_tab', 'plan_fb_folic'], ['plan_cons_hb', 'plan_a_hb_s'], ['plan_cons_long', 'plan_rv_ttc']].map((x) => '<p class="small pl-bcons"><strong>' + esc(t(x[0])) + '</strong> ' + esc(t(x[1])) + '</p>').join('') : '<p class="small">' + esc(t('plan_rv_ttc')) + '</p>';   /* Mohit, 29 Oct: "use recommended wordings" */
     else if (pk === 'preg') tl = '<p class="small">' + esc(t('plan_rv_exp_preg')) + '</p>';
     const rows = []; const es = []; for (let k = Math.max(1, wk - 3); k < wk; k++) { const e = (d.weeks[k] || {}).e; if (e) es.push(tf('plan_sg_e_v', { n: k, e: t('plan_e_' + e) })); }
     if (es.length) rows.push([t('plan_sg_e'), es.slice(-2).join(' · ')]);
@@ -650,7 +655,7 @@
   function renderSettings(v) {
     const d0 = raw(); if (!on() || !S.canSave() || !d0 || !d0.start) { renderMyPlan(v); return; }
     pauseSync();   /* Version 39.22: her reminders as they stand, the nudge and the wind-down on by default */
-    v.innerHTML = S.backRow(t('plan_set_h'), 'plan', false) + settingsHtml(fullD(d0), true) + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
+    v.innerHTML = S.backRow(t('plan_set_h'), 'plan', false) + settingsHtml(fullD(d0), true) + '<p class="footnote">' + esc(footT(d0)) + '</p>';
     S.wire(v); wireSettings(v); wirePause(v);
   }
   /* +10/+15/+20/+30 minutes, with Undo for a slip of the finger */
@@ -2174,7 +2179,7 @@
         (can ? '<p class="small pl-st-rem">' + S.icon('bell') + ' <span>' + esc(remLine(pv)) + '</span></p>' : '') +   /* Version 39.27 (R01): no question; the line says what will ring */
         '<button type="button" class="btn primary block" id="pl-rv-go">' + esc(t('plan_start')) + '</button>' + editB;
     }
-    v.innerHTML = '<div class="pl-rv">' + top + body + (id === 'start' ? '<p class="footnote">' + esc(t('plan_foot')) + '</p>' : '') + '</div>';   /* Version 39.8 (VD-07): the disclaimer once, on the Start card */
+    v.innerHTML = '<div class="pl-rv">' + top + body + (id === 'start' ? '<p class="footnote">' + esc(footT(dd)) + '</p>' : '') + '</div>';   /* Version 39.8 (VD-07): the disclaimer once, on the Start card */
     S.wire(v); wireWhy(v);
     const to = (k) => { stopAudio(); S.mem.rvCard = k; S.render(); window.scrollTo(0, 0); };
     const nx = v.querySelector('#pl-rv-next'); if (nx) nx.addEventListener('click', () => to(i + 1));
@@ -2475,7 +2480,7 @@
     const a = actionsFor(Object.assign(fullD(d), { start: todayISO() }))[0]; const nm = stepName(a);
     v.innerHTML = '<h1>' + esc(packTitle(d)) + '</h1>' + pendBanner() + '<div class="card pl-soon"><h3>' + esc(tf('plan_th_soon', { d: dayWord(d.start) })) + '</h3>' + (nm ? '<p>' + esc(tf('plan_th_first', { a: nm })) + '</p>' : '') +
       '<p class="small">' + esc(tf('plan_sl_d1_p0', { t: timeOf(ciAt(d)) })) + '</p><button type="button" class="btn sm" id="pl-soon-now">' + esc(t('plan_soon_now')) + '</button></div>' +
-      careTeam() + settingsHtml(d) + '<p class="footnote">' + esc(t('plan_foot')) + '</p>';
+      careTeam() + settingsHtml(d) + '<p class="footnote">' + esc(footT(d)) + '</p>';
     S.wire(v); wireSettings(v);
     v.querySelector('#pl-soon-now').addEventListener('click', () => { const dd = D(); dd.start = todayISO(); remOnNow(dd, true); S.save(); S.setHash('home'); });
   }
@@ -3134,6 +3139,10 @@
         plan_tiles_plate: 'My plate', plan_tiles_moves: 'Moves and calm', plan_tiles_body: 'My body', plan_tiles_prog: 'My progress',
         plan_remind: 'Remind me every day', plan_remind_at: 'At', plan_stop: 'Stop my plan', plan_stop_q: 'Stop your plan? What you logged stays on your phone.', plan_stop_yes: 'Yes, stop it', plan_cancel: 'Keep it',
         plan_foot: 'Everyday habits from national guidelines, the same for every woman. No supplements, herbs or medicines here: your doctor decides those.',
+        plan_foot_ttc: 'Everyday habits from national guidelines, and the folic acid tablet they advise before a pregnancy. Your answers choose your version. No other supplements, herbs or medicines here: your doctor decides those.',
+        plan_foot_preg: 'Everyday habits from national guidelines, and the iron tablets your doctor prescribes in pregnancy. No other supplements, herbs or medicines here: your doctor decides those.',
+        plan_foot_d: 'Everyday habits from national guidelines. Any other tablet, herb or medicine: your doctor decides.',
+        plan_cons_tab: 'Your tablet every day:', plan_cons_hb: 'Your Hb test:', plan_cons_long: 'How long it usually takes:',
         plan_done: 'Done', plan_yes: 'Yes', plan_well: 'Well done.', plan_today_d: 'Your plan for today', plan_today_move: 'Move {n} minutes today',
         plan_rev_h: 'Week {n} is done', plan_rev_min: 'You moved {a} minutes. Your target was {t}.', plan_rev_e: 'How was your energy this week?', plan_e_low: 'Low', plan_e_ok: 'Okay', plan_e_good: 'Good',
         plan_rev_b: 'What got in the way?', plan_b_time: 'No time', plan_b_tired: 'Too tired', plan_b_pain: 'Pain', plan_b_family: 'Family or work', plan_b_out: 'Weather or safety', plan_b_none: 'Nothing',
@@ -3423,6 +3432,10 @@
         plan_tiles_plate: 'मेरी थाली', plan_tiles_moves: 'योग, व्यायाम और सुकून', plan_tiles_body: 'मेरा शरीर', plan_tiles_prog: 'मेरी प्रगति',
         plan_remind: 'मुझे रोज़ याद दिलाएँ', plan_remind_at: 'समय', plan_stop: 'मेरा प्लान रोकें', plan_stop_q: 'प्लान रोकें? जो आपने दर्ज किया, वह आपके फ़ोन पर रहेगा।', plan_stop_yes: 'हाँ, रोकें', plan_cancel: 'रहने दें',
         plan_foot: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, हर महिला के लिए एक जैसी। यहाँ कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।',
+        plan_foot_ttc: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ से पहले की folic acid की गोली, जिसकी वे सलाह देते हैं। आपके जवाबों से आपके प्लान का रूप चुना जाता है। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।',
+        plan_foot_preg: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ में आपकी डॉक्टर की लिखी आयरन की गोलियाँ। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।',
+        plan_foot_d: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें। कोई और गोली, जड़ी-बूटी या दवा: वह आपकी डॉक्टर तय करती हैं।',
+        plan_cons_tab: 'रोज़ आपकी गोली:', plan_cons_hb: 'आपकी Hb जाँच:', plan_cons_long: 'आम तौर पर कितना समय लगता है:',
         plan_done: 'हो गया', plan_yes: 'हाँ', plan_well: 'बहुत अच्छा।', plan_today_d: 'आज का आपका प्लान', plan_today_move: 'आज {n} मिनट चलें या व्यायाम करें',
         plan_rev_h: 'हफ़्ता {n} पूरा हुआ', plan_rev_min: 'आपने {a} मिनट व्यायाम किया। लक्ष्य {t} मिनट था।', plan_rev_e: 'इस हफ़्ते आपकी ऊर्जा कैसी रही?', plan_e_low: 'कम', plan_e_ok: 'ठीक', plan_e_good: 'अच्छी',
         plan_rev_b: 'किस बात ने रोका?', plan_b_time: 'समय नहीं', plan_b_tired: 'बहुत थकान', plan_b_pain: 'दर्द', plan_b_family: 'घर या काम', plan_b_out: 'मौसम या सुरक्षा', plan_b_none: 'कुछ नहीं',

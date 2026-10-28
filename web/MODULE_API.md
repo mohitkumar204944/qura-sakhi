@@ -5070,3 +5070,10 @@ pill not counted.
 
 **Tests:** `node test/walkfix.mjs` (34 checks, a diary like Mohit's; 21 fail on the build before it).
 
+**Then (Mohit, 29 Oct: "use recommended wordings"):** the plan's foot line says what the plan holds (`footT`): Getting ready's
+folic acid tablet and versions (`plan_foot_ttc`), the pregnancy plan's iron tablets (`plan_foot_preg`), one neutral line on a
+shared phone (`plan_foot_d`); a plan not started yet is read by the version it will start. Getting ready's "What consistency
+brings" shows its tablet's and its Hb test's reviewed reasons and then "How long it usually takes" with the verified figure
+(`plan_cons_tab`, `plan_cons_hb`, `plan_cons_long`). Golden re-recorded: only the pregnancy plan's foot line changed (56 days).
+Tests: baby.mjs section 18 (137 checks). Wording: review section 19.33.1 (waits for the doctor).
+

@@ -306,3 +306,16 @@ From `docs/plans-design-and-build-2026-10-24-programmes.md`, section 8.
 - The waiting-week coping card rests on one IVF feasibility study (Lancastle and Boivin 2008); the later trial was not verified.
 - When to get checked (12 months under 35, 6 at 35 to 39, straight away at 40 or over and with the listed conditions): the verified card on the tests page.
 - The PMOS plan’s activity numbers: the 2023 international PCOS guideline (150 to 300 minutes a week, 250 for modest weight loss, strength on 2 days).
+
+## Added 29 Oct: two lines from the live test (in the app since 0.39.33-pilot, versionCode 64)
+
+Mohit asked to use the recommended wording meanwhile ("use recommended wordings"). The full text is in the wording review,
+section 19.33.1.
+1. **The plan's foot line** (My plan, Plan settings and the Start card): "Everyday habits from national guidelines, and the
+   folic acid tablet they advise before a pregnancy. Your answers choose your version. No other supplements, herbs or medicines
+   here: your doctor decides those." It replaces "the same for every woman. No supplements, herbs or medicines here", which sat
+   beside the folic acid step. OK / Change / Remove.
+2. **What consistency brings**: "Your tablet every day:" with its reviewed reason (the spine and brain line), "Your Hb test:"
+   with its reviewed reason (the anaemia line), then "How long it usually takes:" with the verified figure (8 in 10 within a
+   year, 9 in 10 within two). Before, the figure stood alone under the heading. OK / Change / Remove.
+
