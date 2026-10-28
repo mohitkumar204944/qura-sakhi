@@ -50,6 +50,8 @@ if (W.dx) await T('[data-ob-dx="' + W.dx + '"]', 'PMOS question: ' + W.dx);
 await R.shot('join-details-' + who, true);
 await T('#ob-next', 'Continue (details)');
 mark('details');
+await T('[data-ob-care="private"]', 'A private gynaecologist (where she gets care, Version 39.28)');
+mark('where she gets care');
 await T('[data-ob-sh="me"]', 'Only me (who uses this phone)');
 mark('who uses this phone');
 /* sign-up */

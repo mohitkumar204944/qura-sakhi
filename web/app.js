@@ -175,6 +175,12 @@
       ob_lp_p: 'A guess is fine. You can fix it later.', ob_lp_w1: 'About a week ago', ob_lp_w2: 'About 2 weeks ago', ob_lp_w34: '3 to 4 weeks ago', ob_lp_more: 'More than a month ago', ob_lp_more_h: 'About how long ago?', ob_lp_m1: '5 to 6 weeks', ob_lp_m2: 'About 2 months', ob_lp_m3: '3 months or more', wn_h: 'What’s new in Sakhi', wn_1: 'Sakhi can make you a 12-week plan for what you want to work on.', wn_2: 'Home is now “{h}”, and Care is now “{c}”.', wn_3: 'Help is at the top of every screen.', wn_plan: 'Your plan carries on.', wn_go: 'See my plan', ob_lp_stop: 'My periods have stopped',
       ob_preg_h: 'Do you know your due date?', ob_preg_p: 'It is on your scan report. If not, the first day of your last period works too.', ob_preg_edd: 'Pick the due date', ob_preg_lmp: 'Pick my last period date', ob_later: 'I’ll add it later',
       ob_bf_q: 'Are you breastfeeding?', ob_yes: 'Yes', ob_no: 'No', ob_some: 'Sometimes',
+      /* Version 39.28: where she usually goes for women's health (Mohit, 28 Oct: tier 1 and 2 women see a private gynaecologist) */
+      care_q_h: 'Where do you usually go for women’s health?', care_q_p: 'Sakhi then points you to the right place for check-ups, tests and tablets.',
+      care_private: 'A private gynaecologist or doctor', care_private_s: 'A clinic or a private hospital', care_govt: 'A government hospital or health centre', care_govt_s: 'PHC, CHC, district hospital or Ayushman Arogya Mandir',
+      care_asha: 'My ASHA or ANM', care_asha_s: 'She visits me at home', care_none: 'Nowhere yet', care_none_s: 'Sakhi shows you both kinds', care_change: 'You can change this any time in Me.',
+      me_care: 'Where I get care', me_care_none: 'Not chosen yet', care_note: 'This changes where Sakhi sends you for check-ups, tests and tablets. Emergency numbers stay the same for everyone.', care_saved: 'Saved.',
+      hs_doc_s_doc: 'A call with a Qura doctor, or a free government doctor',
       ob_sh_h: 'Does anyone else use this phone?', ob_sh_me: 'Only me', ob_sh_some: 'Sometimes', ob_sh_fam: 'Yes, my family uses it',
       ob_kit_h: 'Keep your diary private', ob_kit_lock: 'Lock with fingerprint or PIN', ob_kit_plain: 'Plain words on screen', ob_kit_plain_d: 'No word like “period” shows', ob_kit_notes: 'Show the app as “Notes”', ob_kit_p: 'You can change these any time on the Me page.', ob_done: 'Done',
       approx_note: 'Your start date is a guess. Tap the day it really started to fix it.', pp_rec_b: 'Recovery today', pp_feed_b: 'Feeding',
@@ -424,6 +430,11 @@
       ob_lp_p: 'अंदाज़ा भी चलेगा। बाद में ठीक कर सकती हैं।', ob_lp_w1: 'लगभग एक हफ़्ता पहले', ob_lp_w2: 'लगभग 2 हफ़्ते पहले', ob_lp_w34: '3 से 4 हफ़्ते पहले', ob_lp_more: 'एक महीने से ज़्यादा पहले', ob_lp_more_h: 'लगभग कितने समय पहले?', ob_lp_m1: '5 से 6 हफ़्ते', ob_lp_m2: 'लगभग 2 महीने', ob_lp_m3: '3 महीने या ज़्यादा', wn_h: 'Sakhi में नया क्या है', wn_1: 'Sakhi आपके लिए 12 हफ़्ते का प्लान बना सकती है, उस बात पर जिस पर आप काम करना चाहती हैं।', wn_2: 'होम अब “{h}” है, और देखभाल अब “{c}” है।', wn_3: 'मदद हर स्क्रीन के ऊपर है।', wn_plan: 'आपका प्लान जारी है।', wn_go: 'मेरा प्लान देखें', ob_lp_stop: 'मेरे पीरियड बंद हो गए हैं',
       ob_preg_h: 'क्या डिलीवरी की तारीख़ पता है?', ob_preg_p: 'यह आपकी स्कैन रिपोर्ट पर लिखी होती है। न पता हो, तो पिछले पीरियड का पहला दिन भी चलेगा।', ob_preg_edd: 'डिलीवरी की तारीख़ चुनें', ob_preg_lmp: 'पिछले पीरियड की तारीख़ चुनें', ob_later: 'बाद में जोड़ूँगी',
       ob_bf_q: 'क्या आप स्तनपान करा रही हैं?', ob_yes: 'हाँ', ob_no: 'नहीं', ob_some: 'कभी-कभी',
+      care_q_h: 'महिलाओं की सेहत के लिए आप आमतौर पर कहाँ जाती हैं?', care_q_p: 'फिर Sakhi आपको जाँच, टेस्ट और गोलियों के लिए सही जगह बताएगी।',
+      care_private: 'प्राइवेट गायनेकोलॉजिस्ट या डॉक्टर', care_private_s: 'क्लिनिक या प्राइवेट अस्पताल', care_govt: 'सरकारी अस्पताल या स्वास्थ्य केंद्र', care_govt_s: 'PHC, CHC, ज़िला अस्पताल या आयुष्मान आरोग्य मंदिर',
+      care_asha: 'मेरी ASHA या ANM', care_asha_s: 'वे घर आकर मिलती हैं', care_none: 'अभी कहीं नहीं', care_none_s: 'Sakhi आपको दोनों तरह की जगहें दिखाएगी', care_change: 'इसे कभी भी "मैं" पेज पर बदल सकती हैं।',
+      me_care: 'मैं कहाँ दिखाती हूँ', me_care_none: 'अभी नहीं चुना', care_note: 'इससे बदलता है कि Sakhi जाँच, टेस्ट और गोलियों के लिए आपको कहाँ भेजे। इमरजेंसी नंबर सबके लिए वही रहते हैं।', care_saved: 'सेव हो गया।',
+      hs_doc_s_doc: 'Qura की डॉक्टर से कॉल, या मुफ़्त सरकारी डॉक्टर',
       ob_sh_h: 'क्या यह फ़ोन कोई और भी चलाता है?', ob_sh_me: 'सिर्फ़ मैं', ob_sh_some: 'कभी-कभी', ob_sh_fam: 'हाँ, घर वाले भी',
       ob_kit_h: 'अपनी डायरी निजी रखें', ob_kit_lock: 'फ़िंगरप्रिंट या PIN से लॉक', ob_kit_plain: 'स्क्रीन पर सादे शब्द', ob_kit_plain_d: '"पीरियड" जैसे शब्द नहीं दिखेंगे', ob_kit_notes: 'ऐप "Notes" नाम से दिखे', ob_kit_p: 'ये सब कभी भी "मैं" पेज पर बदल सकती हैं।', ob_done: 'हो गया',
       approx_note: 'शुरू होने की तारीख़ अंदाज़े से है। जिस दिन सच में शुरू हुआ, उस दिन पर टैप करके ठीक करें।', pp_rec_b: 'आज की रिकवरी', pp_feed_b: 'दूध पिलाना',
@@ -1013,8 +1024,8 @@
     const joining = state.stage !== 'app' && state.stage !== 'browse';
     const row = (id, ico, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>';
     sheet('<h2>' + esc(t('help')) + '</h2><div class="list hs-list"><a class="item hs-sos hs-112" id="hs-112" href="tel:112"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('hs_112')) + '</strong><span>' + esc(t('hs_112_s')) + '</span></span><span class="chev">' + I.chev + '</span></a>' +
-      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t('hs_doc'), t('hs_doc_s')) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
-      (modRoute('asha') && state.stage === 'app' ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>', (sh) => {
+      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t('hs_doc'), t(careGov() ? 'hs_doc_s' : 'hs_doc_s_doc')) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
+      (modRoute('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>', (sh) => {
       $('#hs-sos', sh).addEventListener('click', () => { closeSheet(true); openSOS(); });
       $('#hs-harm', sh).addEventListener('click', () => { closeSheet(true); openHarm(); });
       const hd = $('#hs-doc', sh); if (hd) hd.addEventListener('click', () => { closeSheet(true); ask(''); });
@@ -1569,6 +1580,13 @@
      her first log in Diary. Her plan is offered on Today after that first log (her first goal chooses it). */
   const OB_TILES = [['cycle', 'periods'], ['pmos', 'pmos'], ['ttc', 'ttc'], ['preg', 'preg'], ['post', 'post'], ['mid', 'meno'], ['meno', 'meno']];
   const OB_ENGINE = { cycle: 'cycle', pmos: 'cycle', ttc: 'ttc', preg: 'preg', post: 'post', mid: 'meno', meno: 'meno' };
+  /* Version 39.28: where she usually goes for women's health (Mohit, 28 Oct: "not always keep pushing for Asha/ANM"). The
+     government and ASHA wording is the default only for a woman who says that's where she goes. Before she answers, and for
+     a private doctor or "Nowhere yet", Sakhi says "your doctor", and the free government options become one quiet line
+     (they stay in Explore). Emergency numbers and danger signs are the same for everyone. Modules read it as S.care. */
+  const CARE_KEYS = ['private', 'govt', 'asha', 'none'];
+  const careRoute = () => { const c = (state.situation || {}).care; return CARE_KEYS.indexOf(c) >= 0 ? c : null; };
+  const careGov = () => { const c = careRoute(); return c === 'govt' || c === 'asha'; };
   const OB_GOALS = { cycle: ['track', 'pain', 'heavy', 'pms'], pmos: ['irregular', 'weight', 'skin', 'pms', 'pain', 'heavy'], ttc: ['ready', 'irregular', 'weight'], preg: ['food', 'nausea', 'iron', 'sleep', 'mood'], post: ['recovery', 'feed', 'pelvic', 'mood', 'sleep', 'weight'], mid: ['hot', 'sleep', 'mood', 'heavy', 'bones', 'weight'], meno: ['hot', 'sleep', 'mood', 'bones', 'weight'] };
   const OB_GAPS = ['n', 'g45', 'g60', 'gt60', 'vary', 'lt21'];
   const OB_TOKEN = { cycle: 'track', ttc: 'ttc', preg: 'preg', post: 'baby', meno: 'meno' };
@@ -1746,6 +1764,15 @@
         });
       }
       back(() => { ob.step = 3; render(); });
+    } else if (ob.step === 5) {
+      /* Version 39.28: where she usually goes for women's health. One tap goes on; Continue goes on without an answer, and
+         Sakhi then says "your doctor" (CARE_KEYS, careRoute). She changes it any time in Me. */
+      const ico = { private: [I.steth, 'rose'], govt: [I.care, 'teal'], asha: [I.person, 'orange'], none: [I.search, 'purple'] };
+      v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('care_q_h'), t('care_q_p')) + '<div class="list ob-care">' + CARE_KEYS.map((k) => '<button type="button" class="item ob-opt' + (ob.care === k ? ' on' : '') + '" data-ob-care="' + k + '" aria-pressed="' + (ob.care === k) + '"><span class="ico-sm hue hue-' + ico[k][1] + '">' + ico[k][0] + '</span><span class="body"><strong>' + esc(t('care_' + k)) + '</strong><span>' + esc(t('care_' + k + '_s')) + '</span></span></button>').join('') + '</div>' +
+        why('care_change') + '<button type="button" class="btn primary block" id="ob-care-go">' + esc(t('continue')) + '</button></div>';
+      v.querySelectorAll('[data-ob-care]').forEach((b) => b.addEventListener('click', () => { ob.care = b.dataset.obCare; ob.step = 6; render(); }));
+      $('#ob-care-go', v).addEventListener('click', () => { ob.step = 6; render(); });
+      back(() => { ob.step = 4; render(); });
     } else {
       /* A shared phone: offer the privacy kit right here. "Only me" goes straight on. */
       const B = window.SakhiAndroid; const canDisguise = !!(B && B.setDisguise);
@@ -1757,7 +1784,7 @@
       v.querySelectorAll('[data-ob-sh]').forEach((b) => b.addEventListener('click', () => { ob.share = b.dataset.obSh; if (ob.share === 'me') finishOnboard(); else render(); }));
       v.querySelectorAll('[data-ob-kit]').forEach((c) => c.addEventListener('change', () => { ob.kit[c.dataset.obKit] = c.checked; }));
       const dn = $('#ob-done', v); if (dn) dn.addEventListener('click', finishOnboard);
-      back(() => { ob.step = 4; render(); });
+      back(() => { ob.step = 5; render(); });
     }
   }
   /* What joining saves: her birth month and year, her stage as situation flags, her last period if she gave one, and her goals.
@@ -1777,6 +1804,7 @@
       if (ob.hfor) sit.hormonesFor = ob.hfor;
     }
     if (tile === 'pmos' && ob.dx === 'y') sit.pcos = true;
+    if (CARE_KEYS.indexOf(ob.care) >= 0) sit.care = ob.care;   /* Version 39.28: where she gets care (unanswered: "your doctor") */
     const picked = (ob.goals || []).slice(); const g0 = picked[0] || 'track'; const g1 = g0 === 'irregular' && sit.pcos ? 'pmos' : g0;
     state.situation = sit; state.goals = goalsList(st, picked, !!sit.pcos);
     /* Version 39.26: the days she tapped are her periods, counted at once (a start, and an end once it is over); the ticks go
@@ -4369,12 +4397,14 @@
     const callCard = callCan() && mem.calls && mem.calls.available ? '<div class="card" id="ask-call"><h3>' + esc(t('ac_h')) + '</h3><p class="small">' + esc(t('ac_card_p')) + '</p><button type="button" class="btn primary block" data-go="ask-call">' + I.steth + ' ' + esc(t('ac_go')) + '</button></div>' : '';
     /* Version 32 (decision 4 of the field-test audit): without Qura's staffed WhatsApp, the free government doctor comes first,
        and the Qura card says plainly who the doctors are and what costs money */
-    const freeCard = ROUTES['access-doctor'] ? '<div class="card" id="ask-free"><h3>' + esc(t('ask_free_h')) + '</h3><p class="small">' + esc(t('ask_free_p')) + '</p><button type="button" class="btn sm' + (wa || callCard ? '' : ' primary') + '" data-go="access-doctor">' + esc(t('access_doctor')) + '</button></div>' : '';
-    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t('ask_p')) + '</p>' + (wa ? '' : freeCard) + callCard +
+    /* Version 39.28: for a woman who sees a private doctor (or hasn't said), the free government doctor comes after Qura's ways */
+    const late = wa || !careGov();
+    const freeCard = ROUTES['access-doctor'] ? '<div class="card" id="ask-free"><h3>' + esc(t('ask_free_h')) + '</h3><p class="small">' + esc(t('ask_free_p')) + '</p><button type="button" class="btn sm' + (late || callCard ? '' : ' primary') + '" data-go="access-doctor">' + esc(t('access_doctor')) + '</button></div>' : '';
+    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t('ask_p')) + '</p>' + (late ? '' : freeCard) + callCard +
       '<div class="card"><h3>' + esc(t(callCard ? 'ac_or_book' : 'ask_how_h')) + '</h3>' +
       (wa ? '<p class="small">' + esc(t('ask_how_wa')) + '</p><a class="btn' + (callCard ? '' : ' primary') + ' block" id="ask-wa" href="' + esc(waLink('ask_wa_hello')) + '" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('ask_wa')) + '</a>' + waNote()
         : '<p class="small">' + esc(t('ask_how_web')) + '</p><a class="btn block" id="ask-web" href="https://quranutrition.com/book-consultation" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('book_link')) + '</a>') + '<p class="small ask-cost">' + esc(t('ask_cost')) + '</p></div>' +
-      (wa ? freeCard : '') +
+      (late ? freeCard : '') +
       (callsOf().length ? callListHtml() : '') +
       (qs.length ? '<div class="card soft" id="ask-qs"><h3>' + esc(t('ask_q_h')) + '</h3><ul>' + qs.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul><p class="small">' + esc(t('ask_q_p')) + '</p><button type="button" class="linkbtn" id="ask-q-clear">' + esc(t('ask_q_clear')) + '</button></div>' : '') +
       (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '');
@@ -4436,6 +4466,8 @@
     v.innerHTML = backRow(t('me_h'), 'home', false) + head + su +
       '<div class="list">' + meRow('me-privacy', I.lock, 'purple', t('discretion'), privacySummary(), 'me-privacy') +
         meRow('me-health', disc ? I.leaf : I.heart, 'rose', t(disc ? 'me_health_hd' : 'me_health_h'), disc ? t('me_health_private') : stageName()) +
+        /* Version 39.28: where she gets care, in one sheet */
+        (canSave() && !mem.teen ? '<button type="button" class="item" id="me-care"><span class="ico-sm hue hue-teal">' + I.steth + '</span><span class="body"><strong>' + esc(t('me_care')) + '</strong><span>' + esc(careRoute() ? t('care_' + careRoute()) : t('me_care_none')) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '') +
         /* Version 39.2 (diet audit F11): one Reminders row; her lists and the phone's alerts are inside it */
         (canSave() && (ROUTES['tools-reminders'] || hasReminders()) ? meRow('me-reminders', I.bell, 'green', t('me_rem_one'), remOnCount() ? tf('me_rem_on', { n: remOnCount() }) : t('me_rem_one_s'), 'me-rem-list') : '') +
         meRows('main') + '</div>' +
@@ -4447,6 +4479,7 @@
       (state.sample && demoBuild() ? demoHtml() : '') +
       '<div class="list me-danger"><button type="button" class="item" id="me-del"><span class="body"><strong>' + esc(t('delete_all')) + '</strong><span>' + esc(t('tm2_p')) + '</span></span></button></div><div id="me-out"></div>';
     wire(v); wireDemo(v); wireHomeV30(v);
+    const mc = $('#me-care', v); if (mc) mc.addEventListener('click', careSheet);
     $('#me-del', v).addEventListener('click', () => {
       const out = $('#me-out', v);
       out.innerHTML = '<div class="card warn"><p style="color:var(--fg)">' + esc(t('delete_sure')) + '</p><div class="grid2"><button type="button" class="btn" id="del-no">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="del-yes">' + esc(t('yes_delete')) + '</button></div></div>';
@@ -4454,6 +4487,21 @@
       out.scrollIntoView({ block: 'nearest' });
     });
     runHook('afterMe', [v, api, 'main']);
+  }
+
+  /* Version 39.28: "Where I get care": the joining question again, with what it changes. Done saves it. */
+  function careSheet() {
+    let pick = careRoute();
+    const show = () => sheet('<h2>' + esc(t('care_q_h')) + '</h2><div class="list">' + CARE_KEYS.map((k) => '<button type="button" class="item stage-opt' + (pick === k ? ' on' : '') + '" data-care="' + k + '" aria-pressed="' + (pick === k) + '"><span class="body"><strong>' + esc(t('care_' + k)) + '</strong><span>' + esc(t('care_' + k + '_s')) + '</span></span>' + (pick === k ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
+      '<p class="small">' + esc(t('care_note')) + '</p><div class="sheet-foot"><button type="button" class="btn primary block" id="care-done">' + esc(t('ob_done')) + '</button></div>', (sh) => {
+      sh.querySelectorAll('[data-care]').forEach((b) => b.addEventListener('click', () => { pick = b.dataset.care; show(); }));
+      $('#care-done', sh).addEventListener('click', () => {
+        const was = careRoute(); const sit = state.situation || (state.situation = {});
+        if (CARE_KEYS.indexOf(pick) >= 0) sit.care = pick;
+        closeSheet(true); if (pick && pick !== was) { save(); toast(t('care_saved')); } render();
+      });
+    });
+    show();
   }
 
   function renderMePrivacy(v) {
@@ -5024,6 +5072,14 @@
       }));
     }
   };
+
+  /* Version 39.28: where she gets care: 'private', 'govt', 'asha', 'none' or null (unanswered). gov() is the government route
+     (a government centre or her ASHA), asha() her ASHA; unanswered reads as "your doctor". altRow is the free government
+     option as one quiet row, for the doctor route's pages. */
+  Object.assign(api.care, {
+    route: () => careRoute(), gov: () => careGov(), asha: () => careRoute() === 'asha',
+    altRow: (go, label) => '<button type="button" class="item care-alt" data-go="' + esc(go) + '"><span class="body"><strong>' + esc(label) + '</strong></span><span class="chev">' + I.chev + '</span></button>'
+  });
 
   /* ---------- boot (called from index.html after the module scripts load) ---------- */
   let booted = false;

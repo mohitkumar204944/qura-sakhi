@@ -75,7 +75,7 @@ const count = (s, re) => (String(s).match(re) || []).length;
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
   check('1 pregnancy: her plan names her own week, not "of 12"', /My pregnancy plan/i.test(td) && /week 8 of pregnancy/i.test(td) && !/of 12/.test(td), td);
-  check('1 pregnancy: "Due now" is her plan\'s first step, once', count(td, /Due now/g) === 1 && !(await has(page, '#view .today-preg-plan')) && /Due now: Register your pregnancy/.test(td), td);
+  check('1 pregnancy: "Due now" is her plan\'s first step, once', count(td, /Due now/g) === 1 && !(await has(page, '#view .today-preg-plan')) && /Due now: Folic acid/.test(td), td);   /* Version 39.28: registration is the government route's item */
   check('1 the due step opens her pregnancy plan, with no Done of its own', (await page.$eval('#view .today-plan-pdue .today-go', (b) => b.dataset.go).catch(() => '')) === 'preg-plan' && !(await has(page, '#view .today-plan-pdue [data-today-act]')));
   check('1 a running plan leaves no 21-day journey row on Today', !(await has(page, '#view .today-journey')));
   await go(page, 'plan');

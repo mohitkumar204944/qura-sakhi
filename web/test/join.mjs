@@ -2,12 +2,14 @@
 // her language, Start, about you (name, then decade and year), her stage (7 tiles), up to 3 goals, a few details for her
 // stage, then who uses this phone. Sign-up follows in each suite, with its own server.
 //   join(page, { lang, name, dec, y, m, tile, goals, lp, lpd, lpm, gap, dx, pill, hfor, dates, dlen, heavy, pain, edd, lmp, birth,
-//                bf, mp, share, kitOff, stop, under18, onScreen })
+//                bf, mp, care, share, kitOff, stop, under18, onScreen })
 //   Version 39.26: dates: her period starts, oldest first, tapped on the calendar (with dlen, heavy, pain); without them, the
 //   quick choices behind "I don't remember the dates" (lp, lpd, lpm), as before. hfor: on the pill, since when.
 //   tile: cycle | pmos | ttc | preg | post | mid | meno (default cycle). goals: in the order she picks them (default: the tile's
-//   first goal). lp: a last-period chip (default '7'). stop: 'stage' | 'goals' | 'details' | 'share' ends on that screen.
-//   onScreen(name): called on each screen before it is answered ('about', 'stage', 'goals', 'details', 'share').
+//   first goal). lp: a last-period chip (default '7'). stop: 'stage' | 'goals' | 'details' | 'care' | 'share' ends on that screen.
+//   Version 39.28: care: where she usually goes (private | govt | asha | none); without it she taps Continue and leaves it
+//   unanswered, so Sakhi says "your doctor".
+//   onScreen(name): called on each screen before it is answered ('about', 'stage', 'goals', 'details', 'care', 'share').
 export const FIRST_GOAL = { cycle: 'track', pmos: 'irregular', ttc: 'ready', preg: 'food', post: 'recovery', mid: 'hot', meno: 'hot' };
 const click = (page, sel) => page.$eval(sel, (el) => el.click());
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -58,6 +60,9 @@ export async function join(page, o = {}) {
     if (o.pill) { await tick('#ob-pill'); if (o.hfor) await at('[data-ob-hfor="' + o.hfor + '"]'); }
     await at('#ob-next');
   }
+  await page.waitForSelector('[data-ob-care]'); await onScreen('care');
+  if (o.stop === 'care') return;
+  await at(o.care ? '[data-ob-care="' + o.care + '"]' : '#ob-care-go');
   await page.waitForSelector('[data-ob-sh]'); await onScreen('share');
   if (o.stop === 'share') return;
   await at('[data-ob-sh="' + (o.share || 'me') + '"]');

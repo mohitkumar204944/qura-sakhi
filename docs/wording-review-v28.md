@@ -2333,3 +2333,82 @@ asked.
 | Call 108 · Call 102 · Call 112 · Call 14416 (Copy, small, under them) | कॉल करें 108 · … |
 | Call 112 now · Emergency, any kind | 112 पर अभी कॉल करें · कोई भी इमरजेंसी |
 | Other helplines · Every emergency number, in one tap | दूसरी हेल्पलाइन · सभी इमरजेंसी नंबर, एक टैप में |
+
+### 19.28 Version 39.28: your doctor first (MODULE_API section 71)
+
+Mohit, 28 Oct: most women in tier 1 and 2 cities see a private gynaecologist, so Sakhi shouldn't always send them to the ASHA
+or ANM. One question while she joins sets where Sakhi sends her. A government centre or her ASHA keeps today's reviewed
+words. Before she answers, and with a private doctor or "Nowhere yet", the lines below take their place. The doses, the
+tests and their weeks, the danger signs and the emergency numbers don't change.
+
+**Reused, already reviewed:** every dose, test and week in these lines (iron 180 days, folic acid 400 mcg to the end of the
+third month, the 75 g sugar test, Td's two doses or one booster, the 18–20 week anomaly scan, the 6-week check's list, the
+vaccine schedule), and "Many mothers skip it. Please go."
+
+**Please review.** Questions for the doctor:
+1. **"At least 4 check-ups."** The pregnancy plan keeps its 4 check-ups and says: "You need at least 4 check-ups; your
+   gynaecologist may see you more often." Is "at least 4" right to show, given India's minimum of 4 and the WHO's 8 contacts?
+2. **Iron as her doctor prescribed.** Her doctor's dose offers "Every day", "Every other day" or "Once a week". Every other day
+   rings 2 days after her last tablet, and a tablet yesterday makes today a day off. Fine to offer these three?
+3. **Who to ask in the iron help lines.** "Ask your doctor for a haemoglobin test this week. Below 7 needs care in a
+   hospital." (before: "ask the ANM… Below 7 needs a higher centre") and "…no rise in haemoglobin after 4 weeks of tablets:
+   tell your doctor." (before: "ask the ANM to refer you"). Fine?
+4. **Iron and calcium in pregnancy and after the birth** now say "the iron tablet your doctor prescribed" and "the calcium your
+   doctor prescribed", without the national schedule's doses (one red tablet a day; calcium with lunch and dinner). The
+   timing advice stays. Is leaving the dose to her doctor right for a woman with a private gynaecologist?
+5. **The quiet lines.** Free government care becomes one line each: the free iron tablet, "Free at government hospitals:
+   check-ups on the 9th (PMSMA), the birth (JSSK) and scheme money (PMMVY)", and "Vaccines in the national schedule are free
+   at government centres". Enough?
+
+| English | Hindi |
+|---|---|
+| Where do you usually go for women’s health? | महिलाओं की सेहत के लिए आप आमतौर पर कहाँ जाती हैं? |
+| Sakhi then points you to the right place for check-ups, tests and tablets. | फिर Sakhi आपको जाँच, टेस्ट और गोलियों के लिए सही जगह बताएगी। |
+| A private gynaecologist or doctor · A clinic or a private hospital | प्राइवेट गायनेकोलॉजिस्ट या डॉक्टर · क्लिनिक या प्राइवेट अस्पताल |
+| A government hospital or health centre · PHC, CHC, district hospital or Ayushman Arogya Mandir | सरकारी अस्पताल या स्वास्थ्य केंद्र · PHC, CHC, ज़िला अस्पताल या आयुष्मान आरोग्य मंदिर |
+| My ASHA or ANM · She visits me at home | मेरी ASHA या ANM · वे घर आकर मिलती हैं |
+| Nowhere yet · Sakhi shows you both kinds | अभी कहीं नहीं · Sakhi आपको दोनों तरह की जगहें दिखाएगी |
+| You can change this any time in Me. | इसे कभी भी "मैं" पेज पर बदल सकती हैं। |
+| Where I get care · Not chosen yet | मैं कहाँ दिखाती हूँ · अभी नहीं चुना |
+| This changes where Sakhi sends you for check-ups, tests and tablets. Emergency numbers stay the same for everyone. | इससे बदलता है कि Sakhi जाँच, टेस्ट और गोलियों के लिए आपको कहाँ भेजे। इमरजेंसी नंबर सबके लिए वही रहते हैं। |
+| See a doctor · A call with a Qura doctor, or a free government doctor | डॉक्टर को दिखाएँ · Qura की डॉक्टर से कॉल, या मुफ़्त सरकारी डॉक्टर |
+| Your iron tablet protects you from low haemoglobin, but it is easy to forget or to stop when it upsets you. Pick your plan: one tap a day, a reminder, and help when it is hard. | आयरन की गोली कम हीमोग्लोबिन से बचाती है, पर भूलना आसान है, या परेशानी होने पर बंद कर देना। अपना प्लान चुनें: रोज़ एक टैप, एक रिमाइंडर, और मुश्किल हो तो मदद। |
+| As my doctor prescribed | जैसे डॉक्टर ने लिखी |
+| If your Hb is low, your doctor may prescribe iron, often for about 3 months, and test again. Take it as often as they said. | अगर Hb कम है, तो डॉक्टर आयरन की गोली लिख सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। जितनी बार उन्होंने कहा, उतनी बार लें। |
+| From the fourth month: one iron-folic acid tablet a day, for at least 180 days, and again for 180 days after the birth. | चौथे महीने से: रोज़ एक आयरन-फोलिक एसिड की गोली, कम से कम 180 दिन, और डिलीवरी के बाद फिर 180 दिन। |
+| If you are 20 to 49 and not pregnant or breastfeeding: the weekly iron-folic acid tablet (60 mg iron, 500 mcg folic acid) is free at government health centres under Anemia Mukt Bharat. | अगर आप 20 से 49 की हैं और प्रेग्नेंट या स्तनपान कराती नहीं हैं: हफ़्ते की आयरन-फ़ोलिक एसिड गोली (60 mg आयरन, 500 mcg फ़ोलिक एसिड) Anemia Mukt Bharat के तहत सरकारी स्वास्थ्य केंद्रों पर मुफ़्त मिलती है। |
+| How often did your doctor say? · Every day · Every other day · Once a week | डॉक्टर ने कितनी बार लेने को कहा? · रोज़ · एक दिन छोड़कर · हफ़्ते में एक बार |
+| Every other day, until you stop the plan. | एक दिन छोड़कर, जब तक आप प्लान न रोकें। |
+| No tablet today. Your next one is tomorrow. | आज गोली नहीं। अगली गोली कल है। |
+| Get your next strip before it runs out, from your chemist or your doctor. | ख़त्म होने से पहले अगला पत्ता केमिस्ट या डॉक्टर से ले लें। |
+| Black stools are normal with iron. If the tablet upsets your stomach, tell your doctor instead of stopping. | आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह डॉक्टर को बताएँ। |
+| Very pale, breathless on stairs, heart racing, or very tired: ask your doctor for a haemoglobin test this week. Below 7 needs care in a hospital. | बहुत पीलापन, सीढ़ी चढ़ने में साँस फूलना, दिल तेज़ धड़कना, या बहुत थकान: इसी हफ़्ते डॉक्टर से हीमोग्लोबिन टेस्ट कराएँ। 7 से नीचे हो तो अस्पताल में इलाज ज़रूरी है। |
+| Vomiting every tablet, or no rise in haemoglobin after 4 weeks of tablets: tell your doctor. | हर गोली उल्टी हो जाती है, या 4 हफ़्ते गोली के बाद भी हीमोग्लोबिन नहीं बढ़ा: डॉक्टर को बताएँ। |
+| Free iron tablets at government health centres (Anemia Mukt Bharat) | सरकारी स्वास्थ्य केंद्रों पर मुफ़्त आयरन की गोलियाँ (एनीमिया मुक्त भारत) |
+| Your ticks stay on this phone. | आपके टिक इसी फ़ोन पर रहते हैं। |
+| What is due in your pregnancy, from your dates. You need at least 4 check-ups; your gynaecologist may see you more often. Tick each one as you have it. | आपकी तारीख़ों से, गर्भावस्था में कब क्या करना है। कम से कम 4 जाँचें ज़रूरी हैं; आपकी गायनेकोलॉजिस्ट ज़्यादा बार भी बुला सकती हैं। हर जाँच होने पर उसे टिक करें। |
+| First check-up and tests | पहली जाँच और टेस्ट |
+| Take folic acid 400 mcg once a day until the end of the third month. It protects the baby's brain and spine. | तीसरे महीने के अंत तक रोज़ एक बार folic acid 400 mcg लें। यह बच्चे के दिमाग़ और रीढ़ की रक्षा करता है। |
+| At your first visit, ask your gynaecologist about these tests: haemoglobin, blood group, urine, sugar (the 75 g test), HIV, syphilis and hepatitis B. Keep your reports together in one file. | पहली मुलाक़ात में अपनी गायनेकोलॉजिस्ट से इन जाँचों के बारे में पूछें: हीमोग्लोबिन, blood group, पेशाब, sugar (75 g वाली जाँच), HIV, syphilis और hepatitis B। अपनी सारी reports एक फ़ाइल में रखें। |
+| Td injection: the first dose early in pregnancy, the second 4 weeks later, at your check-ups. If you had two doses in a pregnancy in the last 3 years, one booster is enough. | Td का टीका: पहली खुराक गर्भ के शुरू में, दूसरी 4 हफ़्ते बाद, आपकी जाँच के समय। अगर पिछले 3 साल में किसी गर्भ में दो खुराक ली थीं, तो एक booster काफ़ी है। |
+| Take the iron tablet your doctor prescribed. Take it with water or lemon water, about 2 hours after a meal, and not with tea or the calcium tablet. | डॉक्टर की लिखी आयरन की गोली लें। इसे सादे पानी या नींबू पानी के साथ, खाने के लगभग 2 घंटे बाद लें, चाय या calcium की गोली के साथ नहीं। |
+| Take the calcium your doctor prescribed, with meals. Never take calcium and iron together, or calcium on an empty stomach. | डॉक्टर का लिखा calcium खाने के साथ लें। calcium और iron कभी एक साथ न लें, और calcium ख़ाली पेट न लें। |
+| Your second check-up with your gynaecologist is due between 14 and 26 weeks. Ask for your BP, weight, Hb and urine to be checked, and keep your reports together in one file. | गायनेकोलॉजिस्ट से दूसरी जाँच 14 से 26 हफ़्ते के बीच होती है। BP, वज़न, Hb और पेशाब की जाँच कराएँ, और अपनी reports एक फ़ाइल में रखें। |
+| The anomaly scan (level 2 scan) at 18–20 weeks looks at the baby's organs, spine and growth. Your gynaecologist will tell you where to book it. | 18–20 हफ़्ते का anomaly scan (level 2 scan) बच्चे के अंग, रीढ़ और बढ़त देखता है। आपकी गायनेकोलॉजिस्ट बताएँगी कि यह कहाँ बुक करना है। |
+| Your third check-up is due between 28 and 34 weeks. Take your reports and these logs with you. | तीसरी जाँच 28 से 34 हफ़्ते के बीच होती है। अपनी reports और यह रिकॉर्ड साथ ले जाएँ। |
+| Your doctor’s and ambulance numbers · Save your doctor's number and the ambulance numbers (102, 108) in your phone, and tell your family which hospital you will go to. | डॉक्टर और एम्बुलेंस के नंबर · अपनी डॉक्टर का नंबर और एम्बुलेंस के नंबर (102, 108) फ़ोन में सेव करें, और परिवार को बता दें कि किस अस्पताल जाना है। |
+| Your fourth check-up is due from 36 weeks. Pack your hospital bag: ID, reports, clothes, pads, and clothes and a cap for the baby. | चौथी जाँच 36 हफ़्ते से होती है। अस्पताल का बैग तैयार रखें: पहचान पत्र, reports, कपड़े, pad, और बच्चे के कपड़े व टोपी। |
+| If you missed one, ask your gynaecologist about it at your next visit. | कोई छूट गया हो, तो अगली जाँच में अपनी गायनेकोलॉजिस्ट से उसके बारे में पूछें। |
+| At 10 am on the first day of each check-up and test. | हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे। |
+| Free at government hospitals: check-ups on the 9th (PMSMA), the birth (JSSK) and scheme money (PMMVY) | सरकारी अस्पतालों में मुफ़्त: 9 तारीख़ की जाँच (PMSMA), डिलीवरी (JSSK) और योजना का पैसा (PMMVY) |
+| Check-ups for you and your baby, with dates worked out from the birth date. | आपकी और बच्चे की जाँचें, जन्म की तारीख़ से निकाली गई तारीख़ों के साथ। |
+| Around day 42 ({d}), see your gynaecologist for a check for yourself, even if you feel well. Many mothers skip it. Please go. (and "Around 6 weeks after the birth, …") | लगभग दिन 42 ({d}) पर अपनी गायनेकोलॉजिस्ट से अपनी जाँच करवाएँ, भले आप ठीक महसूस करें। कई माँएँ यह छोड़ देती हैं। ज़रूर जाएँ। |
+| Your baby's doctor gives each vaccine and writes it on the vaccination card. Dates are worked out from the birth date: follow the card. | बच्चे के डॉक्टर हर टीका लगाते हैं और उसे टीकाकरण कार्ड पर लिखते हैं। तारीख़ें जन्म की तारीख़ से निकाली गई हैं: कार्ड के हिसाब से चलें। |
+| Should be done: check the vaccination card | हो जाने चाहिए: टीकाकरण कार्ड देखें |
+| Missed a dose? Ask your baby's doctor what to give, and when. | कोई टीका छूट गया? बच्चे के डॉक्टर से पूछें कि कौन सा और कब लगाना है। |
+| Vaccines in the national schedule are free at government centres (Universal Immunisation Programme). | राष्ट्रीय टीकाकरण सूची के टीके सरकारी केंद्रों पर मुफ़्त लगते हैं (सार्वभौमिक टीकाकरण कार्यक्रम)। |
+| Keep taking the iron and calcium your doctor prescribed, for as long as they said. Take calcium with meals, never at the same time as the iron tablet: calcium stops iron being absorbed. | डॉक्टर की लिखी आयरन और कैल्शियम की गोलियाँ, जितने समय के लिए कहा, लेती रहें। कैल्शियम खाने के साथ लें, और आयरन की गोली के साथ कभी नहीं: कैल्शियम आयरन को शरीर में जाने से रोकता है। |
+| Feeling very tired, breathless or pale? Ask your doctor for a haemoglobin (Hb) test. | बहुत थकान, साँस फूलना या चेहरा पीला? डॉक्टर से हीमोग्लोबिन (Hb) की जाँच के लिए कहें। |
+| Does an ASHA visit you? See her visit days | क्या ASHA आपके घर आती हैं? उनकी विज़िट के दिन देखें |
+| Long or heavy periods can cause anaemia. Ask your doctor if you need iron tablets. They are also free at government health centres. | लंबे या भारी पीरियड से खून की कमी हो सकती है। डॉक्टर से पूछें कि क्या आपको आयरन की गोलियाँ चाहिए। ये सरकारी स्वास्थ्य केंद्रों पर मुफ़्त भी मिलती हैं। |
+| If you could be pregnant, take a home test. Any chemist sells one; your ASHA gives Nishchay kits free. | अगर गर्भ की संभावना है, तो घर पर test करें। यह किसी भी केमिस्ट पर मिलता है; ASHA Nishchay किट मुफ़्त देती हैं। |

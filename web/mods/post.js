@@ -295,11 +295,22 @@
     meds_1: ['Iron-folic acid (IFA): one tablet a day for 180 days (6 months) after delivery, under Anemia Mukt Bharat. Free from your ASHA, Anganwadi or PHC.', 'आयरन-फ़ोलिक एसिड (IFA): डिलीवरी के बाद 180 दिन (6 महीने) तक रोज़ एक गोली, एनीमिया मुक्त भारत के तहत। ASHA, आंगनवाड़ी या PHC से मुफ़्त।'],
     meds_2: ['Calcium: keep taking the calcium tablets until 6 months after the birth, as your ANM or doctor gives them. Take them with meals, never at the same time as the iron tablet: calcium stops iron being absorbed.', 'कैल्शियम: डिलीवरी के 6 महीने बाद तक कैल्शियम की गोलियाँ लेती रहें, जैसे ANM या डॉक्टर दें। खाने के साथ लें, और आयरन की गोली के साथ कभी नहीं: कैल्शियम आयरन को शरीर में जाने से रोकता है।'],
     meds_3: ['Feeling very tired, breathless or pale? Ask for a haemoglobin (Hb) test; it is free at government facilities.', 'बहुत थकान, साँस फूलना या चेहरा पीला? हीमोग्लोबिन (Hb) की जाँच माँगें; सरकारी जगहों पर मुफ़्त है।'],
+    /* Version 39.28: with a private doctor, or before she says where she goes (S.care) */
+    k_p_doc: ['Check-ups for you and your baby, with dates worked out from the birth date.', 'आपकी और बच्चे की जाँचें, जन्म की तारीख़ से निकाली गई तारीख़ों के साथ।'],
+    six_p_doc: ['Around day 42 ({d}), see your gynaecologist for a check for yourself, even if you feel well. Many mothers skip it. Please go.', 'लगभग दिन 42 ({d}) पर अपनी गायनेकोलॉजिस्ट से अपनी जाँच करवाएँ, भले आप ठीक महसूस करें। कई माँएँ यह छोड़ देती हैं। ज़रूर जाएँ।'],
+    six_p0_doc: ['Around 6 weeks after the birth, see your gynaecologist for a check for yourself, even if you feel well. Many mothers skip it. Please go.', 'डिलीवरी के लगभग 6 हफ़्ते बाद अपनी गायनेकोलॉजिस्ट से अपनी जाँच करवाएँ, भले आप ठीक महसूस करें। कई माँएँ यह छोड़ देती हैं। ज़रूर जाएँ।'],
+    vax_p_doc: ["Your baby's doctor gives each vaccine and writes it on the vaccination card. Dates are worked out from the birth date: follow the card.", 'बच्चे के डॉक्टर हर टीका लगाते हैं और उसे टीकाकरण कार्ड पर लिखते हैं। तारीख़ें जन्म की तारीख़ से निकाली गई हैं: कार्ड के हिसाब से चलें।'],
+    vax_p0_doc: ["Your baby's doctor gives each vaccine and writes it on the vaccination card: follow the card.", 'बच्चे के डॉक्टर हर टीका लगाते हैं और उसे टीकाकरण कार्ड पर लिखते हैं: कार्ड के हिसाब से चलें।'],
+    vax_free_doc: ['Vaccines in the national schedule are free at government centres (Universal Immunisation Programme).', 'राष्ट्रीय टीकाकरण सूची के टीके सरकारी केंद्रों पर मुफ़्त लगते हैं (सार्वभौमिक टीकाकरण कार्यक्रम)।'],
+    vax_missed_doc: ["Missed a dose? Ask your baby's doctor what to give, and when.", 'कोई टीका छूट गया? बच्चे के डॉक्टर से पूछें कि कौन सा और कब लगाना है।'],
+    meds_doc: ['Keep taking the iron and calcium your doctor prescribed, for as long as they said. Take calcium with meals, never at the same time as the iron tablet: calcium stops iron being absorbed.', 'डॉक्टर की लिखी आयरन और कैल्शियम की गोलियाँ, जितने समय के लिए कहा, लेती रहें। कैल्शियम खाने के साथ लें, और आयरन की गोली के साथ कभी नहीं: कैल्शियम आयरन को शरीर में जाने से रोकता है।'],
+    meds_3_doc: ['Feeling very tired, breathless or pale? Ask your doctor for a haemoglobin (Hb) test.', 'बहुत थकान, साँस फूलना या चेहरा पीला? डॉक्टर से हीमोग्लोबिन (Hb) की जाँच के लिए कहें।'],
+    asha_q_doc: ['Does an ASHA visit you? See her visit days', 'क्या ASHA आपके घर आती हैं? उनकी विज़िट के दिन देखें'],
     jssk: ['JSSK: treatment for problems after delivery, and for a sick baby up to 1 year, is free at government hospitals, including medicines, tests, blood and transport.', 'JSSK: डिलीवरी के बाद की परेशानियों का, और 1 साल तक के बीमार बच्चे का इलाज सरकारी अस्पताल में मुफ़्त है, जिसमें दवाएँ, जाँच, ख़ून और आने-जाने की गाड़ी शामिल हैं।'],
     vax_h: ["Baby's vaccines", 'बच्चे के टीके'],
     vax_p: ['Free under the Universal Immunisation Programme. Dates are worked out from the birth date. Your ANM writes each dose on the MCP card: follow the card and the vaccination days in your area.', 'सार्वभौमिक टीकाकरण कार्यक्रम (UIP) में मुफ़्त। तारीख़ें जन्म की तारीख़ से निकाली गई हैं। ANM हर टीका MCP कार्ड पर लिखती हैं: कार्ड और अपने इलाक़े के टीकाकरण दिवस के हिसाब से चलें।'],
     vax_p0: ['Free under the Universal Immunisation Programme. Your ANM writes each dose on the MCP card: follow the card and the vaccination days in your area.', 'सार्वभौमिक टीकाकरण कार्यक्रम (UIP) में मुफ़्त। ANM हर टीका MCP कार्ड पर लिखती हैं: कार्ड और अपने इलाक़े के टीकाकरण दिवस के हिसाब से चलें।'],
-    vx_due: ['Due {d}', '{d} को'], vx_soon: ['Due this week: {d}', 'इसी हफ़्ते: {d}'], vx_today: ['Due today', 'आज'], vx_past: ['Should be done: check the MCP card', 'हो जाने चाहिए: MCP कार्ड देखें'],
+    vx_due: ['Due {d}', '{d} को'], vx_soon: ['Due this week: {d}', 'इसी हफ़्ते: {d}'], vx_today: ['Due today', 'आज'], vx_past: ['Should be done: check the MCP card', 'हो जाने चाहिए: MCP कार्ड देखें'], vx_past_doc: ['Should be done: check the vaccination card', 'हो जाने चाहिए: टीकाकरण कार्ड देखें'],
     vax_add: ['Add vaccine reminders', 'टीकों के रिमाइंडर जोड़ें'],
     vax_on: ['Vaccine reminders are on. They show on Today in the days before each one.', 'टीकों के रिमाइंडर चालू हैं। हर टीके से कुछ दिन पहले “आज” पर दिखेंगे।'],
     vax_off: ['Remove vaccine reminders', 'टीकों के रिमाइंडर हटाएँ'],
@@ -844,9 +855,13 @@
     return c;
   }
   function nextVax(b) { for (let i = 0; i < VAX.length; i++) { const d = vaxDate(b, VAX[i]); if (d >= S.today() && VAX[i].id !== 'birth') return { x: VAX[i], d: d }; } return null; }
+  /* Version 39.28: where she gets care (S.care). With a private doctor, or before she says where she goes: her own check
+     with her gynaecologist, vaccines from the baby's doctor, iron and calcium as prescribed, and the ASHA's visit days folded
+     behind one quiet line. The danger signs and the call buttons are the same for everyone. */
+  const docR = () => !!(S.care && S.care.gov && !S.care.gov());
   function renderChecks(v) {
     stopAll();
-    const b = birth(); const n = dayN();
+    const b = birth(); const n = dayN(); const dr = docR();
     let asha = '<div class="card"><h3>' + esc(T('asha_h')) + '</h3><p class="small pst-txt">' + esc(T('asha_p')) + '</p>';
     if (b) {
       const nextD = ASHA_DAYS.filter((d) => d >= n && d > 1)[0];
@@ -854,16 +869,17 @@
       asha += '<div class="pst-vd">' + ASHA_DAYS.map((d) => { const dt = S.addDays(b, off(d)); const cls = off(d) < n ? 'past' : (d === nextD ? 'next' : ''); return '<span class="pst-vdi ' + cls + '"><b>' + esc(TF('day_only', { n: d })) + '</b><i>' + esc(dShort(dt)) + '</i><em>' + esc(off(d) === n ? T('v_today') : (d < n ? T('v_past') : (d === nextD ? T('v_next') : ''))) + '</em></span>'; }).join('') + '</div><p class="small">' + esc(T('day1_note')) + '</p>';
     }
     asha += '<p class="small">' + esc(T('asha_later')) + '</p></div>';
+    if (dr) asha = '<details class="pst-asha-q"><summary class="item care-alt"><span class="body"><strong>' + esc(T('asha_q_doc')) + '</strong></span><span class="chev">' + S.I.chev + '</span></summary>' + asha + '</details>';
     const sixD = b ? S.addDays(b, 42) : null;
     const remSix = S.reminders.get('post-6wk');
-    let six = '<div class="card"><h3>' + esc(T('six_h')) + '</h3><p class="small pst-txt">' + esc(sixD ? TF('six_p', { d: dLong(sixD) }) : T('six_p0')) + '</p><div class="pst-lbl">' + esc(T('six_list')) + '</div><ul class="pst-ul small">' + li(G.six) + '</ul>';
+    let six = '<div class="card"><h3>' + esc(T('six_h')) + '</h3><p class="small pst-txt">' + esc(sixD ? TF(dr ? 'six_p_doc' : 'six_p', { d: dLong(sixD) }) : T(dr ? 'six_p0_doc' : 'six_p0')) + '</p><div class="pst-lbl">' + esc(T('six_list')) + '</div><ul class="pst-ul small">' + li(G.six) + '</ul>';
     if (sixD && sixD >= S.today() && S.canSave()) six += remSix ? '<p class="small"><strong>' + esc(TF('six_on', { d: dLong(sixD) })) + '</strong></p><button type="button" class="btn sm pst-self" id="pst-six-off">' + esc(T('rem_off')) + '</button>' : '<button type="button" class="btn sm secondary pst-self" id="pst-six">' + esc(T('six_rem')) + '</button>';
     six += '</div>';
-    const meds = '<div class="card"><h3>' + esc(T('meds_h')) + '</h3><ul class="pst-ul small">' + ['meds_1', 'meds_2', 'meds_3'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul><div class="note">' + esc(T('jssk')) + '</div></div>';
+    const meds = '<div class="card"><h3>' + esc(T('meds_h')) + '</h3><ul class="pst-ul small">' + (dr ? ['meds_doc', 'meds_3_doc'] : ['meds_1', 'meds_2', 'meds_3']).map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul>' + (dr ? '' : '<div class="note">' + esc(T('jssk')) + '</div>') + '</div>';
     const nx = b ? nextVax(b) : null;
     const rows = VAX.map((x) => {
       let when = ''; let cls = '';
-      if (b) { const d = vaxDate(b, x); const dd = S.diffDays(S.today(), d); if (dd < 0) { when = T('vx_past'); cls = 'past'; } else if (dd === 0) { when = T('vx_today'); cls = 'next'; } else if (dd <= 7) { when = TF('vx_soon', { d: dShort(d) }); cls = 'next'; } else { when = TF('vx_due', { d: dLong(d) }); if (nx && nx.x.id === x.id) cls = 'next'; } }
+      if (b) { const d = vaxDate(b, x); const dd = S.diffDays(S.today(), d); if (dd < 0) { when = T(dr ? 'vx_past_doc' : 'vx_past'); cls = 'past'; } else if (dd === 0) { when = T('vx_today'); cls = 'next'; } else if (dd <= 7) { when = TF('vx_soon', { d: dShort(d) }); cls = 'next'; } else { when = TF('vx_due', { d: dLong(d) }); if (nx && nx.x.id === x.id) cls = 'next'; } }
       return '<div class="pst-vx ' + cls + '"><div class="pst-va"><strong>' + esc(tx(x.age)) + '</strong>' + (when ? '<span>' + esc(when) + '</span>' : '') + '</div><div class="pst-vv">' + esc(tx(x.v)) + '</div></div>';
     }).join('');
     let vaxBtns = '';
@@ -871,8 +887,9 @@
       if (vaxOn()) vaxBtns = '<div class="flag ok">' + fi(S.I.bell) + '<span class="pst-ft">' + esc(T('vax_on')) + '</span></div><div class="row wrap">' + (has('tools-reminders') ? '<button type="button" class="btn sm" data-go="tools-reminders">' + esc(T('all_rem')) + '</button>' : '') + '<button type="button" class="btn sm" id="pst-vax-off">' + esc(T('vax_off')) + '</button></div>';
       else if (nx) vaxBtns = '<button type="button" class="btn primary block" id="pst-vax">' + esc(T('vax_add')) + '</button>';
     } else if (b && !S.canSave()) vaxBtns = S.needDiary();
-    const vax = '<div class="card"><h3>' + esc(T('vax_h')) + '</h3><p class="small pst-txt">' + esc(b ? T('vax_p') : T('vax_p0')) + '</p><div class="pst-vlist">' + rows + '</div>' + vaxBtns + '<p class="small">' + esc(T('vax_je')) + ' ' + esc(T('vax_missed')) + '</p><p class="small">' + esc(T('vax_later')) + '</p></div>';
-    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T('k_p')) + '</p>' + birthCard() + vax + asha + six + meds + related(R.checks) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+    const vax = '<div class="card"><h3>' + esc(T('vax_h')) + '</h3><p class="small pst-txt">' + esc(T((b ? 'vax_p' : 'vax_p0') + (dr ? '_doc' : ''))) + '</p><div class="pst-vlist">' + rows + '</div>' + vaxBtns + '<p class="small">' + esc(T('vax_je')) + ' ' + esc(T(dr ? 'vax_missed_doc' : 'vax_missed')) + '</p><p class="small">' + esc(T('vax_later')) + '</p>' + (dr ? '<p class="small">' + esc(T('vax_free_doc')) + '</p>' : '') + '</div>';
+    /* the doctor route: her own check before the ASHA's visit days, which fold behind one quiet line */
+    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T(dr ? 'k_p_doc' : 'k_p')) + '</p>' + birthCard() + vax + (dr ? six + meds + asha : asha + six + meds) + related(R.checks) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v);
     const va = v.querySelector('#pst-vax'); if (va) va.addEventListener('click', () => { const bb = birth(); if (!bb) return; addVax(bb); S.toast(T('vax_added_t')); S.render(); });
     const vo = v.querySelector('#pst-vax-off'); if (vo) vo.addEventListener('click', () => { VAX_IDS.forEach((id) => S.reminders.remove(id)); S.render(); });
@@ -891,7 +908,7 @@
       rows.push([T('k_check'), done ? T('k_done') : T('k_notyet')]);
       rows.push([T('k_feeds'), ls ? TF('feeds_last', { n: tf.length, s: sideName(ls.side) }) : String(tf.length)]);
       rows.push([T('k_pf'), TF('of3', { n: Math.min(sets, 3) })]);
-      const na = ASHA_DAYS.filter((d) => d > 1 && d >= n)[0]; if (na != null) rows.push([T('k_asha'), na === n ? TF('day_today', { n: na }) : TF('day_d', { n: na, d: dShort(S.addDays(b, na)) })]);
+      const na = docR() ? null : ASHA_DAYS.filter((d) => d > 1 && d >= n)[0]; if (na != null) rows.push([T('k_asha'), na === n ? TF('day_today', { n: na }) : TF('day_d', { n: na, d: dShort(S.addDays(b, na)) })]);
       if (n < 42) rows.push([T('k_six'), dShort(S.addDays(b, 42))]);
       const nx = nextVax(b); if (nx) rows.push([T('k_vax'), tx(nx.x.age) + ' · ' + dShort(nx.d)]);
       const phase = n <= 42 ? T('ph1') : (n < 183 ? TF('ph2', { d: dLong(addMonths(b, 6)) }) : T('ph3'));
@@ -1000,6 +1017,7 @@
       '.pst-hero .big { margin-top: -2px; }',
       '.pst-ul { padding-left: 18px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }',
       '.pst-ul.small { font-size: 13px; }',
+      '.pst-asha-q > summary { list-style: none; cursor: pointer; } .pst-asha-q > summary::-webkit-details-marker { display: none; } .pst-asha-q[open] > summary { margin-bottom: 10px; } .pst-asha-q[open] > summary .chev { transform: rotate(90deg); }',   /* Version 39.28 */
       '#pst-bset { flex-shrink: 0; white-space: nowrap; }',
       '.pst-txt { color: var(--text); font-size: 13px; }',
       '.pst-q { color: var(--fg); font-weight: 600; font-size: 14px; }',

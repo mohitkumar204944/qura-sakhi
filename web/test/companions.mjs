@@ -24,7 +24,9 @@ const check = (name, cond, extra) => { results.push({ name, pass: !!cond }); if 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isoAgo = (d) => { const x = new Date(); x.setHours(12, 0, 0, 0); x.setDate(x.getDate() - d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); };
 const TOURS_DONE = Object.fromEntries(['home', 'diary', 'care', 'help', 'me'].map((k) => [k, { st: 'done', d: isoAgo(3) }]));
-const seedOf = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1992-07-01', consent: { c1: isoAgo(30), c2: null, c4: null }, situation: { stage: 'cycle' },
+/* Version 39.28: these are the government route's features, so she goes to a government centre (situation.care); the doctor
+   route's words are checked in test/care.mjs */
+const seedOf = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1992-07-01', consent: { c1: isoAgo(30), c2: null, c4: null }, situation: { stage: 'cycle', care: 'govt' },
   events: [{ d: isoAgo(52), t: 'start' }, { d: isoAgo(47), t: 'end' }, { d: isoAgo(24), t: 'start' }, { d: isoAgo(19), t: 'end' }], daily: {}, notes: {}, checkins: {},
   tours: TOURS_DONE, fullTour: { st: 'done', d: isoAgo(3) } }, extra || {}, { settings: Object.assign({ toursAuto: false }, (extra || {}).settings || {}) });
 
@@ -51,7 +53,7 @@ const rem = (page, id) => page.evaluate((x) => { const r = (window.Saathi.state.
 
 /* ---------- 1. Iron: pregnancy, one record with the pregnancy logs ---------- */
 {
-  const preg = { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(140) }, mods: { preg: { tabs: { [isoAgo(2)]: { ifa: true, ca: true }, [isoAgo(1)]: { ca: true } } } },
+  const preg = { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(140), care: 'govt' }, mods: { preg: { tabs: { [isoAgo(2)]: { ifa: true, ca: true }, [isoAgo(1)]: { ca: true } } } },
     reminders: [{ id: 'preg-ifa', mod: 'preg', title: { en: 'IFA tablet', hi: 'IFA' }, kind: 'med', start: isoAgo(5), every: 1, time: '21:00', on: true }] };
   const { ctx, page, errs } = await open({ hash: '#iron', seed: preg });
   check('1 the pregnancy plan is suggested for a pregnant woman', (await page.$eval('input[name="iron-plan"]:checked', (e) => e.value)) === 'preg');
@@ -128,7 +130,7 @@ const rem = (page, id) => page.evaluate((x) => { const r = (window.Saathi.state.
   check('3 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
-for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(70) } }]]) {
+for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(70), care: 'govt' } }]]) {
   const { ctx, page } = await open({ hash: '#home', seed });
   check('3 ' + label + ': no check-ups card', !/Free check-ups for you/.test(await view(page)));
   await ctx.close();
@@ -215,7 +217,7 @@ for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', {
   await ctx.close();
 }
 {
-  const preg = { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(24 * 7) }, events: [] };
+  const preg = { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(24 * 7), care: 'govt' }, events: [] };
   const { ctx, page, errs } = await open({ hash: '#access-doctor', seed: preg });
   check('7 pregnant: the pregnancy services come first', (await page.$eval('#view h2', (h) => h.textContent)) === 'In pregnancy');
   await go(page, 'preg-plan');

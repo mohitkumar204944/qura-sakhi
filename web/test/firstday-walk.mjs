@@ -1,7 +1,7 @@
 // Her first day (docs/first-days-audit-2026-10-24.md): a new woman joins on a 390 px phone the way Mohit's example woman
 // would (periods 36 to 45 days apart, some months skipped), and every screen is measured and photographed: words, screens of
-// scrolling, controls, any sheet or tip. Also Mohit's own path: an existing diary changes its goal in My plan, then leaves
-// the plan screen by the Today tab. Not a pass/fail test: run it before and after a change to compare.
+// scrolling, controls, any sheet or tip. Also Mohit's own path: an existing diary changes its goal in My plan's settings,
+// then leaves the plan screen by the Today tab. Not a pass/fail test: run it before and after a change to compare.
 // Usage: node test/firstday-walk.mjs   (screens to test/shots/firstday/, numbers to test/shots/firstday/walk.json)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -62,6 +62,7 @@ await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) 
   await snap('stage'); await tap('[data-ob-st="pmos"]');
   await snap('goals'); await tap('[data-ob-goal="irregular"]'); await tap('[data-ob-goal="skin"]'); await snap('goals-picked'); await tap('#ob-next');
   await snap('details'); await tap('#jd-none'); await tap('[data-ob-lp="more"]'); await tap('[data-ob-lpm="60"]'); await tap('[data-ob-gap="g45"]'); await tap('[data-ob-dx="ns"]'); await snap('details-answered'); await tap('#ob-next');
+  await snap('care'); await tap('[data-ob-care="private"]');   /* Version 39.28: where she gets care */
   await snap('shared-phone'); await tap('[data-ob-sh="me"]'); await settle(600);
   await snap('signup-number'); await page.fill('#su-num', '9876543210'); await tap('#su-send'); await settle(400);
   await snap('signup-code'); await page.fill('#su-code', '123456'); await settle(1200);
@@ -98,8 +99,8 @@ await run('A', '2026-10-24T10:00:00+05:30', async ({ page, snap, tap, settle }) 
   await page.evaluate(() => { location.hash = '#plan'; }); await settle(800); await snap('my-plan');
 });
 
-/* B. Mohit's path: an existing diary with the V35 PMOS plan going; My plan > Change what I work on; then he leaves the
-   reveal by the Today tab instead of "Start today" */
+/* B. Mohit's path: an existing diary with the V35 PMOS plan going; My plan > Plan settings (the gear; Version 39.15) >
+   Change what I work on; then he leaves the reveal by the Today tab instead of "Start today" */
 await run('B', '2026-10-24T01:20:00+05:30', async ({ page, snap, tap, settle }) => {
   await page.evaluate(() => {
     const S = window.Saathi; const iso = (n) => S.toISO(S.addDays(S.today(), -n));
@@ -113,6 +114,7 @@ await run('B', '2026-10-24T01:20:00+05:30', async ({ page, snap, tap, settle }) 
   await page.waitForFunction(() => !!window.Saathi); await settle(1500);
   await snap('today-before');
   await page.evaluate(() => { location.hash = '#plan'; }); await settle(800); await snap('my-plan-old');
+  await tap('#view .pl-gear'); await snap('plan-settings');
   await tap('#pl-chg'); await snap('change-goal');
   await tap('[data-pl-goal="irregular"]'); await snap('periods-q');
   for (const s of ['[data-pl-q="gap:g45"]', '[data-pl-q="skips:y"]', '[data-pl-q="dx:y"]', '[data-pl-m="signs:acne"]']) await tap(s);

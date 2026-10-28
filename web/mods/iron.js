@@ -27,30 +27,46 @@
   };
   const fmt = (d) => S.fmtD(d, { day: 'numeric', month: 'short', year: 'numeric' });
   const REM = 'iron', REM_TEST = 'iron-test';
+  /* Version 39.28: where she gets care (S.care). Before she answers, and with a private doctor or "Nowhere yet", this page
+     says "your doctor": her doctor's dose first, the next strip from her chemist or her doctor, and the free tablet under
+     Anemia Mukt Bharat as one quiet line. A government centre or her ASHA keeps the government route's words. No dose changes. */
+  const doc = () => !!(S.care && S.care.gov && !S.care.gov());
+  const pk = (x) => (doc() && x.doc ? x.doc : x);   /* a line's doctor-route words, where they differ */
 
   /* ---------- the plans (Anemia Mukt Bharat; wording from the verified article, journey and anaemia page) ---------- */
   const PLANS = {
     preg: { every: 1, target: 180, name: L('Pregnancy', 'गर्भावस्था'),
-      how: L('From the fourth month: one red iron-folic acid tablet a day, for at least 180 days, and again for 180 days after the birth.', 'चौथे महीने से: रोज़ एक लाल आयरन-फोलिक एसिड की गोली, कम से कम 180 दिन, और डिलीवरी के बाद फिर 180 दिन।') },
+      how: L('From the fourth month: one red iron-folic acid tablet a day, for at least 180 days, and again for 180 days after the birth.', 'चौथे महीने से: रोज़ एक लाल आयरन-फोलिक एसिड की गोली, कम से कम 180 दिन, और डिलीवरी के बाद फिर 180 दिन।'),
+      dhow: L('From the fourth month: one iron-folic acid tablet a day, for at least 180 days, and again for 180 days after the birth.', 'चौथे महीने से: रोज़ एक आयरन-फोलिक एसिड की गोली, कम से कम 180 दिन, और डिलीवरी के बाद फिर 180 दिन।') },
     post: { every: 1, target: 180, name: L('After the birth', 'डिलीवरी के बाद'),
       how: L('Keep taking iron for 180 days and calcium for six months.', 'आयरन 180 दिन और कैल्शियम छह महीने लेती रहें।') },
     weekly: { every: 7, target: 0, name: L('The weekly tablet', 'हफ़्ते की गोली'),
-      how: L('If you are 20 to 49 and not pregnant or breastfeeding, your ASHA or ANM can give you the weekly iron-folic acid tablet under Anemia Mukt Bharat (60 mg iron, 500 mcg folic acid).', 'अगर आप 20 से 49 की हैं और प्रेग्नेंट या स्तनपान कराती नहीं हैं, तो आपकी आशा या ANM Anemia Mukt Bharat के तहत हफ़्ते की आयरन-फ़ोलिक एसिड गोली दे सकती हैं (60 mg आयरन, 500 mcg फ़ोलिक एसिड)।') },
-    doctor: { every: 1, target: 0, name: L('My doctor’s dose', 'डॉक्टर की बताई डोज़'),
-      how: L('If your Hb is low, the doctor or ANM may give the red tablet daily, often for about 3 months, and test again. Your doctor decides.', 'अगर Hb कम है, तो डॉक्टर या ANM लाल गोली रोज़ दे सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। यह डॉक्टर तय करती हैं।') }
+      how: L('If you are 20 to 49 and not pregnant or breastfeeding, your ASHA or ANM can give you the weekly iron-folic acid tablet under Anemia Mukt Bharat (60 mg iron, 500 mcg folic acid).', 'अगर आप 20 से 49 की हैं और प्रेग्नेंट या स्तनपान कराती नहीं हैं, तो आपकी आशा या ANM Anemia Mukt Bharat के तहत हफ़्ते की आयरन-फ़ोलिक एसिड गोली दे सकती हैं (60 mg आयरन, 500 mcg फ़ोलिक एसिड)।'),
+      dhow: L('If you are 20 to 49 and not pregnant or breastfeeding: the weekly iron-folic acid tablet (60 mg iron, 500 mcg folic acid) is free at government health centres under Anemia Mukt Bharat.', 'अगर आप 20 से 49 की हैं और प्रेग्नेंट या स्तनपान कराती नहीं हैं: हफ़्ते की आयरन-फ़ोलिक एसिड गोली (60 mg आयरन, 500 mcg फ़ोलिक एसिड) Anemia Mukt Bharat के तहत सरकारी स्वास्थ्य केंद्रों पर मुफ़्त मिलती है।') },
+    doctor: { every: 1, target: 0, name: L('My doctor’s dose', 'डॉक्टर की बताई डोज़'), dname: L('As my doctor prescribed', 'जैसे डॉक्टर ने लिखी'),
+      how: L('If your Hb is low, the doctor or ANM may give the red tablet daily, often for about 3 months, and test again. Your doctor decides.', 'अगर Hb कम है, तो डॉक्टर या ANM लाल गोली रोज़ दे सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। यह डॉक्टर तय करती हैं।'),
+      dhow: L('If your Hb is low, your doctor may prescribe iron, often for about 3 months, and test again. Take it as often as they said.', 'अगर Hb कम है, तो डॉक्टर आयरन की गोली लिख सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। जितनी बार उन्होंने कहा, उतनी बार लें।') }
   };
   const PLAN_IDS = ['preg', 'post', 'weekly', 'doctor'];
+  const planIds = () => (doc() ? ['doctor', 'preg', 'post', 'weekly'] : PLAN_IDS);   /* her doctor's dose first */
+  const nameOf = (P) => (doc() && P.dname ? P.dname : P.name);
+  const howOf = (P) => (doc() && P.dhow ? P.dhow : P.how);
+  /* Version 39.28: "How often did your doctor say?" (her doctor's dose): every day, every other day, or once a week */
+  const EVERY = [1, 2, 7];
   /* What to do when it upsets her (verified, except the constipation line: in the doctor's review list) */
   const UPSET = [
     L('Take it two hours after a meal, with water or lemon water, not with tea or milk. If it upsets you, take it at bedtime.', 'खाने के दो घंटे बाद लें, पानी या नींबू पानी से, चाय या दूध से नहीं। परेशान करे तो रात को सोते वक़्त लें।'),
     L('Never take calcium and the iron tablet together; each blocks the other.', 'कैल्शियम और आयरन की गोली कभी एक साथ न लें; एक दूसरे को काम नहीं करने देती।'),
     L('Constipation: more water, fruit, vegetables and walking.', 'कब्ज़ हो तो: ज़्यादा पानी, फल, सब्ज़ी और टहलना।'),
-    L('Black stools are normal with iron. If the tablet upsets your stomach, tell the ASHA or doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह ASHA या डॉक्टर को बताएँ।'),
+    Object.assign(L('Black stools are normal with iron. If the tablet upsets your stomach, tell the ASHA or doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह ASHA या डॉक्टर को बताएँ।'),
+      { doc: L('Black stools are normal with iron. If the tablet upsets your stomach, tell your doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह डॉक्टर को बताएँ।') }),
     L('Pause it during a fever, diarrhoea or other short illness, and restart when you are well.', 'बुख़ार, दस्त या कोई और छोटी बीमारी में रोक दें, ठीक होने पर फिर शुरू करें।')
   ];
   const HELP = [
-    L('Very pale, breathless on stairs, heart racing, or very tired: ask the ANM for a haemoglobin test this week. Below 7 needs a higher centre.', 'बहुत पीलापन, सीढ़ी चढ़ने में साँस फूलना, दिल तेज़ धड़कना, या बहुत थकान: इसी हफ़्ते ANM से हीमोग्लोबिन टेस्ट कराएँ। 7 से नीचे हो तो बड़े सेंटर जाना होता है।'),
-    L('Vomiting every tablet, or no rise in haemoglobin after 4 weeks of tablets: ask the ANM to refer you.', 'हर गोली उल्टी हो जाती है, या 4 हफ़्ते गोली के बाद भी हीमोग्लोबिन नहीं बढ़ा: ANM से रेफ़र करने को कहें।'),
+    Object.assign(L('Very pale, breathless on stairs, heart racing, or very tired: ask the ANM for a haemoglobin test this week. Below 7 needs a higher centre.', 'बहुत पीलापन, सीढ़ी चढ़ने में साँस फूलना, दिल तेज़ धड़कना, या बहुत थकान: इसी हफ़्ते ANM से हीमोग्लोबिन टेस्ट कराएँ। 7 से नीचे हो तो बड़े सेंटर जाना होता है।'),
+      { doc: L('Very pale, breathless on stairs, heart racing, or very tired: ask your doctor for a haemoglobin test this week. Below 7 needs care in a hospital.', 'बहुत पीलापन, सीढ़ी चढ़ने में साँस फूलना, दिल तेज़ धड़कना, या बहुत थकान: इसी हफ़्ते डॉक्टर से हीमोग्लोबिन टेस्ट कराएँ। 7 से नीचे हो तो अस्पताल में इलाज ज़रूरी है।') }),
+    Object.assign(L('Vomiting every tablet, or no rise in haemoglobin after 4 weeks of tablets: ask the ANM to refer you.', 'हर गोली उल्टी हो जाती है, या 4 हफ़्ते गोली के बाद भी हीमोग्लोबिन नहीं बढ़ा: ANM से रेफ़र करने को कहें।'),
+      { doc: L('Vomiting every tablet, or no rise in haemoglobin after 4 weeks of tablets: tell your doctor.', 'हर गोली उल्टी हो जाती है, या 4 हफ़्ते गोली के बाद भी हीमोग्लोबिन नहीं बढ़ा: डॉक्टर को बताएँ।') }),
     L('Known thalassaemia or repeated blood transfusions: do not take iron tablets without a doctor’s advice.', 'थैलेसीमिया है या बार-बार खून चढ़ा है: डॉक्टर की सलाह बिना आयरन की गोली न लें।'),
     L('Severe vomiting, belly pain that does not settle, rash, swelling or trouble breathing: stop and see a doctor.', 'तेज़ उल्टी, पेट दर्द जो न रुके, चकत्ते, सूजन या साँस में तकलीफ़: गोली रोकें और डॉक्टर को दिखाएँ।')
   ];
@@ -63,18 +79,22 @@
   /* ---------- counting ---------- */
   const todayISO = () => iso(S.today());
   const active = (d) => !!(d.plan && PLANS[d.plan] && okDate(d.start) && !d.ended);
-  const weekly = (d) => PLANS[d.plan] && PLANS[d.plan].every === 7;
+  const every = (d) => (d.plan === 'doctor' && EVERY.indexOf(d.every) >= 0 ? d.every : ((PLANS[d.plan] || {}).every || 1));
+  const weekly = (d) => !!PLANS[d.plan] && every(d) === 7;
+  const lastTick = (d) => Object.keys(d.log).filter((k) => okDate(k) && k >= d.start && d.log[k]).sort().pop() || null;
+  /* every other day: a tick yesterday makes today a day off */
+  const restDay = (d) => every(d) === 2 && !d.log[todayISO()] && !!d.log[iso(S.addDays(S.today(), -1))] && iso(S.addDays(S.today(), -1)) >= d.start;
   const takenDays = (d) => Object.keys(d.log).filter((k) => okDate(k) && k >= d.start && d.log[k]).length;
   /* the weekly tablet is due from the last occurrence of her day; done once she ticks any day since then */
   const lastDue = (d) => { let x = S.today(); for (let i = 0; i < 7; i++) { if (x.getDay() === Number(d.day)) return x; x = S.addDays(x, -1); } return S.today(); };
   const weeksTaken = (d) => { const seen = {}; Object.keys(d.log).filter((k) => okDate(k) && k >= d.start && d.log[k]).forEach((k) => { const x = S.fromISO(k); seen[iso(S.addDays(x, -((x.getDay() - Number(d.day) + 7) % 7)))] = 1; }); return Object.keys(seen).length; };
-  const doneNow = (d) => { if (!active(d)) return true; if (weekly(d)) { const from = iso(lastDue(d)); return from < d.start ? true : Object.keys(d.log).some((k) => k >= from && d.log[k]); } return !!d.log[todayISO()]; };
+  const doneNow = (d) => { if (!active(d)) return true; if (restDay(d)) return true; if (weekly(d)) { const from = iso(lastDue(d)); return from < d.start ? true : Object.keys(d.log).some((k) => k >= from && d.log[k]); } return !!d.log[todayISO()]; };
   const last30 = (d) => { let n = 0; const td = S.today(); for (let i = 0; i < 30; i++) { const k = iso(S.addDays(td, -i)); if (k < d.start) break; if (d.log[k]) n++; } return n; };
   const suggest = () => {
     const age = S.cycle.ageYears();
     if (S.cycle.isPregnant()) return 'preg';
     if (S.cycle.afterBirth()) return 'post';
-    return age != null && age >= 20 && age <= 49 ? 'weekly' : 'doctor';
+    return !doc() && age != null && age >= 20 && age <= 49 ? 'weekly' : 'doctor';   /* the weekly tablet comes from the ASHA or ANM */
   };
 
   /* ---------- reminders ---------- */
@@ -85,6 +105,7 @@
       const cur = S.reminders.get(REM); if (cur && okTime(cur.time)) d.time = cur.time;   /* a time changed under All reminders stays */
       const base = { id: REM, mod: 'iron', title: L('Iron tablet', 'आयरन की गोली'), kind: 'med', time: okTime(d.time) ? d.time : '21:00', on: true, dates: null, until: null };
       if (weekly(d)) S.reminders.upsert(Object.assign(base, { start: d.start, every: null, weekdays: [Number(d.day) || 0] }));
+      else if (every(d) === 2) S.reminders.upsert(Object.assign(base, { start: lastTick(d) || d.start, every: 2, weekdays: null }));   /* two days after her last tablet */
       else S.reminders.upsert(Object.assign(base, { start: d.start, every: 1, weekdays: null }));
       const r = S.reminders.get(REM); const td = todayISO(); if (r) { if (d.log[td]) r.doneOn = td; else delete r.doneOn; }
     }
@@ -104,26 +125,30 @@
   const ul = (arr) => '<ul class="iron-ul">' + arr.map((x) => '<li>' + E(x) + '</li>').join('') + '</ul>';
   const srcList = () => '<details><summary>' + esc(t('iron_sources')) + '</summary><p class="sources">' + SRC.map((s) => '<a href="' + esc(s[0]) + '" target="_blank" rel="noopener">' + E(s[1]) + '</a>').join(' · ') + '</p></details>';
   function pickHtml(d) {
-    const sug = d.pick || suggest(); const pi = S.preg && S.preg.info ? S.preg.info() : null;
-    return '<div class="card"><h3>' + esc(t('iron_pick_h')) + '</h3><div class="list iron-plans">' + PLAN_IDS.map((id) => '<label class="item"><span class="body"><strong>' + E(PLANS[id].name) + '</strong><span>' + E(PLANS[id].how) + '</span></span><input type="radio" name="iron-plan" value="' + id + '"' + (id === sug ? ' checked' : '') + '></label>').join('') + '</div>' +
+    const sug = d.pick || suggest(); const pi = S.preg && S.preg.info ? S.preg.info() : null; const ev = EVERY.indexOf(d.pickEvery) >= 0 ? d.pickEvery : 1;
+    return '<div class="card"><h3>' + esc(t('iron_pick_h')) + '</h3><div class="list iron-plans">' + planIds().map((id) => '<label class="item"><span class="body"><strong>' + E(nameOf(PLANS[id])) + '</strong><span>' + E(howOf(PLANS[id])) + '</span></span><input type="radio" name="iron-plan" value="' + id + '"' + (id === sug ? ' checked' : '') + '></label>').join('') + '</div>' +
       (pi && pi.weeks < 12 ? '<p class="small">' + esc(t('iron_early')) + '</p>' : '') +
-      '<div id="iron-day-row"' + (sug === 'weekly' ? '' : ' hidden') + '><label for="iron-day">' + esc(t('iron_day_l')) + '</label><select id="iron-day">' + [1, 2, 3, 4, 5, 6, 0].map((n) => '<option value="' + n + '"' + (n === 1 ? ' selected' : '') + '>' + esc(S.fmtD(new Date(2026, 9, 18 + n), { weekday: 'long' })) + '</option>').join('') + '</select></div>' +
+      everyHtml('iron-every-row', ev, sug !== 'doctor') +
+      '<div id="iron-day-row"' + (sug === 'weekly' || (sug === 'doctor' && ev === 7) ? '' : ' hidden') + '><label for="iron-day">' + esc(t('iron_day_l')) + '</label><select id="iron-day">' + [1, 2, 3, 4, 5, 6, 0].map((n) => '<option value="' + n + '"' + (n === 1 ? ' selected' : '') + '>' + esc(S.fmtD(new Date(2026, 9, 18 + n), { weekday: 'long' })) + '</option>').join('') + '</select></div>' +
       '<label for="iron-time">' + esc(t('iron_time_l')) + '</label><input id="iron-time" type="time" value="21:00">' +
       '<button type="button" class="btn primary block" id="iron-start">' + esc(t('iron_start')) + '</button></div>';
   }
+  /* Version 39.28: "How often did your doctor say?" for her doctor's dose */
+  const everyHtml = (id, ev, hide) => '<div id="' + id + '" class="iron-every"' + (hide ? ' hidden' : '') + '><p class="iron-every-h">' + esc(t('iron_every_h')) + '</p><div class="chips" role="group" aria-label="' + esc(t('iron_every_h')) + '">' + EVERY.map((n) => '<button type="button" class="chip' + (n === ev ? ' on' : '') + '" data-iron-every="' + n + '" aria-pressed="' + (n === ev) + '">' + esc(t('iron_e' + n)) + '</button>').join('') + '</div></div>';
   /* Version 39.8: the tablet and the strip, drawn */
   const pic = (k) => (S.art && S.art.hasFood && S.art.hasFood(k) ? '<span class="iron-pic" aria-hidden="true">' + S.art.food(k) + '</span>' : '');
   function render(v) {
     const head = S.backRow(t('iron_h'), 'care', false);
-    if (!S.canSave()) { v.innerHTML = head + '<p class="small">' + esc(t('iron_p')) + '</p>' + S.needDiary(); S.wire(v); return; }
+    const intro = t(doc() ? 'iron_p_doc' : 'iron_p');
+    if (!S.canSave()) { v.innerHTML = head + '<p class="small">' + esc(intro) + '</p>' + S.needDiary(); S.wire(v); return; }
     const d = D(); let body;
     if (!active(d)) {
-      body = '<p class="small">' + esc(t('iron_p')) + '</p>' + (d.ended ? '<div class="card soft"><p class="small">' + esc(tf('iron_ended', { d: fmt(S.fromISO(d.ended)), n: takenDays(d) })) + '</p></div>' : '') + pickHtml(d);
+      body = '<p class="small">' + esc(intro) + '</p>' + (d.ended ? '<div class="card soft"><p class="small">' + esc(tf('iron_ended', { d: fmt(S.fromISO(d.ended)), n: takenDays(d) })) + '</p></div>' : '') + pickHtml(d);
     } else {
-      const P = PLANS[d.plan]; const td = S.today(); const tdS = todayISO(); const isW = weekly(d); const done = doneNow(d);
+      const P = PLANS[d.plan]; const td = S.today(); const tdS = todayISO(); const isW = weekly(d); const done = doneNow(d); const rest = restDay(d);
       const n = isW ? weeksTaken(d) : takenDays(d);
-      const today = '<div class="card iron-today" data-nofold="1"><div class="row iron-hd">' + pic('tablet') + '<div><span class="eyebrow">' + E(P.name) + '</span><h2>' + esc(t(isW ? 'iron_week_h' : 'iron_today_h')) + '</h2></div></div>' +
-        (done ? '<div class="flag ok">' + esc(t(isW ? 'iron_week_done' : 'iron_today_done')) + '</div>' + (isW || !d.log[tdS] ? '' : '<button type="button" class="linkbtn" id="iron-undo">' + esc(t('iron_undo')) + '</button>')
+      const today = '<div class="card iron-today" data-nofold="1"><div class="row iron-hd">' + pic('tablet') + '<div><span class="eyebrow">' + E(nameOf(P)) + '</span><h2>' + esc(t(isW ? 'iron_week_h' : 'iron_today_h')) + '</h2></div></div>' +
+        (done ? '<div class="flag ok">' + esc(t(rest ? 'iron_rest' : (isW ? 'iron_week_done' : 'iron_today_done'))) + '</div>' + (isW || !d.log[tdS] ? '' : '<button type="button" class="linkbtn" id="iron-undo">' + esc(t('iron_undo')) + '</button>')
           : '<button type="button" class="btn primary block" id="iron-took">' + esc(t('iron_took')) + '</button>') + '</div>';
       let prog = '<div class="card"><h3>' + esc(t('iron_prog_h')) + '</h3>';
       if (isW) prog += '<p>' + esc(tf('iron_weeks_n', { n: n })) + '</p>';
@@ -134,32 +159,42 @@
         const days = []; for (let i = 6; i >= 0; i--) { const x = S.addDays(td, -i); if (iso(x) >= d.start) days.push(x); }
         prog += '<div class="iron-week" role="group" aria-label="' + esc(t('iron_week_l')) + '">' + days.map((x) => { const k = iso(x); const on = !!d.log[k]; return '<button type="button" class="iron-day' + (on ? ' on' : '') + '" data-iron-day="' + k + '" aria-pressed="' + on + '" aria-label="' + esc(S.fmtD(x, { weekday: 'long', day: 'numeric', month: 'short' }) + ': ' + t(on ? 'iron_day_on' : 'iron_day_off')) + '"><span>' + esc(S.fmtD(x, { weekday: 'narrow' })) + '</span><b class="num">' + x.getDate() + '</b></button>'; }).join('') + '</div><p class="small">' + esc(t('iron_week_tap')) + '</p>';
       }
-      prog += '<p class="small">' + E(P.how) + '</p></div>';
+      prog += '<p class="small">' + E(howOf(P)) + '</p></div>';
       const rem = S.reminders.get(REM); const remOn = d.remOn !== false;
-      const remCard = '<div class="card"><div class="list"><label class="item"><span class="body"><strong>' + esc(t('iron_rem')) + '</strong><span>' + esc(isW ? tf('iron_rem_w', { day: S.fmtD(lastDue(d), { weekday: 'long' }) }) : t('iron_rem_d')) + '</span></span><input type="checkbox" id="iron-rem"' + (remOn ? ' checked' : '') + '></label></div>' +
+      const remCard = '<div class="card"><div class="list"><label class="item"><span class="body"><strong>' + esc(t('iron_rem')) + '</strong><span>' + esc(isW ? tf('iron_rem_w', { day: S.fmtD(lastDue(d), { weekday: 'long' }) }) : t(every(d) === 2 ? 'iron_rem_2' : 'iron_rem_d')) + '</span></span><input type="checkbox" id="iron-rem"' + (remOn ? ' checked' : '') + '></label></div>' +
         (remOn ? '<label for="iron-time">' + esc(t('iron_time_l')) + '</label><input id="iron-time" type="time" value="' + esc(rem && okTime(rem.time) ? rem.time : (okTime(d.time) ? d.time : '21:00')) + '">' : '') + '</div>';
       const low = typeof d.left === 'number' && d.left <= 5;
       const strip = '<div class="card' + (low ? ' warn' : '') + '"><div class="row iron-hd">' + pic('strip') + '<h3>' + esc(t('iron_left_h')) + '</h3></div>' +
-        (low ? '<p style="color:var(--fg)"><strong>' + esc(tf('iron_low', { n: d.left })) + '</strong> ' + esc(t('iron_low_ask')) + '</p><p class="small" style="color:var(--fg)">' + E(STOCK) + '</p>' : '<p class="small">' + esc(t('iron_left_p')) + '</p>') +
+        (low ? '<p style="color:var(--fg)"><strong>' + esc(tf('iron_low', { n: d.left })) + '</strong> ' + esc(t(doc() ? 'iron_low_ask_doc' : 'iron_low_ask')) + '</p>' + (doc() ? '' : '<p class="small" style="color:var(--fg)">' + E(STOCK) + '</p>') : '<p class="small">' + esc(t('iron_left_p')) + '</p>') +
         '<div class="row"><input id="iron-left" type="number" inputmode="numeric" min="0" max="400" placeholder="' + esc(t('iron_left_ph')) + '" value="' + (typeof d.left === 'number' ? d.left : '') + '" style="flex:1"><button type="button" class="btn sm" id="iron-left-go">' + esc(t('iron_left_save')) + '</button></div></div>';
-      const docRow = d.plan === 'doctor' ? '<div class="card"><label for="iron-until">' + esc(t('iron_until_l')) + '</label><input id="iron-until" type="date" value="' + esc(okDate(d.until) ? d.until : '') + '"><p class="small">' + esc(t('iron_until_p')) + '</p></div>' : '';
+      const docRow = d.plan === 'doctor' ? '<div class="card">' + everyHtml('iron-every-now', every(d), false) + '<label for="iron-until">' + esc(t('iron_until_l')) + '</label><input id="iron-until" type="date" value="' + esc(okDate(d.until) ? d.until : '') + '"><p class="small">' + esc(t('iron_until_p')) + '</p></div>' : '';
       body = today + prog + remCard + strip + docRow +
-        '<div class="card soft"><h3>' + esc(t('iron_upset_h')) + '</h3>' + ul(UPSET) + '</div>' +
-        '<div class="card warn"><h3>' + esc(t('iron_help_h')) + '</h3>' + ul(HELP) + '</div>' +
+        '<div class="card soft"><h3>' + esc(t('iron_upset_h')) + '</h3>' + ul(UPSET.map(pk)) + '</div>' +
+        '<div class="card warn"><h3>' + esc(t('iron_help_h')) + '</h3>' + ul(HELP.map(pk)) + '</div>' +
         '<div class="list"><button type="button" class="item" data-go="a-pregnancy.iron-folic-acid-calcium-td"><span class="body"><strong>' + esc(t('iron_read')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>' +
-        (S.routeOwner('asha') ? '<button type="button" class="item" data-go="asha"><span class="body"><strong>' + esc(t('iron_asha')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>' : '') + '</div>' +
+        (S.routeOwner('asha') && (!doc() || (S.asha && S.asha.saved())) ? '<button type="button" class="item" data-go="asha"><span class="body"><strong>' + esc(t('iron_asha')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>' : '') + '</div>' +
         '<div id="iron-stop-box"><button type="button" class="linkbtn" id="iron-stop">' + esc(t('iron_stop')) + '</button></div>';
     }
-    v.innerHTML = head + body + srcList() + '<p class="footnote">' + esc(t('iron_foot')) + '</p>';
+    /* the doctor route: the free tablet as one quiet line, to the schemes for her stage */
+    const alt = doc() && S.care.altRow && S.routeOwner('access-schemes-preg') ? S.care.altRow('access-schemes-' + (S.cycle.isPregnant() ? 'preg' : (S.cycle.afterBirth() ? 'post' : 'period')), t('iron_free_doc')) : '';
+    v.innerHTML = head + body + alt + srcList() + '<p class="footnote">' + esc(t(doc() ? 'iron_foot_doc' : 'iron_foot')) + '</p>';
     S.wire(v); wire(v);
   }
   function wire(v) {
     const d = D();
-    v.querySelectorAll('input[name="iron-plan"]').forEach((r) => r.addEventListener('change', () => { d.pick = r.value; const row = v.querySelector('#iron-day-row'); if (row) row.hidden = r.value !== 'weekly'; }));
+    const dayRow = (p) => { const row = v.querySelector('#iron-day-row'); if (row) row.hidden = !(p === 'weekly' || (p === 'doctor' && d.pickEvery === 7)); };
+    v.querySelectorAll('input[name="iron-plan"]').forEach((r) => r.addEventListener('change', () => { d.pick = r.value; dayRow(r.value); const er = v.querySelector('#iron-every-row'); if (er) er.hidden = r.value !== 'doctor'; }));
+    v.querySelectorAll('#iron-every-row [data-iron-every]').forEach((b) => b.addEventListener('click', () => {
+      d.pickEvery = Number(b.dataset.ironEvery); v.querySelectorAll('#iron-every-row [data-iron-every]').forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); }); dayRow('doctor');
+    }));
+    /* her doctor's dose, started: a new rhythm from today (once a week keeps today's weekday) */
+    v.querySelectorAll('#iron-every-now [data-iron-every]').forEach((b) => b.addEventListener('click', () => {
+      const n = Number(b.dataset.ironEvery); if (n === every(d)) return; d.every = n; if (n === 7 && d.day == null) d.day = S.today().getDay(); sync(d); S.save(); S.render();
+    }));
     const st = v.querySelector('#iron-start'); if (st) st.addEventListener('click', () => {
       const p = (v.querySelector('input[name="iron-plan"]:checked') || {}).value || suggest();
-      const tm = (v.querySelector('#iron-time') || {}).value; const dy = (v.querySelector('#iron-day') || {}).value;
-      Object.assign(d, { plan: p, start: todayISO(), ended: null, remOn: true, time: okTime(tm) ? tm : '21:00', day: p === 'weekly' ? Number(dy || 1) : null, until: null, pick: null });
+      const tm = (v.querySelector('#iron-time') || {}).value; const dy = (v.querySelector('#iron-day') || {}).value; const ev = p === 'doctor' && EVERY.indexOf(d.pickEvery) >= 0 ? d.pickEvery : 1;
+      Object.assign(d, { plan: p, start: todayISO(), ended: null, remOn: true, time: okTime(tm) ? tm : '21:00', day: p === 'weekly' || ev === 7 ? Number(dy || 1) : null, every: p === 'doctor' ? ev : null, until: null, pick: null, pickEvery: null });
       S.reminders.remove(REM); S.reminders.remove('preg-ifa'); sync(d);   /* one iron reminder: this one replaces the pregnancy logs' IFA reminder */ S.save(); S.toast(t('iron_started')); S.render(); window.scrollTo(0, 0);
     });
     const tk = v.querySelector('#iron-took'); if (tk) tk.addEventListener('click', () => { mark(d, todayISO(), true); S.toast(t('iron_noted')); });
@@ -198,7 +233,8 @@
   /* ---------- the doctor's summary ---------- */
   function summary() {
     if (!S.canSave()) return []; const d0 = (S.state.mods || {}).iron; if (!d0 || !d0.plan || !PLANS[d0.plan] || !okDate(d0.start)) return [];
-    const d = D(); const P = PLANS[d.plan]; const lines = [tx(P.name) + ', ' + tf('iron_since_s', { d: fmt(S.fromISO(d.start)) })];
+    const d = D(); const P = PLANS[d.plan]; const lines = [tx(nameOf(P)) + ', ' + tf('iron_since_s', { d: fmt(S.fromISO(d.start)) })];
+    if (d.plan === 'doctor' && every(d) !== 1) lines.push(t('iron_e' + every(d)));
     if (weekly(d)) lines.push(tf('iron_weeks_n', { n: weeksTaken(d) }));
     else { lines.push(P.target ? tf('iron_of', { n: takenDays(d), of: P.target }) : tf('iron_days_n', { n: takenDays(d) })); lines.push(tf('iron_last30', { n: last30(d) })); }
     if (d.ended) lines.push(tf('iron_ended_s', { d: fmt(S.fromISO(d.ended)) }));
@@ -242,7 +278,11 @@
         iron_ended: 'Your last plan ended on {d}, with {n} days taken.', iron_ended_s: 'Stopped on {d}', iron_last30: 'Last 30 days: {n} days',
         iron_setup_preg: 'Start your iron tablets', iron_setup_preg_s: 'One a day from the fourth month, with a reminder', iron_setup_post: 'Iron tablets for 180 days after the birth', iron_setup_post_s: 'One a day, with a reminder',
         iron_home: 'Iron tablet today', iron_home_w: 'This week’s iron tablet', iron_home_d: 'Today’s tablet', iron_home_took_d: 'Done',
-        iron_sources: 'Sources', iron_foot: 'Free under Anemia Mukt Bharat from your ASHA, ANM, Anganwadi or PHC. Your ticks stay on this phone.'
+        iron_sources: 'Sources', iron_foot: 'Free under Anemia Mukt Bharat from your ASHA, ANM, Anganwadi or PHC. Your ticks stay on this phone.',
+        /* Version 39.28: the doctor route (S.care) */
+        iron_p_doc: 'Your iron tablet protects you from low haemoglobin, but it is easy to forget or to stop when it upsets you. Pick your plan: one tap a day, a reminder, and help when it is hard.',
+        iron_low_ask_doc: 'Get your next strip before it runs out, from your chemist or your doctor.', iron_free_doc: 'Free iron tablets at government health centres (Anemia Mukt Bharat)', iron_foot_doc: 'Your ticks stay on this phone.',
+        iron_every_h: 'How often did your doctor say?', iron_e1: 'Every day', iron_e2: 'Every other day', iron_e7: 'Once a week', iron_rem_2: 'Every other day, until you stop the plan.', iron_rest: 'No tablet today. Your next one is tomorrow.'
       },
       hi: {
         iron_h: 'आयरन की गोलियाँ', iron_tile_s: 'रोज़ की गोली पर टिक, रिमाइंडर, और परेशानी हो तो मदद',
@@ -263,7 +303,10 @@
         iron_ended: 'आपका पिछला प्लान {d} को ख़त्म हुआ, {n} दिन गोली ली।', iron_ended_s: '{d} को रोका', iron_last30: 'पिछले 30 दिन: {n} दिन',
         iron_setup_preg: 'आयरन की गोलियाँ शुरू करें', iron_setup_preg_s: 'चौथे महीने से रोज़ एक, रिमाइंडर के साथ', iron_setup_post: 'डिलीवरी के बाद 180 दिन आयरन की गोलियाँ', iron_setup_post_s: 'रोज़ एक, रिमाइंडर के साथ',
         iron_home: 'आज की आयरन की गोली', iron_home_w: 'इस हफ़्ते की आयरन की गोली', iron_home_d: 'आज की गोली', iron_home_took_d: 'हो गया',
-        iron_sources: 'स्रोत', iron_foot: 'एनीमिया मुक्त भारत में ASHA, ANM, आंगनवाड़ी या PHC से मुफ़्त। आपके टिक इसी फ़ोन पर रहते हैं।'
+        iron_sources: 'स्रोत', iron_foot: 'एनीमिया मुक्त भारत में ASHA, ANM, आंगनवाड़ी या PHC से मुफ़्त। आपके टिक इसी फ़ोन पर रहते हैं।',
+        iron_p_doc: 'आयरन की गोली कम हीमोग्लोबिन से बचाती है, पर भूलना आसान है, या परेशानी होने पर बंद कर देना। अपना प्लान चुनें: रोज़ एक टैप, एक रिमाइंडर, और मुश्किल हो तो मदद।',
+        iron_low_ask_doc: 'ख़त्म होने से पहले अगला पत्ता केमिस्ट या डॉक्टर से ले लें।', iron_free_doc: 'सरकारी स्वास्थ्य केंद्रों पर मुफ़्त आयरन की गोलियाँ (एनीमिया मुक्त भारत)', iron_foot_doc: 'आपके टिक इसी फ़ोन पर रहते हैं।',
+        iron_every_h: 'डॉक्टर ने कितनी बार लेने को कहा?', iron_e1: 'रोज़', iron_e2: 'एक दिन छोड़कर', iron_e7: 'हफ़्ते में एक बार', iron_rem_2: 'एक दिन छोड़कर, जब तक आप प्लान न रोकें।', iron_rest: 'आज गोली नहीं। अगली गोली कल है।'
       }
     },
     routes: { iron: render },
@@ -279,6 +322,7 @@
     css: '.iron-hd { gap: 12px; align-items: center; flex-wrap: nowrap; } .iron-hd h3 { margin: 0; } .iron-pic { width: 52px; height: 52px; flex-shrink: 0; border-radius: 14px; background: var(--peach-2); display: inline-flex; overflow: hidden; } .iron-pic svg { width: 100%; height: 100%; } .iron-today h2 { margin: 0; } .iron-bar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; } .iron-bar i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }' +
       '.iron-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; } .iron-day { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; padding: 6px 0; }' +
       '.iron-day span { font-size: 12px; } .iron-day b { font-size: 15px; color: var(--fg); } .iron-day.on { background: var(--accent-soft); border: 2px solid var(--accent); color: var(--accent); font-weight: 600; }' +
-      '.iron-ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); } .iron-plans .item span { white-space: normal; }' 
+      '.iron-ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--fg); } .iron-plans .item span { white-space: normal; }' +
+      '.iron-every { display: grid; gap: 8px; margin: 4px 0 8px; } .iron-every-h { margin: 0; font-weight: 600; color: var(--fg); }' 
   });
 })(window.Saathi);

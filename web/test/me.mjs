@@ -51,8 +51,8 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   const r = await rows(page);
   /* Version 39.2: one Reminders row (her lists and the phone's alerts are inside it); her unfinished setup steps (setup-it) sit in Me now */
   const order = r.filter((x) => !/setup/.test(x.cls || '')).map((x) => x.go || x.id).filter(Boolean);
-  check('1 the rows, in order: account, privacy, health, reminders, language, data, look, help, about, then delete',
-    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
+  check('1 the rows, in order: account, privacy, health, where she gets care (Version 39.28), reminders, language, data, look, help, about, then delete',
+    JSON.stringify(order) === JSON.stringify(['account', 'me-privacy', 'me-health', 'me-care', 'me-reminders', 'lang', 'me-data', 'me-look', 'me-help', 'me-about', 'me-del']), order);
   check('1 her name and masked number head the page', r[0].t === 'Asha' && /Asha\s*\+91\u00a0•••••\u00a0•3210/.test(await view(page)), await view(page));
   check('1 privacy says what is on', /Privacy on a shared phone/.test(await view(page)) && /Nothing switched on yet/.test(await view(page)));
   check('1 health shows her stage, and names no condition', /Tracking my periods/.test(await view(page)) && !CONDITIONS.test(await view(page)), await view(page));

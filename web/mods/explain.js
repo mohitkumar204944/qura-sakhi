@@ -13,7 +13,10 @@
 
   /* ---------- the explanations ---------- */
   const BLEED_WHY = [L('Fibroids or polyps in the womb.', 'बच्चेदानी में fibroid या polyp।'), L('Hormone changes, common in the first years of periods and in your 40s.', 'हॉर्मोन में बदलाव, जो पीरियड के शुरुआती सालों और 40 के बाद आम है।'), L('A Copper-T or some medicines.', 'Copper-T या कुछ दवाएँ।'), L('Less often, a bleeding problem.', 'कभी-कभी, खून जमने से जुड़ी समस्या।')];
-  const IRON = L('Long or heavy periods can cause anaemia. Free iron tablets come from your ASHA or health centre.', 'लंबे या भारी पीरियड से खून की कमी हो सकती है। मुफ़्त आयरन की गोलियाँ ASHA या स्वास्थ्य केंद्र से मिलती हैं।');
+  /* Version 39.28: a line's doctor-route words (doc), for a woman who sees a private doctor or hasn't said where she goes (S.care) */
+  const docR = () => !!(S.care && S.care.gov && !S.care.gov());
+  const IRON = Object.assign(L('Long or heavy periods can cause anaemia. Free iron tablets come from your ASHA or health centre.', 'लंबे या भारी पीरियड से खून की कमी हो सकती है। मुफ़्त आयरन की गोलियाँ ASHA या स्वास्थ्य केंद्र से मिलती हैं।'),
+    { doc: L('Long or heavy periods can cause anaemia. Ask your doctor if you need iron tablets. They are also free at government health centres.', 'लंबे या भारी पीरियड से खून की कमी हो सकती है। डॉक्टर से पूछें कि क्या आपको आयरन की गोलियाँ चाहिए। ये सरकारी स्वास्थ्य केंद्रों पर मुफ़्त भी मिलती हैं।') });
   const MOOD_SEE = L('Talk to a doctor this month. Tele-MANAS on 14416 is free, at any hour. If you think about harming yourself, call 14416 or 112 now.', 'इसी महीने डॉक्टर से बात करें। Tele-MANAS 14416 मुफ़्त है, किसी भी समय। ख़ुद को नुक़सान पहुँचाने के विचार आएँ तो अभी 14416 या 112 पर कॉल करें।');
   const X = {
     gap_usual: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), w: L('That is within the usual 21 to {b} days. Gaps can move by a few days from month to month, and that is normal too.', 'यह आम 21 से {b} दिन के दायरे में है। अंतर हर महीने कुछ दिन आगे-पीछे हो सकता है, और यह भी सामान्य है।'), go: 'diary' },
@@ -34,7 +37,8 @@
       /* Version 37.2: from 40, long gaps are expected in the years before menopause (ux-gaps B1; wording-review section 15) */
       tMid: L('{d} days since your last period', 'पिछले पीरियड को {d} दिन'), wMid: L('In the years before menopause, gaps between periods often get longer or shorter. Keep noting your periods.', 'मेनोपॉज़ से पहले के सालों में पीरियड के बीच का अंतर अक्सर लंबा या छोटा होता है। अपने पीरियड दर्ज करती रहें।'),
       why: [L('Pregnancy, if you have had sex since your last period.', 'गर्भ, अगर पिछले पीरियड के बाद संबंध बने हैं।'), L('Stress, illness, travel or weight change.', 'तनाव, बीमारी, सफ़र या वज़न में बदलाव।'), L('Breastfeeding, PMOS or thyroid problems.', 'दूध पिलाना, PMOS या थायरॉइड की समस्या।')],
-      todo: [L('If you could be pregnant, take a home test. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'), L('If it is negative and your period still has not come, test again in a week.', 'test negative हो और पीरियड फिर भी न आए, तो एक हफ़्ते बाद फिर test करें।'),
+      todo: [Object.assign(L('If you could be pregnant, take a home test. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'),
+        { doc: L('If you could be pregnant, take a home test. Any chemist sells one; your ASHA gives Nishchay kits free.', 'अगर गर्भ की संभावना है, तो घर पर test करें। यह किसी भी केमिस्ट पर मिलता है; ASHA Nishchay किट मुफ़्त देती हैं।') }), L('If it is negative and your period still has not come, test again in a week.', 'test negative हो और पीरियड फिर भी न आए, तो एक हफ़्ते बाद फिर test करें।'),
         /* Version 32: the pregnancy-test pages' warning, word for word (field-test audit 2.3) */
         L('Period late or a positive test, with pain on one side of the lower belly, pain at the tip of the shoulder, bleeding, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which can bleed inside.', 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, ब्लीडिंग, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसमें अंदर ही अंदर ख़ून बह सकता है।')],
       see: L('No period for 90 days, and not pregnant or breastfeeding: see a doctor.', '90 दिन तक पीरियड न आए, और आप गर्भवती या दूध पिलाने वाली नहीं हैं: डॉक्टर को दिखाएँ।'),
@@ -319,7 +323,7 @@
     const x = xOf(f); const what = x.w ? one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : '')) : '';
     const why = (x.why || []).filter((r, i) => !(f.id === 'gap_short' && i === 3 && f.no40) && !(f.id === 'gap_long' && i === 3 && f.no45));
     const see = seeOf(f);
-    const list = (arr) => '<ul>' + arr.map((r) => '<li>' + esc(tx(r)) + '</li>').join('') + '</ul>';
+    const list = (arr) => '<ul>' + arr.map((r) => '<li>' + esc(tx(r.doc && docR() ? r.doc : r)) + '</li>').join('') + '</ul>';
     return '<div class="card xp-card xp-' + f.lv + '" data-key="' + esc(f.key) + '"><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(t('explain_lv_' + f.lv)) + '</span><span class="small">' + esc(S.fmtD(S.fromISO(f.at))) + '</span></div>' +
       '<h3>' + esc(title(f)) + '</h3>' + (what ? '<p class="xp-what">' + esc(what) + '</p>' : '') +
       (see ? '<div class="xp-see"><b>' + esc(t('explain_see')) + '</b><p>' + esc(one(see)) + '</p></div>' : '') +

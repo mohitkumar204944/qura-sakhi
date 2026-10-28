@@ -386,7 +386,8 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
 
 /* ---------- 15. Help paths, words and the notice (decisions 4 and 5, audit 3.4) ---------- */
 {
-  const T = await open({ seed: { events: regular(10, 3) }, hash: '#ask', cfg: { grievance: 'Test Officer, Trinaya Wellness LLP' } });
+  /* Version 39.28: the government route's order (situation.care); the doctor route puts Qura's ways first (test/care.mjs) */
+  const T = await open({ seed: { events: regular(10, 3), situation: { care: 'govt' } }, hash: '#ask', cfg: { grievance: 'Test Officer, Trinaya Wellness LLP' } });
   const { page } = T;
   const ids = await page.$$eval('#view .card', (cs) => cs.map((c) => c.id || ''));
   check('15 the free government doctor comes first on the doctor screen', ids[0] === 'ask-free', ids);

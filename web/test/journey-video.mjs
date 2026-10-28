@@ -139,6 +139,7 @@ async function journey(key) {
     if (W.dx) await tap('[data-ob-dx="' + W.dx + '"]', 700);
     await beat(800); await tap('#ob-next');
   });
+  await scene('Where she goes for check-ups: a private gynaecologist', async () => { await beat(700); await tap('[data-ob-care="' + (W.care || 'private') + '"]', 1200); });   /* Version 39.28 */
   await scene('Who uses this phone: only her', async () => { await beat(700); await tap('[data-ob-sh="me"]', 1200); });
   await scene('She signs up with her mobile number and the code she gets', async () => {
     await page.waitForSelector('#su-num', { timeout: 8000 }); await type('#su-num', '9876543210'); await tap('#su-send', 1500);

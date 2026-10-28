@@ -156,6 +156,9 @@ body.hi .big { font-family: var(--font-hi); font-size: 52px; }
 .me-danger .item strong { color: var(--accent); }
 .me-version { text-align: center; padding: 6px 0; }
 .item.quiet { box-shadow: none; background: var(--card-2); }
+/* Version 39.28: the free government option as one quiet line, for a woman who sees a private doctor (S.care.altRow) */
+.item.care-alt { box-shadow: none; background: transparent; border: 1.5px dashed var(--line); min-height: 52px; }
+.item.care-alt .body strong { font-weight: 500; font-size: 14px; }
 
 .article { display: flex; flex-direction: column; gap: 14px; }
 .article .bodytext { display: flex; flex-direction: column; gap: 10px; color: var(--text); font-size: 15px; line-height: 1.6; }

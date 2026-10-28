@@ -55,6 +55,10 @@
   const pToday = () => (S.planToday ? S.planToday() : S.today());
   const todayISO = () => S.toISO(pToday());
   const disc = () => !!(S.state.settings || {}).discreet;
+  /* Version 39.28: on the doctor route (S.care: a private doctor, "Nowhere yet", or not answered) Qura's doctor comes before
+     the free government doctor; the government route keeps the free doctor first */
+  const docR = () => !!(S.care && S.care.gov && !S.care.gov());
+  const byRoute = (free, qura) => (docR() ? qura + free : free + qura);
   const reduced = () => { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
   const round5 = (n) => Math.round(n / 5) * 5;
   const num1 = (n) => (Math.round(n * 10) / 10).toFixed(1).replace(/\.0$/, '');
@@ -655,10 +659,10 @@
     const row = (id, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="body"><strong>' + esc(title) + '</strong><span>' + esc(sub) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';
     /* Version 39.6 (journey audit P2-03; roadmap section 2, "The end sentence"): her result as counts with no judging word,
        then one card for every woman: show this page to a doctor, the free government doctor first */
-    const endCard = '<div class="card soft pl-end-doc"><h3>' + esc(t('plan_end_doc_h')) + '</h3><p class="small">' + esc(t('plan_end_doc_p')) + '</p><div class="row wrap">' +
-      (S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '') +
-      '<button type="button" class="btn sm primary" data-go="report-show">' + esc(t('plan_end_show')) + '</button>' +
-      (disc() ? '' : '<button type="button" class="btn sm" data-ask="' + esc(tf('plan_ask_r', { t: packTitle(d) })) + '">' + esc(t('plan_rv_qura')) + '</button>') + '</div></div>';
+    const endFree = S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '';
+    const endRest = '<button type="button" class="btn sm primary" data-go="report-show">' + esc(t('plan_end_show')) + '</button>' +
+      (disc() ? '' : '<button type="button" class="btn sm" data-ask="' + esc(tf('plan_ask_r', { t: packTitle(d) })) + '">' + esc(t('plan_rv_qura')) + '</button>');
+    const endCard = '<div class="card soft pl-end-doc"><h3>' + esc(t('plan_end_doc_h')) + '</h3><p class="small">' + esc(t('plan_end_doc_p')) + '</p><div class="row wrap">' + byRoute(endFree, endRest) + '</div></div>';
     v.innerHTML = hd + pendBanner() + '<div class="card pl-intro">' + (S.art ? S.art.sakhi({ pose: 'cheer', look: (S.state.settings || {}).look }) : '') + '<h2>' + esc(t(kept ? 'plan_year_h' : 'plan_end_h')) + '</h2><p>' + esc(tf('plan_fin_days', { n: n, t: tot })) + '</p><p class="small">' + esc(t(n < 12 ? 'plan_fin_low' : 'plan_fin_p')) + '</p></div>' +
       (mcDue(d) === 3 ? '<div class="card pl-mc-end"><h3>' + esc(t('plan_mc_end_h')) + '</h3><p class="small">' + esc(t('plan_mc_row_s')) + '</p><button type="button" class="btn sm primary" data-go="plan-check">' + esc(tf('plan_mc_b', { n: N })) + '</button></div>' : '') +   /* Version 39.12 (gap 6) */
       resultCard(d) + (docTold(d) && !disc() ? '<p class="small pl-told">' + esc(docTold(d)) + '</p>' : '') + endCard +
@@ -2012,7 +2016,7 @@
         '<p class="small">' + esc(t(pk === 'preg' && !disc() ? 'plan_rv_exp_preg' : 'plan_rv_diff')) + '</p>' + nextB;
     } else if (id === 'doc') {
       body = '<h1>' + esc(t('plan_rv_doc_h2')) + '</h1><div class="card warn pl-doc"><p>' + esc(t(disc() ? 'plan_doc_d' : dk)) + '</p></div><p>' + esc(t(dk === 'plan_rv_doc_cyc' ? 'plan_rv_doc_when' : 'plan_rv_doc_soon')) + '</p>' +
-        '<div class="row wrap">' + (S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '') + '<button type="button" class="btn sm" data-go="ask">' + esc(t('plan_rv_qura')) + '</button></div>' + nextB;
+        '<div class="row wrap">' + byRoute(S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '', '<button type="button" class="btn sm" data-go="ask">' + esc(t('plan_rv_qura')) + '</button>') + '</div>' + nextB;
     } else {
       const mon = pToday().getDay() === 0 ? [] : [['monday', tf('plan_st_mon', { d: S.fmtD(S.fromISO(startDay('monday')), { day: 'numeric', month: 'short' }) })]];
       const al = S.alerts || {}; const can = !!(al.can && al.can());
@@ -2187,9 +2191,9 @@
   function careTeam(fold) {
     const row = (go, ico, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button>';
     const sec = (list) => (fold ? foldCard('pl-care', t('plan_ct_h'), t('plan_ct_sum'), list) : '<section class="care-sec pl-sec pl-care"><h2>' + esc(t('plan_ct_h')) + '</h2>' + list + '</section>');   /* Version 39.19: one row after her first week */
-    return sec('<div class="list">' +
-      (S.routeOwner('access-doctor') ? row('access-doctor', S.icon('steth'), t('plan_rv_free'), t('plan_ct_free_s')) : '') +
-      (disc() ? row('ask', S.icon('steth'), t('plan_ct_qura'), t('plan_ct_qura_s')) : '<button type="button" class="item" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(raw() || {}) })) + '"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('plan_ct_qura')) + '</strong><span>' + esc(t('plan_ct_qura_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>') +   /* Version 39.6 (P2-11) */
+    const free = S.routeOwner('access-doctor') ? row('access-doctor', S.icon('steth'), t('plan_rv_free'), t('plan_ct_free_s')) : '';
+    const qura = disc() ? row('ask', S.icon('steth'), t('plan_ct_qura'), t('plan_ct_qura_s')) : '<button type="button" class="item" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(raw() || {}) })) + '"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('plan_ct_qura')) + '</strong><span>' + esc(t('plan_ct_qura_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';   /* Version 39.6 (P2-11) */
+    return sec('<div class="list">' + byRoute(free, qura) +
       row('report', S.icon('file'), t('plan_ct_report'), '') + row('help', S.I.help, t('help'), t('plan_ct_help_s')) + '</div>');
   }
   function lightResults(d) {
@@ -2678,7 +2682,7 @@
     return '<h1 class="pl-mc-rh">' + esc(k === 3 ? t('plan_mc_res_h3') : tf('plan_mc_res_h', { n: wks })) + '</h1>' +
       '<div class="card pl-mc-did"><span class="eyebrow">' + esc(t('plan_mc_did')) + '</span><div class="pl-mc-tiles">' + tiles.map((x) => '<div class="pl-mc-tile hue-' + x[2] + '"><strong>' + x[0] + '</strong><span class="small">' + esc(t(x[1])) + '</span></div>').join('') + '</div>' + (pk === 'cycle' && mins ? '<p class="small">' + esc(tf('plan_mc_r_mins', { n: mins })) + '</p>' : '') + '</div>' +
       '<div class="card pl-mc-saw"><span class="eyebrow">' + esc(t('plan_mc_saw')) + '</span>' + mcQs(d).filter((q) => rec[q]).map((q) => row(t('plan_mc_' + q), t('plan_mc_' + rec[q]), rec[q])).join('') + meas('waist', t('plan_cm'), 'plan_mc_waist_l') + meas('w', 'kg', 'plan_mc_weight_l') + '</div>' +
-      (worse ? '<div class="card soft pl-mc-worse"><p class="small">' + esc(t('plan_mc_worse_p')) + '</p><div class="row wrap">' + (S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '') + '<button type="button" class="btn sm" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(d) })) + '">' + esc(t('plan_rv_qura')) + '</button></div></div>' : '') +
+      (worse ? '<div class="card soft pl-mc-worse"><p class="small">' + esc(t('plan_mc_worse_p')) + '</p><div class="row wrap">' + byRoute(S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '', '<button type="button" class="btn sm" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(d) })) + '">' + esc(t('plan_rv_qura')) + '</button>') + '</div></div>' : '') +
       (per || k < 3 ? '<div class="card soft pl-mc-note">' + (per ? '<p class="small">' + esc(t('plan_rv_cyc')) + '</p>' : '') + (k < 3 ? '<p class="small">' + esc(t('plan_mc_next')) + '</p>' : '') + '</div>' : '') +
       '<div class="grid2"><button type="button" class="btn primary" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn" data-go="plan-progress">' + esc(t('plan_tiles_prog')) + '</button></div>';
   }

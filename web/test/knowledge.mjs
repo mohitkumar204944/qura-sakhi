@@ -303,7 +303,8 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   await go(page, 'access-free');
   check('12 Govt. services: "How to use free care", three Learn guides', /How to use free care/.test(await view(page)) && (await gos(page, '#view [data-go^="a-services."]')).length === 3);
   errsAll.push(...errs); await ctx.close();
-  const p = await open({ seed: PREG, hash: '#preg-plan' });
+  /* Version 39.28: scheme money is the government route's item (situation.care) */
+  const p = await open({ seed: Object.assign({}, PREG, { situation: Object.assign({}, PREG.situation, { care: 'govt' }) }), hash: '#preg-plan' });
   check('12 the pregnancy plan\'s scheme item names Kilkari, with the shared-phone line', /Kilkari, in states that run it: free weekly voice calls/.test(await allText(p.page)) && /Choose that number carefully if the phone is shared/.test(await allText(p.page)));
   errsAll.push(...p.errs); await p.ctx.close();
 }

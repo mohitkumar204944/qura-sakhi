@@ -96,7 +96,7 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   const { ctx, page, errs } = await open({ lang });
   const screens = [];
   await join(page, { lang, name: 'Asha', tile: S.tile, goals: S.goals, dec: S.dec, y: S.y, dx: S.dx, lmp: S.lmp, birth: S.birth, bf: S.bf, mp: S.mp, stop: 'share', onScreen: async (n) => { screens.push([n, await fits(page)]); } });
-  check(tag + ': 5 joining screens (about you, stage, goals, details, this phone), each fits 360 px with no untranslated words', screens.length === 5 && screens.every((x) => x[1]), screens);
+  check(tag + ': 6 joining screens (about you, stage, goals, details, where she gets care, this phone), each fits 360 px with no untranslated words', screens.length === 6 && screens.every((x) => x[1]), screens);
   await tap(page, '[data-ob-sh="me"]'); await signUp(page);
   let s = await st(page); const g1 = S.dx === 'y' && S.goals[0] === 'irregular' ? 'pmos' : S.goals[0];
   check(tag + ': joining saved her stage, her goals in order, and no plan yet', stageOf(s) === S.st && s.focus && s.focus.tile === S.tile && JSON.stringify(s.focus.goals) === JSON.stringify(S.goals) && s.intake.goal === g1 && !(s.mods.plan || {}).next && !(s.mods.plan || {}).start && !!(s.prompts || {}).planOffer, [stageOf(s), s.focus, s.intake, s.prompts]);

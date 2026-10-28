@@ -42,6 +42,8 @@ const seedOf = (x) => Object.assign({ lang: 'en', langChosen: true, stage: 'app'
   tours: TOURS_DONE, fullTour: { st: 'done', d: ago(3) }, whatsNew: '0.37', prompts: { setup: 'off', notifyIntro: ago(3), planCall: ago(3) }, mods: {} }, x || {}, { settings: Object.assign({ toursAuto: false, notify: true }, (x || {}).settings || {}) });
 const planOf = (pack, goal, start, extra) => Object.assign({ pack: pack, goalKey: goal, start: start, go: true, level: 0, limits: { knees: false, back: false }, food: 'veg', focus: 'habits', goal: 'cycles', remAt: '20:00', when: 'evening', bed: 'b23', work: 'day', log: {}, weeks: {}, body: [], doc: 'done' }, extra || {});
 const PREG = (w) => ({ situation: { pregnant: true, pregnantSince: ago(w * 7) }, events: [] });
+/* Version 39.28: scheme money is the government route's item (situation.care) */
+const PREG_GOV = (w) => ({ situation: { pregnant: true, pregnantSince: ago(w * 7), care: 'govt' }, events: [] });
 const REC_OK = { danger: ['none'], bleed: 'light', colour: 'brown', wtype: 'stitch', wound: 'fine', fever: 'no', breast: 'fine', pee: 'fine', potty: 'fine', mood: 'ok', sleep: 'some' };
 
 const browser = await chromium.launch();
@@ -254,6 +256,7 @@ const errsAll = [];
   const ob = await a.page.evaluate(() => (window.Saathi.mem.ob || {}).pill);
   check('9 ... and remembers her answer', ob === true, ob);
   await tap(a.page, '#ob-next');
+  if (await has(a.page, '[data-ob-care]')) await tap(a.page, '#ob-care-go');   /* Version 39.28: where she gets care */
   if (await has(a.page, '[data-ob-sh]')) {
     await tap(a.page, '[data-ob-sh="me"]'); await settle(a.page, 400);
     await a.page.fill('#su-num', '9876543210'); await tap(a.page, '#su-send'); await a.page.fill('#su-code', '123456'); await settle(a.page, 900);
@@ -288,7 +291,7 @@ const errsAll = [];
 
 /* ---------- 11. Small fixes ---------- */
 {
-  const a = await open({ seed: Object.assign({}, PREG(21), { mods: { access: { claims: { pmmvy: { started: ago(30), applied: ago(15), docs: {} } } } } }), hash: '#preg-plan' });
+  const a = await open({ seed: Object.assign({}, PREG_GOV(21), { mods: { access: { claims: { pmmvy: { started: ago(30), applied: ago(15), docs: {} } } } } }), hash: '#preg-plan' });
   const due = await a.page.evaluate(() => window.Saathi.preg.plan.due().map((x) => x.id));
   check('11 an applied PMMVY claim ticks "Scheme money" in the pregnancy plan', due.indexOf('scheme') < 0, due);
   errsAll.push(...a.errs); await a.ctx.close();
@@ -478,7 +481,7 @@ const pinIn = async (page, pin) => { for (const k of pin) await tap(page, '#pg-p
 }
 {
   /* life-12: a scheme claim from an earlier baby doesn't tick this pregnancy's plan */
-  const a = await open({ seed: Object.assign({}, PREG(21), { mods: { access: { claims: { pmmvy: { started: ago(400), applied: ago(390), docs: {} } } } } }) });
+  const a = await open({ seed: Object.assign({}, PREG_GOV(21), { mods: { access: { claims: { pmmvy: { started: ago(400), applied: ago(390), docs: {} } } } } }) });
   check('13 life-12 an earlier baby\'s PMMVY claim leaves "Scheme money" to do', await a.page.evaluate(() => window.Saathi.preg.plan.due().some((x) => x.id === 'scheme')));
   errsAll.push(...a.errs); await a.ctx.close();
 }

@@ -72,7 +72,7 @@ async function signUp(page) {
   if (await has(page, '#su-done')) { await page.fill('#su-pin', '302001'); await tap(page, '#su-done'); }
   await sleep(700);
 }
-const finish = async (page) => { await tap(page, '#ob-next'); await tap(page, '[data-ob-sh="me"]'); await signUp(page); };
+const finish = async (page) => { await tap(page, '#ob-next'); await tap(page, '#ob-care-go'); await tap(page, '[data-ob-sh="me"]'); await signUp(page); };
 
 /* ---------- 1 and 2: the Details step, and what her dates show ---------- */
 const LONG = [ago(80), ago(39), ago(1)];   /* gaps of 41 and 38 days; her latest period began yesterday */

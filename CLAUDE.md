@@ -188,6 +188,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - a doctor finding and her plan's offer in one card;
     - Call buttons on the after-birth danger cards, "Call 112 now" first in Help, and Help while she joins.
     Contract: MODULE_API section 70; wording: section 19.27 of the review (new lines wait for doctor review).
+  - `node test/care.mjs` (Version 39.28, your doctor first; Mohit, 28 Oct: "not always keep pushing for Asha/ANM"; mockup
+    claude.ai/artifact/TyUgHfhf9GNmpkEsMkMnsu):
+    - "Where do you usually go for women's health?" while she joins (`situation.care`), and "Where I get care" in Me;
+    - the government and ASHA words only for a woman who picks them; otherwise "your doctor" and one quiet line for the free
+      government option (iron tablets, pregnancy check-ups, after the birth, Help, the doctor screen, My plan's doctors, the
+      findings);
+    - iron as her doctor prescribed: every day, every other day or once a week.
+    Suites that check the government route seed `care: 'govt'`. Contract: MODULE_API section 71; wording: section 19.28 of the
+    review (waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

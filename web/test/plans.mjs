@@ -31,10 +31,11 @@ const isoAdd = (s, n) => { const p = s.split('-').map(Number); const x = new Dat
 /* the 9th of each month after today, up to the due date: the PMSMA days */
 const ninthsUntil = (due) => { const t = new Date(); t.setHours(0, 0, 0, 0); let x = new Date(t.getFullYear(), t.getMonth(), 9); if (x < t) x = new Date(t.getFullYear(), t.getMonth() + 1, 9); const out = []; while (iso(x) <= due && out.length < 8) { out.push(iso(x)); x = new Date(x.getFullYear(), x.getMonth() + 1, 9); } return out; };
 const TOURS_DONE = Object.fromEntries(['home', 'diary', 'care', 'help', 'me'].map((k) => [k, { st: 'done', d: isoAgo(3) }]));
-const seedOf = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1992-07-01', consent: { c1: isoAgo(30), c2: null, c4: null }, situation: { stage: 'cycle' },
+/* Version 39.28: the pregnancy plan as the government route shows it (situation.care); the doctor route: test/care.mjs */
+const seedOf = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1992-07-01', consent: { c1: isoAgo(30), c2: null, c4: null }, situation: { stage: 'cycle', care: 'govt' },
   events: [{ d: isoAgo(52), t: 'start' }, { d: isoAgo(47), t: 'end' }, { d: isoAgo(24), t: 'start' }, { d: isoAgo(19), t: 'end' }], daily: {}, notes: {}, checkins: {},
   tours: TOURS_DONE, fullTour: { st: 'done', d: isoAgo(3) } }, extra || {}, { settings: Object.assign({ toursAuto: false }, (extra || {}).settings || {}) });
-const pregSeed = (weeks, extra) => Object.assign({ situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(weeks * 7) }, events: [] }, extra || {});
+const pregSeed = (weeks, extra) => Object.assign({ situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(weeks * 7), care: 'govt' }, events: [] }, extra || {});
 
 const browser = await chromium.launch();
 const sent = [];
@@ -154,7 +155,7 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
 {
   const before = sent.length;
   const birth = isoAgo(50), by = isoAdd(birth, 270);
-  const { ctx, page, errs } = await open({ hash: '#access-schemes-post', seed: { situation: { stage: 'post', deliveredOn: birth }, events: [] } });
+  const { ctx, page, errs } = await open({ hash: '#access-schemes-post', seed: { situation: { stage: 'post', deliveredOn: birth, care: 'govt' }, events: [] } });
   const fmt = (d) => page.evaluate((x) => window.Saathi.fmtD(window.Saathi.fromISO(x), { day: 'numeric', month: 'short', year: 'numeric' }), d);
   check('2 no "My claims" card before she tracks one', !(await page.$('.access-my')));
   check('2 a scheme Sakhi can\'t track has no button (JSSK)', !!(await page.$('#sch-jssk')) && !(await page.$('#sch-jssk [data-claim-start]')));

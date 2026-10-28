@@ -12,6 +12,12 @@
     plan_p: ['What is due in your pregnancy, from your dates. Tick what you have done; the dates in your MCP card and your logs count too.', 'आपकी तारीख़ों से, गर्भावस्था में कब क्या करना है। जो कर लिया, उसे टिक करें; MCP card और रिकॉर्ड की तारीख़ें भी गिनी जाती हैं।'],
     plan_now: ['Due now', 'अभी का'], plan_soon: ['Coming up', 'आगे'], plan_done_h: ['Done ({n})', 'हो गया ({n})'], plan_past_h: ['Not done yet ({n})', 'अभी नहीं हुआ ({n})'],
     plan_past_p: ['If you missed one, ask your ANM about it at your next visit.', 'कोई छूट गया हो, तो अगली जाँच में ANM से उसके बारे में पूछें।'],
+    /* Version 39.28: with a private gynaecologist, or before she says where she goes (S.care) */
+    plan_p_doc: ['What is due in your pregnancy, from your dates. You need at least 4 check-ups; your gynaecologist may see you more often. Tick each one as you have it.', 'आपकी तारीख़ों से, गर्भावस्था में कब क्या करना है। कम से कम 4 जाँचें ज़रूरी हैं; आपकी गायनेकोलॉजिस्ट ज़्यादा बार भी बुला सकती हैं। हर जाँच होने पर उसे टिक करें।'],
+    plan_past_p_doc: ['If you missed one, ask your gynaecologist about it at your next visit.', 'कोई छूट गया हो, तो अगली जाँच में अपनी गायनेकोलॉजिस्ट से उसके बारे में पूछें।'],
+    plan_rem_s_doc: ['At 10 am on the first day of each check-up and test.', 'हर जाँच और टेस्ट के पहले दिन सुबह 10 बजे।'],
+    plan_free_doc: ['Free at government hospitals: check-ups on the 9th (PMSMA), the birth (JSSK) and scheme money (PMMVY)', 'सरकारी अस्पतालों में मुफ़्त: 9 तारीख़ की जाँच (PMSMA), डिलीवरी (JSSK) और योजना का पैसा (PMMVY)'],
+    pi_anc1_doc: ['First check-up and tests', 'पहली जाँच और टेस्ट'], pi_asha_doc: ['Your doctor’s and ambulance numbers', 'डॉक्टर और एम्बुलेंस के नंबर'],
     plan_wk: ['Weeks {a} to {b}', 'हफ़्ता {a} से {b}'], plan_upto: ['Up to week {b}', 'हफ़्ता {b} तक'], plan_from: ['From week {a}, {d}', 'हफ़्ता {a} से, {d}'],
     plan_open: ['Open', 'खोलें'], plan_mark: ['Done', 'हो गया'], plan_marked: ['Done on {d}', '{d} को हो गया'], plan_undo: ['Undo', 'वापस लें'], plan_auto: ['Done: from your MCP card, logs or tools', 'हो गया: आपके MCP card, रिकॉर्ड या टूल से'],
     plan_td2: ['Second dose from {d}', 'दूसरी खुराक {d} से'],
@@ -922,7 +928,7 @@
   /* Home's setup card: the plan's reminders */
   function setup() {
     if (!S.canSave() || !S.cycle.isPregnant() || !weekInfo()) return null;
-    return { id: 'preg-plan', order: 20, title: T('setup_plan'), sub: T('plan_rem_s'), go: 'preg-plan', done: !!planOf(store()).rem };
+    return { id: 'preg-plan', order: 20, title: T('setup_plan'), sub: T(docR() ? 'plan_rem_s_doc' : 'plan_rem_s'), go: 'preg-plan', done: !!planOf(store()).rem };
   }
   /* ---------- My pregnancy plan (Version 28; docs/feature-research-2026-10-22.md, A1) ----------
      What is due from her weeks: the four check-ups and their free tests, Td, the scans, PMSMA on the 9th, the 75 g sugar test,
@@ -932,22 +938,40 @@
      "ask your ANM at your next visit". Only her dates decide what shows; nothing judges her entries. */
   const wkOf = (wi, isoD) => Math.floor(S.diffDays(S.fromISO(wi.basis), S.fromISO(isoD)) / 7);
   const ancIn = (st, wi, a, b) => st.mcp.anc.some((d) => { const w = wkOf(wi, d); return w >= a && w <= b; });
+  /* Version 39.28: where she gets care (S.care). With a private gynaecologist, or before she says where she goes, the plan
+     names her gynaecologist and her reports; registration, PMSMA, JSSK and scheme money (gov) move to one quiet line, and
+     stay in Explore. The tests and their weeks are the same for everyone. */
+  const docR = () => !!(S.care && S.care.gov && !S.care.gov());
+  const DOC_TIP = {
+    folic: { en: "Take folic acid 400 mcg once a day until the end of the third month. It protects the baby's brain and spine.", hi: 'तीसरे महीने के अंत तक रोज़ एक बार folic acid 400 mcg लें। यह बच्चे के दिमाग़ और रीढ़ की रक्षा करता है।' },
+    anc1: { en: 'At your first visit, ask your gynaecologist about these tests: haemoglobin, blood group, urine, sugar (the 75 g test), HIV, syphilis and hepatitis B. Keep your reports together in one file.', hi: 'पहली मुलाक़ात में अपनी गायनेकोलॉजिस्ट से इन जाँचों के बारे में पूछें: हीमोग्लोबिन, blood group, पेशाब, sugar (75 g वाली जाँच), HIV, syphilis और hepatitis B। अपनी सारी reports एक फ़ाइल में रखें।' },
+    td: { en: 'Td injection: the first dose early in pregnancy, the second 4 weeks later, at your check-ups. If you had two doses in a pregnancy in the last 3 years, one booster is enough.', hi: 'Td का टीका: पहली खुराक गर्भ के शुरू में, दूसरी 4 हफ़्ते बाद, आपकी जाँच के समय। अगर पिछले 3 साल में किसी गर्भ में दो खुराक ली थीं, तो एक booster काफ़ी है।' },
+    ifa: { en: 'Take the iron tablet your doctor prescribed. Take it with water or lemon water, about 2 hours after a meal, and not with tea or the calcium tablet.', hi: 'डॉक्टर की लिखी आयरन की गोली लें। इसे सादे पानी या नींबू पानी के साथ, खाने के लगभग 2 घंटे बाद लें, चाय या calcium की गोली के साथ नहीं।' },
+    ca: { en: 'Take the calcium your doctor prescribed, with meals. Never take calcium and iron together, or calcium on an empty stomach.', hi: 'डॉक्टर का लिखा calcium खाने के साथ लें। calcium और iron कभी एक साथ न लें, और calcium ख़ाली पेट न लें।' },
+    anc2: { en: 'Your second check-up with your gynaecologist is due between 14 and 26 weeks. Ask for your BP, weight, Hb and urine to be checked, and keep your reports together in one file.', hi: 'गायनेकोलॉजिस्ट से दूसरी जाँच 14 से 26 हफ़्ते के बीच होती है। BP, वज़न, Hb और पेशाब की जाँच कराएँ, और अपनी reports एक फ़ाइल में रखें।' },
+    scan2: { en: "The anomaly scan (level 2 scan) at 18–20 weeks looks at the baby's organs, spine and growth. Your gynaecologist will tell you where to book it.", hi: '18–20 हफ़्ते का anomaly scan (level 2 scan) बच्चे के अंग, रीढ़ और बढ़त देखता है। आपकी गायनेकोलॉजिस्ट बताएँगी कि यह कहाँ बुक करना है।' },
+    anc3: { en: 'Your third check-up is due between 28 and 34 weeks. Take your reports and these logs with you.', hi: 'तीसरी जाँच 28 से 34 हफ़्ते के बीच होती है। अपनी reports और यह रिकॉर्ड साथ ले जाएँ।' },
+    asha: { en: "Save your doctor's number and the ambulance numbers (102, 108) in your phone, and tell your family which hospital you will go to.", hi: 'अपनी डॉक्टर का नंबर और एम्बुलेंस के नंबर (102, 108) फ़ोन में सेव करें, और परिवार को बता दें कि किस अस्पताल जाना है।' },
+    anc4: { en: 'Your fourth check-up is due from 36 weeks. Pack your hospital bag: ID, reports, clothes, pads, and clothes and a cap for the baby.', hi: 'चौथी जाँच 36 हफ़्ते से होती है। अस्पताल का बैग तैयार रखें: पहचान पत्र, reports, कपड़े, pad, और बच्चे के कपड़े व टोपी।' }
+  };
+  const piName = (id) => (docR() && P['pi_' + id + '_doc'] ? P['pi_' + id + '_doc'] : P['pi_' + id]);   /* [en, hi] */
+  const piText = (id) => tx({ en: piName(id)[0], hi: piName(id)[1] });
   const PLAN = [
-    { id: 'reg', w: [0, 12], tip: 5, go: 'preg-mcp', auto: (st) => !!st.mcp.regd },
+    { id: 'reg', gov: true, w: [0, 12], tip: 5, go: 'preg-mcp', auto: (st) => !!st.mcp.regd },
     { id: 'folic', w: [0, 12], tip: 4 },
     { id: 'anc1', w: [0, 12], tip: 9, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 0, 13) },
     { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', ext: ['https://uwinselfregistration.mohfw.gov.in/login', 'plan_uwin'], auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
     { id: 'scan1', w: [11, 14], tip: 11 },
     /* Version 39.0: done once she has applied for PMMVY or JSY in her claims (access.js), so it stops showing as due */
-    { id: 'scheme', w: [5, 40], tip: 12, go: 'access-schemes-preg', auto: () => !!(S.access && S.access.claimed && ['pmmvy', 'jsy'].some((k) => ['applied', 'got', 'got2'].indexOf(S.access.claimed(k, (S.state.situation || {}).pregnantSince)) >= 0)) },
+    { id: 'scheme', gov: true, w: [5, 40], tip: 12, go: 'access-schemes-preg', auto: () => !!(S.access && S.access.claimed && ['pmmvy', 'jsy'].some((k) => ['applied', 'got', 'got2'].indexOf(S.access.claimed(k, (S.state.situation || {}).pregnantSince)) >= 0)) },
     { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) },
     { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs' },
     { id: 'anc2', w: [14, 26], tip: 16, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 14, 26) },
     { id: 'scan2', w: [18, 20], tip: 18, rem: true },   /* the verified tip says 18–20 weeks */
-    { id: 'pmsma', w: [13, 40], tip: 23, pmsma: true, ext: ['https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/', 'plan_pmsma_find'] },
+    { id: 'pmsma', gov: true, w: [13, 40], tip: 23, pmsma: true, ext: ['https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/', 'plan_pmsma_find'] },
     { id: 'ogtt', w: [24, 28], tip: 24, go: 'preg-logs', rem: true, auto: (st, wi) => st.sug.some((x) => x.k === 'dipsi' && wkOf(wi, x.d) >= 24 && wkOf(wi, x.d) <= 28) },
     { id: 'anc3', w: [28, 34], tip: 27, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 28, 34) },
-    { id: 'jssk', w: [28, 40], tip: 29, go: 'access-schemes-preg' },
+    { id: 'jssk', gov: true, w: [28, 40], tip: 29, go: 'access-schemes-preg' },
     { id: 'birth', w: [32, 40], tip: 33, go: 'pregtools-bag' },
     { id: 'asha', w: [32, 40], tip: 34, go: 'asha', auto: () => !!(S.asha && S.asha.saved()) },
     { id: 'anc4', w: [36, 41], tip: 36, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 36, 42) },
@@ -960,7 +984,7 @@
   const ninths = (wi) => { const out = []; const td = S.today(); let x = new Date(td.getFullYear(), td.getMonth(), 9); if (x < td) x = new Date(td.getFullYear(), td.getMonth() + 1, 9); const end = wi.due; while (x <= end && out.length < 8) { if (wkOf(wi, S.toISO(x)) >= 13) out.push(new Date(x)); x = new Date(x.getFullYear(), x.getMonth() + 1, 9); } return out; };
   function planStatus(st, wi) {
     const pl = planOf(st);
-    return PLAN.filter((it) => !it.only || wi.w >= it.w[0]).map((it) => {
+    return PLAN.filter((it) => (!it.only || wi.w >= it.w[0]) && !(it.gov && docR())).map((it) => {
       const auto = !!(it.auto && safeAuto(it, st, wi)); const tick = pl.done[it.id];
       let code = 'soon';
       if (it.pmsma) code = wi.w < it.w[0] ? 'soon' : (wi.w <= it.w[1] ? 'now' : 'past');
@@ -981,20 +1005,22 @@
       if (x.it.pmsma) { if (x.code !== 'past') { const ds = ninths(wi).map(S.toISO); if (ds.length) S.reminders.upsert({ id: 'preg-plan-pmsma', mod: 'preg', title: { en: P.plan_rem_pmsma[0], hi: P.plan_rem_pmsma[1] }, kind: 'visit', dates: ds, start: null, every: null, weekdays: null, time: '09:00', on: true }); } return; }
       if (!x.it.rem || x.code === 'done' || x.code === 'past') return;
       const start = dayOfWeek(wi, x.it.w[0]); const when = start > td ? start : null; if (!when) return;   /* already due: no alarm, the plan and Home show it */
-      S.reminders.upsert({ id: 'preg-plan-' + x.it.id, mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', P['pi_' + x.it.id][0]), hi: P.plan_rem_now[1].replace('{x}', P['pi_' + x.it.id][1]) }, kind: 'checkup', dates: [S.toISO(when)], start: null, every: null, weekdays: null, time: '10:00', on: true });
+      S.reminders.upsert({ id: 'preg-plan-' + x.it.id, mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', piName(x.it.id)[0]), hi: P.plan_rem_now[1].replace('{x}', piName(x.it.id)[1]) }, kind: 'checkup', dates: [S.toISO(when)], start: null, every: null, weekdays: null, time: '10:00', on: true });
     });
     /* Td: the second dose four weeks after the first */
     if (st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb) { const d2 = S.addDays(S.fromISO(st.mcp.td1), 28); if (d2 > td) S.reminders.upsert({ id: 'preg-plan-td2', mod: 'preg', title: { en: P.plan_rem_now[0].replace('{x}', P.pi_td[0]), hi: P.plan_rem_now[1].replace('{x}', P.pi_td[1]) }, kind: 'checkup', dates: [S.toISO(d2)], start: null, every: null, weekdays: null, time: '10:00', on: true }); }
   }
   function renderPlan(v) {
-    const wi = weekInfo(); const head = S.backRow(T('plan_h'), backTo(), false) + '<p class="small">' + esc(T('plan_p')) + '</p>' + (S.canSave() ? '<button type="button" class="linkbtn pg-dates" data-go="me-health">' + esc(T('dates_b')) + '</button>' : '');   /* review PLACES-01: her scan and period dates */
+    const wi = weekInfo(); const dr = docR(); const head = S.backRow(T('plan_h'), backTo(), false) + '<p class="small">' + esc(T(dr ? 'plan_p_doc' : 'plan_p')) + '</p>' + (S.canSave() ? '<button type="button" class="linkbtn pg-dates" data-go="me-health">' + esc(T('dates_b')) + '</button>' : '');   /* review PLACES-01: her scan and period dates */
     if (!S.canSave()) { v.innerHTML = head + S.needDiary(); S.wire(v); return; }
     if (!wi) { v.innerHTML = head + setCard(); S.wire(v); wireSetCard(v); return; }
     const st = store(); const pl = planOf(st); const rows = planStatus(st, wi);
-    const tipOf = (it) => (W[it.tip] && W[it.tip].tip ? tx(W[it.tip].tip) : '');
+    const tipOf = (it) => (dr && DOC_TIP[it.id] ? tx(DOC_TIP[it.id]) : (W[it.tip] && W[it.tip].tip ? tx(W[it.tip].tip) : ''));
+    /* the doctor route: no MCP card or ASHA page to open, and no U-WIN booking (Td is given at her check-ups) */
+    const goOk = (it) => !!it.go && linkOk(it.go) && !(dr && (it.go === 'preg-mcp' || it.go === 'asha'));
     const win = (it) => (it.w[0] ? TF('plan_wk', { a: it.w[0], b: it.w[1] }) : TF('plan_upto', { b: it.w[1] }));
     const card = (x) => {
-      const it = x.it; const name = T('pi_' + it.id); let extra = '';
+      const it = x.it; const name = piText(it.id); let extra = '';
       if (it.pmsma) { const n9 = ninths(wi)[0]; extra = (n9 ? '<p class="small" style="color:var(--fg);font-weight:600">' + esc(TF('plan_pmsma_next', { d: S.fmtD(n9, { weekday: 'short', day: 'numeric', month: 'short' }) })) + '</p>' : '') + (pl.pmsma.length ? '<p class="small">' + esc(TF('plan_pmsma_n', { n: pl.pmsma.length })) + '</p>' : ''); }
       if (it.id === 'scheme' && x.code !== 'past') extra += '<p class="small">' + esc(T('plan_kilkari')) + '</p>';   /* Version 39.7 (journey audit P3-09): Kilkari, in the schemes guide's words, corrected at the official source */
       if (it.id === 'td' && st.mcp.td1 && !st.mcp.td2 && !st.mcp.tdb && x.code !== 'done') extra += '<p class="small" style="color:var(--fg)">' + esc(TF('plan_td2', { d: fdy(S.toISO(S.addDays(S.fromISO(st.mcp.td1), 28))) })) + '</p>';
@@ -1003,8 +1029,8 @@
       if (it.pmsma && x.code === 'now') btns.push('<button type="button" class="btn sm' + (pl.pmsma.indexOf(todayISO()) >= 0 ? ' on' : '') + '" data-pg-pmsma="1">' + esc(T('plan_pmsma_went')) + '</button>');
       else if (!it.pmsma && !x.auto) btns.push(x.tick ? '<button type="button" class="btn sm" data-pg-plan-undo="' + it.id + '">' + esc(T('plan_undo')) + '</button>' : '<button type="button" class="btn sm' + (x.code === 'now' ? ' primary' : '') + '" data-pg-plan="' + it.id + '">' + esc(T('plan_mark')) + '</button>');
       /* an official site, opened outside Sakhi (Version 29) */
-      if (it.ext && x.code !== 'done' && x.code !== 'past') btns.push('<a class="btn sm" href="' + esc(it.ext[0]) + '" target="_blank" rel="noopener">' + esc(T(it.ext[1])) + '</a>');
-      if (it.go && linkOk(it.go)) btns.push('<button type="button" class="btn sm" data-go="' + esc(it.go) + '">' + esc(GO_LABEL[it.go] ? GO_LABEL[it.go]() : T('plan_open')) + '</button>');
+      if (it.ext && !(dr && it.id === 'td') && x.code !== 'done' && x.code !== 'past') btns.push('<a class="btn sm" href="' + esc(it.ext[0]) + '" target="_blank" rel="noopener">' + esc(T(it.ext[1])) + '</a>');
+      if (goOk(it)) btns.push('<button type="button" class="btn sm" data-go="' + esc(it.go) + '">' + esc(GO_LABEL[it.go] ? GO_LABEL[it.go]() : T('plan_open')) + '</button>');
       return '<div class="card pg-plan" data-plan="' + it.id + '"><div class="row spread" style="align-items:flex-start;gap:8px"><h3 style="margin:0;min-width:0">' + esc(name) + '</h3><span class="pill ' + (x.code === 'now' ? 'accent' : (x.code === 'done' ? 'ok' : 'muted')) + '">' + esc(x.code === 'soon' ? TF('plan_from', { a: it.w[0], d: S.fmtD(dayOfWeek(wi, it.w[0]), { day: 'numeric', month: 'short' }) }) : win(it)) + '</span></div>' +
         '<p class="small" style="color:var(--fg)">' + esc(tipOf(it)) + '</p>' + extra + doneLine + (btns.length ? '<div class="row wrap">' + btns.join('') + '</div>' : '') + '</div>';
     };
@@ -1013,9 +1039,10 @@
       '<div class="card"><div class="eyebrow">' + esc(T('hub_h')) + '</div><h2>' + esc(TF('hub_now', { n: wi.w })) + '</h2><p class="small">' + esc(TF('hub_due', { d: S.fmtD(wi.due, { day: 'numeric', month: 'long', year: 'numeric' }) })) + '</p></div>' +
       '<h2>' + esc(T('plan_now')) + '</h2>' + (now.length ? now.map(card).join('') : '<div class="card soft"><p class="small">' + esc(T('plan_all_now')) + '</p></div>') +
       (soon.length ? '<h2>' + esc(T('plan_soon')) + '</h2>' + soon.map(card).join('') : '') +
+      (dr && S.care.altRow && linkOk('access-schemes-preg') ? S.care.altRow('access-schemes-preg', T('plan_free_doc')) : '') +
       (done.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_done_h', { n: done.length })) + '</summary><div class="stack" style="margin-top:10px">' + done.map(card).join('') + '</div></details>' : '') +
-      (past.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_past_h', { n: past.length })) + '</summary><p class="small">' + esc(T('plan_past_p')) + '</p><div class="stack" style="margin-top:10px">' + past.map(card).join('') + '</div></details>' : '') +
-      '<div class="list"><label class="item"><span class="body"><strong>' + esc(T('plan_rem')) + '</strong><span>' + esc(T('plan_rem_s')) + '</span></span><input type="checkbox" id="pg-plan-rem"' + (pl.rem ? ' checked' : '') + '></label></div>' +
+      (past.length ? '<details class="pg-acc"><summary>' + esc(TF('plan_past_h', { n: past.length })) + '</summary><p class="small">' + esc(T(dr ? 'plan_past_p_doc' : 'plan_past_p')) + '</p><div class="stack" style="margin-top:10px">' + past.map(card).join('') + '</div></details>' : '') +
+      '<div class="list"><label class="item"><span class="body"><strong>' + esc(T('plan_rem')) + '</strong><span>' + esc(T(dr ? 'plan_rem_s_doc' : 'plan_rem_s')) + '</span></span><input type="checkbox" id="pg-plan-rem"' + (pl.rem ? ' checked' : '') + '></label></div>' +
       urgentAction() +
       /* Version 39.2: the old check-up visits page now opens this one, so its "The pregnancy ended" lives here (core's words) */
       (S.pregEnded ? '<details><summary>' + esc(t('after_change')) + '</summary><div class="card" style="margin-top:8px"><button type="button" class="btn" id="loss">' + esc(t('loss')) + '</button><p class="small" id="loss-p" hidden>' + esc(t('loss_p')) + '</p></div></details>' : '');
@@ -1028,7 +1055,7 @@
     const rm = v.querySelector('#pg-plan-rem'); if (rm) rm.addEventListener('change', () => { pl.rem = rm.checked; redo(); });
   }
   /* what is due now, by name, for Home and the summaries */
-  const dueNames = () => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => T('pi_' + x.it.id)); };
+  const dueNames = () => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => piText(x.it.id)); };
   /* Version 38: one pregnancy plan. The companion's pregnancy plan (mods/plan.js, pack 'preg') takes what is due now from here,
      and while it runs Today's "Due now" row is that plan's first step instead of a row of its own (planOwns). */
   const planOwns = () => !!(S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'preg');
@@ -1066,7 +1093,7 @@
     markedOn: (iso) => { if (!S.canSave()) return false; const st = store(); const pl = planOf(st); const ks = Object.keys(pl.done).filter((k) => pl.done[k] === iso); const wi = weekInfo(); if (!ks.length || !wi) return false;
       if (iso === S.toISO(S.today())) return !planStatus(st, wi).some((x) => x.code === 'now' && !x.it.pmsma);   /* review FIXES-05: PMSMA is 'now' for months, as due() knows */
       const wAt = wkOf(wi, iso);   /* review FIXES-05: that day's own pregnancy week */ return ks.some((k) => { const it = PLAN.find((x) => x.id === k); return !!it && wAt >= it.w[0] && wAt <= it.w[1]; }); },
-    due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: T('pi_' + x.it.id) })); } };
+    due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: piText(x.it.id) })); } };
 
   function summary() {
     const st = store(); const wi = weekInfo(); const L = [];

@@ -4652,3 +4652,106 @@ results, carryon, daily, winddown, follow, insights and cyclefirst, plus the re-
 
 **Wording:** section 19.27 of the review. New lines wait for the doctor: "Pain today?", "Days with hot flushes", the meter's
 promise, and the findings' "{k} of your last {m}".
+
+## 71. Version 39.28: your doctor first
+
+Mohit, 28 Oct: "I want to not always keep pushing for Asha/ANM because women in tier 1 and 2 will be consulting a private
+gynaecologist". Mockup: claude.ai/artifact/TyUgHfhf9GNmpkEsMkMnsu ("go ahead and build it"). The government and ASHA wording
+stays the default only for a woman who says that's where she goes. Before she answers, and for a private doctor or "Nowhere
+yet", Sakhi says "your doctor", and the free government options become one quiet line (they stay in Explore). Emergency
+numbers, danger signs, the tests and their weeks, and every dose are the same for everyone.
+
+**Her answer** (`state.situation.care`):
+- `'private'` (a private gynaecologist or doctor), `'govt'` (a government hospital or health centre), `'asha'` (her ASHA or
+  ANM) or `'none'` (nowhere yet). No key means she hasn't answered.
+- The government route is `govt` or `asha`. Everything else (unanswered, `private`, `none`) reads "your doctor"; `none` is
+  "your doctor" with the government option one tap away, which is what "Sakhi shows you both kinds" promises.
+- **Joining** (step 5, between Details and "Does anyone else use this phone?"; the share step is now 6):
+  - "Where do you usually go for women's health?", with 4 answers, each with its line. One tap on an answer goes on.
+  - Continue goes on without an answer. Back returns to Details. The progress bar stays on Details.
+  - "You can change this any time in Me."
+  - `finishOnboard` saves `sit.care`; the update flow (`join-update`) doesn't ask.
+  - `test/join.mjs` takes `care` (without it, Continue) and `stop: 'care'`.
+- **Me:** "Where I get care" (`#me-care`), after My health, shows her answer or "Not chosen yet".
+  - It opens a sheet (`careSheet`): the same question, the 4 answers, and "This changes where Sakhi sends you for check-ups,
+    tests and tablets. Emergency numbers stay the same for everyone."
+  - Done saves it; closing the sheet keeps her old answer.
+
+**For modules** (`S.care`, beside Care near me's `on` and `load`):
+- `route()` gives her answer or null; `gov()` is true for `govt` and `asha`; `asha()` is true for `asha` only.
+- `altRow(go, label)` is the free government option as one quiet row (`.item.care-alt`, a dashed outline), opening `go`.
+- A module reads the doctor route as `!!(S.care && S.care.gov && !S.care.gov())`, so an older core keeps the government words.
+- A line with doctor-route words carries them as `doc` beside its `en` and `hi` (iron's help lines, the findings' lines).
+
+**Iron tablets** (`mods/iron.js`), on the doctor route:
+- Her doctor's dose comes first and is suggested away from pregnancy and the 6 months after a birth: "As my doctor
+  prescribed". The weekly tablet comes from the ASHA or ANM, so only the government route suggests it at 20 to 49.
+- "Your iron tablet protects you…" (not "The red iron tablet"); the pregnancy plan without "red"; the weekly tablet "is free
+  at government health centres under Anemia Mukt Bharat"; her doctor's dose "as often as they said".
+- **"How often did your doctor say?"** (her doctor's dose, on every route): Every day, Every other day, or Once a week
+  (`d.every`: 1, 2 or 7).
+  - Once a week asks the day and works as the weekly tablet does.
+  - Every other day: a tablet yesterday makes today a day off ("No tablet today. Your next one is tomorrow.", and nothing on
+    Today). The reminder rings every 2 days from her last tablet (`every: 2`, starting at `lastTick`).
+  - She can change it on the started plan; Once a week then keeps today's weekday.
+  - The doctor's summary names "As my doctor prescribed" and the rhythm.
+- The strip running low: "Get your next strip before it runs out, from your chemist or your doctor." No ANM stock line.
+- "When to get help" and "If it upsets you" name her doctor (no ANM or ASHA). No "My ASHA or ANM" row unless she saved her
+  ASHA's number.
+- One quiet line, "Free iron tablets at government health centres (Anemia Mukt Bharat)", opens the schemes for her stage
+  (pregnancy, after the birth, or periods). The footer says only "Your ticks stay on this phone."
+
+**Pregnancy check-ups** (`mods/preg.js`), on the doctor route:
+- "You need at least 4 check-ups; your gynaecologist may see you more often. Tick each one as you have it."
+- Registration, scheme money, PMSMA and JSSK (`gov: true`) leave the plan, and so leave Home's "Due now", My plan's
+  `S.preg.plan.due()` and the reminders. One quiet line takes their place: "Free at government hospitals: check-ups on the
+  9th (PMSMA), the birth (JSSK) and scheme money (PMMVY)", to the pregnancy schemes.
+- Her own tips (`DOC_TIP`): her gynaecologist and her reports in one file for the check-ups; the anomaly scan "Your
+  gynaecologist will tell you where to book it"; iron and calcium "your doctor prescribed"; Td "at your check-ups"; "Your
+  doctor's and ambulance numbers"; the hospital bag without the MCP card; folic acid without "Your ANM… gives it free".
+- No "My MCP card" or "My ASHA" buttons and no U-WIN booking. "First check-up and tests" (without "free").
+- A missed one: "ask your gynaecologist". The reminders line: "At 10 am on the first day of each check-up and test."
+
+**After the birth** (`mods/post.js`), on the doctor route:
+- The after-birth page has no "Next ASHA visit" row.
+- Check-ups and baby's vaccines:
+  - "Check-ups for you and your baby…";
+  - her own check: "see your gynaecologist for a check for yourself, even if you feel well";
+  - vaccines: "Your baby's doctor gives each vaccine and writes it on the vaccination card", "Missed a dose? Ask your
+    baby's doctor what to give, and when.", the birth doses "check the vaccination card", and one line "Vaccines in the
+    national schedule are free at government centres (Universal Immunisation Programme).";
+  - iron and calcium "your doctor prescribed, for as long as they said", "Ask your doctor for a haemoglobin (Hb) test", and
+    no JSSK note.
+- The ASHA's visit days fold behind "Does an ASHA visit you? See her visit days" (`.pst-asha-q`), after her own check.
+- The danger signs and their call buttons are unchanged.
+
+**Help and the doctor screen** (core):
+- "See a doctor" reads "A call with a Qura doctor, or a free government doctor" (the government route keeps "A free
+  government doctor, or a call with a Qura doctor").
+- "My ASHA" shows in Help for the government route, or when she saved her ASHA's number.
+- On the doctor screen, the free government doctor comes after Qura's ways, as it already did with Qura's WhatsApp number
+  (Version 32's order stays for the government route).
+- "Call 112 now" is first for everyone.
+
+**My plan** (`mods/plan.js`), on the doctor route: a Qura doctor comes before the free government doctor in her care team,
+on the end page's card ("Show my doctor", a Qura doctor, then the free government doctor), in the plan's doctor row and in
+the month card (`byRoute`). No words change.
+
+**What your diary shows** (`mods/explain.js`), on the doctor route:
+- Long or heavy periods and a low Hb: "Ask your doctor if you need iron tablets. They are also free at government health
+  centres."
+- A late period: "Any chemist sells one; your ASHA gives Nishchay kits free."
+
+**Not in this version:** the Learn library (`content.json`) and the other modules' ASHA and ANM lines (access, contra, asha,
+screen, pregtest, teen, pregtools, ttc, cond, intimate). The government services in Explore are unchanged for everyone.
+
+**Tests:** `test/care.mjs`. Updated:
+- me (the row order) and results (the end page's card order);
+- companions, plans, fieldtest, knowledge (Kilkari) and protect (PMMVY), seeded on the government route (`care: 'govt'`);
+- goals (registration is a government-route item);
+- the suites that join by hand: firstday, firstday-walk, joining, joindates, companion, protect, journey-video and
+  taps/join-run (one more tap while joining).
+The golden plans were re-recorded. Only two things changed: the pregnancy plan's "Due now" line (no registration or scheme
+money), and the order of the doctors on My plan.
+
+**Wording:** section 19.28 of the review. Every doctor-route line waits for the doctor.
