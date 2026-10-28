@@ -507,7 +507,7 @@
     const hbCard = '<div class="card"><h2>' + h({ en: 'Your Hb results', hi: 'आपके Hb नतीजे' }) + '</h2>' +
       (!can ? P({ en: 'Hb results you save on the lab results page show here.', hi: 'Lab results वाले पन्ने पर सेव किए Hb नतीजे यहाँ दिखते हैं।' }, 'small') :
         (hbs.length ? '<div class="list">' + hbs.map((e) => '<div class="item quiet"><span class="body"><strong class="cond-tnum">' + esc(num(e.v) + ' ' + e.u) + ' · ' + esc(fmtL(e.d)) + '</strong><span>' + esc(t('cond_lab_range_lbl')) + ': ' + esc(rangeText(e)) + '</span>' + (outside(e) ? '<span class="pill accent cond-flag">' + esc(t('cond_lab_out')) + '</span>' : '') + '</span></div>').join('') + '</div>' :
-          P({ en: 'No Hb result saved yet. Ask your ANM or the Ayushman Arogya Mandir for a free Hb test.', hi: 'अभी कोई Hb नतीजा सेव नहीं है। मुफ़्त Hb जाँच के लिए अपनी ANM या आयुष्मान आरोग्य मंदिर से कहें।' }, 'small')) +
+          P({ en: 'No Hb result saved yet. Ask your ANM or the Ayushman Arogya Mandir for a free Hb test.', hi: 'अभी कोई Hb नतीजा सेव नहीं है। मुफ़्त Hb जाँच के लिए अपनी ANM या आयुष्मान आरोग्य मंदिर से कहें।', doc: { en: 'No Hb result saved yet. Ask your doctor for an Hb test; it is also free at the Ayushman Arogya Mandir.', hi: 'अभी कोई Hb नतीजा सेव नहीं है। डॉक्टर से Hb जाँच के लिए कहें; यह आयुष्मान आरोग्य मंदिर में मुफ़्त भी होती है।' } }, 'small')) +
         '<button type="button" class="btn sm" style="align-self:flex-start" id="cond-addhb">' + h({ en: 'Add an Hb result', hi: 'Hb नतीजा जोड़ें' }) + '</button>') + '</div>';
 
     const about = '<div class="card"><h2>' + h({ en: 'What anaemia is', hi: 'ख़ून की कमी (एनीमिया) क्या है' }) + '</h2>' +
@@ -525,7 +525,7 @@
         { en: 'An Hb test once a year. Ask at your Ayushman Arogya Mandir, a health camp, or your ANM.', hi: 'साल में एक बार Hb जाँच। आयुष्मान आरोग्य मंदिर, health camp, या अपनी ANM से पूछें।' },
         { en: 'A deworming tablet (albendazole) twice a year at the Anganwadi centre.', hi: 'साल में दो बार पेट के कीड़ों की गोली (albendazole), आँगनवाड़ी केंद्र पर।' },
         { en: 'Planning a pregnancy? Switch to a daily folic acid tablet (400 mcg) from before pregnancy until 12 weeks. Pregnant or breastfeeding women get a different schedule at their check-ups.', hi: 'गर्भ की योजना है? गर्भ से पहले से 12 हफ़्ते तक रोज़ फ़ोलिक एसिड की गोली (400 mcg) लें। गर्भवती और दूध पिलाने वाली महिलाओं को जाँच के समय अलग schedule मिलता है।' }]) +
-      P({ en: 'If your Hb is low, the doctor or ANM may give the red tablet daily, often for about 3 months, and test again. Your doctor decides.', hi: 'अगर Hb कम है, तो डॉक्टर या ANM लाल गोली रोज़ दे सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। यह डॉक्टर तय करती हैं।' }, 'small') +
+      P({ en: 'If your Hb is low, the doctor or ANM may give the red tablet daily, often for about 3 months, and test again. Your doctor decides.', hi: 'अगर Hb कम है, तो डॉक्टर या ANM लाल गोली रोज़ दे सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। यह डॉक्टर तय करती हैं।', doc: { en: 'If your Hb is low, your doctor may prescribe iron, often for about 3 months, and test again. Your doctor decides.', hi: 'अगर Hb कम है, तो डॉक्टर आयरन की गोली लिख सकती हैं, अक्सर लगभग 3 महीने, और फिर जाँच। यह डॉक्टर तय करती हैं।' } }, 'small') +
       sub({ en: 'Taking the tablet', hi: 'गोली लेते समय' }) +
       ul([{ en: 'If it makes you feel sick, take it after a meal or at bedtime.', hi: 'जी मिचलाए तो खाने के बाद या सोते समय लें।' },
         { en: 'Black stools are normal with iron and not harmful.', hi: 'आयरन से पखाना काला होना सामान्य है, नुक़सान नहीं करता।' },

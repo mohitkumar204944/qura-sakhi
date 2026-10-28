@@ -8,6 +8,7 @@
   if (!S) return;
   const t = S.t, esc = S.esc, tx = S.tx;
   const L = (en, hi) => ({ en: en, hi: hi });
+  const LD = (en, hi, den, dhi) => ({ en: en, hi: hi, doc: { en: den, hi: dhi } });   /* Version 39.29: with its doctor-route words */
   /* who: the person it's for. st: the stages it fits best (first in her list). */
   const C = [
     { id: 'periods', who: 'family_w_all', st: ['cycle', 'ttc', 'meno', 'browse'],
@@ -29,7 +30,7 @@
     { id: 'iron', who: 'family_w_all', st: ['preg', 'post'],
       h: { en: 'Why her iron tablets matter', hi: 'आयरन की गोलियाँ क्यों ज़रूरी हैं' },
       p: { en: 'More than half of women in India are anaemic, usually because of low iron. It leaves them tired, breathless and pale, and in pregnancy it can harm both mother and baby. Iron tablets are free from the ASHA or a government hospital. Help her take them the way the ASHA or doctor says, with water or nimbu pani, not with tea or milk. Green leafy vegetables, chana, rajma, eggs or meat help too. Black stools are normal with iron tablets.',
-        hi: 'भारत में आधी से ज़्यादा औरतों में ख़ून की कमी (एनीमिया) है, ज़्यादातर आयरन की कमी से। इससे थकान, साँस फूलना और चेहरा पीला पड़ना होता है, और प्रेग्नेंसी में यह माँ और बच्चे दोनों के लिए नुक़सानदेह हो सकता है। आयरन की गोलियाँ ASHA या सरकारी अस्पताल से मुफ़्त मिलती हैं। उसे गोलियाँ वैसे ही लेने में मदद करें जैसे ASHA या डॉक्टर बताएँ, पानी या नींबू पानी के साथ, चाय या दूध के साथ नहीं। हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडे या मीट भी मदद करते हैं। आयरन की गोली से मल काला होना आम है।' } },
+        hi: 'भारत में आधी से ज़्यादा औरतों में ख़ून की कमी (एनीमिया) है, ज़्यादातर आयरन की कमी से। इससे थकान, साँस फूलना और चेहरा पीला पड़ना होता है, और प्रेग्नेंसी में यह माँ और बच्चे दोनों के लिए नुक़सानदेह हो सकता है। आयरन की गोलियाँ ASHA या सरकारी अस्पताल से मुफ़्त मिलती हैं। उसे गोलियाँ वैसे ही लेने में मदद करें जैसे ASHA या डॉक्टर बताएँ, पानी या नींबू पानी के साथ, चाय या दूध के साथ नहीं। हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडे या मीट भी मदद करते हैं। आयरन की गोली से मल काला होना आम है।', doc: { en: 'More than half of women in India are anaemic, usually because of low iron. It leaves them tired, breathless and pale, and in pregnancy it can harm both mother and baby. Her doctor can prescribe iron tablets; they are also free from the ASHA or a government hospital. Help her take them the way the doctor says, with water or nimbu pani, not with tea or milk. Green leafy vegetables, chana, rajma, eggs or meat help too. Black stools are normal with iron tablets.', hi: 'भारत में आधी से ज़्यादा औरतों में ख़ून की कमी (एनीमिया) है, ज़्यादातर आयरन की कमी से। इससे थकान, साँस फूलना और चेहरा पीला पड़ना होता है, और प्रेग्नेंसी में यह माँ और बच्चे दोनों के लिए नुक़सानदेह हो सकता है। डॉक्टर आयरन की गोलियाँ लिख सकती हैं; ये ASHA या सरकारी अस्पताल से मुफ़्त भी मिलती हैं। उसे गोलियाँ वैसे ही लेने में मदद करें जैसे डॉक्टर बताएँ, पानी या नींबू पानी के साथ, चाय या दूध के साथ नहीं। हरी पत्तेदार सब्ज़ियाँ, चना, राजमा, अंडे या मीट भी मदद करते हैं। आयरन की गोली से मल काला होना आम है।' } } },
     { id: 'checkups', who: 'family_w_all', st: ['preg'],
       h: { en: 'Pregnancy check-ups', hi: 'प्रेग्नेंसी की जाँचें' },
       get p() { const d = danger(); return { en: 'A pregnant woman needs at least four check-ups. They\'re free at government hospitals, PHCs and Ayushman Arogya Mandirs, and the ASHA can help her get there. Each visit checks her BP, weight, blood, urine and the baby\'s growth, so please go with her and help with the travel. ' + d.en,
@@ -51,7 +52,7 @@
      to go to hospital at once. She sends it herself; nothing goes on its own. */
   const TRI = [
     [L('She may feel sick and very tired. Let her rest, keep dry snacks handy, and take over the cooking when smells bother her.', 'उन्हें जी मिचलाना और बहुत थकान हो सकती है। उन्हें आराम करने दें, सूखे स्नैक्स पास रखें, और खाने की गंध से परेशानी हो तो खाना आप बना दें।'),
-      L('Help her register the pregnancy and get the first check-up at the PHC. The ASHA can help.', 'प्रेग्नेंसी का रजिस्ट्रेशन और पहली जाँच PHC पर करवाने में मदद करें। ASHA मदद कर सकती है।'),
+      LD('Help her register the pregnancy and get the first check-up at the PHC. The ASHA can help.', 'प्रेग्नेंसी का रजिस्ट्रेशन और पहली जाँच PHC पर करवाने में मदद करें। ASHA मदद कर सकती है।', 'Help her get her first check-up with a gynaecologist early. Registering with the ASHA or at the PHC is free too.', 'जल्दी गायनेकोलॉजिस्ट से पहली जाँच करवाने में उसकी मदद करें। ASHA या PHC पर रजिस्ट्रेशन भी मुफ़्त है।'),
       L('Make sure she takes the tablets the doctor or ASHA gives, every day.', 'डॉक्टर या ASHA की दी हुई गोलियाँ वे रोज़ लें, यह ध्यान रखें।'),
       L('No smoking or alcohol near her.', 'उनके पास धूम्रपान या शराब नहीं।')],
     [L('Go with her to her check-ups. Each one checks her BP, blood and the baby’s growth.', 'उनकी जाँचों में साथ जाएँ। हर जाँच में BP, ख़ून और बच्चे की बढ़त देखी जाती है।'),
@@ -59,7 +60,7 @@
       L('Let her rest on her side, and do the heavy lifting yourself.', 'उन्हें करवट लेकर आराम करने दें, और भारी सामान आप उठाएँ।'),
       L('A little more food every day: one more meal or snack with dal, milk or curd, fruit and vegetables.', 'रोज़ थोड़ा ज़्यादा खाना: दाल, दूध या दही, फल और सब्ज़ी के साथ एक और खाना या नाश्ता।')],
     [L('Pack the hospital bag together and plan how you will reach the hospital, day or night. The 102 and 108 ambulances are free.', 'अस्पताल का बैग साथ मिलकर तैयार करें और दिन हो या रात, अस्पताल कैसे पहुँचेंगे, यह तय कर लें। 102 और 108 एम्बुलेंस मुफ़्त हैं।'),
-      L('Keep her MCP card and papers in one place.', 'उनका MCP कार्ड और काग़ज़ एक जगह रखें।'),
+      LD('Keep her MCP card and papers in one place.', 'उनका MCP कार्ड और काग़ज़ एक जगह रखें।', 'Keep her reports and papers in one place.', 'उनकी reports और काग़ज़ एक जगह रखें।'),
       L('Help her sleep: an extra pillow, fewer chores, a quiet room.', 'उन्हें सोने में मदद करें: एक और तकिया, कम काम, शांत कमरा।'),
       L('If the baby moves less than usual, take her to hospital the same day.', 'अगर बच्चा रोज़ से कम हिले, तो उसी दिन अस्पताल ले जाएँ।')]
   ];

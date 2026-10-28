@@ -4755,3 +4755,71 @@ The golden plans were re-recorded. Only two things changed: the pregnancy plan's
 money), and the order of the doctors on My plan.
 
 **Wording:** section 19.28 of the review. Every doctor-route line waits for the doctor.
+
+## 72. Version 39.29: the doctor route everywhere
+
+Mohit, 28 Oct: "now do the Learn library and other modules too". Version 39.28 (section 71) routed the most-used screens. This
+version carries the same rule through the Learn library and every other module. Before she answers, and with a private doctor
+or "Nowhere yet", she reads her doctor (or the chemist, for supplies) first, and the free government option second.
+
+**One switch in core** (`docOn()`: `situation.care` is neither `govt` nor `asha`):
+- `t(key)` reads `key_doc` when it exists (checked in English first, so the check is cheap). A module adds a doctor-route
+  line by adding `<key>_doc` beside `<key>`, in English and Hindi. No call site changes.
+- `tx(o)` reads `o.doc` when the line carries one: `{ en, hi, doc: { en, hi } }`. Modules with an `L(en, hi)` helper add
+  `LD(en, hi, docEn, docHi)` beside it.
+- The Learn library: an article's `doc` holds its doctor-route paragraphs beside the reviewed ones, `doc["<field>_<lang>"]` (a
+  string for title, summary and qura_line; `{ "<index>": "<text>" }` for body and see_doctor). Core's `L(a, k)` lays them over
+  the reviewed paragraphs.
+- A key that only ends in "_doc" (hs_doc, "See a doctor") has no base key, so it never switches.
+- Version 39.28's explicit choices (iron, preg, post, explain) still work. preg's check-up tips moved onto the week tips'
+  `doc`, so the week pages and the check-ups list read one text.
+
+**What changed** (the full list, English and Hindi: `docs/doctor-route-review-2026-10-28.md`):
+- **Learn** (73 paragraphs in 30 guides): lines that sent her first, or only, to the ASHA, ANM or PHC now name her doctor or
+  gynaecologist (or a chemist) first, keeping the free option. Examples:
+  - "Ask your doctor for a haemoglobin test; it is also free at the PHC";
+  - "Your doctor decides these doses";
+  - "Your 6-week check with your gynaecologist";
+  - "Take your reports";
+  - "Not sure if it counts: call your doctor";
+  - "If an ASHA visits you, she comes on days 3, 7, 14, 21, 28 and 42".
+- **Contraception:** your doctor checks a method is safe; "see your doctor" when an injection or a Copper-T is overdue or
+  LAM ends; the emergency pill "any chemist sells it without a prescription"; missed pills "ask your doctor".
+- **Pregnancy:**
+  - "Your doctor's count wins";
+  - the Hb and iron notes, "your doctor may increase your iron";
+  - "My pregnancy card" for the MCP card page;
+  - the week tips (folic acid, the first tests, Td, iron and calcium "your doctor prescribed", the anomaly scan, gentle
+    exercise, the hospital bag);
+  - "a hospital equipped for" a high-risk birth.
+- **After the birth:**
+  - weighing the baby and watching a feed with a nurse or her doctor first;
+  - formula: "ask your baby's doctor";
+  - the BP check for swelling "by your doctor";
+  - contraception "your gynaecologist can give any of these".
+- **The other modules:**
+  - screening starts with her doctor;
+  - the pregnancy test: the chemist first and "see a doctor to confirm it";
+  - trying to conceive: a gynaecologist first;
+  - intimate health, pregnancy loss, midlife, periods, anaemia, the iron journey, For my family, the birth plan, Tools'
+    reports, My plan's doctor lines;
+  - core's pregnancy page.
+
+**What stays the same for everyone:** emergency numbers, danger signs and where to go in an emergency (the Learn danger-signs
+guide keeps its CHC, FRU or district hospital list; the after-birth fever flag keeps "PHC, CHC or hospital today"). Also
+unchanged:
+- every dose, test and week;
+- the government services in Explore (`access.js`), My ASHA, and the Learn "services" guides;
+- scheme facts (PMMVY, JSY, JSSK, PMSMA, Anganwadi food, Kilkari);
+- the free-supply and free-test lists, and the HPV vaccine programme;
+- the teen programme pages (RKSK, for girls under 18, who don't sign up).
+
+**Tests:** `test/care.mjs`, section 9:
+- every `_doc` pair in English and Hindi, and every Learn override on a real paragraph in both languages;
+- the switch both ways (`t`, `tx`, an article title);
+- no string sending her to the ASHA or ANM without its doctor-route words outside the government pages (an explicit keep list
+  for the rest);
+- a Learn guide and the anaemia page by route;
+- the guide in Hindi at 360 px.
+
+**Wording:** section 19.29 of the review, with the packet above. Every new line waits for the doctor.

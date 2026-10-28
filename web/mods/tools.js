@@ -121,7 +121,7 @@
     rep_none: ['No reports yet. Add your latest blood test, scan or prescription.', 'अभी कोई रिपोर्ट नहीं। अपना पिछला blood test, स्कैन या पर्चा जोड़ें।'],
     rep_none_f: ['No reports of this kind.', 'इस तरह की कोई रिपोर्ट नहीं।'], no_photo: ['No photo', 'फ़ोटो नहीं'],
     rep_del_q: ['Delete this report and its photo from this phone?', 'यह रिपोर्ट और इसकी फ़ोटो इस फ़ोन से हटाएँ?'], rep_deleted: ['Report deleted.', 'रिपोर्ट हटा दी।'],
-    rep_free: ['Many essential tests are free at government hospitals, PHCs and Ayushman Arogya Mandirs. Ask there before you pay at a private lab.', 'सरकारी अस्पताल, PHC और आयुष्मान आरोग्य मंदिर में कई ज़रूरी जाँचें मुफ़्त होती हैं। private lab में पैसे देने से पहले वहाँ पूछें।'],
+    rep_free: ['Many essential tests are free at government hospitals, PHCs and Ayushman Arogya Mandirs. Ask there before you pay at a private lab.', 'सरकारी अस्पताल, PHC और आयुष्मान आरोग्य मंदिर में कई ज़रूरी जाँचें मुफ़्त होती हैं। private lab में पैसे देने से पहले वहाँ पूछें।'], rep_free_doc: ['Many essential tests are also free at government hospitals, PHCs and Ayushman Arogya Mandirs.', 'सरकारी अस्पताल, PHC और आयुष्मान आरोग्य मंदिर में कई ज़रूरी जाँचें मुफ़्त भी होती हैं।'],
     photo_alt: ['Photo of the report', 'रिपोर्ट की फ़ोटो'],
 
     /* ABHA */

@@ -477,7 +477,7 @@
   "day 0": {
    "pack": "heavy",
    "acts": [
-    "iron | tick | Your iron tablet | If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
+    "iron | tick | Your iron tablet | If your doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
     "move | minutes | Walk or move 10 minutes | In the evening | plan-moves | "
    ],
    "head": "STRONGER BLOOD · WEEK 1 · PLAN DAY 1",
@@ -822,7 +822,7 @@
    "pack": "preg",
    "acts": [
     "pdue | check | Due now: Td injections, and 3 more | Check-ups and tests | preg-plan | ",
-    "iron | tick | Your iron tablet | If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | "
+    "iron | tick | Your iron tablet | If your doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | "
    ],
    "head": "MY PREGNANCY PLAN · WEEK 17 OF PREGNANCY",
    "sum": "My pregnancy plan: Week 17 of pregnancy, plan started 27 Oct 2026 / Working on: Iron and tablets",
@@ -1482,7 +1482,7 @@
   "day 0": {
    "pack": "heavy",
    "acts": [
-    "iron | tick | Your iron tablet | If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
+    "iron | tick | Your iron tablet | If your doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
     "move | minutes | Walk or move 10 minutes | In the evening | plan-moves | "
    ],
    "head": "STRONGER BLOOD · WEEK 1 · PLAN DAY 1",
@@ -2259,7 +2259,7 @@
   "day 0": {
    "pack": "heavy",
    "acts": [
-    "iron | tick | Your iron tablet | If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
+    "iron | tick | Your iron tablet | If your doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani. | iron | ",
     "move | minutes | Walk or move 10 minutes | In the evening | plan-moves | "
    ],
    "head": "STRONGER BLOOD · WEEK 1 · PLAN DAY 1",

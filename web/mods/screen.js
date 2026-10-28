@@ -6,6 +6,7 @@
   const D = () => S.data('screen');
   const E = (o) => esc(tx(o));
   const L = (en, hi) => ({ en: en, hi: hi });
+  const LD = (en, hi, den, dhi) => ({ en: en, hi: hi, doc: { en: den, hi: dhi } });   /* Version 39.29: with its doctor-route words */
   const iso = (d) => S.toISO(d);
   const okDate = (s) => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
   const addMonths = S.addMonths;   /* kept inside the month: 31 Aug + 6 months = 28 Feb */
@@ -48,7 +49,7 @@
       elig: (a) => (UNDER(a, 30) ? 'later' : (a != null && a > 65 ? 'ask' : 'now')) },
     { k: 'cbe', icon: 'ribbon', months: 60, go: 'screen-breast', from: 30,
       name: L('Breast exam by a health worker', 'स्वास्थ्यकर्मी से स्तन की जाँच'),
-      how: L('A trained nurse or ANM checks both breasts and armpits by hand. Once in 5 years from 30 to 65. Free.', 'प्रशिक्षित नर्स या ANM हाथ से दोनों स्तन और बगल जाँचती हैं। 30 से 65 साल तक, 5 साल में एक बार। मुफ़्त।'),
+      how: LD('A trained nurse or ANM checks both breasts and armpits by hand. Once in 5 years from 30 to 65. Free.', 'प्रशिक्षित नर्स या ANM हाथ से दोनों स्तन और बगल जाँचती हैं। 30 से 65 साल तक, 5 साल में एक बार। मुफ़्त।', 'Your doctor, or a trained nurse or ANM, checks both breasts and armpits by hand. Once in 5 years from 30 to 65. Free at government centres.', 'आपकी डॉक्टर, या प्रशिक्षित नर्स या ANM, हाथ से दोनों स्तन और बगल जाँचती हैं। 30 से 65 साल तक, 5 साल में एक बार। सरकारी केंद्रों पर मुफ़्त।'),
       elig: (a) => (UNDER(a, 30) ? 'later' : (a != null && a > 65 ? 'ask' : 'now')) },
     { k: 'oral', icon: 'search', months: 60, go: 'screen-signs', from: 30,
       name: L('Mouth check', 'मुँह की जाँच'),
@@ -56,7 +57,7 @@
       elig: (a) => (UNDER(a, 30) ? 'later' : (a != null && a > 65 ? 'ask' : 'now')) },
     { k: 'bp', icon: 'heart', months: 12, from: 30,
       name: L('BP check', 'BP की जाँच'),
-      how: L('Once a year from 30. Free at your Ayushman Arogya Mandir; your ASHA can tell you the screening day.', '30 साल से हर साल एक बार। आयुष्मान आरोग्य मंदिर पर मुफ़्त; ASHA आपको जाँच का दिन बता सकती है।'),
+      how: LD('Once a year from 30. Free at your Ayushman Arogya Mandir; your ASHA can tell you the screening day.', '30 साल से हर साल एक बार। आयुष्मान आरोग्य मंदिर पर मुफ़्त; ASHA आपको जाँच का दिन बता सकती है।', 'Once a year from 30, with your doctor or free at your Ayushman Arogya Mandir.', '30 साल से हर साल एक बार, डॉक्टर से या आयुष्मान आरोग्य मंदिर पर मुफ़्त।'),
       elig: (a) => (UNDER(a, 30) ? 'later' : 'now') },
     { k: 'sugar', icon: 'drop', months: 12, from: 30,
       name: L('Sugar check', 'शुगर की जाँच'),
@@ -64,7 +65,7 @@
       elig: (a) => (UNDER(a, 30) ? 'later' : 'now') },
     { k: 'hb', icon: 'drop', months: 0, go: 'cond-anaemia', when: L('If tired, or periods are heavy', 'थकान हो या पीरियड भारी हों'),
       name: L('Hb (haemoglobin) test', 'Hb (हीमोग्लोबिन) जाँच'),
-      how: L('Get one if you feel tired or breathless, have heavy periods, or plan a pregnancy. Free at a PHC or government hospital.', 'थकान या साँस फूलना हो, पीरियड भारी हों, या गर्भ की योजना हो तो करवाएँ। PHC या सरकारी अस्पताल में मुफ़्त।'),
+      how: LD('Get one if you feel tired or breathless, have heavy periods, or plan a pregnancy. Free at a PHC or government hospital.', 'थकान या साँस फूलना हो, पीरियड भारी हों, या गर्भ की योजना हो तो करवाएँ। PHC या सरकारी अस्पताल में मुफ़्त।', 'Get one if you feel tired or breathless, have heavy periods, or plan a pregnancy. Your doctor can order it; it is also free at a PHC or government hospital.', 'थकान या साँस फूलना हो, पीरियड भारी हों, या गर्भ की योजना हो तो करवाएँ। डॉक्टर यह जाँच लिख सकती हैं; PHC या सरकारी अस्पताल में मुफ़्त भी है।'),
       elig: () => 'now' },
     { k: 'thyroid', icon: 'leaf', months: 0, go: 'cond-labs', when: L('Only if a doctor suggests it', 'सिर्फ़ डॉक्टर कहें तो'), later: L('Only if a doctor suggests it', 'सिर्फ़ डॉक्टर कहें तो'),
       name: L('Thyroid test (TSH)', 'थायरॉइड जाँच (TSH)'),
@@ -433,8 +434,8 @@
   /* ---------- strings ---------- */
   const en = {
     screen_hub: 'Screening and check-ups', screen_hub_s: 'My check-ups, cervical screening, HPV vaccine, breast self-check',
-    screen_hub_p: 'Simple tests find problems early, often years before you feel anything. Most are free at your Ayushman Arogya Mandir (health and wellness centre) or PHC.',
-    screen_setup: 'Add your check-up dates', screen_setup_s: 'Free from 30: cervical screening and a breast exam', screen_home_h: 'Free check-ups for you', screen_home_p: 'From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years, at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_go: 'See my check-ups', screen_home_later: 'Later',
+    screen_hub_p: 'Simple tests find problems early, often years before you feel anything. Most are free at your Ayushman Arogya Mandir (health and wellness centre) or PHC.', screen_hub_p_doc: 'Simple tests find problems early, often years before you feel anything. Your doctor can do most of them, and most are also free at your Ayushman Arogya Mandir (health and wellness centre) or PHC.',
+    screen_setup: 'Add your check-up dates', screen_setup_s: 'Free from 30: cervical screening and a breast exam', screen_home_h: 'Free check-ups for you', screen_home_p: 'From 30, every woman can have a cervical screening and a breast exam by a health worker, free, once in 5 years, at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_p_doc: 'From 30, every woman can have a cervical screening and a breast exam once in 5 years, with her gynaecologist or free at the Ayushman Arogya Mandir or PHC. Add when you last had them, or get a reminder.', screen_home_go: 'See my check-ups', screen_home_later: 'Later',
     screen_mine: 'My check-ups', screen_mine_s: 'Built from your age. Add the dates, get reminders.',
     screen_mine_p: 'Built from your age and what you set on the Me page. Add when you last had each one; the next date and a reminder follow.',
     screen_cervix: 'Cervical screening', screen_cervix_s: 'The free VIA test: why, what happens, results',
@@ -480,19 +481,19 @@
     screen_bse_on: 'Turn on reminder', screen_bse_off: 'Turn off reminder', screen_bse_next: 'Next reminder', screen_bse_set: 'Reminder set.', screen_bse_removed: 'Reminder turned off.',
     screen_bse_noperiod: 'No period start in your diary yet, so the reminder uses the 1st of the month until you log one.', screen_bse_sum: 'monthly self-check reminder on',
     screen_br_signs_h: 'Show a doctor within 2 weeks', screen_br_signs_p: 'Breast pain alone is usually not cancer. Pain that does not go away still deserves a check.',
-    screen_cbe_h: 'Breast exam by a health worker', screen_cbe_p: 'Free once in 5 years from 30 to 65 at your Ayushman Arogya Mandir or PHC. A trained nurse or ANM checks both breasts and armpits by hand; it takes a few minutes.',
+    screen_cbe_h: 'Breast exam by a health worker', screen_cbe_p: 'Free once in 5 years from 30 to 65 at your Ayushman Arogya Mandir or PHC. A trained nurse or ANM checks both breasts and armpits by hand; it takes a few minutes.', screen_cbe_p_doc: 'Once in 5 years from 30 to 65. Your doctor checks both breasts and armpits by hand; it takes a few minutes. It is also free at your Ayushman Arogya Mandir or PHC, done by a trained nurse or ANM.',
     screen_mammo_h: 'About mammograms',
     screen_not_dx: 'Not a diagnosis. Most of these signs turn out to be something other than cancer. Each one still deserves a check.',
     screen_when_h: 'How soon', screen_when_p: 'Any sign here that is new for you, or does not settle: see a doctor within 2 weeks. Do not wait for your next screening date.',
     screen_call112: 'call 112 now',
-    screen_where_h: 'Where to get checked free', screen_where_p: 'Start at your Ayushman Arogya Mandir or PHC. If something needs a closer look, they refer you to the NCD clinic at the CHC or district hospital, also free.',
+    screen_where_h: 'Where to get checked free', screen_where_p: 'Start at your Ayushman Arogya Mandir or PHC. If something needs a closer look, they refer you to the NCD clinic at the CHC or district hospital, also free.', screen_where_p_doc: 'Start with your doctor, or free at your Ayushman Arogya Mandir or PHC. If something needs a closer look there, they refer you to the NCD clinic at the CHC or district hospital, also free.',
     screen_quit_h: 'Want to stop tobacco?', screen_quit_d: 'National Tobacco Quitline, free, Government of India',
     screen_free_w: 'free', screen_signs_short: 'Warning signs', screen_sum_hint: 'Tap a check-up to add the date you remember.'
   };
   const hi = {
     screen_hub: 'जाँच और चेक-अप', screen_hub_s: 'मेरे चेक-अप, बच्चेदानी के मुँह की जाँच, HPV टीका, स्तन की ख़ुद जाँच',
-    screen_hub_p: 'आसान जाँचें बीमारी को जल्दी पकड़ लेती हैं, अक्सर कुछ महसूस होने से सालों पहले। ज़्यादातर जाँचें आपके आयुष्मान आरोग्य मंदिर (हेल्थ एंड वेलनेस सेंटर) या PHC पर मुफ़्त हैं।',
-    screen_setup: 'अपनी जाँचों की तारीख़ें जोड़ें', screen_setup_s: '30 साल की उम्र से मुफ़्त: बच्चेदानी के मुँह की जाँच और स्तन की जाँच', screen_home_h: 'आपके लिए मुफ़्त जाँच', screen_home_p: '30 साल से हर महिला 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर, बच्चेदानी के मुँह की जाँच और स्वास्थ्यकर्मी से स्तन की जाँच मुफ़्त करवा सकती है। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_go: 'मेरे चेक-अप देखें', screen_home_later: 'बाद में',
+    screen_hub_p: 'आसान जाँचें बीमारी को जल्दी पकड़ लेती हैं, अक्सर कुछ महसूस होने से सालों पहले। ज़्यादातर जाँचें आपके आयुष्मान आरोग्य मंदिर (हेल्थ एंड वेलनेस सेंटर) या PHC पर मुफ़्त हैं।', screen_hub_p_doc: 'आसान जाँचें बीमारी को जल्दी पकड़ लेती हैं, अक्सर कुछ महसूस होने से सालों पहले। ज़्यादातर जाँचें आपकी डॉक्टर कर सकती हैं, और ज़्यादातर आपके आयुष्मान आरोग्य मंदिर (हेल्थ एंड वेलनेस सेंटर) या PHC पर मुफ़्त भी हैं।',
+    screen_setup: 'अपनी जाँचों की तारीख़ें जोड़ें', screen_setup_s: '30 साल की उम्र से मुफ़्त: बच्चेदानी के मुँह की जाँच और स्तन की जाँच', screen_home_h: 'आपके लिए मुफ़्त जाँच', screen_home_p: '30 साल से हर महिला 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर, बच्चेदानी के मुँह की जाँच और स्वास्थ्यकर्मी से स्तन की जाँच मुफ़्त करवा सकती है। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_p_doc: '30 साल से हर महिला 5 साल में एक बार बच्चेदानी के मुँह की जाँच और स्तन की जाँच करवा सकती है, अपनी गायनेकोलॉजिस्ट से या आयुष्मान आरोग्य मंदिर या PHC पर मुफ़्त। आख़िरी बार कब करवाई थी, लिखें, या रिमाइंडर लें।', screen_home_go: 'मेरे चेक-अप देखें', screen_home_later: 'बाद में',
     screen_mine: 'मेरे चेक-अप', screen_mine_s: 'आपकी उम्र के हिसाब से। तारीख़ें डालें, reminder पाएँ।',
     screen_mine_p: 'आपकी उम्र और “मैं” पन्ने पर दी जानकारी के हिसाब से। हर जाँच आख़िरी बार कब हुई, लिखें; अगली तारीख़ और reminder अपने आप बन जाते हैं।',
     screen_cervix: 'बच्चेदानी के मुँह की जाँच', screen_cervix_s: 'मुफ़्त VIA जाँच: क्यों, क्या होता है, नतीजे',
@@ -538,12 +539,12 @@
     screen_bse_on: 'Reminder चालू करें', screen_bse_off: 'Reminder बंद करें', screen_bse_next: 'अगला reminder', screen_bse_set: 'Reminder लग गया।', screen_bse_removed: 'Reminder बंद हो गया।',
     screen_bse_noperiod: 'डायरी में अभी पीरियड की शुरुआत दर्ज नहीं है, इसलिए reminder महीने की 1 तारीख़ को आएगा, जब तक आप दर्ज न करें।', screen_bse_sum: 'हर महीने ख़ुद जाँच का reminder चालू',
     screen_br_signs_h: '2 हफ़्ते के अंदर डॉक्टर को दिखाएँ', screen_br_signs_p: 'सिर्फ़ स्तन में दर्द आम तौर पर कैंसर नहीं होता। पर जो दर्द ठीक न हो, उसकी भी जाँच करवाएँ।',
-    screen_cbe_h: 'स्वास्थ्यकर्मी से स्तन की जाँच', screen_cbe_p: '30 से 65 साल तक, 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर मुफ़्त। प्रशिक्षित नर्स या ANM हाथ से दोनों स्तन और बगल जाँचती हैं; कुछ ही मिनट लगते हैं।',
+    screen_cbe_h: 'स्वास्थ्यकर्मी से स्तन की जाँच', screen_cbe_p: '30 से 65 साल तक, 5 साल में एक बार, आयुष्मान आरोग्य मंदिर या PHC पर मुफ़्त। प्रशिक्षित नर्स या ANM हाथ से दोनों स्तन और बगल जाँचती हैं; कुछ ही मिनट लगते हैं।', screen_cbe_p_doc: '30 से 65 साल तक, 5 साल में एक बार। आपकी डॉक्टर हाथ से दोनों स्तन और बगल जाँचती हैं; कुछ ही मिनट लगते हैं। आयुष्मान आरोग्य मंदिर या PHC पर प्रशिक्षित नर्स या ANM यह मुफ़्त भी करती हैं।',
     screen_mammo_h: 'मैमोग्राम के बारे में',
     screen_not_dx: 'यह diagnosis नहीं है। इनमें से ज़्यादातर संकेत कैंसर के अलावा किसी और वजह से होते हैं। फिर भी हर एक की जाँच ज़रूरी है।',
     screen_when_h: 'कितनी जल्दी', screen_when_p: 'यहाँ का कोई भी संकेत जो आपके लिए नया हो, या ठीक न हो: 2 हफ़्ते के अंदर डॉक्टर को दिखाएँ। अगली जाँच की तारीख़ का इंतज़ार न करें।',
     screen_call112: 'अभी 112 पर कॉल करें',
-    screen_where_h: 'मुफ़्त जाँच कहाँ', screen_where_p: 'अपने आयुष्मान आरोग्य मंदिर या PHC से शुरू करें। और ध्यान से देखने की ज़रूरत हो तो वे CHC या ज़िला अस्पताल के NCD clinic भेजते हैं, वहाँ भी मुफ़्त।',
+    screen_where_h: 'मुफ़्त जाँच कहाँ', screen_where_p: 'अपने आयुष्मान आरोग्य मंदिर या PHC से शुरू करें। और ध्यान से देखने की ज़रूरत हो तो वे CHC या ज़िला अस्पताल के NCD clinic भेजते हैं, वहाँ भी मुफ़्त।', screen_where_p_doc: 'अपनी डॉक्टर से शुरू करें, या आयुष्मान आरोग्य मंदिर या PHC पर मुफ़्त। वहाँ और ध्यान से देखने की ज़रूरत हो तो वे CHC या ज़िला अस्पताल के NCD clinic भेजते हैं, वहाँ भी मुफ़्त।',
     screen_quit_h: 'तंबाकू छोड़ना चाहती हैं?', screen_quit_d: 'राष्ट्रीय तंबाकू Quitline, मुफ़्त, भारत सरकार',
     screen_free_w: 'मुफ़्त', screen_signs_short: 'चेतावनी के संकेत', screen_sum_hint: 'जो तारीख़ याद है, उसे डालने के लिए किसी जाँच पर टैप करें।'
   };

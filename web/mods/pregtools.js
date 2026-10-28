@@ -98,17 +98,17 @@
     b_p: ['Pack by about 36 weeks and keep the bag where everyone at home can find it. Tick each item as you pack.', 'लगभग 36 हफ़्ते तक बैग तैयार कर लें और ऐसी जगह रखें जहाँ घर में सबको मिल जाए। जो सामान रख लें, उस पर टिक करें।'],
     b_prog: ['{n} of {t} packed', '{t} में से {n} रख लिए'],
     b_plan: ['Your birth plan', 'आपकी डिलीवरी की योजना'],
-    b_plan_p: ['Decide these with your family and your ASHA well before your due date.', 'ये बातें डिलीवरी की तारीख़ से काफ़ी पहले अपने परिवार और ASHA के साथ तय कर लें।'],
+    b_plan_p: ['Decide these with your family and your ASHA well before your due date.', 'ये बातें डिलीवरी की तारीख़ से काफ़ी पहले अपने परिवार और ASHA के साथ तय कर लें।'], b_plan_p_doc: ['Decide these with your family and your doctor well before your due date.', 'ये बातें डिलीवरी की तारीख़ से काफ़ी पहले अपने परिवार और डॉक्टर के साथ तय कर लें।'],
     b_plan_prog: ['{n} of {t} ready', '{t} में से {n} तैयार'],
     f_hosp: ['Which hospital', 'कौन सा अस्पताल'],
-    f_hosp_h: ['Choose one that does deliveries 24 hours and can do a C-section and give blood if needed, often the district hospital or a First Referral Unit. Your ANM can tell you which.', 'ऐसा अस्पताल चुनें जहाँ 24 घंटे डिलीवरी होती हो और ज़रूरत पड़ने पर ऑपरेशन और ख़ून चढ़ाने की सुविधा हो, अक्सर ज़िला अस्पताल या First Referral Unit। आपकी ANM बता सकती हैं।'],
+    f_hosp_h: ['Choose one that does deliveries 24 hours and can do a C-section and give blood if needed, often the district hospital or a First Referral Unit. Your ANM can tell you which.', 'ऐसा अस्पताल चुनें जहाँ 24 घंटे डिलीवरी होती हो और ज़रूरत पड़ने पर ऑपरेशन और ख़ून चढ़ाने की सुविधा हो, अक्सर ज़िला अस्पताल या First Referral Unit। आपकी ANM बता सकती हैं।'], f_hosp_h_doc: ['Choose one that does deliveries 24 hours and can do a C-section and give blood if needed. Your gynaecologist can tell you which.', 'ऐसा अस्पताल चुनें जहाँ 24 घंटे डिलीवरी होती हो और ज़रूरत पड़ने पर ऑपरेशन और ख़ून चढ़ाने की सुविधा हो। आपकी गायनेकोलॉजिस्ट बता सकती हैं।'],
     f_trans: ['Backup vehicle: driver\'s phone', 'दूसरी गाड़ी: ड्राइवर का फ़ोन'],
     f_trans_h: ['The free ambulance is 102 or 108, depending on your state. Write here the number of a vehicle you can call if the ambulance is late.', 'मुफ़्त एम्बुलेंस 102 या 108 है, राज्य के हिसाब से। एम्बुलेंस देर से आए तो जिस गाड़ी को बुला सकें, उसका नंबर यहाँ लिखें।'],
     f_comp: ['Who will come with you', 'साथ कौन जाएगा'],
     f_comp_h: ['Government labour-room rules (LaQshya) allow one birth companion of your choice to stay with you. Pick someone calm you trust.', 'सरकारी लेबर रूम के नियम (LaQshya) आपकी पसंद के एक साथी को आपके पास रहने देते हैं। किसी शांत, भरोसेमंद व्यक्ति को चुनें।'],
     f_donor: ['Blood donors', 'ख़ून देने वाले'],
     f_donor_h: ['1–2 healthy adults who agree to give blood if you need it. Write their phone numbers.', '1–2 स्वस्थ लोग जो ज़रूरत पड़ने पर ख़ून देने को तैयार हों। उनके फ़ोन नंबर लिखें।'],
-    f_asha: ['ASHA or ANM phone', 'ASHA या ANM का फ़ोन'],
+    f_asha: ['ASHA or ANM phone', 'ASHA या ANM का फ़ोन'], f_asha_doc: ['Your doctor\'s or ASHA\'s phone', 'डॉक्टर या ASHA का फ़ोन'],
     p_route: ['We know the route and how long it takes, by day and at night', 'रास्ता और लगने वाला समय पता है, दिन में भी और रात में भी'],
     p_money: ['Some emergency money is kept aside', 'इमरजेंसी के लिए कुछ पैसे अलग रखे हैं'],
     p_home: ['Someone will look after the children and the house', 'बच्चों और घर को कोई सँभाल लेगा'],
@@ -116,7 +116,7 @@
     b_money_h: ['What is free', 'क्या मुफ़्त है'],
     b_money: ['In government hospitals, JSSK makes these free: the delivery, a C-section, medicines, tests, blood, food (3 days after a normal birth, 7 after a C-section) and transport both ways. Keep some money for emergencies anyway.', 'सरकारी अस्पताल में JSSK के तहत ये मुफ़्त हैं: डिलीवरी, ऑपरेशन, दवाएँ, जाँचें, ख़ून, खाना (नॉर्मल डिलीवरी के बाद 3 दिन, ऑपरेशन के बाद 7 दिन) और आने-जाने की गाड़ी। फिर भी इमरजेंसी के लिए कुछ पैसे अलग रखें।'],
     b_badhai: ['Staff should not ask your family for any money, including "badhai" for the birth. The LaQshya labour-room rules say families should not have to pay anything, formal or informal.', 'स्टाफ़ को आपके परिवार से कोई पैसा नहीं माँगना चाहिए, जन्म की “बधाई” के नाम पर भी नहीं। LaQshya लेबर रूम के नियम कहते हैं कि परिवार को कोई फ़ीस या ऊपर से पैसा नहीं देना पड़ना चाहिए।'],
-    b_tip: ['Tell everyone at home where the bag and this plan are. Keep the MCP card on top.', 'घर में सबको बता दें कि बैग और यह योजना कहाँ है। MCP card सबसे ऊपर रखें।'],
+    b_tip: ['Tell everyone at home where the bag and this plan are. Keep the MCP card on top.', 'घर में सबको बता दें कि बैग और यह योजना कहाँ है। MCP card सबसे ऊपर रखें।'], b_tip_doc: ['Tell everyone at home where the bag and this plan are. Keep your reports on top.', 'घर में सबको बता दें कि बैग और यह योजना कहाँ है। अपनी reports सबसे ऊपर रखें।'],
 
     /* birth guide */
     r_h: ['Preparing for birth', 'डिलीवरी की तैयारी'],
@@ -442,7 +442,7 @@
       { en: 'The cord is cut after 1 to 3 minutes, once it stops pulsing. The extra blood helps protect your baby from anaemia.', hi: 'नाल 1 से 3 मिनट बाद काटी जाती है, जब उसका धड़कना रुक जाए। इससे बच्चे को ज़्यादा ख़ून मिलता है और ख़ून की कमी से बचाव होता है।' },
       { en: 'Breastfeed within the first hour. Many families are told the first thick, yellow milk (colostrum) is heavy or dirty. It is the opposite: it is rich in vitamin A and protects your baby from infections. Do not throw it away, and do not give honey, ghutti, sugar water or even plain water.', hi: 'पहले घंटे में ही दूध पिलाना शुरू करें। कई घरों में कहा जाता है कि पहला गाढ़ा पीला दूध (colostrum) भारी या गंदा होता है। सच उल्टा है: इसमें vitamin A भरपूर होता है और यह बच्चे को infection से बचाता है। इसे फेंकें नहीं, और शहद, घुट्टी, चीनी का पानी या सादा पानी भी न दें।' },
       { en: 'Stay in hospital for at least 48 hours after a normal birth, and longer after a C-section. Serious problems like heavy bleeding or fits are most likely in these first 48 hours, and in hospital help is close by.', hi: 'नॉर्मल डिलीवरी के बाद कम से कम 48 घंटे अस्पताल में रुकें, और ऑपरेशन के बाद ज़्यादा। भारी ब्लीडिंग या दौरे जैसी गंभीर दिक़्क़तों का ख़तरा इन्हीं पहले 48 घंटों में सबसे ज़्यादा होता है, और अस्पताल में मदद पास होती है।' },
-      { en: 'Before you go home, check that your baby got the birth vaccines and that your MCP card is filled in.', hi: 'घर जाने से पहले देख लें कि बच्चे को जन्म के टीके लग गए हैं और आपका MCP card भरा गया है।' }
+      { en: 'Before you go home, check that your baby got the birth vaccines and that your MCP card is filled in.', hi: 'घर जाने से पहले देख लें कि बच्चे को जन्म के टीके लग गए हैं और आपका MCP card भरा गया है।', doc: { en: 'Before you go home, check that your baby got the birth vaccines, written on the vaccination card, and that you have your discharge papers.', hi: 'घर जाने से पहले देख लें कि बच्चे को जन्म के टीके लग गए हैं और टीकाकरण कार्ड पर लिखे गए हैं, और आपके discharge के काग़ज़ आपके पास हैं।' } }
     ]
   };
   function renderBirth(v) {

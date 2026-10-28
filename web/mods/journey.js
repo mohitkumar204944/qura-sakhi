@@ -6,6 +6,7 @@
   if (!S) return;
   const t = S.t, tf = S.tf, esc = S.esc, tx = S.tx;
   const L = (en, hi) => ({ en: en, hi: hi });
+  const LD = (en, hi, den, dhi) => ({ en: en, hi: hi, doc: { en: den, hi: dhi } });   /* Version 39.29: with its doctor-route words */
   const D = () => { const d = S.data('journey'); d.done = d.done || {}; d.finished = d.finished || {}; return d; };
   const J = {
     pmos: { hue: 'purple', icon: 'leaf', ask: 'PMOS', days: [
@@ -31,7 +32,7 @@
       [L('This month', 'इस महीने'), L('Note this month’s signs, if you haven’t yet.', 'इस महीने के संकेत दर्ज कर लें, अगर अभी तक नहीं किए।'), 'checkin'],
       [L('Look back', 'पीछे देखें'), L('Which steps helped most? Keep two of them going.', 'किन क़दमों से सबसे ज़्यादा मदद मिली? उनमें से दो जारी रखें।')]] },
     iron: { hue: 'rose', icon: 'drop', ask: 'Anaemia and iron', days: [
-      [L('Your iron tablet', 'आपकी आयरन की गोली'), L('If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani.', 'अगर ASHA या डॉक्टर ने आयरन की गोलियाँ दी हैं, तो आज उनके बताए तरीके से लें, पानी या नींबू पानी के साथ।'), 'iron'],
+      [L('Your iron tablet', 'आपकी आयरन की गोली'), LD('If the ASHA or a doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani.', 'अगर ASHA या डॉक्टर ने आयरन की गोलियाँ दी हैं, तो आज उनके बताए तरीके से लें, पानी या नींबू पानी के साथ।', 'If your doctor gave you iron tablets, take them today the way they told you, with water or nimbu pani.', 'अगर डॉक्टर ने आयरन की गोलियाँ दी हैं, तो आज उनके बताए तरीके से लें, पानी या नींबू पानी के साथ।'), 'iron'],
       [L('Tea away from meals', 'खाने से दूर चाय'), L('Keep tea and coffee an hour away from your meals today.', 'आज चाय और कॉफ़ी खाने से एक घंटा दूर रखें।')],
       [L('Lemon on your dal', 'दाल पर नींबू'), L('Squeeze lemon on your dal or sabzi. Vitamin C helps your body take in iron.', 'दाल या सब्ज़ी पर नींबू निचोड़ें। विटामिन C शरीर को आयरन लेने में मदद करता है।')],
       [L('Green leaves', 'हरी पत्तियाँ'), L('Add a green leafy sabzi today: palak, methi, bathua or sarson.', 'आज हरी पत्तेदार सब्ज़ी खाएँ: पालक, मेथी, बथुआ या सरसों।')],
@@ -45,9 +46,9 @@
       [L('Ragi or bajra', 'रागी या बाजरा'), L('Have ragi or bajra today: roti, porridge or dosa.', 'आज रागी या बाजरा लें: रोटी, दलिया या डोसा।')],
       [L('A handful of seeds', 'मुट्ठी भर बीज'), L('Snack on a few pumpkin or sesame (til) seeds.', 'नाश्ते में थोड़े कद्दू या तिल के बीज लें।')],
       [L('Milk at another time', 'दूध अलग समय पर'), L('Have milk or curd at a different time from your iron tablet.', 'दूध या दही आयरन की गोली से अलग समय पर लें।')],
-      [L('Know your Hb', 'अपना Hb जानें'), L('Ask for an Hb test at your next check-up. It is free at government health centres. If it is low, treating it usually takes a daily tablet for about 3 months, then a repeat test, so don’t stop when you feel better.', 'अगली जाँच में Hb टेस्ट माँगें। सरकारी स्वास्थ्य केंद्रों पर यह मुफ़्त है। कम निकले, तो इलाज में आम तौर पर लगभग 3 महीने रोज़ गोली और फिर दोबारा जाँच होती है, इसलिए बेहतर लगने पर गोली बंद न करें।')],
-      [L('If the tablet upsets you', 'अगर गोली से परेशानी हो'), L('Black stools are normal with iron. If the tablet upsets your stomach, tell the ASHA or doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह ASHA या डॉक्टर को बताएँ।')],
-      [L('Ask about deworming', 'पेट के कीड़ों की दवा'), L('Worms can cause anaemia. Ask the ASHA or doctor about a deworming tablet.', 'पेट के कीड़ों से ख़ून की कमी हो सकती है। ASHA या डॉक्टर से कीड़े की दवा के बारे में पूछें।')],
+      [L('Know your Hb', 'अपना Hb जानें'), LD('Ask for an Hb test at your next check-up. It is free at government health centres. If it is low, treating it usually takes a daily tablet for about 3 months, then a repeat test, so don’t stop when you feel better.', 'अगली जाँच में Hb टेस्ट माँगें। सरकारी स्वास्थ्य केंद्रों पर यह मुफ़्त है। कम निकले, तो इलाज में आम तौर पर लगभग 3 महीने रोज़ गोली और फिर दोबारा जाँच होती है, इसलिए बेहतर लगने पर गोली बंद न करें।', 'Ask your doctor for an Hb test at your next check-up. It is also free at government health centres. If it is low, treating it usually takes a daily tablet for about 3 months, then a repeat test, so don’t stop when you feel better.', 'अगली जाँच में डॉक्टर से Hb टेस्ट माँगें। सरकारी स्वास्थ्य केंद्रों पर यह मुफ़्त भी है। कम निकले, तो इलाज में आम तौर पर लगभग 3 महीने रोज़ गोली और फिर दोबारा जाँच होती है, इसलिए बेहतर लगने पर गोली बंद न करें।')],
+      [L('If the tablet upsets you', 'अगर गोली से परेशानी हो'), LD('Black stools are normal with iron. If the tablet upsets your stomach, tell the ASHA or doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह ASHA या डॉक्टर को बताएँ।', 'Black stools are normal with iron. If the tablet upsets your stomach, tell your doctor instead of stopping.', 'आयरन की गोली से मल काला होना आम है। अगर पेट ख़राब हो, तो गोली बंद करने की जगह डॉक्टर को बताएँ।')],
+      [L('Ask about deworming', 'पेट के कीड़ों की दवा'), LD('Worms can cause anaemia. Ask the ASHA or doctor about a deworming tablet.', 'पेट के कीड़ों से ख़ून की कमी हो सकती है। ASHA या डॉक्टर से कीड़े की दवा के बारे में पूछें।', 'Worms can cause anaemia. Ask your doctor about a deworming tablet.', 'पेट के कीड़ों से ख़ून की कमी हो सकती है। डॉक्टर से कीड़े की दवा के बारे में पूछें।')],
       [L('Sprouts', 'अंकुरित अनाज'), L('Add sprouted moong or chana to a meal.', 'किसी खाने में अंकुरित मूँग या चना जोड़ें।')],
       [L('Tell your family', 'परिवार को बताएँ'), L('Send the iron card from Explain it to my family.', '“परिवार को समझाएँ” से आयरन वाला कार्ड भेजें।'), 'family'],
       [L('This month', 'इस महीने'), L('Note this month’s signs, if you haven’t yet.', 'इस महीने के संकेत दर्ज कर लें, अगर अभी तक नहीं किए।'), 'checkin'],

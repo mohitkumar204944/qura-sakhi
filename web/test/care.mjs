@@ -16,7 +16,9 @@
 //   6 Help: "See a doctor" names Qura first, "My ASHA" only for the government route (or a saved number), the free government
 //     doctor after Qura's ways on the doctor screen; 112 first for everyone;
 //   7 What your diary shows: the iron line and the pregnancy-test line in her route's words;
-//   8 Hindi at 360 px, no sideways scroll, no page errors.
+//   8 Hindi at 360 px, no sideways scroll, no page errors;
+//   9 Version 39.29, the doctor route everywhere: every "_doc" string and Learn override in order, the switch both ways (t, tx,
+//     the Learn library), no ASHA or ANM push left without its doctor-route words, and a Learn guide in English and Hindi.
 // Usage: node test/care.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -309,6 +311,64 @@ async function signUp(a) {
   a = await open({ hash: 'explain', seed: { events: regular(45) } });
   tc = await all(a, '#view');
   check('7 a late period, unanswered: "Any chemist sells one; your ASHA gives Nishchay kits free."', /If you could be pregnant, take a home test\. Any chemist sells one; your ASHA gives Nishchay kits free\./.test(tc) && !/Free Nishchay kits come from your ASHA\./.test(tc), tc.slice(0, 600));
+  await done(a);
+}
+
+/* ---------- 9: the doctor route everywhere (Version 39.29): the Learn library and the other modules ---------- */
+{
+  const a = await open({});
+  const integ = await a.page.evaluate(() => { const S = window.Saathi; const en = S.strings.en, hi = S.strings.hi; const bad = [];
+    /* a pair is <key> and <key>_doc (keys that only end in "_doc", like hs_doc "See a doctor", have no base and never switch) */
+    const pairs = Object.keys(en).filter((k) => /_doc$/.test(k) && en[k.slice(0, -4)] != null);
+    pairs.forEach((k) => { const b = k.slice(0, -4); if (hi[b] == null || hi[k] == null || en[k] === en[b]) bad.push(k); });
+    Object.keys(hi).filter((k) => /_doc$/.test(k) && hi[k.slice(0, -4)] != null && en[k] == null).forEach((k) => bad.push('hi only ' + k));
+    return { n: pairs.length, bad }; });
+  check('9 every doctor-route string has its base key, in English and Hindi, and says something different (' + integ.n + ' pairs)', integ.n >= 60 && !integ.bad.length, integ.bad);
+  const arts = JSON.parse(CONTENT); const abad = []; let nOv = 0;
+  for (const g of arts.groups) for (const x of g.articles) { const d = x.doc; if (!d) continue;
+    for (const k of Object.keys(d)) { const m = k.match(/^(.+)_(en|hi)$/); const other = m && (m[1] + '_' + (m[2] === 'en' ? 'hi' : 'en'));
+      if (!m || x[k] == null || !(other in d)) { abad.push(g.group + '/' + x.id + ' ' + k); continue; }
+      if (typeof d[k] === 'string') { nOv++; if (d[k] === x[k] || typeof d[other] !== 'string') abad.push(g.group + '/' + x.id + ' ' + k); }
+      else for (const i of Object.keys(d[k])) { nOv++; if (x[k][+i] == null || d[k][i] === x[k][+i] || d[other][i] == null) abad.push(g.group + '/' + x.id + ' ' + k + '[' + i + ']'); } } }
+  check('9 every Learn override sits on a real paragraph, in both languages, and changes it (' + nOv + ' paragraphs)', nOv >= 140 && !abad.length, abad);
+  check('9 the government services guides keep their words (no overrides in the services group)', !arts.groups.find((g) => g.group === 'services').articles.some((x) => x.doc));
+  /* the switch: the same key reads her route's words */
+  const KEYS = ['contra_hub_p', 'preg_hub_scan', 'post_s_ask', 'screen_where_p', 'pregtools_b_tip', 'plan_rv_doc_hb', 'pw_v1'];
+  const both = async (care) => a.page.evaluate(([c, ks]) => { const S = window.Saathi; if (c) S.state.situation.care = c; else delete S.state.situation.care;
+    const o = { en: 'gov line', hi: 'सरकारी', doc: { en: 'doctor line', hi: 'डॉक्टर' } };
+    return { t: ks.map((k) => S.t(k)), tx: S.tx(o), art: (S.article('pregnancy.after-birth-first-six-weeks') || {}).title, base: ks.map((k) => S.strings.en[k]), doc: ks.map((k) => S.strings.en[k + '_doc']) }; }, [care, KEYS]);
+  const d0 = await both(null); const g0 = await both('govt'); const p0 = await both('private');
+  check('9 unanswered: each key reads its doctor-route words', JSON.stringify(d0.t) === JSON.stringify(d0.doc) && d0.t.every((x, i) => x !== d0.base[i]), d0.t);
+  check('9 ... a private doctor: the same', JSON.stringify(p0.t) === JSON.stringify(d0.t));
+  check('9 ... a government centre: the reviewed words, unchanged', JSON.stringify(g0.t) === JSON.stringify(g0.base), g0.t);
+  check('9 an inline line with doc words: "doctor line" on the doctor route, "gov line" on the government route', d0.tx === 'doctor line' && g0.tx === 'gov line', [d0.tx, g0.tx]);
+  check('9 a Learn title: "…your check-ups" on the doctor route, "…your ASHA" on the government route', /your check-ups$/.test(d0.art) && /your ASHA$/.test(g0.art), [d0.art, g0.art]);
+  /* no new ASHA/ANM push without its doctor-route words (the government pages, the teen programme and the danger flag stay) */
+  const left = await a.page.evaluate(() => { const S = window.Saathi; const en = S.strings.en;
+    const PUSH = /\b(ask|tell|see|call|ask at|go to|register with|visit)\s+(your|the|an?)\s+(ASHA|ANM|PHC|Anganwadi)\b|\b(your|the)\s+(ASHA|ANM)\s+(can|will|gives|brings|decides|should|says)\b/i;
+    const owner = {}; for (const m of S.modules) for (const k of Object.keys((m.strings || {}).en || {})) owner[k] = m.id;
+    const KEEP = ['contra_fr_m2', 'post_fl_fever', 'screen_cx_free', 'screen_hpv_consent'];
+    return Object.keys(en).filter((k) => !/_doc$/.test(k) && typeof en[k] === 'string' && PUSH.test(en[k]) && en[k + '_doc'] == null && ['access', 'asha', 'teen'].indexOf(owner[k]) < 0 && KEEP.indexOf(k) < 0); });
+  check('9 no string sends her to the ASHA or ANM without its doctor-route words (outside the government pages)', !left.length, left);
+  await done(a);
+}
+for (const [care, want, not] of [[null, /Your doctor decides these doses/, /Your ANM decides these doses/], ['asha', /Your ANM decides these doses/, /Your doctor decides these doses/]]) {
+  const a = await open({ hash: 'a-pregnancy.iron-folic-acid-calcium-td', seed: { situation: care ? { care } : {} } });
+  const tc = await all(a, '#view');
+  check('9 the Learn guide on iron and calcium, ' + (care ? 'her ASHA' : 'unanswered') + ': ' + want.source, want.test(tc) && !not.test(tc) && (care ? /ask the ANM for a haemoglobin test this week/ : /ask your doctor for a haemoglobin test this week/).test(tc), tc.slice(0, 500));
+  await done(a);
+}
+{
+  let a = await open({ hash: 'cond-anaemia' });
+  check('9 the anaemia page, unanswered: "your doctor may prescribe iron"', /your doctor may prescribe iron, often for about 3 months/.test(await all(a, '#view')) && !/the doctor or ANM may give the red tablet daily/.test(await all(a, '#view')));
+  await done(a);
+  a = await open({ hash: 'cond-anaemia', seed: { situation: { care: 'govt' } } });
+  check('9 ... a government centre: the red tablet from the doctor or ANM, as before', /the doctor or ANM may give the red tablet daily/.test(await all(a, '#view')));
+  await done(a);
+  a = await open({ hash: 'a-pregnancy.iron-folic-acid-calcium-td', w: 360, seed: { lang: 'hi' } });
+  const v = await all(a, '#view');
+  check('9 Hindi at 360 px: the Learn guide in her route\'s words ("डोज़ आपकी डॉक्टर तय करती हैं"), no sideways scroll', /डोज़ आपकी डॉक्टर तय करती हैं/.test(v) && !/डोज़ आपकी ANM तय करती हैं/.test(v) && await noScroll(a) && !KEYS.test(v), v.slice(0, 300));
+  await shot(a, 'hi-learn-iron');
   await done(a);
 }
 

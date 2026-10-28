@@ -194,9 +194,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the government and ASHA words only for a woman who picks them; otherwise "your doctor" and one quiet line for the free
       government option (iron tablets, pregnancy check-ups, after the birth, Help, the doctor screen, My plan's doctors, the
       findings);
-    - iron as her doctor prescribed: every day, every other day or once a week.
-    Suites that check the government route seed `care: 'govt'`. Contract: MODULE_API section 71; wording: section 19.28 of the
-    review (waits for doctor review).
+    - iron as her doctor prescribed: every day, every other day or once a week;
+    - Version 39.29, the same rule in the Learn library and every module: `<key>_doc` strings, `doc` lines and article `doc`
+      paragraphs, read by core's `t`, `tx` and `L` (the full list for the doctor: `docs/doctor-route-review-2026-10-28.md`).
+    Suites that check the government route seed `care: 'govt'`. Contract: MODULE_API sections 71 and 72; wording: sections 19.28
+    and 19.29 of the review (waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

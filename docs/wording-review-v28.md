@@ -2412,3 +2412,31 @@ vaccine schedule), and "Many mothers skip it. Please go."
 | Does an ASHA visit you? See her visit days | क्या ASHA आपके घर आती हैं? उनकी विज़िट के दिन देखें |
 | Long or heavy periods can cause anaemia. Ask your doctor if you need iron tablets. They are also free at government health centres. | लंबे या भारी पीरियड से खून की कमी हो सकती है। डॉक्टर से पूछें कि क्या आपको आयरन की गोलियाँ चाहिए। ये सरकारी स्वास्थ्य केंद्रों पर मुफ़्त भी मिलती हैं। |
 | If you could be pregnant, take a home test. Any chemist sells one; your ASHA gives Nishchay kits free. | अगर गर्भ की संभावना है, तो घर पर test करें। यह किसी भी केमिस्ट पर मिलता है; ASHA Nishchay किट मुफ़्त देती हैं। |
+
+### 19.29 Version 39.29: the doctor route everywhere (MODULE_API section 72)
+
+Mohit, 28 Oct: carry Version 39.28's doctor-first rule into the Learn library and the other modules. A woman who sees a private
+doctor (or hasn't said) reads 219 lines in their doctor-route form: 73 Learn paragraphs, 69 strings and 77 lines written in place.
+Each is the reviewed line with only who she sees, or where she gets it, changed. The doctor first, the free government option kept
+as a second clause. The full list, in English and Hindi beside the reviewed English: **`docs/doctor-route-review-2026-10-28.md`**.
+
+**Unchanged for everyone (reviewed):** emergency numbers and danger signs, and where to go in an emergency. Also:
+- every dose, test and week;
+- the government services pages, My ASHA and the Learn services guides;
+- scheme facts, the free-supply and free-test lists, the HPV vaccine programme and the teen (RKSK) pages.
+
+**Please review.** Questions for the doctor:
+1. **Who to ask when unsure in pregnancy.** "Not sure if it counts: call your doctor, or 104" (before: "call your ANM"). The
+   danger signs, 112/108/102 and "a CHC, FRU or district hospital is best" stay as they are. Right to leave the emergency
+   destination unchanged for a woman with a private gynaecologist?
+2. **High blood pressure or Hb below 7 in pregnancy.** Before: "the ANM should refer you to a higher centre". Now: "this needs
+   your gynaecologist's care now, in a hospital if they say so". Strong enough?
+3. **The emergency pill.** "Any chemist sells it without a prescription; it is also free from your ASHA, the sub-centre, PHC or
+   CHC." And for missed pills, "ask your doctor whether you need the emergency pill" (before: "your ASHA or doctor"). Fine?
+4. **After the birth.** "If an ASHA visits you, she comes on days 3, 7, 14, 21, 28 and 42", and "Keep taking the iron and
+   calcium your doctor prescribed, for as long as they said" (before: "for 180 days … six months"). Is leaving the length to her
+   doctor right here, as on the check-ups page (question 4 of 19.28)?
+5. **Screening.** "From 30, every woman can have a cervical screening and a breast exam once in 5 years, with her gynaecologist
+   or free at the Ayushman Arogya Mandir or PHC." The intervals are unchanged. Fine?
+6. **The iron guide's title.** "The red tablet, the white tablet and two injections" names the government's tablets. For a woman
+   on her doctor's brands, keep the title, or give her a plainer one ("Iron, calcium and two injections")?
