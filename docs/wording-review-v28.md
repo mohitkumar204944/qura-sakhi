@@ -2440,3 +2440,17 @@ as a second clause. The full list, in English and Hindi beside the reviewed Engl
    or free at the Ayushman Arogya Mandir or PHC." The intervals are unchanged. Fine?
 6. **The iron guide's title.** "The red tablet, the white tablet and two injections" names the government's tablets. For a woman
    on her doctor's brands, keep the title, or give her a plainer one ("Iron, calcium and two injections")?
+
+### 19.30 Version 39.30: a danger sign typed in search, for every woman (MODULE_API section 73)
+
+No new wording. Help's own lines, already reviewed, now also appear above the search results when a woman types one of Help's
+"Call 112 now" signs in her own words, at every stage (before, only in pregnancy did search put the danger guide first):
+- "Call 112 now if" with "Soaking a pad every 1–2 hours and feeling dizzy or breathless" (bleeding with dizziness, fainting or
+  breathlessness), or with "Period late or a positive test, plus one-sided lower belly pain, shoulder-tip pain, dizziness or
+  fainting"; buttons "Call 112 now" and "Help and safety";
+- "Thoughts of harming myself or my baby" with "Tele-MANAS 14416 and 112: free, any time"; buttons Call 14416, Call 112 and
+  "Help and safety".
+
+One question for the doctor: these two signs show a card only together with dizziness, fainting or breathlessness (or, for a
+late period, one-sided or shoulder pain). Bleeding alone, or dizziness alone, shows the normal results. Is that the right line,
+or should heavy bleeding alone ("a pad every 1–2 hours") show Help's "See a doctor today if" card as well?

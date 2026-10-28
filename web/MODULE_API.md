@@ -4823,3 +4823,43 @@ unchanged:
 - the guide in Hindi at 360 px.
 
 **Wording:** section 19.29 of the review, with the packet above. Every new line waits for the doctor.
+
+## 73. Version 39.30: a danger sign typed in search, for every woman
+
+Mohit, 28 Oct, after walking a competitor tracker whose offline chat answered "very heavy bleeding and I feel faint" with its
+welcome message ("build 1 first"; mockup claude.ai/artifact/Y4Kom9DHfyiw4buDUQRi8B). Until now only a pregnant woman's
+search put the danger guide first (`dangerQ` stops at `isPregnant()`). For anyone else, "bahut bleeding ho rahi hai aur
+chakkar aa raha hai" opened After an abortion first, and "very heavy bleeding and I feel faint" found How to read a pregnancy
+test (its "faint T line"). Neither showed 112.
+
+**The card** (`urgentCard(q)` in core, `.card.srch-urg`): when her words match one of Help's "Call 112 now" signs, one card
+comes before everything else in `searchResults`, so in Explore's search and Learn's search, at every stage:
+- Help's heading "Call 112 now if" and the sign that matched, in Help's own words: `s1b` (soaking a pad every 1–2 hours and
+  feeling dizzy or breathless) or `s1a` (a late period or positive test with one-sided or shoulder-tip pain, dizziness or
+  fainting); "Call 112 now" (`tel:112`) and "Help and safety" (`data-go="help"`).
+- Thoughts of harming herself or her baby: Help's `hs_harm` and `hs_harm_s`, then Call 14416 (Tele-MANAS) first and Call 112,
+  as in discreet mode's urgent card (review DP-5), and Help and safety.
+- `data-urg` names the match (`s1b`, `s1a` or `harm`); `data-say` lets the speaker read it. It shows in discreet mode and on a
+  shared phone too: she typed it.
+- No new wording: every line is Help's, already doctor-checked in English and Hindi.
+
+**What matches** (`urgentQ(q)`, on core's `norm`, so typed or spoken, Hinglish or Devanagari, with or without the nukta):
+- **harm** (checked first): suicide, "kill myself", "end my life", "want to die", self-harm, harming herself or her baby,
+  "khudkushi", "aatmhatya", "marna chahti", "mar jaana chahti", "jeena nahi chahti", "khud ko nuksan", "baby ko nuksan", and
+  the same in Hindi script.
+- **s1a**: a late or missed period, or a positive test, together with one-sided or shoulder pain, or dizziness or fainting.
+- **s1b**: bleeding words (bleed, spotting, "pad … bhig/soak", "heavy period/flow", "period bahut zyada aa raha", and the blood
+  words through `DANGER_BLOOD` with `DANGER_LAB` and `DANGER_BLEED`, as pregnancy uses them) together with dizziness,
+  fainting, blacking out ("aankhon ke aage andhera") or breathlessness.
+- **Not a sign:** bleeding or dizziness alone, "khoon ki kami" (and its dizziness), a blood test or blood group, a "faint line"
+  or "faint positive" on a pregnancy test, period pain with dizziness, "this pain is killing me".
+
+**Unchanged:** in pregnancy, `dangerQ` and its danger-signs guide as the quick answer, now under the card when a card shows;
+the results themselves and their order; Help.
+
+**Tests:** `test/urgent.mjs` (40 checks): the signs in English, Hinglish and Hindi, each card's heading, line and `tel:` links,
+the card first; 12 near misses with no card; Help and safety opens Help; Learn's search; pregnancy (no card for bleeding
+alone, the guide still the quick answer), after the birth, midlife, discreet mode; Hindi at 360 px, the harm card's 3 buttons
+without sideways scroll; no page errors.
+
+**Wording:** none new (section 19.30 of the review notes where Help's lines now also appear).

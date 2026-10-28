@@ -1272,6 +1272,31 @@
     return DANGER_MOVE.test(qq) || (DANGER_HEAD.test(qq) && DANGER_SEVERE.test(qq));
   };
   const dangerFirst = (q, arts) => { if (!dangerQ(q)) return arts; const d = allArticles().find((a) => a.group + '.' + a.id === DANGER_ART); return d ? [d].concat(arts.filter((a) => a !== d)) : arts; };
+  /* Version 39.30 (the Cykel walk, 28 Oct): one of Help's "Call 112 now" signs typed in her own words puts one card above the
+     results, at every stage, in Help's own words: bleeding with dizziness, fainting or breathlessness (s1b); a late period or
+     a positive test with one-sided or shoulder-tip pain, dizziness or fainting (s1a); thoughts of harming herself or her baby
+     (Tele-MANAS 14416, then 112). A "faint line" on a pregnancy test, "khoon ki kami" and a blood test are not signs. In
+     pregnancy the danger-signs guide still comes first among the articles, as before. */
+  const URG_BLEED = /bleed|ब्लीडिंग|रक्तस्राव|raktasrav|spotting|स्पॉटिंग|\bpads? .{0,12}(bhig|bheeg|soak|bhar|full)|पैड .{0,12}(भीग|भर)|heavy (period|flow|bleed)|(period|पीरियड|mahina|masik|मासिक).{0,16}(zyada|jyada|ज्यादा|bahut|bohot|बहुत)( zyada| jyada| ज्यादा)? (aa|ho|आ|हो) ?(raha|rahi|rahe|रहा|रही|रहे)/;
+  const URG_DIZZY = /dizz|chakk?ar|चक्कर|faint(?!\s*(t\s*)?(line|positive|लाइन))|behosh|बेहोश|unconscious|black ?out|pass(ed)? out|andhera|अँधेरा|अंधेरा|breathless|short of breath|saa?ns .{0,10}(phool|phul|nahi|ruk)|(साँस|सांस) .{0,10}(फूल|नहीं|रुक)/;
+  const URG_LATE = /\blate\b|der se|der ho|देर|miss(ed)? (my )?period|period miss|period nahi(n)? aa|पीरियड नहीं आ|positive|पॉजिटिव|पोजिटिव/;
+  const URG_SIDE = /one.?sided?|ek (taraf|tarf|side)|एक (तरफ|साइड)|shoulder|kandh|कंध/;
+  const URG_HARM = /suicid|kill(ing)? my ?self|end (my|this) life|want to die|wanna die|self.?harm|(hurt|harm)(ing)? (my ?self|my baby)|khud ?kh?ushi|aa?tm(a)? ?hatya|आत्महत्या|खुदकुशी|mar(na| jaa?na) chah|mar jaa?u|jee?na nahi(n)? chah|मरना चाह|मर जाना चाह|मर जाऊ|जीना नहीं चाह|khud ko (nuksaa?n|chot|maar)|खुद को (नुकसान|चोट|मार)|(baby|bachch?e) ko (nuksaa?n|maar)|बच्चे को (नुकसान|मार)/;
+  const urgentQ = (q) => {
+    const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
+    if (URG_HARM.test(qq)) return 'harm';
+    const dizzy = URG_DIZZY.test(qq);
+    if (URG_LATE.test(qq) && (dizzy || URG_SIDE.test(qq))) return 's1a';
+    const bleed = URG_BLEED.test(qq) || (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq)));
+    return bleed && dizzy ? 's1b' : null;
+  };
+  function urgentCard(q) {
+    const k = urgentQ(q); if (!k) return ''; const harm = k === 'harm';
+    const calls = harm ? '<a class="btn primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a><a class="btn danger" href="tel:112">' + esc(t('call_b')) + ' 112</a>'
+      : '<a class="btn primary" href="tel:112">' + esc(t('hs_112')) + '</a>';
+    return '<section class="card srch-urg" data-urg="' + k + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t(harm ? 'hs_harm' : 'call_now')) + '</h2></div>' +
+      '<p class="su-sign">' + esc(t(harm ? 'hs_harm_s' : k)) + '</p><div class="su-btns">' + calls + '<button type="button" class="btn danger" data-go="help">' + esc(t('help_h')) + '</button></div></section>';
+  }
   /* Questions come typed or spoken ("mera period late hai"): drop the filler words, keep the words that carry meaning,
      and add the English word for every Hindi or Hinglish word Sakhi knows. Results are ranked by how many words they match. */
   const STOP = new Set(('my me i im am is are was were the a an of to in on at for and or but what how when why which who do does did done it its this that ' +
@@ -1436,7 +1461,8 @@
   };
   const bothLang = (x, k) => { const val = x[k]; if (!val) return ''; if (typeof val === 'string') return (STR.en[val] || val) + ' ' + (STR.hi[val] || ''); return (val.en || '') + ' ' + (val.hi || ''); };
   function searchResults(q, all) {
-    const terms = searchTerms(q); if (!terms.length) return '';
+    const urg = urgentCard(q);   /* Version 39.30: a danger sign she typed comes before everything else */
+    const terms = searchTerms(q); if (!terms.length) return urg;
     const rank = (list, hayOf) => list.map((x) => ({ x: x, n: score(hayOf(x), terms) })).filter((r) => r.n > 0).sort((a, b) => b.n - a.n).map((r) => r.x);
     let hitT = rankTiles(q, terms, all);
     let hitA = dangerFirst(q, rank(allArticles(), (a) => norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' '))));
@@ -1445,9 +1471,9 @@
     const af = ansFirst(q); const afA = af ? findArticle(af) : null;
     const afHtml = afA ? '<div class="card soft ans-first"><span class="eyebrow">' + esc(t('ans_first')) + '</span><button type="button" class="item quiet" data-qa="' + esc(af) + '"><span class="ico-sm hue hue-' + hueOf(afA.group) + '">' + icon(GROUP_ICONS[afA.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(afA, 'title')) + '</strong><span>' + esc(L(afA, 'summary')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '';
     if (afA) hitA = hitA.filter((a) => a.group + '.' + a.id !== af);
-    if (!hitT.length && !hitA.length && afHtml) return afHtml;
-    if (!hitT.length && !hitA.length) return '<div class="card"><p>' + esc(t('no_tools')) + '</p><button type="button" class="btn sm" data-ask="' + esc(q) + '">' + esc(t('ask_qura')) + '</button></div>';
-    return afHtml + (hitT.length ? '<section class="care-sec"><h2>' + esc(t('res_tools')) + '</h2><div class="list">' + hitT.slice(0, 24).map(tileHtml).join('') + '</div></section>' : '') +
+    if (!hitT.length && !hitA.length && afHtml) return urg + afHtml;
+    if (!hitT.length && !hitA.length) return urg + '<div class="card"><p>' + esc(t('no_tools')) + '</p><button type="button" class="btn sm" data-ask="' + esc(q) + '">' + esc(t('ask_qura')) + '</button></div>';
+    return urg + afHtml + (hitT.length ? '<section class="care-sec"><h2>' + esc(t('res_tools')) + '</h2><div class="list">' + hitT.slice(0, 24).map(tileHtml).join('') + '</div></section>' : '') +
       (hitA.length ? '<section class="care-sec"><h2>' + esc(t('res_articles')) + '</h2><div class="list">' + hitA.slice(0, 24).map(artHtml).join('') + '</div></section>' : '');
   }
   /* mic: a Speak button where the Android app can listen (Version 37: Explore's search took over from Home's ask box) */

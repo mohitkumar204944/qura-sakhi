@@ -199,6 +199,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       paragraphs, read by core's `t`, `tx` and `L` (the full list for the doctor: `docs/doctor-route-review-2026-10-28.md`).
     Suites that check the government route seed `care: 'govt'`. Contract: MODULE_API sections 71 and 72; wording: sections 19.28
     and 19.29 of the review (waits for doctor review).
+  - `node test/urgent.mjs` (Version 39.30, a danger sign typed in search, for every woman; Mohit, 28 Oct, after the Cykel walk;
+    mockup claude.ai/artifact/Y4Kom9DHfyiw4buDUQRi8B): Help's "Call 112 now" signs in her words (bleeding with dizziness or
+    fainting, a late period or positive test with one-sided pain, thoughts of harm) put one card above Explore's and Learn's
+    results, at every stage, with Call 112 now (Tele-MANAS 14416 first for harm) and Help and safety. Help's own lines, no new
+    wording. Contract: MODULE_API section 73; review section 19.30.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
