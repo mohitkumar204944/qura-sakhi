@@ -220,6 +220,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       her version's doctor card, a fresh start, a positive test ("Yes, move me on");
     - every line for the doctor: `docs/baby-plan-review-packet-2026-10-28.md` (page claude.ai/artifact/XXz1VPJicgVJMAY6v3rrUt;
       the new lines wait for doctor review). Contract: MODULE_API section 75; wording: section 19.32 of the review.
+  - `node test/walkfix.mjs` (Version 39.33, the walkthrough's fixes; Mohit, 28 Oct: "Proceed fixing all"): on a diary like
+    Mohit's, Edit period dates (no + over Save, Sakhi's guessed days lighter), the calendar's key (start, bleeding,
+    predicted), Today ("Partly done", no "Next" after the check-in, the cycle left out of her gaps), Cycles ("last {n}",
+    "3-day period", no end day), "Feeling okay" never with a sign that says otherwise (a danger sign stays), My progress, the
+    flow choices one to a row, and Hindi at 360 px. Contract: MODULE_API section 76; wording: section 19.33 (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

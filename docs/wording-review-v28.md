@@ -2474,3 +2474,18 @@ its own packet, as built: `docs/baby-plan-review-packet-2026-10-28.md`, also a p
 - **17 questions** at the end of the packet, for the gynaecologist, Dr. Megha (food) and a physiotherapist (moves).
 
 Until the doctor signs, the plan runs in demo and pilot builds as every Version 39 plan has.
+
+### 19.33 Version 39.33: the walkthrough's fixes (MODULE_API section 76)
+
+UI words only; nothing about health is new. The key and Today reuse lines already in the app ("Period started", "Bleeding",
+"Predicted period", "Period from {d}", "not counted: hormones").
+- Edit period dates, when a month shows Sakhi's guess: "Lighter days are Sakhi’s guess, as no end day is saved. Keep them, or
+  tap to take them off." / "हल्के रंग वाले दिन Sakhi का अंदाज़ा हैं, क्योंकि ख़त्म होने का दिन सेव नहीं है। उन्हें रहने दें, या हटाने के लिए टैप करें।"
+- My cycles, a finished cycle with no end day: "no end day saved" / "ख़त्म होने का दिन सेव नहीं".
+- Your cycle at a glance: "Cycle length (last {n})" / "चक्र की लंबाई (पिछले {n})" (was "last 6").
+- My cycles: "{p}-day period · {c}-day cycle" and "{p}-day period · cycle day {c}" (was "{p} days period"; Hindi unchanged).
+- My progress for Getting ready: "From what you logged." / "आपने जो दर्ज किया उससे।", and its 12 weeks' line without the
+  checklist (which has its own card there): "{n} days of your tablet, and about {m} minutes moved a week." / "{n} दिन गोली,
+  और हफ़्ते में लगभग {m} मिनट चलना-फिरना।" (a shortened copy of section 19.32's line, which waits for the doctor).
+- Removed: the "Noted." toast on "I have my tablet" (Version 39.32's live test).
+

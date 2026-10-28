@@ -5011,9 +5011,62 @@ builds"; CLAUDE.md; `docs/minimalism-audit-2026-10-27.md`, sections 3 and 4). Ho
   taps as before, 24 screens (+1: A few things first), 7 scrolls (+2 on its 13 lines);
 - `progs.mjs` 5b checks every live plan's evening order (the check-in after her move nudge).
 
-**Tests:** `node test/baby.mjs` (109 checks: starting, her version, day 1 and the doctor card, her tablet, her weeks, food,
-moves, lessons, the ready check, moments, every verified line word for word, Hindi at 360 px, version 1 running on, and the
-baseline: her evening's order, one row under her steps, no repeated row, the fold). progs.mjs knows the new words and the two
-live versions of `ttc`, and checks every live plan's evening order.
+**Found on Mohit's phone (28 Oct, the live test of 0.39.32-pilot; Mohit: "fix gaps 1, 2, 3, 5, 6 and 7").** No new wording.
+- A plan made at another stage doesn't wait (`pendingOk`): after she switches to trying for a baby, an unstarted period-pain
+  plan no longer stands between her and her stage's plans, and Today offers only a goal of her stage now (`offerCard`). It
+  waits again if she switches back. (Installed as vc 60.)
+- A plan she stopped earlier left `nudgeMade`, so the new plan's nudge looked deleted and the 6 pm the Start card named never
+  rang: a fresh start (`commitStart`) and `closePlan` clear it.
+- PMOS she told Sakhi is ticked on "A few things first" (`pcosSaid()`: Version 36's "What would you like help with?" in an
+  older diary; a diagnosis in `situation.pcos` was ticked already through Months of trying), so her version is right
+  without asking again.
+- While she tries for a baby, "My PMOS plan" isn't offered (My plan's suggestions, Me's setup, Explore's PMOS tile) until a
+  plan has started; `plan-pmos` opens My plan, where Getting ready carries the PMOS food and moves.
+- Core's "Tell Sakhi your stage and goals" (an older diary after a stage change) waits while her plan for this stage runs or
+  waits: the plan holds her stage and goal.
+- How it looks: the tablet's reminder is the app's switch (`label.item`, as in Plan settings) with no "Noted." toast over
+  it; a lesson card that opens with its story or its urgent line keeps it clear of the speaker; a read lesson's tick stays
+  on its line.
+- Then (Mohit: "yes fix and reinstall"): one "Your 12 weeks" on My plan. Getting ready's 4 parts (`BPH`) are the path card's
+  own (`pathHtml`, as pregnancy and after a birth have theirs), this one marked, with her doctor month (`bdocMonth`); after
+  week 1, `weeksCard`'s this week and next name her part (the 4-week check and her results stay). `babyCard` keeps only her
+  tools: this week's lesson, the ready check, the calm switch.
+- The "How to do it" sheet's tool button (`toolOf`) names a page with no tile by its step ("My folic acid tablet",
+  "1-minute ready check"), never its address.
+
+**Tests:** `node test/baby.mjs` (130 checks: starting, her version, day 1 and the doctor card, her tablet, her weeks, food,
+moves, lessons, the ready check, moments, every verified line word for word, Hindi at 360 px, version 1 running on, the
+baseline (her evening's order, one row under her steps, no repeated row, the fold), and sections 16 and 17 for what the live
+test found). progs.mjs knows the new words and the two live versions of `ttc`, and checks every live plan's evening order.
 
 **Wording:** section 19.32 of the review; every line in the packet, the new ones waiting for the doctor.
+
+## 76. Version 39.33: the walkthrough's fixes (Today, My plan, Diary)
+
+Mohit, 28 Oct: "can you do a walkthrough of home my plan and diary section if any gaps or bugs", then "Proceed fixing all".
+Found on his Flip5 (vc 62): 3 bugs and 7 gaps. No new health wording; the new lines are UI words (review section 19.33).
+- **Edit period dates** (core `renderCalEdit`): the + button stays off while it is open (`renderFab`: it sat on Save). The days
+  Sakhi guessed (`guessDays()`: the 4 days `bleedingDays0` adds after a start with no end day) are lighter, with one line
+  (`ce_guess`); a day she taps is hers. They stay marked: unmarked, one tap inside a period would save a new period. Save
+  still rewrites only the periods she changed, and a run that reaches today stays open.
+- **The calendar's key** (`periodKey`): a start (solid, "Period started"), the days after it (lighter, "Bleeding", as the
+  calendar draws them), spotting, and "Predicted period" whenever the month shows predicted days. On a shared phone, one
+  period word as before.
+- **Today**: a step she marked "Partly" says "Partly done"; "Next" is the first step she hasn't touched, and none after her
+  check-in (`nx`). Under "Your last gaps", a latest cycle left out says why in Days' own words ("Period from 1 Oct · not
+  counted: hormones"); never on a shared phone or in discreet mode.
+- **Cycles**: "Cycle length (last {n})" names the gaps it has; "3-day period · 23-day cycle"; a finished cycle with no end day
+  says so (`mc_noend`).
+- **"Feeling okay"** (`okRule`, in Today's quick set, the day page, the first log and the period sheet): a pain, body or
+  low-mood sign she adds takes it off, and "Feeling okay" takes those off. Calm, happy and discharge stay, and so does a
+  danger sign (bleeding or the baby moving less in a pregnancy).
+- **My progress** (Getting ready): "From what you logged." (it compares nothing with before); her checklist's count once, in
+  its own card (Version 38's "Before-pregnancy checklist", with "Open the checklist"), so her 12 weeks' line there leaves the
+  checklist out (`resultOf(d, true)`, `plan_bres_p`); the end page and the month summaries keep the full line.
+- **The day page's flow choices** one to a row, so "Soaked one every 1–2 hours" is as tall as the rest.
+
+**By design, not changed:** the care team's order (V39.28 `byRoute`), "Sakhi says" hidden after the check-in, a cycle on the
+pill not counted.
+
+**Tests:** `node test/walkfix.mjs` (34 checks, a diary like Mohit's; 21 fail on the build before it).
+

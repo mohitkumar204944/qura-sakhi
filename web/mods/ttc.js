@@ -184,10 +184,10 @@
       '<div class="card" data-say="1"><h3>' + esc(t('ttc_folic_where')) + '</h3>' + P(VF.strip, 'ttc-p') + '<p class="ttc-p">' + esc(t('ttc_folic_free')) + '</p></div>' +
       (!can ? '' : (!f.has
         ? '<div class="row wrap"><button type="button" class="btn primary" id="ttc-fo-has">' + esc(t('ttc_folic_has')) + '</button><button type="button" class="btn" id="ttc-fo-not">' + esc(t('ttc_folic_not')) + '</button></div>'
-        : '<div class="card"><label class="row spread ttc-fo-rem"><span class="ttc-lab"><strong>' + esc(t('ttc_folic_rem')) + '</strong>' + (disc ? '' : '<span class="small">' + esc(t('ttc_folic_lock')) + '</span>') + '</span><input type="checkbox" class="switch" id="ttc-fo-rem"' + (remOn ? ' checked' : '') + '></label></div>')) +
+        : '<div class="list"><label class="item ttc-fo-rem"><span class="body"><strong>' + esc(t('ttc_folic_rem')) + '</strong>' + (disc ? '' : '<span>' + esc(t('ttc_folic_lock')) + '</span>') + '</span><input type="checkbox" id="ttc-fo-rem"' + (remOn ? ' checked' : '') + '></label></div>')) +   /* Version 39.32 (found on Mohit's phone): the app's own switch, as in Plan settings */
       '</div>';
     S.wire(v);
-    const hs = v.querySelector('#ttc-fo-has'); if (hs) hs.addEventListener('click', () => { folicSet({ has: S.toISO(S.today()), ask: null }); folicSync(babyOn()); persist(); S.toast(t('saved')); S.render(); });
+    const hs = v.querySelector('#ttc-fo-has'); if (hs) hs.addEventListener('click', () => { folicSet({ has: S.toISO(S.today()), ask: null }); folicSync(babyOn()); persist(); S.render(); });   /* Version 39.32 (found on Mohit's phone): no "Noted." over her new switch; the switch says it */
     const nt = v.querySelector('#ttc-fo-not'); if (nt) nt.addEventListener('click', () => { folicSet({ ask: S.toISO(S.today()) }); persist(); S.setHash('home'); });
     const rm = v.querySelector('#ttc-fo-rem'); if (rm) rm.addEventListener('change', () => {
       const r2 = S.reminders.get(FOLIC_R);
@@ -816,6 +816,7 @@
       '.ttc-ft { min-width: 0; overflow-wrap: anywhere; }',
       '.ttc-lab { min-width: 0; display: flex; flex-direction: column; gap: 3px; overflow-wrap: anywhere; }',
       '.ttc-lab .small { font-weight: 400; }',
+      '.ttc-les.has-say > .say-b + .ttc-p { padding-right: 40px; } .ttc-les.has-say > .say-b + .flag { margin-right: 40px; }',   /* Version 39.32 (found on Mohit's phone): a lesson card that opens with its story or its urgent line keeps it clear of the speaker */
       '.ttc-big { font-family: var(--font-display); font-size: 48px; font-weight: 600; color: var(--fg); line-height: 1; }',
       'body.hi .ttc-big { font-family: var(--font-hi); font-size: 40px; }',
       '.ttc-bar { height: 10px; border-radius: 5px; background: var(--bg); overflow: hidden; }',

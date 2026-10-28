@@ -1158,7 +1158,7 @@ body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span
 .df-next .df-i, .df-before .df-i { border: 2px dashed var(--accent-2); }
 .day-flowq { display: flex; flex-direction: column; gap: 8px; }
 .day-flowq .dfq { font-weight: 600; color: var(--muted); }
-.flow-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.flow-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }   /* Version 39.33: one to a row, so the longest (soaked every 1-2 hours) is as tall as the rest */
 .flow-t { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border-radius: 14px; border: 2px solid transparent; background: var(--h-rose-soft); color: var(--fg); font: inherit; font-weight: 500; text-align: left; }
 .flow-t.on { border-color: var(--bleed); background: var(--card); font-weight: 700; }
 .flow-t .drops { display: inline-flex; gap: 1px; flex: none; }

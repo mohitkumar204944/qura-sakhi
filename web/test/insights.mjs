@@ -101,7 +101,7 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   check('3 the verdict gives the next period', /Next period: in about 6 days, likely/.test(vd), vd);
   check('3 the period-length chart: a bar for each period with an end, and the 8-day line', (await page.$$('#view .pbars .col')).length === 11 && !!(await page.$('#view .pbars .pline')));
   const rows = await page.$$eval('#view .mc-card .mc-row', (rs) => rs.map((r) => ({ t: r.innerText, p: r.querySelectorAll('.mc-pills i.p').length, f: r.querySelectorAll('.mc-pills i.f').length, o: r.querySelectorAll('.mc-pills i.o').length, n: r.querySelectorAll('.mc-pills i').length })));
-  check('3 My cycles: the current cycle first, with its cycle day (Version 39.27: as Today counts it)', /– now/.test(rows[0].t) && /5 days period · cycle day 24/.test(rows[0].t) && rows[0].n === 24 && rows[0].p === 5, rows[0]);
+  check('3 My cycles: the current cycle first, with its cycle day (Version 39.27: as Today counts it)', /– now/.test(rows[0].t) && /5-day period · cycle day 24/.test(rows[0].t) && rows[0].n === 24 && rows[0].p === 5, rows[0]);
   check('3 My cycles: each cycle shows its fertile window and one ovulation day', rows.slice(0, 3).every((r) => r.f === 5 && r.o === 1), rows.slice(0, 3));
   check('3 My cycles: a past cycle shows its own length', /29-day cycle/.test(rows[1].t), rows[1]);
   check('3 My cycles: four rows open, the rest under Show all', rows.length === 11 && (await page.$$('#view .mc-card > .mc-list > .mc-row')).length === 4 && /Show all 11/.test(await card(page, '#view .mc-more summary')), rows.length);

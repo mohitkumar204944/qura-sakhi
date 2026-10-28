@@ -74,6 +74,10 @@ const view = (a) => txt(a, '#view');
 const st = (a) => a.page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state)));
 const acts = (a) => a.page.evaluate(() => window.Saathi.plan.actions().map((x) => ({ id: x.id, kind: x.kind, title: x.title, sub: x.sub, state: x.state, r: x.r || null, habit: x.habit || null, why: x.why || null })));
 const ids = async (a) => (await acts(a)).map((x) => x.id);
+/* My plan's "Your 12 weeks" (Version 39.32: one card, Getting ready's 4 parts): how many cards say it, its parts, the one marked,
+   this week and next, her doctor month, and whether an old baby card is left */
+const y12 = (a) => a.page.evaluate(() => { const c = document.querySelector('#view .pl-bpath, #view .pl-weeks'); const li = c ? Array.from(c.querySelectorAll(':scope > .pl-steps li')) : [];
+  return { n: Array.from(document.querySelectorAll('#view h3')).filter((h) => h.textContent.trim() === 'Your 12 weeks').length, li: li.length, now: li.findIndex((x) => x.classList.contains('now')), kv: ((c && c.querySelector('.pl-kv')) || {}).textContent || '', dm: ((c && c.querySelector('.pl-bdm')) || {}).textContent || '', baby: !!document.querySelector('#view .pl-baby') }; });
 const noScroll = (a) => a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
 const shot = (a, name) => a.page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: true });
 const KEYS = /\b(plan|ttc)_[a-z0-9_]+\b/;   /* a string key on screen is a missing translation */
@@ -296,10 +300,12 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const w2 = await open({ seed: withPlan(8) });
   check('8 the look-back seen: the lesson row', (await has(w2, '#view .pl-les')) && !(await has(w2, '#view .pl-rev-row')));
   await go(w2, 'plan');
-  check('8 My plan: no row repeats her tablet, and her 12 weeks fold to one line after week 1', !(await has(w2, '.pl-baby [data-go="ttc-folic"], .pl-baby-tools [data-go="ttc-folic"]')) && (await has(w2, '.pl-baby details')) && !(await w2.page.$eval('.pl-baby details', (x) => x.open)) && (await has(w2, '.pl-baby-tools [data-go="ttc-lesson"]')));
+  const y2 = await y12(w2);
+  check('8 My plan after week 1: no row repeats her tablet, one "Your 12 weeks", and this week and next name her parts', !(await has(w2, '.pl-baby-tools [data-go="ttc-folic"]')) && (await has(w2, '.pl-baby-tools [data-go="ttc-lesson"]')) && y2.n === 1 && /This week\s*First things first: your tablet, an Hb test, and his part\s*Next week\s*Food, tests before pregnancy, fertile days, and how long it takes/.test(y2.kv), y2);
   await done(w2);
   const w1 = await open({ seed: withPlan(0), hash: 'plan' });
-  check('8 week 1: her 12 weeks open', (await has(w1, '.pl-baby h3')) && !(await has(w1, '.pl-baby details')));
+  const y1 = await y12(w1);
+  check('8 week 1: one "Your 12 weeks", her 4 parts, the first marked', y1.n === 1 && y1.li === 4 && y1.now === 0 && !y1.baby, y1);
   await done(w1);
   const a = await open({ seed: withPlan(0) });
   await tap(a, '.pl-les');
@@ -375,7 +381,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const end = await open({ seed: withPlan(84, { log: { [ago(80)]: { ck: { folic: 'd' }, min: 20 }, [ago(79)]: { ck: { folic: 'd' } } } }, { mods: { plan: baby(84, { log: { [ago(80)]: { ck: { folic: 'd' }, min: 20 }, [ago(79)]: { ck: { folic: 'd' } } } }), ttc: { prep: { folic: true, hb: true } } } }) });
   const res = await end.page.evaluate(() => { const S = window.Saathi; return S.t('plan_bres_h'); });
   await go(end, 'plan-progress');
-  check('10 her 12 weeks: days of her tablet, her checklist and her minutes, no pregnancy count', res === 'Your 12 weeks' && /Your 12 weeks 2 days of your tablet, 2 of 17 on your checklist, and about \d+ minutes moved a week\./.test(await view(end)) && !/pregnan/i.test(await txt(end, '.pl-bres')), (await view(end)).slice(0, 900));
+  check('10 her 12 weeks: days of her tablet and her minutes (her checklist in its own card), no pregnancy count', res === 'Your 12 weeks' && /Your 12 weeks 2 days of your tablet, and about \d+ minutes moved a week\. Before-pregnancy checklist 2 of 17 done/.test(await view(end)) && !/pregnan/i.test(await txt(end, '.pl-bres')), (await view(end)).slice(0, 900));
   await done(end);
 }
 
@@ -422,6 +428,91 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   check('12 A few things first in Hindi, no sideways scroll', /पहले कुछ बातें/.test(await view(a)) && /क्या इनमें से कुछ आप पर लागू होता है\?/.test(await view(a)) && (await noScroll(a)) && !KEYS.test(await view(a)));
   await shot(a, 'hi-start');
   await done(a);
+}
+
+/* ---------- 16 a plan she made at another stage (found on Mohit's phone, 28 Oct) ---------- */
+{
+  const old = { pack: 'pain', goalKey: 'pain', intake: { at: ago(9), stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23' }, at: ago(9), level: 0, limits: { knees: false, back: false }, food: 'veg', goal: 'pain', focus: 'habits', remAt: '20:00' };
+  const a = await open({ seed: { situation: { planning: true }, intake: { at: ago(9), stage: 'cycle', goal: 'pain' }, mods: { plan: { next: old, log: {}, weeks: {}, body: [] } }, prompts: { setup: 'off', planCall: ago(3), firstLog: ago(30), notifyAuto: ago(30), planOffer: ago(9) } }, hash: 'plan' });
+  const v = await view(a);
+  check('16 after she switches to trying for a baby, the old period-pain plan stops waiting: My plan offers her stage\'s goals, Getting ready first', /What do you want to work on\?/.test(v) && /Getting ready for a baby/.test(v) && !/Your plan is ready/.test(v), v.slice(0, 600));
+  await go(a, 'home');
+  check('16 Today offers no plan for a goal of her old stage', !/Ready to start|Ready for you/i.test(await view(a)) || !/Easier periods/.test(await view(a)), (await view(a)).slice(0, 900));
+  await done(a);
+  const back = await open({ seed: { situation: {}, intake: { at: ago(9), stage: 'cycle', goal: 'pain' }, mods: { plan: { next: old, log: {}, weeks: {}, body: [] } } }, hash: 'plan' });
+  check('16 back at her old stage, it waits again', /Your plan is ready/.test(await view(back)));
+  await done(back);
+  /* a plan she stopped earlier made a nudge (nudgeMade): the new plan's nudge is still on, as the Start card says */
+  const was = await open({ seed: { mods: { plan: { nudgeMade: true, past: [], log: {}, weeks: {}, body: [] } } } });
+  await was.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(was.page, 600);
+  await tap(was, '#pl-in-next'); await tap(was, '[data-pl-q="act:1"]'); await tap(was, '[data-pl-m="lim:none"]'); await tap(was, '#pl-in-next'); await tap(was, '[data-pl-when="evening"]');
+  await tap(was, '#pl-in-make'); for (let i = 0; i < 5 && (await has(was, '#pl-rv-next')); i++) await tap(was, '#pl-rv-next'); await tap(was, '#pl-rv-go');
+  const ng = await was.page.evaluate(() => ({ r: window.Saathi.reminders.get('plan-nudge'), off: window.Saathi.state.mods.plan.nudge === false }));
+  check('16 after a plan she stopped, the new plan\'s 6 pm nudge rings (it isn\'t taken for one she deleted)', ng.r && ng.r.time === '18:00' && ng.r.on !== false && !ng.off, ng);
+  await done(was);
+  /* PMOS she told Sakhi is ticked on "A few things first": her version without asking again (Mohit's phone: an older diary's
+     goals hold "pmos" from Version 36's "What would you like help with?"; a diagnosis saved in situation.pcos was ticked already) */
+  const said = await open({ seed: { situation: { planning: true }, goals: ['ttc', 'pmos'] } });
+  await said.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(said.page, 600);
+  check('16 PMOS she told Sakhi comes ticked on "A few things first"', await said.page.$eval('[data-pl-bf="pcos"]', (c) => c.checked));
+  await tap(said, '#pl-in-next'); await tap(said, '[data-pl-q="act:1"]'); await tap(said, '[data-pl-m="lim:none"]'); await tap(said, '#pl-in-next'); await tap(said, '[data-pl-when="evening"]');
+  await tap(said, '#pl-in-make'); for (let i = 0; i < 5 && (await has(said, '#pl-rv-next')); i++) await tap(said, '#pl-rv-next'); await tap(said, '#pl-rv-go');
+  const sk = (await st(said)).mods.plan.intake || {};
+  check('16 ...so her plan is a gynaecologist first, with the PMOS food and moves', sk.bdoc === 'gyn' && sk.bset === 'mix', sk);
+  await done(said);
+  /* while she tries for a baby, Getting ready is her plan: "My PMOS plan" isn't offered (My plan, Me's setup, Explore), and its page opens My plan */
+  const pm = await open({ seed: { situation: { planning: true, pcos: true } }, hash: 'plan' });
+  check('16 at the trying stage, My plan suggests no "My PMOS plan" (Getting ready is listed)', !/My PMOS plan/.test(await view(pm)) && /Getting ready for a baby/.test(await view(pm)), (await view(pm)).slice(0, 700));
+  await go(pm, 'topic-cond'); check('16 ...nor Explore\'s PMOS tile', !/PMOS: food, yoga and moves/.test(await view(pm)), (await view(pm)).slice(0, 500));
+  await go(pm, 'plan-pmos'); check('16 ...and its page opens My plan, Getting ready first', /What do you want to work on\?/.test(await view(pm)) && /Getting ready for a baby/.test(await view(pm)), (await view(pm)).slice(0, 400));
+  await done(pm);
+  const cyc = await open({ seed: { situation: { pcos: true }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' } }, hash: 'topic-cond' });
+  check('16 at the tracking stage, the PMOS tile stays', /PMOS: food, yoga and moves/.test(await view(cyc)));
+  await done(cyc);
+  const SET = { planCall: ago(3), firstLog: ago(30), notifyAuto: ago(30) };   /* Me's setup card on */
+  const ms = await open({ seed: { dob: '1999-05-01', situation: { planning: true, pcos: true }, prompts: SET }, hash: 'me' });   /* 27: no check-up step first */
+  check('16 ...nor Me\'s setup ("Start your PMOS plan") while she tries', !/Start your PMOS plan/.test(await view(ms)) && /Set up Sakhi for you/.test(await view(ms)), (await view(ms)).slice(0, 500));
+  await done(ms);
+  const mc = await open({ seed: { dob: '1999-05-01', situation: { pcos: true }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' }, prompts: SET }, hash: 'me' });
+  check('16 ...which offers it at the tracking stage', /Start your PMOS plan/.test(await view(mc)), (await view(mc)).slice(0, 500));
+  await done(mc);
+  /* a woman who joined before Version 39.10, after a stage change: her plan holds her stage and goal, so Today doesn't ask */
+  const ex0 = await open({ seed: {} });
+  check('16 an older diary with no plan: Today asks her stage and goals once', await has(ex0, '#view .ex-card'));
+  await done(ex0);
+  const ex1 = await open({ seed: withPlan(0) });
+  check('16 ...but not while her plan for this stage runs', !(await has(ex1, '#view .ex-card')));
+  await done(ex1);
+}
+
+/* ---------- 17 how it looks (found on Mohit's phone, 28 Oct): the app's own switch, a speaker clear of the words, her 12 weeks as a list ---------- */
+{
+  const a = await open({ seed: withPlan(0), hash: 'ttc-folic', h: 760 });
+  await tap(a, '#ttc-fo-has');
+  const sw = await a.page.evaluate(() => { const c = document.querySelector('#ttc-fo-rem'); const r = c.closest('.ttc-fo-rem').getBoundingClientRect(); const cs = getComputedStyle(c); return { item: c.parentElement.classList.contains('item'), w: cs.width, app: cs.appearance || cs.webkitAppearance, top: r.top, bot: r.bottom, vh: window.innerHeight }; });
+  check('17 the tablet\'s reminder is the app\'s switch (as in Plan settings)', sw.item && sw.w === '48px' && sw.app === 'none', sw);
+  check('17 ...where her buttons were, with no toast over it (the switch says it)', sw.top >= 0 && sw.bot <= sw.vh && !(await has(a, '.toast, #toast.on, .toast.on')), sw);
+  await done(a);
+  const l = await open({ seed: withPlan(0), hash: 'ttc-lesson' });
+  const ov = await l.page.evaluate(() => Array.from(document.querySelectorAll('#view .ttc-les.has-say')).map((c) => { const b = c.querySelector(':scope > .say-b').getBoundingClientRect(); const f = c.querySelector(':scope > .say-b + *'); if (!f || /^H/.test(f.tagName)) return null; const r = f.getBoundingClientRect(); const cs = getComputedStyle(f); return { tag: f.className, right: f.classList.contains('flag') ? r.right : r.right - parseFloat(cs.paddingRight), b: b.left }; }).filter(Boolean));
+  check('17 the lesson\'s speaker covers no words (its story and its urgent line)', ov.length >= 2 && ov.every((x) => x.right <= x.b + 1), ov);
+  await done(l);
+  /* her doctor month (Months of trying 40 days ago, at 30: 12 months on) under her 4 parts, in week 1 and after it */
+  const dmS = (n) => withPlan(n, {}, { mods: { plan: baby(n), ttc: { since: ago(40) } } });
+  const p1 = await open({ seed: dmS(0), hash: 'plan' }); const q1 = await y12(p1);
+  check('17 "Your 12 weeks" in week 1: her doctor month under her 4 parts', q1.n === 1 && q1.li === 4 && /^Your doctor month: September 2027/.test(q1.dm), q1);
+  await done(p1);
+  const p2 = await open({ seed: dmS(8), hash: 'plan' }); const q2 = await y12(p2);
+  check('17 ...and after week 1', q2.n === 1 && /^Your doctor month: September 2027/.test(q2.dm), q2);
+  await done(p2);
+  /* "How to do it" names a page with no tile by its step (found on Mohit's phone: "ttc-folic") */
+  const wy = await open({ seed: withPlan(2), hash: 'plan' }); const ix = await ids(wy); const lab = {};
+  for (const id of ['folic', 'ready']) { const i = ix.indexOf(id); if (i < 0) continue; await tap(wy, '[data-pl-how="' + i + '"]'); lab[id] = await wy.page.$eval('.pl-why-b [data-go]', (b) => b.textContent.trim()).catch(() => null); await wy.page.evaluate(() => window.Saathi.closeSheet()); await settle(wy.page, 300); }
+  check('17 "How to do it" names her tablet\'s page and the ready check, never their address', lab.folic === 'My folic acid tablet' && lab.ready === '1-minute ready check', { ix, lab });
+  await done(wy);
+  const r = await open({ seed: withPlan(8, {}, { mods: { plan: baby(8), ttc: { les: { w2: ago(1) } } } }), hash: 'plan' });
+  check('17 a lesson read keeps its tick on the same line', /The first|Week 2/.test(await view(r)) && (await r.page.evaluate(() => / ✓/.test((document.querySelector('.pl-baby-tools [data-go="ttc-lesson"]') || {}).textContent || ''))));
+  await done(r);
 }
 
 /* ---------- 13 version 1 runs on ---------- */
