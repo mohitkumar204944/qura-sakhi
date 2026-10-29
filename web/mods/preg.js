@@ -207,6 +207,7 @@
     r_prev: ['Problems in an earlier pregnancy (bleeding, fits, high BP, loss)', 'पिछले गर्भ में दिक़्क़त (ब्लीडिंग, दौरे, ऊँचा BP, गर्भ का नुक़सान)'],
     r_age: ['Age under 19 or over 35', 'उम्र 19 से कम या 35 से ज़्यादा'],
     r_oth: ['Something else', 'कुछ और'],
+    less_b: ['Baby moving less? Get help', 'बच्चे की हलचल कम है? मदद लें'],   /* Version 39.34: the pregnancy card's button on Home (core) */
     r_note: ['Note (what the ANM wrote)', 'नोट (ANM ने क्या लिखा)'], r_note_doc: ['Note (what the doctor wrote)', 'नोट (डॉक्टर ने क्या लिखा)'],
     r_marked: ['High-risk pregnancies are usually delivered at a district hospital or medical college. Ask your ANM which hospital, and plan transport early.', 'high-risk गर्भ में डिलीवरी आम तौर पर ज़िला अस्पताल या मेडिकल कॉलेज में होती है। ANM से पूछें कौन सा अस्पताल, और गाड़ी का इंतज़ाम पहले से करें।'], r_marked_doc: ['High-risk pregnancies are usually delivered at a hospital equipped for them. Ask your gynaecologist which hospital, and plan transport early.', 'high-risk गर्भ में डिलीवरी आम तौर पर ऐसे अस्पताल में होती है जहाँ इसकी पूरी सुविधा हो। अपनी गायनेकोलॉजिस्ट से पूछें कौन सा अस्पताल, और गाड़ी का इंतज़ाम पहले से करें।'],
     mcp_save: ['Save card', 'कार्ड सेव करें'],
@@ -1077,6 +1078,10 @@
     const c = DIET.cards[f[1]]; return c ? { t: tx(c.h), p: firstSentence(tx(c.p[0])) } : null;
   }
   S.preg.foodTip = foodTip;
+  /* Version 39.34: My pregnancy's safety screen ticks her MCP card's marks, and saves her ticks back to it (one home for each fact) */
+  S.preg.risks = () => { if (!S.canSave()) return []; const r = store().mcp.risk || {}; return RISKS.filter((k) => r[k]); };
+  S.preg.riskName = (k) => T(k);
+  S.preg.setRisks = (on) => { if (!S.canSave()) return; const m = store().mcp; if (!m.risk || typeof m.risk !== 'object') m.risk = {}; ['r_hr', 'r_bp', 'r_an', 'r_tw', 'r_gdm', 'r_prev', 'r_oth'].forEach((k) => { if ((on || []).indexOf(k) >= 0) m.risk[k] = true; else delete m.risk[k]; }); };
   S.preg.plan = { /* Version 39.5: a check-up or test she marked done on that day (a plan step counts from it) */
     /* review SAFETY-04: a day counts only when she ticked an item that was due then; today, only once nothing is left due */
     markedOn: (iso) => { if (!S.canSave()) return false; const st = store(); const pl = planOf(st); const ks = Object.keys(pl.done).filter((k) => pl.done[k] === iso); const wi = weekInfo(); if (!ks.length || !wi) return false;

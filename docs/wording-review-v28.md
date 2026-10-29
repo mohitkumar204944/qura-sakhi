@@ -2515,3 +2515,71 @@ These are health lines, so they wait for the doctor. Mohit chose to use them in 
 - **Questions for the doctor:** is "the iron tablets your doctor prescribes" right for every pregnant woman (the free government
   IFA included)? Is the Hb line right as a benefit of keeping to the plan?
 
+### 19.34 Version 39.34: My pregnancy, safety first (MODULE_API section 77)
+
+Built on 29 Oct 2026 (Mohit: "Proceed building with minimalist approach", after the advice in
+`docs/pregnancy-plan-advice-2026-10-29.md` and its mockup). This is the plan's safety layer and its daily steps. Lessons,
+pregnancy moves, the weekly "How are you in yourself?" and the late joiners' pack are not built yet (MODULE_API 77.6). The new
+lines run in demo and pilot builds until the doctor signs, as every Version 39 line has.
+
+- **New, please check (English / Hindi):**
+  - Before you start, the one new screen before her first step: "Before you start" / "शुरू करने से पहले"; "Two questions keep
+    your plan safe for you. Your answers stay on this phone." / "दो सवाल आपके प्लान को आपके लिए सुरक्षित रखते हैं। आपके जवाब इसी
+    फ़ोन पर रहते हैं।"; "Right now, do you have any of these?" / "क्या अभी आपको इनमें से कुछ है?"; "None of these" / "इनमें से
+    कुछ नहीं"; "Yes, one of these" / "हाँ, इनमें से एक".
+  - Under Help's call card after a yes: "No walk until you check your answers again; your other steps stay. Sakhi asks you
+    tomorrow." / "जवाब दोबारा देखने तक टहलना नहीं; आपके बाक़ी कदम रहेंगे। सखी कल फिर पूछेगी।"
+  - "Has your doctor told you any of these?" / "क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है?" (government route: "Has your
+    doctor or ANM told you any of these?" / "क्या आपकी डॉक्टर या ANM ने आपको इनमें से कुछ बताया है?").
+  - Two lines of its own beside the MCP card's marks: "My doctor told me to rest, or not to exercise" / "मेरी डॉक्टर ने आराम
+    करने, या व्यायाम न करने को कहा है" (government route: "My doctor or ANM told me to rest, or not to exercise" / "मेरी डॉक्टर या
+    ANM ने आराम करने, या व्यायाम न करने को कहा है"); "Not sure about any of these" / "इनमें से किसी के बारे में पक्का नहीं पता";
+    "Not sure? Tick it. Sakhi keeps your walk easy until your doctor says." / "पक्का नहीं पता? इसे टिक करें। जब तक आपकी डॉक्टर न
+    कहें, सखी आपका टहलना हल्का रखेगी।"
+  - The 3 tiers: "Your full plan" / "आपका पूरा प्लान": "A walk at a pace you can talk, growing over the weeks, the pelvic floor
+    from week 13, and the step for your goal." / "इतनी रफ़्तार से टहलना कि आप बात कर सकें, जो हफ़्तों के साथ बढ़ेगा; 13वें हफ़्ते
+    से पेल्विक फ़्लोर; और आपके लक्ष्य वाला कदम।" · "Easy walking, until your doctor says" / "हल्का टहलना, जब तक आपकी डॉक्टर न
+    कहें": "An easy 10-minute walk, the pelvic floor from week 13, and the step for your goal. At your next check-up, ask: “Is
+    it fine for me to exercise?”" / "10 मिनट हल्का टहलना, 13वें हफ़्ते से पेल्विक फ़्लोर, और आपके लक्ष्य वाला कदम। अगली जाँच पर
+    पूछें: “क्या मेरे लिए व्यायाम करना ठीक है?”" · "Gentle days" / "आराम के दिन": "No walking target. The pelvic floor from week
+    13 and the step for your goal stay. Your doctor decides when you can do more." / "टहलने का कोई लक्ष्य नहीं। 13वें हफ़्ते से
+    पेल्विक फ़्लोर और आपके लक्ष्य वाला कदम रहेंगे। आप कब ज़्यादा कर सकती हैं, यह आपकी डॉक्टर तय करेंगी।" · after a yes: "No walk
+    until you check your answers again" / "जवाब दोबारा देखने तक टहलना नहीं".
+  - The easy walk's line: "Easy: slow, at a pace you can talk. Stop if you feel dizzy." / "हल्की चाल: धीरे, इतनी कि आप बात कर
+    सकें। चक्कर आए तो रुक जाएँ।"
+  - The check again (Sakhi says): "A quick check" / "एक छोटी-सी जाँच"; "Two questions, so your steps still fit you." / "दो
+    सवाल, ताकि आपके कदम अब भी आपके लिए ठीक रहें।"; the day after a yes: "You told Sakhi about a sign that doesn’t wait. Before
+    your next walk, check your answers." / "आपने सखी को एक ऐसे लक्षण के बारे में बताया जो इंतज़ार नहीं कर सकता। अगली बार टहलने से पहले
+    अपने जवाब देख लें।"; "Check my answers" / "मेरे जवाब देखें"; "Nothing has changed" / "कुछ नहीं बदला"; My plan's settings:
+    "My safety answers" / "मेरे सुरक्षा वाले जवाब".
+  - The check-in from 28 weeks: "Your baby’s movements today" / "आज आपके बच्चे की हलचल"; "Your baby’s own pattern, not a
+    number." / "आपके बच्चे का अपना ढंग, कोई गिनती नहीं।"; "As usual" / "हमेशा जैसी", "Less than usual" / "आम दिनों से कम", "Not
+    sure" / "पक्का नहीं पता", "Not felt any movement today" / "आज कोई हलचल महसूस नहीं हुई"; "Tonight" / "आज रात" (the label over
+    the verified side-sleeping line).
+  - The step: "Pelvic floor · 1 set" / "पेल्विक फ़्लोर · 1 सेट". The pregnancy card on Home, from 24 weeks: "Baby moving less?
+    Get help" / "बच्चे की हलचल कम है? मदद लें".
+- **How it works, please check:**
+  - Red (no walking target): told to rest or not to exercise, marked high-risk, high BP, Hb under 7, or twins from 28 weeks.
+  - Amber (an easy 10 minutes that doesn't grow): sugar in pregnancy or diabetes, problems in an earlier pregnancy, something
+    else, not sure, or twins before 28 weeks.
+  - Green: the light walk (10, 15, 20 then 30 minutes, growing only after a week of 3 days or more).
+  - An earlier C-section and age alone hold nothing, so the screen doesn't ask them.
+  - The pelvic floor set from week 13 (and her plan's day 4) in every tier, red included.
+  - A yes to "Right now", or "Less than usual", "Not sure" or "Not felt any movement today" in the check-in: no walk until she
+    checks her answers again, which Sakhi asks the next day.
+  - Her answers again at 14 and 28 weeks.
+  - The movements question from 28 weeks, and "Baby moving less? Get help" from 24 weeks, because the kick page's own line
+    says to contact the hospital the same day if movements she was feeling slow down or stop.
+- **Verified on 20 Oct, word for word (no review):**
+  - Help's pregnancy danger line (core's reviewed list) and Help's "Call 112 now" card.
+  - The 7 marks of the MCP card copy.
+  - The kick page's 2 lines: fewer or weaker movements, get checked today; no movement, hospital now.
+  - The symptom guide's sleep line: "From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and
+    between your knees helps."
+  - The first sentence of the pelvic floor trainer's pregnancy line, as the step's reason. `test/pregplan.mjs` checks each copy
+    against its page.
+- **Questions for the doctor:**
+  - Are the red and amber lists right, and twins red from 28 weeks?
+  - Is the pelvic floor set right for every tier, including a stitch, a low-lying placenta or being told to rest?
+  - Is 24 weeks right for the "Baby moving less?" button?
+  - Is holding the walk after a less-movement answer, until she checks her answers again, right?

@@ -412,7 +412,7 @@
   /* review life-12: with `since`, only a claim started on or after it (a claim from an earlier baby isn't this pregnancy's) */
   /* Version 39.7 (journey audit P3-18): the husband's page as cards for "For my family", her stage first */
   const PART_ST = [['cycle', 'ttc', 'meno'], ['preg'], ['post'], ['meno'], ['cycle', 'post'], ['ttc'], [], ['post', 'preg', 'meno']];   /* consent and respect: for everyone, in More cards */
-  S.access = Object.assign(S.access || {}, { partner: () => PARTNER.map((p, i) => ({ id: 'p' + i, st: PART_ST[i] || [], h: p.h, items: p.items, go: p.go || [] })), claimed: (k, since) => { const c = claimOf(k); return c && !(since && /^\d{4}-\d{2}-\d{2}$/.test(since) && !(c.started && c.started >= since)) ? stepOf(c) : null; } });
+  S.access = Object.assign(S.access || {}, { lv: (k) => (LV[k] ? { label: LV[k].label, where: LV[k].where } : null), partner: () => PARTNER.map((p, i) => ({ id: 'p' + i, st: PART_ST[i] || [], h: p.h, items: p.items, go: p.go || [] })), claimed: (k, since) => { const c = claimOf(k); return c && !(since && /^\d{4}-\d{2}-\d{2}$/.test(since) && !(c.started && c.started >= since)) ? stepOf(c) : null; } });
   function claimSync() {
     /* V39.9 review FIXES-02: Sakhi moves only the dates; a reminder she switched off stays off */
     const keep = (r) => { const was = S.reminders.get(r.id); S.reminders.upsert(Object.assign(r, { on: was ? was.on !== false : true }), was ? { quiet: true } : undefined); };

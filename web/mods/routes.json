@@ -99,6 +99,7 @@
     "explain",
     "plan",
     "plan-pmos",
+    "plan-psafe",
     "plan-start",
     "plan-plate",
     "plan-body",

@@ -5077,3 +5077,94 @@ brings" shows its tablet's and its Hb test's reviewed reasons and then "How long
 (`plan_cons_tab`, `plan_cons_hb`, `plan_cons_long`). Golden re-recorded: only the pregnancy plan's foot line changed (56 days).
 Tests: baby.mjs section 18 (137 checks). Wording: review section 19.33.1 (waits for the doctor).
 
+## 77. Version 39.34: My pregnancy, safety first (`preg` version 2)
+
+Mohit, 29 Oct: "next is I am pregnant custom plan can you advise how it will differ" (advice
+`docs/pregnancy-plan-advice-2026-10-29.md`), "create mockup" (claude.ai/artifact/U54RRpvvHBVpAhBvPTcEgT), then "Proceed
+building with minimalist approach". This builds the safety layer and the daily steps; the rest waits (77.6). New lines wait for
+doctor review (review section 19.34).
+
+### 77.1 The plan
+- `web/progs/v1.js`, `preg` version 2. Version 1 runs on for a woman on it (`specOf(pk, d.pv)`). There is no offer card, as with
+  Getting ready's version 2.
+- `intake: { screens: [{ id: 'psafe' }], day: ['food', 'milk'] }`, `slots: { max: 4 }`. The steps in order:
+  - Due now (`preg.due`).
+  - Her walk by her tier (`first`): green `mins: 'light'` (cap 30, the hold rule); amber `mins: 10` with
+    `sub: '@plan_walk_easy'`; red none.
+  - Her goal's step (version 1's map).
+  - The pelvic floor set (`pf`): a `link` to `post-pelvic`, counted from its trainer (`from`, `check`), `priv`,
+    `if: ['gw:13-', 'pday:4-', 'route']`.
+  - Day 1 has 3 steps or fewer.
+- The engine's new vocabulary (`test/progs.mjs`):
+  - `if` keys: `gw:a-b` (her pregnancy week, `gwAt(iso)` from `S.preg.info()`); `pt:green|amber|red` (her tier, live from
+    her ticks and her week); `pnow` (a sign that doesn't wait, until she checks her answers again).
+  - `minutes` steps take a whole number of minutes (5 to 30) and a `sub` (an `@key`).
+
+### 77.2 Before you start (`psafe`)
+- `renderIntake`'s `psafe` screen (`psafeHtml`, `wirePsafe`). Nothing has to be answered (`qsOf` asks nothing).
+- Right now: core's `s1c` (the reviewed danger list) with "None of these" and "Yes, one of these". A yes shows Help's "Call 112
+  now" card (`S.access.lv('now')`, access.js's `LV`) with 112, 108 and 102.
+- Told by her doctor (`PSAFE`):
+  - told to rest (`plan_ps_rest`, with `_doc` for the doctor route);
+  - 7 of the MCP card's marks (`S.preg.risks()`, `S.preg.riskName(k)`). An earlier C-section and age hold nothing, so the
+    screen doesn't ask them;
+  - not sure.
+- Her card's marks come ticked. At the start her ticks go back to the card (`S.preg.setRisks`, the 7 marks only).
+- `psTier(flags, week)`:
+  - red: told to rest, high-risk, high BP, Hb under 7, or twins from 28 weeks;
+  - amber: any other tick;
+  - green: none.
+- The tier card changes as she ticks, and the summary shows it (`sumRows`).
+- Her answers go in the plan's intake (`pregOf`): `pflags`, `psafeW` (her week) and `pnow` (the day she said yes).
+
+### 77.3 Her answers again
+- `cardKind` 'psafe' comes after a positive test's card and before day 1's. `psafeDue(d)` is:
+  - 'now' the day after a yes, with only "Check my answers";
+  - 'wk' once she reaches 14 or 28 weeks, having answered earlier, with "Nothing has changed" too (`#pl-ps-same` records her
+    week).
+- Its words are plain (`plan_ps_re_p`), so it shows on a shared phone.
+- `plan-psafe` (`renderPsafe`) is the same screen for the plan she is on. Save updates her intake and her MCP card, and nothing
+  restarts.
+- My plan's settings has a row for it (`psSetRow`: "My safety answers", with her tier).
+
+### 77.4 The check-in from 28 weeks
+- `mvAsk(d)`: version 2, 28 weeks or more, and not on a shared phone.
+- "Your baby's movements today" (`MV`: usual, less, unsure, none), never a count:
+  - less or not sure: pregtools' `k_today`, with Call 108 and 112;
+  - none: Help's "Call 112 now" label and pregtools' `k_now`, with 112, 108 and 102.
+- The answer is saved in her day log (`mv`). Less, not sure or none sets `pnow`: her walk waits until she checks her answers
+  again.
+- The feedback keeps the call card. With "As usual" it shows "Tonight" and the symptom guide's side-sleeping line
+  (`plan_mv_side`, a verified copy), then tonight's Wind down as before.
+
+### 77.5 Home
+- Core's pregnancy card, from 24 weeks: "Baby moving less? Get help" (`preg_less_b`) opens `pregtools-kicks`, whose 2 lines are
+  at the top.
+- It shows for every pregnant woman, not on a shared phone, and only where the kick page is shown (`api.toolShown`).
+
+### 77.6 Not built yet (each needs a reviewer first)
+- Pregnancy moves (3 routines, about 9 poses; a women's-health physiotherapist).
+- The weekly "How are you in yourself?" and its crisis card (a psychologist or psychiatrist).
+- Weekly lessons from the week pages, the bag and birth-plan steps, the quiet-spell card, leaks from 20 weeks, the 3-day pack
+  for late joiners, and folic acid carrying on from Getting ready.
+- An offer of version 2 to women on version 1.
+
+### 77.7 The minimalist baseline (CLAUDE.md)
+- **Her evening:** no new ring. Her check-in rings as before, her tablets ring from their pages, and there is no walk nudge in
+  pregnancy (`careTime`).
+- **Today:**
+  - day 1 has 3 steps or fewer (the pelvic floor joins on day 4), and no day has more than 4;
+  - "A quick check" is the one Sakhi says card.
+- **Ask less:** one new screen before her first step, for safety. It reuses her MCP card's marks and Help's line, and nothing on
+  it has to be answered.
+- **One home for each fact:** her marks live on the MCP card, the movement lines on the kick page, the danger line in Help.
+- **Read once:** no new explanation to fold, and the danger lines never fold.
+- **No new tours, tips or celebrations.**
+- **The shared phone:** the pelvic floor step is private. A shared phone gets no movements question and no button, and "A quick
+  check" uses plain words.
+- **Taps:**
+  - starting a pregnancy plan takes one more screen and one more tap (Continue; nothing to answer);
+  - the check-in from 28 weeks takes one optional tap;
+  - `web/test/taps/` counts joining for the cycle, trying and no-plan stages only, so these come from the screens.
+
+**Tests:** `node test/pregplan.mjs` (53 checks).

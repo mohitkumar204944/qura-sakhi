@@ -82,10 +82,10 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
 const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm'];   /* Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32 */
-const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens */
+const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at', 'sub'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens; sub: Version 39.34, a set walk's own line */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
-const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|goal:[a-z]+|sit:[a-z]+|ans:[a-zA-Z]+=[a-zA-Z0-9]+|birth:\d+-\d+|(week|pday):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32 */
+const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|birth:\d+-\d+|(week|pday|gw):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34 */
 const whenOk = (w) => w == null || w === 'daily' || w === 'periodDays' || /^days:[0-6](,[0-6])*$/.test(w);
 const keyOk = (x) => typeof x === 'string' && /^@([a-z][a-z0-9_]*|tile)$/.test(x);
 const bad = [];
@@ -93,10 +93,11 @@ const stepOk = (x, where) => {
   if (x.first) { if (!Array.isArray(x.first) || Object.keys(x).length !== 1) bad.push(where + ': first'); x.first.forEach((y, i) => stepOk(y, where + '.first' + i)); return; }
   if (x.goal) { if (Object.keys(x).length !== 1) bad.push(where + ': goal'); Object.keys(x.goal).forEach((g) => (x.goal[g] || []).forEach((y, i) => stepOk(y, where + '.goal.' + g + i))); return; }
   Object.keys(x).forEach((k) => { if (STEP_KEYS.indexOf(k) < 0) bad.push(where + ': key ' + k); });
+  if (x.sub != null && !(x.kind === 'minutes' && typeof x.sub === 'string' && /^@[a-z0-9_]+$/.test(x.sub))) bad.push(where + ': sub');   /* Version 39.34 */
   if (!/^[a-z]+$/.test(x.id || '')) bad.push(where + ': id');
   if (KINDS.indexOf(x.kind) < 0) bad.push(where + ': kind ' + x.kind);
   if (x.kind === 'adapter' && ADAPTERS.indexOf(x.use) < 0) bad.push(where + ': adapter ' + x.use);
-  if (x.kind === 'minutes' && !(x.use === 'walk' && ['ladder', 'light', 'post'].indexOf(x.mins) >= 0)) bad.push(where + ': minutes');
+  if (x.kind === 'minutes' && !(x.use === 'walk' && (['ladder', 'light', 'post'].indexOf(x.mins) >= 0 || (Number.isInteger(x.mins) && x.mins >= 5 && x.mins <= 30)))) bad.push(where + ': minutes');   /* a set walk: Version 39.34 */
   if (['tick', 'routine', 'link', 'check'].indexOf(x.kind) >= 0 && !(x.go && keyOk(x.title) && x.icon && HUES.indexOf(x.hue) >= 0 && /^plan_fb_[a-z_]+$/.test(x.why || ''))) bad.push(where + ': link step');
   if (x.kind === 'routine' && !/^plan-r-[a-z]+$/.test(x.go || '')) bad.push(where + ': routine go');
   if (!whenOk(x.when)) bad.push(where + ': when ' + x.when);
@@ -117,7 +118,7 @@ specs.forEach((p) => {
   if (!Array.isArray(p.goals) || p.goals.some((g) => Object.keys(g).some((x) => ['stage', 'goal'].indexOf(x) < 0))) bad.push(w + ': goals');
   const lf = p.life || {}; if ((lf.needs && !/^(pregnant|birth:\d+)$/.test(lf.needs)) || (lf.ends && lf.ends !== 'pregnant') || !Array.isArray(lf.pause) || lf.pause.some((x) => ['preg', 'post', 'loss'].indexOf(x) < 0) || lf.pause.indexOf('loss') < 0) bad.push(w + ': life (every plan pauses after a loss)');
   if (['weeks', 'pregWeek', 'birthWeek'].indexOf(p.clock) < 0 || !p.length || !(p.length.weeks >= 0)) bad.push(w + ': clock or length');
-  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
+  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby', 'psafe'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
   if (p.moves && (ik.day || []).indexOf('lim') < 0) bad.push(w + ': a plan with moves asks about knees and back');
   if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 4)) bad.push(w + ': at most 4 steps a day');   /* Version 39.13: the cycle plan's yoga and walk */
   if (p.hero != null && ['ring', 'week', 'timeline'].indexOf(p.hero) < 0) bad.push(w + ': hero');

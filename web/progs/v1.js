@@ -34,6 +34,34 @@
     doctor: []
   },
   {
+    id: 'preg', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_preg' }], discreetTitle: '@plan_h_d',
+    goals: [{ stage: 'preg' }],
+    life: { needs: 'pregnant', pause: ['loss'] },
+    clock: 'pregWeek', length: { weeks: 0 },
+    intake: { screens: [{ id: 'psafe' }], day: ['food', 'milk'] },
+    slots: { max: 4 }, hero: 'timeline', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'preg-plan', text: '@preg_plan_h', icon: 'check', hue: 'orange', priv: true }, { go: 'preg-week', text: '@preg_t_week', icon: 'baby', hue: 'plum', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }],
+    steps: [
+      { id: 'pdue', kind: 'adapter', use: 'preg.due', from: 'preg-plan', check: true },
+      { first: [
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', cap: 30, grow: 'hold', why: 'plan_fb_move_g', if: ['pt:green', '!pnow'] },
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 10, sub: '@plan_walk_easy', why: 'plan_fb_move_g', if: ['pt:amber', '!pnow'] }
+      ] },
+      { goal: {
+        nausea: [{ id: 'nausea', kind: 'tick', go: 'relief-nausea', title: '@relief_nausea_t', icon: 'leaf', hue: 'green', why: 'plan_fb_any', priv: true, from: 'relief:nausea' }],
+        sleep: [{ id: 'rsleep', kind: 'tick', go: 'relief-sleep', title: '@relief_sleep_t', icon: 'moon', hue: 'purple', why: 'plan_fb_sleep', priv: true, from: 'relief:sleep' }],
+        mood: [{ id: 'calm', kind: 'tick', go: 'relief-calm', title: '@relief_calm_t', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm', priv: true, from: 'relief:calm' }],
+        iron: [{ id: 'iron', kind: 'adapter', use: 'journey.iron' }],
+        '*': [{ id: 'food', kind: 'adapter', use: 'preg.food' }]
+      } },
+      { id: 'pf', kind: 'link', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', check: true, if: ['gw:13-', 'pday:4-', 'route'] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: []
+  },
+  {
     id: 'post', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_post' }], discreetTitle: '@plan_h_d',
     goals: [{ stage: 'post' }],

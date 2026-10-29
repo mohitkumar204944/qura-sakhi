@@ -225,6 +225,17 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     predicted), Today ("Partly done", no "Next" after the check-in, the cycle left out of her gaps), Cycles ("last {n}",
     "3-day period", no end day), "Feeling okay" never with a sign that says otherwise (a danger sign stays), My progress, the
     flow choices one to a row, and Hindi at 360 px. Contract: MODULE_API section 76; wording: section 19.33 (UI words only).
+  - `node test/pregplan.mjs` (Version 39.34, My pregnancy safety first; Mohit, 29 Oct: "Proceed building with minimalist
+    approach"; advice `docs/pregnancy-plan-advice-2026-10-29.md`; mockup claude.ai/artifact/U54RRpvvHBVpAhBvPTcEgT):
+    - the pregnancy stage opens `preg` version 2 (`web/progs/v1.js`; version 1 runs on for the women on it);
+    - "Before you start", the one screen before her first step:
+      - right now: Help's danger line; a yes shows Help's "Call 112 now" card and holds her walk until she checks again;
+      - told by her doctor: her MCP card's marks, saved back to the card;
+    - her tier: green (the light walk), amber (an easy 10 minutes), red (no walking target); the pelvic floor from week 13;
+    - "A quick check" at 14 and 28 weeks, and the day after a sign that doesn't wait;
+    - the check-in from 28 weeks: her baby's movements (the kick page's own lines and Call buttons), sleeping on her side;
+    - "Baby moving less? Get help" on Home's pregnancy card from 24 weeks, for every pregnant woman.
+    Contract: MODULE_API section 77; wording: section 19.34 of the review (new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
