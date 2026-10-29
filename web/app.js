@@ -922,9 +922,9 @@
   };
   const backBtn = (fallback) => '<button type="button" class="iconbtn backbtn" data-back="' + esc(fallback || 'home') + '" aria-label="' + esc(t('back')) + '">' + I.back + '</button>';
   const route = () => (location.hash || '#home').slice(1);
-  const toast = (msg) => { const r = $('#toast-root'); r.innerHTML = '<div class="toast" role="status">' + esc(msg) + '</div>'; clearTimeout(toast.tm); toast.tm = setTimeout(() => { r.innerHTML = ''; }, 2400); };
+  const toast = (msg) => { toast.at = Date.now(); const r = $('#toast-root'); r.innerHTML = '<div class="toast" role="status">' + esc(msg) + '</div>'; clearTimeout(toast.tm); toast.tm = setTimeout(() => { r.innerHTML = ''; }, 2400); };
   /* A toast with buttons, e.g. "Saved · Undo · Add details". Stays 6 seconds. */
-  const toastAct = (msg, actions) => { const r = $('#toast-root'); r.innerHTML = '<div class="toast act" role="status"><span>' + esc(msg) + '</span>' + actions.map((a, i) => '<button type="button" data-ta="' + i + '">' + esc(a.label) + '</button>').join('') + '</div>'; r.querySelectorAll('[data-ta]').forEach((b) => b.addEventListener('click', () => { clearTimeout(toast.tm); r.innerHTML = ''; actions[+b.dataset.ta].fn(); })); clearTimeout(toast.tm); toast.tm = setTimeout(() => { r.innerHTML = ''; }, 6000); };
+  const toastAct = (msg, actions) => { toast.at = Date.now(); const r = $('#toast-root'); r.innerHTML = '<div class="toast act" role="status"><span>' + esc(msg) + '</span>' + actions.map((a, i) => '<button type="button" data-ta="' + i + '">' + esc(a.label) + '</button>').join('') + '</div>'; r.querySelectorAll('[data-ta]').forEach((b) => b.addEventListener('click', () => { clearTimeout(toast.tm); r.innerHTML = ''; actions[+b.dataset.ta].fn(); })); clearTimeout(toast.tm); toast.tm = setTimeout(() => { r.innerHTML = ''; }, 6000); };
   const fmtD = (d, opts) => { try { return new Intl.DateTimeFormat(langMeta(state.lang).locale || 'en-IN', opts || { day: 'numeric', month: 'short' }).format(d); } catch (e) { return toISO(d); } };
   const fmtRange = (a, b) => (a.getMonth() === b.getMonth() ? fmtD(a, { day: 'numeric' }) + '–' + fmtD(b) : fmtD(a) + ' – ' + fmtD(b));
 
@@ -3986,7 +3986,8 @@
     const fShow = !fw || fw === 'few' || fw === 'irregular'; const repOk = !p || p.n >= 3;
     if (ri && (!fShow || !fw) && repOk) return '';
     const row = (cls, ok, ico, hue, h, sub) => '<div class="item quiet kn-row ' + cls + (ok ? ' ok' : '') + '"><span class="ico-sm hue hue-' + (ok ? 'green' : hue) + '">' + (ok ? I.check : ico) + '</span><span class="body"><strong>' + esc(h) + '</strong><span>' + esc(sub) + '</span></span></div>';
-    const rows = [row('kn-next', !!ri, I.clock, 'rose', t('kn_next'), ri ? tf('kn_next_ok', { r: fmtRange(ri.from, ri.to) }) : (n >= 2 ? tf('kn_next_irr', { a: minOf(g6), b: maxOf(g6) }) : tf('kn_next_need', { n: n })))];
+    const late = !!ri && today() > ri.to; const lateN = late ? diffDays(ri.to, today()) : 0;   /* Version 39.37: as Today says it, never a range that has passed */
+    const rows = [row('kn-next', !!ri && !late, I.clock, 'rose', t('kn_next'), late ? (lateN === 1 ? t('late_n1') : tf('late_n', { n: lateN })) : ri ? tf('kn_next_ok', { r: fmtRange(ri.from, ri.to) }) : (n >= 2 ? tf('kn_next_irr', { a: minOf(g6), b: maxOf(g6) }) : tf('kn_next_need', { n: n })))];
     if (fShow) rows.push(row('kn-fert', !fw, I.flower, 'purple', t('kn_fert'), !fw ? t('kn_fert_ok') : (fw === 'few' ? tf('kn_fert_need', { n: usable().filter((x) => x >= 21 && x <= 35).length }) : t('kn_fert_irr'))));
     if (p) rows.push(row('kn-rep', repOk, I.chart, 'gold', t('kn_rep'), repOk ? t('kn_rep_ok') : tf('kn_rep_need', { n: p.n })));
     const add = (!ri && n < 2) || fw === 'few';
@@ -4155,7 +4156,7 @@
     /* Version 39.25 (G2, G3): what Sakhi can tell her, or her pill card, under the signal cards; one "Add a past period" */
     const kn = knowCard(); const knAdd = kn.indexOf('id="ap-add"') >= 0; const knRep = kn.indexOf('kn-rep') >= 0;
     /* Version 39.23: before two period starts: her first period with "Add a past period", and what her numbers will look like */
-    if (!ga.length) { const mc = cyclesCard(knAdd); v.innerHTML = signalCards() + kn + patternsCard(knRep) + mc + exampleCard(!mc && !knAdd) + rp + tail; wire(v); wireMc(); wireAdd(); return; }
+    if (!ga.length) { const mc = cyclesCard(knAdd); v.innerHTML = signalCards() + kn + patternsCard(knRep) + mc + (isPregnant() ? '' : exampleCard(!mc && !knAdd)) + rp + tail;   /* Version 39.37 */ wire(v); wireMc(); wireAdd(); return; }
     const mx = Math.max(60, Math.max.apply(null, ga.map((x) => Math.min(x.days, 130)))); const h = 120; const hiB = bandHi();
     const vdc = verdictCard(); const nums = vdc || !usable().length ? '' : '<div class="card vd-nums-card">' + numbersHtml().replace('<details class="vd-nums">', '<details class="vd-nums" open>') + '</div>';   /* review ENGINE-08 */
     v.innerHTML = signalCards() + kn + patternsCard(knRep) + cyclesCard(knAdd) + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
@@ -5169,6 +5170,7 @@
     /* The Android app bundles the library as content.js (WebView cannot fetch file:// URLs); the web version fetches content.json. */
     if (window.SAKHI_CONTENT && window.SAKHI_CONTENT.groups) CONTENT = window.SAKHI_CONTENT;
     else fetch('content.json', { cache: 'no-cache' }).then((r) => r.json()).then((c) => { CONTENT = c || { groups: [] }; const r0 = route(); if (['learn', 'home', 'care'].indexOf(r0) >= 0 || r0.startsWith('a-') || r0.startsWith('topic-')) render(); }).catch(() => { });
+    window.addEventListener('hashchange', () => { if (toast.at && Date.now() - toast.at > 700) { clearTimeout(toast.tm); const r = $('#toast-root'); if (r) r.innerHTML = ''; } });   /* Version 39.37: a toast stays with the screen it was for */
     window.addEventListener('hashchange', render);
     ['click', 'change'].forEach((e) => document.addEventListener(e, () => { lastTap = Date.now(); }, true));
     if (state.settings.shared && state.stage === 'app') mem.locked = true;

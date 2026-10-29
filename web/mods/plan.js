@@ -570,7 +570,7 @@
   /* R7.2: her daily steps, each with its reviewed reason (always shown), how to do it, and today's tick, the same tick as
      Today's; R9: the check-in button only once it is due */
   function stepsCard(d, acts, fold) {
-    if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const all = done === acts.length;
+    if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const req = held(acts); const all = done === req.length;   /* Version 39.37 */
     const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r)); const pl = !!a.play && !ok && !rest;   /* Version 39.22: her wind-down plays where the tick goes */
       const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : a.title; const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
       const sub = (fold || a.play) && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.24: week 1 says what her wind-down plays */   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
@@ -581,7 +581,7 @@
       return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb || pl ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (sub ? '<span class="pl-step-sub">' + esc(sub) + '</span>' : '') + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() && !fold ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t('plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
     const whyN = acts.filter((a) => a.why).length;
     const ciB = due ? '<button type="button" class="btn ' + (fold ? 'sm' : 'primary block') + ' pl-ci-go" data-go="plan-checkin">' + esc(ciLabel()) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>';   /* Version 39.22: Today keeps the pink button */
-    return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(acts.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: acts.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, acts.length)) + '</span></div>' + nightBar() +
+    return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(req.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: req.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' + nightBar() +
       '<div class="pl-t4-bar" aria-hidden="true">' + acts.map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
       (fold ? '' : '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>') +
       (!disc() && !ci && !rest && foodDay(d, todayISO()) && !acts.some((a) => FOOD_IDS.indexOf(a.id) >= 0 || a.id === 'fast') ? '<button type="button" class="linkbtn pl-fast-tog" id="pl-fast-tog">' + esc(t('plan_fast_q')) + '</button>' : '') +   /* no food step to ask in (V39.9 review FOOD-01) */
@@ -1520,7 +1520,7 @@
       return j ? [{ id: 'iron', icon: S.icon('leaf'), hue: 'green', kind: 'tick', title: j.t, name: n > 21 ? t('plan_a_ironf') : null, sub: j.p, go: j.go || (S.routeOwner('food') ? 'food' : 'plan'), state: st('iron'), why: 'plan_fb_iron', priv: true }] : [];
     },
     /* Version 38 (ux-gaps E1): what her pregnancy plan has due now comes first (preg.js S.preg.plan) */
-    'preg.due': (d, c, x, st) => { const due = (S.preg && S.preg.plan ? S.preg.plan.due() : []).filter((y) => y.id !== 'asha');   /* Mohit, 26 Oct: My ASHA stays off Today and My plan */ return due.length ? [{ id: 'pdue', icon: S.icon('check'), hue: 'orange', kind: 'link', title: due.length > 1 ? tf('plan_a_due_more', { x: due[0].name, n: due.length - 1 }) : tf('plan_a_due', { x: due[0].name }), sub: t('plan_a_due_s'), go: 'preg-plan', state: st('pdue'), why: 'plan_fb_due', priv: true }] : []; },
+    'preg.due': (d, c, x, st) => { const due = (S.preg && S.preg.plan ? S.preg.plan.due() : []).filter((y) => y.id !== 'asha');   /* Mohit, 26 Oct: My ASHA stays off Today and My plan */ return due.length ? [{ id: 'pdue', icon: S.icon('check'), hue: 'orange', kind: 'link', title: due.length > 1 ? tf('plan_a_due_more', { x: due[0].name, n: due.length - 1 }) : tf('plan_a_due', { x: due[0].name }), sub: t('plan_a_due_s'), go: 'preg-plan', state: st('pdue'), why: 'plan_fb_due', priv: true, soft: true }] : []; },   /* Version 39.37: soft */
     /* Version 38 (ux-gaps E2): until 6 weeks, the daily recovery check and its danger signs, done only by doing it (S.post.checkedOn) */
     'post.rcheck': (d, c) => [{ id: 'rcheck', icon: S.icon('check'), hue: 'rose', kind: 'check', title: tileTitle('post-recovery'), sub: t('plan_a_rcheck_s'), go: 'post-recovery', state: S.post && S.post.checkedOn && S.post.checkedOn(c.day) ? 'd' : null, why: 'plan_fb_recov', priv: true }],
     /* Version 39.9 (diet audit 2): for 40+ bones, a calcium food on its days, from her region and how she eats */
@@ -1986,7 +1986,7 @@
   }
   const lightWalk = (d, iso) => { const wk = Math.max(1, Math.min(weekAt(d, iso || todayISO()), N)); return wk <= 2 ? 10 : (wk <= 4 ? 15 : (wk <= 8 ? 20 : 30)); };
   /* the day's steps; another day (iso: yesterday) gets that day's week, weekday and log. Version 39.4: from her plan's spec */
-  function actionsFor(d, iso) { return stepsFor(d, iso); }
+  function actionsFor(d, iso) { const xs = stepsFor(d, iso); return xs.some((a) => a.soft) ? xs.filter((a) => !a.soft).concat(xs.filter((a) => a.soft)) : xs; }   /* Version 39.37: a soft step after her daily steps */
   /* one tap on Today, or a "Done" in the check-in */
   function markAction(d, a, val) {
     if (a.kind === 'check') return;
@@ -2324,7 +2324,7 @@
       const goal = s.goal && !disc() ? '<span class="eyebrow">' + esc(t('plan_ci_goal_h')) + '</span><p class="lead pl-ci-goal">' + esc(s.goal) + '</p>' : '';   /* her goal */
       v.innerHTML = hd + '<div class="card ok pl-fb" id="pl-ci-fb">' + goal + '<p class="' + (goal ? 'pl-ci-why' : 'lead') + '">' + esc(s.line) + '</p>' + (disc() ? '' : whyBtn(s.why, 'pl-why', packOf(d))) + '<p class="small">' + esc(countLine(s.dn, s.pn, s.n) + ' · ' + tf('plan_ci_week', { w: s.w })) + '</p>' + (s.add ? '<p class="small pl-ci-add">' + esc(s.add) + '</p>' : '') +
         (s.str ? '<p class="small pl-ci-str">' + esc(s.str) + '</p>' : '') + (s.tom ? '<p class="small pl-ci-tomr">' + esc(s.tom) + '</p>' : '') +
-        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(ciAt(d)) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + (s.mv && s.mv !== 'usual' ? mvOut(s.mv) : (s.side ? sideCard() : '') + nightHtml(s)) +
+        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first && !s.tom ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(ciAt(d)) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + (s.mv && s.mv !== 'usual' ? mvOut(s.mv) : (s.side ? sideCard() : '') + nightHtml(s)) +
         '<div class="grid2"><button type="button" class="btn primary" data-go="home">' + esc(t('plan_ci_home')) + '</button><button type="button" class="btn" data-go="plan">' + esc(t('plan_ci_plan')) + '</button></div>';
       S.wire(v); wireWhy(v); return;
     }
@@ -2373,7 +2373,7 @@
       const done = acts.filter((a) => m.sel[a.id] === 'd' || m.sel[a.id] === 'p'); const dl = done.filter((a) => m.sel[a.id] === 'd'); const pool = dl.length ? dl : done;
       const first = pool.length ? pool[(planDay(dd) - 1) % pool.length] : null;   /* Version 39.6 (P2-01): each evening, the reason of another step she did */
       const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : t('plan_tip_' + b));   /* Version 39.12: her own if-then plan first */
-      m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: acts.length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
+      m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: held(acts.map((a) => Object.assign({}, a, { state: m.sel[a.id] || a.state }))).length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
         goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: ciTom(fullD(dd)),
         slp: m.slp || null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some((a) => !!a.play) && !(S.calm && S.calm.doneOn(todayISO())),
         add: done.length ? (function () { const miss = acts.filter((a) => m.sel[a.id] === 'n'); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? t('plan_today_d') : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.13 */
@@ -2555,7 +2555,7 @@
      itself (decision 5a); it shows explain's top open finding, and the row opens What your diary shows. Not on a shared phone. */
   function recordsRow(v) {
     if (!S.canSave() || disc() || !S.explain || !S.explain.top || !S.explain.label) return;
-    const f = S.explain.top(); if (!f) return; const lb = S.explain.label(f);
+    const f = S.explain.top(); if (!f || ['now', 'today'].indexOf(f.lv) < 0) return; const lb = S.explain.label(f);   /* Version 39.37: one home: Today and Cycles hold the rest */
     const el = document.createElement('div'); el.className = 'list pl-xp';
     el.innerHTML = '<button type="button" class="item"><span class="ico-sm hue hue-' + esc(lb.hue) + '">' + S.I.help + '</span><span class="body"><strong>' + esc(lb.t) + '</strong><span>' + esc(lb.lv) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' +
       (lb.call ? '<div class="row wrap pl-xp-call">' + (lb.call === '14416' ? '<a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>' : '');   /* review PRIVACY-04 */
@@ -2619,7 +2619,7 @@
     if (finished(fullD(d))) return '<div class="pl-th"><button type="button" class="pl-th-plan" data-go="plan"><span class="eyebrow">' + esc(packTitle(d)) + '</span><span class="small">' + esc(t(d.keep ? 'plan_year_h' : 'plan_end_h')) + '</span></button><button type="button" class="btn sm primary" data-go="plan">' + esc(t('plan_end_b')) + '</button></div>';
     const dd = fullD(d); const acts = actionsFor(dd); if (!acts.length) return '';
     const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(dd); const day = planDay(dd);
-    const rem = dd.remAt || '20:00'; const rest = isRest(dd); const full = !rest && done === acts.length; const ciNow = ciDueNow(dd, acts);
+    const rem = dd.remAt || '20:00'; const rest = isRest(dd); const req = held(acts); const full = !rest && done === req.length;   /* Version 39.37 */ const ciNow = ciDueNow(dd, acts);
     /* Version 39.14: a notice gets a line of its own; her week's dots now carry "Yesterday" and her week line the strength day */
     let sub = '';
     if (day >= 2) {
@@ -2641,7 +2641,7 @@
     if (full) return top + cr + nightBar() + dayDoneHtml(dd, ci, '<div class="pl-wk">' + weekDots(dd) + (wl ? '<p class="small pl-wl">' + wl + '</p>' : '') + '</div>');   /* R2: a full day closes itself */
     /* R1, R5: her week as 7 small dots (today ringed) and today's count on one line; a notice, else her week's line, under it.
        Two short lines, as Version 39.13's were, so her steps keep their place on the first screen at 360 px. */
-    return top + cr + nightBar() + '<div class="pl-t7">' + weekDots(dd, true) + '<span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, acts.length)) + '</span></div>' +
+    return top + cr + nightBar() + '<div class="pl-t7">' + weekDots(dd, true) + '<span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' +
       (sub ? '<p class="small pl-th-y pl-th-str">' + esc(sub) + '</p>' : (wl ? '<p class="small pl-wl">' + wl + '</p>' : '')) +
       (pq ? painQ(dd) + (perNow(dd) ? '<p class="small pl-th-y">' + esc(t('plan_per_pain')) + '</p>' : '') : '') +   /* Version 39.27 (R05) */
       (offer ? '<div class="pl-th-rest"><span class="small">' + esc(t('plan_rest_q')) + '</span><button type="button" class="btn sm" id="pl-rest-yes">' + esc(t('plan_rest_yes')) + '</button></div>' : '');
@@ -2696,7 +2696,7 @@
     const wk = weekNo(dd); const inWeek = (day - 1) % 7 < 3;
     if (!disc() && (wk === 5 || wk === 9) && !(dd.weeks[(wk === 5 ? 1 : 2) * 4] || {}).seenM && inWeek) return 'month';
     if (dd.keep && !disc() && wk === keepWeekly(dd) && inWeek && !dd.m4Seen) return 'm4';   /* Version 39.6: month 4, her results */
-    if (wk >= 2 && inWeek && reviewCard(dd, true)) return 'rev';
+    if (wk >= 2 && inWeek && !(dd.carried && !dd.endSeen) && reviewCard(dd, true)) return 'rev';   /* Version 39.37: the end card holds week 12 */
     if (docCase(dd) && day >= 2 && day <= 21 && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO())) return 'doc';   /* Version 39.6: every plan's own check */
     if (!disc() && dd.doc === 'done' && !dd.docSaid && SAID[pk] && docCase(dd) && dd.docAt && S.diffDays(S.fromISO(dd.docAt), pToday()) <= 30) return 'said';
     if (!disc() && dueEntry(dd) && dd.dueSeen !== todayISO().slice(0, 7)) return 'due';
@@ -2754,10 +2754,13 @@
      what already counted, asks only the rest and asks about last night's bedtime; the feedback names her goal; Plan your week;
      an optional nudge at her time to move; a 4-week check; and help after two quiet weeks. All of it stays on the phone. ---------- */
   /* Version 39.13 (Mohit, 26 Oct: "we need to make sure user did all daily activities for the day"): a day with every step done */
-  const allDoneToday = (d) => { try { if (!packOf(d)) return false; const acts = actionsFor(fullD(d)); return acts.length > 0 && acts.every((a) => a.state === 'd'); } catch (e) { return false; } };
+  /* Version 39.37 (the three-plan walkthrough): a soft step ("Due now", a check-up that waits for her visit) counts when it is
+     done, and never holds her day while it waits */
+  const held = (xs) => xs.filter((a) => !a.soft || a.state === 'd' || a.state === 'p');
+  const allDoneToday = (d) => { try { if (!packOf(d)) return false; const acts = held(actionsFor(fullD(d))); return acts.length > 0 && acts.every((a) => a.state === 'd'); } catch (e) { return false; } };
   /* a day's count: its steps as Today counted them, and a step she ticked that a later day can't rebuild (what was due in her
      pregnancy then); Version 39.14: her week's dots and full days count the same way */
-  const dayCount = (d, iso) => { const xs = actionsFor(d, iso); const ck = dayLog(d, iso).ck || {}; const more = Object.keys(ck).filter((k) => !xs.some((a) => a.id === k) && (ck[k] === 'd' || ck[k] === 'p'));
+  const dayCount = (d, iso) => { const xs = held(actionsFor(d, iso)); const ck = dayLog(d, iso).ck || {}; const more = Object.keys(ck).filter((k) => !xs.some((a) => a.id === k) && (ck[k] === 'd' || ck[k] === 'p'));
     return { a: xs.filter((a) => a.state === 'd').length + more.filter((k) => ck[k] === 'd').length, p: xs.filter((a) => a.state === 'p').length + more.filter((k) => ck[k] === 'p').length, n: xs.length + more.length }; };
   const dayFull = (d, iso) => { const c = dayCount(d, iso); return c.n > 0 && c.a === c.n; };
   const fullDays = (d, wk) => weekDates(d, wk).filter((iso) => iso <= todayISO() && dayFull(d, iso)).length;

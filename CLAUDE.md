@@ -254,13 +254,24 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       - urgent cards in ink;
       - no "Your day" when My food holds it.
     Contracts: MODULE_API sections 78 and 79; wording: sections 19.35 and 19.36 of the review.
+  - `node test/threefix.mjs` (Version 39.37, the three-plan walkthrough's fixes; Mohit, 29 Oct: "fix all 8"):
+    - Cycles' next period date when she is late;
+    - "Due now" not holding her pregnancy day;
+    - one "Tomorrow" line;
+    - the home test first for a late period while trying;
+    - no example cycle numbers in a pregnancy;
+    - one home for what her records say;
+    - the end card alone on day 85;
+    - one celebration at a time.
+    Contract: MODULE_API section 80; wording: section 19.37 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
     routes, drafts, `d.pv`, and each live plan's hash in `web/progs/baseline.json`, re-recorded with `npm run progs:record`
     when a plan or a line it shows changes). Contract: MODULE_API section 47.
   - Walks, not pass/fail (screens to `web/test/shots/`, gitignored): `node test/firstday-walk.mjs`,
-    `node test/weeks-walk.mjs` (12 weeks, fast-forwarded) and `node test/stages-walk.mjs` (every goal and stage). Run them
+    `node test/weeks-walk.mjs` (12 weeks, fast-forwarded), `node test/stages-walk.mjs` (every goal and stage) and
+    `node test/threeplans-walk.mjs` (PMOS, Getting ready and My pregnancy lived from day 1 to day 85; Version 39.37). Run them
     before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
     install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
     `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then

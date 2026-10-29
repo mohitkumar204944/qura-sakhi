@@ -250,9 +250,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
 {
   const a = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10), intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(5)) } } });   /* review FLOWS-11: a real pack */
   await go(a.page, 'plan');
-  check('10 My plan: one row for the open signal, under the heading', /One of your recent gaps was 42 days/.test(await txt(a.page, '#view .pl-xp')) && /See a doctor this month/.test(await txt(a.page, '#view .pl-xp')), await txt(a.page, '#view .pl-xp'));
-  await tap(a.page, '#view .pl-xp button');
-  check('10 ... and it opens What your diary shows', await a.page.evaluate(() => location.hash) === '#explain');
+  check('10 My plan: no row for a signal that can wait (Version 39.37: Today and Cycles hold it; one that can\'t wait has its row, check 13)', !(await has(a.page, '#view .pl-xp')));
   await a.page.evaluate(() => { window.Saathi.state.settings.discreet = true; window.Saathi.save(); }); await go(a.page, 'plan');
   check('10 not on a shared phone', !(await has(a.page, '#view .pl-xp')));
   errsAll.push(...a.errs); await a.ctx.close();

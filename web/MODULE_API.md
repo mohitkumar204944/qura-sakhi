@@ -5241,3 +5241,33 @@ Mohit, 29 Oct: "fix gaps 8 to 15 too" (section 78's list).
 
 **Tests:** `node test/pregwalk.mjs`, checks g8 to g15 (39 checks in all; 10 of the new ones fail on 0.39.35's code). baby.mjs
 18 now checks the iron tablets line on an iron-goal pregnancy plan; pregplan.mjs reads the page's new name.
+
+## 80. Version 39.37: the three-plan walkthrough's fixes
+
+Mohit, 29 Oct: "can you do a walkthrough and verify if all three plans diary and home works properly". The walk is
+`test/threeplans-walk.mjs`: PMOS, Getting ready and My pregnancy, day 1 to day 85, in the test browser, plus his Flip5. Then
+he said "fix all 8". No new wording.
+1. **Cycles' "Next period date"** (core `knowCard`): once today is past her likely range, it says how late she is, as Today
+   does (`late_n`, `late_n1`), never a range that has passed.
+2. **"Due now" doesn't hold her day** (My pregnancy):
+   - the `preg.due` step is `soft`;
+   - a soft step counts only when done (`held()`: `dayCount`, `allDoneToday`, Today's and My plan's counts, the check-in's
+     count, the rings);
+   - it comes after her daily steps (`actionsFor`), and My plan's heading counts her daily steps.
+   So with her daily steps done, her day is full and closes itself, while the check-up waits for her visit.
+3. **One "Tomorrow" line**: with tomorrow's own line (`s.tom`), the check-in says "See you tomorrow at {t}." (`plan_ci_see`),
+   not "Tomorrow: the same steps" too.
+4. **Trying for a baby, a long wait for her period** (explain `late_now`): its line starts with core's reviewed `late_p` ("A
+   week or more late and you could be pregnant? A home test is the first step."), then the doctor. Not in midlife.
+5. **Cycles in a pregnancy**: no example cycle numbers and no "Add a past period" (`exampleCard`).
+6. **One home for what her records say**: Today's card and the card in Cycles. My plan's row (`recordsRow`) and the Diary's
+   note on Calendar and Days (`xp-banner`) come only for what can't wait (now or today), so an urgent row keeps its Call
+   button.
+7. **The day her 12 weeks end**: Today shows the end card (`carryRow`) without the week's look back (`cardKind` 'rev').
+8. **One celebration at a time** (`joy.js` `celebrate`, core `toast`):
+   - the check-in's own "A petal for your garden" line, with no petal panel over it;
+   - a badge earned with a petal comes as a short toast, not a panel over the page (her garden shows it);
+   - a toast more than 0.7 s old doesn't follow her to the next screen.
+
+**Tests:** `node test/threefix.mjs` (22 checks; 15 fail on 0.39.36's code). records.mjs 10 now checks that a signal that can
+wait has no row on My plan. Golden is re-recorded for 2: the pregnancy plans' "Due now" after the daily steps, and the counts.

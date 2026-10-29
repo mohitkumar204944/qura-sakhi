@@ -208,8 +208,8 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':d"]');
   await tap(page, '#pl-ci-save'); await settle(page, 300);
   v = await view(page);
-  check('8 after the first check-in: tomorrow, the same steps, and when', /Tomorrow: the same steps. See you at 8 pm./.test(v), v.slice(0, 500));
-  check('8 the check-in celebrates what day 1 earned, once', (await pop(page)).joy);
+  check('8 after the first check-in: tomorrow, and when (one "Tomorrow" line: Version 39.37)', (/Tomorrow: the same steps\. See you at 8 pm\./.test(v) && (v.match(/Tomorrow:/g) || []).length === 1) || (/See you tomorrow at 8 pm\./.test(v) && !/Tomorrow: the same steps/.test(v)), v.slice(0, 500));
+  check('8 the check-in celebrates what day 1 earned, once: its own petal line, no panel over it (Version 39.37)', /A petal for your garden/.test(v) && !(await pop(page)).joy);
   await shot(page, '05-first-checkin');
   /* day 2: yesterday */
   await jump(page, 1, '09:00'); await closeTips(page);

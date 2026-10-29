@@ -190,6 +190,11 @@
   if (S.onOwnerChange) S.onOwnerChange(() => { memQuiz = {}; q = { id: null, ans: null }; fresh = null; held = null; });
   function celebrate(kind, o) {
     if (/^relief-/.test(S.route())) return;
+    /* Version 39.37 (the three-plan walkthrough): the check-in already says "A petal for your garden"; a badge earned with a petal is a
+       short note, not a second panel over the page (her garden shows it) */
+    const just = celebrate.at && Date.now() - celebrate.at < 9000;
+    if (kind === 'petal' && S.route() === 'plan-checkin') { celebrate.at = Date.now(); return; }
+    if (kind === 'badge' && just) { S.toast(tf('joy_pop_badge', { b: t('joy_b_' + o.b.id) })); return; }
     celebrate.at = Date.now();   /* in a routine: no confetti while she is in pain or anxious (the petal still counts) */
     const m = monthIdx(o.mk || S.monthKey(S.today()));
     const title = kind === 'petal' ? t('joy_pop_petal') : kind === 'bloom' ? tf('joy_pop_bloom', { m: monthName(m) }) : tf('joy_pop_badge', { b: t('joy_b_' + o.b.id) });

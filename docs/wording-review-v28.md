@@ -2612,3 +2612,10 @@ Interface words describing the plan's own steps; nothing about health is new.
 - **Moved, not new:** the neutral foot line ("Everyday habits from national guidelines. Any other tablet, herb or medicine:
   your doctor decides.", section 19.33.1) now also shows for a pregnancy plan without the tablet step. "In pregnancy, start
   moves only after your doctor says it’s OK for you" no longer shows beside version 2's safety answers.
+
+### 19.37 Version 39.37: the three-plan walkthrough's fixes (MODULE_API section 80)
+
+No new wording. Lines reused in new places:
+- trying for a baby, the late finding in Cycles starts with Today's reviewed "A week or more late and you could be pregnant?
+  A home test is the first step.";
+- Cycles' "Next period date" says "Your period is {n} days late", as Today does, once her likely range has passed.

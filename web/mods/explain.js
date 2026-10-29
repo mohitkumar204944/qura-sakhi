@@ -271,7 +271,9 @@
   const title = (f) => { const x = xOf(f); return one(tx(fill(f.mid && x.tMid ? x.tMid : (f.old && x.tOld ? x.tOld : x.t), f.vars))); };
   /* Version 39.0: at "Call 112 now", Help's own call-now line leads (the stricter reviewed line) */
   const lc1 = (str) => (S.state.lang === 'en' ? str.charAt(0).toLowerCase() + str.slice(1) : str);
-  const seeOf = (f) => { const x = xOf(f); if (f.lv === 'now' && x.seeNow) return t('call_now') + ' ' + lc1(t(x.seeNow)); return f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : ''); };
+  const seeOf0 = (f) => { const x = xOf(f); if (f.lv === 'now' && x.seeNow) return t('call_now') + ' ' + lc1(t(x.seeNow)); return f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : ''); };
+  /* Version 39.37 (the three-plan walkthrough): trying for a baby, her late period starts with the home test, in Today's "Period late?" words */
+  const seeOf = (f) => { const s = seeOf0(f); return f.id === 'late_now' && !f.mid && S.stageNow && S.stageNow() === 'ttc' ? t('late_p') + (s ? ' ' + s : '') : s; };
   /* Version 39.1 (journey audit J-03, P1-07): the same buttons on every signal: the doctor step, her report for the doctor
      (with this card's question first), "Check the signs" where a validated self-check exists (where the build shows it), until
      she has done it in the last 90 days.
@@ -473,7 +475,7 @@
       /* Version 39.1: What it shows has the cards themselves */
       if (S.mem.diaryTab === 'tr') { wireActs(v); return; }
       /* on the calendar and Days, a one-line note when something needs a look; it opens What it shows */
-      const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !x.quiet)[0]; if (!f) return;
+      const seen = D().seen; const f = open(findings()).filter((x) => !seen[x.key] && !x.quiet)[0]; if (!f || ['now', 'today'].indexOf(f.lv) < 0) return;   /* Version 39.37: one home */
       const el = document.createElement('button'); el.type = 'button'; el.className = 'action xp-home xp-banner';
       el.innerHTML = '<span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span>';
       el.addEventListener('click', () => { S.mem.diaryTab = 'tr'; S.render(); window.scrollTo(0, 0); });
