@@ -145,7 +145,7 @@ const pEvents = [{ d: iso(lmp, -29), t: 'start' }, { d: iso(lmp, -25), t: 'end' 
   check('5 ... no "Add a past period" in a pregnancy', !(await has(a, '#ap-add')));
   await tap(a, '[data-tab="days"]');
   const heads = await a.page.$$eval('.dy-gh', (xs) => xs.map((x) => x.innerText.trim()));
-  check('5 Days: its group is "Bleeding", not "Period from"', heads.some((h) => h.indexOf('Bleeding · ' + d2) === 0) && !heads.some((h) => h.indexOf('Period from ' + d2) === 0), heads);
+  check('5 Days: not "Period from" (Version 39.41: the days inside the pregnancy are one "In your pregnancy" group)', heads.indexOf('In your pregnancy') >= 0 && !heads.some((h) => h.indexOf('Period from ' + d2) === 0), heads);
   const tags = await a.page.$$eval('.dy-tag.p', (xs) => xs.map((x) => x.innerText.trim()));
   check('5 Days: the day says "Bleeding"; her last period before the pregnancy still says "Period started"', tags.indexOf('Bleeding') >= 0 && tags.indexOf('Period started') >= 0, tags);
   await done(a);

@@ -292,6 +292,18 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - Your numbers' spread;
     - "ask your doctor" on the labour timer.
     Contract: MODULE_API section 83; wording: section 19.40 of the review (the dates line waits for doctor review).
+  - `node test/planwalk.mjs` (Version 39.41, the three-plan walk's gaps; Mohit, 30 Oct: "fix all 10"):
+    - no tick on Getting ready's passed parts;
+    - a routine's minutes from her Done, once;
+    - no "Do it now" for "Due now" in the check-in;
+    - "Plan week {n} is done" in a pregnancy;
+    - "Why these {n} steps?" by her daily steps;
+    - the calm card's line;
+    - "Period late?" on My plan while getting ready;
+    - "My doctor" in every plan;
+    - one "In your pregnancy" group in Days;
+    - a routine's minutes on its Start, and the pregnancy card's buttons two to a row.
+    Contract: MODULE_API section 84; wording: section 19.41 of the review (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

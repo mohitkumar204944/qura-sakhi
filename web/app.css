@@ -1269,3 +1269,6 @@ body:has(.tour-pop) .toast { top: calc(env(safe-area-inset-top, 0px) + 76px); bo
 .action.pg-urg { flex-direction: column; align-items: stretch; gap: 10px; }
 .action.pg-urg .pg-urg-b { box-shadow: none; padding: 0; background: none; border-radius: 0; }
 .action.pg-urg .pg-call { padding-left: 56px; }
+/* Version 39.41 (Mohit's three-plan walk): from 37 weeks the pregnancy card's 4 buttons two to a row, each label wrapping */
+.row.hero-btns2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: stretch; }
+.row.hero-btns2 > .btn { width: 100%; min-width: 0; white-space: normal; text-align: left; justify-content: space-between; padding-top: 6px; padding-bottom: 6px; line-height: 1.25; }

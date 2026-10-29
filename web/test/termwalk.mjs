@@ -113,8 +113,8 @@ const pEv = [{ d: ago(330), t: 'start' }, { d: ago(326), t: 'end' }, { d: ago(30
   check('2 Your numbers: 2 periods logged and the one gap before the pregnancy (the bleeding in it left out)', /\b2\s*Periods logged/.test(nums) && /\b30\s*Average gap/.test(nums), nums);
   await tap(a, '[data-tab="days"]');
   const heads = await a.page.$$eval('.dy-gh', (xs) => xs.map((x) => x.innerText.trim()));
-  const dv = await a.page.$$eval('.dy-grp', (xs) => xs.filter((g) => /^Bleeding · /.test(g.querySelector('.dy-gh').innerText.trim())).map((g) => g.textContent).join(' '));   /* the groups inside the pregnancy */
-  check('2 Days: each bleed in the pregnancy has its own "Bleeding" group, and no day is "Day n of your period"', heads.filter((h) => /^Bleeding · /.test(h)).length === 4 && !/Day \d+ of your period/.test(dv), { heads });
+  const dv = await a.page.$$eval('.dy-grp', (xs) => xs.filter((g) => /^In your pregnancy$/.test(g.querySelector('.dy-gh').innerText.trim())).map((g) => g.textContent).join(' '));   /* the group inside the pregnancy (Version 39.41) */
+  check('2 Days: the bleeds in the pregnancy are "Bleeding" in one "In your pregnancy" group (Version 39.41), and no day is "Day n of your period"', heads.filter((h) => h === 'In your pregnancy').length === 1 && (dv.match(/Bleeding/g) || []).length >= 4 && !/Day \d+ of your period/.test(dv), { heads });
   await done(a);
   const s = await open({ seed: { situation: scan39(), events: pEv } });
   await tap(s, '#stage-btn'); if (!(await has(s, '#st-preg-is'))) await tap(s, '[data-stage="preg"]');
@@ -161,7 +161,7 @@ const reqs = [];
   await go(g, 'ask'); check('3 ... and none on the doctor screen', !(await has(g, '#ask-mydoc')) && !(await has(g, '#ask-mydoc-add')));
   await done(g);
   const c = await open({ seed: { situation: { care: 'private' }, mydoc: { tel: DOC }, events: [{ d: ago(20), t: 'start' }] }, hash: 'ask' });
-  check('3 not pregnant: the doctor screen as before', !(await has(c, '#ask-mydoc')) && !(await has(c, '#ask-mydoc-add')));
+  check('3 not pregnant, her number saved: Call my doctor, and no add link (Version 39.41)', (await has(c, '#ask-mydoc')) && !(await has(c, '#ask-mydoc-add')));
   await done(c);
   const d = await open({ seed: Object.assign(withPlan(30, {}, { situation: sit(35), mydoc: { tel: DOC } }), { settings: { discreet: true } }), hash: 'plan' });
   check('3 a shared phone: no doctor\'s row', !(await has(d, '#view .pl-mydoc')));

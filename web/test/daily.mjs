@@ -90,7 +90,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('1 "plan day", never just "Day": MY PMOS PLAN · WEEK 2 · PLAN DAY 10', /MY PMOS PLAN · WEEK 2 · PLAN DAY 10/.test(td) && !/\bDay 10\b/.test(td.replace(/PLAN DAY 10/, '')), td);
   const rows = await a.page.$$eval('#view .today-card .today-plan-list .today-it', (x) => x.map((y) => (y.className.match(/today-plan-[a-z]+/) || [''])[0]));
   check('1 her 4 steps as a checklist: yoga, walk, food, bedtime', JSON.stringify(rows) === JSON.stringify(['today-plan-yoga', 'today-plan-move', 'today-plan-plate', 'today-plan-sleep']), rows);
-  check('1 one pink button in the morning: her yoga\'s Start', JSON.stringify(await pinks(a.page, '#view .today-card')) === JSON.stringify(['Start']), await pinks(a.page, '#view .today-card'));
+  check('1 one pink button in the morning: her yoga\'s Start (Version 39.41: its minutes on it)', (await pinks(a.page, '#view .today-card')).length === 1 && /^\d+ min$/.test((await pinks(a.page, '#view .today-card'))[0]), await pinks(a.page, '#view .today-card'));
   check('1 the check-in waits, with its time under her steps (Version 39.27: 10 pm, after her 9:15 pm walk)', /Check-in at 10 pm/.test(td) && !(await has(a.page, '#view .today-card [data-go="plan-checkin"]')), td);
   const dots = await a.page.$$eval('#view .today-card .pl-d7d', (x) => x.map((y) => ({ c: y.querySelector('i').className, t: y.title, now: y.classList.contains('now') })));
   check('1 her plan week as 7 dots: Sunday some steps, Monday a full day, today ringed', dots.length === 7 && dots[0].c === 'some' && dots[1].c === 'full' && dots[2].now && /^Monday: 4 of 4 steps$/.test(dots[1].t) && /^Sunday: 3 of 4 steps$/.test(dots[0].t), dots);

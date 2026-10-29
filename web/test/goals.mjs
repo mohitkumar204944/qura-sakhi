@@ -84,7 +84,7 @@ const count = (s, re) => (String(s).match(re) || []).length;
   await shot(page, '1-preg-my-plan');
   await go(page, 'plan-checkin');
   /* Version 39.5 (journey audit P2-15): what is due is done in the checklist itself, so the check-in shows it and doesn't ask */
-  check('1 the check-in shows what is due, done in its checklist (not a Done tap)', (await has(page, '#view .pl-ci [data-go="preg-plan"]')) && !(await has(page, '[data-ci^="pdue:"]')));
+  check('1 the check-in leaves out what is due (Version 39.41: it waits for her visit; Today and My plan show it), and never a Done tap', !(await has(page, '#view .pl-ci [data-go="preg-plan"]')) && !(await has(page, '[data-ci^="pdue:"]')));
   check('1 no page errors', errs.length === 0, errs);
   await ctx.close();
   const b = await open({ seed: Object.assign({}, PREG, { mods: { journey: { active: 'iron', start: ago(2), done: {}, finished: {} } } }) });
@@ -265,7 +265,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   check('10 a pregnancy plan past 12 weeks counts its recent weeks (doctor summary)', /about (6\.[5-9]|7) days a week/.test(sum), sum);
   await c.page.evaluate(() => { window.Saathi.state.settings.discreet = true; window.Saathi.save(); }); await go(c.page, 'plan');
   const cv = await view(c.page);
-  check('10 discreet: a pregnancy plan says its own week in plain words, never "Week 12 of 12", and no trimesters', /Week 20/.test(cv) && !/of 12|pregnan|trimester|Weeks 1 to 13/i.test(cv), cv.slice(0, 500));
+  check('10 discreet: a pregnancy plan says its own week in plain words, never "Week 12 of 12", and no trimesters', /Week 2\d · How it works/.test(cv) && /Plan week 20 is done/.test(cv) && !/of 12|pregnan|trimester|Weeks 1 to 13/i.test(cv), cv.slice(0, 500));
   await c.ctx.close();
   const d = await open({ seed: { checkins: { [TODAY.slice(0, 7)]: { at: ago(2), kind: 'cycle', chips: ['mood'] } }, mods: { contra: { method: 'implant', until: ago(10) }, plan: planOf('cycle', 'irregular', ago(9)) } } });
   await go(d.page, 'home');

@@ -74,8 +74,8 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* day 10 of her PMOS plan (plan day index 2): cycle care yoga today; strength on Thursday (index 4) */
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }) });
   const td = await txt(a.page, '#view .today-card'); const cm = await rmins(a.page, 'cycle');
-  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name; 39.22: before a meal first)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\nBefore a meal · ' + cm + ' min') && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
-  check('1 ... yoga has Start, the walk a tick (Version 39.14)', (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === 'Start' && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await a.page.$eval('#view .today-plan-move [data-today-act]', (b) => b.getAttribute('aria-label')).catch(() => '')) === 'Mark done: Walk 10 minutes');
+  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name; 39.22: before a meal first; 39.41: its minutes on its Start)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\nBefore a meal') && (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === cm + ' min' && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
+  check('1 ... yoga has Start (Version 39.41: its minutes on it, "8 min"), the walk a tick (Version 39.14)', /^\d+ min$/.test(await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await a.page.$eval('#view .today-plan-move [data-today-act]', (b) => b.getAttribute('aria-label')).catch(() => '')) === 'Mark done: Walk 10 minutes');
   await tap(a.page, '#view .today-plan-move [data-today-why]'); const wsh = await a.page.$eval('#sheet-root', (e) => e.innerText).catch(() => '');
   check('1 ... the walk\'s "Why?" opens its reason, how to do it and Yoga and moves (Version 39.14)', /WHY IT HELPS\n\nMoving most days helps your body use insulin better/.test(wsh) && /Brisk: you can talk, but not sing/.test(wsh) && (await has(a.page, '#sheet-root [data-go="plan-moves"]')), wsh);
   await tap(a.page, '#pl-why-ok');
@@ -94,7 +94,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* a strength day (index 1): strength at home, with Start; no "strength day ahead" line */
   const s = await open({ seed: cyc(ago(8), { log: logged(8, 5) }) });
   const ts = await txt(s.page, '#view .today-card'); const sm = await rmins(s.page, 'strength');
-  check('1 a strength day: "Strength at home", about N min, as the yoga step', (await txt(s.page, '#view .today-plan-yoga')).startsWith('Strength at home\n' + sm + ' min') && !/: strength day ·|Strength on|strength on/.test(ts), ts);
+  check('1 a strength day: "Strength at home", about N min on its Start (Version 39.41), as the yoga step', (await txt(s.page, '#view .today-plan-yoga')).startsWith('Strength at home') && (await txt(s.page, '#view .today-plan-yoga [data-today-nav]')) === sm + ' min' && !/: strength day ·|Strength on|strength on/.test(ts), ts);
   check('1 ... Start opens Strength at home', (await s.page.$eval('#view .today-plan-yoga [data-today-nav]', (b) => { b.click(); return true; }).then(() => settle(s.page, 300)).then(() => s.page.evaluate(() => location.hash))) === '#plan-r-strength');
   await done(s);
   /* the day before a strength day: "Tomorrow: strength day"; a week whose strength is done: no line */
@@ -173,7 +173,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const d = await plan(a.page);
   check('7 saving keeps her week: strength days, time, and her if-then plan', JSON.stringify((d.wplan || {})[2]) === JSON.stringify({ when: 'dinner', at: TODAY, str: [2, 5], ifb: 'time', ift: 'split' }) && d.weeks[1].seen === true, [d.wplan, d.weeks]);
   await go(a.page, 'home'); await a.page.clock.setFixedTime(at(2, '10:00')); await go(a.page, 'home');
-  check('7 her own strength day comes on Today (in 2 days, index 2)', /Strength at home\n\d+ min/.test(await txt(a.page, '#view .today-card')), await txt(a.page, '#view .today-card'));
+  check('7 her own strength day comes on Today (in 2 days, index 2)', /Strength at home\nWhy\?\n\d+ min/.test(await txt(a.page, '#view .today-card')), await txt(a.page, '#view .today-card'));
   /* the barrier she planned for: the check-in's tip is her own plan */
   await a.page.clock.setFixedTime(at(2, '20:30')); await go(a.page, 'plan-checkin');
   for (const g of await a.page.$$eval('[data-ci]', (b) => [...new Set(b.map((y) => y.dataset.ci.split(':')[0]))])) await tap(a.page, '[data-ci="' + g + ':n"]');

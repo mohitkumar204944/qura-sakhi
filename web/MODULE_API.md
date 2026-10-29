@@ -5351,3 +5351,47 @@ Core's own About week page (`pregnancy`) only runs without the pregnancy module,
 **Tests:** `node test/termwalk.mjs` (43 checks). On 0.39.38's code it fails 9 of them, then stops: My plan has no doctor's row.
 daily.mjs 4 (My ASHA off Today and My plan) now seeds `care: 'govt'`. Golden is re-recorded for 2: the pregnancy plans' care
 team starts with "My doctor", and "Due now" counts her doctor's and ambulance numbers from week 32.
+
+## 84. Version 39.41: the three-plan walk's gaps
+
+Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps properly for home my plan and diary for all three stage
+users which we have curated plans" (My pregnancy on his Flip5, vc 71; PMOS and Getting ready lived day 1 to 85 in the test
+browser), then "fix all 10". No new health wording; the new words are UI only (review section 19.41).
+1. **Getting ready's 12 weeks** (`pathHtml`): a part that has passed is drawn as passed (`li.gone`, as the pregnancy's path,
+   Version 39.35), never a ✓: she may not have done it.
+2. **A routine done without the player counts its minutes, once** (`markAction`, `unmark`, `logRoutine`):
+   - her Done in the check-in (or a tick) adds the routine's minutes (`routineMins`; Partly, half) to the day's minutes and
+     `rmin`, kept in `x.tkr[routine]` so a tap on its tick takes back only those;
+   - not when she played that routine today (`x.r`: the player counted it), and playing it later takes the Done's minutes back
+     before the played ones go in. So "Active minutes" counts the yoga she does from memory, never twice.
+3. **The check-in never asks "Do it now" for "Due now"** (`renderCheckin`): a check-up waits for her visit (the soft step stays
+   on Today and My plan).
+4. **A pregnancy's look back** (`revH`): "Plan week {n} is done" (`plan_rev_hp`), never a week that reads as her pregnancy's.
+   Every other plan keeps "Week {n} is done".
+5. **"Why these {n} steps?"** (`whyN`, `openWhyAll`) counts her daily steps, as the heading does.
+6. **"A calm few minutes"** shows from week 8, so it says only "For the week before your period." (`plan_bcalm_p2`).
+7. **Late while getting ready** (`lateTest`, `lateRow`; pregtest `lastTest()`): her period 14 days or more past its date and
+   no test saved since: the week's lesson steps aside on Today (her cycle card's "Period late?" leads there), and My plan starts
+   with that row, "Period late? · A week or more late and you could be pregnant? A home test is the first step.", to the test
+   page. A positive test brings "Your test is positive · Yes, move me on" (Version 39.32); a saved test ends the row.
+8. **"My doctor" in every plan's care team** on her doctor's route (Version 39.40 had it in a pregnancy only), and once her
+   number is saved, "Call my doctor" on the doctor screen for every woman (adding it there stays a pregnancy's).
+9. **The Diary in a pregnancy:** Days puts every day inside the pregnancy in one group, "In your pregnancy" (`dy_grp_preg`;
+   on a shared phone "From {date}"), never under its last bleed; My cycles draws no cycle strip under a bleed in it.
+10. **Layout:**
+    - a yoga or strength step's minutes go on its Start button ("▶ 8 min", `plan_min_n`), as the wind-down step's already do,
+      so its line keeps "Before a meal · Why?" whole from 390 px (at 360 px the line is still cut, but the minutes show). A
+      wrapped line would push her first Done below the tab bar at 360 × 800 (FIXES-06) and break the wind-down step's short
+      line;
+    - from 37 weeks the pregnancy card's 4 buttons are two to a row, equal heights (`.row.hero-btns2`).
+
+**Tests:** `node test/planwalk.mjs` (29 checks; on 0.39.40's code it fails the first and stops at the second: no Done
+minutes). Updated for what changed on purpose:
+- latepreg 5 and termwalk 2: the one "In your pregnancy" group;
+- termwalk 3: "Call my doctor" for a woman who isn't pregnant but saved her number;
+- care 6: "My doctor" first in the care team;
+- goals 1: the check-in leaves out "Due now"; goals 10: "Plan week 20 is done" on a shared phone;
+- follow 1 and 7, daily 1, winddown 2: the routine's minutes on its Start.
+
+Golden is re-recorded for 3: "My doctor" in every care team on her doctor's route, "Plan week {n} is done" in a pregnancy,
+and "Why this step?" counting her daily steps.

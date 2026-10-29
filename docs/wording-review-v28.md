@@ -2660,3 +2660,15 @@ No new wording. Lines reused in new places:
   - the labour timer on her doctor's route: "At your 36-week visit, ask your doctor when they want you to come in, and to which
     hospital." (the reviewed line without "or ANM");
   - "Bleeding" for every start inside a pregnancy, in My cycles, Days and the Calendar's key.
+
+### 19.41 Version 39.41: the three-plan walk's gaps (MODULE_API section 84)
+
+No new health wording, so nothing waits for the doctor.
+- **New, interface words:**
+  - "Plan week {n} is done" / "प्लान का हफ़्ता {n} पूरा हुआ" (a pregnancy's look back);
+  - "In your pregnancy" / "आपकी गर्भावस्था में" (Days).
+- **Moved, not new:**
+  - "For the week before your period." (the first sentence of "A calm few minutes", without "You can switch it on from week 8");
+  - Today's reviewed "Period late?" row on My plan while getting ready, once her period is 14 days or more late;
+  - "My doctor" and "Call my doctor" (section 19.40) in every plan's care team on her doctor's route.
+  - a yoga or strength step's minutes ("8 min" / "8 मिनट") on its Start button on Today, in place of the word Start.

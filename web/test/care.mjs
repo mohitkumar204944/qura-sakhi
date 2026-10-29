@@ -290,9 +290,9 @@ async function signUp(a) {
   await done(a);
   /* My plan's care team: the same order */
   const team = async (care) => { const b = await open({ hash: 'plan', seed: { situation: care ? { care } : {}, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', 3) } } });
-    const r = await b.page.$$eval('#view .pl-care .item', (x) => x.map((y) => y.dataset.go || (y.dataset.ask ? 'ask' : ''))); await done(b); return r; };
+    const r = await b.page.$$eval('#view .pl-care .item', (x) => x.map((y) => y.dataset.go || (y.dataset.ask ? 'ask' : (y.dataset.mydoc ? 'mydoc' : '')))); await done(b); return r; };
   let tm = await team(null);
-  check('6 My plan\'s care team, unanswered: a Qura doctor, then the free government doctor', tm[0] === 'ask' && tm[1] === 'access-doctor', tm);
+  check('6 My plan\'s care team, unanswered: her own doctor (Version 39.41), a Qura doctor, then the free government doctor', tm[0] === 'mydoc' && tm[1] === 'ask' && tm[2] === 'access-doctor', tm);
   tm = await team('govt');
   check('6 ... a government centre: the free government doctor first, as before', tm[0] === 'access-doctor' && tm[1] === 'ask', tm);
 }

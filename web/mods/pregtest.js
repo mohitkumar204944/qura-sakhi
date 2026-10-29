@@ -5,7 +5,7 @@
   const t = S.t, esc = S.esc, tx = S.tx;
   const D = () => S.data('pregtest');
   /* Version 39.32: the latest positive result she saved, for the Getting ready plan's "Your test is positive" card (read only) */
-  S.pregtest = Object.assign(S.pregtest || {}, { lastPos: () => { if (!S.canSave()) return null; const x = ((S.state.mods || {}).pregtest || {}).tests || []; return x.filter((r) => r && r.r === 'pos' && /^\d{4}-\d{2}-\d{2}$/.test(r.d || '')).map((r) => r.d).sort().pop() || null; } });
+  S.pregtest = Object.assign(S.pregtest || {}, { lastTest: () => { if (!S.canSave()) return null; const x = ((S.state.mods || {}).pregtest || {}).tests || []; return x.filter((r) => r && /^\d{4}-\d{2}-\d{2}$/.test(r.d || '')).map((r) => r.d).sort().pop() || null; },   /* Version 39.41: her last test, any result */ lastPos: () => { if (!S.canSave()) return null; const x = ((S.state.mods || {}).pregtest || {}).tests || []; return x.filter((r) => r && r.r === 'pos' && /^\d{4}-\d{2}-\d{2}$/.test(r.d || '')).map((r) => r.d).sort().pop() || null; } });
   const saved = () => (((S.state.mods || {}).pregtest || {}).tests || []);
 
   /* Dates she types and the result she picks live only in memory. They are wiped when she leaves these pages,
