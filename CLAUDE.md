@@ -282,6 +282,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     `web/fig` is made by `web/tools/fig3d` (README.md there; Blender and MakeHuman's CC0 packs, outside the repo). After a
     re-render, run `python3 web/tools/fig3d/install.py <work>/final web`. Contract: MODULE_API section 82; wording: section
     19.39 (UI words only).
+  - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
+    - Call buttons on the labour timer;
+    - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;
+    - her own doctor's number on the phone, with Call in My plan, the doctor screen, the kick page and the labour timer;
+    - the labour timer on Today from 37 weeks;
+    - the week page's scan line;
+    - "Call 112 now if" in one card;
+    - Your numbers' spread;
+    - "ask your doctor" on the labour timer.
+    Contract: MODULE_API section 83; wording: section 19.40 of the review (the dates line waits for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

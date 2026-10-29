@@ -89,6 +89,7 @@
     wk_youare: ['By your dates you are in about week {n}.', 'आपकी तारीख़ों से आप लगभग हफ़्ता {n} में हैं।'],
     wk_goto: ['Go to my week', 'मेरे हफ़्ते पर जाएँ'],
     wk_p: ['Counted from the first day of the last period. Every baby grows at its own pace.', 'पिछले पीरियड के पहले दिन से गिना गया। हर बच्चा अपनी रफ़्तार से बढ़ता है।'],
+    wk_pace: ['Every baby grows at its own pace.', 'हर बच्चा अपनी रफ़्तार से बढ़ता है।'],   /* Version 39.40: wk_p's second sentence, after hub_scan */
     wk_tri1: ['First three months', 'पहले तीन महीने'],
     wk_tri2: ['Middle three months', 'बीच के तीन महीने'],
     wk_tri3: ['Last three months', 'आख़िरी तीन महीने'],
@@ -583,8 +584,7 @@
   const KIND_CLS = { warn: 'accent', scheme: 'ok', food: 'ok' };
   const goBtn = (r, cls) => (r && linkOk(r) && GO_LABEL[r] ? '<button type="button" class="btn sm ' + (cls || '') + '" data-go="' + esc(r) + '">' + esc(GO_LABEL[r]()) + '</button>' : '');
   const backTo = () => 'preg';
-  const urgentAction = () => '<button type="button" class="action" data-go="help"><span class="ico accent">' + S.I.help + '</span><span class="body"><strong>' + esc(t('call_now')) + '</strong><span class="small">' + esc(t('s1c')) + '</span></span></button>' +
-    '<div class="row wrap pg-call"><a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>';   /* Version 39.38 */
+  const urgentAction = () => S.callNowCard();   /* Version 39.40: one card with its Call 112 (core) */
   const sizeLine = (n) => { const x = W[n]; return tx(x.s) + ', ' + lcFirst(tx(x.c)); };
   /* The week's fruit or vegetable, drawn by art.js (Home shows it beside the week number). */
   const sizeArt = (n, cls) => (S.art ? '<span class="' + (cls || 'pg-art') + '">' + S.art.produce(n, tx(W[n].c)) + '</span>' : '');
@@ -682,6 +682,8 @@
   }
 
   /* ---------- week pages ---------- */
+  /* Version 39.40: the week page says what her weeks count from (the scan's due date, in the hub's reviewed words) */
+  const wkP = (wi) => (wi && wi.from === 'scan' ? T('hub_scan') + ' ' + T('wk_pace') : T('wk_p'));
   function renderWeekRoute(v) {
     const wi = weekInfo();
     if (wi) return renderWeek(v, clampW(wi.w));
@@ -700,7 +702,7 @@
     else if (wi) mineNote = '<div class="row spread"><span class="small" style="flex:1">' + esc(TF('wk_youare', { n: wi.w })) + '</span><button type="button" class="btn sm" style="flex-shrink:0" data-go="preg-w-' + mine + '">' + esc(T('wk_goto')) + '</button></div>';
     const prev = n > W_MIN ? '<button type="button" class="btn" data-go="preg-w-' + (n - 1) + '">' + esc(TF('wk_prev', { n: n - 1 })) + '</button>' : '<span></span>';
     const next = n < W_MAX ? '<button type="button" class="btn" data-go="preg-w-' + (n + 1) + '">' + esc(TF('wk_next', { n: n + 1 })) + '</button>' : '<span></span>';
-    v.innerHTML = S.backRow(TF('wk_title', { n: n }), backTo(), false) + '<p class="small">' + esc(T('wk_p')) + '</p>' +
+    v.innerHTML = S.backRow(TF('wk_title', { n: n }), backTo(), false) + '<p class="small">' + esc(wkP(wi)) + '</p>' +
       '<div class="card">' + mineNote + triBar(n) + '</div>' +
       '<div class="card"><div class="eyebrow">' + esc(T('wk_baby')) + '</div><div class="pg-sizerow">' + sizeArt(n) + '<div class="pg-size"><span class="small">' + esc(lenLbl) + '</span><span class="pg-big num">' + esc(tx(x.s)) + '</span><span class="pg-cmp">' + esc(tx(x.c)) + '</span></div></div><p>' + esc(tx(x.b)) + '</p></div>' +
       '<div class="card"><div class="eyebrow">' + esc(T('wk_body')) + '</div><p>' + esc(tx(x.y)) + '</p></div>' +
@@ -964,7 +966,7 @@
     { id: 'anc3', w: [28, 34], tip: 27, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 28, 34) },
     { id: 'jssk', gov: true, w: [28, 40], tip: 29, go: 'access-schemes-preg' },
     { id: 'birth', w: [32, 40], tip: 33, go: 'pregtools-bag' },
-    { id: 'asha', w: [32, 40], tip: 34, go: 'asha', auto: () => !!(S.asha && S.asha.saved()) },
+    { id: 'asha', w: [32, 40], tip: 34, go: 'asha', auto: () => !!(S.asha && S.asha.saved()) || (docR() && !!(S.mydoc && S.mydoc.get())) },   /* Version 39.40: her doctor's number */
     { id: 'anc4', w: [36, 41], tip: 36, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 36, 42) },
     { id: 'fp', w: [36, 40], tip: 39, go: 'post-contra' },
     { id: 'w41', w: [41, 42], tip: 41, only: true }
@@ -1025,6 +1027,7 @@
       else if (!it.pmsma && !x.auto) btns.push(x.tick ? '<button type="button" class="btn sm" data-pg-plan-undo="' + it.id + '">' + esc(T('plan_undo')) + '</button>' : '<button type="button" class="btn sm' + (x.code === 'now' ? ' primary' : '') + '" data-pg-plan="' + it.id + '">' + esc(T('plan_mark')) + '</button>');
       /* an official site, opened outside Sakhi (Version 29) */
       if (it.ext && !(dr && it.id === 'td') && x.code !== 'done' && x.code !== 'past') btns.push('<a class="btn sm" href="' + esc(it.ext[0]) + '" target="_blank" rel="noopener">' + esc(T(it.ext[1])) + '</a>');
+      if (it.id === 'asha' && dr && S.mydoc && S.canSave()) btns.push('<button type="button" class="btn sm" data-mydoc="1">' + esc(t(S.mydoc.get() ? 'mydoc_h' : 'mydoc_add')) + '</button>');   /* Version 39.40 */
       if (goOk(it)) btns.push('<button type="button" class="btn sm" data-go="' + esc(it.go) + '">' + esc(GO_LABEL[it.go] ? GO_LABEL[it.go]() : T('plan_open')) + '</button>');
       return '<div class="card pg-plan" data-plan="' + it.id + '"><div class="row spread" style="align-items:flex-start;gap:8px"><h3 style="margin:0;min-width:0">' + esc(name) + '</h3><span class="pill ' + (x.code === 'now' ? 'accent' : (x.code === 'done' ? 'ok' : 'muted')) + '">' + esc(x.code === 'soon' ? TF('plan_from', { a: it.w[0], d: S.fmtD(dayOfWeek(wi, it.w[0]), { day: 'numeric', month: 'short' }) }) : win(it)) + '</span></div>' +
         '<p class="small" style="color:var(--fg)">' + esc(tipOf(it)) + '</p>' + extra + doneLine + (btns.length ? '<div class="row wrap">' + btns.join('') + '</div>' : '') + '</div>';

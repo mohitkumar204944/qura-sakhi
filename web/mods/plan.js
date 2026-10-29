@@ -1520,7 +1520,7 @@
       return j ? [{ id: 'iron', icon: S.icon('leaf'), hue: 'green', kind: 'tick', title: j.t, name: n > 21 ? t('plan_a_ironf') : null, sub: j.p, go: j.go || (S.routeOwner('food') ? 'food' : 'plan'), state: st('iron'), why: 'plan_fb_iron', priv: true }] : [];
     },
     /* Version 38 (ux-gaps E1): what her pregnancy plan has due now comes first (preg.js S.preg.plan) */
-    'preg.due': (d, c, x, st) => { const due = (S.preg && S.preg.plan ? S.preg.plan.due() : []).filter((y) => y.id !== 'asha');   /* Mohit, 26 Oct: My ASHA stays off Today and My plan */ return due.length ? [{ id: 'pdue', icon: S.icon('check'), hue: 'orange', kind: 'link', title: due.length > 1 ? tf('plan_a_due_more', { x: due[0].name, n: due.length - 1 }) : tf('plan_a_due', { x: due[0].name }), sub: t('plan_a_due_s'), go: 'preg-plan', state: st('pdue'), why: 'plan_fb_due', priv: true, soft: true }] : []; },   /* Version 39.37: soft */
+    'preg.due': (d, c, x, st) => { const due = (S.preg && S.preg.plan ? S.preg.plan.due() : []).filter((y) => y.id !== 'asha' || !(S.care && S.care.gov && S.care.gov()));   /* Mohit, 26 Oct: My ASHA stays off Today and My plan; Version 39.40: on her doctor's route it is her doctor's and ambulance numbers */ return due.length ? [{ id: 'pdue', icon: S.icon('check'), hue: 'orange', kind: 'link', title: due.length > 1 ? tf('plan_a_due_more', { x: due[0].name, n: due.length - 1 }) : tf('plan_a_due', { x: due[0].name }), sub: t('plan_a_due_s'), go: 'preg-plan', state: st('pdue'), why: 'plan_fb_due', priv: true, soft: true }] : []; },   /* Version 39.37: soft */
     /* Version 38 (ux-gaps E2): until 6 weeks, the daily recovery check and its danger signs, done only by doing it (S.post.checkedOn) */
     'post.rcheck': (d, c) => [{ id: 'rcheck', icon: S.icon('check'), hue: 'rose', kind: 'check', title: tileTitle('post-recovery'), sub: t('plan_a_rcheck_s'), go: 'post-recovery', state: S.post && S.post.checkedOn && S.post.checkedOn(c.day) ? 'd' : null, why: 'plan_fb_recov', priv: true }],
     /* Version 39.9 (diet audit 2): for 40+ bones, a calcium food on its days, from her region and how she eats */
@@ -2447,12 +2447,16 @@
       '<dl class="pl-kv"><dt>' + esc(t('plan_kv_this')) + '</dt><dd>' + esc(focus(wk)) + '</dd>' + (wk < N ? '<dt>' + esc(t('plan_kv_next')) + '</dt><dd>' + esc(focus(wk + 1)) + '</dd>' : '') + '</dl>' + stage + (babyD(d) ? bdocMonth() : '') + mr +
       '<details class="pl-path-more" data-pl-fold="path"' + (foldOpen('path') ? ' open' : '') + '><summary class="linkbtn">' + esc(t('plan_path_all')) + '</summary><ol class="pl-steps">' + all.map(li).join('') + '</ol>' + cons.replace('<div class="card pl-cons">', '<div class="pl-cons pl-cons-in">') + '</details></div>';
   }
+  /* Version 39.40 (Mohit's 39-week walk): in a pregnancy on her doctor's route, her own doctor first: Call, or add the number */
+  const myDocRow = () => { if (!pregnant() || disc() || !S.mydoc || !S.canSave() || (S.care && S.care.gov && S.care.gov())) return ''; const n = S.mydoc.get();
+    return n ? '<a class="item pl-mydoc" href="tel:' + esc(n) + '"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('mydoc_call')) + '</strong><span>' + esc(n) + '</span></span><span class="chev">' + S.I.chev + '</span></a>'
+      : '<button type="button" class="item pl-mydoc" data-mydoc="1"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('mydoc_h')) + '</strong><span>' + esc(t('mydoc_add')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>'; };
   function careTeam(fold) {
     const row = (go, ico, title, sub) => '<button type="button" class="item" data-go="' + go + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button>';
     const sec = (list) => (fold ? foldCard('pl-care', t('plan_ct_h'), t('plan_ct_sum'), list) : '<section class="care-sec pl-sec pl-care"><h2>' + esc(t('plan_ct_h')) + '</h2>' + list + '</section>');   /* Version 39.19: one row after her first week */
     const free = S.routeOwner('access-doctor') ? row('access-doctor', S.icon('steth'), t('plan_rv_free'), t('plan_ct_free_s')) : '';
     const qura = disc() ? row('ask', S.icon('steth'), t('plan_ct_qura'), t('plan_ct_qura_s')) : '<button type="button" class="item" data-ask="' + esc(tf('plan_ask_q', { t: packTitle(raw() || {}) })) + '"><span class="ico-sm hue hue-rose">' + S.icon('steth') + '</span><span class="body"><strong>' + esc(t('plan_ct_qura')) + '</strong><span>' + esc(t('plan_ct_qura_s')) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';   /* Version 39.6 (P2-11) */
-    return sec('<div class="list">' + byRoute(free, qura) +
+    return sec('<div class="list">' + myDocRow() + byRoute(free, qura) +
       row('report', S.icon('file'), t('plan_ct_report'), '') + row('help', S.I.help, t('help'), t('plan_ct_help_s')) + '</div>');
   }
   function lightResults(d) {

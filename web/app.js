@@ -50,7 +50,7 @@
       r6_h: '90+ days since your last period', r6_p: 'If you could be pregnant, a home test is the first step. Then see a doctor. For PMOS, regular periods protect the womb lining.',
       late_h: 'Past the expected range', late_p: 'A week or more late and you could be pregnant? A home test is the first step.',
       calendar: 'Calendar', bleeding: 'Bleeding', likely_range: 'Likely range', today_l: 'Today', cal_note: 'Tap a day to log.',
-      stats: 'Your numbers', stats_from: 'From your last {n} counted gaps (guessed dates, hormones and pregnancy left out).', stats_from_1: 'From your last counted gap (guessed dates, hormones and pregnancy left out).', avg_gap: 'Average gap', shortest: 'Shortest gap', longest: 'Longest gap', bleed_days: 'Bleeding days (avg)', cycles_logged: 'Periods logged', spread6: 'Spread of last 6',
+      stats: 'Your numbers', stats_from: 'From your last {n} counted gaps (guessed dates, hormones and pregnancy left out).', stats_from_1: 'From your last counted gap (guessed dates, hormones and pregnancy left out).', avg_gap: 'Average gap', shortest: 'Shortest gap', longest: 'Longest gap', bleed_days: 'Bleeding days (avg)', cycles_logged: 'Periods logged', spread6: 'Spread of last 6', spread_n: 'Spread of last {n}',
       no_data: 'Log two period starts to see the gap between them.', gaps12: 'Last 12 gaps (days)', band_label: 'Band: 21–35 days, the same for everyone. Hatched: not counted (hormones, pregnancy).',
       log_h: 'Log', what_log: 'What happened?', on_date: 'On which day?', flow_h: 'Flow and pain (optional)', pads: 'Pads today', pads_1: '1–2', pads_2: '3–5', pads_3: '6 or more', pads_4: 'Soaked one every 1–2 hours',
       clots: 'Clots', clots_0: 'None', clots_1: 'Small', clots_2: '₹10 coin or bigger', leaked: 'Leaked through clothes', twopads: 'Needed two pads', pain: 'Pain', pain_0: 'No pain', pain_1: 'Mild', pain_2: 'Needed a painkiller', pain_3: "Couldn't do my day",
@@ -115,7 +115,9 @@
       vb_regular: 'Regular', vb_irregular: 'Irregular', vb_outside: 'Outside the usual', vb_normal: 'Normal', vb_long: 'Longer than usual',
       per12: 'Last 12 periods (days)', per_aria: 'Period lengths in days: {list}', per_line: 'Line: 8 days. Bleeding usually lasts 2 to 7 days.',
       mc_h: 'My cycles', mc_now: '{d} – now', mc_row: '{p}-day period · {c}-day cycle', mc_row_now: '{p}-day period · cycle day {c}', mc_row_nop: '{c}-day cycle', mc_row_now_nop: 'Cycle day {c}', mc_all: 'Show all {n}',
-      mc_x_hormones: 'not counted: hormones', mc_x_pregnancy: 'not counted: pregnancy', mc_x_birth: 'not counted: after a birth', mc_approx: 'date guessed', mc_noend: 'no end day saved',
+      mc_x_hormones: 'not counted: hormones', mc_x_pregnancy: 'not counted: pregnancy',
+      /* Version 39.40 (UI words) */ stage_preg_gap: 'Your last period and your scan’s due date are {n} weeks apart. Sakhi counts from the scan, so check both dates.', mydoc_h: 'My doctor', mydoc_add: 'Add your doctor’s number', mydoc_l: 'Your doctor’s or hospital’s phone number', mydoc_stays: 'It stays on this phone. Sakhi never sends it anywhere.', mydoc_call: 'Call my doctor', mydoc_del: 'Remove this number', mydoc_bad: 'Enter a phone number: a 10-digit mobile, or 0, the STD code and the number.',
+      mc_x_birth: 'not counted: after a birth', mc_approx: 'date guessed', mc_noend: 'no end day saved',
       tab_days: 'Days', dy_p: 'Every day you noted, newest first. Tap one to change it.', dy_none: 'Nothing noted yet. The days you note show here, newest first.', dy_more: 'Show more', dy_pads: 'Pads: {x}', dy_clots: 'Clots: {x}',
       dy_pday: 'Day {n} of your period', dy_cday: 'Day {n} of your cycle', dy_next: '{n} days until your next period (estimate)', dy_before: '{n} days before the next period',
       dy_fw_in: 'Fertile window in {n} days (estimate)', dy_ov_in: 'Ovulation in {n} days (estimate)', dy_fw: 'Fertile window (estimate)', dy_ov: 'Ovulation day (estimate)',
@@ -307,7 +309,7 @@
       r6_h: 'पिछले पीरियड को 90+ दिन हो गए', r6_p: 'अगर गर्भ की संभावना है तो पहले घर पर test करें। फिर डॉक्टर को दिखाएँ। PMOS में नियमित पीरियड गर्भाशय की परत को सुरक्षित रखते हैं।',
       late_h: 'अनुमानित अंतर से आगे', late_p: 'एक हफ़्ता या ज़्यादा देर और गर्भ की संभावना है? पहले घर पर test करें।',
       calendar: 'कैलेंडर', bleeding: 'ब्लीडिंग', likely_range: 'पीरियड की संभावित तारीख़ें', today_l: 'आज', cal_note: 'दर्ज करने के लिए दिन पर टैप करें।',
-      stats: 'आपके आँकड़े', stats_from: 'आपके पिछले {n} गिने गए अंतरों से (अंदाज़े की तारीख़, हॉर्मोन और गर्भ छोड़कर)।', stats_from_1: 'आपके पिछले गिने गए अंतर से (अंदाज़े की तारीख़, हॉर्मोन और गर्भ छोड़कर)।', avg_gap: 'औसत अंतर', shortest: 'सबसे छोटा अंतर', longest: 'सबसे लंबा अंतर', bleed_days: 'ब्लीडिंग के दिन (औसत)', cycles_logged: 'दर्ज पीरियड', spread6: 'पिछले 6 का फैलाव',
+      stats: 'आपके आँकड़े', stats_from: 'आपके पिछले {n} गिने गए अंतरों से (अंदाज़े की तारीख़, हॉर्मोन और गर्भ छोड़कर)।', stats_from_1: 'आपके पिछले गिने गए अंतर से (अंदाज़े की तारीख़, हॉर्मोन और गर्भ छोड़कर)।', avg_gap: 'औसत अंतर', shortest: 'सबसे छोटा अंतर', longest: 'सबसे लंबा अंतर', bleed_days: 'ब्लीडिंग के दिन (औसत)', cycles_logged: 'दर्ज पीरियड', spread6: 'पिछले 6 का फैलाव', spread_n: 'पिछले {n} का फैलाव',
       no_data: 'दो पीरियड की शुरुआत दर्ज करें, तब उनके बीच का अंतर दिखेगा।', gaps12: 'पिछले 12 अंतर (दिन)', band_label: 'पट्टी: 21–35 दिन, सबके लिए एक जैसी। धारीदार: गिने नहीं गए (हॉर्मोन, गर्भ)।',
       log_h: 'दर्ज करें', what_log: 'क्या हुआ?', on_date: 'किस दिन?', flow_h: 'ब्लीडिंग और दर्द (वैकल्पिक)', pads: 'आज pad', pads_1: '1–2', pads_2: '3–5', pads_3: '6 या ज़्यादा', pads_4: 'हर 1–2 घंटे में pad भीग गया',
       clots: 'थक्के', clots_0: 'नहीं', clots_1: 'छोटे', clots_2: '₹10 के सिक्के जितने या बड़े', leaked: 'कपड़ों तक निकल गया', twopads: 'दो pad लगाने पड़े', pain: 'दर्द', pain_0: 'दर्द नहीं', pain_1: 'हल्का', pain_2: 'दर्द की गोली लेनी पड़ी', pain_3: 'दिन का काम नहीं हो पाया',
@@ -372,7 +374,9 @@
       vb_regular: 'नियमित', vb_irregular: 'अनियमित', vb_outside: 'सामान्य से अलग', vb_normal: 'सामान्य', vb_long: 'सामान्य से लंबा',
       per12: 'पिछले 12 पीरियड (दिन)', per_aria: 'पीरियड की लंबाई, दिनों में: {list}', per_line: 'रेखा: 8 दिन। ब्लीडिंग आमतौर पर 2 से 7 दिन चलती है।',
       mc_h: 'मेरे चक्र', mc_now: '{d} – अब तक', mc_row: '{p} दिन पीरियड · {c} दिन का चक्र', mc_row_now: '{p} दिन पीरियड · चक्र का दिन {c}', mc_row_nop: '{c} दिन का चक्र', mc_row_now_nop: 'चक्र का दिन {c}', mc_all: 'सभी {n} दिखाएँ',
-      mc_x_hormones: 'गिना नहीं गया: हॉर्मोन', mc_x_pregnancy: 'गिना नहीं गया: गर्भावस्था', mc_x_birth: 'गिना नहीं गया: डिलीवरी के बाद', mc_approx: 'तारीख़ अंदाज़े से', mc_noend: 'ख़त्म होने का दिन सेव नहीं',
+      mc_x_hormones: 'गिना नहीं गया: हॉर्मोन', mc_x_pregnancy: 'गिना नहीं गया: गर्भावस्था',
+      stage_preg_gap: 'आपके पिछले पीरियड और scan की डिलीवरी तारीख़ में {n} हफ़्ते का फ़र्क है। Sakhi scan से गिनती है, इसलिए दोनों तारीख़ें जाँच लें।', mydoc_h: 'मेरी डॉक्टर', mydoc_add: 'अपनी डॉक्टर का नंबर जोड़ें', mydoc_l: 'आपकी डॉक्टर या अस्पताल का फ़ोन नंबर', mydoc_stays: 'यह नंबर इसी फ़ोन पर रहता है। Sakhi इसे कहीं नहीं भेजती।', mydoc_call: 'मेरी डॉक्टर को कॉल करें', mydoc_del: 'यह नंबर हटाएँ', mydoc_bad: 'फ़ोन नंबर लिखें: 10 अंकों का मोबाइल, या 0, STD कोड और नंबर।',
+      mc_x_birth: 'गिना नहीं गया: डिलीवरी के बाद', mc_approx: 'तारीख़ अंदाज़े से', mc_noend: 'ख़त्म होने का दिन सेव नहीं',
       tab_days: 'दिन', dy_p: 'आपके दर्ज किए सभी दिन, सबसे नया सबसे ऊपर। बदलने के लिए किसी दिन पर टैप करें।', dy_none: 'अभी कुछ दर्ज नहीं। जो दिन आप दर्ज करेंगी, वे यहाँ दिखेंगे, सबसे नया सबसे ऊपर।', dy_more: 'और दिखाएँ', dy_pads: 'पैड: {x}', dy_clots: 'थक्के: {x}',
       dy_pday: 'पीरियड का दिन {n}', dy_cday: 'चक्र का दिन {n}', dy_next: 'अगले पीरियड में {n} दिन (अंदाज़ा)', dy_before: 'अगले पीरियड से {n} दिन पहले',
       dy_fw_in: '{n} दिन बाद फ़र्टाइल दिन शुरू (अंदाज़ा)', dy_ov_in: '{n} दिन बाद ओव्यूलेशन (अंदाज़ा)', dy_fw: 'फ़र्टाइल दिन (अंदाज़ा)', dy_ov: 'ओव्यूलेशन का दिन (अंदाज़ा)',
@@ -662,7 +666,8 @@
     const sp = spanList(); const day = (k) => (isISO(sit[k]) ? fromISO(sit[k]) : null);
     const hs = day('hormonesSince'); if (hs && over(hs, day('hormonesUntil') || addDays(hs, 3650))) return 'hormones';
     if (sp.some((x) => x.k === 'horm' && over(fromISO(x.a), isISO(x.b) ? fromISO(x.b) : fromISO(x.a)))) return 'hormones';
-    const ps = day('pregnantSince'); if (ps && over(ps, addDays(ps, 3650))) return 'pregnancy';
+    const pi0 = sit.pregnant ? pregInfo() : null; const ps = pi0 ? fromISO(pi0.lmp) : day('pregnantSince');   /* Version 39.40: the start her weeks count from */
+    if (ps && over(ps, addDays(ps, 3650))) return 'pregnancy';
     if (sp.some((x) => x.k === 'preg' && a <= fromISO(x.a) && fromISO(x.a) < b)) return 'pregnancy';
     const bo = day('deliveredOn'); if (bo && over(bo, addDays(bo, 365))) return 'birth';
     if (sp.some((x) => x.k === 'birth' && over(fromISO(x.a), addDays(fromISO(x.a), 365)))) return 'birth';
@@ -844,6 +849,11 @@
   /* Version 39.38: from 2 weeks after her last period's first day, so that period itself (her LMP, or a scan's date a few days
      off it) stays a period, with its own days */
   const inPregAt = (iso) => { const pi = pregInfo(); return !!pi && iso >= toISO(addDays(fromISO(pi.lmp), 14)); };
+  /* Version 39.40 (Mohit's 39-week walk): her last period and the scan's due date more than 3 weeks apart: how many weeks (else 0) */
+  const pregGapW = (lmp, edd) => { if (!isISO(lmp) || !isISO(edd)) return 0; const g = Math.abs(diffDays(addDays(fromISO(edd), -280), fromISO(lmp))); return g > 21 ? Math.round(g / 7) : 0; };
+  /* Version 39.40: "Call 112 now if" with its Call button in the same card (the week page, Check-ups and tests) */
+  const callNowCard = () => '<div class="action pg-urg"><button type="button" class="action pg-urg-b" data-go="help"><span class="ico accent">' + I.help + '</span><span class="body"><strong>' + esc(t('call_now')) + '</strong><span class="small">' + esc(t('s1c')) + '</span></span></button>' +
+    '<div class="row wrap pg-call"><a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div></div>';
   const pregBleedNow = () => { const pi = pregInfo(); if (!pi) return false; const bd = bleedingDays(); for (let k = 0; k <= 2; k++) { const iso = toISO(addDays(today(), -k)); if (iso >= pi.lmp && bd[iso]) return true; } return false; };
   const unmarkPregnant = () => { const s0 = state.situation; if (!s0.pregnant) return; s0.pregnant = false; delete s0.pregnantSince; delete s0.scanEdd; delete s0.scanDate; emit('pregEnd', { birth: false, mistake: true }); };
   const endPregnancy = (on, birth) => { const s0 = state.situation; if (!s0.pregnant) return; const pi = pregInfo(); if (pi) addSpan({ k: 'preg', a: pi.lmp }); s0.pregnant = false; delete s0.pregnantSince; delete s0.scanEdd; delete s0.scanDate;
@@ -1087,6 +1097,7 @@
     root.querySelectorAll('[data-back]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', (e) => { e.preventDefault(); goBack(b.dataset.back); }); });
     root.querySelectorAll('[data-start-diary]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { closeSheet(); state.stage = 'onboard'; mem.ob = { step: 1 }; save(); render(); }); });
     root.querySelectorAll('[data-ask]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => ask(b.dataset.ask)); });
+    root.querySelectorAll('[data-mydoc]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => openMyDoc()); });   /* Version 39.40: her doctor's number */
   }
   const scrollMem = {}; let curRoute = null;
   /* When the diary changes hands (Delete everything, a sample woman, a restored backup) every screen forgets what the last
@@ -2460,7 +2471,8 @@
            weeks, "My baby is born" opens the stage sheet at After birth (a shared phone sees "Change stage") */
         '<div class="row wrap">' + (!disc && ROUTES['preg-plan'] ? heroBtn('preg-plan', t('preg_checks_b')) : '') +
           /* Version 39.34: from 24 weeks, "Baby moving less? Get help" opens the kick page's own lines (get checked today; no movement: hospital now) */
-          (!disc && w != null && w >= 24 && ROUTES['pregtools-kicks'] && api.toolShown('pregtools-kicks') ? heroBtn('pregtools-kicks', t('preg_less_b')).replace('class="btn sm"', 'class="btn sm pg-less"') : '') + (w != null && w >= 37 ? '<button type="button" class="btn sm" id="bb-born">' + esc(t(disc ? 'stage_change' : 'bb_born')) + '</button>' : '') + '</div>';
+          (!disc && w != null && w >= 24 && ROUTES['pregtools-kicks'] && api.toolShown('pregtools-kicks') ? heroBtn('pregtools-kicks', t('preg_less_b')).replace('class="btn sm"', 'class="btn sm pg-less"') : '') + (!disc && w != null && w >= 37 && ROUTES['pregtools-contractions'] && api.toolShown('pregtools-contractions') ? heroBtn('pregtools-contractions', t('pregtools_t_ctx')) : '') +   /* Version 39.40 */
+          (w != null && w >= 37 ? '<button type="button" class="btn sm" id="bb-born">' + esc(t(disc ? 'stage_change' : 'bb_born')) + '</button>' : '') + '</div>';
     } else if (afterBirth) {
       if (disc) main = '<div class="eyebrow">' + esc(t('today_h')) + '</div><div class="big num' + blur + '" id="bignum">' + birthD + '</div>';
       else if (birthD <= 42) main = '<div class="eyebrow">' + esc(t('pp_eyebrow')) + '</div>' + twoCol(ringBox(ringSvg(42, [{ from: 0, to: Math.max(birthD, 0.5), cls: 'prog' }], null, [7, 14, 21, 28, 35]), birthD, t(birthD === 1 ? 'pp_ring_1' : 'pp_ring'), tf('pp_aria', { n: birthD })), '<div class="hero-main"><p class="lead">' + esc(tf('pp_week', { n: Math.min(6, Math.floor(birthD / 7) + 1) })) + '</p></div>') + '<p class="small">' + esc(t('pp_p')) + '</p>' + (ROUTES['post'] ? '<div class="row">' + heroBtn('post', t('pp_go')) + '</div>' : '');
@@ -3142,8 +3154,9 @@
     const inRange = (val, a, b) => !!val && fromISO(val) >= addDays(today(), a) && fromISO(val) <= addDays(today(), b);
     /* Version 39.35: her diary's last period, and her week and due date from what she enters (the scan's date wins, as pregInfo) */
     const lmpGuess = () => { const ls = lastStart(); return ls && inRange(toISO(ls), -310, 0) ? toISO(ls) : ''; };
-    const pregIsLine = (lmp, edd) => { const okE = inRange(edd, -28, 280), okL = inRange(lmp, -310, 0); if (!okE && !okL) return ''; const l = okE ? addDays(fromISO(edd), -280) : fromISO(lmp);
+    const pregIs0 = (lmp, edd) => { const okE = inRange(edd, -28, 280), okL = inRange(lmp, -310, 0); if (!okE && !okL) return ''; const l = okE ? addDays(fromISO(edd), -280) : fromISO(lmp);
       return Math.max(0, Math.floor(diffDays(l, today()) / 7)) + ' ' + t('weeks_preg') + ' · ' + tf('due_on', { d: fmtD(addDays(l, 280), { day: 'numeric', month: 'short', year: 'numeric' }) }); };
+    const pregIsLine = (lmp, edd) => { const s = pregIs0(lmp, edd); const g = s && inRange(edd, -28, 280) && inRange(lmp, -310, 0) ? pregGapW(lmp, edd) : 0; return s + (g ? ' ' + tf('stage_preg_gap', { n: g }) : ''); };   /* Version 39.40 */
     const show = () => sheet('<h2>' + esc(t('stage_h')) + '</h2><div class="list">' + opts.map((o) => '<button type="button" class="item stage-opt' + (pick === o[0] ? ' on' : '') + '" data-stage="' + o[0] + '" aria-pressed="' + (pick === o[0]) + '"><span class="ico-sm hue hue-' + hueOf(o[2]) + '">' + icon(SECTION_ICONS[o[2]]) + '</span><span class="body"><strong>' + esc(t(o[1])) + '</strong></span>' + (pick === o[0] ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
       (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
         return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
@@ -3594,14 +3607,14 @@
     if (pr && !pr.late && !state.settings.discreet) for (let q = 0; q < (pr.plen || 5); q++) { const pd = addDays(pr.next, q); if (pd >= today()) predSet[toISO(pd)] = true; }   /* none in discreet mode (Version 32) */
     const hearts = sexHearts(); let cells = ''; for (let i = 0; i < offset; i++) cells += '<span></span>';
     const apS = preg ? {} : approxStarts(); const gq = preg || state.settings.discreet || state.settings.shared ? null : guessedStart();   /* Version 39.25 (G4) */
-    const ce = mem.calEdit && !preg ? mem.calEdit : null;   /* Version 39.23: editing her period dates */ let anyPred = false;
+    const ce = mem.calEdit && !preg ? mem.calEdit : null;   /* Version 39.23: editing her period dates */ let anyPred = false; let anyB = false;
     for (let d = 1; d <= daysIn; d++) {
       if (ce) { const d0 = new Date(y, m, d); const s0 = toISO(d0); cells += d0 > today() ? '<span class="day other ce-fut"><span class="num">' + d + '</span></span>' : '<button type="button" class="day ce-d' + (ce.sel[s0] ? ' bleed' + (ce.guess && ce.guess[s0] ? ' light' : '') : '') + (s0 === tStr ? ' today' : '') + '" data-ed="' + s0 + '" aria-pressed="' + !!ce.sel[s0] + '" aria-label="' + esc(fmtD(d0, { day: 'numeric', month: 'long' })) + '"><span class="num">' + d + '</span></button>'; continue; }
-      const dt = new Date(y, m, d); const s = toISO(dt); const k = bd[s]; const inR = ri && dt >= ri.from && dt <= ri.to; const fut = dt > today(); const ks = fut ? [] : kindsOn(s);
+      const dt = new Date(y, m, d); const s = toISO(dt); const inPg = preg && inPregAt(s); const k = inPg && bd[s] === 'start' ? 'bleed' : bd[s]; if (k === 'start' || k === 'bleed') anyB = true;   /* Version 39.40 */ const inR = ri && dt >= ri.from && dt <= ri.to; const fut = dt > today(); const ks = fut ? [] : kindsOn(s);
       const pred = !k && !!predSet[s]; if (pred) anyPred = true; const ov = !k && fz.some((f) => toISO(f.ov) === s); const fw = !k && !ov && fz.some((f) => dt >= f.fwFrom && dt <= f.fwTo);
       const gs = k === 'start' && !!apS[s];
       const cls = ['day', k === 'start' ? 'bleed' : (k === 'bleed' ? 'bleed light' : ''), gs ? 'guess' : '', k === 'spot' ? 'spot' : '', inR ? 'range' : '', pred ? 'pred' : '', fw ? 'fw' : '', ov ? 'ov' : '', s === tStr ? 'today' : '', fut ? 'other' : ''].join(' ');
-      const aria = fmtD(dt, { day: 'numeric', month: 'long' }) + (k === 'start' || k === 'bleed' ? ', ' + t('cal_a_period') : '') + (gs ? ', ' + t('mc_approx') : '') + (k === 'spot' ? ', ' + t('cal_a_spot') : '') + (inR ? ', ' + t('cal_a_range') : '') + (pred ? ', ' + t('cal_a_pred') : '') + (ov ? ', ' + t('cal_a_ov') : '') + (fw ? ', ' + t('cal_a_fw') : '') + (s === tStr ? ', ' + t('today_l') : '') + (ks.length ? ', ' + t('cal_a_noted') + ': ' + ks.map((x) => t(KINDS[x].label)).join(', ') : '');
+      const aria = fmtD(dt, { day: 'numeric', month: 'long' }) + (k === 'start' || k === 'bleed' ? ', ' + t(inPg ? 'bleeding' : 'cal_a_period') : '') + (gs ? ', ' + t('mc_approx') : '') + (k === 'spot' ? ', ' + t('cal_a_spot') : '') + (inR ? ', ' + t('cal_a_range') : '') + (pred ? ', ' + t('cal_a_pred') : '') + (ov ? ', ' + t('cal_a_ov') : '') + (fw ? ', ' + t('cal_a_fw') : '') + (s === tStr ? ', ' + t('today_l') : '') + (ks.length ? ', ' + t('cal_a_noted') + ': ' + ks.map((x) => t(KINDS[x].label)).join(', ') : '');
       const ht = hearts && !fut && !!(state.sex || {})[s];   /* Version 39.11 */
       cells += '<button type="button" class="' + cls + '" data-day="' + s + '" aria-label="' + esc(aria) + '"' + (fut ? ' disabled' : '') + '><span class="num">' + d + '</span>' + (gs ? '<i class="gq" aria-hidden="true">?</i>' : '') + (ks.length || ht ? '<span class="kd" aria-hidden="true">' + dotsIn(s) + (ht ? HEART_I : '') + '</span>' : '') + '</button>';
     }
@@ -3611,7 +3624,7 @@
     const pw = pgi && pgi.weeks != null && !state.settings.discreet ? '<div class="card soft cal-pw" data-nofold="1"><span class="ico-sm hue hue-sky">' + I.baby + '</span><strong>' + esc(tf('cal_pw', { n: pgi.weeks })) + '</strong>' + (ROUTES['preg-week'] ? '<button type="button" class="btn sm" data-go="preg-week">' + esc(t('this_week')) + '</button>' : '') + '</div>' : '';
     v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div>' + (gq ? guessBox(gq) : '') + (preg ? '' : '<button type="button" class="btn block cal-edit-b" id="cal-edit">' + PEN_I + esc(t(state.settings.discreet ? 'mc_edit' : 'ce_b')) + '</button>') + '</div>' +   /* Version 39.23 */
       (strip ? '' : fwFew()) +   /* Version 39.11: when her fertile days will start (Version 39.17: the strip's meter says it) */
-      (preg ? '' : '<div class="legend">' + periodKey(pr, false, ri, anyPred) + '</div>') + (fz.length ? fertKey() : '') +
+      (preg ? (anyB && !state.settings.discreet ? '<div class="legend"><span><i class="sw" style="background:var(--bleed-light)"></i>' + esc(t('bleeding')) + '</span></div>' : '') : '<div class="legend">' + periodKey(pr, false, ri, anyPred) + '</div>') + (fz.length ? fertKey() : '') +
       /* Version 39.16 (R13): the period marks, then her notes' dots in one line; "?" opens the full key */
       '<div class="legend legend-dots"><span class="lk lk-dots" aria-hidden="true"><i class="hue-' + KINDS.pain.hue + '"></i><i class="hue-' + KINDS.body.hue + '"></i><i class="hue-' + KINDS.mood.hue + '"></i></span><span>' + esc(t('legend_dots')) + '</span><button type="button" class="tour-q" id="cal-key" aria-label="' + esc(t('legend_key')) + '">?</button></div><p class="small">' + esc(t('cal_note')) + (preg ? '' : ' ' + esc(t(fz.length ? 'fert_note' : 'no_contra'))) + '</p>';
     wire(v); wireFeel(v); wireWhy(v); wireGuess(v);
@@ -3936,11 +3949,11 @@
   }
   /* Version 39.1: "Your numbers", folded into the verdict card */
   function numbersHtml() {
-    const gU = usable(); const last6 = gU.slice(-6); const bleeds = starts().map(periodLen).filter((n) => n != null);
+    const gU = usable(); const last6 = gU.slice(-6); const st0 = starts().filter((x) => !inPregAt(x)); const bleeds = st0.map(periodLen).filter((n) => n != null);   /* Version 39.40 */
     const avg = (a) => (a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : null);
-    const st = (val, k) => '<div class="stat"><b class="num">' + val + '</b><span>' + esc(t(k)) + '</span></div>';
+    const st = (val, k) => '<div class="stat"><b class="num">' + val + '</b><span>' + esc(k.charAt(0) === '#' ? k.slice(1) : t(k)) + '</span></div>';
     return '<details class="vd-nums"><summary>' + esc(t('stats')) + '</summary><p class="small">' + esc(gU.length === 1 ? t('stats_from_1') : tf('stats_from', { n: gU.length })) + '</p><div class="statgrid">' +
-      st(avg(gU) || '–', 'avg_gap') + st(last6.length ? maxOf(last6) - minOf(last6) : '–', 'spread6') + st(gU.length ? minOf(gU) : '–', 'shortest') + st(gU.length ? maxOf(gU) : '–', 'longest') + st(avg(bleeds) || '–', 'bleed_days') + st(starts().length, 'cycles_logged') + '</div></details>';
+      st(avg(gU) || '–', 'avg_gap') + st(last6.length >= 2 ? maxOf(last6) - minOf(last6) : '–', last6.length >= 2 && last6.length < 6 ? '#' + tf('spread_n', { n: last6.length }) : 'spread6') + st(gU.length ? minOf(gU) : '–', 'shortest') + st(gU.length ? maxOf(gU) : '–', 'longest') + st(avg(bleeds) || '–', 'bleed_days') + st(st0.length, 'cycles_logged') + '</div></details>';
   }
   /* Version 39.1: "This month's signs" moved off Today into What it shows. Version 39.18 (Diary audit R8): named by what it
      asks, and only where it fits: skin and hair signs with PMOS or irregular periods, midlife signs, and the pregnancy and
@@ -3974,11 +3987,11 @@
     const row = (c) => {
       const n = Math.min(c.days, 45); const f = disc ? null : c.fert; let pills = '';
       for (let k = 0; k < n; k++) { const d = addDays(c.start, k); pills += '<i class="' + (k < c.bleed ? 'p' : (f && toISO(d) === toISO(f.ov) ? 'o' : (f && d >= f.fwFrom && d <= f.fwTo ? 'f' : ''))) + '"></i>'; }
-      const pb = c.why === 'pregnancy' && inPregAt(toISO(c.start));
+      const pb = inPregAt(toISO(c.start));   /* Version 39.40: any start inside the pregnancy, hormones or not */
       const title = pb ? fmtD(c.start) : c.next ? fmtD(c.start) + ' – ' + fmtD(addDays(c.next, -1)) : tf('mc_now', { d: fmtD(c.start) });
       /* Version 39.38 (Mohit's 38-week walk): bleeding in a pregnancy is its day and "Bleeding", never a cycle that runs to now */
       const sub = (pb ? t('t_bleed') : c.next ? (c.plen != null ? tf('mc_row', { p: c.plen, c: c.gap }) : tf('mc_row_nop', { c: c.gap }) + ' · ' + t('mc_noend')) : (c.plen != null ? tf('mc_row_now', { p: c.plen, c: c.days }) : tf('mc_row_now_nop', { c: c.days }))) +
-        (c.why && c.why !== 'now' ? ' · ' + t('mc_x_' + c.why) : '') + (c.approx ? ' · ' + t('mc_approx') : '');
+        (pb ? ' · ' + t('mc_x_pregnancy') : (c.why && c.why !== 'now' ? ' · ' + t('mc_x_' + c.why) : '')) + (c.approx ? ' · ' + t('mc_approx') : '');
       return '<div class="mc-row"><span class="row spread"><button type="button" class="mc-open" data-cy="' + toISO(c.start) + '"><strong>' + esc(title) + '</strong></button><button type="button" class="linkbtn mc-edit" data-cyedit="' + toISO(c.start) + '">' + PEN_I + esc(t('mc_edit')) + '</button></span><span class="mc-pills' + (c.days > 45 ? ' more' : '') + '" aria-hidden="true">' + pills + '</span><span class="small">' + esc(sub) + (c.approx && !disc ? ' · <button type="button" class="linkbtn mc-guess" data-guess="' + toISO(c.start) + '">' + esc(t('guess_link')) + '</button>' : '') + '</span></div>';   /* Version 39.11: Edit dates; 39.25: Is it right? */
     };
     const rest = cs.slice(4);
@@ -4034,6 +4047,7 @@
     const d = fromISO(ds); const c = cycleOf(d, cs); if (!c) return [];
     const k = diffDays(c.start, d) + 1; const bk = bd[ds]; const inP = bk === 'start' || bk === 'bleed';
     /* Version 32: a pregnancy, the year after a birth, hormones or a pause is not a cycle day (field-test audit 3.2) */
+    if (inPregAt(ds)) return [{ k: 'x', text: t('mc_x_pregnancy') }];   /* Version 39.40: inside a pregnancy, never a period day, even on hormones */
     if (c.why && !(inP && c.why === 'hormones')) return [{ k: 'x', text: t(c.why === 'now' ? 'dy_paused' : 'mc_x_' + c.why) }];
     const out = [{ k: inP ? 'pday' : 'cday', text: tf(inP ? 'dy_pday' : 'dy_cday', { n: k }) }];
     if (disc) return out;
@@ -4134,7 +4148,7 @@
       const out = [f0.k === 'cday' && c ? tf('dy_d', { n: diffDays(c.start, fromISO(ds)) + 1 }) : f0.text]; const b = fs.find((x) => x.k === 'before');
       if (b && c && c.next && diffDays(fromISO(ds), c.next) <= 8) out.push(b.text); return out; };
     const head = (c) => { if (!c) return t('dy_grp_old'); const d0 = fmtD(c.start); if (disc) return tf('dy_grp_d', { d: d0 });
-      if (c.why === 'pregnancy' && inPregAt(toISO(c.start))) return t('t_bleed') + ' · ' + d0 + ' · ' + t('mc_x_pregnancy');   /* Version 39.38 */
+      if (inPregAt(toISO(c.start))) return t('t_bleed') + ' · ' + d0 + ' · ' + t('mc_x_pregnancy');   /* Version 39.38 */
       if (c.why) return tf('dy_grp_x', { d: d0 }) + ' · ' + t(c.why === 'now' ? 'dy_paused' : 'mc_x_' + c.why); return c.next ? tf('dy_grp', { d: d0, n: c.gap }) : tf('dy_grp_now', { d: d0 }); };
     const groups = []; days.slice(0, N).forEach((ds) => { const c = cycleOf(fromISO(ds), cs); const key = c ? toISO(c.start) : '-'; const g = groups[groups.length - 1]; if (g && g.key === key) g.days.push(ds); else groups.push({ key: key, c: c, days: [ds] }); });
     const kindOf = (key) => { const cat = SYM.find((x) => x[2].some((y) => y[0] === key)); return KINDS[cat ? cat[0].slice(4) : 'body'] || KINDS.body; };
@@ -4465,6 +4479,23 @@
     wire(v); $('#sos-btn', v).addEventListener('click', openSOS);
     const a = $('#tell-wa', v); if (a) a.addEventListener('click', () => askTapped('whatsapp'));
   }
+  /* Version 39.40 (Mohit's 39-week walk): her own doctor's or hospital's number, on this phone only (state.mydoc; net() never
+     sends it): a 10-digit mobile, or 0 and the STD code (11 digits); +91 is dropped */
+  const myDocTel = () => (state.mydoc && typeof state.mydoc.tel === 'string' ? state.mydoc.tel : null);
+  const docTelNorm = (s) => { let d = String(s || '').replace(/\D/g, ''); if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); return /^[1-9]\d{9}$/.test(d) || /^0\d{10}$/.test(d) ? d : null; };
+  function openMyDoc(after) {
+    if (!canSave()) return; const n0 = myDocTel();
+    sheet('<h2>' + esc(t('mydoc_h')) + '</h2><div class="card"><label for="md-tel">' + esc(t('mydoc_l')) + '</label><input id="md-tel" inputmode="tel" autocomplete="off" maxlength="16" value="' + esc(n0 || '') + '"><p class="small">' + esc(t('mydoc_stays')) + '</p>' + (n0 ? '<button type="button" class="linkbtn" id="md-del">' + esc(t('mydoc_del')) + '</button>' : '') + '</div>' +
+      '<div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="md-cancel">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="md-save">' + esc(t('save')) + '</button></div></div>', (sh) => {
+      const done = () => { save(); closeSheet(); if (after) after(); else render(); };
+      $('#md-cancel', sh).addEventListener('click', closeSheet);
+      $('#md-save', sh).addEventListener('click', () => { const d = docTelNorm($('#md-tel', sh).value); if (!d) { toast(t('mydoc_bad')); return; } state.mydoc = { tel: d }; done(); });
+      const del = $('#md-del', sh); if (del) del.addEventListener('click', () => { delete state.mydoc; done(); });
+    });
+  }
+  /* in a pregnancy on her doctor's route, the doctor screen calls her own doctor (or offers to add the number) */
+  const myDocAsk = () => { if (!isPregnant() || !docOn() || !canSave() || state.settings.discreet) return ''; const n = myDocTel();
+    return n ? '<a class="btn block" id="ask-mydoc" href="tel:' + esc(n) + '">' + I.steth + ' ' + esc(t('mydoc_call')) + '</a>' : '<button type="button" class="linkbtn" id="ask-mydoc-add" data-mydoc="1">' + esc(t('mydoc_add')) + '</button>'; };
   function renderAsk(v) {
     if (mem.teen) { v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_teen_h')) + '</h1></div><div class="card"><p>' + esc(t('ask_teen_p')) + '</p><div class="helpline"><div style="min-width:0"><div class="n num">1098</div><div class="what">Childline</div></div></div></div><div class="list"><button type="button" class="item" data-go="help"><span class="body"><strong>' + esc(t('safety')) + '</strong></span><span class="chev">' + I.chev + '</span></button>' + (modRoute('teen') ? '<button type="button" class="item" data-go="teen"><span class="body"><strong>' + esc(t('teen_u18')) + '</strong></span><span class="chev">' + I.chev + '</span></button>' : '') + '</div>'; wire(v); return; }
     const wa = waNum(); const qs = (state.askTopics || []).filter((x) => typeof x === 'string' && x);
@@ -4477,7 +4508,7 @@
     /* Version 39.28: for a woman who sees a private doctor (or hasn't said), the free government doctor comes after Qura's ways */
     const late = wa || !careGov();
     const freeCard = ROUTES['access-doctor'] ? '<div class="card" id="ask-free"><h3>' + esc(t('ask_free_h')) + '</h3><p class="small">' + esc(t('ask_free_p')) + '</p><button type="button" class="btn sm' + (late || callCard ? '' : ' primary') + '" data-go="access-doctor">' + esc(t('access_doctor')) + '</button></div>' : '';
-    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t(isPregnant() ? 'ask_p_preg' : 'ask_p')) + '</p>' + (late ? '' : freeCard) + callCard +   /* Version 39.38 */
+    v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t(isPregnant() ? 'ask_p_preg' : 'ask_p')) + '</p>' + myDocAsk() + (late ? '' : freeCard) + callCard +   /* Version 39.38 */
       '<div class="card"><h3>' + esc(t(callCard ? 'ac_or_book' : 'ask_how_h')) + '</h3>' +
       (wa ? '<p class="small">' + esc(t('ask_how_wa')) + '</p><a class="btn' + (callCard ? '' : ' primary') + ' block" id="ask-wa" href="' + esc(waLink('ask_wa_hello')) + '" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('ask_wa')) + '</a>' + waNote()
         : '<p class="small">' + esc(t('ask_how_web')) + '</p><a class="btn block" id="ask-web" href="https://quranutrition.com/book-consultation" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('book_link')) + '</a>') + '<p class="small ask-cost">' + esc(t('ask_cost')) + '</p></div>' +
@@ -5094,6 +5125,7 @@
     version: 1, register: register,
     get state() { return state; }, get mem() { return mem; },
     $: $, esc: esc, pad2: pad2, toISO: toISO, fromISO: fromISO, addDays: addDays, diffDays: diffDays, today: today, planToday: planToday, monthKey: monthKey, clamp: clamp, addMonths: addMonths,
+    mydoc: { get: myDocTel, open: openMyDoc }, callNowCard: callNowCard,   /* Version 39.40 */
     t: t, tf: tf, tx: tx, one: one, fmtD: fmtD, fmtRange: fmtRange, I: I, icon: icon,
     save: modSave, saveQuiet: save, emit: emit, render: render, setHash: setHash, route: route, wire: wire, toast: toast, toastAct: toastAct, sheet: sheet, closeSheet: closeSheet, backRow: backRow, gate: gate,
     pregEnded: () => { endPregnancy(); save(); },   /* Version 39.2: "The pregnancy ended" on the check-ups page (preg.js) */

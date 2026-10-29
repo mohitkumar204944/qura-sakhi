@@ -84,6 +84,7 @@
     go_call: ['Call 108 or 102 for a free ambulance, or 112.', 'मुफ़्त एम्बुलेंस के लिए 108 या 102 पर, या 112 पर कॉल करें।'],
     w_h: ['When to go to hospital', 'अस्पताल कब जाएँ'],
     w_1: ['At your 36-week visit, ask your doctor or ANM when they want you to come in, and to which hospital.', '36 हफ़्ते वाली जाँच में अपनी डॉक्टर या ANM से पूछें कि कब आना है और किस अस्पताल में।'],
+    w_1_doc: ['At your 36-week visit, ask your doctor when they want you to come in, and to which hospital.', '36 हफ़्ते वाली जाँच में अपनी डॉक्टर से पूछें कि कब आना है और किस अस्पताल में।'],   /* Version 39.40: her doctor's route */
     w_2: ["India's guidelines for health workers say to set off once labour signs start: a sticky, blood-streaked discharge, or painful contractions that keep getting longer, stronger and closer together.", 'भारत के स्वास्थ्य कर्मियों के दिशानिर्देश कहते हैं कि लेबर के संकेत शुरू होते ही निकल पड़ें: ख़ून मिला चिपचिपा स्राव, या ऐसा दर्द जो लगातार लंबा, तेज़ और पास-पास होता जाए।'],
     w_3: ["Go as soon as they start if this is not your first baby, your hospital is far, or a vehicle takes time to reach you, especially at night.", 'पहला बच्चा न हो, अस्पताल दूर हो, या गाड़ी आने में समय लगता हो (ख़ासकर रात में), तो दर्द शुरू होते ही निकलें।'],
     w_4: ["If it is your first baby and the hospital is close, some doctors suggest waiting at home until contractions come about every 5 minutes, each lasting about 1 minute, for about 1 hour (the 5‑1‑1 guide). Don't wait beyond that.", 'पहला बच्चा हो और अस्पताल पास हो, तो कुछ डॉक्टर घर पर तब तक रुकने को कहते हैं जब तक दर्द लगभग हर 5 मिनट पर न आने लगे, हर दर्द लगभग 1 मिनट का, और ऐसा लगभग 1 घंटे तक (5‑1‑1 पैमाना)। इससे ज़्यादा इंतज़ार न करें।'],
@@ -204,8 +205,13 @@
   let tick = null;
   const stopTick = () => { if (tick) { clearInterval(tick); tick = null; } };
 
-  function ambulance() {
-    return '<div class="stack"><h2>' + esc(T('amb_h')) + '</h2><div class="list">' + [['108', 'amb108'], ['102', 'amb102'], ['112', 'amb112']].map((x) => '<div class="helpline"><div style="min-width:0"><div class="n num">' + x[0] + '</div><div class="what">' + esc(T(x[1])) + '</div></div><button type="button" class="btn sm" data-ptl-copy="' + x[0] + '">' + esc(t('copy')) + '</button></div>').join('') + '</div><p class="small">' + esc(T('amb_note')) + '</p></div>';
+  /* Version 39.40 (Mohit's 39-week walk): her own doctor's number first when she saved it (on her doctor's route), and in labour
+     (call) each ambulance number calls */
+  function ambulance(call) {
+    const md = S.mydoc && S.mydoc.get() && !(S.care && S.care.gov && S.care.gov()) ? S.mydoc.get() : null;
+    const callA = (n, p) => '<a class="btn sm' + (p ? ' primary' : '') + '" href="tel:' + esc(n) + '">' + esc(t('call_b')) + '</a>';
+    return (md ? '<div class="list ptl-mydoc"><div class="helpline"><div style="min-width:0"><div class="n num">' + esc(md) + '</div><div class="what">' + esc(t('mydoc_h')) + '</div></div>' + callA(md, true) + '</div></div>' : '') +
+      '<div class="stack"><h2>' + esc(T('amb_h')) + '</h2><div class="list">' + [['108', 'amb108'], ['102', 'amb102'], ['112', 'amb112']].map((x, i) => '<div class="helpline"><div style="min-width:0"><div class="n num">' + x[0] + '</div><div class="what">' + esc(T(x[1])) + '</div></div>' + (call ? callA(x[0], !md && !i) : '<button type="button" class="btn sm" data-ptl-copy="' + x[0] + '">' + esc(t('copy')) + '</button>') + '</div>').join('') + '</div><p class="small">' + esc(T('amb_note')) + '</p></div>';
   }
   function wireCopy(v) {
     v.querySelectorAll('[data-ptl-copy]').forEach((b) => b.addEventListener('click', () => {
@@ -352,7 +358,7 @@
     const pastHtml = past.length ? '<div class="card"><h3>' + esc(T('c_past')) + '</h3><div class="stack">' + past.map((s) => { const x = statsOf(s); return '<div class="ptl-hist"><span class="body"><strong>' + esc(fmtDay(s[0].s)) + ' · ' + esc(fmtTime(s[0].s)) + '</strong><span>' + esc(x.n > 1 ? TF('c_pastrow', { n: x.n, g: roundDur(x.gap), d: x.len != null ? roundDur(x.len) : '–' }) : TF('c_pastone', { d: x.len != null ? roundDur(x.len) : '–' })) + '</span></span></div>'; }).join('') + '</div></div>' : '';
     const when = '<div class="card"><h3>' + esc(T('w_h')) + '</h3><ul>' + ['w_1', 'w_2', 'w_3', 'w_4', 'w_5'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul></div>';
 
-    v.innerHTML = S.backRow(T('c_h'), backTo(), true) + '<p class="small">' + esc(T('c_p')) + '</p>' + pre + timer + flags + stats + table + (S.canSave() ? '' : S.needDiary()) + goNow() + when + pastHtml + ambulance() + related(R.ctx) + '<p class="footnote">' + esc(T('c_notdx')) + '</p>';
+    v.innerHTML = S.backRow(T('c_h'), backTo(), true) + '<p class="small">' + esc(T('c_p')) + '</p>' + pre + timer + flags + stats + table + (S.canSave() ? '' : S.needDiary()) + goNow() + when + pastHtml + ambulance(true) + related(R.ctx) + '<p class="footnote">' + esc(T('c_notdx')) + '</p>';
     S.wire(v); wireCopy(v);
     const $ = (id) => v.querySelector('#' + id);
     if ($('ptl-c-start')) $('ptl-c-start').addEventListener('click', () => { C = { store: st, s: Date.now() }; S.render(); });

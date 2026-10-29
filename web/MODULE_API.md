@@ -5307,3 +5307,47 @@ Mohit, 29 Oct: "can you do a walkthrough on my phone and check gaps", at 38 week
 
 **Tests:** `node test/latepreg.mjs` (27 checks; 19 fail on 0.39.37's code). plans.mjs 1 now counts Home's row without the
 tablets ("and 3 more"); the report's line is unchanged.
+
+## 83. Version 39.40: the 39-week walk's gaps
+
+Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 70, 39 weeks, My pregnancy running), then "fix all 8".
+Version 39.39 is the other session's 3D figure (section 82). New words are UI only (review section 19.40).
+1. **The labour pain timer calls** (pregtools `ambulance(call)`): on the labour page 108, 102 and 112 each have Call
+   (`tel:`), the first one pink. The kick page keeps its Call buttons above (Version 39.35) and its list as before.
+2. **One pregnancy start** (core):
+   - `excludedWhy` leaves gaps out from `pregInfo().lmp`: the scan's due date minus 280 days when she has one, as her weeks
+     already do. Before, it used her last period's date (`pregnantSince`), so a scan months off counted periods inside the
+     pregnancy;
+   - inside the pregnancy (`inPregAt`, from 14 days after that start) every start is "Bleeding · not counted: pregnancy" in
+     My cycles and its Days group, hormones or not, and no day is "Day n of your period" (`dayFacts`);
+   - the Calendar draws it as bleeding (lighter), not a period's first day, and in a pregnancy its key is one swatch,
+     "Bleeding";
+   - Your numbers leave it out of "Periods logged" and the bleeding days;
+   - the stage sheet says when her last period and the scan's due date are more than 3 weeks apart (`pregGapW`,
+     `stage_preg_gap`): "Sakhi counts from the scan, so check both dates." Saving is as before.
+3. **Her own doctor's number** (core `state.mydoc`, `S.mydoc.get()` and `S.mydoc.open(after)`; `data-mydoc` opens the sheet
+   anywhere `S.wire` runs):
+   - one number, kept on the phone (`net()` has no field for it): a 10-digit mobile, or 0, the STD code and the number;
+     +91 is dropped. Save, Cancel, "Remove this number";
+   - in a pregnancy on her doctor's route (not on a shared phone): My plan's care team starts with "My doctor · Add your
+     doctor's number", then "Call my doctor" with her number; the doctor screen shows "Call my doctor" under the
+     pregnancy line (or "Add your doctor's number"); the kick page and the labour timer put her number first, with Call;
+   - Check-ups and tests: "Your doctor's and ambulance numbers" has "Add your doctor's number" (then "My doctor" to change
+     it) and is done once it is saved;
+   - Today's "Due now" (`preg.due`) counts that item on her doctor's route. On the government route it is still My ASHA,
+     and stays off Today and My plan (Mohit, 26 Oct).
+4. **The labour pain timer on Today** (core pregnancy card): from 37 weeks, "Labour pain timer" (the tile's own name)
+   beside "Baby moving less? Get help". Not on a shared phone.
+5. **The week page** (preg `wkP`): when her weeks come from the scan, it says the hub's reviewed `hub_scan` line (doctor's
+   route: "Your doctor's count wins.") and "Every baby grows at its own pace." (`wk_pace`, `wk_p`'s second sentence).
+6. **"Call 112 now if" in one card** (core `callNowCard`, `.action.pg-urg`; preg's `urgentAction`): the Call 112 button
+   sits inside the card, under its words, on the week page and Check-ups and tests.
+7. **Your numbers**: the spread is of as many gaps as there are ("Spread of last {n}", `spread_n`), and "–" until there
+   are 2.
+8. **The labour timer on her doctor's route**: "ask your doctor when they want you to come in" (`w_1_doc`).
+
+Core's own About week page (`pregnancy`) only runs without the pregnancy module, so it is unchanged.
+
+**Tests:** `node test/termwalk.mjs` (43 checks). On 0.39.38's code it fails 9 of them, then stops: My plan has no doctor's row.
+daily.mjs 4 (My ASHA off Today and My plan) now seeds `care: 'govt'`. Golden is re-recorded for 2: the pregnancy plans' care
+team starts with "My doctor", and "Due now" counts her doctor's and ambulance numbers from week 32.

@@ -2636,3 +2636,27 @@ No new wording. Lines reused in new places:
   - the week page's "Call 112 now if" card has a "Call 112" button.
 - **For the doctor:** a daily tablet now shows "Done: from your MCP card, logs or tools" on Check-ups and tests once its
   reminder is on, or she ticked it in the last 2 weeks. Is a reminder that is on enough to count it as started?
+
+### 19.40 Version 39.40: the 39-week walk's gaps (MODULE_API section 83)
+
+- **New, interface words (her own doctor's number):**
+  - "My doctor" / "मेरी डॉक्टर";
+  - "Add your doctor’s number" / "अपनी डॉक्टर का नंबर जोड़ें";
+  - "Your doctor’s or hospital’s phone number" / "आपकी डॉक्टर या अस्पताल का फ़ोन नंबर";
+  - "It stays on this phone. Sakhi never sends it anywhere." / "यह नंबर इसी फ़ोन पर रहता है। Sakhi इसे कहीं नहीं भेजती।";
+  - "Call my doctor" / "मेरी डॉक्टर को कॉल करें";
+  - "Remove this number" / "यह नंबर हटाएँ";
+  - "Enter a phone number: a 10-digit mobile, or 0, the STD code and the number." / "फ़ोन नंबर लिखें: 10 अंकों का मोबाइल, या 0,
+    STD कोड और नंबर।";
+  - "Spread of last {n}" / "पिछले {n} का फैलाव".
+- **New, about her dates (for the doctor):** on the stage sheet, when her last period and the scan's due date are more than 3
+  weeks apart: "Your last period and your scan’s due date are {n} weeks apart. Sakhi counts from the scan, so check both
+  dates." / "आपके पिछले पीरियड और scan की डिलीवरी तारीख़ में {n} हफ़्ते का फ़र्क है। Sakhi scan से गिनती है, इसलिए दोनों तारीख़ें
+  जाँच लें।" Is 3 weeks the right point to say it, and is "Sakhi counts from the scan" right in every trimester?
+- **Moved, not new:**
+  - the week page, when her weeks come from the scan: the pregnancy page's "Counted from the due date on your scan report.
+    Your doctor's count wins." (or "Your ANM's count wins.") and "Every baby grows at its own pace.";
+  - "Labour pain timer" (the tile's name) on Today's pregnancy card from 37 weeks;
+  - the labour timer on her doctor's route: "At your 36-week visit, ask your doctor when they want you to come in, and to which
+    hospital." (the reviewed line without "or ANM");
+  - "Bleeding" for every start inside a pregnancy, in My cycles, Days and the Calendar's key.

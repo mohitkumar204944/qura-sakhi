@@ -158,9 +158,10 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('1 ... "Got it" puts it away', !(await has(a.page, '#view .pl-sl-rev')));
   await done(a);
 }
-/* ---------- 4: a link step keeps its one-tap row; My ASHA stays off Today, My plan and Diary ---------- */
+/* ---------- 4: a link step keeps its one-tap row; My ASHA stays off Today, My plan and Diary (the government route: on her doctor's
+   route the item is her doctor's and ambulance numbers, and Today counts it, Version 39.40, test/termwalk.mjs) ---------- */
 {
-  const p = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(60) }, events: [], intake: { goal: 'food' }, mods: { plan: planOf('preg', 'food', ago(9)) } }, now: at(0, '09:30') });
+  const p = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(60), care: 'govt' }, events: [], intake: { goal: 'food' }, mods: { plan: planOf('preg', 'food', ago(9)) } }, now: at(0, '09:30') });
   const pd = await p.page.evaluate(() => !!document.querySelector('#view .today-plan-pdue .today-go[data-go="preg-plan"]'));
   check('4 pregnancy\'s "Due now" keeps its one-tap row to her checklist (no tick of its own)', pd && !(await has(p.page, '#view .today-plan-pdue [data-today-act]')));
   await p.page.evaluate(() => { const S = window.Saathi; if (S.preg && S.preg.plan) S.preg.plan.due = () => [{ id: 'asha', name: 'ASHA and ambulance numbers' }]; S.render(); }); await settle(p.page, 300);
