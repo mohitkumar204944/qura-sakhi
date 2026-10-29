@@ -268,7 +268,7 @@
       stop_never: 'I was never on it', stop_never_s: 'Ticked by mistake? It’s removed, and your dates count as they are.', stop_date: 'The day you stopped', stop_keep: 'Keep it on',
       sos_h: 'Need help now?', sos_p: 'Tap a number to call. For any emergency, call 112.', call_b: 'Call', sos_signs: 'Danger signs: when to go now',
       stage_change: 'Change stage', stage_h: 'Where are you right now?', stage_cycle: 'Tracking my periods', stage_ttc: 'Trying for a baby', stage_preg: 'I am pregnant', stage_post: 'I had a baby', stage_meno: 'My periods have stopped',
-      stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
+      stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_preg_note2: 'Add the first day of your last period, or the due date on your scan report.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
       stage_saved: 'Updated. Today now shows what fits you.', stage_log_first: 'Log the day your periods came back. Sakhi then counts your cycle again.', stage_now: 'Your stage',
       scan_edd: 'Due date on your scan report (EDD)', scan_edd_note: 'Most scan reports and MCP cards print an EDD. If yours does, Sakhi counts the weeks from it.', date_bad: 'That date does not look right. Please check it.',
       r_pain: 'Pain that stops your day is worth a doctor visit this month. Sudden severe pain on one side with a late period: call 112 now.',
@@ -522,7 +522,7 @@
       stop_never: 'मैं कभी इस पर नहीं थी', stop_never_s: 'ग़लती से चुना था? यह हट जाएगा, और आपकी तारीख़ें जैसी हैं वैसी गिनी जाएँगी।', stop_date: 'जिस दिन बंद किया', stop_keep: 'चालू रखें',
       sos_h: 'अभी मदद चाहिए?', sos_p: 'कॉल करने के लिए नंबर पर टैप करें। किसी भी आपातकाल में 112 पर कॉल करें।', call_b: 'कॉल करें', sos_signs: 'ख़तरे के संकेत: कब तुरंत जाएँ',
       stage_change: 'स्थिति बदलें', stage_h: 'आप अभी किस दौर में हैं?', stage_cycle: 'पीरियड का हिसाब रख रही हूँ', stage_ttc: 'बच्चे की कोशिश कर रही हूँ', stage_preg: 'मैं गर्भवती हूँ', stage_post: 'मेरा बच्चा हुआ है', stage_meno: 'मेरे पीरियड बंद हो गए हैं',
-      stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
+      stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_preg_note2: 'पिछले पीरियड का पहला दिन, या स्कैन रिपोर्ट की डिलीवरी तारीख़ दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
       stage_saved: 'बदल दिया। “आज” पर अब वही दिखेगा जो आपके काम का है।', stage_log_first: 'जिस दिन पीरियड लौटे, वह दर्ज करें। फिर Sakhi चक्र दोबारा गिनेगी।', stage_now: 'आपकी स्थिति',
       scan_edd: 'स्कैन रिपोर्ट पर लिखी डिलीवरी की तारीख़ (EDD)', scan_edd_note: 'ज़्यादातर स्कैन रिपोर्ट और MCP कार्ड पर EDD लिखी होती है। अगर आपकी पर है, तो Sakhi हफ़्ते उसी से गिनेगी।', date_bad: 'यह तारीख़ सही नहीं लग रही। कृपया जाँच लें।',
       r_pain: 'जो दर्द आपका दिन रोक दे, उसके लिए इसी महीने डॉक्टर को दिखाएँ। देर से आए पीरियड के साथ एक तरफ़ अचानक तेज़ दर्द हो: अभी 112 पर कॉल करें।',
@@ -701,7 +701,7 @@
   /* review FIXES-01: one bleeding map until her diary is saved again (a plan's day counts read it for every day) */
   let bdMemo = null;
   const bleedingDays = () => { const key = state.events.length + '|' + (state.savedAt || 0); if (bdMemo && bdMemo.key === key && bdMemo.ev === state.events) return bdMemo.v; const v = bleedingDays0(); bdMemo = { key: key, ev: state.events, v: v }; return v; };
-  const bleedingDays0 = () => { const set = {}; const evs = state.events.slice().sort((a, b) => (a.d < b.d ? -1 : 1)); const live = liveStartEvents(); const st = evs.filter((e) => e.t === 'start' && live.indexOf(e) >= 0); st.forEach((s0, i) => { const nx = st[i + 1] ? st[i + 1].d : null; const end = evs.filter((e) => e.t === 'end' && e.d >= s0.d && (!nx || e.d < nx) && diffDays(fromISO(s0.d), fromISO(e.d)) <= 20).pop(); const n = end ? diffDays(fromISO(s0.d), fromISO(end.d)) : 4; for (let k = 0; k <= n; k++) { const key = toISO(addDays(fromISO(s0.d), k)); if (!set[key] || set[key] === 'spot') set[key] = k === 0 ? 'start' : 'bleed'; } }); evs.filter((e) => e.t === 'spot').forEach((e) => { if (!set[e.d]) set[e.d] = 'spot'; }); return set; };
+  const bleedingDays0 = () => { const set = {}; const evs = state.events.slice().sort((a, b) => (a.d < b.d ? -1 : 1)); const live = liveStartEvents(); const st = evs.filter((e) => e.t === 'start' && live.indexOf(e) >= 0); st.forEach((s0, i) => { const nx = st[i + 1] ? st[i + 1].d : null; const end = evs.filter((e) => e.t === 'end' && e.d >= s0.d && (!nx || e.d < nx) && diffDays(fromISO(s0.d), fromISO(e.d)) <= 20).pop(); const n = end ? diffDays(fromISO(s0.d), fromISO(end.d)) : (inPregAt(s0.d) ? 0 : 4);   /* Version 39.35: bleeding in a pregnancy is never stretched into guessed days */ for (let k = 0; k <= n; k++) { const key = toISO(addDays(fromISO(s0.d), k)); if (!set[key] || set[key] === 'spot') set[key] = k === 0 ? 'start' : 'bleed'; } }); evs.filter((e) => e.t === 'spot').forEach((e) => { if (!set[e.d]) set[e.d] = 'spot'; }); return set; };
   /* Version 39.33 (walkthrough, 28 Oct): the 4 days bleedingDays0 adds after a start with no end day: Sakhi's guess, not her log */
   const guessDays = () => { const g = {}; const evs = state.events.slice().sort((a, b) => (a.d < b.d ? -1 : 1)); const live = liveStartEvents(); const st = evs.filter((e) => e.t === 'start' && live.indexOf(e) >= 0); const bd = bleedingDays();
     st.forEach((s0, i) => { const nx = st[i + 1] ? st[i + 1].d : null; if (evs.some((e) => e.t === 'end' && e.d >= s0.d && (!nx || e.d < nx) && diffDays(fromISO(s0.d), fromISO(e.d)) <= 20)) return;
@@ -836,6 +836,10 @@
   /* A pregnancy that ends (a birth, a loss, or she says it is over) is kept as a span, so the gap around it never counts as a
      long cycle: "the diary then counts from your next period". */
   /* review life-6: "I marked it by mistake": no pregnancy span, no loss weeks, no loss pages; the plan's check-up reminders stop */
+  /* Version 39.35 (Mohit's walkthrough, 29 Oct): a day inside her pregnancy (from her last period's date), and bleeding logged in
+     the last 3 days of it, for the reviewed line on Today's pregnancy card */
+  const inPregAt = (iso) => { const pi = pregInfo(); return !!pi && iso >= pi.lmp; };
+  const pregBleedNow = () => { const pi = pregInfo(); if (!pi) return false; const bd = bleedingDays(); for (let k = 0; k <= 2; k++) { const iso = toISO(addDays(today(), -k)); if (iso >= pi.lmp && bd[iso]) return true; } return false; };
   const unmarkPregnant = () => { const s0 = state.situation; if (!s0.pregnant) return; s0.pregnant = false; delete s0.pregnantSince; delete s0.scanEdd; delete s0.scanDate; emit('pregEnd', { birth: false, mistake: true }); };
   const endPregnancy = (on, birth) => { const s0 = state.situation; if (!s0.pregnant) return; const pi = pregInfo(); if (pi) addSpan({ k: 'preg', a: pi.lmp }); s0.pregnant = false; delete s0.pregnantSince; delete s0.scanEdd; delete s0.scanDate;
     s0.pregEndedOn = isISO(on) ? on : toISO(today());
@@ -2045,7 +2049,7 @@
   function exCard(disc) {
     if (disc || !canSave() || state.sample || state.focus || (state.prompts || {}).exAsked || state.stage !== 'app') return '';
     /* Version 39.32 (found on Mohit's phone): a plan she started or made at this stage already holds her stage and goal */
-    if (api.plan && safe(() => (api.plan.running && api.plan.running() && (state.intake || {}).stage === stageNow()) || (api.plan.pending && api.plan.pending()), false)) return '';
+    if (api.plan && safe(() => (api.plan.running && api.plan.running() && (state.intake || {}).stage === stageNow()) || (api.plan.pending && api.plan.pending()) || (api.plan.changing && api.plan.changing()), false)) return '';   /* Version 39.35: nor while "Your plan has changed" asks */
     return '<div class="card soft ex-card" data-nofold="1"><h3>' + esc(t('fx_h')) + '</h3><p class="small">' + esc(t('fx_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="ex-go">' + esc(t('fx_b')) + '</button><button type="button" class="btn sm" id="ex-not">' + esc(t('tour_later')) + '</button></div></div>';
   }
   function wireExCard(v) {
@@ -2436,7 +2440,8 @@
     if (isPregnant()) {
       showLog = false; const pi = pregInfo(); const w = pi ? pi.weeks : null;
       const sz = w != null && api.pregSize ? safe(() => api.pregSize(w), null) : null; const pct = w != null ? clamp((w / 40) * 100, 1, 99) : 0;
-      main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(disc ? t('today_h') : t('pregnant')) + '</div>' +
+      main = (!disc && pregBleedNow() ? '<div class="flag urgent pg-bleed" data-xp-urgent="1"><span>' + esc(t('ci_flag_preg')) + '</span></div><div class="row wrap pg-bleed-call"><a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>' : '') +   /* Version 39.35 */
+        twoCol('<div class="hero-main"><div class="eyebrow">' + esc(disc ? t('today_h') : t('pregnant')) + '</div>' +
         (w != null ? '<div class="big num' + blur + '" id="bignum">' + w + '</div><p class="lead">' + esc(disc ? t('d_weeks') : t('weeks_preg')) + '</p>' + (pi && !hide ? '<p class="small">' + esc(tf('due_on', { d: fmtD(fromISO(pi.edd), { day: 'numeric', month: 'short', year: 'numeric' }) })) + '</p>' : '') : '<p class="lead">' + esc(t('preg_set_date')) + '</p>' + (disc ? '' : '<button type="button" class="btn sm" id="preg-date">' + esc(t('preg_date_b')) + '</button>')) + '</div>',
         !disc && w != null && A ? '<div class="hero-art">' + A.produce(w, sz ? sz.c : '') + '</div>' : '') +
         (!disc && sz ? '<p class="hero-cap">' + esc(sz.line || (sz.s + ' · ' + sz.c)) + '</p>' : '') +
@@ -3125,13 +3130,19 @@
     let endWhy = '';   /* review life-6: leaving "Pregnant" asks whether it ended or was marked by mistake */
     const opts = [['cycle', 'stage_cycle', 'periods'], ['ttc', 'stage_ttc', 'ttc'], ['preg', 'stage_preg', 'preg'], ['post', 'stage_post', 'post'], ['mid', 'stage_mid', 'meno'], ['meno', 'stage_meno', 'meno']];
     const inRange = (val, a, b) => !!val && fromISO(val) >= addDays(today(), a) && fromISO(val) <= addDays(today(), b);
+    /* Version 39.35: her diary's last period, and her week and due date from what she enters (the scan's date wins, as pregInfo) */
+    const lmpGuess = () => { const ls = lastStart(); return ls && inRange(toISO(ls), -310, 0) ? toISO(ls) : ''; };
+    const pregIsLine = (lmp, edd) => { const okE = inRange(edd, -28, 280), okL = inRange(lmp, -310, 0); if (!okE && !okL) return ''; const l = okE ? addDays(fromISO(edd), -280) : fromISO(lmp);
+      return Math.max(0, Math.floor(diffDays(l, today()) / 7)) + ' ' + t('weeks_preg') + ' · ' + tf('due_on', { d: fmtD(addDays(l, 280), { day: 'numeric', month: 'short', year: 'numeric' }) }); };
     const show = () => sheet('<h2>' + esc(t('stage_h')) + '</h2><div class="list">' + opts.map((o) => '<button type="button" class="item stage-opt' + (pick === o[0] ? ' on' : '') + '" data-stage="' + o[0] + '" aria-pressed="' + (pick === o[0]) + '"><span class="ico-sm hue hue-' + hueOf(o[2]) + '">' + icon(SECTION_ICONS[o[2]]) + '</span><span class="body"><strong>' + esc(t(o[1])) + '</strong></span>' + (pick === o[0] ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
-      (pick === 'preg' ? '<div class="card"><p class="small">' + esc(t('stage_preg_note')) + '</p><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(s0.pregnant ? (s0.scanEdd || '') : '') + '"><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(s0.pregnant ? (s0.pregnantSince || '') : '') + '"></div>' : '') +
+      (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
+        return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
       (s0.pregnant && pick !== 'preg' && pick !== 'post' ? '<div class="card st-end"><p>' + esc(t('stage_end_q')) + '</p><div class="grid2">' + [['ended', 'stage_end_y'], ['mistake', 'stage_end_n']].map((o) => '<button type="button" class="btn sm' + (endWhy === o[0] ? ' on' : '') + '" data-st-end="' + o[0] + '" aria-pressed="' + (endWhy === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
       (pick === 'post' ? '<div class="card"><label for="st-birth">' + esc(t('stage_birth_date')) + '</label><input type="date" id="st-birth" max="' + toISO(today()) + '" value="' + esc(s0.deliveredOn || '') + '"><label class="row" style="font-weight:500"><input type="checkbox" id="st-bf" style="width:22px;height:22px;min-height:0;accent-color:var(--accent)"' + (s0.breastfeeding !== false ? ' checked' : '') + '> ' + esc(t('stage_bf')) + '</label></div>' : '') +
       '<div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="st-cancel">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="st-save">' + esc(t('save')) + '</button></div></div>', (sh) => {
       sh.querySelectorAll('[data-stage]').forEach((b) => b.addEventListener('click', () => { pick = b.dataset.stage; show(); }));
       sh.querySelectorAll('[data-st-end]').forEach((b) => b.addEventListener('click', () => { endWhy = b.dataset.stEnd; show(); }));
+      const isL = $('#st-preg-is', sh); if (isL) ['#st-lmp', '#st-edd'].forEach((q) => { const el = $(q, sh); if (el) ['input', 'change'].forEach((ev) => el.addEventListener(ev, () => { isL.textContent = pregIsLine($('#st-lmp', sh).value, $('#st-edd', sh).value); })); });   /* Version 39.35 */
       $('#st-cancel', sh).addEventListener('click', closeSheet);
       $('#st-save', sh).addEventListener('click', () => {
         const val = (id) => { const el = $('#' + id, sh); return el ? el.value : ''; };
@@ -4833,7 +4844,7 @@
     const hourMin = (time) => { const hm = String(time || '09:00').split(':'); const h = parseInt(hm[0], 10), m = parseInt(hm[1], 10); return [isNaN(h) ? 9 : h, isNaN(m) ? 0 : m]; };   /* "00:30" is half past midnight, not 9 am */
     const endOf = (iso) => (isISO(iso) ? new Date(fromISO(iso).getFullYear(), fromISO(iso).getMonth(), fromISO(iso).getDate(), 23, 59).getTime() : 0);
     const item = (id, at, body, k, go, extra) => Object.assign({ id: id, at: at, title: notifBrand(), body: disc ? t('d_reminder') : body, secret: disc, go: go }, chanOf(k), extra || {});
-    reminders.list().forEach((r) => {
+    reminders.list().forEach((r) => { try {   /* Version 39.35: one reminder that can't be built never stops the rest reaching the phone */
       if (r.on === false) return; let from = today(); const hm = hourMin(r.time);
       const rep = r.dates && r.dates.length ? null : (r.weekdays && r.weekdays.length ? { wd: r.weekdays.slice() } : (r.every ? { every: r.every } : null));
       const horizon = addDays(today(), rep ? 8 : 400); const far = addDays(today(), 400);
@@ -4844,12 +4855,12 @@
         if (at > now) out.push(item('r-' + r.id + '-' + toISO(d), at, notifWords(r), notifCh(r), notifGo(r), rep ? { rid: r.id, rep: rep, hh: hm[0], mm: hm[1], until: endOf(r.until) } : null));
         from = addDays(d, 1);
       }
-    });
-    const ri = headsRange();
+    } catch (e) { if (window.console) console.error('[saathi]', e); } });
+    const ri = safe(() => headsRange(), null);
     if (ri && !isPregnant() && !countsOff() && stageNow() !== 'ttc') { const d = addDays(ri.from, -1);   /* Version 39.27: not while she is trying for a baby, as the card */ const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0).getTime(); if (at > now) out.push(item('period-' + toISO(ri.from), at, state.settings.notifWords ? t('notif_period') : t('notif_n_care'), 'period', 'home')); }
     /* Her period is late: three days after her own likely range ends, one nudge with no health words. Logging her period
        moves the range, so it never comes. */
-    const rl = rangeInfo();
+    const rl = safe(() => rangeInfo(), null);
     if (rl) { const d = addDays(rl.to, 3); const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 10, 0).getTime(); if (at > now) out.push(item('late-' + toISO(rl.to), at, t('notif_late'), 'period', 'home')); }
     out.sort((a, b) => a.at - b.at);
     if (out.length <= 60) return out;

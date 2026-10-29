@@ -2583,3 +2583,16 @@ lines run in demo and pilot builds until the doctor signs, as every Version 39 l
   - Is the pelvic floor set right for every tier, including a stitch, a low-lying placenta or being told to rest?
   - Is 24 weeks right for the "Baby moving less?" button?
   - Is holding the walk after a less-movement answer, until she checks her answers again, right?
+
+### 19.35 Version 39.35: the pregnancy walkthrough's fixes (MODULE_API section 78)
+
+From Mohit's walkthrough on his Flip5 (29 Oct). Interface words only; the health lines are reused word for word.
+- **New:** the stage sheet's note in a new order, "Add the first day of your last period, or the due date on your scan report."
+  / "पिछले पीरियड का पहला दिन, या स्कैन रिपोर्ट की डिलीवरी तारीख़ दर्ज करें।" (the same words as before, the last period first).
+  The line under the dates reuses "weeks pregnant" and "Due around {d}".
+- **Reused, now in a new place:**
+  - the check-in's reviewed line "Bleeding in pregnancy, or a bad headache with swelling or blurred vision: see a doctor
+    today. Heavy bleeding or fits: call 112 now." now shows on Today's pregnancy card for 3 days after bleeding (or spotting)
+    is logged in a pregnancy, with Call 112;
+  - the kick page's 2 lines are unchanged, now with Call 112, 108 and 102.
+- **Questions for the doctor:** are 3 days right for that line on Today, and should spotting bring it up (it does)?

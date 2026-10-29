@@ -251,7 +251,9 @@
     let note = '';
     if (S.canSave() && !sit.pregnant) note = '<div class="card soft"><p class="small">' + esc(T('k_notset')) + '</p><button type="button" class="btn sm" data-go="me">' + esc(t('me')) + '</button></div>';
     else if (w != null && w < 28) note = '<div class="card soft"><p class="small" style="color:var(--fg)">' + esc(TF('k_early', { w: w })) + '</p></div>';
-    const flags = '<div class="flag urgent">' + fi(S.I.help) + '<span class="ptl-ft">' + esc(T('k_now')) + '</span></div><div class="flag">' + fi(S.I.clock) + '<span class="ptl-ft">' + esc(T('k_today')) + '</span></div>';
+    /* Version 39.35 (Mohit's walkthrough, 29 Oct): "Baby moving less? Get help" opens this page, so its 2 lines come with Call buttons */
+    const flags = '<div class="flag urgent">' + fi(S.I.help) + '<span class="ptl-ft">' + esc(T('k_now')) + '</span></div><div class="flag">' + fi(S.I.clock) + '<span class="ptl-ft">' + esc(T('k_today')) + '</span></div>' +
+      '<div class="row wrap ptl-calls">' + ['112', '108', '102'].map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>';
     let counter = '';
     if (K) {
       counter = '<div class="card ptl-center"><div class="eyebrow">' + esc(T('k_counting')) + '</div><div class="bigtimer" id="ptl-k-time">' + clock((Date.now() - K.start) / 1000) + '</div>' +

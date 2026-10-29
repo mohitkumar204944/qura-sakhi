@@ -1905,9 +1905,20 @@
   }
   /* "Start my plan": today, tomorrow or next Monday, with her check-in time */
   function startDay(when) { const t0 = pToday(); if (when === 'tomorrow') return S.toISO(S.addDays(t0, 1)); if (when === 'monday') return S.toISO(S.addDays(t0, ((8 - t0.getDay()) % 7) || 7)); return S.toISO(t0); }
+  /* Version 39.35 (Mohit's walkthrough, 29 Oct): starting a plan keeps the plan it replaces, so "No, I marked it by mistake" (core's
+     stage sheet) brings that plan back as it was: its start, its days, its answers and its check-in. The mistaken pregnancy plan
+     is dropped, not kept as her last plan. */
+  const PLAN_OWN = ['log', 'past', 'next', 'prevPlan', 'body', 'height'];
+  const snapPlan = (d) => { const o = JSON.parse(JSON.stringify(d)); PLAN_OWN.forEach((k) => { delete o[k]; }); o.ik0 = S.state.intake ? JSON.parse(JSON.stringify(S.state.intake)) : null; return o; };
+  function restorePrev(d) {
+    const pp = d.prevPlan; const keep = {}; PLAN_OWN.forEach((k) => { if (k !== 'prevPlan' && d[k] !== undefined) keep[k] = d[k]; });
+    Object.keys(d).forEach((k) => { delete d[k]; }); Object.assign(d, JSON.parse(JSON.stringify(pp)), keep);
+    if (d.ik0) S.state.intake = d.ik0; delete d.ik0;
+    S.reminders.remove('plan'); delete d.remGone; remOnNow(d, true);
+  }
   function commitStart(when, remAt) {
     const d = D(); const n = nextOf(d); if (!n) return null;
-    const fresh = !d.start; if (!fresh) archive(d);   /* Version 39.5: the plan she leaves is kept in d.past */
+    const fresh = !d.start; const prev = !fresh && d.pack ? snapPlan(d) : null; if (!fresh) archive(d);   /* Version 39.35: the plan it replaces */   /* Version 39.5: the plan she leaves is kept in d.past */
     NEXT_KEYS.forEach((k) => { if (n[k] !== undefined) d[k] = n[k]; });
     if (n.body && n.body.h && n.body.w) { const b = { d: todayISO(), h: n.body.h, w: n.body.w }; if (n.body.waist) b.waist = n.body.waist; d.body = (d.body || []).filter((x) => x.d !== todayISO()).concat([b]).slice(-60); d.height = n.body.h; }
     if (remAt && remAt >= '17:00') { d.remAt = remAt; d.remPick = true; } else d.remAt = n.remAt || '20:00';   /* Version 39.27: a time she picked stays hers */
@@ -1926,6 +1937,7 @@
     if (babyD(d) && S.ttc && S.ttc.setFlags) S.ttc.setFlags((d.intake || {}).bflags || []);   /* Version 39.32: Months of trying shows the same ticks */
     if (pregV2(d) && S.preg && S.preg.setRisks) S.preg.setRisks((d.intake || {}).pflags || []);   /* Version 39.34: her MCP card shows the same marks */
     folicSync(d);
+    if (prev) d.prevPlan = prev; else delete d.prevPlan;   /* Version 39.35 */
     return d;
   }
   /* ---------- for core and the other modules: where her plan is ---------- */
@@ -1999,6 +2011,7 @@
   const painQ = (d) => (painAsk(d) ? '<div class="pl-pain" role="group" aria-label="' + esc(t('plan_pain_q')) + '"><p class="small"><strong>' + esc(t('plan_pain_q')) + '</strong></p><div class="pl-pain-a">' + PAIN_A.map((k) => '<button type="button" class="btn sm" data-pl-pain="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div></div>' : '');
   const wirePain = (v) => v.querySelectorAll('[data-pl-pain]').forEach((b) => b.addEventListener('click', () => { if (S.cycle.setPain(b.dataset.plPain)) S.toast(t('plan_pain_saved')); S.render(); }));
   function onLog(name, p) {
+    if (name === 'pregEnd' && p && p.mistake) { const d0 = raw(); if (d0 && d0.pack === 'preg' && d0.prevPlan && d0.prevPlan.pack && d0.prevPlan.pack !== 'preg') restorePrev(D()); return; }   /* Version 39.35 */
     if (name === 'tool' && p && p.type === 'calm') { const dc = raw(); if (dc && packOf(dc)) setTimeout(() => { const dd = D(); closeDay(dd); remSync(dd); S.saveQuiet(); }, 0); return; }   /* Version 39.22: she wound down (after this event: a full day's petal is an event too) */
     if (name !== 'log' || !p || p.type !== 'start' || !runningD()) return;
     const d = D(); const st = (S.state.events || []).filter((e) => e.t === 'start').map((e) => e.d).sort(); const last = st[st.length - 1];
@@ -2062,7 +2075,7 @@
   }
   function archive(d) { const e = pastEntry(d); if (e) d.past = [e].concat(Array.isArray(d.past) ? d.past : []).slice(0, 5); }
   /* the plan ends and is kept as "Your last plan": Stop, or (V39.9 review FIXES-07) her after-birth plan at the baby's first birthday */
-  function closePlan(dd) { archive(dd); dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); ['nudge', 'nudgeHeld', 'nudgeMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.12 */
+  function closePlan(dd) { archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); ['nudge', 'nudgeHeld', 'nudgeMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.12 */
   const pastBirthday = (d) => { const b = (S.state.situation || {}).deliveredOn; return !!(d && d.start && (d.pack || 'cycle') === 'post' && d.go !== false && d.start <= todayISO() && typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) && !pregnant() && S.diffDays(S.fromISO(b), pToday()) > 365); };
   /* Version 39.5 (P2-04): the same goal again, within a month of her last plan's end, starts where she is. Review ENGINE-06:
      the plan screen shows it too, before she starts */
@@ -2085,7 +2098,7 @@
       '<div class="row wrap"><button type="button" class="btn sm primary" id="pl-chg-go" data-chg="' + why + '">' + esc(t(why === 'preg' ? 'plan_chg_go_preg' : 'plan_chg_go_post')) + '</button><button type="button" class="btn sm" id="pl-chg-not">' + esc(t('plan_rec_not')) + '</button></div></div>';
   }
   function wireChange(v) {
-    const g = v.querySelector('#pl-chg-go'); if (g) g.addEventListener('click', () => { const w = g.dataset.chg; S.mem.planIntake = { stage: w === 'preg' ? 'preg' : 'post', goal: w === 'preg' ? 'food' : 'recovery', iq: 1 }; S.setHash('plan-goal'); });
+    const g = v.querySelector('#pl-chg-go'); if (g) g.addEventListener('click', () => { const w = g.dataset.chg; S.mem.planIntake = w === 'preg' ? { stage: 'preg', iq: 0 } : { stage: 'post', goal: 'recovery', iq: 1 };   /* Version 39.35: her goal, asked (it chooses her step) */ S.setHash('plan-goal'); });
     const n = v.querySelector('#pl-chg-not'); if (n) n.addEventListener('click', () => { const dd = D(); dd.chg = dd.start + ':' + (dd.pack || 'cycle'); S.saveQuiet(); S.render(); });
     const pk2 = v.querySelector('#pl-chg-pick'); if (pk2) pk2.addEventListener('click', () => { S.mem.discPick = true; S.render(); });
   }
@@ -2386,7 +2399,7 @@
       if (disc()) return '';   /* trimesters are pregnancy words; a pregnancy has no 12-week path either */
       const pi = S.preg && S.preg.info ? S.preg.info() : null; const w = pi ? pi.weeks : 0; const tri = w < 14 ? 1 : (w < 28 ? 2 : 3);
       return '<div class="card pl-path"><div class="row spread"><h3>' + esc(t('plan_path_preg_h')) + '</h3></div><ol class="pl-steps">' +   /* Version 39.5: her week is the page's clock line */
-        [1, 2, 3].map((k) => '<li class="' + (k < tri ? 'past' : (k === tri ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true">' + (k < tri ? '✓' : '') + '</span><span class="body"><strong>' + esc(t('plan_tri_' + k)) + '</strong><span class="small">' + esc(t('plan_tri_' + k + '_p')) + '</span></span></li>').join('') + '</ol></div>';
+        [1, 2, 3].map((k) => '<li class="' + (k < tri ? 'gone' : (k === tri ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true"></span><span class="body"><strong>' + esc(t('plan_tri_' + k)) + '</strong><span class="small">' + esc(t('plan_tri_' + k + '_p')) + '</span></span></li>').join('') + '</ol></div>';
     }
     if (pk === 'post') {   /* Version 39.5 (journey audit P2-19): her weeks after the birth, not "of 12" */
       if (disc()) return '';
@@ -3142,6 +3155,7 @@
     intake: { render: renderIntake, count: (a) => (a && a.goal ? screensOf(a).length : 5), goals: (st) => GOALS[stKey(st)].slice(),
       part: (a) => { const l = a && a.goal ? screensOf(a) : []; return l[S.clamp((a && a.iq) || 0, 0, Math.max(0, l.length - 1))] === 'sum' ? 2 : 1; } },
     psTier: psTier, gwAt: (iso) => gwAt(iso),   /* Version 39.34 */
+    changing: () => { const d = raw(); return !!(planOn() && d && changedWhy(d)); },   /* Version 39.35: core's goals card waits while it asks */
     nudgeAt: NUDGE_AT, mcDue: () => (raw() ? mcDue(fullD(raw())) : 0),   /* Version 39.12 */
     startFromIntake: startFromIntake, packFor: packFor, packOf: () => packOf(raw()), dayDone: (iso) => { const d = raw(); return !!(packOf(d) && iso >= d.start && dayDone(fullD(d), iso)); }, actions: () => (packOf(raw()) ? actionsFor(fullD(raw())) : []),
     /* Version 37.1: a plan waits to be started; core orders Today by these, and joy holds its petals for the first check-in */
@@ -3766,6 +3780,7 @@
     event: onLog,
     afterRender: (v, route) => { if (route !== 'plan-reveal' && route !== 'plan') stopAudio(); if (!/^plan-r-/.test(route || '')) { stopRun(); awake(false); } if (route !== 'plan-moves' && !/^plan-r-/.test(route || '')) stopAnim(); if (route !== 'plan-body') S.mem.planShow = false; if (route !== 'plan') S.mem.planHelp = null; if (route !== 'plan' && !/^plan-/.test(route || '')) { S.mem.discPick = false; S.mem.lossPick = false; } if (route !== 'plan-week') { S.mem.planWk = null; S.mem.planNudgeAsk = false; } if (route !== 'plan-check' && S.mem.planMc && S.mem.planMc.saved) S.mem.planMc = null; if (route !== 'home') { S.mem.planFam = null; S.mem.planFamEdit = false; } },   /* Version 39.12 */
     css: [
+      '.pl-steps li.gone .pl-sdot { background: var(--line); border-color: var(--line); } .pl-steps li.gone strong { color: var(--muted); }',   /* Version 39.35: a part of her pregnancy that has passed, not a tick */
       '.pl-fig { width: 100%; height: auto; display: block; color: var(--accent); }',
       '.pl-fig polyline { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; } .pl-fig circle { fill: currentColor; }',
       '.pl-fig .pl-mat { stroke: var(--line); stroke-width: 2; stroke-linecap: round; } .pl-fig .pl-prop path { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }',

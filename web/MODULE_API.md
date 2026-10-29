@@ -5168,3 +5168,51 @@ doctor review (review section 19.34).
   - `web/test/taps/` counts joining for the cycle, trying and no-plan stages only, so these come from the screens.
 
 **Tests:** `node test/pregplan.mjs` (53 checks).
+
+## 78. Version 39.35: the pregnancy walkthrough's fixes
+
+Mohit, 29 Oct: "can you do a walkthrough on my phone and advise on gaps or bugs" (his Flip5, 0.39.34-pilot vc 66, marked 30
+weeks pregnant), then "proceed" on gaps 1 to 7. These are interface words only, plus lines the doctor already checked (review
+section 19.35).
+
+- **The kick page** (`pregtools.js` `renderKicks`): its 2 lines are followed by Call 112, 108 and 102 (`.ptl-calls`), before
+  the counter. Version 39.34's "Baby moving less? Get help" opens this page.
+- **Bleeding inside a pregnancy** (core):
+  - A start on or after her pregnancy's last-period date, with no end day, isn't stretched into Sakhi's 4 guessed days
+    (`bleedingDays0`, `inPregAt`). The calendar and the week strip show only what she logged.
+  - Today's pregnancy card shows the check-in's reviewed line (`ci_flag_preg`) with Call 112 while bleeding was logged in the
+    last 3 days of the pregnancy (`pregBleedNow`, `.pg-bleed`). Never on a shared phone.
+- **Reminders reach the phone** (`buildNotifs`): one reminder that can't be built, or a failing period heads-up or late nudge,
+  no longer stops the rest of the list reaching Android. On the phone, the check-in's alarms stayed booked for a while after
+  the stage switch. The test page sends the right list, so the cause wasn't reproduced. The app re-sends its list on every save
+  and whenever it comes back to the front.
+- **My plan's "Your pregnancy"**: a part that has passed is grey (`li.gone`), not ticked, because her check-ups there may still
+  be due.
+- **The stage sheet** (`openStage`), on "I am pregnant":
+  - it asks the first day of her last period first, filled from her diary (`lmpGuess`: her last start within 310 days), then
+    the scan's due date;
+  - its note is in that order (`stage_preg_note2`);
+  - a line says her week and due date as she enters them (`pregIsLine`, from `weeks_preg` and `due_on`). The scan's date wins,
+    as in `pregInfo`.
+- **One ask after a stage change:**
+  - core's goals card (`exCard`) waits while "Your plan has changed" shows (`S.plan.changing`);
+  - "See my pregnancy plan" opens on her goal (`wireChange`, iq 0), because her goal chooses her step.
+- **"No, I marked it by mistake"**:
+  - Starting a plan keeps the plan it replaced (`d.prevPlan`, `snapPlan`). It keeps everything but the log, the past plans, a
+    waiting plan and her body measures, and it also keeps her answers.
+  - The stage sheet's mistake (`pregEnd` with `mistake`) brings that plan back as it was (`restorePrev`): its start, version,
+    answers and check-in reminder. The mistaken pregnancy plan isn't kept as her last plan.
+  - "Yes, it ended" (a loss) brings nothing back.
+  - Stop (`closePlan`) and the next start clear it.
+
+**Not changed yet** (the walkthrough's items 8 to 15, waiting for Mohit):
+- My plan's "start moves only after your doctor says" line beside the safety screen's walk;
+- the plan reveal not naming the pelvic floor from day 4, the movements question or the 14 and 28-week checks;
+- "My safety answers" titled "Before you start", and its row without a ›;
+- the foot line's iron tablets;
+- the "This week of pregnancy" tile's word break;
+- the "Updated" toast over the tour;
+- the soft pink "Call 112 now" cards;
+- "Your day" asking food and milk again.
+
+**Tests:** `node test/pregwalk.mjs` (25 checks; 16 fail on 0.39.34's code).

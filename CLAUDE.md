@@ -236,6 +236,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the check-in from 28 weeks: her baby's movements (the kick page's own lines and Call buttons), sleeping on her side;
     - "Baby moving less? Get help" on Home's pregnancy card from 24 weeks, for every pregnant woman.
     Contract: MODULE_API section 77; wording: section 19.34 of the review (new lines wait for doctor review).
+  - `node test/pregwalk.mjs` (Version 39.35, the pregnancy walkthrough's fixes; Mohit, 29 Oct, on his Flip5):
+    - Call buttons on the kick page;
+    - bleeding in a pregnancy without guessed days, and the reviewed line on Today;
+    - reminders that reach the phone;
+    - no "done" ticks for the past parts of her pregnancy;
+    - the stage sheet's last period first, from her diary, with her week and due date;
+    - one ask after a stage change, and her goal asked;
+    - "marked by mistake" bringing back her plan.
+    Contract: MODULE_API section 78; wording: section 19.35 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
