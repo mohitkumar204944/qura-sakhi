@@ -5271,3 +5271,39 @@ he said "fix all 8". No new wording.
 
 **Tests:** `node test/threefix.mjs` (22 checks; 15 fail on 0.39.36's code). records.mjs 10 now checks that a signal that can
 wait has no row on My plan. Golden is re-recorded for 2: the pregnancy plans' "Due now" after the daily steps, and the counts.
+
+## 81. Version 39.38: the 38-week walk's fixes
+
+Mohit, 29 Oct: "can you do a walkthrough on my phone and check gaps", at 38 weeks with My pregnancy running on his Flip5; then
+"fix all 8". New wording: Help's "See a doctor" line in a pregnancy only (review section 19.38).
+1. **Day complete counts her daily steps** (plan `dayDoneHtml`): `held()`, as Today's count, so a "Due now" that waits for her
+   visit isn't in "All n done today" (a done one is).
+2. **My plan counts the same steps**: "How your plan works · Every day n steps" (`rhythmGrid`) counts the steps that aren't
+   `soft`, and the steps' bar has one mark for each step in `held()`, as the count beside it.
+3. **Her tablets** (preg `PLAN` items `ifa` and `ca`):
+   - each is started (`auto`, "Done: from your MCP card, logs or tools") once she takes it in Sakhi: its reminder on
+     (`preg-ifa`, `preg-ca`), or a tick in the last 14 days (`tabStarted`); iron also from the iron tracker, as before;
+   - Today's "Due now" (`S.preg.plan.due`, Home's row `dueNames()`, and `markedOn` for today) is check-ups and tests only
+     (`TAB_IDS`): her tablets have their own rows and reminders. The doctor's report keeps them in its "Due now"
+     (`dueNames(true)`), as before.
+4. **"My baby is born"** (core stage sheet): from a pregnancy the birth date starts on today and "I am breastfeeding" starts
+   ticked. She can change both. Without a pregnancy, nothing is filled in.
+5. **Bleeding in a pregnancy, in the Diary** (core):
+   - `inPregAt` starts 14 days after her last period's first day, so that period (her LMP, or a scan's date a few days off it)
+     stays a period with its own days;
+   - My cycles: a bleed inside the pregnancy is its date and "Bleeding · not counted: pregnancy", never "{d} – now · Cycle day
+     n";
+   - Days: its group is "Bleeding · {d} · not counted: pregnancy", and its tags say "Bleeding", not "Period started" or
+     "Period ended";
+   - no "Add a past period" while she is pregnant.
+6. **For you from 34 weeks** (core `forYouTiles`, `FOR_YOU.pregLate`): her hospital bag, birth plan and contraction timer come
+   right after her goal's first tool (that one leads, Version 38). Five tiles at most, as before.
+7. **The week page's urgent card** (preg `urgentAction`): "Call 112 now if" has a "Call 112" button (`.pg-call`) under it.
+8. **"See a doctor" in a pregnancy** (core Help and `renderAsk`):
+   - Help's row says her ANM or gynaecologist (her gynaecologist on her doctor's route) looks after the pregnancy, and a Qura
+     doctor helps with food, weight and sleep (`hs_doc_s_preg`, `_doc`);
+   - the screen it opens starts with the pregnancy page's reviewed line (`ask_p_preg`, `_doc`, the words of preg
+     `hub_ask_p`).
+
+**Tests:** `node test/latepreg.mjs` (27 checks; 19 fail on 0.39.37's code). plans.mjs 1 now counts Home's row without the
+tablets ("and 3 more"); the report's line is unchanged.

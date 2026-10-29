@@ -216,7 +216,7 @@ async function signUp(a) {
   const v = await view(a); const tc = await all(a, '#view');
   check('4 unanswered: "You need at least 4 check-ups; your gynaecologist may see you more often."', /You need at least 4 check-ups; your gynaecologist may see you more often\. Tick each one as you have it\./.test(v) && !/MCP card and your logs count too/.test(v), v.slice(0, 300));
   const due = await a.page.evaluate(() => window.Saathi.preg.plan.due().map((x) => x.id));
-  check('4 ... due now: Td, iron, calcium, the second check-up and the anomaly scan (no scheme money or PMSMA)', JSON.stringify(due) === JSON.stringify(['td', 'ifa', 'ca', 'anc2', 'scan2']), due);
+  check('4 ... due now: Td, the second check-up and the anomaly scan (no scheme money or PMSMA; Version 39.38: her tablets have their own rows)', JSON.stringify(due) === JSON.stringify(['td', 'anc2', 'scan2']), due);
   check('4 ... no registration, scheme money, PMSMA or JSSK cards', !(await has(a, '[data-plan="reg"]')) && !(await has(a, '[data-plan="scheme"]')) && !(await has(a, '[data-plan="pmsma"]')) && !(await has(a, '[data-plan="jssk"]')));
   check('4 ... the second check-up with her gynaecologist, her reports in one file', /Your second check-up with your gynaecologist is due between 14 and 26 weeks\. Ask for your BP, weight, Hb and urine to be checked, and keep your reports together in one file\./.test(await txt(a, '[data-plan="anc2"]')) && !(await has(a, '[data-plan="anc2"] [data-go="preg-mcp"]')), await txt(a, '[data-plan="anc2"]'));
   check('4 ... the anomaly scan: "Your gynaecologist will tell you where to book it."', /Your gynaecologist will tell you where to book it\./.test(await txt(a, '[data-plan="scan2"]')));
@@ -234,7 +234,7 @@ async function signUp(a) {
   const a = await open({ hash: 'preg-plan', seed: PREG('govt') });
   const v = await view(a);
   const due = await a.page.evaluate(() => window.Saathi.preg.plan.due().map((x) => x.id));
-  check('4 a government centre: the plan as before (scheme money, PMSMA, the MCP card, U-WIN)', JSON.stringify(due) === JSON.stringify(['td', 'scheme', 'ifa', 'ca', 'anc2', 'scan2']) && await has(a, '[data-plan="pmsma"]') && /MCP card/.test(await txt(a, '[data-plan="anc2"]')) && await has(a, '[data-plan="td"] a[href*="uwin"]') && !(await has(a, '#view .care-alt')), due);
+  check('4 a government centre: the plan as before (scheme money, PMSMA, the MCP card, U-WIN)', JSON.stringify(due) === JSON.stringify(['td', 'scheme', 'anc2', 'scan2']) && await has(a, '[data-plan="pmsma"]') && /MCP card/.test(await txt(a, '[data-plan="anc2"]')) && await has(a, '[data-plan="td"] a[href*="uwin"]') && !(await has(a, '#view .care-alt')), due);
   check('4 ... with the government route\'s intro', /the dates in your MCP card and your logs count too/.test(v));
   await done(a);
 }

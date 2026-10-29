@@ -2619,3 +2619,20 @@ No new wording. Lines reused in new places:
 - trying for a baby, the late finding in Cycles starts with Today's reviewed "A week or more late and you could be pregnant?
   A home test is the first step.";
 - Cycles' "Next period date" says "Your period is {n} days late", as Today does, once her likely range has passed.
+
+### 19.38 Version 39.38: the 38-week walk's fixes (MODULE_API section 81)
+
+- **New (waits for doctor review):** Help's "See a doctor" while she is pregnant. It says in short what her pregnancy page's
+  reviewed line says:
+  - "Your ANM or gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep" / "गर्भ के लिए आपकी ANM या स्त्री
+    रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर";
+  - her doctor's route: "Your gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep" / "गर्भ के लिए आपकी
+    स्त्री रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर".
+- **Moved, not new:**
+  - in a pregnancy, the screen "See a doctor" opens ("Talk to a Qura doctor") now starts with the pregnancy page's reviewed line
+    ("A free call with a Qura doctor (BAMS) can help with food, weight and sleep. Your ANM or gynaecologist looks after the
+    pregnancy itself, medicines and scans.", or "Your gynaecologist" on her doctor's route), in place of the general line;
+  - "Bleeding" names bleeding logged in a pregnancy in My cycles and Days, in place of "Period started" and a cycle day;
+  - the week page's "Call 112 now if" card has a "Call 112" button.
+- **For the doctor:** a daily tablet now shows "Done: from your MCP card, logs or tools" on Check-ups and tests once its
+  reminder is on, or she ticked it in the last 2 weeks. Is a reminder that is on enough to count it as started?

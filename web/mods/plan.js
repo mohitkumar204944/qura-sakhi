@@ -552,7 +552,7 @@
   const foldCard = (cls, title, line, inner) => '<div class="card ' + cls + ' pl-fold"><details data-pl-fold="' + cls + '"' + (foldOpen(cls) ? ' open' : '') + '><summary><span class="pl-fold-t"><strong>' + esc(title) + '</strong>' + (line ? '<span class="small">' + esc(line) + '</span>' : '') + '</span><span class="pl-fold-c" aria-hidden="true">' + S.I.chev + '</span></summary><div class="pl-fold-in">' + inner + '</div></details></div>';
   function rhythmGrid(d, acts) {
     const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d); const at = timeOf(ciAt(d));
-    const cols = [['plan_rh_day', acts.length === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: acts.length, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2'))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
+    const cols = [['plan_rh_day', acts.filter((a) => !a.soft).length === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: acts.filter((a) => !a.soft).length, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2'))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
     return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
   }
   /* Version 39.22: her first week reads how her plan works; after it, "How it works" by her week opens it */
@@ -582,7 +582,7 @@
     const whyN = acts.filter((a) => a.why).length;
     const ciB = due ? '<button type="button" class="btn ' + (fold ? 'sm' : 'primary block') + ' pl-ci-go" data-go="plan-checkin">' + esc(ciLabel()) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>';   /* Version 39.22: Today keeps the pink button */
     return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(req.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: req.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' + nightBar() +
-      '<div class="pl-t4-bar" aria-hidden="true">' + acts.map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
+      '<div class="pl-t4-bar" aria-hidden="true">' + held(acts).map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
       (fold ? '' : '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>') +
       (!disc() && !ci && !rest && foodDay(d, todayISO()) && !acts.some((a) => FOOD_IDS.indexOf(a.id) >= 0 || a.id === 'fast') ? '<button type="button" class="linkbtn pl-fast-tog" id="pl-fast-tog">' + esc(t('plan_fast_q')) + '</button>' : '') +   /* no food step to ask in (V39.9 review FOOD-01) */
       (fold ? '<div class="pl-steps-f">' + (whyN && !disc() ? '<button type="button" class="linkbtn pl-whyall" id="pl-whyall">' + esc(whyN === 1 ? t('plan_why_all1') : tf('plan_why_all', { n: whyN })) + '</button>' : '<span></span>') + ciB + '</div>' : ciB) + '</div>';
@@ -3084,7 +3084,7 @@
     const noToday = (x) => String(x).replace(/\s+today$/i, '').replace(/^आज\s+/, '').replace(/\s+आज(\s)/, '$1');   /* Version 39.27 (R04): never "Tomorrow · Move 10 minutes today" */
     return actionsFor(d, tn).filter((a) => !a.priv && a.kind !== 'check' && a.kind !== 'link').slice(0, 2).map((a) => noToday(a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : a.title)); };
   function dayDoneHtml(d, ci, wk) {
-    const n = actionsFor(d).length; const g = goalLine(d); const tm = tomLines(d); const x = dayLog(d, todayISO());
+    const n = held(actionsFor(d)).length; const g = goalLine(d); const tm = tomLines(d);   /* Version 39.38 */ const x = dayLog(d, todayISO());
     return '<div class="pl-dc"><span class="pl-dc-ic" aria-hidden="true">' + SVG_TICK + '</span><span class="pl-dc-t"><strong>' + esc(t('plan_dc_h')) + '</strong><span class="small">' + esc(countLine(n, 0, n)) + '</span></span></div>' +
       (g ? '<p class="pl-dc-goal">' + esc(g) + '</p>' : '') + wk +
       (tm.length ? '<div class="pl-dc-tom"><span class="eyebrow">' + esc(t('plan_dc_tom')) + '</span>' + tm.map((y) => '<span>' + esc(y) + '</span>').join('') + '</div>' : '') +

@@ -264,6 +264,24 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the end card alone on day 85;
     - one celebration at a time.
     Contract: MODULE_API section 80; wording: section 19.37 of the review.
+  - `node test/latepreg.mjs` (Version 39.38, the 38-week walk's fixes; Mohit, 29 Oct: "fix all 8"):
+    - Day complete and My plan counting her daily steps, not a "Due now" that waits;
+    - her tablets started, not "due", once she takes them in Sakhi;
+    - "My baby is born" on today's date, with breastfeeding ticked;
+    - bleeding in a pregnancy as "Bleeding" in the Diary, with no "Add a past period";
+    - from 34 weeks the hospital bag, birth plan and contraction timer in For you;
+    - Call 112 on the week page;
+    - her gynaecologist for the pregnancy in Help's "See a doctor".
+    Contract: MODULE_API section 81; wording: section 19.38 of the review (Help's new line waits for doctor review).
+  - `node test/moves3d.mjs` (Version 39.39, the 3D figure in the player and a rest between moves; Mohit, 29 Oct: "build it
+    into the player with the rest screen"; canvas claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka):
+    - each move's 3D loop, with its still for "reduce motion", the routine's list and the rest's Next;
+    - the sun salutation's flows, the left side mirrored, and the drawings when there's no `web/fig`;
+    - a rest of 15 seconds in strength and 10 in yoga, none between sides, before Shavasana or in the sun salutation, with
+      +20s, Skip rest and Previous.
+    `web/fig` is made by `web/tools/fig3d` (README.md there; Blender and MakeHuman's CC0 packs, outside the repo). After a
+    re-render, run `python3 web/tools/fig3d/install.py <work>/final web`. Contract: MODULE_API section 82; wording: section
+    19.39 (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

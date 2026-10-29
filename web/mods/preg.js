@@ -583,7 +583,8 @@
   const KIND_CLS = { warn: 'accent', scheme: 'ok', food: 'ok' };
   const goBtn = (r, cls) => (r && linkOk(r) && GO_LABEL[r] ? '<button type="button" class="btn sm ' + (cls || '') + '" data-go="' + esc(r) + '">' + esc(GO_LABEL[r]()) + '</button>' : '');
   const backTo = () => 'preg';
-  const urgentAction = () => '<button type="button" class="action" data-go="help"><span class="ico accent">' + S.I.help + '</span><span class="body"><strong>' + esc(t('call_now')) + '</strong><span class="small">' + esc(t('s1c')) + '</span></span></button>';
+  const urgentAction = () => '<button type="button" class="action" data-go="help"><span class="ico accent">' + S.I.help + '</span><span class="body"><strong>' + esc(t('call_now')) + '</strong><span class="small">' + esc(t('s1c')) + '</span></span></button>' +
+    '<div class="row wrap pg-call"><a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>';   /* Version 39.38 */
   const sizeLine = (n) => { const x = W[n]; return tx(x.s) + ', ' + lcFirst(tx(x.c)); };
   /* The week's fruit or vegetable, drawn by art.js (Home shows it beside the week number). */
   const sizeArt = (n, cls) => (S.art ? '<span class="' + (cls || 'pg-art') + '">' + S.art.produce(n, tx(W[n].c)) + '</span>' : '');
@@ -954,8 +955,8 @@
     { id: 'scan1', w: [11, 14], tip: 11 },
     /* Version 39.0: done once she has applied for PMMVY or JSY in her claims (access.js), so it stops showing as due */
     { id: 'scheme', gov: true, w: [5, 40], tip: 12, go: 'access-schemes-preg', auto: () => !!(S.access && S.access.claimed && ['pmmvy', 'jsy'].some((k) => ['applied', 'got', 'got2'].indexOf(S.access.claimed(k, (S.state.situation || {}).pregnantSince)) >= 0)) },
-    { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) },
-    { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs' },
+    { id: 'ifa', w: [13, 40], tip: 14, go: 'iron', auto: () => !!(S.iron && S.iron.active()) || tabStarted('ifa', 'preg-ifa') },   /* Version 39.38 */
+    { id: 'ca', w: [14, 40], tip: 15, go: 'preg-logs', auto: () => tabStarted('ca', 'preg-ca') },
     { id: 'anc2', w: [14, 26], tip: 16, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 14, 26) },
     { id: 'scan2', w: [18, 20], tip: 18, rem: true },   /* the verified tip says 18–20 weeks */
     { id: 'pmsma', gov: true, w: [13, 40], tip: 23, pmsma: true, ext: ['https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/', 'plan_pmsma_find'] },
@@ -968,6 +969,10 @@
     { id: 'fp', w: [36, 40], tip: 39, go: 'post-contra' },
     { id: 'w41', w: [41, 42], tip: 41, only: true }
   ];
+  /* Version 39.38 (Mohit's 38-week walk): a daily tablet is started, not "due", once she takes it in Sakhi: its reminder on, or a tick
+     in the last 2 weeks. Today's "Due now" (her plan's step and Home's row) is check-ups and tests; her tablets have their own rows. */
+  const tabStarted = (key, remId) => { try { const r = S.reminders.get(remId); if (r && r.on !== false) return true; const st = store(); for (let i = 0; i < 14; i++) if (tabOn(st, key, S.toISO(S.addDays(S.today(), -i)))) return true; } catch (e) { /* no record */ } return false; };
+  const TAB_IDS = ['ifa', 'ca'];
   const planOf = (st) => { const pl = st.plan && typeof st.plan === 'object' ? st.plan : (st.plan = {}); if (!pl.done || typeof pl.done !== 'object') pl.done = {}; if (!Array.isArray(pl.pmsma)) pl.pmsma = []; return pl; };
   const dayOfWeek = (wi, n) => S.addDays(S.fromISO(wi.basis), n * 7);
   /* the 9th of each month from today until the due date */
@@ -1045,7 +1050,8 @@
     const rm = v.querySelector('#pg-plan-rem'); if (rm) rm.addEventListener('change', () => { pl.rem = rm.checked; redo(); });
   }
   /* what is due now, by name, for Home and the summaries */
-  const dueNames = () => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => piText(x.it.id)); };
+  /* Version 39.38: Today's row names check-ups and tests; the doctor's report keeps her tablets (tabs), as before */
+  const dueNames = (tabs) => { const wi = weekInfo(); if (!wi || !S.canSave()) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma && (tabs || TAB_IDS.indexOf(x.it.id) < 0)).map((x) => piText(x.it.id)); };
   /* Version 38: one pregnancy plan. The companion's pregnancy plan (mods/plan.js, pack 'preg') takes what is due now from here,
      and while it runs Today's "Due now" row is that plan's first step instead of a row of its own (planOwns). */
   const planOwns = () => !!(S.plan && S.plan.running && S.plan.running() && S.plan.packOf && S.plan.packOf() === 'preg');
@@ -1085,9 +1091,9 @@
   S.preg.plan = { /* Version 39.5: a check-up or test she marked done on that day (a plan step counts from it) */
     /* review SAFETY-04: a day counts only when she ticked an item that was due then; today, only once nothing is left due */
     markedOn: (iso) => { if (!S.canSave()) return false; const st = store(); const pl = planOf(st); const ks = Object.keys(pl.done).filter((k) => pl.done[k] === iso); const wi = weekInfo(); if (!ks.length || !wi) return false;
-      if (iso === S.toISO(S.today())) return !planStatus(st, wi).some((x) => x.code === 'now' && !x.it.pmsma);   /* review FIXES-05: PMSMA is 'now' for months, as due() knows */
+      if (iso === S.toISO(S.today())) return !planStatus(st, wi).some((x) => x.code === 'now' && !x.it.pmsma && TAB_IDS.indexOf(x.it.id) < 0);   /* review FIXES-05: PMSMA is 'now' for months, as due() knows; Version 39.38: her tablets too */
       const wAt = wkOf(wi, iso);   /* review FIXES-05: that day's own pregnancy week */ return ks.some((k) => { const it = PLAN.find((x) => x.id === k); return !!it && wAt >= it.w[0] && wAt <= it.w[1]; }); },
-    due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma).map((x) => ({ id: x.it.id, name: piText(x.it.id) })); } };
+    due: () => { const wi = weekInfo(); if (!wi || !S.canSave() || wi.days > 294 || wi.w < W_MIN || wi.w > W_MAX) return []; return planStatus(store(), wi).filter((x) => x.code === 'now' && !x.it.pmsma && TAB_IDS.indexOf(x.it.id) < 0).map((x) => ({ id: x.it.id, name: piText(x.it.id) })); } };
 
   function summary() {
     const st = store(); const wi = weekInfo(); const L = [];
@@ -1098,7 +1104,7 @@
     if (s) L.push(TF('sum_sug', { k: T(s.k === 'dipsi' ? 'sug_d_short' : 'sug_f_short'), v: s.v, d: fdy(s.d) }));
     if (h) L.push(TF('sum_hb', { v: num1(h.v), d: fdy(h.d) }));
     if (Object.keys(st.tabs).length) L.push(TF('sum_tab', { a: tabDays(st, 'ifa', 7), b: tabDays(st, 'ca', 7) }));
-    const due = dueNames(); const dueLine = due.length ? TF('sum_due', { x: due.join(', ') }) : null; if (dueLine) L.push(dueLine);
+    const due = dueNames(true); const dueLine = due.length ? TF('sum_due', { x: due.join(', ') }) : null; if (dueLine) L.push(dueLine);
     if (st.mcp.bg || st.mcp.edd) L.push(TF('sum_rch', { b: st.mcp.bg ? st.mcp.bg + (st.mcp.rh || '') : T('mcp_none'), e: st.mcp.edd ? fdy(st.mcp.edd) : T('mcp_none') }));
     /* the doctor's summary (Version 33) leaves out what's due now, which mixes scheme money with check-ups */
     return L.length ? [{ title: T('sum_h'), lines: L, doctorLines: L.filter((l) => l !== dueLine) }] : [];
