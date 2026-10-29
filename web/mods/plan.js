@@ -146,7 +146,7 @@
      its versions, the pregnancy plan's iron tablets (one neutral line on a shared phone); a plan not started yet is read by
      the version it will start */
   const footT = (x) => { const pk = packOf(x) || (x && x.pack); const v2 = pk === 'ttc' && ((x && x.pv) || (specOf('ttc') || {}).ver || 1) >= 2;
-    return t(!v2 && pk !== 'preg' ? 'plan_foot' : (disc() ? 'plan_foot_d' : (v2 ? 'plan_foot_ttc' : 'plan_foot_preg'))); };
+    return t(!v2 && pk !== 'preg' ? 'plan_foot' : (disc() ? 'plan_foot_d' : (v2 ? 'plan_foot_ttc' : (((x && x.goalKey) || '') === 'iron' ? 'plan_foot_preg' : 'plan_foot_d')))); };   /* Version 39.36: iron tablets only beside her tablet step */
   const bsetOf = (d) => { const b0 = bmiNow(d); const b = b0 != null ? b0 : (ikOf(d).bmi || null); if (b != null && b < 18.5) return 'uw'; return ikOf(d).bset === 'mix' ? 'mix' : 'std'; };
   const habList = (d) => (babyD(d) ? BSETS[bsetOf(d)].map((id, i) => Object.assign({}, habOf(id), { wk: 1 + 2 * i })) : HABITS);
   const habitsOn = (wk, d) => habList(d).filter((h) => h.wk <= Math.max(1, Math.min(wk, N)));
@@ -535,7 +535,7 @@
     const one = fold && weeksOne(d);   /* Version 39.22: her 12 weeks and what consistency brings, one card */
     v.innerHTML = hd + '<p class="small pl-clock">' + esc(disc() || !gk ? clock : tf('plan_goal_l', { g: t('plan_gv_' + gk), w: clock })) + (fold && acts.length ? ' · <button type="button" class="linkbtn pl-howlink" id="pl-howlink">' + esc(t('plan_how_link')) + '</button>' : '') + '</p>' +
       pendBanner() + pauseBanner(d) + perBanner(d) + rhythmCard(d, acts, fold) + stepsCard(d, acts, fold) + babyCard(d) + weekCard(d, fold) + (fold ? '' : gardenRow()) + reviewCard(d) + (one ? weeksCard(d) : mcRow(d) + consCard(d, fold) + pathHtml(d, fold)) +
-      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + '<p class="footnote">' + esc(footT(d)) + '</p>';
+      tilesHtml(d, sp.tiles) + (packOf(d) === 'preg' && !pregV2(d) && !disc() ? '<p class="small pl-preg-moves">' + esc(t('plan_preg_moves')) + '</p>' : '') + pastCard(d) + careTeam(fold) + '<p class="footnote">' + esc(footT(d)) + '</p>';
     S.wire(v); wireReview(v); wirePause(v); wireSteps(v, acts);
     v.querySelectorAll('[data-pl-fold]').forEach((dt) => dt.addEventListener('toggle', () => { S.mem.plFold = S.mem.plFold || {}; S.mem.plFold[dt.dataset.plFold] = dt.open; }));   /* Version 39.19 */
     const fq = v.querySelector('#pl-fast-tog'); if (fq) fq.addEventListener('click', () => { const dd = D(); setFast(dd, todayISO(), !fastOn(dd)); remSync(dd); S.save(); S.render(); });   /* Version 39.9 */
@@ -1636,11 +1636,14 @@
   /* Version 39.4: the screens come from her plan's spec (intake.screens, intake.when): her goal; its own questions; her day;
      when she can move (plans with moves); her body (Version 39.3: only for a weight goal; My body takes it any time); and,
      Version 37.1, what she told Sakhi, to check before her plan is made */
+  /* Version 39.36 (Mohit's walkthrough, 29 Oct): "Your day" only when it asks something My food doesn't already hold */
+  const daySkip = (a) => { if (a.dayShow || !(S.food && S.food.known && S.food.known())) return false; const q = qsOf('day', a); return q.length > 0 && q.every((k) => k === 'food' || k === 'milk'); };
+  const dayFill = (a) => { if (a.food == null && S.food && S.food.known && S.food.known()) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; } };
   function screensOf(a) {
     const pk = packFor(a.goal, a.stage); const sp = pk ? specOf(pk) : null; const out = ['goal']; if (!sp) return out;
     const ik = sp.intake || {}; const c = { goal: a.goal, day: todayISO() };
     (ik.screens || []).forEach((x) => { if (progIf(x.if, c)) out.push(x.id); });
-    out.push('day'); if (ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) out.push('when');
+    if (!daySkip(a)) out.push('day'); if (ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) out.push('when');
     if (a.goal === 'weight') out.push('body'); out.push('sum'); return out;
   }
   /* her goals now: no "heavy periods" once her periods have stopped (bleeding after that needs a doctor, not a plan) */
@@ -1690,7 +1693,7 @@
     if (l.indexOf('psafe') >= 0) rows.push([t('plan_ps_h'), t(a.pnow === 'y' ? 'plan_ps_t_now' : 'plan_ps_t_' + psTier(a.pflags, gwAt(todayISO()))), 'psafe']);   /* Version 39.34 */
     const sym = ['cyc', 'pain', 'heavy', 'pms'].find((x) => l.indexOf(x) >= 0); const now = nowLineOf(ikOfAnswers(a), pk);
     if (sym && now) rows.push([t('plan_in_sum_now'), now, sym]);
-    if (l.indexOf('day') >= 0) {
+    if (l.indexOf('day') >= 0 || daySkip(a)) { dayFill(a);   /* Version 39.36 */
       const q = qsOf('day', a); const bedK = a.bed ? 'plan_bd_' + (a.bed === 'late' ? 'late' : a.bed.slice(1)) : null;
       const bits = [q.indexOf('act') >= 0 && a.act != null ? t('plan_lv_' + a.act) : null, q.indexOf('food') >= 0 && a.food ? t('plan_f_' + a.food) : null, bedK ? t(bedK) : null, a.work ? t('plan_wk_' + a.work) : null].filter(Boolean);
       if (bits.length) rows.push([t('plan_in_day_h'), bits.join(' · '), 'day']);
@@ -1762,7 +1765,7 @@
     ctx.back(prev);
     v.querySelectorAll('[data-pl-goal]').forEach((b) => b.addEventListener('click', () => { a.goal = b.dataset.plGoal; if (a.goal === 'track') { ctx.done(); return; } a.iq = 0; next(); }));
     v.querySelectorAll('[data-pl-when]').forEach((b) => b.addEventListener('click', () => { a.when = b.dataset.plWhen; next(); }));
-    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
+    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { if (b.dataset.plEdit === 'day') a.dayShow = true; const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
     const mk = v.querySelector('#pl-in-make'); if (mk) mk.addEventListener('click', () => ctx.done());
     v.querySelectorAll('[data-pl-bf]').forEach((c) => c.addEventListener('change', () => { const k = c.dataset.plBf; a.bflags = (a.bflags || []).filter((x) => x !== k); if (c.checked) a.bflags.push(k); }));   /* Version 39.32 */
     if (id === 'psafe') wirePsafe(v, a, gwAt(todayISO()));   /* Version 39.34 */
@@ -1842,7 +1845,7 @@
   const telRow = (ns) => '<div class="row wrap">' + ns.map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>';
   const lvNow = () => (S.access && S.access.lv ? S.access.lv('now') : null);
   const nowH = () => (lvNow() ? tx(lvNow().label) : t('call_b') + ' 112');
-  const psNowCard = () => '<div class="card dark pl-ps-go" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3>' + (lvNow() ? '<p class="small">' + esc(tx(lvNow().where)) + '</p>' : '') + telRow(['112', '108', '102']) + '<p class="small">' + esc(t('plan_ps_now_p')) + '</p></div>';
+  const psNowCard = () => '<div class="card dark pl-urg pl-ps-go" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3>' + (lvNow() ? '<p class="small">' + esc(tx(lvNow().where)) + '</p>' : '') + telRow(['112', '108', '102']) + '<p class="small">' + esc(t('plan_ps_now_p')) + '</p></div>';
   const psTierCard = (fl, gw) => { const tr = psTier(fl, gw); return '<div class="card ' + (tr === 'green' ? 'ok' : 'warn') + ' pl-ps-tier" data-tier="' + tr + '"><h3>' + esc(t('plan_ps_t_' + tr)) + '</h3><p class="small">' + esc(t('plan_ps_t_' + tr + '_p')) + '</p></div>'; };
   function psafeHtml(a, gw) {
     const nb = (k, key) => '<button type="button" class="chip' + (a.pnow === k ? ' on' : '') + '" data-pl-pnow="' + k + '" aria-pressed="' + (a.pnow === k) + '">' + esc(t(key)) + '</button>';
@@ -1864,23 +1867,27 @@
   const psafeDue = (dd) => { const ik = ikOf(dd); if (ik.pnow && ik.pnow < todayISO()) return 'now'; const gw = gwAt(todayISO()); const w0 = ik.psafeW == null ? gw : ik.psafeW;
     return gw != null && w0 != null && ((gw >= 14 && w0 < 14) || (gw >= 28 && w0 < 28)) ? 'wk' : ''; };
   const psLine = (d) => { const ik = ikOf(d); return t(ik.pnow ? 'plan_ps_t_now' : 'plan_ps_t_' + psTier(ik.pflags, gwAt(todayISO()))); };
-  const psSetRow = (d) => (pregV2(d) ? '<div class="list pl-ps-set"><button type="button" class="item" data-go="plan-psafe"><span class="body"><strong>' + esc(t('plan_ps_set')) + '</strong><span>' + esc(psLine(d)) + '</span></span></button></div>' : '');
+  const psSetRow = (d) => (pregV2(d) ? '<div class="list pl-ps-set"><button type="button" class="item" data-go="plan-psafe"><span class="body"><strong>' + esc(t('plan_ps_set')) + '</strong><span>' + esc(psLine(d)) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : '');   /* Version 39.36: a › as the rows beside it */
   /* her answers again, for the plan she is on (nothing restarts) */
   function renderPsafe(v) {
     const d0 = raw(); if (!planOn() || !packOf(d0) || !pregV2(d0)) { renderMyPlan(v); return; }
     const ik = ikOf(D()); const gw = gwAt(todayISO());
     const a = S.mem.planPs = S.mem.planPs && S.mem.planPs.day === todayISO() ? S.mem.planPs : { day: todayISO(), pflags: (ik.pflags || []).slice(), pnow: null };
-    v.innerHTML = head('plan_ps_h', 'home') + '<div class="stack ob" style="gap:12px"><p class="small">' + esc(t('plan_ps_p')) + '</p>' + psafeHtml(a, gw) + '<button type="button" class="btn primary block" id="pl-ps-save">' + esc(t('save')) + '</button></div>';
+    v.innerHTML = head('plan_ps_set', 'home') + '<div class="stack ob" style="gap:12px"><p class="small">' + esc(t('plan_ps_p')) + '</p>' + psafeHtml(a, gw) + '<button type="button" class="btn primary block" id="pl-ps-save">' + esc(t('save')) + '</button></div>';
     S.wire(v); wirePsafe(v, a, gw);
     v.querySelector('#pl-ps-save').addEventListener('click', () => { const dd = D(); const fl = a.pflags.filter((k) => PSAFE.indexOf(k) >= 0);
       dd.intake = Object.assign({}, ikOf(dd), { pflags: fl, psafeW: gw, pnow: a.pnow === 'y' ? todayISO() : null });
       if (S.preg && S.preg.setRisks) S.preg.setRisks(fl);
       S.mem.planPs = null; S.save(); S.toast(t('saved')); S.setHash('home'); });
   }
+  /* Version 39.36: the reveal's "What happens when", by her week: the pelvic floor (day 4, or week 13), the checks of her
+     answers still ahead (14 and 28 weeks), her baby's movements in the check-in (from 28 weeks) */
+  const pregRvRows = () => { const gw = gwAt(todayISO()); if (gw == null) return []; const r = [gw >= 13 ? 'plan_rv_pf' : 'plan_rv_pf13'];
+    if (gw < 14) r.push('plan_rv_ps14'); else if (gw < 28) r.push('plan_rv_ps28'); r.push(gw >= 28 ? 'plan_rv_mv' : 'plan_rv_mv28'); return r; };
   /* the check-in from 28 weeks: her baby's movements today, then sleeping on her side tonight */
   const MV = ['usual', 'less', 'unsure', 'none'];
   const mvAsk = (d) => pregV2(d) && !disc() && (gwAt(todayISO()) || 0) >= 28;
-  const mvOut = (k) => (k === 'none' ? '<div class="card dark pl-mv-out pl-mv-now" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3><p class="small">' + esc(t('pregtools_k_now')) + '</p>' + telRow(['112', '108', '102']) + '</div>'
+  const mvOut = (k) => (k === 'none' ? '<div class="card dark pl-urg pl-mv-out pl-mv-now" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3><p class="small">' + esc(t('pregtools_k_now')) + '</p>' + telRow(['112', '108', '102']) + '</div>'
     : (k === 'less' || k === 'unsure' ? '<div class="card warn pl-mv-out pl-mv-today"><p class="small"><strong>' + esc(t('pregtools_k_today')) + '</strong></p>' + telRow(['108', '112']) + '</div>' : ''));
   const mvQ = (m) => '<div class="card pl-ci-mv"><span class="eyebrow">' + esc(t('plan_mv_q')) + '</span><p class="small">' + esc(t('plan_mv_p')) + '</p><div class="chips" role="group" aria-label="' + esc(t('plan_mv_q')) + '">' +
     MV.map((k) => '<button type="button" class="chip' + (m.mv === k ? ' on' : '') + '" data-ci-mv="' + k + '" aria-pressed="' + (m.mv === k) + '">' + esc(t('plan_mv_' + k)) + '</button>').join('') + '</div><div id="pl-ci-mvout">' + mvOut(m.mv) + '</div></div>';
@@ -1891,6 +1898,7 @@
   const ikOfAnswers = (a) => { const ik = ikBase(a); if ((a.stage || 'cycle') === 'ttc') Object.assign(ik, babyOf(a)); if ((a.stage || 'cycle') === 'preg') Object.assign(ik, pregOf(a)); return ik; };   /* Version 39.34: her safety answers */
   function startFromIntake(a0) {
     const a = a0 || {}; const st = a.stage || 'cycle'; const pk = packFor(a.goal, st);
+    dayFill(a);   /* Version 39.36: My food's answer when "Your day" wasn't asked */
     if (S.food && S.canSave() && a.food) S.food.set(a.food, a.milk !== 'n');   /* Version 39.3: how she eats, for every food screen */
     const ik = ikOfAnswers(Object.assign({}, a, { stage: st }));
     if (!pk || !on() || !S.canSave()) { S.state.intake = ik; return null; }   /* "Just keeping track": her answers, no plan */
@@ -2245,7 +2253,7 @@
         (disc() ? '<p class="small">' + esc(t('plan_fb_any')) + '</p>' : '') +
         (pk === 'cycle' ? '<p class="small">' + esc(tf('plan_rv_week', { m: target(dd, 1), n: daySuggest(dd, 1) })) + '</p><p class="small">' + esc(t('plan_rv_also')) + '</p>' : '') + nextB;
     } else if (id === 'days') {
-      const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'] : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12'];
+      const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'].concat(pregV2(dd) && !disc() ? pregRvRows() : []) : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12'];   /* Version 39.36: what comes later in her pregnancy */
       body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(st.at) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
         '<div class="card soft"><p>' + esc(t('plan_rv_miss')) + '</p></div>' +
         (src ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(src) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') +
@@ -3290,6 +3298,9 @@
         plan_feel_hard_tip: 'Do Gentle start for a week, and go slowly. If a move hurts, skip it.', plan_feel_thanks: 'Thank you. Keep going at this pace.',
         plan_p_again: 'Do it again', plan_p_back: 'Back to my plan',
         plan_prog_h: 'My progress', plan_prog_p: 'From what you logged, compared with before you started.', plan_prog_p0: 'From what you logged.',
+        /* Version 39.36: the reveal's rows for My pregnancy (interface words) */
+        plan_rv_pf: 'From day 4: your pelvic floor, 1 set a day', plan_rv_pf13: 'From week 13: your pelvic floor, 1 set a day', plan_rv_ps14: 'At 14 and 28 weeks: a quick check of your 2 safety answers', plan_rv_ps28: 'At 28 weeks: a quick check of your 2 safety answers', plan_rv_mv28: 'From 28 weeks: your baby’s movements, in “How did today go?”', plan_rv_mv: 'Each evening: your baby’s movements, in “How did today go?”',
+       
         /* Version 39.34: My pregnancy, safety first (new lines wait for doctor review; plan_mv_side and plan_fb_pf are verified lines, word for word) */
         plan_ps_h: 'Before you start', plan_ps_p: 'Two questions keep your plan safe for you. Your answers stay on this phone.', plan_ps_now_q: 'Right now, do you have any of these?', plan_ps_none: 'None of these', plan_ps_yes: 'Yes, one of these', plan_ps_now_p: 'No walk until you check your answers again; your other steps stay. Sakhi asks you tomorrow.', plan_ps_told_q: 'Has your doctor or ANM told you any of these?', plan_ps_told_q_doc: 'Has your doctor told you any of these?', plan_ps_rest: 'My doctor or ANM told me to rest, or not to exercise', plan_ps_rest_doc: 'My doctor told me to rest, or not to exercise', plan_ps_unsure: 'Not sure about any of these', plan_ps_unsure_p: 'Not sure? Tick it. Sakhi keeps your walk easy until your doctor says.', plan_ps_t_green: 'Your full plan', plan_ps_t_green_p: 'A walk at a pace you can talk, growing over the weeks, the pelvic floor from week 13, and the step for your goal.', plan_ps_t_amber: 'Easy walking, until your doctor says', plan_ps_t_amber_p: 'An easy 10-minute walk, the pelvic floor from week 13, and the step for your goal. At your next check-up, ask: “Is it fine for me to exercise?”', plan_ps_t_red: 'Gentle days', plan_ps_t_red_p: 'No walking target. The pelvic floor from week 13 and the step for your goal stay. Your doctor decides when you can do more.', plan_ps_t_now: 'No walk until you check your answers again', plan_ps_re_h: 'A quick check', plan_ps_re_p: 'Two questions, so your steps still fit you.', plan_ps_re_now: 'You told Sakhi about a sign that doesn’t wait. Before your next walk, check your answers.', plan_ps_re_go: 'Check my answers', plan_ps_re_same: 'Nothing has changed', plan_ps_set: 'My safety answers', plan_walk_easy: 'Easy: slow, at a pace you can talk. Stop if you feel dizzy.', plan_mv_q: 'Your baby’s movements today', plan_mv_p: 'Your baby’s own pattern, not a number.', plan_mv_usual: 'As usual', plan_mv_less: 'Less than usual', plan_mv_unsure: 'Not sure', plan_mv_none: 'Not felt any movement today', plan_mv_side_h: 'Tonight', plan_mv_side: 'From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and between your knees helps.', plan_pf_t: 'Pelvic floor · 1 set', plan_fb_pf: 'Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth.',
         plan_prog_none: 'Start your plan to see your progress here.',
@@ -3586,6 +3597,9 @@
         plan_feel_hard_tip: 'एक हफ़्ता “आसान शुरुआत” करें, और धीरे चलें। जिस व्यायाम से दर्द हो, उसे छोड़ दें।', plan_feel_thanks: 'शुक्रिया। इसी रफ़्तार से जारी रखें।',
         plan_p_again: 'फिर से करें', plan_p_back: 'मेरे प्लान पर वापस',
         plan_prog_h: 'मेरी प्रगति', plan_prog_p: 'आपने जो दर्ज किया उससे, शुरू करने से पहले की तुलना में।', plan_prog_p0: 'आपने जो दर्ज किया उससे।',
+        /* Version 39.36: the reveal's rows for My pregnancy (interface words) */
+        plan_rv_pf: 'चौथे दिन से: पेल्विक फ़्लोर, रोज़ 1 सेट', plan_rv_pf13: '13वें हफ़्ते से: पेल्विक फ़्लोर, रोज़ 1 सेट', plan_rv_ps14: '14 और 28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक छोटी-सी जाँच', plan_rv_ps28: '28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक छोटी-सी जाँच', plan_rv_mv28: '28 हफ़्ते से: “आज का दिन कैसा रहा?” में आपके बच्चे की हलचल', plan_rv_mv: 'हर शाम: “आज का दिन कैसा रहा?” में आपके बच्चे की हलचल',
+       
         /* Version 39.34: My pregnancy, safety first (new lines wait for doctor review; plan_mv_side and plan_fb_pf are verified lines, word for word) */
         plan_ps_h: 'शुरू करने से पहले', plan_ps_p: 'दो सवाल आपके प्लान को आपके लिए सुरक्षित रखते हैं। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ps_now_q: 'क्या अभी आपको इनमें से कुछ है?', plan_ps_none: 'इनमें से कुछ नहीं', plan_ps_yes: 'हाँ, इनमें से एक', plan_ps_now_p: 'जवाब दोबारा देखने तक टहलना नहीं; आपके बाक़ी कदम रहेंगे। सखी कल फिर पूछेगी।', plan_ps_told_q: 'क्या आपकी डॉक्टर या ANM ने आपको इनमें से कुछ बताया है?', plan_ps_told_q_doc: 'क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है?', plan_ps_rest: 'मेरी डॉक्टर या ANM ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_rest_doc: 'मेरी डॉक्टर ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_unsure: 'इनमें से किसी के बारे में पक्का नहीं पता', plan_ps_unsure_p: 'पक्का नहीं पता? इसे टिक करें। जब तक आपकी डॉक्टर न कहें, सखी आपका टहलना हल्का रखेगी।', plan_ps_t_green: 'आपका पूरा प्लान', plan_ps_t_green_p: 'इतनी रफ़्तार से टहलना कि आप बात कर सकें, जो हफ़्तों के साथ बढ़ेगा; 13वें हफ़्ते से पेल्विक फ़्लोर; और आपके लक्ष्य वाला कदम।', plan_ps_t_amber: 'हल्का टहलना, जब तक आपकी डॉक्टर न कहें', plan_ps_t_amber_p: '10 मिनट हल्का टहलना, 13वें हफ़्ते से पेल्विक फ़्लोर, और आपके लक्ष्य वाला कदम। अगली जाँच पर पूछें: “क्या मेरे लिए व्यायाम करना ठीक है?”', plan_ps_t_red: 'आराम के दिन', plan_ps_t_red_p: 'टहलने का कोई लक्ष्य नहीं। 13वें हफ़्ते से पेल्विक फ़्लोर और आपके लक्ष्य वाला कदम रहेंगे। आप कब ज़्यादा कर सकती हैं, यह आपकी डॉक्टर तय करेंगी।', plan_ps_t_now: 'जवाब दोबारा देखने तक टहलना नहीं', plan_ps_re_h: 'एक छोटी-सी जाँच', plan_ps_re_p: 'दो सवाल, ताकि आपके कदम अब भी आपके लिए ठीक रहें।', plan_ps_re_now: 'आपने सखी को एक ऐसे लक्षण के बारे में बताया जो इंतज़ार नहीं कर सकता। अगली बार टहलने से पहले अपने जवाब देख लें।', plan_ps_re_go: 'मेरे जवाब देखें', plan_ps_re_same: 'कुछ नहीं बदला', plan_ps_set: 'मेरे सुरक्षा वाले जवाब', plan_walk_easy: 'हल्की चाल: धीरे, इतनी कि आप बात कर सकें। चक्कर आए तो रुक जाएँ।', plan_mv_q: 'आज आपके बच्चे की हलचल', plan_mv_p: 'आपके बच्चे का अपना ढंग, कोई गिनती नहीं।', plan_mv_usual: 'हमेशा जैसी', plan_mv_less: 'आम दिनों से कम', plan_mv_unsure: 'पक्का नहीं पता', plan_mv_none: 'आज कोई हलचल महसूस नहीं हुई', plan_mv_side_h: 'आज रात', plan_mv_side: '28 हफ़्ते से करवट लेकर सोएँ, बाईं या दाईं। पेट के नीचे और घुटनों के बीच तकिया मदद करता है।', plan_pf_t: 'पेल्विक फ़्लोर · 1 सेट', plan_fb_pf: 'प्रेग्नेंसी में ये करने से आख़िरी महीनों में और डिलीवरी के बाद पेशाब लीक होने की संभावना कम होती है।',
         plan_prog_none: 'अपनी प्रगति यहाँ देखने के लिए अपना प्लान शुरू करें।',
@@ -3780,6 +3794,7 @@
     event: onLog,
     afterRender: (v, route) => { if (route !== 'plan-reveal' && route !== 'plan') stopAudio(); if (!/^plan-r-/.test(route || '')) { stopRun(); awake(false); } if (route !== 'plan-moves' && !/^plan-r-/.test(route || '')) stopAnim(); if (route !== 'plan-body') S.mem.planShow = false; if (route !== 'plan') S.mem.planHelp = null; if (route !== 'plan' && !/^plan-/.test(route || '')) { S.mem.discPick = false; S.mem.lossPick = false; } if (route !== 'plan-week') { S.mem.planWk = null; S.mem.planNudgeAsk = false; } if (route !== 'plan-check' && S.mem.planMc && S.mem.planMc.saved) S.mem.planMc = null; if (route !== 'home') { S.mem.planFam = null; S.mem.planFamEdit = false; } },   /* Version 39.12 */
     css: [
+      '.card.dark.pl-urg { background: var(--ink); color: var(--ink-text); } .card.dark.pl-urg h3, .card.dark.pl-urg p { color: var(--ink-text) !important; }',   /* Version 39.36 */
       '.pl-steps li.gone .pl-sdot { background: var(--line); border-color: var(--line); } .pl-steps li.gone strong { color: var(--muted); }',   /* Version 39.35: a part of her pregnancy that has passed, not a tick */
       '.pl-fig { width: 100%; height: auto; display: block; color: var(--accent); }',
       '.pl-fig polyline { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; } .pl-fig circle { fill: currentColor; }',
@@ -3911,7 +3926,7 @@
       '.pl-steps-card .pl-step { background: transparent; box-shadow: none; border-radius: 0; padding: 10px 0; } .pl-steps-card .pl-step + .pl-step { border-top: 1px solid var(--line); } .pl-steps-card .list { gap: 0; }',
       '.pl-step-sub { font-size: 13px; color: var(--muted); line-height: 1.35; } .pl-steps-f { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; } .pl-steps-f .pl-t-at { margin: 0; }',
       '.pl-st-play, .today-start.night { background: #2F2240; color: #FFFFFF; border-color: #2F2240; padding: 0 10px; gap: 4px; } .pl-st-play svg, .today-start.night svg { width: 14px; height: 14px; }',
-      '.pl-tiles4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .pl-tiles4 .pl-tile { justify-items: center; text-align: center; padding: 10px 4px; gap: 6px; min-height: 84px; align-content: center; } .pl-tiles4 .pl-tile strong { font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; } .pl-tiles4 .pl-tile .small { font-size: 12px; margin-top: -4px; }',
+      '.pl-tiles4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .pl-tiles4 .pl-tile { justify-items: center; text-align: center; padding: 10px 4px; gap: 6px; min-height: 84px; align-content: center; } .pl-tiles4 .pl-tile strong { font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; } .pl-tiles4 .pl-tile .small { font-size: 12px; margin-top: -4px; }',
       '.pl-wkc .pl-garden-in { border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; padding: 10px 0 0; background: transparent; } .pl-wp-link { display: inline-flex; align-items: center; gap: 2px; min-height: 0; padding: 0; } .pl-wp-link svg { width: 16px; height: 16px; }',
       '.pl-kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0; font-size: 14px; } .pl-kv dt { color: var(--muted); } .pl-kv dd { margin: 0; color: var(--fg); font-weight: 600; } .pl-wk-stage { margin: 0; } .pl-cons-in { display: grid; gap: 8px; margin-top: 8px; }',
       '.pl-night { background: linear-gradient(160deg, #2A1F45 0%, #1B1530 100%); color: #F4ECF6; } .pl-night h3 { color: #FFFFFF; margin: 0; } .pl-night .small { color: #D9CCE4; } .pl-night-h { gap: 10px; align-items: center; } .pl-night-i { width: 40px; height: 40px; border-radius: 20px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: rgba(242,167,203,0.16); color: #F2A7CB; } .pl-night-i svg { width: 22px; height: 22px; }',

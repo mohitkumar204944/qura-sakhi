@@ -183,7 +183,7 @@
     (LOCAL[o.region] || []).concat(MORE).forEach((x) => { if ((x[4] || '').indexOf(tagCh) < 0 || !ok(x, o) || (o.skip && o.skip.test(x[1]))) return; const n = name(x, o); if (seen[n]) return; seen[n] = 1; out.push(x); });
     return out;
   }
-  S.food = { table: { GROUPS: GROUPS, MORE: MORE, LESS: LESS, AVOID: AVOID, LOCAL: LOCAL }, pick: pick, diet: diet, set: set, ok: ok, name: name, simple: simple, types: TYPES.slice(), plate: PLATE, artOf: artOf, tile: tile, strip: strip, mark: mark };
+  S.food = { table: { GROUPS: GROUPS, MORE: MORE, LESS: LESS, AVOID: AVOID, LOCAL: LOCAL }, pick: pick, diet: diet, known: () => TYPES.indexOf((((S.state.mods || {}).food) || {}).type) >= 0, set: set, ok: ok, name: name, simple: simple, types: TYPES.slice(), plate: PLATE, artOf: artOf, tile: tile, strip: strip, mark: mark };
 
   S.register({
     open: ['food'],   /* review FOOD-06: My food opens without a diary too (it says what a diary adds) */

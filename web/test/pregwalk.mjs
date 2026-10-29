@@ -12,6 +12,10 @@
 //   7 "No, I marked it by mistake" brings back the plan she was on (its start, its answers, its check-in), and the mistaken
 //     pregnancy plan isn't kept as her last plan; "Yes, it ended" doesn't;
 //   8 Hindi at 360 px; 9 no page errors.
+// Version 39.36 (Mohit: "fix gaps 8 to 15 too"), checks g8 to g15: My plan's moves line only for version 1; the reveal names
+//   the pelvic floor, the checks of her answers and her baby's movements; "My safety answers" by its name, with a ›; the foot
+//   line's iron tablets only beside the tablet step; tile labels that hyphenate; a toast clear of a tour card; urgent cards in
+//   ink; no "Your day" when My food already holds it.
 // Usage: node test/pregwalk.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -221,6 +225,54 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   await stageTo(c, 'preg', { lmp: ago(60) }); await startPreg(c); await go(c, 'home'); await stageTo(c, 'ttc', { end: 'ended' });
   check('7 "Yes, it ended" (a loss): nothing is brought back', (await st(c)).mods.plan.pack !== 'ttc');
   await done(c);
+}
+
+/* ---------- Version 39.36: gaps 8 to 15 ---------- */
+{
+  const v2 = await open({ seed: withPlan(20, { intake: IK({ psafeW: 16 }) }, { situation: sit(16) }), hash: 'plan' });
+  const v1 = await open({ seed: withPlan(20, { pv: 1 }, { situation: sit(16) }), hash: 'plan' });
+  check('g8 the "start moves only after your doctor says" line: not beside her own answers (version 2), still on version 1', !(await has(v2, '#view .pl-preg-moves')) && (await has(v1, '#view .pl-preg-moves')));
+  const foot2 = await txt(v2, '#view .footnote');
+  check('g11 the foot line: no iron tablets beside a plan with no tablet step', foot2 === 'Everyday habits from national guidelines. Any other tablet, herb or medicine: your doctor decides.', foot2);
+  const ts = await v2.page.$eval('#view .pl-tiles4 .pl-tile strong', (e) => { const c = getComputedStyle(e); return c.overflowWrap + '|' + (c.hyphens || c.webkitHyphens); });
+  check('g12 a tile\'s label breaks between syllables (a hyphen) where it can, and never runs off the tile', ts === 'anywhere|auto', ts);
+  await done(v1);
+  await go(v2, 'plan-settings');
+  check('g10 the settings row opens like the rows beside it (a ›)', await has(v2, '.pl-ps-set .chev'));
+  await tap(v2, '.pl-ps-set [data-go="plan-psafe"]');
+  check('g10 the page is called "My safety answers"', /^My safety answers Two questions keep your plan safe for you\./.test(await view(v2)), (await view(v2)).slice(0, 80));
+  await tap(v2, '[data-pl-pnow="y"]');
+  const bg = await v2.page.$eval('.pl-ps-go', (e) => getComputedStyle(e).backgroundImage);
+  check('g14 the "Call 112 now" card in ink, not soft pink', bg === 'none' && (await v2.page.$eval('.pl-ps-go', (e) => e.classList.contains('pl-urg'))), bg);
+  await v2.page.evaluate(() => { document.body.insertAdjacentHTML('beforeend', '<div class="tour-pop" id="fake-tour" style="position:fixed;bottom:80px;left:0;right:0;height:200px"></div>'); window.Saathi.toast('Updated. Today now shows what fits you.'); });
+  const top = await v2.page.$eval('.toast', (e) => Math.round(e.getBoundingClientRect().top));
+  check('g13 while a tour card is open at the bottom, a toast shows at the top', top < 250, top);
+  await done(v2);
+  const ir = await open({ seed: withPlan(20, { goalKey: 'iron', intake: IK({ goal: 'iron', psafeW: 16 }) }, { situation: sit(16) }), hash: 'plan' });
+  check('g11 ... and her iron goal (her tablet step) keeps the iron tablets line', /the iron tablets your doctor prescribes in pregnancy/.test(await txt(ir, '#view .footnote')));
+  await done(ir);
+  const rvRows = async (w) => { const a = await open({ seed: { situation: sit(w) } }); await a.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(a.page, 300);
+    await go(a, 'plan-reveal'); for (let i = 0; i < 6 && !/What happens when/.test(await view(a)); i++) await tap(a, '#pl-rv-next');
+    const r = await a.page.$$eval('#view .pl-tl li', (xs) => xs.map((x) => x.textContent.trim())); await done(a); return r; };
+  const r10 = await rvRows(10), r30 = await rvRows(30);
+  check('g9 the reveal at 10 weeks: the weekly look back, the pelvic floor from week 13, the checks at 14 and 28 weeks, the movements from 28', r10.join(' | ') === 'Every week: a short look back at your week | From week 13: your pelvic floor, 1 set a day | At 14 and 28 weeks: a quick check of your 2 safety answers | From 28 weeks: your baby’s movements, in “How did today go?”', r10);
+  check('g9 ... and at 30 weeks: the pelvic floor from day 4, no checks left, the movements each evening', r30.join(' | ') === 'Every week: a short look back at your week | From day 4: your pelvic floor, 1 set a day | Each evening: your baby’s movements, in “How did today go?”', r30);
+  const fk = await open({ seed: { situation: sit(10), mods: { food: { type: 'egg', milk: true } } } });
+  const n3 = await fk.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }));
+  await fk.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(fk.page, 600); await tap(fk, '#pl-in-next');
+  const sv = await view(fk);
+  check('g15 My food holds how she eats: no "Your day" (3 screens), and the summary shows it with Change', n3 === 3 && /Here’s what you told Sakhi/.test(sv) && /Your day Eggs too Change/.test(sv), { n3, sv: sv.slice(0, 300) });
+  await tap(fk, '[data-pl-edit="day"]');
+  check('g15 Change opens "Your day"', /^Your day/.test(await view(fk)) && (await has(fk, '[data-pl-q="food:egg"].on')));
+  await done(fk);
+  const fk2 = await open({ seed: { situation: sit(10), mods: { food: { type: 'egg', milk: false } } } });
+  await fk2.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(fk2.page, 300);
+  const nx = (await st(fk2)).mods.plan.next || {};
+  check('g15 the plan uses My food\'s answer', nx.food === 'egg' && (nx.intake || {}).milk === 'n', { food: nx.food, milk: (nx.intake || {}).milk });
+  await done(fk2);
+  const nf = await open({ seed: { situation: sit(10) } });
+  check('g15 with no answer in My food, "Your day" asks (4 screens)', (await nf.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }))) === 4);
+  await done(nf);
 }
 
 /* ---------- 8 Hindi at 360 px ---------- */

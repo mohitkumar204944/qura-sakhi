@@ -5216,3 +5216,28 @@ section 19.35).
 - "Your day" asking food and milk again.
 
 **Tests:** `node test/pregwalk.mjs` (25 checks; 16 fail on 0.39.34's code).
+
+## 79. Version 39.36: the pregnancy walkthrough's gaps 8 to 15
+
+Mohit, 29 Oct: "fix gaps 8 to 15 too" (section 78's list).
+- **8:** My plan's "In pregnancy, start moves only after your doctor says it's OK for you" (`plan_preg_moves`) shows only on
+  version 1. On version 2 her safety answers decide her walk.
+- **9:** the reveal's "What happens when" for version 2 adds rows by her week (`pregRvRows`):
+  - the pelvic floor from day 4 (`plan_rv_pf`), or from week 13 if she is earlier (`plan_rv_pf13`);
+  - the checks of her answers still ahead: 14 and 28 weeks (`plan_rv_ps14`), or 28 only (`plan_rv_ps28`);
+  - her baby's movements in "How did today go?", from 28 weeks (`plan_rv_mv28`) or each evening (`plan_rv_mv`).
+  None of this shows on a shared phone.
+- **10:** the safety answers page is called "My safety answers" (`plan_ps_set`), and its settings row has a ›.
+- **11:** the foot line (`footT`) names "the iron tablets your doctor prescribes" (`plan_foot_preg`) only for her iron goal,
+  whose steps include her tablet. Any other pregnancy goal gets the neutral line (`plan_foot_d`).
+- **12:** the 4 tiles' labels break between syllables with a hyphen where they can (`hyphens: auto`). `overflow-wrap: anywhere`
+  stays, so a word with no break point never runs off the tile at 200% text.
+- **13:** while a tour card is open (`.tour-pop`), a toast shows at the top of the screen (`app.css`, `body:has(.tour-pop)`).
+- **14:** the plan's "Call 112 now" cards (the safety screen's and the check-in's no-movement card) are ink, as Explore's
+  urgent card on Home (`.card.dark.pl-urg`). Help's own card is unchanged.
+- **15:** "Your day" isn't asked when everything it asks (food and milk) is already in My food (`S.food.known`, `daySkip`). The
+  summary still shows her answer, with Change (`a.dayShow`), and the plan takes My food's answer (`dayFill`). Starting a
+  pregnancy plan is one screen and one tap shorter for her.
+
+**Tests:** `node test/pregwalk.mjs`, checks g8 to g15 (39 checks in all; 10 of the new ones fail on 0.39.35's code). baby.mjs
+18 now checks the iron tablets line on an iron-goal pregnancy plan; pregplan.mjs reads the page's new name.

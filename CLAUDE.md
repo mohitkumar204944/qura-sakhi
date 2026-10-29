@@ -244,7 +244,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the stage sheet's last period first, from her diary, with her week and due date;
     - one ask after a stage change, and her goal asked;
     - "marked by mistake" bringing back her plan.
-    Contract: MODULE_API section 78; wording: section 19.35 of the review.
+    Version 39.36 ("fix gaps 8 to 15 too"), checks g8 to g15:
+      - the moves line only on version 1;
+      - the reveal's later rows;
+      - "My safety answers" by name;
+      - the foot line's iron tablets only for the iron goal;
+      - tile labels that hyphenate;
+      - a toast clear of a tour card;
+      - urgent cards in ink;
+      - no "Your day" when My food holds it.
+    Contracts: MODULE_API sections 78 and 79; wording: sections 19.35 and 19.36 of the review.
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

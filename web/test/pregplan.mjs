@@ -178,7 +178,7 @@ async function startFromSummary(a) {
   check('3 the next day: "A quick check" before her next walk, with no "Nothing has changed"', nv === 'A quick check You told Sakhi about a sign that doesn’t wait. Before your next walk, check your answers. Check my answers' && !(await ids(n1)).includes('move'), nv);
   await shot(n1, 'quick-check-now');
   await tap(n1, '.pl-sl-psafe [data-go="plan-psafe"]');
-  check('3 Check my answers: the same 2 questions, her ticks kept', /^Before you start Two questions keep your plan safe for you\./.test(await view(n1)) && (await n1.page.evaluate(() => location.hash)) === '#plan-psafe');
+  check('3 Check my answers: the same 2 questions, her ticks kept', /^My safety answers Two questions keep your plan safe for you\./.test(await view(n1)) && (await n1.page.evaluate(() => location.hash)) === '#plan-psafe');
   await tap(n1, '[data-pl-pnow="n"]'); await tap(n1, '#pl-ps-save');
   const s1 = await st(n1);
   check('3 None of these, Save: her walk is back, the card gone, the week she answered in', !s1.mods.plan.intake.pnow && s1.mods.plan.intake.psafeW === 16 && (await ids(n1)).includes('move') && !(await has(n1, '.pl-sl-psafe')), s1.mods.plan.intake);
@@ -285,7 +285,7 @@ async function startFromSummary(a) {
   const h = await open({ w: 360, seed: withPlan(4, { intake: IK({ psafeW: 16, pflags: ['r_gdm'] }) }, { lang: 'hi', situation: sit(16) }), hash: 'plan-psafe' });
   await tap(h, '[data-pl-pnow="y"]');
   const hv = await view(h);
-  check('9 Hindi at 360 px: Before you start and the call card, no missing words, no side scroll', /^शुरू करने से पहले दो सवाल/.test(hv) && /क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है\?/.test(hv) && /हल्का टहलना, जब तक आपकी डॉक्टर न कहें/.test(hv) && !KEYS.test(hv) && (await noScroll(h)), hv.slice(0, 700));
+  check('9 Hindi at 360 px: Before you start and the call card, no missing words, no side scroll', /^मेरे सुरक्षा वाले जवाब दो सवाल/.test(hv) && /क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है\?/.test(hv) && /हल्का टहलना, जब तक आपकी डॉक्टर न कहें/.test(hv) && !KEYS.test(hv) && (await noScroll(h)), hv.slice(0, 700));
   await shot(h, 'hi-before-you-start');
   await done(h);
   const hc = await open({ w: 360, seed: withPlan(60, { intake: IK({ psafeW: 30 }) }, { lang: 'hi', situation: sit(30) }), hm: '21:00', hash: 'plan-checkin' });

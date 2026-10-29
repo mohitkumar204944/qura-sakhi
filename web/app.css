@@ -1263,3 +1263,5 @@ body.hi p.small, body.hi .card li, body.hi .food-tile .ft-n, body.hi .fs-it span
 .srch-urg .su-sign { font-size: 16px; color: var(--fg); font-weight: 500; }
 .srch-urg .su-btns { display: flex; flex-wrap: wrap; gap: 8px; }
 .srch-urg .su-btns .btn { flex: 1 1 140px; }
+/* Version 39.36 (Mohit's walkthrough, 29 Oct): while a tour card is open at the bottom, a toast shows at the top, never over it */
+body:has(.tour-pop) .toast { top: calc(env(safe-area-inset-top, 0px) + 76px); bottom: auto; }

@@ -2596,3 +2596,19 @@ From Mohit's walkthrough on his Flip5 (29 Oct). Interface words only; the health
     is logged in a pregnancy, with Call 112;
   - the kick page's 2 lines are unchanged, now with Call 112, 108 and 102.
 - **Questions for the doctor:** are 3 days right for that line on Today, and should spotting bring it up (it does)?
+
+### 19.36 Version 39.36: the pregnancy walkthrough's gaps 8 to 15 (MODULE_API section 79)
+
+Interface words describing the plan's own steps; nothing about health is new.
+- **New:** the reveal's rows for My pregnancy:
+  - "From day 4: your pelvic floor, 1 set a day" / "चौथे दिन से: पेल्विक फ़्लोर, रोज़ 1 सेट";
+  - "From week 13: your pelvic floor, 1 set a day" / "13वें हफ़्ते से: पेल्विक फ़्लोर, रोज़ 1 सेट";
+  - "At 14 and 28 weeks: a quick check of your 2 safety answers" / "14 और 28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक
+    छोटी-सी जाँच";
+  - "At 28 weeks: a quick check of your 2 safety answers" / "28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक छोटी-सी जाँच";
+  - "From 28 weeks: your baby’s movements, in “How did today go?”" / "28 हफ़्ते से: “आज का दिन कैसा रहा?” में आपके बच्चे की
+    हलचल";
+  - "Each evening: your baby’s movements, in “How did today go?”" / "हर शाम: “आज का दिन कैसा रहा?” में आपके बच्चे की हलचल".
+- **Moved, not new:** the neutral foot line ("Everyday habits from national guidelines. Any other tablet, herb or medicine:
+  your doctor decides.", section 19.33.1) now also shows for a pregnancy plan without the tablet step. "In pregnancy, start
+  moves only after your doctor says it’s OK for you" no longer shows beside version 2's safety answers.
