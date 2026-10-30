@@ -571,11 +571,13 @@
      Only about 2 in 100 women aged 30 to 49 have ever had cervical screening. A woman of 30 to 65 whose free 5-yearly
      check-ups (cervical screening, a breast exam by a health worker) have no date yet, or are due, sees one card on Home
      until she opens My check-ups (where a date or "never" starts the monthly reminder) or says later (60 days). Never in
-     pregnancy or in discreet mode. Her age alone decides; nothing reads her diary. */
+     pregnancy, in the 6 weeks after a birth (her own 6-week check comes first; Version 39.47), or in discreet mode. Her age
+     alone decides; nothing reads her diary. */
   const HOME_KEYS = ['cervix', 'cbe'];
   function homeTop() {
     if (!S.canSave()) return ''; const st0 = S.state;
     if ((st0.settings || {}).discreet || S.cycle.isPregnant() || (S.setupShows && S.setupShows('checkups'))) return '';   /* the setup card has it */
+    const born = (st0.situation || {}).deliveredOn; if (okDate(born) && S.diffDays(S.fromISO(born), S.today()) < 42) return '';   /* Version 39.47 */
     const age = ageNow(); if (age == null || age < 30 || age > 65) return '';
     const sn = ((st0.mods || {}).screen || {}).snooze; if (okDate(sn) && sn > iso(S.today())) return '';
     const due = HOME_KEYS.filter((k) => { const c = status(BY[k]).code; return c === 'add' || c === 'due'; });

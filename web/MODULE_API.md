@@ -5777,3 +5777,62 @@ Edge cases tried in the test browser, and what they found:
    - the grief page, which "Support after a loss" opens (one line there is about early pregnancy loss: for the psychologist).
 
 **Tests:** `node test/afterbirth.mjs` now has 87 checks, section 15 and section 8 for these. The full run passes on this tree.
+
+## 90. Version 39.47: the four-plan walk's gaps
+
+Mohit, 30 Oct: "Do a proper walkthrough on how all four plans built works, is there any gaps or bugs" (`test/fourplans-walk.mjs`:
+one woman per plan joins on a 360 × 800 phone and lives her plan; My PMOS plan to day 85, Getting ready to a positive test, My
+pregnancy from 10 weeks to "My baby is born", I had a baby to the first birthday), then "fix all 16". No new health wording: the
+new words are UI only, and two lines move (review section 19.47).
+1. **Her folic acid carries on into My pregnancy** (plan.js `ttcBefore`, `folicCarry`, `folicRun`, `S.plan.folicOn`; progs/v1.js
+   preg version 2's first step `ttc.folic` with `if: ['folic']`; preg.js check-up `folic` `auto`). "Your folic acid carries on to
+   12 weeks" said so, but once she started My pregnancy the tablet step and its 9 pm reminder went, and her check-ups said "Due
+   now: Folic acid". Now a pregnancy plan that follows Getting ready (its plan before this pregnancy, or the one it replaces)
+   keeps the tablet step first and its reminder until 12 weeks. Her check-ups count her tablet as started, from "Yes, move me
+   on" on, so "Due now" doesn't name it too. Today's draw syncs it (`remWords`), so it ends at 12 weeks without a tick. The
+   reveal says "Your 4 steps" for her (her tablet isn't new, so a new plan's 3 on day 1 isn't broken: it carries on).
+2. **A card leads Sakhi says on 3 days at most** (core `leadSlot`, `slotKey`, `slotKeep`; `prompts.slotLead`,
+   `prompts.slotAside`):
+   - one card she hadn't answered led for months: a doctor finding for 12 weeks, the 14-week quick check to 39 weeks, "Ready to
+     move a little more?" to the first birthday;
+   - now, after 3 days a card waits under "More from Sakhi" for 7 days while the next card leads, then comes back;
+   - her plan's own next card leads in that week (plan.js `aside`, read by `postDue` and `cardKind`): after a birth, her method
+     before sex starts again (it showed only on days 21 to 34);
+   - a card that keeps her safe always leads: her baby's danger signs, a BP check after high BP in pregnancy, her support after
+     a loss, a sign that doesn't wait (`pl-ps-now`), a positive test, her plan's change of stage, or `data-slot-keep`. Urgent
+     cards were never in the slot.
+3. **The evening reminder says what her evening is** (plan.js `REM_RC`, `remT`, `remWords`): to day 41 after a birth, "Your
+   recovery check · 1 minute", then "How did today go? 1 minute". A shared phone still sees "Reminder".
+4. **A late period said one way** (pregtest.js `whenOut`): from her diary, "When can I test?" counts from the end of her likely
+   range, as Today and Cycles do (the same day said 11 days there and 14 here). A date she types counts from that date.
+5. **After a birth, "Plan week {n} is done"** (`revH`), as a pregnancy's: her headline counts weeks from the birth.
+6. **The reveal says the Start card's time** (`rvAt`): "At 10 pm, Sakhi asks…" after a 9:15 pm walk, never a fixed 8 pm.
+7. **The check-in after her walk, never at its minute** (`ciAt`): in bed by 10 pm with a 9:15 pm walk, 9:30 pm. Before, both
+   rang at 9:15 pm.
+8. **Her Hb test waits for her visit** (`ttc.hb` `soft`), as "Due now" does: counted once done, never "Do it now" at 9 pm.
+9. **My plan's "Next week" never repeats this week** (`weeksCard`): Getting ready's parts and the light plans' lines span weeks.
+10. **One length for her recovery check:** 1 minute, as its page says (`plan_rv_d2p`, `plan_st_at_pp`; the reveal and the Start
+    card said 2).
+11. **The walk of her first 2 weeks opens no page** (progs/v1.js `pwalk` `go: 'plan'`): its "Why?" offered the recovery check form.
+12. **"Your baby was born today"** (`bornWhy`; "yesterday" on day 1), never "0 days ago".
+13. **A shared phone: each hidden step its own place** (`discNm`): "Your step 2", "Your step 4"; one alone keeps "Your plan for
+    today". Today, My plan and the check-in number them the same way.
+14. **"Your Sakhi" says where her plan starts** (core `ys_plan_up`): with her plan's Start above, "Your plan: start it above, or
+    later on Today", not "Your plan, after your first log".
+15. **Free check-ups wait until 6 weeks after a birth** (screen.js `homeTop`), as they wait in pregnancy: her own 6-week check comes
+    first. For the doctor to confirm (review 19.47).
+16. **The first 6 weeks' line on Today's after-birth card** (core `pp_p0`, `pp_p0b`, `pp_p1`):
+    - to day 20, the after-birth page's own healing line (its line without the baby after "My baby has died");
+    - from day 21, "Periods can come back any time, and you can get pregnant before the first one.";
+    - from day 43, the full line with "When bleeding starts again, log it here." Before, that showed while she was still
+      bleeding after the birth.
+    - For the doctor to confirm (review 19.47).
+
+**Tests:** `node test/fourwalk.mjs` (37 checks; on 0.39.46's code 27 fail, at least one for each of the 16). Updated for what
+changed on purpose:
+- minimal 2: in bed by 10 pm, the check-in 9:30 pm after her 9:15 pm walk;
+- afterbirth 1: "1 minute".
+
+`progs/baseline.json` re-records `preg@2` (her tablet's step) and `post@2` (the walk's page). Golden is re-recorded for 9: "Next
+week" isn't the same line again. The walk itself, `node test/fourplans-walk.mjs`, writes its screens and each woman's words to
+`test/shots/fourplans-walk/` (not pass/fail).

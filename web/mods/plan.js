@@ -212,7 +212,7 @@
   function prune(d) { const keys = Object.keys(d.log); if (keys.length <= 400) return; keys.sort().slice(0, keys.length - 400).forEach((k) => { delete d.log[k]; }); }
   function addMin(d, n) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.min = S.clamp((x.min || 0) + n, 0, 600); prune(d); remSync(d); }
   function setHabit(d, id, val) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.plate = x.plate || {}; x.plate[id] = !!val; }
-  const remSync = (d) => { nudgeSync(d); windSync(d); folicSync(d); const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = recCi(d) ? recDone(todayISO()) : !!(x.ci || x.rest || allDoneToday(d)); S.reminders.upsert({ id: 'plan', doneOn: ok ? todayISO() : null }, { quiet: true }); };   /* Version 39.46: to day 41 her recovery check is her check-in */   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
+  const remSync = (d) => { nudgeSync(d); windSync(d); folicSync(d); const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = recCi(d) ? recDone(todayISO()) : !!(x.ci || x.rest || allDoneToday(d)); const tt = remT(d); S.reminders.upsert(Object.assign({ id: 'plan', doneOn: ok ? todayISO() : null }, r.title && r.title.en === tt.en ? {} : { title: tt }), { quiet: true }); };   /* Version 39.47: its words follow her evening */   /* Version 39.46: to day 41 her recovery check is her check-in */   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
   /* a pregnancy plan's reminder ends two weeks after her due date, in case nobody tells Sakhi the baby came */
   /* Version 39.6: a kept plan's reminder ends at month 12. Version 39.27 (R03): one that carries on rings past week 12, to 4 weeks
      after the last day she opened Sakhi (her plan's year at most), so it never rings on for months she isn't using it */
@@ -586,7 +586,7 @@
     if (!acts.length) return ''; const rest = isRest(d); const done = acts.filter((a) => a.state === 'd').length; const part = acts.filter((a) => a.state === 'p').length; const ci = ciDone(d); const due = ciDueNow(d, acts); const req = held(acts); const all = done === req.length;   /* Version 39.37 */
     const row = (a, i) => { const ok = a.state === 'd'; const tick = TICK.indexOf(a.kind) >= 0 && !rest; const sb = /^plan-r-/.test(a.go || '') && (a.kind === 'routine' || (a.kind === 'minutes' && !!a.r)); const pl = !!a.play && !ok && !rest;   /* Version 39.22: her wind-down plays where the tick goes */
       const rtB = a.kind === 'routine' && !!a.r && sb && !ok;   /* Version 39.43: as Today's row, its name and its minutes on the play button */
-      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : (rtB && !disc() ? rName(a.r) : a.title); const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
+      const nm = disc() && (a.priv || a.kind === 'minutes') ? discNm(a, acts) : (rtB && !disc() ? rName(a.r) : a.title); const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
       const sub = (fold || a.play) && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.24: week 1 says what her wind-down plays */   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
       const tk = sb && !ok ? '<button type="button" class="btn sm pl-st-start" data-pl-start="' + i + '">' + (rtB ? S.I.play.replace('<svg', '<svg aria-hidden="true"') + esc(tf('plan_min_n', { n: routineMins(a.r, d) })) : esc(t('plan_start_b'))) + '</button>'
         : (pl ? '<button type="button" class="btn sm pl-st-play" data-pl-play="' + i + '">' + PLAY_SVG + esc(tf('calm_min', { n: a.playMin })) + '</button>'
@@ -687,7 +687,12 @@
   }
   /* Version 37.2: it rings in the evening and opens the check-in (NOTIF_GO.plan), so it says what it is for */
   const REM_T = L('How did today go? 1 minute', 'आज का दिन कैसा रहा? 1 मिनट');
-  function remOnNow(d, quiet) { const at = ciAt(d); d.ciSet = at; S.reminders.upsert({ id: 'plan', mod: 'plan', title: REM_T, start: d.start && d.start > todayISO() ? d.start : todayISO(), until: remEnd(d), every: 1, time: at, on: true, doneOn: null }, quiet ? { quiet: true } : undefined); remSync(d); }
+  /* Version 39.47 (Mohit's four-plan walk): to day 41 after a birth her evening is her recovery check, and the phone says so */
+  const REM_RC = L('Your recovery check · 1 minute', 'आपकी रिकवरी जाँच · 1 मिनट');
+  const remT = (d) => (d && recCi(d) ? REM_RC : REM_T);
+  /* only what changed (no reminder is touched on a day nothing changes): her folic acid to 12 weeks, and the evening's words */
+  const remWords = (d) => { try { folicSync(d); const r = S.reminders.get('plan'); const tt = remT(d); if (r && r.title && r.title.en !== tt.en) S.reminders.upsert({ id: 'plan', title: tt }, { quiet: true }); } catch (e) { /* a reminder that can't be read never stops Today */ } };
+  function remOnNow(d, quiet) { const at = ciAt(d); d.ciSet = at; S.reminders.upsert({ id: 'plan', mod: 'plan', title: remT(d), start: d.start && d.start > todayISO() ? d.start : todayISO(), until: remEnd(d), every: 1, time: at, on: true, doneOn: null }, quiet ? { quiet: true } : undefined); remSync(d); }
 
   /* the weekly look-back: energy, what got in the way, and one tip for the next week (behavioural strategies, rec 3.2) */
   const BARS = ['time', 'tired', 'pain', 'family', 'out', 'none'];
@@ -701,7 +706,12 @@
     const id = Object.keys(n).sort((a, b) => n[b] - n[a])[0]; return id && n[id] >= 2 ? { t: tt[id], n: n[id] } : null;
   }
   /* Version 39.41 (Mohit's three-plan walk): in a pregnancy the look back says "Plan week {n}", never a week that reads as her pregnancy's */
-  const revH = (d, k) => tf(packOf(d) === 'preg' ? 'plan_rev_hp' : 'plan_rev_h', { n: k });
+  const revH = (d, k) => tf(packOf(d) === 'preg' || postV2(d) ? 'plan_rev_hp' : 'plan_rev_h', { n: k });   /* Version 39.47: after a birth too */
+  /* Version 39.47 (Mohit's four-plan walk): "Your baby was born today", never "0 days ago" */
+  const bornWhy = (n) => (n <= 0 ? t('plan_why_birth0') : (n === 1 ? t('plan_why_birth1') : tf('plan_why_birth', { n: n })));
+  /* Version 39.47: on a shared phone each hidden step says its place on her list ("Your step 2"), so two of them never read the
+     same; one alone keeps "Your plan for today". The count is the same everywhere: her private steps and her minutes */
+  const discNm = (a, acts) => (acts.filter((x) => x.priv || x.kind === 'minutes').length > 1 && acts.indexOf(a) >= 0 ? tf('plan_today_dn', { n: acts.indexOf(a) + 1 }) : t('plan_today_d'));
   function reviewCard(d, onToday, mini) {
     const wk = weekNo(d); const k = wk - 1; const pw = d.keep ? keepUntil(d) : (planWeeks(d) || 999); if (k < 1 || k > pw) return ''; const w = d.weeks[k] || {};
     if (d.keep && k >= keepWeekly(d) && k % 4 !== 0) return '';   /* Version 39.6: after month 4, one look-back a month */
@@ -1222,7 +1232,7 @@
       const rt = a.kind === 'routine' && a.r && !disc();   /* a routine: its name, and its minutes in the line under it (so the row stays one line at 360 px) */
       /* Version 39.41 (Mohit's three-plan walk): with Start, its minutes go on the button (\u25b6 8 min, as the wind-down step's), so the line keeps when and "Why?" */
       const rtMin = rt ? tf('plan_min_n', { n: routineMins(a.r, dd) }) : ''; const rtBtn = rt && sb && !ok;
-      const nm = disc() && (a.priv || a.kind === 'minutes') ? t('plan_today_d') : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : (a.titleT || a.title)));   /* Version 39.22: Today keeps the short bedtime name; tonight's session is its line */
+      const nm = disc() && (a.priv || a.kind === 'minutes') ? discNm(a, acts) : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : (a.titleT || a.title)));   /* Version 39.22: Today keeps the short bedtime name; tonight's session is its line */
       const sub0 = disc() && a.priv ? '' : (rt ? (YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') + (rtBtn ? '' : ' · ') : '') + (rtBtn ? '' : rtMin) :   /* Version 39.22: when first, so a cut line keeps it */ (a.id === 'fast' && !fastCare() ? '' : (a.subT || a.sub)));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
       return { id: ids[a.id] || 'plan-' + a.id, order: 25 + i, plan: true, icon: a.icon, hue: a.hue, title: nm,
         sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a.state === 'p' ? t('plan_t_part') : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : sub0)),
@@ -1338,7 +1348,7 @@
     add({ id: 'journey-iron', go: 'journey-iron', t: t('journey_iron_t'), s: t('journey_iron_s'), dur: t('plan_d_21d'), icon: S.icon('drop'), hue: 'rose', fit: jOn('iron'), active: jOn('iron'),   /* Version 39.2: only while she is on it */
       pts: [pt(s.heavy >= 2, 4, hv), pt(s.heavy === 1, 3, hv), pt(s.ciHeavy >= 1, 3, t('plan_why_ciheavy')), gl('heavy', 3), gl('iron', 2), pt(s.tired >= 5, 2, tf('plan_why_tired', { n: s.tired }))] });
     add({ id: 'iron', go: 'iron', tile: true, dur: t('plan_d_daily'), icon: S.icon('pill'), hue: 'rose', fit: true,
-      pts: [pt(preg, 4, t('plan_why_preg')), pt(post && s.birth < 180, 3, tf('plan_why_birth', { n: s.birth })), gl('iron', 3)] });
+      pts: [pt(preg, 4, t('plan_why_preg')), pt(post && s.birth < 180, 3, bornWhy(s.birth)), gl('iron', 3)] });
     add({ id: 'relief-cramps', go: 'relief-cramps', t: t('relief_cramps_t'), s: '', dur: t('plan_d_3m'), icon: S.icon('leaf'), hue: 'rose', fit: !preg,
       pts: [pt(s.pain >= 2, 4, pn), pt(s.pain === 1, 2, pn), pt(s.cramps >= 3, 3, tf('plan_why_cramps', { n: s.cramps })), gl('pain', 3)] });
     add({ id: 'relief-calm', go: 'relief-calm', t: t('relief_calm_t'), s: '', dur: t('plan_d_3m'), icon: S.icon('sparkle'), hue: 'sky', fit: true,
@@ -1354,7 +1364,7 @@
       pts: [gl('bones', 3), pt(st === 'meno', 1, mid)] });
     add({ id: 'plan-moves', go: 'plan-moves', t: t('plan_moves_h'), s: t('plan_i_move_s'), icon: ICO.move, hue: 'purple', fit: moveOk && !s.pcos, pts: [gl('weight', 3), gl('food', 1)] });
     add({ id: 'plan-plate', go: 'plan-plate', t: t('plan_plate_h'), s: t('plan_i_eat_s'), icon: ICO.plate, hue: 'green', fit: !preg && !s.pcos, pts: [gl('food', 3), gl('weight', 3)] });
-    add({ id: 'post-recovery', go: 'post-recovery', tile: true, hue: 'rose', fit: post, pts: [pt(early, 4, tf('plan_why_birth', { n: s.birth })), gl('recovery', 4)] });
+    add({ id: 'post-recovery', go: 'post-recovery', tile: true, hue: 'rose', fit: post, pts: [pt(early, 4, bornWhy(s.birth)), gl('recovery', 4)] });
     add({ id: 'post-pelvic', go: 'post-pelvic', tile: true, hue: 'plum', fit: post, pts: [pt(true, 3, t('plan_why_post')), gl('pelvic', 4)] });
     if (!died()) add({ id: 'post-feed', go: 'post-feed', tile: true, hue: 'sky', fit: post, pts: [gl('feed', 3), pt(s.bf, 2, t('plan_why_feed'))] });   /* Version 39.46: not after "My baby has died" */
     add({ id: 'post-mood', go: 'post-mood', tile: true, hue: 'sky', fit: post, pts: [gl('mood', 3), pt(s.low >= 3, 3, low)] });
@@ -1517,6 +1527,7 @@
       else if (k === 'unlock') r = unlocked(c.d, c.day);   /* Version 39.46: back to strong, after her 6-week check */
       else if (k === 'pready') r = preadyOk(c.d, c.day);   /* Version 39.46: Strength at home, after "Is my body ready?" */
       else if (k === 'died') r = died();   /* Version 39.46: "My baby has died" */
+      else if (k === 'folic') r = folicCarry(c.d, c.day);   /* Version 39.47: her folic acid from Getting ready, to 12 weeks */
       else if (k === 'week' || k === 'pday') { const m = /^(\d+)-(\d*)$/.exec(v); const n = c.d && c.d.start && c.day ? (k === 'week' ? weekAt(c.d, c.day) : planDayAt(c.d, c.day)) : 0; r = !!m && n >= +m[1] && (m[2] === '' || n <= +m[2]); }   /* Version 39.32: her plan's week or day, a to b (no b: from a on) */
       else if (k === 'gw') { const m = /^(\d+)-(\d*)$/.exec(v); const n = gwAt(c.day); r = !!m && n != null && n >= +m[1] && (m[2] === '' || n <= +m[2]); }   /* Version 39.34: her pregnancy week, a to b */
       else if (k === 'pt') r = psTier((c.ik || {}).pflags, gwAt(c.day)) === v;   /* Version 39.34: her safety tier, from her answers and her week */
@@ -1592,7 +1603,14 @@
   const calmWeekAt = (iso) => { try { const ri = S.cycle.rangeInfo(); if (!ri) return false; const n = S.diffDays(S.fromISO(iso), ri.from); return n >= 1 && n <= 7; } catch (e) { return false; } };
   /* her folic acid reminder runs with the Getting ready plan, and on in a pregnancy that follows it until 12 weeks (packet J3);
      after a loss it stops with the plan */
-  const folicRun = (d) => { if (!babyD(d)) return false; if (packOf(d) && !pausedFor(d) && !selfPaused(d) && !finished(fullD(d))) return true;
+  /* Version 39.47 (Mohit's four-plan walk): "Your folic acid carries on to 12 weeks", and now it does. Once she started My
+     pregnancy, the tablet step and its 9 pm reminder went (the pregnancy plan isn't Getting ready). A pregnancy plan that follows
+     Getting ready (its plan before this pregnancy, or the one it replaces) keeps the tablet step, first, and its reminder until
+     12 weeks; her check-ups count her tablet as started (preg.js), so "Due now" doesn't name it too. */
+  const ttcBefore = () => { const r = raw(); if (!r) return false; if (babyD(r)) return true; const since = (S.state.situation || {}).pregnantSince;
+    return (Array.isArray(r.past) ? r.past : []).some((p) => p && p.pack === 'ttc' && (p.pv || 1) >= 2 && (!since || !p.end || p.end >= since)); };
+  const folicCarry = (d, iso) => { if (!d || packOf(d) !== 'preg' || !pregnant() || !ttcBefore()) return false; const gw = gwAt(iso || todayISO()); return gw != null && gw < 12; };
+  const folicRun = (d) => { if (!babyD(d)) return folicCarry(d) && !pausedFor(d) && !selfPaused(d); if (packOf(d) && !pausedFor(d) && !selfPaused(d) && !finished(fullD(d))) return true;
     if (pregnant()) { const pi = S.preg && S.preg.info ? S.preg.info() : null; return !!(pi && pi.weeks != null && pi.weeks < 12); } return false; };
   const folicSync = (d) => { try { if (d && S.ttc && S.ttc.folic) S.ttc.folic.sync(folicRun(d), ((dayLog(d, todayISO()).ck) || {}).folic === 'd'); } catch (e) { /* this build has no trying pages */ } };
   const ADAPT = {
@@ -1649,7 +1667,7 @@
       return [{ id: 'folic', icon: S.icon('pill'), hue: 'rose', kind: has ? 'tick' : 'check', title: nm, name: nm, sub: has ? '' : t('plan_a_folic_get'), go: 'ttc-folic', state: has ? st('folic') : (F.askedOn() === c.day ? 'n' : null), why: 'plan_fb_folic' }]; },
     'ttc.hb': (d, c) => { const T2 = S.ttc; if (!T2 || !T2.prepHas) return []; const pd = planDayAt(d, c.day); const at = T2.prepAt('hb');
       if (pd < 2 || pd > 14 || (T2.prepHas('hb') && at !== c.day)) return [];
-      return [{ id: 'hb', icon: S.icon('drop'), hue: 'rose', kind: 'check', title: t('plan_a_hb'), sub: t('plan_a_hb_s'), go: 'ttc-prep', state: at === c.day ? 'd' : null, why: 'plan_fb_hb', priv: true }]; },
+      return [{ id: 'hb', icon: S.icon('drop'), hue: 'rose', kind: 'check', title: t('plan_a_hb'), sub: t('plan_a_hb_s'), go: 'ttc-prep', state: at === c.day ? 'd' : null, why: 'plan_fb_hb', priv: true, soft: true }]; },   /* Version 39.47: a test waits for her visit, as "Due now" */
     'ttc.ready': (d, c) => { const R2 = S.ttc && S.ttc.ready; if (!R2) return []; const last = R2.last(); if (last !== c.day && !readyDue(d, c.day, last)) return [];
       return [{ id: 'ready', icon: S.icon('chart'), hue: 'sky', kind: 'check', title: t('plan_a_ready'), sub: t('plan_a_ready_s'), go: 'ttc-ready', state: last === c.day ? 'd' : null, why: 'plan_fb_ready', priv: true }]; },
     /* his part, once a week from week 2 (the 6th day of her plan week), opening the partner page; never on a shared phone */
@@ -2368,6 +2386,7 @@
     const cards = ['ready', 'steps', 'days'].concat(dkR ? ['doc'] : [], ['start']);   /* Version 39.3: one card for her days and weeks */
     const i = S.mem.rvCard = S.clamp(S.mem.rvCard || 0, 0, cards.length - 1); const id = cards[i];
     const st = S.mem.rvStart = S.mem.rvStart || { when: nowHM() >= '21:00' ? 'tomorrow' : 'today', at: null };   /* at: null is Sakhi's time (Version 39.27); a chip she taps is hers */
+    const rvAt = () => ciAt(Object.assign({}, dd, { remAt: st.at || n.remAt || '20:00', remPick: !!st.at || !!dd.remPick }));   /* Version 39.47: "How each day works" says the Start card's time */
     const chip = (attr, val, label, on1) => '<button type="button" class="chip' + (on1 ? ' on' : '') + '" ' + attr + '="' + esc(val) + '" aria-pressed="' + !!on1 + '">' + esc(label) + '</button>';
     const nextB = '<button type="button" class="btn primary block" id="pl-rv-next">' + esc(t('plan_rv_next')) + '</button>';
     const editB = '<button type="button" class="linkbtn" id="pl-rv-edit">' + esc(t('plan_rv_edit')) + '</button>';
@@ -2391,7 +2410,7 @@
         (pk === 'cycle' ? '<p class="small">' + esc(tf('plan_rv_week', { m: target(dd, 1), n: daySuggest(dd, 1) })) + '</p><p class="small">' + esc(t('plan_rv_also')) + '</p>' : '') + nextB;
     } else if (id === 'days') {
       const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'].concat(pregV2(dd) && !disc() ? pregRvRows() : []) : (postV2(dd) ? [[14, 'plan_rv_p14'], [42, 'plan_rv_p42'], [84, 'plan_rv_p84']].filter((x) => (bDays(todayISO()) || 0) < x[0]).map((x) => x[1]).concat([died() ? 'plan_rv_p365b' : 'plan_rv_p365']) : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12']);   /* Version 39.36: what comes later in her pregnancy; Version 39.46: her year after the birth */
-      body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', postV2(dd) && earlyAt(todayISO()) && !disc() ? 'plan_rv_d2p' : 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(st.at) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
+      body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', postV2(dd) && earlyAt(todayISO()) && !disc() ? 'plan_rv_d2p' : 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(rvAt()) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
         '<div class="card soft"><p>' + esc(t('plan_rv_miss')) + '</p></div>' +
         (src ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(src) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') +
         '<h2 class="ob-h2">' + esc(t('plan_rv_when_h')) + '</h2><ol class="pl-tl">' + (pk !== 'preg' && laterStep(dd) ? '<li><strong>' + esc(laterLine(laterStep(dd))) + '</strong></li>' : '') + rows.map((k) => '<li><strong>' + esc(t(k)) + '</strong></li>').join('') + '</ol>' +
@@ -2482,7 +2501,7 @@
     }
     const opt = (a, val, key) => '<button type="button" class="chip' + (m.sel[a.id] === val ? ' on' : '') + '" data-ci="' + a.id + ':' + val + '" aria-pressed="' + (m.sel[a.id] === val) + '">' + CI_SYM[val] + esc(t(key)) + '</button>';
     const anyMiss = () => asked.some((a) => m.sel[a.id] === 'n' || m.sel[a.id] === 'p');
-    const nm = (a, done) => (disc() && a.priv ? t('plan_today_d') : (a.bed ? tf(done ? 'plan_ci_last_d' : 'plan_ci_last', { t: clockOf(a.bed) }) : a.title));
+    const nm = (a, done) => (disc() && a.priv ? discNm(a, acts) : (a.bed ? tf(done ? 'plan_ci_last_d' : 'plan_ci_last', { t: clockOf(a.bed) }) : a.title));
     /* Version 39.22: with last night's bedtime, how she slept (if she likes; a hard night brings a sound for tonight) */
     const slpQ = (a) => (a.bed ? '<div class="pl-ci-slp"><span class="small pl-ci-slp-h">' + esc(t('plan_ci_slp')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_ci_slp')) + '">' + ['well', 'ok', 'bad'].map((k) => '<button type="button" class="chip' + (m.slp === k ? ' on' : '') + '" data-ci-slp="' + k + '" aria-pressed="' + (m.slp === k) + '">' + esc(t('plan_slp_' + k)) + '</button>').join('') + '</div></div>' : '');
     const left = open.length; const leftTxt = left ? tf(left === 1 ? 'plan_ci_left1' : 'plan_ci_left', { n: left }) : t('plan_ci_left0');
@@ -2493,7 +2512,7 @@
     v.innerHTML = hd + '<p class="small pl-ci-date">' + esc(S.fmtD(pToday(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' + leftTxt) + '</p>' +
       (firstCi && !ciDone(d) ? '<p class="small pl-ci-first">' + esc(t('plan_ci_first')) + '</p>' : '') +
       (!ciDone(d) && restLeft(d) > 0 && !acts.some((a) => a.state === 'd' || a.state === 'p' || (SAFE.indexOf(a.id) >= 0 && a.state !== 'd')) ? '<button type="button" class="btn block pl-rest-b" id="pl-ci-rest">' + esc(t('plan_rest_b')) + ' <span class="small">· ' + esc(tf('plan_rest_left', { n: restLeft(d) })) + '</span></button>' : '') +
-      '<div class="card pl-ci">' + acts.filter((a) => a.kind === 'check' && !a.soft).map((a) => '<div class="pl-ci-row"><div class="row" style="gap:10px">' + ico(a) + '<strong>' + esc(disc() && a.priv ? t('plan_today_d') : a.title) + '</strong></div>' + (a.state === 'd' ? '<p class="small pl-ci-ok">✓ ' + esc(t('plan_ci_chk_done')) + '</p>' : '<button type="button" class="btn sm" data-go="' + a.go + '">' + esc(t('plan_ci_chk_go')) + '</button>') + '</div>').join('') +
+      '<div class="card pl-ci">' + acts.filter((a) => a.kind === 'check' && !a.soft).map((a) => '<div class="pl-ci-row"><div class="row" style="gap:10px">' + ico(a) + '<strong>' + esc(disc() && a.priv ? discNm(a, acts) : a.title) + '</strong></div>' + (a.state === 'd' ? '<p class="small pl-ci-ok">✓ ' + esc(t('plan_ci_chk_done')) + '</p>' : '<button type="button" class="btn sm" data-go="' + a.go + '">' + esc(t('plan_ci_chk_go')) + '</button>') + '</div>').join('') +
         asked.map((a) => (open.indexOf(a) >= 0 ? askRow(a) : preRow(a))).join('') + '</div>' +
       (pre.length && !m.edit ? '<button type="button" class="linkbtn pl-ci-edit" id="pl-ci-edit">' + esc(t('plan_ci_change')) + '</button>' : '') +
       (!disc() && (fd0 || fd1) ? '<div class="card pl-ci-fast"><span class="eyebrow">' + esc(t('plan_fast_h')) + '</span><div class="chips">' +
@@ -2531,7 +2550,7 @@
       m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: held(acts.map((a) => Object.assign({}, a, { state: m.sel[a.id] || a.state }))).length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
         goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: ciTom(fullD(dd)),
         slp: m.slp || null, md: mdAsk(dd) ? m.md || null : null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some((a) => !!a.play) && !(S.calm && S.calm.doneOn(todayISO())),
-        add: done.length ? (function () { const miss = acts.filter((a) => m.sel[a.id] === 'n'); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? t('plan_today_d') : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.13 */
+        add: done.length ? (function () { const miss = acts.filter((a) => m.sel[a.id] === 'n'); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? discNm(a, acts) : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.13 */
       remSync(dd); S.save();
       const rel = S.joy && S.joy.release ? S.joy.release() : false;   /* what her plan's first day earned, celebrated now */
       m.saved.petal = !!rel || (S.joy && S.joy.petals ? S.joy.petals() : 0) > p0;
@@ -2606,7 +2625,7 @@
     const mr = mcRow(d).replace('<div class="list pl-mc-rowl">', '<div class="list pl-mc-rowl pl-mc-in">');
     return '<div class="card pl-path pl-weeks"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(tf('plan_wk', { n: wk })) + '</span></div>' +
       '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div>' +
-      '<dl class="pl-kv"><dt>' + esc(t('plan_kv_this')) + '</dt><dd>' + esc(focus(wk)) + '</dd>' + (wk < N ? '<dt>' + esc(t('plan_kv_next')) + '</dt><dd>' + esc(focus(wk + 1)) + '</dd>' : '') + '</dl>' + stage + (babyD(d) ? bdocMonth() : '') + mr +
+      '<dl class="pl-kv"><dt>' + esc(t('plan_kv_this')) + '</dt><dd>' + esc(focus(wk)) + '</dd>' + (wk < N && focus(wk + 1) !== focus(wk) ? '<dt>' + esc(t('plan_kv_next')) + '</dt><dd>' + esc(focus(wk + 1)) + '</dd>' : '') + '</dl>' + stage + (babyD(d) ? bdocMonth() : '') + mr +
       '<details class="pl-path-more" data-pl-fold="path"' + (foldOpen('path') ? ' open' : '') + '><summary class="linkbtn">' + esc(t('plan_path_all')) + '</summary><ol class="pl-steps">' + all.map(li).join('') + '</ol>' + cons.replace('<div class="card pl-cons">', '<div class="pl-cons pl-cons-in">') + '</details></div>';
   }
   /* Version 39.40 (Mohit's 39-week walk): on her doctor's route, her own doctor first: Call, or add the number (Version 39.41: in every plan) */
@@ -2836,6 +2855,7 @@
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return '';
     const k = cardKind(d); const dd = fullD(d); const acts = actionsFor(dd); const first = acts[0]; const day = planDay(dd); const easy = acts.find((a) => a.id === 'move') || first;   /* Version 39.13: a restart starts with her walk */
     if (postV2(dd) && S.post && S.post.sixSync) S.post.sixSync();   /* Version 39.46: a changed birth date moves her 6-week check */
+    remWords(dd);   /* Version 39.47: as Today draws, her tablet's reminder follows her weeks, and the evening's its words */
     if (k === 'post2' || k === 'pv2') return postCardHtml(dd, k === 'pv2' ? 'pv2' : postDue(dd));   /* Version 39.46 */
     if (k === 'pause') return card('pl-sl-pause', t('plan_sl_pause_h'), t('plan_sl_pause_p'), '<button type="button" class="btn sm primary" id="pl-pause-go">' + esc(t('plan_pause')) + '</button><button type="button" class="btn sm" id="pl-pause-not">' + esc(t('plan_rec_not')) + '</button>', true);
     if (k === 'end') return card('pl-sl-end', t(dd.keep ? 'plan_year_h' : 'plan_end_h'), babyD(dd) && !dd.keep ? t('plan_bend_p') : tf('plan_end_p', { n: followedDays(dd), t: (dd.keep ? keepUntil(dd) : planWeeks(dd)) * 7 }), '<button type="button" class="btn sm primary" data-go="plan">' + esc(t('plan_end_b')) + '</button>', true);
@@ -2849,7 +2869,7 @@
     if (k === 'doc' && babyD(dd) && !disc()) { const bd = babyDoc(dd);   /* Version 39.32: day 1 to 21, her version's card in short */
       return '<div class="card warn pl-slot pl-sl-doc pl-sl-bdoc" data-nofold="1"><h3>' + esc(bd.h) + '</h3>' + bd.lines.slice(0, 2).map((x) => '<p class="small">' + esc(x) + '</p>').join('') + '<p class="small">' + esc(bd.free) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="pl-doc-yes">' + esc(t('plan_sl_doc_yes')) + '</button><button type="button" class="btn sm" id="pl-doc-later">' + esc(t('plan_bdoc_later')) + '</button></div></div>'; }
     if (k === 'pos') return card('pl-sl-pos', t('plan_bpos_h'), t('plan_bpos_p'), '<button type="button" class="btn sm primary" id="pl-pos-yes">' + esc(t('plan_bpos_yes')) + '</button><button type="button" class="btn sm" id="pl-pos-not">' + esc(t('plan_rec_not')) + '</button>');   /* Version 39.32 (packet J3) */
-    if (k === 'psafe') { const why = psafeDue(dd); return card('pl-sl-psafe', t('plan_ps_re_h'), t(why === 'now' && !disc() ? 'plan_ps_re_now' : 'plan_ps_re_p'), '<button type="button" class="btn sm primary" data-go="plan-psafe">' + esc(t('plan_ps_re_go')) + '</button>' + (why === 'now' ? '' : '<button type="button" class="btn sm" id="pl-ps-same">' + esc(t('plan_ps_re_same')) + '</button>'), true); }   /* Version 39.34: neutral words, so it shows on a shared phone too */
+    if (k === 'psafe') { const why = psafeDue(dd); return card('pl-sl-psafe' + (why === 'now' ? ' pl-ps-now' : ''), t('plan_ps_re_h'), t(why === 'now' && !disc() ? 'plan_ps_re_now' : 'plan_ps_re_p'), '<button type="button" class="btn sm primary" data-go="plan-psafe">' + esc(t('plan_ps_re_go')) + '</button>' + (why === 'now' ? '' : '<button type="button" class="btn sm" id="pl-ps-same">' + esc(t('plan_ps_re_same')) + '</button>'), true); }   /* Version 39.34: neutral words, so it shows on a shared phone too */
     if (k === 'doc') { const de = docEntry(dd) || {};
       const extra = disc() ? '' : (de.check && S.routeOwner(de.check) && (!S.toolShown || S.toolShown(de.check)) ? '<button type="button" class="btn sm" data-go="' + de.check + '">' + esc(t('explain_check')) + '</button>' : (de.go && S.routeOwner(de.go) ? '<button type="button" class="btn sm" data-go="' + de.go + '">' + esc(tileTitle(de.go)) + '</button>' : ''));
       return '<div class="card warn pl-slot pl-sl-doc" data-nofold="1" data-disc-ok="1"><h3>' + esc(t('plan_sl_doc_h')) + '</h3><p class="small">' + esc(t(disc() ? 'plan_doc_d' : (docCase(dd) === 'plan_rv_doc_cyc' ? 'plan_sl_doc_p' : docCase(dd)))) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="pl-doc-yes">' + esc(t('plan_sl_doc_yes')) + '</button>' + (S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '') + extra + '<button type="button" class="btn sm" id="pl-doc-later">' + esc(t('plan_rv_later')) + '</button></div></div>'; }
@@ -2886,15 +2906,18 @@
   /* which after-birth card is due, first that applies: after "My baby has died", her support (a week); in week 1 her baby's danger
      signs; a BP check in week 1 after high BP in pregnancy; her own check at 6 weeks (days 35 to 56, until "I went"); from day 42
      "Ready to move a little more?"; from week 12 "Is your body ready for more?"; from day 21 her method before sex starts again */
+  /* Version 39.47 (Mohit's four-plan walk): a card Today set aside (it led Sakhi says on 3 days, unanswered) lets the next of
+     her plan's cards lead for its 7 days: "Ready to move a little more?" no longer holds back her method before sex starts again */
+  const aside = (cls) => { const a = (S.state.prompts || {}).slotAside || {}; const td = todayISO(); return Object.keys(a).some((k) => a[k] > td && (' ' + k.split('#')[0] + ' ').indexOf(' ' + cls + ' ') >= 0); };
   function postDue(dd) {
     const n = bDays(todayISO()); if (n == null || n < 0) return ''; const s0 = S.state.situation || {}; const sh = !!(S.state.settings || {}).shared;
     if (died()) { if (ago(s0.babyDied) <= 7 && dd.diedSeen !== s0.babyDied) return 'died'; }
     else if (n <= 7 && !dd.nbSeen && !disc() && !sh) return 'nb';
     if (pMarks(dd).indexOf('r_bp') >= 0 && n >= 2 && n <= 10 && !dd.bpAt && !later(dd.bpLater) && !disc()) return 'bp';
-    if (n >= 35 && n <= 41 && !dd.six && !dd.unlock && !later(dd.sixLater)) return 'six';
-    if (n >= 42 && !unlocked(dd) && !(dd.unNot && ago(dd.unNot) < 7)) return 'unlock';
-    if (n >= 84 && unlocked(dd) && !(dd.pready && (dd.pready.ok || ago(dd.pready.at) < 14)) && !later(dd.readyLater)) return 'ready';
-    if (n >= 21 && n <= 120 && !dd.contraOk && !later(dd.contraLater) && !disc() && S.routeOwner('post-contra')) return 'contra';
+    if (n >= 35 && n <= 41 && !dd.six && !dd.unlock && !later(dd.sixLater) && !aside('pl-p2-six')) return 'six';
+    if (n >= 42 && !unlocked(dd) && !(dd.unNot && ago(dd.unNot) < 7) && !aside('pl-p2-un')) return 'unlock';
+    if (n >= 84 && unlocked(dd) && !(dd.pready && (dd.pready.ok || ago(dd.pready.at) < 14)) && !later(dd.readyLater) && !aside('pl-p2-ready')) return 'ready';
+    if (n >= 21 && n <= 120 && !dd.contraOk && !later(dd.contraLater) && !disc() && S.routeOwner('post-contra') && !aside('pl-p2-contra')) return 'contra';
     return '';
   }
   /* women on version 1 are offered this one once; her days, her steps and her answers stay (the clock is the birth's) */
@@ -2979,13 +3002,13 @@
     if (postV2(dd) && postDue(dd)) return 'post2';   /* Version 39.46: one after-birth card at a time, before every other card */
     if (pv2Offer(dd)) return 'pv2';   /* Version 39.46: version 1 is offered version 2, once */
     if (babyD(dd) && !disc() && posDue(dd)) return 'pos';   /* Version 39.32 (packet J3): a positive test she saved, once */
-    if (pregV2(dd) && psafeDue(dd)) return 'psafe';   /* Version 39.34: her safety answers again (the day after a sign that doesn't wait; at 14 and 28 weeks) */
+    if (pregV2(dd) && psafeDue(dd) && (psafeDue(dd) === 'now' || !aside('pl-sl-psafe'))) return 'psafe';   /* Version 39.47: a sign that doesn't wait always leads */   /* Version 39.34: her safety answers again (the day after a sign that doesn't wait; at 14 and 28 weeks) */
     if (day === 1 && actionsFor(dd).length && !ciDone(dd)) return babyD(dd) && !disc() && docCase(dd) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) ? 'doc' : 'd1';   /* Version 39.32: her doctor card from day 1 (the mockup's Today) */
     const wk = weekNo(dd); const inWeek = (day - 1) % 7 < 3;
     if (!disc() && (wk === 5 || wk === 9) && !(dd.weeks[(wk === 5 ? 1 : 2) * 4] || {}).seenM && inWeek) return 'month';
     if (dd.keep && !disc() && wk === keepWeekly(dd) && inWeek && !dd.m4Seen) return 'm4';   /* Version 39.6: month 4, her results */
     if (wk >= 2 && inWeek && !(dd.carried && !dd.endSeen) && reviewCard(dd, true)) return 'rev';   /* Version 39.37: the end card holds week 12 */
-    if (docCase(dd) && day >= 2 && day <= 21 && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO())) return 'doc';   /* Version 39.6: every plan's own check */
+    if (docCase(dd) && day >= 2 && day <= 21 && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) && !aside('pl-sl-doc')) return 'doc';   /* Version 39.6: every plan's own check */
     if (!disc() && dd.doc === 'done' && !dd.docSaid && SAID[pk] && docCase(dd) && dd.docAt && S.diffDays(S.fromISO(dd.docAt), pToday()) <= 30) return 'said';
     if (!disc() && dueEntry(dd) && dd.dueSeen !== todayISO().slice(0, 7)) return 'due';
     if (disc()) return '';
@@ -3142,7 +3165,8 @@
     if (!d || d.remPick || d.work === 'night' || !d.when || !NUDGE_AT[d.when] || !(specD(d) || {}).moves || careTime(d)) return own;
     const mv = hmMin(NUDGE_AT[d.when]) + 45; if (mv <= hmMin(own)) return own;
     const bt = d.bed === 'b22' ? '22:00' : bedTarget(d, todayISO()); let b = bt ? hmMin(bt) : 24 * 60; if (b < 12 * 60) b += 24 * 60;
-    return hmOf(Math.max(hmMin(own), Math.min(mv, b - 45)));
+    const at = Math.max(hmMin(own), Math.min(mv, b - 45)); const wk0 = hmMin(NUDGE_AT[d.when]);
+    return hmOf(at > wk0 ? at : wk0 + 15);   /* Version 39.47 (Mohit's four-plan walk): after her walk, never at its minute (in bed by 10 pm, a 9:15 pm walk: 9:30 pm) */
   };
   /* Version 39.27 (R01): what will ring, named above Start (one switch covers it all); in her day's order */
   function remLine(d) {
@@ -3446,6 +3470,8 @@
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { tonight: planTonight, calmRow: calmRow,
     /* Version 39.32: the Getting ready plan, for ttc.js (her lesson, her tablet's reminder, her ready check's folic answer) */
+    folicOn: () => { const d = raw(); if (!d || !planOn()) return false; if (folicCarry(d)) return true;   /* Version 39.47: preg.js's check-ups count her tablet as started */
+      return babyD(d) && pregnant() && folicRun(d) && !!(S.ttc && S.ttc.folic && S.ttc.folic.has && S.ttc.folic.has()); },   /* moved on, before she starts My pregnancy: her tablet still rings */
     baby: { on: () => { const d = raw(); return !!(planOn() && d && babyD(d) && packOf(d) && !pausedFor(d)); }, lesson: () => { const d = raw(); return d && planOn() ? lessonId(d) : null; }, set: (d) => (d ? bsetOf(fullD(d)) : null), lut: () => { const d = raw(); return !!(d && lutOn(d)); } },
     ckDays: (id, n) => { const d = raw(); if (!d || !planOn()) return null; let c = 0; for (let i = 0; i < n; i++) if (((dayLog(d, S.toISO(S.addDays(pToday(), -i))).ck) || {})[id] === 'd') c++; return c; }, regionOfPin: regionOfPin, target: target, dayCount: (iso) => { const d = raw(); return packOf(d) ? dayCount(fullD(d), iso) : null; },   /* Version 39.14 */
     /* Version 39.4: the plans as data (web/progs/*.js): what this build runs, each spec, and the engine's own words */
@@ -3548,7 +3574,7 @@
         plan_foot_preg: 'Everyday habits from national guidelines, and the iron tablets your doctor prescribes in pregnancy. No other supplements, herbs or medicines here: your doctor decides those.',
         plan_foot_d: 'Everyday habits from national guidelines. Any other tablet, herb or medicine: your doctor decides.',
         plan_cons_tab: 'Your tablet every day:', plan_cons_hb: 'Your Hb test:', plan_cons_long: 'How long it usually takes:',
-        plan_done: 'Done', plan_yes: 'Yes', plan_well: 'Well done.', plan_today_d: 'Your plan for today', plan_today_move: 'Move {n} minutes today',
+        plan_done: 'Done', plan_yes: 'Yes', plan_well: 'Well done.', plan_today_d: 'Your plan for today', plan_today_dn: 'Your step {n}', plan_today_move: 'Move {n} minutes today',
         plan_rev_h: 'Week {n} is done', plan_rev_hp: 'Plan week {n} is done', plan_rev_min: 'You moved {a} minutes. Your target was {t}.', plan_rev_e: 'How was your energy this week?', plan_e_low: 'Low', plan_e_ok: 'Okay', plan_e_good: 'Good',
         plan_rev_b: 'What got in the way?', plan_b_time: 'No time', plan_b_tired: 'Too tired', plan_b_pain: 'Pain', plan_b_family: 'Family or work', plan_b_out: 'Weather or safety', plan_b_none: 'Nothing',
         plan_tip_time: 'Split it up: two 10-minute walks count. Walk while you talk on the phone, or after dinner with your family.',
@@ -3636,7 +3662,7 @@
         plan_why_pain: 'You needed a painkiller in {n} of your last {m} periods.', plan_why_cramps: 'You logged cramps on {n} days.',
         plan_why_low: 'You felt low, anxious or irritable on {n} days this month.', plan_why_cimood: 'You ticked low mood in your check-in.', plan_why_sleep: 'You slept badly on {n} days this month.',
         plan_why_hot: 'You logged hot flushes on {n} days this month.', plan_why_cihot: 'You noted hot flushes in your check-in.', plan_why_nausea: 'You logged nausea on {n} days.',
-        plan_why_preg: 'For your pregnancy.', plan_why_birth: 'Your baby was born {n} days ago.', plan_why_post: 'It helps every woman after a birth.', plan_why_feed: 'You are breastfeeding.',
+        plan_why_preg: 'For your pregnancy.', plan_why_birth: 'Your baby was born {n} days ago.', plan_why_birth0: 'Your baby was born today.', plan_why_birth1: 'Your baby was born yesterday.', plan_why_post: 'It helps every woman after a birth.', plan_why_feed: 'You are breastfeeding.',
         plan_why_ttc: 'You are planning a pregnancy.', plan_why_midlife: 'It helps in the years around menopause.',
         plan_gv_irregular: 'more regular periods', plan_gv_pmos: 'feeling better with PMOS', plan_gv_pain: 'less period pain', plan_gv_heavy: 'more iron and easier heavy periods', plan_gv_pms: 'calmer days before your period', plan_gv_skin: 'clearer skin and less extra hair',
         plan_gv_weight: 'a healthier weight', plan_gv_ready: 'getting ready for a baby', plan_gv_food: 'eating well in pregnancy', plan_gv_nausea: 'easier days with nausea', plan_gv_iron: 'enough iron', plan_gv_sleep: 'better sleep', plan_gv_mood: 'calmer days',
@@ -3714,9 +3740,9 @@
         plan_p2_v2_h: 'Your recovery plan has more now', plan_p2_v2_p: 'It follows your body to your baby’s first birthday: your evening check, your 6-week check, then back to strong. Your days and answers stay.', plan_p2_v2_yes: 'Switch to it', plan_p2_v2_done: 'Your recovery plan is up to date.',
         plan_a_pwalk: 'Walk a little, as you feel able', plan_a_pf: 'Your pelvic floor squeezes', plan_a_pf5: '5 gentle squeezes', plan_a_pf5_s: 'Your pelvic floor, during a feed', plan_a_pf5_s0: 'Your pelvic floor, lying or sitting', plan_a_pf10: '10 squeezes, and the knack', plan_a_pf10_s: 'Squeeze before you cough, sneeze or lift',
         plan_lk_h: 'This week: any leaks?', plan_lk_never: 'Never', plan_lk_some: 'Sometimes', plan_lk_most: 'Most days', plan_md_h: 'How are you in yourself this week?', plan_md_low: 'Low or worried most days for 2 weeks or more? Talk to your doctor this week, or call Tele-MANAS 14416, free.',
-        plan_rv_p14: 'From day 14: a short walk, 3 days a week', plan_rv_p42: 'Around day 42: your own check, then back to strong', plan_rv_p84: 'From week 12: is your body ready for more?', plan_rv_p365: 'To your baby’s first birthday', plan_rv_p365b: 'To a year after the birth', plan_rv_d2p: 'At {t}, your recovery check: 2 minutes, with the signs that can’t wait.', plan_st_r_six: 'your 6-week check on {d}',
+        plan_rv_p14: 'From day 14: a short walk, 3 days a week', plan_rv_p42: 'Around day 42: your own check, then back to strong', plan_rv_p84: 'From week 12: is your body ready for more?', plan_rv_p365: 'To your baby’s first birthday', plan_rv_p365b: 'To a year after the birth', plan_rv_d2p: 'At {t}, your recovery check: 1 minute, with the signs that can’t wait.', plan_st_r_six: 'your 6-week check on {d}',
         plan_pq_h: 'Your year, in 5 parts', plan_pq_1: 'Rest and heal · days 0 to 13', plan_pq_1p: 'Your evening check, gentle squeezes, rest', plan_pq_2: 'Settle · days 14 to 41', plan_pq_2p: 'Short walks, choosing a method, your 6-week check', plan_pq_3: 'Back to strong · weeks 7 to 18', plan_pq_3p: 'After your 6-week check: more walking, gentle moves, then strength', plan_pq_4: 'Keep going · to 6 months', plan_pq_4p: 'Your steps carry on. Periods can come back any time.', plan_pq_5: 'Your first year · to {d}', plan_pq_5p: 'Your steps, and a look back at your year',
-        plan_rh_day_rc: '{n} steps, recovery check {t}', plan_th_rc_at: 'Recovery check at {t}', plan_p2_un_hd: 'Ready for a little more?', plan_p2_un_pd: 'Start when your doctor says so, or when you feel ready.', plan_rv_len_p: 'To your baby’s first birthday · a few minutes a day', plan_rv_len_pb: 'A year after the birth · a few minutes a day', plan_st_at_pp: 'Each evening, 2 minutes: your recovery check, to day 41.', plan_st_r_rc: 'your {t} recovery check', plan_p2_six_wait: 'Back to strong opens on {d}.', plan_rh_p42: 'Around day 42', plan_rh_p42_s: 'Your own check, then back to strong', plan_rh_p84: 'From week 12', plan_rh_p84_s: 'Is your body ready for more?', plan_res_lk: 'Leaks', plan_res_lk_w: '{x} · week {n}', plan_st_r_per: 'a note the day before your period', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
+        plan_rh_day_rc: '{n} steps, recovery check {t}', plan_th_rc_at: 'Recovery check at {t}', plan_p2_un_hd: 'Ready for a little more?', plan_p2_un_pd: 'Start when your doctor says so, or when you feel ready.', plan_rv_len_p: 'To your baby’s first birthday · a few minutes a day', plan_rv_len_pb: 'A year after the birth · a few minutes a day', plan_st_at_pp: 'Each evening, 1 minute: your recovery check, to day 41.', plan_st_r_rc: 'your {t} recovery check', plan_p2_six_wait: 'Back to strong opens on {d}.', plan_rh_p42: 'Around day 42', plan_rh_p42_s: 'Your own check, then back to strong', plan_rh_p84: 'From week 12', plan_rh_p84_s: 'Is your body ready for more?', plan_res_lk: 'Leaks', plan_res_lk_w: '{x} · week {n}', plan_st_r_per: 'a note the day before your period', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
         plan_in_now_p: 'So Sakhi knows where you’re starting, and can show you what changes.', plan_in_sum_h: 'Here’s what you told Sakhi', plan_in_sum_p: 'Check it, then Sakhi makes your plan.',
         plan_in_sum_goal: 'What you want to work on', plan_in_sum_now: 'Now', plan_in_sum_when: 'Your time to move', plan_in_make: 'Make my plan',
         plan_ci_first: 'This takes a minute. Your answers stay on this phone.', plan_ci_tom: 'Tomorrow: the same steps. See you at {t}.', plan_ci_see: 'See you tomorrow at {t}.',
@@ -3867,7 +3893,7 @@
         plan_foot_preg: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें, और गर्भ में आपकी डॉक्टर की लिखी आयरन की गोलियाँ। यहाँ और कोई सप्लीमेंट, जड़ी-बूटी या दवा नहीं: वह आपकी डॉक्टर तय करती हैं।',
         plan_foot_d: 'राष्ट्रीय दिशानिर्देशों से रोज़ की आदतें। कोई और गोली, जड़ी-बूटी या दवा: वह आपकी डॉक्टर तय करती हैं।',
         plan_cons_tab: 'रोज़ आपकी गोली:', plan_cons_hb: 'आपकी Hb जाँच:', plan_cons_long: 'आम तौर पर कितना समय लगता है:',
-        plan_done: 'हो गया', plan_yes: 'हाँ', plan_well: 'बहुत अच्छा।', plan_today_d: 'आज का आपका प्लान', plan_today_move: 'आज {n} मिनट चलें या व्यायाम करें',
+        plan_done: 'हो गया', plan_yes: 'हाँ', plan_well: 'बहुत अच्छा।', plan_today_d: 'आज का आपका प्लान', plan_today_dn: 'आपका कदम {n}', plan_today_move: 'आज {n} मिनट चलें या व्यायाम करें',
         plan_rev_h: 'हफ़्ता {n} पूरा हुआ', plan_rev_hp: 'प्लान का हफ़्ता {n} पूरा हुआ', plan_rev_min: 'आपने {a} मिनट व्यायाम किया। लक्ष्य {t} मिनट था।', plan_rev_e: 'इस हफ़्ते आपकी ऊर्जा कैसी रही?', plan_e_low: 'कम', plan_e_ok: 'ठीक', plan_e_good: 'अच्छी',
         plan_rev_b: 'किस बात ने रोका?', plan_b_time: 'समय नहीं', plan_b_tired: 'बहुत थकान', plan_b_pain: 'दर्द', plan_b_family: 'घर या काम', plan_b_out: 'मौसम या सुरक्षा', plan_b_none: 'कुछ नहीं',
         plan_tip_time: 'बाँट लें: 10-10 मिनट की दो सैर भी गिनी जाती हैं। फ़ोन पर बात करते हुए टहलें, या रात के खाने के बाद परिवार के साथ।',
@@ -3954,7 +3980,7 @@
         plan_why_pain: 'आपके पिछले {m} में से {n} पीरियड में दर्द की गोली लेनी पड़ी।', plan_why_cramps: 'आपने {n} दिन ऐंठन दर्ज की।',
         plan_why_low: 'इस महीने {n} दिन आप उदास, घबराई हुई या चिड़चिड़ी रहीं।', plan_why_cimood: 'आपने चेक-इन में उदास मन चुना।', plan_why_sleep: 'इस महीने {n} दिन आपकी नींद ख़राब रही।',
         plan_why_hot: 'इस महीने आपने {n} दिन गर्मी के झोंके दर्ज किए।', plan_why_cihot: 'आपने चेक-इन में गर्मी के झोंके बताए।', plan_why_nausea: 'आपने {n} दिन जी मिचलाना दर्ज किया।',
-        plan_why_preg: 'आपकी गर्भावस्था के लिए।', plan_why_birth: 'आपके बच्चे का जन्म {n} दिन पहले हुआ।', plan_why_post: 'जन्म के बाद यह हर महिला की मदद करता है।', plan_why_feed: 'आप स्तनपान करा रही हैं।',
+        plan_why_preg: 'आपकी गर्भावस्था के लिए।', plan_why_birth: 'आपके बच्चे का जन्म {n} दिन पहले हुआ।', plan_why_birth0: 'आपके बच्चे का जन्म आज हुआ।', plan_why_birth1: 'आपके बच्चे का जन्म कल हुआ।', plan_why_post: 'जन्म के बाद यह हर महिला की मदद करता है।', plan_why_feed: 'आप स्तनपान करा रही हैं।',
         plan_why_ttc: 'आप गर्भधारण की योजना बना रही हैं।', plan_why_midlife: 'यह मेनोपॉज़ के आसपास के सालों में मदद करता है।',
         plan_gv_irregular: 'ज़्यादा नियमित पीरियड', plan_gv_pmos: 'PMOS में बेहतर महसूस करना', plan_gv_pain: 'पीरियड में कम दर्द', plan_gv_heavy: 'ज़्यादा आयरन और आसान भारी पीरियड', plan_gv_pms: 'पीरियड से पहले शांत दिन', plan_gv_skin: 'साफ़ त्वचा और कम अनचाहे बाल',
         plan_gv_weight: 'सेहतमंद वज़न', plan_gv_ready: 'गर्भ के लिए तैयारी', plan_gv_food: 'गर्भावस्था में अच्छा खाना', plan_gv_nausea: 'जी मिचलाने में आसान दिन', plan_gv_iron: 'भरपूर आयरन', plan_gv_sleep: 'बेहतर नींद', plan_gv_mood: 'शांत दिन',
@@ -4030,9 +4056,9 @@
         plan_p2_v2_h: 'आपके रिकवरी प्लान में अब और भी है', plan_p2_v2_p: 'यह बच्चे के पहले जन्मदिन तक आपके शरीर के साथ चलता है: शाम की जाँच, 6 हफ़्ते की जाँच, फिर दोबारा मज़बूती। आपके दिन और जवाब वैसे ही रहेंगे।', plan_p2_v2_yes: 'इसे अपनाएँ', plan_p2_v2_done: 'आपका रिकवरी प्लान अपडेट हो गया।',
         plan_a_pwalk: 'जितना हो सके, थोड़ा चलें', plan_a_pf: 'पेल्विक फ़्लोर के कसाव', plan_a_pf5: '5 हल्के कसाव', plan_a_pf5_s: 'पेल्विक फ़्लोर, दूध पिलाते समय', plan_a_pf5_s0: 'पेल्विक फ़्लोर, लेटकर या बैठकर', plan_a_pf10: '10 कसाव, और खाँसी से पहले कसना', plan_a_pf10_s: 'खाँसने, छींकने या कुछ उठाने से पहले कस लें',
         plan_lk_h: 'इस हफ़्ते: कोई लीक?', plan_lk_never: 'कभी नहीं', plan_lk_some: 'कभी-कभी', plan_lk_most: 'ज़्यादातर दिन', plan_md_h: 'इस हफ़्ते आप अंदर से कैसी हैं?', plan_md_low: '2 हफ़्ते या उससे ज़्यादा से ज़्यादातर दिन उदास या चिंतित? इस हफ़्ते डॉक्टर से बात करें, या Tele-MANAS 14416 पर मुफ़्त कॉल करें।',
-        plan_rv_p14: '14वें दिन से: हफ़्ते में 3 दिन थोड़ी सैर', plan_rv_p42: 'लगभग 42वें दिन: आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rv_p84: '12वें हफ़्ते से: क्या शरीर और के लिए तैयार है?', plan_rv_p365: 'बच्चे के पहले जन्मदिन तक', plan_rv_p365b: 'डिलीवरी के एक साल तक', plan_rv_d2p: '{t} आपकी रिकवरी जाँच: 2 मिनट, उन संकेतों के साथ जिनमें देर नहीं करनी।', plan_st_r_six: '{d} को आपकी 6 हफ़्ते की जाँच',
+        plan_rv_p14: '14वें दिन से: हफ़्ते में 3 दिन थोड़ी सैर', plan_rv_p42: 'लगभग 42वें दिन: आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rv_p84: '12वें हफ़्ते से: क्या शरीर और के लिए तैयार है?', plan_rv_p365: 'बच्चे के पहले जन्मदिन तक', plan_rv_p365b: 'डिलीवरी के एक साल तक', plan_rv_d2p: '{t} आपकी रिकवरी जाँच: 1 मिनट, उन संकेतों के साथ जिनमें देर नहीं करनी।', plan_st_r_six: '{d} को आपकी 6 हफ़्ते की जाँच',
         plan_pq_h: 'आपका साल, 5 हिस्सों में', plan_pq_1: 'आराम और ठीक होना · दिन 0 से 13', plan_pq_1p: 'शाम की जाँच, हल्के कसाव, आराम', plan_pq_2: 'संभलना · दिन 14 से 41', plan_pq_2p: 'थोड़ी सैर, गर्भनिरोध चुनना, 6 हफ़्ते की जाँच', plan_pq_3: 'दोबारा मज़बूती · हफ़्ते 7 से 18', plan_pq_3p: '6 हफ़्ते की जाँच के बाद: ज़्यादा सैर, हल्के व्यायाम, फिर ताक़त वाले', plan_pq_4: 'जारी रखें · 6 महीने तक', plan_pq_4p: 'आपके क़दम जारी रहेंगे। पीरियड कभी भी लौट सकते हैं।', plan_pq_5: 'पहला साल · {d} तक', plan_pq_5p: 'आपके क़दम, और साल पर एक नज़र',
-        plan_rh_day_rc: '{n} क़दम, रिकवरी जाँच {t}', plan_th_rc_at: 'रिकवरी जाँच {t}', plan_p2_un_hd: 'थोड़ा और करने को तैयार?', plan_p2_un_pd: 'डॉक्टर के कहने पर, या जब आप तैयार महसूस करें, तब शुरू करें।', plan_rv_len_p: 'बच्चे के पहले जन्मदिन तक · रोज़ कुछ मिनट', plan_rv_len_pb: 'डिलीवरी के एक साल तक · रोज़ कुछ मिनट', plan_st_at_pp: 'हर शाम, 2 मिनट: आपकी रिकवरी जाँच, 41वें दिन तक।', plan_st_r_rc: '{t} की रिकवरी जाँच', plan_p2_six_wait: '{d} से दोबारा मज़बूती शुरू होगी।', plan_rh_p42: 'लगभग 42वें दिन', plan_rh_p42_s: 'आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rh_p84: '12वें हफ़्ते से', plan_rh_p84_s: 'क्या शरीर और के लिए तैयार है?', plan_res_lk: 'लीक', plan_res_lk_w: '{x} · हफ़्ता {n}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
+        plan_rh_day_rc: '{n} क़दम, रिकवरी जाँच {t}', plan_th_rc_at: 'रिकवरी जाँच {t}', plan_p2_un_hd: 'थोड़ा और करने को तैयार?', plan_p2_un_pd: 'डॉक्टर के कहने पर, या जब आप तैयार महसूस करें, तब शुरू करें।', plan_rv_len_p: 'बच्चे के पहले जन्मदिन तक · रोज़ कुछ मिनट', plan_rv_len_pb: 'डिलीवरी के एक साल तक · रोज़ कुछ मिनट', plan_st_at_pp: 'हर शाम, 1 मिनट: आपकी रिकवरी जाँच, 41वें दिन तक।', plan_st_r_rc: '{t} की रिकवरी जाँच', plan_p2_six_wait: '{d} से दोबारा मज़बूती शुरू होगी।', plan_rh_p42: 'लगभग 42वें दिन', plan_rh_p42_s: 'आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rh_p84: '12वें हफ़्ते से', plan_rh_p84_s: 'क्या शरीर और के लिए तैयार है?', plan_res_lk: 'लीक', plan_res_lk_w: '{x} · हफ़्ता {n}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
         plan_in_now_p: 'ताकि Sakhi जाने कि आप कहाँ से शुरू कर रही हैं, और आपको दिखा सके कि क्या बदला।', plan_in_sum_h: 'आपने Sakhi को यह बताया', plan_in_sum_p: 'एक बार देख लें, फिर Sakhi आपका प्लान बनाएगी।',
         plan_in_sum_goal: 'आप किस पर काम करना चाहती हैं', plan_in_sum_now: 'अभी', plan_in_sum_when: 'चलने-फिरने का आपका समय', plan_in_make: 'मेरा प्लान बनाएँ',
         plan_ci_first: 'इसमें एक मिनट लगता है। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ci_tom: 'कल: यही क़दम। {t} फिर मिलेंगे।', plan_ci_see: 'कल {t} फिर मिलेंगे।',

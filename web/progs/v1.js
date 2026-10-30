@@ -42,8 +42,9 @@
     intake: { screens: [{ id: 'psafe' }], day: ['food', 'milk'] },
     slots: { max: 4 }, hero: 'timeline', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'preg-plan', text: '@preg_plan_h', icon: 'check', hue: 'orange', priv: true }, { go: 'preg-week', text: '@preg_t_week', icon: 'baby', hue: 'plum', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: her folic acid tablet from Getting ready carries on to 12 weeks, with its 9 pm reminder' }],
     steps: [
+      { id: 'folic', kind: 'adapter', use: 'ttc.folic', if: ['folic'] },
       { id: 'pdue', kind: 'adapter', use: 'preg.due', from: 'preg-plan', check: true },
       { first: [
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', cap: 30, grow: 'hold', why: 'plan_fb_move_g', if: ['pt:green', '!pnow'] },
@@ -103,13 +104,13 @@
     intake: { day: ['food', 'milk', 'lim'], when: ['goal:weight'] },
     slots: { max: 4 }, hero: 'timeline', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'post-pelvic', text: '@post_t_pelvic', icon: 'flower', hue: 'plum', priv: true }, { go: 'post-checks', text: '@post_t_checks', icon: 'check', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.46: to the first birthday; the recovery check as her evening form to day 41; the squeezes by her days; a walk from day 14; back to strong after her 6-week check; strength after Is my body ready?; nothing about the baby after My baby has died' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.46: to the first birthday; the recovery check as her evening form to day 41; the squeezes by her days; a walk from day 14; back to strong after her 6-week check; strength after Is my body ready?; nothing about the baby after My baby has died' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: the gentle walk of the first 2 weeks opens no page (its Why? opened the recovery check)' }],
     steps: [
       { id: 'rcheck', kind: 'adapter', use: 'post.rcheck', if: ['early', 'route:post-recovery'] },
       { id: 'pelvic', kind: 'adapter', use: 'post.pf', if: ['route:post-pelvic'] },
       { goal: {
-        recovery: [{ id: 'pwalk', kind: 'tick', go: 'post-recovery', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
-        weight: [{ id: 'pwalk', kind: 'tick', go: 'post-recovery', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
+        recovery: [{ id: 'pwalk', kind: 'tick', go: 'plan', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
+        weight: [{ id: 'pwalk', kind: 'tick', go: 'plan', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
         feed: [{ id: 'feed', kind: 'tick', go: 'post-feed', title: '@tile', icon: 'drop', hue: 'rose', why: 'plan_fb_any', priv: true, if: ['route', '!died'] }],
         mood: [{ id: 'mood', kind: 'tick', go: 'relief-calm', title: '@relief_calm_t', icon: 'sparkle', hue: 'rose', why: 'plan_fb_calm', priv: true, if: ['route'], from: 'relief:calm' }],
         sleep: [{ id: 'sleep', kind: 'tick', go: 'relief-sleep', title: '@relief_sleep_t', icon: 'sparkle', hue: 'rose', why: 'plan_fb_sleep', priv: true, if: ['route'], from: 'relief:sleep' }]

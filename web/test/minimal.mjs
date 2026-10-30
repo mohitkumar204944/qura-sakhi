@@ -212,7 +212,7 @@ const PAIN_IK = { stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act:
 }
 {
   const a = await open({ seed: { mods: { plan: planOf('cycle', 'irregular', 9, { bed: 'b22' }) }, reminders: [planRem(9, '20:00')], settings: { notify: true } } });
-  check('2 never later than 45 minutes before her bedtime: in bed by 10 pm, the check-in at 9:15 pm', (await rem(a.page, 'plan') || {}).time === '21:15', await rem(a.page, 'plan'));
+  check('2 never later than 45 minutes before her bedtime, and always after her walk: in bed by 10 pm with a 9:15 pm walk, the check-in at 9:30 pm (Version 39.47: never at its minute)', (await rem(a.page, 'plan') || {}).time === '21:30', await rem(a.page, 'plan'));
   await done(a);
 }
 {

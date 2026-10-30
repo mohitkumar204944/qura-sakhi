@@ -2764,3 +2764,27 @@ After the bug hunt (MODULE_API 89.9), these lines were added:
 
 Reused word for word: the recovery check and its 12 signs, the 6-week check's line by care route, the newborn danger list and
 its free-ambulance line, the crisis card (`fl_harm_h`, `fl_harm`), the leaking tip.
+
+### 19.47 Version 39.47: the four-plan walk's gaps (MODULE_API section 90)
+
+No new health wording. New UI words (English, Hindi):
+- the evening reminder to day 41 after a birth: "Your recovery check · 1 minute" ("आपकी रिकवरी जाँच · 1 मिनट");
+- "Your baby was born today." / "Your baby was born yesterday." ("आपके बच्चे का जन्म आज हुआ।" / "…कल हुआ।");
+- on a shared phone, a hidden step: "Your step {n}" ("आपका कदम {n}");
+- "Your Sakhi": "Your plan: start it above, or later on Today" ("आपका प्लान: ऊपर शुरू करें, या बाद में ‘आज’ पर");
+- the test page: "Your period is 1 day late." ("पीरियड 1 दिन देर से है।");
+- the reveal and the Start card: the recovery check takes "1 minute" (they said "2 minutes"; its page says "About 1 minute").
+
+Moved, word for word:
+- Today's after-birth card shows, to day 20, the after-birth page's own line, "The first weeks after a baby are for healing.
+  Check yourself daily, feed often, and know the warning signs." After "My baby has died" it shows that line without the baby
+  (19.46). From day 21 it shows "Periods can come back any time, and you can get pregnant before the first one." From day 43 it
+  shows the full line, "…When bleeding starts again, log it here."
+- Her folic acid tablet step ("My folic acid tablet", "Not got it yet? See where") carries on into My pregnancy until 12 weeks,
+  as the reviewed card "Your test is positive" says.
+
+**For the doctor (timing, not words):**
+1. Free cervical screening and breast exam now wait until 6 weeks after a birth, as they already wait in pregnancy: her own
+   6-week check comes first. Is 6 weeks right, or should it be after her 6-week check, or 12 weeks?
+2. Today's after-birth card: is the line about getting pregnant before the first period right from day 21? And is "When
+   bleeding starts again, log it here" right only from day 43, once the bleeding after the birth has usually stopped?

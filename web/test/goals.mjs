@@ -227,7 +227,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('preg', 'food', ago(5)) } }) });
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
-  check('9 discreet: the pregnancy plan\'s due step says only "Your plan for today"', /Your plan for today/.test(td) && !/Register|pregnan/i.test(td), td);
+  check('9 discreet: the pregnancy plan\'s due step says only "Your plan for today" (or "Your step {n}" beside another hidden step, Version 39.47)', /Your plan for today|Your step \d/.test(td) && !/Register|pregnan/i.test(td), td);
   check('9 discreet: her plan\'s line has no pregnancy words', /My plan/i.test(td) && !/of pregnancy/.test(td), td);
   await ctx.close();
   const b = await open({ seed: Object.assign({}, POST(14), { settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('post', 'feed', ago(3)) } }) });

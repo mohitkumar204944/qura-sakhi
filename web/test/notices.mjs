@@ -75,7 +75,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   await page.evaluate((a) => { const S = window.Saathi; S.plan.startFromIntake(a); S.plan.start('today', '20:00'); S.save(); }, { stage: stage, goal: goal, gap: 'n', act: 0, bed: 'b23', work: 'day', when: 'evening', pain: 'pk', painDays: '23', pads: 'p23', clots: 'n', tired: 'n', pms: ['mood'], pmsLevel: 'lot' });
   await go(page, 'home');
   const r = (await rings(page)).filter((x) => x.rid === 'plan');   /* Version 39.22: the move nudge and the wind-down ring too */
-  check('1 ' + stage + '/' + goal + ': the evening alarm opens the check-in, on "Your plan", at 8 pm', r.length > 0 && r.every((x) => x.go === 'plan-checkin' && x.ch === 'sakhi_plan' && x.chname === 'Your plan' && x.hh === 20 && /How did today go\? 1 minute/.test(x.body)), r.slice(0, 1));
+  check('1 ' + stage + '/' + goal + ': the evening alarm opens the check-in, on "Your plan", at 8 pm', r.length > 0 && r.every((x) => x.go === 'plan-checkin' && x.ch === 'sakhi_plan' && x.chname === 'Your plan' && x.hh === 20 && (stage === 'post' ? /Your recovery check · 1 minute/ : /How did today go\? 1 minute/).test(x.body)), r.slice(0, 1));   /* Version 39.47: to day 41 after a birth, her recovery check */
   check('1 ' + stage + '/' + goal + ': no page errors', errs.length === 0, errs);
   await ctx.close();
 }
@@ -258,7 +258,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   const b = await open({ seed: { intake: IK, settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('heavy', 'heavy', ago(8), { log: log }) } } });
   await go(b.page, 'home');
   const td = await txt(b.page, '#view .today-card');
-  check('7 discreet: the heavy plan\'s iron step says only "Your plan for today"', /Your plan for today/.test(td) && !HEALTH.test(td), td);
+  check('7 discreet: the heavy plan\'s iron step says only "Your plan for today" (or "Your step {n}" beside another hidden step, Version 39.47)', /Your plan for today|Your step \d/.test(td) && !HEALTH.test(td), td);
   check('7 discreet: the look-back shows, in plain words', (await has(b.page, '#view .pl-sl-rev')) && !HEALTH.test(await txt(b.page, '#view .pl-sl-rev')), await txt(b.page, '#view .pl-sl-rev'));
   await go(b.page, 'plan');
   check('7 discreet: a light plan\'s page has no health words', !HEALTH.test(await view(b.page)), (await view(b.page)).match(/.{0,60}(period|PMOS|insulin|hormone|cramp|iron|regular periods|waist).{0,40}/i));

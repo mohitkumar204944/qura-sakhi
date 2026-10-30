@@ -333,6 +333,18 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "My baby has died".
     The bug hunt before the commit: section 15 (MODULE_API 89.9).
     Contract: MODULE_API section 89; wording: section 19.46 of the review (new lines wait for doctor review).
+  - `node test/fourwalk.mjs` (Version 39.47, the four-plan walk's gaps; Mohit, 30 Oct: "fix all 16"; the walk is
+    `node test/fourplans-walk.mjs`, screens and each woman's words to `test/shots/fourplans-walk/`):
+    - her folic acid carries on into My pregnancy, to 12 weeks;
+    - a card leads Sakhi says on 3 days at most, then waits 7 days under "More from Sakhi" (a card that keeps her safe always
+      leads), and her plan's next card leads;
+    - "Your recovery check" as the reminder to day 41 after a birth;
+    - one count for a late period; "Plan week {n}" after a birth; the reveal's check-in time; the check-in after her walk,
+      never at its minute;
+    - her Hb test waits for her visit; "Next week" never repeats; 1 minute for the recovery check; no page for the first
+      weeks' walk; "born today"; "Your step {n}" on a shared phone; "Your Sakhi" says where her plan starts;
+    - free check-ups and Today's after-birth line wait for the first 6 weeks.
+    Contract: MODULE_API section 90; wording: section 19.47 of the review (UI words; two timings for the doctor).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

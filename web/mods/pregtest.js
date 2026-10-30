@@ -120,7 +120,10 @@
     let when;
     if (test <= td) {
       when = T({ en: 'That day has come, so you can test now.', hi: 'वह दिन आ चुका है, आप अभी test कर सकती हैं।' });
-      if (due && S.diffDays(due, td) > 0) when += ' ' + esc(fill(tx({ en: 'Your period is {n} days late.', hi: 'पीरियड {n} दिन देर से है।' }), { n: S.diffDays(due, td) }));
+      /* Version 39.47 (Mohit's four-plan walk): from her diary, late counts from the end of her likely range, as Today and Cycles
+         say it (the same day said 11 days there and 14 here) */
+      const ri0 = mem.fromDiary && S.cycle.rangeInfo ? S.cycle.rangeInfo() : null; const lateN = ri0 && ri0.to ? S.diffDays(ri0.to, td) : (due ? S.diffDays(due, td) : 0);
+      if (lateN > 0) when += ' ' + esc(fill(tx(lateN === 1 ? { en: 'Your period is 1 day late.', hi: 'पीरियड 1 दिन देर से है।' } : { en: 'Your period is {n} days late.', hi: 'पीरियड {n} दिन देर से है।' }), { n: lateN }));
       if (due && S.diffDays(due, td) >= 60) extra.push(tx({ en: 'With no period for this long, see a doctor whatever the test shows.', hi: 'इतने समय से पीरियड नहीं आया है, तो test में जो भी आए, डॉक्टर को ज़रूर दिखाएँ।' }));
     } else when = esc(fill(tx({ en: 'That is {n} days from today. A test before then can show negative even if you are pregnant.', hi: 'यह आज से {n} दिन बाद है। उससे पहले test negative आ सकता है, भले ही गर्भ हो।' }), { n: S.diffDays(td, test) }));
     return '<div class="card"><div class="eyebrow">' + esc(t('pregtest_earliest')) + '</div><div class="pregtest-day">' + esc(day(test)) + '</div><p class="small">' + T(basis) + '</p><p style="color:var(--fg)">' + when + '</p>' + extra.map((x) => '<p class="note">' + esc(x) + '</p>').join('') + '</div>';

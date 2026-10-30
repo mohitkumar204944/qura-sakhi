@@ -85,7 +85,7 @@ const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'p
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at', 'sub'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens; sub: Version 39.34, a set walk's own line */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
-const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|unlock|pready|died|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|(week|pday|gw|birth):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34; unlock, pready, died and an open birth range: Version 39.46 */
+const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|unlock|pready|died|folic|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|(week|pday|gw|birth):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34; unlock, pready, died and an open birth range: Version 39.46; folic: Version 39.47 */
 const whenOk = (w) => w == null || w === 'daily' || w === 'periodDays' || /^days:[0-6](,[0-6])*$/.test(w);
 const keyOk = (x) => typeof x === 'string' && /^@([a-z][a-z0-9_]*|tile)$/.test(x);
 const bad = [];

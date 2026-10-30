@@ -951,7 +951,7 @@
   const piText = (id) => tx({ en: piName(id)[0], hi: piName(id)[1] });
   const PLAN = [
     { id: 'reg', gov: true, w: [0, 12], tip: 5, go: 'preg-mcp', auto: (st) => !!st.mcp.regd },
-    { id: 'folic', w: [0, 12], tip: 4 },
+    { id: 'folic', w: [0, 12], tip: 4, auto: () => !!(S.plan && S.plan.folicOn && S.plan.folicOn()) },   /* Version 39.47: her tablet from Getting ready, her plan's step (not "Due now" too) */
     { id: 'anc1', w: [0, 12], tip: 9, go: 'preg-mcp', rem: true, auto: (st, wi) => ancIn(st, wi, 0, 13) },
     { id: 'td', w: [0, 36], tip: 10, go: 'preg-mcp', ext: ['https://uwinselfregistration.mohfw.gov.in/login', 'plan_uwin'], auto: (st) => !!((st.mcp.td1 && st.mcp.td2) || st.mcp.tdb) },
     { id: 'scan1', w: [11, 14], tip: 11 },
