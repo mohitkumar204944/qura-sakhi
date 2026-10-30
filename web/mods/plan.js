@@ -2062,6 +2062,7 @@
     if (remAt && remAt >= '17:00') { d.remAt = remAt; d.remPick = true; } else d.remAt = n.remAt || '20:00';   /* Version 39.27: a time she picked stays hers */
     d.start = startDay(when); d.go = true; d.keep = false; d.weeks = {}; d.doc = null; d.lapse = null; d.per = null; d.endSeen = null; d.started = todayISO(); delete d.remGone;
     d.pv = (specOf(d.pack || 'cycle') || {}).ver || 1;   /* Version 39.4: the version of her plan she started */
+    if (d.goalKey) S.state.goals = [d.goalKey].concat((Array.isArray(S.state.goals) ? S.state.goals : []).filter((x) => x !== d.goalKey));   /* Version 39.48 (Mohit's switch walk): the plan she starts leads her goals, so For you and the rest follow it, also while it rests */
     if (postV2(d) && S.post && S.post.sixRemind) { const n0 = bDays(todayISO()); if (n0 != null && n0 < 42) S.post.sixRemind(); }   /* Version 39.46: her own 6-week check rings on its day */
     delete d.pauseUntil; delete d.remPaused; delete d.chg; delete d.docAt; delete d.docSaid; delete d.m4Seen; delete d.dueSeen; delete d.yearSeen; delete d.carried;   /* review RESULTS-03: the last plan's doctor answer stays with it */
     const fr = fairOf(Array.isArray(d.past) ? d.past[0] : null, d);   /* review FIXES-04: after Stop, past[0] is the plan she stopped */
@@ -2244,6 +2245,28 @@
     if (disc()) return '<div class="' + cls + '" data-nofold="1" data-disc-ok="1"><h3>' + esc(t('plan_chg_h')) + '</h3><p class="small">' + esc(t('plan_chg_d')) + '</p><div class="row wrap">' + (slot ? '<button type="button" class="btn sm primary" data-go="plan">' + esc(t('plan_chg_go_d')) + '</button>' : '<button type="button" class="btn sm" id="pl-chg-not">' + esc(t('plan_rec_not')) + '</button>') + '</div></div>';   /* review PAGES-08, FIXES-06: on My plan itself, Not now (the page has its one pick button) */
     return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(t('plan_chg_h')) + '</h3><p class="small">' + esc(tf(why === 'preg' ? 'plan_chg_preg' : 'plan_chg_birth', { t: packTitle(dd), n: followedDays(dd) })) + '</p>' +
       '<div class="row wrap"><button type="button" class="btn sm primary" id="pl-chg-go" data-chg="' + why + '">' + esc(t(why === 'preg' ? 'plan_chg_go_preg' : 'plan_chg_go_post')) + '</button><button type="button" class="btn sm" id="pl-chg-not">' + esc(t('plan_rec_not')) + '</button></div></div>';
+  }
+  /* Version 39.48 (Mohit's switch walk): her stage moved between tracking and trying while the other stage's plan runs. Getting
+     ready ran on after "Tracking my periods" (folic acid, trying lessons, "you could be pregnant"), and Easier periods after
+     "Trying for a baby", with no folic acid; "Your plan has changed" knew only a pregnancy and a birth. Now one card offers the
+     plan for now. Her plan runs on until she chooses, and "Keep" keeps it, remembered apart from "Your plan has changed" so a
+     pregnancy still asks. */
+  const CYC_PACKS = ['cycle', 'pain', 'heavy', 'pms'];
+  function fitWhy(d) {
+    if (!planOn() || !d || !d.start || pendingOk(d) || d.start > todayISO() || pregnant() || pausedFor(d) || selfPaused(d) || finished(fullD(d))) return null;
+    const st = stageNowKey(); const pk = packOf(d);
+    const why = st === 'ttc' && CYC_PACKS.indexOf(pk) >= 0 ? 'ttc' : (st === 'cycle' && pk === 'ttc' ? 'nottc' : null);
+    return why && d.fitKeep !== d.start + ':' + why ? why : null;
+  }
+  function fitCard(d, why) {
+    const dd = fullD(d); const cls = 'card soft pl-slot pl-fit pl-sl-fit'; const b = (id, key, pri, x) => '<button type="button" class="btn sm' + (pri ? ' primary' : '') + '" id="' + id + '" data-fit="' + why + '">' + esc(x || t(key)) + '</button>';
+    if (disc()) return '<div class="' + cls + '" data-nofold="1" data-disc-ok="1"><h3>' + esc(t('plan_fit_hd')) + '</h3><p class="small">' + esc(t('plan_fit_pd')) + '</p><div class="row wrap">' + b('pl-fit-go', 'plan_fit_pick', true) + b('pl-fit-keep', 'plan_fit_keep_d') + '</div></div>';   /* a shared phone: plain words */
+    return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(t(why === 'ttc' ? 'plan_fit_ttc_h' : 'plan_fit_cyc_h')) + '</h3><p class="small">' + esc(t(why === 'ttc' ? 'plan_fit_ttc_p' : 'plan_fit_cyc_p')) + '</p><div class="row wrap">' +
+      b('pl-fit-go', why === 'ttc' ? 'plan_fit_ttc_go' : 'plan_fit_pick', true) + b('pl-fit-keep', null, false, tf('plan_fit_keep', { t: packTitle(dd) })) + '</div></div>';
+  }
+  function wireFit(v) {
+    const g = v.querySelector('#pl-fit-go'); if (g) g.addEventListener('click', () => { S.mem.planIntake = g.dataset.fit === 'ttc' ? { stage: 'ttc', goal: 'ready', iq: 1 } : { stage: stageNowKey(), iq: 0 }; S.setHash('plan-goal'); });
+    const k = v.querySelector('#pl-fit-keep'); if (k) k.addEventListener('click', () => { const dd = D(); dd.fitKeep = dd.start + ':' + k.dataset.fit; S.saveQuiet(); S.render(); });
   }
   /* Version 39.46: after the birth, her pregnancy's answers for "Your day" (how she eats, her knees or back), so it isn't asked again */
   const postPre = () => { const ik = S.state.intake || {}; const d0 = raw() || {}; const a = { stage: 'post', goal: 'recovery', iq: 1 };
@@ -2852,6 +2875,7 @@
         '<button type="button" class="btn sm primary" data-go="plan-reveal">' + esc(t('plan_sl_go_b')) + '</button>' + (run ? '<button type="button" class="btn sm" id="pl-next-drop">' + esc(t('plan_sl_keep')) + '</button>' : ''), true);
     }
     const chg = changedWhy(d); if (chg) return changedCard(d, chg, true);   /* Version 39.5 */
+    const fit = fitWhy(d); if (fit) return fitCard(d, fit);   /* Version 39.48: her stage moved between tracking and trying */
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return '';
     const k = cardKind(d); const dd = fullD(d); const acts = actionsFor(dd); const first = acts[0]; const day = planDay(dd); const easy = acts.find((a) => a.id === 'move') || first;   /* Version 39.13: a restart starts with her walk */
     if (postV2(dd) && S.post && S.post.sixSync) S.post.sixSync();   /* Version 39.46: a changed birth date moves her 6-week check */
@@ -3044,7 +3068,7 @@
     const cn = v.querySelector('#pl-call-not'); if (cn) cn.addEventListener('click', () => call(false));
     /* she keeps the plan she is on: the new one is dropped */
     const nd = v.querySelector('#pl-next-drop'); if (nd) nd.addEventListener('click', () => { const dd = D(); delete dd.next; if (S.state.prompts) delete S.state.prompts.reveal; S.saveQuiet(); S.render(); });
-    wirePause(v); wireChange(v); wireQuiet(v);
+    wirePause(v); wireChange(v); wireFit(v); wireQuiet(v);
     const cs = v.querySelector('#pl-carry-stop'); if (cs) cs.addEventListener('click', () => { S.mem.planStopT = true; S.render(); });   /* Version 39.27 (R03) */
     const cno = v.querySelector('#pl-carry-no'); if (cno) cno.addEventListener('click', () => { S.mem.planStopT = false; S.render(); });
     const cye = v.querySelector('#pl-carry-yes'); if (cye) cye.addEventListener('click', () => { closePlan(D()); S.mem.planStopT = false; S.save(); S.render(); });
@@ -3489,7 +3513,8 @@
     intake: { render: renderIntake, count: (a) => (a && a.goal ? screensOf(a).length : 5), goals: (st) => GOALS[stKey(st)].slice(),
       part: (a) => { const l = a && a.goal ? screensOf(a) : []; return l[S.clamp((a && a.iq) || 0, 0, Math.max(0, l.length - 1))] === 'sum' ? 2 : 1; } },
     psTier: psTier, gwAt: (iso) => gwAt(iso),   /* Version 39.34 */
-    changing: () => { const d = raw(); return !!(planOn() && d && changedWhy(d)); },   /* Version 39.35: core's goals card waits while it asks */
+    changing: () => { const d = raw(); return !!(planOn() && d && (changedWhy(d) || fitWhy(d))); },   /* Version 39.35: core's goals card waits while it asks */   /* Version 39.48: or while the plan for now is offered */
+    misfit: () => { const d = raw(); return !!(planOn() && d && fitWhy(d)); },   /* Version 39.48: a plan that doesn't fit her stage doesn't keep its goal first */
     nudgeAt: NUDGE_AT, mcDue: () => (raw() ? mcDue(fullD(raw())) : 0),   /* Version 39.12 */
     startFromIntake: startFromIntake, packFor: packFor, packOf: () => packOf(raw()), dayDone: (iso) => { const d = raw(); return !!(packOf(d) && iso >= d.start && dayDone(fullD(d), iso)); }, actions: (iso) => (packOf(raw()) ? actionsFor(fullD(raw()), iso || undefined) : []),   /* Version 39.46: any day's steps, for tests */
     /* Version 37.1: a plan waits to be started; core orders Today by these, and joy holds its petals for the first check-in */
@@ -3653,7 +3678,7 @@
         plan_all_foot: 'Suggestions come from what you logged and what you told Sakhi. They are not a diagnosis. For medicines or supplements, ask a doctor.',
         plan_help_h: 'What you want help with', plan_help_none: 'Nothing picked yet.', plan_help_save: 'Save', plan_help_saved: 'Saved. Your suggestions are updated.', plan_cancel_b: 'Cancel',
         plan_off_eye: 'Ready for you', plan_off_p: 'Made from your answers and your first log.', plan_off_b: 'See my plan', plan_off_later: 'Later',
-        plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_rec_all: 'All plans', plan_paused_pill: 'After your 6-week check',
+        plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_fit_ttc_h: 'Trying for a baby now?', plan_fit_ttc_p: 'Getting ready for a baby has the steps for these months: your folic acid tablet, your food and your moves.', plan_fit_ttc_go: 'See Getting ready', plan_fit_cyc_h: 'Not trying for a baby now?', plan_fit_cyc_p: 'Getting ready for a baby is for the months before a pregnancy. Choose a plan for your periods, or keep this one.', plan_fit_pick: 'Choose my plan', plan_fit_keep: 'Keep {t}', plan_fit_hd: 'A different plan may fit now', plan_fit_pd: 'Your stage has changed. Choose a plan for now, or keep yours.', plan_fit_keep_d: 'Keep my plan', plan_rec_all: 'All plans', plan_paused_pill: 'After your 6-week check',
         plan_d_12w: '12 weeks', plan_d_21d: '21 days', plan_d_3m: '3 minutes', plan_d_2m: '2 minutes', plan_d_daily: 'Every day',
         plan_sc_t: 'Could it be PMOS?', plan_sc_s: 'The signs doctors ask about, with your diary',
         plan_why_g: 'You asked for help with: {k}.', plan_why_pcos: 'You told Sakhi you have PMOS.', plan_why_sc: 'Your PMOS self-check matched PMOS.', plan_why_sc_risk: 'Your PMOS self-check found 1 of the 2 signs.',
@@ -3971,7 +3996,7 @@
         plan_all_foot: 'सुझाव आपकी entries और आपके बताए जवाबों से आते हैं। ये कोई निदान नहीं हैं। दवा या सप्लीमेंट के लिए डॉक्टर से पूछें।',
         plan_help_h: 'आपको किस बात में मदद चाहिए', plan_help_none: 'अभी कुछ नहीं चुना।', plan_help_save: 'सेव करें', plan_help_saved: 'सेव हो गया। आपके सुझाव बदल गए हैं।', plan_cancel_b: 'रद्द करें',
         plan_off_eye: 'आपके लिए तैयार', plan_off_p: 'आपके जवाबों और पहली एंट्री से बना।', plan_off_b: 'मेरा प्लान देखें', plan_off_later: 'बाद में',
-        plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_rec_all: 'सभी प्लान', plan_paused_pill: '6 हफ़्ते की जाँच के बाद',
+        plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_fit_ttc_h: 'अब बच्चे की कोशिश कर रही हैं?', plan_fit_ttc_p: '‘गर्भ के लिए तैयारी’ में इन महीनों के कदम हैं: folic acid की गोली, आपका खाना और व्यायाम।', plan_fit_ttc_go: '‘गर्भ के लिए तैयारी’ देखें', plan_fit_cyc_h: 'अभी बच्चे की कोशिश नहीं?', plan_fit_cyc_p: '‘गर्भ के लिए तैयारी’ प्रेगनेंसी से पहले के महीनों के लिए है। अपने पीरियड के लिए प्लान चुनें, या इसी को रखें।', plan_fit_pick: 'मेरा प्लान चुनें', plan_fit_keep: '{t} रखें', plan_fit_hd: 'अब कोई दूसरा प्लान ठीक रहेगा', plan_fit_pd: 'आपकी स्थिति बदली है। अभी के लिए प्लान चुनें, या अपना रखें।', plan_fit_keep_d: 'मेरा प्लान रखें', plan_rec_all: 'सभी प्लान', plan_paused_pill: '6 हफ़्ते की जाँच के बाद',
         plan_d_12w: '12 हफ़्ते', plan_d_21d: '21 दिन', plan_d_3m: '3 मिनट', plan_d_2m: '2 मिनट', plan_d_daily: 'रोज़',
         plan_sc_t: 'क्या यह PMOS हो सकता है?', plan_sc_s: 'डॉक्टर जिन संकेतों के बारे में पूछते हैं, आपकी डायरी के साथ',
         plan_why_g: 'आपने इसमें मदद माँगी: {k}।', plan_why_pcos: 'आपने Sakhi को बताया कि आपको PMOS है।', plan_why_sc: 'आपका PMOS self-check PMOS से मेल खाता है।', plan_why_sc_risk: 'आपके PMOS self-check में 2 में से 1 संकेत मिला।',

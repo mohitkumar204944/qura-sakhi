@@ -345,6 +345,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       weeks' walk; "born today"; "Your step {n}" on a shared phone; "Your Sakhi" says where her plan starts;
     - free check-ups and Today's after-birth line wait for the first 6 weeks.
     Contract: MODULE_API section 90; wording: section 19.47 of the review (UI words; two timings for the doctor).
+  - `node test/stagesync.mjs` (Version 39.48, the switch walk's gaps; Mohit, 30 Oct: "fix all 5"; the walk is
+    `node test/switch-walk.mjs [priya|neha|riya|meera|asha]`, screens and each checkpoint's words to `test/shots/switch-walk/`):
+    - the plan for now when her stage moves between tracking and trying ("Not trying for a baby now?", "Trying for a baby now?",
+      Keep), and a pregnancy still asks;
+    - after a loss, the goals ask and free check-ups wait 6 weeks;
+    - "Log the day your periods came back", never "Updated" first;
+    - her 6-week check reminder ends;
+    - the plan she starts leads her goals.
+    Contract: MODULE_API section 91; wording: section 19.48 of the review (UI words; one timing for the doctor).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

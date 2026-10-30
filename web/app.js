@@ -1904,7 +1904,7 @@
   function finishUpdate() {
     const ob = mem.ob || {}; const tile = OB_ENGINE[ob.tile] ? ob.tile : obTileOf(); const st = stageNow(); const sit = state.situation || (state.situation = {});
     if (tile === 'pmos' && ob.dx === 'y') sit.pcos = true;
-    const picked = (ob.goals || []).slice(); const run = api.plan && safe(() => api.plan.running && api.plan.running() && api.plan.goal ? api.plan.goal() : null, null);
+    const picked = (ob.goals || []).slice(); const run = api.plan && !safe(() => !!(api.plan.misfit && api.plan.misfit()), false) ? safe(() => api.plan.running && api.plan.running() && api.plan.goal ? api.plan.goal() : null, null) : null;   /* Version 39.48: unless it doesn't fit her stage */
     const goals = run && picked.indexOf(run) < 0 ? [run].concat(picked).slice(0, 3) : picked;   /* a running plan keeps its goal first */
     state.goals = goalsList(st, goals, !!sit.pcos); state.focus = { tile: tile, goals: goals, at: toISO(today()) };
     state.prompts = state.prompts || {}; state.prompts.exAsked = toISO(today());
@@ -2071,6 +2071,7 @@
   /* Version 39.10: a woman who joined before it tells Sakhi her stage and goals, once (and again after a stage change) */
   function exCard(disc) {
     if (disc || !canSave() || state.sample || state.focus || (state.prompts || {}).exAsked || state.stage !== 'app') return '';
+    const pe = (state.situation || {}).pregEndedOn; if (isISO(pe) && diffDays(fromISO(pe), today()) < 42) return '';   /* Version 39.48 (Mohit's switch walk): after a loss it waits 6 weeks; My plan's "Pick a goal when you're ready" stays */
     /* Version 39.32 (found on Mohit's phone): a plan she started or made at this stage already holds her stage and goal */
     if (api.plan && safe(() => (api.plan.running && api.plan.running() && (state.intake || {}).stage === stageNow()) || (api.plan.pending && api.plan.pending()) || (api.plan.changing && api.plan.changing()), false)) return '';   /* Version 39.35: nor while "Your plan has changed" asks */
     return '<div class="card soft ex-card" data-nofold="1"><h3>' + esc(t('fx_h')) + '</h3><p class="small">' + esc(t('fx_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="ex-go">' + esc(t('fx_b')) + '</button><button type="button" class="btn sm" id="ex-not">' + esc(t('tour_later')) + '</button></div></div>';
@@ -2478,6 +2479,7 @@
     if (ch) { state.prompts = Object.assign({}, p, { slotLead: ld, slotAside: aside }); setTimeout(save, 0); }
   }
   function renderHome(v) {
+    safe(() => api.post && api.post.sixSync && api.post.sixSync());   /* Version 39.48: her 6-week check reminder ends after its day, or in a new pregnancy, whatever plan runs */
     const cd = cycleDay(); const ls = lastStart(); const ri = rangeInfo(); const g = usable(); const last6 = g.slice(-6); const bd = bleedingDays(); const tStr = toISO(today()); const inPeriod = bd[tStr] && bd[tStr] !== 'spot';
     const disc = !!state.settings.discreet; const hide = disc && !mem.shownNumbers; const blur = hide ? ' blur' : '';
     const sit0 = state.situation; const birthD = sit0.deliveredOn ? diffDays(fromISO(sit0.deliveredOn), today()) : null;
@@ -3220,9 +3222,10 @@
         }
         state.focus = null; if (state.prompts) delete state.prompts.exAsked;   /* Version 39.10: Today asks her goals for her new stage */
         state.prompts = state.prompts || {}; state.prompts.exStage = toISO(today());   /* Version 39.42: she just set it, so a plan offer in Sakhi says comes first (an older diary is asked as before) */
-        save(); closeSheet(); toast(t('stage_saved'));
-        const ls = lastStart();
-        if ((pick === 'cycle' || pick === 'ttc') && s0.deliveredOn && diffDays(fromISO(s0.deliveredOn), today()) <= 365 && !(ls && ls > fromISO(s0.deliveredOn))) { setHash('home'); toast(t('stage_log_first')); openLog('start', toISO(today()), null); return; }
+        const ls = lastStart(); const needLog = (pick === 'cycle' || pick === 'ttc') && s0.deliveredOn && diffDays(fromISO(s0.deliveredOn), today()) <= 365 && !(ls && ls > fromISO(s0.deliveredOn));
+        save(); closeSheet();
+        if (needLog) { setHash('home'); toast(t('stage_log_first')); openLog('start', toISO(today()), null); return; }   /* Version 39.48 (Mohit's switch walk): her first period after the birth moves her, so "Updated" waits until it is true */
+        toast(t('stage_saved'));
         setHash('home');
       });
     });

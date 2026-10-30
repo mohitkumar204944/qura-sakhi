@@ -2788,3 +2788,21 @@ Moved, word for word:
    6-week check comes first. Is 6 weeks right, or should it be after her 6-week check, or 12 weeks?
 2. Today's after-birth card: is the line about getting pregnant before the first period right from day 21? And is "When
    bleeding starts again, log it here" right only from day 43, once the bleeding after the birth has usually stopped?
+
+### 19.48 Version 39.48: the switch walk's gaps (MODULE_API section 91)
+
+No new health wording. New UI words (English, Hindi):
+- "Trying for a baby now?" ("अब बच्चे की कोशिश कर रही हैं?"):
+  - "Getting ready for a baby has the steps for these months: your folic acid tablet, your food and your moves."
+    ("‘गर्भ के लिए तैयारी’ में इन महीनों के कदम हैं: folic acid की गोली, आपका खाना और व्यायाम।");
+  - "See Getting ready" ("‘गर्भ के लिए तैयारी’ देखें") and "Keep {her plan}" ("{प्लान} रखें").
+- "Not trying for a baby now?" ("अभी बच्चे की कोशिश नहीं?"):
+  - "Getting ready for a baby is for the months before a pregnancy. Choose a plan for your periods, or keep this one."
+    ("‘गर्भ के लिए तैयारी’ प्रेगनेंसी से पहले के महीनों के लिए है। अपने पीरियड के लिए प्लान चुनें, या इसी को रखें।");
+  - "Choose my plan" ("मेरा प्लान चुनें").
+- On a shared phone: "A different plan may fit now · Your stage has changed. Choose a plan for now, or keep yours. · Keep my plan"
+  ("अब कोई दूसरा प्लान ठीक रहेगा · आपकी स्थिति बदली है। अभी के लिए प्लान चुनें, या अपना रखें। · मेरा प्लान रखें").
+
+**For the doctor or psychologist (timing, not words):** after a pregnancy loss, Today now waits 6 weeks before it asks "Tell
+Sakhi your stage and goals" and shows the free check-ups card. My plan keeps "Pick a goal when you're ready" from the first day.
+Is 6 weeks right?

@@ -971,7 +971,11 @@
       });
     });
   }
-  const sixSync = () => { const r = S.reminders.get('post-6wk'); const bb = birth(); if (!r || !bb) return; const want = S.toISO(S.addDays(bb, 42)); if ((r.dates || [])[0] !== want) S.reminders.upsert({ id: 'post-6wk', dates: [want] }, { quiet: true }); };   /* Version 39.46 */
+  /* Version 39.48 (Mohit's switch walk): it ends once its day has passed, or with no birth, or in a new pregnancy (Me said "1 on" a
+     year after the birth, with nothing to ring) */
+  const sixSync = () => { const r = S.reminders.get('post-6wk'); if (!r) return; const bb = birth(); const preg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
+    const want = bb ? S.toISO(S.addDays(bb, 42)) : null; if (!want || preg || S.toISO(S.today()) > want) { S.reminders.remove('post-6wk'); return; }
+    if ((r.dates || [])[0] !== want) S.reminders.upsert({ id: 'post-6wk', dates: [want] }, { quiet: true }); };   /* Version 39.46 */
   const sixRemind = () => { const bb = birth(); if (!bb) return; S.reminders.upsert({ id: 'post-6wk', mod: 'post', title: { en: 'My 6-week check after birth', hi: 'डिलीवरी के बाद मेरी 6 हफ़्ते की जाँच' }, kind: 'checkup', dates: [S.toISO(S.addDays(bb, 42))], time: '09:00', on: true }); };
 
   /* ---------- hooks ---------- */

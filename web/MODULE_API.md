@@ -5836,3 +5836,37 @@ changed on purpose:
 `progs/baseline.json` re-records `preg@2` (her tablet's step) and `post@2` (the walk's page). Golden is re-recorded for 9: "Next
 week" isn't the same line again. The walk itself, `node test/fourplans-walk.mjs`, writes its screens and each woman's words to
 `test/shots/fourplans-walk/` (not pass/fail).
+
+## 91. Version 39.48: the switch walk's gaps
+
+Mohit, 30 Oct: "can you do proper thorough check by walkthrough navigating between different stages and using different
+programs ... make sure everything sync properly home, diary, my plan etc." (`test/switch-walk.mjs`: five women change their
+stage and their plan through the real pages, and at each change Today, My plan, the Diary, Me, Explore, what rings and what is
+saved are compared), then "fix all 5". New words are UI only (review section 19.48).
+1. **The plan for now, when her stage moves between tracking and trying** (plan.js `fitWhy`, `fitCard`, `wireFit`; `S.plan.misfit`;
+   core `finishUpdate`).
+   - Getting ready ran on after "Tracking my periods" (folic acid, trying lessons, "you could be pregnant"), and Easier periods
+     after "Trying for a baby", with no folic acid. "Your plan has changed" knew only a pregnancy and a birth, and "Tell Sakhi"
+     kept the running plan's goal first.
+   - Now one card in Sakhi says offers the plan for now:
+     - "Not trying for a baby now?" with Choose my plan (her stage's plans) and Keep Getting ready;
+     - "Trying for a baby now?" with See Getting ready and Keep {her plan}.
+   - Her plan runs on until she chooses. "Keep" is remembered apart from "Your plan has changed" (`fitKeep`), so a pregnancy
+     still asks.
+   - While the card asks, the goals ask waits (`changing`). A plan that doesn't fit her stage doesn't keep its goal first in
+     "Tell Sakhi".
+   - A shared phone sees "A different plan may fit now" in plain words.
+2. **After a pregnancy loss, Today waits 6 weeks** before "Tell Sakhi your stage and goals" (core `exCard`) and the free check-ups
+   card (screen.js `homeTop`), as the check-ups wait after a birth (39.47). My plan keeps "Pick a goal when you're ready". After 6
+   weeks, one ask at a time, as before (a plan for her first, then her goals). The timing is for the doctor (review 19.48).
+3. **"Tracking my periods" (or trying) after a birth, with no period logged** (the stage sheet): "Log the day your periods came
+   back" and the period log, never "Updated." first. Her first period after the birth moves her, as before.
+4. **Her 6-week check reminder ends** (post.js `sixSync`, run as Today draws, whatever plan runs): the day after its date, with no
+   birth, or in a new pregnancy. Me said "1 on" a year after the birth, with nothing to ring.
+5. **The plan she starts leads her goals** (plan.js `commitStart`): changing PMOS for Easier periods left PMOS first, so For you
+   showed PMOS pages while Easier periods rested.
+
+**Tests:** `node test/stagesync.mjs` (27 checks; on 0.39.47's code 2 fail, then it stops: there is no card to choose from). Updated for
+what changed on purpose: companion 2, her goals after she starts a plan (`["irregular","track"]`). The
+walk itself, `node test/switch-walk.mjs [priya|neha|riya|meera|asha]`, writes its screens and each checkpoint's words to
+`test/shots/switch-walk/` (not pass/fail).
