@@ -78,7 +78,7 @@ def props_for(names):
         elif kind == 'calfwall':
             m = stage.prop('calfwall', y=moves.CALF_WALL_Y)
         else:
-            m = stage.prop('step', front=moves.STEP_FRONT, h=moves.STEP_H); framed += m
+            m = stage.prop('step', front=moves.STEP_FRONT, h=moves.STEP_H) + stage.prop('rail', a=moves.RAIL_A, b=moves.RAIL_B); framed += m
         made += m
     return made, framed
 

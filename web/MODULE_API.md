@@ -5392,6 +5392,17 @@ pose was checked from the app's camera and from a three-quarter view, and every 
    - Her standing positions share one camera and her positions on the mat another (`SUN_VIEWS`), so she fills the frame on
      the mat; the flows down to the mat and back up carry the camera across. Before, one loose camera framed all twelve and
      she lay along the bottom of the frame.
+9. Strength at home (30 Oct, "strength moves need improvement too"):
+   - Loosen up does all three things its words say: her head turns slowly to each side, one shoulder roll, then one big arm
+     circle (8 seconds). It is filmed from her side, where the circle reads as forward, up, back and down; its still, both
+     arms up, is too.
+   - Chair squats lower slowly (1.8 seconds), sit a moment and stand without her hands: 4 seconds a squat.
+   - Wall push-ups stand further back (the wall 80 cm from her heels) and lean from 16 to 26 degrees, so her chest comes
+     close to the wall, as the drawing has it. Her palms rest on the wall's face, here and in heel raises (before, 2.7 cm
+     into it).
+   - Step-ups have a handrail beside the step ("Hold the railing"); her left hand holds it and slides up as she steps up.
+   - Bridge lifts and heel raises come down slowly: the bridge holds, then lowers over 2.2 seconds; heel raises pause on her
+     toes, then lower over 1.5 seconds.
 
 **The rest (the mockup's notes):**
 1. After each move and each set: 15 seconds in Strength at home, 10 in Gentle start and Cycle care (`REST_S`, `restAfter`).

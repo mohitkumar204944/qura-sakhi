@@ -64,11 +64,18 @@ def setup(size=(720, 600), view='side', samples=48):
 
 
 def prop(kind, **o):
-    """Chair (behind her), a wall or the calf wall (in front), a step (in front) or a yoga mat (under her)."""
+    """Chair (behind her), a wall or the calf wall (in front), a step (in front) with its railing on her left, or a yoga mat
+    (under her)."""
     made = []
     def box(loc, dim, m):
         bpy.ops.mesh.primitive_cube_add(location=loc); b = bpy.context.object; b.dimensions = dim; b.data.materials.append(m)
         bpy.ops.object.transform_apply(scale=True); made.append(b); return b
+    def bar(a, b, r, m):
+        """A round bar from a to b."""
+        a, b = Vector(a), Vector(b)
+        bpy.ops.mesh.primitive_cylinder_add(radius=r, depth=(b - a).length, location=(a + b) / 2, vertices=24)
+        c = bpy.context.object; c.rotation_mode = 'QUATERNION'; c.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(b - a)
+        c.data.materials.append(m); made.append(c); return c
     if kind == 'chair':
         wood = mat('wood', (0.42, 0.26, 0.15), 0.6)
         box((0, 0.31, 0.435), (0.46, 0.42, 0.04), wood); box((0, 0.53, 0.75), (0.46, 0.03, 0.6), wood)
@@ -78,7 +85,13 @@ def prop(kind, **o):
     elif kind in ('wall', 'calfwall'):
         y = o['y']; box((0, y - 0.06, 1.0), (1.6, 0.12, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
     elif kind == 'step':
-        f, h = o['front'], o['h']; box((0, f - 0.2, h / 2), (0.9, 0.4, h), mat('stepwood', (0.55, 0.36, 0.22), 0.6))
+        f, h = o['front'], o['h']; box((0, f - 0.2, h / 2), (0.7, 0.4, h), mat('stepwood', (0.55, 0.36, 0.22), 0.6))
+    elif kind == 'rail':
+        # a handrail sloping up beside the step, on two posts and one between them
+        a, b = Vector(o['a']), Vector(o['b']); metal = mat('rail', (0.32, 0.31, 0.3), 0.35)
+        bar(a, b, 0.021, metal)
+        for t in (0.0, 0.55, 1.0):
+            p = a.lerp(b, t); bar((p.x, p.y, 0), (p.x, p.y, p.z), 0.018, metal)
     elif kind == 'mat':
         (x0, y0), (x1, y1) = o['lo'], o['hi']
         cx, cy = (x0 + x1) / 2, (y0 + y1) / 2; w = max(0.62, x1 - x0 + 0.24); l = max(1.8, y1 - y0 + 0.3)
