@@ -6,7 +6,8 @@
 //   - the rest: 15 seconds in Strength at home, 10 in Gentle start and Cycle care, none between sides, before Shavasana or in
 //     the sun salutation; +20s, Pause, Skip rest, and "Next" on a move skipping its rest; Previous; the next move's picture;
 //     the voice line; the screen kept on; the rest counted in her minutes;
-//   - the seated forward bend (child pose with knee pain) has its own loop;
+//   - the seated forward bend (child pose with knee pain) has its own loop; Anulom vilom has its own still, her right hand at
+//     her nose (30 Oct), and Bhramari keeps her sitting;
 //   - Hindi at 360 px, no page errors, nothing sent anywhere;
 //   - on Mohit's Flip5 (360 x 800) and a small phone, Previous, Pause and Next stay above the tab bar, tappable, with the
 //     timer in view, however many lines the move's words take (30 Oct: "fix the buttons").
@@ -180,9 +181,10 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   await k.ctx.close();
   const c = await open();
   await go(c.page, 'plan-r-calm'); await tap(c.page, '#pl-pstart');
-  check('4 Calm breath shows her sitting, eyes closed', (await attr(c.page, 'img#pl-fig3d', 'src')) === 'fig/s/sit.webp');
+  check('4 Anulom vilom shows her right hand at her nose, eyes closed, as its words say', (await attr(c.page, 'img#pl-fig3d', 'src')) === 'fig/s/nostril.webp');
   await settle(c.page, 180500);
   check('4 Calm breath has no rests', /Move 2 of 3/i.test(await view(c.page)) && !(await has(c.page, '#pl-rest')), (await view(c.page)).slice(0, 120));
+  check('4 Bhramari shows her sitting, eyes closed', (await attr(c.page, 'img#pl-fig3d', 'src')) === 'fig/s/sit.webp');
   check('4 no page errors', !errs.length && !k.errs.length && !c.errs.length, [errs, k.errs, c.errs]);
   await c.ctx.close();
 }

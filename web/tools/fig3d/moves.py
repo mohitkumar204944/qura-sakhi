@@ -101,7 +101,7 @@ def triangle(k):
     t = max(0.15, min(0.85, (kn.z - (sh.z - k.bent(8))) / (kn.z - an.z)))
     k.arm('R', kn + (an - kn) * t + V((0, -0.055, 0)), elbow=sh + V((-0.3, 0.3, -0.1)), palm=(0, 1, 0), fingers=(0, 0, -1))
     k.shape('LR', 'flat')
-    k.neck(twist=25)
+    k.neck(twist=60)   # "look up if your neck is comfortable": her face turns up to her raised hand
 
 
 def _circle(k, a):
@@ -119,7 +119,7 @@ for _a in range(0, 360, 45):
 
 
 def warmup(k):
-    _circle(k, 135)
+    _circle(k, 180)   # the top of the circle, both arms up
 
 
 def warmup2(k):
@@ -140,17 +140,17 @@ def _march(k, up, fwd_arm):
     st = 'L' if up == 'R' else 'R'
     k.leg(st, (SX[st] * 0.09, -0.03, 0.066), knee=(SX[st] * 0.09, -0.7, 0.45))
     k.leg(up, (SX[up] * 0.09, -0.29, 0.34), knee=(SX[up] * 0.09, -1.0, 0.8), toes=(0, -0.45, -0.89), sole=(0, 0.89, -0.45))
-    # the forward arm's upper arm 20 degrees ahead with the forearm level; the back arm's elbow behind her, the hand under
-    # the shoulder
+    # as the app's drawing swings them: the forward arm bent, its hand up at her chest; the back arm almost straight, swung
+    # back past her hip
     bk = 'L' if fwd_arm == 'R' else 'R'
-    swing(k, fwd_arm, 57, 80); swing(k, bk, 8, 70)
+    swing(k, fwd_arm, 57, 100); swing(k, bk, -22, 12)
 
 
 def marchmid(k):
     """Between two lifts: both feet down, arms passing her sides."""
     stand(k, feet=0.09)
     for s in LR:
-        swing(k, s, 33, 75)
+        swing(k, s, 17, 45)
 
 
 def march(k):
@@ -168,7 +168,7 @@ def _walk(k, front):
     k.flat(front, pitch=-8)
     k.leg(back, (SX[back] * 0.09, 0.27, 0.13), knee=(SX[back] * 0.09, -0.8, 0.45))
     k.flat(back, pitch=38); k.toes(back, 35)
-    swing(k, back, 29, 30); swing(k, front, -15, 10)   # the arm opposite the front leg swings forward
+    swing(k, back, 32, 22); swing(k, front, -24, 10)   # the arm opposite the front leg swings forward
 
 
 def _pass(k, stance):
@@ -318,14 +318,16 @@ def downdog(k):
 
 # ---------- kneeling ----------
 def child(k):
-    # sitting back on her heels, chest down over her thighs, forehead on the mat, arms long in front
-    k.body((0, 0.16, 0.27), rot=(92, 0, 0))
-    k.spine(bend=18); k.neck(bend=6)
+    """Sitting back on her heels (her hips just above them, as far as her knees fold), her back rounding down over her
+    thighs so her forehead rests on the mat, arms long in front. The turn and the rounding are the pair that puts her
+    forehead on the mat with her hips there."""
+    hip, rot = V((0, 0.29, 0.21)), 72
+    k.body((0, 0.2, 0.3), rot=(rot, 0, 0)); k.body(V((0, 0.2, 0.3)) + hip - (k.hip('L') + k.hip('R')) / 2, rot=(rot, 0, 0))
+    k.spine(bend=34); k.neck(bend=6)
     for s in LR:
-        hp = k.hip(s)
-        k.leg(s, (SX[s] * 0.08, hp.y + 0.16, 0.06), knee=(SX[s] * 0.1, -0.8, -0.4), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
+        k.leg(s, (SX[s] * 0.08, 0.35, 0.065), knee=(SX[s] * 0.1, -0.8, -0.4), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
         k.shrug(s, 8)
-        sh = k.sh(s); k.arm(s, (SX[s] * 0.19, sh.y - 0.4, FLOOR_W), elbow=(SX[s] * 0.25, sh.y - 0.2, 0.8), palm=-UP, fingers=FWD)
+        floor_arm(k, s, (SX[s] * 0.12, -1), bend=8)
     k.shape('LR', 'floor')
     k.ground()
 
@@ -341,8 +343,10 @@ def kneel(k):
 def camel(k):
     kneel(k)
     pz = (k.rig.matrix_world @ k.P0).z
-    k.body((0, -0.06, pz))
-    k.spine(bend=-34, weights=[0.8, 1, 1.1, 1.2, 1.2]); k.neck(bend=-24)
+    # "push your hips forward and lean back a little": her hips go forward of her knees, her upper back opens and her head
+    # follows it, not dropping back
+    k.body((0, -0.12, pz - 0.012))
+    k.spine(bend=-24, weights=[0.8, 1, 1.1, 1.2, 1.2]); k.neck(bend=-4)
     for s in LR:
         hp = k.hip(s)
         k.arm(s, hp + V((SX[s] * 0.07, 0.13, 0.1)), elbow=(SX[s] * 0.3, 0.75, 0.7), palm=FWD, fingers=(0, 0.1, -1))
@@ -491,6 +495,19 @@ def sit(k):
     k.ground()
 
 
+NOSE = V((0, -0.107, 0.004))   # her nose tip, from her head bone's base (measured on her face)
+
+
+def nostril(k):
+    """Anulom vilom ("close your right nostril with your thumb"): sitting as she does to breathe, her right hand at her nose
+    in Nasika mudra, the thumb at her right nostril and the ring finger at her left, the first two fingers folded; her left
+    hand stays on her knee, her eyes closed."""
+    sit(k)
+    k.arm('R', k.at('head') + NOSE + V((-0.025, -0.065, -0.10)), elbow=k.sh('R') + V((-0.09, -0.2, -0.12)), palm=(0, 1, 0),
+          fingers=(0.25, 0.25, 1))
+    k.shape('R', 'nasika')
+
+
 # ---------- strength (side, with props) ----------
 def chairup(k):
     stand(k)
@@ -560,9 +577,49 @@ def stepfloor(k):
 
 
 def step(k):
-    stand(k, feet=0.09, pelvis=(0, -0.09, 0.8))
+    stand(k, feet=0.09, pelvis=(0, -0.09, 0.775))   # low enough that her back knee stays soft, her foot on the floor
     k.leg('R', (-0.09, STEP_FRONT - 0.14, STEP_H + 0.066), knee=(-0.09, -1.0, 0.7))
     swing(k, 'L', 20, 28); swing(k, 'R', -12, 10)
+
+
+# step-ups, "step up onto a stair with one foot, then the other, and step down": where an ankle stands on the floor, on the
+# step, and lifted clear of the step's edge on the way up or down
+FLOOR_FOOT, STEP_FOOT, OVER = (-0.03, 0.066), (STEP_FRONT - 0.14, STEP_H + 0.066), (-0.20, 0.36)
+STEPPING = ['steplift', 'stepon', 'stepup', 'stepoff', 'stepdown', 'stepoff2']
+
+
+def _stepping(k, pelvis, R, L, lead=None):
+    """Her pelvis (from where it is when she stands) and each ankle (depth, height); the arm opposite the leg that moves
+    (lead) swings a little forward."""
+    k.body(k.P0 + V(pelvis))
+    for s, (y, z) in (('R', R), ('L', L)):
+        k.leg(s, (SX[s] * 0.09, y, z), knee=(SX[s] * 0.09, y - 0.65, z + 0.42))
+    for s in LR:
+        swing(k, s, *((6, 18) if not lead else (16, 24) if s != lead else (-10, 10)))
+
+
+def steplift(k):
+    _stepping(k, (0, -0.03, -0.02), OVER, FLOOR_FOOT, 'R')
+
+
+def stepon(k):
+    _stepping(k, (0, -0.30, 0.10), STEP_FOOT, OVER, 'L')
+
+
+def stepup(k):
+    _stepping(k, (0, -0.37, STEP_H), STEP_FOOT, STEP_FOOT)
+
+
+def stepoff(k):
+    _stepping(k, (0, -0.35, 0.12), OVER, STEP_FOOT, 'R')
+
+
+def stepdown(k):
+    _stepping(k, (0, -0.22, -0.06), FLOOR_FOOT, STEP_FOOT, 'R')
+
+
+def stepoff2(k):
+    _stepping(k, (0, -0.05, -0.02), FLOOR_FOOT, OVER, 'L')
 
 
 CALF_WALL_Y = -0.43
@@ -593,17 +650,19 @@ POSES = {n: f for n, f in globals().items() if callable(f) and not n.startswith(
 POSES['sun_cobra'] = sun_cobra
 
 CIRCLE = ['circle%d' % a for a in range(0, 360, 45)]
-FRONT = {'pray', 'opens', 'armsup', 'tiptoe', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', 'butterfly', 'butterfly2', 'sit'} | set(CIRCLE)
+FRONT = {'pray', 'opens', 'armsup', 'tiptoe', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', 'butterfly', 'butterfly2', 'sit', 'nostril'} | set(CIRCLE)
 PROPS = {'chair': 'chair', 'chairup': 'chair', 'chairsit': 'chair', 'chairfwd': 'chair', 'wall': 'wall', 'wallout': 'wall', 'stepfloor': 'step', 'step': 'step',
-         'calfdown': 'calfwall', 'calf': 'calfwall'}
-NO_MAT = {'chair', 'chairup', 'chairsit', 'chairfwd', 'wall', 'wallout', 'stepfloor', 'step', 'calfdown', 'calf', 'walk', 'walk2'}
+         'calfdown': 'calfwall', 'calf': 'calfwall', **{n: 'step' for n in STEPPING}}
+NO_MAT = {'chair', 'chairup', 'chairsit', 'chairfwd', 'wall', 'wallout', 'stepfloor', 'step', 'calfdown', 'calf', 'walk', 'walk2'} | set(STEPPING)
 
 # the app's loops: [from, to, seconds, hold]; locust starts from its own prone position (arms by her sides)
 LOOPS = {
-    'chair': ('chairup', 'chair', 3, False), 'wall': ('wallout', 'wall', 2.6, False), 'step': ('stepfloor', 'step', 2.4, False),
+    'chair': ('chairup', 'chair', 3, False), 'wall': ('wallout', 'wall', 2.6, False),
     'bridge': ('bridgedown', 'bridge', 4, True), 'cobra': ('prone', 'cobra', 5, True), 'locust': ('locust0', 'locust', 4, True),
     'camel': ('kneel', 'camel', 6, True),
     'calf': ('calfdown', 'calf', 2.4, False),
+    # step-ups: up with the right foot, then the left, down with the right, then the left; each foot lifts clear of the edge
+    'step': {'dur': 4.8, 'seq': [(i / 8, n) for i, n in enumerate(['stepfloor', 'steplift', 'step'] + STEPPING[1:] + ['stepfloor'])]},
     # marching and walking put each foot down before the other lifts, so the loop never hops or glides
     'march': {'dur': 1.4, 'seq': [(0, 'march'), (0.25, 'marchmid'), (0.5, 'march2'), (0.75, 'marchmid'), (1.0, 'march')]},
     'walk': {'dur': 1.1, 'seq': [(0, 'walk'), (0.25, 'walkpass'), (0.5, 'walk2'), (0.75, 'walkpass2'), (1.0, 'walk')]},
@@ -614,7 +673,7 @@ LOOPS = {
     # butterfly: "move your knees gently up and down", one slow flap in 2 seconds
     'butterfly': ('butterfly', 'butterfly2', 2, False), 'twist': ('sitlong', 'twist', 6, True), 'knees': {'dur': 4, 'seq': [(0, 'knees'), (0.25, 'knees2'), (0.5, 'knees'), (0.75, 'knees3'), (1.0, 'knees')]},
     # Loosen up: "swing your arms in big circles", one slow circle in 3 seconds, starting from the still's position
-    'warmup': {'dur': 3, 'seq': [(i / 8, 'circle%d' % ((135 + 45 * i) % 360)) for i in range(9)]},
+    'warmup': {'dur': 3, 'seq': [(i / 8, 'circle%d' % ((180 + 45 * i) % 360)) for i in range(9)]},
     'chairfwd': ('chairsit', 'chairfwd', 6, True),   # the app's "Seated forward bend" (child pose with knee pain)
 }
 # the sun salutation flows from each position to the next (0.9 seconds); one camera for all of them
@@ -627,4 +686,4 @@ DRAWINGS = ['pray', 'armsup', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', '
             'bridgedown', 'bridge', 'knees', 'knees2', 'rest', 'sitlong', 'twist', 'butterfly', 'butterfly2', 'sit', 'chairup', 'chair',
             'wallout', 'wall', 'stepfloor', 'step', 'calfdown', 'calf']
 # positions the app has no drawing for, used by its steps all the same
-EXTRA = ['chairsit', 'chairfwd']
+EXTRA = ['chairsit', 'chairfwd', 'nostril']

@@ -22,7 +22,7 @@ def D(a):
 
 # Hand shapes (MakeHuman's own hand is flat with the fingers spread). spread: how far the index, ring and little fingers close
 # in on the middle one (0 to 1); curl: the bend at each of the finger's three joints, towards the palm (degrees); thumb: the
-# same for the thumb, tspread how far it closes in on the index; index: the index finger's own curl, when it differs.
+# same for the thumb, tspread how far it closes in on the index; index, middle: those fingers' own curl, when it differs.
 SHAPES = {
     'relaxed': {'spread': 0.55, 'curl': (14, 24, 12), 'thumb': (6, 10, 8), 'tspread': 0.25},   # an arm swinging or hanging
     'flat': {'spread': 0.85, 'curl': (2, 4, 2), 'thumb': (0, 4, 2), 'tspread': 0.55},          # namaste, a palm on the wall
@@ -30,6 +30,8 @@ SHAPES = {
     'hold': {'spread': 0.8, 'curl': (38, 48, 26), 'thumb': (12, 22, 16), 'tspread': 0.45},     # round a shin or a foot
     'cup': {'spread': 0.8, 'curl': (20, 30, 16), 'thumb': (10, 18, 12), 'tspread': 0.5},       # over her toes
     'mudra': {'spread': 0.5, 'curl': (16, 26, 14), 'thumb': (14, 24, 16), 'tspread': 0.4, 'index': (36, 42, 24)},
+    'nasika': {'spread': 0.9, 'curl': (22, 28, 14), 'thumb': (0, 10, 10), 'tspread': 0.25, 'index': (85, 100, 60),   # at her nose
+               'middle': (85, 100, 60)},
 }
 
 
@@ -255,7 +257,7 @@ class Kit:
                 toward('finger%d-1.%s' % (f, s), 'finger3-1.' + s, sh['spread'])
             toward('finger1-1.' + s, 'finger2-1.' + s, sh['tspread'])
             for f in (1, 2, 3, 4, 5):
-                curl = sh['thumb'] if f == 1 else (sh.get('index', sh['curl']) if f == 2 else sh['curl'])
+                curl = sh['thumb'] if f == 1 else sh.get({2: 'index', 3: 'middle'}.get(f), sh['curl'])
                 for j in (1, 2, 3):
                     b = 'finger%d-%d.%s' % (f, j, s)
                     if b not in self.pb or not curl[j - 1]:

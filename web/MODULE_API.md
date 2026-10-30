@@ -5357,7 +5357,25 @@ own drawing (`P`, `ANIM`, the sun salutation) posed on her, so no move changes. 
    - Palm tree opens the arms wide, meets them overhead and rises on the toes, as it says ("Rise on your toes if you can"). It
      takes 8 seconds.
    - Loosen up swings the arms in big circles ("swing your arms in big circles"), 3 seconds a circle.
-   - Their stills: palms together overhead, and both arms forward and up.
+   - Their stills: palms together overhead, and both arms up, the top of the circle.
+
+**Her moves against their words (Mohit, 30 Oct: "butterfly needs rework", then "other moves need improvement too"):** every
+pose was checked from the app's camera and from a three-quarter view, and every changed loop frame by frame.
+1. Butterfly: the soles press together on their outer edges, toes ahead and heels drawn in; she sits tall with her hands over
+   her feet, her fingers round her toes. Only her knees move, one slow flap in 2 seconds.
+2. Step-ups: the whole step, "with one foot, then the other, and step down": the right foot up, then the left, standing tall
+   on the step, then the right foot down behind and the left after it. Each foot lifts clear of the step's edge (no foot
+   enters the step), and the back knee stays soft, so it never snaps straight. 4.8 seconds a step.
+3. Child pose: she sits back on her heels (her hips just above them), her back rounds down and her forehead rests on the mat,
+   her arms long in front. Before, her hips stayed high over her knees.
+4. Half camel: her hips go forward of her knees ("push your hips forward") and she leans back a little, her head following
+   her spine instead of dropping back.
+5. March on the spot swings the arms as its drawing does: the forward arm bent with its hand at her chest, the back arm swung
+   back past her hip. Before, both hands stayed in front of her. Walking's arms swing a little more.
+6. Triangle: she looks up at her raised hand ("Look up if your neck is comfortable").
+7. Anulom vilom has its own still (`fig: 'nostril'` on its step, `fig/s/nostril.webp`): her right hand at her nose in Nasika
+   mudra, the thumb at her right nostril and the ring finger at her left, as its words say ("Close your right nostril with
+   your thumb"). Bhramari and Sit quietly keep her sitting still; without `web/fig` all three keep the sitting drawing.
 
 **The rest (the mockup's notes):**
 1. After each move and each set: 15 seconds in Strength at home, 10 in Gentle start and Cycle care (`REST_S`, `restAfter`).
@@ -5379,7 +5397,7 @@ own drawing (`P`, `ANIM`, the sun salutation) posed on her, so no move changes. 
 **Words:** UI only, in English and Hindi: Previous, Rest, +20s, Skip rest, Next, "{x} done", and the voice line. No health
 wording, so nothing waits for the doctor (review section 19.39).
 
-**Tests:** `node test/moves3d.mjs` (62 checks). pmosplan.mjs keeps checking the drawings with `fig: false`, and now meets the
+**Tests:** `node test/moves3d.mjs` (63 checks). pmosplan.mjs keeps checking the drawings with `fig: false`, and now meets the
 rest before move 2.
 
 ## 83. Version 39.40: the 39-week walk's gaps
