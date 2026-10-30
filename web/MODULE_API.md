@@ -5308,6 +5308,80 @@ Mohit, 29 Oct: "can you do a walkthrough on my phone and check gaps", at 38 week
 **Tests:** `node test/latepreg.mjs` (27 checks; 19 fail on 0.39.37's code). plans.mjs 1 now counts Home's row without the
 tablets ("and 3 more"); the report's line is unchanged.
 
+## 82. Version 39.39: the 3D figure in the player, and a rest between moves (Mohit, 29 Oct: "build it into the player with the rest screen")
+
+The mockup: claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka (row 1, the rest screen; row 2, every move in 3D). The figure is made
+with free tools in `web/tools/fig3d` (README.md there): Blender, MPFB and MakeHuman's CC0 packs. Every position is the app's
+own drawing (`P`, `ANIM`, the sun salutation) posed on her, so no move changes. Section 81 is the other session's Version 39.38.
+
+**What the app carries (`web/fig`, made by `web/tools/fig3d/install.py`, about 1.6 MB):**
+- `fig/v/<name>.webm`: one loop per moving drawing (VP9, which plays in Android's WebView and in the tests' Chromium), with the
+  drawing's own timing. Also `chairfwd`, the seated forward bend, and `sun-01` to `sun-11`, the sun salutation's flows.
+- `fig/s/<pose>.webp`: a still of every position (the 43 drawings, `chairsit` and `chairfwd`), and `sun-00` to `sun-11`, each
+  sun salutation position framed as its flow is.
+- `fig/fig.js`: `window.SAKHI_FIG = { v: 1, loops, stills, sun }`, loaded by index.html before the modules. `android/build-apk.sh`
+  copies `web/fig` when it is there.
+
+**The player (`mods/plan.js`):**
+1. Each move plays its loop (`figLoop`: the step's own `fig`, or the `ANIM` loop named by its pose). It is muted, looping and
+   inline, with the move's still as its poster.
+2. A held pose (tree, child pose, Shavasana, the calm sitting) shows its still. Shavasana and the calm sitting have her eyes
+   closed.
+3. The sun salutation shows its first position as a still. Each next position flows in once (no loop, about 0.9 s) and holds
+   on its last frame.
+4. "Reduce motion" shows the still. The left side is the same picture, mirrored (`pl-mirror`). Pause pauses the loop too.
+5. A video that can't play (not found, can't decode, or the WebView wants a tap first) gives way to the move's still
+   (`wireFig3d`). A build without `web/fig`, or `SAKHI_CONFIG.fig === false`, shows the drawings as before.
+6. The routine's list, and the rest's next move, show each move's still (`figThumb`), or its drawing without `web/fig`.
+7. `CHAIR_FWD` (child pose with knee pain) has its own loop, `fig: 'chairfwd'`. Its drawing still reuses the chair squat.
+   Sun salutation steps carry their place in the twelve (`si`).
+8. Previous, Pause and Next (`.pl-ctl`) stay above the tab bar (sticky) whenever the page is taller than the screen. On a
+   short screen (860 px or less) the timer is 100 px and the gaps tighter. The time left shows once, in the ring; `#pl-left`
+   still carries it for screen readers. At 720 px or less the figure is at most 220 px wide. Before this, on Mohit's Flip5
+   (360 × 800 in the app), a move whose words take three lines pushed the buttons under the tab bar (30 Oct, "fix the
+   buttons").
+
+**Her arms (Mohit, 30 Oct: "hand movements needs improvement", then "i meant entire arm movements"; `web/tools/fig3d`):**
+1. Her arms straighten. The elbow's limit counts from her rest pose, whose elbow is already bent about 34 degrees, so a straight
+   arm stops 4 degrees short of straight. Before, no arm straightened past 34 degrees.
+2. A loop moves a free arm joint by joint, in arcs: each pose keeps its arms as joint turns (`Kit.finish`). IK holds a hand that
+   stays put, on the floor, a wall or her knees.
+3. The forearm turns the palm. Her shoulders lift when her arms go overhead.
+4. Each hand has a shape:
+   - relaxed when the arms swing;
+   - flat for namaste and overhead;
+   - spread on the floor and the wall;
+   - curled round her knees and feet;
+   - a mudra when she sits.
+5. Two loops now follow their own words rather than the drawing:
+   - Palm tree opens the arms wide, meets them overhead and rises on the toes, as it says ("Rise on your toes if you can"). It
+     takes 8 seconds.
+   - Loosen up swings the arms in big circles ("swing your arms in big circles"), 3 seconds a circle.
+   - Their stills: palms together overhead, and both arms forward and up.
+
+**The rest (the mockup's notes):**
+1. After each move and each set: 15 seconds in Strength at home, 10 in Gentle start and Cycle care (`REST_S`, `restAfter`).
+2. No rest inside the sun salutation or Calm breath, between her right and left side, or before Shavasana (it is the rest).
+3. Getting ready's sun salutation that became Gentle start rests as Gentle start does.
+4. The rest screen shows:
+   - "Move 1 of 12 done" (`plan_p_done_t`) and "Rest";
+   - a blue ring and its time;
+   - +20s (as often as she likes), Pause, and Skip rest as the one pink button;
+   - the next move's picture, name, time and words ("Next · Set 2 of 2").
+5. With her voice on, it says "Rest. Next: {move}." (`plan_p_rest_say`, a visually hidden line); it is off on a shared phone,
+   as before.
+6. The phone buzzes as the rest starts. The screen stays on. When the rest runs out, the next move starts.
+7. "Next" on a move goes straight to the next move: tapping it is skipping. A move after the first has Previous (`plan_p_prev`),
+   which goes back one move and starts its time again.
+8. The rest counts in her minutes, as Shavasana does. All of Strength at home with every rest is 12 minutes, against 10 for its
+   moves alone. `routineMins` ("About N min") is unchanged, because Today, the walk's minutes and the golden plans read it.
+
+**Words:** UI only, in English and Hindi: Previous, Rest, +20s, Skip rest, Next, "{x} done", and the voice line. No health
+wording, so nothing waits for the doctor (review section 19.39).
+
+**Tests:** `node test/moves3d.mjs` (62 checks). pmosplan.mjs keeps checking the drawings with `fig: false`, and now meets the
+rest before move 2.
+
 ## 83. Version 39.40: the 39-week walk's gaps
 
 Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 70, 39 weeks, My pregnancy running), then "fix all 8".

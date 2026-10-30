@@ -66,6 +66,11 @@ mkdir -p build/assets/www/progs && cp "$WEB"/progs/*.js build/assets/www/progs/
 # Wind down and the relief routines in Dr. Megha's voice (Version 39.21): Opus sounds, kept uncompressed (-0 ogg below) so
 # Android plays them straight from the APK; web/sounds/CREDITS.md says where each came from.
 mkdir -p build/assets/www/sounds && cp -R "$WEB"/sounds/voice "$WEB"/sounds/music "$WEB"/sounds/timelines.js "$WEB"/sounds/captions.js build/assets/www/sounds/
+# The 3D figure (Version 39.39): each move's loop (VP9 .webm; the WebView streams it, so it needs no -0 like the sounds)
+# and its still, made by web/tools/fig3d; without web/fig the player shows the drawings.
+if [ -f "$WEB/fig/fig.js" ]; then
+  mkdir -p build/assets/www/fig && cp -R "$WEB"/fig/v "$WEB"/fig/s "$WEB"/fig/fig.js "$WEB"/fig/CREDITS.md build/assets/www/fig/
+fi
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/

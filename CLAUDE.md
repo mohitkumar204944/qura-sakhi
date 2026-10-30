@@ -278,7 +278,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - each move's 3D loop, with its still for "reduce motion", the routine's list and the rest's Next;
     - the sun salutation's flows, the left side mirrored, and the drawings when there's no `web/fig`;
     - a rest of 15 seconds in strength and 10 in yoga, none between sides, before Shavasana or in the sun salutation, with
-      +20s, Skip rest and Previous.
+      +20s, Skip rest and Previous;
+    - on the Flip5's 360 × 800 (and a small phone), Previous, Pause and Next above the tab bar, tappable, with the timer in
+      view (30 Oct, "fix the buttons"). Its taps use `el.click()`, so it asks the page what a tap at each button would hit.
     `web/fig` is made by `web/tools/fig3d` (README.md there; Blender and MakeHuman's CC0 packs, outside the repo). After a
     re-render, run `python3 web/tools/fig3d/install.py <work>/final web`. Contract: MODULE_API section 82; wording: section
     19.39 (UI words only).
@@ -323,7 +325,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - Server, from the repo root: `npm run test:server`. `npm test` runs everything.
 - APK: `cd android && VERSION_CODE=<n> VERSION_NAME=<x>-demo ./build-apk.sh`.
   - The APK needs Android 10 or newer (min SDK 29). Mohit, 25 Oct: build for newer phones, not very cheap ones, so don't trade
-    quality for old phones. The build refuses an APK over 30 MB unless `MAX_APK_MB` is raised on purpose.
+    quality for old phones. The build refuses an APK over 30 MB unless `MAX_APK_MB` is raised on purpose: a guard against
+    accidental bloat, not a budget (app size is not a barrier, below).
   - VERSION_CODE is required and may not go below the last APK built (testers' phones refuse it, and uninstalling deletes
     the diary). A missing `sakhi-prototype.keystore` stops the build: restore it from Mohit's backup; `NEW_KEYSTORE=1` only for
     a first build that no phone has.
@@ -350,6 +353,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `progs/*.js` (the plans as data, Version 39.4) go up with every publish, beside `mods/*.js`.
   - `sounds/` (Version 39.21, about 17 MB: `timelines.js`, `captions.js`, `voice/`, `music/`) goes up too, or Wind down and the relief
     voice stay silent there.
+  - `fig/` (Version 39.39, about 1.6 MB: `fig.js`, `v/`, `s/`) goes up too, or the player shows the drawings there.
   - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
     with a script that checks each record.
 - Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy
@@ -357,6 +361,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
 
 ## Mohit's rules for Sakhi
 - Reproductive health only. No new conditions; evidence is used only to strengthen existing features.
+- App size is not a barrier (Mohit, 29 and 30 Oct: "App size is not a constraint i want to deliver best user experience").
+  Spend the MB a better experience needs, such as the 3D moves, voices, sounds and pictures, and never cut quality to save
+  size. When a wanted feature passes the 30 MB guard, raise `MAX_APK_MB` on purpose and say so in the build summary.
 - The diary never leaves the phone.
   - Only core `net()` talks to a server, and only with allowlisted fields (MODULE_API section 24).
   - Modules never touch the network.

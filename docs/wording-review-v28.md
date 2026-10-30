@@ -2637,6 +2637,24 @@ No new wording. Lines reused in new places:
 - **For the doctor:** a daily tablet now shows "Done: from your MCP card, logs or tools" on Check-ups and tests once its
   reminder is on, or she ticked it in the last 2 weeks. Is a reminder that is on enough to count it as started?
 
+### 19.39 Version 39.39: the 3D figure in the player, and a rest between moves (MODULE_API section 82)
+
+- **UI words only, so nothing waits for the doctor:**
+  - "Previous" / "पिछला";
+  - "Rest" / "आराम";
+  - "+20s" / "+20 सेकंड";
+  - "Skip rest" / "आराम छोड़ें";
+  - "Next" / "अगला" (the next move);
+  - "{x} done" / "{x} पूरा" (as in "Move 1 of 12 done");
+  - the voice line "Rest. Next: {move}." / "आराम। अगला: {move}।".
+- **The same moves, as pictures:** every 3D move is the app's own reviewed drawing, posed on a 3D woman with the same timing.
+- **For the doctor, or a yoga teacher, before it goes to testers:** please look at each move's form on the canvas
+  (claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka, row 2), above all:
+  - the forward bend (hands to the shins, as the words say);
+  - cobra (a gentle lift with elbows bent);
+  - camel (hands on the lower back);
+  - child pose and the seated forward bend.
+
 ### 19.40 Version 39.40: the 39-week walk's gaps (MODULE_API section 83)
 
 - **New, interface words (her own doctor's number):**

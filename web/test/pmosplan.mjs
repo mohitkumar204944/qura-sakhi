@@ -34,7 +34,8 @@ const seedOf = (x) => Object.assign({ lang: 'en', langChosen: true, stage: 'app'
   tours: TOURS_DONE, fullTour: { st: 'done', d: ago(3) }, prompts: { setup: 'off', notifyIntro: ago(3) }, mods: {} }, x || {}, { settings: Object.assign({ toursAuto: false }, (x || {}).settings || {}) });
 const ACCT = { token: 'test', id: 'test', phone: '+919876543210', name: 'Priya', pincode: '302001', activeOn: TODAY };
 const ANDROID = 'window.SakhiAndroid = { schedule(j){ window.__sched = j; return 0; }, cancelAll(){}, canNotify(){ return true; }, askNotify(){}, canExactAlarms(){ return true; }, askExactAlarms(){}, speak(){ return true; }, stop(){}, voices(){ return "[]"; }, copy(){ return true; }, haptic(){}, setSecure(){}, setDisguise(){}, isDisguised(){ return false; }, keepAwake(on){ window.__awake = on; } };';
-const DEMO = { api: 'https://api.test.invalid', app: 'test-0.35-demo', platform: 'android' };
+/* fig: false keeps the drawings this file checks; the 3D figure that replaces them in the player is test/moves3d.mjs (Version 39.39) */
+const DEMO = { api: 'https://api.test.invalid', app: 'test-0.35-demo', platform: 'android', fig: false };
 
 const browser = await chromium.launch();
 async function open(o = {}) {
@@ -203,6 +204,8 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const a = await points(page); await settle(page, 700); const b = await points(page);
   check('4 the drawing moves, like a GIF', a !== b, [a, b]);
   await settle(page, 61000);
+  check('4 when the timer ends she rests (Version 39.39), then moves on to the next move', await has(page, '#pl-rest'), (await view(page)).slice(0, 200));
+  await settle(page, 15000);
   check('4 the timer moves her on to the next move', /Move 2 of 12/i.test(await view(page)) && /March on the spot/.test(await view(page)), (await view(page)).slice(0, 200));
   await shot(page, 'player-march-en');
   await tap(page, '#pl-next');

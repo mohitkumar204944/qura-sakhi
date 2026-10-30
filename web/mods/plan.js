@@ -325,7 +325,7 @@
   const BRIDGE = { pose: 'bridge', s: 15, reps: 3, n: L('Setu bandhasana (bridge)', 'सेतुबंधासन'), p: L('Lie on your back, knees bent, feet flat. Lift your hips, hold, and lower them slowly.', 'पीठ के बल लेटें, घुटने मोड़ें, तलवे ज़मीन पर। कूल्हे ऊपर उठाएँ, रुकें और धीरे से नीचे लाएँ।') };
   const KNEES = { pose: 'knees', s: 30, n: L('Pavanamuktasana (knees to chest)', 'पवनमुक्तासन'), p: L('Hug both knees to your chest and rock gently from side to side.', 'दोनों घुटनों को छाती से लगाएँ और धीरे-धीरे दाएँ-बाएँ हिलें।') };
   const BUTTERFLY = { pose: 'butterfly', s: 60, n: L('Bhadrasana (butterfly)', 'भद्रासन (तितली)'), p: L('Sit with the soles of your feet together and let your knees drop out. Sit tall and breathe. Move your knees gently up and down if you like.', 'पैरों के तलवे मिलाकर बैठें और घुटनों को ढीला छोड़ें। सीधी बैठें और साँस लें। चाहें तो घुटनों को धीरे-धीरे ऊपर-नीचे करें।') };
-  const CHAIR_FWD = { pose: 'chair', s: 40, n: L('Seated forward bend', 'कुर्सी पर आगे झुकना'), p: L('Sit on a chair, feet apart, and bend forward slowly with your arms hanging down. Breathe.', 'कुर्सी पर पैर फैलाकर बैठें, और हाथ नीचे लटकाकर धीरे से आगे झुकें। साँस लें।') };
+  const CHAIR_FWD = { pose: 'chair', fig: 'chairfwd', s: 40, n: L('Seated forward bend', 'कुर्सी पर आगे झुकना'), p: L('Sit on a chair, feet apart, and bend forward slowly with your arms hanging down. Breathe.', 'कुर्सी पर पैर फैलाकर बैठें, और हाथ नीचे लटकाकर धीरे से आगे झुकें। साँस लें।') };
   const R = {
     gentle: { hue: 'green', first: 'armsup', steps: [W, MARCH,
       { pose: 'armsup', s: 30, reps: 2, n: L('Tadasana (palm tree)', 'ताड़ासन'), p: L('Raise your arms above your head, stretch up and breathe slowly. Rise on your toes if you can.', 'हाथ सिर के ऊपर उठाएँ, ऊपर की ओर खिंचें और धीरे साँस लें। हो सके तो पंजों पर उठें।') },
@@ -374,7 +374,7 @@
   const sunRounds = (wk) => (wk <= 3 ? 3 : (wk <= 6 ? 4 : (wk <= 9 ? 5 : 6)));
   function sunSteps(d) {
     const rounds = sunRounds(d && d.start ? Math.max(1, wkShown(d)) : 1); const out = [W];
-    for (let r = 1; r <= rounds; r++) SUN.forEach((x, i) => out.push({ pose: x[0], s: 6, n: x[1], p: L('Breathe slowly and move into the next pose.', 'धीरे साँस लें और अगले आसन में जाएँ।'), sun: true, round: r, rounds: rounds, flow: i > 0 || r > 1 }));
+    for (let r = 1; r <= rounds; r++) SUN.forEach((x, i) => out.push({ pose: x[0], s: 6, n: x[1], p: L('Breathe slowly and move into the next pose.', 'धीरे साँस लें और अगले आसन में जाएँ।'), sun: true, si: i, round: r, rounds: rounds, flow: i > 0 || r > 1 }));
     out.push(REST); return out;
   }
   /* the steps she does: sets and both sides spelled out; knee pain swaps kneeling moves, back pain skips them */
@@ -942,6 +942,60 @@
   const RING = 339.3;
   const fmt = (sec) => { const s = Math.max(0, Math.ceil(sec)); return Math.floor(s / 60) + ':' + S.pad2(s % 60); };
   const buzz = () => { try { const B = window.SakhiAndroid; if (B && B.haptic) B.haptic(); } catch (e) { /* not on a phone */ } };
+  /* Version 39.39: the 3D figure (web/fig, made by web/tools/fig3d; Mohit, 29 Oct: "build it into the player with the rest
+     screen"). Each move plays its loop (the drawing's own two positions and timing), with a still for "reduce motion", the
+     routine's list and the rest's Next; the sun salutation plays each flow once and holds. A build without web/fig, a video
+     that can't play and SAKHI_CONFIG.fig === false all keep the drawings. */
+  const FIG = () => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false ? f : null; };
+  const figStill = (pose) => { const f = FIG(); return f && (f.stills || []).indexOf(pose) >= 0 ? 'fig/s/' + pose + '.webp' : ''; };
+  const figKey = (s) => s.fig || (ANIM[s.pose] ? s.pose : '');
+  const figLoop = (s) => { const f = FIG(); const k = figKey(s); return f && k && (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : ''; };
+  const figThumb = (s, mirror) => { const src = figStill(s.fig || s.pose); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror }); };
+  function fig3d(s, prev) {
+    const f = FIG(); if (!f) return '';
+    const mir = s.sideK === 'l' ? ' pl-mirror' : ''; let still, clip = '', loop = true;
+    if (s.sun && s.si != null && f.sun) {
+      still = 'fig/s/sun-' + S.pad2(s.si) + '.webp';
+      if (s.flow && prev && prev.pose !== s.pose && s.si >= 1 && s.si <= f.sun) { clip = 'fig/v/sun-' + S.pad2(s.si) + '.webm'; loop = false; }
+    } else { still = figStill(s.fig || s.pose); clip = figLoop(s); }
+    if (!still && !clip) return '';
+    if (!clip || reduced()) return still ? '<img class="pl-3d' + mir + '" id="pl-fig3d" src="' + still + '" alt="">' : '';
+    return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + clip + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') +
+      ' muted playsinline autoplay preload="auto"' + (loop ? ' loop' : '') + '></video>';
+  }
+  /* a video that can't play (not found, can't decode, or the WebView wants a tap first) gives way to the move's still */
+  function wireFig3d(v) {
+    const vd = v.querySelector('video#pl-fig3d'); if (!vd) return;
+    const toStill = () => {
+      const src = vd.getAttribute('data-still'); if (!vd.isConnected) return;
+      if (!src) { vd.removeAttribute('src'); return; }
+      const im = document.createElement('img'); im.className = vd.className; im.id = 'pl-fig3d'; im.src = src; im.alt = ''; vd.replaceWith(im);
+    };
+    vd.addEventListener('error', toStill);
+    try { vd.muted = true; const p = vd.play(); if (p && p.catch) p.catch((e) => { if (e && e.name === 'NotAllowedError') toStill(); }); } catch (e) { toStill(); }
+  }
+  /* Version 39.39, the rest screen (mockup claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka): a rest after each move and set, 15 seconds
+     in Strength at home and 10 in Gentle start and Cycle care; none inside the sun salutation or Calm breath, between her right
+     and left side, or before Shavasana (it is the rest). It counts in her minutes, as Shavasana does. "Next" on a move skips its rest. */
+  const REST_S = { strength: 15, gentle: 10, cycle: 10 };
+  const restAfter = (i) => {
+    const st = run.steps, a = st[i], b = st[i + 1];
+    const rid = run.id === 'sun' && !st.some((s) => s.sun) ? 'gentle' : run.id;   /* Getting ready's sun salutation that became Gentle start */
+    const sec = REST_S[rid] || 0;
+    if (!sec || !a || !b || a.sun || b.sun || b.pose === 'rest') return 0;
+    if (a.sideK === 'r' && b.sideK === 'l' && a.n === b.n && a.set === b.set) return 0;
+    return sec;
+  };
+  function rest(sec) {
+    const v = document.getElementById('view'); if (!v || !run) return;
+    stopRun(); run.rest = { left: sec, total: sec }; run.paused = false; run.at = Date.now(); buzz(); draw(v); window.scrollTo(0, 0);
+    if (run.voice && S.speakEl) { const el = v.querySelector('#pl-restsay'); if (el) setTimeout(() => { if (run && run.rest && !run.paused) S.speakEl(el); }, 150); }
+  }
+  function paintRest(v) {
+    if (!run || !run.rest) return;
+    const te = v.querySelector('#pl-rtime'); if (te) te.textContent = fmt(run.rest.left);
+    const arc = v.querySelector('#pl-rarc'); if (arc) arc.setAttribute('stroke-dashoffset', (RING * (1 - run.rest.left / run.rest.total)).toFixed(1));
+  }
   function renderPlayer(v, id) {
     if (!on()) { offScreen(v); return; }
     const d = S.canSave() && raw() ? D() : null;
@@ -955,20 +1009,34 @@
     if (run.i < 0) {
       const uniq = []; st.forEach((s) => { if (!s.sun && !uniq.some((u) => u.n === s.n)) uniq.push(s); });
       body = '<p class="small">' + esc(t('plan_p_intro')) + '</p>' + (run.id === 'sun' ? '<div class="card warn"><p class="small">' + esc(t('plan_sun_care')) + '</p></div>' : '') +
-        '<div class="list">' + (run.id === 'sun' ? [uniq[0]].concat(SUN.slice(0, 8).map((x) => ({ pose: x[0], n: x[1] }))) : uniq).map((s) => '<div class="item quiet pl-pitem"><span class="pl-thumb">' + figSvg(s.pose) + '</span><span class="body"><strong>' + esc(tx(s.n)) + '</strong>' + (s.s ? '<span>' + esc(s.reps > 1 ? s.reps + ' × ' + fmt(s.s) : fmt(s.s)) + (s.side ? ' · ' + esc(t('plan_p_both')) : '') + '</span>' : '') + '</span></div>').join('') + '</div>' +
+        '<div class="list">' + (run.id === 'sun' ? [uniq[0]].concat(SUN.slice(0, 8).map((x) => ({ pose: x[0], n: x[1] }))) : uniq).map((s) => '<div class="item quiet pl-pitem"><span class="pl-thumb">' + figThumb(s) + '</span><span class="body"><strong>' + esc(tx(s.n)) + '</strong>' + (s.s ? '<span>' + esc(s.reps > 1 ? s.reps + ' × ' + fmt(s.s) : fmt(s.s)) + (s.side ? ' · ' + esc(t('plan_p_both')) : '') + '</span>' : '') + '</span></div>').join('') + '</div>' +
         (run.id === 'sun' ? '<p class="small">' + esc(tf('plan_p_rounds', { n: st.filter((s) => s.sun).length / SUN.length })) + '</p>' : '') +
         (S.speakEl ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('plan_p_voice')) + '</strong><span>' + esc(t('plan_p_voice_d')) + '</span></span><input type="checkbox" id="pl-voice"' + (run.voice ? ' checked' : '') + '></label></div>' : '') +
         '<button type="button" class="btn primary block" id="pl-pstart">' + esc(t('plan_p_start')) + ' · ' + esc(tf('plan_mins', { n: routineMins(run.id, raw()) })) + '</button>' +
         '<div class="card warn"><p class="small">' + esc(t('plan_stop_l')) + '</p></div>';
+    } else if (run.rest && run.i < n - 1) {
+      /* Version 39.39: the rest between moves, with the next move's picture and its first words */
+      const s = st[run.i], nx = st[run.i + 1];
+      const tags = [tf('plan_p_step', { i: run.i + 1, n: n })]; if (s.sideK) tags.push(t(s.sideK === 'r' ? 'plan_p_right' : 'plan_p_left')); if (s.sets > 1) tags.push(tf('plan_p_set', { i: s.set, n: s.sets }));
+      const more = []; if (nx.sideK) more.push(t(nx.sideK === 'r' ? 'plan_p_right' : 'plan_p_left')); if (nx.sets > 1) more.push(tf('plan_p_set', { i: nx.set, n: nx.sets }));
+      body = '<div class="pl-pbar" aria-hidden="true"><i style="width:' + Math.round(((run.i + 1) / n) * 100) + '%"></i></div>' +
+        '<div class="card pl-rest" id="pl-rest"><span class="eyebrow">' + esc(tf('plan_p_done_t', { x: tags.join(' · ') })) + '</span><h2>' + esc(t('plan_p_rest')) + '</h2>' +
+        '<div class="pl-timer pl-rtimer" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="pl-rarc" cx="60" cy="60" r="54" stroke-dasharray="' + RING + '" stroke-dashoffset="0"/></svg><b id="pl-rtime"></b></div>' +
+        '<p class="pl-sr" id="pl-restsay">' + esc(tf('plan_p_rest_say', { n: [tx(nx.n)].concat(more).join(', ') })) + '</p>' +
+        '<div class="grid2"><button type="button" class="btn" id="pl-more">' + esc(t('plan_p_more')) + '</button><button type="button" class="btn" id="pl-pause">' + esc(t(run.paused ? 'plan_p_resume' : 'plan_p_pause')) + '</button></div>' +
+        '<button type="button" class="btn primary block" id="pl-skip">' + esc(t('plan_p_skiprest')) + '</button></div>' +
+        '<div class="card pl-nextcard" id="pl-nextcard"><span class="pl-thumb">' + figThumb(nx, nx.sideK === 'l') + '</span><span class="body"><span class="eyebrow">' + esc([t('plan_p_up')].concat(more).join(' · ')) + '</span><strong>' + esc(tx(nx.n)) + '</strong><span class="small">' + esc(fmt(nx.s)) + '</span><span>' + esc(tx(nx.p)) + '</span></span></div>';
     } else if (run.i < n) {
       const s = st[run.i];
       const tags = [tf('plan_p_step', { i: run.i + 1, n: n })]; if (s.sun) tags.push(tf('plan_p_round', { i: s.round, n: s.rounds })); if (s.sideK) tags.push(t(s.sideK === 'r' ? 'plan_p_right' : 'plan_p_left')); if (s.sets > 1) tags.push(tf('plan_p_set', { i: s.set, n: s.sets }));
+      const f3 = fig3d(s, run.i > 0 ? st[run.i - 1] : null);
       body = '<div class="pl-pbar" aria-hidden="true"><i style="width:' + Math.round((run.i / n) * 100) + '%"></i></div>' +
-        '<div class="card pl-stage" id="pl-step"><div class="pl-figbox hue-' + r.hue + '">' + figSvg(s.pose, { id: 'pl-fig', mirror: s.sideK === 'l' }) + '</div><span class="eyebrow">' + esc(tags.join(' · ')) + '</span><h2>' + esc(tx(s.n)) + '</h2><p>' + esc(tx(s.p)) + '</p></div>' +
+        '<div class="card pl-stage" id="pl-step"><div class="pl-figbox hue-' + r.hue + (f3 ? ' pl-fb3d' : '') + '">' + (f3 || figSvg(s.pose, { id: 'pl-fig', mirror: s.sideK === 'l' })) + '</div><span class="eyebrow">' + esc(tags.join(' · ')) + '</span><h2>' + esc(tx(s.n)) + '</h2><p>' + esc(tx(s.p)) + '</p></div>' +
         (s.breath ? '<div class="pl-breath-wrap" aria-hidden="true"><div class="pl-breath" id="pl-breath"></div><b id="pl-phase"></b></div>'
           : '<div class="pl-timer" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="pl-arc" cx="60" cy="60" r="54" stroke-dasharray="' + RING + '" stroke-dashoffset="0"/></svg><b id="pl-time"></b></div>') +
         '<p class="small pl-left" id="pl-left" aria-live="off"></p>' +
-        '<div class="grid2"><button type="button" class="btn" id="pl-pause">' + esc(t(run.paused ? 'plan_p_resume' : 'plan_p_pause')) + '</button><button type="button" class="btn primary" id="pl-next">' + esc(t(run.i === n - 1 ? 'plan_p_finish' : 'plan_p_next')) + '</button></div>';
+        (run.i > 0 ? '<div class="grid3 pl-ctl"><button type="button" class="btn" id="pl-prev">' + esc(t('plan_p_prev')) + '</button>' : '<div class="grid2 pl-ctl">') +   /* Version 39.39: Previous */
+        '<button type="button" class="btn" id="pl-pause">' + esc(t(run.paused ? 'plan_p_resume' : 'plan_p_pause')) + '</button><button type="button" class="btn primary" id="pl-next">' + esc(t(run.i === n - 1 ? 'plan_p_finish' : 'plan_p_next')) + '</button></div>';
     } else {
       body = '<div class="card pl-intro">' + (S.art ? S.art.sakhi({ pose: 'cheer', look: (S.state.settings || {}).look }) : '') + '<h2>' + esc(t('plan_p_done_h')) + '</h2><p>' + esc(run.logged > 1 ? tf('plan_p_done_m', { n: run.logged }) : run.logged === 1 ? t('plan_p_done_m1') : t(S.canSave() ? 'plan_p_done_0' : 'plan_p_done_b')) + '</p></div>' +
         (S.canSave() && raw() ? (run.feel ? '<div class="card ok"><p>' + esc(t(run.feel === 'hard' ? 'plan_feel_hard_tip' : 'plan_feel_thanks')) + '</p></div>'
@@ -991,22 +1059,29 @@
   function wirePlayer(v) {
     const vs = v.querySelector('#pl-voice'); if (vs) vs.addEventListener('change', () => { run.voice = vs.checked; if (S.canSave() && raw()) { D().voice = run.voice; S.saveQuiet(); } });
     const st = v.querySelector('#pl-pstart'); if (st) st.addEventListener('click', () => go(0));
-    const ps = v.querySelector('#pl-pause'); if (ps) ps.addEventListener('click', () => { run.paused = !run.paused; if (run.paused && S.stopSpeech) S.stopSpeech(); awake(!run.paused); ps.textContent = t(run.paused ? 'plan_p_resume' : 'plan_p_pause'); });
+    const ps = v.querySelector('#pl-pause'); if (ps) ps.addEventListener('click', () => {
+      run.paused = !run.paused; if (run.paused && S.stopSpeech) S.stopSpeech(); awake(!run.paused); ps.textContent = t(run.paused ? 'plan_p_resume' : 'plan_p_pause');
+      const vd = v.querySelector('video#pl-fig3d'); if (vd) { try { if (run.paused) vd.pause(); else { const p = vd.play(); if (p && p.catch) p.catch(() => {}); } } catch (e) { /* no video */ } }
+    });
     const nx = v.querySelector('#pl-next'); if (nx) nx.addEventListener('click', () => go(run.i + 1));
+    const pv = v.querySelector('#pl-prev'); if (pv) pv.addEventListener('click', () => go(Math.max(0, run.i - 1)));
+    const mo = v.querySelector('#pl-more'); if (mo) mo.addEventListener('click', () => { if (!run.rest) return; run.rest.left += 20; run.rest.total = Math.max(run.rest.total, run.rest.left); paintRest(v); });
+    const sk = v.querySelector('#pl-skip'); if (sk) sk.addEventListener('click', () => go(run.i + 1));
     const ag = v.querySelector('#pl-again2'); if (ag) ag.addEventListener('click', () => { run.feel = null; run.logged = null; run.total = 0; go(0); });
     v.querySelectorAll('[data-pl-feel]').forEach((b) => b.addEventListener('click', () => { run.feel = b.dataset.plFeel; const d = D(); d.feel = (d.feel || []).concat([{ d: todayISO(), r: run.id, f: run.feel }]).slice(-60); S.saveQuiet(); draw(v); }));
-    if (run.i >= 0 && run.i < run.steps.length) {
+    if (run.rest && run.i < run.steps.length - 1) { paintRest(v); tick(v); if (!run.paused) awake(true); }
+    else if (run.i >= 0 && run.i < run.steps.length) {
       const s = run.steps[run.i]; const fig = v.querySelector('#pl-fig'); const prev = run.i > 0 ? run.steps[run.i - 1] : null;
       if (fig) {
         if (s.sun && s.flow && prev && prev.pose !== s.pose) animate(fig, prev.pose, s.pose, 0.9, false, true);
         else if (!s.sun && ANIM[s.pose]) animate(fig, ANIM[s.pose][0], ANIM[s.pose][1], ANIM[s.pose][2], ANIM[s.pose][3], false);
       }
-      paint(v); tick(v); if (!run.paused) awake(true);
+      wireFig3d(v); paint(v); tick(v); if (!run.paused) awake(true);
     }
   }
   function go(i) {
     const v = document.getElementById('view'); if (!v || !run) return; const n = run.steps.length;
-    stopRun(); if (i >= n) awake(false); run.i = i; run.paused = false; run.at = Date.now();
+    stopRun(); if (i >= n) awake(false); run.i = i; run.rest = null; run.paused = false; run.at = Date.now();
     if (i < n) { run.left = run.steps[i].s; run.el = 0; }
     if (i >= n && run.logged == null) logRoutine();
     if (i > 0) buzz(); draw(v); window.scrollTo(0, 0);
@@ -1015,9 +1090,11 @@
   function tick(v) {
     clearInterval(tm);
     tm = setInterval(() => {
-      if (!run || run.paused || !document.getElementById('pl-step')) return;
-      run.left -= 0.25; run.el += 0.25; run.total += 0.25; run.at = Date.now(); paint(v);
-      if (run.left <= 0) go(run.i + 1);
+      if (!run || run.paused || !(document.getElementById('pl-step') || document.getElementById('pl-rest'))) return;
+      run.total += 0.25; run.at = Date.now();
+      if (run.rest) { run.rest.left -= 0.25; paintRest(v); if (run.rest.left <= 0) go(run.i + 1); return; }   /* Version 39.39 */
+      run.left -= 0.25; run.el += 0.25; paint(v);
+      if (run.left <= 0) { const r = restAfter(run.i); if (r) rest(r); else go(run.i + 1); }
     }, 250);
   }
   function paint(v) {
@@ -3315,6 +3392,9 @@
         plan_p_start: 'Start', plan_p_pause: 'Pause', plan_p_resume: 'Go on', plan_p_next: 'Next', plan_p_finish: 'Finish', plan_p_both: 'both sides', plan_p_rounds: '{n} rounds, one slow breath in each pose',
         plan_p_step: 'Move {i} of {n}', plan_p_round: 'Round {i} of {n}', plan_p_right: 'Right side', plan_p_left: 'Left side', plan_p_set: 'Set {i} of {n}', plan_p_left_t: '{t} left',
         plan_p_in: 'Breathe in', plan_p_out: 'Breathe out',
+        /* Version 39.39: the rest between moves, and Previous (UI words only) */
+        plan_p_prev: 'Previous', plan_p_rest: 'Rest', plan_p_more: '+20s', plan_p_skiprest: 'Skip rest', plan_p_up: 'Next', plan_p_done_t: '{x} done',
+        plan_p_rest_say: 'Rest. Next: {n}.',
         plan_p_done_h: 'Well done', plan_p_done_m: '{n} minutes added to your week.', plan_p_done_m1: 'One minute added to your week.', plan_p_done_0: 'Routine done. Every move counts.', plan_p_done_b: 'Every move counts. Start your diary to keep your minutes.',
         plan_p_feel: 'How did it feel?', plan_feel_easy: 'Easy', plan_feel_ok: 'Just right', plan_feel_hard: 'Hard',
         plan_feel_hard_tip: 'Do Gentle start for a week, and go slowly. If a move hurts, skip it.', plan_feel_thanks: 'Thank you. Keep going at this pace.',
@@ -3614,6 +3694,8 @@
         plan_p_start: 'शुरू करें', plan_p_pause: 'रोकें', plan_p_resume: 'जारी रखें', plan_p_next: 'आगे', plan_p_finish: 'पूरा करें', plan_p_both: 'दोनों तरफ़', plan_p_rounds: '{n} राउंड, हर आसन में एक धीमी साँस',
         plan_p_step: '{n} में से व्यायाम {i}', plan_p_round: '{n} में से राउंड {i}', plan_p_right: 'दायाँ हिस्सा', plan_p_left: 'बायाँ हिस्सा', plan_p_set: '{n} में से सेट {i}', plan_p_left_t: '{t} बाक़ी',
         plan_p_in: 'साँस लें', plan_p_out: 'साँस छोड़ें',
+        plan_p_prev: 'पिछला', plan_p_rest: 'आराम', plan_p_more: '+20 सेकंड', plan_p_skiprest: 'आराम छोड़ें', plan_p_up: 'अगला', plan_p_done_t: '{x} पूरा',
+        plan_p_rest_say: 'आराम। अगला: {n}।',
         plan_p_done_h: 'बहुत अच्छा', plan_p_done_m: 'आपके हफ़्ते में {n} मिनट जुड़ गए।', plan_p_done_m1: 'आपके हफ़्ते में 1 मिनट जुड़ गया।', plan_p_done_0: 'पूरा हुआ। हर व्यायाम मायने रखता है।', plan_p_done_b: 'हर व्यायाम मायने रखता है। अपने मिनट रखने के लिए अपनी डायरी शुरू करें।',
         plan_p_feel: 'कैसा लगा?', plan_feel_easy: 'आसान', plan_feel_ok: 'ठीक', plan_feel_hard: 'मुश्किल',
         plan_feel_hard_tip: 'एक हफ़्ता “आसान शुरुआत” करें, और धीरे चलें। जिस व्यायाम से दर्द हो, उसे छोड़ दें।', plan_feel_thanks: 'शुक्रिया। इसी रफ़्तार से जारी रखें।',
@@ -3849,10 +3931,20 @@
       '.pl-pitem .pl-thumb { width: 56px; height: 47px; flex: none; display: block; } .pl-pbar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; } .pl-pbar i { display: block; height: 100%; background: var(--accent); }',
       '.pl-stage { align-items: center; text-align: center; gap: 6px; } .pl-stage h2 { margin: 0; } .pl-stage p { margin: 0; color: var(--fg); }',
       '.pl-figbox { width: 100%; max-width: 260px; border-radius: 20px; background: var(--hue-soft, var(--accent-soft)); padding: 6px 4px 0; } .pl-figbox .pl-fig { color: var(--hue, var(--accent)); }',
+      /* Version 39.39: the 3D figure (on the renders' own light grey) and the rest between moves */
+      '.pl-figbox.pl-fb3d { padding: 0; overflow: hidden; background: #EBEBEB; } .pl-3d { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; } .pl-mirror { transform: scaleX(-1); } .pl-pitem .pl-thumb img.pl-3d { width: 56px; height: 47px; border-radius: 8px; }',
+      '.pl-rest { align-items: center; text-align: center; gap: 6px; } .pl-rest h2 { margin: 0; font-family: var(--font-display); font-size: 34px; line-height: 1.1; } body.hi .pl-rest h2 { font-family: var(--font-hi); font-size: 28px; } .pl-rest .grid2, .pl-rest .btn.block { width: 100%; }',
+      '.pl-timer.pl-rtimer, .pl-timer.pl-rtimer svg { width: 140px; height: 140px; } .pl-timer.pl-rtimer .arc { stroke: var(--h-sky); } .pl-timer.pl-rtimer .trk { stroke: var(--h-sky-soft); } .pl-timer.pl-rtimer b { font-size: 30px; }',
+      '.pl-nextcard { flex-direction: row; display: flex; gap: 12px; align-items: center; } .pl-nextcard .pl-thumb { width: 108px; flex: none; border-radius: 12px; overflow: hidden; background: #EBEBEB; } .pl-nextcard .pl-thumb .pl-fig, .pl-nextcard .pl-thumb .pl-3d { width: 108px; height: auto; display: block; }',
+      '.pl-nextcard .body { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; } .pl-nextcard .body > span:last-child { font-size: 14px; } .pl-sr { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }',
       '.pl-timer { position: relative; width: 120px; height: 120px; margin: 4px auto 0; } .pl-timer svg { width: 120px; height: 120px; transform: rotate(-90deg); } .pl-timer .trk { fill: none; stroke: var(--line); stroke-width: 8; }',
       '.pl-timer .arc { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear; } .pl-timer b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 24px; color: var(--fg); }',
       '.pl-breath-wrap { position: relative; width: 150px; height: 150px; margin: 4px auto 0; display: grid; place-items: center; } .pl-breath { position: absolute; inset: 0; border-radius: 50%; background: var(--h-sky-soft); border: 3px solid var(--h-sky); transform: scale(0.62); transition: transform 0.25s linear; }',
       '.pl-breath-wrap b { position: relative; font-size: 17px; color: var(--fg); } .pl-left { text-align: center; } .pl-player { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; } .pl-player .item .body { min-width: 0; overflow-wrap: anywhere; }',
+      /* Version 39.39 (Mohit's Flip5, 30 Oct: "fix the buttons"): Previous, Pause and Next stay above the tab bar however long the move's
+         words; a short screen gets a smaller timer and the time left only once (the ring), still read out from #pl-left */
+      '.pl-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .pl-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }',
+      '@media (max-height: 860px) { .pl-player { gap: 8px; } .pl-timer, .pl-timer svg { width: 100px; height: 100px; } .pl-left { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } } @media (max-height: 720px) { .pl-figbox { max-width: 220px; } }',
       '.pl-chart { width: 100%; height: auto; display: block; } .pl-chart .gd { stroke: var(--line); stroke-width: 1; } .pl-chart .bar { fill: var(--accent); opacity: 0.4; } .pl-chart .bar.met { fill: var(--accent-strong); opacity: 1; } .pl-chart .tg { stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; } .pl-chart text { fill: var(--muted); font-size: 11px; }',
       '.pl-legend { display: inline-flex; align-items: center; gap: 6px; } .pl-legend i.tg { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--gold); }',
       '.pl-mini .card { gap: 4px; } .pl-mini .pl-big, .pl-big { font-size: 22px; color: var(--fg); }',

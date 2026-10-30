@@ -1,0 +1,616 @@
+# Every position the app's drawings use (mods/plan.js: P, ANIM and the sun salutation), posed on the 3D figure in real
+# proportions. A position is a function of the kit; a loop repeats the drawing's timing (ANIM: seconds, and whether it
+# holds the second position for 40% of the loop). Side views show her right side, facing right as the drawings do;
+# front views face the camera. Props: chair, wall and step, and a yoga mat for the yoga and floor positions.
+import math
+from mathutils import Vector
+from kit import V, LR, SX, UP, FWD, D, unit
+
+FLOOR_W = 0.035   # a wrist resting on the floor (palm flat)
+
+
+def stand(k, feet=0.10, pelvis=None, rot=(0, 0, 0), knees=True):
+    k.body(pelvis, rot)
+    for s in LR:
+        k.leg(s, (SX[s] * feet, -0.03, 0.066), knee=(SX[s] * feet, -0.7, 0.45) if knees else None)
+
+
+def arms_side(k, palm=-UP, lift=0.0):
+    """Arms long and level out to her sides."""
+    for s in LR:
+        k.point(s, (SX[s], 0, lift), palm=palm)
+    k.shape('LR', 'flat')
+
+
+def namaste(k, z=1.1):
+    for s in LR:
+        k.arm(s, (SX[s] * 0.02, -0.2, z), elbow=(SX[s] * 0.6, -0.05, 0.92), palm=(-SX[s], 0, 0), fingers=(0, -0.15, 1))
+    k.shape('LR', 'flat')
+
+
+def overhead(k, gap=0.02, fwd=0.05):
+    """Arms straight up beside her head, palms together, her shoulders lifting with them."""
+    for s in LR:
+        k.shrug(s, 15)
+    mid = (k.sh('L') + k.sh('R')) / 2; L = k.bent(5)
+    for s in LR:
+        sh = k.sh(s); x = mid.x + SX[s] * gap; y = sh.y - fwd
+        z = sh.z + math.sqrt(max(0.0, L * L - (sh.x - x) ** 2 - (sh.y - y) ** 2))
+        k.arm(s, (x, y, z), elbow=sh + V((SX[s] * 0.5, 0.25, 0.3)), palm=(-SX[s], 0, 0), fingers=UP)
+    k.shape('LR', 'flat')
+
+
+def floor_arm(k, s, d, palm=-UP, h=FLOOR_W, bend=6.0):
+    """A long arm lying on the floor towards d (level, the world's): the wrist at h, as far out as the arm reaches."""
+    sh = k.sh(s); L = k.bent(bend); r = math.sqrt(max(0.0, L * L - max(0.0, sh.z - h) ** 2)); d = unit((d[0], d[1], 0))
+    k.arm(s, (sh.x + d.x * r, sh.y + d.y * r, h), elbow=sh + d * 0.22 + V((SX[s] * 0.5, 0, 0)), palm=palm, fingers=d)
+
+
+def thigh_hand(k, s, bend=10.0):
+    """Her hand resting on top of her thigh, palm down, as far down it as her arm reaches with the elbow soft."""
+    sh = k.sh(s); hp = k.hip(s); kn = k.at('lowerleg01.' + s); L = k.bent(bend)
+    on = [hp + (kn - hp) * (0.1 + 0.8 * i / 40) + V((0, 0, 0.085)) for i in range(41)]
+    p = min(on, key=lambda q: abs((q - sh).length - L))
+    k.arm(s, p, elbow=sh + V((SX[s] * 0.4, 0.2, -0.1)), palm=-UP, fingers=unit(kn - hp))
+
+
+# ---------- standing ----------
+def pray(k):
+    stand(k); namaste(k)
+
+
+def armsup(k):
+    stand(k); overhead(k)
+
+
+def opens(k):
+    """Palm tree on the way up and down: arms wide at shoulder height, palms turned up so they can go on overhead."""
+    stand(k); arms_side(k, palm=UP, lift=0.08)
+
+
+def tiptoe(k):
+    """Palm tree at its fullest: up on her toes, arms stretched up ("Rise on your toes if you can")."""
+    stand(k, pelvis=(0, -0.05, 0.875))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.10, -0.012, 0.15), knee=(SX[s] * 0.10, -0.7, 0.5))
+        k.flat(s, pitch=36); k.toes(s, 55)
+    k.ground(); overhead(k)
+
+
+def tree(k):
+    k.body((-0.035, -0.022, 0.791))
+    k.leg('R', (-0.075, -0.03, 0.066), knee=(-0.08, -0.7, 0.45))
+    # her left foot on the inside of her right calf, never on the knee; the left knee opens out to her left
+    k.leg('L', (-0.035, -0.0, 0.34), knee=(0.75, -0.2, 0.55), toes=(-0.1, -0.15, -1), sole=(-1, 0, 0))
+    overhead(k)
+
+
+def wide(k):
+    stand(k, feet=0.47, pelvis=(0, -0.022, 0.70))
+    k.flat('R', yaw=-90); k.flat('L', yaw=12)
+    arms_side(k)
+
+
+def triangle(k):
+    stand(k, feet=0.47, pelvis=(0.1, -0.022, 0.70), rot=(0, -48, 0))
+    k.flat('R', yaw=-90); k.flat('L', yaw=12)
+    k.spine(side=-12)
+    # her arms make one upright line: the upper arm straight up, the lower hand resting on the front of her right shin
+    k.point('L', UP, bend=4, palm=(0, -1, 0))
+    sh = k.sh('R'); kn = k.at('lowerleg01.R'); an = k.at('lowerleg02.R', 'tail')
+    t = max(0.15, min(0.85, (kn.z - (sh.z - k.bent(8))) / (kn.z - an.z)))
+    k.arm('R', kn + (an - kn) * t + V((0, -0.055, 0)), elbow=sh + V((-0.3, 0.3, -0.1)), palm=(0, 1, 0), fingers=(0, 0, -1))
+    k.shape('LR', 'flat')
+    k.neck(twist=25)
+
+
+def _circle(k, a):
+    """Loosen up's big arm circles: both arms long, forward and up past her ears, then out behind her and down (a, degrees
+    round the circle: 0 hanging, 90 forward, 180 up, 270 out behind; the arm stays a little out from her side)."""
+    stand(k)
+    sn, cs = math.sin(D(a)), math.cos(D(a))
+    for s in LR:
+        k.point(s, (SX[s] * (0.35 - 0.25 * sn), -sn * (1.0 if sn > 0 else 0.6), -cs), bend=6, palm=(-SX[s], 0, 0))
+    k.shape('LR', 'relaxed')
+
+
+for _a in range(0, 360, 45):
+    globals()['circle%d' % _a] = (lambda a: lambda k: _circle(k, a))(_a)
+
+
+def warmup(k):
+    _circle(k, 135)
+
+
+def warmup2(k):
+    _circle(k, 225)
+
+
+def swing(k, s, deg=0.0, bend=12.0):
+    """A relaxed arm from the shoulder: the wrist swung forward (+) or back (-) by deg from hanging straight down, the elbow
+    bent by bend and pointing back, the palm towards her side, as an arm swings when she walks or marches."""
+    sh = k.sh(s); a = D(deg); d = unit((SX[s] * 0.12, -math.sin(a), -math.cos(a)))
+    k.point(s, d, bend=bend, elbow=sh + d * 0.22 + V((SX[s] * 0.1, 0.5, 0)))
+    k.relax(s, (-SX[s], 0.3, 0)); k.shape(s, 'relaxed')
+
+
+def _march(k, up, fwd_arm):
+    """up: the leg whose knee lifts; fwd_arm: the arm that swings forward (the other side), elbows bent as she marches."""
+    k.body()
+    st = 'L' if up == 'R' else 'R'
+    k.leg(st, (SX[st] * 0.09, -0.03, 0.066), knee=(SX[st] * 0.09, -0.7, 0.45))
+    k.leg(up, (SX[up] * 0.09, -0.29, 0.34), knee=(SX[up] * 0.09, -1.0, 0.8), toes=(0, -0.45, -0.89), sole=(0, 0.89, -0.45))
+    # the forward arm's upper arm 20 degrees ahead with the forearm level; the back arm's elbow behind her, the hand under
+    # the shoulder
+    bk = 'L' if fwd_arm == 'R' else 'R'
+    swing(k, fwd_arm, 57, 80); swing(k, bk, 8, 70)
+
+
+def marchmid(k):
+    """Between two lifts: both feet down, arms passing her sides."""
+    stand(k, feet=0.09)
+    for s in LR:
+        swing(k, s, 33, 75)
+
+
+def march(k):
+    _march(k, 'R', 'L')
+
+
+def march2(k):
+    _march(k, 'L', 'R')
+
+
+def _walk(k, front):
+    back = 'L' if front == 'R' else 'R'
+    k.body((0, -0.02, 0.765))
+    k.leg(front, (SX[front] * 0.09, -0.3, 0.07), knee=(SX[front] * 0.09, -1.0, 0.5))
+    k.flat(front, pitch=-8)
+    k.leg(back, (SX[back] * 0.09, 0.27, 0.13), knee=(SX[back] * 0.09, -0.8, 0.45))
+    k.flat(back, pitch=38); k.toes(back, 35)
+    swing(k, back, 29, 30); swing(k, front, -15, 10)   # the arm opposite the front leg swings forward
+
+
+def _pass(k, stance):
+    """Mid-step: her weight over the stance foot, the other foot swinging past it just off the floor, arms by her sides."""
+    sw = 'L' if stance == 'R' else 'R'
+    k.body((0, -0.02, 0.79))
+    k.leg(stance, (SX[stance] * 0.09, -0.02, 0.066), knee=(SX[stance] * 0.09, -0.8, 0.45))
+    k.leg(sw, (SX[sw] * 0.09, 0.02, 0.15), knee=(SX[sw] * 0.09, -0.9, 0.5)); k.flat(sw, pitch=18)
+    for s in LR:
+        swing(k, s, 6, 18)
+
+
+def walkpass(k):
+    _pass(k, 'R')
+
+
+def walkpass2(k):
+    _pass(k, 'L')
+
+
+def walk(k):
+    _walk(k, 'R')
+
+
+def walk2(k):
+    _walk(k, 'L')
+
+
+# ---------- the sun salutation (side) ----------
+SUN_HANDS_Y = -0.55   # where both palms stay planted, from the lunge to the other lunge
+
+
+def prays(k):
+    stand(k, feet=0.06); namaste(k)
+
+
+def reach(k):
+    stand(k, feet=0.06)
+    k.spine(bend=-12, weights=[0.6, 0.8, 1, 1.2, 1.2]); k.neck(bend=-6)
+    for s in LR:
+        k.point(s, k.axis((-SX[s] * 0.22, 0.16, 1)), palm=(-SX[s], 0, 0))
+    k.shape('LR', 'flat')
+
+
+def fwdbend(k):
+    """Hasta padasana as Sakhi words it, "hands to your shins or feet": a rounded fold with soft knees and her hands on
+    her shins (a deeper hip fold strains the figure's hips)."""
+    k.body((0, 0.08, 0.75), rot=(104, 0, 0))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.08, -0.03, 0.066), knee=(SX[s] * 0.08, -0.9, 0.5))
+    k.spine(bend=40); k.neck(bend=14)
+    for s in LR:
+        k.arm(s, (SX[s] * 0.11, -0.13, 0.27), elbow=(SX[s] * 0.35, 0.1, 0.5), palm=(0, 1, 0), fingers=(0, 0, -1))
+    k.shape('LR', 'hold')
+    k.ground()
+
+
+def _plant_hands(k, y=SUN_HANDS_Y):
+    """Moves the whole pose so her hands are on the sun salutation's spot."""
+    mid = (k.T['handL'].location + k.T['handR'].location) / 2
+    k.shift((0, y - mid.y, 0))
+
+
+def _lunge(k, front):
+    back = 'L' if front == 'R' else 'R'
+    k.body((0, 0.02, 0.35), rot=(66, 0, 0))
+    k.spine(bend=4); k.neck(bend=-42)
+    k.leg(front, (SX[front] * 0.09, -0.4, 0.066), knee=(SX[front] * 0.09, -1.0, 0.6))
+    k.leg(back, (SX[back] * 0.09, 0.62, 0.075), knee=(SX[back] * 0.09, 0.25, -0.6), toes=(0, 0.97, -0.25), sole=(0, 0.25, 0.97))
+    for s in LR:
+        sh = k.sh(s); k.arm(s, (SX[s] * 0.25, sh.y - 0.04, FLOOR_W), elbow=(SX[s] * 0.4, sh.y + 0.3, 0.6), palm=-UP, fingers=FWD)
+    k.shape('LR', 'floor')
+    _plant_hands(k); k.ground()
+
+
+def lunge(k):
+    _lunge(k, 'R')
+
+
+def lunge2(k):
+    _lunge(k, 'L')
+
+
+def plank(k):
+    k.body((0, 0, 0.335), rot=(74, 0, 0))
+    for s in LR:
+        ank = k.rig.matrix_world @ k.rig.data.bones['lowerleg02.' + s].tail_local
+        k.leg(s, ank + V((0, 0, 0.0)), knee=ank + V((0, -0.3, -0.6)), toes=(0, 0.25, -1), sole=(0, 1, 0.1))
+        k.toes(s, 70)
+        sh = k.sh(s); k.arm(s, (sh.x * 1.05, sh.y, FLOOR_W), elbow=(SX[s] * 0.35, sh.y + 0.4, 0.3), palm=-UP, fingers=FWD)
+    k.shape('LR', 'floor')
+    _plant_hands(k); k.ground()
+
+
+def ashtanga(k):
+    k.body((0, 0, 0.36), rot=(114, 0, 0))
+    k.spine(bend=-12); k.neck(bend=-28)
+    for s in LR:
+        hp = k.hip(s)
+        k.leg(s, (SX[s] * 0.09, hp.y + 0.52, 0.11), knee=(SX[s] * 0.09, hp.y + 0.3, -0.6), toes=(0, 0.2, -1), sole=(0, 1, 0.1))
+        k.toes(s, 70)
+        sh = k.sh(s); k.arm(s, (SX[s] * 0.24, sh.y + 0.02, FLOOR_W), elbow=(SX[s] * 0.3, sh.y + 0.3, 0.7), palm=-UP, fingers=FWD)
+    k.shape('LR', 'floor')
+    _plant_hands(k); k.ground()
+
+
+def prone(k, arms='chest'):
+    k.body((0, 0, 0.12), rot=(90, 0, 0))
+    for s in LR:
+        ank = k.rig.matrix_world @ k.rig.data.bones['lowerleg02.' + s].tail_local
+        k.leg(s, (SX[s] * 0.08, ank.y, 0.07), knee=(SX[s] * 0.08, ank.y - 0.4, -0.6), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
+    if arms == 'chest':
+        # hands flat beside her chest, under the shoulders, elbows bent close to the body
+        for s in LR:
+            sh = k.sh(s); k.arm(s, (SX[s] * 0.25, sh.y - 0.02, FLOOR_W), elbow=(SX[s] * 0.32, sh.y + 0.35, 0.45), palm=-UP, fingers=FWD)
+    else:
+        # arms long along her sides, palms down beside her thighs
+        for s in LR:
+            floor_arm(k, s, (SX[s] * 0.1, 1))
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def cobra(k):
+    prone(k)                                     # the hands stay where they were
+    k.spine(bend=-36, weights=[1.2, 1.2, 1, 0.9, 0.8]); k.neck(bend=-14)
+    k.ground()
+
+
+def sun_cobra(k):
+    cobra(k); _plant_hands(k); k.ground()
+
+
+def downdog(k):
+    a = 50   # her back and arms make one line, 50 degrees below level
+    k.body((0, 0, 0.04 + 0.817 * math.sin(D(a))), rot=(90 + a, 0, 0))
+    k.neck(bend=14)
+    for s in LR:
+        k.shrug(s, 10)
+        sh = k.sh(s); line = k.axis((0, 0, 1))
+        k.arm(s, sh + line * 0.43, elbow=sh + V((SX[s] * 0.3, -0.2, 0.3)), palm=-UP, fingers=FWD)
+        hp = k.hip(s)
+        k.leg(s, (SX[s] * 0.1, hp.y + 0.44, 0.066), knee=(SX[s] * 0.1, hp.y - 0.6, 0.5))
+    k.shape('LR', 'floor')
+    _plant_hands(k); k.ground()
+
+
+# ---------- kneeling ----------
+def child(k):
+    # sitting back on her heels, chest down over her thighs, forehead on the mat, arms long in front
+    k.body((0, 0.16, 0.27), rot=(92, 0, 0))
+    k.spine(bend=18); k.neck(bend=6)
+    for s in LR:
+        hp = k.hip(s)
+        k.leg(s, (SX[s] * 0.08, hp.y + 0.16, 0.06), knee=(SX[s] * 0.1, -0.8, -0.4), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
+        k.shrug(s, 8)
+        sh = k.sh(s); k.arm(s, (SX[s] * 0.19, sh.y - 0.4, FLOOR_W), elbow=(SX[s] * 0.25, sh.y - 0.2, 0.8), palm=-UP, fingers=FWD)
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def kneel(k):
+    k.body((0, -0.02, 0.43))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.09, 0.35, 0.065), knee=(SX[s] * 0.09, -0.7, -0.1), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
+        k.point(s, (SX[s] * 0.15, 0.02, -1), bend=10); k.relax(s, (-SX[s], 0.2, 0))
+    k.ground()
+
+
+def camel(k):
+    kneel(k)
+    pz = (k.rig.matrix_world @ k.P0).z
+    k.body((0, -0.06, pz))
+    k.spine(bend=-34, weights=[0.8, 1, 1.1, 1.2, 1.2]); k.neck(bend=-24)
+    for s in LR:
+        hp = k.hip(s)
+        k.arm(s, hp + V((SX[s] * 0.07, 0.13, 0.1)), elbow=(SX[s] * 0.3, 0.75, 0.7), palm=FWD, fingers=(0, 0.1, -1))
+    k.shape('LR', 'flat')
+    k.ground()
+
+
+def locust0(k):
+    prone(k, arms='sides')
+
+
+def locust(k):
+    prone(k, arms='sides')
+    f = k.T['footR'].location
+    k.leg('R', (f.x, f.y, 0.3), knee=(f.x, f.y - 0.4, -0.8))
+    k.ground()
+
+
+# ---------- lying on her back (side) ----------
+def supine(k, pelvis_z=0.11):
+    k.body((0, 0, pelvis_z), rot=(-90, 0, 0))
+
+
+def bridgedown(k):
+    supine(k)
+    for s in LR:
+        k.leg(s, (SX[s] * 0.1, -0.42, 0.066), knee=(SX[s] * 0.1, -0.3, 1.0))
+        floor_arm(k, s, (SX[s] * 0.15, -1), bend=30)   # arms beside her, palms down; soft elbows, so they never lock as her hips lift
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def bridge(k):
+    bridgedown(k)
+    k.body((0, -0.02, 0.36), rot=(-122, 0, 0)); k.neck(bend=30)
+    k.ground()
+
+
+def _knees(k, roll=0.0):
+    """Knees drawn in over her chest, shins level, hands holding just below the knees; roll rocks her gently to a side."""
+    supine(k)
+    for s in LR:
+        k.leg(s, (SX[s] * 0.1, -0.1, 0.33), knee=(SX[s] * 0.1, 0.25, 1.6))
+    for s in LR:
+        kn = k.at('lowerleg01.' + s)
+        k.arm(s, kn + V((SX[s] * 0.06, -0.07, 0.02)), elbow=(SX[s] * 0.6, 0.45, 0.25))
+        k.relax(s, (-SX[s] * 0.3, 0, -1))         # palms over her shins
+    k.shape('LR', 'hold')
+    k.neck(bend=12)
+    if roll:
+        k.turn((0, 1, 0), roll, k.rig.matrix_world @ k.P0)
+    k.ground()
+
+
+def knees(k):
+    _knees(k)
+
+
+def knees2(k):
+    _knees(k, 9)
+
+
+def knees3(k):
+    _knees(k, -9)
+
+
+def rest(k):
+    supine(k)
+    for s in LR:
+        ank = k.rig.matrix_world @ k.rig.data.bones['lowerleg02.' + s].tail_local
+        k.leg(s, (SX[s] * 0.19, ank.y, 0.08), knee=(SX[s] * 0.3, ank.y + 0.3, 1.0), toes=(SX[s] * 0.55, -0.7, 0.45), sole=(SX[s] * 0.3, -0.6, -0.75))
+        floor_arm(k, s, (SX[s] * 0.5, -0.87), palm=UP, h=0.025)   # arms a little out from her sides, palms up
+    k.eyes_closed()
+    k.ground()
+
+
+# ---------- sitting ----------
+def seated(k, lean=0.0):
+    k.body((0, 0, 0.125), rot=(lean, 0, 0))
+
+
+def sitlong(k):
+    seated(k)
+    for s in LR:
+        k.leg(s, (SX[s] * 0.1, -0.74, 0.075), knee=(SX[s] * 0.1, -0.4, 1.0), toes=(0, -0.35, 0.94), sole=(0, -0.94, -0.35))
+    for s in LR:
+        thigh_hand(k, s)
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def twist(k):
+    seated(k)
+    k.leg('L', (0.1, -0.74, 0.075), knee=(0.1, -0.4, 1.0), toes=(0, -0.35, 0.94), sole=(0, -0.94, -0.35))
+    k.leg('R', (-0.1, -0.33, 0.066), knee=(-0.12, -0.3, 1.0))
+    k.spine(twist=-34); k.neck(twist=-24)
+    # her left arm hugs the bent right knee; her right fingertips rest on the floor behind her
+    k.arm('L', (-0.19, -0.24, 0.36), elbow=(0.2, -0.6, 0.4)); k.relax('L', (1, 0, 0))
+    sh = k.sh('R'); L = k.bent(8); back = 0.17
+    k.arm('R', (sh.x - 0.03, sh.y + back, sh.z - math.sqrt(max(0.0, L * L - back * back - 0.03 ** 2))),
+          elbow=sh + V((-0.4, 0.3, 0)), palm=(0, 1, 0), fingers=(0, 0.25, -1))
+    k.shape('L', 'hold'); k.shape('R', 'floor')
+    k.ground()
+
+
+def _butterfly(k, knee_z):
+    seated(k, lean=6)
+    for s in LR:
+        k.leg(s, (SX[s] * 0.045, -0.33, 0.1), knee=(SX[s] * 0.9, -0.15, knee_z), toes=(0, -1, -0.15), sole=(-SX[s], 0, 0))
+        k.arm(s, (SX[s] * 0.075, -0.32, 0.14), elbow=(SX[s] * 0.5, -0.2, 0.6))   # her hands hold her feet
+        k.relax(s, (0, -0.3, -1))
+    k.shape('LR', 'hold')
+    k.ground()
+
+
+def butterfly(k):
+    _butterfly(k, 0.2)
+
+
+def butterfly2(k):
+    _butterfly(k, 0.48)
+
+
+def sit(k):
+    seated(k)
+    k.leg('L', (-0.13, -0.25, 0.07), knee=(0.9, -0.3, 0.15), toes=(-0.9, -0.2, -0.3), sole=(0, 0.55, 0.85))
+    k.leg('R', (0.13, -0.18, 0.07), knee=(-0.9, -0.3, 0.15), toes=(0.9, -0.2, -0.3), sole=(0, 0.55, 0.85))
+    for s in LR:
+        kn = k.at('lowerleg01.' + s)     # the backs of her hands rest on her knees
+        k.arm(s, kn + V((-SX[s] * 0.02, 0.0, 0.075)), elbow=(SX[s] * 0.6, 0.15, 0.6), palm=UP, fingers=(SX[s] * 0.3, -1, 0))
+    k.shape('LR', 'mudra')
+    k.eyes_closed()
+    k.ground()
+
+
+# ---------- strength (side, with props) ----------
+def chairup(k):
+    stand(k)
+    for s in LR:
+        k.point(s, (0, -1, -0.03), bend=4, palm=-UP)   # arms long and level in front of her
+    k.shape('LR', 'flat')
+
+
+def chair(k):
+    stand(k, pelvis=(0, 0.27, 0.56), rot=(28, 0, 0))
+    for s in LR:
+        k.point(s, (0, -1, 0), bend=4, palm=-UP)
+    k.shape('LR', 'flat')
+
+
+def chairsit(k):
+    """Sitting tall on the chair, feet apart, hands on her thighs (the seated forward bend's start)."""
+    k.body((0, 0.25, 0.555))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.13, -0.08, 0.066), knee=(SX[s] * 0.15, -0.9, 0.5))
+    for s in LR:
+        thigh_hand(k, s)
+    k.shape('LR', 'floor')
+
+
+def chairfwd(k):
+    """The knee-pain swap for child pose: "bend forward slowly with your arms hanging down"."""
+    k.body((0, 0.25, 0.555), rot=(38, 0, 0))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.13, -0.08, 0.066), knee=(SX[s] * 0.15, -0.9, 0.5))
+    k.spine(bend=34); k.neck(bend=12)
+    for s in LR:
+        k.point(s, (SX[s] * 0.08, -0.1, -1), bend=10); k.relax(s, (-SX[s], 0.3, 0))   # arms hanging loose
+
+
+WALL_Y = -0.66
+
+
+def _lean(k, deg):
+    """Her body straight from heels to head, leaning forward about the ankles."""
+    import mathutils
+    ank = V((0, -0.03, 0.066)); R = mathutils.Matrix.Rotation(D(deg), 3, 'X')
+    stand(k, pelvis=ank + R @ (k.P0 - ank), rot=(deg, 0, 0))
+
+
+def wallout(k):
+    _lean(k, 10)
+    for s in LR:
+        sh = k.sh(s); k.arm(s, (SX[s] * 0.24, WALL_Y + 0.03, sh.z - 0.02), elbow=(SX[s] * 0.5, sh.y, 0.9), palm=FWD, fingers=(SX[s] * 0.2, 0, 1))
+    k.shape('LR', 'floor')
+
+
+def wall(k):
+    _lean(k, 18)
+    for s in LR:
+        sh = k.sh(s); k.arm(s, (SX[s] * 0.24, WALL_Y + 0.03, 1.165), elbow=(SX[s] * 0.6, sh.y + 0.05, 0.8), palm=FWD, fingers=(SX[s] * 0.2, 0, 1))
+    k.shape('LR', 'floor')
+
+
+STEP_FRONT, STEP_H = -0.26, 0.18
+
+
+def stepfloor(k):
+    stand(k, feet=0.09)
+    for s in LR:
+        swing(k, s, 6, 18)
+
+
+def step(k):
+    stand(k, feet=0.09, pelvis=(0, -0.09, 0.8))
+    k.leg('R', (-0.09, STEP_FRONT - 0.14, STEP_H + 0.066), knee=(-0.09, -1.0, 0.7))
+    swing(k, 'L', 20, 28); swing(k, 'R', -12, 10)
+
+
+CALF_WALL_Y = -0.43
+
+
+def _calfarms(k):
+    for s in LR:
+        k.arm(s, (SX[s] * 0.22, CALF_WALL_Y + 0.03, 1.12), elbow=(SX[s] * 0.5, 0.1, 0.8), palm=FWD, fingers=(0, 0, 1))
+    k.shape('LR', 'floor')
+
+
+def calfdown(k):
+    stand(k, feet=0.09); k.ground(); _calfarms(k)
+
+
+def calf(k):
+    """Up on her toes: the heels lift, the balls of her feet and her toes stay on the floor, her hands stay on the wall."""
+    stand(k, feet=0.09, pelvis=(0, -0.05, 0.875))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.09, -0.012, 0.15), knee=(SX[s] * 0.09, -0.7, 0.5))
+        k.flat(s, pitch=36); k.toes(s, 55)   # the toes bend flat on the floor
+    k.ground(); _calfarms(k)
+
+
+POSES = {n: f for n, f in globals().items() if callable(f) and not n.startswith('_') and n not in (
+    'stand', 'arms_side', 'namaste', 'overhead', 'supine', 'seated', 'unit', 'D', 'V', 'Vector', 'sun_cobra', 'swing', 'floor_arm',
+    'thigh_hand')}
+POSES['sun_cobra'] = sun_cobra
+
+CIRCLE = ['circle%d' % a for a in range(0, 360, 45)]
+FRONT = {'pray', 'opens', 'armsup', 'tiptoe', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', 'butterfly', 'butterfly2', 'sit'} | set(CIRCLE)
+PROPS = {'chair': 'chair', 'chairup': 'chair', 'chairsit': 'chair', 'chairfwd': 'chair', 'wall': 'wall', 'wallout': 'wall', 'stepfloor': 'step', 'step': 'step',
+         'calfdown': 'calfwall', 'calf': 'calfwall'}
+NO_MAT = {'chair', 'chairup', 'chairsit', 'chairfwd', 'wall', 'wallout', 'stepfloor', 'step', 'calfdown', 'calf', 'walk', 'walk2'}
+
+# the app's loops: [from, to, seconds, hold]; locust starts from its own prone position (arms by her sides)
+LOOPS = {
+    'chair': ('chairup', 'chair', 3, False), 'wall': ('wallout', 'wall', 2.6, False), 'step': ('stepfloor', 'step', 2.4, False),
+    'bridge': ('bridgedown', 'bridge', 4, True), 'cobra': ('prone', 'cobra', 5, True), 'locust': ('locust0', 'locust', 4, True),
+    'camel': ('kneel', 'camel', 6, True),
+    'calf': ('calfdown', 'calf', 2.4, False),
+    # marching and walking put each foot down before the other lifts, so the loop never hops or glides
+    'march': {'dur': 1.4, 'seq': [(0, 'march'), (0.25, 'marchmid'), (0.5, 'march2'), (0.75, 'marchmid'), (1.0, 'march')]},
+    'walk': {'dur': 1.1, 'seq': [(0, 'walk'), (0.25, 'walkpass'), (0.5, 'walk2'), (0.75, 'walkpass2'), (1.0, 'walk')]},
+    # palm tree: the arms open wide and go up the sides to meet overhead, she rises on her toes and holds, then comes down
+    'armsup': {'dur': 8, 'seq': [(0, 'pray'), (0.12, 'opens'), (0.25, 'armsup'), (0.34, 'tiptoe'), (0.62, 'tiptoe'), (0.72, 'armsup'),
+                                 (0.86, 'opens'), (1.0, 'pray')]},
+    'triangle': ('wide', 'triangle', 6, True),
+    'butterfly': ('butterfly', 'butterfly2', 1.6, False), 'twist': ('sitlong', 'twist', 6, True), 'knees': {'dur': 4, 'seq': [(0, 'knees'), (0.25, 'knees2'), (0.5, 'knees'), (0.75, 'knees3'), (1.0, 'knees')]},
+    # Loosen up: "swing your arms in big circles", one slow circle in 3 seconds, starting from the still's position
+    'warmup': {'dur': 3, 'seq': [(i / 8, 'circle%d' % ((135 + 45 * i) % 360)) for i in range(9)]},
+    'chairfwd': ('chairsit', 'chairfwd', 6, True),   # the app's "Seated forward bend" (child pose with knee pain)
+}
+# the sun salutation flows from each position to the next (0.9 seconds); one camera for all of them
+SUN = ['prays', 'reach', 'fwdbend', 'lunge', 'plank', 'ashtanga', 'sun_cobra', 'downdog', 'lunge2', 'fwdbend', 'reach', 'prays']
+# a looser frame where the camera would otherwise crop her
+FRAME_MARGIN = {'fwdbend': 1.4}
+# the drawing names, so every one of the app's 43 positions has its own still
+DRAWINGS = ['pray', 'armsup', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', 'march', 'march2', 'walk', 'walk2', 'prays', 'reach',
+            'fwdbend', 'lunge', 'lunge2', 'plank', 'ashtanga', 'prone', 'cobra', 'downdog', 'child', 'kneel', 'camel', 'locust',
+            'bridgedown', 'bridge', 'knees', 'knees2', 'rest', 'sitlong', 'twist', 'butterfly', 'butterfly2', 'sit', 'chairup', 'chair',
+            'wallout', 'wall', 'stepfloor', 'step', 'calfdown', 'calf']
+# positions the app has no drawing for, used by its steps all the same
+EXTRA = ['chairsit', 'chairfwd']
