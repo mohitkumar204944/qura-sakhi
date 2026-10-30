@@ -119,7 +119,7 @@
     if (st === 'preg' && !disc) add('preg-diet', '', t('food_r_preg'));
     if (st === 'meno' && !disc) add('meno-bones', t('food_r_calcium'), t('food_r_calcium_s'), 'gold');
     if (st !== 'preg') add('plan-plate', '', t('food_r_plate'));
-    if (st === 'post' && !disc) add('post-feed', '', t('food_r_post'), 'sky');
+    if (st === 'post' && !disc && !(S.post && S.post.died && S.post.died())) add('post-feed', '', t('food_r_post'), 'sky');   /* Version 39.46: not after "My baby has died" */
     if (!disc) add('cond-anaemia', t('food_r_iron'), t('food_r_iron_s'), 'rose');
     if (!disc) add('periods-fasting', '', t('food_r_fast'), 'purple');
     return out;

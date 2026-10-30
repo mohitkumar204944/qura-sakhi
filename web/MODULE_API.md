@@ -5594,3 +5594,177 @@ words are UI only (review section 19.45).
    can't play, `wireFig3d`). Without `web/fig`, or with `SAKHI_CONFIG.fig === false`, the drawings stay.
 
 **Tests:** `node test/myplanwalk.mjs` (28 checks; 17 fail on 0.39.44's code).
+
+## 89. Version 39.46: I had a baby, the full plan (`post` version 2)
+
+Mohit, 30 Oct: "yes start with the I had a baby plan" (advice `docs/after-birth-plan-advice-2026-10-30.md`; mockup
+claude.ai/artifact/RLz4dU7pQ5A5iVTFCcnqPa), then "proceed building", which takes the advice's 9 recommendations. This builds the
+safety layer and the plan. The two new routines and the lessons come next (89.7). New lines wait for doctor review (review
+section 19.46).
+
+### 89.1 The plan
+- `web/progs/v1.js`, `post` version 2 (live). Version 1 runs on for the women on it, with one offer (89.5).
+- Clock: days since the birth (`birthWeek`), `length: { weeks: 0 }`. It runs to the first birthday, which ends it as before
+  (`life.needs: 'birth:365'`). `slots: { max: 4 }`, `moves: true`.
+- The steps in order:
+  - the recovery check (`post.rcheck`, to day 41);
+  - the squeezes (adapter `post.pf`). To day 13: "5 gentle squeezes", "during a feed", or "lying or sitting" if she doesn't
+    breastfeed. From day 14: "10 squeezes, and the knack". They count from the pelvic floor trainer too;
+  - her goal's step:
+    - recovery and weight: "Walk a little, as you feel able", to day 13;
+    - feeding: Breastfeeding (never after "My baby has died");
+    - mood and sleep: the calm and sleep routines;
+  - the walk: from day 14, 3 days a week. After back to strong, most days (cap 30, the hold rule);
+  - Gentle start, 2 days a week after back to strong, until "Is my body ready?";
+  - Strength at home, 2 days a week, from the day after "Is my body ready?" said yes;
+  - food while she breastfeeds, once a week.
+- Today shows the recovery check last: it is her evening.
+- Day 1 has 3 steps or fewer, and no day has more than 4.
+- New vocabulary (`test/progs.mjs`):
+  - `if` words `unlock`, `pready` and `died`, and an open range `birth:a-`;
+  - adapter `post.pf`;
+  - `S.plan.actions(iso)` gives any day's steps.
+
+### 89.2 Her evening
+- **To day 41, the recovery check is her check-in.**
+  - Today and My plan say "Recovery check at 8 pm", with no "How did today go?".
+  - `plan-checkin` opens `post-recovery`, and so does its reminder.
+  - A saved check marks tonight's reminder done (`recCi`: `ciDone`, `ciDueNow`, `remSync`, `onLog` 'tool' on
+    `post-recovery`).
+- **From day 42, "How did today go?" with one weekly question: "This week: any leaks?"**
+  - Answers: never, sometimes or most days. After sometimes or most days, post.js's reviewed leaking tip.
+  - Not within 6 days of her last answer, and never on a shared phone or in discreet mode.
+- **The weekly "How are you in yourself this week?"** from day 42, in the recovery check's own mood words, with its crisis card
+  (Tele-MANAS 14416, 112). It shows only with `SAKHI_CONFIG.drafts` until the psychologist has reviewed it (recommendation 6).
+  To day 41 the recovery check asks about mood every evening, as before.
+- **Her 6-week check reminder (`post-6wk`) turns on when she starts** (`commitStart`). The Start card names it ("your 6-week
+  check on {d}"). This is the plan's one new ring, because her own check is the plan's backbone and many mothers skip it.
+- No bedtime step and no wind-down ring: night feeds make a bedtime target unkind.
+
+### 89.3 Sakhi says (`postDue`, one card at a time, first that applies)
+1. For a week after "My baby has died": "We are so sorry", Call 14416, and Support after a loss (`loss-grief`).
+2. Days 0 to 7: her baby's danger signs. They are the feeding page's reviewed list (`S.post.babySigns()`), with Call 108 and
+   Call 102, and "Got it". Not on a shared phone or in discreet mode.
+3. Days 2 to 10, after high BP in her pregnancy: "Your BP check this week".
+4. Days 35 to 41: "Your own check at 6 weeks", in post.js's reviewed line for her care route. Under it:
+   - "From your pregnancy": a BP check after high BP, the 75 g sugar test after sugar (`fromPreg`);
+   - buttons: "Remind me on {d}", "I went", "What to ask for".
+5. From day 42 until back to strong opens, "Ready to move a little more?". Its buttons:
+   - "I went to my 6-week check";
+   - "My doctor said I can exercise";
+   - "I feel ready to start gently": a sheet with two checks, both needed (bleeding no heavier when she is active; stitches or
+     wound not hurting when she walks);
+   - "Not yet": asked again in a week.
+
+   Any of the first three opens it (`d.six`, `d.unlock`).
+6. From week 12, after back to strong: "Is your body ready for more?", which opens `plan-pready`.
+   - 6 tests: walk 30 minutes; one leg 10 seconds by a wall; 10 sit-to-stands; lift the rice bag 10 times; carry a half bucket
+     20 steps; 10 heel raises. A rice or atta bag, never the baby.
+   - One question: any leak, heaviness, pain or bleeding?
+   - All 6 and none: Strength at home from tomorrow. Otherwise she stays at her level 2 more weeks.
+7. Days 21 to 120: "Before sex starts again: choose your method".
+   - One optional question: "How is your baby fed now?" (only breast milk; breast and other milk; other milk only). Her answer
+     goes in `situation.feedHow` and shows its line.
+   - Buttons: See my choices (`post-contra`), I have a method.
+   - After "My baby has died" there is no feeding question. Not shown in discreet mode.
+
+The day-3 Qura call card doesn't show on version 2.
+
+### 89.4 "My baby has died" (post.js; the 24 Oct review's blocker)
+- **Where:** one link at the end of the after-birth page, and one under the birth date in core's stage sheet. Both open the
+  same question, which says what stops and what stays, with "Stop them".
+- **What it saves:** `situation.babyDied` (`S.post.died()`). The vaccine reminders are removed, and a feeding goal becomes her
+  recovery (`onLog` 'babyDied'). No feeding or food-while-breastfeeding step, no baby card, no feeding question.
+- **What changes on screen:**
+  - the after-birth page starts with her support, with no feeds, vaccines or baby's age;
+  - the feeding page says what it is and leads back to her recovery;
+  - Check-ups keeps her own 6-week check, without the vaccines;
+  - her recovery check says "Thoughts of harming myself", with its own line (`fl_harm_b`);
+  - Today's card says "days since birth" and "Your recovery", with no Feeding button;
+  - Explore's quick answers, For you and search leave feeding out.
+- **Quiet:** it is saved quietly, so no petal or toast celebrates. "Marked this by mistake? Undo" is on the after-birth page.
+
+### 89.5 Version 1
+- Women on version 1 keep it (`d.pv`) and see "Your recovery plan has more now" once.
+- "Switch to it" sets `d.pv` to 2. Her start, days and answers stay, because the clock is the birth's.
+- "Not now" means it is never offered again.
+
+### 89.6 My plan, the reveal and the recovery check
+- **The reveal:**
+  - "To your baby's first birthday · a few minutes a day";
+  - her steps;
+  - "At 8 pm, your recovery check: 2 minutes, with the signs that can't wait";
+  - what happens when: day 14, day 42, week 12, the first birthday;
+  - the Start card's evening line and its reminders.
+- **How it works (week 1):** her steps with the recovery check's time, "Around day 42" and "From week 12".
+- **"Your year, in 5 parts":** rest and heal, settle, back to strong, keep going, and her first year to the birthday. Passed parts
+  are drawn as passed, with no tick.
+- **My progress, Leaks:** first noted (the recovery check's "Leaking", days 14 to 41) and latest (her weekly answers).
+- **From My pregnancy:** her high BP and sugar marks carry into the new plan's answers (`intake.pm`), with her MCP card's
+  (`S.preg.risks()`).
+- **The recovery check:** a new warning sign, "Fever and feeling very unwell", is a "now" sign (Call 112).
+
+### 89.7 Not built yet (each needs a reviewer first)
+- Gentle recovery (5 minutes, with a C-section version) and Core and posture (8 minutes), with about 10 new 3D poses. A
+  women's-health physiotherapist reviews them first. Until then back to strong uses Gentle start and Strength at home.
+- The weekly lessons (about 14, then monthly).
+- The family's card on the signs of psychosis.
+- The feeding questions on days 3, 7, 14 and 28.
+- "Ask someone to take one night stretch".
+- The year's look back at the first birthday.
+
+### 89.8 The minimalist baseline (CLAUDE.md)
+- **Her evening:** one ring to day 41, the recovery check at her time. One new ring, her 6-week check on its day (reason
+  above). No bedtime, no wind-down.
+- **Today:** day 1 has 3 steps or fewer and no day more than 4; one Sakhi says card; one row under her steps.
+- **Ask less:** no new screen before her first step; one optional question on day 21; nothing from her pregnancy asked again.
+- **One home for each fact:** the checks stay on their pages, and My plan names them.
+- **Read once:** how it works folds after week 1.
+- **No new tours, tips or celebrations.** Marking her baby's death is saved quietly.
+- **The shared phone:** discreet titles and private steps hidden. No baby card, no contraception card, and no leaks or mood
+  question.
+- **Taps:** `web/test/taps/` counts the cycle, trying and no-plan stages, so these come from the screens:
+  - starting takes the same screens as version 1;
+  - day 21: one optional tap;
+  - from day 42: one optional tap a week in the check-in;
+  - "My baby has died": 2 taps.
+
+**Tests:** `node test/afterbirth.mjs` (87 checks with 89.9; on 0.39.45's code 10 fail, then it stops: there is no baby card to put
+away). companion.mjs's after-birth pelvic goal now names "Your pelvic floor squeezes". progs.mjs knows the new words and records
+`post@2`. Golden is byte-identical (its plans are version 1).
+
+### 89.9 The bug hunt before the commit (Mohit, 30 Oct: "can you first test for any bugs or issues")
+Edge cases tried in the test browser, and what they found:
+1. **"My baby has died" also ends breastfeeding** (`situation.breastfeeding` false, `bfWas` for the undo). So the old plan's
+   food-while-breastfeeding step and My food's breastfeeding page go too.
+2. **Every other way to the feeding page goes after it:**
+   - Explore's Breastfeeding tile (the tile's `hidden`);
+   - Check-ups shows as "Your own check at 6 weeks" (a second tile for the same page, `post_t_checks_s0`);
+   - the myths deck's baby-feeding cards (joy.js);
+   - the plan picker's breastfeeding plan.
+3. **A recovery check after midnight is the evening before's**, as her plan's day ends at 4 am (Version 39.23).
+   - The check keeps the time it was saved (`rec.at`). `S.post.checkedFor(iso)` reads it, and the plan uses it (`recDone`).
+   - Before this, a check at 1 am left the evening's check undone and silenced the next evening's reminder.
+4. **A changed birth date moves her 6-week check reminder** (`S.post.sixSync`, when Today draws and when the birth date is
+   edited).
+5. **A late joiner hears only what is still ahead** in "What happens when".
+6. **In discreet mode, the plain words:** "Check-in at 8 pm", never "recovery check".
+7. **A rest day in her first 6 weeks doesn't silence her recovery check:** only the check makes her evening done.
+8. **Ask less:** after the birth, "Your day" isn't asked again when her pregnancy's answers hold it (`postPre`, `daySkip` with
+   `a.known`). The change card goes straight to her answers and "Make my plan".
+9. **No baby in her own lines after "My baby has died":**
+   - the after-birth page's first line and its urgent box ("Thoughts of harming yourself: 14416 or 112");
+   - the recovery check's self-care lines (water through the day; nothing heavy);
+   - My plan's tile, "Your own check at 6 weeks".
+10. **"Marked this by mistake? Undo" gives back her feeding goal** (`goalWas`, the `babyBack` event).
+11. **Discreet mode can still reach back to strong:** "Ready for a little more?" in plain words, without the check after a birth.
+    "Is your body ready for more?" is plain too. The other after-birth cards stay off a shared phone.
+12. **Checked and fine:**
+   - the new plan from My pregnancy;
+   - the first birthday (the plan ends and is kept as her last plan);
+   - a period logged at day 50;
+   - the phone's reminders (neutral titles);
+   - a shared phone;
+   - the grief page, which "Support after a loss" opens (one line there is about early pregnancy loss: for the psychologist).
+
+**Tests:** `node test/afterbirth.mjs` now has 87 checks, section 15 and section 8 for these. The full run passes on this tree.

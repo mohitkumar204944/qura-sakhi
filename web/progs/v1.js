@@ -87,6 +87,42 @@
     list: [{ use: 'today' }],
     doctor: []
   },
+  /* Version 39.46 (Mohit, 30 Oct: "yes start with the I had a baby plan", then "proceed building"; advice
+     docs/after-birth-plan-advice-2026-10-30.md, mockup claude.ai/artifact/RLz4dU7pQ5A5iVTFCcnqPa). Days since the birth to the
+     first birthday: rest and heal (0 to 13), settle (14 to 41), back to strong after her 6-week check (unlock), then strength
+     after "Is my body ready?" (pready). Her recovery check is her evening form to day 41; her 6-week check, the unlock,
+     contraception and the readiness tests come one at a time in Sakhi says (plan.js postCard). Version 1 runs on for the women on
+     it, with an offer of this one. */
+  {
+    id: 'post', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_post' }], discreetTitle: '@plan_h_d',
+    goals: [{ stage: 'post' }],
+    life: { needs: 'birth:365', pause: ['loss'] },
+    clock: 'birthWeek', length: { weeks: 0 },
+    moves: true,
+    intake: { day: ['food', 'milk', 'lim'], when: ['goal:weight'] },
+    slots: { max: 4 }, hero: 'timeline', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'post-pelvic', text: '@post_t_pelvic', icon: 'flower', hue: 'plum', priv: true }, { go: 'post-checks', text: '@post_t_checks', icon: 'check', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.46: to the first birthday; the recovery check as her evening form to day 41; the squeezes by her days; a walk from day 14; back to strong after her 6-week check; strength after Is my body ready?; nothing about the baby after My baby has died' }],
+    steps: [
+      { id: 'rcheck', kind: 'adapter', use: 'post.rcheck', if: ['early', 'route:post-recovery'] },
+      { id: 'pelvic', kind: 'adapter', use: 'post.pf', if: ['route:post-pelvic'] },
+      { goal: {
+        recovery: [{ id: 'pwalk', kind: 'tick', go: 'post-recovery', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
+        weight: [{ id: 'pwalk', kind: 'tick', go: 'post-recovery', title: '@plan_a_pwalk', icon: 'ico:move', hue: 'purple', why: 'plan_fb_move_g', if: ['birth:0-13'] }],
+        feed: [{ id: 'feed', kind: 'tick', go: 'post-feed', title: '@tile', icon: 'drop', hue: 'rose', why: 'plan_fb_any', priv: true, if: ['route', '!died'] }],
+        mood: [{ id: 'mood', kind: 'tick', go: 'relief-calm', title: '@relief_calm_t', icon: 'sparkle', hue: 'rose', why: 'plan_fb_calm', priv: true, if: ['route'], from: 'relief:calm' }],
+        sleep: [{ id: 'sleep', kind: 'tick', go: 'relief-sleep', title: '@relief_sleep_t', icon: 'sparkle', hue: 'rose', why: 'plan_fb_sleep', priv: true, if: ['route'], from: 'relief:sleep' }]
+      } },
+      { id: 'move', kind: 'minutes', use: 'walk', mins: 'post', grow: 'hold', why: 'plan_fb_move_g', if: ['birth:14-', '!unlock'], when: 'days:1,3,5' },
+      { id: 'move', kind: 'minutes', use: 'walk', mins: 'post', grow: 'hold', cap: 30, why: 'plan_fb_move_g', if: ['unlock'] },
+      { id: 'gentle', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:move', hue: 'green', why: 'plan_fb_move_g', if: ['unlock', '!pready'], when: 'days:2,5' },
+      { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_move_g', if: ['pready'], when: 'days:2,5' },
+      { id: 'bfood', kind: 'tick', go: 'post-feed', at: 'bf-food', title: '@plan_a_bfood', icon: 'ico:plate', hue: 'green', why: 'plan_fb_any', priv: true, if: ['sit:breastfeeding', 'route', '!died'], when: 'days:2' }
+    ],
+    list: [{ use: 'today' }],
+    doctor: []
+  },
   {
     id: 'ttc', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_ttc' }], discreetTitle: '@plan_h_d',

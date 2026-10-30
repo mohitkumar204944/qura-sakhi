@@ -163,7 +163,8 @@
   /* Cards for her stage, the most relevant first. */
   function pool() {
     const tags = stageTags(); const rank = (c) => Math.min.apply(null, c.tags.map((g) => (tags.indexOf(g) < 0 ? 99 : tags.indexOf(g))));
-    return CARDS.filter((c) => rank(c) < 99).map((c, i) => ({ c: c, r: rank(c) * 100 + i })).sort((a, b) => a.r - b.r).map((x) => x.c);
+    const gone = !!(S.post && S.post.died && S.post.died());   /* Version 39.46: no baby-feeding myths after "My baby has died" */
+    return CARDS.filter((c) => rank(c) < 99 && !(gone && c.go === 'post-feed')).map((c, i) => ({ c: c, r: rank(c) * 100 + i })).sort((a, b) => a.r - b.r).map((x) => x.c);
   }
   let memQuiz = {};                       /* answers when there is no diary to save them in */
   let q = { id: null, ans: null };        /* the card on screen and her answer */

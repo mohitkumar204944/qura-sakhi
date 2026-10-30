@@ -187,7 +187,7 @@
       ask_p_preg: 'A free call with a Qura doctor (BAMS) can help with food, weight and sleep. Your ANM or gynaecologist looks after the pregnancy itself, medicines and scans.', ask_p_preg_doc: 'A free call with a Qura doctor (BAMS) can help with food, weight and sleep. Your gynaecologist looks after the pregnancy itself, medicines and scans.',
       ob_sh_h: 'Does anyone else use this phone?', ob_sh_me: 'Only me', ob_sh_some: 'Sometimes', ob_sh_fam: 'Yes, my family uses it',
       ob_kit_h: 'Keep your diary private', ob_kit_lock: 'Lock with fingerprint or PIN', ob_kit_plain: 'Plain words on screen', ob_kit_plain_d: 'No word like “period” shows', ob_kit_notes: 'Show the app as “Notes”', ob_kit_p: 'You can change these any time on the Me page.', ob_done: 'Done',
-      approx_note: 'Your start date is a guess. Tap the day it really started to fix it.', pp_rec_b: 'Recovery today', pp_feed_b: 'Feeding',
+      approx_note: 'Your start date is a guess. Tap the day it really started to fix it.', pp_rec_b: 'Recovery today', pp_feed_b: 'Feeding', pp_go_b: 'Your recovery',
       stage_mid: 'Periods changing after 40', sit_mid: 'Periods changing after 40', sit_mid_d: 'Sakhi shows hot flushes, sleep and other midlife questions',
       learn_hero_h: 'Here for answers?', learn_p: 'Ask anything below or try today’s card. Your diary is ready whenever you want it.', learn_card: 'Today’s card', learn_log: 'Note my period',
       qura_ttc_h: 'Getting ready for a baby?', qura_ttc_p: 'Talk to a Qura doctor about food, weight and PMOS before you conceive. The first call is free.',
@@ -444,7 +444,7 @@
       ask_p_preg: 'Qura की डॉक्टर (BAMS) से मुफ़्त कॉल में खाने, वज़न और नींद पर मदद मिल सकती है। गर्भ की देखभाल, दवाएँ और scan आपकी ANM या स्त्री रोग विशेषज्ञ देखती हैं।', ask_p_preg_doc: 'Qura की डॉक्टर (BAMS) से मुफ़्त कॉल में खाने, वज़न और नींद पर मदद मिल सकती है। गर्भ की देखभाल, दवाएँ और scan आपकी स्त्री रोग विशेषज्ञ देखती हैं।',
       ob_sh_h: 'क्या यह फ़ोन कोई और भी चलाता है?', ob_sh_me: 'सिर्फ़ मैं', ob_sh_some: 'कभी-कभी', ob_sh_fam: 'हाँ, घर वाले भी',
       ob_kit_h: 'अपनी डायरी निजी रखें', ob_kit_lock: 'फ़िंगरप्रिंट या PIN से लॉक', ob_kit_plain: 'स्क्रीन पर सादे शब्द', ob_kit_plain_d: '"पीरियड" जैसे शब्द नहीं दिखेंगे', ob_kit_notes: 'ऐप "Notes" नाम से दिखे', ob_kit_p: 'ये सब कभी भी "मैं" पेज पर बदल सकती हैं।', ob_done: 'हो गया',
-      approx_note: 'शुरू होने की तारीख़ अंदाज़े से है। जिस दिन सच में शुरू हुआ, उस दिन पर टैप करके ठीक करें।', pp_rec_b: 'आज की रिकवरी', pp_feed_b: 'दूध पिलाना',
+      approx_note: 'शुरू होने की तारीख़ अंदाज़े से है। जिस दिन सच में शुरू हुआ, उस दिन पर टैप करके ठीक करें।', pp_rec_b: 'आज की रिकवरी', pp_feed_b: 'दूध पिलाना', pp_go_b: 'आपकी रिकवरी',
       stage_mid: '40 के बाद बदलते पीरियड', sit_mid: '40 के बाद बदलते पीरियड', sit_mid_d: 'Sakhi में hot flushes, नींद और 40 के बाद के सवाल दिखेंगे',
       learn_hero_h: 'जवाब ढूँढ रही हैं?', learn_p: 'नीचे कुछ भी पूछें या आज का कार्ड देखें। आपकी डायरी जब चाहें, तैयार है।', learn_card: 'आज का कार्ड', learn_log: 'पीरियड दर्ज करें',
       qura_ttc_h: 'बच्चे की तैयारी कर रही हैं?', qura_ttc_p: 'गर्भ से पहले खान-पान, वज़न और PMOS पर Qura की डॉक्टर से बात करें। पहली कॉल मुफ़्त है।',
@@ -717,6 +717,7 @@
   const isPregnant = () => !!state.situation.pregnant;
   /* After a birth, until her first period comes back, the last period before the pregnancy says nothing about today: no cycle
      day, no late card, no period alarm, breastfeeding or not. Same rule as the after-birth Home (the year after the birth). */
+  const babyGone = () => !!(api.post && api.post.died && api.post.died());   /* Version 39.46: "My baby has died" */
   const afterBirthNow = () => { const b = state.situation.deliveredOn; if (!b || isPregnant()) return false; const n = diffDays(fromISO(b), today()); const ls = lastStart(); return n >= 0 && n <= 365 && !(ls && ls > fromISO(b)); };
   /* Version 32 (field-test audit 2.2 and 3.2): the same pause after a pregnancy ends any other way (a loss, or "it's over"),
      and after she stops hormones (the pill, injection, hormonal IUS or implant), until her next period. The period before
@@ -1227,7 +1228,7 @@
     const byRoute = {}; all.forEach((x) => { if (!byRoute[x.route]) byRoute[x.route] = x; }); const res = [];
     const govt = (rt) => rt.indexOf('access-') === 0 || rt === 'asha';   /* Version 36: government services live in their own row */
     const gk = state.stage === 'app' ? goalNow() : null;
-    (gk ? ['goal:' + gk] : []).concat(forYouKeys()).forEach((k) => ((k.indexOf('goal:') === 0 ? goalTools(k.slice(5)) : FOR_YOU[k]) || []).forEach((rt) => { const x = byRoute[rt]; if (x && !govt(rt) && res.indexOf(x) < 0 && res.length < 5) res.push(x); }));
+    (gk ? ['goal:' + gk] : []).concat(forYouKeys()).forEach((k) => ((k.indexOf('goal:') === 0 ? goalTools(k.slice(5)) : FOR_YOU[k]) || []).forEach((rt) => { const x = byRoute[rt]; if (x && !govt(rt) && res.indexOf(x) < 0 && res.length < 5 && !(rt === 'post-feed' && babyGone())) res.push(x); }));   /* Version 39.46 */
     /* Version 39.38 (Mohit's 38-week walk): from 34 weeks her hospital bag, birth plan and contraction timer come right after her
        goal's first tool (that one leads, Version 38) */
     const late = state.situation.pregnant && (pregInfo() || {}).weeks >= 34 ? FOR_YOU.pregLate.map((rt) => byRoute[rt]).filter(Boolean) : [];
@@ -1473,7 +1474,7 @@
     /* review FOOD-09: a tablet or a medicine is not a food question; after a birth, milk words are about breastfeeding first */
     if (/(^|\s)(tablet|tablets|goli|गोली|medicine|dawai|dawa|dava|दवा|दवाई|capsule|syrup|injection)(\s|$)/.test(qq)) ['food', 'plan-plate', 'preg-diet'].forEach((k) => { delete b[k]; });
     if (b.calm && /(^|\s)(nidra|निद्रा)(\s|$)/.test(qq)) ['plan-moves', 'plan-pmos'].forEach((k) => { delete b[k]; });   /* Version 39.21: yoga nidra is rest, not exercise */
-    if (afterBirthNow() && ROUTES['post-feed'] && /(doodh|dudh|दूध|milk|feed|feeding)/.test(qq)) b['post-feed'] = Math.max(b['post-feed'] || 0, (b.food || 0) + 20);
+    if (afterBirthNow() && !babyGone() && ROUTES['post-feed'] && /(doodh|dudh|दूध|milk|feed|feeding)/.test(qq)) b['post-feed'] = Math.max(b['post-feed'] || 0, (b.food || 0) + 20);
     const mine = state.stage !== 'app' ? '' : (isPregnant() ? 'access-schemes-preg' : (afterBirthNow() ? 'access-schemes-post' : ''));
     if (mine && b[mine] && b['access-schemes']) b[mine] = b['access-schemes'] + 30;   /* in pregnancy or after a birth, her own schemes page first */
     /* Version 39.3: food words in pregnancy lead with pregnancy food, then My food */
@@ -2475,8 +2476,8 @@
           (w != null && w >= 37 ? '<button type="button" class="btn sm" id="bb-born">' + esc(t(disc ? 'stage_change' : 'bb_born')) + '</button>' : '') + '</div>';
     } else if (afterBirth) {
       if (disc) main = '<div class="eyebrow">' + esc(t('today_h')) + '</div><div class="big num' + blur + '" id="bignum">' + birthD + '</div>';
-      else if (birthD <= 42) main = '<div class="eyebrow">' + esc(t('pp_eyebrow')) + '</div>' + twoCol(ringBox(ringSvg(42, [{ from: 0, to: Math.max(birthD, 0.5), cls: 'prog' }], null, [7, 14, 21, 28, 35]), birthD, t(birthD === 1 ? 'pp_ring_1' : 'pp_ring'), tf('pp_aria', { n: birthD })), '<div class="hero-main"><p class="lead">' + esc(tf('pp_week', { n: Math.min(6, Math.floor(birthD / 7) + 1) })) + '</p></div>') + '<p class="small">' + esc(t('pp_p')) + '</p>' + (ROUTES['post'] ? '<div class="row">' + heroBtn('post', t('pp_go')) + '</div>' : '');
-      else main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(t('pp_eyebrow')) + '</div><div class="big num" id="bignum">' + birthD + '</div><p class="lead">' + esc(t(birthD === 1 ? 'pp_days_1' : 'pp_days')) + '</p></div>', A ? '<div class="hero-art">' + A.spot('post') + '</div>' : '') + '<p class="small">' + esc(t('pp_p')) + '</p>' + (ROUTES['post'] ? heroBtn('post', t('pp_go')) : '');
+      else if (birthD <= 42) main = '<div class="eyebrow">' + esc(t('pp_eyebrow')) + '</div>' + twoCol(ringBox(ringSvg(42, [{ from: 0, to: Math.max(birthD, 0.5), cls: 'prog' }], null, [7, 14, 21, 28, 35]), birthD, t(birthD === 1 ? 'pp_ring_1' : 'pp_ring'), tf('pp_aria', { n: birthD })), '<div class="hero-main"><p class="lead">' + esc(tf('pp_week', { n: Math.min(6, Math.floor(birthD / 7) + 1) })) + '</p></div>') + '<p class="small">' + esc(t('pp_p')) + '</p>' + (ROUTES['post'] ? '<div class="row">' + heroBtn('post', t(babyGone() ? 'pp_go_b' : 'pp_go')) + '</div>' : '');   /* Version 39.46 */
+      else main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(t('pp_eyebrow')) + '</div><div class="big num" id="bignum">' + birthD + '</div><p class="lead">' + esc(t(babyGone() ? (birthD === 1 ? 'pp_ring_1' : 'pp_ring') : (birthD === 1 ? 'pp_days_1' : 'pp_days'))) + '</p></div>', A ? '<div class="hero-art">' + A.spot('post') + '</div>' : '') + '<p class="small">' + esc(t('pp_p')) + '</p>' + (ROUTES['post'] ? heroBtn('post', t(babyGone() ? 'pp_go_b' : 'pp_go')) : '');
     } else if (cyclesOff) {
       showLog = !sit0.hysterectomy;
       main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(disc ? t('today_h') : t('off_eyebrow')) + '</div>' + (disc ? '' : '<p class="lead">' + esc(sit0.hysterectomy ? t('off_p_hyst') : t('off_p_stopped')) + '</p>' + (ROUTES['meno'] ? heroBtn('meno', t('off_go')) : '')) + '</div>', !disc && A ? '<div class="hero-art">' + A.spot('meno') + '</div>' : '');
@@ -2844,7 +2845,7 @@
   function actionsHtml(showLog, disc, inPeriod) {
     const R = (attrs, ico, label, cls, dot) => '<button type="button" class="ract' + (cls ? ' ' + cls : '') + '" ' + attrs + '><span class="rico">' + ico + (dot ? '<i class="rdot"></i>' : '') + '</span><span class="rl">' + esc(label) + '</span></button>';
     const ciDone = !!state.checkins[monthKey(today())]; const out = [];
-    if (showLog && !disc && earlyPost() && ROUTES['post-recovery']) { out.push(R('data-go="post-recovery"', I.heart, t('pp_rec_b'), 'hue-plum')); if (ROUTES['post-feed']) out.push(R('data-go="post-feed"', I.clock, t('pp_feed_b'), 'hue-sky')); showLog = false; }
+    if (showLog && !disc && earlyPost() && ROUTES['post-recovery']) { out.push(R('data-go="post-recovery"', I.heart, t('pp_rec_b'), 'hue-plum')); if (ROUTES['post-feed'] && !babyGone()) out.push(R('data-go="post-feed"', I.clock, t('pp_feed_b'), 'hue-sky')); showLog = false; }
     const open = openPeriod();
     if (showLog) out.push(R('data-log="' + (open ? 'end' : 'start') + '"', I.drop, disc ? (open ? t('d_end') : t('d_start')) : (open ? t('period_ended') : t('period_started')), 'primary'));
     if (showLog) out.push(R('data-log="spot"', SPOTS, disc ? t('d_spot') : t('spotting'), 'hue-rose'));
@@ -2968,7 +2969,7 @@
   /* Version 37: her stage's common questions, one tap each. They sat under Home's ask box; Explore has them now, under its search. */
   function qaHtml(disc) {
     const sk = stageNow(); const pm = sk === 'cycle' && (state.situation.pcos || (state.goals || []).indexOf('pmos') >= 0);
-    const list = disc ? [] : (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) : !!findArticle(x[1]));
+    const list = disc ? [] : (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => !(x[0] === 'feed' && babyGone())).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) : !!findArticle(x[1]));   /* Version 39.46 */
     /* Version 39.7 (journey audit P3-04): her stage's dos and don'ts, first */
     const dk = disc ? null : dosKey(null, true); const dA = dk ? findArticle(dk) : null;
     const dos = dA ? '<button type="button" class="qa-wide hue-' + hueOf(dA.group) + '" data-qa="' + esc(dk) + '">' + spotFor(dA.group === 'pregnancy' ? (afterBirthNow() ? 'post' : 'preg') : 'periods', true) + '<span><strong>' + esc(t('qa_dos')) + '</strong><span class="small">' + esc(L(dA, 'title')) + '</span></span></button>' : '';
@@ -3161,9 +3162,10 @@
       (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
         return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
       (s0.pregnant && pick !== 'preg' && pick !== 'post' ? '<div class="card st-end"><p>' + esc(t('stage_end_q')) + '</p><div class="grid2">' + [['ended', 'stage_end_y'], ['mistake', 'stage_end_n']].map((o) => '<button type="button" class="btn sm' + (endWhy === o[0] ? ' on' : '') + '" data-st-end="' + o[0] + '" aria-pressed="' + (endWhy === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
-      (pick === 'post' ? '<div class="card"><label for="st-birth">' + esc(t('stage_birth_date')) + '</label><input type="date" id="st-birth" max="' + toISO(today()) + '" value="' + esc(s0.deliveredOn || (s0.pregnant ? toISO(today()) : '')) + '"><label class="row" style="font-weight:500"><input type="checkbox" id="st-bf" style="width:22px;height:22px;min-height:0;accent-color:var(--accent)"' + (s0.pregnant || s0.breastfeeding !== false ? ' checked' : '') + '> ' + esc(t('stage_bf')) + '</label></div>' : '') +
+      (pick === 'post' ? '<div class="card"><label for="st-birth">' + esc(t('stage_birth_date')) + '</label><input type="date" id="st-birth" max="' + toISO(today()) + '" value="' + esc(s0.deliveredOn || (s0.pregnant ? toISO(today()) : '')) + '"><label class="row" style="font-weight:500"><input type="checkbox" id="st-bf" style="width:22px;height:22px;min-height:0;accent-color:var(--accent)"' + (s0.pregnant || s0.breastfeeding !== false ? ' checked' : '') + '> ' + esc(t('stage_bf')) + '</label>' + (s0.deliveredOn && !s0.pregnant && api.post && api.post.lost && !babyGone() ? '<button type="button" class="linkbtn st-lost" id="st-lost">' + esc(t('post_lost_link')) + '</button>' : '') + '</div>' : '') +   /* Version 39.46 */
       '<div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="st-cancel">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="st-save">' + esc(t('save')) + '</button></div></div>', (sh) => {
       sh.querySelectorAll('[data-stage]').forEach((b) => b.addEventListener('click', () => { pick = b.dataset.stage; show(); }));
+      const sl = sh.querySelector('#st-lost'); if (sl) sl.addEventListener('click', () => { closeSheet(); setTimeout(() => api.post.lost(), 0); });   /* Version 39.46 */
       sh.querySelectorAll('[data-st-end]').forEach((b) => b.addEventListener('click', () => { endWhy = b.dataset.stEnd; show(); }));
       const isL = $('#st-preg-is', sh); if (isL) ['#st-lmp', '#st-edd'].forEach((q) => { const el = $(q, sh); if (el) ['input', 'change'].forEach((ev) => el.addEventListener(ev, () => { isL.textContent = pregIsLine($('#st-lmp', sh).value, $('#st-edd', sh).value); })); });   /* Version 39.35 */
       $('#st-cancel', sh).addEventListener('click', closeSheet);

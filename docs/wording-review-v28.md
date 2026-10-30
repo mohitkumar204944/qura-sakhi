@@ -2711,3 +2711,56 @@ UI words only, built from reviewed lines:
   - "From day {n}: {x}" / "{n}वें दिन से: {x}", where {x} is the step's own title ("From day 4: wind down, in bed by 11 pm"),
     in the PMOS plan's "What happens when" and under her steps on My plan until it joins;
   - "your {t} wind-down from day {n}" / "{n}वें दिन से {t} सुकून के पल", in the Start card's list of reminders.
+
+### 19.46 Version 39.46: I had a baby, the full plan (MODULE_API section 89)
+
+New lines (draft, waiting for review). The obstetrician reviews every line; the psychologist or psychiatrist the "My baby has
+died" lines and the mood question; the women's-health physiotherapist the readiness tests and the squeezes:
+  - **"My baby has died":**
+    - "We are so sorry";
+    - what stops and what stays;
+    - "Talk to someone: Tele-MANAS 14416, free, any time.";
+    - "Thoughts of harming myself";
+    - its crisis line without the baby ("You do not have to go through this alone.");
+    - "This page is about feeding a baby.";
+    - "Marked this by mistake? Undo".
+  - **A warning sign:** "Fever and feeling very unwell": "can be a serious infection. Call 112 or go to hospital now."
+  - **Her steps:**
+    - "5 gentle squeezes" (during a feed; lying or sitting);
+    - "10 squeezes, and the knack" ("Squeeze before you cough, sneeze or lift");
+    - "Walk a little, as you feel able" (from the recovery check's reviewed self-care line).
+  - **The cards:**
+    - "This week: signs in your baby that can't wait" (the list under it is the feeding page's reviewed list);
+    - "Your BP check this week";
+    - "From your pregnancy": a BP check; the 75 g sugar test, then once a year (from the 6-week check's reviewed list);
+    - "Ready to move a little more?" and its 4 answers, with the two checks before starting gently;
+    - "Is your body ready for more?", its 6 tests, the bag line, "Stay at this level for 2 more weeks", and "Running, jumping
+      and skipping are outside this plan".
+  - **Contraception:**
+    - "Before sex starts again: choose your method";
+    - "You can get pregnant before your first period comes back.";
+    - the feeding question and its 3 lines. The obstetrician checks "about 4 to 6 weeks" for women who don't breastfeed, and
+      the lactational amenorrhoea line.
+  - **The check-in:**
+    - "This week: any leaks?" (post.js's reviewed leaking tip after it);
+    - "How are you in yourself this week?" (the recovery check's own reviewed mood words and crisis card; it ships only after
+      the psychologist's review);
+    - "Low or worried most days for 2 weeks or more? Talk to your doctor this week, or call Tele-MANAS 14416, free."
+  - **The plan's frame:**
+    - "Your year, in 5 parts" and its lines;
+    - how it works;
+    - what happens when;
+    - "Your recovery plan has more now";
+    - the reveal and Start card lines.
+
+After the bug hunt (MODULE_API 89.9), these lines were added:
+  - Check-ups after "My baby has died" is "Your own check at 6 weeks", with "Your own check, iron and calcium";
+  - after "My baby has died", the lines without the baby (for the psychologist and the obstetrician):
+    - "The first weeks after a birth are for healing. Check yourself daily, and know the warning signs.";
+    - "Thoughts of harming yourself: 14416 or 112";
+    - "Eat proper meals: dal, eggs or paneer, milk, green vegetables and fruit, and drink water through the day.";
+    - "Walk a little every day as you feel able. Avoid lifting anything heavy for the first weeks, especially after a C-section.";
+  - in discreet mode: "Ready for a little more? Start when your doctor says so, or when you feel ready."
+
+Reused word for word: the recovery check and its 12 signs, the 6-week check's line by care route, the newborn danger list and
+its free-ambulance line, the crisis card (`fl_harm_h`, `fl_harm`), the leaking tip.

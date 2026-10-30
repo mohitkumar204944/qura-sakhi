@@ -34,6 +34,28 @@
     nodx: ['Not a diagnosis. Based on WHO, NHS, CDC and Indian government guidance.', 'यह निदान (diagnosis) नहीं है। WHO, NHS, CDC और भारत सरकार की गाइडलाइन पर आधारित।'],
     ask_topic: ['Recovery after birth', 'डिलीवरी के बाद रिकवरी'],
 
+    /* Version 39.46: "My baby has died" (review section 19.46; words for the psychologist and the obstetrician) */
+    lost_link: ['My baby has died', 'मेरा बच्चा नहीं रहा'],
+    lost_h: ['We are so sorry', 'हमें बहुत दुख है'],
+    lost_q_p: ['Sakhi will stop everything about your baby: feeding, the vaccine dates and your baby’s age. What is for you stays: your daily check to day 41, your own check at 6 weeks, and contraception when you want it.', 'Sakhi बच्चे से जुड़ी हर चीज़ बंद कर देगी: दूध पिलाना, टीकों की तारीख़ें और बच्चे की उम्र। आपके लिए जो है वह रहेगा: 41वें दिन तक रोज़ की जाँच, 6 हफ़्ते पर आपकी अपनी जाँच, और जब चाहें गर्भनिरोध।'],
+    lost_q_yes: ['Stop them', 'बंद करें'],
+    lost_done: ['Nothing about your baby will come up again.', 'बच्चे से जुड़ी कोई बात अब नहीं आएगी।'],
+    lost_talk: ['Talk to someone: Tele-MANAS 14416, free, any time.', 'किसी से बात करें: Tele-MANAS 14416, मुफ़्त, कभी भी।'],
+    lost_sup: ['Support after a loss', 'खोने के बाद सहारा'],
+    lost_undo: ['Marked this by mistake? Undo', 'ग़लती से चुना? वापस लें'],
+    lost_feed: ['This page is about feeding a baby.', 'यह पेज बच्चे को दूध पिलाने के बारे में है।'],
+    lost_back: ['Back to your recovery', 'अपनी रिकवरी पर लौटें'],
+    t_checks_s0: ['Your own check, iron and calcium', 'आपकी अपनी जाँच, आयरन और कैल्शियम'],
+    u_4b: ['Thoughts of harming yourself: 14416 or 112', 'ख़ुद को नुक़सान पहुँचाने के ख़याल: 14416 या 112'],
+    self_2b: ['Eat proper meals: dal, eggs or paneer, milk, green vegetables and fruit, and drink water through the day.', 'पूरा खाना खाएँ: दाल, अंडा या पनीर, दूध, हरी सब्ज़ियाँ और फल, और दिन भर पानी पिएँ।'],
+    self_3b: ['Walk a little every day as you feel able. Avoid lifting anything heavy for the first weeks, especially after a C-section.', 'जितना हो सके, रोज़ थोड़ा चलें। पहले हफ़्तों में कुछ भारी न उठाएँ, ख़ासकर ऑपरेशन के बाद।'],
+    p_b: ['The first weeks after a birth are for healing. Check yourself daily, and know the warning signs.', 'डिलीवरी के बाद के पहले हफ़्ते ठीक होने के लिए हैं। रोज़ ख़ुद को जाँचें, और ख़तरे के संकेत जानें।'],
+    mo_harm_b: ['Thoughts of harming myself', 'ख़ुद को नुक़सान पहुँचाने के विचार'],
+    fl_harm_b: ['Call Tele-MANAS 14416 (free, any time) or 112 now, and ask someone to stay with you. You do not have to go through this alone.', 'अभी Tele-MANAS 14416 (मुफ़्त, कभी भी) या 112 पर कॉल करें, और किसी से अपने पास रहने को कहें। आपको यह अकेले नहीं सहना है।'],
+    d_ill: ['Fever and feeling very unwell', 'बुख़ार और बहुत बीमार महसूस होना'],
+    fl_ill: ['A fever with feeling very unwell after a birth can be a serious infection. Call 112 or go to hospital now.', 'डिलीवरी के बाद बुख़ार के साथ बहुत बीमार महसूस होना गंभीर संक्रमण हो सकता है। अभी 112 पर कॉल करें या अस्पताल जाएँ।'],
+    s_ill: ['fever and feeling very unwell', 'बुख़ार और बहुत बीमार महसूस होना'],
+
     /* birth date */
     nobirth_h: ['When was your baby born?', 'आपके बच्चे का जन्म कब हुआ?'],
     nobirth_p: ['Add the birth date to see your day count, ASHA visit days and vaccine dates. It stays on this phone.', 'जन्म की तारीख़ डालें, तो दिनों की गिनती, ASHA की विज़िट और टीकों की तारीख़ें दिखेंगी। यह इसी फ़ोन पर रहती है।'], nobirth_p_doc: ['Add the birth date to see your day count, check-up and vaccine dates. It stays on this phone.', 'जन्म की तारीख़ डालें, तो दिनों की गिनती, जाँच और टीकों की तारीख़ें दिखेंगी। यह इसी फ़ोन पर रहती है।'],
@@ -549,12 +571,12 @@
     if (b) b.addEventListener('click', () => {
       const val = (v.querySelector('#pst-birth') || {}).value || '';
       if (!okISO(val) || S.fromISO(val) > S.today()) { S.toast(T('birth_bad')); return; }
-      store().birth = val; if (S.birthOn) S.birthOn(val); persist(); editBirth = false; S.render();   /* review life-13: the birth ends the pregnancy, as the stage sheet's does */
+      store().birth = val; if (S.birthOn) S.birthOn(val); sixSync(); persist(); editBirth = false; S.render();   /* review life-13: the birth ends the pregnancy, as the stage sheet's does */
     });
   }
 
   /* ---------- recovery: flags ---------- */
-  const DANGER = ['soak', 'clots', 'head', 'vision', 'fits', 'calf', 'chest', 'breath', 'faint', 'smell', 'swell', 'belly'];
+  const DANGER = ['soak', 'clots', 'head', 'vision', 'fits', 'calf', 'chest', 'breath', 'faint', 'smell', 'swell', 'belly', 'ill'];   /* ill: Version 39.46 */
   const GROUPS = [
     { g: 'bleed', label: 'g_bleed', opts: ['heavy', 'moderate', 'light', 'none'], pre: 'b_' },
     { g: 'colour', label: 'g_colour', opts: ['red', 'pink', 'brown', 'yellow'], pre: 'c_', when: (v) => v.bleed && v.bleed !== 'none' },
@@ -578,6 +600,7 @@
     if (on('smell')) add('danger', 'd', 'fl_smell', 's_smell');
     if (on('swell') && !(on('head') || on('vision') || on('fits'))) add('danger', 'd', 'fl_swell', 's_swell');
     if (on('belly')) add('danger', 'd', 'fl_belly', 's_belly');
+    if (on('ill')) add('danger', 'u', 'fl_ill', 's_ill');   /* Version 39.46: a serious infection after a birth (the 24 Oct review) */
     if (v.bleed === 'heavy' && !(on('soak') || on('clots'))) add('bleed', 'd', 'fl_heavy', 's_heavy');
     if (v.colour === 'red' && v.bleed && v.bleed !== 'none' && v.bleed !== 'heavy' && n != null && n > 14) add('colour', 'd', 'fl_redagain', 's_redagain');
     if (v.wtype && v.wtype !== 'none') { if (v.wound === 'pus' || v.wound === 'red') add('wound', 'd', 'fl_wound', 's_wound'); else if (v.wound === 'pain') add('wound', 't', 'tp_wpain'); }
@@ -592,7 +615,7 @@
   const TIP_LINK = { tp_sore: R.feed, fl_redpatch: R.feed, tp_leak: R.pelvic, tp_mood: R.mood };
   function inlineHtml(list) {
     return list.map((f) => {
-      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T(f.k === 'fl_harm' ? 'fl_harm_h' : 'fl_112')) + '</strong><span>' + esc(T(f.k)) + '</span>' + callRow(f.k === 'fl_harm' ? ['112', '14416'] : ['112', '108'], 'pst-onDark') + '</div>';
+      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T(f.k === 'fl_harm' ? 'fl_harm_h' : 'fl_112')) + '</strong><span>' + esc(T(f.k === 'fl_harm' && died() ? 'fl_harm_b' : f.k)) + '</span>' + callRow(f.k === 'fl_harm' ? ['112', '14416'] : ['112', '108'], 'pst-onDark') + '</div>';
       if (f.lvl === 'd') return '<div class="flag pst-col"><strong>' + esc(T('fl_today')) + '</strong><span>' + esc(T(f.k)) + '</span></div>';
       const go = TIP_LINK[f.k];
       return '<div class="pst-tip"><p>' + esc(T(f.k)) + '</p>' + (go ? '<button type="button" class="btn sm pst-self" data-go="' + go + '">' + esc(T(go === R.feed ? 't_feed' : (go === R.pelvic ? 't_pelvic' : 't_mood'))) + '</button>' : '') + '</div>';
@@ -621,7 +644,7 @@
     const st = store(); const n = dayN(); const dr = getDraft(st); const val = dr.v; const exists = !!st.rec[dr.date];
     const chip = (g, o, label, on) => '<button type="button" class="chip' + (on ? ' on' : '') + '" data-pst-g="' + g + '" data-pst-v="' + o + '" aria-pressed="' + (on ? 'true' : 'false') + '">' + esc(label) + '</button>';
     const dangerGrp = '<div class="pst-grp" data-grp="danger"><div class="pst-lbl">' + esc(T('g_danger')) + '</div><div class="chips">' + chip('danger', 'none', T('d_none'), val.danger.indexOf('none') >= 0) + DANGER.map((k) => chip('danger', k, T('d_' + k), val.danger.indexOf(k) >= 0)).join('') + '</div><div class="pst-inl" data-inl="danger"></div></div>';
-    const grps = GROUPS.map((x) => '<div class="pst-grp" data-grp="' + x.g + '"' + (x.when && !x.when(val) ? ' hidden' : '') + '><div class="pst-lbl">' + esc(T(x.label)) + '</div><div class="chips">' + x.opts.map((o) => chip(x.g, o, T(x.pre + o), val[x.g] === o)).join('') + '</div><div class="pst-inl" data-inl="' + x.g + '"></div></div>').join('');
+    const grps = GROUPS.map((x) => '<div class="pst-grp" data-grp="' + x.g + '"' + (x.when && !x.when(val) ? ' hidden' : '') + '><div class="pst-lbl">' + esc(T(x.label)) + '</div><div class="chips">' + x.opts.map((o) => chip(x.g, o, T(x.pre + o + (x.g === 'mood' && o === 'harm' && died() ? '_b' : '')), val[x.g] === o)).join('') + '</div><div class="pst-inl" data-inl="' + x.g + '"></div></div>').join('');
     const hist = Object.keys(st.rec).sort().reverse().slice(0, 7);
     const histHtml = '<div class="card"><h3>' + esc(T('hist_h')) + '</h3>' + (hist.length ? '<div class="stack">' + hist.map((k) => {
       const e = st.rec[k]; const fl = flagsOf(e, birth() ? S.diffDays(birth(), S.fromISO(k)) : null).filter((f) => f.lvl !== 't');
@@ -630,7 +653,7 @@
     }).join('') + '</div>' : '<p class="small">' + esc(T('hist_none')) + '</p>') + '</div>';
     const stage = n == null ? -1 : (n < 4 ? 0 : (n < 10 ? 1 : (n <= 42 ? 2 : 3)));
     const norm = '<div class="card"><h3>' + esc(T('norm_h')) + '</h3><ul class="pst-norm">' + ['norm_1', 'norm_2', 'norm_3'].map((k, i) => '<li class="' + (i === stage ? 'on' : '') + '"><span class="sw pst-sw' + i + '"></span><span>' + esc(T(k)) + '</span></li>').join('') + '</ul>' + (n != null ? '<p class="small"><strong>' + esc(TF('norm_you', { n: n })) + '</strong></p>' : '') + '<p class="small">' + esc(T('norm_4')) + '</p></div>';
-    const self = '<div class="card soft"><h3>' + esc(T('self_h')) + '</h3><ul class="small pst-ul">' + ['self_1', 'self_2', 'self_3'].map((k) => '<li>' + esc(T(k)) + '</li>').join('') + '</ul></div>';
+    const self = '<div class="card soft"><h3>' + esc(T('self_h')) + '</h3><ul class="small pst-ul">' + ['self_1', 'self_2', 'self_3'].map((k) => '<li>' + esc(T(k + (k !== 'self_1' && died() ? 'b' : ''))) + '</li>').join('') + '</ul></div>';
     v.innerHTML = S.backRow(T('r_h'), R.hub, true) + '<p class="small">' + esc(T('r_p')) + '</p>' +
       '<p class="eyebrow">' + esc(n != null ? TF('r_forn', { d: dShort(S.today()), n: n }) : TF('r_for', { d: dShort(S.today()) })) + '</p>' +
       '<div class="card pst-form" data-nofold="1">' + dangerGrp + grps + '</div>' +   /* Version 32: never folded, so no warning sign hides behind "Show more" (field-test audit 2.4) */
@@ -662,6 +685,7 @@
     const sv = v.querySelector('#pst-rsave');
     if (sv) sv.addEventListener('click', () => {
       const rec = {}; GROUPS.forEach((x) => { if (val[x.g] && (!x.when || x.when(val))) rec[x.g] = val[x.g]; }); rec.danger = val.danger.slice();
+      const nw = new Date(); rec.at = S.pad2(nw.getHours()) + ':' + S.pad2(nw.getMinutes());   /* Version 39.46: when she saved it */
       st.rec[dr.date] = rec; persist(); draft = null; S.toast(T('saved_t')); S.render();
     });
     v.querySelectorAll('[data-pst-rdel]').forEach((b) => b.addEventListener('click', () => { delete st.rec[b.dataset.pstRdel]; if (b.dataset.pstRdel === dr.date) draft = null; persist(); S.render(); }));
@@ -704,6 +728,7 @@
   }
   function renderFeed(v) {
     stopAll();
+    if (died()) { v.innerHTML = S.backRow(T('t_feed'), R.hub, false) + '<div class="card"><p>' + esc(T('lost_feed')) + '</p><button type="button" class="btn sm" data-go="' + R.rec + '">' + esc(T('lost_back')) + '</button></div>'; S.wire(v); return; }   /* Version 39.46 */
     const st = store(); const run = st.run; const tf = todayFeeds(st); const mins = tf.reduce((a, f) => a + sessMin(f), 0); const ls = lastSeg(st);
     let log = '';
     if (run) {
@@ -890,11 +915,11 @@
     } else if (b && !S.canSave()) vaxBtns = S.needDiary();
     const vax = '<div class="card"><h3>' + esc(T('vax_h')) + '</h3><p class="small pst-txt">' + esc(T((b ? 'vax_p' : 'vax_p0') + (dr ? '_doc' : ''))) + '</p><div class="pst-vlist">' + rows + '</div>' + vaxBtns + '<p class="small">' + esc(T('vax_je')) + ' ' + esc(T(dr ? 'vax_missed_doc' : 'vax_missed')) + '</p><p class="small">' + esc(T('vax_later')) + '</p>' + (dr ? '<p class="small">' + esc(T('vax_free_doc')) + '</p>' : '') + '</div>';
     /* the doctor route: her own check before the ASHA's visit days, which fold behind one quiet line */
-    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T(dr ? 'k_p_doc' : 'k_p')) + '</p>' + birthCard() + vax + (dr ? six + meds + asha : asha + six + meds) + related(R.checks) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T(dr ? 'k_p_doc' : 'k_p')) + '</p>' + birthCard() + (died() ? '' : vax) + (dr ? six + meds + asha : asha + six + meds) + related(R.checks) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v);
     const va = v.querySelector('#pst-vax'); if (va) va.addEventListener('click', () => { const bb = birth(); if (!bb) return; addVax(bb); S.toast(T('vax_added_t')); S.render(); });
     const vo = v.querySelector('#pst-vax-off'); if (vo) vo.addEventListener('click', () => { VAX_IDS.forEach((id) => S.reminders.remove(id)); S.render(); });
-    const sx = v.querySelector('#pst-six'); if (sx) sx.addEventListener('click', () => { const bb = birth(); if (!bb) return; S.reminders.upsert({ id: 'post-6wk', mod: 'post', title: { en: 'My 6-week check after birth', hi: 'डिलीवरी के बाद मेरी 6 हफ़्ते की जाँच' }, kind: 'checkup', dates: [S.toISO(S.addDays(bb, 42))], time: '09:00', on: true }); S.render(); });
+    const sx = v.querySelector('#pst-six'); if (sx) sx.addEventListener('click', () => { if (!birth()) return; sixRemind(); S.render(); });
     const so = v.querySelector('#pst-six-off'); if (so) so.addEventListener('click', () => { S.reminders.remove('post-6wk'); S.render(); });
   }
 
@@ -907,13 +932,13 @@
       const done = !!st.rec[k]; const tf = todayFeeds(st); const ls = lastSeg(st); const sets = pfSets(st, k);
       const rows = [];
       rows.push([T('k_check'), done ? T('k_done') : T('k_notyet')]);
-      rows.push([T('k_feeds'), ls ? TF('feeds_last', { n: tf.length, s: sideName(ls.side) }) : String(tf.length)]);
+      if (!died()) rows.push([T('k_feeds'), ls ? TF('feeds_last', { n: tf.length, s: sideName(ls.side) }) : String(tf.length)]);
       rows.push([T('k_pf'), TF('of3', { n: Math.min(sets, 3) })]);
       const na = docR() ? null : ASHA_DAYS.filter((d) => d > 1 && d >= n)[0]; if (na != null) rows.push([T('k_asha'), na === n ? TF('day_today', { n: na }) : TF('day_d', { n: na, d: dShort(S.addDays(b, na)) })]);
       if (n < 42) rows.push([T('k_six'), dShort(S.addDays(b, 42))]);
-      const nx = nextVax(b); if (nx) rows.push([T('k_vax'), tx(nx.x.age) + ' · ' + dShort(nx.d)]);
+      const nx = died() ? null : nextVax(b); if (nx) rows.push([T('k_vax'), tx(nx.x.age) + ' · ' + dShort(nx.d)]);
       const phase = n <= 42 ? T('ph1') : (n < 183 ? TF('ph2', { d: dLong(addMonths(b, 6)) }) : T('ph3'));
-      hero = '<div class="card pst-hero"><div class="eyebrow">' + esc(T('eb_day')) + '</div><div class="big num">' + n + '</div><p class="lead">' + esc(n === 0 ? T('day0') : ageText(n)) + '</p><p class="small">' + esc(phase) + '</p>' + birthCard() +
+      hero = '<div class="card pst-hero"><div class="eyebrow">' + esc(T('eb_day')) + '</div><div class="big num">' + n + '</div>' + (died() ? '' : '<p class="lead">' + esc(n === 0 ? T('day0') : ageText(n)) + '</p>') + '' + (died() ? '' : '<p class="small">' + esc(phase) + '</p>') + birthCard() +
         '<dl class="kv">' + rows.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' +
         '<button type="button" class="btn primary block" data-go="' + R.rec + '">' + esc(done ? T('upd_check') : T('do_check')) + '</button></div>';
       if (st.run && st.run.segs.length) { const cur = st.run.segs[st.run.segs.length - 1]; hero += '<button type="button" class="action" data-go="' + R.feed + '"><span class="ico accent">' + S.I.drop + '</span><span class="body"><strong>' + esc(TF('running', { side: sideName(cur.side), t: fmtTime(st.run.segs[0].s) })) + '</strong><span class="small">' + esc(T('open_feed')) + '</span></span><span class="go">' + chev() + '</span></button>'; }
@@ -921,19 +946,46 @@
     const tools = [[R.rec, 't_rec', 't_rec_s', S.I.check, true], [R.mood, 't_mood', 't_mood_s', S.I.heart, true], [R.feed, 't_feed', 't_feed_s', S.I.drop], [R.contra, 't_contra', 't_contra_s', S.I.pill], [R.pelvic, 't_pelvic', 't_pelvic_s', S.I.flower], [R.checks, 't_checks', 't_checks_s', S.I.bell]];
     if (has('access-schemes-post')) tools.push(['access-schemes-post', 'schemes', 'schemes_s', S.I.file]);
     if (has('pregtools-birth') && n != null && n <= 7) tools.push(['pregtools-birth', 'birthprep', 'birthprep_s', S.I.heart]);
-    v.innerHTML = S.backRow(T('h'), 'care', false) + '<p class="small">' + esc(T('p')) + '</p>' + hero +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108', '14416'], 'pst-onDark') + '</div>' +
+    const gone = died();   /* Version 39.46: no baby lines, and her support first */
+    if (gone) for (let i = tools.length - 1; i >= 0; i--) if (tools[i][0] === R.feed) tools.splice(i, 1);
+    const lostTop = gone ? '<div class="card pst-lost"><h3>' + esc(T('lost_h')) + '</h3><p class="small">' + esc(T('lost_talk')) + '</p><div class="pst-row"><a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' + (has('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(T('lost_sup')) + '</button>' : '') + '</div><button type="button" class="linkbtn" id="pst-lost-undo">' + esc(T('lost_undo')) + '</button></div>' : '';
+    v.innerHTML = S.backRow(T('h'), 'care', false) + lostTop + '<p class="small">' + esc(T(gone ? 'p_b' : 'p')) + '</p>' + hero +
+      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x === 'u_4' && gone ? 'u_4b' : x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108', '14416'], 'pst-onDark') + '</div>' +
       '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
-      askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+      askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + (b && !gone && S.canSave() ? '<button type="button" class="linkbtn pst-lost-l" id="pst-lost">' + esc(T('lost_link')) + '</button>' : '') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v); wireCopy(v);
+    const lo = v.querySelector('#pst-lost'); if (lo) lo.addEventListener('click', lostSheet);   /* Version 39.46 */
+    const lu = v.querySelector('#pst-lost-undo'); if (lu) lu.addEventListener('click', () => { const s0 = Object.assign({}, S.state.situation || {}); delete s0.babyDied; if (s0.bfWas) s0.breastfeeding = true; delete s0.bfWas; S.state.situation = s0; S.emit('babyBack', {}); S.saveQuiet(); S.render(); });
   }
+
+  /* ---------- Version 39.46: "My baby has died" (one tap here and in core's stage sheet). Every baby line stops: feeding, the vaccine
+     reminders, her baby's age; what is hers stays: her check to day 41, her own 6-week check, contraception. Undo on the hub. ---------- */
+  const died = () => { const s0 = S.state.situation || {}; const b = birthISO(); return !!(s0.babyDied && b && s0.babyDied >= b); };
+  function lostSheet() {
+    if (!S.sheet || !S.canSave()) return;
+    S.sheet('<div class="pst-lost-sh"><h2>' + esc(T('lost_h')) + '</h2><p>' + esc(T('lost_q_p')) + '</p><div class="grid2"><button type="button" class="btn primary" id="pst-lost-yes">' + esc(T('lost_q_yes')) + '</button><button type="button" class="btn" id="pst-lost-no">' + esc(t('cancel')) + '</button></div></div>', (sh) => {
+      sh.querySelector('#pst-lost-no').addEventListener('click', () => S.closeSheet());
+      sh.querySelector('#pst-lost-yes').addEventListener('click', () => {
+        const s1 = S.state.situation || {}; S.state.situation = Object.assign({}, s1, { babyDied: todayISO(), breastfeeding: false, bfWas: !!s1.breastfeeding }); VAX_IDS.forEach((id) => S.reminders.remove(id));
+        S.emit('babyDied', {}); S.saveQuiet(); S.closeSheet(); S.toast(T('lost_done')); S.setHash(R.hub);   /* quiet: never a petal or a celebration here */
+      });
+    });
+  }
+  const sixSync = () => { const r = S.reminders.get('post-6wk'); const bb = birth(); if (!r || !bb) return; const want = S.toISO(S.addDays(bb, 42)); if ((r.dates || [])[0] !== want) S.reminders.upsert({ id: 'post-6wk', dates: [want] }, { quiet: true }); };   /* Version 39.46 */
+  const sixRemind = () => { const bb = birth(); if (!bb) return; S.reminders.upsert({ id: 'post-6wk', mod: 'post', title: { en: 'My 6-week check after birth', hi: 'डिलीवरी के बाद मेरी 6 हफ़्ते की जाँच' }, kind: 'checkup', dates: [S.toISO(S.addDays(bb, 42))], time: '09:00', on: true }); };
 
   /* ---------- hooks ---------- */
   function stopAll() { stopFeedTick(); stopPfTick(); }
   /* Version 38: her plan's daily recovery check (plan.js, every after-birth goal until day 42) is done only by this check */
   S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]),
     /* Version 39.5: pelvic floor sets on that day (a plan step counts from them) */
-    pelvicOn: (iso) => !!(S.canSave() && Number((store().pf || {})[iso] || 0) > 0) });
+    pelvicOn: (iso) => !!(S.canSave() && Number((store().pf || {})[iso] || 0) > 0),
+    /* Version 39.46: for the after-birth plan's version 2 */
+    died: died, lost: lostSheet, sixOn: () => !!S.reminders.get('post-6wk'), sixRemind: sixRemind, sixSync: sixSync,
+    /* her plan's day ends at 4 am: a check saved before 4 am is the day before's, not its own date's */
+    checkedFor: (iso) => { if (!S.canSave()) return false; const rec = store().rec || {}; const a = rec[iso]; const b = rec[S.toISO(S.addDays(S.fromISO(iso), 1))]; return !!((a && !(a.at && a.at < '04:00')) || (b && b.at && b.at < '04:00')); },
+    babySigns: () => ({ h: T('baby_h'), list: G.baby.map((x) => tx(x)), note: tx(G.babyNote) }),
+    leaks: (a, z) => { const rec = (S.canSave() ? store().rec : {}) || {}; let n = 0, k = 0; Object.keys(rec).forEach((x) => { if (x >= a && x <= z) { n++; if (rec[x].pee === 'leak') k++; } }); return { n: n, k: k }; } });
   /* Version 39.0 (journey audit P0 2 and 2.1): today's and yesterday's recovery-check warning signs reach Today and her diary,
      at their own level (112 now, or a doctor today) and in the check's own reviewed words */
   const LP = (k) => ({ en: P[k][0].charAt(0).toUpperCase() + P[k][0].slice(1), hi: P[k][1] });
@@ -943,7 +995,8 @@
     const lead = (f) => (f.k === 'fl_harm' ? null : P[f.lvl === 'u' ? 'fl_112' : 'fl_today']);
     (rec[todayISO()] ? [0] : [0, 1]).forEach((k) => { const iso = S.toISO(S.addDays(S.today(), -k)); const v = rec[iso]; if (!v) return; const n = S.diffDays(S.fromISO(b), S.fromISO(iso)); if (n < 0 || n > 84) return;
       flagsOf(v, n).filter((f) => (f.lvl === 'u' || f.lvl === 'd') && f.s).forEach((f) => { if (out.some((o) => o.id === 'pp_' + f.k)) return; const ld = lead(f);
-        out.push({ id: 'pp_' + f.k, lv: f.lvl === 'u' ? 'now' : 'today', at: iso, t: LP(f.s), see: { en: (ld ? ld[0] + '. ' : '') + P[f.k][0], hi: (ld ? ld[1] + '। ' : '') + P[f.k][1] }, go: R.rec, call: f.k === 'fl_harm' ? '14416' : '112' }); }); });
+        const fk = f.k === 'fl_harm' && died() ? 'fl_harm_b' : f.k;   /* Version 39.46 */
+        out.push({ id: 'pp_' + f.k, lv: f.lvl === 'u' ? 'now' : 'today', at: iso, t: LP(f.s), see: { en: (ld ? ld[0] + '. ' : '') + P[fk][0], hi: (ld ? ld[1] + '। ' : '') + P[fk][1] }, go: R.rec, call: f.k === 'fl_harm' ? '14416' : '112' }); }); });
     return out;
   };
   function home() {
@@ -993,10 +1046,11 @@
       { section: 'post', route: R.hub, title: 'post_t_hub', sub: 'post_t_hub_s', icon: 'baby', order: 1, gated: false, keywords: 'after birth postpartum postnatal delivery recovery day count baby newborn डिलीवरी के बाद प्रसव के बाद जच्चा' },
       { section: 'post', route: R.rec, title: 'post_t_rec', sub: 'post_t_rec_s', icon: 'check', order: 2, gated: true, keywords: 'bleeding lochia stitches c-section wound fever infection clots pre-eclampsia ब्लीडिंग टाँके बुख़ार' },
       { section: 'post', route: R.mood, title: 'post_t_mood', sub: 'post_t_mood_s', icon: 'heart', order: 3, gated: true, keywords: 'baby blues postpartum depression postnatal psychosis anxiety tele-manas 14416 उदासी डिप्रेशन' },
-      { section: 'post', route: R.feed, title: 'post_t_feed', sub: 'post_t_feed_s', icon: 'drop', order: 4, gated: false, keywords: 'breastfeeding feed log latch nipples mastitis engorgement milk supply expressing storage maternity leave creche maa स्तनपान दूध' },
+      { section: 'post', route: R.feed, title: 'post_t_feed', sub: 'post_t_feed_s', icon: 'drop', order: 4, gated: false, hidden: () => died(), keywords: 'breastfeeding feed log latch nipples mastitis engorgement milk supply expressing storage maternity leave creche maa स्तनपान दूध' },
       { section: 'post', route: R.contra, title: 'post_t_contra', sub: 'post_t_contra_s', icon: 'pill', order: 5, gated: false, keywords: 'contraception after delivery ppiucd copper-t lam antara chhaya pop tubectomy nsv गर्भनिरोध नसबंदी' },
       { section: 'post', route: R.pelvic, title: 'post_t_pelvic', sub: 'post_t_pelvic_s', icon: 'flower', order: 6, gated: false, keywords: 'pelvic floor kegel leaking urine incontinence diastasis belly gap prolapse व्यायाम लीक' },
-      { section: 'post', route: R.checks, title: 'post_t_checks', sub: 'post_t_checks_s', icon: 'bell', order: 7, gated: false, keywords: 'asha visits hbnc 6 week check ifa iron calcium vaccines uip immunisation mcp card टीके जाँच' }
+      { section: 'post', route: R.checks, title: 'post_t_checks', sub: 'post_t_checks_s', icon: 'bell', order: 7, gated: false, hidden: () => died(), keywords: 'asha visits hbnc 6 week check ifa iron calcium vaccines uip immunisation mcp card टीके जाँच' },
+      { section: 'post', route: R.checks, title: 'post_six_h', sub: 'post_t_checks_s0', icon: 'bell', order: 7, gated: false, hidden: () => !died(), keywords: '6 week check ifa iron calcium जाँच' }   /* Version 39.46: after "My baby has died" */
     ],
     css: [
       '.pst-col { flex-direction: column; gap: 6px; align-items: stretch; padding: 12px 14px; }',

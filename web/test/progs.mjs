@@ -81,11 +81,11 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 /* ---------- 2. The closed vocabulary (mods/plan.js implements each word once) ---------- */
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
-const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm'];   /* Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32 */
+const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm', 'post.pf'];   /* Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32; post.pf: Version 39.46 */
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at', 'sub'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens; sub: Version 39.34, a set walk's own line */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
-const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|birth:\d+-\d+|(week|pday|gw):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34 */
+const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|unlock|pready|died|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|(week|pday|gw|birth):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34; unlock, pready, died and an open birth range: Version 39.46 */
 const whenOk = (w) => w == null || w === 'daily' || w === 'periodDays' || /^days:[0-6](,[0-6])*$/.test(w);
 const keyOk = (x) => typeof x === 'string' && /^@([a-z][a-z0-9_]*|tile)$/.test(x);
 const bad = [];

@@ -258,7 +258,7 @@ for (const [goal, ans, re, sel, now] of [['heavy', { pads: 'p12', clots: 'y', ti
 
 /* ---------- every goal and stage starts the right plan ---------- */
 for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'A calmer cycle', /Calm breath/], ['cycle', 'heavy', 'heavy', 'Stronger blood', /iron/i], ['pmos', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Every day: My folic acid tablet/],   /* Version 38: its own plan; Version 39.32: version 2 starts with her folic acid tablet */
-  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Pelvic floor trainer/], ['mid', 'hot', 'meno', 'My midlife plan', /For hot flushes/]]) {
+  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Your pelvic floor squeezes/], ['mid', 'hot', 'meno', 'My midlife plan', /For hot flushes/]]) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
   await toOffer(page, stage, goal); await answer(page, { dx: 'n' });
   const v = await revealWords(page); await tap(page, '#pl-rv-go'); const s = await st(page);

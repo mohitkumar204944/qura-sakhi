@@ -323,6 +323,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "Your last plan" never a pregnancy marked by mistake, nor a copy of the plan she runs;
     - the 3D figure on Moves and calm.
     Contract: MODULE_API section 88; review section 19.45 (UI words only).
+  - `node test/afterbirth.mjs` (Version 39.46, I had a baby, the full plan; Mohit, 30 Oct: "proceed building"; advice
+    `docs/after-birth-plan-advice-2026-10-30.md`; mockup claude.ai/artifact/RLz4dU7pQ5A5iVTFCcnqPa):
+    - the stage's plan opens `post` version 2, to the first birthday (version 1 runs on, with one offer);
+    - to day 41 the recovery check is her evening form; the squeezes by her days; a walk from day 14;
+    - one card at a time: her baby's signs in week 1, her own 6-week check, back to strong from day 42, "Is my body ready?"
+      from week 12, her method before sex starts again;
+    - leaks, her main measure; the weekly mood question waits for the psychologist (drafts only);
+    - "My baby has died".
+    The bug hunt before the commit: section 15 (MODULE_API 89.9).
+    Contract: MODULE_API section 89; wording: section 19.46 of the review (new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
