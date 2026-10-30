@@ -36,7 +36,7 @@ def build_set(view, size, samples):
 
 
 def view_of(names):
-    return 'front' if names[0] in moves.FRONT else 'side'
+    return 'front' if names[0] in moves.FRONT else 'quarter' if names[0] in moves.QUARTER else 'side'
 
 
 def pose(name):

@@ -5,6 +5,15 @@ import bpy
 from mathutils import Vector
 
 BG = (0.965, 0.95, 0.935)
+# where the camera stands, seen from her: in front, at her right side, or three-quarters from her right side towards her
+# feet and higher (for a move whose motion runs across her body, which a side view hides)
+VIEWS = {'front': (0, -1, 0), 'side': (-1, 0, 0), 'quarter': (-0.64, -0.77, 0)}
+TILT = {'quarter': 20.0}
+FIT = {'quarter': 0.8}   # seen on a diagonal, her box is wider than she is: she lies corner to corner in it
+
+
+def towards(view):
+    return Vector(VIEWS[view]).normalized()
 
 
 def engine():
@@ -34,8 +43,8 @@ def cyclorama(view):
     for poly in me.polygons:
         poly.use_smooth = True
     ob = bpy.data.objects.new('floor', me); bpy.context.scene.collection.objects.link(ob); ob.data.materials.append(mat('floor', BG, 0.9))
-    # the camera looks from -Y (front view) or -X (side view); the wall stands on the far side
-    ob.rotation_euler = (0, 0, 0) if view == 'front' else (0, 0, math.radians(-90))
+    # the wall stands on the far side of her from the camera
+    d = -towards(view); ob.rotation_euler = (0, 0, math.atan2(-d.x, d.y))
     return ob
 
 
@@ -52,8 +61,7 @@ def setup(size=(720, 600), view='side', samples=48):
     w = sc.world or bpy.data.worlds.new('World'); sc.world = w; w.use_nodes = True
     bgn = w.node_tree.nodes['Background']; bgn.inputs[0].default_value = (*BG, 1); bgn.inputs[1].default_value = 0.7
     cyclorama(view)
-    c = Vector((0, -1, 0)) if view == 'front' else Vector((-1, 0, 0))     # towards the camera
-    r = Vector((1, 0, 0)) if view == 'front' else Vector((0, -1, 0))      # the camera's right
+    c = towards(view); r = Vector((-c.y, c.x, 0))     # towards the camera, and the camera's right
     def area(name, loc, energy, size):
         bpy.ops.object.light_add(type='AREA', location=loc); L = bpy.context.object; L.name = name
         L.data.energy = energy; L.data.size = size
@@ -103,14 +111,13 @@ def frame(view, lo, hi, lens=70, margin=1.14, tilt=5.0):
     """A camera that fits the box lo..hi (the whole move) in a 6:5 frame, a little above her eye line."""
     sc = bpy.context.scene
     bpy.ops.object.camera_add(); cam = bpy.context.object; cam.name = 'cam'; cam.data.lens = lens; cam.data.sensor_fit = 'HORIZONTAL'
-    c = (lo + hi) / 2
-    w = (hi.x - lo.x) if view == 'front' else (hi.y - lo.y); h = hi.z - lo.z
-    depth = (hi.y - lo.y) if view == 'front' else (hi.x - lo.x)
+    c = (lo + hi) / 2; t = towards(view); r = Vector((-t.y, t.x, 0)); tilt = TILT.get(view, tilt)
+    w = (abs(r.x) * (hi.x - lo.x) + abs(r.y) * (hi.y - lo.y)) * FIT.get(view, 1.0); h = hi.z - lo.z
+    depth = abs(t.x) * (hi.x - lo.x) + abs(t.y) * (hi.y - lo.y)
     aspect = sc.render.resolution_x / sc.render.resolution_y
     fh = 2 * math.atan(18.0 / lens); fv = 2 * math.atan(math.tan(fh / 2) / aspect)
     dist = max(w * margin / 2 / math.tan(fh / 2), h * margin / 2 / math.tan(fv / 2)) + depth / 2
-    back = Vector((0, -1, 0)) if view == 'front' else Vector((-1, 0, 0))
-    cam.location = c + back * dist + Vector((0, 0, dist * math.tan(math.radians(tilt))))
+    cam.location = c + t * dist + Vector((0, 0, dist * math.tan(math.radians(tilt))))
     cam.rotation_euler = (c - cam.location).to_track_quat('-Z', 'Y').to_euler()
     sc.camera = cam
     return cam

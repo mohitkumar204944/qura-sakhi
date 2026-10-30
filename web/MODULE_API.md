@@ -5403,6 +5403,15 @@ pose was checked from the app's camera and from a three-quarter view, and every 
    - Step-ups have a handrail beside the step ("Hold the railing"); her left hand holds it and slides up as she steps up.
    - Bridge lifts and heel raises come down slowly: the bridge holds, then lowers over 2.2 seconds; heel raises pause on her
      toes, then lower over 1.5 seconds.
+10. Cycle care yoga (30 Oct, "cycle care yoga moves need improvement too"); its Loosen up, child pose, butterfly, half
+    camel and bridge are above:
+    - The cobra keeps her elbows bent and lifts her head with her chest ("lift your head and chest gently, elbows bent"), as
+      the drawing has it. She starts with her hands beside her chest, so at the top they are under her shoulders. Before,
+      her arms straightened, her hands ended far in front and she looked down at the mat. The sun salutation's cobra is the
+      same.
+    - Knees to chest is filmed three-quarters from her feet (`QUARTER`, stage.py's `VIEWS`), where "rock gently from side
+      to side" shows. From her side the rock ran towards and away from the camera and hardly showed. It rocks 14 degrees
+      each way (before, 9).
 
 **The rest (the mockup's notes):**
 1. After each move and each set: 15 seconds in Strength at home, 10 in Gentle start and Cycle care (`REST_S`, `restAfter`).

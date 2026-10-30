@@ -42,7 +42,8 @@ credit line in the app.
   each foot lifting clear of the step's edge, her left hand on the railing. The sun salutation stands where her hands come
   down, flows through a middle (a swan dive, a plank line, or half way with a stepping or turning foot lifted) and has a
   camera for her standing positions and another for those on the mat.
-- `stage.py` sets up the backdrop, lights, props (chair, wall, step with its railing, yoga mat) and the camera.
+- `stage.py` sets up the backdrop, lights, props (chair, wall, step with its railing, yoga mat) and the camera: in front,
+  at her side, or three-quarters from her feet for knees to chest, whose rock runs across her body.
 - `render.py` renders a contact sheet, the stills, one loop, or the sun salutation. A loop's free arms move joint by joint,
   in arcs, while IK holds a hand that stays put (the floor, a wall, her knees); every turn takes the short way round, and a
   loop runs on round its seam without a stop.

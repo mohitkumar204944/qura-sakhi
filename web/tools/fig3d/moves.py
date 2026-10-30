@@ -337,9 +337,10 @@ def prone(k, arms='chest'):
         ank = k.rig.matrix_world @ k.rig.data.bones['lowerleg02.' + s].tail_local
         k.leg(s, (SX[s] * 0.08, ank.y, 0.07), knee=(SX[s] * 0.08, ank.y - 0.4, -0.6), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
     if arms == 'chest':
-        # hands flat beside her chest, under the shoulders, elbows bent close to the body
+        # hands flat beside her chest, elbows bent close to the body: when her chest lifts in the cobra, her shoulders come back
+        # over her hands and her elbows stay bent, as the drawing has them
         for s in LR:
-            sh = k.sh(s); k.arm(s, (SX[s] * 0.25, sh.y - 0.02, FLOOR_W), elbow=(SX[s] * 0.32, sh.y + 0.35, 0.45), palm=-UP, fingers=FWD)
+            sh = k.sh(s); k.arm(s, (SX[s] * 0.24, sh.y + 0.05, FLOOR_W), elbow=(SX[s] * 0.3, sh.y + 0.4, 0.5), palm=-UP, fingers=FWD)
     else:
         # arms long along her sides, palms down beside her thighs
         for s in LR:
@@ -349,8 +350,10 @@ def prone(k, arms='chest'):
 
 
 def cobra(k):
-    prone(k)                                     # the hands stay where they were
-    k.spine(bend=-36, weights=[1.2, 1.2, 1, 0.9, 0.8]); k.neck(bend=-14)
+    """Bhujangasana, "lift your head and chest gently, elbows bent, hips down": her hands stay where they were, her head
+    lifts with her chest and she looks ahead."""
+    prone(k)
+    k.spine(bend=-32, weights=[1.2, 1.2, 1, 0.9, 0.8]); k.neck(bend=-30)
     k.ground()
 
 
@@ -462,11 +465,11 @@ def knees(k):
 
 
 def knees2(k):
-    _knees(k, 9)
+    _knees(k, 14)
 
 
 def knees3(k):
-    _knees(k, -9)
+    _knees(k, -14)
 
 
 def rest(k):
@@ -721,6 +724,8 @@ POSES['sun_cobra'] = sun_cobra
 
 # Loosen up is filmed from her side, where its arm circle reads as forward, up, back and down, and its shoulder roll shows
 FRONT = {'pray', 'opens', 'armsup', 'tiptoe', 'tree', 'triangle', 'wide', 'butterfly', 'butterfly2', 'sit', 'nostril'}
+# knees to chest rocks from side to side, across her body, so it is filmed three-quarters from her feet (stage.VIEWS)
+QUARTER = {'knees', 'knees2', 'knees3'}
 PROPS = {'chair': 'chair', 'chairup': 'chair', 'chairsit': 'chair', 'chairfwd': 'chair', 'wall': 'wall', 'wallout': 'wall', 'stepfloor': 'step', 'step': 'step',
          'calfdown': 'calfwall', 'calf': 'calfwall', **{n: 'step' for n in STEPPING}}
 NO_MAT = {'chair', 'chairup', 'chairsit', 'chairfwd', 'wall', 'wallout', 'stepfloor', 'step', 'calfdown', 'calf', 'walk', 'walk2'} | set(STEPPING)
