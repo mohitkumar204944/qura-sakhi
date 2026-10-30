@@ -5327,7 +5327,7 @@ own drawing (`P`, `ANIM`, the sun salutation) posed on her, so no move changes. 
    inline, with the move's still as its poster.
 2. A held pose (tree, child pose, Shavasana, the calm sitting) shows its still. Shavasana and the calm sitting have her eyes
    closed.
-3. The sun salutation shows its first position as a still. Each next position flows in once (no loop, about 0.9 s) and holds
+3. The sun salutation shows its first position as a still. Each next position flows in once (no loop, about 1.2 s; the drawings, 0.9 s) and holds
    on its last frame.
 4. "Reduce motion" shows the still. The left side is the same picture, mirrored (`pl-mirror`). Pause pauses the loop too.
 5. A video that can't play (not found, can't decode, or the WebView wants a tap first) gives way to the move's still
@@ -5376,6 +5376,22 @@ pose was checked from the app's camera and from a three-quarter view, and every 
 7. Anulom vilom has its own still (`fig: 'nostril'` on its step, `fig/s/nostril.webp`): her right hand at her nose in Nasika
    mudra, the thumb at her right nostril and the ring finger at her left, as its words say ("Close your right nostril with
    your thumb"). Bhramari and Sit quietly keep her sitting still; without `web/fig` all three keep the sitting drawing.
+8. The sun salutation (30 Oct, "sun salutation moves need improvement too"):
+   - Hasta uttanasana leans back a little, as it says: her hips forward, her upper back arching, her arms up past her head.
+   - Ashwa sanchalanasana lifts her chest about 40 degrees with an arched back, the back knee down and her fingertips on the
+     mat either side of the front foot. With her palms flat, her arms would hold her chest down near her thigh.
+   - She stands where her hands come down, so the front foot of each lunge stays put and the other foot steps. Before, the
+     front foot slid half a metre.
+   - A foot that steps lifts clear of the mat, its knee pointing down as it steps back and forward as it steps through. A
+     foot that turns over, its toes tucking or its top coming down, lifts as it turns, so no toe goes through the mat.
+   - Her arms sweep down in front of her and back up through a swan dive, and from the cobra her hips rise through a plank
+     line before her head drops between her arms (`SUN_MID`). Before, her face went 7 cm into the mat there.
+   - A hand that turns from fingertips to a flat palm turns before it comes down. Where her body would still dip under the
+     mat, the flow's middle lifts her, so nothing goes under by more than half a centimetre.
+   - Each flow takes 1.2 seconds instead of 0.9.
+   - Her standing positions share one camera and her positions on the mat another (`SUN_VIEWS`), so she fills the frame on
+     the mat; the flows down to the mat and back up carry the camera across. Before, one loose camera framed all twelve and
+     she lay along the bottom of the frame.
 
 **The rest (the mockup's notes):**
 1. After each move and each set: 15 seconds in Strength at home, 10 in Gentle start and Cycle care (`REST_S`, `restAfter`).

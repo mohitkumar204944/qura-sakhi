@@ -38,7 +38,9 @@ credit line in the app.
   step-ups' steps), the 17 loops and the sun salutation. The loops follow the moves' words: Palm tree opens the arms wide,
   meets them overhead and rises on the toes; Loosen up swings the arms in big circles; in the butterfly only her knees lift
   and drop, while her seat, her feet (soles together) and her hands over her toes stay still; step-ups step up with one
-  foot, then the other, and step down, each foot lifting clear of the step's edge.
+  foot, then the other, and step down, each foot lifting clear of the step's edge. The sun salutation stands where her hands
+  come down, flows through a middle (a swan dive, a plank line, or half way with a stepping or turning foot lifted) and has
+  a camera for her standing positions and another for those on the mat.
 - `stage.py` sets up the backdrop, lights, props (chair, wall, step, yoga mat) and the camera.
 - `render.py` renders a contact sheet, the stills, one loop, or the sun salutation. A loop's free arms move joint by joint,
   in arcs, while IK holds a hand that stays put (the floor, a wall, her knees); every turn takes the short way round, and a

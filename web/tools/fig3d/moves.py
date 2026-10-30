@@ -199,18 +199,40 @@ def walk2(k):
 
 # ---------- the sun salutation (side) ----------
 SUN_HANDS_Y = -0.55   # where both palms stay planted, from the lunge to the other lunge
+SUN_FEET_Y = -0.54    # where she stands, so her hands come down beside her feet and the front foot of each lunge stays put
+
+
+def _sun_spot(k):
+    """Moves a standing position of the sun salutation onto the spot where she stands."""
+    k.shift((0, SUN_FEET_Y - (k.T['footL'].location.y + k.T['footR'].location.y) / 2, 0))
 
 
 def prays(k):
-    stand(k, feet=0.06); namaste(k)
+    stand(k, feet=0.06); namaste(k); _sun_spot(k)
 
 
 def reach(k):
-    stand(k, feet=0.06)
-    k.spine(bend=-12, weights=[0.6, 0.8, 1, 1.2, 1.2]); k.neck(bend=-6)
+    """Hasta uttanasana, "arms up, lean back a little": her hips a little forward, her upper back arching and her arms
+    reaching up and back past her head."""
+    stand(k, feet=0.06, pelvis=k.P0 + V((0, -0.04, -0.004)))
+    k.spine(bend=-26, weights=[0.5, 0.7, 1, 1.3, 1.4]); k.neck(bend=-12)
     for s in LR:
-        k.point(s, k.axis((-SX[s] * 0.22, 0.16, 1)), palm=(-SX[s], 0, 0))
+        k.point(s, k.axis((-SX[s] * 0.18, 0.32, 1)), palm=(-SX[s], 0, 0))
     k.shape('LR', 'flat')
+    _sun_spot(k)
+
+
+def dive(k):
+    """Between her raised arms and the forward bend, both ways: folding from her hips with her back long and her arms
+    reaching forward in line with it, so her arms sweep down in front of her (the flow's middle, not a position)."""
+    k.body((0, 0.06, 0.77), rot=(55, 0, 0))
+    for s in LR:
+        k.leg(s, (SX[s] * 0.06, -0.03, 0.066), knee=(SX[s] * 0.06, -0.9, 0.5))
+    k.spine(bend=6); k.neck(bend=-8)
+    for s in LR:
+        k.point(s, k.axis((-SX[s] * 0.12, -0.15, 1)), palm=(-SX[s], 0, 0))
+    k.shape('LR', 'flat')
+    _sun_spot(k)
 
 
 def fwdbend(k):
@@ -223,7 +245,7 @@ def fwdbend(k):
     for s in LR:
         k.arm(s, (SX[s] * 0.11, -0.13, 0.27), elbow=(SX[s] * 0.35, 0.1, 0.5), palm=(0, 1, 0), fingers=(0, 0, -1))
     k.shape('LR', 'hold')
-    k.ground()
+    k.ground(); _sun_spot(k)
 
 
 def _plant_hands(k, y=SUN_HANDS_Y):
@@ -233,15 +255,22 @@ def _plant_hands(k, y=SUN_HANDS_Y):
 
 
 def _lunge(k, front):
+    """Ashwa sanchalanasana, "one leg back, knee down": the back shin along the mat with the knee resting on it, her hips
+    low where that thigh puts them, her chest lifted about 40 degrees with an arched back, looking ahead, and her arms long
+    with the fingertips on the mat either side of the front foot (palms flat, her arms would hold her chest down)."""
     back = 'L' if front == 'R' else 'R'
-    k.body((0, 0.02, 0.35), rot=(66, 0, 0))
-    k.spine(bend=4); k.neck(bend=-42)
-    k.leg(front, (SX[front] * 0.09, -0.4, 0.066), knee=(SX[front] * 0.09, -1.0, 0.6))
-    k.leg(back, (SX[back] * 0.09, 0.62, 0.075), knee=(SX[back] * 0.09, 0.25, -0.6), toes=(0, 0.97, -0.25), sole=(0, 0.25, 0.97))
+    knee_y, hz = 0.62 - 0.399, 0.28                     # the back knee 40 cm ahead of its ankle; her hips 28 cm up
+    hip = V((0, knee_y - math.sqrt(0.34 ** 2 - (hz - 0.05) ** 2), hz))
+    k.body((0, 0, 0.4), rot=(56, 0, 0)); k.body(V((0, 0, 0.4)) + hip - (k.hip('L') + k.hip('R')) / 2, rot=(56, 0, 0))
+    k.spine(bend=-14); k.neck(bend=-26)
+    k.leg(front, (SX[front] * 0.09, -0.37, 0.066), knee=(SX[front] * 0.09, -1.0, 0.6))
+    k.leg(back, (SX[back] * 0.09, 0.62, 0.075), knee=(SX[back] * 0.09, knee_y, -0.6), toes=(0, 0.97, -0.25), sole=(0, 0.25, 0.97))
+    k.ground()   # before her hands come down: her fingers take their shape only after the pose
     for s in LR:
-        sh = k.sh(s); k.arm(s, (SX[s] * 0.25, sh.y - 0.04, FLOOR_W), elbow=(SX[s] * 0.4, sh.y + 0.3, 0.6), palm=-UP, fingers=FWD)
-    k.shape('LR', 'floor')
-    _plant_hands(k); k.ground()
+        sh = k.sh(s)
+        k.arm(s, (SX[s] * 0.21, sh.y - 0.03, 0.12), elbow=(SX[s] * 0.4, sh.y + 0.3, 0.6), palm=(0, 0.94, -0.35), fingers=(0, -0.35, -0.94))
+    k.shape('LR', 'tips')
+    _plant_hands(k)
 
 
 def lunge(k):
@@ -676,8 +705,13 @@ LOOPS = {
     'warmup': {'dur': 3, 'seq': [(i / 8, 'circle%d' % ((180 + 45 * i) % 360)) for i in range(9)]},
     'chairfwd': ('chairsit', 'chairfwd', 6, True),   # the app's "Seated forward bend" (child pose with knee pain)
 }
-# the sun salutation flows from each position to the next (0.9 seconds); one camera for all of them
+# the sun salutation flows from each position to the next (1.2 seconds). Her standing positions share one camera and her
+# positions on the mat another, so she fills the frame in both; the flows down to the mat and back up carry the camera across.
 SUN = ['prays', 'reach', 'fwdbend', 'lunge', 'plank', 'ashtanga', 'sun_cobra', 'downdog', 'lunge2', 'fwdbend', 'reach', 'prays']
+SUN_VIEWS = [['prays', 'reach', 'fwdbend'], ['lunge', 'plank', 'ashtanga', 'sun_cobra', 'downdog', 'lunge2']]
+# a flow's middle, where it is a position of its own
+SUN_MID = {('reach', 'fwdbend'): 'dive', ('fwdbend', 'reach'): 'dive',
+           ('sun_cobra', 'downdog'): 'plank'}   # her hips rise through a plank line before her head drops between her arms
 # a looser frame where the camera would otherwise crop her
 FRAME_MARGIN = {'fwdbend': 1.4}
 # the drawing names, so every one of the app's 43 positions has its own still

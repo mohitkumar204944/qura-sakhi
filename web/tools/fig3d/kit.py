@@ -29,6 +29,7 @@ SHAPES = {
     'floor': {'spread': 0.25, 'curl': (0, 3, 2), 'thumb': (0, 3, 2), 'tspread': 0.1},          # a palm on the mat, fingers apart
     'hold': {'spread': 0.8, 'curl': (38, 48, 26), 'thumb': (12, 22, 16), 'tspread': 0.45},     # round a shin or a foot
     'cup': {'spread': 0.8, 'curl': (20, 30, 16), 'thumb': (10, 18, 12), 'tspread': 0.5},       # over her toes
+    'tips': {'spread': 0.45, 'curl': (14, 18, 10), 'thumb': (4, 8, 6), 'tspread': 0.2},      # fingertips on the mat
     'mudra': {'spread': 0.5, 'curl': (16, 26, 14), 'thumb': (14, 24, 16), 'tspread': 0.4, 'index': (36, 42, 24)},
     'nasika': {'spread': 0.9, 'curl': (22, 28, 14), 'thumb': (0, 10, 10), 'tspread': 0.25, 'index': (85, 100, 60),   # at her nose
                'middle': (85, 100, 60)},

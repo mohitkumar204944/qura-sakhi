@@ -2,7 +2,7 @@
 #   sheet [a,b,..]  small stills of the app's 43 positions (or the names given), each framed on its own
 #   stills [a,b,..] the same at full size, for the app's still drawings and the rest screen's "Next"
 #   loop <name>     one of the app's loops (moves.LOOPS), frame by frame, with the drawing's timing
-#   sun             the sun salutation: each flow from one position to the next, under one camera
+#   sun             the sun salutation: each flow from one position to the next, under the standing or the mat camera
 import math, os, sys
 import bpy
 sys.dont_write_bytecode = True   # no __pycache__ beside the scripts
@@ -156,6 +156,53 @@ def ease_all(cyclic=False):
             fc.update()
 
 
+def halfway(a, b, lift=0.08, step=0.3):
+    """The middle of a flow, every turn and target half way from a to b, except:
+    - a foot that steps (30 cm or more) lifts clear of the mat, its knee pointing down as it steps back and forward as it
+      steps through, as she steps back into a lunge or forward between her hands;
+    - a foot that turns over (its toes tucking or untucking, its top coming down to the mat) lifts by as much as it turns,
+      up to 10 cm, so its toes never go through the mat;
+    - a hand that turns (from fingertips to a flat palm, say) stays as high as it was, so it turns before it comes down."""
+    q = lambda x, y: x.slerp(-y if x.dot(y) < 0 else y, 0.5)
+    m = {'rig': (a['rig'][0].lerp(b['rig'][0], 0.5), q(a['rig'][1], b['rig'][1])),
+         'T': {n: (l.lerp(b['T'][n][0], 0.5), q(r, b['T'][n][1])) for n, (l, r) in a['T'].items()},
+         'pb': {n: (q(r, b['pb'][n][0]), l.lerp(b['pb'][n][1], 0.5)) for n, (r, l) in a['pb'].items()},
+         'c': dict(a['c']), 'sk': dict(a['sk']), 'aim': dict(a['aim']), 'hand': {s: a['hand'][s].lerp(b['hand'][s], 0.5) for s in LR}}
+    for s in LR:
+        fa, fb = a['T']['foot' + s][0], b['T']['foot' + s][0]
+        steps = (fb - fa).length >= step
+        up = (lift if steps else 0.0) + 0.1 * a['T']['footrot' + s][1].rotation_difference(b['T']['footrot' + s][1]).angle / math.pi
+        l, r = m['T']['foot' + s]; l = l + V((0, 0, up)); m['T']['foot' + s] = (l, r)
+        if steps:
+            m['T']['knee' + s] = (l + (V((0, -0.7, 0.2)) if fb.y < fa.y else V((0, -0.2, -0.7))), m['T']['knee' + s][1])
+        if a['T']['handrot' + s][1].rotation_difference(b['T']['handrot' + s][1]).angle > math.radians(25):
+            l, r = m['T']['hand' + s]; m['T']['hand' + s] = (V((l.x, l.y, max(a['hand'][s].z, b['hand'][s].z))), r)
+    return settle(m)
+
+
+def settle(m):
+    """A middle key as a pose of its own: her arms solved to its hand targets (as a position's are), so no frame pops."""
+    apply(m)
+    for s in LR:
+        k.pb['wrist.' + s].constraints['aim'].influence = 1.0 if m['aim'][s] else 0.0
+    k.resolve(LR, m['aim'])
+    out = snapshot(); out['hand'] = {s: k.at('wrist.' + s).copy() for s in LR}; out['aim'] = dict(m['aim'])
+    return out
+
+
+def flow(a, b, T):
+    """Keys one flow of the sun salutation, a to b in T frames, through its middle (moves.SUN_MID, or halfway). Where her
+    body would still dip under the mat, the middle lifts her (from the pelvis, so a planted hand or foot stays put) by as
+    much, until nothing goes under."""
+    mid = snaps_mid.get((a, b)) or halfway(snaps[a], snaps[b])
+    for _ in range(6):
+        clear_anim(); key_seq([(1, snaps[a]), (T // 2 + 1, mid), (T, snaps[b])])
+        low = min((sc.frame_set(f) or k.lowest()) for f in range(1, T + 1))
+        if low > -0.004:
+            return
+        mid = settle(dict(mid, rig=(mid['rig'][0] + V((0, 0, 0.006 - low)), mid['rig'][1])))
+
+
 def still(name, path):
     sc.render.filepath = path; bpy.ops.render.render(write_still=True)
 
@@ -181,15 +228,36 @@ elif MODE == 'loop':
     bpy.ops.render.render(animation=True); print('LOOP', name, N, flush=True)
 elif MODE == 'sun':
     snaps = stage_for(moves.SUN, BIG, SAMPLES)
-    T = round(0.9 * FPS)
+    # each group of positions (moves.SUN_VIEWS) gets the camera that fits it; a flow from one group to the other moves the camera
+    cam = sc.camera; views = {}
+    for group in moves.SUN_VIEWS:
+        lo, hi = V((1e9,) * 3), V((-1e9,) * 3)
+        for n in group:
+            apply(snaps[n]); a, b = k.bbox()
+            lo = V([min(x, y) for x, y in zip(lo, a)]); hi = V([max(x, y) for x, y in zip(hi, b)])
+        c = stage.frame('side', lo, hi)
+        for n in group:
+            views[n] = (c.location.copy(), c.rotation_euler.copy())
+        bpy.data.objects.remove(c, do_unlink=True)
+    sc.camera = cam
+
+    def aim(n, f=None):
+        cam.location, cam.rotation_euler = views[n]
+        if f:
+            cam.keyframe_insert('location', frame=f); cam.keyframe_insert('rotation_euler', frame=f)
+    T = round(1.2 * FPS)
+    snaps_mid = {}
+    for (a, b), n in moves.SUN_MID.items():
+        pose(n); snaps_mid[(a, b)] = snapshot()
     for i in range(1, len(moves.SUN)):
         a, b = moves.SUN[i - 1], moves.SUN[i]
         if a == b:
             continue
-        clear_anim()
-        key_seq([(1, snaps[a]), (T, snaps[b])]); sc.frame_start, sc.frame_end = 1, T
+        cam.animation_data_clear()
+        flow(a, b, T); sc.frame_start, sc.frame_end = 1, T
+        aim(a, 1); aim(b, T)
         sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = os.path.join(OUT, 'sun%02d-' % i)
         bpy.ops.render.render(animation=True); print('SUN', i, a, b, flush=True)
-    clear_anim()
+    clear_anim(); cam.animation_data_clear()
     for n in dict.fromkeys(moves.SUN):
-        apply(snaps[n]); still(n, os.path.join(OUT, 'sun-' + n + '.png'))
+        apply(snaps[n]); aim(n); still(n, os.path.join(OUT, 'sun-' + n + '.png'))
