@@ -110,6 +110,7 @@
     pp_mood: { t: L('Low mood after the birth', 'डिलीवरी के बाद उदासी'), w: L('Weepy days in the first 2 weeks are common and pass. Low mood that lasts longer can be postnatal depression, which is common and treatable.', 'पहले 2 हफ़्तों में रोना आना आम है और ठीक हो जाता है। उससे लंबी उदासी postnatal depression हो सकती है, जो आम है और जिसका इलाज होता है।'),
       see: L('Talk to a doctor. Tele-MANAS on 14416 is free, at any hour. Thoughts of harming yourself or your baby: call 14416 or 112 now.', 'डॉक्टर से बात करें। Tele-MANAS 14416 मुफ़्त है, किसी भी समय। ख़ुद को या बच्चे को नुक़सान पहुँचाने के विचार आएँ: अभी 14416 या 112 पर कॉल करें।'), go: 'post-mood', ask: L('Low mood after birth', 'डिलीवरी के बाद उदासी') },
     m_hot: { t: L('Hot flushes waking you at night', 'रात को नींद तोड़ने वाले गर्मी के झोंके'), w: L('Common in the years around menopause, and treatable.', 'मेनोपॉज़ के आसपास के सालों में आम है, और इसका इलाज होता है।'),
+      w2: L(' You noted hot flushes and poor sleep together on {k} of the last 14 days.', ' पिछले 14 दिनों में से {k} दिन आपने गर्मी के झोंके और ख़राब नींद, दोनों दर्ज कीं।'),   /* Version 39.49: from her diary */
       todo: [L('A cool room, light cotton clothes, and less tea, coffee and spicy food help some women.', 'ठंडा कमरा, हल्के सूती कपड़े, और कम चाय, कॉफ़ी और मसालेदार खाना कुछ महिलाओं की मदद करता है।')],
       see: L('See a doctor this month. They can talk you through treatments, including HRT.', 'इसी महीने डॉक्टर को दिखाएँ। वे HRT समेत इलाज के बारे में समझा सकते हैं।'), go: 'meno-hrt', ask: L('Hot flushes at night', 'रात को गर्मी के झोंके') },
     m_palp: { t: L('A racing heartbeat', 'दिल की धड़कन तेज़ होना'), w: L('Palpitations are common around menopause, but they need a check.', 'मेनोपॉज़ के आसपास धड़कन तेज़ होना आम है, पर इसकी जाँच ज़रूरी है।'),
@@ -250,6 +251,14 @@
       const sw = dOf(['d_swell'], 3), hd = dOf(['d_headache'], 3); if (sw.length && hd.length && !seen('p_headswell')) add({ id: 'p_headswell', lv: 'today', at: [sw[sw.length - 1], hd[hd.length - 1]].sort().pop(), vars: {} });
       dd = dOf(['d_nausea'], 7); if (dd.length && !seen('p_nausea')) add({ id: 'p_nausea', lv: 'watch', at: dd[dd.length - 1], vars: {} });
     }
+    /* Version 39.49 (night sweats and sleep): in midlife, hot flushes and poor sleep on the same day on 3 or more of the last 14 days
+       (her day page, or the plan check-in's "Hot flushes woke me", which notes both). With her check-in's "Woke me at night" too,
+       that card gains the count. */
+    if (kindNow() === 'meno') {
+      const hn = recentDays(13).filter((k) => (daily[k] || []).indexOf('d_hotflush') >= 0 && (daily[k] || []).indexOf('d_sleep') >= 0);
+      const f0 = out.find((f) => f.id === 'm_hot');
+      if (hn.length >= 3) { if (f0) Object.assign(f0, { vars: { k: hn.length }, w2: true }); else add({ id: 'm_hot', lv: 'month', at: hn[hn.length - 1], vars: { k: hn.length }, w2: true }); }
+    }
     /* Version 39.0 (journey audit P0 2): the warning lines her stage's own records already show (pregnancy BP, Hb and sugar in
        the last 3 days; the after-birth recovery check today or yesterday) reach Today, in their own reviewed words */
     [S.preg, S.post].forEach((m) => { if (m && m.flags) (() => { try { return m.flags() || []; } catch (e) { return []; } })().forEach((x) => { if (x && X[x.id] == null && LV.indexOf(x.lv) >= 0) add({ id: x.id, lv: x.lv, at: x.at, vars: {}, ext: x }); }); });
@@ -322,7 +331,7 @@
     return rowOf(main, '') + rowOf(more, ' xp-more') + (noPair ? '' : planPair(f)) + rowOf(tail, ' xp-more');
   }
   function cardHtml(f) {
-    const x = xOf(f); const what = x.w ? one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(x.w2) : '')) : '';
+    const x = xOf(f); const what = x.w ? one(tx(fill(f.mid && x.wMid ? x.wMid : (f.own && x.wOwn ? x.wOwn : x.w), f.vars)) + (f.w2 && x.w2 ? tx(fill(x.w2, f.vars)) : '')) : '';
     const why = (x.why || []).filter((r, i) => !(f.id === 'gap_short' && i === 3 && f.no40) && !(f.id === 'gap_long' && i === 3 && f.no45));
     const see = seeOf(f);
     const list = (arr) => '<ul>' + arr.map((r) => '<li>' + esc(tx(r.doc && docR() ? r.doc : r)) + '</li>').join('') + '</ul>';

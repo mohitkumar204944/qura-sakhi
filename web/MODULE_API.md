@@ -5870,3 +5870,37 @@ saved are compared), then "fix all 5". New words are UI only (review section 19.
 what changed on purpose: companion 2, her goals after she starts a plan (`["irregular","track"]`). The
 walk itself, `node test/switch-walk.mjs [priya|neha|riya|meera|asha]`, writes its screens and each checkpoint's words to
 `test/shots/switch-walk/` (not pass/fail).
+
+## 92. Version 39.49: night sweats and sleep
+
+Mohit, 30 Oct: "build the night sweats and sleep link", after the walk through a menopause app (principle notes only). Her hot
+flushes and her sleep were both in Sakhi but never met. The midlife plan's check-in never asked how she slept, because that
+question came only with a bedtime step (Version 39.22). After a hard night, the card offered a sound and nothing for a flush.
+The night-sweats doctor card ("Hot flushes waking you at night", `m_hot`) fired only from the core check-in's "Woke me at
+night", which a woman on a plan rarely opens. New lines wait for the doctor (review section 19.49).
+1. **"How did you sleep?" in the midlife plan** (plan.js `slpAsk`, `slpCard`): for the hot-flush and sleep goals, on a card of its
+   own after her steps and before "How do you feel today?". It is Version 39.22's question in its own words, and it needs no
+   answer. Plans with a bedtime step keep it on that step, as before.
+2. **"Hot flushes woke me"** (plan.js `slpHot`): a fourth answer for her hot-flush goal, or for a midlife woman (`S.cycle.isMidlife`)
+   with hot flushes in her diary in the last 30 days. Never in discreet mode or on a shared phone. It is saved as `slp: 'hot'`,
+   and her diary gets Hot flushes and Poor sleep today (`d_hotflush`, `d_sleep`), each only if it isn't there already.
+3. **Tonight's card after it** (plan.js `nightHtml`, `.pl-night-hot`): "Hot flushes woke you. Tonight, keep the room cool." The
+   card has light cotton clothes and water by her bed, and cooling down and slow breathing if a flush wakes her (the hot-flush
+   routine's own steps). It offers the routine ("For hot flushes · 3 min", `S.relief.mins`, new) and yoga nidra, and says what
+   was noted, with "Woken by them often? See a doctor: they are treatable." "Badly" keeps the hard-night card as it was.
+4. **The doctor's card from her diary** (explain.js): in midlife (`kindNow() === 'meno'`), Hot flushes and Poor sleep on the same
+   day on 3 or more of the last 14 days gives `m_hot` (see a doctor this month, treatments including HRT, `meno-hrt`). Its new
+   `w2` line has the count: "You noted hot flushes and poor sleep together on {k} of the last 14 days." With her check-in's
+   "Woke me at night" as well, it is still one card, now with the count. A finding's `w2` now fills its `{vars}`.
+5. **The report for her doctor** (meno.js `summary`): "Hot flushes and sleep: Hot flushes and poor sleep on the same day: {k} of
+   the last 28 days", in midlife only.
+
+**Minimal baseline:**
+- No new ring, step, tour or Today card.
+- One optional question, asked only in the midlife plan's hot-flush and sleep goals, where it changes tonight's card and the
+  doctor's card.
+- The night lives in her diary (one home); the doctor's card and the report count it from there.
+- On a shared phone, and in discreet mode, no hot-flush answer is shown.
+
+**Tests:** `node test/nightsweats.mjs` (33 checks). Unchanged and passing: winddown, minimal, goals, records, maths, progs,
+golden (no re-record), calm, daynote, smoke and check.

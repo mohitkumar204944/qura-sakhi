@@ -2487,6 +2487,12 @@
      the psychologist (SAKHI_CONFIG.drafts only), and to day 41 the recovery check asks it every evening */
   const MD = ['ok', 'low', 'anx', 'harm'];
   const mdAsk = (d) => !!(window.SAKHI_CONFIG || {}).drafts && weekAsk(d, 'md');
+  /* Version 39.49 (night sweats and sleep): the midlife plan's hot-flush and sleep goals ask "How did you sleep?" on a card of its
+     own, as a bedtime step does in other plans. "Hot flushes woke me" joins its answers for her hot-flush goal, or for a midlife
+     woman with hot flushes in her diary in the last 30 days; never in discreet mode or on a shared phone. */
+  const slpAsk = (d) => packOf(d) === 'meno' && (d.goalKey === 'hot' || d.goalKey === 'sleep');
+  const hotRecent = () => { const dl = S.state.daily || {}; return Object.keys(dl).some((k) => k <= todayISO() && S.diffDays(S.fromISO(k), pToday()) <= 30 && (dl[k] || []).indexOf('d_hotflush') >= 0); };
+  const slpHot = (d) => !disc() && !(S.state.settings || {}).shared && (d.goalKey === 'hot' || ((packOf(d) === 'meno' || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())) && hotRecent()));
   const crisisHtml = () => '<div class="card urgent pl-ci-crisis" role="alert"><h3>' + esc(t('post_fl_harm_h')) + '</h3><p class="small">' + esc(t(died() ? 'post_fl_harm_b' : 'post_fl_harm')) + '</p>' + telRow(['14416', '112']) + '</div>';
   const mdQ = (m) => '<div class="card pl-ci-md"><span class="eyebrow">' + esc(t('plan_md_h')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_md_h')) + '">' + MD.map((k) => '<button type="button" class="chip' + (m.md === k ? ' on' : '') + '" data-ci-md="' + k + '" aria-pressed="' + (m.md === k) + '">' + esc(t(k === 'harm' && died() ? 'post_mo_harm_b' : 'post_mo_' + k)) + '</button>').join('') + '</div>' +
     (m.md === 'harm' ? crisisHtml() : (m.md === 'low' || m.md === 'anx' ? '<p class="small">' + esc(t('plan_md_low')) + '</p>' : '')) + '</div>';
@@ -2526,7 +2532,9 @@
     const anyMiss = () => asked.some((a) => m.sel[a.id] === 'n' || m.sel[a.id] === 'p');
     const nm = (a, done) => (disc() && a.priv ? discNm(a, acts) : (a.bed ? tf(done ? 'plan_ci_last_d' : 'plan_ci_last', { t: clockOf(a.bed) }) : a.title));
     /* Version 39.22: with last night's bedtime, how she slept (if she likes; a hard night brings a sound for tonight) */
-    const slpQ = (a) => (a.bed ? '<div class="pl-ci-slp"><span class="small pl-ci-slp-h">' + esc(t('plan_ci_slp')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_ci_slp')) + '">' + ['well', 'ok', 'bad'].map((k) => '<button type="button" class="chip' + (m.slp === k ? ' on' : '') + '" data-ci-slp="' + k + '" aria-pressed="' + (m.slp === k) + '">' + esc(t('plan_slp_' + k)) + '</button>').join('') + '</div></div>' : '');
+    const slpChips = () => '<div class="chips" role="group" aria-label="' + esc(t('plan_ci_slp')) + '">' + ['well', 'ok', 'bad'].concat(slpHot(d) ? ['hot'] : []).map((k) => '<button type="button" class="chip' + (m.slp === k ? ' on' : '') + '" data-ci-slp="' + k + '" aria-pressed="' + (m.slp === k) + '">' + esc(t('plan_slp_' + k)) + '</button>').join('') + '</div>';
+    const slpQ = (a) => (a.bed ? '<div class="pl-ci-slp"><span class="small pl-ci-slp-h">' + esc(t('plan_ci_slp')) + '</span>' + slpChips() + '</div>' : '');
+    const slpCard = () => '<div class="card pl-ci-slpc"><span class="eyebrow">' + esc(t('plan_ci_slp')) + '</span>' + slpChips() + '</div>';   /* Version 39.49 */
     const left = open.length; const leftTxt = left ? tf(left === 1 ? 'plan_ci_left1' : 'plan_ci_left', { n: left }) : t('plan_ci_left0');
     const ico = (a) => '<span class="ico-sm hue hue-' + a.hue + '">' + a.icon + '</span>';
     const preRow = (a) => '<div class="pl-ci-row pl-ci-pre"><div class="row" style="gap:10px">' + ico(a) + '<span class="body"><strong>' + esc(nm(a, true)) + '</strong><span class="small pl-ci-ok">' + CI_SYM.d + esc(ciNote(a, lg)) + '</span></span></div>' + slpQ(a) + '</div>';
@@ -2541,7 +2549,7 @@
       (!disc() && (fd0 || fd1) ? '<div class="card pl-ci-fast"><span class="eyebrow">' + esc(t('plan_fast_h')) + '</span><div class="chips">' +
         [['pl-ci-fast-today', 'plan_fast_today', fastOn(d), fd0], ['pl-ci-fast-tom', 'plan_fast_tom', fastOn(d, S.toISO(S.addDays(pToday(), 1))), fd1]].filter((x) => x[3]).map((x) => '<button type="button" class="chip' + (x[2] ? ' on' : '') + '" id="' + x[0] + '" aria-pressed="' + !!x[2] + '">' + esc(t(x[1])) + '</button>').join('') + '</div></div>' : '') +   /* Version 39.9 */
       '<div class="card" id="pl-ci-bar"' + (anyMiss() ? '' : ' hidden') + '><span class="eyebrow">' + esc(t('plan_rev_b')) + '</span><div class="chips">' + BARS.filter((x) => !(disc() && x === 'pain')).map((x) => '<button type="button" class="chip' + (m.bar === x ? ' on' : '') + '" data-ci-b="' + x + '">' + esc(t('plan_b_' + x)) + '</button>').join('') + '</div></div>' +
-      (painAsk(d) ? '<div class="card pl-ci-pain">' + painQ(d) + '</div>' : '') + (mvAsk(d) ? mvQ(m) : '') + (lkAsk(d) ? lkQ(m) : '') + (mdAsk(d) ? mdQ(m) : '') +   /* Version 39.46 */   /* Version 39.27 (R05): she skipped it on Today */
+      (painAsk(d) ? '<div class="card pl-ci-pain">' + painQ(d) + '</div>' : '') + (mvAsk(d) ? mvQ(m) : '') + (lkAsk(d) ? lkQ(m) : '') + (mdAsk(d) ? mdQ(m) : '') + (slpAsk(d) && !asked.some((a) => a.bed) ? slpCard() : '') +   /* Version 39.46 */   /* Version 39.27 (R05): she skipped it on Today */
       (S.feel && S.feel.on() ? '<div class="card pl-ci-feel"><span class="eyebrow">' + esc(t('feel_h')) + '</span>' + S.feel.chips(todayISO()) + '</div>' : '') +   /* Version 39.16 (R11): one evening ritual fills her plan and her Diary */
       '<p class="small pl-err" id="pl-ci-err" hidden>' + esc(t('plan_ci_need')) + '</p><button type="button" class="btn primary block" id="pl-ci-save">' + esc(t('plan_help_save')) + '</button>';
     S.wire(v); wirePain(v); wireMv(v, m);   /* Version 39.34 */
@@ -2565,7 +2573,9 @@
       if (m.slp) x.slp = m.slp; else delete x.slp;   /* Version 39.22: a hard night goes in her diary as Poor sleep */
       if (lkAsk(dd) && m.lk) x.lk = m.lk; if (mdAsk(dd) && m.md) x.md = m.md;   /* Version 39.46 */
       if (mvAsk(dd) && m.mv) { x.mv = m.mv; if (m.mv !== 'usual') dd.intake = Object.assign({}, ikOf(dd), { pnow: todayISO() }); } else delete x.mv;   /* Version 39.34: less, not sure or none: her walk waits until she checks her answers again */
-      if (m.slp === 'bad' && S.feel && ((S.state.daily || {})[todayISO()] || []).indexOf('d_sleep') < 0) S.feel.toggle(todayISO(), 'd_sleep');
+      const dl0 = () => ((S.state.daily || {})[todayISO()] || []);
+      if ((m.slp === 'bad' || m.slp === 'hot') && S.feel && dl0().indexOf('d_sleep') < 0) S.feel.toggle(todayISO(), 'd_sleep');
+      if (m.slp === 'hot' && S.feel && dl0().indexOf('d_hotflush') < 0) S.feel.toggle(todayISO(), 'd_hotflush');   /* Version 39.49: hot flushes woke her, so both go in her diary */
       const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0;
       const done = acts.filter((a) => m.sel[a.id] === 'd' || m.sel[a.id] === 'p'); const dl = done.filter((a) => m.sel[a.id] === 'd'); const pool = dl.length ? dl : done;
       const first = pool.length ? pool[(planDay(dd) - 1) % pool.length] : null;   /* Version 39.6 (P2-01): each evening, the reason of another step she did */
@@ -2583,6 +2593,11 @@
 
   /* Version 39.22: after the check-in, tonight's session; after a hard night, yoga nidra or a sound for sleep */
   function nightHtml(s) {
+    /* Version 39.49: hot flushes woke her: keep cool tonight, and the hot-flush routine for a flush that wakes her (yoga nidra too) */
+    if (s.slp === 'hot') return '<div class="card pl-night pl-night-hot"><div class="row pl-night-h"><span class="pl-night-i" aria-hidden="true">' + S.icon('moon') + '</span><h3>' + esc(t('plan_night_hot_h')) + '</h3></div><p class="small">' + esc(t('plan_night_hot_p')) + '</p>' +
+      '<button type="button" class="btn block pl-night-a" data-go="relief-hot">' + PLAY_SVG + esc(t('relief_hot_t') + (S.relief && S.relief.mins ? ' · ' + tf(calmOn() ? 'calm_min' : 'relief_mins', { n: S.relief.mins('hot') }) : '')) + '</button>' +
+      (calmOn() ? '<button type="button" class="btn block pl-night-b" data-go="calm-nidra">' + PLAY_SVG + esc(t('calm_nidra') + ' · ' + tf('calm_min', { n: S.calm.mins('nidra') })) + '</button>' : '') +
+      '<p class="small pl-night-n">' + esc(t('plan_night_hot_noted')) + '</p></div>';
     if (!calmOn()) return '';
     if (s.slp === 'bad') return '<div class="card pl-night"><div class="row pl-night-h"><span class="pl-night-i" aria-hidden="true">' + S.icon('moon') + '</span><h3>' + esc(t('plan_night_h')) + '</h3></div><p class="small">' + esc(tf('plan_night_p', { n: S.calm.timer() })) + '</p>' +
       '<button type="button" class="btn block pl-night-a" data-go="calm-nidra">' + PLAY_SVG + esc(t('calm_nidra') + ' · ' + tf('calm_min', { n: S.calm.mins('nidra') })) + '</button>' +
@@ -3834,6 +3849,9 @@
         plan_ci_slp: 'How did you sleep?', plan_slp_well: 'Well', plan_slp_ok: 'Okay', plan_slp_bad: 'Badly',
         plan_night_h: 'A hard night. Tonight, let a sound help you sleep.', plan_night_p: 'Dr. Megha’s yoga nidra relaxes you part by part. Or play a calm sound that fades out after {n} minutes.',
         plan_night_noted: 'Noted in your diary as poor sleep. Sleeping badly most nights for 2 weeks? Tell your doctor.', plan_tonight: 'Tonight’s wind-down', plan_tonight_pill: 'Tonight',
+        /* Version 39.49: night sweats and sleep */
+        plan_slp_hot: 'Hot flushes woke me', plan_night_hot_h: 'Hot flushes woke you. Tonight, keep the room cool.', plan_night_hot_p: 'Light cotton clothes and water by your bed help some women too. If a flush wakes you, cool down and breathe slowly until it passes.',
+        plan_night_hot_noted: 'Noted in your diary as hot flushes and poor sleep. Woken by them often? See a doctor: they are treatable.',
         plan_wind_rem: 'Wind-down reminder', plan_wind_rem_s: 'Every night at {t}, 30 minutes before bed', plan_wind_rem_ci: 'Your evening check-in brings tonight’s session',
         plan_how_link: 'How it works', plan_why_all: 'Why these {n} steps?', plan_why_all1: 'Why this step?', plan_wp_link: 'Plan the week', plan_add_s: 'Add',
         plan_res_tile_s: '{n} days', plan_garden_n: 'My garden · {n} petals', plan_garden_1: 'My garden · 1 petal', plan_kv_this: 'This week', plan_kv_next: 'Next week', plan_path_all: 'All 12 weeks',
@@ -4143,6 +4161,8 @@
         plan_ci_slp: 'नींद कैसी रही?', plan_slp_well: 'अच्छी', plan_slp_ok: 'ठीक-ठाक', plan_slp_bad: 'ख़राब',
         plan_night_h: 'रात मुश्किल रही। आज रात, किसी शांत आवाज़ के सहारे सोएँ।', plan_night_p: 'डॉ. मेघा की योग निद्रा शरीर के हर हिस्से को आराम देती है। या कोई शांत आवाज़ चलाएँ, जो {n} मिनट बाद धीमी होकर बंद हो जाएगी।',
         plan_night_noted: 'डायरी में “नींद ख़राब” लिख दिया है। 2 हफ़्ते तक ज़्यादातर रातें नींद ख़राब रहे, तो डॉक्टर को बताएँ।', plan_tonight: 'आज रात के सुकून के पल', plan_tonight_pill: 'आज रात',
+        plan_slp_hot: 'गर्मी के झोंकों से नींद खुली', plan_night_hot_h: 'गर्मी के झोंकों से नींद खुली। आज रात कमरा ठंडा रखें।', plan_night_hot_p: 'हल्के सूती कपड़े और बिस्तर के पास पानी भी कुछ महिलाओं की मदद करते हैं। झोंके से नींद खुले, तो ठंडक लें और धीरे-धीरे साँस लें, जब तक वह गुज़र न जाए।',
+        plan_night_hot_noted: 'डायरी में “गर्मी के झोंके” और “नींद ख़राब” लिख दिया है। अक्सर इनसे नींद खुलती है? डॉक्टर को दिखाएँ: इनका इलाज होता है।',
         plan_wind_rem: 'सुकून के पल का रिमाइंडर', plan_wind_rem_s: 'हर रात {t}, सोने से 30 मिनट पहले', plan_wind_rem_ci: 'शाम का चेक-इन ही आज रात का सत्र दिखाएगा',
         plan_how_link: 'कैसे चलता है', plan_why_all: 'ये {n} क़दम क्यों?', plan_why_all1: 'यह क़दम क्यों?', plan_wp_link: 'हफ़्ते की योजना', plan_add_s: 'जोड़ें',
         plan_res_tile_s: '{n} दिन', plan_garden_n: 'मेरा बगीचा · {n} पंखुड़ियाँ', plan_garden_1: 'मेरा बगीचा · 1 पंखुड़ी', plan_kv_this: 'इस हफ़्ते', plan_kv_next: 'अगले हफ़्ते', plan_path_all: 'सभी 12 हफ़्ते',

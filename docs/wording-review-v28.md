@@ -2806,3 +2806,29 @@ No new health wording. New UI words (English, Hindi):
 **For the doctor or psychologist (timing, not words):** after a pregnancy loss, Today now waits 6 weeks before it asks "Tell
 Sakhi your stage and goals" and shows the free check-ups card. My plan keeps "Pick a goal when you're ready" from the first day.
 Is 6 weeks right?
+
+### 19.49 Version 39.49: night sweats and sleep (MODULE_API section 92)
+
+New lines, waiting for the doctor (English, Hindi):
+- In the midlife plan's evening check-in, "How did you sleep?" (Version 39.22's words) gets a fourth answer: "Hot flushes woke me"
+  ("गर्मी के झोंकों से नींद खुली").
+- Tonight's card after that answer:
+  - "Hot flushes woke you. Tonight, keep the room cool." ("गर्मी के झोंकों से नींद खुली। आज रात कमरा ठंडा रखें।")
+  - "Light cotton clothes and water by your bed help some women too. If a flush wakes you, cool down and breathe slowly until it
+    passes." ("हल्के सूती कपड़े और बिस्तर के पास पानी भी कुछ महिलाओं की मदद करते हैं। झोंके से नींद खुले, तो ठंडक लें और
+    धीरे-धीरे साँस लें, जब तक वह गुज़र न जाए।")
+  - "Noted in your diary as hot flushes and poor sleep. Woken by them often? See a doctor: they are treatable." ("डायरी में
+    “गर्मी के झोंके” और “नींद ख़राब” लिख दिया है। अक्सर इनसे नींद खुलती है? डॉक्टर को दिखाएँ: इनका इलाज होता है।")
+  - Its buttons are the hot-flush routine ("For hot flushes · 3 min") and yoga nidra, in their own words.
+- The night-sweats card ("Hot flushes waking you at night", reviewed) gains a count line: "You noted hot flushes and poor sleep
+  together on {k} of the last 14 days." ("पिछले 14 दिनों में से {k} दिन आपने गर्मी के झोंके और ख़राब नींद, दोनों दर्ज कीं।")
+- The report for her doctor: "Hot flushes and sleep: Hot flushes and poor sleep on the same day: {k} of the last 28 days" ("गर्मी के
+  झोंके और नींद: एक ही दिन गर्मी के झोंके और ख़राब नींद: पिछले 28 दिनों में से {k} दिन").
+
+**For the doctor (rules, not words):**
+1. The card "See a doctor this month" now also fires when her diary holds hot flushes and poor sleep on the same day on 3 of the
+   last 14 days. Before, it came only from the check-in's "Woke me at night", where one answer was enough. Is 3 in 14 days right?
+2. Its title says "waking you at night", but a day with both signs is a likely sign of night sweats, not a certain one. Is that
+   title fine for it, with the count line underneath?
+3. At bedtime the card suggests a cool room, light cotton clothes, water by the bed, and the hot-flush routine's cooling and slow
+   breathing when a flush wakes her. Is that right for the night?

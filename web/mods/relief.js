@@ -34,7 +34,7 @@
   const helped = (mk) => { const seen = {}; D().log.filter((x) => x.d.slice(0, 7) === mk && (x.r === 'yes' || x.r === 'some')).forEach((x) => { seen[x.id] = 1; }); return Object.keys(seen).filter((id) => R[id]).map((id) => t('relief_' + id + '_t')); };
   /* Version 39.5: did she do this routine on that day? A plan step counts from it (read only, never creates her data) */
   const doneOn = (id, iso) => { const l = ((S.state.mods || {}).relief || {}).log; return Array.isArray(l) && l.some((x) => x && x.d === iso && x.id === id); };
-  S.relief = { pick: pick, forSym: forSym, helped: helped, doneOn: doneOn };
+  S.relief = { pick: pick, forSym: forSym, helped: helped, doneOn: doneOn, mins: mins };   /* mins: Version 39.49, the night card's button */
 
   function renderList(v) {
     const ids = IDS.filter((id) => R[id].ok());

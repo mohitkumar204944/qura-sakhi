@@ -354,6 +354,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - her 6-week check reminder ends;
     - the plan she starts leads her goals.
     Contract: MODULE_API section 91; wording: section 19.48 of the review (UI words; one timing for the doctor).
+  - `node test/nightsweats.mjs` (Version 39.49, night sweats and sleep; Mohit, 30 Oct: "build the night sweats and sleep link",
+    after the walk through a menopause app):
+    - the midlife plan's hot-flush and sleep goals ask "How did you sleep?" in the evening check-in, on a card of its own;
+    - "Hot flushes woke me", for her hot-flush goal or a midlife woman with hot flushes in her diary (never in discreet mode or
+      on a shared phone), notes Hot flushes and Poor sleep, with tonight's card (a cool room, the hot-flush routine, yoga
+      nidra);
+    - the night-sweats doctor card from her diary (both on 3 of the last 14 days, with the count), and the days in her last 28
+      in the report for her doctor.
+    Contract: MODULE_API section 92; wording: section 19.49 of the review (new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

@@ -643,6 +643,10 @@
       L.push(t('meno_noscore'));
       out.push({ title: t('meno_sum_h'), lines: L });
     }
+    /* Version 39.49 (night sweats and sleep): the days in her last 28 that hold hot flushes and poor sleep together */
+    const dl = S.state.daily || {}; const t0 = S.today();
+    const hn = Object.keys(dl).filter((k) => { const n = S.diffDays(S.fromISO(k), t0); return n >= 0 && n < 28 && (dl[k] || []).indexOf('d_hotflush') >= 0 && (dl[k] || []).indexOf('d_sleep') >= 0; }).length;
+    if (hn && S.cycle.isMidlife && S.cycle.isMidlife() && !S.cycle.isPregnant()) out.push({ title: t('meno_night_h'), lines: [S.tf('meno_night_l', { k: hn, n: 28 })] });
     const sc = peekScores();
     if (sc.length) {
       const last = sc[sc.length - 1]; const s = scoreOf(last.v);
@@ -741,6 +745,7 @@
         meno_count_row: 'Moderate or a lot', meno_logged4: 'Weeks logged: {n} of 4', meno_wk_of: '{n} of {m} weeks',
         meno_noscore: 'Counts of your own entries. No score, no diagnosis.',
         meno_sum_h: 'Menopause diary', meno_sum_weeks: 'Weekly entries: {n} ({a} to {b})', meno_sum_top: 'Most frequent, last 4 weeks', meno_sum_lot: 'Rated “a lot”, last 4 weeks',
+        meno_night_h: 'Hot flushes and sleep', meno_night_l: 'Hot flushes and poor sleep on the same day: {k} of the last {n} days',   /* Version 39.49 */
         meno_home_h: 'Menopause diary: this week', meno_home_p: 'Rate 12 symptoms, about a minute'
       },
       hi: {
@@ -800,6 +805,7 @@
         meno_count_row: 'मध्यम या बहुत', meno_logged4: 'दर्ज हफ़्ते: 4 में से {n}', meno_wk_of: '{m} में से {n} हफ़्ते',
         meno_noscore: 'आपकी अपनी entries की गिनती। कोई score नहीं, कोई diagnosis नहीं।',
         meno_sum_h: 'मेनोपॉज़ डायरी', meno_sum_weeks: 'हफ़्ते की entries: {n} ({a} से {b})', meno_sum_top: 'पिछले 4 हफ़्तों में सबसे ज़्यादा', meno_sum_lot: 'पिछले 4 हफ़्तों में “बहुत”',
+        meno_night_h: 'गर्मी के झोंके और नींद', meno_night_l: 'एक ही दिन गर्मी के झोंके और ख़राब नींद: पिछले {n} दिनों में से {k} दिन',
         meno_home_h: 'मेनोपॉज़ डायरी: यह हफ़्ता', meno_home_p: '12 लक्षणों को अंक दें, लगभग एक मिनट'
       }
     },
