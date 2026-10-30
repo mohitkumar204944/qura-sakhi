@@ -292,7 +292,7 @@
     let g = PAIR[f.id]; if (!g || ['week', 'month', 'watch'].indexOf(f.lv) < 0 || !S.plan || !S.plan.offerOk) return null;
     const st = S.stageNow ? S.stageNow() : 'cycle';
     if (g === 'mood' && st !== 'meno') return null;
-    if (g === 'irregular' && (S.state.situation || {}).pcos) g = 'pmos';
+    if (g === 'irregular' && ((S.state.situation || {}).pcos || (S.state.goals || []).indexOf('pmos') >= 0)) g = 'pmos';   /* Version 39.42: as Today and My plan (plan.js pcosSaid) */
     return S.plan.offerOk(g) ? g : null;
   }
   function planPair(f) {

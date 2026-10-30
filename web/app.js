@@ -2576,7 +2576,7 @@
     /* Version 39.7: each module's card is its own entry (so "More from Sakhi (n)" counts them), and homeLast waits behind all */
     const slot = [vc].concat(items.filter((h) => h !== cu), planEarly() ? [] : [hu].concat(runHook('homeTop', [api]), [su, cu], runHook('homeLast', [api]))).filter(Boolean);
     const slotHtml = slot.length ? '<section class="slot"><p class="eyebrow slot-h">' + esc(t('slot_h')) + '</p>' + slot[0] + (slot.length > 1 ? '<details class="slot-more"' + (mem.slotMore ? ' open' : '') + '><summary class="linkbtn">' + esc(tf('slot_more', { n: slot.length - 1 })) + '</summary><div class="slot-in">' + slot.slice(1).join('') + '</div></details>' : '') + '</section>' : '';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + exCard(disc)   /* Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
@@ -3190,6 +3190,7 @@
           if (s0.stopped && !wasStopped) s0.stoppedOn = lastBleedISO() || toISO(today()); if (!s0.stopped) delete s0.stoppedOn;   /* review XS-1: bleeding after her last period still counts */
         }
         state.focus = null; if (state.prompts) delete state.prompts.exAsked;   /* Version 39.10: Today asks her goals for her new stage */
+        state.prompts = state.prompts || {}; state.prompts.exStage = toISO(today());   /* Version 39.42: she just set it, so a plan offer in Sakhi says comes first (an older diary is asked as before) */
         save(); closeSheet(); toast(t('stage_saved'));
         const ls = lastStart();
         if ((pick === 'cycle' || pick === 'ttc') && s0.deliveredOn && diffDays(fromISO(s0.deliveredOn), today()) <= 365 && !(ls && ls > fromISO(s0.deliveredOn))) { setHash('home'); toast(t('stage_log_first')); openLog('start', toISO(today()), null); return; }

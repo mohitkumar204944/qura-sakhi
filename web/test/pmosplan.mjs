@@ -468,7 +468,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   let v = await view(page);
   check('14 My plan with no plan going: its heading, "What do you want to work on?" first, no back button, the tab lit', /^My plan/.test(v) && (await has(page, '#view [data-pl-pick]')) && !(await has(page, '#view .backrow, #view [data-back]')) && (await has(page, '#tabbar [data-go="plan"].on')), v.slice(0, 200));
   let ids = await recIds(page); let why = await recWhy(page);
-  check('14 PMOS: her plan is suggested first, because she told Sakhi', ids[0] === 'plan-pmos' && /You told Sakhi you have PMOS/.test(why[0]), [ids, why]);
+  check('14 PMOS: her plan is the picker\'s Suggested row, not again under Suggested for you (Version 39.42)', (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')) && ids.indexOf('plan-pmos') < 0, [ids, why]);
   check('14 one period that needed a painkiller suggests the cramps routine, with the reason', ids.includes('relief-cramps') && why.some((w) => /You needed a painkiller in 1 of your last 3 periods/.test(w)), [ids, why]);
   /* Version 39.2: the 21-day journeys stop being programmes; More plans holds the routines and tools */
   check('14 more plans are listed under More plans, and no 21-day journey', (await gos(page, '#view .pl-sec .list [data-go]')).length > 0 && !(await gos(page, '#view [data-go]')).some((r) => /^journey-/.test(r)));
@@ -577,7 +577,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   const { ctx, page, errs } = await open({ hash: '#care' });
   check('14 Explore has no Plans row (My plan is a tab)', !(await has(page, '#view .care-plans')));
   await go(page, 'plan');
-  check('14 My plan lists her 2 suggestions under the goal picker', (await recIds(page)).length === 2 && (await has(page, '#view [data-pl-pick]')));
+  check('14 My plan lists her suggestion under the goal picker, which holds her PMOS plan (Version 39.42)', (await recIds(page)).length === 1 && (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')), await recIds(page));
   check('14 no page errors (Care)', !errs.length, errs);
   await ctx.close();
 }

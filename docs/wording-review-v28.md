@@ -2690,3 +2690,8 @@ No new health wording, so nothing waits for the doctor.
   - Today's reviewed "Period late?" row on My plan while getting ready, once her period is 14 days or more late;
   - "My doctor" and "Call my doctor" (section 19.40) in every plan's care team on her doctor's route.
   - a yoga or strength step's minutes ("8 min" / "8 मिनट") on its Start button on Today, in place of the word Start.
+
+### 19.42 Version 39.42: the tracking-stage walk's gaps (MODULE_API section 85)
+
+No new wording. Cards shown in fewer places: "Tell Sakhi your stage and goals" waits while Sakhi says offers her a plan, just after she changed her stage; My
+plan's picker is the one place the PMOS plan is suggested; the Cycles finding offers the same plan as Today.

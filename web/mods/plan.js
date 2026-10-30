@@ -1363,8 +1363,9 @@
     opt = opt || {};
     if (!on()) { v.innerHTML = '<h1>' + esc(t('plan_all_h')) + '</h1><div class="card soft"><p>' + esc(t('plan_off')) + '</p></div>'; S.wire(v); return; }
     S.mem.planFrom = 'plan';
-    const can = S.canSave(); const c = catalogue(); const rc = can ? recsOf(c).slice(0, 3) : []; const now = can ? c.filter((x) => x.active) : [];
-    const ids = rc.map((x) => x.id).concat(now.map((x) => x.id)); const more = c.filter((x) => ids.indexOf(x.id) < 0 && !(x.id === 'plan-pmos' && !pcosSaid()));   /* Version 39.2 */
+    /* Version 39.42 (Mohit's tracking-stage walk): with the picker on top (opt.skip), a 12-week plan it lists isn't suggested or listed again */
+    const sk = opt.skip || []; const can = S.canSave(); const c = catalogue(); const rc = can ? recsOf(c).filter((x) => sk.indexOf(x.id) < 0).slice(0, 3) : []; const now = can ? c.filter((x) => x.active) : [];
+    const ids = rc.map((x) => x.id).concat(now.map((x) => x.id)); const more = c.filter((x) => ids.indexOf(x.id) < 0 && sk.indexOf(x.id) < 0 && !(x.id === 'plan-pmos' && !pcosSaid()));   /* Version 39.2 */
     const pill = (x) => (x.paused ? '<span class="pill">' + esc(t('plan_paused_pill')) + '</span>' : (x.dur ? '<span class="pill">' + esc(x.dur) + '</span>' : ''));
     const nowCard = (x) => {
       let sub = '', art = icoOf(x), ttl = x.t;
@@ -1382,7 +1383,7 @@
     v.innerHTML = '<h1>' + esc(t(opt.h || 'plan_all_h')) + '</h1>' + (opt.top || '') + '<p class="small">' + esc(t('plan_all_p')) + '</p>' +
       (now.length ? '<section class="care-sec pl-sec"><h2>' + esc(t('plan_all_now')) + '</h2>' + now.map(nowCard).join('') + '</section>' : '') +
       (!can ? '<div class="card soft"><p>' + esc(t('plan_all_diary')) + '</p>' + S.needDiary() + '</div>' :
-        '<section class="care-sec pl-sec"><h2>' + esc(t('plan_all_rec')) + '</h2>' + (rc.length ? rc.map(recCard).join('') : '<div class="card soft"><p class="small">' + esc(t('plan_all_none')) + '</p></div>') + '</section>') +   /* Version 39.2: one picker ("What do you want to work on?"), no second goal list */
+        (rc.length || !sk.length ? '<section class="care-sec pl-sec"><h2>' + esc(t('plan_all_rec')) + '</h2>' + (rc.length ? rc.map(recCard).join('') : '<div class="card soft"><p class="small">' + esc(t('plan_all_none')) + '</p></div>') + '</section>' : '')) +   /* Version 39.2: one picker ("What do you want to work on?"), no second goal list */
       (more.length ? '<section class="care-sec pl-sec"><h2>' + esc(t('plan_all_more')) + '</h2><div class="list">' + more.map(moreRow).join('') + '</div></section>' : '') +
       '<p class="footnote">' + esc(t('plan_all_foot')) + '</p>';
     S.wire(v); wireHelp(v);
@@ -2643,7 +2644,7 @@
     const chg = S.canSave() ? changedWhy(d) : null;
     const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
     const pick = S.canSave() ? paused + '<div class="card pl-pick"><h2>' + esc(t('plan_my_pick_h')) + '</h2><p class="small">' + esc(t(ik.goal === 'track' ? 'plan_my_track' : 'plan_my_pick_p')) + '</p><div class="list">' + goalsFor({ stage: st }).filter((k) => k !== 'track').map((k) => '<button type="button" class="item" data-pl-pick="' + k + '"><span class="body"><strong>' + esc(goalName(k)) + '</strong></span>' + (k === suggestedGoal(st) ? '<span class="pill ok pl-sugg">' + esc(t('plan_suggested')) + '</span>' : '') + '<span class="chev">' + S.I.chev + '</span></button>').join('') + '</div></div>' : '';
-    renderPlans(v, { h: 'plan_my_h', top: pick }); wireChange(v);
+    renderPlans(v, { h: 'plan_my_h', top: pick, skip: S.canSave() && goalsFor({ stage: st }).indexOf('pmos') >= 0 ? ['plan-pmos'] : [] }); wireChange(v);   /* Version 39.42: "I have PMOS" is its row */
     v.querySelectorAll('[data-pl-pick]').forEach((b) => b.addEventListener('click', () => { S.mem.planIntake = { stage: st, goal: b.dataset.plPick, iq: 1 }; S.setHash('plan-goal'); }));
   }
   /* Version 39.1 (roadmap 39.1): what her records point to, as one row under My plan's heading. The plan never works it out

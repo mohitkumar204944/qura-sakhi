@@ -5469,3 +5469,22 @@ minutes). Updated for what changed on purpose:
 
 Golden is re-recorded for 3: "My doctor" in every care team on her doctor's route, "Plan week {n} is done" in a pregnancy,
 and "Why this step?" counting her daily steps.
+
+## 85. Version 39.42: the tracking-stage walk's gaps
+
+Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 72, Tracking periods with no plan running, after a
+pregnancy marked by mistake), then "fix all 3". No new words.
+1. **One ask on Today just after a stage change** (core): the stage sheet marks the change (`prompts.exStage`). Then, while
+   the first card in Sakhi says is her plan offer (`pl-homerec` or `pl-offer`, which already knows her goal), "Tell Sakhi your
+   stage and goals" (`exCard`) waits; "Not now" on the offer (or another card leading Sakhi says) brings it back. An older
+   diary, which has no mark, is still asked once beside the offer (Version 39.10).
+2. **The finding's free plan** (explain `pairGoal`): an irregular-gaps finding pairs "My PMOS plan" when PMOS is in her
+   details or her goals, as Today and My plan read it (plan.js `pcosSaid`). Before, only her details counted, so the same
+   woman was offered "My cycle plan" on Cycles and "My PMOS plan" everywhere else.
+3. **My plan with no plan running** (`renderPlans` `opt.skip`): "What do you want to work on?" is the 12-week plans' one
+   home, so "I have PMOS (PCOS) · Suggested" isn't repeated as "My PMOS plan" under Suggested for you or More plans. Short
+   tools (For period cramps) stay suggested; when nothing else is, the section goes (no "Nothing to suggest yet" under a
+   picker that holds the suggestion).
+
+**Tests:** `node test/stagewalk.mjs` (13 checks; 4 fail on 0.39.41's code). pmosplan 14 finds her PMOS plan as the picker's
+Suggested row, with her one other suggestion under it.

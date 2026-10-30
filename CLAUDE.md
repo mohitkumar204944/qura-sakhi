@@ -306,6 +306,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - one "In your pregnancy" group in Days;
     - a routine's minutes on its Start, and the pregnancy card's buttons two to a row.
     Contract: MODULE_API section 84; wording: section 19.41 of the review (UI words only).
+  - `node test/stagewalk.mjs` (Version 39.42, the tracking-stage walk's gaps; Mohit, 30 Oct: "fix all 3"):
+    - one ask on Today just after a stage change, while a plan is offered;
+    - the same PMOS plan on Cycles as on Today;
+    - the PMOS plan once on My plan's picker page.
+    Contract: MODULE_API section 85; review section 19.42 (no new wording).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
