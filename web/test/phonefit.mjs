@@ -1,6 +1,6 @@
 // Version 39.43: the PMOS day-1 walk's gaps (Mohit's Flip5 at 360 dp, 30 Oct: "can you do a walkthrough on my phone and check
 // gaps", then "fix all 4"; MODULE_API section 86). This file checks:
-//   1 a step's line on Today that doesn't fit wraps (measured where it is read), and one that fits stays one short line;
+//   1 a step's line on Today that doesn't fit wraps (Version 39.44: in CSS, whenever the font lands), and one that fits stays one short line;
 //   2 the PMOS plan starts day 1 with 3 steps; her bedtime and its wind-down reminder from day 4;
 //   3 Sakhi stays upright on the phone (the manifest's portrait);
 //   4 My plan's routine row as Today's: its name, and its minutes on the play button;
@@ -107,7 +107,7 @@ const PMOS = (startAgo, o) => Object.assign({ pack: 'cycle', goalKey: 'pmos', st
 const cycSeed = (x) => Object.assign({ situation: { care: 'private' }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' }, events: cyc3([120, 78, 36]) }, x || {});
 
 const pm = (startAgo) => cycSeed({ mods: { plan: PMOS(startAgo) }, intake: PMOS(startAgo).intake });
-const subs = (a) => a.page.$$eval('#view .today-chk', (rs) => rs.map((r) => { const s = r.querySelector('.today-sub'); const tt = r.querySelector('.today-sub-t'); return { id: r.className.replace(/.*today-(plan-[a-z]+).*/, '$1'), wrap: !!(s && s.classList.contains('wrap')), cut: !!(tt && tt.scrollWidth > tt.clientWidth + 1) }; }));
+const subs = (a) => a.page.$$eval('#view .today-chk', (rs) => rs.map((r) => { const s = r.querySelector('.today-sub'); const tt = r.querySelector('.today-sub-t'); const lh = s ? parseFloat(getComputedStyle(s).lineHeight) || 18 : 18; return { id: r.className.replace(/.*today-(plan-[a-z]+).*/, '$1'), wrap: !!s && s.getBoundingClientRect().height > lh * 1.5, cut: !!(tt && tt.scrollWidth > tt.clientWidth + 1) }; }));   /* wrap: the line took a second line (Version 39.44: in CSS) */
 
 /* ---------- 1 a line that doesn't fit wraps ---------- */
 {

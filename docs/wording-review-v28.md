@@ -2700,3 +2700,7 @@ plan's picker is the one place the PMOS plan is suggested; the Cycles finding of
 
 No new wording. A step's line under its name shows whole (on a second line when it doesn't fit); the PMOS plan's bedtime step
 starts on day 4; My plan's routine shows its minutes on its play button, as Today does.
+
+### 19.44 Version 39.44: a step's line wraps in CSS (MODULE_API section 87)
+
+No new wording: the line under a step's name on Today shows whole, on a second line where it doesn't fit.

@@ -5508,3 +5508,14 @@ Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 75, My 
 
 **Tests:** `node test/phonefit.mjs` (10 checks). Golden is re-recorded for 2: the cycle plans' 3 steps on day 1 (no bedtime
 step, "Each ring has 3 parts"), and the routines' minutes on My plan's play button. `progs/baseline.json` re-records `cycle@1`.
+
+## 87. Version 39.44: a step's line wraps in CSS
+
+Mohit, 30 Oct: "yes fix it, commit push and install". Section 86's `fitSubs` measured each step's line once as Today drew, and
+on his Flip5 the bundled font landed after that, so the food line stayed cut ("At lunch or dinn…") while the yoga line wrapped.
+Now `app.css` lets `.today-sub` wrap (`flex-wrap: wrap`, `white-space: normal`; `.today-sub-t` no longer cut with an ellipsis):
+the browser breaks a line only where it doesn't fit, whenever the font lands, and a line that fits stays one short line.
+`fitSubs` is gone. No new words.
+
+**Tests:** `node test/phonefit.mjs` 1 counts a line's height (a second line where it doesn't fit, none cut, one line where it
+fits).

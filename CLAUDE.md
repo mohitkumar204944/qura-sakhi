@@ -312,7 +312,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the PMOS plan once on My plan's picker page.
     Contract: MODULE_API section 85; review section 19.42 (no new wording).
   - `node test/phonefit.mjs` (Version 39.43, the PMOS day-1 walk's gaps; Mohit, 30 Oct: "fix all 4"; his Flip5 is 360 dp wide):
-    - a step's line that doesn't fit wraps, measured on the phone;
+    - a step's line that doesn't fit wraps (Version 39.44: in CSS, whenever the font lands);
     - the PMOS plan's 3 steps on day 1 (her bedtime from day 4);
     - Sakhi upright (portrait);
     - My plan's routine minutes on its play button, as Today's.

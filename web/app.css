@@ -793,8 +793,9 @@ body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .today-chk { cursor: pointer; align-items: center; min-height: 52px; padding-top: 4px; padding-bottom: 4px; }
 .today-chk .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .today-chk .body strong { overflow-wrap: anywhere; }
-.today-sub { font-size: 13px; color: var(--muted); display: flex; align-items: baseline; gap: 4px; min-width: 0; white-space: nowrap; }
-.today-sub-t { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* Version 39.44 (Mohit's Flip5, 360 dp): the line wraps where it doesn't fit, never cut ("At lunch or dinn…"); one that fits stays one line */
+.today-sub { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 4px; min-width: 0; white-space: normal; }
+.today-sub-t { min-width: 0; overflow-wrap: anywhere; }
 .today-sub .today-why { flex: none; }
 .today-sub.wrap { white-space: normal; flex-wrap: wrap; } .today-sub.wrap .today-sub-t { overflow: visible; text-overflow: clip; }
 .today-why { display: inline; padding: 0; min-height: 0; font-size: 13px; font-weight: 600; vertical-align: baseline; }
