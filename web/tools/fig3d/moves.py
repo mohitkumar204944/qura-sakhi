@@ -448,22 +448,35 @@ def twist(k):
     k.ground()
 
 
-def _butterfly(k, knee_z):
-    seated(k, lean=6)
+def _butterfly(k, up):
+    """Bhadrasana: the soles pressed together on their outer edges, heels drawn in, knees dropping out to her sides. She sits
+    tall, hinged a little forward from her hips, and her hands rest over her feet with her fingers round her toes. up lifts
+    her knees (0 to 1); her seat, feet and hands stay where they are, so only her knees move."""
+    seated(k, lean=12)
+    k.spine(bend=-8); k.neck(bend=-4)
     for s in LR:
-        k.leg(s, (SX[s] * 0.045, -0.33, 0.1), knee=(SX[s] * 0.9, -0.15, knee_z), toes=(0, -1, -0.15), sole=(-SX[s], 0, 0))
-        k.arm(s, (SX[s] * 0.075, -0.32, 0.14), elbow=(SX[s] * 0.5, -0.2, 0.6))   # her hands hold her feet
-        k.relax(s, (0, -0.3, -1))
-    k.shape('LR', 'hold')
+        k.rot('clavicle.' + s, (0, 0, 1), -SX[s] * 14); k.shrug(s, -6)   # her shoulders reach forward and down to her feet
+        # the sole faces her other foot and the foot points ahead (the foot bone runs 24 degrees from the sole, as in Kit.flat)
+        n = V((-SX[s], 0, 0))
+        k.leg(s, (SX[s] * 0.068, -0.22, 0.085), knee=(SX[s] * 0.9, -0.15, 0.05), toes=0.91 * FWD + 0.41 * n, sole=-0.41 * FWD + 0.91 * n)
+    for s in LR:
+        # her wrist above her instep, behind the big toe's base, as near as her arm reaches with the elbow soft; her hand
+        # slopes down over the ball of her foot
+        sh = k.sh(s); d = k.at('toe1-1.' + s) + V((0, 0.09, 0.04)) - sh
+        k.arm(s, sh + d.normalized() * min(d.length, k.bent(14)), elbow=(SX[s] * 0.6, -0.1, 0.3), palm=-UP,
+              fingers=(-SX[s] * 0.15, -0.85, -0.5))
+    k.shape('LR', 'cup')
     k.ground()
+    for s in LR:
+        k.T['knee' + s].location.z += 0.4 * up
 
 
 def butterfly(k):
-    _butterfly(k, 0.2)
+    _butterfly(k, 0)
 
 
 def butterfly2(k):
-    _butterfly(k, 0.48)
+    _butterfly(k, 1)
 
 
 def sit(k):
@@ -598,7 +611,8 @@ LOOPS = {
     'armsup': {'dur': 8, 'seq': [(0, 'pray'), (0.12, 'opens'), (0.25, 'armsup'), (0.34, 'tiptoe'), (0.62, 'tiptoe'), (0.72, 'armsup'),
                                  (0.86, 'opens'), (1.0, 'pray')]},
     'triangle': ('wide', 'triangle', 6, True),
-    'butterfly': ('butterfly', 'butterfly2', 1.6, False), 'twist': ('sitlong', 'twist', 6, True), 'knees': {'dur': 4, 'seq': [(0, 'knees'), (0.25, 'knees2'), (0.5, 'knees'), (0.75, 'knees3'), (1.0, 'knees')]},
+    # butterfly: "move your knees gently up and down", one slow flap in 2 seconds
+    'butterfly': ('butterfly', 'butterfly2', 2, False), 'twist': ('sitlong', 'twist', 6, True), 'knees': {'dur': 4, 'seq': [(0, 'knees'), (0.25, 'knees2'), (0.5, 'knees'), (0.75, 'knees3'), (1.0, 'knees')]},
     # Loosen up: "swing your arms in big circles", one slow circle in 3 seconds, starting from the still's position
     'warmup': {'dur': 3, 'seq': [(i / 8, 'circle%d' % ((135 + 45 * i) % 360)) for i in range(9)]},
     'chairfwd': ('chairsit', 'chairfwd', 6, True),   # the app's "Seated forward bend" (child pose with knee pain)

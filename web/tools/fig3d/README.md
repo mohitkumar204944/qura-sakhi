@@ -29,13 +29,14 @@ credit line in the app.
     of straight, counted from her rest pose's bent elbow);
   - `point` gives a long arm in a direction, her shoulder lifting once the arm is above shoulder height; `relax` lets the
     hand carry on from the forearm;
-  - palms and soles face where a pose says, and `shape` picks the fingers' shape (relaxed, flat, on the floor, holding, a
-    mudra);
+  - palms and soles face where a pose says, and `shape` picks the fingers' shape (relaxed, flat, on the floor, holding,
+    cupped over her toes, a mudra);
   - `finish` (run after every pose) shapes the fingers and keeps each arm as joint turns, with the forearm, not the wrist,
     turning the palm.
 - `moves.py` holds the 43 positions, the in-between ones (Palm tree's open arms and toes, Loosen up's arm circles), the 17
   loops and the sun salutation. The loops follow the moves' words: Palm tree opens the arms wide, meets them overhead and
-  rises on the toes; Loosen up swings the arms in big circles.
+  rises on the toes; Loosen up swings the arms in big circles; in the butterfly only her knees lift and drop, while her seat,
+  her feet (soles together) and her hands over her toes stay still.
 - `stage.py` sets up the backdrop, lights, props (chair, wall, step, yoga mat) and the camera.
 - `render.py` renders a contact sheet, the stills, one loop, or the sun salutation. A loop's free arms move joint by joint,
   in arcs, while IK holds a hand that stays put (the floor, a wall, her knees); every turn takes the short way round, and a
