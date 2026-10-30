@@ -142,7 +142,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 what it is made from, in her words, with the sign she ticked', /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 300));
   await shot(page, '2-reveal');
   v = await revealWords(page);
-  check('2 her steps: walking from 10 minutes, one food change every two weeks, a bedtime', /Walking that grows from 10 minutes a day/.test(v) && /One food change every two weeks, starting with: Half the plate sabzi/.test(v) && /A regular bedtime: midnight/.test(v));
+  check('2 her steps: walking from 10 minutes, one food change every two weeks, a bedtime (Version 39.45: from day 4, in "What happens when")', /Walking that grows from 10 minutes a day/.test(v) && /One food change every two weeks, starting with: Half the plate sabzi/.test(v) && /From day 4: wind down, in bed by midnight/.test(v) && !/A regular bedtime/.test(v));
   check('2 what happens when, with no percentage or promise', /What happens when/.test(v) && /Week 4: a look at your first month/.test(v) && /It is different for every woman/.test(v) && !/%|guarantee|cure|fix your/i.test(v));
   check('2 skipped months: one doctor check, and a pregnancy test first if she could be pregnant', /Periods that skip months/.test(v) && /do a pregnancy test first/.test(v));
   check('2 the Start screen: when to start, and the evening check-in time (Version 39.27: 10 pm, after her 9:15 pm walk)', /When do you want to start\?/.test(v) && (await has(page, '[data-rv-at="22:00"].on')));

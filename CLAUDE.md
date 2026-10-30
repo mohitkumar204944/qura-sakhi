@@ -317,6 +317,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - Sakhi upright (portrait);
     - My plan's routine minutes on its play button, as Today's.
     Contract: MODULE_API section 86; review section 19.43 (no new wording).
+  - `node test/myplanwalk.mjs` (Version 39.45, the PMOS walk's gaps; Mohit, 30 Oct: "fix all 4"):
+    - My plan's play button on one line;
+    - a bedtime that joins on day 4, named before it comes (the reveal, the Start card, My plan);
+    - "Your last plan" never a pregnancy marked by mistake, nor a copy of the plan she runs;
+    - the 3D figure on Moves and calm.
+    Contract: MODULE_API section 88; review section 19.45 (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

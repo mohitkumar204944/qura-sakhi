@@ -5519,3 +5519,33 @@ the browser breaks a line only where it doesn't fit, whenever the font lands, an
 
 **Tests:** `node test/phonefit.mjs` 1 counts a line's height (a second line where it doesn't fit, none cut, one line where it
 fits).
+
+## 88. Version 39.45: the PMOS walk's gaps
+
+Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 77, My PMOS plan on day 1), then "fix all 4". New
+words are UI only (review section 19.45).
+1. **My plan's play button keeps its label on one line** (`.pl-st-start`, `.pl-st-play`: `white-space: nowrap`, the icon
+   16 px and `flex: none`, as Today's `.today-start`). On his Flip5 the icon had no size and "8 min" broke into "8" over "min".
+2. **A bedtime her plan holds back is named before it comes** (`laterStep(d)`: a `use: 'bed'` step with `if: ['pday:N-']`,
+   the cycle plan's from day 4 since section 86; its day and its own title as it will show on that day):
+   - the reveal's steps card lists the steps of her first day ("Your 3 steps"); before, it said "Your 4 steps" with the
+     bedtime while day 1 showed 3;
+   - "What happens when" starts "From day 4: wind down, in bed by 11 pm" (`plan_rv_from`, the step's own reviewed title), as
+     My pregnancy's "From day 4: your pelvic floor";
+   - the Start card's reminders name its wind-down with its day: "your 8 pm check-in and your 10:30 pm wind-down from day 4"
+     (`windSoon`, `plan_st_r_wind_n`). A plan whose bedtime is there from day 1 says "your 10:30 pm wind-down", as before;
+   - My plan says the same line under her steps (`.pl-later`) until the step joins on day 4.
+3. **"Your last plan" is a real one:**
+   - "No, I marked it by mistake" with no plan before the pregnancy plan ends that plan (`closePlan(dd, true)`, not archived).
+     Before, it stayed, and the next plan she started filed it as her last plan (his phone: "My pregnancy plan · 29 Oct to
+     30 Oct · followed on 1 day");
+   - with a plan before it (`restorePrev`), the entry made when the pregnancy plan replaced it goes, so the plan brought back
+     isn't also her last plan, and the next plan doesn't file it twice;
+   - phones that already hold one are mended when Sakhi opens (`mig`): no pregnancy plan with no pregnancy behind it (she
+     isn't pregnant, and no loss or birth since it started), and no second copy of a plan or of the one she runs. A loss
+     (`pregEndedOn`) or a birth (`deliveredOn`) keeps its pregnancy plan; after a loss it stays off show (review SAFETY-07).
+4. **Moves and calm shows the 3D figure** (section 82): each routine's card shows its first position as the figure's still
+   (`figThumb`, `.pl-rf3d`), and the walk card plays the walk loop (`walkFig`, its still for "reduce motion" or a video that
+   can't play, `wireFig3d`). Without `web/fig`, or with `SAKHI_CONFIG.fig === false`, the drawings stay.
+
+**Tests:** `node test/myplanwalk.mjs` (28 checks; 17 fail on 0.39.44's code).

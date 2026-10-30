@@ -172,7 +172,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 no check-in before Start (her plan shows instead)', !(await has(page, '#pl-ci-save')) && (await has(page, '.pl-rv')));
   await page.evaluate(() => { window.Saathi.mem.rvCard = 0; }); await go(page, 'plan-reveal');
   const words = await cardsToStart(page);
-  check('4 card 2: her steps, each with what it does for her', /Your 4 steps/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /Walking that grows from 10 minutes a day/.test(words) && /helps your body use insulin better/.test(words) && /This week: 50 minutes, about 10 a day/.test(words), words.slice(0, 900));
+  check('4 card 2: her steps, each with what it does for her (Version 39.45: her first day\'s 3; her bedtime "From day 4")', /Your 3 steps/.test(words) && /From day 4: wind down, in bed by midnight/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /Walking that grows from 10 minutes a day/.test(words) && /helps your body use insulin better/.test(words) && /This week: 50 minutes, about 10 a day/.test(words), words.slice(0, 900));
   check('4 card 3: how each day works, the check-in time, a missed day', /How each day works/.test(words) && /Tap Done when you do one/.test(words) && /At 8 pm, Sakhi asks “How did today go\?” It takes 1 minute/.test(words) && /Missed a day\? Nothing to catch up/.test(words), words.slice(0, 1600));
   check('4 card 4: what happens at weeks 1, 4 and 12', /Every week: a short look back/.test(words) && /Week 4: a look at your first month/.test(words) && /Week 12: your results, next to where you started/.test(words) && /It is different for every woman/.test(words));
   check('4 a doctor check card for skipped months, alongside her plan', /Alongside your plan: one doctor check/.test(words) && /You can start your steps today/.test(words));
@@ -180,7 +180,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
   v = await view(page);
   check('6 the Start screen: today, tomorrow or Monday, and an evening check-in time', /When do you want to start\?/.test(v) && /Today/.test(v) && /Tomorrow/.test(v) && /Monday, 2 Nov/.test(v) && /6 pm/.test(v) && /9 pm/.test(v) && !/8 am|1 pm/.test(v), v.slice(0, 600));
-  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4)', /Reminders are on: your 6 pm time to move and your 8 pm check-in\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
+  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4; 39.45: named with its day)', /Reminders are on: your 6 pm time to move, your 8 pm check-in and your 11:30 pm wind-down from day 4\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
   await shot(page, '03-start');
   await closeTips(page);
   await tap(page, '#pl-rv-go'); await settle(page, 1500);

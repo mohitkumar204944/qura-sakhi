@@ -37,6 +37,12 @@
       if (d.remAt && d.remAt < '17:00') { d.remAt = '20:00'; if (rr) rr.time = '20:00'; }
       if (d.start && d.go === undefined) d.go = true;
       if (d.start && d.pv == null) d.pv = 1;   /* Version 39.4: plans saved before the port are version 1 */
+      /* Version 39.45 (Mohit's Flip5): "Your last plan" is a real one: no pregnancy plan with no pregnancy behind it (marked by
+         mistake: she isn't pregnant, and no loss or birth since it started), and no second copy of a plan (the one she runs,
+         brought back after "marked by mistake") */
+      if (Array.isArray(d.past) && d.past.length) { const s0 = S.state.situation || {}; const seen = {}; if (d.start) seen[(d.pack || 'cycle') + '|' + d.start] = 1;
+        d.past = d.past.filter((x) => { if (!x || !x.start) return true; const k = (x.pack || 'cycle') + '|' + x.start; if (seen[k]) return false; seen[k] = 1;
+          return !(x.pack === 'preg' && !s0.pregnant && !((s0.pregEndedOn || '') >= x.start) && !((s0.deliveredOn || '') >= x.start)); }); }
       if (d.start && d.go === false && !d.next) {
         const fd = Object.assign({ log: {}, weeks: {}, body: [] }, d);
         const quiet = !Object.keys(d.log || {}).some((k) => k >= d.start && dayDone(fd, k));
@@ -588,6 +594,7 @@
     const ciB = due ? '<button type="button" class="btn ' + (fold ? 'sm' : 'primary block') + ' pl-ci-go" data-go="plan-checkin">' + esc(ciLabel()) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>';   /* Version 39.22: Today keeps the pink button */
     return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(req.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: req.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' + nightBar() +
       '<div class="pl-t4-bar" aria-hidden="true">' + held(acts).map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' +
+      (laterStep(d) ? '<p class="small pl-later">' + esc(laterLine(laterStep(d))) + '</p>' : '') +   /* Version 39.45: until it joins */
       (fold ? '' : '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>') +
       (!disc() && !ci && !rest && foodDay(d, todayISO()) && !acts.some((a) => FOOD_IDS.indexOf(a.id) >= 0 || a.id === 'fast') ? '<button type="button" class="linkbtn pl-fast-tog" id="pl-fast-tog">' + esc(t('plan_fast_q')) + '</button>' : '') +   /* no food step to ask in (V39.9 review FOOD-01) */
       (fold ? '<div class="pl-steps-f">' + (whyN && !disc() ? '<button type="button" class="linkbtn pl-whyall" id="pl-whyall">' + esc(whyN === 1 ? t('plan_why_all1') : tf('plan_why_all', { n: whyN })) + '</button>' : '<span></span>') + ciB + '</div>' : ciB) + '</div>';
@@ -909,19 +916,22 @@
     v.innerHTML = head('plan_moves_h') + movesTabs(true) + S.calm.listBody();
     S.wire(v); S.calm.wireList(v);
   }
+  /* Version 39.45: the walk card's 3D loop (its still for "reduce motion" or a video that can't play), or the drawing without web/fig */
+  const walkFig = () => { const s = figStill('walk'); if (!s) return figSvg('walk'); const lp = figLoop({ pose: 'walk' });
+    return lp && !reduced() ? '<video class="pl-3d" id="pl-fig3d" src="' + lp + '" poster="' + s + '" data-still="' + s + '" muted playsinline autoplay loop preload="auto"></video>' : '<img class="pl-3d" src="' + s + '" alt="">'; };
   function renderMoves(v) {
     if (!on()) { offScreen(v); return; }
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
     v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + '">' + figSvg(R[id].first) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tp && tp.routine === id ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
-      '<div class="card pl-walkcard"><span class="pl-mfig" id="pl-walkfig">' + figSvg('walk') + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
+      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill(R[id].first) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tp && tp.routine === id ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+      '<div class="card pl-walkcard"><span class="pl-mfig' + (figStill('walk') ? ' pl-mf3d' : '') + '" id="pl-walkfig">' + walkFig() + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       (d && d.start && !finished(d) ? '<div class="chips pl-add">' + [10, 15, 20, 30].map((n) => '<button type="button" class="chip" data-pl-add="' + n + '">+' + n + '</button>').join('') + '</div>' : '') +
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
       (lutOn(d) ? '<p class="small pl-blut">' + esc(t('plan_blut')) + '</p>' : '') + (babyD(d) ? '<p class="small">' + esc(t('plan_bmove')) + '</p>' : '') +   /* Version 39.32 (packet F6, F7) */
       '<div class="card warn"><h3>' + esc(t('plan_stop_h')) + '</h3><p class="small">' + esc(t('plan_stop_l')) + '</p></div>' +
       '<p class="footnote">' + esc(t('plan_moves_foot')) + '</p>';
     S.wire(v);
-    const wf = v.querySelector('#pl-walkfig svg'); if (wf) animate(wf, 'walk', 'walk2', ANIM.walk[2], false, false);
+    const wf = v.querySelector('#pl-walkfig svg'); if (wf) animate(wf, 'walk', 'walk2', ANIM.walk[2], false, false); wireFig3d(v);
     wireAdd(v);
   }
 
@@ -2009,6 +2019,7 @@
   function restorePrev(d) {
     const pp = d.prevPlan; const keep = {}; PLAN_OWN.forEach((k) => { if (k !== 'prevPlan' && d[k] !== undefined) keep[k] = d[k]; });
     Object.keys(d).forEach((k) => { delete d[k]; }); Object.assign(d, JSON.parse(JSON.stringify(pp)), keep);
+    if (Array.isArray(d.past)) d.past = d.past.filter((x) => !(x && (x.pack || 'cycle') === (d.pack || 'cycle') && x.start === d.start));   /* Version 39.45: its own entry, made when the pregnancy plan replaced it */
     if (d.ik0) S.state.intake = d.ik0; delete d.ik0;
     S.reminders.remove('plan'); delete d.remGone; remOnNow(d, true);
   }
@@ -2111,7 +2122,7 @@
   const painQ = (d) => (painAsk(d) ? '<div class="pl-pain" role="group" aria-label="' + esc(t('plan_pain_q')) + '"><p class="small"><strong>' + esc(t('plan_pain_q')) + '</strong></p><div class="pl-pain-a">' + PAIN_A.map((k) => '<button type="button" class="btn sm" data-pl-pain="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div></div>' : '');
   const wirePain = (v) => v.querySelectorAll('[data-pl-pain]').forEach((b) => b.addEventListener('click', () => { if (S.cycle.setPain(b.dataset.plPain)) S.toast(t('plan_pain_saved')); S.render(); }));
   function onLog(name, p) {
-    if (name === 'pregEnd' && p && p.mistake) { const d0 = raw(); if (d0 && d0.pack === 'preg' && d0.prevPlan && d0.prevPlan.pack && d0.prevPlan.pack !== 'preg') restorePrev(D()); return; }   /* Version 39.35 */
+    if (name === 'pregEnd' && p && p.mistake) { const d0 = raw(); if (d0 && d0.pack === 'preg' && d0.prevPlan && d0.prevPlan.pack && d0.prevPlan.pack !== 'preg') restorePrev(D()); else if (d0 && d0.pack === 'preg' && d0.start) closePlan(D(), true); return; }   /* Version 39.35; Version 39.45: with no plan before it, the mistaken pregnancy plan ends and isn't kept as her last plan */
     if (name === 'tool' && p && p.type === 'calm') { const dc = raw(); if (dc && packOf(dc)) setTimeout(() => { const dd = D(); closeDay(dd); remSync(dd); S.saveQuiet(); }, 0); return; }   /* Version 39.22: she wound down (after this event: a full day's petal is an event too) */
     if (name !== 'log' || !p || p.type !== 'start' || !runningD()) return;
     const d = D(); const st = (S.state.events || []).filter((e) => e.t === 'start').map((e) => e.d).sort(); const last = st[st.length - 1];
@@ -2175,7 +2186,7 @@
   }
   function archive(d) { const e = pastEntry(d); if (e) d.past = [e].concat(Array.isArray(d.past) ? d.past : []).slice(0, 5); }
   /* the plan ends and is kept as "Your last plan": Stop, or (V39.9 review FIXES-07) her after-birth plan at the baby's first birthday */
-  function closePlan(dd) { archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); ['nudge', 'nudgeHeld', 'nudgeMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.12 */
+  function closePlan(dd, drop) { if (!drop) archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); ['nudge', 'nudgeHeld', 'nudgeMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.12 */
   const pastBirthday = (d) => { const b = (S.state.situation || {}).deliveredOn; return !!(d && d.start && (d.pack || 'cycle') === 'post' && d.go !== false && d.start <= todayISO() && typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) && !pregnant() && S.diffDays(S.fromISO(b), pToday()) > 365); };
   /* Version 39.5 (P2-04): the same goal again, within a month of her last plan's end, starts where she is. Review ENGINE-06:
      the plan screen shows it too, before she starts */
@@ -2299,11 +2310,21 @@
       if (x.use === 'walk') { const n = x.mins === 'light' ? lightWalk(d) : daySuggest(d, 1); add(ICO.move, 'purple', tf('plan_pi_walk', { n: x.cap ? Math.min(n, x.cap) : n }), x.why); }
       else if (x.use === 'plate') { const hb = habitsOf(d, 1); const h = hb[hb.length - 1]; add(ICO.plate, 'green', tf('plan_pi_food', { h: tx(h.h) }), x.why); }
       else if (x.use === 'item') add(progIco(x.icon), x.hue, ptx(x.text), x.why, x.priv);
-      else if (x.use === 'bed') { if (d.work === 'night') add(S.icon('moon'), 'purple', t('plan_pi_shift'), 'plan_fb_sleep'); else { const bt = bedTarget(d); if (bt) add(S.icon('moon'), 'purple', tf('plan_pi_bed', { t: clockOf(bt) }), 'plan_fb_sleep'); } }
+      else if (x.use === 'bed') { if (laterStep(d)) return;   /* Version 39.45: "What happens when" names it */ if (d.work === 'night') add(S.icon('moon'), 'purple', t('plan_pi_shift'), 'plan_fb_sleep'); else { const bt = bedTarget(d); if (bt) add(S.icon('moon'), 'purple', tf('plan_pi_bed', { t: clockOf(bt) }), 'plan_fb_sleep'); } }
       else if (x.use === 'today') actionsFor(d).forEach((a) => add(a.icon, a.hue, a.id === 'pdue' ? t('plan_pi_due') : (a.id === 'rcheck' ? t('plan_pi_rcheck') : tf(a.every && a.every < 7 ? 'plan_pi_days' : 'plan_pi_goal', { x: a.name || a.title, n: a.every })), a.why, a.priv));   /* V39.9 review FOOD-06 */
     });
     return out;
   }
+  /* Version 39.45 (Mohit's Flip5): a step her plan holds back for its first days (the cycle plan's bedtime, from day 4: Version
+     39.43) is named before it comes: its day and its own title as it will show, or null once it is here */
+  function laterStep(d) {
+    const sp = d && packOf(d) ? specD(d) : null; if (!sp) return null;
+    const s = (sp.steps || []).filter((x) => x.use === 'bed')[0]; const m = s && (s.if || []).map((w) => /^pday:(\d+)-$/.exec(w)).filter(Boolean)[0]; const n = m ? +m[1] : 0;
+    if (n < 2 || (d.start && d.start <= todayISO() && planDay(d) >= n)) return null;
+    const st0 = d.start || todayISO(); const a = stepsFor(Object.assign(fullD(d), { start: st0 }), S.toISO(S.addDays(S.fromISO(st0), n - 1))).filter((x) => x.id === s.id)[0];
+    return a ? { n: n, a: a } : null;
+  }
+  const laterLine = (l) => tf('plan_rv_from', { n: l.n, x: S.state.lang === 'en' ? l.a.title.charAt(0).toLowerCase() + l.a.title.slice(1) : l.a.title });
   /* about how many minutes a day her first steps take */
   const dayMins = (d) => actionsFor(d).reduce((n, a) => n + (a.kind === 'minutes' ? a.mins : (a.r ? routineMins(a.r, d) : (/^relief-/.test(a.go) ? 3 : 0))), 0);
   /* Version 37.1: her plan as cards, one idea each (docs/first-days-audit-2026-10-24.md, 5.3 and 5.5): it's ready; your steps;
@@ -2349,7 +2370,7 @@
       body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(st.at) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
         '<div class="card soft"><p>' + esc(t('plan_rv_miss')) + '</p></div>' +
         (src ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(src) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') +
-        '<h2 class="ob-h2">' + esc(t('plan_rv_when_h')) + '</h2><ol class="pl-tl">' + rows.map((k) => '<li><strong>' + esc(t(k)) + '</strong></li>').join('') + '</ol>' +
+        '<h2 class="ob-h2">' + esc(t('plan_rv_when_h')) + '</h2><ol class="pl-tl">' + (pk !== 'preg' && laterStep(dd) ? '<li><strong>' + esc(laterLine(laterStep(dd))) + '</strong></li>' : '') + rows.map((k) => '<li><strong>' + esc(t(k)) + '</strong></li>').join('') + '</ol>' +
         (['cycle', 'pain', 'heavy', 'pms'].indexOf(pk) >= 0 && !disc() ? '<p>' + esc(t('plan_rv_cyc')) + '</p>' : '') + (pk === 'ttc' && !disc() ? '<p>' + esc(t('plan_rv_ttc')) + '</p>' : '') +
         '<p class="small">' + esc(t(pk === 'preg' && !disc() ? 'plan_rv_exp_preg' : 'plan_rv_diff')) + '</p>' + nextB;
     } else if (id === 'doc' && babyD(dd) && !disc()) {   /* Version 39.32: her version's own card */
@@ -2908,6 +2929,11 @@
   /* Version 39.27 (Mohit, 28 Oct: "no need for 90 minute gap, wherever needed have reminders"): no spacing rule; only a wind-down
      due within 15 minutes of her check-in rides on it, so two never ring at the same moment */
   const windNear = (d, at) => { const g = hmMin(at) - hmMin(ciAt(d)); return g >= 0 && g < 15; };
+  /* Version 39.45: the wind-down her plan rings, from today (windOk; before her start day, her first day's steps), or from the
+     day its bedtime joins (the Start card and Me's line name it with its day) */
+  const windSoon = (d) => { if (!d || !planOn() || !packOf(d) || careTime(d) || !windAt(d)) return null; const on0 = d.start && d.start <= todayISO(); if (on0 && pausedFor(d)) return null;
+    if (on0 ? windOk(d) : stepsFor(Object.assign(fullD(d), { start: todayISO() }), todayISO()).some((a) => !!a.play)) return { at: windAt(d), n: 1 };
+    const l = laterStep(d); return l && l.a.play ? { at: windAt(d), n: l.n } : null; };
   const windOk = (d) => !!(d && planOn() && packOf(d) && d.start && d.start <= todayISO() && !pausedFor(d) && !finished(fullD(d)) && !careTime(d) && actionsFor(fullD(d)).some((a) => !!a.play));
   function windSync(d, loud) {
     try {
@@ -2953,7 +2979,8 @@
     const ci = ciAt(d); const xs = [[ci, tf('plan_st_r_ci', { t: timeOf(ci) })]];
     try {
       if (d.nudge !== false && d.when && NUDGE_AT[d.when] && movesOn(d)) xs.push([NUDGE_AT[d.when], tf(AFTER_MEAL.indexOf(d.when) >= 0 ? 'plan_st_r_walk' : 'plan_st_r_move', { t: timeOf(NUDGE_AT[d.when]) })]);
-      const w = d.wind !== false && windOk(d) ? windAt(d) : null; if (w && !windNear(d, w)) xs.push([w, tf('plan_st_r_wind', { t: timeOf(w) })]);
+      const pw = d.wind === false ? null : windSoon(d);   /* Version 39.45: and the one her bedtime brings later */
+      if (pw && pw.at && !windNear(d, pw.at)) xs.push([pw.at, pw.n > 1 ? tf('plan_st_r_wind_n', { t: timeOf(pw.at), n: pw.n }) : tf('plan_st_r_wind', { t: timeOf(pw.at) })]);
     } catch (e) { /* the check-in alone */ }
     const ord = (hm) => { const m = hmMin(hm); return m < 4 * 60 ? m + 24 * 60 : m; };
     const l = xs.sort((a, b) => ord(a[0]) - ord(b[0])).map((x) => x[1]); if (al.period && al.period() && !disc()) l.push(t('plan_st_r_per'));   /* discreet: no health words */
@@ -3500,7 +3527,7 @@
         plan_rv_cyc: 'Periods often take 3 to 6 months to change. Keep noting them: that’s how Sakhi sees the change.',
         plan_rv_doc_h2: 'Alongside your plan: one doctor check', plan_rv_doc_when: 'You can start your steps today. Get the check in the next 3 weeks; Sakhi will ask you about it.', plan_rv_doc_soon: 'You can start your steps today. Please see a doctor soon.',
         plan_st_h: 'When do you want to start?', plan_st_day: 'Your first day', plan_st_today: 'Today', plan_st_tom: 'Tomorrow', plan_st_mon: 'Monday, {d}', plan_st_at: 'Sakhi checks in at', plan_st_at_p: 'Each evening, 1 minute: “How did today go?”',
-        plan_st_rem: 'Reminders are on: {l}. Nothing shows on the lock screen. Change them any time in Me > Reminders.', plan_st_off: 'Your phone reminders are off, so nothing will ring. You can turn them on in Me > Reminders.', plan_st_block: 'Your phone isn’t letting Sakhi ring reminders. You can allow them in Me > Reminders.', plan_st_r_ci: 'your {t} check-in', plan_st_r_walk: 'your {t} walk', plan_st_r_move: 'your {t} time to move', plan_st_r_wind: 'your {t} wind-down', plan_st_r_per: 'a note the day before your period', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
+        plan_st_rem: 'Reminders are on: {l}. Nothing shows on the lock screen. Change them any time in Me > Reminders.', plan_st_off: 'Your phone reminders are off, so nothing will ring. You can turn them on in Me > Reminders.', plan_st_block: 'Your phone isn’t letting Sakhi ring reminders. You can allow them in Me > Reminders.', plan_st_r_ci: 'your {t} check-in', plan_st_r_walk: 'your {t} walk', plan_st_r_move: 'your {t} time to move', plan_st_r_wind: 'your {t} wind-down', plan_st_r_wind_n: 'your {t} wind-down from day {n}', plan_rv_from: 'From day {n}: {x}', plan_st_r_per: 'a note the day before your period', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
         plan_in_now_p: 'So Sakhi knows where you’re starting, and can show you what changes.', plan_in_sum_h: 'Here’s what you told Sakhi', plan_in_sum_p: 'Check it, then Sakhi makes your plan.',
         plan_in_sum_goal: 'What you want to work on', plan_in_sum_now: 'Now', plan_in_sum_when: 'Your time to move', plan_in_make: 'Make my plan',
         plan_ci_first: 'This takes a minute. Your answers stay on this phone.', plan_ci_tom: 'Tomorrow: the same steps. See you at {t}.', plan_ci_see: 'See you tomorrow at {t}.',
@@ -3800,7 +3827,7 @@
         plan_rv_cyc: 'पीरियड में बदलाव आने में अक्सर 3 से 6 महीने लगते हैं। उन्हें दर्ज करती रहें: इसी से Sakhi बदलाव देख पाती है।',
         plan_rv_doc_h2: 'प्लान के साथ: एक बार डॉक्टर की जाँच', plan_rv_doc_when: 'आप अपने क़दम आज से शुरू कर सकती हैं। जाँच अगले 3 हफ़्तों में करवा लें; Sakhi आपसे इसके बारे में पूछेगी।', plan_rv_doc_soon: 'आप अपने क़दम आज से शुरू कर सकती हैं। कृपया जल्दी डॉक्टर को दिखाएँ।',
         plan_st_h: 'आप कब से शुरू करना चाहती हैं?', plan_st_day: 'आपका पहला दिन', plan_st_today: 'आज', plan_st_tom: 'कल', plan_st_mon: 'सोमवार, {d}', plan_st_at: 'Sakhi इस समय पूछेगी', plan_st_at_p: 'हर शाम, 1 मिनट: “आज का दिन कैसा रहा?”',
-        plan_st_rem: 'रिमाइंडर चालू हैं: {l}। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।', plan_st_off: 'आपके फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_block: 'आपका फ़ोन Sakhi को रिमाइंडर बजाने नहीं दे रहा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_r_ci: '{t} का चेक-इन', plan_st_r_walk: '{t} की सैर', plan_st_r_move: '{t} चलने-फिरने का समय', plan_st_r_wind: '{t} सुकून के पल', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
+        plan_st_rem: 'रिमाइंडर चालू हैं: {l}। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।', plan_st_off: 'आपके फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_block: 'आपका फ़ोन Sakhi को रिमाइंडर बजाने नहीं दे रहा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_r_ci: '{t} का चेक-इन', plan_st_r_walk: '{t} की सैर', plan_st_r_move: '{t} चलने-फिरने का समय', plan_st_r_wind: '{t} सुकून के पल', plan_st_r_wind_n: '{n}वें दिन से {t} सुकून के पल', plan_rv_from: '{n}वें दिन से: {x}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
         plan_in_now_p: 'ताकि Sakhi जाने कि आप कहाँ से शुरू कर रही हैं, और आपको दिखा सके कि क्या बदला।', plan_in_sum_h: 'आपने Sakhi को यह बताया', plan_in_sum_p: 'एक बार देख लें, फिर Sakhi आपका प्लान बनाएगी।',
         plan_in_sum_goal: 'आप किस पर काम करना चाहती हैं', plan_in_sum_now: 'अभी', plan_in_sum_when: 'चलने-फिरने का आपका समय', plan_in_make: 'मेरा प्लान बनाएँ',
         plan_ci_first: 'इसमें एक मिनट लगता है। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ci_tom: 'कल: यही क़दम। {t} फिर मिलेंगे।', plan_ci_see: 'कल {t} फिर मिलेंगे।',
@@ -3917,6 +3944,7 @@
       '.pl-day i b { color: var(--fg); font-size: 13px; } .pl-day i.full b { color: #FFFFFF; } .pl-day span { font-size: 13px; color: var(--muted); } .pl-day.now span { color: var(--accent); font-weight: 700; }',
       '.pl-today h3 { margin: 0 0 6px; } .pl-move { display: flex; gap: 12px; align-items: center; } .pl-mfig { width: 76px; flex: none; } .pl-mtext { display: grid; gap: 2px; min-width: 0; } .pl-mtext strong { color: var(--fg); } .pl-tn { color: var(--accent); font-weight: 600; }',
       '.pl-add { margin: 8px 0 4px; } .pl-routine { margin-top: 8px; } .pl-routine .pl-rfig, .pl-ritem .pl-rfig { width: 76px; height: 64px; flex: none; display: block; border-radius: 12px; background: var(--hue-soft, var(--accent-soft)); padding: 2px; }',
+      '.pl-ritem .pl-rfig.pl-rf3d, .pl-mf3d { padding: 0; overflow: hidden; background: #EBEBEB; border-radius: 12px; } .pl-ritem .pl-rf3d .pl-3d { width: 76px; height: 64px; aspect-ratio: auto; object-fit: cover; }',   /* Version 39.45: the 3D figure on Moves and calm */
       '.pl-habits { display: grid; gap: 6px; margin-top: 12px; } .pl-hab { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); } .pl-hab.done { border-color: var(--ok); background: var(--ok-soft); }',
       '.pl-hab input { width: 22px; height: 22px; min-height: 0; flex: none; accent-color: var(--accent); margin-top: 1px; } .pl-hab > span { display: grid; gap: 2px; min-width: 0; } .pl-hab strong { color: var(--fg); }',
       '.pl-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .pl-tile { display: grid; gap: 8px; justify-items: start; padding: 14px; border-radius: 18px; border: 1.5px solid var(--line); background: var(--hue-soft, var(--card)); color: var(--fg); text-align: left; font: inherit; min-height: 92px; }',
@@ -4024,7 +4052,7 @@
       /* Version 39.15: My plan */
       '.pl-rh { gap: 8px; } .pl-rh-g { display: grid; gap: 6px; text-align: center; } .pl-rh-c { display: grid; justify-items: center; align-content: start; gap: 3px; min-width: 0; } .pl-rh-c i { width: 12px; height: 12px; border-radius: 6px; background: var(--line); } .pl-rh-c i.on { background: var(--accent); } .pl-rh-c strong { font-size: 13px; line-height: 1.25; color: var(--fg); } .pl-rh-c .small { margin: 0; line-height: 1.3; } .pl-rh-c > * { max-width: 100%; overflow-wrap: anywhere; }',
       '.pl-steps-card { gap: 10px; } .pl-steps-h { flex-wrap: wrap; gap: 2px 10px; } .pl-steps-h h3 { margin: 0; } .pl-step .body > * { min-width: 0; overflow-wrap: anywhere; } .pl-step { align-items: flex-start; padding-top: 10px; padding-bottom: 10px; cursor: pointer; } .pl-step .body { flex: 1; min-width: 0; display: grid; gap: 3px; } .pl-step .body strong { overflow-wrap: anywhere; }',
-      '.pl-step-why { font-size: 14px; line-height: 1.4; color: var(--text); } .pl-step-how { justify-self: start; padding: 0; min-height: 0; font-size: 13px; } .pl-steps-same { margin: 0; text-align: center; } .pl-st-start { flex: none; align-self: center; } .pl-step .today-tick, .pl-step .today-open { align-self: center; }',
+      '.pl-step-why { font-size: 14px; line-height: 1.4; color: var(--text); } .pl-step-how { justify-self: start; padding: 0; min-height: 0; font-size: 13px; } .pl-steps-same { margin: 0; text-align: center; } .pl-st-start, .pl-st-play { flex: none; align-self: center; white-space: nowrap; gap: 6px; } .pl-st-start svg, .pl-st-play svg { width: 16px; height: 16px; flex: none; } .pl-step .today-tick, .pl-step .today-open { align-self: center; }',
       '.pl-wkc { gap: 8px; } .pl-wkc h3 { margin: 0; } .pl-wkc .row, .pl-signs .pl-mc-row { flex-wrap: wrap; gap: 2px 10px; } .pl-r7 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; text-align: center; } .pl-r7d { display: grid; justify-items: center; gap: 3px; font-size: 12px; color: var(--muted); min-width: 0; } .pl-r7d.now { color: var(--accent); font-weight: 700; }',
       '.pl-r4 { width: 34px; height: 34px; } .pl-r4 .s { fill: none; stroke-width: 5; stroke: var(--line); } .pl-r4 .s.d { stroke: var(--ok); } .pl-r4 .s.p { stroke: var(--ok-soft); } .pl-r7d.fut .pl-r4 .s { stroke: var(--card-2); } .pl-r4 .s.r { stroke: var(--muted); stroke-dasharray: 2 3; }',
       '.pl-r7d.now .pl-r4 { border-radius: 50%; box-shadow: 0 0 0 2px var(--accent); } .pl-r7s { height: 14px; display: grid; place-items: center; color: var(--h-gold); } .pl-r7s svg { width: 12px; height: 12px; }',

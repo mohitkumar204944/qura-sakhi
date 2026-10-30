@@ -2704,3 +2704,10 @@ starts on day 4; My plan's routine shows its minutes on its play button, as Toda
 ### 19.44 Version 39.44: a step's line wraps in CSS (MODULE_API section 87)
 
 No new wording: the line under a step's name on Today shows whole, on a second line where it doesn't fit.
+
+### 19.45 Version 39.45: the PMOS walk's gaps (MODULE_API section 88)
+
+UI words only, built from reviewed lines:
+  - "From day {n}: {x}" / "{n}वें दिन से: {x}", where {x} is the step's own title ("From day 4: wind down, in bed by 11 pm"),
+    in the PMOS plan's "What happens when" and under her steps on My plan until it joins;
+  - "your {t} wind-down from day {n}" / "{n}वें दिन से {t} सुकून के पल", in the Start card's list of reminders.
