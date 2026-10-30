@@ -1273,3 +1273,69 @@ body:has(.tour-pop) .toast { top: calc(env(safe-area-inset-top, 0px) + 76px); bo
 /* Version 39.41 (Mohit's three-plan walk): from 37 weeks the pregnancy card's 4 buttons two to a row, each label wrapping */
 .row.hero-btns2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: stretch; }
 .row.hero-btns2 > .btn { width: 100%; min-width: 0; white-space: normal; text-align: left; justify-content: space-between; padding-top: 6px; padding-bottom: 6px; line-height: 1.25; }
+
+/* ===================== Version 39.50: glass ===================== */
+/* Mohit, 30 Oct: "proceed doing glass UI for all screens", and "Colour scheme should not be changed" (the mockup:
+   claude.ai/artifact/UGJkPGEeHJLc2q9fVAVaVY). Sakhi's own colours, frosted:
+   - her blush-to-lavender wash stays still behind every screen, with soft glows in her own pink, lavender and peach;
+   - cards, rows and tiles are her card colours, partly see-through, with a fine light edge drawn inside (a shadow, so
+     nothing moves);
+   - the top bar, the tab bar and sheets are frosted.
+   Urgent and highlight cards, buttons, inputs, documents and print stay as they were; reduced transparency gets solid cards.
+   Every rule of it is in this block. */
+:root {
+  --glass: rgba(255, 255, 255, 0.58); --glass-2: rgba(248, 243, 247, 0.6); --glass-paper: rgba(255, 253, 249, 0.7);
+  --glass-edge: rgba(255, 255, 255, 0.85); --glass-hi: rgba(255, 255, 255, 0.75);
+  --glass-bar: rgba(255, 255, 255, 0.9); --glass-top: rgba(247, 244, 248, 0.8); --glass-sheet: rgba(247, 244, 248, 0.9);
+  --orb1: rgba(255, 255, 255, 0.6); --orb2: rgba(255, 255, 255, 0.5); --orb3: rgba(251, 227, 211, 0.85); --orb4: rgba(238, 134, 163, 0.14); --orb5: rgba(106, 76, 156, 0.07);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --glass: rgba(43, 28, 28, 0.7); --glass-2: rgba(52, 34, 34, 0.66); --glass-paper: rgba(44, 32, 38, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.08); --glass-hi: rgba(255, 255, 255, 0.06);
+  --glass-bar: rgba(43, 28, 28, 0.9); --glass-top: rgba(30, 20, 20, 0.8); --glass-sheet: rgba(30, 20, 20, 0.92);
+  --orb1: rgba(240, 122, 155, 0.12); --orb2: rgba(142, 59, 110, 0.18); --orb3: rgba(74, 51, 48, 0.8); --orb4: rgba(240, 122, 155, 0.10); --orb5: rgba(142, 59, 110, 0.12); } }
+:root[data-theme="dark"] {
+  --glass: rgba(43, 28, 28, 0.7); --glass-2: rgba(52, 34, 34, 0.66); --glass-paper: rgba(44, 32, 38, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.08); --glass-hi: rgba(255, 255, 255, 0.06);
+  --glass-bar: rgba(43, 28, 28, 0.9); --glass-top: rgba(30, 20, 20, 0.8); --glass-sheet: rgba(30, 20, 20, 0.92);
+  --orb1: rgba(240, 122, 155, 0.12); --orb2: rgba(142, 59, 110, 0.18); --orb3: rgba(74, 51, 48, 0.8); --orb4: rgba(240, 122, 155, 0.10); --orb5: rgba(142, 59, 110, 0.12); }
+@media (prefers-reduced-transparency: reduce) { :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+  --glass: var(--card); --glass-2: var(--card-2); --glass-paper: var(--paper); --glass-bar: var(--card); --glass-top: var(--bg); --glass-sheet: var(--bg); } }
+/* the still scene behind every screen: her wash, with the glows kept beside the app's column on any width. Text also sits
+   on it directly, so in light no glow is darker than the wash where text can pass: two soft lights in the upper half, and her
+   pink, lavender and peach low and gentle where the page is lightest (muted text stays at 4.5 or more over every point) */
+html { background: var(--bg); }
+body, #app { background: transparent; }
+body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle 150px at calc(50% + 130px) 16%, var(--orb1), transparent),
+    radial-gradient(circle 170px at calc(50% - 150px) 46%, var(--orb2), transparent),
+    radial-gradient(circle 150px at calc(50% + 150px) 64%, var(--orb5), transparent),
+    radial-gradient(circle 170px at calc(50% - 120px) 84%, var(--orb3), transparent),
+    radial-gradient(circle 150px at calc(50% + 140px) 92%, var(--orb4), transparent),
+    linear-gradient(180deg, var(--wash1) 0, var(--wash2) 240px, var(--bg) 560px); }
+/* surfaces: her card colour, see-through, with a fine edge inside (module rules beside them win on order, so :root lifts theirs) */
+.card, .card.hero, .item, .action, .topic-card, .qa-tile, .symcat, .helpline, .sos-row, .dy-card, .day-facts, .day-wk, .joy-strip, .joy-badge,
+.joy-mo, .relief-cta, .meno-tl-st, .ob-lt, .ob-prom > div, .feel-c, .checklist label, .ans-doc,
+:root .xp-how, :root .tl-rem, :root .screen-row, :root .pg-acc, :root .pst-acc { background: var(--glass); }
+.card, .card.hero, .item, .action, .topic-card, .qa-tile, .symcat, .helpline, .sos-row, .dy-card, .day-facts, .joy-strip, .joy-badge, .joy-mo,
+.relief-cta, .meno-tl-st, .ob-lt, .feel-c,
+:root .xp-how, :root .tl-rem, :root .screen-row, :root .pg-acc, :root .pst-acc { box-shadow: var(--shadow), inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi); }
+.card.soft, .item.quiet { background: var(--glass-2); box-shadow: inset 0 0 0 1px var(--glass-edge); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card.hero { background: var(--glass); } }
+:root[data-theme="dark"] .card.hero { background: var(--glass); }
+.diary-paper .card { background-color: var(--glass-paper); }
+/* the module surfaces that sit on the page itself (the route survey, test/glass-survey.mjs): Help's lists, the contraception
+   choices, the birth plan, past medicines, reminders that are off, the intimate pages' first row and her notes after a loss */
+:root .access-sch, :root .contra-res, :root .ptl-acc { background: var(--glass); box-shadow: var(--shadow), inset 0 0 0 1px var(--glass-edge), inset 0 1px 0 var(--glass-hi); }
+:root .tl-acc, :root .tl-rem.tl-off, :root .intimate-static, :root .loss-noteitem { background: var(--glass-2); }
+/* gold words that sat just over 4.5 on white take the palette's own gold for text on the glass (the contrast audit,
+   test/glass-contrast.mjs: the after-birth vaccine line was 4.17) */
+:root .pst-vx.past .pst-va span { color: var(--gold-text); }
+/* frosted bars and sheets: what scrolls under them blurs; the bars stay 80 to 90% solid, so their labels read over a dark card */
+.topbar { background: var(--glass-top); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); }
+.tabbar { background: var(--glass-bar); -webkit-backdrop-filter: saturate(160%) blur(22px); backdrop-filter: saturate(160%) blur(22px); border-top-color: var(--glass-edge); box-shadow: 0 -6px 20px rgba(47, 34, 51, 0.06); }
+.sheet, .sheet-foot { background: var(--glass-sheet); -webkit-backdrop-filter: saturate(150%) blur(24px); backdrop-filter: saturate(150%) blur(24px); }
+/* sticky strips frosted like the bars: the moves player's Previous, Pause and Next, and the intimate check's question */
+:root .pl-ctl { background: var(--glass-bar); -webkit-backdrop-filter: saturate(160%) blur(22px); backdrop-filter: saturate(160%) blur(22px); box-shadow: 0 -4px 16px rgba(47, 34, 51, 0.06); border-radius: 16px; }
+:root .intimate-qx { background: var(--glass-top); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); border-bottom-color: var(--glass-edge); }
+@media print { html { background: #FFFFFF !important; } body::before { display: none; } }

@@ -363,6 +363,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the night-sweats doctor card from her diary (both on 3 of the last 14 days, with the count), and the days in her last 28
       in the report for her doctor.
     Contract: MODULE_API section 92; wording: section 19.49 of the review (new lines wait for doctor review).
+  - `node test/glass.mjs` (Version 39.50, the glass look; Mohit, 30 Oct: "proceed doing glass UI for all screens" and "Colour
+    scheme should not be changed"; mockup claude.ai/artifact/UGJkPGEeHJLc2q9fVAVaVY):
+    - Sakhi's own colours, frosted: her wash stays still behind every screen with soft glows in her pink, lavender and peach;
+    - cards, rows and tiles see-through in her card colours, with the edge drawn inside (nothing moves);
+    - the top bar, the tab bar and sheets frosted, the bars 80 to 90% solid so their labels read over a dark card;
+    - urgent cards, coloured tiles, buttons and inputs solid; print white; light and dark.
+    One block at the end of `web/app.css` (the first-paint guard in `index.html` sits on the page, not the body). Muted text on
+    the page keeps 4.5 over every point of the scene (checked from a picture of it).
+    - `node test/glass-contrast.mjs . <last commit's web>` measures every line of text against what is behind it, on all routes,
+      light and dark, and fails on anything the glass made worse. Run it after any change to the glass or the palette.
+    - `node test/glass-survey.mjs` lists anything still solid across all routes (`test/shots/glass-survey.txt`).
+    - The walk `node test/glass-walk.mjs [dir] [name]` photographs the screens to `test/shots/glass-walk/<name>/`.
+    Contract: MODULE_API section 93 (no new wording).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

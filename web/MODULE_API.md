@@ -5904,3 +5904,77 @@ night", which a woman on a plan rarely opens. New lines wait for the doctor (rev
 
 **Tests:** `node test/nightsweats.mjs` (33 checks). Unchanged and passing: winddown, minimal, goals, records, maths, progs,
 golden (no re-record), calm, daynote, smoke and check.
+
+## 93. Version 39.50: the glass look
+
+Mohit, 30 Oct, after the menopause app walk: "i like Its Glass UI not colour theme", then "Colour scheme should not be changed"
+(the mockup claude.ai/artifact/UGJkPGEeHJLc2q9fVAVaVY), then "proceed doing glass UI for all screens". The look is Sakhi's own
+colours, frosted. No colour, word or layout changes. Every rule is in one block at the end of `app.css`, "Version 39.50: glass".
+1. **A still scene behind every screen** (`body::before`, fixed): her wash (`--wash1`, `--wash2`, `--bg`), kept beside the app's
+   column at any width. In light it has two soft lights in the upper half, and her pink (`--accent-2`), lavender (`--h-purple`)
+   and peach (`--peach`) low and gentle, where the page is lightest. Dark mode has her pink and plum.
+   - Page intros and labels sit on the scene directly, so no glow is darker than the wash where text can pass. Muted text keeps
+     4.5 or more over every point (the check's first try had a pink glow at about 3.5).
+   - The page itself carries `--bg` (`html`). The body and `#app` are see-through, and the first-paint guard in `index.html`
+     moved from `body` to the page for this.
+2. **Her surfaces see-through, in her card colours** (`--glass`: white at 58%, dark `#2B1C1C` at 70%):
+   - `.card` (hero included), `.item`, `.action`;
+   - tiles (`.topic-card`, `.qa-tile`, `.feel-c`, `.ob-lt`), the symptom groups, helplines and the day page's boxes;
+   - module cards, lifted with `:root` over the modules' own rules: `.xp-how`, `.tl-rem`, `.screen-row`, `.pg-acc`, `.pst-acc`,
+     and from the route survey Help's lists `.access-sch`, the contraception choices `.contra-res` and the birth plan
+     `.ptl-acc`;
+   - with `--glass-2`: past medicines `.tl-acc`, reminders that are off, the intimate pages' first row and her notes after a
+     loss.
+   Inner panels inside a card (stats, meters, rows) keep their solid soft colour over the glass.
+   - Soft cards and quiet rows use `--glass-2` (`--card-2` at 62%), and the Diary's paper cards `--glass-paper` (`--paper` at
+     70%, the grain kept).
+   - The edge is a light line drawn inside (`inset` shadows), so no box grows by a pixel.
+3. **Frosted bars and sheets** (`backdrop-filter`):
+   - the top bar is 80% solid with an 18 px blur;
+   - the tab bar is 90% with a 22 px blur;
+   - sheets are 90% with a 24 px blur;
+   - the sticky strips are frosted like the bars: the moves player's Previous, Pause and Next (`.pl-ctl`, its own rounded glass
+     strip in place of a fade) and the intimate check's question (`.intimate-qx`).
+   The bars stay this solid so their labels read when a dark card scrolls under them.
+4. **What stays as it was:** urgent and highlight cards (ink, `.card.dark`, `.xp-now`), coloured cards and tiles (`ok`, `warn`,
+   `hue-*`, Wind down's night tile), buttons, chips, inputs, documents (`.tl-doc`), paper sheets, and print (white, no scene).
+   Reduced transparency gets solid cards.
+
+**Tests:** `node test/glass.mjs` (30 checks, light and dark):
+- the scene;
+- see-through surfaces on Today, My plan, the Diary, Explore, Help and Me, with no border added;
+- frosted bars and sheets, and how solid the bars are;
+- the urgent card, inputs and print;
+- from a picture of the bare scene, muted text on the page at 4.5 or more over every point, and ink, text and muted on a
+  card over its worst point.
+
+`node test/glass-contrast.mjs . <the last commit's web folder>` checks every line of text on all routes for 5 sample women,
+light and dark: about 104,000 lines.
+- Each is measured against what is really behind it: its layers, then the bare scene's worst point, plus an ink card under a
+  bar.
+- It fails only on contrast the glass made worse. On Version 39.50 nothing is worse.
+- The one line it caught: the after-birth vaccine line, gold at 4.17 on glass. It now takes `--gold-text` (`.pst-vx.past .pst-va
+  span`).
+- Eight lines fail the same before and after, so the glass didn't cause them:
+  - the topbar's 9.5 px "QURA" over an ink card scrolling under it;
+  - the "See a doctor this week" labels;
+  - the language glyphs;
+  - one dark-mode date on Plan the week.
+- Reduced transparency gives solid cards and sheets (checked with the media feature emulated). At tablet width the column sits
+  over the scene.
+
+`node test/glass-survey.mjs` (not pass/fail) visits all 216 routes for 5 sample women, light and dark, plus the day sheet and
+Help. It lists every surface still painted solid, and any opaque panel, to `test/shots/glass-survey.txt`. On Version 39.50
+what is left is meant to stay solid:
+- urgent ink;
+- coloured notes, tiles, food tiles and symptom chips;
+- the selected tile;
+- segmented controls and inputs;
+- inner panels inside glass cards.
+The joining flow has none besides the coloured stage tiles and the number box.
+
+The walk `node test/glass-walk.mjs [dir] [name]` photographs these to `test/shots/glass-walk/<name>/`:
+- light and dark: Today (and scrolled), My plan, the Diary, Explore, Learn, Help, Me, a day sheet and the check-in;
+- once: the welcome, Help's body parts, contraception, the moves player (resting and running), Wind down, Learn and an
+  article, a relief routine, the report, Moves and calm, and the intimate check.
+Run it on the last commit's web folder for "before".

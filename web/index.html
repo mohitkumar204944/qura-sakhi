@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="app.css">
 <style>
 /* Tokens, type and layout live in app.css; this block only guards the first paint. */
-body { background: #F7F4F8; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme]) body { background: #1E1414; } }
-:root[data-theme="dark"] body { background: #1E1414; }
+html { background: #F7F4F8; }   /* on the page itself, so the glass scene (Version 39.50) shows through the body */
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) { background: #1E1414; } }
+:root[data-theme="dark"] { background: #1E1414; }
 /* Version 32: if the app never starts (a very old WebView), this note shows after 6 seconds; a normal start replaces it */
 .boot-note { opacity: 0; animation: boot-note 0.3s 6s forwards; padding: 24px 16px; font: 16px/1.5 sans-serif; color: #2B1414; }
 :root[data-theme="dark"] .boot-note { color: #F5E8E8; }
