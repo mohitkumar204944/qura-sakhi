@@ -2695,3 +2695,8 @@ No new health wording, so nothing waits for the doctor.
 
 No new wording. Cards shown in fewer places: "Tell Sakhi your stage and goals" waits while Sakhi says offers her a plan, just after she changed her stage; My
 plan's picker is the one place the PMOS plan is suggested; the Cycles finding offers the same plan as Today.
+
+### 19.43 Version 39.43: the PMOS day-1 walk's gaps (MODULE_API section 86)
+
+No new wording. A step's line under its name shows whole (on a second line when it doesn't fit); the PMOS plan's bedtime step
+starts on day 4; My plan's routine shows its minutes on its play button, as Today does.

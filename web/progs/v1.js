@@ -260,7 +260,7 @@
       { id: 'yoga', kind: 'adapter', use: 'yoga.cycle' },
       { id: 'move', kind: 'adapter', use: 'walk.cycle' },
       { id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food' },
-      { id: 'sleep', kind: 'adapter', use: 'bed' }
+      { id: 'sleep', kind: 'adapter', use: 'bed', if: ['pday:4-'] }   /* Version 39.43: 3 steps on day 1 (the minimalist baseline); her bedtime from day 4 */
     ],
     list: [
       { use: 'item', icon: 'ico:yoga', hue: 'plum', text: '@plan_pi_yoga', why: 'plan_fb_move_g' },

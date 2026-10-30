@@ -125,8 +125,8 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   check('2 Today shows it ticked too', await a.page.$eval('#view .today-plan-sleep', (r) => r.classList.contains('today-ok')).catch(() => false));
   await done(a);
   const t = await open({ hash: '#home', hm: '21:00' });
-  const tw = await t.page.$eval('#view .today-plan-sleep', (r) => ({ t: r.innerText.replace(/\s+/g, ' '), b: !!r.querySelector('.today-start.night[data-today-nav]'), w: !!r.querySelector('.today-sub.wrap') })).catch(() => null);
-  check('2 Today: tonight\'s session plays where the tick goes, in a short line', !!tw && tw.b && !tw.w && /In bed by 11 pm/.test(tw.t) && /Tonight: slow breaths/.test(tw.t) && !/Dr\. Megha/.test(tw.t) && /4 min/.test(tw.t), tw);
+  const tw = await t.page.$eval('#view .today-plan-sleep', (r) => ({ t: r.innerText.replace(/\s+/g, ' '), b: !!r.querySelector('.today-start.night[data-today-nav]'), w: !!r.querySelector('.today-sub.wrap'), c: (() => { const tt = r.querySelector('.today-sub-t'); return !!tt && tt.scrollWidth > tt.clientWidth + 1; })() })).catch(() => null);
+  check('2 Today: tonight\'s session plays where the tick goes, its line whole (Version 39.43: a second line when it doesn\'t fit)', !!tw && tw.b && !tw.c && /In bed by 11 pm/.test(tw.t) && /Tonight: slow breaths/.test(tw.t) && !/Dr\. Megha/.test(tw.t) && /4 min/.test(tw.t), tw);
   check('2 ... and yoga says before a meal in its line, its 8 min on its Start (Version 39.41)', (await txt(t.page, '#view .today-plan-yoga .today-sub-t')) === 'Before a meal' && (await txt(t.page, '#view .today-plan-yoga [data-today-nav]')) === '8 min');
   check('2 ... the pink button stays the next step\'s (or the check-in), never the session', !(await has(t.page, '#view .today-start.night.primary')));
   await tap(t.page, '#view .today-plan-sleep [data-today-nav]');

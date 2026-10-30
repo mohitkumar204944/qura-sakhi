@@ -2450,6 +2450,10 @@
     if (canSave()) { state.prompts = Object.assign({}, p, { approxNote: td }); setTimeout(save, 0); } return true; };
   const planLeads = () => !!(api.plan && api.plan.leads && safe(() => api.plan.leads(), false));
   const planEarly = () => !!(api.plan && api.plan.early && safe(() => api.plan.early(), false));
+  /* Version 39.43 (Mohit's Flip5, 360 dp): a step's line on Today that doesn't fit wraps to a second line, measured on her own phone
+     (it draws these lines wider than the test browser), again once the fonts are in; a line that fits stays one short line */
+  const fitSubs = (v) => { const fit = () => v.querySelectorAll('.today-sub').forEach((s) => { const tt = s.querySelector('.today-sub-t'); if (tt && !s.classList.contains('wrap') && tt.scrollWidth > tt.clientWidth + 1) s.classList.add('wrap'); });
+    fit(); try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); } catch (e) { /* no font API: the first measure stands */ } };
   function renderHome(v) {
     const cd = cycleDay(); const ls = lastStart(); const ri = rangeInfo(); const g = usable(); const last6 = g.slice(-6); const bd = bleedingDays(); const tStr = toISO(today()); const inPeriod = bd[tStr] && bd[tStr] !== 'spot';
     const disc = !!state.settings.discreet; const hide = disc && !mem.shownNumbers; const blur = hide ? ' blur' : '';
@@ -2579,7 +2583,7 @@
     v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
-    wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
+    fitSubs(v); wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
     const hlr = $('.hl-row', v); if (hlr) hlr.addEventListener('click', (e) => { if (!e.target.closest('button, a')) setHash('diary'); });   /* Version 39.23 */
     wireOneTap(v); wireHomeV30(v); wireExCard(v); wireFeel(v); wireWhy(v);   /* Version 39.10; 39.16; 39.25 */
     const hr = $('#hu-rem', v); if (hr) hr.addEventListener('click', () => turnOnNotify());   /* Version 39.27: on in one tap, no page to find */

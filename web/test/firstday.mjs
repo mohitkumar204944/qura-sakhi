@@ -180,7 +180,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
   v = await view(page);
   check('6 the Start screen: today, tomorrow or Monday, and an evening check-in time', /When do you want to start\?/.test(v) && /Today/.test(v) && /Tomorrow/.test(v) && /Monday, 2 Nov/.test(v) && /6 pm/.test(v) && /9 pm/.test(v) && !/8 am|1 pm/.test(v), v.slice(0, 600));
-  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default)', /Reminders are on: your 6 pm time to move, your 8 pm check-in and your 11:30 pm wind-down\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
+  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4)', /Reminders are on: your 6 pm time to move and your 8 pm check-in\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
   await shot(page, '03-start');
   await closeTips(page);
   await tap(page, '#pl-rv-go'); await settle(page, 1500);
@@ -195,7 +195,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 Start starts it: day 1 today, the 8 pm reminder', s.mods.plan.start === TODAY && s.mods.plan.go === true && !s.mods.plan.next && (s.reminders || []).some((r) => r.id === 'plan' && r.time === '20:00' && r.start === TODAY), [s.mods.plan.start, s.reminders]);
   v = await view(page);
   check('8 day 1: her plan leads "Sakhi says"', (await slotFirst(page)) === 'Day 1 of your plan' && /Your first step: Cycle care yoga · \d+ min\. At 8 pm, a 1-minute check-in\./.test(v), [await slotFirst(page), v.slice(0, 900)]);
-  check('8 day 1: Today counts her plan by plan day (Version 39.14), and the check-in waits for the evening', /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && /Check-in at 8 pm/.test(v) && !(await has(page, '#view .today-card .pl-t-ci')), v.slice(0, 900));
+  check('8 day 1: Today counts her plan by plan day (Version 39.14), and the check-in waits for the evening', /PLAN DAY 1/.test(v) && /0 of 3 done today/.test(v) && /Check-in at 8 pm/.test(v) && !(await has(page, '#view .today-card .pl-t-ci')), v.slice(0, 900));
   check('8 day 1: the "keep an eye on it" card waits (no period for 60 days)', !(await has(page, '#view [data-xp-lv="watch"]')));
   check('8 day 1: the heads-up, setup and Coming up wait', !(await has(page, '#view .hu-card')) && !(await has(page, '#view .setup-card')) && !(await has(page, '#view .cu-empty')));
   await shot(page, '04-day1-today');
@@ -215,12 +215,12 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await jump(page, 1, '09:00'); await closeTips(page);
   v = await view(page);
   const yd = await page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? { c: y.querySelector('i').className, t: y.title } : null; });
-  check('8 day 2: Today shows what she did yesterday (Version 39.14: her week\'s dots)', /PLAN DAY 2/.test(v) && yd && yd.c === 'full' && /: 4 of 4 steps$/.test(yd.t), [yd, v.slice(0, 900)]);
+  check('8 day 2: Today shows what she did yesterday (Version 39.14: her week\'s dots)', /PLAN DAY 2/.test(v) && yd && yd.c === 'full' && /: 3 of 3 steps$/.test(yd.t), [yd, v.slice(0, 900)]);
   check('8 day 2: no first-day card', (await slotFirst(page)) !== 'Day 1 of your plan', await slotFirst(page));
   await jump(page, 2, '09:00'); await closeTips(page);
   v = await view(page);
   const yd3 = await page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? { c: y.querySelector('i').className, t: y.title } : null; });
-  check('8 day 3: small steps add up', /3 days in: small steps add up./.test(v) && yd3 && yd3.c === '' && /: 0 of 4 steps$/.test(yd3.t), [yd3, v.slice(0, 900)]);
+  check('8 day 3: small steps add up', /3 days in: small steps add up./.test(v) && yd3 && yd3.c === '' && /: 0 of 3 steps$/.test(yd3.t), [yd3, v.slice(0, 900)]);
   await jump(page, 3, '09:00'); await closeTips(page);
   check('8 day 4: the cards that waited come back (setup, Coming up)', /Set up Sakhi for you/.test(await page.$eval('#view .slot', (e) => e.textContent).catch(() => '')));
   check('8 day 4: "no period yet" is folded into the plan\'s doctor check (Version 37.2)', (await page.$eval('#view .slot', (s) => s.children[1] ? s.children[1].innerText.split('\n')[0] : '').catch(() => '')) === 'Did you get the doctor check?' && !(await has(page, '#view [data-xp-lv="watch"]')));
@@ -276,7 +276,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('9 My plan says when, with "Start today instead"', /Your plan starts tomorrow/.test(await view(page)) && (await has(page, '#pl-soon-now')));
   await jump(page, 1, '10:00'); await closeTips(page);
   v = await view(page);
-  check('9 tomorrow, day 1 begins', /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && (await slotFirst(page)) === 'Day 1 of your plan', v.slice(0, 900));
+  check('9 tomorrow, day 1 begins (3 steps)', /PLAN DAY 1/.test(v) && /0 of 3 done today/.test(v) && (await slotFirst(page)) === 'Day 1 of your plan', v.slice(0, 900));
   check('16 no page errors (tomorrow)', errs.length === 0, errs);
   await ctx.close();
 }
@@ -424,7 +424,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('16 discreet: the doctor check shows in plain words', !/doctor check/.test(words) || /A doctor’s check is part of your plan/.test(words), words.match(/.{0,60}doctor.{0,60}/i));
   await tap(page, '#pl-rv-go'); await settle(page, 1200); await closeTips(page);
   const v = await view(page);
-  check('16 discreet: Today says "My plan · plan day 1"', /My plan/i.test(v) && /PLAN DAY 1/.test(v) && /0 of 4 done today/.test(v) && !/My cycle plan/i.test(v), v.slice(0, 700));
+  check('16 discreet: Today says "My plan · plan day 1"', /My plan/i.test(v) && /PLAN DAY 1/.test(v) && /0 of 3 done today/.test(v) && !/My cycle plan/i.test(v), v.slice(0, 700));
   check('16 discreet: the day-1 card shows, in plain words', (await slotFirst(page)) === 'Day 1 of your plan', await slotFirst(page));
   check('16 no page errors (discreet)', errs.length === 0, errs);
   await ctx.close();

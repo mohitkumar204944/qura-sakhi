@@ -5488,3 +5488,23 @@ pregnancy marked by mistake), then "fix all 3". No new words.
 
 **Tests:** `node test/stagewalk.mjs` (13 checks; 4 fail on 0.39.41's code). pmosplan 14 finds her PMOS plan as the picker's
 Suggested row, with her one other suggestion under it.
+
+## 86. Version 39.43: the PMOS day-1 walk's gaps
+
+Mohit, 30 Oct: "can you do a walkthrough on my phone and check gaps" (vc 75, My PMOS plan on day 1; his Flip5's main screen is
+360 dp wide, not about 411 as section 84 said), then "fix all 4". No new words.
+1. **A step's line that doesn't fit wraps** (core `fitSubs`): after Today draws (and again once the fonts are in), each step's
+   line under its name that is cut (`.today-sub-t` wider than its box) gets `.today-sub.wrap`, a second line. A line that
+   fits stays one short line. It is measured on her phone because her phone draws these lines wider than the test browser,
+   which cut none of the three his phone cut ("Before a …", "At lunch or dinn…", "Tonight: sl…").
+2. **The PMOS (cycle) plan starts day 1 with 3 steps** (`progs/v1.js`, its `sleep` step `if: ['pday:4-']`, as My
+   pregnancy's pelvic floor): yoga, her walk and her food habit; her bedtime joins on day 4. Its wind-down reminder follows
+   the step (`windOk`), so it starts ringing on day 4 too, and the Start card doesn't name it on day 1. The only live plan
+   that had 4 steps on day 1 (the minimalist baseline, Mohit 28 Oct).
+3. **Sakhi stays upright** (`android/AndroidManifest.xml`, `MainActivity` `screenOrientation="portrait"`): on its side the
+   phone drew the wide-screen frame, taller than the screen, with the tab bar over her cards.
+4. **My plan's routine row as Today's:** its name, and its minutes on the play button ("▶ 8 min"), as Today's row (section
+   84) and the wind-down step on both pages; no "Start" beside "Cycle care yoga · 8 min".
+
+**Tests:** `node test/phonefit.mjs` (10 checks). Golden is re-recorded for 2: the cycle plans' 3 steps on day 1 (no bedtime
+step, "Each ring has 3 parts"), and the routines' minutes on My plan's play button. `progs/baseline.json` re-records `cycle@1`.

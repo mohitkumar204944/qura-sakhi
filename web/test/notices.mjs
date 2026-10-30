@@ -97,7 +97,8 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
 
 /* ---------- 2. One count everywhere ---------- */
 {
-  const { ctx, page, errs } = await open({ seed: { intake: IK, reminders: [REM()], mods: { plan: planOf('cycle', 'irregular', ago(2)) } }, now: at(0, '20:30') });
+  /* plan day 4: her bedtime step has joined (Version 39.43), so all 4 steps are counted */
+  const { ctx, page, errs } = await open({ seed: { intake: IK, reminders: [REM()], mods: { plan: planOf('cycle', 'irregular', ago(3)) } }, now: at(0, '20:30') });
   await go(page, 'plan-checkin');
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':p"]');
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
@@ -112,7 +113,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   await ctx.close();
 }
 {
-  const { ctx, page } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(2)) } }, now: at(0, '20:30') });
+  const { ctx, page } = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(3)) } }, now: at(0, '20:30') });   /* plan day 4: with her bedtime step (Version 39.43) */
   await go(page, 'plan-checkin'); await tap(page, '[data-ci="yoga:n"]'); await tap(page, '[data-ci="move:d"]'); await tap(page, '[data-ci="food:p"]'); await tap(page, '[data-ci="sleep:n"]'); await tap(page, '[data-ci-b="tired"]'); await tap(page, '#pl-ci-save');
   check('2 a mixed day: "1 done, 1 partly today"', /1 done, 1 partly today/.test(await view(page)), (await view(page)).slice(0, 300));
   await go(page, 'home');
@@ -276,7 +277,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   check('8 Hindi: the summary and what next', /आपने 84 में से 2 दिन प्लान पूरा किया/.test(await view(page)) && /आगे क्या\?/.test(await view(page)) && /आपने बताया: 36 से 45 दिन/.test(await view(page)), (await view(page)).slice(0, 600));
   check('8 360 px: the summary doesn\'t scroll sideways', await noScroll(page));
   await ctx.close();
-  const b = await open({ seed: { lang: 'hi', intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(2)) } }, lang: 'hi', w: 360, now: at(0, '20:30') });
+  const b = await open({ seed: { lang: 'hi', intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(3)) } }, lang: 'hi', w: 360, now: at(0, '20:30') });   /* plan day 4 (Version 39.43) */
   await go(b.page, 'plan-checkin');
   for (const g of await b.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(b.page, '[data-ci="' + g + ':p"]');
   await tap(b.page, '[data-ci-b="time"]'); await tap(b.page, '#pl-ci-save');
