@@ -884,7 +884,7 @@
     ].join('\n'),
     home: home,
     /* Home's setup card (Version 30): in midlife, the weekly symptom diary */
-    setup: () => (S.canSave() && S.stageNow() === 'meno' ? { id: 'meno-diary', order: 20, title: t('meno_setup'), sub: t('meno_diary_s'), go: 'meno-diary', done: Object.keys(peekDiary()).length > 0 } : null),
+    setup: () => (S.canSave() && S.stageNow() === 'meno' && !(S.plan && S.plan.meno && S.plan.meno.on()) ? {   /* Version 39.51: not while the midlife plan runs (its weekly number is in her check-in) */ id: 'meno-diary', order: 20, title: t('meno_setup'), sub: t('meno_diary_s'), go: 'meno-diary', done: Object.keys(peekDiary()).length > 0 } : null),
     summary: summary,
     sample: sample,
     afterRender: (v, route) => { if (route !== 'meno-diary') { mem.week = null; mem.draft = null; mem.confirm = false; } }

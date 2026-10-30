@@ -2832,3 +2832,175 @@ New lines, waiting for the doctor (English, Hindi):
    title fine for it, with the count line underneath?
 3. At bedtime the card suggests a cool room, light cotton clothes, water by the bed, and the hot-flush routine's cooling and slow
    breathing when a flush wakes her. Is that right for the night?
+
+### 19.51 Version 39.51: My midlife plan, version 2, "Cool, calm and strong" (MODULE_API section 94)
+
+Mohit, 30 Oct: "start with the midlife plan", then "proceed building with your recommendations" (advice
+`docs/midlife-plan-advice-2026-10-30.md`; mockup claude.ai/artifact/4K1ocG3KAXiAtPHQn3rymd). Every line below is new and waits for
+review. The Hindi of each line sits beside it in `web/mods/midlife.js` (the chapters) and `web/mods/plan.js` (the plan's lines).
+Reused as they are, already reviewed: the POI line (`meno_tl_poi0`), "12 months without a period before 45" (`meno_tl_done_early`),
+tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midlife articles (her year's monthly read).
+
+**The chapters** (one a week, 4 a part; the skill on Today that week in brackets). Each ends with "Why this works":
+- Cool and calm: "This way of working with thoughts and habits is called CBT. In studies, women who learnt it found hot flushes and
+  night sweats less of a problem, even when they still came. The UK’s NICE guideline recommends it, beside hormone therapy or on its
+  own."
+- A calmer mind: "This way of working with thoughts and habits is called CBT. The UK’s NICE guideline recommends it for low mood
+  around menopause."
+- Rest: "These rules come from CBT for sleep (CBT for insomnia), which doctors recommend first for sleep problems that last."
+- Strong and steady: "Strength and balance work is what doctors and physiotherapists advise after menopause, for muscles, bones and
+  fewer falls."
+
+**h1 · What a hot flush is** (Today’s skill: “notice it, name it”)
+- As your periods change or stop, your body’s thermostat gets more sensitive. A small rise in warmth sets off a quick cool-down: heat in your face and chest, sweating, a fast heartbeat. Then it passes, often in a few minutes.
+- A flush is uncomfortable, but it isn’t dangerous. How much it gets in your way depends partly on what you think and do while it happens, and that part you can change.
+- When a flush starts, tell yourself: “This is a flush. It will pass.” Notice where you were and what you were thinking. Tap Hot flushes in your diary that day.
+
+**h2 · Thoughts that turn up the heat** (Today’s skill: “swap the thought”)
+- When a flush starts, a thought often comes with it: “Everyone can see.” “I can’t bear this.” Thoughts like these make it feel bigger and harder to sit through.
+- “Everyone can see” → “Most people don’t notice. If they do, it’s only a flush.”
+- “I can’t bear this” → “I’ve got through every one so far. It will pass.”
+- “It will never stop” → “It passes, usually in a few minutes.”
+- “Something is wrong with me” → “My body is cooling down. It isn’t dangerous.”
+- Pick the calmer thought that fits you best, and say it to yourself each time a flush starts.
+
+**h3 · Carry on, and keep cool** (Today’s skill: “carry on”)
+- Rushing out of the room or stopping everything can make a flush feel like an emergency. Staying with what you’re doing, as best you can, teaches your mind that it isn’t one.
+- Some things help you feel cooler: a layer you can take off, cotton clothes, cool water, a fan. Notice what sets your flushes off, such as a hot drink, spicy food or a warm room. These make you more comfortable; they don’t stop the flushes.
+- When a flush comes: name it, say your calmer thought, breathe slowly, and carry on with what you were doing.
+
+**h4 · Night sweats** (Today’s skill: “your night plan”)
+- Night sweats are hot flushes while you sleep. Waking up hot can make you worry about tomorrow, and the worry keeps you awake.
+- Before bed: a cool room, light cotton clothes, water by your bed. If a flush wakes you, push back the covers, sip some water and tell yourself: “It will pass. I can rest.”
+- Set up your bedroom the cool way every night this week. Can’t get back to sleep after about 20 minutes? Get up and do something calm until you feel sleepy.
+- See a doctor this week
+- Night sweats with a fever, a cough for more than 2 weeks, or weight loss: see a doctor and ask about a TB test, which is free at government centres.
+
+**q1 · Mood in midlife** (Today’s skill: “notice your mood”)
+- Changing hormones, poor sleep and a busy life can all bring worry, irritability or low days in midlife. It’s common, and it can be helped.
+- What you think, how you feel and what you do are linked. Change one, and the others often follow.
+- Once a day, stop and notice: how am I feeling, and what am I thinking? Just notice. You don’t have to fix it.
+- Thoughts of harming yourself? Call Tele-MANAS on 14416: free, any time. In danger right now, call 112.
+
+**q2 · Worry thoughts** (Today’s skill: “a kinder answer”)
+- Worry often jumps to the worst: “Something bad will happen.” “I can’t cope.”
+- Ask yourself: what would I tell a friend who thought this? Then tell yourself the same.
+- When a worry comes, say it or write it down, then the kinder answer you would give a friend.
+
+**q3 · One thing that lifts you** (Today’s skill: “one thing that lifts you”)
+- When we feel low, we do less, and doing less makes us feel lower. Small things you enjoy, or that matter to you, turn this around.
+- A walk in the morning light, a call to a friend, music, prayer, cooking something you like, time with family.
+- Each day, plan one small thing that lifts you, and do it, even if you don’t feel like it at first.
+
+**q4 · Sleep and mood** (Today’s skill: “your wind-down”)
+- Poor sleep and low mood feed each other. A steady get-up time and a calm last hour before bed help both.
+- Every evening this week, take 20 minutes to wind down before bed: lights low, your phone away, slow breaths or yoga nidra.
+- Talk to your doctor
+- Low mood or worry on most days for 2 weeks, or it stops you doing your day: talk to your doctor. Talking therapy and medicines help.
+
+**r1 · One get-up time** (Today’s skill: “up at the same time”)
+- Your body clock likes a steady morning. Getting up at the same time every day, even after a bad night or on a holiday, makes sleep come more easily at night.
+- Lying in after a bad night feels kind, but it pushes tonight’s sleep later.
+- Pick your get-up time, and keep it every day this week.
+
+**r2 · Bed is for sleep** (Today’s skill: “the 20-minute rule”)
+- Lying awake for a long time teaches your body that bed is a place to worry.
+- Go to bed when you feel sleepy, not just because it’s late. Can’t sleep after about 20 minutes? Get up, sit somewhere dim and do something calm. Go back when you feel sleepy.
+- Use the 20-minute rule this week, every night you need it.
+
+**r3 · Light, naps and tea** (Today’s skill: “morning light”)
+- Daylight in the morning sets your body clock. A walk outside, or sitting by a window after you get up, helps.
+- If you nap, keep it to about 20 minutes, before 3 pm. Have your tea or coffee before 2 pm.
+- Get 15 minutes of morning light every day this week.
+
+**r4 · When sleep needs a doctor** (Today’s skill: “a calm last hour”)
+- Keep your last hour before bed calm: lights low, your phone away, and Wind down if you like.
+- Tell your doctor if
+- You snore loudly and stop breathing for a moment, feel very sleepy in the day, or have slept badly on most nights for 3 months. These can be treated: a short course of talking therapy for sleep (CBT for insomnia) helps many women, and doctors try it before sleeping pills.
+- Keep a calm last hour every evening this week.
+
+**s1 · Muscle after 40** (Today’s skill: “steady on your feet”)
+- After menopause, muscles and bones get weaker faster. Strength work twice a week keeps your muscles strong, and helps your bones too.
+- You don’t need a gym: a chair, a wall and your own body are enough.
+- Every day: Steady on your feet, 3 minutes. Twice a week: Strength at home.
+
+**s2 · Steady on your feet** (Today’s skill: “steady on your feet”)
+- Good balance helps prevent falls, and most broken bones later in life come from a fall.
+- A few minutes of balance practice a day makes a difference. Always keep a hand near a wall or a chair.
+- Steady on your feet, every day this week.
+
+**s3 · Lift and bend the safe way** (Today’s skill: “steady on your feet”)
+- To lift something: bend your knees and hips, keep your back tall, hold it close to you, and don’t twist while you lift.
+- Avoid bending forward with something heavy, and sudden twists, most of all if your doctor has said your bones are weak.
+- This week, lift the safe way every time: a bucket, a child, the shopping.
+
+**s4 · Food for strong bones** (Today’s skill: “steady on your feet”)
+- Calcium foods every day: milk or curd, paneer, ragi, til, green leafy vegetables, rajma and chana.
+- Protein at each meal helps your muscles: dal, paneer and curd, and eggs, fish or chicken if you eat them.
+- Calcium or vitamin D tablets: only if your doctor advises them.
+- Every day this week: a calcium food, some protein at each meal, and Steady on your feet.
+
+**The plan's lines:**
+- Today's step: "Today’s skill: {the chapter's skill}" · "2 minutes · from this week’s chapter" · "This week’s sleep rule" · "This
+  week’s chapter" · "This month’s read".
+- Its reasons (behind "Why?"): "A skill you practise every day makes hot flushes easier to handle, even when they still come." ·
+  "Noticing your thoughts, and doing one thing that lifts you, helps your mood day by day." · "A steady body clock lets sleep come
+  more easily." · "A few minutes of balance a day helps keep you steady on your feet."
+- Reworded for every midlife plan: `plan_fb_hot` "Cooling down and a calm breath can make a hot flush more comfortable while it
+  passes." (was "Cooling down and slow breathing can make hot flushes easier to get through"; The Menopause Society 2023 doesn't
+  recommend paced breathing or cooling as a flush treatment) · `plan_fb_bones` "Strength work two days a week keeps your muscles
+  strong after 40, and helps your bones too."
+- Steady on your feet (3 minutes): "One leg at the wall: Stand side-on to a wall with one hand on it. Lift one foot a little off the
+  floor and hold, up to 30 seconds." · "Heel to toe at the wall: Walk slowly along a wall with one hand on it,
+  one foot right in front of the other, heel to toe. 10 steps, then turn and come back." · Heel raises, as in Strength at home.
+- "Your day": "Has a doctor said your bones are weak, or did a bone break after a small fall?" (Yes, No, Not sure) · "Chest pain,
+  fainting, or getting very breathless when you walk?" (Yes, No).
+- Under a yes, and on My plan: "Please see your doctor before you do more. Until then your walk stays easy, and Gentle start takes the
+  place of Strength at home. Chest pain right now, or pain spreading to your jaw or arm: call 112." · "Every move in this plan is
+  bone-safe, with no jumps. Ask your doctor about a bone scan and tablets."
+- Her weekly number (the check-in, once a week from day 7): "This week, how much did {hot flushes and night sweats / poor sleep /
+  worry or low mood / aches, stiffness or tiredness} get in your way?" 0 · not at all to 10 · very much.
+- Her results: "How much {…} got in your way: {a} of 10 in your first 2 weeks, {b} of 10 in your last 2." · "Nights you slept well or
+  okay: {a} of {n} in your first 2 weeks, {b} of {m} in your last 2." · "Strength days: {n}".
+- Cards: "Your periods stopped before 45" (with the reviewed line) · weeks 4 to 7: "Hot flushes still getting in your way? The most
+  effective treatment for hot flushes is hormone therapy, prescribed by an MBBS gynaecologist. Your plan works beside it, or on its
+  own." · for her other goals, only with hot flushes in her diary, aches and tiredness, or hormone medicine: "Your doctor can help
+  too" · on hormone medicine:
+  "You take hormone medicine: keep to your doctor’s plan, and see your doctor about it once a year." with "Call 112 now if one calf is
+  swollen and painful, you are suddenly breathless, or one side of your body feels weak or speaking is hard." · for aches: "Aches and
+  tiredness: ask your doctor which blood tests you need, often Hb and thyroid." · weeks 12 to 16: "Your checks after 40. After 40,
+  BP, sugar and your bones need checking more often. See which checks, and how often."
+- Before 40: "Before a plan: see a gynaecologist" (with the reviewed POI line) · "My doctor has seen me".
+- The walk's fixes (31 Oct): "Here's what you told Sakhi" adds "Weak bones" and "Chest pain or very breathless when you walk"; her
+  year's skill line "Every day · from {Cool and calm}"; the new version's card "A short chapter a week for hot flushes, sleep and
+  strength, and a few minutes of balance, in a fresh 12 weeks from today. What you logged stays." and "Your new 12 weeks start
+  today."; after her periods stop, the routine's safety line is the reviewed line's first sentence, "Pain, dizziness, chest pain,
+  breathlessness that doesn’t settle, or bleeding."; the before-45 card only at 40 to 44 and a year after her last period.
+- The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
+  goal "fewer aches and more energy" and its check-in line "A step towards more energy."
+
+**For the doctor (MBBS gynaecologist):**
+1. Is the course's promise right: flushes "less of a problem, even when they still came", and NICE recommending CBT?
+2. Are the calmer thoughts in chapter h2 fine, "Most people don’t notice" above all?
+3. Chapter h4: night sweats with a fever, a cough for more than 2 weeks or weight loss mean a doctor this week and the free TB test.
+   Is that the right list?
+4. The sleep rules (one get-up time, the 20-minute rule, naps of about 20 minutes before 3 pm, tea before 2 pm, 15 minutes of morning
+   light) and "when sleep needs a doctor" (loud snoring with pauses, very sleepy in the day, 3 months of bad sleep; CBT-I before
+   sleeping pills): right for Indian women in midlife?
+5. The week-4 lines on hormone therapy, for the hot-flush goal and for the others.
+6. The warning signs for a woman on hormone medicine (one painful swollen calf, sudden breathlessness, weakness on one side or trouble
+   speaking): the right signs, and right for the pill and a hormonal IUD as well as HRT?
+7. "Often Hb and thyroid" for aches and tiredness: add vitamin D, or leave it to her doctor?
+8. Chest pain, fainting or getting very breathless when she walks: an easy walk and Gentle start until her doctor says, with 112 for
+   chest pain now. Is the line right, and should a yes hold the plan instead?
+9. Periods stopped before 40: no plan until she taps "My doctor has seen me". Is that the right gate?
+10. The checks after 40 named on the week-12 card: BP, sugar, and breast and cervical screening.
+
+**For a clinical psychologist (RCI registered):** the Cool and calm chapters (h1 to h4), the calm chapters (q1 to q4), their crisis
+line ("Thoughts of harming yourself? Call Tele-MANAS on 14416: free, any time. In danger right now, call 112.") and "Low mood or worry
+on most days for 2 weeks, or it stops you doing your day: talk to your doctor. Talking therapy and medicines help." The weekly 0 to
+10: is "get in your way" the right question, and should the results show it?
+
+**For a physiotherapist:** Steady on your feet (its 3 moves and their times), the lifting chapter (s3), "Always keep a hand near a wall
+or a chair", bone-safe as the rule for every midlife woman (no jumps in version 1), and Gentle start in place of Strength at home after
+chest pain when she walks. The 3D loops are the nearest poses (march, walk, calf) until the new ones are made.

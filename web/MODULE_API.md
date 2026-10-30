@@ -5978,3 +5978,80 @@ The walk `node test/glass-walk.mjs [dir] [name]` photographs these to `test/shot
 - once: the welcome, Help's body parts, contraception, the moves player (resting and running), Wind down, Learn and an
   article, a relief routine, the report, Moves and calm, and the intimate check.
 Run it on the last commit's web folder for "before".
+
+## 94. Version 39.51: My midlife plan, version 2 ("Cool, calm and strong")
+
+Mohit, 30 Oct: "start with the midlife plan", then "proceed building with your recommendations" (advice
+`docs/midlife-plan-advice-2026-10-30.md`, its 11 decisions as recommended; mockup claude.ai/artifact/4K1ocG3KAXiAtPHQn3rymd). It
+builds on Version 39.49 (the sleep card in the check-in), so it is committed after it. New health wording waits for the doctor
+(review 19.51), the calm chapters for a psychologist too and the balance moves for a physiotherapist.
+1. **The plan** (`web/progs/v1.js`, `meno` version 2, both midlife stages): 12 weeks in three 4-week parts in the order her goal
+   needs, then her year to week 52 (`keep`). Version 1 runs on for the women on it and is offered version 2 once (`mpv2`); Try it
+   starts a fresh 12 weeks from that day, so her parts begin at the first, and what she logged stays.
+   - The order (plan.js `M2_ORDER`): hot flushes h r s; sleep r h s (the calm chapters q in place of h when her diary has no hot
+     flushes in the last 60 days); worry or low mood q r s; bones s h r; weight and aches s r h. The parts are h Cool and calm, q a
+     calmer mind, r Rest and s Strong and steady (`m2Part`, `m2Order`).
+   - Her steps (`slots.max` 4): Today's skill (`meno.skill`: the week's practice or sleep rule, a tick that opens the chapter, or
+     Steady on your feet, the new balance routine `plan-r-steady`, in Strong and steady; in her year her first part's, `M2_KEEP`);
+     her walk (the ladder, or the light walk after "chest pain when you walk"); the plate for the weight goal, or a calcium food on
+     plan days 1, 3 and 6, as version 1; Strength at home on plan days 2 and 5 (Gentle start after "chest pain when you walk").
+   - Day 1 has 3 steps. No day has more than 3 (4 for weight, with the plate every day).
+2. **The chapters** (`mods/midlife.js`, new; route `mid-lesson`, behind her PIN in discreet mode, `PIN_ROUTES`): 16 short chapters,
+   4 a part (h1 to h4, a self-help course built on CBT; q1 to q4 its calm version; r1 to r4; s1 to s4). Each has its part and number,
+   cards her speaker reads, this week's skill, "Why this works" folded, and Done (`S.midlife.lesson`: `title`, `skill`, `read`,
+   `mark`, `ids`, `part`).
+   - The week's chapter is one row under her steps until she reads it (`lessonRow` → `m2LessonRow`). In her year it is a Learn
+     article a month, in turn (`M2_YEAR`), with no new wording; none on a shared phone.
+   - Breathing and cooling are comfort while a flush passes, never a treatment (The Menopause Society 2023). `plan_fb_hot` is reworded
+     so for every midlife plan, and `plan_fb_bones` names muscle first.
+   - Its reasons open the Learn library (`WHY_ART`: hot flushes, sleep and mood, bones and heart).
+3. **Her day's questions** ("Your day", the screen her plan already asks; no new screen): `mbone` (a doctor said her bones are weak,
+   or a bone broke after a small fall) and `mheart` (chest pain, fainting or very breathless when she walks), each with its line under
+   a yes (`warnOf`). My plan (`m2Card`): the week's chapter; "Your walk stays easy for now" with Call 112 and "My doctor says I can do
+   more" (`intake.mheart = 'ok'`); "Your bones" with Bones and heart after 40.
+4. **Her evening** (no new ring): the check-in asks her weekly number once a week from plan day 7 (`msAsk`, `msQ`; the day's log
+   `ms`, 0 to 10; never on a shared phone or in discreet mode), and in Rest V39.49's "How did you sleep?" for every goal (`slpRest`).
+5. **One card at a time in Sakhi says** (`menoDue`, `menoCardHtml`, `wireMeno`; none in discreet mode), each in its own weeks so
+   none comes back for months:
+   - once: her periods stopped before 45 (the reviewed `meno_tl_done_early`), at 40 to 44 and a year after her last period
+     (`yearSinceBleed`; none in her diary means joining's "about a year ago" or more);
+   - weeks 4 to 7, for hot flushes (her goal, or in her diary: `m2Hot`), aches and tiredness or hormone medicine: her doctor and hormone
+     therapy; her hormone medicine's own warning signs with Call 112 if she takes one; blood tests for aches and tiredness;
+   - weeks 12 to 16: her checks after 40 (BP, sugar and bones; the free check-ups card holds the screening), with Bones and heart
+     after 40.
+6. **Periods stopped before 40** (`poiHold`): no midlife plan (`packFor`) until she taps "My doctor has seen me"
+   (`situation.poiOk`, which also offers her plan: `prompts.planOffer`). Today shows the reviewed POI line (`meno_tl_poi0`), whatever
+   joining set, with Read about POI and Not now for 14 days (`prompts.poiNot`); My plan shows it in place of its goals (`wirePoi`).
+7. **Her results** (`menoRes`, the end page): her weekly number and her good nights, her first 2 weeks beside her last 2, and her
+   strength days, with no judging word.
+8. **My plan's 12 weeks** (`pathHtml`): her 3 parts in her order with their weeks, then her year.
+9. **Core:** the joining goal "Aches and tiredness" (`aches`) for both midlife stages, with Bones and heart in For you; `mid-lesson`
+   in `PIN_ROUTES`.
+10. **Not yet:**
+    - the chapters and practices in Dr. Megha's voice wait for the reviewed words (the speaker reads them until then);
+    - the 4 new 3D poses (one leg at the wall, heel to toe, tall back, side leg lift) wait for the 3D session and the
+      physiotherapist, so Steady on your feet uses the nearest loops (march, walk, calf);
+    - hypnosis audio isn't built.
+
+**Tests:** `node test/midlife.mjs` (68 checks). Re-recorded on purpose:
+- `progs/baseline.json`: meno 1 shows its two reworded lines, and meno 2 is new;
+- `test/golden/plans.json`: 4 fields, the same two lines on version 1's My plan.
+The plans test knows `meno.skill`, `mbone` and `mheart`.
+
+11. **The midlife walk's fixes** (Mohit, 31 Oct, "can you do testing first for any gaps or bugs", then "fix all 12"; the walk is
+    `node test/midlife-walk.mjs [kavita|sunita|asha|meera|vera]`, screens and words to `test/shots/midlife-walk/`):
+    1. before 40, the gynaecologist first even though joining offered no plan, and My plan's goals held behind it;
+    2. Aches and tiredness among the plan's midlife goals (`GOALS.meno`), so Today offers its plan and My plan lists it;
+    3. her bones and heart answers saved with her plan (`ikBase`) and shown in "Here's what you told Sakhi"; Gentle start, in place of
+       Strength at home, gives "Every small step counts." so My plan doesn't say her walk's reason twice;
+    4. version 1 to 2: a fresh 12 weeks from that day (her check-in's reminder to the new end);
+    5. before 45: at 40 to 44, a year after her last period;
+    6. week 4 by her goal (no hot-flush card without hot flushes);
+    7. week 12: BP, sugar and bones;
+    8. her year: "Every day · from {her first part}" (`plan_m2_keep_s`);
+    9. the sleep goal's chapters chosen on the day that part starts (`hotBefore`), so they never change inside it;
+    10. a new plan starts its own cards (`commitStart` clears `w4Seen`, `w12Seen`, `mpv2No`);
+    11. after her periods stop, the routine's safety line without "During your period" (`plan_stop_l_m`), and one leg at the wall
+        without "Then the other foot";
+    12. no "Start the weekly symptom diary" setup prompt while the midlife plan runs (meno.js `setup`); the diary stays a tool.
+    `node test/midlife.mjs` section 11 checks each one (93 checks in all).

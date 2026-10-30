@@ -376,6 +376,21 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - `node test/glass-survey.mjs` lists anything still solid across all routes (`test/shots/glass-survey.txt`).
     - The walk `node test/glass-walk.mjs [dir] [name]` photographs the screens to `test/shots/glass-walk/<name>/`.
     Contract: MODULE_API section 93 (no new wording).
+  - `node test/midlife.mjs` (Version 39.51, My midlife plan, version 2, "Cool, calm and strong"; Mohit, 30 Oct: "start with the
+    midlife plan", then "proceed building with your recommendations"; advice `docs/midlife-plan-advice-2026-10-30.md`; mockup
+    claude.ai/artifact/4K1ocG3KAXiAtPHQn3rymd):
+    - `meno` version 2 for both midlife stages: three 4-week parts in the order her goal needs (Cool and calm, a short CBT course
+      for hot flushes, or its calm version for worry; Rest, one sleep rule a week; Strong and steady, strength and balance), then a
+      Learn article a month to month 12; version 1 runs on, offered version 2 once;
+    - day 1: Today's skill, her walk and a calcium food, and the week's chapter as one row (`mods/midlife.js`: 16 chapters, route
+      `mid-lesson`);
+    - "Your day" asks about weak bones and chest pain when she walks; her weekly 0 to 10 in the check-in from day 7;
+    - one card at a time: before 45, weeks 4 to 7 (hormone therapy), weeks 12 to 16 (checks after 40); before 40, no plan until
+      her doctor has seen her;
+    - her results in her own numbers; Steady on your feet on Moves and calm, for midlife only.
+    The walk is `node test/midlife-walk.mjs [kavita|sunita|asha|meera|vera]` (screens and words to `test/shots/midlife-walk/`); its
+    12 fixes are the test's section 11. It builds on Version 39.49. Contract: MODULE_API section 94; wording: section 19.51 of the
+    review (new lines wait for doctor review, the calm chapters for a psychologist too, the moves for a physiotherapist).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

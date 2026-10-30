@@ -81,7 +81,7 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 /* ---------- 2. The closed vocabulary (mods/plan.js implements each word once) ---------- */
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
-const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm', 'post.pf'];   /* Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32; post.pf: Version 39.46 */
+const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm', 'post.pf', 'meno.skill'];   /* Version 39.51: meno.skill; Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32; post.pf: Version 39.46 */
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at', 'sub'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens; sub: Version 39.34, a set walk's own line */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
@@ -118,7 +118,7 @@ specs.forEach((p) => {
   if (!Array.isArray(p.goals) || p.goals.some((g) => Object.keys(g).some((x) => ['stage', 'goal'].indexOf(x) < 0))) bad.push(w + ': goals');
   const lf = p.life || {}; if ((lf.needs && !/^(pregnant|birth:\d+)$/.test(lf.needs)) || (lf.ends && lf.ends !== 'pregnant') || !Array.isArray(lf.pause) || lf.pause.some((x) => ['preg', 'post', 'loss'].indexOf(x) < 0) || lf.pause.indexOf('loss') < 0) bad.push(w + ': life (every plan pauses after a loss)');
   if (['weeks', 'pregWeek', 'birthWeek'].indexOf(p.clock) < 0 || !p.length || !(p.length.weeks >= 0)) bad.push(w + ': clock or length');
-  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby', 'psafe'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
+  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby', 'psafe'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work', 'mbone', 'mheart'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
   if (p.moves && (ik.day || []).indexOf('lim') < 0) bad.push(w + ': a plan with moves asks about knees and back');
   if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 4)) bad.push(w + ': at most 4 steps a day');   /* Version 39.13: the cycle plan's yoga and walk */
   if (p.hero != null && ['ring', 'week', 'timeline'].indexOf(p.hero) < 0) bad.push(w + ': hero');

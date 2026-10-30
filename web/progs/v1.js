@@ -236,6 +236,33 @@
     doctor: []
   },
   {
+    id: 'meno', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_meno' }], discreetTitle: '@plan_h_d',
+    goals: [{ stage: 'meno' }],
+    life: { pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    moves: true,
+    intake: { day: ['act', 'food', 'milk', 'lim', 'mbone', 'mheart'], when: true },
+    slots: { max: 4 }, hero: 'week', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'meno-diary', text: '@meno_diary', icon: 'diary', hue: 'orange', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.51: Cool, calm and strong: three 4-week parts in the order her goal needs (a short CBT course for hot flushes or for worry, one sleep rule a week, strength and balance), a chapter a week, her weekly 0 to 10, the bones and heart questions, one card at a time (before 45, week 4, week 12), then a Learn article a month to month 12' }],
+    steps: [
+      { id: 'skill', kind: 'adapter', use: 'meno.skill' },
+      { first: [
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', grow: 'hold', why: 'plan_fb_move_g', if: ['ans:mheart=y'] },
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g' }
+      ] },
+      { goal: { weight: [{ id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food' }] } },
+      { id: 'ca', kind: 'adapter', use: 'food.calcium', when: 'days:0,2,5', if: ['!goal:weight'] },
+      { first: [
+        { id: 'str', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:move', hue: 'green', why: 'plan_fb_any', when: 'days:1,4', if: ['ans:mheart=y'] },
+        { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_bones', when: 'days:1,4' }
+      ] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: []
+  },
+  {
     id: 'pain', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_pain' }], discreetTitle: '@plan_h_d',
     goals: [{ goal: 'pain' }],
