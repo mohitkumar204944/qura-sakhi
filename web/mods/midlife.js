@@ -163,7 +163,10 @@
       '.mid-les { display: grid; gap: 8px; }',
       '.mid-les.has-say > .say-b + .mid-p { padding-right: 40px; }',   /* a card that opens with its words keeps them clear of the speaker, as Getting ready's lessons do */
       '.mid-skill { border: 1.5px solid var(--accent); }',
-      '.mid-why summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }'
+      '.mid-why summary { list-style: none; cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }',
+      '.mid-why summary::-webkit-details-marker { display: none; }',
+      '.mid-why summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-right: 4px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); }',   /* Version 39.51 (Mohit's phone): the WebView drew no marker */
+      '.mid-why[open] summary::after { transform: rotate(-135deg); }'
     ].join('\n')
   });
 })(window.Saathi);

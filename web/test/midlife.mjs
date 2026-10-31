@@ -22,7 +22,11 @@
 //     joining set, with My plan's goals held; Aches and tiredness offered; her bones and heart answers saved through the real
 //     questions and in the summary; version 1 to 2 a fresh 12 weeks; before 45 at 40 to 44 a year after her last period; week 4 by
 //     her goal; week 12's words; her year's skill line; the sleep goal's chapters fixed for the part; a new plan's own cards; the
-//     balance routine's words; no diary setup prompt while the plan runs; no page errors.
+//     balance routine's words; no diary setup prompt while the plan runs;
+//  12 the phone test's 6 fixes (Mohit, 31 Oct, on his Flip5: "Fix all 6"): midlife now while a plan for her periods runs offers
+//     My midlife plan (Keep keeps hers; heavy periods keep theirs); "Your day" holds her last plan's activity and knees; the
+//     reveal names her parts, her chapter and her strength days; "Why this works" has its arrow; the check-in names tomorrow's
+//     steps when they change; Moves and calm's Today is her plan's own routine; no page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -371,6 +375,48 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   check('11.12 while the plan runs, no "Start the weekly symptom diary" prompt', !/Start the weekly symptom diary/.test(await all(a.page)), await all(a.page)); await done(a);
   a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400), prompts: SETUP, joined: ago(2) } });
   check('11.12 with no plan it is still offered', /Start the weekly symptom diary/.test(await all(a.page)), await all(a.page)); await done(a);
+}
+
+// ---------- 12 the phone test's 6 fixes ----------
+{
+  /* Mohit's phone: her stage moved to "Periods changing after 40" while her PMOS plan ran */
+  const pmosMid = (x) => Object.assign({ dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5),
+    mods: { plan: planOf('cycle', 'pmos', 1, { level: 1, limits: { knees: true, back: false } }) }, reminders: [planRem(1)] }, x || {});
+  let a = await open({ seed: pmosMid() });
+  check('12.1 midlife now, her PMOS plan running: "My midlife plan may fit now"', /My midlife plan may fit now/.test(await txt(a.page, '#view .pl-fit')) && await has(a.page, '#pl-fit-go') && await has(a.page, '#pl-fit-keep'), await view(a.page));
+  await tap(a.page, '#pl-fit-go');
+  const mi = await a.page.evaluate(() => window.Saathi.mem.planIntake || null);
+  check('12.1 See it: her midlife goal’s plan questions', (await a.page.evaluate(() => location.hash)) === '#plan-goal' && mi && mi.stage === 'meno' && mi.goal === 'hot', mi);
+  /* 2 "Your day" holds what her PMOS plan holds */
+  const on = await a.page.$$eval('#view [data-pl-q].on, #view [data-pl-m].on', (x) => x.map((y) => y.dataset.plQ || y.dataset.plM));
+  check('12.2 "Your day": how active she is and her knees, from her plan before', on.indexOf('act:1') >= 0 && on.indexOf('lim:knees') >= 0, on); await done(a);
+  a = await open({ seed: pmosMid() }); await tap(a.page, '#pl-fit-keep');
+  check('12.1 Keep: her plan stays, and the card goes', !(await has(a.page, '#view .pl-fit')) && (await st(a.page)).mods.plan.pack === 'cycle', await view(a.page)); await done(a);
+  a = await open({ seed: pmosMid({ intake: { goal: 'heavy', stage: 'meno' }, goals: ['meno', 'heavy'], mods: { plan: planOf('heavy', 'heavy', 1) } }) });
+  check('12.1 heavy periods at 40: her heavy-periods plan stays, with no card', !(await has(a.page, '#view .pl-fit'))); await done(a);
+  /* 3 the reveal */
+  a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400) } });
+  await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'meno', goal: 'hot', iq: 1, act: '0', lim: ['none'], food: 'veg', milk: 'y', mbone: 'n', mheart: 'n', when: 'evening' }; }); await go(a.page, 'plan-goal');
+  for (let i = 0; i < 6 && (await a.page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) { if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make'); else if (await has(a.page, '[data-pl-when]')) await tap(a.page, '[data-pl-when="evening"]'); else if (await has(a.page, '#pl-in-next')) await tap(a.page, '#pl-in-next'); else break; }
+  let rv = '';
+  for (let i = 0; i < 4; i++) { rv += ' ' + (await view(a.page)); if (/What happens when/.test(rv) || !(await has(a.page, '#pl-rv-next'))) break; await tap(a.page, '#pl-rv-next'); }
+  check('12.3 the reveal names her parts, her chapter and her strength days', /Weeks 1 to 4: Cool and calm/.test(rv) && /Weeks 5 to 8: Rest/.test(rv) && /Weeks 9 to 12: Strong and steady/.test(rv) && /Every week: a short chapter/.test(rv) && /Twice a week, from day 2: Strength at home/.test(rv), rv.slice(-900)); await done(a);
+  /* 4 "Why this works" has its arrow */
+  a = await open({ seed: m2('hot', B(1)), hash: '#mid-lesson' });
+  const arrow = await a.page.$eval('#view details.mid-why summary', (sm) => { const c = getComputedStyle(sm, '::after'); return c.content !== 'none' && parseFloat(c.borderRightWidth) > 0; }).catch(() => false);
+  check('12.4 "Why this works" draws its own arrow', arrow); await done(a);
+  /* 5 the check-in names tomorrow when it changes */
+  a = await open({ seed: m2('hot', B(1)), hash: '#plan-checkin', hm: '20:30' });
+  await answerSteps(a.page); await tap(a.page, '#pl-ci-save');
+  const tom = await txt(a.page, '#view .pl-ci-tomr');
+  check('12.5 day 1’s check-in: "Tomorrow: your skill, your walk, Strength at home", not "the same steps"', /Tomorrow: your skill, your walk, Strength at home/.test(tom) && !/the same steps/.test(await view(a.page)), tom); await done(a);
+  /* 6 Moves and calm: Today is her plan's own routine */
+  a = await open({ seed: m2('hot', B(2)), hash: '#plan-moves' });
+  const today = await a.page.$$eval('#view .pl-ritem', (x) => x.filter((y) => /Today/.test(y.innerText)).map((y) => y.dataset.go));
+  check('12.6 a strength day: Strength at home is Today, and Cycle care yoga isn’t', today.length === 1 && today[0] === 'plan-r-strength', today); await done(a);
+  a = await open({ seed: m2('hot', B(57)), hash: '#plan-moves' });
+  const today2 = await a.page.$$eval('#view .pl-ritem', (x) => x.filter((y) => /Today/.test(y.innerText)).map((y) => y.dataset.go));
+  check('12.6 Strong and steady: Steady on your feet is Today', today2.indexOf('plan-r-steady') >= 0 && today2.indexOf('plan-r-cycle') < 0, today2); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

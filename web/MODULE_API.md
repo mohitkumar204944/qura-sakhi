@@ -6055,3 +6055,17 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
         without "Then the other foot";
     12. no "Start the weekly symptom diary" setup prompt while the midlife plan runs (meno.js `setup`); the diary stays a tool.
     `node test/midlife.mjs` section 11 checks each one (93 checks in all).
+12. **The phone test's fixes** (Mohit, 31 Oct, "change my stage to midlife and test on phone" on his Flip5, then "Fix all 6"):
+    1. midlife now (her stage or her goal) while a plan for her periods or for a baby runs: Version 39.48's plan for now gains a
+       midlife case (`fitWhy` 'meno'): "My midlife plan may fit now", See it (her midlife goal's questions) or Keep hers; heavy periods
+       keep their plan;
+    2. "Your day" holds what her plan before holds: how active she is and her knees or back (`a.dayPre`), as her food comes from My
+       food;
+    3. the reveal's "What happens when" names her parts in her order, the chapter and look back each week, Strength at home twice a
+       week from day 2 (Gentle start after a chest-pain yes) and her results (`m2RvRows`);
+    4. "Why this works" draws its own arrow (the WebView drew no marker for a flex summary);
+    5. the check-in names tomorrow's steps when they change ("Tomorrow: your skill, your walk, Strength at home.", `m2Tom`), not "the
+       same steps";
+    6. Moves and calm's Today is her plan's own routine (`tRs`): Strength at home on its days, Steady on your feet in Strong and
+       steady, never the cycle plan's yoga.
+    `node test/midlife.mjs` section 12 checks each one (103 checks in all).

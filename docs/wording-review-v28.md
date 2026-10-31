@@ -2976,6 +2976,10 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   strength, and a few minutes of balance, in a fresh 12 weeks from today. What you logged stays." and "Your new 12 weeks start
   today."; after her periods stop, the routine's safety line is the reviewed line's first sentence, "Pain, dizziness, chest pain,
   breathlessness that doesn’t settle, or bleeding."; the before-45 card only at 40 to 44 and a year after her last period.
+- The phone test's fixes (31 Oct, UI words): "My midlife plan may fit now", "A short chapter a week for hot flushes, sleep or worry,
+  with strength and balance for your bones. What you logged stays.", "See My midlife plan"; the reveal's "Weeks {a} to {b}: {part}",
+  "Every week: a short chapter, and a look back at your week", "Twice a week, from day 2: Strength at home"; the check-in's
+  "Tomorrow: your skill, your walk, Strength at home."
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 
