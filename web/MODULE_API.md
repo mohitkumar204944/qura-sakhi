@@ -6071,7 +6071,7 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     `node test/midlife.mjs` section 12 checks each one (103 checks in all).
 13. **The second phone test's gaps** (Mohit, 31 Oct, "test the 6 fixes on phone" on his Flip5, then "fix all 3"):
     1. "Your last plan" (and "Before this" in the report for her doctor) skips a plan changed on the day it started with no day
-       followed (`pastZero`, `lastPast`), and shows the one before it; `d.past` itself stays as it was, so the fair new 12
+       followed (`lastPast`; item 14 drops "with no day followed"), and shows the one before it; `d.past` itself stays as it was, so the fair new 12
        weeks and the folic acid carry-on read what they read before. One day reads "followed on 1 day" (`plan_past_p1`,
        `plan_sum_past1`);
     2. version 2 has no "Strength at home" row under My plan (`planRows`; it is a step, and on Moves and calm); version 1 keeps it.
@@ -6083,3 +6083,11 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
        minutes?" again, the summary shows it, and Change asks it (`a.whenShow`). A first plan still asks; a plan that doesn't
        ask it gets no time, as before.
     `node test/midlife.mjs` section 13 checks each one (119 checks in all).
+14. **The third phone test's gaps** (Mohit, 31 Oct, "test the 3 fixes on phone" on his Flip5, then "fix both"):
+    1. "Your last plan" skips any plan changed on the day it started (`sameDay`), even when her check-in that day counted it as
+       followed. A copy of the plan she is on is always one of these (its start is today), so it goes at once, not only when the
+       app next opens (`mig`'s copy rule runs once per load);
+    2. "Your day" holds her bones and heart answers from the midlife plan she is on (`a.mbone`, `a.mheart`), as it holds her
+       activity and knees; after "My doctor says I can do more" (`mheart: 'ok'`) the question shows No, and her doctor's OK goes
+       with her new plan. A plan that never asked them (PMOS) leaves both for her to answer.
+    `node test/midlife.mjs` section 14 checks each one (125 checks in all).

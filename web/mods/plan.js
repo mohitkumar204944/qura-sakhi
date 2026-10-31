@@ -1874,10 +1874,13 @@
     if (id === 'day' && a.food == null && S.food && S.food.diet) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; }
     if (id === 'day' && !a.dayPre) { a.dayPre = true; const d0 = raw() || {}; const ik0 = d0.intake || {};   /* Version 39.51 (Mohit's phone): what her plan before holds, so it isn't asked again */
       if (d0.start && a.act == null) { const lv = ik0.act != null ? ik0.act : d0.level; if (lv != null) a.act = String(lv); }
-      if (d0.start && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } } }
+      if (d0.start && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } }
+      /* Version 39.51 (Mohit's phone test): her bones and heart answers too, from the midlife plan she is on; "My doctor says I can do more" stays hers */
+      if (d0.start && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
+      if (d0.start && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart; }
     const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
     const prev = () => { if (a.iq <= 0) ctx.prev(); else { a.iq--; ctx.redraw(); } };
-    const ask = (k) => { const q = Q[k]; const cur = a[k]; const multi = q[2] === 'multi';
+    const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
       const mk = (o, h) => (k === 'food' && S.food && S.food.mark ? h.replace(/>([^<]*)<\/button>$/, '>' + S.food.mark(o[0]) + '$1</button>') : h);   /* Version 39.8: the veg and non-veg marks */
       return '<h2 class="ob-h2">' + esc(t(q[0])) + '</h2><div class="chips" role="group" aria-label="' + esc(t(q[0])) + '">' + q[1].map((o) => mk(o, ctx.chip(multi ? 'data-pl-m' : 'data-pl-q', k + ':' + o[0], t(o[1]), multi ? (cur || []).indexOf(o[0]) >= 0 : String(cur) === o[0]))).join('') + '</div>'; };
     let html = '';
@@ -2306,10 +2309,12 @@
     const n = v.querySelector('#pl-chg-not'); if (n) n.addEventListener('click', () => { const dd = D(); dd.chg = dd.start + ':' + (dd.pack || 'cycle'); S.saveQuiet(); S.render(); });
     const pk2 = v.querySelector('#pl-chg-pick'); if (pk2) pk2.addEventListener('click', () => { S.mem.discPick = true; S.render(); });
   }
-  /* Version 39.51 (Mohit's phone test, 31 Oct): a plan changed on the day it started, with no day followed, isn't her last plan:
-     "Your last plan" and the report for her doctor show the one before it (the list itself stays as it was) */
-  const pastZero = (x) => !!(x && x.start && x.end && x.end <= x.start && !x.days);
-  const lastPast = (d) => { const l = d && Array.isArray(d.past) ? d.past : []; let i = 0; while (i < l.length && pastZero(l[i])) i++; return l[i] || null; };
+  /* Version 39.51 (Mohit's phone tests, 31 Oct): a plan changed on the day it started isn't her last plan, even when her check-in
+     that day counted it as followed: "Your last plan" and the report for her doctor show the one before it (the list itself stays
+     as it was). A copy of the plan she is on is always one of these (its start is today), so it goes at once, not only when the
+     app next opens (mig) */
+  const sameDay = (x) => !!(x && x.start && x.end && x.end <= x.start);
+  const lastPast = (d) => { const l = d && Array.isArray(d.past) ? d.past : []; let i = 0; while (i < l.length && sameDay(l[i])) i++; return l[i] || null; };
   const pastCard = (d) => { const p = lastPast(d); if (!p || !p.start) return '';
     if (p.pack === 'preg' && ((S.state.situation || {}).pregEndedOn || '') >= p.start) return '';   /* review SAFETY-07: after a loss, no pregnancy plan on show */
     const yr = p.end && p.start.slice(0, 4) !== p.end.slice(0, 4); const f = (x) => S.fmtD(S.fromISO(x), yr ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short' });   /* review RESULTS-01: a year shows when it ran past one */
