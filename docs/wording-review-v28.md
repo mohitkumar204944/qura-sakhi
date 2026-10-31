@@ -2980,6 +2980,10 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   with strength and balance for your bones. What you logged stays.", "See My midlife plan"; the reveal's "Weeks {a} to {b}: {part}",
   "Every week: a short chapter, and a look back at your week", "Twice a week, from day 2: Strength at home"; the check-in's
   "Tomorrow: your skill, your walk, Strength at home."
+- The second phone test's fixes (31 Oct, UI words): "followed on 1 day" and "Before this: …, followed on 1 day" for a plan of one
+  day; My plan's line now names her routine, "{routine} runs twice a week from week 1, in every part." (Gentle start after a
+  chest-pain yes, as "Gentle start takes the place of Strength at home" already says). No new health line: while that answer
+  waits for her doctor, Strength at home and the sun salutation are simply not offered on Moves and calm.
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 

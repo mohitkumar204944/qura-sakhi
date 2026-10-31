@@ -406,7 +406,7 @@
   const routineMins = (id, d) => Math.max(1, Math.round(stepsOf(id, d).reduce((a, s) => a + s.s, 0) / 60) + 1);
   const rName = (id) => t(disc() && id === 'cycle' ? 'plan_r_d' : 'plan_r_' + id);
   const rSub = (id) => (disc() && id === 'cycle' ? '' : t('plan_r_' + id + '_s'));
-  const routineOk = (id, d) => !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife */
+  const routineOk = (id, d) => !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife()))) && !((id === 'strength' || id === 'sun') && heartHold(d));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife, and no strength or sun salutation while her heart answer waits for her doctor */
 
   /* ---------- small pictures ---------- */
   const ICO = {
@@ -1263,10 +1263,10 @@
   }
   /* the doctor summary (and, when she ticks it, Ask Qura to call me): where she is, minutes, strength, food, and her body notes */
   function summary() {
-    const out = summaryNow(); const d = raw(); const p = on() && S.canSave() && d && Array.isArray(d.past) ? d.past[0] : null;
+    const out = summaryNow(); const d = raw(); const p = on() && S.canSave() && d ? lastPast(d) : null;   /* Version 39.51: not a plan changed the day it started */
     if (!p || !p.start) return out;
     const f = (x) => S.fmtD(S.fromISO(x), { day: 'numeric', month: 'short', year: 'numeric' });
-    const line = tf('plan_sum_past', { t: packTitle({ pack: p.pack, goalKey: p.goalKey, pv: p.pv }), a: f(p.start), b: f(p.end), n: p.days });
+    const line = tf(p.days === 1 ? 'plan_sum_past1' : 'plan_sum_past', { t: packTitle({ pack: p.pack, goalKey: p.goalKey, pv: p.pv }), a: f(p.start), b: f(p.end), n: p.days });
     if (out.length) { out[0].lines.push(line); return out; }
     return [{ title: t('plan_past_h'), lines: [line] }];
   }
@@ -1783,11 +1783,16 @@
   /* Version 39.36 (Mohit's walkthrough, 29 Oct): "Your day" only when it asks something My food doesn't already hold */
   const daySkip = (a) => { if (a.dayShow) return false; const fk = !!(S.food && S.food.known && S.food.known()); const kn = a.known || []; const q = qsOf('day', a); return q.length > 0 && q.every((k) => kn.indexOf(k) >= 0 || (fk && (k === 'food' || k === 'milk'))); };   /* Version 39.46: or answers she gave before */
   const dayFill = (a) => { if (a.food == null && S.food && S.food.known && S.food.known()) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; } };
+  /* Version 39.51 (Mohit's phone test, 31 Oct): her time to move comes from the plan she is on, so a new plan doesn't ask it
+     again; Change on the summary asks it */
+  const whenRun = () => { const d0 = raw(); return d0 && d0.start && d0.when && Q.when[1].some((o) => o[0] === d0.when) ? d0.when : null; };
+  const asksWhen = (a) => { const pk = packFor(a.goal, a.stage); const sp = pk ? specOf(pk) : null; const ik = (sp && sp.intake) || {}; return ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, { goal: a.goal, day: todayISO() })); };
+  const whenFill = (a) => { if (a.when == null && asksWhen(a)) { const w = whenRun(); if (w) a.when = w; } };
   function screensOf(a) {
     const pk = packFor(a.goal, a.stage); const sp = pk ? specOf(pk) : null; const out = ['goal']; if (!sp) return out;
     const ik = sp.intake || {}; const c = { goal: a.goal, day: todayISO() };
     (ik.screens || []).forEach((x) => { if (progIf(x.if, c)) out.push(x.id); });
-    if (!daySkip(a)) out.push('day'); if (ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) out.push('when');
+    if (!daySkip(a)) out.push('day'); if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
     if (a.goal === 'weight') out.push('body'); out.push('sum'); return out;
   }
   /* her goals now: no "heavy periods" once her periods have stopped (bleeding after that needs a doctor, not a plan) */
@@ -1844,7 +1849,7 @@
       const bits = [q.indexOf('act') >= 0 && a.act != null ? t('plan_lv_' + a.act) : null, q.indexOf('food') >= 0 && a.food ? t('plan_f_' + a.food) : null, bedK ? t(bedK) : null, a.work ? t('plan_wk_' + a.work) : null, a.mbone === 'y' ? t('plan_m2_sum_bone') : null, a.mheart === 'y' ? t('plan_m2_sum_heart') : null].filter(Boolean);
       if (bits.length) rows.push([t('plan_in_day_h'), bits.join(' · '), 'day']);
     }
-    if (l.indexOf('when') >= 0 && a.when) rows.push([t('plan_in_sum_when'), t('plan_w_' + a.when), 'when']);
+    if (asksWhen(a)) { whenFill(a); if (a.when) rows.push([t('plan_in_sum_when'), t('plan_w_' + a.when), 'when']); }   /* Version 39.51: asked, or from the plan she is on */
     if (l.indexOf('body') >= 0 && a.h && a.w) rows.push([t('plan_in_body_h'), num1(a.h) + ' ' + t('plan_cm') + ' · ' + num1(a.w) + ' kg', 'body']);
     return rows;
   }
@@ -1914,7 +1919,7 @@
     ctx.back(prev);
     v.querySelectorAll('[data-pl-goal]').forEach((b) => b.addEventListener('click', () => { a.goal = b.dataset.plGoal; if (a.goal === 'track') { ctx.done(); return; } a.iq = 0; next(); }));
     v.querySelectorAll('[data-pl-when]').forEach((b) => b.addEventListener('click', () => { a.when = b.dataset.plWhen; next(); }));
-    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { if (b.dataset.plEdit === 'day') a.dayShow = true; const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
+    v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { if (b.dataset.plEdit === 'day') a.dayShow = true; if (b.dataset.plEdit === 'when') a.whenShow = true; const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
     const mk = v.querySelector('#pl-in-make'); if (mk) mk.addEventListener('click', () => ctx.done());
     v.querySelectorAll('[data-pl-bf]').forEach((c) => c.addEventListener('change', () => { const k = c.dataset.plBf; a.bflags = (a.bflags || []).filter((x) => x !== k); if (c.checked) a.bflags.push(k); }));   /* Version 39.32 */
     if (id === 'psafe') wirePsafe(v, a, gwAt(todayISO()));   /* Version 39.34 */
@@ -2047,7 +2052,7 @@
   const ikOfAnswers = (a) => { const ik = ikBase(a); if ((a.stage || 'cycle') === 'ttc') Object.assign(ik, babyOf(a)); if ((a.stage || 'cycle') === 'preg') Object.assign(ik, pregOf(a)); return ik; };   /* Version 39.34: her safety answers */
   function startFromIntake(a0) {
     const a = a0 || {}; const st = a.stage || 'cycle'; const pk = packFor(a.goal, st);
-    dayFill(a);   /* Version 39.36: My food's answer when "Your day" wasn't asked */
+    dayFill(a); whenFill(a);   /* Version 39.36: My food's answer when "Your day" wasn't asked */   /* Version 39.51: her time to move when it wasn't asked */
     if (S.food && S.canSave() && a.food) S.food.set(a.food, a.milk !== 'n');   /* Version 39.3: how she eats, for every food screen */
     const ik = ikOfAnswers(Object.assign({}, a, { stage: st }));
     if (st === 'post') { const cur = raw(); const fl = cur && cur.pack === 'preg' ? (ikOf(cur).pflags || []) : []; const pm = fl.filter((k) => ['r_bp', 'r_gdm'].indexOf(k) >= 0); if (pm.length) ik.pm = pm; }   /* Version 39.46: high BP or sugar in her pregnancy */
@@ -2301,10 +2306,14 @@
     const n = v.querySelector('#pl-chg-not'); if (n) n.addEventListener('click', () => { const dd = D(); dd.chg = dd.start + ':' + (dd.pack || 'cycle'); S.saveQuiet(); S.render(); });
     const pk2 = v.querySelector('#pl-chg-pick'); if (pk2) pk2.addEventListener('click', () => { S.mem.discPick = true; S.render(); });
   }
-  const pastCard = (d) => { const p = d && Array.isArray(d.past) ? d.past[0] : null; if (!p || !p.start) return '';
+  /* Version 39.51 (Mohit's phone test, 31 Oct): a plan changed on the day it started, with no day followed, isn't her last plan:
+     "Your last plan" and the report for her doctor show the one before it (the list itself stays as it was) */
+  const pastZero = (x) => !!(x && x.start && x.end && x.end <= x.start && !x.days);
+  const lastPast = (d) => { const l = d && Array.isArray(d.past) ? d.past : []; let i = 0; while (i < l.length && pastZero(l[i])) i++; return l[i] || null; };
+  const pastCard = (d) => { const p = lastPast(d); if (!p || !p.start) return '';
     if (p.pack === 'preg' && ((S.state.situation || {}).pregEndedOn || '') >= p.start) return '';   /* review SAFETY-07: after a loss, no pregnancy plan on show */
     const yr = p.end && p.start.slice(0, 4) !== p.end.slice(0, 4); const f = (x) => S.fmtD(S.fromISO(x), yr ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short' });   /* review RESULTS-01: a year shows when it ran past one */
-    return '<div class="card soft pl-past"><h3>' + esc(t('plan_past_h')) + '</h3><p class="small">' + esc(tf('plan_past_p', { t: packTitle({ pack: p.pack, goalKey: p.goalKey, pv: p.pv }), a: f(p.start), b: f(p.end), n: p.days })) + '</p></div>'; };
+    return '<div class="card soft pl-past"><h3>' + esc(t('plan_past_h')) + '</h3><p class="small">' + esc(tf(p.days === 1 ? 'plan_past_p1' : 'plan_past_p', { t: packTitle({ pack: p.pack, goalKey: p.goalKey, pv: p.pv }), a: f(p.start), b: f(p.end), n: p.days })) + '</p></div>'; };
   /* days since she last followed her plan (0: today) */
   const sinceLast = (d) => { for (let i = 0; i < 60; i++) { const iso = S.toISO(S.addDays(pToday(), -i)); if (iso < d.start) return i; if (dayDone(d, iso)) return i; } return 60; };
 
@@ -2650,7 +2659,7 @@
       return '<div class="card pl-path pl-m2path"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(kept ? t('plan_wk_keep') : tf('plan_wk', { n: wk })) + '</span></div>' +
         '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk || kept ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div><ol class="pl-steps">' +
         rows.map((r) => { const past = wn > r[2]; const now = wn >= r[1] && wn <= r[2]; return '<li class="' + (past ? 'gone' : (now ? 'now' : '')) + '" data-m2p="' + r[0] + '"><span class="pl-sdot" aria-hidden="true"></span><span class="body"><strong>' + esc(r[0] === 'k' ? t('plan_m2_year') : (ML ? ML.part(r[0]) : r[0])) + '</strong><span class="small">' + esc(r[0] === 'k' ? t('plan_m2_year_s') : tf('plan_m2_wks', { a: r[1], b: r[2] }) + ' · ' + t('plan_m2_p_' + r[0])) + '</span></span></li>'; }).join('') + '</ol>' +
-        '<p class="small pl-m2-str">' + esc(t('plan_m2_str_all')) + '</p></div>';
+        '<p class="small pl-m2-str">' + esc(tf('plan_m2_str_all', { r: rName(ikOf(d).mheart === 'y' ? 'gentle' : 'strength') })) + '</p></div>';
     }
     if (pk === 'preg') {
       if (disc()) return '';   /* trimesters are pregnancy words; a pregnancy has no 12-week path either */
@@ -2841,7 +2850,7 @@
     const row = (r, ico, hue, ttl, sub) => '<button type="button" class="item" data-go="' + r + '"><span class="ico-sm hue hue-' + hue + '">' + ico + '</span><span class="body"><strong>' + esc(ttl) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button>';
     const pk = packOf(d); const b = (S.state.situation || {}).deliveredOn; const early = pk === 'post' && !!b && S.diffDays(S.fromISO(b), pToday()) < 42;
     /* Version 39.5: My food and Yoga and moves are the plan's own tiles (renderProgramme); 40+ keeps strength first */
-    if (pk === 'meno' && !early) S.wire(add(row('plan-r-strength', ICO.move, 'gold', t('plan_r_strength'), ''), 'pl-moves-row'));
+    if (pk === 'meno' && !early && !menoV2(d)) S.wire(add(row('plan-r-strength', ICO.move, 'gold', t('plan_r_strength'), ''), 'pl-moves-row'));   /* Version 39.51 (Mohit's phone test): version 2 has strength as a step and on Moves and calm */
     const pi = S.preg && S.preg.info ? S.preg.info() : null;
     if (packOf(d) === 'preg' && pi && pi.weeks >= 28 && S.openStage) { const el = add('<button type="button" class="item"><span class="ico-sm hue hue-plum">' + S.icon('baby') + '</span><span class="body"><strong>' + esc(t(disc() ? 'stage_change' : 'bb_born')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>', 'pl-born'); el.querySelector('button').addEventListener('click', () => S.openStage('post')); }
   }
@@ -2967,6 +2976,10 @@
      claude.ai/artifact/4K1ocG3KAXiAtPHQn3rymd). Three 4-week parts in the order her goal needs, then her year to month 12;
      mods/midlife.js holds the chapters. ---------- */
   const menoV2 = (d) => !!(d && (d.pack || 'cycle') === 'meno' && (d.pv || (d.start ? 1 : ((specOf('meno') || {}).ver || 1))) >= 2);
+  /* Version 39.51 (Mohit's phone test, 31 Oct): chest pain, fainting or getting very breathless when she walks: until her doctor
+     says she can do more, Gentle start takes the place of Strength at home everywhere (Moves and calm, its search tile, My plan's
+     line), and the sun salutation waits too */
+  const heartHold = (d0) => { const d = d0 || (S.canSave() ? raw() : null); return !!(d && d.start && menoV2(d) && ikOf(d).mheart === 'y'); };
   /* the parts: h Cool and calm (hot flushes), q its calm version (worry, low mood), r Rest, s Strong and steady */
   const M2_ORDER = { hot: 'hrs', sleep: 'rhs', mood: 'qrs', bones: 'shr', weight: 'srh', aches: 'srh' };
   /* her sleep goal's chapters on flushes only when her diary has hot flushes in the 60 days before that part starts (chosen on its
@@ -3758,7 +3771,7 @@
         plan_rest_q: 'Make today a rest day?', plan_rest_yes: 'Yes, rest today', plan_th_wb: 'Welcome back. Nothing to catch up: just today.',
         plan_pause: 'Pause for a week', plan_pause_s: 'Your steps and the reminder rest for 7 days, then carry on', plan_paused_til: 'Paused until {d}', plan_unpause: 'Start again now',
         plan_sl_pause_h: 'Take a week off?', plan_sl_pause_p: 'You can pause your plan for a week. It carries on after that, from where you are.', plan_stop_or: 'Or pause it for a week instead',
-        plan_past_h: 'Your last plan', plan_past_p: '{t} · {a} to {b} · followed on {n} days', plan_sum_past: 'Before this: {t}, {a} to {b}, followed on {n} days',
+        plan_past_h: 'Your last plan', plan_past_p: '{t} · {a} to {b} · followed on {n} days', plan_past_p1: '{t} · {a} to {b} · followed on 1 day', plan_sum_past: 'Before this: {t}, {a} to {b}, followed on {n} days', plan_sum_past1: 'Before this: {t}, {a} to {b}, followed on 1 day',
         plan_chg_h: 'Your plan has changed', plan_chg_preg: 'You are pregnant now, so {t} is on hold. You followed it on {n} days. Your pregnancy plan has the steps for now.', plan_chg_birth: 'Your baby is here, so your pregnancy plan has ended. Your after-birth plan starts with the daily recovery check.',
         plan_chg_d: 'Your plan has changed. Open My plan to see what is next.', plan_chg_go_preg: 'See my pregnancy plan', plan_chg_go_post: 'See my after-birth plan', plan_chg_go_d: 'Open My plan',
         plan_hero_days: '{n} of 7 days this week', plan_hero_days_s: 'Days you followed your plan. Rest days count.', plan_res_tile: '{n} days so far', plan_rev_hold: 'Next week: the same pace. Your steps grow after a week with 3 days or more.',
@@ -3827,7 +3840,7 @@
         plan_m2_poi_h: 'Before a plan: see a gynaecologist', plan_m2_poi_ok: 'My doctor has seen me', plan_m2_poi_read: 'Read about POI',
         plan_m2_year: 'Your year', plan_m2_year_s: 'The skills that work for you, and a read a month, to month 12', plan_m2_wks: 'Weeks {a} to {b}',
         plan_m2_p_h: 'A short course for hot flushes, a chapter a week', plan_m2_p_q: 'A short course for worry and low mood, a chapter a week', plan_m2_p_r: 'One sleep rule a week', plan_m2_p_s: 'Strength, balance and food for your bones',
-        plan_m2_str_all: 'Strength at home runs twice a week from week 1, in every part.',
+        plan_m2_str_all: '{r} runs twice a week from week 1, in every part.',
         plan_m2_heart_h: 'Your walk stays easy for now', plan_m2_heart_ok: 'My doctor says I can do more', plan_m2_bone_h: 'Your bones',
         plan_m2_res_h: 'Your own numbers', plan_m2_res_ms: 'How much {x} got in your way: {a} of 10 in your first 2 weeks, {b} of 10 in your last 2.', plan_m2_res_n: 'Nights you slept well or okay: {a} of {an} in your first 2 weeks, {b} of {bn} in your last 2.', plan_m2_res_str: 'Strength days: {n}',
         plan_r_gentle: 'Gentle start', plan_r_cycle: 'Cycle care yoga', plan_r_sun: 'Sun salutation, slow', plan_r_strength: 'Strength at home', plan_r_calm: 'Calm breath',
@@ -4104,7 +4117,7 @@
         plan_rest_q: 'आज आराम का दिन रखें?', plan_rest_yes: 'हाँ, आज आराम', plan_th_wb: 'फिर से स्वागत है। कुछ पूरा नहीं करना है: बस आज से।',
         plan_pause: 'एक हफ़्ते के लिए रोकें', plan_pause_s: 'आपके क़दम और रिमाइंडर 7 दिन रुकेंगे, फिर चलेंगे', plan_paused_til: '{d} तक रुका है', plan_unpause: 'अभी फिर शुरू करें',
         plan_sl_pause_h: 'एक हफ़्ते की छुट्टी लें?', plan_sl_pause_p: 'आप अपना प्लान एक हफ़्ते के लिए रोक सकती हैं। उसके बाद वह वहीं से चलेगा जहाँ आप हैं।', plan_stop_or: 'या इसकी जगह एक हफ़्ते के लिए रोकें',
-        plan_past_h: 'आपका पिछला प्लान', plan_past_p: '{t} · {a} से {b} · {n} दिन माना', plan_sum_past: 'इससे पहले: {t}, {a} से {b}, {n} दिन माना',
+        plan_past_h: 'आपका पिछला प्लान', plan_past_p: '{t} · {a} से {b} · {n} दिन माना', plan_past_p1: '{t} · {a} से {b} · 1 दिन माना', plan_sum_past: 'इससे पहले: {t}, {a} से {b}, {n} दिन माना', plan_sum_past1: 'इससे पहले: {t}, {a} से {b}, 1 दिन माना',
         plan_chg_h: 'आपका प्लान बदल गया है', plan_chg_preg: 'अब आप गर्भवती हैं, इसलिए {t} रुका है। आपने इसे {n} दिन माना। अभी के क़दम आपके गर्भावस्था प्लान में हैं।', plan_chg_birth: 'आपका बच्चा आ गया है, इसलिए गर्भावस्था का प्लान पूरा हुआ। जन्म के बाद का प्लान रोज़ की रिकवरी जाँच से शुरू होता है।',
         plan_chg_d: 'आपका प्लान बदल गया है। आगे क्या है, यह देखने के लिए मेरा प्लान खोलें।', plan_chg_go_preg: 'मेरा गर्भावस्था प्लान देखें', plan_chg_go_post: 'जन्म के बाद का मेरा प्लान देखें', plan_chg_go_d: 'मेरा प्लान खोलें',
         plan_hero_days: 'इस हफ़्ते 7 में से {n} दिन', plan_hero_days_s: 'जिन दिनों आपने प्लान माना। आराम के दिन भी गिने जाते हैं।', plan_res_tile: 'अब तक {n} दिन', plan_rev_hold: 'अगले हफ़्ते: वही रफ़्तार। 3 या ज़्यादा दिनों वाले हफ़्ते के बाद आपके क़दम बढ़ेंगे।',
@@ -4173,7 +4186,7 @@
         plan_m2_poi_h: 'प्लान से पहले: स्त्री रोग विशेषज्ञ को दिखाएँ', plan_m2_poi_ok: 'डॉक्टर ने मुझे देख लिया है', plan_m2_poi_read: 'POI के बारे में पढ़ें',
         plan_m2_year: 'आपका साल', plan_m2_year_s: 'जो अभ्यास आपके काम आए, और हर महीने कुछ पढ़ने को, 12वें महीने तक', plan_m2_wks: 'हफ़्ते {a} से {b}',
         plan_m2_p_h: 'गर्मी के झोंकों के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_q: 'चिंता और उदासी के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_r: 'हर हफ़्ते नींद का एक नियम', plan_m2_p_s: 'ताक़त, संतुलन और हड्डियों के लिए खाना',
-        plan_m2_str_all: 'घर पर ताक़त पहले हफ़्ते से, हर हिस्से में, हफ़्ते में दो बार चलती है।',
+        plan_m2_str_all: '{r} पहले हफ़्ते से, हर हिस्से में, हफ़्ते में दो बार चलती है।',
         plan_m2_heart_h: 'अभी आपकी सैर हल्की रहेगी', plan_m2_heart_ok: 'डॉक्टर ने कहा है कि मैं ज़्यादा कर सकती हूँ', plan_m2_bone_h: 'आपकी हड्डियाँ',
         plan_m2_res_h: 'आपके अपने आँकड़े', plan_m2_res_ms: '{x} ने आपको कितना परेशान किया: पहले 2 हफ़्तों में 10 में से {a}, आख़िरी 2 हफ़्तों में 10 में से {b}।', plan_m2_res_n: 'जिन रातों अच्छी या ठीक-ठाक नींद आई: पहले 2 हफ़्तों में {an} में से {a}, आख़िरी 2 हफ़्तों में {bn} में से {b}।', plan_m2_res_str: 'ताक़त वाले दिन: {n}',
         plan_r_gentle: 'आसान शुरुआत', plan_r_cycle: 'पीरियड के लिए योग', plan_r_sun: 'सूर्य नमस्कार, धीरे', plan_r_strength: 'घर पर ताक़त', plan_r_calm: 'शांत साँस',
@@ -4393,7 +4406,7 @@
     open: ['plan', 'plan-pmos', 'plan-plate', 'plan-moves', 'plan-calm', 'plan-r-*'],
     /* Version 39.3 (diet audit 5.3, 5.4): Yoga and moves, Strength at home and My plate can be found by search (not in pregnancy) */
     tiles: [{ section: 'tools', route: 'plan-moves', title: 'plan_moves_h', sub: 'plan_moves_tile_s', icon: ICO.move, order: 6, gated: false, hidden: () => !on() || pregnant() || earlyPost(), keywords: 'yoga yog exercise vyayam kasrat workout asana stretch stretching moves योग व्यायाम कसरत आसन' },
-      { section: 'tools', route: 'plan-r-strength', title: 'plan_r_strength', sub: 'plan_r_strength_s', icon: ICO.move, order: 7, gated: false, hidden: () => !on() || pregnant() || earlyPost(), keywords: 'strength strong bones muscle chair wall stairs taqat ताक़त ताकत हड्डी' },
+      { section: 'tools', route: 'plan-r-strength', title: 'plan_r_strength', sub: 'plan_r_strength_s', icon: ICO.move, order: 7, gated: false, hidden: () => !on() || pregnant() || earlyPost() || heartHold(), keywords: 'strength strong bones muscle chair wall stairs taqat ताक़त ताकत हड्डी' },
       { section: 'tools', route: 'plan-plate', title: 'plan_plate_h', sub: 'plan_plate_tile_s', icon: ICO.plate, order: 8, gated: false, hidden: () => !on() || pregnant(), keywords: 'plate thali healthy plate portion half sabzi थाली' },   /* review FOOD-10 */
       { section: 'tools', route: 'plan-body', title: 'plan_tiles_body', sub: 'plan_body_tile_s', icon: ICO.body, order: 9, gated: false, hidden: () => !on() || pregnant(), keywords: 'bmi weight waist body vajan wajan motapa वज़न वजन मोटापा कमर' },   /* review FOOD-11: "BMI" opens My body */
       { section: 'cond', route: 'plan-pmos', title: 'plan_tile_t', sub: 'plan_tile_s', icon: ICO.move, order: 0.5, gated: true, hidden: () => !on() || pregnant() || (stageNowKey() === 'ttc' && !(raw() && raw().start)),   /* Version 39.32: while she tries for a baby, Getting ready (My plan) */

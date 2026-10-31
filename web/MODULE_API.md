@@ -6069,3 +6069,17 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     6. Moves and calm's Today is her plan's own routine (`tRs`): Strength at home on its days, Steady on your feet in Strong and
        steady, never the cycle plan's yoga.
     `node test/midlife.mjs` section 12 checks each one (103 checks in all).
+13. **The second phone test's gaps** (Mohit, 31 Oct, "test the 6 fixes on phone" on his Flip5, then "fix all 3"):
+    1. "Your last plan" (and "Before this" in the report for her doctor) skips a plan changed on the day it started with no day
+       followed (`pastZero`, `lastPast`), and shows the one before it; `d.past` itself stays as it was, so the fair new 12
+       weeks and the folic acid carry-on read what they read before. One day reads "followed on 1 day" (`plan_past_p1`,
+       `plan_sum_past1`);
+    2. version 2 has no "Strength at home" row under My plan (`planRows`; it is a step, and on Moves and calm); version 1 keeps it.
+       While her answer to chest pain, fainting or getting very breathless when she walks is yes (`heartHold`, until "My doctor
+       says I can do more"), Gentle start takes Strength at home's place everywhere, as `plan_m2_heart_w` says: Moves and calm
+       (`routineOk`, with the sun salutation), the search tile, the routine's own page (it opens Moves and calm), and My plan's
+       line (`plan_m2_str_all` now names the routine);
+    3. her time to move comes from the plan she is on (`whenRun`, `whenFill`): a new plan doesn't ask "When can you move for 10
+       minutes?" again, the summary shows it, and Change asks it (`a.whenShow`). A first plan still asks; a plan that doesn't
+       ask it gets no time, as before.
+    `node test/midlife.mjs` section 13 checks each one (119 checks in all).
