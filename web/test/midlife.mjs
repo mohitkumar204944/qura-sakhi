@@ -702,6 +702,35 @@ const startPlan = async (page, intake, pick) => {
   check('21.3 at 37 with periods still coming: her plan runs (no POI card)', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
 }
 
+// ---------- 22 the hold's phone test (Mohit, 1 Nov: "fix all 4") ----------
+{
+  /* Mohit's Flip5: her midlife plan held for her doctor (37, periods stopped), just after she set her stage, an earlier run of the
+     plan in her past, and PMOS in her answers */
+  const P0 = { setup: 'off', planCall: ago(3), firstLog: ago(30), exStage: ago(0) };
+  const held = (x) => m2('hot', B(1), { past: [{ pack: 'meno', goalKey: 'hot', pv: 2, start: ago(2), end: ago(1), days: 1 }] }, Object.assign({ dob: '1989-03-01', situation: { stopped: true, pcos: true }, prompts: P0 }, x || {}));
+  const where = (page) => page.evaluate(() => { const v = document.getElementById('view'); const c = v.querySelector('.pl-m2-poi'); const f = v.querySelector('.feel-card'); const r = v.querySelector('.ract-row');
+    const sh = v.querySelector('.slot .slot-h'); const lead = sh && sh.nextElementSibling;
+    return { card: !!c, inSlot: !!(c && c.closest('.slot')), beforeFeel: !!(c && f && (c.compareDocumentPosition(f) & Node.DOCUMENT_POSITION_FOLLOWING)), afterRound: !!(c && r && (r.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING)),
+      leads: !!(lead && lead.classList.contains('pl-m2-poi')), keep: !!(c && c.hasAttribute('data-slot-keep')) }; });
+  let a = await open({ seed: held() });
+  let w = await where(a.page);
+  check('22.1 Today: the card stands where her plan was (after the round buttons, before "How do you feel today?", not in Sakhi says)', w.card && !w.inSlot && w.beforeFeel && w.afterRound, w);
+  check('22.2 Today: no "Tell Sakhi your stage and goals" just after she set her stage, while the card holds her plan', !(await has(a.page, '#view .ex-card')), (await view(a.page)).slice(0, 400));
+  await go(a.page, 'plan');
+  const mp = await a.page.evaluate(() => { const v = document.getElementById('view'); const f = v.querySelector('h1 ~ .card'); return { first: f ? f.className : '', past: !!v.querySelector('.pl-past'), txt: v.innerText }; });
+  check('22.3 My plan: the card first and alone, no "Your last plan" above it', /pl-m2-poi/.test(mp.first) && !mp.past, mp.first);
+  check('22.4 My plan: no "After your 6-week check", and no PMOS plan row beside the card', !/After your 6-week check/.test(mp.txt) && !(await has(a.page, '#view [data-go="plan-pmos"]')), mp.txt.slice(0, 600));
+  await go(a.page, 'home'); await tap(a.page, '#view .pl-m2-poi #pl-m2-poi-ok');
+  check('22.5 "My doctor has seen me" from its place on Today: her plan comes back', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')), (await view(a.page)).slice(0, 300)); await done(a);
+  /* no plan yet (she joined at 37 with her periods stopped): the card is her plan's offer in Sakhi says, and it always leads */
+  a = await open({ seed: { dob: '1989-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['hot'], events: regular(400), prompts: P0 } });
+  w = await where(a.page);
+  check('22.6 no plan yet: the card leads Sakhi says and stays first (a card that keeps her safe), with no goals ask', w.inSlot && w.leads && w.keep && !(await has(a.page, '#view .ex-card')), w); await done(a);
+  /* at 51 with her periods stopped, nothing changes: her plan runs and Today asks nothing new */
+  a = await open({ seed: m2('hot', B(3), null, { prompts: P0 }) });
+  check('22.7 at 51: her plan runs, no card, no PMOS change', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
+}
+
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));
 await browser.close();
 const n = results.filter((r) => r.pass).length;

@@ -6144,6 +6144,18 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     no nudge. Today shows the reviewed gynaecologist card where her plan was (`offerCard`), and My plan shows it alone (no other
     pause line). "My doctor has seen me" (`poiOk`) brings her plan and its reminder back. At 40 and over, or while her periods
     still come, nothing changes. `node test/midlife.mjs` section 21 checks it (164 checks in all).
+22. **The hold's phone test** (Mohit, 1 Nov, on his Flip5 with vc 97: "fix all 4"). While the gynaecologist card holds her
+    plan:
+    - Today shows the card where her plan's steps were, after the round buttons and before "How do you feel today?" (the card
+      carries `data-plan-top`, and core puts such a card after her steps), not last in Sakhi says;
+    - "Tell Sakhi your stage and goals" waits (`S.plan.poi`), even just after she set her stage: no goal leads to a plan until
+      her doctor has seen her;
+    - My plan shows the card alone, with no "Your last plan" above it (an earlier run read as if her resting plan had ended);
+    - My plan's lists show no plan row beside the card. The 12-week plan's row had said "After your 6-week check", the pill
+      for after a birth that marks any paused plan.
+    With no plan yet (she joined at 37 with her periods stopped), the card stays her plan's offer in Sakhi says, and it always
+    leads there (`data-slot-keep`), as a card that keeps her safe. No new words. `node test/midlife.mjs` section 22 checks it
+    (171 checks in all).
 
 ## 95. Version 39.52: pregnancy yoga by trimester
 

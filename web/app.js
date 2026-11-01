@@ -2074,6 +2074,7 @@
     const pe = (state.situation || {}).pregEndedOn; if (isISO(pe) && diffDays(fromISO(pe), today()) < 42) return '';   /* Version 39.48 (Mohit's switch walk): after a loss it waits 6 weeks; My plan's "Pick a goal when you're ready" stays */
     /* Version 39.32 (found on Mohit's phone): a plan she started or made at this stage already holds her stage and goal */
     if (api.plan && safe(() => (api.plan.running && api.plan.running() && (state.intake || {}).stage === stageNow()) || (api.plan.pending && api.plan.pending()) || (api.plan.changing && api.plan.changing()), false)) return '';   /* Version 39.35: nor while "Your plan has changed" asks */
+    if (api.plan && safe(() => !!(api.plan.poi && api.plan.poi()), false)) return '';   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, the gynaecologist card comes first; no goal leads to a plan until her doctor has seen her */
     return '<div class="card soft ex-card" data-nofold="1"><h3>' + esc(t('fx_h')) + '</h3><p class="small">' + esc(t('fx_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="ex-go">' + esc(t('fx_b')) + '</button><button type="button" class="btn sm" id="ex-not">' + esc(t('tour_later')) + '</button></div></div>';
   }
   function wireExCard(v) {
@@ -2586,11 +2587,11 @@
     const bbCard = pi0 && pi0.edd && today() >= addDays(fromISO(pi0.edd), 7) && !(snz && fromISO(snz) > today()) ? ('<div class="card soft bb-card"><h3>' + esc(t('bb_h')) + '</h3><p class="small">' + esc(t('bb_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" id="bb-add">' + esc(t('bb_add')) + '</button><button type="button" class="btn sm" id="bb-not">' + esc(t('bb_not')) + '</button></div><button type="button" class="linkbtn" id="bb-end">' + esc(t('bb_end')) + '</button></div>') : '';
     /* An urgent card (a module card marked data-xp-urgent) sits right under the hero, above the round buttons. Discreet mode hides
        module cards, but more than 42 weeks by her dates still gets a plain-words line. */
-    const urgentTop = [];
+    const urgentTop = [], planTop = [];   /* Version 39.53: a card that holds her plan (data-plan-top) stands where her plan's steps were */
     /* discreet mode: only cards written in plain words (data-disc-ok) */
     let hidGo = null;   /* review DP-4: an urgent module card that a shared phone hides (a method past its date) */
     const seeHidden = (h) => { if (!hidGo && h.indexOf('data-xp-urgent') >= 0 && h.indexOf('data-disc-ok') < 0) { const m = /data-go="([^"]+)"/.exec(h); hidGo = m ? m[1] : 'home'; } };
-    if (!disc || planLeads()) moduleCards().forEach((h) => { if (disc && h.indexOf('data-disc-ok') < 0) { seeHidden(h); return; } if (h.indexOf('data-xp-urgent') >= 0) urgentTop.push(h); else items.push(h); });
+    if (!disc || planLeads()) moduleCards().forEach((h) => { if (disc && h.indexOf('data-disc-ok') < 0) { seeHidden(h); return; } if (h.indexOf('data-xp-urgent') >= 0) urgentTop.push(h); else if (h.indexOf('data-plan-top') >= 0) planTop.push(h); else items.push(h); });
     else if (canSave()) moduleCards().forEach(seeHidden);
     if (disc) { const pd = isPregnant() ? pregInfo() : null; if (pd && pd.days > 294) urgentTop.push('<div class="flag urgent pg-late" data-xp-urgent="1">' + esc(t('late_preg_d')) + '</div>'); }
     if (disc) urgentTop.unshift(discUrgent(hidGo));
@@ -2606,7 +2607,7 @@
     const slot = [vc].concat(items.filter((h) => h !== cu), planEarly() ? [] : [hu].concat(runHook('homeTop', [api]), [su, cu], runHook('homeLast', [api]))).filter(Boolean);
     leadSlot(slot);   /* Version 39.47 */
     const slotHtml = slot.length ? '<section class="slot"><p class="eyebrow slot-h">' + esc(t('slot_h')) + '</p>' + slot[0] + (slot.length > 1 ? '<details class="slot-more"' + (mem.slotMore ? ' open' : '') + '><summary class="linkbtn">' + esc(tf('slot_more', { n: slot.length - 1 })) + '</summary><div class="slot-in">' + slot.slice(1).join('') + '</div></details>' : '') + '</section>' : '';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + feelCard(disc) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + planTop.join('') + feelCard(disc) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));

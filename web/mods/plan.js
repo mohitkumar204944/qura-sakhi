@@ -1439,6 +1439,7 @@
     const g = (k) => s.goals.indexOf(k) >= 0; const pt = (c, n, why) => (c ? [n, why] : null); const gl = (k, n) => pt(g(k), n, tf('plan_why_g', { k: t('ob_h_' + k) }));
     const jd = (S.state.mods || {}).journey || {}; const jOn = (id) => !!(S.canSave() && jd.active === id && jd.start && S.diffDays(S.fromISO(jd.start), pToday()) < 21);
     const pd = S.canSave() ? raw() : null; const pOn = !!(pd && pd.start && (packOf(pd) || upcoming(pd)));
+    const poiNo = poiHold() && !(pOn && !(pd && pausedFor(pd)));   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, no plan row beside the gynaecologist card (it said "After your 6-week check") */
     const gaps = tf('plan_why_gaps', { n: s.long, m: s.gaps, b: s.band }); const hv = tf('plan_why_heavy', { n: s.heavy, m: s.periods }); const pn = tf('plan_why_pain', { n: s.pain, m: s.periods });
     const low = tf('plan_why_low', { n: s.low }); const mid = t('plan_why_midlife');
     const out = [];
@@ -1450,7 +1451,7 @@
       if (o.paused || o.active) o.score = 0;
       delete o.pts; delete o.tile; delete o.fit; out.push(o);
     };
-    add({ id: 'plan-pmos', go: 'plan-pmos', t: disc() ? t('plan_h_d') : t('plan_h'), s: t('plan_tile_s'), dur: t('plan_d_12w'), icon: ICO.move, hue: 'purple', fit: !preg && st !== 'ttc' && (st !== 'meno' || s.pcos),   /* Version 39.32: while she tries for a baby, Getting ready is her plan, with the PMOS food and moves */ active: pOn && !(pd && pausedFor(pd)), paused: (early && !pOn) || !!(pd && pausedFor(pd)),
+    add({ id: 'plan-pmos', go: 'plan-pmos', t: disc() ? t('plan_h_d') : t('plan_h'), s: t('plan_tile_s'), dur: t('plan_d_12w'), icon: ICO.move, hue: 'purple', fit: !preg && st !== 'ttc' && (st !== 'meno' || s.pcos) && !poiNo,   /* Version 39.32: while she tries for a baby, Getting ready is her plan, with the PMOS food and moves */ active: pOn && !(pd && pausedFor(pd)), paused: (early && !pOn) || !!(pd && pausedFor(pd)),
       pts: [pt(s.pcos, 5, t('plan_why_pcos')), pt(s.sc === 'match', 4, t('plan_why_sc')), pt(s.sc === 'risk', 2, t('plan_why_sc_risk')), pt(!s.pcos && !s.sc && s.long >= 2 && s.ciSigns >= 1, 2, gaps), gl('weight', s.pcos ? 1 : 2), gl('skin', 1), gl('irregular', 1)] });
     /* Version 39.1 (journey audit): "Could it be PMOS?" is a check, not a plan, so it is no longer suggested as one; the long-gap
        and PMOS-signs cards in What your diary shows offer it as "Check the signs" */
@@ -1577,7 +1578,7 @@
   function offerCard() {
     const p = S.state.prompts || {}; if (!on() || !S.canSave() || disc() || lossNow()) return '';
     const d = raw(); if ((packOf(d) && pausedFor(d) !== 'poi') || pendingOk(d) || upcoming(d)) return '';   /* Version 39.51: a plan held for her doctor shows the card */
-    if (poiHold() && stageNowKey() === 'meno') return p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml();   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her */
+    if (poiHold() && stageNowKey() === 'meno') return p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml(!!(packOf(d) && pausedFor(d) === 'poi'));   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her; Version 39.53 (Mohit's phone test): while it holds her plan, Today shows it where her plan's steps were */
     if (!p.planOffer || !p.firstLog) return '';
     if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), pToday()) < 3) return '';
     const ik = S.state.intake || {}; const pk = ik.goal && goalsFor({ stage: stageNowKey() }).indexOf(ik.goal) >= 0 ? packFor(ik.goal, stageNowKey()) : null; if (!pk) return '';   /* Version 39.32: only a goal of her stage now */
@@ -2963,7 +2964,7 @@
     const chg = S.canSave() ? changedWhy(d) : null;
     const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' && why !== 'poi' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
     const pick = S.canSave() ? paused + '<div class="card pl-pick"><h2>' + esc(t('plan_my_pick_h')) + '</h2><p class="small">' + esc(t(ik.goal === 'track' ? 'plan_my_track' : 'plan_my_pick_p')) + '</p><div class="list">' + goalsFor({ stage: st }).filter((k) => k !== 'track').map((k) => '<button type="button" class="item" data-pl-pick="' + k + '"><span class="body"><strong>' + esc(goalName(k)) + '</strong></span>' + (k === suggestedGoal(st) ? '<span class="pill ok pl-sugg">' + esc(t('plan_suggested')) + '</span>' : '') + '<span class="chev">' + S.I.chev + '</span></button>').join('') + '</div></div>' : '';
-    const pick2 = poiHold() && st === 'meno' && S.canSave() ? paused + poiHtml() : pick;   /* Version 39.51 (the midlife walk): before 40, the gynaecologist first, not goals that lead nowhere */
+    const pick2 = poiHold() && st === 'meno' && S.canSave() ? poiHtml() : pick;   /* Version 39.51 (the midlife walk): before 40, the gynaecologist first, not goals that lead nowhere; Version 39.53 (Mohit's phone test): the card alone, as "Your last plan" above it read as if her resting plan had ended */
     renderPlans(v, { h: 'plan_my_h', top: pick2, skip: S.canSave() && goalsFor({ stage: st }).indexOf('pmos') >= 0 ? ['plan-pmos'] : [] }); wireChange(v); wirePoi(v);   /* Version 39.42: "I have PMOS" is its row */
     v.querySelectorAll('[data-pl-pick]').forEach((b) => b.addEventListener('click', () => { S.mem.planIntake = { stage: st, goal: b.dataset.plPick, iq: 1 }; S.setHash('plan-goal'); }));
   }
@@ -3173,7 +3174,7 @@
     const po = v.querySelector('#pl-m2-poi-ok'); if (po) po.addEventListener('click', () => { S.state.situation = Object.assign({}, S.state.situation || {}, { poiOk: todayISO() }); S.state.prompts = Object.assign({}, S.state.prompts || {}); if (!S.state.prompts.planOffer) S.state.prompts.planOffer = todayISO(); S.save(); S.render(); });   /* her plan is offered now */
     const pn = v.querySelector('#pl-m2-poi-not'); if (pn) pn.addEventListener('click', () => { S.state.prompts = Object.assign({}, S.state.prompts || {}, { poiNot: todayISO() }); S.saveQuiet(); S.render(); });
   }
-  const poiHtml = () => '<div class="card warn pl-offer pl-m2-poi" data-nofold="1"><h3>' + esc(t('plan_m2_poi_h')) + '</h3><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap">' +
+  const poiHtml = (top) => '<div class="card warn pl-offer pl-m2-poi" data-nofold="1" data-slot-keep="1"' + (top ? ' data-plan-top="1"' : '') + '><h3>' + esc(t('plan_m2_poi_h')) + '</h3><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap">' +
     (S.routeOwner('cond-poi') ? '<button type="button" class="btn sm" data-go="cond-poi">' + esc(t('plan_m2_poi_read')) + '</button>' : '') + '<button type="button" class="btn sm primary" id="pl-m2-poi-ok">' + esc(t('plan_m2_poi_ok')) + '</button><button type="button" class="btn sm" id="pl-m2-poi-not">' + esc(t('plan_off_later')) + '</button></div></div>';
   /* which midlife card is due, first that applies, one at a time in Sakhi says (none on a shared phone): her periods stopped before
      45 at 40 to 44, a year after her last period (once); in weeks 4 to 7, for hot flushes (her goal or her diary), aches and tiredness or
@@ -3817,6 +3818,7 @@
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
+    poi: () => poiHold(),   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, her doctor first (core's goals card waits) */
     /* Version 39.32: the Getting ready plan, for ttc.js (her lesson, her tablet's reminder, her ready check's folic answer) */
     folicOn: () => { const d = raw(); if (!d || !planOn()) return false; if (folicCarry(d)) return true;   /* Version 39.47: preg.js's check-ups count her tablet as started */
       return babyD(d) && pregnant() && folicRun(d) && !!(S.ttc && S.ttc.folic && S.ttc.folic.has && S.ttc.folic.has()); },   /* moved on, before she starts My pregnancy: her tablet still rings */

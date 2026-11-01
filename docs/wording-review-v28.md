@@ -3003,6 +3003,8 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   card's own lines ("Cool and calm · A short course for hot flushes, a chapter a week").
 - POI while her plan runs (1 Nov): no new words. Under 40 with her periods stopped, her midlife plan rests behind the reviewed card
   ("Before a plan: see a gynaecologist", "Periods that stop before 40 are not menopause…") until "My doctor has seen me".
+- The hold's phone test (1 Nov): no new words. While the card holds her plan, it stands where her plan's steps were on Today, the
+  goals ask waits, and My plan shows it alone, with no plan row beside it.
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 
