@@ -6138,6 +6138,12 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     flushes, a chapter a week", "Rest · One sleep rule a week", "Strong and steady · Strength, balance and food for your bones". Her
     4-week and 8-week checks and her results keep their weeks; on a shared phone, "Your daily steps". `node test/midlife.mjs` section
     20 checks it (158 checks in all).
+21. **POI while her plan runs** (Mohit, 1 Nov, after the fourth exploratory phone test: "card and hold"). Under 40 with her periods
+    stopped and no "My doctor has seen me" (`poiHold`, now a hoisted function), a running midlife plan rests (`pausedFor` gives
+    'poi'), as decision 6 says (no plan until her doctor's word), the way a pregnancy pauses a plan: no steps, no check-in reminder,
+    no nudge. Today shows the reviewed gynaecologist card where her plan was (`offerCard`), and My plan shows it alone (no other
+    pause line). "My doctor has seen me" (`poiOk`) brings her plan and its reminder back. At 40 and over, or while her periods
+    still come, nothing changes. `node test/midlife.mjs` section 21 checks it (164 checks in all).
 
 ## 95. Version 39.52: pregnancy yoga by trimester
 
@@ -6220,3 +6226,39 @@ The minimalist baseline: no new ring (her check-in stays after her last step), a
 on its days; day 1 has 3 or fewer), no new question or screen, one home for each fact, no new tour, tip or celebration, and
 the shared-phone check above. Starting the yoga from Today is 2 taps (Start on Today, Start on its page); stopping for today
 is 2 more. The tap suite's jobs (`web/test/taps/`: the cycle, Getting ready and no-plan women) don't pass through pregnancy.
+
+## 96. Version 39.53: every guide leads to her plan
+
+Mohit, 1 Nov: "i believe everything should leave to plan and for extended medical help qura doctor should be advised thats the
+whole purpose of this app", then "build it", after the midlife plan's phone tests found the hot-flush guide led only to a routine.
+
+**One row, `S.plan.forRow(topic)`** (plan.js), for the guides, routines and topic pages whose subject a plan covers:
+- her running plan covers it: "Your plan for this" and her plan's name, with My midlife plan's part for the subject ("Weeks 1 to
+  4: Cool and calm"; hot flushes: Cool and calm or its calm version; sleep: Rest; bones and aches: Strong and steady). A tap opens
+  My plan;
+- no plan running: "A free plan for this" and the name of the plan that fits her stage (`packFor(goal, stage)`). A tap starts its
+  own questions (`S.plan.offer`, from any page; a sheet closes first);
+- nothing while another plan runs (hers stays hers), while hers rests or is on its way, in a pregnancy, after a loss, on a shared
+  phone, or where no plan at her stage covers the subject (sleep while she tracks her periods; before 40 with her periods stopped,
+  `packFor` gives no midlife plan, so the gynaecologist card stays first).
+
+Topics: hot, sleep, mood, bones (the midlife plan's goals), meno (her midlife goal), pain, heavy, pms, pmos, irregular, ready.
+
+**Where it shows**, first among a page's actions (her plan, then the tools, then a Qura doctor):
+- guides (`ART[key].plan`, app.js), on the full page and on the quick answer's sheet (so also "What helps" after a log): hot
+  flushes; sleep, mood and dryness in midlife; sleep and hormones; bones and heart after 40; perimenopause; periods after 40;
+  painful periods; periods dos and don'ts; heavy bleeding; mood and the cycle; what PMOS is; a thali for hormones; movement with
+  PMOS; irregular cycles; Getting ready's checklist;
+- the routines (relief.js), after Start: cramps (pain), hot flushes, poor sleep (sleep), anxious or low (mood);
+- topic pages, before their Qura card: period pain and PMS (periods.js); endometriosis, fibroids and anaemia (cond.js); the
+  Menopause page and Bones and heart (meno.js).
+
+**A Qura doctor for medical help:**
+- "Who treats what: Qura doctor or gynaecologist?" leads with "Ask a Qura doctor about this", as its own line says a Qura doctor
+  does the first assessment. The free government doctor page is its second button.
+- The urine-infection and bleeding-after-menopause guides keep the in-person doctor first, with a Qura doctor advised beside it.
+  Their reviewed lines say: an MBBS doctor for the antibiotic; a gynaecologist in person first.
+- The iron tablets page gains "Ask a Qura doctor about this".
+
+New UI words: `plan_for_h_run` "Your plan for this" and `plan_for_h_offer` "A free plan for this", with Hindi. `node test/planfor.mjs`
+checks it (26 checks).

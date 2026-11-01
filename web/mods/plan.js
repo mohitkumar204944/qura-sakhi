@@ -1552,9 +1552,31 @@
   /* Home: the best suggestion, when she has no plan going, until she says "Not now" (back after 14 days) */
   /* Version 39.10 (MODULE_API 53): after her first log, Today offers the plan her first goal chooses. "See my plan" asks the
      plan's own questions (from her answers at joining), then the plan screen and Start, as in Version 37.1. */
+  /* Version 39.53 (Mohit, 1 Nov: "everything should lead to plan"): a guide, a routine or a topic page names her plan for its
+     subject: the plan she runs (the midlife plan's part for it), or the plan that fits her stage, offered. Nothing while another
+     plan runs (hers stays hers), while one rests or is on its way, in a pregnancy, after a loss or on a shared phone. */
+  const FOR_PART = { hot: 'h', mood: 'q', sleep: 'r', bones: 's', aches: 's' };
+  function forRow(topic) {
+    if (!topic || !planOn() || disc() || pregnant() || lossNow()) return '';
+    const st = stageNowKey(); const d = raw();
+    const goal = topic === 'meno' ? (st === 'meno' ? ((S.state.goals || []).find((k) => GOALS.meno.indexOf(k) >= 0 && k !== 'track' && k !== 'heavy') || 'hot') : null) : topic;
+    const pk = goal ? packFor(goal, st) : null; if (!pk) return '';
+    const run = runningD();
+    const row = (attr, ttl, sub) => '<div class="card soft pl-for" data-nofold="1"><span class="eyebrow">' + esc(t(run ? 'plan_for_h_run' : 'plan_for_h_offer')) + '</span><div class="list"><button type="button" class="item" ' + attr + '><span class="body"><strong>' + esc(ttl) + '</strong>' + (sub ? '<span class="small">' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button></div></div>';
+    if (run) {
+      if (packOf(run) !== pk) return '';
+      let sub = ''; const ML = S.midlife && S.midlife.lesson;
+      if (menoV2(run) && FOR_PART[topic] && ML && weekNo(run) <= N) { const ord = m2Order(run); let p = FOR_PART[topic]; if (ord.indexOf(p) < 0) p = p === 'h' ? 'q' : (p === 'q' ? 'h' : p); const i = ord.indexOf(p); if (i >= 0) sub = tf('plan_m2_rv_p', { a: i * 4 + 1, b: i * 4 + 4, p: ML.part(p) }); }
+      return row('data-go="plan"', packTitle(run), sub);
+    }
+    if ((d && d.start && packOf(d)) || pendingOk(d) || upcoming(d) || goalsFor({ stage: st }).indexOf(goal) < 0) return '';
+    return row('data-pl-for="' + esc(goal) + '"', packTitle({ pack: pk, goalKey: goal, pv: (specOf(pk) || {}).ver }), '');
+  }
+  /* the offer starts that plan's own questions, from any page (a guide's sheet closes first) */
+  document.addEventListener('click', (e) => { const b = e.target && e.target.closest ? e.target.closest('[data-pl-for]') : null; if (!b) return; e.preventDefault(); if (S.closeSheet) S.closeSheet(); S.plan.offer(b.dataset.plFor); });
   function offerCard() {
     const p = S.state.prompts || {}; if (!on() || !S.canSave() || disc() || lossNow()) return '';
-    const d = raw(); if (packOf(d) || pendingOk(d) || upcoming(d)) return '';
+    const d = raw(); if ((packOf(d) && pausedFor(d) !== 'poi') || pendingOk(d) || upcoming(d)) return '';   /* Version 39.51: a plan held for her doctor shows the card */
     if (poiHold() && stageNowKey() === 'meno') return p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml();   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her */
     if (!p.planOffer || !p.firstLog) return '';
     if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), pToday()) < 3) return '';
@@ -1859,7 +1881,8 @@
     if (ck === 'birthWeek') { const b = (S.state.situation || {}).deliveredOn; return b ? tf('plan_wk_post', { n: Math.floor(S.diffDays(S.fromISO(b), pToday()) / 7) + 1 }) : ''; } return ''; };
   /* the cycle and light plans pause in pregnancy and for the first 6 weeks after a birth (the pregnancy and after-birth plans don't) */
   /* review life-1: a plan started on or after the day her pregnancy ended isn't paused by it (it used to fall through to 'loss') */
-  const pausedFor = (d) => { const pk = packOf(d); if (!pk) return null; const w = pauseWhy(); if (!w || (((specD(d) || {}).life || {}).pause || []).indexOf(w) < 0) return null;
+  const pausedFor = (d) => { const pk = packOf(d); if (!pk) return null; if (pk === 'meno' && poiHold()) return 'poi';   /* Version 39.51 (Mohit's phone test): under 40 with her periods stopped, her doctor first */
+    const w = pauseWhy(); if (!w || (((specD(d) || {}).life || {}).pause || []).indexOf(w) < 0) return null;
     if (w === 'loss') return d && d.start && d.started && d.started >= ((S.state.situation || {}).pregEndedOn || '') ? null : 'loss'; return w; };
   function packTitle(d) {
     const pk = packOf(d) || (d && d.pack) || 'cycle'; const sp = specOf(pk, d && d.pv);
@@ -2938,7 +2961,7 @@
     /* paused (a pregnancy, or the first 6 weeks after a birth): why, and the plans for now; a new one replaces the paused one */
     /* Version 39.5: when her stage stopped her plan, one card that offers the plan for her new stage; and her last plan */
     const chg = S.canSave() ? changedWhy(d) : null;
-    const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
+    const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' && why !== 'poi' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
     const pick = S.canSave() ? paused + '<div class="card pl-pick"><h2>' + esc(t('plan_my_pick_h')) + '</h2><p class="small">' + esc(t(ik.goal === 'track' ? 'plan_my_track' : 'plan_my_pick_p')) + '</p><div class="list">' + goalsFor({ stage: st }).filter((k) => k !== 'track').map((k) => '<button type="button" class="item" data-pl-pick="' + k + '"><span class="body"><strong>' + esc(goalName(k)) + '</strong></span>' + (k === suggestedGoal(st) ? '<span class="pill ok pl-sugg">' + esc(t('plan_suggested')) + '</span>' : '') + '<span class="chev">' + S.I.chev + '</span></button>').join('') + '</div></div>' : '';
     const pick2 = poiHold() && st === 'meno' && S.canSave() ? paused + poiHtml() : pick;   /* Version 39.51 (the midlife walk): before 40, the gynaecologist first, not goals that lead nowhere */
     renderPlans(v, { h: 'plan_my_h', top: pick2, skip: S.canSave() && goalsFor({ stage: st }).indexOf('pmos') >= 0 ? ['plan-pmos'] : [] }); wireChange(v); wirePoi(v);   /* Version 39.42: "I have PMOS" is its row */
@@ -3145,7 +3168,7 @@
   const msQ = (d, m) => '<div class="card pl-ci-ms" data-say="1"><span class="eyebrow">' + esc(t('plan_ms_eye')) + '</span><p class="pl-ci-ms-q"><strong>' + esc(tf('plan_ms_q', { x: msX(d) })) + '</strong></p><div class="pl-ms-n" role="group" aria-label="' + esc(tf('plan_ms_q', { x: msX(d) })) + '">' +
     Array.from({ length: 11 }, (x, i) => '<button type="button" class="chip' + (m.ms === i ? ' on' : '') + '" data-ci-ms="' + i + '" aria-pressed="' + (m.ms === i) + '">' + i + '</button>').join('') + '</div><div class="row spread small pl-ms-ends"><span>' + esc(t('plan_ms_lo')) + '</span><span>' + esc(t('plan_ms_hi')) + '</span></div></div>';
   /* periods that stopped before 40 need a gynaecologist first (the reviewed POI line): no midlife plan until her doctor has seen her */
-  const poiHold = () => { const s0 = S.state.situation || {}; const age = S.cycle && S.cycle.ageYears ? S.cycle.ageYears() : null; return !!s0.stopped && age != null && age < 40 && !s0.poiOk; };
+  function poiHold() { const s0 = S.state.situation || {}; const age = S.cycle && S.cycle.ageYears ? S.cycle.ageYears() : null; return !!s0.stopped && age != null && age < 40 && !s0.poiOk; }   /* a declaration: pausedFor asks it */
   function wirePoi(v) {
     const po = v.querySelector('#pl-m2-poi-ok'); if (po) po.addEventListener('click', () => { S.state.situation = Object.assign({}, S.state.situation || {}, { poiOk: todayISO() }); S.state.prompts = Object.assign({}, S.state.prompts || {}); if (!S.state.prompts.planOffer) S.state.prompts.planOffer = todayISO(); S.save(); S.render(); });   /* her plan is offered now */
     const pn = v.querySelector('#pl-m2-poi-not'); if (pn) pn.addEventListener('click', () => { S.state.prompts = Object.assign({}, S.state.prompts || {}, { poiNot: todayISO() }); S.saveQuiet(); S.render(); });
@@ -3793,7 +3816,7 @@
   const calmRow = () => { const d = S.canSave() && raw() ? D() : null; return routineOk('calm', d) ? { go: 'plan-r-calm', title: rName('calm'), sub: rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }) } : null; };
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
-  S.plan = { tonight: planTonight, calmRow: calmRow,
+  S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
     /* Version 39.32: the Getting ready plan, for ttc.js (her lesson, her tablet's reminder, her ready check's folic answer) */
     folicOn: () => { const d = raw(); if (!d || !planOn()) return false; if (folicCarry(d)) return true;   /* Version 39.47: preg.js's check-ups count her tablet as started */
       return babyD(d) && pregnant() && folicRun(d) && !!(S.ttc && S.ttc.folic && S.ttc.folic.has && S.ttc.folic.has()); },   /* moved on, before she starts My pregnancy: her tablet still rings */
@@ -4015,7 +4038,7 @@
         plan_all_foot: 'Suggestions come from what you logged and what you told Sakhi. They are not a diagnosis. For medicines or supplements, ask a doctor.',
         plan_help_h: 'What you want help with', plan_help_none: 'Nothing picked yet.', plan_help_save: 'Save', plan_help_saved: 'Saved. Your suggestions are updated.', plan_cancel_b: 'Cancel',
         plan_off_eye: 'Ready for you', plan_off_p: 'Made from your answers and your first log.', plan_off_b: 'See my plan', plan_off_later: 'Later',
-        plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_fit_ttc_h: 'Trying for a baby now?', plan_fit_ttc_p: 'Getting ready for a baby has the steps for these months: your folic acid tablet, your food and your moves.', plan_fit_ttc_go: 'See Getting ready', plan_fit_cyc_h: 'Not trying for a baby now?', plan_fit_cyc_p: 'Getting ready for a baby is for the months before a pregnancy. Choose a plan for your periods, or keep this one.', plan_fit_pick: 'Choose my plan', plan_fit_keep: 'Keep {t}', plan_fit_hd: 'A different plan may fit now', plan_fit_pd: 'Your stage has changed. Choose a plan for now, or keep yours.', plan_fit_keep_d: 'Keep my plan', plan_fit_meno_h: '{t} may fit now', plan_fit_meno_p: 'A short chapter a week for hot flushes, sleep or worry, with strength and balance for your bones. What you logged stays.', plan_fit_meno_go: 'See {t}',
+        plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_fit_ttc_h: 'Trying for a baby now?', plan_fit_ttc_p: 'Getting ready for a baby has the steps for these months: your folic acid tablet, your food and your moves.', plan_fit_ttc_go: 'See Getting ready', plan_fit_cyc_h: 'Not trying for a baby now?', plan_fit_cyc_p: 'Getting ready for a baby is for the months before a pregnancy. Choose a plan for your periods, or keep this one.', plan_fit_pick: 'Choose my plan', plan_fit_keep: 'Keep {t}', plan_fit_hd: 'A different plan may fit now', plan_fit_pd: 'Your stage has changed. Choose a plan for now, or keep yours.', plan_fit_keep_d: 'Keep my plan', plan_fit_meno_h: '{t} may fit now', plan_fit_meno_p: 'A short chapter a week for hot flushes, sleep or worry, with strength and balance for your bones. What you logged stays.', plan_fit_meno_go: 'See {t}', plan_for_h_run: 'Your plan for this', plan_for_h_offer: 'A free plan for this',
         plan_m2_rv_p: 'Weeks {a} to {b}: {p}', plan_m2_rv_ch: 'Every week: a short chapter, and a look back at your week', plan_m2_rv_str: 'Twice a week, from day 2: {r}',
         plan_m2_tom: 'Tomorrow: {x}.', plan_m2_tl_skill: 'your skill', plan_m2_tl_move: 'your walk', plan_m2_tl_ca: 'a calcium food', plan_m2_tl_food: 'your plate', plan_rec_all: 'All plans', plan_paused_pill: 'After your 6-week check',
         plan_d_12w: '12 weeks', plan_d_21d: '21 days', plan_d_3m: '3 minutes', plan_d_2m: '2 minutes', plan_d_daily: 'Every day',
@@ -4372,7 +4395,7 @@
         plan_all_foot: 'सुझाव आपकी entries और आपके बताए जवाबों से आते हैं। ये कोई निदान नहीं हैं। दवा या सप्लीमेंट के लिए डॉक्टर से पूछें।',
         plan_help_h: 'आपको किस बात में मदद चाहिए', plan_help_none: 'अभी कुछ नहीं चुना।', plan_help_save: 'सेव करें', plan_help_saved: 'सेव हो गया। आपके सुझाव बदल गए हैं।', plan_cancel_b: 'रद्द करें',
         plan_off_eye: 'आपके लिए तैयार', plan_off_p: 'आपके जवाबों और पहली एंट्री से बना।', plan_off_b: 'मेरा प्लान देखें', plan_off_later: 'बाद में',
-        plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_fit_ttc_h: 'अब बच्चे की कोशिश कर रही हैं?', plan_fit_ttc_p: '‘गर्भ के लिए तैयारी’ में इन महीनों के कदम हैं: folic acid की गोली, आपका खाना और व्यायाम।', plan_fit_ttc_go: '‘गर्भ के लिए तैयारी’ देखें', plan_fit_cyc_h: 'अभी बच्चे की कोशिश नहीं?', plan_fit_cyc_p: '‘गर्भ के लिए तैयारी’ प्रेगनेंसी से पहले के महीनों के लिए है। अपने पीरियड के लिए प्लान चुनें, या इसी को रखें।', plan_fit_pick: 'मेरा प्लान चुनें', plan_fit_keep: '{t} रखें', plan_fit_hd: 'अब कोई दूसरा प्लान ठीक रहेगा', plan_fit_pd: 'आपकी स्थिति बदली है। अभी के लिए प्लान चुनें, या अपना रखें।', plan_fit_keep_d: 'मेरा प्लान रखें', plan_fit_meno_h: '{t} अब ठीक रहेगा', plan_fit_meno_p: 'गर्मी के झोंकों, नींद या चिंता पर हर हफ़्ते एक छोटा अध्याय, और हड्डियों के लिए ताक़त व संतुलन। आपने जो दर्ज किया, वह रहेगा।', plan_fit_meno_go: '{t} देखें',
+        plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_fit_ttc_h: 'अब बच्चे की कोशिश कर रही हैं?', plan_fit_ttc_p: '‘गर्भ के लिए तैयारी’ में इन महीनों के कदम हैं: folic acid की गोली, आपका खाना और व्यायाम।', plan_fit_ttc_go: '‘गर्भ के लिए तैयारी’ देखें', plan_fit_cyc_h: 'अभी बच्चे की कोशिश नहीं?', plan_fit_cyc_p: '‘गर्भ के लिए तैयारी’ प्रेगनेंसी से पहले के महीनों के लिए है। अपने पीरियड के लिए प्लान चुनें, या इसी को रखें।', plan_fit_pick: 'मेरा प्लान चुनें', plan_fit_keep: '{t} रखें', plan_fit_hd: 'अब कोई दूसरा प्लान ठीक रहेगा', plan_fit_pd: 'आपकी स्थिति बदली है। अभी के लिए प्लान चुनें, या अपना रखें।', plan_fit_keep_d: 'मेरा प्लान रखें', plan_fit_meno_h: '{t} अब ठीक रहेगा', plan_fit_meno_p: 'गर्मी के झोंकों, नींद या चिंता पर हर हफ़्ते एक छोटा अध्याय, और हड्डियों के लिए ताक़त व संतुलन। आपने जो दर्ज किया, वह रहेगा।', plan_fit_meno_go: '{t} देखें', plan_for_h_run: 'इसके लिए आपका प्लान', plan_for_h_offer: 'इसके लिए एक मुफ़्त प्लान',
         plan_m2_rv_p: 'हफ़्ते {a} से {b}: {p}', plan_m2_rv_ch: 'हर हफ़्ते: एक छोटा अध्याय, और अपने हफ़्ते पर एक नज़र', plan_m2_rv_str: 'हफ़्ते में दो बार, दूसरे दिन से: {r}',
         plan_m2_tom: 'कल: {x}।', plan_m2_tl_skill: 'आपका अभ्यास', plan_m2_tl_move: 'आपकी सैर', plan_m2_tl_ca: 'एक कैल्शियम वाला खाना', plan_m2_tl_food: 'आपकी थाली', plan_rec_all: 'सभी प्लान', plan_paused_pill: '6 हफ़्ते की जाँच के बाद',
         plan_d_12w: '12 हफ़्ते', plan_d_21d: '21 दिन', plan_d_3m: '3 मिनट', plan_d_2m: '2 मिनट', plan_d_daily: 'रोज़',

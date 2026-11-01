@@ -6,6 +6,8 @@
   'use strict';
   if (!S) return;
   const t = S.t, tf = S.tf, esc = S.esc;
+  const planFor = (k) => (k && S.plan && S.plan.forRow ? S.plan.forRow(k) : '');   /* Version 39.53: her plan for this page's subject, when one fits */
+  const RL_TOPIC = { cramps: 'pain', hot: 'hot', sleep: 'sleep', calm: 'mood' };   /* Version 39.53: the plan each routine belongs to */
   const D = () => { const d = S.data('relief'); d.log = d.log || []; return d; };
   /* breathing patterns in seconds: in, hold, out, hold */
   const BR = { b46: [4, 0, 6, 0], box: [4, 4, 4, 4], b55: [5, 0, 5, 0] };
@@ -71,7 +73,7 @@
       body = '<div class="card rl-stage">' + art('calm') + '<p class="lead">' + esc(tf('relief_mins', { n: mins(run.id) })) + '</p><p class="small">' + esc(t('relief_intro')) + '</p></div>' +
         '<ol class="steps">' + r.steps.map((s) => '<li>' + esc(t('relief_' + s[0] + '_h')) + '</li>').join('') + '</ol>' +
         (S.speakEl || clipFor('c1') ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('relief_voice')) + '</strong><span>' + esc(t('relief_voice_d')) + '</span></span><input type="checkbox" id="rl-voice" ' + (run.voice ? 'checked' : '') + '></label></div>' : '') +
-        '<button type="button" class="btn primary block" id="rl-start">' + esc(t('relief_start')) + '</button>' + (run.id === 'sleep' ? calmRow() : '') + doc(run.id);   /* Version 39.21: one tap from her plan's bedtime step */
+        '<button type="button" class="btn primary block" id="rl-start">' + esc(t('relief_start')) + '</button>' + (run.id === 'sleep' ? calmRow() : '') + planFor(RL_TOPIC[run.id]) + doc(run.id);   /* Version 39.21: one tap from her plan's bedtime step */
     } else if (run.i < n) {
       const s = r.steps[run.i];
       body = '<div class="rl-dots" aria-hidden="true">' + r.steps.map((x, k) => '<i class="' + (k < run.i ? 'done' : (k === run.i ? 'on' : '')) + '"></i>').join('') + '</div>' +

@@ -42,6 +42,7 @@
   const flag = (cls, o) => '<div class="flag' + (cls ? ' ' + cls : '') + '"><span>' + h(o) + '</span></div>';
   const flagLead = (cls, lead, body) => '<div class="flag' + (cls ? ' ' + cls : '') + '"><span><strong>' + esc(lead) + ':</strong> ' + esc(body) + '</span></div>';
   const linkItem = (route, icon, title, sub, pill) => '<button type="button" class="item" data-go="' + esc(route) + '"><span class="ico-sm">' + S.icon(icon) + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span>' + (pill ? '<span class="pill" style="flex-shrink:0">' + esc(pill) + '</span>' : '') + '</button>';
+  const planFor = (k) => (k && S.plan && S.plan.forRow ? S.plan.forRow(k) : '');   /* Version 39.53: her plan for this page's subject, when one fits */
   const askCard = (topic, body) => '<div class="card dark"><h3>' + esc(t('qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + h(body) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none;align-self:flex-start" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button></div>';
   const sources = (keys) => '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + keys.map((k) => { const s = SRC[k]; return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + h(s) + '</a>'; }).join(' · ') + '</p></details>';
   const foot = (o) => '<p class="footnote" style="text-align:left">' + h(o) + '</p>';
@@ -253,7 +254,7 @@
     v.innerHTML = S.backRow(t('cond_endo'), 'cond', false) +
       intro({ en: 'Log pain on any day it comes, and pain-free days too. The diary lines it up by cycle day, so you and your gynaecologist can see when it happens. Not a diagnosis.', hi: 'जिस दिन दर्द हो उस दिन दर्ज करें, और बिना दर्द वाले दिन भी। डायरी इसे चक्र के दिन के हिसाब से दिखाती है, ताकि आप और आपकी स्त्री रोग विशेषज्ञ देख सकें कि दर्द कब होता है। यह diagnosis नहीं है।' }) +
       off + tracker + explain + tell + treat + doctor +
-      askCard({ en: 'Pelvic pain and my pain diary (endometriosis)', hi: 'पेडू का दर्द और मेरी दर्द डायरी (एंडोमेट्रियोसिस)' }, { en: 'A Qura doctor (BAMS) can go through this diary with you, help with sleep, food and movement, order tests, and refer you to a gynaecologist. Hormone medicines and surgery need an MBBS gynaecologist.', hi: 'Qura की डॉक्टर (BAMS) यह डायरी आपके साथ देख सकती हैं, नींद, खाने और चलने-फिरने में मदद करती हैं, जाँचें लिखती हैं, और स्त्री रोग विशेषज्ञ के पास refer करती हैं। हॉर्मोन की दवाएँ और सर्जरी MBBS स्त्री रोग विशेषज्ञ ही करती हैं।' }) +
+      planFor('pain') + askCard({ en: 'Pelvic pain and my pain diary (endometriosis)', hi: 'पेडू का दर्द और मेरी दर्द डायरी (एंडोमेट्रियोसिस)' }, { en: 'A Qura doctor (BAMS) can go through this diary with you, help with sleep, food and movement, order tests, and refer you to a gynaecologist. Hormone medicines and surgery need an MBBS gynaecologist.', hi: 'Qura की डॉक्टर (BAMS) यह डायरी आपके साथ देख सकती हैं, नींद, खाने और चलने-फिरने में मदद करती हैं, जाँचें लिखती हैं, और स्त्री रोग विशेषज्ञ के पास refer करती हैं। हॉर्मोन की दवाएँ और सर्जरी MBBS स्त्री रोग विशेषज्ञ ही करती हैं।' }) +
       sources(['whoEndo', 'acogInf']);
     S.wire(v);
     if (!can) return;
@@ -295,7 +296,7 @@
       intro({ en: 'Three common growths in or near the womb. Most are not cancer. What each one is, how it is found, and what can be done. Not a diagnosis.', hi: 'बच्चेदानी में या उसके पास होने वाली तीन आम गाँठें। ज़्यादातर कैंसर नहीं होतीं। हर एक क्या है, कैसे पता चलती है, और क्या किया जा सकता है। यह diagnosis नहीं है।' }) +
       flag('urgent', TORSION) + flagLead('urgent', t('call_now'), t('s1a')) +
       fib + cyst + polyp + where +
-      askCard({ en: 'Fibroids, cysts or polyps', hi: 'फाइब्रॉइड, सिस्ट या पॉलिप' }, { en: 'Bring your scan report to a free call. A Qura doctor explains it in plain words, helps with heavy-period care and diet, and refers you to a gynaecologist.', hi: 'अपनी scan report लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर उसे आसान शब्दों में समझाएँगी, भारी पीरियड और खाने में मदद करेंगी, और स्त्री रोग विशेषज्ञ के पास refer करेंगी।' }) +
+      planFor('heavy') + askCard({ en: 'Fibroids, cysts or polyps', hi: 'फाइब्रॉइड, सिस्ट या पॉलिप' }, { en: 'Bring your scan report to a free call. A Qura doctor explains it in plain words, helps with heavy-period care and diet, and refers you to a gynaecologist.', hi: 'अपनी scan report लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर उसे आसान शब्दों में समझाएँगी, भारी पीरियड और खाने में मदद करेंगी, और स्त्री रोग विशेषज्ञ के पास refer करेंगी।' }) +
       sources(['nhsFib', 'acogFib', 'nhsCyst', 'torsion', 'pmjay']);
     S.wire(v);
   }
@@ -561,7 +562,7 @@
       intro({ en: 'Anaemia is easy to test for and usually easy to treat. Heavy periods are a common cause. This page has your Hb results, a heavy-bleeding chart to fill during your period, and what is free. Not a diagnosis.', hi: 'ख़ून की कमी की जाँच आसान है और इलाज भी अक्सर आसान है। भारी पीरियड इसकी आम वजह हैं। इस पन्ने पर आपके Hb नतीजे, पीरियड के दिनों में भरने वाला ब्लीडिंग चार्ट, और मुफ़्त सुविधाएँ हैं। यह diagnosis नहीं है।' }) +
       flagLead('urgent', t('call_now'), t('s1b')) +
       [hbCard, pbCard, about, free, food, doctor].map((x) => x.replace(/^<div class="card([^"]*)"/, '<div class="card$1" data-jump="1"')).join('') +   /* Version 39.8: one tap to each section */
-      askCard({ en: 'Anaemia and heavy periods', hi: 'ख़ून की कमी और भारी पीरियड' }, { en: 'Bring your Hb report and this chart to a free call. A Qura doctor helps with diet and tablets, orders tests, and refers you to a gynaecologist when bleeding needs treatment.', hi: 'अपनी Hb report और यह चार्ट लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर खाने और गोलियों में मदद करती हैं, जाँचें लिखती हैं, और ब्लीडिंग के इलाज के लिए स्त्री रोग विशेषज्ञ के पास refer करती हैं।' }) +
+      planFor('heavy') + askCard({ en: 'Anaemia and heavy periods', hi: 'ख़ून की कमी और भारी पीरियड' }, { en: 'Bring your Hb report and this chart to a free call. A Qura doctor helps with diet and tablets, orders tests, and refers you to a gynaecologist when bleeding needs treatment.', hi: 'अपनी Hb report और यह चार्ट लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर खाने और गोलियों में मदद करती हैं, जाँचें लिखती हैं, और ब्लीडिंग के इलाज के लिए स्त्री रोग विशेषज्ञ के पास refer करती हैं।' }) +
       sources(['amb', 'pbac']);
     S.wire(v);
     const add = v.querySelector('#cond-addhb'); if (add) add.addEventListener('click', () => { mem.lab = null; mem.labPre = 'hb'; S.setHash('cond-labs'); });

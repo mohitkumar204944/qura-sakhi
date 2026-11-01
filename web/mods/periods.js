@@ -20,6 +20,7 @@
   const ul = (arr) => '<ul>' + arr.map((o) => '<li>' + h(o) + '</li>').join('') + '</ul>';
   const steps = (arr) => '<ol class="steps">' + arr.map((o) => '<li>' + h(o) + '</li>').join('') + '</ol>';
   const linkItem = (route, icon, title, sub, pill) => '<button type="button" class="item" data-go="' + esc(route) + '"><span class="ico-sm">' + S.icon(icon) + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span>' + (pill ? '<span class="pill" style="flex-shrink:0">' + esc(pill) + '</span>' : '') + '</button>';
+  const planFor = (k) => (k && S.plan && S.plan.forRow ? S.plan.forRow(k) : '');   /* Version 39.53: her plan for this page's subject, when one fits */
   const askCard = (topic, body) => '<div class="card dark"><h3>' + esc(t('qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + h(body) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none;align-self:flex-start" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button></div>';
   const intro = (o) => '<p class="small">' + h(o) + '</p>';
 
@@ -190,7 +191,7 @@
     v.innerHTML = S.backRow(t('periods_pms'), 'periods', true) +
       intro({ en: 'Log how you feel each day, especially in the 1–2 weeks before your period. After 2–3 cycles you and your doctor can see whether it follows your cycle.', hi: 'हर दिन लिखें कि आप कैसा महसूस करती हैं, ख़ासकर पीरियड से पहले के 1–2 हफ़्ते। 2–3 चक्र बाद आप और आपकी डॉक्टर देख सकेंगी कि यह आपके चक्र के साथ चलता है या नहीं।' }) +
       offNote + form + gridCard + countsCard + explain + doctor +
-      askCard({ en: 'Mood and body before periods (PMS / PMDD)', hi: 'पीरियड से पहले मन और शरीर (PMS / PMDD)' }, { en: 'Bring this log to a free call. A Qura doctor goes through it with you and tells you where to go next.', hi: 'यह डायरी लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर इसे आपके साथ देखेंगी और बताएँगी कि आगे कहाँ जाएँ।' });
+      planFor('pms') + askCard({ en: 'Mood and body before periods (PMS / PMDD)', hi: 'पीरियड से पहले मन और शरीर (PMS / PMDD)' }, { en: 'Bring this log to a free call. A Qura doctor goes through it with you and tells you where to go next.', hi: 'यह डायरी लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर इसे आपके साथ देखेंगी और बताएँगी कि आगे कहाँ जाएँ।' });
     S.wire(v);
     if (!can) return;
     v.querySelectorAll('[data-sym]').forEach((b) => b.addEventListener('click', () => {
@@ -236,7 +237,7 @@
       '<div class="card dark"><h3>' + esc(t('call_now')) + '</h3><ul><li>' + esc(t('s1a')) + '</li><li>' + esc(t('s1b')) + '</li></ul></div>' +
       '<div class="flag"><span><strong>' + esc(t('today_if')) + ':</strong> ' + esc(t('s2b')) + h({ en: '. ', hi: '। ' }) + h({ en: 'Or pain far worse than your usual period pain that medicine does not ease.', hi: 'या दर्द आपके आम पीरियड दर्द से बहुत ज़्यादा हो और दवा से भी कम न हो।' }) + '</span></div>' +
       (S.canSave() ? '<div class="card soft"><p class="small">' + h({ en: 'Log pain each time you log a period. Over a few months the diary shows your doctor how bad it gets and for how long.', hi: 'हर बार पीरियड दर्ज करते समय दर्द भी दर्ज करें। कुछ महीनों में डायरी डॉक्टर को दिखाती है कि दर्द कितना और कितने दिन रहता है।' }) + '</p><button type="button" class="btn sm" style="align-self:flex-start" data-go="diary">' + esc(t('diary')) + '</button></div>' : '') +
-      askCard({ en: 'Period pain', hi: 'पीरियड का दर्द' }, { en: 'A Qura doctor can go through your pain diary with you, suggest tests and refer you to a gynaecologist.', hi: 'Qura की डॉक्टर आपकी दर्द की डायरी आपके साथ देख सकती हैं, जाँच बता सकती हैं और gynaecologist के पास refer कर सकती हैं।' });
+      planFor('pain') + askCard({ en: 'Period pain', hi: 'पीरियड का दर्द' }, { en: 'A Qura doctor can go through your pain diary with you, suggest tests and refer you to a gynaecologist.', hi: 'Qura की डॉक्टर आपकी दर्द की डायरी आपके साथ देख सकती हैं, जाँच बता सकती हैं और gynaecologist के पास refer कर सकती हैं।' });
     S.wire(v);
   }
 

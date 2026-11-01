@@ -47,7 +47,10 @@
 //  19 the discreet path cards (Mohit, 1 Nov: "fix the leak in both plans"): on a shared phone no "Your 12 weeks" card on My midlife
 //     plan or on Getting ready, as in a pregnancy;
 //  20 her parts on the weeks card (Mohit, 1 Nov: "add the parts to that card too"): from week 2 each week's part in her order, the
-//     4-week and 8-week checks and her results kept, and none on a shared phone; no page errors.
+//     4-week and 8-week checks and her results kept, and none on a shared phone;
+//  21 POI while her plan runs (Mohit, 1 Nov: "card and hold"): under 40 with her periods stopped, the gynaecologist card on Today
+//     and My plan, her plan and its reminder resting until "My doctor has seen me"; not at 51, not while periods still come; no
+//     page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -679,6 +682,24 @@ const startPlan = async (page, intake, pick) => {
   a = await open({ seed: m2('hot', B(9), null, { settings: { discreet: true } }), hash: '#plan' });
   w = await wks(a.page);
   check('20.3 a shared phone: "Your daily steps", no parts', /This week Your daily steps/.test(w.txt) && !/Cool and calm|Rest ·|Strong and steady/.test(w.all.join(' ')), w.txt.slice(0, 300)); await done(a);
+}
+
+// ---------- 21 POI while her plan runs ----------
+{
+  /* Mohit's phone: her midlife plan running, then her periods stopped, and she is 37 */
+  const poi = (x) => m2('hot', B(3), null, Object.assign({ dob: '1989-03-01' }, x || {}));
+  const rem = (page) => page.evaluate(() => ((window.Saathi.state.reminders || []).find((r) => r.id === 'plan') || null));
+  let a = await open({ seed: poi() });
+  check('21.1 under 40 with her periods stopped: the gynaecologist card on Today, where her plan was', /Before a plan: see a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')) && /not menopause/.test(await txt(a.page, '#view .pl-m2-poi')) && !(await has(a.page, '#view .today-plan-skill')), (await view(a.page)).slice(0, 600));
+  check('21.1 her plan rests: no check-in reminder', !(await rem(a.page)), await rem(a.page));
+  await go(a.page, 'plan');
+  check('21.1 My plan: the card alone (no steps, no other pause line)', await has(a.page, '#view .pl-m2-poi') && !(await has(a.page, '#view .pl-steps-card')) && !(await has(a.page, '#view .pl-paused')), (await view(a.page)).slice(0, 500));
+  await tap(a.page, '#pl-m2-poi-ok'); await go(a.page, 'home');
+  check('21.2 "My doctor has seen me": her plan and its reminder come back', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')) && !!(await rem(a.page)), { rem: await rem(a.page), v: (await view(a.page)).slice(0, 300) }); await done(a);
+  a = await open({ seed: m2('hot', B(3)) });
+  check('21.3 at 51 with her periods stopped: her plan runs, no card', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
+  a = await open({ seed: poi({ situation: { midlife: true } }) });
+  check('21.3 at 37 with periods still coming: her plan runs (no POI card)', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

@@ -3016,26 +3016,26 @@
   const ART = {
     'cycle.what-is-a-menstrual-cycle': { guide: 'periods', also: ['cycle.usual-gap-between-periods', 'cycle.why-cycles-become-irregular', 'cycle.how-to-keep-a-period-diary'] },
     'cycle.usual-gap-between-periods': { tool: 'explain', also: ['cycle.why-cycles-become-irregular', 'cycle.missed-period-what-to-do-first', 'cycle.how-to-keep-a-period-diary'] },
-    'cycle.why-cycles-become-irregular': { tool: 'explain', also: ['pmos.what-pmos-is', 'mind_body.stress-and-periods', 'mind_body.thyroid-and-anaemia-tests'] },
+    'cycle.why-cycles-become-irregular': { plan: 'irregular', tool: 'explain', also: ['pmos.what-pmos-is', 'mind_body.stress-and-periods', 'mind_body.thyroid-and-anaemia-tests'] },
     'cycle.missed-period-what-to-do-first': { tool: 'pregtest-read', guide: 'pregtest', also: ['conceive.pregnancy-test-when-and-how', 'mind_body.stress-and-periods', 'cycle.why-cycles-become-irregular'] },
-    'cycle.heavy-bleeding-how-to-tell': { tool: 'cond-anaemia', guide: 'cond-fibroids', also: ['mind_body.thyroid-and-anaemia-tests', 'cycle.how-to-keep-a-period-diary', 'midlife.periods-after-40'] },
-    'cycle.painful-periods': { tool: 'relief-cramps', guide: 'periods-pain', also: ['cycle.heavy-bleeding-how-to-tell', 'cycle.how-to-keep-a-period-diary', 'intimate.pain-during-sex'] },
+    'cycle.heavy-bleeding-how-to-tell': { plan: 'heavy', tool: 'cond-anaemia', guide: 'cond-fibroids', also: ['mind_body.thyroid-and-anaemia-tests', 'cycle.how-to-keep-a-period-diary', 'midlife.periods-after-40'] },
+    'cycle.painful-periods': { plan: 'pain', tool: 'relief-cramps', guide: 'periods-pain', also: ['cycle.heavy-bleeding-how-to-tell', 'cycle.how-to-keep-a-period-diary', 'intimate.pain-during-sex'] },
     'cycle.spotting-between-periods': { tool: 'screen-cervix', also: ['intimate.safe-sex-infections-testing', 'cycle.heavy-bleeding-how-to-tell', 'midlife.bleeding-after-menopause'] },
     'cycle.first-periods-for-teens': { tool: 'periods-products', guide: 'teen-first', also: ['services.under-18-daughter-sister', 'cycle.common-period-myths', 'intimate.pads-cloth-cups-tampons'] },
     'cycle.common-period-myths': { tool: 'joy-quiz', guide: 'periods-myths', also: ['cycle.period-dos-and-donts', 'intimate.hygiene-myths', 'mind_body.talking-to-family'] },
     'cycle.how-to-keep-a-period-diary': { tool: 'report', also: ['cycle.usual-gap-between-periods', 'services.doctor-visit-bring-and-ask', 'cycle.why-cycles-become-irregular'] },
-    'cycle.period-dos-and-donts': { tool: 'relief-cramps', guide: 'periods-myths', also: ['cycle.common-period-myths', 'cycle.painful-periods', 'cycle.heavy-bleeding-how-to-tell'] },
-    'pmos.what-pmos-is': { tool: 'selfcheck', guide: 'cond', also: ['pmos.signs-to-notice', 'pmos.tests-and-why', 'pmos.same-signs-different-cause'] },
+    'cycle.period-dos-and-donts': { plan: 'pain', tool: 'relief-cramps', guide: 'periods-myths', also: ['cycle.common-period-myths', 'cycle.painful-periods', 'cycle.heavy-bleeding-how-to-tell'] },
+    'pmos.what-pmos-is': { plan: 'pmos', tool: 'selfcheck', guide: 'cond', also: ['pmos.signs-to-notice', 'pmos.tests-and-why', 'pmos.same-signs-different-cause'] },
     'pmos.signs-to-notice': { tool: 'selfcheck', also: ['pmos.tests-and-why', 'pmos.what-pmos-is', 'pmos.lean-pmos'] },
     'pmos.tests-and-why': { tool: 'cond-labs', also: ['mind_body.thyroid-and-anaemia-tests', 'pmos.same-signs-different-cause', 'services.reading-prescription-tests'] },
     'pmos.same-signs-different-cause': { tool: 'selfcheck', also: ['pmos.tests-and-why', 'mind_body.thyroid-and-anaemia-tests', 'pmos.what-pmos-is'] },
-    'pmos.food-for-hormones': { tool: 'food', also: ['mind_body.simple-indian-plate', 'pmos.movement-sleep-stress', 'mind_body.weight-and-waist'] },
-    'pmos.movement-sleep-stress': { tool: 'plan-moves', also: ['mind_body.movement-busy-day', 'mind_body.sleep-and-hormones', 'mind_body.stress-and-periods'] },
+    'pmos.food-for-hormones': { plan: 'pmos', tool: 'food', also: ['mind_body.simple-indian-plate', 'pmos.movement-sleep-stress', 'mind_body.weight-and-waist'] },
+    'pmos.movement-sleep-stress': { plan: 'pmos', tool: 'plan-moves', also: ['mind_body.movement-busy-day', 'mind_body.sleep-and-hormones', 'mind_body.stress-and-periods'] },
     'pmos.pmos-planning-a-baby': { tool: 'ttc-prep', guide: 'ttc', also: ['conceive.getting-ready-india-preconception-checklist', 'conceive.when-to-see-a-fertility-doctor', 'pmos.what-pmos-is'] },
     'pmos.pmos-long-term': { tool: 'screen-mine', also: ['pmos.lean-pmos', 'mind_body.weight-and-waist', 'pregnancy.sugar-test-blood-pressure-pmos'] },
     'pmos.lean-pmos': { tool: 'plan-body', also: ['pmos.what-pmos-is', 'pmos.food-for-hormones', 'mind_body.weight-and-waist'] },
-    'pmos.who-treats-what': { tool: 'access-doctor', also: ['services.how-qura-helps', 'services.see-gynaecologist-government-hospital', 'pmos.tests-and-why'] },
-    'conceive.getting-ready-india-preconception-checklist': { tool: 'ttc-prep', guide: 'ttc', also: ['conceive.folic-acid-and-tests-before-pregnancy', 'conceive.partner-health-and-semen-test', 'pmos.pmos-planning-a-baby'] },
+    'pmos.who-treats-what': { guide: 'access-doctor', also: ['services.how-qura-helps', 'services.see-gynaecologist-government-hospital', 'pmos.tests-and-why'] },
+    'conceive.getting-ready-india-preconception-checklist': { plan: 'ready', tool: 'ttc-prep', guide: 'ttc', also: ['conceive.folic-acid-and-tests-before-pregnancy', 'conceive.partner-health-and-semen-test', 'pmos.pmos-planning-a-baby'] },
     'conceive.why-no-app-can-name-your-fertile-day': { tool: 'fertile', guide: 'ttc-signs', also: ['conceive.ovulation-strips-temperature-progesterone', 'conceive.pregnancy-test-when-and-how', 'cycle.usual-gap-between-periods'] },
     'conceive.folic-acid-and-tests-before-pregnancy': { tool: 'ttc-prep', guide: 'ttc-tests', also: ['conceive.getting-ready-india-preconception-checklist', 'mind_body.thyroid-and-anaemia-tests', 'pregnancy.iron-folic-acid-calcium-td'] },
     'conceive.when-to-see-a-fertility-doctor': { tool: 'ttc-trying', guide: 'ttc', also: ['conceive.partner-health-and-semen-test', 'pmos.pmos-planning-a-baby', 'conceive.ovulation-strips-temperature-progesterone'] },
@@ -3061,18 +3061,18 @@
     'intimate.pads-cloth-cups-tampons': { guide: 'periods-products', also: ['cycle.first-periods-for-teens', 'intimate.hygiene-myths', 'cycle.period-dos-and-donts'] },
     'intimate.hygiene-myths': { tool: 'joy-quiz', also: ['intimate.discharge-itching-odour', 'cycle.common-period-myths', 'intimate.pads-cloth-cups-tampons'] },
     'intimate.did-not-want-the-sex': { tool: 'intimate-safety', also: ['services.helplines-directory'] },
-    'midlife.perimenopause-indian-age': { tool: 'meno-diary', guide: 'meno', also: ['midlife.periods-after-40', 'midlife.hot-flushes-night-sweats', 'midlife.contraception-perimenopause'] },
-    'midlife.periods-after-40': { tool: 'meno-diary', also: ['midlife.bleeding-after-menopause', 'cycle.heavy-bleeding-how-to-tell', 'midlife.perimenopause-indian-age'] },
-    'midlife.hot-flushes-night-sweats': { tool: 'relief-hot', also: ['midlife.hormone-therapy-explained', 'midlife.sleep-mood-dryness-midlife', 'midlife.perimenopause-indian-age'] },
+    'midlife.perimenopause-indian-age': { plan: 'meno', tool: 'meno-diary', guide: 'meno', also: ['midlife.periods-after-40', 'midlife.hot-flushes-night-sweats', 'midlife.contraception-perimenopause'] },
+    'midlife.periods-after-40': { plan: 'meno', tool: 'meno-diary', also: ['midlife.bleeding-after-menopause', 'cycle.heavy-bleeding-how-to-tell', 'midlife.perimenopause-indian-age'] },
+    'midlife.hot-flushes-night-sweats': { plan: 'hot', tool: 'relief-hot', also: ['midlife.hormone-therapy-explained', 'midlife.sleep-mood-dryness-midlife', 'midlife.perimenopause-indian-age'] },
     'midlife.hormone-therapy-explained': { guide: 'meno-hrt', also: ['midlife.hot-flushes-night-sweats', 'midlife.early-menopause-poi', 'midlife.bones-heart-after-40'] },
     'midlife.early-menopause-poi': { guide: 'cond-poi', also: ['midlife.hormone-therapy-explained', 'midlife.bones-heart-after-40', 'midlife.perimenopause-indian-age'] },
-    'midlife.bones-heart-after-40': { tool: 'screen-mine', guide: 'meno-bones', also: ['midlife.hormone-therapy-explained', 'mind_body.weight-and-waist', 'midlife.early-menopause-poi'] },
+    'midlife.bones-heart-after-40': { plan: 'bones', tool: 'screen-mine', guide: 'meno-bones', also: ['midlife.hormone-therapy-explained', 'mind_body.weight-and-waist', 'midlife.early-menopause-poi'] },
     'midlife.bleeding-after-menopause': { tool: 'access-doctor', also: ['midlife.periods-after-40', 'cycle.spotting-between-periods', 'services.see-gynaecologist-government-hospital'] },
-    'midlife.sleep-mood-dryness-midlife': { tool: 'relief-sleep', guide: 'meno-intimate', also: ['midlife.hot-flushes-night-sweats', 'mind_body.sleep-and-hormones', 'intimate.pain-during-sex'] },
+    'midlife.sleep-mood-dryness-midlife': { plan: 'sleep', tool: 'relief-sleep', guide: 'meno-intimate', also: ['midlife.hot-flushes-night-sweats', 'mind_body.sleep-and-hormones', 'intimate.pain-during-sex'] },
     'midlife.contraception-perimenopause': { tool: 'contra-chooser', guide: 'contra', also: ['midlife.perimenopause-indian-age', 'midlife.periods-after-40', 'cycle.missed-period-what-to-do-first'] },
-    'mind_body.mood-and-the-cycle': { tool: 'periods-pms', also: ['mind_body.stress-and-periods', 'mind_body.sleep-and-hormones', 'intimate.low-desire'] },
+    'mind_body.mood-and-the-cycle': { plan: 'pms', tool: 'periods-pms', also: ['mind_body.stress-and-periods', 'mind_body.sleep-and-hormones', 'intimate.low-desire'] },
     'mind_body.stress-and-periods': { tool: 'relief-calm', also: ['mind_body.mood-and-the-cycle', 'cycle.why-cycles-become-irregular', 'mind_body.sleep-and-hormones'] },
-    'mind_body.sleep-and-hormones': { tool: 'relief-sleep', also: ['mind_body.stress-and-periods', 'mind_body.movement-busy-day', 'pmos.movement-sleep-stress'] },
+    'mind_body.sleep-and-hormones': { plan: 'sleep', tool: 'relief-sleep', also: ['mind_body.stress-and-periods', 'mind_body.movement-busy-day', 'pmos.movement-sleep-stress'] },
     'mind_body.simple-indian-plate': { tool: 'food', also: ['pmos.food-for-hormones', 'mind_body.weight-and-waist', 'mind_body.thyroid-and-anaemia-tests'] },
     'mind_body.movement-busy-day': { tool: 'plan-moves', also: ['pmos.movement-sleep-stress', 'mind_body.weight-and-waist', 'mind_body.sleep-and-hormones'] },
     'mind_body.weight-and-waist': { tool: 'plan-body', also: ['mind_body.simple-indian-plate', 'mind_body.movement-busy-day', 'pmos.lean-pmos'] },
@@ -3100,6 +3100,8 @@
     return rel.length ? '<div class="ans-rel"><span class="eyebrow">' + esc(t('also_asked')) + '</span><div class="list">' + rel.map((x) => '<button type="button" class="item quiet" data-ans="' + esc(x.group + '.' + x.id) + '"><span class="body"><strong>' + esc(L(x, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></div>' : '';
   }
   /* the article's tool (the main button) and its long guide, where the build shows them */
+  /* Version 39.53: her plan for this guide's subject (plan.js forRow), when one fits */
+  const artPlan = (key) => { const m = ART[key] || {}; return m.plan && api.plan && api.plan.forRow ? (safe(() => api.plan.forRow(m.plan), '') || '') : ''; };
   function artTools(key) {
     const m = ART[key] || {}; const tool = artOk(m.tool) && routeTitle(m.tool) ? m.tool : null; const guide = m.guide && m.guide !== tool && artOk(m.guide) && routeTitle(m.guide) ? m.guide : null;   /* never a button without words */
     return { tool: tool, guide: guide, html: (tool ? '<div class="art-tool"><span class="eyebrow">' + esc(t('art_tool_h')) + '</span><button type="button" class="btn primary block" data-go="' + esc(tool) + '">' + esc(routeTitle(tool)) + '</button></div>' : '') + (guide ? '<button type="button" class="btn block" data-go="' + esc(guide) + '">' + esc(t('art_guide')) + ': ' + esc(routeTitle(guide)) + '</button>' : '') };
@@ -3145,7 +3147,7 @@
       '<p class="lead">' + esc(L(a, 'summary')) + '</p>' +
       '<div class="row wrap">' + (api.readAloud ? '<button type="button" class="btn sm" id="ans-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_b')) + '</button>' : '') + '<button type="button" class="btn sm" data-go="a-' + esc(key) + '">' + esc(t('full_guide')) + '</button></div>' +
       (sd.length ? '<div class="ans-doc"><b>' + esc(t('see_doctor')) + '</b><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
-      (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
+      (urgent ? '' : artPlan(key)) + (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
       relatedHtml(a) + '</div>', (sh) => {
       const ls = $('#ans-listen', sh); if (ls) ls.addEventListener('click', () => api.readAloud($('#ans', sh)));
       sh.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
@@ -4302,7 +4304,7 @@
     v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1><p class="lead">' + esc(L(a, 'summary')) + '</p><div class="bodytext">' + body.map((p) => (p.startsWith('- ') ? '<p class="bullet">' + esc(p.slice(2)) + '</p>' : '<p>' + esc(p) + '</p>')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
-      at.html + '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' +
+      artPlan(key) + at.html + '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' +
       relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
     wire(v); $('#art-ask', v).addEventListener('click', () => ask(L(a, 'title')));
     const al = $('#art-listen', v); if (al) al.addEventListener('click', () => api.readAloud($('.article', v)));

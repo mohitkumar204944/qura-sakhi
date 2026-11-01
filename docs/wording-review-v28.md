@@ -3001,6 +3001,8 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   Getting ready ("Your daily steps" from week 2, as other plans).
 - Her parts on the weeks card (1 Nov): no new words. From week 2 My plan's "Your 12 weeks" names her part each week with the path
   card's own lines ("Cool and calm · A short course for hot flushes, a chapter a week").
+- POI while her plan runs (1 Nov): no new words. Under 40 with her periods stopped, her midlife plan rests behind the reviewed card
+  ("Before a plan: see a gynaecologist", "Periods that stop before 40 are not menopause…") until "My doctor has seen me".
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 
@@ -3110,3 +3112,14 @@ three-month boundaries (14 and 28 weeks), child pose with knees wide in the firs
 three months ("don't let your back sag" from 14 weeks), the side-lying leg lift from 14 weeks, rocking on hands and knees and lean
 and sway in the last three months, Bhramari in the middle three months, and the breathing counts (4 in, 6 out, never held). The
 pictures are drawings with her bump from 14 weeks, not the 3D figure.
+
+### 19.53 Version 39.53: every guide leads to her plan (MODULE_API section 96)
+
+UI words only:
+- "Your plan for this" (इसके लिए आपका प्लान) above her running plan's name and, for My midlife plan, the part ("Weeks 1 to 4: Cool
+  and calm");
+- "A free plan for this" (इसके लिए एक मुफ़्त प्लान) above the name of the plan that fits her stage.
+
+Both show on the guides, routines and topic pages listed in MODULE_API 96. No guide's own words changed. The hot-flush guide still
+says "simple habits help a little, hormone therapy helps the most"; naming CBT there, as her plan does, would be new wording for
+review. "Who treats what" now leads with the Qura doctor button its own line describes.
