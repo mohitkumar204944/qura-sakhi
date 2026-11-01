@@ -6096,3 +6096,12 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     (`menoV2(d0)`). A plan whose "Your day" doesn't ask them never keeps them (`ikBase`, `dayAsks`), so a PMOS plan made while
     her midlife plan ran (0.39.51.3 kept them) leaves both for her to answer when she comes back. `node test/midlife.mjs`
     section 15 checks it (128 checks in all).
+16. **The exploratory phone test's gaps** (Mohit, 1 Nov, "test the midlife plan on phone for more gaps", then "fix all 4"):
+    1. "Why?": Today's skill has its own How, this week's skill in its chapter's words (`S.midlife.lesson.how`, the chapter's
+       "This week's skill" card); the calcium food has no How (`how: ''`; `howOf` now reads '' as none) instead of its subtitle
+       again. Its reason stays "Every small step counts." until a midlife calcium line is reviewed;
+    2. "How your plan works": every week, "A short chapter and a look back" (`plan_rh_wk_m2`), as Getting ready names its lesson;
+    3. her plan's chapters, Getting ready's lessons and its ready check light My plan, not Explore (core `tabOf`);
+    4. a plan started today after today's check-in (her plan before it) asks its own check-in tonight (`commitStart` clears the
+       day's `ci`); her answers that day stay.
+    `node test/midlife.mjs` section 16 checks each one (136 checks in all).

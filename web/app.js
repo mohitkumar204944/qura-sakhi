@@ -1072,7 +1072,7 @@
   /* Version 36: plans are a tab of their own (Mohit, 23 Oct: "plan should be handy not deep hidden") */
   const planTab = () => state.stage === 'app' && !!ROUTES['plan'] && !!api.planOn();
   function tabOf(r) {
-    if ((r === 'plan' || r.startsWith('plan-')) && planTab()) return 'plan';
+    if ((r === 'plan' || r.startsWith('plan-') || ['mid-lesson', 'ttc-lesson', 'ttc-ready'].indexOf(r) >= 0) && planTab()) return 'plan';   /* Version 39.51 (Mohit's phone test): her plan's chapters, lessons and ready check are My plan's */
     if (r.startsWith('a-') || r === 'learn' || r.startsWith('learn-')) return 'care';
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */

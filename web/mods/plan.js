@@ -572,7 +572,7 @@
     const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d); const at = timeOf(ciAt(d));
     const nS = acts.filter((a) => !a.soft).length; const rc = recCi(d);
     const cols = postV2(d) ? [['plan_rh_day', tf(rc && !disc() ? 'plan_rh_day_rc' : (nS === 1 ? 'plan_rh_day_s1' : 'plan_rh_day_s'), { n: nS, t: at })], ['plan_rh_p42', t('plan_rh_p42_s')], ['plan_rh_p84', t('plan_rh_p84_s')]] :   /* Version 39.46 */
-      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2'))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
+      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
     return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
   }
   /* Version 39.22: her first week reads how her plan works; after it, "How it works" by her week opens it */
@@ -1664,7 +1664,7 @@
     'food.calcium': (d, c, x, st) => { const xs = S.food && S.food.pick ? S.food.pick('c', { region: regionOf(d) }).slice(0, 7) : []; if (!xs.length) return [];
       const pd = planDayAt(d, c.day) - 1; const ds = /^days:/.test(x.when || '') ? x.when.slice(5).split(',').map(Number) : [0, 1, 2, 3, 4, 5, 6];
       const f = xs[(Math.floor(pd / 7) * ds.length + Math.max(0, ds.indexOf(pd % 7))) % xs.length];   /* V39.9 review FOOD-07: her calcium days in turn, so a week doesn't repeat */
-      return [{ id: 'ca', icon: ICO.drink, hue: 'gold', kind: 'tick', title: tf('plan_a_ca', { x: S.food.name(f) }), name: t('plan_a_ca_s'), sub: t('plan_a_ca_s'), go: S.routeOwner('meno-bones') ? 'meno-bones' : 'food', state: st('ca'), why: x.why || 'plan_fb_any', priv: true }]; },
+      return [{ id: 'ca', icon: ICO.drink, hue: 'gold', kind: 'tick', title: tf('plan_a_ca', { x: S.food.name(f) }), name: t('plan_a_ca_s'), sub: t('plan_a_ca_s'), go: S.routeOwner('meno-bones') ? 'meno-bones' : 'food', state: st('ca'), why: x.why || 'plan_fb_any', how: '', priv: true }]; },   /* Version 39.51: no How that repeats its subtitle */
     /* Version 39.9 (diet audit 2): the pregnancy plan's food step changes with her trimester, from the pregnancy food page's
        reviewed lines (preg.js S.preg.foodTip) */
     'preg.food': (d, c, x, st) => { const pi = S.preg && S.preg.info ? S.preg.info() : null;
@@ -1690,7 +1690,7 @@
        chapter), Strong and steady's balance routine; in her year, the skill of her first part */
     'meno.skill': (d, c, x, st) => { const ML = S.midlife && S.midlife.lesson; if (!ML || !menoV2(d)) return []; const id = m2Skill(d, c.day); if (!id) return []; const p = id.charAt(0);
       if (p === 's') { const did = (c.lg.r || []).indexOf('steady') >= 0; return [{ id: 'skill', icon: ICO.move, hue: 'gold', kind: 'routine', r: 'steady', title: tf('plan_a_r', { r: rName('steady'), n: routineMins('steady', d) }), name: rName('steady'), sub: '', go: 'plan-r-steady', state: st('skill', did), why: 'plan_fb_m2s' }]; }
-      return [{ id: 'skill', icon: S.icon(p === 'r' ? 'moon' : 'sparkle'), hue: p === 'r' ? 'purple' : 'plum', kind: 'tick', title: tf('plan_m2_skill', { s: ML.skill(id) }), name: t('plan_m2_skill_n'), sub: m2Part(d, c.day) === 'k' ? tf('plan_m2_keep_s', { p: ML.part(p) }) : t(p === 'r' ? 'plan_m2_rule_s' : 'plan_m2_skill_s'), go: 'mid-lesson', state: st('skill'), why: 'plan_fb_m2' + p, priv: p !== 'r' }]; }
+      return [{ id: 'skill', icon: S.icon(p === 'r' ? 'moon' : 'sparkle'), hue: p === 'r' ? 'purple' : 'plum', kind: 'tick', title: tf('plan_m2_skill', { s: ML.skill(id) }), name: t('plan_m2_skill_n'), sub: m2Part(d, c.day) === 'k' ? tf('plan_m2_keep_s', { p: ML.part(p) }) : t(p === 'r' ? 'plan_m2_rule_s' : 'plan_m2_skill_s'), go: 'mid-lesson', state: st('skill'), why: 'plan_fb_m2' + p, how: ML.how ? ML.how(id) : undefined, priv: p !== 'r' }]; }   /* Version 39.51: its How, the chapter's own skill */
   };
   /* the day's steps from her plan's spec: { id, icon, hue, kind: 'minutes' | 'habit' | 'routine' | 'tick' | 'link' | 'check',
      title, sub, go, state: 'd' | 'p' | 'n' | null, why }. Another day (iso: yesterday) gets that day's week, weekday and log. */
@@ -2103,6 +2103,7 @@
     if (n.intake) S.state.intake = n.intake;
     delete d.next; if (S.state.prompts) delete S.state.prompts.reveal;
     if (!fresh) S.reminders.remove('plan');
+    if (!fresh && d.start === todayISO()) { const lx = (d.log || {})[todayISO()]; if (lx && lx.ci) delete lx.ci; }   /* Version 39.51 (Mohit's phone test): a plan started after today's check-in asks its own tonight; her answers stay */
     remOnNow(d, true);
     if (babyD(d) && S.ttc && S.ttc.setFlags) S.ttc.setFlags((d.intake || {}).bflags || []);   /* Version 39.32: Months of trying shows the same ticks */
     if (pregV2(d) && S.preg && S.preg.setRisks) S.preg.setRisks((d.intake || {}).pflags || []);   /* Version 39.34: her MCP card shows the same marks */
@@ -3630,7 +3631,7 @@
   }
   /* R3: how to do a step: a food habit's own line, the walk's pace, a routine's moves, the bedtime tip, else its line */
   function howOf(a, d) {
-    if (a.how) return a.how;   /* Version 39.22: the wind-down's own */
+    if (a.how != null) return a.how;   /* Version 39.22: the wind-down's own */   /* Version 39.51 (Mohit's phone test): '' is no How, not her subtitle again */
     if (a.kind === 'habit') { const h = habOf(a.habit); return h && h.p ? tx(h.p) : ''; }
     if (a.kind === 'minutes' && !a.r) return t('plan_walk_s');
     if (a.r && (a.r === 'sun' || R[a.r])) { const seen = {}; const ns = []; stepsOf(a.r, d).forEach((s) => { const nm = s.n ? tx(s.n) : ''; if (nm && !seen[nm]) { seen[nm] = 1; ns.push(nm); } });
@@ -3741,7 +3742,7 @@
         plan_bdoc_gyn_h: 'See a gynaecologist now', plan_bdoc_gyn_p: 'Because of what you told us, doctors suggest a check now. You don’t need to wait 12 months.', plan_bdoc_pmos: 'With PMOS, eggs may not be released every month. A gynaecologist can check, and treatment helps.',
         plan_bdoc_meds_h: 'See your doctor before you start trying', plan_bdoc_qura: 'Your plan runs alongside your doctor’s care. A Qura doctor can help with food, sleep and habits on a free call; your fertility check is with a gynaecologist.',
         plan_bdoc_space: 'Your last baby was born {n} months ago. Doctors suggest waiting at least 2 years after a birth before the next pregnancy, so your body can recover. After a caesarean, ask your doctor how long to wait.',
-        plan_les_h: 'This week’s lesson · 2 min', plan_les_read: 'Read', plan_rh_wk_b: 'A 2-minute lesson and a look back',
+        plan_les_h: 'This week’s lesson · 2 min', plan_les_read: 'Read', plan_rh_wk_b: 'A 2-minute lesson and a look back', plan_rh_wk_m2: 'A short chapter and a look back',
         plan_bph_h: 'Your 12 weeks', plan_bph_1w: 'Weeks 1–2', plan_bph_1: 'First things first: your tablet, an Hb test, and his part', plan_bph_2w: 'Weeks 3–6', plan_bph_2: 'Food, tests before pregnancy, fertile days, and how long it takes', plan_bph_3w: 'Weeks 7–12', plan_bph_3: 'Steady and calm: strength, the waiting week, sleep and family', plan_bph_4w: 'After that', plan_bph_4: 'A lesson and a ready check each month',
         plan_bmonth: 'Your doctor month: {m}', plan_bmonth_p12: '12 months after you started trying. If you’re not pregnant by then, see a gynaecologist. Sooner whenever you’re worried.', plan_bmonth_p6: '6 months after you started trying. If you’re not pregnant by then, see a gynaecologist. Sooner whenever you’re worried.',
         plan_bper_h: 'A fresh start', plan_bper: 'Your period started today. This month counts too: your tablet and your walk carry on, and nothing needs to change.',
@@ -4087,7 +4088,7 @@
         plan_bdoc_gyn_h: 'अभी स्त्री रोग विशेषज्ञ को दिखाएँ', plan_bdoc_gyn_p: 'आपने जो बताया, उसकी वजह से डॉक्टर अभी जाँच की सलाह देते हैं। 12 महीने इंतज़ार करने की ज़रूरत नहीं।', plan_bdoc_pmos: 'PMOS में हो सकता है हर महीने अंडा न निकले। स्त्री रोग विशेषज्ञ इसकी जाँच कर सकती हैं, और इलाज मदद करता है।',
         plan_bdoc_meds_h: 'कोशिश शुरू करने से पहले अपनी डॉक्टर को दिखाएँ', plan_bdoc_qura: 'आपका प्लान आपकी डॉक्टर की देखभाल के साथ चलता है। Qura की डॉक्टर मुफ़्त कॉल पर खाने, नींद और आदतों में मदद कर सकती हैं; गर्भ ठहरने से जुड़ी जाँच स्त्री रोग विशेषज्ञ करती हैं।',
         plan_bdoc_space: 'आपके पिछले बच्चे का जन्म {n} महीने पहले हुआ। डॉक्टर सलाह देते हैं कि जन्म के बाद अगले गर्भ से पहले कम से कम 2 साल रुकें, ताकि शरीर ठीक हो सके। ऑपरेशन (सिज़ेरियन) हुआ था, तो डॉक्टर से पूछें कि कितना रुकना है।',
-        plan_les_h: 'इस हफ़्ते का पाठ · 2 मिनट', plan_les_read: 'पढ़ें', plan_rh_wk_b: '2 मिनट का एक पाठ और पीछे एक नज़र',
+        plan_les_h: 'इस हफ़्ते का पाठ · 2 मिनट', plan_les_read: 'पढ़ें', plan_rh_wk_b: '2 मिनट का एक पाठ और पीछे एक नज़र', plan_rh_wk_m2: 'एक छोटा अध्याय और पीछे एक नज़र',
         plan_bph_h: 'आपके 12 हफ़्ते', plan_bph_1w: 'हफ़्ता 1–2', plan_bph_1: 'पहले ज़रूरी काम: आपकी गोली, Hb की जाँच, और उनका हिस्सा', plan_bph_2w: 'हफ़्ता 3–6', plan_bph_2: 'खाना, गर्भ से पहले की जाँचें, फ़र्टाइल दिन, और कितना समय लगता है', plan_bph_3w: 'हफ़्ता 7–12', plan_bph_3: 'आराम से और लगातार: स्ट्रेंथ, इंतज़ार का हफ़्ता, नींद और परिवार', plan_bph_4w: 'उसके बाद', plan_bph_4: 'हर महीने एक पाठ और एक तैयारी जाँच',
         plan_bmonth: 'डॉक्टर वाला महीना: {m}', plan_bmonth_p12: 'कोशिश शुरू करने के 12 महीने बाद। तब तक गर्भ न ठहरे, तो स्त्री रोग विशेषज्ञ को दिखाएँ। जब भी चिंता हो, उससे पहले।', plan_bmonth_p6: 'कोशिश शुरू करने के 6 महीने बाद। तब तक गर्भ न ठहरे, तो स्त्री रोग विशेषज्ञ को दिखाएँ। जब भी चिंता हो, उससे पहले।',
         plan_bper_h: 'नई शुरुआत', plan_bper: 'आज आपका पीरियड शुरू हुआ। यह महीना भी मायने रखता है: आपकी गोली और सैर जारी रहेंगी, कुछ बदलने की ज़रूरत नहीं।',

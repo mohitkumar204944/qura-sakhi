@@ -2988,6 +2988,10 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   plan she is on (No after "My doctor says I can do more"); she can change them there.
 - The fourth phone test's fix (1 Nov): no new words. Those two answers come only from a midlife plan; after any other plan she
   answers them again.
+- The exploratory phone test's fixes (1 Nov, UI words): "How your plan works": "Every week · A short chapter and a look back" (Hindi
+  "एक छोटा अध्याय और पीछे एक नज़र"). Today's skill's "Why?" shows its chapter's own skill line as How (no new words). Still waiting:
+  a reason line for the midlife calcium food (today "Every small step counts."), and the doctor's word on "Periods changing after
+  40" under 40 (the POI card covers only periods that stopped).
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 

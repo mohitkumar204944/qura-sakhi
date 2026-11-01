@@ -35,7 +35,10 @@
 //     started, even after a check-in that day, and a same-day copy of her plan goes at once; "Your day" holds her bones and
 //     heart answers from the midlife plan she is on ("My doctor says I can do more" shows No and stays hers);
 //  15 the fourth phone test's gap (Mohit, 1 Nov: "fix it"): "Your day" fills in only the questions its own screen asks, and her
-//     bones and heart answers only from a midlife plan, so a PMOS plan never keeps them; no page errors.
+//     bones and heart answers only from a midlife plan, so a PMOS plan never keeps them;
+//  16 the exploratory phone test's 4 gaps (Mohit, 1 Nov: "fix all 4"): the skill's Why? has its chapter's skill as How and the
+//     calcium food no How that repeats its subtitle; "How your plan works" names the weekly chapter; her chapter lights My plan;
+//     a plan started after today's check-in asks its own tonight; no page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -507,24 +510,27 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   check('14.2 from a plan that never asked them (PMOS): both wait for her answer', await has(a.page, '[data-pl-q="mheart:y"]') && !(await has(a.page, '[data-pl-q^="mbone:"].on')) && !(await has(a.page, '[data-pl-q^="mheart:"].on'))); await done(a);
 }
 
+/* her plan's questions to Start: each question with no answer gets the one in pick, else "None of these", else its first,
+   one at a time as the screen redraws (sections 15 and 16) */
+const fillOne = (page, pick) => page.evaluate((pk) => {
+  const g = {}; document.querySelectorAll('#view [data-pl-q], #view [data-pl-m]').forEach((b) => { const k = (b.dataset.plQ || b.dataset.plM).split(':')[0]; (g[k] = g[k] || []).push(b); });
+  const k = Object.keys(g).find((x) => !g[x].some((b) => b.classList.contains('on'))); if (!k) return false;
+  const v = (b) => (b.dataset.plQ || b.dataset.plM || '').split(':')[1];
+  (g[k].find((b) => pk[k] != null && v(b) === pk[k]) || g[k].find((b) => v(b) === 'none') || g[k][0]).click(); return true; }, pick || {});
+const startPlan = async (page, intake, pick) => {
+  await page.evaluate((x) => { window.Saathi.mem.planIntake = x; }, intake); await go(page, 'plan-goal');
+  for (let i = 0; i < 12 && (await page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) {
+    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); continue; }
+    if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
+    for (let j = 0; j < 12 && await fillOne(page, pick); j++) await settle(page, 150);
+    if (await has(page, '#pl-in-next')) await tap(page, '#pl-in-next'); else break;
+  }
+  for (let i = 0; i < 8 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
+  if (await has(page, '#pl-rv-go')) await tap(page, '#pl-rv-go');
+};
+
 // ---------- 15 the fourth phone test's gap ----------
 {
-  /* each question with no answer gets its first one ("None of these" for a list), one at a time as the screen redraws */
-  const fillOne = (page) => page.evaluate(() => {
-    const g = {}; document.querySelectorAll('#view [data-pl-q], #view [data-pl-m]').forEach((b) => { const k = (b.dataset.plQ || b.dataset.plM).split(':')[0]; (g[k] = g[k] || []).push(b); });
-    const k = Object.keys(g).find((x) => !g[x].some((b) => b.classList.contains('on'))); if (!k) return false;
-    (g[k].find((b) => /:none$/.test(b.dataset.plM || b.dataset.plQ || '')) || g[k][0]).click(); return true; });
-  const startPlan = async (page, intake) => {
-    await page.evaluate((x) => { window.Saathi.mem.planIntake = x; }, intake); await go(page, 'plan-goal');
-    for (let i = 0; i < 12 && (await page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) {
-      if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); continue; }
-      if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
-      for (let j = 0; j < 12 && await fillOne(page); j++) await settle(page, 150);
-      if (await has(page, '#pl-in-next')) await tap(page, '#pl-in-next'); else break;
-    }
-    for (let i = 0; i < 8 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
-    if (await has(page, '#pl-rv-go')) await tap(page, '#pl-rv-go');
-  };
   const dayFor = async (page, goal) => { await page.evaluate((g) => { window.Saathi.mem.planIntake = { stage: 'meno', goal: g, iq: 1 }; }, goal); await go(page, 'plan-goal'); };
   const fresh = async (page) => await has(page, '[data-pl-q="mheart:y"]') && !(await has(page, '[data-pl-q^="mbone:"].on')) && !(await has(page, '[data-pl-q^="mheart:"].on'));
   /* Mohit's phone: stage back to tracking her periods while her midlife plan ran, then the PMOS plan */
@@ -538,6 +544,38 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   a = await open({ seed: { dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3, { intake: { goal: 'pmos', stage: 'cycle', act: 0, lim: [], mbone: 'n', mheart: 'ok' } }) }, reminders: [planRem(3)] } });
   await dayFor(a.page, 'hot');
   check('15.2 her bones and heart answers come only from a midlife plan', await fresh(a.page), (await view(a.page)).slice(-400)); await done(a);
+}
+
+// ---------- 16 the exploratory phone test's 4 gaps ----------
+{
+  /* 1 "Why?" (My plan's "How to do it" opens the same sheet as Today's): the skill's How in its chapter's own words; the calcium
+     food has no How that repeats its subtitle */
+  const why = async (page, id) => { const i = (await acts(page)).findIndex((x) => x.id === id); await page.$eval('#view [data-pl-how="' + i + '"]', (el) => el.click()); await settle(page, 400);
+    return { all: await txt(page, '.pl-why-sh'), how: await txt(page, '.pl-why-sh .pl-why-how') }; };
+  let a = await open({ seed: m2('hot', 0), hash: '#plan' });
+  const sk = await why(a.page, 'skill');
+  check('16.1 the skill’s Why?: its How is this week’s skill in the chapter’s words', /notice it, name it/.test(sk.all) && /When a flush starts, tell yourself/.test(sk.how) && !/from this week’s chapter/.test(sk.how), sk); await done(a);
+  a = await open({ seed: m2('hot', 0), hash: '#plan' });
+  const ca = await why(a.page, 'ca');
+  check('16.1 the calcium food’s Why?: no How that repeats its subtitle', /calcium food/.test(ca.all) && !(await has(a.page, '.pl-why-sh .pl-why-how')), ca); await done(a);
+  a = await open({ seed: m2('hot', 0), hash: '#plan' });
+  const mv = await why(a.page, 'move');
+  check('16.1 the walk keeps its own How', /talk, but not sing/.test(mv.how), mv); await done(a);
+  /* 3 "How your plan works": every week, her chapter */
+  a = await open({ seed: m2('hot', B(2)), hash: '#plan' });
+  check('16.2 "How your plan works": every week, a short chapter and a look back', /Every week A short chapter and a look back/.test(await txt(a.page, '#view .pl-rh')), await txt(a.page, '#view .pl-rh')); await done(a);
+  a = await open({ seed: m2('hot', B(2), { pv: 1 }), hash: '#plan' });
+  check('16.2 version 1 keeps "Look back, plan the week"', /Every week Look back, plan the week/.test(await txt(a.page, '#view .pl-rh')), await txt(a.page, '#view .pl-rh')); await done(a);
+  /* 4 her plan's chapter lights My plan */
+  a = await open({ seed: m2('hot', B(1)), hash: '#mid-lesson' });
+  check('16.3 her chapter lights My plan, not Explore', /My plan/.test(await txt(a.page, '#tabbar .on')) && /notice it, name it|What a hot flush is/.test(await view(a.page)), await txt(a.page, '#tabbar .on')); await done(a);
+  /* 5 her PMOS plan's check-in this morning, then My midlife plan the same day */
+  a = await open({ seed: { dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3, { log: { [TODAY]: { ci: 1, slp: 'ok', ck: { move: 'n' } } } }) }, reminders: [planRem(3)] }, hm: '20:30' });
+  await startPlan(a.page, { stage: 'meno', goal: 'hot', iq: 1 }, { mbone: 'n', mheart: 'n' });
+  const p5 = (await st(a.page)).mods.plan; const lg = (p5.log || {})[TODAY] || {};
+  check('16.4 a plan started after today’s check-in asks its own tonight, and her answers stay', p5.pack === 'meno' && p5.start === TODAY && !lg.ci && lg.slp === 'ok', { pack: p5.pack, lg });
+  await go(a.page, 'home');
+  check('16.4 Today offers its check-in, not "Checked in today"', await has(a.page, '#view .pl-t-ci') && !/Checked in today/.test(await view(a.page)), (await view(a.page)).slice(0, 600)); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

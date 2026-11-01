@@ -147,7 +147,8 @@
     const dn = v.querySelector('#mid-les-done'); if (dn) dn.addEventListener('click', () => { mark(id); S.mem.midLes = null; S.setHash('home'); });
   }
   S.midlife = Object.assign(S.midlife || {}, {
-    lesson: { title: (id) => (L[id] ? tx(L[id].h) : ''), skill: (id) => (L[id] ? tx(L[id].sk) : ''), read: lessonRead, mark: mark, ids: () => Object.keys(L), part: (p) => (PART[p] ? tx(PART[p]) : '') }
+    lesson: { title: (id) => (L[id] ? tx(L[id].h) : ''), skill: (id) => (L[id] ? tx(L[id].sk) : ''), read: lessonRead, mark: mark, ids: () => Object.keys(L), part: (p) => (PART[p] ? tx(PART[p]) : ''),
+      how: (id) => { const c = L[id] && (L[id].cards || []).find((x) => x.b === SKILL); return c && c.l && c.l[0] ? tx(c.l[0]) : ''; } }   /* Version 39.51: this week's skill, for the step's Why? */
   });
 
   S.register({
