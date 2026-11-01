@@ -33,7 +33,9 @@
 //     from the plan she is on, with Change to pick again;
 //  14 the third phone test's 2 gaps (Mohit, 31 Oct: "fix both"): "Your last plan" is never a plan changed on the day it
 //     started, even after a check-in that day, and a same-day copy of her plan goes at once; "Your day" holds her bones and
-//     heart answers from the midlife plan she is on ("My doctor says I can do more" shows No and stays hers); no page errors.
+//     heart answers from the midlife plan she is on ("My doctor says I can do more" shows No and stays hers);
+//  15 the fourth phone test's gap (Mohit, 1 Nov: "fix it"): "Your day" fills in only the questions its own screen asks, and her
+//     bones and heart answers only from a midlife plan, so a PMOS plan never keeps them; no page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -503,6 +505,39 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   check('14.2 and her doctor’s OK goes with her new plan', (await a.page.evaluate(() => (window.Saathi.mem.planIntake || {}).mheart)) === 'ok', await a.page.evaluate(() => window.Saathi.mem.planIntake)); await done(a);
   a = await day({ dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3) }, reminders: [planRem(3)] }, 'hot');
   check('14.2 from a plan that never asked them (PMOS): both wait for her answer', await has(a.page, '[data-pl-q="mheart:y"]') && !(await has(a.page, '[data-pl-q^="mbone:"].on')) && !(await has(a.page, '[data-pl-q^="mheart:"].on'))); await done(a);
+}
+
+// ---------- 15 the fourth phone test's gap ----------
+{
+  /* each question with no answer gets its first one ("None of these" for a list), one at a time as the screen redraws */
+  const fillOne = (page) => page.evaluate(() => {
+    const g = {}; document.querySelectorAll('#view [data-pl-q], #view [data-pl-m]').forEach((b) => { const k = (b.dataset.plQ || b.dataset.plM).split(':')[0]; (g[k] = g[k] || []).push(b); });
+    const k = Object.keys(g).find((x) => !g[x].some((b) => b.classList.contains('on'))); if (!k) return false;
+    (g[k].find((b) => /:none$/.test(b.dataset.plM || b.dataset.plQ || '')) || g[k][0]).click(); return true; });
+  const startPlan = async (page, intake) => {
+    await page.evaluate((x) => { window.Saathi.mem.planIntake = x; }, intake); await go(page, 'plan-goal');
+    for (let i = 0; i < 12 && (await page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) {
+      if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); continue; }
+      if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
+      for (let j = 0; j < 12 && await fillOne(page); j++) await settle(page, 150);
+      if (await has(page, '#pl-in-next')) await tap(page, '#pl-in-next'); else break;
+    }
+    for (let i = 0; i < 8 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
+    if (await has(page, '#pl-rv-go')) await tap(page, '#pl-rv-go');
+  };
+  const dayFor = async (page, goal) => { await page.evaluate((g) => { window.Saathi.mem.planIntake = { stage: 'meno', goal: g, iq: 1 }; }, goal); await go(page, 'plan-goal'); };
+  const fresh = async (page) => await has(page, '[data-pl-q="mheart:y"]') && !(await has(page, '[data-pl-q^="mbone:"].on')) && !(await has(page, '[data-pl-q^="mheart:"].on'));
+  /* Mohit's phone: stage back to tracking her periods while her midlife plan ran, then the PMOS plan */
+  let a = await open({ seed: m2('hot', B(3), { a: { mbone: 'y', mheart: 'y' } }, { dob: '1990-03-01', situation: {}, intake: { goal: 'pmos', stage: 'cycle' }, goals: ['pmos'] }) });
+  await startPlan(a.page, { stage: 'cycle', goal: 'pmos', iq: 1 });
+  const p = (await st(a.page)).mods.plan;
+  check('15.1 a PMOS plan made while her midlife plan ran keeps no bones or heart answers', p.pack === 'cycle' && p.start === TODAY && (p.intake || {}).mbone == null && (p.intake || {}).mheart == null, { pack: p.pack, start: p.start, ik: p.intake });
+  await dayFor(a.page, 'hot');
+  check('15.1 and back to My midlife plan, "Your day" asks both again', await fresh(a.page), (await view(a.page)).slice(-400)); await done(a);
+  /* a PMOS plan that kept them under 0.39.51.3 (Mohit's phone): they still don't come back */
+  a = await open({ seed: { dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3, { intake: { goal: 'pmos', stage: 'cycle', act: 0, lim: [], mbone: 'n', mheart: 'ok' } }) }, reminders: [planRem(3)] } });
+  await dayFor(a.page, 'hot');
+  check('15.2 her bones and heart answers come only from a midlife plan', await fresh(a.page), (await view(a.page)).slice(-400)); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

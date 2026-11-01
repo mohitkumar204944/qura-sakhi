@@ -1872,12 +1872,12 @@
     const dg = id === 'cyc' ? diaryGaps() : null;
     if (dg && a.gap == null && !a.dgSeen) { a.gap = dg.gap; a.skips = a.skips || dg.skips; a.dgSeen = true; }
     if (id === 'day' && a.food == null && S.food && S.food.diet) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; }
-    if (id === 'day' && !a.dayPre) { a.dayPre = true; const d0 = raw() || {}; const ik0 = d0.intake || {};   /* Version 39.51 (Mohit's phone): what her plan before holds, so it isn't asked again */
-      if (d0.start && a.act == null) { const lv = ik0.act != null ? ik0.act : d0.level; if (lv != null) a.act = String(lv); }
-      if (d0.start && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } }
+    if (id === 'day' && !a.dayPre) { a.dayPre = true; const d0 = raw() || {}; const ik0 = d0.intake || {}; const qd = qsOf('day', a); const asks = (k) => !!d0.start && qd.indexOf(k) >= 0;   /* Version 39.51 (Mohit's phone): what her plan before holds, so it isn't asked again; only what this screen asks (his fourth phone test) */
+      if (asks('act') && a.act == null) { const lv = ik0.act != null ? ik0.act : d0.level; if (lv != null) a.act = String(lv); }
+      if (asks('lim') && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } }
       /* Version 39.51 (Mohit's phone test): her bones and heart answers too, from the midlife plan she is on; "My doctor says I can do more" stays hers */
-      if (d0.start && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
-      if (d0.start && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart; }
+      if (asks('mbone') && menoV2(d0) && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
+      if (asks('mheart') && menoV2(d0) && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart; }
     const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
     const prev = () => { if (a.iq <= 0) ctx.prev(); else { a.iq--; ctx.redraw(); } };
     const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
@@ -1973,7 +1973,8 @@
   const upcoming = (d) => !!(d && d.start && d.start > todayISO() && d.go);
   const ikBase = (a) => ({ at: todayISO(), stage: a.stage || 'cycle', goal: a.goal || null, gap: a.gap || null, skips: a.skips || null, dx: a.goal === 'pmos' ? 'y' : (a.dx || null), signs: (a.signs || []).filter((x) => x !== 'none'),
     pain: a.pain || null, painDays: a.painDays || null, pads: a.pads || null, clots: a.clots || null, tired: a.tired || null, pms: (a.pms || []).slice(), pmsLevel: a.pmsLevel || null,
-    act: a.act == null ? null : +a.act, food: a.food || null, milk: a.milk || null, lim: (a.lim || []).filter((x) => x !== 'none'), bed: a.bed || null, work: a.work || null, when: a.when || null, mbone: a.mbone || null, mheart: a.mheart || null });   /* Version 39.51: the midlife plan's moves */
+    act: a.act == null ? null : +a.act, food: a.food || null, milk: a.milk || null, lim: (a.lim || []).filter((x) => x !== 'none'), bed: a.bed || null, work: a.work || null, when: a.when || null, mbone: dayAsks(a, 'mbone') ? a.mbone || null : null, mheart: dayAsks(a, 'mheart') ? a.mheart || null : null });   /* Version 39.51: the midlife plan's moves, kept only by a plan that asks them (Mohit's fourth phone test) */
+  const dayAsks = (a, k) => qsOf('day', a).indexOf(k) >= 0;
   const BMEDS = ['meds', 'diab', 'ntd', 'scd'];
   /* Version 39.32 (packet B20, B21): her version. Medicines first: a daily medicine, diabetes, a past pregnancy with a spine or
      brain defect, sickle cell or thalassaemia. See a gynaecologist first: any line of the verified list, 40 or over, or a year of

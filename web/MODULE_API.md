@@ -6091,3 +6091,8 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
        activity and knees; after "My doctor says I can do more" (`mheart: 'ok'`) the question shows No, and her doctor's OK goes
        with her new plan. A plan that never asked them (PMOS) leaves both for her to answer.
     `node test/midlife.mjs` section 14 checks each one (125 checks in all).
+15. **The fourth phone test's gap** (Mohit, 1 Nov, "test the 2 fixes on phone", then "fix it"): "Your day" fills in only the
+    questions its own screen asks (`qsOf('day', a)`), and her bones and heart answers only from a midlife plan she is on
+    (`menoV2(d0)`). A plan whose "Your day" doesn't ask them never keeps them (`ikBase`, `dayAsks`), so a PMOS plan made while
+    her midlife plan ran (0.39.51.3 kept them) leaves both for her to answer when she comes back. `node test/midlife.mjs`
+    section 15 checks it (128 checks in all).

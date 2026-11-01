@@ -389,7 +389,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       her doctor has seen her;
     - her results in her own numbers; Steady on your feet on Moves and calm, for midlife only.
     The walk is `node test/midlife-walk.mjs [kavita|sunita|asha|meera|vera]` (screens and words to `test/shots/midlife-walk/`); its
-    12 fixes are the test's section 11; the phone test's 6 fixes (31 Oct, on Mohit's Flip5) are section 12, the second phone test's 3 are section 13, and the third's 2 are section 14. It builds on Version 39.49. Contract: MODULE_API section 94; wording: section 19.51 of the
+    12 fixes are the test's section 11; the phone test's 6 fixes (31 Oct, on Mohit's Flip5) are section 12, the second phone test's 3 are section 13, the third's 2 section 14, and the fourth's 1 section 15. It builds on Version 39.49. Contract: MODULE_API section 94; wording: section 19.51 of the
     review (new lines wait for doctor review, the calm chapters for a psychologist too, the moves for a physiotherapist).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
