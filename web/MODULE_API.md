@@ -6138,3 +6138,85 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     flushes, a chapter a week", "Rest · One sleep rule a week", "Strong and steady · Strength, balance and food for your bones". Her
     4-week and 8-week checks and her results keep their weeks; on a shared phone, "Your daily steps". `node test/midlife.mjs` section
     20 checks it (158 checks in all).
+
+## 95. Version 39.52: pregnancy yoga by trimester
+
+Mohit, 1 Nov: "build the pregnancy yoga by trimester", after the walk through a prenatal yoga app (principle notes only). It
+builds the pregnancy moves the programme design planned (`docs/plans-design-and-build-2026-10-24-programmes.md`, section 6,
+"Routines and new poses"; the pregnancy advice, `docs/pregnancy-plan-advice-2026-10-29.md`, sections 2 and 5) as yoga for each
+three months, inside My pregnancy (`preg` version 2). Every new line waits for the gynaecologist and a women's-health
+physiotherapist (wording review 19.52).
+
+1. **Three routines** in `mods/plan.js` `R`, by her week as the week pages count it (`triOf`): `preg1` to 13 weeks, `preg2` from
+   14 to 27, `preg3` from 28 (`pyId(iso)`). Each is about 10 minutes at most (`routineMins` 8, 10, 10):
+   - `preg1`, the first three months: Loosen up, Tadasana (feet flat, never on the toes), Vrikshasana at a wall, Marjariasana
+     (cat and cow, small), Shashankasana with the knees wide (the chair forward bend with knee pain), Bhadrasana, slow breathing
+     (4 in, 6 out), Shavasana (on the back is fine to 13 weeks; WHO 2020);
+   - `preg2`, the middle three months: Loosen up, Tadasana, Vrikshasana at a wall, wall push-ups (one set), chair squats (8, hands
+     if she needs them), Marjariasana ("don't let your back sag"), Bhadrasana, Bhramari, side-lying leg lift, rest on her side;
+   - `preg3`, the last three months: Loosen up sitting (seated march), slow sit-to-stand (6, feet wide), long breaths out on the
+     chair, wall push-ups, lean and sway at a wall or table, rocking on hands and knees, Bhadrasana against a wall, side-lying
+     leg lift, rest on her side.
+   The rules (the design's, WHO's): nothing on the back after 13 weeks, nothing on the tummy, no twist, no rising on the toes
+   (no heel raises, no palm tree on the toes), no step-ups, no deep bends, no breath held, balance at a wall. The reused moves
+   keep their reviewed words (Loosen up, wall push-ups, Bhramari, the chair forward bend). Rests: 10 seconds (`REST_S`), none
+   between sides or before resting on her side (`restAfter`).
+2. **Drawn, with her bump**: a routine with `draw: true` never takes the 3D figure (`fig3d`, `figThumb`), which isn't pregnant;
+   `bump` (0, 0.75, 1) draws her bump (`bumpOf`): from her spine when side-on, round on her middle when she faces you
+   (`fv: 1` on the front-view positions), resting towards the floor when she lies on her side (`bd: 'down'`). New positions in
+   `P`: `seat`, `seatmarch`/`seatmarch2`, `allfours`/`rockback`, `cat`/`cow` (with `m`, a point mid-spine, so the back rounds
+   and dips: `spine(f)`, and `lerp` carries it), `sidelie` (with a pillow prop), `sidedown`/`sideleg`, `leanfwd`/`leanfwd2`;
+   new loops in `ANIM`: `seatmarch`, `allfours`, `cat`, `sideleg`, `leanfwd`. `web/tools/fig3d` keeps its own positions, so
+   nothing there changes; a pregnant 3D figure is a later job.
+3. **On Today** (`web/progs/v1.js`, `preg` version 2, revision R3): the move step's `first` group puts her three months' yoga
+   (`kind: 'routine'`, `go: 'plan-r-preg1'` to `'plan-r-preg3'`, `priv`) on days 2 and 5 of her plan week, in the walk's place,
+   when her tier is green and no sign that doesn't wait (`pt:green`, `!pnow`, `gw:0-13` / `gw:14-27` / `gw:28-`). Amber keeps
+   the easy 10-minute walk and red has no move, as before. No new step, screen, question or reminder; day 1 is a walk day. Its
+   "Why?" (`plan_fb_pyoga`) opens the reviewed pregnancy dos and don'ts (`WHY_ART`). The plan's steps before she starts (the
+   reveal's `stepsList`) name it on the green tier in the walk's own line, "Walk or move 10 minutes, or Pregnancy yoga on 2 days
+   a week" (`plan_pi_wy`), so the count of her steps doesn't grow: a new list word, `{ use: 'pyoga' }` (`pyTier`), after `today`. "Before you start"'s green
+   tier names it (`plan_ps_t_green_p`).
+4. **The player**: the stop card (`pyStopCard`: `plan_stop_h`; the signs for today, `plan_py_stop`; under "Call 112 now" the signs
+   for now, `plan_py_now` (chest pain, fainting, regular painful tightenings), then Help's own line (core `s1c`) and Call 112) sits
+   above Start, after "Go gently in a cool room, with water nearby" (`plan_py_go`). Every move has "Feeling unwell?" in the corner
+   of its picture (in view and clear of the buttons at 360 × 800; `data-noread`, so the voice reads the move, not the button;
+   `--accent`, 4.5 to 1 or more in light and dark): stop now and rest, both groups of signs, Call 112, 108 and 102; "I feel fine now" goes back to the move, paused; "Stop for today" keeps the minutes she did, sets
+   `intake.pnow` (her walk and yoga wait until she checks her answers again, and "A quick check" leads the next day, as a sign
+   that doesn't wait does) and shows the rest card. "Hard" after a pregnancy routine gives `plan_py_hard`, not Gentle start.
+5. **Moves and calm in a pregnancy** (its tile is hidden, but search and guides open it): `routineOk` lets a pregnant woman open
+   only her three months' yoga, on My pregnancy's green tier with no sign that doesn't wait (`pyOpen`), and Calm breath (no
+   breath held; Wind down's row). Every other routine's page opens Moves and calm instead (they lie on the back or the tummy,
+   twist or rise on the toes); this closes a gap where search's "yoga" led a pregnant woman to the cycle routine. When it isn't
+   open, a note says why (`pyWhy`: `plan` no My pregnancy yet, `doc` amber or red, `now` a sign that doesn't wait) with My
+   pregnancy plan or My safety answers; the pregnancy stop card replaces the cycle one. Outside a pregnancy the pregnancy yoga
+   never shows and its pages refuse.
+6. **A shared phone**: "Yoga" (`plan_r_d`), never "Pregnancy yoga", on Today (the step is `priv`), in the player and on Moves and
+   calm, with no subtitle; the stop signs stay.
+7. **The plans' vocabulary** (`test/progs.mjs`): routine ids may hold digits (`plan-r-[a-z][a-z0-9]*`), and `pyoga` is a list
+   word. `web/progs/baseline.json` is re-recorded for `preg@2` (the plan changed on purpose). `golden.mjs` is unchanged (its
+   pregnancy replays have no walk).
+8. **Hooks**: `S.plan.rids()` (the routines Moves and calm would list now), `S.plan.pyId(iso)`, `S.plan.routine(id)`.
+9. **The bug hunt before the commit** (Mohit, 1 Nov: "Can you test first for bugs and gaps"; the walk is
+   `node test/pregyoga-walk.mjs`, screens and words to `test/shots/pregyoga-walk/`):
+   1. the voice read "Feeling unwell?" before each move: the button is `data-noread`;
+   2. the stop card said "tell your doctor today" for chest pain, fainting and regular painful tightenings: they now sit with
+      "Call 112 now" (the safer default, for the doctor to confirm), and "Go gently" names a cool room and water;
+   3. at 360 × 800 a move with many words pushed the timer under the buttons, and the breath circle (150 px) always did: every
+      move's words are shorter, child pose keeps its one-line title, and on a short screen the breath circle is 120 px (every
+      routine, as Version 39.39 did for the timer); the test checks every move of all three, in English and Hindi;
+   4. on the first pregnancy plan (version 1), the note's button opened the plan she had, a dead end: it names "Change what I work
+      on" in Plan settings, which starts version 2 with "Before you start" (`pyWhy` 'v1');
+   5. "Feeling unwell?" was 3 to 1 on a dark card (`--accent-strong`): it uses `--accent`;
+   6. with knee pain the first months' child pose became the seated forward bend, drawn as a half squat: a `chairfwd` drawing;
+   7. search found no yoga for a pregnant woman (the Moves and calm tile was hidden in every pregnancy): the tile shows once her
+      yoga is open (`pyOpen`), so "yoga" finds it; it stays hidden for amber, red and no plan;
+   8. "…, or Pregnancy yoga on 2 days a week": lowercase in the sentence (`lowFirst`).
+   Found and left (not this build): in the days after a loss the Moves and calm tile is hidden, but a guide's tool link still
+   opens every routine's page (`routineOk` has no rule for `lossNow`); the plan picker says "12-week plan" in a pregnancy.
+
+`node test/pregyoga.mjs` checks it (78 checks); `test/pregplan.mjs` expects the green tier's new line.
+
+The minimalist baseline: no new ring (her check-in stays after her last step), at most 4 steps (the yoga takes the walk's row
+on its days; day 1 has 3 or fewer), no new question or screen, one home for each fact, no new tour, tip or celebration, and
+the shared-phone check above. Starting the yoga from Today is 2 taps (Start on Today, Start on its page); stopping for today
+is 2 more. The tap suite's jobs (`web/test/taps/`: the cycle, Getting ready and no-plan women) don't pass through pregnancy.

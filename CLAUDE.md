@@ -391,6 +391,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     The walk is `node test/midlife-walk.mjs [kavita|sunita|asha|meera|vera]` (screens and words to `test/shots/midlife-walk/`); its
     12 fixes are the test's section 11; the phone test's 6 fixes (31 Oct, on Mohit's Flip5) are section 12, the second phone test's 3 are section 13, the third's 2 section 14, the fourth's 1 section 15, the exploratory one's 4 section 16, the second exploratory one's 3 section 17, the bone-safe stop-gap section 18, the discreet path cards section 19, and her parts on the weeks card section 20. It builds on Version 39.49. Contract: MODULE_API section 94; wording: section 19.51 of the
     review (new lines wait for doctor review, the calm chapters for a psychologist too, the moves for a physiotherapist).
+  - `node test/pregyoga.mjs` (Version 39.52, pregnancy yoga by trimester; Mohit, 1 Nov: "build the pregnancy yoga by trimester"):
+    - three routines by her week (`preg1` to 13 weeks, `preg2` 14 to 27, `preg3` from 28), about 10 minutes each: nothing on the
+      back after 13 weeks, nothing on the tummy, no twist, no rising on the toes, no breath held, balance at a wall;
+    - drawn with her bump from 14 weeks, never the 3D figure (it isn't pregnant);
+    - on Today on days 2 and 5 of her plan week, in the walk's place, on My pregnancy's green tier only;
+    - the stop card above Start, "Feeling unwell?" on every move ("Stop for today" holds her walk and yoga until she checks her
+      answers again);
+    - Moves and calm in a pregnancy: only her three months' yoga and Calm breath, the other routines' pages refuse;
+    - "Yoga" on a shared phone, and Hindi at 360 px.
+    Contract: MODULE_API section 95; wording: section 19.52 of the review (new lines wait for the doctor and a physiotherapist).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

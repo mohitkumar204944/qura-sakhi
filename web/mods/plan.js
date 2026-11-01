@@ -240,13 +240,13 @@
   /* ---------- the moving drawings: one figure, its joints moved between two positions (looping like a GIF) ----------
      h head, n neck, p pelvis; a = arms [far, near] from the neck; l = legs [far, near] from the pelvis; side view faces right */
   const P = {
-    pray: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[50, 42], [59, 40]], [[70, 42], [61, 40]]], l: [[[57, 76], [56, 94]], [[63, 76], [64, 94]]] },
-    armsup: { h: [60, 24], n: [60, 35], p: [60, 62], a: [[[51, 23], [54, 8]], [[69, 23], [66, 8]]], l: [[[58, 78], [57, 94]], [[62, 78], [63, 94]]] },
-    tree: { h: [60, 24], n: [60, 35], p: [60, 62], a: [[[50, 23], [59, 6]], [[70, 23], [61, 6]]], l: [[[58, 78], [57, 94]], [[75, 72], [60, 80]]] },
-    triangle: { h: [36, 31], n: [44, 38], p: [60, 60], a: [[[49, 23], [53, 8]], [[40, 53], [37, 69]]], l: [[[46, 77], [35, 94]], [[74, 77], [85, 94]]] },
-    wide: { h: [60, 19], n: [60, 30], p: [60, 60], a: [[[46, 32], [32, 30]], [[74, 32], [88, 30]]], l: [[[46, 77], [35, 94]], [[74, 77], [85, 94]]] },
-    warmup: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[46, 33], [32, 31]], [[74, 33], [88, 31]]], l: [[[56, 76], [54, 94]], [[64, 76], [66, 94]]] },
-    warmup2: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[48, 22], [40, 10]], [[72, 22], [80, 10]]], l: [[[56, 76], [54, 94]], [[64, 76], [66, 94]]] },
+    pray: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[50, 42], [59, 40]], [[70, 42], [61, 40]]], l: [[[57, 76], [56, 94]], [[63, 76], [64, 94]]], fv: 1 },
+    armsup: { h: [60, 24], n: [60, 35], p: [60, 62], a: [[[51, 23], [54, 8]], [[69, 23], [66, 8]]], l: [[[58, 78], [57, 94]], [[62, 78], [63, 94]]], fv: 1 },
+    tree: { h: [60, 24], n: [60, 35], p: [60, 62], a: [[[50, 23], [59, 6]], [[70, 23], [61, 6]]], l: [[[58, 78], [57, 94]], [[75, 72], [60, 80]]], fv: 1 },
+    triangle: { h: [36, 31], n: [44, 38], p: [60, 60], a: [[[49, 23], [53, 8]], [[40, 53], [37, 69]]], l: [[[46, 77], [35, 94]], [[74, 77], [85, 94]]], fv: 1 },
+    wide: { h: [60, 19], n: [60, 30], p: [60, 60], a: [[[46, 32], [32, 30]], [[74, 32], [88, 30]]], l: [[[46, 77], [35, 94]], [[74, 77], [85, 94]]], fv: 1 },
+    warmup: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[46, 33], [32, 31]], [[74, 33], [88, 31]]], l: [[[56, 76], [54, 94]], [[64, 76], [66, 94]]], fv: 1 },
+    warmup2: { h: [60, 19], n: [60, 30], p: [60, 58], a: [[[48, 22], [40, 10]], [[72, 22], [80, 10]]], l: [[[56, 76], [54, 94]], [[64, 76], [66, 94]]], fv: 1 },
     march: { h: [61, 19], n: [60, 30], p: [60, 58], a: [[[67, 43], [73, 35]], [[54, 43], [51, 55]]], l: [[[59, 76], [58, 94]], [[73, 62], [71, 80]]] },
     march2: { h: [61, 19], n: [60, 30], p: [60, 58], a: [[[54, 43], [51, 55]], [[67, 43], [73, 35]]], l: [[[73, 62], [71, 80]], [[61, 76], [62, 94]]] },
     walk: { h: [65, 20], n: [62, 31], p: [60, 58], a: [[[67, 44], [73, 52]], [[55, 44], [50, 55]]], l: [[[54, 76], [45, 92]], [[68, 75], [72, 94]]] },
@@ -272,9 +272,9 @@
     rest: { h: [14, 87], n: [25, 90], p: [58, 91], a: [[[40, 93], [54, 94]], [[41, 93], [55, 94]]], l: [[[77, 92], [97, 92]], [[77, 93], [97, 93]]] },
     sitlong: { h: [46, 46], n: [44, 57], p: [40, 88], a: [[[36, 72], [30, 91]], [[48, 72], [52, 87]]], l: [[[63, 91], [88, 91]], [[63, 90], [88, 90]]] },
     twist: { h: [47, 46], n: [44, 57], p: [40, 88], a: [[[33, 72], [27, 91]], [[55, 60], [63, 66]]], l: [[[63, 91], [88, 91]], [[57, 68], [61, 91]]] },
-    butterfly: { h: [60, 44], n: [60, 55], p: [60, 84], a: [[[48, 70], [58, 88]], [[72, 70], [62, 88]]], l: [[[36, 76], [57, 91]], [[84, 76], [63, 91]]] },
-    butterfly2: { h: [60, 44], n: [60, 55], p: [60, 84], a: [[[48, 70], [58, 88]], [[72, 70], [62, 88]]], l: [[[38, 70], [57, 91]], [[82, 70], [63, 91]]] },
-    sit: { h: [60, 47], n: [60, 58], p: [60, 86], a: [[[48, 71], [42, 84]], [[72, 71], [78, 84]]], l: [[[42, 88], [66, 92]], [[78, 88], [54, 92]]] },
+    butterfly: { h: [60, 44], n: [60, 55], p: [60, 84], a: [[[48, 70], [58, 88]], [[72, 70], [62, 88]]], l: [[[36, 76], [57, 91]], [[84, 76], [63, 91]]], fv: 1 },
+    butterfly2: { h: [60, 44], n: [60, 55], p: [60, 84], a: [[[48, 70], [58, 88]], [[72, 70], [62, 88]]], l: [[[38, 70], [57, 91]], [[82, 70], [63, 91]]], fv: 1 },
+    sit: { h: [60, 47], n: [60, 58], p: [60, 86], a: [[[48, 71], [42, 84]], [[72, 71], [78, 84]]], l: [[[42, 88], [66, 92]], [[78, 88], [54, 92]]], fv: 1 },
     chairup: { h: [66, 19], n: [64, 30], p: [62, 58], a: [[[70, 43], [80, 45]], [[71, 44], [81, 46]]], l: [[[64, 76], [66, 94]], [[65, 76], [67, 94]]], prop: 'chair' },
     chair: { h: [66, 33], n: [60, 42], p: [46, 69], a: [[[69, 50], [81, 52]], [[70, 51], [82, 53]]], l: [[[69, 76], [66, 94]], [[70, 76], [67, 94]]], prop: 'chair' },
     wallout: { h: [76, 31], n: [71, 40], p: [58, 66], a: [[[83, 39], [95, 37]], [[84, 40], [95, 38]]], l: [[[51, 80], [44, 94]], [[52, 80], [45, 94]]], prop: 'wall' },
@@ -282,29 +282,65 @@
     stepfloor: { h: [54, 18], n: [53, 29], p: [52, 57], a: [[[58, 43], [61, 55]], [[48, 43], [46, 55]]], l: [[[52, 76], [50, 94]], [[54, 76], [54, 94]]], prop: 'step' },
     step: { h: [60, 18], n: [58, 29], p: [56, 56], a: [[[63, 43], [66, 54]], [[52, 43], [49, 55]]], l: [[[54, 76], [50, 94]], [[70, 65], [74, 80]]], prop: 'step' },
     calfdown: { h: [60, 18], n: [58, 29], p: [58, 56], a: [[[72, 40], [90, 40]], [[73, 41], [90, 41]]], l: [[[59, 75], [60, 94], [67, 94]], [[60, 75], [61, 94], [68, 94]]], prop: 'wall' },
-    calf: { h: [60, 16], n: [58, 27], p: [58, 54], a: [[[72, 38], [90, 38]], [[73, 39], [90, 39]]], l: [[[59, 73], [61, 90], [67, 94]], [[60, 73], [62, 90], [68, 94]]], prop: 'wall' }
+    calf: { h: [60, 16], n: [58, 27], p: [58, 54], a: [[[72, 38], [90, 38]], [[73, 39], [90, 39]]], l: [[[59, 73], [61, 90], [67, 94]], [[60, 73], [62, 90], [68, 94]]], prop: 'wall' },
+    /* Version 39.52: pregnancy yoga's positions (drafts for the physiotherapist). fv: she faces you (her bump sits on her front);
+       m: a point mid-spine, so her back can round (cat) or dip a little (cow); bd 'down': lying on her side, her bump rests
+       towards the floor */
+    seat: { h: [38, 31], n: [37, 42], p: [36, 68], a: [[[39, 56], [47, 66]], [[40, 57], [48, 67]]], l: [[[54, 69], [55, 94]], [[55, 70], [56, 94]]], prop: 'chair' },
+    seatmarch: { h: [38, 31], n: [37, 42], p: [36, 68], a: [[[38, 56], [46, 50]], [[39, 57], [47, 51]]], l: [[[54, 69], [55, 94]], [[52, 58], [57, 80]]], prop: 'chair' },
+    seatmarch2: { h: [38, 31], n: [37, 42], p: [36, 68], a: [[[38, 56], [46, 50]], [[39, 57], [47, 51]]], l: [[[52, 58], [57, 80]], [[55, 70], [56, 94]]], prop: 'chair' },
+    allfours: { h: [79, 68], n: [70, 68], p: [42, 75], a: [[[71, 81], [72, 94]], [[72, 81], [73, 94]]], l: [[[42, 93], [22, 94]], [[43, 93], [23, 94]]] },
+    rockback: { h: [71, 74], n: [62, 74], p: [34, 80], a: [[[67, 84], [72, 94]], [[68, 84], [73, 94]]], l: [[[42, 93], [22, 94]], [[43, 93], [23, 94]]] },
+    cat: { h: [76, 78], n: [70, 70], m: [56, 63], p: [42, 76], a: [[[71, 82], [72, 94]], [[72, 82], [73, 94]]], l: [[[42, 93], [22, 94]], [[43, 93], [23, 94]]] },
+    cow: { h: [79, 61], n: [70, 67], m: [56, 72], p: [42, 74], a: [[[71, 80], [72, 94]], [[72, 80], [73, 94]]], l: [[[42, 93], [22, 94]], [[43, 93], [23, 94]]] },
+    sidelie: { h: [15, 80], n: [25, 85], p: [57, 87], a: [[[18, 94], [12, 88]], [[34, 92], [43, 94]]], l: [[[74, 93], [92, 94]], [[74, 88], [92, 90]]], prop: 'pillow', bd: 'down' },
+    sidedown: { h: [15, 80], n: [25, 85], p: [57, 87], a: [[[18, 94], [12, 88]], [[34, 92], [43, 94]]], l: [[[75, 93], [94, 94]], [[75, 90], [94, 92]]], bd: 'down' },
+    sideleg: { h: [15, 80], n: [25, 85], p: [57, 87], a: [[[18, 94], [12, 88]], [[34, 92], [43, 94]]], l: [[[75, 93], [94, 94]], [[74, 80], [91, 73]]], bd: 'down' },
+    leanfwd: { h: [86, 38], n: [77, 44], p: [52, 58], a: [[[87, 51], [96, 44]], [[88, 52], [96, 45]]], l: [[[51, 76], [49, 94]], [[53, 76], [52, 94]]], prop: 'wall' },
+    leanfwd2: { h: [83, 41], n: [74, 46], p: [48, 61], a: [[[85, 52], [96, 44]], [[86, 53], [96, 45]]], l: [[[50, 78], [49, 94]], [[52, 78], [52, 94]]], prop: 'wall' },
+    chairfwd: { h: [56, 62], n: [50, 53], p: [37, 68], a: [[[54, 66], [58, 80]], [[55, 67], [59, 81]]], l: [[[55, 69], [57, 94]], [[56, 70], [58, 94]]], prop: 'chair' }
   };
   /* moves that loop: [from, to, seconds per loop, holds at the end?] */
   const ANIM = { chair: ['chairup', 'chair', 3, false], wall: ['wallout', 'wall', 2.6, false], step: ['stepfloor', 'step', 2.4, false], bridge: ['bridgedown', 'bridge', 4, true], cobra: ['prone', 'cobra', 5, true],
     locust: ['prone', 'locust', 4, true], camel: ['kneel', 'camel', 6, true], march: ['march', 'march2', 1.4, false], walk: ['walk', 'walk2', 1.1, false], calf: ['calfdown', 'calf', 2.4, false],
-    armsup: ['pray', 'armsup', 6, true], triangle: ['wide', 'triangle', 6, true], butterfly: ['butterfly', 'butterfly2', 1.6, false], twist: ['sitlong', 'twist', 6, true], knees: ['knees', 'knees2', 3, false], warmup: ['warmup', 'warmup2', 3, false] };
+    armsup: ['pray', 'armsup', 6, true], triangle: ['wide', 'triangle', 6, true], butterfly: ['butterfly', 'butterfly2', 1.6, false], twist: ['sitlong', 'twist', 6, true], knees: ['knees', 'knees2', 3, false], warmup: ['warmup', 'warmup2', 3, false],
+    /* Version 39.52: pregnancy yoga */
+    seatmarch: ['seatmarch', 'seatmarch2', 1.6, false], allfours: ['allfours', 'rockback', 4, false], cat: ['cat', 'cow', 6, false], sideleg: ['sidedown', 'sideleg', 3, true], leanfwd: ['leanfwd', 'leanfwd2', 4, false] };
+  const mid = (F) => F.m || [(F.n[0] + F.p[0]) / 2, (F.n[1] + F.p[1]) / 2];
   const lerp = (A, B, k) => { const m = (a, b) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
-    return { prop: A.prop, h: m(A.h, B.h), n: m(A.n, B.n), p: m(A.p, B.p), a: A.a.map((x, i) => x.map((q, j) => m(q, B.a[i][j]))), l: A.l.map((x, i) => x.map((q, j) => m(q, B.l[i][j]))) }; };
+    const o = { prop: A.prop, fv: A.fv, bd: A.bd, h: m(A.h, B.h), n: m(A.n, B.n), p: m(A.p, B.p), a: A.a.map((x, i) => x.map((q, j) => m(q, B.a[i][j]))), l: A.l.map((x, i) => x.map((q, j) => m(q, B.l[i][j]))) };
+    if (A.m || B.m) o.m = m(mid(A), mid(B)); return o; };
   const pts = (arr) => arr.map((q) => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ');
-  const PROPS = { chair: '<path d="M27 44v50M27 71h21M46 71v23"/>', wall: '<path d="M97 10v84"/>', step: '<path d="M56 80h40v14"/>' };
+  const PROPS = { chair: '<path d="M27 44v50M27 71h21M46 71v23"/>', wall: '<path d="M97 10v84"/>', step: '<path d="M56 80h40v14"/>', pillow: '<path d="M68 91a6 2.6 0 1 0 12 0a6 2.6 0 1 0 -12 0"/>' };
+  /* Version 39.52: her bump in pregnancy yoga (k: 0.75 in the middle three months, 1 in the last), on her front: from her spine
+     when the figure is side-on, round on her middle when she faces you, resting towards the floor when she lies on her side */
+  const spine = (f) => (f.m ? [f.n, f.m, f.p] : [f.n, f.p]);
+  function bumpOf(f, k) {
+    if (!k) return null;
+    const n = f.n, p = f.p, dx = p[0] - n[0], dy = p[1] - n[1], len = Math.hypot(dx, dy) || 1, a = Math.atan2(dy, dx) * 180 / Math.PI;
+    if (f.fv) { const r = 4 + 3.2 * k; return { cx: n[0] + dx * 0.72, cy: n[1] + dy * 0.72, rx: r, ry: r, a: 0 }; }
+    const rx = 3 + 6 * k, ry = 2 + 5 * k;
+    if (f.bd === 'down') return { cx: n[0] + dx * 0.6, cy: 95 - ry, rx: rx, ry: ry, a: a };
+    const off = 3.2 + ry * 0.7;
+    return { cx: n[0] + dx * 0.64 + (dy / len) * off, cy: n[1] + dy * 0.64 - (dx / len) * off, rx: rx, ry: ry, a: a };
+  }
+  const bumpKv = (b) => ({ cx: b.cx.toFixed(1), cy: b.cy.toFixed(1), rx: b.rx.toFixed(1), ry: b.ry.toFixed(1), transform: 'rotate(' + b.a.toFixed(1) + ' ' + b.cx.toFixed(1) + ' ' + b.cy.toFixed(1) + ')' });
+  const bumpAttr = (b) => { const kv = bumpKv(b); return Object.keys(kv).map((k) => k + '="' + kv[k] + '"').join(' '); };
   function figSvg(id, o) {
     const f = P[id] || P.pray; o = o || {};
     const line = (k, list, w, op) => '<polyline data-k="' + k + '" points="' + pts(list) + '" stroke-width="' + w + '"' + (op ? ' opacity="0.45"' : '') + '/>';
+    const bp = bumpOf(f, o.bump);
     const body = '<line class="pl-mat" x1="10" y1="96" x2="110" y2="96"/>' + (f.prop ? '<g class="pl-prop">' + PROPS[f.prop] + '</g>' : '') +
-      '<g class="pl-lim">' + line('a0', [f.n].concat(f.a[0]), 5, 1) + line('l0', [f.p].concat(f.l[0]), 6, 1) + line('t', [f.n, f.p], 8) + line('l1', [f.p].concat(f.l[1]), 6) + line('a1', [f.n].concat(f.a[1]), 5) + '</g>' +
+      '<g class="pl-lim">' + line('a0', [f.n].concat(f.a[0]), 5, 1) + line('l0', [f.p].concat(f.l[0]), 6, 1) + line('t', spine(f), 8) + (bp ? '<ellipse class="pl-bump" data-k="b" ' + bumpAttr(bp) + '/>' : '') + line('l1', [f.p].concat(f.l[1]), 6) + line('a1', [f.n].concat(f.a[1]), 5) + '</g>' +
       '<circle data-k="h" cx="' + f.h[0] + '" cy="' + f.h[1] + '" r="7"/>';
-    return '<svg class="pl-fig' + (o.cls ? ' ' + o.cls : '') + '" viewBox="0 0 120 100" aria-hidden="true" focusable="false"' + (o.id ? ' id="' + o.id + '"' : '') + '>' + (o.mirror ? '<g transform="translate(120 0) scale(-1 1)">' + body + '</g>' : body) + '</svg>';
+    return '<svg class="pl-fig' + (o.cls ? ' ' + o.cls : '') + '" viewBox="0 0 120 100" aria-hidden="true" focusable="false"' + (o.id ? ' id="' + o.id + '"' : '') + (bp ? ' data-bump="' + o.bump + '"' : '') + '>' + (o.mirror ? '<g transform="translate(120 0) scale(-1 1)">' + body + '</g>' : body) + '</svg>';
   }
   function setFig(svg, f) {
     const q = (k) => svg.querySelector('[data-k="' + k + '"]');
     const set = (k, list) => { const el = q(k); if (el) el.setAttribute('points', pts(list)); };
-    set('a0', [f.n].concat(f.a[0])); set('l0', [f.p].concat(f.l[0])); set('t', [f.n, f.p]); set('l1', [f.p].concat(f.l[1])); set('a1', [f.n].concat(f.a[1]));
+    set('a0', [f.n].concat(f.a[0])); set('l0', [f.p].concat(f.l[0])); set('t', spine(f)); set('l1', [f.p].concat(f.l[1])); set('a1', [f.n].concat(f.a[1]));
     const h = q('h'); if (h) { h.setAttribute('cx', f.h[0].toFixed(1)); h.setAttribute('cy', f.h[1].toFixed(1)); }
+    const b = q('b'), bp = b ? bumpOf(f, +svg.getAttribute('data-bump')) : null; if (bp) { const kv = bumpKv(bp); Object.keys(kv).forEach((k) => b.setAttribute(k, kv[k])); }   /* Version 39.52 */
   }
   /* one animation at a time (the step on screen); it stops when the figure leaves the page or she leaves the routine */
   let raf = 0;
@@ -367,7 +403,36 @@
       { pose: 'walk', s: 45, n: L('Heel to toe at the wall', 'दीवार के साथ एड़ी से पंजा'), p: L('Walk slowly along a wall with one hand on it, one foot right in front of the other, heel to toe. 10 steps, then turn and come back.', 'दीवार पर एक हाथ रखकर धीरे-धीरे चलें, एक पैर ठीक दूसरे के आगे, एड़ी से पंजा मिलाकर। 10 क़दम, फिर मुड़कर वापस।') },
       { pose: 'calf', s: 30, n: L('Heel raises', 'एड़ी उठाना'), p: L('Hold a wall or a chair. Rise up on your toes and come down slowly. 15 times.', 'दीवार या कुर्सी पकड़ें। पंजों पर उठें और धीरे से नीचे आएँ। 15 बार।') }] }
   };
-  const RIDS = ['gentle', 'cycle', 'sun', 'strength', 'calm', 'steady'];   /* Version 39.51: Steady on your feet, for midlife */
+  /* Version 39.52 (Mohit, 1 Nov: "build the pregnancy yoga by trimester"): yoga for each three months of a pregnancy, from the
+     programme design (docs/plans-design-and-build-2026-10-24-programmes.md, section 6) and WHO 2020: nothing on the back after
+     13 weeks and nothing on the tummy, no breath held, no deep twists, no jumping, no rising on the toes, balance at a wall.
+     Drafts for the gynaecologist and a women's-health physiotherapist (wording review 19.52). Drawn, with her bump from the
+     middle three months, not the 3D figure (which isn't pregnant); the reused moves keep their reviewed words */
+  const PY_T = (reps) => ({ pose: 'armsup', s: 30, reps: reps, n: L('Tadasana (palm tree)', 'ताड़ासन'), p: L('Feet a little apart and flat on the floor. Raise your arms, stretch up and breathe slowly.', 'पैर थोड़े खुले, पूरे ज़मीन पर। हाथ ऊपर उठाएँ, ऊपर की ओर खिंचें और धीरे साँस लें।') });
+  const PY_TREE = { pose: 'tree', s: 20, side: true, n: L('Vrikshasana (tree) at a wall', 'दीवार के पास वृक्षासन'), p: L('One hand on a wall. Rest one foot on your other ankle or calf, never on the knee. Breathe.', 'एक हाथ दीवार पर। एक पैर दूसरे पैर के टखने या पिंडली पर रखें, घुटने पर कभी नहीं। साँस लेती रहें।') };
+  const PY_CAT = (sag) => ({ pose: 'cat', s: 60, n: L('Marjariasana (cat and cow)', 'मार्जरी आसन (बिल्ली और गाय)'), p: L('On hands and knees: breathe out, round your back; breathe in, lift your head. ' + (sag ? 'Don’t let your back sag.' : 'Keep it small.'), 'हाथों और घुटनों के बल: साँस छोड़ें, पीठ गोल करें; साँस लें, सिर उठाएँ। ' + (sag ? 'पीठ नीचे न लटकने दें।' : 'हरकत छोटी रखें।')) });
+  const PY_CHILD = { pose: 'child', s: 40, knees: Object.assign({}, CHAIR_FWD, { pose: 'chairfwd' }), n: L('Shashankasana (child pose)', 'शशांकासन'), p: L('Knees wide apart, big toes together. Sit back towards your heels and stretch your arms forward.', 'घुटने चौड़े, पैरों के अँगूठे साथ। एड़ियों की ओर पीछे बैठें और हाथ आगे फैलाएँ।') };
+  const PY_BUT = (wall) => ({ pose: 'butterfly', s: 60, n: L('Bhadrasana (butterfly)', 'भद्रासन (तितली)'), p: wall ? L('Sit with your back against a wall, the soles of your feet together and your knees out. Breathe slowly.', 'दीवार से पीठ टिकाकर बैठें, तलवे आपस में मिलाकर, घुटने बाहर। धीरे साँस लें।')
+    : L('Sit tall on a folded sheet, the soles of your feet together and your knees out. Breathe slowly.', 'मुड़ी हुई चादर पर सीधी बैठें, तलवे आपस में मिलाकर, घुटने बाहर। धीरे साँस लें।') });
+  const PY_SIDELEG = { pose: 'sideleg', s: 30, side: true, n: L('Side-lying leg lift', 'करवट लेकर पैर उठाना'), p: L('Lie on your side, head on your arm. Lift your top leg a little, keeping it straight, and lower it slowly. 8 times.', 'करवट लेकर लेटें, सिर बाँह पर। ऊपर वाला पैर सीधा रखकर थोड़ा उठाएँ, फिर धीरे से नीचे लाएँ। 8 बार।') };
+  const PY_REST = { pose: 'sidelie', s: 90, n: L('Rest on your side', 'करवट लेकर आराम'), p: L('Lie on your side, left or right, a pillow between your knees. Let your body go loose and breathe slowly.', 'बाईं या दाईं करवट लेटें, घुटनों के बीच तकिया। शरीर ढीला छोड़ें और धीरे साँस लें।') };
+  const PY_WALL = Object.assign({}, R.strength.steps[3], { reps: 1 });   /* Wall push-ups, its reviewed words, one set */
+  R.preg1 = { hue: 'plum', first: 'cat', draw: true, bump: 0, steps: [W, PY_T(2), PY_TREE, PY_CAT(false), PY_CHILD, PY_BUT(false),
+    { pose: 'sit', s: 60, breath: [4, 0, 6, 0], n: L('Slow breathing', 'धीमी साँस'), p: L('Sit comfortably. Breathe in for 4 counts and out slowly for 6. Never hold your breath.', 'आराम से बैठें। 4 गिनती तक साँस लें और 6 गिनती तक धीरे छोड़ें। साँस कभी न रोकें।') },
+    REST] };
+  R.preg2 = { hue: 'plum', first: 'cat', draw: true, bump: 0.75, steps: [W, PY_T(1), PY_TREE, PY_WALL,
+    { pose: 'chair', s: 45, n: L('Chair squats', 'कुर्सी से उठक-बैठक'), p: L('Stand up from a chair slowly, using your hands if you need to, then sit down slowly. 8 times.', 'कुर्सी से धीरे से खड़ी हों, ज़रूरत हो तो हाथों का सहारा लेकर, फिर धीरे से बैठें। 8 बार।') },
+    PY_CAT(true), PY_BUT(false), R.calm.steps[1], PY_SIDELEG, PY_REST] };
+  R.preg3 = { hue: 'plum', first: 'leanfwd', draw: true, bump: 1, steps: [
+    { pose: 'seatmarch', s: 60, n: L('Loosen up, sitting', 'बैठकर शरीर खोलें'), p: L('Sit tall on a chair. Roll your shoulders, then march, lifting your knees one by one.', 'कुर्सी पर सीधी बैठें। कंधे घुमाएँ, फिर एक-एक करके घुटने उठाते हुए क़दमताल करें।') },
+    { pose: 'chair', s: 45, n: L('Slow sit-to-stand', 'धीरे से उठना-बैठना'), p: L('Feet wide apart. Stand up from a chair slowly, then sit down slowly. Use your hands if you need to. 6 times.', 'पैर चौड़े खुले। कुर्सी से धीरे से खड़ी हों, फिर धीरे से बैठें। ज़रूरत हो तो हाथों का सहारा लें। 6 बार।') },
+    { pose: 'seat', s: 60, breath: [4, 0, 6, 0], n: L('Long breaths out', 'लंबी साँस छोड़ना'), p: L('Sit tall on a chair. Breathe in for 4 counts and out slowly for 6. Never hold your breath.', 'कुर्सी पर सीधी बैठें। 4 गिनती तक साँस लें और 6 गिनती तक धीरे छोड़ें। साँस कभी न रोकें।') },
+    PY_WALL,
+    { pose: 'leanfwd', s: 45, n: L('Lean and sway', 'झुककर झूमना'), p: L('Hands on a wall or a table, lean forward a little and sway your hips slowly, side to side or in circles.', 'दीवार या मेज़ पर हाथ रखकर थोड़ा आगे झुकें, और कूल्हों को धीरे-धीरे दाएँ-बाएँ या गोल घुमाएँ।') },
+    { pose: 'allfours', s: 60, n: L('Rock on hands and knees', 'हाथों-घुटनों के बल झूलना'), p: L('On hands and knees with your back flat, rock slowly forward and back. A folded sheet under your knees helps.', 'हाथों और घुटनों के बल, पीठ सीधी रखकर, धीरे-धीरे आगे-पीछे झूलें। घुटनों के नीचे मुड़ी चादर रखें।') },
+    PY_BUT(true), PY_SIDELEG, PY_REST] };
+  const PY = ['preg1', 'preg2', 'preg3'];
+  const RIDS = ['gentle', 'cycle', 'sun', 'strength', 'calm', 'steady'].concat(PY);   /* Version 39.51: Steady on your feet, for midlife; 39.52: pregnancy yoga */
   /* Version 39.32 (packet F2, F6): on the Getting ready plan, in the 14 days before her likely period (all month when her dates
      can't say, and while it is late), Bhujangasana (cobra) gives way to Tadasana and Vakrasana (seated twist) to sitting quietly,
      in case she is already pregnant; the sun salutation, which has a cobra, gives way to Gentle start. Never on her period days.
@@ -401,16 +466,25 @@
         else out.push(Object.assign({}, s, { set: k, sets: sets }));
       }
     });
+    if (R[id] && R[id].draw) out.forEach((x) => { x.draw = true; x.bump = R[id].bump || 0; });   /* Version 39.52: pregnancy yoga, drawn with her bump */
     return out;
   }
   const routineMins = (id, d) => Math.max(1, Math.round(stepsOf(id, d).reduce((a, s) => a + s.s, 0) / 60) + 1);
-  const rName = (id) => t(disc() && id === 'cycle' ? 'plan_r_d' : 'plan_r_' + id);
-  const rSub = (id) => (disc() && id === 'cycle' ? '' : t('plan_r_' + id + '_s'));
+  const rName = (id) => t(disc() && (id === 'cycle' || PY.indexOf(id) >= 0) ? 'plan_r_d' : 'plan_r_' + id);   /* Version 39.52: "Yoga", never "Pregnancy yoga", on a shared phone */
+  const rSub = (id) => (disc() && (id === 'cycle' || PY.indexOf(id) >= 0) ? '' : t('plan_r_' + id + '_s'));
+  /* Version 39.52: in a pregnancy, only her three months' yoga, on My pregnancy's green tier with no sign that doesn't wait, and
+     Calm breath (no breath held); the other routines lie on the back or the tummy, twist or rise on the toes. Outside a pregnancy,
+     never the pregnancy yoga */
+  const pyId = (iso) => { const gw = gwAt(iso || todayISO()); return gw == null ? null : (gw < 14 ? 'preg1' : (gw < 28 ? 'preg2' : 'preg3')); };
+  const pyWhy = (d) => (d && d.pack === 'preg' && !pregV2(d) && d.start && !pausedFor(d) ? 'v1' : (!(d && pregV2(d) && d.start && d.start <= todayISO() && !pausedFor(d)) ? 'plan'
+    : (ikOf(d).pnow ? 'now' : (psTier(ikOf(d).pflags, gwAt(todayISO())) !== 'green' ? 'doc' : ''))));   /* v1: the first pregnancy plan, which has no safety questions */
+  const pyOpen = (d) => pregnant() && !pyWhy(d);
+  const pyTier = (d) => !!(d && pregV2(d) && pregnant() && !pausedFor(d) && !ikOf(d).pnow && psTier(ikOf(d).pflags, gwAt(todayISO())) === 'green');   /* her steps named before she starts */
   /* Version 39.51 (Mohit's phone test, 1 Nov; advice decision 7, bone-safe moves for every midlife woman), a stop-gap: while a
      midlife plan runs, or at midlife with no plan running, no Cycle care yoga (child pose) and no sun salutation (standing forward
      bends). Another plan she kept (the PMOS plan rotates both) keeps them; Gentle start waits for the physiotherapist's swaps */
   const boneHold = (d) => { const pk = d && d.start ? packOf(d) : null; return pk === 'meno' || (!pk && !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())); };
-  const routineOk = (id, d) => !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife()))) && !((id === 'strength' || id === 'sun') && heartHold(d)) && !((id === 'cycle' || id === 'sun') && boneHold(d));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife, and no strength or sun salutation while her heart answer waits for her doctor */
+  const routineOk = (id, d) => (pregnant() ? id === 'calm' || (id === pyId() && pyOpen(d)) : PY.indexOf(id) < 0) && !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife()))) && !((id === 'strength' || id === 'sun') && heartHold(d)) && !((id === 'cycle' || id === 'sun') && boneHold(d));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife, and no strength or sun salutation while her heart answer waits for her doctor */
 
   /* ---------- small pictures ---------- */
   const ICO = {
@@ -948,17 +1022,30 @@
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
     const tRs = !tp ? [] : (packOf(d) === 'cycle' ? [tp.routine] : actionsFor(fullD(d)).filter((a) => a.kind === 'routine' && a.r).map((a) => a.r));   /* Version 39.51 (Mohit's phone): Today is her plan's own routine, not the cycle plan's */
     v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill(R[id].first) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill(R[id].first) && !R[id].draw ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, draw: R[id].draw, bump: R[id].bump }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
       '<div class="card pl-walkcard"><span class="pl-mfig' + (figStill('walk') ? ' pl-mf3d' : '') + '" id="pl-walkfig">' + walkFig() + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       (d && d.start && !finished(d) ? '<div class="chips pl-add">' + [10, 15, 20, 30].map((n) => '<button type="button" class="chip" data-pl-add="' + n + '">+' + n + '</button>').join('') + '</div>' : '') +
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
       (lutOn(d) ? '<p class="small pl-blut">' + esc(t('plan_blut')) + '</p>' : '') + (babyD(d) ? '<p class="small">' + esc(t('plan_bmove')) + '</p>' : '') +   /* Version 39.32 (packet F6, F7) */
-      '<div class="card warn"><h3>' + esc(t('plan_stop_h')) + '</h3><p class="small">' + esc(t((S.state.situation || {}).stopped ? 'plan_stop_l_m' : 'plan_stop_l')) + '</p></div>' +
+      (pregnant() && !disc() && pyWhy(d) ? pyLockCard(d) : '') +   /* Version 39.52 */
+      (pregnant() ? pyStopCard() : '<div class="card warn"><h3>' + esc(t('plan_stop_h')) + '</h3><p class="small">' + esc(t((S.state.situation || {}).stopped ? 'plan_stop_l_m' : 'plan_stop_l')) + '</p></div>') +
       '<p class="footnote">' + esc(t('plan_moves_foot')) + '</p>';
     S.wire(v);
     const wf = v.querySelector('#pl-walkfig svg'); if (wf) animate(wf, 'walk', 'walk2', ANIM.walk[2], false, false); wireFig3d(v);
     wireAdd(v);
   }
+
+  /* Version 39.52: pregnancy yoga's stop card (the moves' own stop signs, ACOG's in our words, and Help's "Call 112 now" line), the
+     note when it isn't open to her, and "Feeling unwell?" (stop now and rest; Stop for today holds her walk and yoga until she
+     checks her answers again, as a sign that doesn't wait does) */
+  const pyNowCard = () => '<div class="card dark pl-urg pl-pynow" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3><p class="small">' + esc(t('plan_py_now')) + '</p><p class="small">' + esc(t('s1c')) + '</p>' + telRow(['112', '108', '102']) + '</div>';
+  const pyStopCard = () => '<div class="card warn pl-pystop"><h3>' + esc(t('plan_stop_h')) + '</h3><p class="small">' + esc(t('plan_py_stop')) + '</p><p class="small"><strong>' + esc(nowH()) + '</strong></p><p class="small">' + esc(t('plan_py_now')) + '</p><p class="small">' + esc(t('s1c')) + '</p>' + telRow(['112']) + '</div>';
+  const pyLockCard = (d) => { const w = pyWhy(d); const go = { plan: ['plan', 'plan_pk_preg'], v1: ['plan-settings', 'plan_set_h'] }[w] || ['plan-psafe', 'plan_ps_set'];
+    return '<div class="card soft pl-pylock"><h3>' + esc(t('plan_py_h')) + '</h3><p class="small">' + esc(w === 'v1' ? tf('plan_py_lock_v1', { x: t('plan_set_goal'), y: t('plan_set_h') }) : t('plan_py_lock_' + w)) + '</p><button type="button" class="btn sm" data-go="' + go[0] + '">' + esc(t(go[1])) + '</button></div>'; };
+  const pyUnwellHtml = () => (run.unwell === 'stopped'
+    ? '<div class="card pl-intro pl-pyrest"><h2>' + esc(t('plan_py_rest_h')) + '</h2><p>' + esc(t('plan_py_rest_p')) + '</p></div>' + pyNowCard() + '<button type="button" class="btn primary block" data-go="plan">' + esc(t('plan_p_back')) + '</button>'
+    : '<div class="card warn pl-pyunwell"><h2>' + esc(t('plan_py_unwell_h')) + '</h2><p>' + esc(t('plan_py_stop')) + '</p></div>' + pyNowCard() +
+      '<div class="grid2"><button type="button" class="btn" id="pl-uw-ok">' + esc(t('plan_py_uw_ok')) + '</button><button type="button" class="btn primary" id="pl-uw-stop">' + esc(t('plan_py_uw_stop')) + '</button></div>');
 
   /* ---------- the player: intro, each move with its moving drawing and a timer, then "How did it feel?" ---------- */
   let run = null, tm = 0;
@@ -986,9 +1073,9 @@
   const figStill = (pose) => { const f = FIG(); return f && (f.stills || []).indexOf(pose) >= 0 ? 'fig/s/' + pose + '.webp' : ''; };
   const figKey = (s) => s.fig || (ANIM[s.pose] ? s.pose : '');
   const figLoop = (s) => { const f = FIG(); const k = figKey(s); return f && k && (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : ''; };
-  const figThumb = (s, mirror) => { const src = figStill(s.fig || s.pose); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror }); };
+  const figThumb = (s, mirror) => { const src = s.draw ? '' : figStill(s.fig || s.pose); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror, bump: s.bump }); };   /* Version 39.52: pregnancy yoga is drawn */
   function fig3d(s, prev) {
-    const f = FIG(); if (!f) return '';
+    const f = FIG(); if (!f || s.draw) return '';
     const mir = s.sideK === 'l' ? ' pl-mirror' : ''; let still, clip = '', loop = true;
     if (s.sun && s.si != null && f.sun) {
       still = 'fig/s/sun-' + S.pad2(s.si) + '.webp';
@@ -1013,12 +1100,12 @@
   /* Version 39.39, the rest screen (mockup claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka): a rest after each move and set, 15 seconds
      in Strength at home and 10 in Gentle start and Cycle care; none inside the sun salutation or Calm breath, between her right
      and left side, or before Shavasana (it is the rest). It counts in her minutes, as Shavasana does. "Next" on a move skips its rest. */
-  const REST_S = { strength: 15, gentle: 10, cycle: 10 };
+  const REST_S = { strength: 15, gentle: 10, cycle: 10, preg1: 10, preg2: 10, preg3: 10 };
   const restAfter = (i) => {
     const st = run.steps, a = st[i], b = st[i + 1];
     const rid = run.id === 'sun' && !st.some((s) => s.sun) ? 'gentle' : run.id;   /* Getting ready's sun salutation that became Gentle start */
     const sec = REST_S[rid] || 0;
-    if (!sec || !a || !b || a.sun || b.sun || b.pose === 'rest') return 0;
+    if (!sec || !a || !b || a.sun || b.sun || b.pose === 'rest' || b.pose === 'sidelie') return 0;   /* Version 39.52: nor before resting on her side */
     if (a.sideK === 'r' && b.sideK === 'l' && a.n === b.n && a.set === b.set) return 0;
     return sec;
   };
@@ -1048,8 +1135,12 @@
         '<div class="list">' + (run.id === 'sun' ? [uniq[0]].concat(SUN.slice(0, 8).map((x) => ({ pose: x[0], n: x[1] }))) : uniq).map((s) => '<div class="item quiet pl-pitem"><span class="pl-thumb">' + figThumb(s) + '</span><span class="body"><strong>' + esc(tx(s.n)) + '</strong>' + (s.s ? '<span>' + esc(s.reps > 1 ? s.reps + ' × ' + fmt(s.s) : fmt(s.s)) + (s.side ? ' · ' + esc(t('plan_p_both')) : '') + '</span>' : '') + '</span></div>').join('') + '</div>' +
         (run.id === 'sun' ? '<p class="small">' + esc(tf('plan_p_rounds', { n: st.filter((s) => s.sun).length / SUN.length })) + '</p>' : '') +
         (S.speakEl ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('plan_p_voice')) + '</strong><span>' + esc(t('plan_p_voice_d')) + '</span></span><input type="checkbox" id="pl-voice"' + (run.voice ? ' checked' : '') + '></label></div>' : '') +
+        (PY.indexOf(run.id) >= 0 ? pyStopCard() : '') +   /* Version 39.52: in pregnancy, the stop signs before Start */
         '<button type="button" class="btn primary block" id="pl-pstart">' + esc(t('plan_p_start')) + ' · ' + esc(tf('plan_mins', { n: routineMins(run.id, raw()) })) + '</button>' +
-        '<div class="card warn"><p class="small">' + esc(t((S.state.situation || {}).stopped ? 'plan_stop_l_m' : 'plan_stop_l')) + '</p></div>';
+        (PY.indexOf(run.id) >= 0 ? '' : '<div class="card warn"><p class="small">' + esc(t((S.state.situation || {}).stopped ? 'plan_stop_l_m' : 'plan_stop_l')) + '</p></div>');
+      if (PY.indexOf(run.id) >= 0) body = '<p class="small">' + esc(t('plan_py_go')) + '</p>' + body;   /* Version 39.52 */
+    } else if (run.unwell) {
+      body = pyUnwellHtml();   /* Version 39.52: "Feeling unwell?" during pregnancy yoga */
     } else if (run.rest && run.i < n - 1) {
       /* Version 39.39: the rest between moves, with the next move's picture and its first words */
       const s = st[run.i], nx = st[run.i + 1];
@@ -1067,7 +1158,7 @@
       const tags = [tf('plan_p_step', { i: run.i + 1, n: n })]; if (s.sun) tags.push(tf('plan_p_round', { i: s.round, n: s.rounds })); if (s.sideK) tags.push(t(s.sideK === 'r' ? 'plan_p_right' : 'plan_p_left')); if (s.sets > 1) tags.push(tf('plan_p_set', { i: s.set, n: s.sets }));
       const f3 = fig3d(s, run.i > 0 ? st[run.i - 1] : null);
       body = '<div class="pl-pbar" aria-hidden="true"><i style="width:' + Math.round((run.i / n) * 100) + '%"></i></div>' +
-        '<div class="card pl-stage" id="pl-step"><div class="pl-figbox hue-' + r.hue + (f3 ? ' pl-fb3d' : '') + '">' + (f3 || figSvg(s.pose, { id: 'pl-fig', mirror: s.sideK === 'l' })) + '</div><span class="eyebrow">' + esc(tags.join(' · ')) + '</span><h2>' + esc(tx(s.n)) + '</h2><p>' + esc(tx(s.p)) + '</p></div>' +
+        '<div class="card pl-stage" id="pl-step"><div class="pl-figbox hue-' + r.hue + (f3 ? ' pl-fb3d' : '') + '">' + (f3 || figSvg(s.pose, { id: 'pl-fig', mirror: s.sideK === 'l', bump: s.bump })) + (PY.indexOf(run.id) >= 0 ? '<button type="button" class="pl-unwell-b" id="pl-unwell" data-noread="1">' + esc(t('plan_py_unwell')) + '</button>' : '') + '</div><span class="eyebrow">' + esc(tags.join(' · ')) + '</span><h2>' + esc(tx(s.n)) + '</h2><p>' + esc(tx(s.p)) + '</p></div>' +
         (s.breath ? '<div class="pl-breath-wrap" aria-hidden="true"><div class="pl-breath" id="pl-breath"></div><b id="pl-phase"></b></div>'
           : '<div class="pl-timer" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="pl-arc" cx="60" cy="60" r="54" stroke-dasharray="' + RING + '" stroke-dashoffset="0"/></svg><b id="pl-time"></b></div>') +
         '<p class="small pl-left" id="pl-left" aria-live="off"></p>' +
@@ -1075,7 +1166,7 @@
         '<button type="button" class="btn" id="pl-pause">' + esc(t(run.paused ? 'plan_p_resume' : 'plan_p_pause')) + '</button><button type="button" class="btn primary" id="pl-next">' + esc(t(run.i === n - 1 ? 'plan_p_finish' : 'plan_p_next')) + '</button></div>';
     } else {
       body = '<div class="card pl-intro">' + (S.art ? S.art.sakhi({ pose: 'cheer', look: (S.state.settings || {}).look }) : '') + '<h2>' + esc(t('plan_p_done_h')) + '</h2><p>' + esc(run.logged > 1 ? tf('plan_p_done_m', { n: run.logged }) : run.logged === 1 ? t('plan_p_done_m1') : t(S.canSave() ? 'plan_p_done_0' : 'plan_p_done_b')) + '</p></div>' +
-        (S.canSave() && raw() ? (run.feel ? '<div class="card ok"><p>' + esc(t(run.feel === 'hard' ? 'plan_feel_hard_tip' : 'plan_feel_thanks')) + '</p></div>'
+        (S.canSave() && raw() ? (run.feel ? '<div class="card ok"><p>' + esc(t(run.feel === 'hard' ? (PY.indexOf(run.id) >= 0 ? 'plan_py_hard' : 'plan_feel_hard_tip') : 'plan_feel_thanks')) + '</p></div>'
           : '<h2>' + esc(t('plan_p_feel')) + '</h2><div class="grid3">' + ['easy', 'ok', 'hard'].map((k) => '<button type="button" class="btn" data-pl-feel="' + k + '">' + esc(t('plan_feel_' + k)) + '</button>').join('') + '</div>') : '') +
         '<div class="grid2"><button type="button" class="btn" id="pl-again2">' + esc(t('plan_p_again')) + '</button><button type="button" class="btn" data-go="' + (S.canSave() && raw() && raw().start ? 'plan' : 'plan-moves') + '">' + esc(t(S.canSave() && raw() && raw().start ? 'plan_p_back' : 'plan_tiles_moves')) + '</button></div>';
     }
@@ -1093,6 +1184,11 @@
     prune(d); remSync(d); S.save();
   }
   function wirePlayer(v) {
+    const uw = v.querySelector('#pl-unwell'); if (uw) uw.addEventListener('click', () => { stopRun(); run.paused = true; run.unwell = 'ask'; awake(false); draw(v); window.scrollTo(0, 0); });   /* Version 39.52 */
+    const uo = v.querySelector('#pl-uw-ok'); if (uo) uo.addEventListener('click', () => { run.unwell = null; draw(v); });
+    const us = v.querySelector('#pl-uw-stop'); if (us) us.addEventListener('click', () => { const m = Math.round(run.total / 60);
+      if (S.canSave() && raw()) { const dd = D(); if (m >= 1) addMin(dd, m); dd.intake = Object.assign({}, ikOf(dd), { pnow: todayISO() }); S.save(); }   /* her moves wait until she checks her answers again */
+      run.unwell = 'stopped'; draw(v); });
     const vs = v.querySelector('#pl-voice'); if (vs) vs.addEventListener('change', () => { run.voice = vs.checked; if (S.canSave() && raw()) { D().voice = run.voice; S.saveQuiet(); } });
     const st = v.querySelector('#pl-pstart'); if (st) st.addEventListener('click', () => go(0));
     const ps = v.querySelector('#pl-pause'); if (ps) ps.addEventListener('click', () => {
@@ -1105,6 +1201,7 @@
     const sk = v.querySelector('#pl-skip'); if (sk) sk.addEventListener('click', () => go(run.i + 1));
     const ag = v.querySelector('#pl-again2'); if (ag) ag.addEventListener('click', () => { run.feel = null; run.logged = null; run.total = 0; go(0); });
     v.querySelectorAll('[data-pl-feel]').forEach((b) => b.addEventListener('click', () => { run.feel = b.dataset.plFeel; const d = D(); d.feel = (d.feel || []).concat([{ d: todayISO(), r: run.id, f: run.feel }]).slice(-60); S.saveQuiet(); draw(v); }));
+    if (run.unwell) return;   /* Version 39.52: "Feeling unwell?" has no timer */
     if (run.rest && run.i < run.steps.length - 1) { paintRest(v); tick(v); if (!run.paused) awake(true); }
     else if (run.i >= 0 && run.i < run.steps.length) {
       const s = run.steps[run.i]; const fig = v.querySelector('#pl-fig'); const prev = run.i > 0 ? run.steps[run.i - 1] : null;
@@ -2399,6 +2496,7 @@
   /* Version 39.7 (journey audit P3-02): each step's "Why?" opens the Learn guide that explains it (never on a shared phone) */
   const WHY_ART = { plan_fb_move: 'mind_body.movement-busy-day', plan_fb_move_g: 'mind_body.movement-busy-day', plan_fb_movep: 'mind_body.movement-busy-day', plan_fb_str: 'mind_body.movement-busy-day', plan_fb_food: 'mind_body.simple-indian-plate', plan_fb_food_t: 'mind_body.simple-indian-plate', plan_fb_sleep: 'mind_body.sleep-and-hormones', plan_fb_calm: 'mind_body.stress-and-periods', plan_fb_cramps: 'cycle.painful-periods', plan_fb_iron: 'mind_body.thyroid-and-anaemia-tests', plan_fb_hot: 'midlife.hot-flushes-night-sweats', plan_fb_bones: 'midlife.bones-heart-after-40', plan_fb_recov: 'pregnancy.after-birth-first-six-weeks', plan_fb_due: 'pregnancy.four-antenatal-visits', plan_fb_prep: 'conceive.getting-ready-india-preconception-checklist',
     /* Version 39.32 */ plan_fb_folic: 'conceive.getting-ready-india-preconception-checklist', plan_fb_hb: 'mind_body.thyroid-and-anaemia-tests', plan_fb_bcalm: 'mind_body.stress-and-periods', plan_fb_bgreens: 'mind_body.simple-indian-plate', plan_fb_bdal: 'mind_body.simple-indian-plate', plan_fb_bfruit: 'mind_body.simple-indian-plate', plan_fb_btea: 'mind_body.simple-indian-plate', plan_fb_bmilk: 'mind_body.simple-indian-plate', plan_fb_bkatori: 'mind_body.simple-indian-plate', plan_fb_bnuts: 'mind_body.simple-indian-plate' };
+  WHY_ART.plan_fb_pyoga = 'pregnancy.dos-and-donts';   /* Version 39.52: its reviewed line on everyday work and a daily walk */
   Object.assign(WHY_ART, { plan_fb_m2h: 'midlife.hot-flushes-night-sweats', plan_fb_m2q: 'midlife.sleep-mood-dryness-midlife', plan_fb_m2r: 'midlife.sleep-mood-dryness-midlife', plan_fb_m2s: 'midlife.bones-heart-after-40' });   /* Version 39.51 */
   /* review FACTS-04, KNOWLEDGE-10: the guide fits her plan and stage. No exercise guide in pregnancy or the first 6 weeks
      after a birth (after the birth, the recovery guide); the calm step's guide by plan (none in pregnancy). */
@@ -2420,7 +2518,9 @@
       else if (x.use === 'plate') { const hb = habitsOf(d, 1); const h = hb[hb.length - 1]; add(ICO.plate, 'green', tf('plan_pi_food', { h: tx(h.h) }), x.why); }
       else if (x.use === 'item') add(progIco(x.icon), x.hue, ptx(x.text), x.why, x.priv);
       else if (x.use === 'bed') { if (laterStep(d)) return;   /* Version 39.45: "What happens when" names it */ if (d.work === 'night') add(S.icon('moon'), 'purple', t('plan_pi_shift'), 'plan_fb_sleep'); else { const bt = bedTarget(d); if (bt) add(S.icon('moon'), 'purple', tf('plan_pi_bed', { t: clockOf(bt) }), 'plan_fb_sleep'); } }
-      else if (x.use === 'today') actionsFor(d).forEach((a) => add(a.icon, a.hue, a.id === 'pdue' ? t('plan_pi_due') : (a.id === 'rcheck' ? t('plan_pi_rcheck') : tf(a.every && a.every < 7 ? 'plan_pi_days' : 'plan_pi_goal', { x: a.name || a.title, n: a.every })), a.why, a.priv));   /* V39.9 review FOOD-06 */
+      else if (x.use === 'pyoga') { const id = pyId(); if (!id || !pyTier(d) || out.some((y) => y.py)) return; const w = out.find((y) => y.walk);   /* Version 39.52: the yoga takes the walk's place on 2 days, so it shares the walk's line */
+        if (w) { w.txt = tf('plan_pi_wy', { x: w.x, y: lowFirst(rName(id)) }); w.py = true; } else { add(ICO.yoga, 'plum', tf('plan_pi_days', { x: rName(id), n: 2 }), 'plan_fb_pyoga', true); out[out.length - 1].py = true; } }
+      else if (x.use === 'today') actionsFor(d).forEach((a) => { add(a.icon, a.hue, a.id === 'pdue' ? t('plan_pi_due') : (a.id === 'rcheck' ? t('plan_pi_rcheck') : tf(a.every && a.every < 7 ? 'plan_pi_days' : 'plan_pi_goal', { x: a.name || a.title, n: a.every })), a.why, a.priv); const y = out[out.length - 1]; if (PY.indexOf(a.r) >= 0) y.py = true; if (a.id === 'move' && a.kind === 'minutes' && !a.r) { y.walk = true; y.x = a.name || a.title; } });   /* V39.9 review FOOD-06 */
     });
     return out;
   }
@@ -3715,6 +3815,7 @@
     intake: { render: renderIntake, count: (a) => (a && a.goal ? screensOf(a).length : 5), goals: (st) => GOALS[stKey(st)].slice(),
       part: (a) => { const l = a && a.goal ? screensOf(a) : []; return l[S.clamp((a && a.iq) || 0, 0, Math.max(0, l.length - 1))] === 'sum' ? 2 : 1; } },
     psTier: psTier, gwAt: (iso) => gwAt(iso),   /* Version 39.34 */
+    rids: () => RIDS.filter((id) => routineOk(id, S.canSave() && raw() ? D() : null)), pyId: (iso) => pyId(iso), routine: (id) => (R[id] ? { hue: R[id].hue, draw: !!R[id].draw, bump: R[id].bump || 0 } : null),   /* Version 39.52 */
     changing: () => { const d = raw(); return !!(planOn() && d && (changedWhy(d) || fitWhy(d))); },   /* Version 39.35: core's goals card waits while it asks */   /* Version 39.48: or while the plan for now is offered */
     misfit: () => { const d = raw(); return !!(planOn() && d && fitWhy(d)); },   /* Version 39.48: a plan that doesn't fit her stage doesn't keep its goal first */
     nudgeAt: NUDGE_AT, mcDue: () => (raw() ? mcDue(fullD(raw())) : 0),   /* Version 39.12 */
@@ -3839,6 +3940,18 @@
         plan_m2_skill: 'Today’s skill: {s}', plan_m2_skill_n: 'Today’s skill', plan_m2_skill_s: '2 minutes · from this week’s chapter', plan_m2_rule_s: 'This week’s sleep rule', plan_m2_les_h: 'This week’s chapter', plan_m2_month: 'This month’s read',
         plan_fb_m2h: 'A skill you practise every day makes hot flushes easier to handle, even when they still come.', plan_fb_m2q: 'Noticing your thoughts, and doing one thing that lifts you, helps your mood day by day.', plan_fb_m2r: 'A steady body clock lets sleep come more easily.', plan_fb_m2s: 'A few minutes of balance a day helps keep you steady on your feet.',
         plan_r_steady: 'Steady on your feet', plan_r_steady_s: 'Balance at a wall, 3 minutes',
+        /* Version 39.52: pregnancy yoga (new lines wait for doctor review, wording review 19.52) */
+        plan_r_preg1: 'Pregnancy yoga', plan_r_preg2: 'Pregnancy yoga', plan_r_preg3: 'Pregnancy yoga',
+        plan_r_preg1_s: 'First three months: gentle stretches and slow breathing', plan_r_preg2_s: 'Middle three months: stretches, strength and rest on your side', plan_r_preg3_s: 'Last three months: easy moves, long breaths out and rest on your side',
+        plan_pi_wy: '{x}, or {y} on 2 days a week',
+        plan_py_h: 'Pregnancy yoga', plan_py_go: 'Go gently in a cool room, with water nearby, and skip any move that doesn’t feel right. You should be able to talk while you move.',
+        plan_py_stop: 'Dizziness, a headache, breathlessness before you start, or a calf that hurts or swells. Stop, rest, and tell your doctor today.', plan_py_now: 'Chest pain, fainting, or regular painful tightenings in your tummy.',
+        plan_py_unwell: 'Feeling unwell?', plan_py_unwell_h: 'Stop now and rest', plan_py_uw_ok: 'I feel fine now', plan_py_uw_stop: 'Stop for today',
+        plan_py_rest_h: 'Rest now', plan_py_rest_p: 'Your walk and yoga wait until you check your answers again; Sakhi asks you tomorrow. If you feel worse, don’t wait: call 112.',
+        plan_py_hard: 'Next time, go more slowly and skip any move that feels hard. If something felt wrong, tell your doctor.',
+        plan_py_lock_plan: 'Yoga for your pregnancy comes with My pregnancy plan, after two safety questions.', plan_py_lock_doc: 'Yoga opens when your doctor says exercise is fine for you. Then change your answers in My safety answers.', plan_py_lock_now: 'No yoga until you check your answers again.',
+        plan_py_lock_v1: 'Yoga for your pregnancy comes with the newer My pregnancy plan. To switch, tap “{x}” in {y}. What you logged stays.',
+        plan_fb_pyoga: 'Gentle yoga in pregnancy can ease aches and help you sleep and feel calmer.',
         plan_in_mbone: 'Has a doctor said your bones are weak, or did a bone break after a small fall?', plan_in_mheart: 'Chest pain, fainting, or getting very breathless when you walk?',
         plan_m2_heart_w: 'Please see your doctor before you do more. Until then your walk stays easy, and Gentle start takes the place of Strength at home. Chest pain right now, or pain spreading to your jaw or arm: call 112.',
         plan_m2_bone_w: 'Every move in this plan is bone-safe, with no jumps. Ask your doctor about a bone scan and tablets.',
@@ -3880,7 +3993,7 @@
         plan_rv_pf: 'From day 4: your pelvic floor, 1 set a day', plan_rv_pf13: 'From week 13: your pelvic floor, 1 set a day', plan_rv_ps14: 'At 14 and 28 weeks: a quick check of your 2 safety answers', plan_rv_ps28: 'At 28 weeks: a quick check of your 2 safety answers', plan_rv_mv28: 'From 28 weeks: your baby’s movements, in “How did today go?”', plan_rv_mv: 'Each evening: your baby’s movements, in “How did today go?”',
        
         /* Version 39.34: My pregnancy, safety first (new lines wait for doctor review; plan_mv_side and plan_fb_pf are verified lines, word for word) */
-        plan_ps_h: 'Before you start', plan_ps_p: 'Two questions keep your plan safe for you. Your answers stay on this phone.', plan_ps_now_q: 'Right now, do you have any of these?', plan_ps_none: 'None of these', plan_ps_yes: 'Yes, one of these', plan_ps_now_p: 'No walk until you check your answers again; your other steps stay. Sakhi asks you tomorrow.', plan_ps_told_q: 'Has your doctor or ANM told you any of these?', plan_ps_told_q_doc: 'Has your doctor told you any of these?', plan_ps_rest: 'My doctor or ANM told me to rest, or not to exercise', plan_ps_rest_doc: 'My doctor told me to rest, or not to exercise', plan_ps_unsure: 'Not sure about any of these', plan_ps_unsure_p: 'Not sure? Tick it. Sakhi keeps your walk easy until your doctor says.', plan_ps_t_green: 'Your full plan', plan_ps_t_green_p: 'A walk at a pace you can talk, growing over the weeks, the pelvic floor from week 13, and the step for your goal.', plan_ps_t_amber: 'Easy walking, until your doctor says', plan_ps_t_amber_p: 'An easy 10-minute walk, the pelvic floor from week 13, and the step for your goal. At your next check-up, ask: “Is it fine for me to exercise?”', plan_ps_t_red: 'Gentle days', plan_ps_t_red_p: 'No walking target. The pelvic floor from week 13 and the step for your goal stay. Your doctor decides when you can do more.', plan_ps_t_now: 'No walk until you check your answers again', plan_ps_re_h: 'A quick check', plan_ps_re_p: 'Two questions, so your steps still fit you.', plan_ps_re_now: 'You told Sakhi about a sign that doesn’t wait. Before your next walk, check your answers.', plan_ps_re_go: 'Check my answers', plan_ps_re_same: 'Nothing has changed', plan_ps_set: 'My safety answers', plan_walk_easy: 'Easy: slow, at a pace you can talk. Stop if you feel dizzy.', plan_mv_q: 'Your baby’s movements today', plan_mv_p: 'Your baby’s own pattern, not a number.', plan_mv_usual: 'As usual', plan_mv_less: 'Less than usual', plan_mv_unsure: 'Not sure', plan_mv_none: 'Not felt any movement today', plan_mv_side_h: 'Tonight', plan_mv_side: 'From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and between your knees helps.', plan_pf_t: 'Pelvic floor · 1 set', plan_fb_pf: 'Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth.',
+        plan_ps_h: 'Before you start', plan_ps_p: 'Two questions keep your plan safe for you. Your answers stay on this phone.', plan_ps_now_q: 'Right now, do you have any of these?', plan_ps_none: 'None of these', plan_ps_yes: 'Yes, one of these', plan_ps_now_p: 'No walk until you check your answers again; your other steps stay. Sakhi asks you tomorrow.', plan_ps_told_q: 'Has your doctor or ANM told you any of these?', plan_ps_told_q_doc: 'Has your doctor told you any of these?', plan_ps_rest: 'My doctor or ANM told me to rest, or not to exercise', plan_ps_rest_doc: 'My doctor told me to rest, or not to exercise', plan_ps_unsure: 'Not sure about any of these', plan_ps_unsure_p: 'Not sure? Tick it. Sakhi keeps your walk easy until your doctor says.', plan_ps_t_green: 'Your full plan', plan_ps_t_green_p: 'A walk at a pace you can talk, growing over the weeks, with yoga for your stage of pregnancy on 2 days, the pelvic floor from week 13, and the step for your goal.', plan_ps_t_amber: 'Easy walking, until your doctor says', plan_ps_t_amber_p: 'An easy 10-minute walk, the pelvic floor from week 13, and the step for your goal. At your next check-up, ask: “Is it fine for me to exercise?”', plan_ps_t_red: 'Gentle days', plan_ps_t_red_p: 'No walking target. The pelvic floor from week 13 and the step for your goal stay. Your doctor decides when you can do more.', plan_ps_t_now: 'No walk until you check your answers again', plan_ps_re_h: 'A quick check', plan_ps_re_p: 'Two questions, so your steps still fit you.', plan_ps_re_now: 'You told Sakhi about a sign that doesn’t wait. Before your next walk, check your answers.', plan_ps_re_go: 'Check my answers', plan_ps_re_same: 'Nothing has changed', plan_ps_set: 'My safety answers', plan_walk_easy: 'Easy: slow, at a pace you can talk. Stop if you feel dizzy.', plan_mv_q: 'Your baby’s movements today', plan_mv_p: 'Your baby’s own pattern, not a number.', plan_mv_usual: 'As usual', plan_mv_less: 'Less than usual', plan_mv_unsure: 'Not sure', plan_mv_none: 'Not felt any movement today', plan_mv_side_h: 'Tonight', plan_mv_side: 'From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and between your knees helps.', plan_pf_t: 'Pelvic floor · 1 set', plan_fb_pf: 'Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth.',
         plan_prog_none: 'Start your plan to see your progress here.',
         plan_prog_min: 'Active minutes each week', plan_prog_target: 'target', plan_prog_str: 'Strength days this week', plan_prog_food: 'Food habits, last 7 days',
         plan_prog_cyc: 'Days between periods', plan_prog_before: 'Before', plan_prog_since: 'Since you started', plan_prog_cyc_wait: 'Your first cycle since you started isn’t over yet.', plan_prog_cyc_none: 'Log your periods to see this.',
@@ -4185,6 +4298,18 @@
         plan_m2_skill: 'आज का अभ्यास: {s}', plan_m2_skill_n: 'आज का अभ्यास', plan_m2_skill_s: '2 मिनट · इस हफ़्ते के अध्याय से', plan_m2_rule_s: 'इस हफ़्ते का नींद का नियम', plan_m2_les_h: 'इस हफ़्ते का अध्याय', plan_m2_month: 'इस महीने पढ़ें',
         plan_fb_m2h: 'रोज़ का अभ्यास गर्मी के झोंकों को झेलना आसान बनाता है, भले ही वे आते रहें।', plan_fb_m2q: 'अपनी सोच पहचानना, और मन हल्का करने वाला एक काम करना, दिन-ब-दिन मन को सँभालता है।', plan_fb_m2r: 'शरीर की घड़ी ठीक रहे, तो नींद आसानी से आती है।', plan_fb_m2s: 'रोज़ कुछ मिनट संतुलन का अभ्यास पैरों पर टिके रहने में मदद करता है।',
         plan_r_steady: 'पैरों पर संतुलन', plan_r_steady_s: 'दीवार के पास संतुलन, 3 मिनट',
+        /* Version 39.52: प्रेग्नेंसी योग */
+        plan_r_preg1: 'प्रेग्नेंसी योग', plan_r_preg2: 'प्रेग्नेंसी योग', plan_r_preg3: 'प्रेग्नेंसी योग',
+        plan_r_preg1_s: 'पहले तीन महीने: हल्के खिंचाव और धीमी साँस', plan_r_preg2_s: 'बीच के तीन महीने: खिंचाव, ताक़त और करवट लेकर आराम', plan_r_preg3_s: 'आख़िरी तीन महीने: आसान हरकतें, लंबी साँस छोड़ना और करवट लेकर आराम',
+        plan_pi_wy: '{x}, या हफ़्ते में 2 दिन {y}',
+        plan_py_h: 'प्रेग्नेंसी योग', plan_py_go: 'ठंडे कमरे में, पास में पानी रखकर, आराम से करें, और जो हरकत ठीक न लगे उसे छोड़ दें। करते समय आप बात कर पाएँ, इतना ही ज़ोर लगाएँ।',
+        plan_py_stop: 'चक्कर, सिरदर्द, शुरू करने से पहले ही साँस फूलना, या पिंडली में दर्द या सूजन। रुकें, आराम करें, और आज ही अपनी डॉक्टर को बताएँ।', plan_py_now: 'छाती में दर्द, बेहोशी, या पेट में बार-बार दर्द वाला कसाव।',
+        plan_py_unwell: 'तबीयत ठीक नहीं?', plan_py_unwell_h: 'अभी रुकें और आराम करें', plan_py_uw_ok: 'अब मैं ठीक हूँ', plan_py_uw_stop: 'आज के लिए बस',
+        plan_py_rest_h: 'अब आराम करें', plan_py_rest_p: 'जवाब दोबारा देखने तक टहलना और योग रुके रहेंगे; सखी कल पूछेगी। तबीयत और बिगड़े, तो इंतज़ार न करें: 112 पर कॉल करें।',
+        plan_py_hard: 'अगली बार और धीरे करें, और जो हरकत मुश्किल लगे उसे छोड़ दें। कुछ ठीक न लगा हो, तो अपनी डॉक्टर को बताएँ।',
+        plan_py_lock_plan: 'प्रेग्नेंसी का योग “मेरा प्रेग्नेंसी प्लान” के साथ आता है, दो सुरक्षा सवालों के बाद।', plan_py_lock_doc: 'जब आपकी डॉक्टर कहें कि व्यायाम आपके लिए ठीक है, तब योग खुलेगा। फिर “मेरे सुरक्षा जवाब” में अपने जवाब बदलें।', plan_py_lock_now: 'जवाब दोबारा देखने तक योग नहीं।',
+        plan_py_lock_v1: 'प्रेग्नेंसी का योग नए “मेरा प्रेग्नेंसी प्लान” के साथ आता है। बदलने के लिए, {y} में “{x}” दबाएँ। आपका लिखा हुआ रहता है।',
+        plan_fb_pyoga: 'प्रेग्नेंसी में हल्का योग दर्द-तकलीफ़ कम कर सकता है, और नींद व मन को शांत रखने में मदद करता है।',
         plan_in_mbone: 'क्या डॉक्टर ने कहा है कि आपकी हड्डियाँ कमज़ोर हैं, या हल्का-सा गिरने पर कोई हड्डी टूटी?', plan_in_mheart: 'चलते समय छाती में दर्द, बेहोशी, या साँस बहुत फूलना?',
         plan_m2_heart_w: 'और ज़्यादा करने से पहले अपनी डॉक्टर को दिखाएँ। तब तक आपकी सैर हल्की रहेगी, और घर पर ताक़त की जगह आसान शुरुआत होगी। अभी छाती में दर्द हो, या दर्द जबड़े या बाँह तक जाए: 112 पर फ़ोन करें।',
         plan_m2_bone_w: 'इस प्लान का हर व्यायाम हड्डियों के लिए सुरक्षित है, कोई उछल-कूद नहीं। अपनी डॉक्टर से हड्डियों की जाँच (bone scan) और गोलियों के बारे में पूछें।',
@@ -4225,7 +4350,7 @@
         plan_rv_pf: 'चौथे दिन से: पेल्विक फ़्लोर, रोज़ 1 सेट', plan_rv_pf13: '13वें हफ़्ते से: पेल्विक फ़्लोर, रोज़ 1 सेट', plan_rv_ps14: '14 और 28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक छोटी-सी जाँच', plan_rv_ps28: '28 हफ़्ते पर: आपके 2 सुरक्षा वाले जवाबों की एक छोटी-सी जाँच', plan_rv_mv28: '28 हफ़्ते से: “आज का दिन कैसा रहा?” में आपके बच्चे की हलचल', plan_rv_mv: 'हर शाम: “आज का दिन कैसा रहा?” में आपके बच्चे की हलचल',
        
         /* Version 39.34: My pregnancy, safety first (new lines wait for doctor review; plan_mv_side and plan_fb_pf are verified lines, word for word) */
-        plan_ps_h: 'शुरू करने से पहले', plan_ps_p: 'दो सवाल आपके प्लान को आपके लिए सुरक्षित रखते हैं। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ps_now_q: 'क्या अभी आपको इनमें से कुछ है?', plan_ps_none: 'इनमें से कुछ नहीं', plan_ps_yes: 'हाँ, इनमें से एक', plan_ps_now_p: 'जवाब दोबारा देखने तक टहलना नहीं; आपके बाक़ी कदम रहेंगे। सखी कल फिर पूछेगी।', plan_ps_told_q: 'क्या आपकी डॉक्टर या ANM ने आपको इनमें से कुछ बताया है?', plan_ps_told_q_doc: 'क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है?', plan_ps_rest: 'मेरी डॉक्टर या ANM ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_rest_doc: 'मेरी डॉक्टर ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_unsure: 'इनमें से किसी के बारे में पक्का नहीं पता', plan_ps_unsure_p: 'पक्का नहीं पता? इसे टिक करें। जब तक आपकी डॉक्टर न कहें, सखी आपका टहलना हल्का रखेगी।', plan_ps_t_green: 'आपका पूरा प्लान', plan_ps_t_green_p: 'इतनी रफ़्तार से टहलना कि आप बात कर सकें, जो हफ़्तों के साथ बढ़ेगा; 13वें हफ़्ते से पेल्विक फ़्लोर; और आपके लक्ष्य वाला कदम।', plan_ps_t_amber: 'हल्का टहलना, जब तक आपकी डॉक्टर न कहें', plan_ps_t_amber_p: '10 मिनट हल्का टहलना, 13वें हफ़्ते से पेल्विक फ़्लोर, और आपके लक्ष्य वाला कदम। अगली जाँच पर पूछें: “क्या मेरे लिए व्यायाम करना ठीक है?”', plan_ps_t_red: 'आराम के दिन', plan_ps_t_red_p: 'टहलने का कोई लक्ष्य नहीं। 13वें हफ़्ते से पेल्विक फ़्लोर और आपके लक्ष्य वाला कदम रहेंगे। आप कब ज़्यादा कर सकती हैं, यह आपकी डॉक्टर तय करेंगी।', plan_ps_t_now: 'जवाब दोबारा देखने तक टहलना नहीं', plan_ps_re_h: 'एक छोटी-सी जाँच', plan_ps_re_p: 'दो सवाल, ताकि आपके कदम अब भी आपके लिए ठीक रहें।', plan_ps_re_now: 'आपने सखी को एक ऐसे लक्षण के बारे में बताया जो इंतज़ार नहीं कर सकता। अगली बार टहलने से पहले अपने जवाब देख लें।', plan_ps_re_go: 'मेरे जवाब देखें', plan_ps_re_same: 'कुछ नहीं बदला', plan_ps_set: 'मेरे सुरक्षा वाले जवाब', plan_walk_easy: 'हल्की चाल: धीरे, इतनी कि आप बात कर सकें। चक्कर आए तो रुक जाएँ।', plan_mv_q: 'आज आपके बच्चे की हलचल', plan_mv_p: 'आपके बच्चे का अपना ढंग, कोई गिनती नहीं।', plan_mv_usual: 'हमेशा जैसी', plan_mv_less: 'आम दिनों से कम', plan_mv_unsure: 'पक्का नहीं पता', plan_mv_none: 'आज कोई हलचल महसूस नहीं हुई', plan_mv_side_h: 'आज रात', plan_mv_side: '28 हफ़्ते से करवट लेकर सोएँ, बाईं या दाईं। पेट के नीचे और घुटनों के बीच तकिया मदद करता है।', plan_pf_t: 'पेल्विक फ़्लोर · 1 सेट', plan_fb_pf: 'प्रेग्नेंसी में ये करने से आख़िरी महीनों में और डिलीवरी के बाद पेशाब लीक होने की संभावना कम होती है।',
+        plan_ps_h: 'शुरू करने से पहले', plan_ps_p: 'दो सवाल आपके प्लान को आपके लिए सुरक्षित रखते हैं। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ps_now_q: 'क्या अभी आपको इनमें से कुछ है?', plan_ps_none: 'इनमें से कुछ नहीं', plan_ps_yes: 'हाँ, इनमें से एक', plan_ps_now_p: 'जवाब दोबारा देखने तक टहलना नहीं; आपके बाक़ी कदम रहेंगे। सखी कल फिर पूछेगी।', plan_ps_told_q: 'क्या आपकी डॉक्टर या ANM ने आपको इनमें से कुछ बताया है?', plan_ps_told_q_doc: 'क्या आपकी डॉक्टर ने आपको इनमें से कुछ बताया है?', plan_ps_rest: 'मेरी डॉक्टर या ANM ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_rest_doc: 'मेरी डॉक्टर ने आराम करने, या व्यायाम न करने को कहा है', plan_ps_unsure: 'इनमें से किसी के बारे में पक्का नहीं पता', plan_ps_unsure_p: 'पक्का नहीं पता? इसे टिक करें। जब तक आपकी डॉक्टर न कहें, सखी आपका टहलना हल्का रखेगी।', plan_ps_t_green: 'आपका पूरा प्लान', plan_ps_t_green_p: 'इतनी रफ़्तार से टहलना कि आप बात कर सकें, जो हफ़्तों के साथ बढ़ेगा, और हफ़्ते में 2 दिन प्रेग्नेंसी के आपके महीनों का योग; 13वें हफ़्ते से पेल्विक फ़्लोर; और आपके लक्ष्य वाला कदम।', plan_ps_t_amber: 'हल्का टहलना, जब तक आपकी डॉक्टर न कहें', plan_ps_t_amber_p: '10 मिनट हल्का टहलना, 13वें हफ़्ते से पेल्विक फ़्लोर, और आपके लक्ष्य वाला कदम। अगली जाँच पर पूछें: “क्या मेरे लिए व्यायाम करना ठीक है?”', plan_ps_t_red: 'आराम के दिन', plan_ps_t_red_p: 'टहलने का कोई लक्ष्य नहीं। 13वें हफ़्ते से पेल्विक फ़्लोर और आपके लक्ष्य वाला कदम रहेंगे। आप कब ज़्यादा कर सकती हैं, यह आपकी डॉक्टर तय करेंगी।', plan_ps_t_now: 'जवाब दोबारा देखने तक टहलना नहीं', plan_ps_re_h: 'एक छोटी-सी जाँच', plan_ps_re_p: 'दो सवाल, ताकि आपके कदम अब भी आपके लिए ठीक रहें।', plan_ps_re_now: 'आपने सखी को एक ऐसे लक्षण के बारे में बताया जो इंतज़ार नहीं कर सकता। अगली बार टहलने से पहले अपने जवाब देख लें।', plan_ps_re_go: 'मेरे जवाब देखें', plan_ps_re_same: 'कुछ नहीं बदला', plan_ps_set: 'मेरे सुरक्षा वाले जवाब', plan_walk_easy: 'हल्की चाल: धीरे, इतनी कि आप बात कर सकें। चक्कर आए तो रुक जाएँ।', plan_mv_q: 'आज आपके बच्चे की हलचल', plan_mv_p: 'आपके बच्चे का अपना ढंग, कोई गिनती नहीं।', plan_mv_usual: 'हमेशा जैसी', plan_mv_less: 'आम दिनों से कम', plan_mv_unsure: 'पक्का नहीं पता', plan_mv_none: 'आज कोई हलचल महसूस नहीं हुई', plan_mv_side_h: 'आज रात', plan_mv_side: '28 हफ़्ते से करवट लेकर सोएँ, बाईं या दाईं। पेट के नीचे और घुटनों के बीच तकिया मदद करता है।', plan_pf_t: 'पेल्विक फ़्लोर · 1 सेट', plan_fb_pf: 'प्रेग्नेंसी में ये करने से आख़िरी महीनों में और डिलीवरी के बाद पेशाब लीक होने की संभावना कम होती है।',
         plan_prog_none: 'अपनी प्रगति यहाँ देखने के लिए अपना प्लान शुरू करें।',
         plan_prog_min: 'हर हफ़्ते के सक्रिय मिनट', plan_prog_target: 'लक्ष्य', plan_prog_str: 'इस हफ़्ते ताक़त के दिन', plan_prog_food: 'खाने की आदतें, पिछले 7 दिन',
         plan_prog_cyc: 'पीरियड के बीच के दिन', plan_prog_before: 'पहले', plan_prog_since: 'शुरू करने के बाद', plan_prog_cyc_wait: 'शुरू करने के बाद का पहला चक्र अभी पूरा नहीं हुआ।', plan_prog_cyc_none: 'इसे देखने के लिए अपने पीरियड दर्ज करें।',
@@ -4420,7 +4545,7 @@
     testRoutes: ['plan-r-gentle', 'plan-r-cycle', 'plan-r-sun', 'plan-r-strength', 'plan-r-calm'],
     open: ['plan', 'plan-pmos', 'plan-plate', 'plan-moves', 'plan-calm', 'plan-r-*'],
     /* Version 39.3 (diet audit 5.3, 5.4): Yoga and moves, Strength at home and My plate can be found by search (not in pregnancy) */
-    tiles: [{ section: 'tools', route: 'plan-moves', title: 'plan_moves_h', sub: 'plan_moves_tile_s', icon: ICO.move, order: 6, gated: false, hidden: () => !on() || pregnant() || earlyPost(), keywords: 'yoga yog exercise vyayam kasrat workout asana stretch stretching moves योग व्यायाम कसरत आसन' },
+    tiles: [{ section: 'tools', route: 'plan-moves', title: 'plan_moves_h', sub: 'plan_moves_tile_s', icon: ICO.move, order: 6, gated: false, hidden: () => !on() || (pregnant() && !pyOpen(S.canSave() && raw() ? D() : null)) || earlyPost(), keywords: 'yoga yog exercise vyayam kasrat workout asana stretch stretching moves योग व्यायाम कसरत आसन' },
       { section: 'tools', route: 'plan-r-strength', title: 'plan_r_strength', sub: 'plan_r_strength_s', icon: ICO.move, order: 7, gated: false, hidden: () => !on() || pregnant() || earlyPost() || heartHold(), keywords: 'strength strong bones muscle chair wall stairs taqat ताक़त ताकत हड्डी' },
       { section: 'tools', route: 'plan-plate', title: 'plan_plate_h', sub: 'plan_plate_tile_s', icon: ICO.plate, order: 8, gated: false, hidden: () => !on() || pregnant(), keywords: 'plate thali healthy plate portion half sabzi थाली' },   /* review FOOD-10 */
       { section: 'tools', route: 'plan-body', title: 'plan_tiles_body', sub: 'plan_body_tile_s', icon: ICO.body, order: 9, gated: false, hidden: () => !on() || pregnant(), keywords: 'bmi weight waist body vajan wajan motapa वज़न वजन मोटापा कमर' },   /* review FOOD-11: "BMI" opens My body */
@@ -4441,7 +4566,7 @@
       '.card.dark.pl-urg { background: var(--ink); color: var(--ink-text); } .card.dark.pl-urg h3, .card.dark.pl-urg p { color: var(--ink-text) !important; }',   /* Version 39.36 */
       '.pl-steps li.gone .pl-sdot { background: var(--line); border-color: var(--line); } .pl-steps li.gone strong { color: var(--muted); }',   /* Version 39.35: a part of her pregnancy that has passed, not a tick */
       '.pl-fig { width: 100%; height: auto; display: block; color: var(--accent); }',
-      '.pl-fig polyline { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; } .pl-fig circle { fill: currentColor; }',
+      '.pl-fig polyline { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; } .pl-fig circle { fill: currentColor; } .pl-fig ellipse.pl-bump { fill: currentColor; } .pl-figbox { position: relative; } .pl-unwell-b { position: absolute; top: 8px; right: 8px; min-height: 36px; padding: 4px 12px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); color: var(--accent); font: inherit; font-size: 13px; font-weight: 600; }',
       '.pl-fig .pl-mat { stroke: var(--line); stroke-width: 2; stroke-linecap: round; } .pl-fig .pl-prop path { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }',
       '.pl-intro { align-items: center; text-align: center; gap: 8px; } .pl-intro .sakhi { width: 72px; height: 72px; } .pl-intro .lead { margin: 0; }',
       '.pl-intro-art { display: grid; grid-template-columns: 1.6fr 1fr; gap: 8px; align-items: center; width: 100%; } .pl-fig-sm { max-width: 120px; margin: 0 auto; }',
@@ -4485,7 +4610,7 @@
       /* Version 39.39 (Mohit's Flip5, 30 Oct: "fix the buttons"): Previous, Pause and Next stay above the tab bar however long the move's
          words; a short screen gets a smaller timer and the time left only once (the ring), still read out from #pl-left */
       '.pl-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .pl-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }',
-      '@media (max-height: 860px) { .pl-player { gap: 8px; } .pl-timer, .pl-timer svg { width: 100px; height: 100px; } .pl-left { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } } @media (max-height: 720px) { .pl-figbox { max-width: 220px; } }',
+      '@media (max-height: 860px) { .pl-player { gap: 8px; } .pl-timer, .pl-timer svg { width: 100px; height: 100px; } .pl-breath-wrap { width: 120px; height: 120px; } .pl-left { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } } @media (max-height: 720px) { .pl-figbox { max-width: 220px; } }',
       '.pl-chart { width: 100%; height: auto; display: block; } .pl-chart .gd { stroke: var(--line); stroke-width: 1; } .pl-chart .bar { fill: var(--accent); opacity: 0.4; } .pl-chart .bar.met { fill: var(--accent-strong); opacity: 1; } .pl-chart .tg { stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; } .pl-chart text { fill: var(--muted); font-size: 11px; }',
       '.pl-legend { display: inline-flex; align-items: center; gap: 6px; } .pl-legend i.tg { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--gold); }',
       '.pl-mini .card { gap: 4px; } .pl-mini .pl-big, .pl-big { font-size: 22px; color: var(--fg); }',

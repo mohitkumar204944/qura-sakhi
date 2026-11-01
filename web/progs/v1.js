@@ -42,11 +42,14 @@
     intake: { screens: [{ id: 'psafe' }], day: ['food', 'milk'] },
     slots: { max: 4 }, hero: 'timeline', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'preg-plan', text: '@preg_plan_h', icon: 'check', hue: 'orange', priv: true }, { go: 'preg-week', text: '@preg_t_week', icon: 'baby', hue: 'plum', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: her folic acid tablet from Getting ready carries on to 12 weeks, with its 9 pm reminder' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: her folic acid tablet from Getting ready carries on to 12 weeks, with its 9 pm reminder' }, { ver: 2, r: 'R3', at: '2026-11-01', what: 'Version 39.52: yoga for her three months of pregnancy on 2 days a week, in place of the walk, on the green tier with no sign that doesn\u2019t wait' }],
     steps: [
       { id: 'folic', kind: 'adapter', use: 'ttc.folic', if: ['folic'] },
       { id: 'pdue', kind: 'adapter', use: 'preg.due', from: 'preg-plan', check: true },
       { first: [
+        { id: 'move', kind: 'routine', go: 'plan-r-preg1', title: '@plan_r_preg1', icon: 'ico:yoga', hue: 'plum', why: 'plan_fb_pyoga', priv: true, when: 'days:2,5', if: ['pt:green', '!pnow', 'gw:0-13'] },
+        { id: 'move', kind: 'routine', go: 'plan-r-preg2', title: '@plan_r_preg2', icon: 'ico:yoga', hue: 'plum', why: 'plan_fb_pyoga', priv: true, when: 'days:2,5', if: ['pt:green', '!pnow', 'gw:14-27'] },
+        { id: 'move', kind: 'routine', go: 'plan-r-preg3', title: '@plan_r_preg3', icon: 'ico:yoga', hue: 'plum', why: 'plan_fb_pyoga', priv: true, when: 'days:2,5', if: ['pt:green', '!pnow', 'gw:28-'] },
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', cap: 30, grow: 'hold', why: 'plan_fb_move_g', if: ['pt:green', '!pnow'] },
         { id: 'move', kind: 'minutes', use: 'walk', mins: 10, sub: '@plan_walk_easy', why: 'plan_fb_move_g', if: ['pt:amber', '!pnow'] }
       ] },
@@ -59,7 +62,7 @@
       } },
       { id: 'pf', kind: 'link', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', check: true, if: ['gw:13-', 'pday:4-', 'route'] }
     ],
-    list: [{ use: 'today' }],
+    list: [{ use: 'today' }, { use: 'pyoga' }],
     doctor: []
   },
   {

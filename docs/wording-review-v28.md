@@ -3029,3 +3029,84 @@ on most days for 2 weeks, or it stops you doing your day: talk to your doctor. T
 **For a physiotherapist:** Steady on your feet (its 3 moves and their times), the lifting chapter (s3), "Always keep a hand near a wall
 or a chair", bone-safe as the rule for every midlife woman (no jumps in version 1), and Gentle start in place of Strength at home after
 chest pain when she walks. The 3D loops are the nearest poses (march, walk, calf) until the new ones are made.
+
+### 19.52 Version 39.52: pregnancy yoga by trimester (MODULE_API section 95)
+
+Yoga for each three months of a pregnancy, in My pregnancy on 2 days a week in place of the walk, on the green tier only. The
+moves Sakhi already had keep their reviewed words (Loosen up, wall push-ups, Bhramari, the chair forward bend, Shavasana). New
+lines, waiting for the doctor and a physiotherapist (English, Hindi):
+
+- Its name: "Pregnancy yoga" ("प्रेग्नेंसी योग"); on a shared phone, "Yoga". Under it: "First three months: gentle stretches and
+  slow breathing" ("पहले तीन महीने: हल्के खिंचाव और धीमी साँस"), "Middle three months: stretches, strength and rest on your side"
+  ("बीच के तीन महीने: खिंचाव, ताक़त और करवट लेकर आराम"), "Last three months: easy moves, long breaths out and rest on your side"
+  ("आख़िरी तीन महीने: आसान हरकतें, लंबी साँस छोड़ना और करवट लेकर आराम").
+- Why it helps: "Gentle yoga in pregnancy can ease aches and help you sleep and feel calmer." ("प्रेग्नेंसी में हल्का योग दर्द-तकलीफ़
+  कम कर सकता है, और नींद व मन को शांत रखने में मदद करता है।") Its guide is the reviewed pregnancy dos and don'ts.
+- Before the first move: "Go gently in a cool room, with water nearby, and skip any move that doesn't feel right. You should be
+  able to talk while you move." ("ठंडे कमरे में, पास में पानी रखकर, आराम से करें, और जो हरकत ठीक न लगे उसे छोड़ दें। करते समय आप
+  बात कर पाएँ, इतना ही ज़ोर लगाएँ।")
+- The stop card, above Start ("Stop and rest if you feel", reviewed):
+  - for today: "Dizziness, a headache, breathlessness before you start, or a calf that hurts or swells. Stop, rest, and tell your
+    doctor today." ("चक्कर, सिरदर्द, शुरू करने से पहले ही साँस फूलना, या पिंडली में दर्द या सूजन। रुकें, आराम करें, और आज ही अपनी
+    डॉक्टर को बताएँ।")
+  - under "Call 112 now": "Chest pain, fainting, or regular painful tightenings in your tummy." ("छाती में दर्द, बेहोशी, या पेट में
+    बार-बार दर्द वाला कसाव।"), then Help's own "In pregnancy: …" line, as it is, and Call 112.
+- "Feeling unwell?" ("तबीयत ठीक नहीं?") on every move's picture opens "Stop now and rest" ("अभी रुकें और आराम करें") with the same
+  lines and Call 112, 108 and 102, and two buttons: "I feel fine now" ("अब मैं ठीक हूँ") and "Stop for today" ("आज के लिए बस").
+  After Stop for today: "Rest now" ("अब आराम करें"), "Your walk and yoga wait until you check your answers again; Sakhi asks you
+  tomorrow. If you feel worse, don't wait: call 112." ("जवाब दोबारा देखने तक टहलना और योग रुके रहेंगे; सखी कल पूछेगी। तबीयत और
+  बिगड़े, तो इंतज़ार न करें: 112 पर कॉल करें।")
+- After "Hard": "Next time, go more slowly and skip any move that feels hard. If something felt wrong, tell your doctor."
+  ("अगली बार और धीरे करें, और जो हरकत मुश्किल लगे उसे छोड़ दें। कुछ ठीक न लगा हो, तो अपनी डॉक्टर को बताएँ।")
+- When it isn't open, on Moves and calm (UI words): "Yoga for your pregnancy comes with My pregnancy plan, after two safety
+  questions."; on the first pregnancy plan: "Yoga for your pregnancy comes with the newer My pregnancy plan. To switch, tap
+  "Change what I work on" in Plan settings. What you logged stays."; amber or red: "Yoga opens when your doctor says exercise is
+  fine for you. Then change your answers in My safety answers."; after a sign that doesn't wait: "No yoga until you check your
+  answers again." (Hindi beside each in `mods/plan.js`, `plan_py_lock_*`.)
+- Her steps before she starts (UI words): the walk's line reads "Walk or move 10 minutes, or pregnancy yoga on 2 days a week"
+  ("…, या हफ़्ते में 2 दिन प्रेग्नेंसी योग").
+- A changed line: "Before you start"'s green tier, "Your full plan", now reads "A walk at a pace you can talk, growing over the
+  weeks, with yoga for your stage of pregnancy on 2 days, the pelvic floor from week 13, and the step for your goal." ("…, और
+  हफ़्ते में 2 दिन प्रेग्नेंसी के आपके महीनों का योग; …")
+- The moves, each with its own words (short enough that the timer stays in view on a 360 × 800 screen; the Hindi is beside each
+  in `mods/plan.js`, `PY_*` and `R.preg1` to `R.preg3`):
+  - Tadasana (palm tree): "Feet a little apart and flat on the floor. Raise your arms, stretch up and breathe slowly."
+  - Vrikshasana (tree) at a wall: "One hand on a wall. Rest one foot on your other ankle or calf, never on the knee. Breathe."
+  - Marjariasana (cat and cow): "On hands and knees: breathe out, round your back; breathe in, lift your head. Keep it small."
+    From 14 weeks the last words are "Don't let your back sag."
+  - Shashankasana (child pose), first three months: "Knees wide apart, big toes together. Sit back towards your heels and stretch
+    your arms forward." With knee pain, the reviewed seated forward bend.
+  - Bhadrasana (butterfly): "Sit tall on a folded sheet, the soles of your feet together and your knees out. Breathe slowly." In
+    the last three months: "Sit with your back against a wall, the soles of your feet together and your knees out. Breathe slowly."
+  - Slow breathing (first): "Sit comfortably. Breathe in for 4 counts and out slowly for 6. Never hold your breath." Long breaths
+    out (last, on a chair): "Sit tall on a chair. Breathe in for 4 counts and out slowly for 6. Never hold your breath."
+  - Chair squats (middle): "Stand up from a chair slowly, using your hands if you need to, then sit down slowly. 8 times."
+  - Slow sit-to-stand (last): "Feet wide apart. Stand up from a chair slowly, then sit down slowly. Use your hands if you need
+    to. 6 times."
+  - Side-lying leg lift (middle and last): "Lie on your side, head on your arm. Lift your top leg a little, keeping it straight,
+    and lower it slowly. 8 times."
+  - Rest on your side (middle and last): "Lie on your side, left or right, a pillow between your knees. Let your body go loose and
+    breathe slowly."
+  - Loosen up, sitting (last): "Sit tall on a chair. Roll your shoulders, then march, lifting your knees one by one."
+  - Lean and sway (last): "Hands on a wall or a table, lean forward a little and sway your hips slowly, side to side or in
+    circles."
+  - Rock on hands and knees (last): "On hands and knees with your back flat, rock slowly forward and back. A folded sheet under
+    your knees helps."
+
+**For the doctor (rules, not words):**
+1. Green tier only (no "told by your doctor" mark, no sign that doesn't wait); amber and red keep their walk or none. Should a
+   green woman also be asked for her doctor's OK before yoga (decision 1 of the pregnancy advice recommended green alone)?
+2. Yoga from the first weeks (the design waited until 14 weeks). The first three months' set is gentle and ends lying on the back
+   (fine to 13 weeks, WHO 2020). Right to offer it from the start, with "skip any move that doesn't feel right"?
+3. The stop signs: dizziness, a headache, breathlessness before starting and a calf that hurts or swells say "tell your doctor
+   today"; chest pain, fainting and regular painful tightenings sit with Help's "Call 112 now" line (the safer default). Is each in
+   the right group?
+4. "Stop for today" holds her walk and yoga until she answers the safety questions again (as a sign that doesn't wait does). Too
+   strict for a headache or tiredness?
+5. "Why it helps": aches, sleep and calm. Is that claim fair for the trials (back pain, anxiety, sleep)?
+
+**For a women's-health physiotherapist:** every move above and its time (each set is about 10 minutes; 10-second rests), the
+three-month boundaries (14 and 28 weeks), child pose with knees wide in the first three months, cat and cow in the first and middle
+three months ("don't let your back sag" from 14 weeks), the side-lying leg lift from 14 weeks, rocking on hands and knees and lean
+and sway in the last three months, Bhramari in the middle three months, and the breathing counts (4 in, 6 out, never held). The
+pictures are drawings with her bump from 14 weeks, not the 3D figure.

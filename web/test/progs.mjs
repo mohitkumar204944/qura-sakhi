@@ -99,7 +99,7 @@ const stepOk = (x, where) => {
   if (x.kind === 'adapter' && ADAPTERS.indexOf(x.use) < 0) bad.push(where + ': adapter ' + x.use);
   if (x.kind === 'minutes' && !(x.use === 'walk' && (['ladder', 'light', 'post'].indexOf(x.mins) >= 0 || (Number.isInteger(x.mins) && x.mins >= 5 && x.mins <= 30)))) bad.push(where + ': minutes');   /* a set walk: Version 39.34 */
   if (['tick', 'routine', 'link', 'check'].indexOf(x.kind) >= 0 && !(x.go && keyOk(x.title) && x.icon && HUES.indexOf(x.hue) >= 0 && /^plan_fb_[a-z_]+$/.test(x.why || ''))) bad.push(where + ': link step');
-  if (x.kind === 'routine' && !/^plan-r-[a-z]+$/.test(x.go || '')) bad.push(where + ': routine go');
+  if (x.kind === 'routine' && !/^plan-r-[a-z][a-z0-9]*$/.test(x.go || '')) bad.push(where + ': routine go');   /* Version 39.52: preg1 to preg3 */
   if (!whenOk(x.when)) bad.push(where + ': when ' + x.when);
   (x.if || []).forEach((w) => { if (!ifOk(w)) bad.push(where + ': if ' + w); });
   if (x.cap != null && !(x.cap > 0 && x.cap <= 120)) bad.push(where + ': cap');
@@ -125,7 +125,7 @@ specs.forEach((p) => {
   if (p.rest != null && !(p.rest >= 0 && p.rest <= 3)) bad.push(w + ': rest');
   if (p.tiles != null && !(Array.isArray(p.tiles) && p.tiles.length === 4 && p.tiles.every((x) => x.go && keyOk(x.text) && x.text !== '@tile' && x.icon && HUES.indexOf(x.hue) >= 0 && Object.keys(x).every((k) => ['go', 'text', 'icon', 'hue', 'priv'].indexOf(k) >= 0)))) bad.push(w + ': 4 tiles');
   (p.steps || []).forEach((x, i) => stepOk(x, w + '.steps' + i));
-  (p.list || []).forEach((x, i) => { if (['walk', 'plate', 'item', 'bed', 'today'].indexOf(x.use) < 0 || (x.use === 'item' && !keyOk(x.text)) || (x.use === 'walk' && ['suggest', 'light'].indexOf(x.mins) < 0)) bad.push(w + '.list' + i); });
+  (p.list || []).forEach((x, i) => { if (['walk', 'plate', 'item', 'bed', 'today', 'pyoga'].indexOf(x.use) < 0 || (x.use === 'item' && !keyOk(x.text)) || (x.use === 'walk' && ['suggest', 'light'].indexOf(x.mins) < 0)) bad.push(w + '.list' + i); });
   /* Version 39.6: 'start' (from her answers) and 'due' (from her own dates); check opens a self-check, go a page */
   (p.doctor || []).forEach((x, i) => { const ok = Object.keys(x).every((k) => ['id', 'any', 'text', 'check', 'go', 'due'].indexOf(k) >= 0) && keyOk(x.text) && x.text !== '@tile' &&
     ((x.id === 'start' && Array.isArray(x.any) && x.any.length && x.any.every(ifOk) && !x.due) || (x.id === 'due' && x.due === 'ttc-trying' && !x.any)) && (!x.check || /^selfcheck-[a-z]+$/.test(x.check)) && (!x.go || /^[a-z][a-z0-9-]*$/.test(x.go));
