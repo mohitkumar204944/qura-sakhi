@@ -165,7 +165,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('4 a "Not today" asks what got in the way', !(await page.$eval('#pl-ci-bar', (e) => e.hidden)));
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   v = await view(page);
-  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 3 done today · 1 of 7 days this week/.test(v) && /Tomorrow, add: Yoga\./.test(v) && /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
+  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 3 done today · 1 of 7 days this week/.test(v) && !/Tomorrow, add: Yoga/.test(v) && /Tomorrow: Gentle start/.test(v) &&   /* Version 39.51: tomorrow is Gentle start, so no "add yoga" */ /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
   check('4 and when Sakhi asks again (one "Tomorrow" line: Version 39.37)', (/Tomorrow: the same steps\. See you at 10 pm\./.test(v) && (v.match(/Tomorrow:/g) || []).length === 1) || (/See you tomorrow at 10 pm\./.test(v) && !/Tomorrow: the same steps/.test(v)), v.slice(0, 500));
   check('4 no "streak" anywhere', !/streak/i.test(v));
   await shot(page, '4-feedback');

@@ -2621,14 +2621,14 @@
       const dl0 = () => ((S.state.daily || {})[todayISO()] || []);
       if ((m.slp === 'bad' || m.slp === 'hot') && S.feel && dl0().indexOf('d_sleep') < 0) S.feel.toggle(todayISO(), 'd_sleep');
       if (m.slp === 'hot' && S.feel && dl0().indexOf('d_hotflush') < 0) S.feel.toggle(todayISO(), 'd_hotflush');   /* Version 39.49: hot flushes woke her, so both go in her diary */
-      const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0;
+      const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0; const tomL = ciTom(fullD(dd));
       const done = acts.filter((a) => m.sel[a.id] === 'd' || m.sel[a.id] === 'p'); const dl = done.filter((a) => m.sel[a.id] === 'd'); const pool = dl.length ? dl : done;
       const first = pool.length ? pool[(planDay(dd) - 1) % pool.length] : null;   /* Version 39.6 (P2-01): each evening, the reason of another step she did */
       const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : t('plan_tip_' + b));   /* Version 39.12: her own if-then plan first */
       m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: held(acts.map((a) => Object.assign({}, a, { state: m.sel[a.id] || a.state }))).length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
-        goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: ciTom(fullD(dd)),
+        goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: tomL,
         slp: m.slp || null, md: mdAsk(dd) ? m.md || null : null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some((a) => !!a.play) && !(S.calm && S.calm.doneOn(todayISO())),
-        add: done.length ? (function () { const miss = acts.filter((a) => m.sel[a.id] === 'n'); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? discNm(a, acts) : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.13 */
+        add: done.length && !(tomL && menoV2(dd)) ? (function () { const tmr = stepsFor(fullD(dd), S.toISO(S.addDays(pToday(), 1))); const miss = acts.filter((a) => m.sel[a.id] === 'n' && tmr.some((y) => y.id === a.id && (y.r || null) === (a.r || null))); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? discNm(a, acts) : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.51 (Mohit's phone test): only a step tomorrow has, and none when tomorrow's own line names them all */   /* Version 39.13 */
       remSync(dd); S.save();
       const rel = S.joy && S.joy.release ? S.joy.release() : false;   /* what her plan's first day earned, celebrated now */
       m.saved.petal = !!rel || (S.joy && S.joy.petals ? S.joy.petals() : 0) > p0;
@@ -3586,11 +3586,12 @@
   const ebLine = (d) => { const ow = ownWeek(d); if (ow) return ow; const wk = weekNo(d); return (d.keep && wk > N ? t('plan_wk_keep') : tf('plan_wk_s', { n: wk })) + ' · ' + tf('plan_pday', { n: planDay(d) }); };
   /* a tap on a ticked step's tick: not done after all (the minutes her tick added go too, never the ones she walked) */
   function unmark(d, a) {
-    const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); x.ck[a.id] = 'n';
+    const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); delete x.ck[a.id];   /* Version 39.51 (Mohit's phone test): unanswered, as before her tick */
     const tk = x.tkm && x.tkm[a.id]; if (a.kind === 'minutes' && tk) { x.min = Math.max(x.rmin || 0, (x.min || 0) - tk); x.tkm = Object.assign({}, x.tkm); delete x.tkm[a.id]; }
     const tr = a.kind === 'routine' && a.r && x.tkr ? x.tkr[a.r] : 0; if (tr) { x.min = Math.max(0, (x.min || 0) - tr); x.rmin = Math.max(0, (x.rmin || 0) - tr); x.tkr = Object.assign({}, x.tkr); delete x.tkr[a.r]; }   /* Version 39.41 */
     if (a.kind === 'habit') { x.plate = Object.assign({}, x.plate || {}); x.plate[a.habit] = false; }
     if (a.r === 'strength' && (x.r || []).indexOf('strength') < 0) delete x.str;
+    if (((actionsFor(fullD(d)).find((y) => y.id === a.id) || {}).state) === 'd') x.ck[a.id] = 'n';   /* her own minutes or a routine she played would tick it again */
     prune(d);
   }
   /* R2: the tick that completes her day earns a petal, as a check-in does (once a day; no check-in needed) */
@@ -4416,7 +4417,7 @@
       { section: 'tools', route: 'plan-r-strength', title: 'plan_r_strength', sub: 'plan_r_strength_s', icon: ICO.move, order: 7, gated: false, hidden: () => !on() || pregnant() || earlyPost() || heartHold(), keywords: 'strength strong bones muscle chair wall stairs taqat ताक़त ताकत हड्डी' },
       { section: 'tools', route: 'plan-plate', title: 'plan_plate_h', sub: 'plan_plate_tile_s', icon: ICO.plate, order: 8, gated: false, hidden: () => !on() || pregnant(), keywords: 'plate thali healthy plate portion half sabzi थाली' },   /* review FOOD-10 */
       { section: 'tools', route: 'plan-body', title: 'plan_tiles_body', sub: 'plan_body_tile_s', icon: ICO.body, order: 9, gated: false, hidden: () => !on() || pregnant(), keywords: 'bmi weight waist body vajan wajan motapa वज़न वजन मोटापा कमर' },   /* review FOOD-11: "BMI" opens My body */
-      { section: 'cond', route: 'plan-pmos', title: 'plan_tile_t', sub: 'plan_tile_s', icon: ICO.move, order: 0.5, gated: true, hidden: () => !on() || pregnant() || (stageNowKey() === 'ttc' && !(raw() && raw().start)),   /* Version 39.32: while she tries for a baby, Getting ready (My plan) */
+      { section: 'cond', route: 'plan-pmos', title: 'plan_tile_t', sub: 'plan_tile_s', icon: ICO.move, order: 0.5, gated: true, hidden: () => !on() || pregnant() || (stageNowKey() === 'ttc' && !(raw() && raw().start)) || !!(raw() && raw().start && (raw().pack || 'cycle') !== 'cycle'),   /* Version 39.51 (Mohit's phone test): not while another plan runs */   /* Version 39.32: while she tries for a baby, Getting ready (My plan) */
       keywords: 'diet food khana thali eat avoid what to eat yoga yog exercise vyayam kasrat workout walk walking steps strength bmi weight vajan motapa waist healthy millet bajra ragi खाना डाइट थाली योग व्यायाम कसरत सैर वज़न वजन मोटापा बीएमआई कमर' }],
     today: today,
     setup: setup,

@@ -3792,7 +3792,8 @@ changelog has R5. `progs.mjs` now allows 4 steps a day.
 - **The evening check-in reminder keeps coming until every step is done**, or she checks in or rests. This applies to every
   plan (`remSync`, `allDoneToday`). Before, one step (or the cycle plan's minutes) put it away for the day.
 - **The nudge waits** for both her yoga and her walk.
-- **The check-in asks each step on its own.** Its feedback names what she missed: "Tomorrow, add: Walk 10 minutes."
+- **The check-in asks each step on its own.** Its feedback names what she missed: "Tomorrow, add: Walk 10 minutes." (Version 39.51,
+  section 94 item 17: only a step tomorrow has, so not today's yoga when tomorrow is Gentle start)
 - **The weekly look-back** adds "All your steps on N of 7 days." when N is 1 or more (`fullDays`). It isn't shown at 0, since
   the weeks before this version had no yoga step.
 
@@ -3839,7 +3840,9 @@ check-in time, or once she has done a step). Other rows' Done buttons are plain.
 
 **Undo.** `unmark(d, a)` sets the step's answer to `n`. For the walk, it takes away only the minutes the tick added
 (`log.tkm`, written by `markAction`), never the ones she walked. A habit clears its plate habit, and a strength tick its
-strength mark.
+strength mark. Version 39.51 (Mohit's phone test, section 94 item 17): undo takes the answer away instead, so the step is
+unanswered again and the check-in doesn't show "Not today" for a tap made by mistake; it is `n` only when her own minutes or a
+routine she played would tick it straight back.
 
 **A full day closes itself (R2).** The tick that completes her day (`closeDay`):
 - sets `log.fd` and earns a petal through `S.emit('checkin', { quiet: true })`, once a day (`log.petal` when one was earned);
@@ -6105,3 +6108,13 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
     4. a plan started today after today's check-in (her plan before it) asks its own check-in tonight (`commitStart` clears the
        day's `ci`); her answers that day stay.
     `node test/midlife.mjs` section 16 checks each one (136 checks in all).
+17. **The second exploratory phone test's gaps** (Mohit, 1 Nov, "test the midlife plan on phone for more gaps", then "fix all 3"):
+    1. one "Tomorrow" line in the check-in: "Tomorrow, add" (`plan_ci_add`) names only steps tomorrow has (the same id and
+       routine), and goes when the midlife plan's own line (`m2Tom`) names tomorrow's steps. Version 39.37's rule (section 80.3)
+       holds again; the cycle plan keeps its routine line beside the add line;
+    2. no "PMOS: food, yoga and moves" tile while a plan other than the PMOS (cycle) plan runs: it opened that plan under the
+       PMOS plan's name;
+    3. an undone tick is unanswered again (`unmark`; section 57's rule changes), so the evening check-in asks it with nothing
+       picked; "Not today" only when her own minutes or a routine she played would tick it straight back.
+    `node test/midlife.mjs` section 17 checks each one (142 checks in all); `node test/daily.mjs`'s two undo checks follow the
+    new rule.

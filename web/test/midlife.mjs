@@ -38,7 +38,10 @@
 //     bones and heart answers only from a midlife plan, so a PMOS plan never keeps them;
 //  16 the exploratory phone test's 4 gaps (Mohit, 1 Nov: "fix all 4"): the skill's Why? has its chapter's skill as How and the
 //     calcium food no How that repeats its subtitle; "How your plan works" names the weekly chapter; her chapter lights My plan;
-//     a plan started after today's check-in asks its own tonight; no page errors.
+//     a plan started after today's check-in asks its own tonight;
+//  17 the second exploratory phone test's 3 gaps (Mohit, 1 Nov: "fix all 3"): one "Tomorrow" line in the check-in, and "Tomorrow,
+//     add" only for steps tomorrow has; no PMOS plan tile while another plan runs; an undone tick is unanswered again ("Not today"
+//     only when her own minutes or a routine she played would tick it back); no page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -576,6 +579,41 @@ const startPlan = async (page, intake, pick) => {
   check('16.4 a plan started after today’s check-in asks its own tonight, and her answers stay', p5.pack === 'meno' && p5.start === TODAY && !lg.ci && lg.slp === 'ok', { pack: p5.pack, lg });
   await go(a.page, 'home');
   check('16.4 Today offers its check-in, not "Checked in today"', await has(a.page, '#view .pl-t-ci') && !/Checked in today/.test(await view(a.page)), (await view(a.page)).slice(0, 600)); await done(a);
+}
+
+// ---------- 17 the second exploratory phone test's 3 gaps ----------
+{
+  /* the check-in with these answers (step id: d, p or n), saved */
+  const ciSave = async (page, sel) => { for (const [id, v] of Object.entries(sel)) await tap(page, '#view [data-ci="' + id + ':' + v + '"]'); await tap(page, '#pl-ci-save');
+    return { tom: await txt(page, '#view .pl-ci-tomr'), add: await txt(page, '#view .pl-ci-add'), all: await view(page) }; };
+  /* 1 one "Tomorrow" line: Mohit's day 1 (skill done, the walk and the calcium food not today; tomorrow is a strength day) */
+  let a = await open({ seed: m2('hot', 0), hash: '#plan-checkin', hm: '20:30' });
+  const c1 = await ciSave(a.page, { skill: 'd', move: 'n', ca: 'n' });
+  check('17.1 day 1’s check-in: one "Tomorrow" line, with tomorrow’s steps, and no "Tomorrow, add" for a calcium food tomorrow doesn’t have', /^Tomorrow: your skill, your walk, Strength at home\.$/.test(c1.tom) && !c1.add && (c1.all.match(/Tomorrow/g) || []).length === 1, c1); await done(a);
+  /* the add line names only steps tomorrow has: the PMOS plan's yoga today, strength tomorrow */
+  a = await open({ seed: { intake: { goal: 'pmos', stage: 'cycle' }, goals: ['pmos'], mods: { plan: planOf('cycle', 'pmos', 0) }, reminders: [planRem(0)] }, hash: '#plan-checkin', hm: '20:30' });
+  const xs = await a.page.evaluate(() => window.Saathi.plan.actions().map((x) => ({ id: x.id, kind: x.kind, r: x.r || null, title: x.title, name: x.name || '' })));
+  const rt = xs.find((x) => x.kind === 'routine'); const sel = {}; xs.filter((x) => x.kind !== 'check').forEach((x) => { sel[x.id] = x.kind === 'minutes' ? 'd' : 'n'; });
+  const c2 = await ciSave(a.page, sel);
+  check('17.1 the PMOS plan: "Tomorrow, add" names the steps tomorrow has, not today’s yoga when tomorrow has another routine', !!rt && /^Tomorrow: /.test(c2.tom) && c2.tom.indexOf(rt.title.split(' · ')[0]) < 0 && /^Tomorrow, add: /.test(c2.add) && !/yoga/i.test(c2.add), { rt, c2 }); await done(a);
+  /* 2 no PMOS plan tile while another plan runs */
+  const pmosTile = (page) => page.evaluate(() => { const x = window.Saathi.tiles().find((y) => y.route === 'plan-pmos'); return !!(x && !(x.hidden && x.hidden())); });
+  a = await open({ seed: m2('hot', B(2), null, { situation: { stopped: true, pcos: true }, goals: ['meno', 'hot', 'pmos'] }), hash: '#care' });
+  check('17.2 her midlife plan runs: no "PMOS: food, yoga and moves" tile (it opened her midlife plan)', !(await pmosTile(a.page)) && !(await has(a.page, '#view [data-go="plan-pmos"]')), (await view(a.page)).slice(0, 500)); await done(a);
+  a = await open({ seed: { situation: { pcos: true }, intake: { goal: 'pmos', stage: 'cycle' }, goals: ['pmos'], mods: { plan: planOf('cycle', 'pmos', 3) }, reminders: [planRem(3)] }, hash: '#care' });
+  check('17.2 her PMOS plan runs: its tile stays', await pmosTile(a.page)); await done(a);
+  /* 3 an undone tick is unanswered again, so the check-in asks it */
+  a = await open({ seed: m2('hot', 0), hm: '19:30' });
+  await tap(a.page, '#view .today-plan-ca [data-today-act]'); await tap(a.page, '#view .today-plan-ca [data-today-undo]');
+  const ck3 = (((await st(a.page)).mods.plan.log || {})[TODAY] || {}).ck || {};
+  await go(a.page, 'plan-checkin');
+  check('17.3 a tick tapped by mistake and undone: unanswered, and the check-in has no "Not today" picked', ck3.ca == null && !(await has(a.page, '#view [data-ci^="ca:"].on')), ck3); await done(a);
+  /* her own walk counts: undoing a walk her minutes did keeps it off, as "Not today" */
+  a = await open({ seed: m2('hot', 0, { log: { [TODAY]: { min: 20 } } }), hm: '19:30' });
+  const ok0 = await has(a.page, '#view .today-plan-move.today-ok');
+  await tap(a.page, '#view .today-plan-move [data-today-undo]');
+  const lg4 = (((await st(a.page)).mods.plan.log || {})[TODAY] || {});
+  check('17.3 a walk done by her own minutes, undone: off Today, as "Not today", and her minutes stay', ok0 && (lg4.ck || {}).move === 'n' && lg4.min === 20 && !(await has(a.page, '#view .today-plan-move.today-ok')), { ok0, lg4 }); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

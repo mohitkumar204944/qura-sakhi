@@ -102,8 +102,8 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('1 ... then the check-in is the one pink button', JSON.stringify(await pinks(a.page, '#view .today-card')) === JSON.stringify(['How did today go?']), await pinks(a.page, '#view .today-card'));
   /* a tap on its tick undoes it, and only the minutes the tick added go */
   await tap(a.page, '#view .today-plan-move [data-today-undo]');
-  lg = (await plan(a.page)).log[TODAY];
-  check('1 a tap on the tick undoes it (and the minutes it added)', lg.ck.move === 'n' && lg.min === 0 && !(await has(a.page, '#view .today-plan-move.today-ok')) && /0 of 4 done today/.test(await txt(a.page, '#view .today-card')), lg);
+  lg = (await plan(a.page)).log[TODAY] || {};   /* Version 39.51 (Mohit's phone test): back to unanswered, as before the tick */
+  check('1 a tap on the tick undoes it (and the minutes it added)', (lg.ck || {}).move == null && !(lg.min > 0) && !(await has(a.page, '#view .today-plan-move.today-ok')) && /0 of 4 done today/.test(await txt(a.page, '#view .today-card')), lg);
   /* her yoga row starts her yoga */
   await rowTap(a.page, '#view .today-plan-yoga');
   check('1 the yoga row starts today\'s routine', (await a.page.evaluate(() => location.hash)) === '#plan-r-cycle');
@@ -199,7 +199,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('5 a tick on My plan is the same tick as Today\'s', ((await plan(a.page)).log[TODAY].ck || {}).move === 'd' && (await has(a.page, '#view .pl-steps-card .today-ok')) && /1 of 4 done today/.test(await txt(a.page, '#view .pl-steps-card')));
   check('5 ... and then the check-in is due there too (a plain button: Today keeps the pink one)', await has(a.page, '#view .pl-steps-card .pl-ci-go[data-go="plan-checkin"]'));
   await tap(a.page, '#view .pl-steps-card [data-pl-un="1"]');
-  check('5 ... and undone there too', ((await plan(a.page)).log[TODAY].ck || {}).move === 'n');
+  check('5 ... and undone there too (back to unanswered, Version 39.51)', ((((await plan(a.page)).log[TODAY] || {}).ck || {}).move == null) && !(await has(a.page, '#view .pl-steps-card .today-ok')));
   const wk = await txt(a.page, '#view .pl-wkc');
   const rings = await a.page.$$eval('#view .pl-wkc .pl-r4', (x) => x.map((s) => ({ n: s.querySelectorAll('circle').length, d: s.querySelectorAll('circle.d').length })));
   check('5 this week as rings, a part for each step (Monday all 4, Sunday 3)', rings.length === 7 && rings[0].n === 4 && rings[0].d === 3 && rings[1].d === 4, rings);
