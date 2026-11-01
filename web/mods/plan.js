@@ -406,7 +406,11 @@
   const routineMins = (id, d) => Math.max(1, Math.round(stepsOf(id, d).reduce((a, s) => a + s.s, 0) / 60) + 1);
   const rName = (id) => t(disc() && id === 'cycle' ? 'plan_r_d' : 'plan_r_' + id);
   const rSub = (id) => (disc() && id === 'cycle' ? '' : t('plan_r_' + id + '_s'));
-  const routineOk = (id, d) => !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife()))) && !((id === 'strength' || id === 'sun') && heartHold(d));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife, and no strength or sun salutation while her heart answer waits for her doctor */
+  /* Version 39.51 (Mohit's phone test, 1 Nov; advice decision 7, bone-safe moves for every midlife woman), a stop-gap: while a
+     midlife plan runs, or at midlife with no plan running, no Cycle care yoga (child pose) and no sun salutation (standing forward
+     bends). Another plan she kept (the PMOS plan rotates both) keeps them; Gentle start waits for the physiotherapist's swaps */
+  const boneHold = (d) => { const pk = d && d.start ? packOf(d) : null; return pk === 'meno' || (!pk && !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())); };
+  const routineOk = (id, d) => !(id === 'sun' && d && ((d.limits || {}).back || (d.limits || {}).knees || lutOn(d))) && !(id === 'steady' && !(menoV2(d) || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife()))) && !((id === 'strength' || id === 'sun') && heartHold(d)) && !((id === 'cycle' || id === 'sun') && boneHold(d));   /* review FOOD-08: knees too; Version 39.51: Steady on your feet for midlife, and no strength or sun salutation while her heart answer waits for her doctor */
 
   /* ---------- small pictures ---------- */
   const ICO = {
@@ -2655,6 +2659,7 @@
   function pathHtml(d, fold) {
     const kept = !!(d.keep && weekNo(d) > N); const wk = kept ? weekNo(d) : Math.max(1, Math.min(weekNo(d), N)); const pk = packOf(d);
     if (babyD(d)) {   /* Version 39.32: Getting ready's 4 parts, this one marked, and her doctor month */
+      if (disc()) return '';   /* Version 39.51 (Mohit's phone test): its parts name her tablet and his part, so a shared phone sees none, as in a pregnancy */
       /* Version 39.41 (Mohit's three-plan walk): a part that has passed is drawn as passed, never a tick (she may not have done it), as her pregnancy's path is (Version 39.35) */
       const wn = weekNo(d); const cur = bphOf(wn);
       return '<div class="card pl-path pl-bpath"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(kept ? t('plan_wk_keep') : tf('plan_wk', { n: wk })) + '</span></div>' +
@@ -2662,6 +2667,7 @@
         BPH.map((p) => { const past = wn > p[2]; return '<li class="' + (past ? 'gone' : (p === cur ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true"></span><span class="body"><strong>' + esc(t('plan_bph_' + p[0] + 'w')) + '</strong><span class="small">' + esc(t('plan_bph_' + p[0])) + '</span></span></li>'; }).join('') + '</ol>' + bdocMonth() + '</div>';
     }
     if (menoV2(d)) {   /* Version 39.51: her 3 parts in the order her goal needs, this one marked, then her year */
+      if (disc()) return '';   /* Version 39.51 (Mohit's phone test): its parts name hot flushes, worry and sleep, so a shared phone sees none */
       const wn = weekNo(d); const ML = S.midlife && S.midlife.lesson; const rows = m2Order(d).split('').map((p, i) => [p, i * 4 + 1, i * 4 + 4]).concat([['k', N + 1, 9999]]);
       return '<div class="card pl-path pl-m2path"><div class="row spread"><h3>' + esc(t('plan_path_h')) + '</h3><span class="small">' + esc(kept ? t('plan_wk_keep') : tf('plan_wk', { n: wk })) + '</span></div>' +
         '<div class="pl-dots" aria-hidden="true">' + Array.from({ length: N }, (x, i) => '<i class="' + (i + 1 < wk || kept ? 'on' : (i + 1 === wk ? 'now' : '')) + '"></i>').join('') + '</div><ol class="pl-steps">' +
@@ -2707,7 +2713,8 @@
     const wk = Math.max(1, Math.min(weekNo(d), N)); const pk = packOf(d); const mc = !disc() && !careTime(d) && !pregnant();
     const focus = (k) => { if (k === 4) return t(mc ? 'plan_path_r4' : 'plan_path_m4'); if (k === 8) return t(mc ? 'plan_path_r8' : 'plan_path_m8'); if (k === N) return t('plan_path_r12');
       if (pk === 'cycle') { const h = HABITS.find((x) => x.wk === k + 2 * (d.hab0 || 0)); return tf('plan_path_cyc', { m: target(d, k) }) + (h ? ' · ' + tf('plan_path_new', { h: tx(h.h) }) : ''); }
-      if (babyD(d)) return t('plan_bph_' + bphOf(k)[0]);   /* Version 39.32: Getting ready's part */
+      if (babyD(d)) return t(disc() ? 'plan_path_light' : 'plan_bph_' + bphOf(k)[0]);   /* Version 39.32: Getting ready's part */   /* Version 39.51 (Mohit's phone test): not on a shared phone */
+      if (menoV2(d) && !disc()) { const ML = S.midlife && S.midlife.lesson; const p = m2Order(d).charAt(Math.min(2, Math.floor((k - 1) / 4))); if (ML && p) return ML.part(p) + ' · ' + t('plan_m2_p_' + p); }   /* Version 39.51: her part, as week 1's path card names it */
       return t('plan_path_light'); };
     const now = wk <= 4 ? 0 : 1; const stage = pk === 'cycle' && !disc() ? '<p class="small pl-wk-stage">' + esc(t('plan_ex_' + (now + 1)) + ': ' + t('plan_ex_' + (now + 1) + '_p')) + '</p>' : '';
     const li = (k) => '<li class="' + (k < wk ? 'past' : (k === wk ? 'now' : '')) + '"><span class="pl-sdot" aria-hidden="true">' + (k < wk ? '✓' : '') + '</span><span class="body"><strong>' + esc(k === wk ? t('plan_path_now') + ' · ' + tf('plan_wk_s', { n: k }) : tf('plan_wk_s', { n: k })) + '</strong><span class="small">' + esc(focus(k)) + '</span></span></li>';

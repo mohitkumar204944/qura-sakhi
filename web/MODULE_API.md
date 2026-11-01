@@ -6118,3 +6118,23 @@ The plans test knows `meno.skill`, `mbone` and `mheart`.
        picked; "Not today" only when her own minutes or a routine she played would tick it straight back.
     `node test/midlife.mjs` section 17 checks each one (142 checks in all); `node test/daily.mjs`'s two undo checks follow the
     new rule.
+18. **The bone-safe stop-gap** (Mohit, 1 Nov, after the third exploratory phone test: "do the stop-gap"). The advice's decision 7
+    ("bone-safe for every midlife woman: no forward bends, side bends or loaded flexion in any routine for this plan") was not built.
+    Until the physiotherapist's swaps, `routineOk` holds back Cycle care yoga (Shashankasana, child pose) and the sun salutation
+    (Hasta padasana, twice) while a midlife plan runs, or at midlife (`S.cycle.isMidlife`) with no plan running (`boneHold`), on
+    Moves and calm and on their own pages (they open Moves and calm). A midlife woman who kept another plan keeps them: the PMOS
+    plan rotates both. Strength at home, Steady on your feet and the warm-up are bone-safe. Still open for the physiotherapist:
+    Gentle start (the plan's routine after a chest-pain yes, and on Moves and calm) has Trikonasana (a side bend), Vakrasana (a
+    twist) and Pavanamuktasana (knees to chest), and `plan_m2_bone_w` says "Every move in this plan is bone-safe".
+    `node test/midlife.mjs` section 18 checks it (147 checks in all); 13.2 now expects the sun salutation to stay off.
+19. **The discreet path cards** (Mohit, 1 Nov, "fix the leak in both plans"): on a shared phone (`disc()`), My plan's "Your 12
+    weeks" no longer names a plan's parts:
+    1. week 1's path card (`pathHtml`) is left out for My midlife plan (its parts say "A short course for hot flushes") and for
+       Getting ready ("your tablet, an Hb test, and his part"), as for a pregnancy and after a birth;
+    2. from week 2 the weeks card (`weeksCard`) gives Getting ready's weeks as "Your daily steps", as other plans' are.
+    `node test/midlife.mjs` section 19 checks both plans in week 1 and week 2, shared and not.
+20. **Her parts on the weeks card** (Mohit, 1 Nov, "add the parts to that card too"): from week 2 My midlife plan's weeks card names
+    each week's part in the order her goal needs (`m2Order`), as week 1's path card does: "Cool and calm · A short course for hot
+    flushes, a chapter a week", "Rest · One sleep rule a week", "Strong and steady · Strength, balance and food for your bones". Her
+    4-week and 8-week checks and her results keep their weeks; on a shared phone, "Your daily steps". `node test/midlife.mjs` section
+    20 checks it (158 checks in all).

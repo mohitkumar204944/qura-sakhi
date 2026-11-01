@@ -41,7 +41,13 @@
 //     a plan started after today's check-in asks its own tonight;
 //  17 the second exploratory phone test's 3 gaps (Mohit, 1 Nov: "fix all 3"): one "Tomorrow" line in the check-in, and "Tomorrow,
 //     add" only for steps tomorrow has; no PMOS plan tile while another plan runs; an undone tick is unanswered again ("Not today"
-//     only when her own minutes or a routine she played would tick it back); no page errors.
+//     only when her own minutes or a routine she played would tick it back);
+//  18 the bone-safe stop-gap (Mohit, 1 Nov: "do the stop-gap"): while a midlife plan runs, or at midlife with no plan, no Cycle
+//     care yoga and no sun salutation; a midlife woman who kept her PMOS plan, and a 30-year-old, keep them;
+//  19 the discreet path cards (Mohit, 1 Nov: "fix the leak in both plans"): on a shared phone no "Your 12 weeks" card on My midlife
+//     plan or on Getting ready, as in a pregnancy;
+//  20 her parts on the weeks card (Mohit, 1 Nov: "add the parts to that card too"): from week 2 each week's part in her order, the
+//     4-week and 8-week checks and her results kept, and none on a shared phone; no page errors.
 // Usage: node test/midlife.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -461,7 +467,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   check('13.2 My plan: "Gentle start runs twice a week"', /Gentle start runs twice a week from week 1, in every part/.test(await txt(a.page, '#view .pl-m2-str')) && !(await has(a.page, '#view .pl-moves-row')), await txt(a.page, '#view .pl-m2-str'));
   await tap(a.page, '[data-m2="heart-ok"]'); await go(a.page, 'plan-moves');
   const ids2 = await a.page.$$eval('#view .pl-ritem', (x) => x.map((y) => y.dataset.go));
-  check('13.2 her doctor said she can do more: Strength at home and the sun salutation are back', ids2.indexOf('plan-r-strength') >= 0 && ids2.indexOf('plan-r-sun') >= 0, ids2); await done(a);
+  check('13.2 her doctor said she can do more: Strength at home is back (the sun salutation stays off for midlife: section 18)', ids2.indexOf('plan-r-strength') >= 0 && ids2.indexOf('plan-r-sun') < 0, ids2); await done(a);
   /* 3 her time to move, from the plan she is on */
   const walkTo = async (page) => { let saw = false, sum = '';
     for (let i = 0; i < 10; i++) {
@@ -614,6 +620,65 @@ const startPlan = async (page, intake, pick) => {
   await tap(a.page, '#view .today-plan-move [data-today-undo]');
   const lg4 = (((await st(a.page)).mods.plan.log || {})[TODAY] || {});
   check('17.3 a walk done by her own minutes, undone: off Today, as "Not today", and her minutes stay', ok0 && (lg4.ck || {}).move === 'n' && lg4.min === 20 && !(await has(a.page, '#view .today-plan-move.today-ok')), { ok0, lg4 }); await done(a);
+}
+
+// ---------- 18 the bone-safe stop-gap ----------
+{
+  const ids = (page) => page.$$eval('#view .pl-ritem', (x) => x.map((y) => y.dataset.go));
+  let a = await open({ seed: m2('hot', B(2)), hash: '#plan-moves' });
+  const i1 = await ids(a.page);
+  check('18.1 her midlife plan runs: no Cycle care yoga (child pose) and no sun salutation (forward bends); Strength at home, Steady on your feet and Gentle start stay', i1.indexOf('plan-r-cycle') < 0 && i1.indexOf('plan-r-sun') < 0 && ['plan-r-strength', 'plan-r-steady', 'plan-r-gentle'].every((x) => i1.indexOf(x) >= 0), i1);
+  await go(a.page, 'plan-r-sun');
+  check('18.1 the sun salutation’s own page opens Moves and calm instead', await has(a.page, '#view .pl-ritem[data-go="plan-r-strength"]') && !/Hasta padasana/.test(await view(a.page)), (await view(a.page)).slice(0, 200)); await done(a);
+  a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400) }, hash: '#plan-moves' });
+  const i2 = await ids(a.page);
+  check('18.2 midlife with no plan running: the same', i2.length > 0 && i2.indexOf('plan-r-cycle') < 0 && i2.indexOf('plan-r-sun') < 0, i2); await done(a);
+  a = await open({ seed: { dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 30) }, reminders: [planRem(30)] }, hash: '#plan-moves' });
+  const i3 = await ids(a.page);
+  check('18.3 a midlife woman who kept her PMOS plan keeps Cycle care yoga (her plan rotates it)', i3.indexOf('plan-r-cycle') >= 0, i3); await done(a);
+  a = await open({ seed: { intake: { goal: 'irregular', stage: 'cycle' }, mods: { plan: planOf('cycle', 'pmos', 30) } }, hash: '#plan-moves' });
+  const i4 = await ids(a.page);
+  check('18.4 a 30-year-old on the PMOS plan keeps Cycle care yoga and the sun salutation', i4.indexOf('plan-r-cycle') >= 0 && i4.indexOf('plan-r-sun') >= 0, i4); await done(a);
+}
+
+// ---------- 19 the discreet path cards ----------
+{
+  const all = (pg) => pg.$eval('#view', (e) => e.textContent.replace(/\s+/g, ' '));   /* folded cards too */
+  /* Mohit's phone: discreet mode, My midlife plan in week 1 (the path card) and in week 2 (the weeks card) */
+  let a = await open({ seed: m2('hot', B(2), null, { settings: { discreet: true } }), hash: '#plan' });
+  const v1 = await all(a.page);
+  check('19.1 a shared phone, week 1: no "Your 12 weeks" path card on My midlife plan, and no "hot flushes" on My plan', !(await has(a.page, '#view .pl-m2path')) && !/hot flush/i.test(v1) && /Your step 1/.test(v1), v1.slice(0, 600)); await done(a);
+  a = await open({ seed: m2('hot', B(9), null, { settings: { discreet: true } }), hash: '#plan' });
+  const v1b = await all(a.page);
+  check('19.1 ... and week 2: no "hot flushes" either', !/hot flush/i.test(v1b), v1b.slice(0, 600)); await done(a);
+  a = await open({ seed: m2('hot', B(2)), hash: '#plan' });
+  check('19.1 not shared: the path card stays', await has(a.page, '#view .pl-m2path')); await done(a);
+  /* Getting ready for a baby: its parts name her tablet and his part */
+  const ttc = (startAgo, x) => Object.assign({ dob: '1996-05-01', situation: { planning: true }, intake: { goal: 'ready', stage: 'ttc' }, goals: ['ttc', 'ready'],
+    mods: { plan: planOf('ttc', 'ready', startAgo, { pv: 2, when: 'evening', intake: { at: ago(startAgo + 1), stage: 'ttc', goal: 'ready', act: 0, food: 'veg', milk: 'y', lim: [], when: 'evening', bflags: [], trying: null, bmi: null, bset: 'std', bdoc: 'std' } }) }, reminders: [planRem(startAgo)] }, x || {});
+  for (const [wk, sa] of [[1, B(3)], [2, B(10)]]) {
+    a = await open({ seed: ttc(sa, { settings: { discreet: true } }), hash: '#plan' });
+    const v2 = await all(a.page);
+    check('19.2 a shared phone, week ' + wk + ': Getting ready’s "Your 12 weeks" names neither her tablet nor his part', !(await has(a.page, '#view .pl-bpath')) && !/his part|your tablet/i.test(v2), v2.slice(0, 700)); await done(a);
+    a = await open({ seed: ttc(sa), hash: '#plan' });
+    check('19.2 not shared, week ' + wk + ': her parts stay', /his part/i.test(await all(a.page)), (await all(a.page)).slice(0, 400)); await done(a);
+  }
+}
+
+// ---------- 20 her parts on the weeks card ----------
+{
+  /* from week 2 My plan's "Your 12 weeks" is the weeks card: this week's part, and each week's in "All 12 weeks" */
+  const wks = async (page) => ({ txt: await txt(page, '#view .pl-weeks'), all: await page.$$eval('#view .pl-weeks .pl-steps li', (l) => l.map((x) => x.textContent.replace(/\s+/g, ' ').trim())) });
+  let a = await open({ seed: m2('hot', B(9)), hash: '#plan' });
+  let w = await wks(a.page);
+  check('20.1 week 2, hot flushes: "This week Cool and calm · A short course for hot flushes, a chapter a week"', /This week Cool and calm · A short course for hot flushes, a chapter a week/.test(w.txt), w.txt.slice(0, 300));
+  check('20.1 her 12 weeks in her order: Rest in weeks 5 to 8, Strong and steady in 9 to 11, with the 4-week and 8-week checks and her results kept', w.all.length === 12 && /Rest · One sleep rule a week/.test(w.all[4]) && /Strong and steady · Strength, balance and food for your bones/.test(w.all[8]) && /4-week check|look-back/.test(w.all[3]) && /8-week check|look-back/.test(w.all[7]) && /results/i.test(w.all[11]), w.all); await done(a);
+  a = await open({ seed: m2('bones', B(9)), hash: '#plan' });
+  w = await wks(a.page);
+  check('20.2 bones: Strong and steady first, then Cool and calm, then Rest', /This week Strong and steady/.test(w.txt) && /Cool and calm/.test(w.all[4]) && /Rest ·/.test(w.all[8]), w.all); await done(a);
+  a = await open({ seed: m2('hot', B(9), null, { settings: { discreet: true } }), hash: '#plan' });
+  w = await wks(a.page);
+  check('20.3 a shared phone: "Your daily steps", no parts', /This week Your daily steps/.test(w.txt) && !/Cool and calm|Rest ·|Strong and steady/.test(w.all.join(' ')), w.txt.slice(0, 300)); await done(a);
 }
 
 check('no page errors', errsAll.length === 0, errsAll.slice(0, 5));

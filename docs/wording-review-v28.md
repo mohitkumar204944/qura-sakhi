@@ -2994,6 +2994,13 @@ tonight's card after "Hot flushes woke me" (19.49) and the Learn library's midli
   40" under 40 (the POI card covers only periods that stopped).
 - The second exploratory phone test's fixes (1 Nov): no new words. The check-in has one "Tomorrow" line, and "Tomorrow, add" names
   only steps tomorrow has.
+- The bone-safe stop-gap (1 Nov): no new words. For a midlife woman, Cycle care yoga and the sun salutation are held back (forward
+  bends). For the physiotherapist: Gentle start's Trikonasana, Vakrasana and Pavanamuktasana, so that "Every move in this plan is
+  bone-safe" (the weak-bones line) is true after a chest-pain yes too.
+- The discreet path cards (1 Nov): no new words. On a shared phone My plan's "Your 12 weeks" names no parts for My midlife plan or
+  Getting ready ("Your daily steps" from week 2, as other plans).
+- Her parts on the weeks card (1 Nov): no new words. From week 2 My plan's "Your 12 weeks" names her part each week with the path
+  card's own lines ("Cool and calm · A short course for hot flushes, a chapter a week").
 - The new joining goal for both midlife stages: "Aches and tiredness", "Strength, balance, and when to check your blood"; its plan's
   goal "fewer aches and more energy" and its check-in line "A step towards more energy."
 
