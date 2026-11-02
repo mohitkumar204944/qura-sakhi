@@ -3193,3 +3193,6 @@ is ready"'s lines: "On your period days: {x}", "The 7 days before your period: {
 your first 3 weeks: {x}", "On your period days: your period kit, and just before, get it ready", "On your period days: a rest
 lying down (yoga nidra)", "Week 4: a look at your first month, and when to see a doctor", "From week {n}: {r} on 2 of your
 walking days", "From week {n}, in the week before your period: {r}".
+
+The phone test (2 Nov): "Relax, 5 minutes" is now "Relax, a few minutes" (Hindi "कुछ मिनट आराम"), as the slow breaths session is 4
+minutes (UI words). Nothing else new: the other fixes reuse reviewed or existing lines.

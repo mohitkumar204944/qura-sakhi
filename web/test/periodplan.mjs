@@ -7,7 +7,9 @@
 // - a chapter a week (mods/perplan.js), one card at a time (week 4's doctor card, the second period's card for the days
 //   before), version 1 offered version 2 once, a Qura doctor on her doctor check, the fixed Hb line beside her Hb results;
 // - 7, the test pass's fixes (2 Nov): My plan's period pain questions, the endometriosis answer kept, "Your plan is ready" saying
-//   when each step comes, Today's offer naming My period plan, and the anaemia guide when heavy periods join.
+//   when each step comes, Today's offer naming My period plan, and the anaemia guide when heavy periods join;
+// - 8, the phone test's fixes (2 Nov): play buttons, no promise without likely days, one true "Tomorrow", the weekly chapter on
+//   My plan, no "Partly" for her Hb test, and a midlife plan after "Tracking my periods" offering the plan for now.
 // Usage: node test/periodplan.mjs [web dir]
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -274,7 +276,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   /* 7.2 "Your plan is ready": each step says when it comes, and "What happens when" names her cycle's steps that aren't today's */
   a = await open({ seed: NOPLAN('pain') });
   let r = await revealCards(a.page, IK.pain);
-  check('7.2 period pain, between periods: "Every day: Relax" and "3 days a week: Walk" (not "Every day")', /Every day: Relax, 5 minutes/.test(r.steps) && /3 days a week: Walk or move \d+ minutes/.test(r.steps), r.steps);
+  check('7.2 period pain, between periods: "Every day: Relax" and "3 days a week: Walk" (not "Every day")', /Every day: Relax, a few minutes/.test(r.steps) && /3 days a week: Walk or move \d+ minutes/.test(r.steps), r.steps);
   check('7.2 ... "What happens when": her kit on period days and before, the chapter, week 4, strength, yoga, week 12', r.tl[0] === 'On your period days: your period kit, and just before, get it ready' && r.tl.indexOf('Every week: a short chapter, and a look back at your week') >= 0 &&
     r.tl.indexOf('Week 4: a look at your first month, and when to see a doctor') >= 0 && r.tl.indexOf('From week 5: Strength at home on 2 of your walking days') >= 0 && r.tl.indexOf('From week 6, in the week before your period: Cycle care yoga') >= 0 && r.tl[r.tl.length - 1] === 'Week 12: your results, next to where you started', r.tl);
   await done(a);
@@ -367,6 +369,68 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   a = await open({ seed: per('pain', B(9)) });
   await go(a.page, 'cond-anaemia');
   check('7.4 ... pain alone: no plan row on the anaemia guide', !(await has(a.page, '#view .pl-for')));
+  await done(a);
+}
+
+// ---------- 8 the phone test's fixes (Mohit's Flip5, 2 Nov: "fix all 6") ----------
+{
+  const navOf = (page, re) => page.evaluate((src) => { const rx = new RegExp(src); const row = [...document.querySelectorAll('#view .today-it')].find((r) => rx.test(r.textContent)); const b = row && row.querySelector('[data-today-nav]'); return b ? { txt: b.textContent.trim(), night: b.classList.contains('night') } : null; }, re.source);
+  /* 8.1 one tap plays her session: Relax (slow breaths), her kit (the cramps routine), the rest lying down (yoga nidra), in daylight */
+  let r, v;
+  let a = await open({ seed: per('pain', B(3)) });
+  let nv = await navOf(a.page, /Relax, a few minutes/);
+  check('8.1 Relax, a few minutes: a play button with its minutes, not the bedtime\'s night button', !!nv && /^\d+ min$/.test(nv.txt) && !nv.night, nv);
+  await a.page.evaluate(() => { const row = [...document.querySelectorAll('#view .today-it')].find((r) => /Relax, a few minutes/.test(r.textContent)); row.querySelector('[data-today-nav]').click(); }); await settle(a.page, 800);
+  check('8.1 ... it opens Dr. Megha\'s slow breaths', /calm-breaths/.test(await a.page.evaluate(() => location.hash)), await a.page.evaluate(() => location.hash));
+  check('8.1 ... and a daytime session is not the bedtime wind-down: no wind-down reminder', !((await st(a.page)).reminders || []).some((x) => x.id === 'plan-wind'), ((await st(a.page)).reminders || []).map((x) => x.id));
+  await done(a);
+  a = await open({ seed: per('pain', B(3), { last: 0 }) });
+  nv = await navOf(a.page, /Your period kit/);
+  check('8.1 a period day: her kit plays the cramps routine (3 min)', !!nv && nv.txt === '3 min' && !nv.night, nv);
+  await go(a.page, 'plan');
+  check('8.1 ... and My plan has its play button, in daylight', await has(a.page, '#view .pl-st-start[data-pl-play]'));
+  await done(a);
+  a = await open({ seed: per('heavy', B(3), { last: 0 }) });
+  nv = await navOf(a.page, /yoga nidra/);
+  check('8.1 heavy periods, a period day: the rest lying down plays yoga nidra', !!nv && /^\d+ min$/.test(nv.txt), nv);
+  await done(a);
+  /* 8.2 with no likely days (her gaps vary from 23 to 34 days), nothing is promised for the days before her period */
+  const uneven = () => { const out = []; [80, 57, 23].forEach((x) => out.push({ d: ago(x), t: 'start' }, { d: ago(x - 4), t: 'end' })); return out; };
+  a = await open({ seed: NOPLAN('pain', { events: uneven() }) });
+  r = await revealCards(a.page, IK.pain);
+  check('8.2 gaps that vary: "On your period days: your period kit", no "just before", no yoga in the week before', r.tl[0] === 'On your period days: your period kit' && !r.tl.some((x) => /just before|week before your period/.test(x)), r.tl);
+  await done(a);
+  /* 8.3 one "Tomorrow" line, and true: her period ends today, so tomorrow's steps are named */
+  a = await open({ seed: per('pain', B(3), { also: ['heavy'], last: 4 }), hm: '21:00' });
+  await go(a.page, 'plan-checkin');
+  await a.page.$$eval('[data-ci$=":d"]', (xs) => xs.forEach((x) => x.click())); await settle(a.page, 300);
+  if (await has(a.page, '[data-ci="hb:n"]')) await tap(a.page, '[data-ci="hb:n"]');
+  await tap(a.page, '#pl-ci-save');
+  v = await view(a.page);
+  check('8.3 after her period: "Tomorrow:" names tomorrow\'s steps, with no "Tomorrow, add" and no "the same steps"', /Tomorrow: [^.]*Relax, a few minutes/.test(v) && !/Tomorrow, add/.test(v) && !/the same steps/.test(v), v.slice(0, 600));
+  await done(a);
+  /* 8.4 My plan names the weekly chapter */
+  a = await open({ seed: per('pain', B(3)), hash: '#plan' });
+  check('8.4 How your plan works: "A short chapter and a look back"', /A short chapter and a look back/.test(await view(a.page)));
+  await done(a);
+  /* 8.5 a test is done or not: no "Partly" for her Hb test */
+  a = await open({ seed: per('heavy', B(3)), hm: '21:00' });
+  await go(a.page, 'plan-checkin');
+  check('8.5 the check-in: her Hb test has Done and Not today, no Partly', await has(a.page, '[data-ci="hb:d"]') && !(await has(a.page, '[data-ci="hb:p"]')) && await has(a.page, '[data-ci="iron:p"]'));
+  await done(a);
+  /* 8.6 a midlife plan after "Tracking my periods" (Mohit's phone: "No, I marked it by mistake" brought it back); at 45, choosing
+     Tracking my periods saves midlife: false */
+  const mid = (goals) => Object.assign(per('pain', B(2)), { dob: '1981-04-01', situation: { midlife: false }, goals: goals, intake: { goal: goals[0] || 'track', stage: 'cycle' }, mods: { plan: planOf('meno', B(2), { goalKey: 'hot', intake: { goal: 'hot', stage: 'meno' } }) } });
+  a = await open({ seed: mid(['pain', 'heavy']) });
+  v = await view(a.page);
+  check('8.6 her period goals: "My period plan may fit now", "See My period plan" and "Keep My midlife plan"', /My period plan may fit now/.test(v) && await has(a.page, '#pl-fit-go') && /See My period plan/.test(await txt(a.page, '#pl-fit-go')) && /Keep My midlife plan/.test(await txt(a.page, '#pl-fit-keep')), v.slice(0, 400));
+  await tap(a.page, '#pl-fit-go');
+  check('8.6 ... "See My period plan" opens period pain\'s questions', /About your period pain/.test(await view(a.page)), (await view(a.page)).slice(0, 200));
+  await done(a);
+  a = await open({ seed: mid(['track']) });
+  check('8.6 no period goal: "A different plan may fit now" with "Choose my plan"', /A different plan may fit now/.test(await view(a.page)) && /Choose my plan/.test(await txt(a.page, '#pl-fit-go')));
+  await tap(a.page, '#pl-fit-keep');
+  check('8.6 ... "Keep" keeps it, and the card goes', !(await has(a.page, '#pl-fit-go')) && ((await st(a.page)).mods.plan || {}).pack === 'meno');
   await done(a);
 }
 

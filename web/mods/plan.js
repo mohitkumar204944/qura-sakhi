@@ -651,7 +651,7 @@
     const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d); const at = timeOf(ciAt(d));
     const nS = acts.filter((a) => !a.soft).length; const rc = recCi(d);
     const cols = postV2(d) ? [['plan_rh_day', tf(rc && !disc() ? 'plan_rh_day_rc' : (nS === 1 ? 'plan_rh_day_s1' : 'plan_rh_day_s'), { n: nS, t: at })], ['plan_rh_p42', t('plan_rh_p42_s')], ['plan_rh_p84', t('plan_rh_p84_s')]] :   /* Version 39.46 */
-      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
+      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) || perV2(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
     return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
   }
   /* Version 39.22: her first week reads how her plan works; after it, "How it works" by her week opens it */
@@ -675,7 +675,7 @@
       const nm = disc() && (a.priv || a.kind === 'minutes') ? discNm(a, acts) : (rtB && !disc() ? rName(a.r) : a.title); const why = disc() ? '' : (a.id === 'fast' && a.sub ? a.sub : (fold ? '' : t(a.why || 'plan_fb_any')));   /* her fasting step: its tips, folded or not (V39.9 review SAFETY-03); Version 39.19: the reasons folded after week 1 */
       const sub = (fold || a.play) && !(disc() && a.priv) && a.id !== 'fast' ? stepSub(a, d) : '';   /* Version 39.24: week 1 says what her wind-down plays */   /* Version 39.22: one line under each step; the reasons behind one "Why these steps?" */
       const tk = sb && !ok ? '<button type="button" class="btn sm pl-st-start" data-pl-start="' + i + '">' + (rtB ? S.I.play.replace('<svg', '<svg aria-hidden="true"') + esc(tf('plan_min_n', { n: routineMins(a.r, d) })) : esc(t('plan_start_b'))) + '</button>'
-        : (pl ? '<button type="button" class="btn sm pl-st-play" data-pl-play="' + i + '">' + PLAY_SVG + esc(tf('calm_min', { n: a.playMin })) + '</button>'
+        : (pl ? '<button type="button" class="btn sm ' + (a.playDay ? 'pl-st-start' : 'pl-st-play') + '" data-pl-play="' + i + '">' + PLAY_SVG + esc(tf('calm_min', { n: a.playMin })) + '</button>'
         : (tick ? '<button type="button" class="today-tick' + (ok ? ' on' : '') + '" ' + (ok ? 'data-pl-un' : 'data-pl-tk') + '="' + i + '" aria-pressed="' + ok + '" aria-label="' + esc(tf(ok ? 'today_untick' : 'today_tick', { x: nm })) + '"><span class="tk">' + (ok ? SVG_TICK : '') + '</span></button>'
           : (ok ? '<span class="today-tick on" aria-hidden="true"><span class="tk">' + SVG_TICK + '</span></span>' : '<button type="button" class="today-open" data-go="' + esc(a.go) + '" aria-label="' + esc(nm) + '">' + S.I.chev + '</button>')));
       return '<div class="item quiet pl-step' + (ok ? ' today-ok' : '') + '"' + (tick || sb || pl ? ' data-pl-row="' + i + '"' : '') + '><span class="ico-sm hue hue-' + esc(a.hue || 'rose') + '">' + a.icon + '</span><span class="body"><strong>' + esc(nm) + '</strong>' + (sub ? '<span class="pl-step-sub">' + esc(sub) + '</span>' : '') + (why ? '<span class="pl-step-why">' + esc(why) + '</span>' : '') + (a.why && !disc() && !fold ? '<button type="button" class="linkbtn pl-step-how" data-pl-how="' + i + '">' + esc(t('plan_how_l')) + '</button>' : '') + '</span>' + tk + '</div>'; };
@@ -1350,7 +1350,7 @@
       return { id: ids[a.id] || 'plan-' + a.id, order: 25 + i, plan: true, icon: a.icon, hue: a.hue, title: nm,
         sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a.state === 'p' ? t('plan_t_part') : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : sub0)),
         go: tick ? null : a.go, at: a.at || null, tick: tick, ok: ok, next: a === nx, fold: full,
-        nav: !ok && sb ? a.go : (!ok && a.play && !rest ? a.play : null), actLabel: sb ? (rtBtn ? rtMin : t('plan_start_b')) : (a.play ? tf('calm_min', { n: a.playMin }) : null), night: !!a.play, primary: !ok && sb && a === nx && !ciNow,   /* R1, R14: one pink button, the next step's Start or the evening check-in */
+        nav: !ok && sb ? a.go : (!ok && a.play && !rest ? a.play : null), actLabel: sb ? (rtBtn ? rtMin : t('plan_start_b')) : (a.play ? tf('calm_min', { n: a.playMin }) : null), night: !!a.play && !a.playDay, primary: !ok && sb && a === nx && !ciNow,   /* R1, R14: one pink button, the next step's Start or the evening check-in */
         act: tick && !ok ? () => { const d2 = D(); markAction(d2, a, 'd'); closeDay(d2); remSync(d2); } : null,
         undo: tick && ok ? () => { const d2 = D(); unmark(d2, a); remSync(d2); } : null,
         why: a.why && !disc() ? () => openWhy(a) : null,
@@ -1778,11 +1778,13 @@
        lying down on a heavy day (yoga nidra), her Hb test to day 21 until it is done (a result she saves counts), and her calm-week
        plan in the 7 days before her period (its tool is the 3-minute routine for a hard moment) */
     'period.relax': (d, c, x, st) => { const did = !!(S.calm && S.calm.doneOn && S.calm.doneOn(c.day));
-      return [{ id: 'relax', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: t('plan_a_relax'), name: t('plan_a_relax'), sub: t('plan_a_relax_s'), go: S.calm ? 'calm-breaths' : 'plan-r-calm', state: st('relax', did), why: 'plan_fb_relax' }]; },
+      return [{ id: 'relax', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: t('plan_a_relax'), name: t('plan_a_relax'), sub: t('plan_a_relax_s'), go: S.calm ? 'calm-breaths' : 'plan-r-calm', state: st('relax', did), why: 'plan_fb_relax',
+        play: S.calm ? 'calm-breaths' : null, playMin: S.calm && S.calm.mins ? S.calm.mins('breaths') : 0, playDay: true }]; },   /* the phone test: one tap plays it */
     'period.rest': (d, c, x, st) => { const did = !!(S.calm && S.calm.doneOn && S.calm.doneOn(c.day));
-      return [{ id: 'rest', icon: S.icon('moon'), hue: 'purple', kind: 'tick', title: t('plan_a_prest'), name: t('plan_a_prest'), sub: t('plan_a_prest_s'), go: S.calm ? 'calm-nidra' : 'plan-r-calm', state: st('rest', did), why: 'plan_fb_prest' }]; },
+      return [{ id: 'rest', icon: S.icon('moon'), hue: 'purple', kind: 'tick', title: t('plan_a_prest'), name: t('plan_a_prest'), sub: t('plan_a_prest_s'), go: S.calm ? 'calm-nidra' : 'plan-r-calm', state: st('rest', did), why: 'plan_fb_prest',
+        play: S.calm ? 'calm-nidra' : null, playMin: S.calm && S.calm.mins ? S.calm.mins('nidra') : 0, playDay: true }]; },
     'period.hb': (d, c, x, st) => { if (planDayAt(d, c.day) > 21 || hbDone(d, S.toISO(S.addDays(S.fromISO(c.day), -1)))) return [];
-      return [{ id: 'hb', icon: S.icon('drop'), hue: 'rose', kind: 'tick', title: t('plan_a_phb'), name: t('plan_a_phb'), sub: t('plan_a_phb_s'), go: S.routeOwner('cond-anaemia') ? 'cond-anaemia' : 'plan', state: st('hb'), why: 'plan_fb_phb', priv: true }]; },
+      return [{ id: 'hb', icon: S.icon('drop'), hue: 'rose', kind: 'tick', title: t('plan_a_phb'), name: t('plan_a_phb'), sub: t('plan_a_phb_s'), go: S.routeOwner('cond-anaemia') ? 'cond-anaemia' : 'plan', state: st('hb'), why: 'plan_fb_phb', priv: true, once: true }]; },   /* once: no "Partly" in the check-in */
     'period.calmweek': (d, c, x, st) => [{ id: 'calmweek', icon: S.icon('sparkle'), hue: 'plum', kind: 'tick', title: t('plan_a_calmweek'), name: t('plan_a_calmweek'), sub: t('plan_a_calmweek_s'), go: S.routeOwner('relief-calm') ? 'relief-calm' : 'plan', state: st('calmweek'), why: 'plan_fb_calmweek', priv: true }],
     /* Version 39.13 (Mohit, 26 Oct: "walk and yoga should be separate"): the day's yoga (Strength at home on a strength day) is a
        step of its own, done by finishing it or by her answer in the check-in. The walk is the rest of the day's minutes (10 at
@@ -1876,7 +1878,8 @@
       if (x.kind === 'adapter') return often(x, (ADAPT[x.use] && ADAPT[x.use](d, c, x, st)) || []);
       if (x.kind === 'minutes') { const ws = walkStep(d, c, minsOf(x, d, c), x.why, st); if (x.sub && !d.when) ws.sub = t(String(x.sub).replace(/^@/, '')); return often(x, [ws]); }   /* Version 39.55: "3 days a week" for a walk too */   /* Version 39.34: its own line (an easy walk) */
       const r = (/^plan-r-(.+)$/.exec(x.go) || [])[1];
-      return often(x, [{ id: x.id, icon: progIco(x.icon), hue: x.hue, kind: x.kind || 'tick', r: r, title: ptx(x.title, x.go), sub: x.sub && !(disc() && x.when === 'periodDays') ? ptx(x.sub) : '', go: x.go, at: x.at || null, state: st(x.id, x.kind === 'routine' && R0.indexOf(r) >= 0), why: x.why, priv: !!x.priv }]);
+      return often(x, [Object.assign({ id: x.id, icon: progIco(x.icon), hue: x.hue, kind: x.kind || 'tick', r: r, title: ptx(x.title, x.go), sub: x.sub && !(disc() && x.when === 'periodDays') ? ptx(x.sub) : '', go: x.go, at: x.at || null, state: st(x.id, x.kind === 'routine' && R0.indexOf(r) >= 0), why: x.why, priv: !!x.priv },
+        x.play ? { play: x.go, playMin: S.relief && S.relief.mins && /^relief-/.test(x.go || '') ? S.relief.mins(x.go.slice(7)) : 3, playDay: true } : {})]);   /* Version 39.55 (the phone test): her kit plays the cramps routine */
     };
     const one = (x) => { if (x.from && allDone(x.from, day)) return []; const a = make(x); if (x.once) { const lg2 = (dd) => (dayLog(d, S.toISO(S.addDays(S.fromISO(day), -dd))).ck || {})[x.id]; for (let i = 1; i <= 7; i++) if (lg2(i) === 'd') { a.forEach((y) => { y.state = 'd'; }); break; } a.forEach((y) => { y.once = true; }); }   /* review PAGES-05: a one-time step stays done */
       if (x.from) { const dn = fromDone(x.from, day); a.forEach((y) => { if (x.check) { y.kind = 'check'; y.state = dn ? 'd' : null; } else if (dn && !y.state) y.state = 'd'; }); } return a; };
@@ -2469,19 +2472,23 @@
   function fitWhy(d) {
     if (!planOn() || !d || !d.start || pendingOk(d) || d.start > todayISO() || pregnant() || pausedFor(d) || selfPaused(d) || finished(fullD(d))) return null;
     const st = stageNowKey(); const pk = packOf(d);
-    const why = st === 'ttc' && CYC_PACKS.indexOf(pk) >= 0 ? 'ttc' : (st === 'cycle' && pk === 'ttc' ? 'nottc' : (st === 'meno' && ['cycle', 'pain', 'pms', 'ttc'].indexOf(pk) >= 0 ? 'meno' : null));   /* Version 39.51 (Mohit's phone): midlife now; heavy periods keep their plan */
+    const why = st === 'ttc' && CYC_PACKS.indexOf(pk) >= 0 ? 'ttc' : (st === 'cycle' && pk === 'ttc' ? 'nottc' : (st === 'meno' && ['cycle', 'pain', 'pms', 'ttc'].indexOf(pk) >= 0 ? 'meno' :
+      (st === 'cycle' && pk === 'meno' ? (perFirst() ? 'per' : 'nomid') : null)));   /* Version 39.55 (the phone test): a midlife plan after "Tracking my periods" */   /* Version 39.51 (Mohit's phone): midlife now; heavy periods keep their plan */
     return why && d.fitKeep !== d.start + ':' + why ? why : null;
   }
+  const perFirst = () => (S.state.goals || []).find((k) => ['pain', 'heavy', 'pms'].indexOf(k) >= 0) || null;   /* her first period goal */
   function fitCard(d, why) {
     const dd = fullD(d); const cls = 'card soft pl-slot pl-fit pl-sl-fit'; const b = (id, key, pri, x) => '<button type="button" class="btn sm' + (pri ? ' primary' : '') + '" id="' + id + '" data-fit="' + why + '">' + esc(x || t(key)) + '</button>';
     if (disc()) return '<div class="' + cls + '" data-nofold="1" data-disc-ok="1"><h3>' + esc(t('plan_fit_hd')) + '</h3><p class="small">' + esc(t('plan_fit_pd')) + '</p><div class="row wrap">' + b('pl-fit-go', 'plan_fit_pick', true) + b('pl-fit-keep', 'plan_fit_keep_d') + '</div></div>';   /* a shared phone: plain words */
+    if (why === 'per') { const g = perFirst(); const pt = packTitle({ pack: g, goalKey: g, pv: (specOf(g) || {}).ver }); return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(tf('plan_fit_meno_h', { t: pt })) + '</h3><p class="small">' + esc(t('plan_per_v2_p')) + '</p><div class="row wrap">' + b('pl-fit-go', null, true, tf('plan_fit_meno_go', { t: pt })) + b('pl-fit-keep', null, false, tf('plan_fit_keep', { t: packTitle(dd) })) + '</div></div>'; }
+    if (why === 'nomid') return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(t('plan_fit_hd')) + '</h3><p class="small">' + esc(t('plan_fit_pd')) + '</p><div class="row wrap">' + b('pl-fit-go', 'plan_fit_pick', true) + b('pl-fit-keep', null, false, tf('plan_fit_keep', { t: packTitle(dd) })) + '</div></div>';
     if (why === 'meno') { const mt = packTitle({ pack: 'meno', pv: 2 }); return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(tf('plan_fit_meno_h', { t: mt })) + '</h3><p class="small">' + esc(t('plan_fit_meno_p')) + '</p><div class="row wrap">' + b('pl-fit-go', null, true, tf('plan_fit_meno_go', { t: mt })) + b('pl-fit-keep', null, false, tf('plan_fit_keep', { t: packTitle(dd) })) + '</div></div>'; }
     return '<div class="' + cls + '" data-nofold="1"><h3>' + esc(t(why === 'ttc' ? 'plan_fit_ttc_h' : 'plan_fit_cyc_h')) + '</h3><p class="small">' + esc(t(why === 'ttc' ? 'plan_fit_ttc_p' : 'plan_fit_cyc_p')) + '</p><div class="row wrap">' +
       b('pl-fit-go', why === 'ttc' ? 'plan_fit_ttc_go' : 'plan_fit_pick', true) + b('pl-fit-keep', null, false, tf('plan_fit_keep', { t: packTitle(dd) })) + '</div></div>';
   }
   function wireFit(v) {
     const g = v.querySelector('#pl-fit-go'); if (g) g.addEventListener('click', () => { const mg = g.dataset.fit === 'meno' ? (S.state.goals || []).find((k) => GOALS.meno.indexOf(k) >= 0 && k !== 'track' && k !== 'heavy') : null;   /* her midlife goal, when she has one */
-      S.mem.planIntake = g.dataset.fit === 'ttc' ? { stage: 'ttc', goal: 'ready', iq: 1 } : (mg ? { stage: 'meno', goal: mg, iq: 1 } : { stage: stageNowKey(), iq: 0 }); S.setHash('plan-goal'); });
+      S.mem.planIntake = g.dataset.fit === 'ttc' ? { stage: 'ttc', goal: 'ready', iq: 1 } : (mg ? { stage: 'meno', goal: mg, iq: 1 } : (g.dataset.fit === 'per' && perFirst() ? { stage: 'cycle', goal: perFirst(), iq: 1 } : { stage: stageNowKey(), iq: 0 })); S.setHash('plan-goal'); });
     const k = v.querySelector('#pl-fit-keep'); if (k) k.addEventListener('click', () => { const dd = D(); dd.fitKeep = dd.start + ':' + k.dataset.fit; S.saveQuiet(); S.render(); });
   }
   /* Version 39.46: after the birth, her pregnancy's answers for "Your day" (how she eats, her knees or back), so it isn't asked again */
@@ -2822,8 +2829,8 @@
       const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : t('plan_tip_' + b));   /* Version 39.12: her own if-then plan first */
       m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: held(acts.map((a) => Object.assign({}, a, { state: m.sel[a.id] || a.state }))).length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
         goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: tomL,
-        slp: m.slp || null, md: mdAsk(dd) ? m.md || null : null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some((a) => !!a.play) && !(S.calm && S.calm.doneOn(todayISO())),
-        add: done.length && !(tomL && menoV2(dd)) ? (function () { const tmr = stepsFor(fullD(dd), S.toISO(S.addDays(pToday(), 1))); const miss = acts.filter((a) => m.sel[a.id] === 'n' && tmr.some((y) => y.id === a.id && (y.r || null) === (a.r || null))); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? discNm(a, acts) : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.51 (Mohit's phone test): only a step tomorrow has, and none when tomorrow's own line names them all */   /* Version 39.13 */
+        slp: m.slp || null, md: mdAsk(dd) ? m.md || null : null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some(windStep) && !(S.calm && S.calm.doneOn(todayISO())),
+        add: done.length && !(tomL && (menoV2(dd) || perV2(dd))) ? (function () { const tmr = stepsFor(fullD(dd), S.toISO(S.addDays(pToday(), 1))); const miss = acts.filter((a) => m.sel[a.id] === 'n' && tmr.some((y) => y.id === a.id && (y.r || null) === (a.r || null))); return miss.length ? tf('plan_ci_add', { x: miss.map((a) => (disc() && a.priv ? discNm(a, acts) : (a.name || a.title))).join(', ') }) : ''; })() : '' };   /* Version 39.51 (Mohit's phone test): only a step tomorrow has, and none when tomorrow's own line names them all */   /* Version 39.13 */
       remSync(dd); S.save();
       const rel = S.joy && S.joy.release ? S.joy.release() : false;   /* what her plan's first day earned, celebrated now */
       m.saved.petal = !!rel || (S.joy && S.joy.petals ? S.joy.petals() : 0) > p0;
@@ -3243,12 +3250,13 @@
   function perRvRows(dd) {
     if (disc()) return ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12'];
     const ids = actionsFor(dd).map((a) => a.id); const lead = dd.goalKey || dd.pack; const has = (g) => lead === g || alsoGoal(g, lead); const out = [];
-    if (lead === 'pain') out.push({ x: ids.indexOf('kit') >= 0 ? tf('plan_pi_kd', { x: lowFirst(t('plan_a_kitready')) }) : t('plan_per_rv_kit') });
+    const ri = S.cycle && S.cycle.rangeInfo ? S.cycle.rangeInfo() : null;   /* the phone test: with no likely days, nothing for the days before her period */
+    if (lead === 'pain') { if (ri) out.push({ x: ids.indexOf('kit') >= 0 ? tf('plan_pi_kd', { x: lowFirst(t('plan_a_kitready')) }) : t('plan_per_rv_kit') }); else if (ids.indexOf('kit') < 0) out.push({ x: tf('plan_pi_pd', { x: lowFirst(t('plan_a_kit')) }) }); }
     else if (has('pain') && ids.indexOf('kit') < 0) out.push({ x: tf('plan_pi_pd', { x: lowFirst(t('plan_a_kit')) }) });
     if (lead === 'heavy' && ids.indexOf('rest') < 0) out.push({ x: t('plan_per_rv_rest') });
-    if (lead === 'pms' && ids.indexOf('calmweek') < 0) out.push({ x: tf('plan_pi_bf', { x: lowFirst(t('plan_a_calmweek')) }) });   /* joining another lead, the days before are the evening question */
+    if (lead === 'pms' && ri && ids.indexOf('calmweek') < 0) out.push({ x: tf('plan_pi_bf', { x: lowFirst(t('plan_a_calmweek')) }) });   /* joining another lead, the days before are the evening question */
     out.push({ x: t('plan_m2_rv_ch') }, { x: t('plan_per_rv_w4') });
-    if (lead === 'pain') out.push({ x: tf('plan_per_rv_str', { n: 5, r: rName('strength') }) }, { x: tf('plan_per_rv_yoga', { n: 6, r: rName('cycle') }) });
+    if (lead === 'pain') { out.push({ x: tf('plan_per_rv_str', { n: 5, r: rName('strength') }) }); if (ri) out.push({ x: tf('plan_per_rv_yoga', { n: 6, r: rName('cycle') }) }); }
     if (lead === 'heavy') out.push({ x: tf('plan_per_rv_str', { n: 7, r: rName('strength') }) });
     return out.concat(['plan_rv_w12']);
   }
@@ -3567,7 +3575,7 @@
     return tf(s.tom ? 'plan_th_str_tom' : 'plan_th_str', { d: weekdayOf(s.iso), a: s.a, t: s.t });
   }
   const ciStr = (d) => { const s = strNext(d); if (!s) return ''; return tf('plan_ci_str', { a: s.a, t: s.t }) + (s.a < s.t && s.iso ? ' · ' + tf('plan_ci_str_nx', { d: s.tom ? t('plan_when_tom') : weekdayOf(s.iso) }) : ''); };
-  const ciTom = (d) => { if (packOf(d) !== 'cycle') return menoV2(d) ? m2Tom(d) : ''; const tn = S.toISO(S.addDays(pToday(), 1)); const last = d.keep ? keepUntil(d) : planWeeks(d); if (last && weekAt(d, tn) > last) return '';
+  const ciTom = (d) => { if (packOf(d) !== 'cycle') return menoV2(d) || perV2(d) ? m2Tom(d) : '';   /* Version 39.55 (the phone test): her period's days change tomorrow's steps */ const tn = S.toISO(S.addDays(pToday(), 1)); const last = d.keep ? keepUntil(d) : planWeeks(d); if (last && weekAt(d, tn) > last) return '';
     const tp = todayPlan(d, tn); return tf('plan_ci_tomr', { r: rName(tp.routine), n: routineMins(tp.routine, d) }); };
   /* her goal: what a check-in is a step towards (new health lines: wording review section 19.12) */
   const CG = ['irregular', 'pmos', 'skin', 'weight', 'ready', 'pain', 'heavy', 'pms', 'food', 'nausea', 'iron', 'sleep', 'mood', 'recovery', 'pelvic', 'feed', 'hot', 'bones', 'aches'];
@@ -3603,9 +3611,10 @@
   /* Version 39.45: the wind-down her plan rings, from today (windOk; before her start day, her first day's steps), or from the
      day its bedtime joins (the Start card and Me's line name it with its day) */
   const windSoon = (d) => { if (!d || !planOn() || !packOf(d) || careTime(d) || !windAt(d)) return null; const on0 = d.start && d.start <= todayISO(); if (on0 && pausedFor(d)) return null;
-    if (on0 ? windOk(d) : stepsFor(Object.assign(fullD(d), { start: todayISO() }), todayISO()).some((a) => !!a.play)) return { at: windAt(d), n: 1 };
-    const l = laterStep(d); return l && l.a.play ? { at: windAt(d), n: l.n } : null; };
-  const windOk = (d) => !!(d && planOn() && packOf(d) && d.start && d.start <= todayISO() && !pausedFor(d) && !finished(fullD(d)) && !careTime(d) && actionsFor(fullD(d)).some((a) => !!a.play));
+    if (on0 ? windOk(d) : stepsFor(Object.assign(fullD(d), { start: todayISO() }), todayISO()).some(windStep)) return { at: windAt(d), n: 1 };
+    const l = laterStep(d); return l && windStep(l.a) ? { at: windAt(d), n: l.n } : null; };
+  const windStep = (a) => !!(a && a.play && !a.playDay);   /* Version 39.55: the bedtime step's wind-down, not a daytime session's play button */
+  const windOk = (d) => !!(d && planOn() && packOf(d) && d.start && d.start <= todayISO() && !pausedFor(d) && !finished(fullD(d)) && !careTime(d) && actionsFor(fullD(d)).some(windStep));
   function windSync(d, loud) {
     try {
       if (!d || !S.reminders) return; const r = S.reminders.get('plan-wind'); const at = d.wind !== false && windOk(d) ? windAt(d) : null;
@@ -3952,7 +3961,7 @@
   /* for the tests and other modules: the rules, without the screens */
   /* Version 39.24: for Wind down (its page, its session screen, Explore's For you): tonight's session when her bedtime step has
      one, and the Calm breath row where her plan has it */
-  const planTonight = () => { const d = S.canSave() && raw() ? D() : null; return d && packOf(d) && !pausedFor(d) && !selfPaused(d) && actionsFor(fullD(d)).some((a) => !!a.play) ? windPick(fullD(d)) : null; };
+  const planTonight = () => { const d = S.canSave() && raw() ? D() : null; return d && packOf(d) && !pausedFor(d) && !selfPaused(d) && actionsFor(fullD(d)).some(windStep) ? windPick(fullD(d)) : null; };
   const calmRow = () => { const d = S.canSave() && raw() ? D() : null; return routineOk('calm', d) ? { go: 'plan-r-calm', title: rName('calm'), sub: rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }) } : null; };
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
@@ -4284,7 +4293,7 @@
         plan_pk_period: 'My period plan',   /* Version 39.55 */
         plan_a_kit: 'Your period kit', plan_a_kit_s: 'Warmth, the cramps routine and a rest position', plan_a_kitready: 'Get your kit ready', plan_a_kitready_s: 'Your period is likely soon: a hot water bag, pads or cloth, and a quiet place to rest',
         plan_a_restday: 'Rest today, or walk 10 minutes', plan_a_restday_s: 'Your choice on a period day. Either one counts.', plan_a_pdiary: 'Your pain diary for your doctor', plan_a_pdiary_s: 'A minute a week, to take to your doctor',
-        plan_a_relax: 'Relax, 5 minutes', plan_a_relax_s: 'Slow breaths with Dr. Megha, or yoga nidra at bedtime', plan_a_prest: 'Rest, lying down: yoga nidra', plan_a_prest_s: 'In place of the walk today. It counts.',
+        plan_a_relax: 'Relax, a few minutes', plan_a_relax_s: 'Slow breaths with Dr. Megha, or yoga nidra at bedtime', plan_a_prest: 'Rest, lying down: yoga nidra', plan_a_prest_s: 'In place of the walk today. It counts.',
         plan_a_phb: 'Get your Hb tested', plan_a_phb_s: 'Ask a Qura doctor, or your own doctor. Done? Add your result.', plan_a_calmweek: 'Your calm-week plan', plan_a_calmweek_s: 'An early night · a lighter day · 10 minutes outside',
         plan_fb_kitready: 'Having your things ready before your period makes the first day easier.', plan_fb_restday: 'Rest or gentle movement are both fine on a period day.',
         plan_fb_cyoga: 'Gentle yoga in the days before your period relaxes your hips, belly and back.', plan_fb_relax: 'A few calm minutes a day can quiet pain signals. Many women notice it over a few periods.',
@@ -4653,7 +4662,7 @@
         plan_pk_period: 'मेरा पीरियड प्लान',   /* Version 39.55 */
         plan_a_kit: 'पीरियड की आपकी किट', plan_a_kit_s: 'गर्माहट, ऐंठन वाली दिनचर्या और आराम की एक मुद्रा', plan_a_kitready: 'अपनी किट तैयार रखें', plan_a_kitready_s: 'पीरियड शायद जल्द आएगा: गर्म पानी की थैली, पैड या कपड़ा, और आराम की एक शांत जगह',
         plan_a_restday: 'आज आराम करें, या 10 मिनट टहलें', plan_a_restday_s: 'पीरियड के दिन आपकी मर्ज़ी। दोनों में से कोई भी गिना जाएगा।', plan_a_pdiary: 'डॉक्टर के लिए दर्द की डायरी', plan_a_pdiary_s: 'हफ़्ते में एक मिनट, डॉक्टर को दिखाने के लिए',
-        plan_a_relax: 'आराम, 5 मिनट', plan_a_relax_s: 'डॉ. मेघा के साथ धीमी साँसें, या सोने से पहले योग निद्रा', plan_a_prest: 'लेटकर आराम: योग निद्रा', plan_a_prest_s: 'आज सैर की जगह। यह गिना जाएगा।',
+        plan_a_relax: 'कुछ मिनट आराम', plan_a_relax_s: 'डॉ. मेघा के साथ धीमी साँसें, या सोने से पहले योग निद्रा', plan_a_prest: 'लेटकर आराम: योग निद्रा', plan_a_prest_s: 'आज सैर की जगह। यह गिना जाएगा।',
         plan_a_phb: 'अपना Hb टेस्ट करवाएँ', plan_a_phb_s: 'Qura डॉक्टर से पूछें, या अपनी डॉक्टर से। हो गया? अपना नतीजा जोड़ें।', plan_a_calmweek: 'शांत हफ़्ते की आपकी योजना', plan_a_calmweek_s: 'जल्दी सोना · हल्का दिन · 10 मिनट बाहर',
         plan_fb_kitready: 'पीरियड से पहले चीज़ें तैयार हों, तो पहला दिन आसान रहता है।', plan_fb_restday: 'पीरियड के दिन आराम या हल्की हरकत, दोनों ठीक हैं।',
         plan_fb_cyoga: 'पीरियड से पहले के दिनों में हल्का योग कूल्हों, पेट और पीठ को ढीला करता है।', plan_fb_relax: 'रोज़ कुछ मिनट का सुकून दर्द के संकेतों को शांत कर सकता है। कई महिलाओं को कुछ पीरियड में फ़र्क़ दिखता है।',

@@ -6396,6 +6396,22 @@ got in your way" (leaked, changed at night or couldn't do her day, since she sta
 before). Not on a shared phone. Beside her Hb results (`cond-anaemia`) one fixed line for every woman: below 8, see a doctor
 this week; today when breathless, dizzy or with chest pain (WHO 2024 keeps severe anaemia below 8 g/dL).
 
+**The phone test** (Mohit's Flip5, 2 Nov: "fix all 6"):
+- Relax, the rest lying down on a period day and her kit each have a play button with their minutes, in daylight (the bedtime's
+  night button stays for bedtime): slow breaths, yoga nidra, and the cramps routine. A tick step's `play: true` plays its `go`
+  (a relief routine, at its own minutes, `S.relief.mins`). "Relax, 5 minutes" is now "Relax, a few minutes", as the session is 4.
+  A daytime play button is not the bedtime wind-down (`windStep`): no wind-down ring, card or line comes from it.
+- With no likely days (gaps that vary, hormones), "What happens when" names nothing for the days before her period: her kit is
+  "On your period days: your period kit", with no Cycle care yoga row and no calm-week row.
+- The check-in's "Tomorrow:" names tomorrow's steps when her days change them (the midlife plan's `m2Tom`), in one line: no
+  "Tomorrow, add" and no "Tomorrow: the same steps" beside it.
+- My plan's "How your plan works" says "A short chapter and a look back" each week.
+- Her Hb test is a one-off (`once`): Done or Not today in the check-in, no Partly.
+- A midlife plan at the tracking stage ("No, I marked it by mistake" brought it back; at 45 or more, choosing Tracking my periods
+  saves `midlife: false`) gets Version 39.48's card (`fitWhy` 'per' and 'nomid'): "My period plan may fit now" for her first
+  period goal ("See My period plan" opens its questions), or "A different plan may fit now" ("Choose my plan"), with "Keep".
+  All of it is existing wording.
+
 **The minimalist baseline** (CLAUDE.md):
 - **Her evening:** no new ring. The check-in rings after her last step; the nudge at her time to move only on her moving days; her
   doctor's iron tablet at its own time. No bedtime, so no wind-down.
@@ -6413,7 +6429,7 @@ this week; today when breathless, dizzy or with chest pain (WHO 2024 keeps sever
   to 47 (2 or 3 steps to tick instead of 1); the everyday jobs 68 to 70 (one more check-in answer, and the check-in button a scroll
   down Today); the trying woman unchanged.
 
-`node test/periodplan.mjs` checks it (70 checks; section 7 holds the test pass's fixes). `node test/periodplan-walk.mjs [who]`
+`node test/periodplan.mjs` checks it (84 checks; section 7 holds the test pass's fixes, section 8 the phone test's). `node test/periodplan-walk.mjs [who]`
 lives it: six women from a new install (period pain with heavy periods, the days before, heavy periods often tired, endometriosis
 with no dates, heavy periods at 44, and version 1 moved to version 2), with their periods coming, screens and words to
 `test/shots/periodplan-walk/`. `test/progs.mjs` knows the new words; its draft example is now version 3. Suites that check

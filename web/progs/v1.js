@@ -223,7 +223,7 @@
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'iron', text: '@iron_h', icon: 'drop', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
     changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by heavy periods. An iron food every day, her Hb test in weeks 1 to 2, a rest lying down on period days, a light walk on 3 days (after her Hb test when she is often tired or dizzy), strength from week 7, the period note in her check-in; period pain joins with her kit. A chapter a week, and her periods in her own numbers' }],
     steps: [
-      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', if: ['also:pain'] },
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true, if: ['also:pain'] },
       { id: 'iron', kind: 'adapter', use: 'journey.iron' },
       { id: 'hb', kind: 'adapter', use: 'period.hb' },
       { first: [
@@ -325,7 +325,7 @@
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'relief-cramps', text: '@relief_cramps_t', icon: 'leaf', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
     changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by period pain. Her cycle sets the steps: her kit and Pain today? on period days; her kit ready and Cycle care yoga before her period; Relax, moving on 3 days and strength between. Heavy periods and the days before join where they matter. A chapter a week, and her periods in her own numbers' }],
     steps: [
-      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps' },
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true },
       { first: [
         { id: 'relax', kind: 'adapter', use: 'period.relax', when: 'days:0,2,4,6', if: ['!period', 'ans:endo=y'] },
         { id: 'relax', kind: 'adapter', use: 'period.relax', if: ['!period', '!ans:endo=y'] }
@@ -379,7 +379,7 @@
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'plan-r-calm', text: '@plan_r_calm', icon: 'sparkle', hue: 'sky' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
     changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by the days before her period. Calm breath every day, her calm-week plan in the 7 days before her period, a calcium food on 5 days, moving on 3 days, the note in her check-in; period pain and heavy periods join where they matter. A chapter a week, and her hard days in her own numbers' }],
     steps: [
-      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', if: ['also:pain'] },
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true, if: ['also:pain'] },
       { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm' },
       { id: 'calmweek', kind: 'adapter', use: 'period.calmweek', when: 'before' },
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g', when: 'days:1,3,5', if: ['!period'] },

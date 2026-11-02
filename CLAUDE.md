@@ -423,7 +423,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - one card at a time (week 4's "When to see a doctor", the second period's card for the days before), a Qura doctor first;
       the fixed Hb line beside her Hb results; her results by period, a goal that joins too.
     The walk is `node test/periodplan-walk.mjs [priya|anjali|rekha|sana|meena|vera]` (screens and words to
-    `test/shots/periodplan-walk/`); its test pass's fixes (2 Nov) are section 7 of the test.
+    `test/shots/periodplan-walk/`); its test pass's fixes (2 Nov) are section 7 of the test, the phone test's 6 (Mohit's Flip5,
+    "fix all 6") section 8.
     Contract: MODULE_API section 98; wording: section 19.55 of the review (new lines wait for doctor review, the days-before
     chapters for a psychologist too).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
