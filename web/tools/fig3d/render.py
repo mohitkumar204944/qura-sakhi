@@ -36,7 +36,9 @@ def build_set(view, size, samples):
 
 
 def view_of(names):
-    return 'front' if names[0] in moves.FRONT else 'quarter' if names[0] in moves.QUARTER else 'side'
+    return ('front' if names[0] in moves.FRONT else 'quarter' if names[0] in moves.QUARTER else 'lie' if names[0] in moves.LIE
+            else 'front3q' if names[0] in moves.FRONT3Q else 'sideback' if names[0] in moves.LEANV else 'backq' if names[0] in moves.BACKQ
+            else 'side')
 
 
 def pose(name):
@@ -77,10 +79,43 @@ def props_for(names):
             m = stage.prop('wall', y=moves.WALL_Y)
         elif kind == 'calfwall':
             m = stage.prop('calfwall', y=moves.CALF_WALL_Y)
+        elif kind == 'sidewall':
+            m = stage.prop('sidewall', x=moves.SIDE_WALL_X)
+        elif kind == 'sheet':
+            m = stage.prop('sheet', h=moves.SHEET_H)
+        elif kind == 'table':
+            m = stage.prop('table', y=moves.TABLE_NEAR, h=moves.TABLE_TOP)
+        elif kind in ('backwall', 'pillow'):
+            continue   # placed from her pose (after_props)
         else:
             m = stage.prop('step', front=moves.STEP_FRONT, h=moves.STEP_H) + stage.prop('rail', a=moves.RAIL_A, b=moves.RAIL_B); framed += m
         made += m
     return made, framed
+
+
+def body_extent(axis, z0, z1, hi=True):
+    """The furthest her body (not her hair or clothes) reaches along an axis between two heights."""
+    dg = bpy.context.evaluated_depsgraph_get(); e = k.body_obj.evaluated_get(dg); m = e.to_mesh(); mw = e.matrix_world
+    ws = [mw @ v.co for v in m.vertices]; ws = [w[axis] for w in ws if z0 < w.z < z1]; e.to_mesh_clear()
+    return max(ws) if hi else min(ws)
+
+
+def after_props(names, snaps):
+    """Props placed from her pose: the wall just behind her back for the butterfly against a wall, and the pillow between her
+    knees when she lies on her side."""
+    made = []
+    kinds = {moves.PROPS.get(n) for n in names}
+    if 'backwall' in kinds:
+        y = -1e9
+        for n in names:
+            apply(snaps[n]); y = max(y, body_extent(1, 0.25, 0.95))
+        made += stage.prop('backwall', y=y + 0.004)
+    for n in names:
+        if moves.PROPS.get(n) == 'pillow':
+            apply(snaps[n]); a, b = k.at('lowerleg01.L'), k.at('lowerleg01.R'); hp = (k.hip('L') + k.hip('R')) / 2
+            mid = (a + b) / 2 + (hp - (a + b) / 2) * 0.18
+            made += stage.prop('pillow', at=mid, size=(0.30, 0.26, max(0.07, (a - b).length - 0.085)))
+    return made
 
 
 def stage_for(names, size, samples):
@@ -94,11 +129,12 @@ def stage_for(names, size, samples):
             pose(n); snaps[n] = snapshot()
             a, b = k.bbox(framed)
             lo = V((min(lo.x, a.x), min(lo.y, a.y), min(lo.z, a.z))); hi = V((max(hi.x, b.x), max(hi.y, b.y), max(hi.z, b.z)))
+    SET.extend(after_props(names, snaps))
     if not any(n in moves.NO_MAT for n in names):
-        if view == 'front':   # facing the camera, the mat runs across the frame
-            cx, cy = (lo.x + hi.x) / 2, (lo.y + hi.y) / 2; half = max(0.9, (hi.x - lo.x) / 2 + 0.15)
-            SET.extend(stage.prop('mat', lo=(cx - half, cy - 0.31), hi=(cx + half, cy + 0.31)))
-            SET[-1].dimensions = (2 * half, 0.62, 0.006)
+        if view in ('front', 'lie'):   # facing the camera, the mat runs across the frame
+            cx, cy = (lo.x + hi.x) / 2, (lo.y + hi.y) / 2; half = max(0.9, (hi.x - lo.x) / 2 + 0.15); dep = max(0.62, hi.y - lo.y + 0.16)
+            SET.extend(stage.prop('mat', lo=(cx - half, cy - dep / 2), hi=(cx + half, cy + dep / 2)))
+            SET[-1].dimensions = (2 * half, dep, 0.006)
         else:
             SET.extend(stage.prop('mat', lo=(lo.x, lo.y), hi=(hi.x, hi.y)))
     SET.append(stage.frame(view, lo, hi, margin=max([1.14] + [moves.FRAME_MARGIN.get(n, 1.14) for n in names])))
@@ -226,6 +262,7 @@ elif MODE == 'loop':
     sc.frame_start, sc.frame_end = 1, N    # the last key (frame N + 1) is the first again, so the loop closes
     sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = os.path.join(OUT, name + '-')
     bpy.ops.render.render(animation=True); print('LOOP', name, N, flush=True)
+    open(os.path.join(OUT, '.done'), 'w').write(str(N))   # a finished loop, so render-preg.sh can carry on after a stop
 elif MODE == 'sun':
     snaps = stage_for(moves.SUN, BIG, SAMPLES)
     # each group of positions (moves.SUN_VIEWS) gets the camera that fits it; a flow from one group to the other moves the camera

@@ -7,8 +7,9 @@ from mathutils import Vector
 BG = (0.965, 0.95, 0.935)
 # where the camera stands, seen from her: in front, at her right side, or three-quarters from her right side towards her
 # feet and higher (for a move whose motion runs across her body, which a side view hides)
-VIEWS = {'front': (0, -1, 0), 'side': (-1, 0, 0), 'quarter': (-0.64, -0.77, 0)}
-TILT = {'quarter': 20.0}
+VIEWS = {'front': (0, -1, 0), 'side': (-1, 0, 0), 'quarter': (-0.64, -0.77, 0), 'lie': (0, -1, 0), 'front3q': (-0.5, -0.87, 0),
+         'sideback': (-0.9, 0.44, 0), 'backq': (-0.62, 0.78, 0)}
+TILT = {'quarter': 20.0, 'lie': 24.0, 'sideback': 10.0, 'backq': 22.0}   # lying on her side, seen from a little above so her body and the mat show
 FIT = {'quarter': 0.8}   # seen on a diagonal, her box is wider than she is: she lies corner to corner in it
 
 
@@ -92,6 +93,22 @@ def prop(kind, **o):
                 box((x, y, 0.21), (0.035, 0.035, 0.42), wood)
     elif kind in ('wall', 'calfwall'):
         y = o['y']; box((0, y - 0.06, 1.0), (1.6, 0.12, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
+    elif kind == 'sidewall':   # a wall at her right side (the tree at a wall), its face at x
+        x = o['x']; box((x - 0.06, 0, 1.0), (0.12, 1.6, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
+    elif kind == 'backwall':   # a wall behind her (the butterfly against a wall), its face at y
+        y = o['y']; box((0, y + 0.06, 1.0), (1.8, 0.12, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
+    elif kind == 'table':      # a table in front of her (lean and sway), its near edge at y, its top at h
+        wood = mat('wood', (0.42, 0.26, 0.15), 0.6); y, h = o['y'], o['h']
+        box((0, y - 0.25, h - 0.02), (0.8, 0.5, 0.04), wood)
+        for x in (-0.36, 0.36):
+            for yy in (y - 0.04, y - 0.46):
+                box((x, yy, (h - 0.04) / 2), (0.045, 0.045, h - 0.04), wood)
+    elif kind == 'sheet':      # a folded sheet under her seat (the butterfly in pregnancy), its top at h
+        box((0, 0.03, o['h'] / 2), (0.46, 0.36, o['h']), mat('sheet', (0.93, 0.9, 0.84), 0.95))
+    elif kind == 'pillow':     # a soft pillow between her knees, lying on her side
+        bpy.ops.mesh.primitive_uv_sphere_add(location=o['at'], segments=32, ring_count=16); b = bpy.context.object
+        b.dimensions = o['size']; bpy.ops.object.transform_apply(scale=True); bpy.ops.object.shade_smooth()
+        b.data.materials.append(mat('pillow', (0.86, 0.83, 0.9), 0.9)); made.append(b)
     elif kind == 'step':
         f, h = o['front'], o['h']; box((0, f - 0.2, h / 2), (0.7, 0.4, h), mat('stepwood', (0.55, 0.36, 0.22), 0.6))
     elif kind == 'rail':

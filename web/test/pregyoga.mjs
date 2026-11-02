@@ -1,14 +1,15 @@
 // Version 39.52: pregnancy yoga by trimester (Mohit, 1 Nov: "build the pregnancy yoga by trimester", after the walk through a
 // prenatal yoga app; the programme design, docs/plans-design-and-build-2026-10-24-programmes.md, section 6; MODULE_API section
 // 95). This file checks:
-//   1 three routines by her week (first three months to 13 weeks, middle to 27, last from 28), drawn, her bump from 14 weeks;
+//   1 three routines by her week (first three months to 13 weeks, middle to 27, last from 28), on the 3D figure (Version 39.54:
+//     her usual figure, then her with a middle and a full bump; every step's still, and a loop where its drawing moves);
 //     nothing on the back after 13 weeks, nothing on the tummy, no twist, no rising on the toes, no step-ups, no breath held;
 //     10 minutes at most; balance at a wall;
 //   2 Today on My pregnancy: on days 2 and 5 of her plan week, her three months' yoga in the walk's place (Start), on the green
 //     tier only; amber keeps the easy walk, red has no move, a sign that doesn't wait has none; 3 steps or fewer on day 1, 4 at
 //     most; the routine changes at 14 and 28 weeks; My plan names it on her walk days too; "Before you start" names it;
-//   3 the player: the stop card above Start (the moves' stop signs, Help's "Call 112 now" line, Call 112), drawings only (no 3D
-//     figure, which isn't pregnant), "Feeling unwell?" on every move (Call 112, 108, 102; "I feel fine now" goes back, paused;
+//   3 the player: the stop card above Start (the moves' stop signs, Help's "Call 112 now" line, Call 112), her 3D body for these
+//     three months (the drawings, with her bump, without web/fig or its pregnancy sets), "Feeling unwell?" on every move (Call 112, 108, 102; "I feel fine now" goes back, paused;
 //     "Stop for today" holds her walk and yoga until she checks her answers again, and "A quick check" leads the next day);
 //     10-second rests, none between sides or before resting on her side;
 //   4 Moves and calm in a pregnancy: only her three months' yoga (and Calm breath in Wind down); the other routines' pages
@@ -49,7 +50,7 @@ const errsAll = [];
 async function open(o = {}) {
   const ctx = await browser.newContext({ viewport: { width: o.w || 390, height: o.h || 844 }, locale: (o.seed || {}).lang === 'hi' ? 'hi-IN' : 'en-IN', timezoneId: 'Asia/Kolkata' });
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
-  await ctx.addInitScript('window.SAKHI_CONFIG = ' + JSON.stringify(LOCAL) + ';');
+  await ctx.addInitScript('window.SAKHI_CONFIG = ' + JSON.stringify(Object.assign({}, LOCAL, o.cfg || {})) + ';');
   await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + '); localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(ACCT)) + '); }');
   await ctx.route(/^https?:/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{}' }));
   const page = await ctx.newPage(); const errs = [];
@@ -57,6 +58,7 @@ async function open(o = {}) {
   await page.clock.install({ time: o.now || at(o.hm || '10:00') });
   await page.goto(PAGE + '#' + (o.hash || 'home'), { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => !!window.Saathi); await settle(page, o.wait || 600);
+  if (o.pre) { await page.evaluate(o.pre); await page.evaluate(() => window.Saathi.render()); await settle(page, 300); }
   return { ctx, page, errs };
 }
 async function settle(page, ms) { for (let i = 0; i < Math.ceil((ms || 400) / 100); i++) { await page.clock.runFor(100); await sleep(10); } }
@@ -80,13 +82,16 @@ const NOW = 'Chest pain, fainting, or regular painful tightenings in your tummy.
 try {
   /* ---------- 1. the three routines ---------- */
   const a1 = await open({ seed: withPlan(20, 2) });
-  const R = await a1.page.evaluate(() => { const P = window.Saathi.plan; return ['preg1', 'preg2', 'preg3'].map((id) => ({ id, meta: P.routine(id), steps: P.stepsOf(id).map((s) => ({ pose: s.pose, s: s.s, side: !!s.side, sideK: s.sideK || null, breath: s.breath || null, n: s.n, p: s.p, draw: !!s.draw, bump: s.bump })), mins: P.routineMins(id) })); });
+  const R = await a1.page.evaluate(() => { const P = window.Saathi.plan; return ['preg1', 'preg2', 'preg3'].map((id) => ({ id, meta: P.routine(id), steps: P.stepsOf(id).map((s) => ({ pose: s.pose, s: s.s, side: !!s.side, sideK: s.sideK || null, breath: s.breath || null, n: s.n, p: s.p, fig: s.fig || null, fb: s.fb, bump: s.bump })), mins: P.routineMins(id) })); });
   const poses = await a1.page.evaluate(() => ({ p: window.Saathi.plan.poses(), a: window.Saathi.plan.anims() }));
   const byId = Object.fromEntries(R.map((x) => [x.id, x]));
   const posesOf = (id) => byId[id].steps.map((s) => s.pose);
   const SUPINE = ['rest', 'bridge', 'bridgedown', 'knees', 'knees2'];
   const NEVER = ['prone', 'cobra', 'locust', 'twist', 'sitlong', 'calf', 'calfdown', 'step', 'stepfloor', 'downdog', 'plank', 'ashtanga', 'camel', 'lunge', 'lunge2', 'fwdbend', 'triangle', 'wide', 'reach'];
-  check('1 three routines, drawn, her bump from the middle three months', R.every((x) => x.meta && x.meta.draw && x.steps.length && x.steps.every((s) => s.draw)) && byId.preg1.meta.bump === 0 && byId.preg2.meta.bump > 0 && byId.preg3.meta.bump > byId.preg2.meta.bump, R.map((x) => x.meta));
+  check('1 three routines on her 3D body for each three months (her usual figure, then a middle and a full bump), the drawings\' bump behind them', R.every((x) => x.meta && x.steps.length && x.steps.every((s) => s.fb === x.meta.fb)) && byId.preg1.meta.fb === '' && byId.preg2.meta.fb === 'b2-' && byId.preg3.meta.fb === 'b3-' && byId.preg1.meta.bump === 0 && byId.preg2.meta.bump > 0 && byId.preg3.meta.bump > byId.preg2.meta.bump, R.map((x) => x.meta));
+  const FIGS = await a1.page.evaluate(() => window.SAKHI_FIG || null); const miss = [];
+  R.forEach((x) => x.steps.forEach((s) => { const n = x.meta.fb + (s.fig || s.pose); if (!FIGS || FIGS.stills.indexOf(n) < 0) miss.push('still ' + n); if (poses.a.indexOf(s.pose) >= 0 && (!FIGS || FIGS.loops.indexOf(n) < 0)) miss.push('loop ' + n); }));
+  check('1 every step has her body\'s 3D still, and a loop where its drawing moves (web/fig, render-preg.sh)', !miss.length, miss);
   check('1 nothing on the tummy, no twist, no rising on the toes, no step-ups, no deep bends, in any of them', R.every((x) => posesOf(x.id).every((p) => NEVER.indexOf(p) < 0)), R.map((x) => posesOf(x.id)));
   check('1 nothing on the back after 13 weeks', ['preg2', 'preg3'].every((id) => posesOf(id).every((p) => SUPINE.indexOf(p) < 0)), [posesOf('preg2'), posesOf('preg3')]);
   check('1 no breath held, ever', R.every((x) => x.steps.every((s) => !s.breath || (s.breath[1] === 0 && s.breath[3] === 0))));
@@ -161,11 +166,12 @@ try {
   const sc = await txt(p3, '.pl-pystop');
   check('3 its words: the signs for today, the signs for now with Help\'s "Call 112 now" line, and Call 112', sc.indexOf(STOP) >= 0 && sc.indexOf('Call 112 now ' + NOW + ' In pregnancy:') >= 0 && (await tels(p3, '.pl-pystop')) === '112', sc);
   check('3 "Go gently in a cool room, with water nearby" first, and about 10 minutes on Start', /^Pregnancy yoga Go gently in a cool room, with water nearby, and skip any move that doesn’t feel right\./.test(iv) && /Start · About 10 min/.test(iv), iv.slice(0, 300));
-  check('3 drawings only: no 3D figure (she isn\'t pregnant)', !(await has(p3, '#view .pl-3d')) && (await p3.page.$$eval('#view .pl-pitem svg.pl-fig', (xs) => xs.length)) > 5);
-  check('3 her bump on the drawings', (await p3.page.$$eval('#view .pl-pitem svg ellipse.pl-bump', (xs) => xs.length)) > 5);
+  const srcs = (a, sel) => a.page.$$eval(sel, (xs) => xs.map((x) => x.getAttribute('src') || x.getAttribute('poster') || ''));
+  const pics = await srcs(p3, '#view .pl-pitem img.pl-3d');
+  check('3 the moves in 3D, on her with the middle three months\' bump (b2-), no drawings', pics.length > 5 && pics.every((x) => /^fig\/s\/b2-/.test(x)) && !(await has(p3, '#view .pl-pitem svg.pl-fig')), pics);
   await shot(p3, '3-intro');
   await tap(p3, '#pl-pstart');
-  check('3 the first move: drawn with her bump, and "Feeling unwell?" on its picture', await has(p3, '.pl-figbox svg#pl-fig ellipse.pl-bump') && await has(p3, '.pl-figbox #pl-unwell') && !(await has(p3, '#pl-fig3d')));
+  check('3 the first move: her 3D figure with the bump (Loosen up\'s b2- loop), and "Feeling unwell?" on its picture', await has(p3, '.pl-figbox.pl-fb3d #pl-fig3d') && /^fig\/v\/b2-warmup\.webm$/.test(await p3.page.$eval('#pl-fig3d', (e) => e.getAttribute('src') || '')) && await has(p3, '.pl-figbox #pl-unwell') && !(await has(p3, '#pl-fig')));
   /* every move of every routine, in both languages, at 360 x 800: the timer (or the breath circle) above the buttons */
   const lay = [];
   for (const [rid, w] of [['preg1', 10], ['preg2', 20], ['preg3', 32]]) for (const lang of ['en', 'hi']) {
@@ -226,17 +232,29 @@ try {
   check('3 the next day "A quick check" leads', await has(n3, '.pl-sl-psafe'));
   await done(n3);
   const t1 = await open({ seed: withPlan(10, 2), hash: 'plan-r-preg1' });
-  check('3 the first three months: drawn, no bump, ends lying on her back (fine to 13 weeks)', !(await has(t1, '#view ellipse.pl-bump')) && !(await has(t1, '#view .pl-3d')) && /Shavasana/.test(await view(t1)));
+  const t1p = await srcs(t1, '#view .pl-pitem img.pl-3d');
+  check('3 the first three months: her usual 3D figure (no bump yet), ends lying on her back (fine to 13 weeks)', t1p.length > 5 && t1p.every((x) => /^fig\/s\/[a-z]/.test(x) && !/^fig\/s\/b[23]-/.test(x)) && !(await has(t1, '#view ellipse.pl-bump')) && /Shavasana/.test(await view(t1)), t1p);
   await done(t1);
   const h3 = await open({ seed: withPlan(32, 2), hash: 'plan-r-preg3' });
   const hv = await view(h3);
   check('3 the last three months: sitting first, long breaths out, rest on her side', /Loosen up, sitting/.test(hv) && /Long breaths out/.test(hv) && /Rest on your side/.test(hv) && !/Shavasana/.test(hv));
+  const h3p = await srcs(h3, '#view .pl-pitem img.pl-3d');
+  check('3 ... on her with the full bump (b3-)', h3p.length > 5 && h3p.every((x) => /^fig\/s\/b3-/.test(x)), h3p);
   await done(h3);
+  /* without the 3D figure, or a web/fig from before the pregnancy sets: the drawings, with her bump */
+  for (const [tag, o] of [['SAKHI_CONFIG.fig false', { cfg: { fig: false } }], ['a web/fig without the pregnancy sets', { pre: () => { const F = window.SAKHI_FIG; ['loops', 'stills'].forEach((k) => { F[k] = F[k].filter((n) => !/^b[23]-/.test(n)); }); } }]]) {
+    const x = await open(Object.assign({ seed: withPlan(20, 2), hash: 'plan-r-preg2' }, o));
+    check('3 ' + tag + ': the drawings, with her bump', (await x.page.$$eval('#view .pl-pitem svg ellipse.pl-bump', (xs) => xs.length)) > 5 && !(await has(x, '#view .pl-pitem .pl-3d')));
+    await tap(x, '#pl-pstart');
+    check('3 ' + tag + ': the first move drawn with her bump', await has(x, '.pl-figbox svg#pl-fig ellipse.pl-bump') && !(await has(x, '#pl-fig3d')) && await has(x, '.pl-figbox #pl-unwell'));
+    await done(x);
+  }
 
   /* ---------- 4. Moves and calm ---------- */
   const m4 = await open({ seed: withPlan(20, 2), hash: 'plan-moves' });
   const items = await m4.page.$$eval('#view .pl-ritem', (xs) => xs.map((x) => x.dataset.go));
   check('4 in a pregnancy: only her three months\' yoga', items.join() === 'plan-r-preg2', items);
+  check('4 its picture: her 3D still with the middle three months\' bump', await has(m4, '.pl-ritem .pl-rfig.pl-rf3d img[src="fig/s/b2-cat.webp"]'));
   check('4 the pregnancy stop card, not the cycle one', await has(m4, '.pl-pystop') && !/During your period/.test(await view(m4)));
   for (const r of ['gentle', 'cycle', 'sun', 'strength', 'steady', 'preg1', 'preg3']) {
     await go(m4, 'plan-r-' + r);

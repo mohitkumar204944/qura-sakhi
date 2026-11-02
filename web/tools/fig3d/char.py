@@ -19,12 +19,15 @@ FACE = {
     'nose-nostrils-width-incr': 0.22, 'nose-point-width-incr': 0.15, 'nose-volume-incr': 0.08,
     'mouth-lowerlip-volume-incr': 0.3, 'mouth-upperlip-volume-incr': 0.22, 'mouth-scale-horiz-incr': 0.05,
 }
+# her bump for the pregnancy yoga (Mohit, 2 Nov: "pregnancy yoga doesnt have 3d model"): MakeHuman's own pregnant stomach,
+# 0 (the default) for her usual figure
+BUMP = float(os.environ.get('FIG_BUMP', '0'))
 human = {
     'name': 'sakhi',
     # a woman in her mid twenties, of average build
     'phenotype': { 'gender': 0.0, 'age': 0.5, 'muscle': 0.5, 'weight': 0.55, 'proportions': 0.6, 'height': 0.42, 'cupsize': 0.45,
                    'firmness': 0.5, 'race': { 'asian': 0.45, 'african': 0.35, 'caucasian': 0.2 } },
-    'targets': [{ 'target': k, 'value': v } for k, v in FACE.items()],
+    'targets': [{ 'target': k, 'value': v } for k, v in FACE.items()] + ([{ 'target': 'stomach-pregnant-incr', 'value': BUMP }] if BUMP else []),
     'rig': 'default',
     'eyes': 'high-poly.mhclo', 'eyebrows': 'eyebrow002.mhclo', 'eyelashes': 'eyelashes02.mhclo',
     'hair': os.environ.get('FIG_HAIR', 'rehmanpolanski_hair_bun_brown') + '.mhclo',

@@ -282,8 +282,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - on the Flip5's 360 × 800 (and a small phone), Previous, Pause and Next above the tab bar, tappable, with the timer in
       view (30 Oct, "fix the buttons"). Its taps use `el.click()`, so it asks the page what a tap at each button would hit.
     `web/fig` is made by `web/tools/fig3d` (README.md there; Blender and MakeHuman's CC0 packs, outside the repo). After a
-    re-render, run `python3 web/tools/fig3d/install.py <work>/final web`. Contract: MODULE_API section 82; wording: section
-    19.39 (UI words only).
+    re-render, run `python3 web/tools/fig3d/install.py <work>/final web <work>/preg/final-b0: <work>/preg/final-b2:b2-
+    <work>/preg/final-b3:b3-` (the last three are pregnancy yoga's bodies, from `render-preg.sh`). Contract: MODULE_API section 82;
+    wording: section 19.39 (UI words only).
   - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
     - Call buttons on the labour timer;
     - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;
@@ -394,13 +395,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `node test/pregyoga.mjs` (Version 39.52, pregnancy yoga by trimester; Mohit, 1 Nov: "build the pregnancy yoga by trimester"):
     - three routines by her week (`preg1` to 13 weeks, `preg2` 14 to 27, `preg3` from 28), about 10 minutes each: nothing on the
       back after 13 weeks, nothing on the tummy, no twist, no rising on the toes, no breath held, balance at a wall;
-    - drawn with her bump from 14 weeks, never the 3D figure (it isn't pregnant);
+    - the 3D figure (Version 39.54; Mohit, 2 Nov: "pregnancy yoga doesnt have 3d model"): her usual figure to 13 weeks, then her
+      with a middle and a full bump (`web/tools/fig3d/render-preg.sh`, `fig/v/b2-*`, `b3-*`); the drawings, with her bump,
+      without them;
     - on Today on days 2 and 5 of her plan week, in the walk's place, on My pregnancy's green tier only;
     - the stop card above Start, "Feeling unwell?" on every move ("Stop for today" holds her walk and yoga until she checks her
       answers again);
     - Moves and calm in a pregnancy: only her three months' yoga and Calm breath, the other routines' pages refuse;
     - "Yoga" on a shared phone, and Hindi at 360 px.
-    Contract: MODULE_API section 95; wording: section 19.52 of the review (new lines wait for the doctor and a physiotherapist).
+    Contract: MODULE_API sections 95 and 97; wording: sections 19.52 and 19.54 of the review (new lines wait for the doctor and a
+    physiotherapist, and the 3D pictures for the physiotherapist).
   - `node test/planfor.mjs` (Version 39.53, every guide leads to her plan; Mohit, 1 Nov: "everything should leave to plan and for
     extended medical help qura doctor should be advised", then "build it"):
     - one "Your plan for this" row on the guides, routines and topic pages a plan covers: her running plan (My midlife plan's part

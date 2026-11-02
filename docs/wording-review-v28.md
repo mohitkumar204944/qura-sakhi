@@ -3113,7 +3113,7 @@ lines, waiting for the doctor and a physiotherapist (English, Hindi):
 three-month boundaries (14 and 28 weeks), child pose with knees wide in the first three months, cat and cow in the first and middle
 three months ("don't let your back sag" from 14 weeks), the side-lying leg lift from 14 weeks, rocking on hands and knees and lean
 and sway in the last three months, Bhramari in the middle three months, and the breathing counts (4 in, 6 out, never held). The
-pictures are drawings with her bump from 14 weeks, not the 3D figure.
+pictures were drawings with her bump from 14 weeks; since Version 39.54 they are the 3D figure (19.54).
 
 ### 19.53 Version 39.53: every guide leads to her plan (MODULE_API section 96)
 
@@ -3125,3 +3125,38 @@ UI words only:
 Both show on the guides, routines and topic pages listed in MODULE_API 96. No guide's own words changed. The hot-flush guide still
 says "simple habits help a little, hormone therapy helps the most"; naming CBT there, as her plan does, would be new wording for
 review. "Who treats what" now leads with the Qura doctor button its own line describes.
+
+### 19.54 Version 39.54: the 3D figure in pregnancy yoga (MODULE_API section 97)
+
+No new words: the three routines' moves, names and timings are 19.52's. What changes is the picture: the 3D woman who shows every
+other routine now shows these, on her usual figure in the first three months (no bump shows yet) and with a bump in the middle
+three months (moderate) and the last three (full). The drawings, with her bump, stay for phones without the 3D files.
+
+**For the women's-health physiotherapist, with 19.52's list:** the 3D pictures show details the words leave open. Please check:
+- Tree at a wall: her right hand flat on a wall at her side, a little below her shoulder; her left hand on her hip; her left foot
+  on the inside of her right calf.
+- Palm tree: her feet stay flat the whole time; her arms open out to her sides, meet overhead, and come down the same way.
+- Cat and cow: she breathes out and rounds her back with her head dropping between her arms, then breathes in, lengthens her
+  back with only a small dip and lifts her head. Her hands stay under her shoulders and her knees under her hips. In the first
+  three months ("Keep it small") both are smaller.
+- Child pose (first three months): knees wide, big toes together, hips back towards her heels, arms long in front, forehead
+  towards the mat; seen from behind her and to one side, so her wide knees show.
+- Lying on her side (from 14 weeks): on her right side, head resting on her right arm along the mat, left hand on the mat in front
+  of her chest. At rest, both knees bent with a pillow between them. For the leg lift, the knee underneath is bent for balance and
+  the top leg stays straight, rising about 30 degrees from where it rests and lowering slowly. (The left side is the mirror
+  image.)
+- Loosen up, sitting (last three months): sitting tall on a chair with her hands on her thighs, she rolls her shoulders up, back
+  and down, then marches: elbows bent at her sides, one knee lifting a hand's width at a time, twice each side; then her hands go
+  back to her thighs.
+- Slow sit-to-stand (last three months): feet wide apart, toes turned out a little, arms long in front; she sits down slowly onto
+  the chair and stands up slowly. Seen from the front and a little to one side, so her wide feet show.
+- Lean and sway (last three months): at a table at kitchen-counter height (the words allow "a wall or a table"), hands flat on it,
+  arms long, leaning forward about 45 degrees from her hips, knees soft. Her hips make one slow circle (to her left, back, to her
+  right, forward), seen from her right and a little behind, so the side-to-side part shows.
+- Rocking on hands and knees (last three months): her hips go back about a quarter of the way towards her heels, through the
+  middle, then a little forward of her hands, her hands and knees staying put.
+- Butterfly against a wall (last three months): sitting upright with her back on the wall, hands resting on her knees, knees
+  lifting and dropping gently.
+- Bhadrasana (first and middle three months): sitting tall on a folded sheet, soles together, knees out, her hands resting on
+  her knees, her knees lifting and dropping a little as she breathes (not the cycle routine's forward lean to her toes).
+- The chair squats, wall push-ups and Loosen up use the same moves as the other routines, on her with a bump.

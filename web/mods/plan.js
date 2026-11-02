@@ -406,29 +406,30 @@
   /* Version 39.52 (Mohit, 1 Nov: "build the pregnancy yoga by trimester"): yoga for each three months of a pregnancy, from the
      programme design (docs/plans-design-and-build-2026-10-24-programmes.md, section 6) and WHO 2020: nothing on the back after
      13 weeks and nothing on the tummy, no breath held, no deep twists, no jumping, no rising on the toes, balance at a wall.
-     Drafts for the gynaecologist and a women's-health physiotherapist (wording review 19.52). Drawn, with her bump from the
-     middle three months, not the 3D figure (which isn't pregnant); the reused moves keep their reviewed words */
-  const PY_T = (reps) => ({ pose: 'armsup', s: 30, reps: reps, n: L('Tadasana (palm tree)', 'ताड़ासन'), p: L('Feet a little apart and flat on the floor. Raise your arms, stretch up and breathe slowly.', 'पैर थोड़े खुले, पूरे ज़मीन पर। हाथ ऊपर उठाएँ, ऊपर की ओर खिंचें और धीरे साँस लें।') });
-  const PY_TREE = { pose: 'tree', s: 20, side: true, n: L('Vrikshasana (tree) at a wall', 'दीवार के पास वृक्षासन'), p: L('One hand on a wall. Rest one foot on your other ankle or calf, never on the knee. Breathe.', 'एक हाथ दीवार पर। एक पैर दूसरे पैर के टखने या पिंडली पर रखें, घुटने पर कभी नहीं। साँस लेती रहें।') };
-  const PY_CAT = (sag) => ({ pose: 'cat', s: 60, n: L('Marjariasana (cat and cow)', 'मार्जरी आसन (बिल्ली और गाय)'), p: L('On hands and knees: breathe out, round your back; breathe in, lift your head. ' + (sag ? 'Don’t let your back sag.' : 'Keep it small.'), 'हाथों और घुटनों के बल: साँस छोड़ें, पीठ गोल करें; साँस लें, सिर उठाएँ। ' + (sag ? 'पीठ नीचे न लटकने दें।' : 'हरकत छोटी रखें।')) });
-  const PY_CHILD = { pose: 'child', s: 40, knees: Object.assign({}, CHAIR_FWD, { pose: 'chairfwd' }), n: L('Shashankasana (child pose)', 'शशांकासन'), p: L('Knees wide apart, big toes together. Sit back towards your heels and stretch your arms forward.', 'घुटने चौड़े, पैरों के अँगूठे साथ। एड़ियों की ओर पीछे बैठें और हाथ आगे फैलाएँ।') };
-  const PY_BUT = (wall) => ({ pose: 'butterfly', s: 60, n: L('Bhadrasana (butterfly)', 'भद्रासन (तितली)'), p: wall ? L('Sit with your back against a wall, the soles of your feet together and your knees out. Breathe slowly.', 'दीवार से पीठ टिकाकर बैठें, तलवे आपस में मिलाकर, घुटने बाहर। धीरे साँस लें।')
+     Drafts for the gynaecologist and a women's-health physiotherapist (wording review 19.52). The 3D figure, on her with a bump
+     from the middle three months (Version 39.54; the drawings, with her bump, without web/fig); the reused moves keep their
+     reviewed words */
+  const PY_T = (reps) => ({ pose: 'armsup', fig: 'palm', s: 30, reps: reps, n: L('Tadasana (palm tree)', 'ताड़ासन'), p: L('Feet a little apart and flat on the floor. Raise your arms, stretch up and breathe slowly.', 'पैर थोड़े खुले, पूरे ज़मीन पर। हाथ ऊपर उठाएँ, ऊपर की ओर खिंचें और धीरे साँस लें।') });
+  const PY_TREE = { pose: 'tree', fig: 'treewall', s: 20, side: true, n: L('Vrikshasana (tree) at a wall', 'दीवार के पास वृक्षासन'), p: L('One hand on a wall. Rest one foot on your other ankle or calf, never on the knee. Breathe.', 'एक हाथ दीवार पर। एक पैर दूसरे पैर के टखने या पिंडली पर रखें, घुटने पर कभी नहीं। साँस लेती रहें।') };
+  const PY_CAT = (sag) => ({ pose: 'cat', fig: sag ? null : 'catsmall', s: 60, n: L('Marjariasana (cat and cow)', 'मार्जरी आसन (बिल्ली और गाय)'), p: L('On hands and knees: breathe out, round your back; breathe in, lift your head. ' + (sag ? 'Don’t let your back sag.' : 'Keep it small.'), 'हाथों और घुटनों के बल: साँस छोड़ें, पीठ गोल करें; साँस लें, सिर उठाएँ। ' + (sag ? 'पीठ नीचे न लटकने दें।' : 'हरकत छोटी रखें।')) });
+  const PY_CHILD = { pose: 'child', fig: 'childwide', s: 40, knees: Object.assign({}, CHAIR_FWD, { pose: 'chairfwd' }), n: L('Shashankasana (child pose)', 'शशांकासन'), p: L('Knees wide apart, big toes together. Sit back towards your heels and stretch your arms forward.', 'घुटने चौड़े, पैरों के अँगूठे साथ। एड़ियों की ओर पीछे बैठें और हाथ आगे फैलाएँ।') };
+  const PY_BUT = (wall) => ({ pose: 'butterfly', fig: wall ? 'butterflywall' : 'butterflytall', s: 60, n: L('Bhadrasana (butterfly)', 'भद्रासन (तितली)'), p: wall ? L('Sit with your back against a wall, the soles of your feet together and your knees out. Breathe slowly.', 'दीवार से पीठ टिकाकर बैठें, तलवे आपस में मिलाकर, घुटने बाहर। धीरे साँस लें।')
     : L('Sit tall on a folded sheet, the soles of your feet together and your knees out. Breathe slowly.', 'मुड़ी हुई चादर पर सीधी बैठें, तलवे आपस में मिलाकर, घुटने बाहर। धीरे साँस लें।') });
   const PY_SIDELEG = { pose: 'sideleg', s: 30, side: true, n: L('Side-lying leg lift', 'करवट लेकर पैर उठाना'), p: L('Lie on your side, head on your arm. Lift your top leg a little, keeping it straight, and lower it slowly. 8 times.', 'करवट लेकर लेटें, सिर बाँह पर। ऊपर वाला पैर सीधा रखकर थोड़ा उठाएँ, फिर धीरे से नीचे लाएँ। 8 बार।') };
   const PY_REST = { pose: 'sidelie', s: 90, n: L('Rest on your side', 'करवट लेकर आराम'), p: L('Lie on your side, left or right, a pillow between your knees. Let your body go loose and breathe slowly.', 'बाईं या दाईं करवट लेटें, घुटनों के बीच तकिया। शरीर ढीला छोड़ें और धीरे साँस लें।') };
   const PY_WALL = Object.assign({}, R.strength.steps[3], { reps: 1 });   /* Wall push-ups, its reviewed words, one set */
-  R.preg1 = { hue: 'plum', first: 'cat', draw: true, bump: 0, steps: [W, PY_T(2), PY_TREE, PY_CAT(false), PY_CHILD, PY_BUT(false),
+  R.preg1 = { hue: 'plum', first: 'cat', ffig: 'catsmall', fb: '', bump: 0, steps: [W, PY_T(2), PY_TREE, PY_CAT(false), PY_CHILD, PY_BUT(false),
     { pose: 'sit', s: 60, breath: [4, 0, 6, 0], n: L('Slow breathing', 'धीमी साँस'), p: L('Sit comfortably. Breathe in for 4 counts and out slowly for 6. Never hold your breath.', 'आराम से बैठें। 4 गिनती तक साँस लें और 6 गिनती तक धीरे छोड़ें। साँस कभी न रोकें।') },
     REST] };
-  R.preg2 = { hue: 'plum', first: 'cat', draw: true, bump: 0.75, steps: [W, PY_T(1), PY_TREE, PY_WALL,
+  R.preg2 = { hue: 'plum', first: 'cat', fb: 'b2-', bump: 0.75, steps: [W, PY_T(1), PY_TREE, PY_WALL,
     { pose: 'chair', s: 45, n: L('Chair squats', 'कुर्सी से उठक-बैठक'), p: L('Stand up from a chair slowly, using your hands if you need to, then sit down slowly. 8 times.', 'कुर्सी से धीरे से खड़ी हों, ज़रूरत हो तो हाथों का सहारा लेकर, फिर धीरे से बैठें। 8 बार।') },
     PY_CAT(true), PY_BUT(false), R.calm.steps[1], PY_SIDELEG, PY_REST] };
-  R.preg3 = { hue: 'plum', first: 'leanfwd', draw: true, bump: 1, steps: [
+  R.preg3 = { hue: 'plum', first: 'leanfwd', ffig: 'leantable', fb: 'b3-', bump: 1, steps: [
     { pose: 'seatmarch', s: 60, n: L('Loosen up, sitting', 'बैठकर शरीर खोलें'), p: L('Sit tall on a chair. Roll your shoulders, then march, lifting your knees one by one.', 'कुर्सी पर सीधी बैठें। कंधे घुमाएँ, फिर एक-एक करके घुटने उठाते हुए क़दमताल करें।') },
-    { pose: 'chair', s: 45, n: L('Slow sit-to-stand', 'धीरे से उठना-बैठना'), p: L('Feet wide apart. Stand up from a chair slowly, then sit down slowly. Use your hands if you need to. 6 times.', 'पैर चौड़े खुले। कुर्सी से धीरे से खड़ी हों, फिर धीरे से बैठें। ज़रूरत हो तो हाथों का सहारा लें। 6 बार।') },
-    { pose: 'seat', s: 60, breath: [4, 0, 6, 0], n: L('Long breaths out', 'लंबी साँस छोड़ना'), p: L('Sit tall on a chair. Breathe in for 4 counts and out slowly for 6. Never hold your breath.', 'कुर्सी पर सीधी बैठें। 4 गिनती तक साँस लें और 6 गिनती तक धीरे छोड़ें। साँस कभी न रोकें।') },
+    { pose: 'chair', fig: 'chairwide', s: 45, n: L('Slow sit-to-stand', 'धीरे से उठना-बैठना'), p: L('Feet wide apart. Stand up from a chair slowly, then sit down slowly. Use your hands if you need to. 6 times.', 'पैर चौड़े खुले। कुर्सी से धीरे से खड़ी हों, फिर धीरे से बैठें। ज़रूरत हो तो हाथों का सहारा लें। 6 बार।') },
+    { pose: 'seat', fig: 'chairsit', s: 60, breath: [4, 0, 6, 0], n: L('Long breaths out', 'लंबी साँस छोड़ना'), p: L('Sit tall on a chair. Breathe in for 4 counts and out slowly for 6. Never hold your breath.', 'कुर्सी पर सीधी बैठें। 4 गिनती तक साँस लें और 6 गिनती तक धीरे छोड़ें। साँस कभी न रोकें।') },
     PY_WALL,
-    { pose: 'leanfwd', s: 45, n: L('Lean and sway', 'झुककर झूमना'), p: L('Hands on a wall or a table, lean forward a little and sway your hips slowly, side to side or in circles.', 'दीवार या मेज़ पर हाथ रखकर थोड़ा आगे झुकें, और कूल्हों को धीरे-धीरे दाएँ-बाएँ या गोल घुमाएँ।') },
+    { pose: 'leanfwd', fig: 'leantable', s: 45, n: L('Lean and sway', 'झुककर झूमना'), p: L('Hands on a wall or a table, lean forward a little and sway your hips slowly, side to side or in circles.', 'दीवार या मेज़ पर हाथ रखकर थोड़ा आगे झुकें, और कूल्हों को धीरे-धीरे दाएँ-बाएँ या गोल घुमाएँ।') },
     { pose: 'allfours', s: 60, n: L('Rock on hands and knees', 'हाथों-घुटनों के बल झूलना'), p: L('On hands and knees with your back flat, rock slowly forward and back. A folded sheet under your knees helps.', 'हाथों और घुटनों के बल, पीठ सीधी रखकर, धीरे-धीरे आगे-पीछे झूलें। घुटनों के नीचे मुड़ी चादर रखें।') },
     PY_BUT(true), PY_SIDELEG, PY_REST] };
   const PY = ['preg1', 'preg2', 'preg3'];
@@ -466,7 +467,7 @@
         else out.push(Object.assign({}, s, { set: k, sets: sets }));
       }
     });
-    if (R[id] && R[id].draw) out.forEach((x) => { x.draw = true; x.bump = R[id].bump || 0; });   /* Version 39.52: pregnancy yoga, drawn with her bump */
+    if (R[id] && R[id].fb != null) out.forEach((x) => { x.fb = R[id].fb; x.bump = R[id].bump || 0; });   /* Version 39.54: pregnancy yoga on her body for these three months */
     return out;
   }
   const routineMins = (id, d) => Math.max(1, Math.round(stepsOf(id, d).reduce((a, s) => a + s.s, 0) / 60) + 1);
@@ -1022,7 +1023,7 @@
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
     const tRs = !tp ? [] : (packOf(d) === 'cycle' ? [tp.routine] : actionsFor(fullD(d)).filter((a) => a.kind === 'routine' && a.r).map((a) => a.r));   /* Version 39.51 (Mohit's phone): Today is her plan's own routine, not the cycle plan's */
     v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill(R[id].first) && !R[id].draw ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, draw: R[id].draw, bump: R[id].bump }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill((R[id].fb || '') + (R[id].ffig || R[id].first)) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, fig: R[id].ffig, fb: R[id].fb, bump: R[id].bump }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
       '<div class="card pl-walkcard"><span class="pl-mfig' + (figStill('walk') ? ' pl-mf3d' : '') + '" id="pl-walkfig">' + walkFig() + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       (d && d.start && !finished(d) ? '<div class="chips pl-add">' + [10, 15, 20, 30].map((n) => '<button type="button" class="chip" data-pl-add="' + n + '">+' + n + '</button>').join('') + '</div>' : '') +
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
@@ -1072,15 +1073,18 @@
   const FIG = () => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false ? f : null; };
   const figStill = (pose) => { const f = FIG(); return f && (f.stills || []).indexOf(pose) >= 0 ? 'fig/s/' + pose + '.webp' : ''; };
   const figKey = (s) => s.fig || (ANIM[s.pose] ? s.pose : '');
-  const figLoop = (s) => { const f = FIG(); const k = figKey(s); return f && k && (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : ''; };
-  const figThumb = (s, mirror) => { const src = s.draw ? '' : figStill(s.fig || s.pose); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror, bump: s.bump }); };   /* Version 39.52: pregnancy yoga is drawn */
+  /* Version 39.54: pregnancy yoga's steps carry her body for those three months (fb: web/fig's b2- or b3- set, '' her usual
+     figure), and fall back to the drawings, with her bump, where that body's file isn't there */
+  const figName = (s, n) => (s.fb || '') + n;   /* a routine's card picture takes its ffig, the 3D position of the step its drawing (first) shows */
+  const figLoop = (s) => { const f = FIG(); const k = figKey(s) && figName(s, figKey(s)); return f && k && (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : ''; };
+  const figThumb = (s, mirror) => { const src = figStill(figName(s, s.fig || s.pose)); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror, bump: s.bump }); };
   function fig3d(s, prev) {
-    const f = FIG(); if (!f || s.draw) return '';
+    const f = FIG(); if (!f) return '';
     const mir = s.sideK === 'l' ? ' pl-mirror' : ''; let still, clip = '', loop = true;
     if (s.sun && s.si != null && f.sun) {
       still = 'fig/s/sun-' + S.pad2(s.si) + '.webp';
       if (s.flow && prev && prev.pose !== s.pose && s.si >= 1 && s.si <= f.sun) { clip = 'fig/v/sun-' + S.pad2(s.si) + '.webm'; loop = false; }
-    } else { still = figStill(s.fig || s.pose); clip = figLoop(s); }
+    } else { still = figStill(figName(s, s.fig || s.pose)); clip = figLoop(s); }
     if (!still && !clip) return '';
     if (!clip || reduced()) return still ? '<img class="pl-3d' + mir + '" id="pl-fig3d" src="' + still + '" alt="">' : '';
     return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + clip + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') +
@@ -3840,7 +3844,7 @@
     intake: { render: renderIntake, count: (a) => (a && a.goal ? screensOf(a).length : 5), goals: (st) => GOALS[stKey(st)].slice(),
       part: (a) => { const l = a && a.goal ? screensOf(a) : []; return l[S.clamp((a && a.iq) || 0, 0, Math.max(0, l.length - 1))] === 'sum' ? 2 : 1; } },
     psTier: psTier, gwAt: (iso) => gwAt(iso),   /* Version 39.34 */
-    rids: () => RIDS.filter((id) => routineOk(id, S.canSave() && raw() ? D() : null)), pyId: (iso) => pyId(iso), routine: (id) => (R[id] ? { hue: R[id].hue, draw: !!R[id].draw, bump: R[id].bump || 0 } : null),   /* Version 39.52 */
+    rids: () => RIDS.filter((id) => routineOk(id, S.canSave() && raw() ? D() : null)), pyId: (iso) => pyId(iso), routine: (id) => (R[id] ? { hue: R[id].hue, fb: R[id].fb != null ? R[id].fb : null, bump: R[id].bump || 0 } : null),   /* Version 39.52; 39.54 her 3D body */
     changing: () => { const d = raw(); return !!(planOn() && d && (changedWhy(d) || fitWhy(d))); },   /* Version 39.35: core's goals card waits while it asks */   /* Version 39.48: or while the plan for now is offered */
     misfit: () => { const d = raw(); return !!(planOn() && d && fitWhy(d)); },   /* Version 39.48: a plan that doesn't fit her stage doesn't keep its goal first */
     nudgeAt: NUDGE_AT, mcDue: () => (raw() ? mcDue(fullD(raw())) : 0),   /* Version 39.12 */

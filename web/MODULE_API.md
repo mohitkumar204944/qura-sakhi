@@ -6274,3 +6274,51 @@ Topics: hot, sleep, mood, bones (the midlife plan's goals), meno (her midlife go
 
 New UI words: `plan_for_h_run` "Your plan for this" and `plan_for_h_offer` "A free plan for this", with Hindi. `node test/planfor.mjs`
 checks it (26 checks).
+
+## 97. Version 39.54: the 3D figure in pregnancy yoga
+
+Mohit, 2 Nov, trying Version 39.52 on his Flip5: "pregnancy yoga doesnt have 3d model", then "proceed building", then "test
+every one and if any inaccuracy is there just fix it and give finished moves with right movements". Section 95 item 2 drew the
+three routines because the 3D woman wasn't pregnant; now she is, with MakeHuman's own pregnancy shape. No new words, steps,
+screens, questions or reminders.
+
+1. **Three bodies** (`web/tools/fig3d`): her usual figure (`b0`) for the first three months, when no bump shows; for the middle
+   three months (`b2`) and the last three (`b3`), `char.py` with `FIG_BUMP` 0.6 and 1.0 (MPFB's `stomach-pregnant-incr` target), so
+   her t-shirt and leggings fit over the bump. The drawings' bump stays 0.75 and 1 (`R.preg2.bump`, `R.preg3.bump`).
+2. **New 3D positions** (`moves.py`'s pregnancy section), each loop as its step's words say, checked move by move against them:
+   - Tadasana with her feet flat (`palm`); the tree at a wall (`treewall`, her right hand on a wall at her side, her left on her hip);
+   - on hands and knees, her hands and knees planted: cat and cow (`cat`, `cow`), the first three months' smaller ones ("Keep it
+     small": `catsmall`, `cowsmall`), and "rock slowly forward and back" (`allfours`, `rockback`, `rockfwd`: back towards her heels,
+     through the middle and a little forward of her hands);
+   - child pose with her knees wide (`childwide`, seen from behind her and to one side so her wide knees show);
+   - lying on her right side (`sidelie` with a pillow between her knees, `sidedown`, `sideleg`);
+   - Loosen up sitting, "Roll your shoulders, then march" (`seatshrug`, `seatroll`, then `seatmid`, `seatmarch`, `seatmarch2`);
+   - the slow sit-to-stand, "Feet wide apart" (`chairupw`, `chairwide`, seen a little from her right so her wide feet show);
+   - lean and sway, "Hands on a wall or a table ... sway your hips slowly, side to side or in circles": at a counter-height table,
+     one slow hip circle (`leantable`, `leanleft`, `leanback`, `leanright`, `leanfore`), seen from her right and a little behind,
+     where her bump and her hips' sway both show (from in front the table and her own body hide her hips);
+   - Bhadrasana, "Sit tall on a folded sheet" (`butterflytall`: upright on a folded sheet, her hands on her knees, not the cycle
+     routine's lean to her toes) and against a wall (`butterflywall`).
+   Views: 'lie' (from in front and a little above), 'front3q', 'sideback', 'backq'. Props: a wall at her side, a wall behind her back
+   and a pillow between her knees (the last two placed from her pose, `render.py` `after_props`), a folded sheet, a table.
+3. **Rendering and install**: `render-preg.sh <work>` renders each body's stills and loops as `moves.PREG` lists them (two bodies at
+   a time; stopped part way, it carries on where it was: each finished loop leaves a `.done`) and encodes them; `install.py <final>
+   <web> <preg>/final-b0: <preg>/final-b2:b2- <preg>/final-b3:b3-` adds them to the regular set (`fig/v/b2-cat.webm`,
+   `fig/s/b3-sidelie.webp`; her usual figure's new ones, `palm`, `catsmall`, `treewall`, `childwide` and `butterflytall`, have no
+   prefix), leaving every regular file as it was. web/fig grows from 2.1 MB to 3.3 MB (34 loops, 70 stills).
+4. **The player** (`mods/plan.js`): `R.preg1` to `R.preg3` carry `fb` ('', 'b2-', 'b3-') in place of `draw`; `stepsOf` gives each
+   step `fb` and `bump`; `figName(s, n)` prefixes a step's still and loop names (`figThumb`, `fig3d`, `figLoop`), so the routine's
+   page, the move and the rest's "Up next" show her body for those three months. Steps that need their own 3D position name it
+   (`fig`): Tadasana `palm`, the tree `treewall`, the first months' cat `catsmall` (`PY_CAT(false)`), child pose `childwide`,
+   Bhadrasana `butterflytall` or `butterflywall`, the slow sit-to-stand `chairwide`, lean and sway `leantable`, long breaths out
+   `chairsit`. A routine's card picture on Moves and calm is her body's still of `ffig` (or `first`). Where a body's file isn't there
+   (`SAKHI_CONFIG.fig` false, no web/fig, or a web/fig from before this version) the drawings, with her bump, stay.
+   `S.plan.routine(id)` gives `fb` in place of `draw`. "Feeling unwell?" stays in the picture's corner, clear of her and the buttons.
+5. **Checked**: `node test/pregyoga.mjs` (84 checks): each routine's body; every step's still for its body, and a loop where its
+   drawing moves; the routine page and the first move in 3D on her middle-months body, the first months' on her usual figure, the
+   last months' on her full bump; the drawings with her bump without the 3D files or without the pregnancy sets; Moves and calm's
+   picture; and, as before, every move at 360 × 800 in English and Hindi with the timer in view, now with the 3D figure. Every loop
+   was looked at frame by frame against its words (the fixes above came from that).
+
+The minimalist baseline: nothing she sees or does changes but the picture: no new step, ring, question, screen, tour or words;
+the shared-phone check is section 95's ("Yoga"). The physiotherapist's checklist for the pictures is review 19.54.

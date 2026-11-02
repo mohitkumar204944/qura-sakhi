@@ -5,14 +5,15 @@
 // (The helpers below are test/pregyoga.mjs's.) Version 39.52: pregnancy yoga by trimester (Mohit, 1 Nov: "build the pregnancy yoga by trimester", after the walk through a
 // prenatal yoga app; the programme design, docs/plans-design-and-build-2026-10-24-programmes.md, section 6; MODULE_API section
 // 95). This file checks:
-//   1 three routines by her week (first three months to 13 weeks, middle to 27, last from 28), drawn, her bump from 14 weeks;
+//   1 three routines by her week (first three months to 13 weeks, middle to 27, last from 28), on the 3D figure (Version 39.54:
+//     her usual figure, then her with a middle and a full bump);
 //     nothing on the back after 13 weeks, nothing on the tummy, no twist, no rising on the toes, no step-ups, no breath held;
 //     10 minutes at most; balance at a wall;
 //   2 Today on My pregnancy: on days 2 and 5 of her plan week, her three months' yoga in the walk's place (Start), on the green
 //     tier only; amber keeps the easy walk, red has no move, a sign that doesn't wait has none; 3 steps or fewer on day 1, 4 at
 //     most; the routine changes at 14 and 28 weeks; My plan names it on her walk days too; "Before you start" names it;
-//   3 the player: the stop card above Start (the moves' stop signs, Help's "Call 112 now" line, Call 112), drawings only (no 3D
-//     figure, which isn't pregnant), "Feeling unwell?" on every move (Call 112, 108, 102; "I feel fine now" goes back, paused;
+//   3 the player: the stop card above Start (the moves' stop signs, Help's "Call 112 now" line, Call 112), her 3D body for these
+//     three months (the drawings, with her bump, without web/fig), "Feeling unwell?" on every move (Call 112, 108, 102; "I feel fine now" goes back, paused;
 //     "Stop for today" holds her walk and yoga until she checks her answers again, and "A quick check" leads the next day);
 //     10-second rests, none between sides or before resting on her side;
 //   4 Moves and calm in a pregnancy: only her three months' yoga (and Calm breath in Wind down); the other routines' pages

@@ -1,13 +1,16 @@
-# Copies the rendered moves into the app: python3 install.py <final dir> <web dir>
+# Copies the rendered moves into the app: python3 install.py <final dir> <web dir> [<pregnancy final dir>:<prefix> ...]
 #   fig/v/<loop>.webm   each loop (moves.LOOPS) and each flow of the sun salutation (sun-01 .. sun-11)
 #   fig/s/<pose>.webp   a still of every position (the app's 43 drawings and moves.EXTRA), and sun-00 .. sun-11, each sun
 #                       salutation position framed as its flow is
 #   fig/fig.js          what is there, for the player (window.SAKHI_FIG)
+# Pregnancy yoga's bodies (render-preg.sh, Version 39.54) come after, each with its prefix: <work>/preg/final-b0: (her usual
+# figure's new positions), <work>/preg/final-b2:b2- and <work>/preg/final-b3:b3- (the middle and last three months).
 # Run render-all.sh (or render.py) and encode.py first.
 import glob, json, os, shutil, sys
 from PIL import Image
 
 FINAL, WEB = sys.argv[1], sys.argv[2]
+EXTRA = [a.rsplit(':', 1) for a in sys.argv[3:]]
 # moves.SUN, as the render names it (sun_cobra is the cobra on the sun salutation's planted hands)
 SUN = ['prays', 'reach', 'fwdbend', 'lunge', 'plank', 'ashtanga', 'sun_cobra', 'downdog', 'lunge2', 'fwdbend', 'reach', 'prays']
 OUT = os.path.join(WEB, 'fig')
@@ -30,12 +33,19 @@ for p in sorted(glob.glob(os.path.join(FINAL, 'stills', '*.png'))):
     name = os.path.basename(p)[:-4]; still(p, os.path.join(OUT, 's', name + '.webp')); stills.append(name)
 for i, pose in enumerate(SUN):
     still(os.path.join(FINAL, 'sun', 'sun-%s.png' % pose), os.path.join(OUT, 's', 'sun-%02d.webp' % i))
+for d, pre in EXTRA:
+    for p in sorted(glob.glob(os.path.join(d, 'video', '*.webm'))):
+        name = pre + os.path.basename(p)[:-5]; shutil.copy(p, os.path.join(OUT, 'v', name + '.webm')); loops.append(name)
+    for p in sorted(glob.glob(os.path.join(d, 'stills', '*.png'))):
+        name = pre + os.path.basename(p)[:-4]; still(p, os.path.join(OUT, 's', name + '.webp')); stills.append(name)
+loops.sort(); stills.sort()
 sun = len(glob.glob(os.path.join(OUT, 'v', 'sun-*.webm')))
 man = {'v': 1, 'loops': loops, 'stills': stills, 'sun': sun}
 with open(os.path.join(OUT, 'fig.js'), 'w') as f:
     f.write('/* The 3D figure\'s moves (Version 39.39), made by web/tools/fig3d/install.py from its renders: do not edit by hand.\n'
             '   loops: fig/v/<name>.webm, one per moving drawing; stills: fig/s/<pose>.webp; sun: fig/v/sun-01..NN.webm, the sun\n'
-            '   salutation\'s flows, with fig/s/sun-00..NN.webp its positions. */\n')
+            '   salutation\'s flows, with fig/s/sun-00..NN.webp its positions; b2- and b3-: pregnancy yoga on her with a bump, the\n'
+            '   middle and the last three months (Version 39.54). */\n')
     f.write('window.SAKHI_FIG = ' + json.dumps(man) + ';\n')
 with open(os.path.join(OUT, 'CREDITS.md'), 'w') as f:
     f.write('# The 3D figure\n\n'
