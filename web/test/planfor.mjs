@@ -96,7 +96,7 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
 {
   let a = await open({});
   let r = await row(a.page, 'a-cycle.painful-periods');
-  check('2 painful periods guide: "A free plan for this · Easier periods" (the period pain plan)', /A free plan for this/i.test(r) && /Easier periods/.test(r), r);
+  check('2 painful periods guide: "A free plan for this · My period plan" (the period pain plan, Version 39.55)', /A free plan for this/i.test(r) && /My period plan/.test(r), r);
   await tap(a.page, '#view .pl-for [data-pl-for]');
   let mi = await intake(a.page);
   check('2 a tap starts that plan’s questions', (await hash(a.page)) === '#plan-goal' && mi && mi.goal === 'pain', { h: await hash(a.page), mi }); await done(a);

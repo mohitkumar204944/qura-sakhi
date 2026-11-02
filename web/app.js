@@ -1072,7 +1072,7 @@
   /* Version 36: plans are a tab of their own (Mohit, 23 Oct: "plan should be handy not deep hidden") */
   const planTab = () => state.stage === 'app' && !!ROUTES['plan'] && !!api.planOn();
   function tabOf(r) {
-    if ((r === 'plan' || r.startsWith('plan-') || ['mid-lesson', 'ttc-lesson', 'ttc-ready'].indexOf(r) >= 0) && planTab()) return 'plan';   /* Version 39.51 (Mohit's phone test): her plan's chapters, lessons and ready check are My plan's */
+    if ((r === 'plan' || r.startsWith('plan-') || ['mid-lesson', 'per-lesson', 'ttc-lesson', 'ttc-ready'].indexOf(r) >= 0) && planTab()) return 'plan';   /* Version 39.51 (Mohit's phone test): her plan's chapters, lessons and ready check are My plan's */
     if (r.startsWith('a-') || r === 'learn' || r.startsWith('learn-')) return 'care';
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */
@@ -2012,6 +2012,17 @@
     if (e) e.pain = v; else state.events.push({ d: td, t: 'start_detail', pads: '', clots: '', pain: v, leaked: false, two: false });
     save(); emit('log', { type: 'flow' }); return true;
   }
+  /* Version 39.55: My period plan's "Your period today" saves its taps on today's period entry (soaked within 1 to 2 hours is the
+     day page's own "Soaked one every 1–2 hours"; clots; leaked through clothes) */
+  function setFlowToday(f) {
+    if (!f || !canSave()) return false; const td = toISO(today());
+    let e = state.events.find((x) => (x.t === 'start' || x.t === 'start_detail') && x.d === td);
+    if (!e) { e = { d: td, t: 'start_detail', pads: '', clots: '', pain: '', leaked: false, two: false }; state.events.push(e); }
+    if (f.soak === 'y') e.pads = 'pads_4'; else if (f.soak === 'n' && e.pads === 'pads_4') e.pads = '';
+    if (['clots_0', 'clots_1', 'clots_2'].indexOf(f.clots) >= 0) e.clots = f.clots;
+    if (typeof f.leaked === 'boolean') e.leaked = f.leaked;
+    save(); emit('log', { type: 'flow' }); return true;
+  }
   function feelToggle(d, k) { let list = (state.daily[d] || []).slice(); const i = list.indexOf(k); if (i >= 0) list.splice(i, 1); else { list.push(k); list = okRule(list, k); } if (list.length) state.daily[d] = list; else delete state.daily[d]; save(); if (i < 0) emit('log', { type: 'daily' }); return i < 0; }
   function feelCard(disc) {
     if (disc || !feelOn()) return ''; const d = toISO(today()); const got = state.daily[d] || []; const plan = !!(api.plan && api.plan.running && safe(() => api.plan.running(), false));
@@ -2641,7 +2652,7 @@
   /* a private screen: behind her PIN when one is set (the same PIN as her health details) */
   function privateGo(route) { mem.pinNext = route; setHash(state.settings.pinHash && !mem.healthOk && PIN_ROUTES.indexOf(route) < 0 ? 'pin' : route); }
   /* review DP-2, DP-10: a private screen asks for the PIN on the page itself, however she reaches it: one title, and Back */
-  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson'];   /* Version 39.51: the midlife plan's chapters */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
+  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson'];   /* Version 39.51: the midlife plan's chapters */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
   const pinGated = (r) => state.stage === 'app' && !!state.settings.pinHash && !mem.healthOk && (r === 'pin' || (!!state.settings.discreet && PIN_ROUTES.indexOf(r) >= 0));
   function renderPinGate(v, r) {
     const next = r === 'pin' ? (mem.pinNext || 'home') : r;
@@ -2665,6 +2676,7 @@
     if (['cycle', 'meno'].indexOf(stageNow()) < 0 || countsOff() || state.situation.stopped || state.situation.hysterectomy) return '';
     const ri = headsRange(); if (!ri) return ''; const n = diffDays(today(), ri.from); if (n < 1 || n > 3) return '';
     if ((state.prompts || {}).heads === toISO(ri.from)) return '';
+    if (api.plan && api.plan.period && api.plan.period.kitToday && api.plan.period.kitToday()) return '';   /* Version 39.55: her plan's "Get your kit ready" holds it today */
     const pats = disc ? [] : (patterns() || { list: [] }).list.filter((x) => x.r >= -4 && x.r <= 1).slice(0, 2);
     const rp = pats.find((x) => x.key === 'd_cramps') || pats.find((x) => api.relief && api.relief.forSym(x.key)); const rel = rp && api.relief ? api.relief.forSym(rp.key) : null;
     return '<div class="card soft hu-card"><h3>' + esc(disc ? t('hu_h_d') : (n === 1 ? t('hu_h1') : tf('hu_h', { n: n }))) + '</h3>' +
@@ -5168,7 +5180,7 @@
     pregEnded: () => { endPregnancy(); save(); },   /* Version 39.2: "The pregnancy ended" on the check-ups page (preg.js) */
     birthOn: (iso) => { if (!isISO(iso) || fromISO(iso) > today()) return; const s0 = state.situation; endPregnancy(null, true); delete s0.pregEndedOn; setBirth(iso); s0.planning = false; s0.stopped = false; delete s0.stoppedOn; save(); },
     data: data, reminders: reminders, canSave: canSave, needDiary: needDiary, ask: ask, goBack: goBack, backBtn: backBtn, share: shareText,
-    cycle: { predict: predictInfo, cycleList: cycleList, fertWhy: fertWhy, chanceOn: chanceOn, chanceShown: chanceShown, phaseOn: phaseOn, afterLoss: afterLossNow, afterHormones: afterHormonesNow, setHormones: (on) => { setHormones(on); save(); }, longOpen: longOpen, starts: starts, gapsAll: gapsAll, usable: usable, lastStart: lastStart, cycleDay: cycleDay, bleedingDays: bleedingDays, rangeInfo: rangeInfo, bandHi: bandHi, isPregnant: isPregnant, countsOff: countsOff, afterBirth: afterBirthNow, ageYears: ageYears, lastCheckins: lastCheckins, fertileInfo: fertileInfo, midlifeStage: midlifeStage, excludedWhy: excludedWhy, isMidlife: isMidlife, approxStarts: approxStarts, periodLen: periodLen, rawStarts: () => liveStartEvents().map((e) => e.d).sort(), verdict: cycleVerdict, periodFlow: periodFlow, heavyEv: heavyEv, counting: countingNow, setPain: setPainToday },
+    cycle: { predict: predictInfo, cycleList: cycleList, fertWhy: fertWhy, chanceOn: chanceOn, chanceShown: chanceShown, phaseOn: phaseOn, afterLoss: afterLossNow, afterHormones: afterHormonesNow, setHormones: (on) => { setHormones(on); save(); }, longOpen: longOpen, starts: starts, gapsAll: gapsAll, usable: usable, lastStart: lastStart, cycleDay: cycleDay, bleedingDays: bleedingDays, rangeInfo: rangeInfo, bandHi: bandHi, isPregnant: isPregnant, countsOff: countsOff, afterBirth: afterBirthNow, ageYears: ageYears, lastCheckins: lastCheckins, fertileInfo: fertileInfo, midlifeStage: midlifeStage, excludedWhy: excludedWhy, isMidlife: isMidlife, approxStarts: approxStarts, periodLen: periodLen, rawStarts: () => liveStartEvents().map((e) => e.d).sort(), verdict: cycleVerdict, periodFlow: periodFlow, heavyEv: heavyEv, counting: countingNow, setPain: setPainToday, setFlowToday: setFlowToday },
     preg: { info: pregInfo },
     sound: sound,   /* Version 39.21 */
     feel: { on: () => feelOn(), chips: (d) => feelChips(d, false), toggle: (d, k) => feelToggle(d, k) },   /* Version 39.16: the plan's evening check-in */

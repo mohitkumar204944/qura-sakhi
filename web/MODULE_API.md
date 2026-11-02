@@ -6322,3 +6322,100 @@ screens, questions or reminders.
 
 The minimalist baseline: nothing she sees or does changes but the picture: no new step, ring, question, screen, tour or words;
 the shared-phone check is section 95's ("Yoga"). The physiotherapist's checklist for the pictures is review 19.54.
+
+## 98. Version 39.55: My period plan
+
+Mohit, 2 Nov: "proceed building with your recommendations", after the advice (`docs/period-plan-advice-2026-11-02.md`) and the
+canvas (claude.ai/artifact/9YbP1fyNWG8gN5gF41c7vS). It is the last of the plans agreed on 30 Oct: the tracking stage's period
+goals, which had light version 1 plans (Easier periods, Stronger blood, A calmer cycle) on a weekly clock.
+
+**One plan, three leads.** `pain`, `heavy` and `pms` each gain version 2 (`web/progs/v1.js`), all titled "My period plan"
+(`plan_pk_period`). The ids stay, so her goal still opens its plan (`packFor`), and a plan she started on version 1 runs on. Her
+first period goal leads (its daily practice and its chapters); her other goals (`S.state.goals`) join only in the window where
+they matter. Heavy periods after 40, while she still bleeds, keep this plan.
+
+**Her cycle sets the steps.** New plan words (mods/plan.js `progIf`, `progWhen`):
+- `when: 'before'` (from 7 days before her likely days to their last day, while she isn't bleeding: `perWin`), `'kitday'` (the
+  same from 2 days before), `'between'`; `if` words `period` (a day she bleeds), `before`, `also:x` (another of her goals), `hbdone`
+  (her Hb test ticked in her plan, or a result saved from 90 days before it began, `S.cond.hbLatest`). Past her likely days she is
+  late, and no window opens;
+- a tick step's own line (`sub`), and `slots.day1` (day 1 at 3 steps; `slots.max` 4).
+With no likely range (hormones, few or uneven gaps) only the period days and the days between show, and a late period never opens
+her kit ("Period late?" leads, as before).
+
+| Lead | Every day | Period days | Before her period | Between |
+|---|---|---|---|---|
+| Period pain | Relax (Wind down's slow breaths; 4 days with a doctor's endometriosis or adenomyosis) | Her kit (warmth, the cramps routine, a rest position), rest or a 10-minute walk | Her kit ready (its last 2 days), Cycle care yoga on a moving day from week 6 | A walk on 3 days, strength on 2 of them from week 5 |
+| Heavy periods | An iron food (the 21 iron days, then the rotation) | A rest lying down (yoga nidra) | | Her Hb test to day 21 until done; a light walk on 3 days (Calm breath instead while she is often tired and has no Hb test); strength from week 7 |
+| The days before | Calm breath | | Her calm-week plan (its tool: the 3-minute routine for a hard moment) | A walk on 3 days, a calcium food on 5 (it opens My food) |
+
+Joining: pain joins as her kit on period days; heavy as her Hb test and an iron food; the days before as the evening question.
+Her questions: pain's screen (`pain2`) adds "Has a doctor told you that you have endometriosis or adenomyosis?", which needs no
+answer (none is the standard version); a yes is kept (`intake.endo`) and shown in "Made from what you told Sakhi". Heavy periods
+ask no activity (the walk is the light one, as in version 1).
+The endometriosis version adds a weekly row for the pain diary (`cond-endo`). New adapters: `period.relax`, `period.rest`,
+`period.hb`, `period.calmweek`; `food.calcium` takes the step's `go`.
+
+**Her evening.** The check-in after her last step, as every plan's (no new ring; her doctor's iron tablet rings at its own time).
+The nudge at her time to move rings only on her moving days (`moveDays`: the weekdays her plan's moving steps come on, as core's
+`weekdays`; the test pass found it ringing every evening for a 3-days-a-week walk, and the same held for My recovery's walk from
+day 14). A strength day counts as moving, and a day whose steps hold no move (her period days' rest) doesn't ring. In the check-in:
+- "Pain today?" on each day she bleeds, to day 5, when pain is one of her goals (saved on that day's diary entry, `setPainToday`);
+- "Your period today" when heavy periods are one of her goals, on days she bleeds: soaked within 1 to 2 hours, clots, and what it
+  got in the way of (leaked through clothes, changed at night, couldn't do her day). The same 3 taps for pads or cloth. Core's new
+  `S.cycle.setFlowToday` saves soaked (the day page's `pads_4`), clots and leaked on today's period entry, so her diary, the report
+  and What your diary shows read them; changed at night and couldn't do her day stay in her plan's day (`pt`);
+- "Did it get in the way today?" (a little, a lot) in the 7 days before her period, when the days before are one of her goals and
+  she noted a sign today (`px`). None of these on a shared phone or in discreet mode.
+
+**A chapter a week.** `mods/perplan.js`: 12 chapters for each lead (p1 to p12, h1 to h12, m1 to m12), one row under her steps until
+she reads it (route `per-lesson`, under My plan, behind her PIN on a shared phone; its title hidden in discreet mode). Each has a
+"Try this week", and its doctor cards ask a Qura doctor first. `S.plan.period.lesson()` gives the week's chapter.
+
+**"Your plan is ready".** Each step says when it comes: "On your period days:", "The 7 days before your period:", "Just before
+your period:", "3 days a week:" (a walk too: the minutes steps now carry `every`), "Once, in your first 3 weeks: Get your Hb
+tested", and the iron food as version 1 said it ("One iron-rich food step every day"). "What happens when" (`perRvRows`) names her
+cycle's steps that aren't today's, "Every week: a short chapter, and a look back at your week", week 4 (her first month and when to
+see a doctor), her strength and yoga weeks and week 12; on a shared phone, the usual 3 rows. Today's plan offer (and the doctor
+finding's pair) names the version that will start.
+
+**One home for each fact.** While her "Get your kit ready" is on Today, core's heads-up card ("Your likely days start in 2 days")
+steps aside (`S.plan.period.kitToday`); 3 days before, it still comes. On a shared phone a step that comes only on period days
+keeps its title but not its line.
+
+**One card at a time, a Qura doctor first** (`cardKind` 'per2', 'ppv2'; `perCardHtml`, `wirePer`):
+- weeks 4 to 6: "When to see a doctor" with her goals' reviewed lines (`plan_rv_doc_pain`, Help's `r2`, `plan_rv_doc_pms`);
+- her second period since she began, when the days before are hers: the reviewed `plan_rv_doc_pms`;
+- version 1 offered version 2 once ("My period plan is here"; "Move me to it" starts a fresh 12 weeks, keeping what she logged);
+- the doctor check's card gains "Ask a Qura doctor about this"; the end page's doctor card says "Still hard?".
+
+**Her results.** My progress shows period pain's and heavy periods' before and since (`painCompare`, `heavyCompare`) for a goal that
+joins, not only the one that leads, and her evening answers day by day (`perWayCards`; the test pass found them saved and never
+read): "The week before your period: days it got in your way a lot" (what she told Sakhi, then her days since) and "Period days it
+got in your way" (leaked, changed at night or couldn't do her day, since she started; her diary holds only the leaks, so nothing
+before). Not on a shared phone. Beside her Hb results (`cond-anaemia`) one fixed line for every woman: below 8, see a doctor
+this week; today when breathless, dizzy or with chest pain (WHO 2024 keeps severe anaemia below 8 g/dL).
+
+**The minimalist baseline** (CLAUDE.md):
+- **Her evening:** no new ring. The check-in rings after her last step; the nudge at her time to move only on her moving days; her
+  doctor's iron tablet at its own time. No bedtime, so no wind-down.
+- **Today:** day 1 has 3 steps or fewer and no day more than 4; one Sakhi says card; one row under her steps (the chapter, after her
+  look-back).
+- **Ask less:** no new screen before her first step; one new question, optional (endometriosis); period pain asks no bedtime or
+  work, heavy periods no activity.
+- **One home for each fact:** "Get your kit ready" holds the heads-up card's advice, so the card steps aside; the reveal promises only
+  what comes.
+- **Read once:** how it works folds after week 1, as every plan's.
+- **No new tours, tips or celebrations.**
+- **The shared phone:** discreet titles, private steps as "Your step {n}", a period-day step without its line, no evening measures,
+  no results beyond the days she followed, the chapters behind her PIN.
+- **Taps** (`web/test/taps/`; its cycle woman joins with period pain): joining 44 to 43; days 1 to 10, 53 to 55, and days 1 to 7, 44
+  to 47 (2 or 3 steps to tick instead of 1); the everyday jobs 68 to 70 (one more check-in answer, and the check-in button a scroll
+  down Today); the trying woman unchanged.
+
+`node test/periodplan.mjs` checks it (70 checks; section 7 holds the test pass's fixes). `node test/periodplan-walk.mjs [who]`
+lives it: six women from a new install (period pain with heavy periods, the days before, heavy periods often tired, endometriosis
+with no dates, heavy periods at 44, and version 1 moved to version 2), with their periods coming, screens and words to
+`test/shots/periodplan-walk/`. `test/progs.mjs` knows the new words; its draft example is now version 3. Suites that check
+version 1's plans seed `ppv2No` (she kept her plan); food, companion, minimal, myplanwalk and planfor check version 2 where
+joining starts it (no bedtime step, so no wind-down).

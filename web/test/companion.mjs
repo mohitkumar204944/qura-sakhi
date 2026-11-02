@@ -257,7 +257,7 @@ for (const [goal, ans, re, sel, now] of [['heavy', { pads: 'p12', clots: 'y', ti
 }
 
 /* ---------- every goal and stage starts the right plan ---------- */
-for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'A calmer cycle', /Calm breath/], ['cycle', 'heavy', 'heavy', 'Stronger blood', /iron/i], ['pmos', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Every day: My folic acid tablet/],   /* Version 38: its own plan; Version 39.32: version 2 starts with her folic acid tablet */
+for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'My period plan', /Calm breath/], ['cycle', 'heavy', 'heavy', 'My period plan', /iron/i], ['pmos', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Every day: My folic acid tablet/],   /* Version 38: its own plan; Version 39.32: version 2 starts with her folic acid tablet */
   ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Your pelvic floor squeezes/], ['mid', 'hot', 'meno', 'My midlife plan', /Every day: Today’s skill/]]) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
   await toOffer(page, stage, goal); await answer(page, { dx: 'n' });
@@ -285,9 +285,9 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   await tap(page, '[data-pl-pick="pain"]');
   check('existing woman: her goal\'s questions come first (period pain)', /About your period pain/.test(await view(page)));
   await tap(page, '[data-pl-q="pain:pk"]'); await tap(page, '[data-pl-q="painDays:23"]'); await tap(page, '#pl-in-next');
-  for (const sel of ['[data-pl-q="act:1"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:b23"]', '[data-pl-q="work:home"]']) await tap(page, sel);
+  for (const sel of ['[data-pl-q="act:1"]', '[data-pl-m="lim:none"]']) await tap(page, sel);   /* Version 39.55: My period plan asks no bedtime or work */
   await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="evening"]'); await tap(page, '#pl-in-make');
-  check('existing woman: her plan\'s reveal', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /Easier periods/.test(await view(page)));
+  check('existing woman: her plan\'s reveal', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /My period plan/.test(await view(page)));   /* Version 39.55 */
   await revealWords(page); await tap(page, '[data-rv-at="18:00"]');
   await tap(page, '#pl-rv-go'); await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; });
   let s = await st(page);

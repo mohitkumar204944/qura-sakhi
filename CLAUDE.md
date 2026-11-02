@@ -412,6 +412,20 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - nothing while another plan runs, in a pregnancy, after a loss, on a shared phone or before 40 with periods stopped;
     - "Who treats what" leads with "Ask a Qura doctor"; the iron tablets page asks a Qura doctor too.
     Contract: MODULE_API section 96; wording: section 19.53 of the review (UI words only).
+  - `node test/periodplan.mjs` (Version 39.55, My period plan; Mohit, 2 Nov: "proceed building with your recommendations"; advice
+    `docs/period-plan-advice-2026-11-02.md`; canvas claude.ai/artifact/9YbP1fyNWG8gN5gF41c7vS):
+    - pain, heavy and pms version 2, all "My period plan": her first period goal leads, the others join where they matter
+      (version 1 runs on, offered version 2 once);
+    - her cycle sets the steps: her kit and "Pain today?" on period days, "Your period today" (3 taps) in the check-in when heavy
+      periods are hers, her kit ready and Cycle care yoga before her period, her calm-week plan; Relax, moving on 3 days, strength,
+      an iron or calcium food between;
+    - day 1 at 3 steps, never more than 4; a chapter a week (`mods/perplan.js`, 36 chapters, route `per-lesson`);
+    - one card at a time (week 4's "When to see a doctor", the second period's card for the days before), a Qura doctor first;
+      the fixed Hb line beside her Hb results; her results by period, a goal that joins too.
+    The walk is `node test/periodplan-walk.mjs [priya|anjali|rekha|sana|meena|vera]` (screens and words to
+    `test/shots/periodplan-walk/`); its test pass's fixes (2 Nov) are section 7 of the test.
+    Contract: MODULE_API section 98; wording: section 19.55 of the review (new lines wait for doctor review, the days-before
+    chapters for a psychologist too).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

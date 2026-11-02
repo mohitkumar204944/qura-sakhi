@@ -3160,3 +3160,36 @@ three months (moderate) and the last three (full). The drawings, with her bump, 
 - Bhadrasana (first and middle three months): sitting tall on a folded sheet, soles together, knees out, her hands resting on
   her knees, her knees lifting and dropping a little as she breathes (not the cycle routine's forward lean to her toes).
 - The chair squats, wall push-ups and Loosen up use the same moves as the other routines, on her with a bump.
+
+### 19.55 Version 39.55: My period plan (MODULE_API section 98)
+
+Reviewed lines it reuses, unchanged: `plan_rv_doc_pain`, `plan_rv_doc_pdays`, `plan_rv_doc_heavy`, `plan_rv_doc_hb`,
+`plan_rv_doc_pms`, Help's `r2`, and Help's 112, Tele-MANAS 14416 and 181 lines.
+
+New lines, waiting for the doctor (the days-before chapters for a psychologist too):
+- the steps: "Your period kit" (warmth, the cramps routine and a rest position); "Get your kit ready" (a hot water bag, pads or
+  cloth, a quiet place to rest); "Rest today, or walk 10 minutes"; "Relax, 5 minutes"; "Rest, lying down: yoga nidra"; "Get your Hb
+  tested"; "Your calm-week plan" (an early night, a lighter day, 10 minutes outside); "Your pain diary for your doctor";
+- their reasons: `plan_fb_kitready`, `plan_fb_restday`, `plan_fb_cyoga`, `plan_fb_relax` ("a few calm minutes a day can quiet pain
+  signals"), `plan_fb_pdiary`, `plan_fb_prest`, `plan_fb_phb`, `plan_fb_calmweek`, and `plan_fb_pca` ("calcium from food on most days
+  ... in some studies it eased the days before a period": ACOG 2023 gives a conditional recommendation on low-quality evidence; food
+  only, no tablet or dose);
+- the question "Has a doctor told you that you have endometriosis or adenomyosis?";
+- the evening: "Your period today" and its 3 questions; "Did it get in the way today?";
+- the fixed Hb line beside her Hb results (below 8: this week; breathless, dizzy or chest pain: today);
+- the cards: "When to see a doctor", "Your second period on the plan", "Still hard? A doctor can treat painful and heavy periods and
+  PMS. Take your record.";
+- the 36 chapters in `mods/perplan.js` (English and Hindi): period pain p1 to p12 (heat safety in p2, the usual and not-usual pain in
+  p3, medicines without names in p6), heavy periods h1 to h12 (the Hb test, iron food and tea, iron tablets as her doctor says, other
+  causes of low Hb in h9, treatments in h10), the days before m1 to m12 (a 2-cycle diary and CBT skills; anger and the child-safety
+  line in m7; when to get more help in m11).
+- the test pass (2 Nov): "Your period is likely soon: a hot water bag, pads or cloth, and a quiet place to rest" (was "likely in 1
+  or 2 days": her kit now stays through her likely days); "endometriosis or adenomyosis (a doctor said)" in her answers' summary;
+  My progress's "The week before your period: days it got in your way a lot", "Period days it got in your way" and "Leaked through
+  clothes, changed at night or couldn’t do your day, from your check-ins."
+
+UI words only: "My period plan", "My period plan is here", "Move me to it", "The same 3 taps for pads or cloth.", and "Your plan
+is ready"'s lines: "On your period days: {x}", "The 7 days before your period: {x}", "Just before your period: {x}", "Once, in
+your first 3 weeks: {x}", "On your period days: your period kit, and just before, get it ready", "On your period days: a rest
+lying down (yoga nidra)", "Week 4: a look at your first month, and when to see a doctor", "From week {n}: {r} on 2 of your
+walking days", "From week {n}, in the week before your period: {r}".

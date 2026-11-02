@@ -163,7 +163,8 @@ async function goalFlow(page, goal, until) {
   check('5 ... and her knees or back (the plan has moves)', kh.indexOf('lim') >= 0, kh);
   check('5 ... with Jain among the answers, and vegetarian already chosen', await has(a.page, '[data-pl-q="food:jain"]') && await has(a.page, '[data-pl-q="food:veg"].on'));
   const kp = await goalFlow(a.page, 'pain', 'food');
-  check('5 painful periods: activity, bedtime and work are asked (her sleep and moves use them)', ['act', 'bed', 'work', 'food', 'milk', 'lim'].every((k) => kp.indexOf(k) >= 0), kp);
+  /* Version 39.55: My period plan has no bedtime step, so bedtime and work aren't asked; her walk and strength use the rest */
+  check('5 painful periods: activity and her knees or back are asked (her moves use them), not bedtime or work', ['act', 'food', 'milk', 'lim'].every((k) => kp.indexOf(k) >= 0) && ['bed', 'work'].every((k) => kp.indexOf(k) < 0), kp);
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { events: cyc6([40, 44, 38, 42, 39, 45], 10) } });
   await go(b.page, 'plan'); await tap(b.page, '#view [data-pl-pick="irregular"]');

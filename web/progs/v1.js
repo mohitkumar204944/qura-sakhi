@@ -212,6 +212,31 @@
     doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb', go: 'cond-anaemia' }]
   },
   {
+    id: 'heavy', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_period' }], discreetTitle: '@plan_h_d',
+    goals: [{ stage: 'meno', goal: 'heavy' }, { goal: 'heavy' }],
+    life: { pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    moves: true,
+    intake: { screens: [{ id: 'heavy' }], day: ['food', 'milk', 'lim'], when: true },
+    slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'iron', text: '@iron_h', icon: 'drop', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by heavy periods. An iron food every day, her Hb test in weeks 1 to 2, a rest lying down on period days, a light walk on 3 days (after her Hb test when she is often tired or dizzy), strength from week 7, the period note in her check-in; period pain joins with her kit. A chapter a week, and her periods in her own numbers' }],
+    steps: [
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', if: ['also:pain'] },
+      { id: 'iron', kind: 'adapter', use: 'journey.iron' },
+      { id: 'hb', kind: 'adapter', use: 'period.hb' },
+      { first: [
+        { id: 'rest', kind: 'adapter', use: 'period.rest', when: 'periodDays' },
+        { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm', when: 'days:0,2,5', if: ['ans:tired=y', '!hbdone'] },
+        { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:2,5', if: ['week:7-'] },
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', grow: 'hold', why: 'plan_fb_move_g', when: 'days:0,2,5' }
+      ] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb', go: 'cond-anaemia' }]
+  },
+  {
     id: 'meno', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_meno' }], discreetTitle: '@plan_h_d',
     goals: [{ stage: 'meno' }],
@@ -289,6 +314,37 @@
     doctor: [{ id: 'start', any: ['ans:pain=stop'], text: '@plan_rv_doc_pain', check: 'selfcheck-endo' }, { id: 'start', any: ['ans:painDays=4'], text: '@plan_rv_doc_pdays', check: 'selfcheck-endo' }]
   },
   {
+    id: 'pain', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_period' }], discreetTitle: '@plan_h_d',
+    goals: [{ goal: 'pain' }],
+    life: { pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    moves: true,
+    intake: { screens: [{ id: 'pain2' }], day: ['act', 'food', 'milk', 'lim'], when: true },
+    slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'relief-cramps', text: '@relief_cramps_t', icon: 'leaf', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by period pain. Her cycle sets the steps: her kit and Pain today? on period days; her kit ready and Cycle care yoga before her period; Relax, moving on 3 days and strength between. Heavy periods and the days before join where they matter. A chapter a week, and her periods in her own numbers' }],
+    steps: [
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps' },
+      { first: [
+        { id: 'relax', kind: 'adapter', use: 'period.relax', when: 'days:0,2,4,6', if: ['!period', 'ans:endo=y'] },
+        { id: 'relax', kind: 'adapter', use: 'period.relax', if: ['!period', '!ans:endo=y'] }
+      ] },
+      { id: 'kitready', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kitready', sub: '@plan_a_kitready_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_kitready', priv: true, when: 'kitday' },
+      { first: [
+        { id: 'rest', kind: 'tick', go: 'calm', title: '@plan_a_restday', sub: '@plan_a_restday_s', icon: 'moon', hue: 'purple', why: 'plan_fb_restday', when: 'periodDays' },
+        { id: 'yoga', kind: 'routine', go: 'plan-r-cycle', title: '@plan_r_cycle', icon: 'ico:move', hue: 'plum', why: 'plan_fb_cyoga', when: 'days:0,2,5', if: ['before', 'week:6-'] },
+        { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:2,5', if: ['week:5-'] },
+        { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_movep', when: 'days:0,2,5' }
+      ] },
+      { id: 'pdiary', kind: 'tick', go: 'cond-endo', title: '@plan_a_pdiary', sub: '@plan_a_pdiary_s', icon: 'chart', hue: 'sky', why: 'plan_fb_pdiary', priv: true, when: 'days:6', if: ['ans:endo=y'] },
+      { id: 'hb', kind: 'adapter', use: 'period.hb', if: ['also:heavy'] },
+      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: [{ id: 'start', any: ['ans:pain=stop'], text: '@plan_rv_doc_pain' }, { id: 'start', any: ['ans:painDays=4'], text: '@plan_rv_doc_pdays' }]
+  },
+  {
     id: 'pms', ver: 1, status: 'live', tier: 'habit',
     title: [{ text: '@plan_pk_pms' }], discreetTitle: '@plan_h_d',
     goals: [{ goal: 'pms' }],
@@ -309,6 +365,29 @@
       { use: 'walk', mins: 'suggest', cap: 30, why: 'plan_fb_move_g' },
       { use: 'bed' }
     ],
+    doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms', go: 'periods-pms' }]
+  },
+  {
+    id: 'pms', ver: 2, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_period' }], discreetTitle: '@plan_h_d',
+    goals: [{ goal: 'pms' }],
+    life: { pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    moves: true,
+    intake: { screens: [{ id: 'pms' }], day: ['act', 'food', 'milk', 'lim'], when: true },
+    slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'plan-r-calm', text: '@plan_r_calm', icon: 'sparkle', hue: 'sky' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by the days before her period. Calm breath every day, her calm-week plan in the 7 days before her period, a calcium food on 5 days, moving on 3 days, the note in her check-in; period pain and heavy periods join where they matter. A chapter a week, and her hard days in her own numbers' }],
+    steps: [
+      { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', if: ['also:pain'] },
+      { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm' },
+      { id: 'calmweek', kind: 'adapter', use: 'period.calmweek', when: 'before' },
+      { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g', when: 'days:1,3,5', if: ['!period'] },
+      { id: 'ca', kind: 'adapter', use: 'food.calcium', go: 'food', why: 'plan_fb_pca', when: 'days:0,1,2,3,4' },
+      { id: 'hb', kind: 'adapter', use: 'period.hb', if: ['also:heavy'] },
+      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] }
+    ],
+    list: [{ use: 'today' }],
     doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms', go: 'periods-pms' }]
   },
   {

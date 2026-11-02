@@ -136,12 +136,13 @@ const PAIN_IK = { stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act:
   const v = await view(a.page);
   check('1 the Start card asks nothing: no "Allow reminders", no ring-on-time card', !(await has(a.page, '#pl-st-allow')) && !(await has(a.page, '#pl-st-exact')) && !/Allow reminders/.test(v), v.slice(0, 700));
   const line = await txt(a.page, '.pl-st-rem');
-  check('1 ... it names everything that will ring, in her evening\'s order (no spacing rule: Mohit, 28 Oct)', line === 'Reminders are on: your 9:15 pm walk, your 10 pm check-in, your 10:30 pm wind-down and a note the day before your period. Nothing shows on the lock screen. Change them any time in Me > Reminders.', line);
+  /* Version 39.55: My period plan has no bedtime step, so no wind-down (its rings: the walk, the check-in, her doctor's tablet) */
+  check('1 ... it names everything that will ring, in her evening\'s order (no spacing rule: Mohit, 28 Oct)', line === 'Reminders are on: your 9:15 pm walk, your 10 pm check-in and a note the day before your period. Nothing shows on the lock screen. Change them any time in Me > Reminders.', line);
   check('1 ... Sakhi\'s time is chosen: 10 pm, after her 9:15 pm walk; 9:30 and 10 pm are there to pick', await has(a.page, '[data-rv-at="22:00"][aria-pressed="true"]') && await has(a.page, '[data-rv-at="21:30"]') && await has(a.page, '[data-rv-at="18:00"]'));
   await shot(a.page, '1-start');
   await tap(a.page, '#pl-rv-go'); await settle(a.page, 1200);
   const s = await st(a.page);
-  check('1 Start: her plan, the 9:15 pm walk cue, the 10 pm check-in and the 10:30 pm wind-down', s.mods.plan.start === TODAY && (await rem(a.page, 'plan') || {}).time === '22:00' && (await rem(a.page, 'plan-nudge') || {}).time === '21:15' && (await rem(a.page, 'plan-wind') || {}).time === '22:30' && !s.mods.plan.remPick, [s.reminders.map((r) => r.id + ' ' + r.time), s.mods.plan.remPick]);
+  check('1 Start: her plan, the 9:15 pm walk cue and the 10 pm check-in (no wind-down in My period plan)', s.mods.plan.start === TODAY && (await rem(a.page, 'plan') || {}).time === '22:00' && (await rem(a.page, 'plan-nudge') || {}).time === '21:15' && !(await rem(a.page, 'plan-wind')) && !s.mods.plan.remPick, [s.reminders.map((r) => r.id + ' ' + r.time), s.mods.plan.remPick]);
   check('1 on a phone that needs no "Allow", Start asks nothing', (await calls(a.page, 'askNotify')) === 0 && s.settings.notify === true);
   await done(a);
 }
@@ -422,7 +423,7 @@ for (const lang of ['en', 'hi']) {
   await a.page.evaluate((ik) => { window.Saathi.plan.startFromIntake(ik); window.Saathi.save(); }, PAIN_IK);
   await startCard(a.page);
   const line = await txt(a.page, '.pl-st-rem');
-  check('8 hi: the Start card\'s line', line === 'रिमाइंडर चालू हैं: रात 9:15 की सैर, रात 10 बजे का चेक-इन, रात 10:30 सुकून के पल और पीरियड से एक दिन पहले एक सूचना। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।' && await noScroll(a.page), line);
+  check('8 hi: the Start card\'s line', line === 'रिमाइंडर चालू हैं: रात 9:15 की सैर, रात 10 बजे का चेक-इन और पीरियड से एक दिन पहले एक सूचना। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।' && await noScroll(a.page), line);
   await shot(a.page, '8-start-hi');
   await done(a);
 }

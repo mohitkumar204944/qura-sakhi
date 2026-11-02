@@ -81,19 +81,19 @@ check('1 the APK copies every plan file', /cp "\$WEB"\/progs\/\*\.js build\/asse
 /* ---------- 2. The closed vocabulary (mods/plan.js implements each word once) ---------- */
 const TOP = ['_file', 'id', 'ver', 'status', 'tier', 'purpose', 'title', 'discreetTitle', 'sensitive', 'goals', 'life', 'clock', 'length', 'moves', 'intake', 'slots', 'hero', 'tiles', 'rest', 'keep', 'steps', 'list', 'doctor', 'examples', 'changelog'];
 const KINDS = ['minutes', 'tick', 'habit', 'routine', 'link', 'check', 'adapter'];
-const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm', 'post.pf', 'meno.skill'];   /* Version 39.51: meno.skill; Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32; post.pf: Version 39.46 */
+const ADAPTERS = ['walk.cycle', 'yoga.cycle', 'plate', 'bed', 'journey.iron', 'preg.due', 'post.rcheck', 'food.calcium', 'preg.food', 'ttc.folic', 'ttc.hb', 'ttc.ready', 'ttc.his', 'ttc.calm', 'post.pf', 'meno.skill', 'period.relax', 'period.rest', 'period.hb', 'period.calmweek'];   /* period.*: Version 39.55 */   /* Version 39.51: meno.skill; Version 39.9; yoga.cycle: Version 39.13; ttc.*: Version 39.32; post.pf: Version 39.46 */
 const STEP_KEYS = ['id', 'kind', 'use', 'go', 'title', 'icon', 'hue', 'why', 'priv', 'when', 'if', 'mins', 'cap', 'grow', 'from', 'check', 'once', 'at', 'sub'];   /* once: Version 39.5 review, a one-time step; at: V39.9 review, the card its link opens; sub: Version 39.34, a set walk's own line */
 const FROM = /^(relief:[a-z]+|ttc-prep|meno-diary|post-pelvic|post-recovery|preg-plan)$/;
 const HUES = ['purple', 'green', 'rose', 'sky', 'orange', 'gold', 'plum'];
-const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|unlock|pready|died|folic|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|(week|pday|gw|birth):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34; unlock, pready, died and an open birth range: Version 39.46; folic: Version 39.47 */
-const whenOk = (w) => w == null || w === 'daily' || w === 'periodDays' || /^days:[0-6](,[0-6])*$/.test(w);
+const ifOk = (w) => /^!?(route(:[a-z0-9-]+)?|early|pnow|unlock|pready|died|folic|period|before|hbdone|also:[a-z]+|goal:[a-z]+|sit:[a-z]+|pt:(green|amber|red)|ans:[a-zA-Z]+=[a-zA-Z0-9]+|(week|pday|gw|birth):\d+-\d*)$/.test(w);   /* week, pday: Version 39.32; gw, pt, pnow: Version 39.34; unlock, pready, died and an open birth range: Version 39.46; folic: Version 39.47 */
+const whenOk = (w) => w == null || ['daily', 'periodDays', 'before', 'between', 'kitday'].indexOf(w) >= 0 || /^days:[0-6](,[0-6])*$/.test(w);   /* before, between, kitday: Version 39.55 */
 const keyOk = (x) => typeof x === 'string' && /^@([a-z][a-z0-9_]*|tile)$/.test(x);
 const bad = [];
 const stepOk = (x, where) => {
   if (x.first) { if (!Array.isArray(x.first) || Object.keys(x).length !== 1) bad.push(where + ': first'); x.first.forEach((y, i) => stepOk(y, where + '.first' + i)); return; }
   if (x.goal) { if (Object.keys(x).length !== 1) bad.push(where + ': goal'); Object.keys(x.goal).forEach((g) => (x.goal[g] || []).forEach((y, i) => stepOk(y, where + '.goal.' + g + i))); return; }
   Object.keys(x).forEach((k) => { if (STEP_KEYS.indexOf(k) < 0) bad.push(where + ': key ' + k); });
-  if (x.sub != null && !(x.kind === 'minutes' && typeof x.sub === 'string' && /^@[a-z0-9_]+$/.test(x.sub))) bad.push(where + ': sub');   /* Version 39.34 */
+  if (x.sub != null && !((x.kind === 'minutes' || x.kind === 'tick') && typeof x.sub === 'string' && /^@[a-z0-9_]+$/.test(x.sub))) bad.push(where + ': sub');   /* Version 39.34; a tick's own line: Version 39.55 */
   if (!/^[a-z]+$/.test(x.id || '')) bad.push(where + ': id');
   if (KINDS.indexOf(x.kind) < 0) bad.push(where + ': kind ' + x.kind);
   if (x.kind === 'adapter' && ADAPTERS.indexOf(x.use) < 0) bad.push(where + ': adapter ' + x.use);
@@ -118,7 +118,7 @@ specs.forEach((p) => {
   if (!Array.isArray(p.goals) || p.goals.some((g) => Object.keys(g).some((x) => ['stage', 'goal'].indexOf(x) < 0))) bad.push(w + ': goals');
   const lf = p.life || {}; if ((lf.needs && !/^(pregnant|birth:\d+)$/.test(lf.needs)) || (lf.ends && lf.ends !== 'pregnant') || !Array.isArray(lf.pause) || lf.pause.some((x) => ['preg', 'post', 'loss'].indexOf(x) < 0) || lf.pause.indexOf('loss') < 0) bad.push(w + ': life (every plan pauses after a loss)');
   if (['weeks', 'pregWeek', 'birthWeek'].indexOf(p.clock) < 0 || !p.length || !(p.length.weeks >= 0)) bad.push(w + ': clock or length');
-  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'heavy', 'pms', 'baby', 'psafe'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work', 'mbone', 'mheart'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
+  const ik = p.intake || {}; if ((ik.screens || []).some((x) => ['cyc', 'pain', 'pain2', 'heavy', 'pms', 'baby', 'psafe'].indexOf(x.id) < 0) || (ik.day || []).some((x) => ['act', 'food', 'milk', 'lim', 'bed', 'work', 'mbone', 'mheart'].indexOf(x) < 0) || (ik.when != null && ik.when !== true && !(Array.isArray(ik.when) && ik.when.every(ifOk)))) bad.push(w + ': intake');
   if (p.moves && (ik.day || []).indexOf('lim') < 0) bad.push(w + ': a plan with moves asks about knees and back');
   if (!p.slots || !(p.slots.max >= 1 && p.slots.max <= 4)) bad.push(w + ': at most 4 steps a day');   /* Version 39.13: the cycle plan's yoga and walk */
   if (p.hero != null && ['ring', 'week', 'timeline'].indexOf(p.hero) < 0) bad.push(w + ': hero');
@@ -175,22 +175,22 @@ const wordsOf = (p) => { const keys = new Set(), routes = new Set(), tiles = new
 /* ---------- 5. The engine ---------- */
 {
   /* a draft plan (and a draft new version of an old one) shows only with SAKHI_CONFIG.drafts */
-  const DRAFTS = '(window.SAKHI_PROGS = window.SAKHI_PROGS || []).push(' + JSON.stringify(Object.assign({}, live.find((p) => p.id === 'pain'), { ver: 2, status: 'draft', title: [{ text: '@plan_pk_pms' }] })) + ');';
+  const DRAFTS = '(window.SAKHI_PROGS = window.SAKHI_PROGS || []).push(' + JSON.stringify(Object.assign({}, live.find((p) => p.id === 'pain'), { ver: 3, status: 'draft', title: [{ text: '@plan_pk_pms' }] })) + ');';
   const off = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(3)) } } });
   const on = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(3), { pv: 1 }) } }, config: { drafts: true } });
   for (const x of [off, on]) { await x.page.evaluate((src) => { new Function(src)(); }, DRAFTS); await x.page.evaluate(() => window.Saathi.render()); await settle(x.page, 200); }
   const sumT = (page) => page.evaluate(() => { const m = (window.Saathi.summaries ? window.Saathi.summaries() : []).find((x) => x.mod === 'plan'); return m && m.sections && m.sections[0] ? m.sections[0].title : null; });
   const T = (page, k) => page.evaluate((x) => window.Saathi.t(x), k);
-  check('5 without SAKHI_CONFIG.drafts, a draft plan is invisible', (await off.page.evaluate(() => window.Saathi.plan.progs.list().find((x) => x.id === 'pain').ver)) === 1 && (await sumT(off.page)) === (await T(off.page, 'plan_pk_pain')));
-  check('5 with it, the draft is the version a new plan gets', (await on.page.evaluate(() => window.Saathi.plan.progs.list().find((x) => x.id === 'pain').ver)) === 2);
+  check('5 without SAKHI_CONFIG.drafts, a draft plan is invisible', (await off.page.evaluate(() => window.Saathi.plan.progs.list().find((x) => x.id === 'pain').ver)) === 2 && (await sumT(off.page)) === (await T(off.page, 'plan_pk_pain')));
+  check('5 with it, the draft is the version a new plan gets', (await on.page.evaluate(() => window.Saathi.plan.progs.list().find((x) => x.id === 'pain').ver)) === 3);
   check('5 ... while the plan she started on version 1 keeps version 1', (await sumT(on.page)) === (await T(on.page, 'plan_pk_pain')), await sumT(on.page));
   await on.page.evaluate(() => { const S = window.Saathi; S.plan.startFromIntake({ stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act: 0, food: 'veg', milk: 'y', lim: [], bed: 'b23', work: 'day', when: 'evening' }); S.plan.start('today', '20:00'); S.save(); S.render(); }); await settle(on.page, 200);
-  check('5 ... and a plan started now gets version 2, with its words', (await on.page.evaluate(() => window.Saathi.state.mods.plan.pv)) === 2 && (await sumT(on.page)) === (await T(on.page, 'plan_pk_pms')), [await on.page.evaluate(() => window.Saathi.state.mods.plan.pv), await sumT(on.page)]);
+  check('5 ... and a plan started now gets version 3, with its words', (await on.page.evaluate(() => window.Saathi.state.mods.plan.pv)) === 3 && (await sumT(on.page)) === (await T(on.page, 'plan_pk_pms')), [await on.page.evaluate(() => window.Saathi.state.mods.plan.pv), await sumT(on.page)]);
   errsAll.push(...off.errs, ...on.errs); await off.ctx.close(); await on.ctx.close();
   /* d.pv: a plan she starts is stamped with its version; a plan saved before the port reads as version 1 */
   const b = await open({ seed: { intake: { goal: 'pain' } } });
   await b.page.evaluate(() => { const S = window.Saathi; S.plan.startFromIntake({ stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act: 0, food: 'veg', milk: 'y', lim: [], bed: 'b23', work: 'day', when: 'evening' }); S.plan.start('today', '20:00'); S.save(); });
-  check('5 a plan she starts keeps its version (d.pv)', (await b.page.evaluate(() => window.Saathi.state.mods.plan.pv)) === 1);
+  check('5 a plan she starts keeps its version (d.pv)', (await b.page.evaluate(() => window.Saathi.state.mods.plan.pv)) === 2);   /* Version 39.55: pain's live version is 2 */
   errsAll.push(...b.errs); await b.ctx.close();
   const c = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(10)) } } });
   await go(c.page, 'plan');

@@ -3,7 +3,7 @@
 //   1 My plan's play button keeps "9 min" on one line, its icon at Today's size;
 //   2 a bedtime her plan holds back to day 4 is named before it comes: the reveal's "Your 3 steps" leaves it out, "What happens
 //     when" starts "From day 4: wind down, in bed by 11 pm", the Start card says "your 10:30 pm wind-down from day 4", and My plan
-//     says it under her steps until it joins; a plan whose bedtime is there from day 1 is as before;
+//     says it under her steps until it joins; My period plan (pain), with no bedtime, names none (Version 39.55);
 //   3 "Your last plan" is a real one: no copy of the plan "marked by mistake" brought back, no pregnancy plan marked by mistake
 //     (with or without a plan before it), and phones that already hold one are mended; a loss or a birth keeps its plan;
 //   4 Moves and calm shows the 3D figure (Version 39.39): each routine's first position and the walk's loop; without web/fig,
@@ -118,7 +118,8 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
   const b = await open({ seed: cycSeed({ goals: ['pain'], intake: { goal: 'pain', stage: 'cycle' }, settings: { notify: true } }), bridge: true });
   const p = await reveal(b, PAIN_IK);
   const ps = p.find((x) => /^Your \d steps?/.test(x.v)) || { v: '' }; const pd = p.find((x) => x.tl.length) || { tl: [] }; const pl = p[p.length - 1];
-  check('2 a plan whose bedtime is there from day 1 (pain): in its steps, no "From day" row, and the Start card names the wind-down without a day', /A regular bedtime: 11 pm/.test(ps.v) && !pd.tl.some((x) => /^From day/.test(x)) && /your 10:30 pm wind-down/.test(pl.rem) && !/from day/.test(pl.rem), { s: ps.v.slice(0, 300), tl: pd.tl, rem: pl.rem });
+  /* Version 39.55: no new plan has its bedtime from day 1 now; My period plan (pain) has none, so none is named anywhere */
+  check('2 My period plan (pain) has no bedtime: none in its steps, no "From day" row, and the Start card names no wind-down', /^Your \d steps?/.test(ps.v) && !/bedtime|in bed by/i.test(ps.v) && !pd.tl.some((x) => /^From day/.test(x)) && /your \d+(:\d+)? [ap]m check-in/.test(pl.rem) && !/wind-down/.test(pl.rem), { s: ps.v.slice(0, 300), tl: pd.tl, rem: pl.rem });
   await done(b);
   for (const n of [0, 2]) {
     const d = await open({ seed: pm(n), hash: 'plan' });
