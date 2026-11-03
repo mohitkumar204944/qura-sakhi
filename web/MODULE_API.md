@@ -6709,6 +6709,66 @@ and For you without her plan's tiles). Updated for what changed on purpose: `tou
 day no other tip showed) and 2 (a tip put off is `off`), `goals.mjs` 8 and 11 and `afterbirth.mjs` 15a (her plan's tiles stay in My
 plan), `daily.mjs` 6 (the feelings line in the card with her body today).
 
+## 103. Version 39.60: "Share how I use Sakhi" through PostHog, events only
+
+Mohit, 2 and 3 Nov: "my goal is to find what users like and spend time more on and then this will define our future roadmap", then
+"find me a ready to use free solution that fits my needs" and, after the Flip5 test, "yes proceed". The research, the test and the
+choices: `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17.
+
+**The rule it changes.** Until now only core `net()` talked to a server (section 24). Core's PostHog block is the one other way out,
+and only as set here: events only, anonymous, on by default with her off switch, through an allowlist. Modules still never touch the network, and nothing in
+this block reads the diary.
+
+**What she sees.** In a build with a PostHog key, Me > Privacy's "Help improve Sakhi" has "Share how I use Sakhi" (`ph_h`, `ph_d`,
+`ph_note`), above "Send what helps" when that one shows. It is **on by default** (Mohit, 3 Nov: "i need to keep it on by default"),
+like Version 39.27's reminders: no question, and off in Me stays off. The data notice ("How Sakhi keeps your data", at signup and in
+Me > About) has one more line in such a build (`ob_notice_6`, through `noticeItems()`), and the notice version she agrees to at signup
+and with a call request is `NOTICE_V + '.ph'` (`noticeV()`), so the consent rows say which notice she saw. A build without the key has
+no switch, no line and no PostHog code, and its notice version is unchanged.
+
+**How it works (core, after the "What helps" block).**
+- `phAvail()`: `CFG.ph` is a PostHog project key (`phc_...`, from `SAKHI_PH`). `phIsOn()`: `state.settings.ph !== false`. `phOn()`: both, a saved
+  diary, no sample woman, not teen browsing, not discreet mode, not a shared phone. `phQuiet()`: not on, the lock is up, or the screen
+  is private.
+- `phStart()` (at start, and after any Me switch) loads `vendor/posthog.js` from the app's files (posthog-js 1.444.4, the
+  `array.full.no-external` bundle, which never loads code) and starts it with: `persistence: 'localStorage'`,
+  `opt_out_persistence_by_default`, `person_profiles: 'identified_only'` and never `identify()`, `ip: false`, no referrer or campaign
+  params, `capture_pageview: false` (core sends its own), `capture_pageleave`, `autocapture` with `mask_all_text` and
+  `mask_all_element_attributes`, rage and dead clicks, `capture_exceptions`, and off: recordings, heatmaps, surveys, product tours,
+  conversations, web experiments, performance, external code, and flags (`advanced_disable_flags`, so PostHog's own settings never
+  reach the app: its dashboard can't switch recordings or surveys on). `get_current_url` gives the neutral address.
+- `phView(r)` (from `render()`, beside `usageMark`): a `$pageview` when the neutral screen changes; PostHog adds the time on the screen
+  before (`$prev_pageview_duration`).
+- `phScreen(r)`: `null` for a private screen (`PH_PRIVATE`: loss, a loss while trying, the abortion, options and after pages of a test,
+  intimate health, midlife intimacy, emergency and missed-pill contraception, the mood page after a birth, teen pages, Tell a person,
+  backup, account, Me's data and health pages, the picture check); the route itself for `PH_EXACT`; else the kind from `PH_FAMILY`
+  (`plan-pmos` is `plan`, `per-lesson` is `lesson`, `relief-cramps` is `relief`, `cond-endo` is `condition`, `preg-week` is
+  `pregnancy`, `a-...` is `article`); anything unlisted is `other`, never its route.
+- `phKeep(e)` (`before_send`, so it sees every event PostHog makes): drops all while `phQuiet()`; keeps only `PH_EVENTS` (`$pageview`,
+  `$pageleave`, `$autocapture`, `$rageclick`, `$dead_click`, `$exception`) and only `PH_PROPS` plus `$prev_pageview_*` and
+  `$dead_click_*`; rebuilds `$elements_chain` as tags and positions (`phChain`); keeps an error's type and frames with file names only,
+  never its message (`phErrors`; `$exception_values` goes); sets `$geoip_disable` (PostHog's server otherwise looked up her city, postal
+  code and coordinates from the IP before discarding it: seen on the Flip5, 3 Nov); sets `$current_url`, `$pathname`, `$host` to `app.sakhi.invalid/<screen>`
+  and adds `screen`, `lang` and `app`; deletes `$set` and `$set_once`.
+- `safe()` hands the errors it catches to `phCatch` (type and place only).
+- Off in Me, or Delete everything: `phStop()` opts out, resets and removes PostHog's `ph_` keys, so on again starts a new anonymous id.
+  Discreet mode or a shared phone stop it at once through `phOn()`.
+
+**Build.** `SAKHI_PH=phc_...` (`android/build-apk.sh`) adds `ph` and `phHost` (`https://eu.i.posthog.com`) to `config.js`, copies
+`vendor/posthog.js` and its licence, and adds that one address to the CSP's `connect-src`. Without it: no vendor folder, no key, the CSP
+as before. The PostHog project must be in the EU region with "Discard client IP data" on.
+
+**State.** `settings.ph`: unset means on; `false` once she turns it off. PostHog's own `localStorage` keys (`ph_<key>_posthog` and its session) while it is on; Delete everything removes them too.
+
+**Strings.** `ph_h`, `ph_d`, `ph_note`, `ob_notice_6`. English and Hindi; UI words only (no health wording). The notice line waits for counsel, as the notice does.
+
+**API.** `S.ph` for the tests: `on()`, `ready()`, `screen(r)`, `keep(e)`.
+
+**Tests.** `node test/posthog.mjs` (43 checks: no key (no line in the notice), turned off, on by default with a hostile PostHog config that switches recordings, heatmaps and
+surveys on from its side; the allowlists, neutral names, no screen words, number, Hindi, route or file path; no other address; private
+screens by capture time; an error without its message; discreet, shared, off and on again with a new id; Hindi at 360 px). The test
+browser hides `navigator.webdriver`, because posthog-js drops events from headless browsers as bots.
+
 ## 104. Version 39.61: phase C, joining that ends with her plan running
 
 Mohit, 3 Nov: "proceed with phase C" (`docs/personal-companion-advice-2026-11-03.md`, 4.2 and decision D1: "Joining ends with her plan

@@ -472,6 +472,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "Your Sakhi" leads with "Make my plan", then her plan's questions without her goal again or a summary, Back to Your Sakhi;
     - one page for her plan from joining (her steps and Start), and her plan offered on Today from the start ("Just my diary for now").
     `web/test/taps/join-run.mjs` takes the path `plan`. Contract: MODULE_API section 104; wording: section 19.61 (UI words only).
+  - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
+    what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
+    `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):
+    - only in a build with `SAKHI_PH`, on by default (Mohit, 3 Nov), off in Me > Privacy stays off, and a line in the data notice;
+      posthog-js from `web/vendor/` (never fetched);
+    - screen views with neutral names and the time on each, taps as their place in the page, rage and dead taps, errors without
+      their message; never recordings, heatmaps, surveys, flags or identify(), whatever PostHog's own settings say;
+    - private screens, the lock, discreet mode, a shared phone and a sample woman send nothing; off forgets the anonymous id.
+    The test's fake PostHog switches everything on from its side. Contract: MODULE_API section 103 (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
@@ -505,6 +514,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - Add `SAKHI_HELP_WA=91XXXXXXXXXX` (Qura's staffed WhatsApp number) for "Speak to a doctor" and "Tell a person". Without
     it the doctor screen offers Qura's booking page and "Tell a person" is hidden.
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
+  - Add `SAKHI_PH=phc_...` (PostHog's EU project key) for "Share how I use Sakhi" (Version 39.60). Without it the APK has no
+    PostHog code and the CSP is as before. Its PostHog project: EU region, "Discard client IP data" on.
   - It installs and opens the app on the phone if one is on adb. To build without installing, run it with adb off the path:
     `PATH=/usr/bin:/bin:/usr/sbin:/sbin` before the command.
   - Copy the result to `../QuraSakhi-prototype.apk`.
@@ -531,7 +542,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   Spend the MB a better experience needs, such as the 3D moves, voices, sounds and pictures, and never cut quality to save
   size. When a wanted feature passes the 30 MB guard, raise `MAX_APK_MB` on purpose and say so in the build summary.
 - The diary never leaves the phone.
-  - Only core `net()` talks to a server, and only with allowlisted fields (MODULE_API section 24).
+  - Only core `net()` talks to a server, and only with allowlisted fields (MODULE_API section 24). The one other way out
+    (Mohit, 3 Nov) is core's PostHog block: events only, anonymous, on by default with her off switch, through its allowlist (MODULE_API section 103).
+    Never recordings.
   - Modules never touch the network.
   - Never send health data to Meta.
 - Every woman signs up, except girls under 18.

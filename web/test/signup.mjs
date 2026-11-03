@@ -404,10 +404,11 @@ const modDoors = mods.filter((f) => doors.test(src('mods/' + f)) && (doors.lastI
 check('CODE app.js has exactly two fetch calls (content.json and net)', coreDoors === 2, coreDoors);
 check('CODE no module makes network calls', !modDoors.length, modDoors);
 check('CODE art.js makes no network calls', !doors.test(src('art.js')));
-/* Care near me's data loader adds the app's own script files (MODULE_API section 30): it is the only place that makes a
-   script element, and no module makes one */
+/* Care near me's data loader adds the app's own script files (MODULE_API section 30), and Version 39.60's PostHog loader adds
+   one fixed file of the app's own (vendor/posthog.js, MODULE_API section 103): the only two places that make a script element,
+   and no module makes one */
 const scripts = /createElement\(\s*['"]script['"]\s*\)/g;
-check('CODE only the Care data loader in app.js makes script elements', (src('app.js').match(scripts) || []).length === 1 && /api\.care = \{[\s\S]{0,900}createElement\('script'\)/.test(src('app.js')) && !mods.some((f) => scripts.test(src('mods/' + f)) && (scripts.lastIndex = 0, true)));
+check('CODE only the Care data loader and the PostHog loader in app.js make script elements', (src('app.js').match(scripts) || []).length === 2 && /api\.care = \{[\s\S]{0,900}createElement\('script'\)/.test(src('app.js')) && /createElement\('script'\); sc\.src = 'vendor\/posthog\.js';/.test(src('app.js')) && !mods.some((f) => scripts.test(src('mods/' + f)) && (scripts.lastIndex = 0, true)));
 
 const pass = results.filter((r) => r.pass).length;
 console.log(pass + '/' + results.length + ' signup checks pass');
