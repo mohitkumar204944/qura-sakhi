@@ -1584,10 +1584,10 @@
     const p = S.state.prompts || {}; if (!on() || !S.canSave() || lossNow()) return '';   /* Version 39.58: a shared phone too; its title is "My plan", and its pages ask her PIN */
     const d = raw(); if ((packOf(d) && pausedFor(d) !== 'poi') || pendingOk(d) || upcoming(d)) return '';   /* Version 39.51: a plan held for her doctor shows the card */
     if (poiHold() && stageNowKey() === 'meno') return disc() ? '' : p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml(!!(packOf(d) && pausedFor(d) === 'poi'));   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her; Version 39.53 (Mohit's phone test): while it holds her plan, Today shows it where her plan's steps were */
-    if (!p.planOffer || !p.firstLog) return '';
+    if (!p.planOffer) return '';   /* Version 39.61 (phase C): her plan comes first; her first log no longer holds it */
     if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), pToday()) < 3) return '';
     const ik = S.state.intake || {}; const pk = ik.goal && goalsFor({ stage: stageNowKey() }).indexOf(ik.goal) >= 0 ? packFor(ik.goal, stageNowKey()) : null; if (!pk) return '';   /* Version 39.32: only a goal of her stage now */
-    return '<div class="card pl-offer" data-nofold="1" data-disc-ok="1"><span class="eyebrow">' + esc(t('plan_off_eye')) + '</span><h3>' + esc(packTitle({ pack: pk, goalKey: ik.goal, pv: (specOf(pk) || {}).ver })) + '</h3><p class="small">' + esc(t('plan_off_p')) + '</p>' +
+    return '<div class="card pl-offer" data-nofold="1" data-disc-ok="1"><span class="eyebrow">' + esc(t('plan_off_eye')) + '</span><h3>' + esc(packTitle({ pack: pk, goalKey: ik.goal, pv: (specOf(pk) || {}).ver })) + '</h3><p class="small">' + esc(t(p.firstLog ? 'plan_off_p' : 'plan_off_p0')) + '</p>' +
       '<div class="row wrap"><button type="button" class="btn sm primary" id="pl-off-go">' + esc(t('plan_off_b')) + '</button><button type="button" class="btn sm" id="pl-off-not">' + esc(t('plan_off_later')) + '</button></div></div>';
   }
   function homeRec() {
@@ -2023,7 +2023,7 @@
     const ik = sp.intake || {}; const c = { goal: a.goal, day: todayISO() };
     (ik.screens || []).forEach((x) => { if (progIf(x.if, c)) out.push(x.id); });
     if (!daySkip(a) && qsOf('day', a).length) out.push('day');   /* Version 39.56: a plan that asks nothing about her day has no Your day */ if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
-    if (a.goal === 'weight') out.push('body'); out.push('sum'); return out;
+    if (a.goal === 'weight') out.push('body'); if (!a.fromJoin) out.push('sum'); return out;   /* Version 39.61: from joining, the one-page plan has Change my answers */
   }
   /* her goals now: no "heavy periods" once her periods have stopped (bleeding after that needs a doctor, not a plan) */
   const goalsFor = (a) => GOALS[stKey(a.stage)].filter((k) => !(k === 'heavy' && (a.stopped || (S.state.situation || {}).stopped)));
@@ -2116,7 +2116,7 @@
       if (asks('mbone') && menoV2(d0) && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
       if (asks('mheart') && menoV2(d0) && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart; }
     const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
-    const prev = () => { if (a.iq <= 0) ctx.prev(); else { a.iq--; ctx.redraw(); } };
+    const prev = () => { if (a.iq <= 0 || (a.fromJoin && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi */
     const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
       const mk = (o, h) => (k === 'food' && S.food && S.food.mark ? h.replace(/>([^<]*)<\/button>$/, '>' + S.food.mark(o[0]) + '$1</button>') : h);   /* Version 39.8: the veg and non-veg marks */
       return '<h2 class="ob-h2">' + esc(t(q[0])) + '</h2><div class="chips" role="group" aria-label="' + esc(t(q[0])) + '">' + q[1].map((o) => mk(o, ctx.chip(multi ? 'data-pl-m' : 'data-pl-q', k + ':' + o[0], t(o[1]), multi ? (cur || []).indexOf(o[0]) >= 0 : String(cur) === o[0]))).join('') + '</div>'; };
@@ -2737,7 +2737,7 @@
     const editB = '<button type="button" class="linkbtn" id="pl-rv-edit">' + esc(t('plan_rv_edit')) + '</button>';
     const top = '<div class="ob-top pl-rv-top">' + (i > 0 ? '<button type="button" class="iconbtn" id="pl-rv-back" aria-label="' + esc(t('back')) + '">' + S.I.back + '</button>' : '<span class="pl-rv-sp"></span>') +
       '<div class="progress" role="img" aria-label="' + esc(t('step') + ' ' + (i + 1) + ' ' + t('of') + ' ' + cards.length) + '">' + cards.map((x, k) => '<i class="' + (k <= i ? 'on' : '') + '"></i>').join('') + '</div></div>';
-    let body = '';
+    const bodyOf = (id) => { let body = '';
     if (id === 'ready') {
       const nm = String((S.account && S.account.info && (S.account.info() || {}).name) || '').trim().split(/\s+/)[0]; const now = nowLine(dd); const m = round5(dayMins(dd));
       body = (S.art ? '<div class="pl-rv-art">' + S.art.sakhi({ pose: 'cheer', look: (S.state.settings || {}).look }) + '</div>' : '') +
@@ -2779,7 +2779,11 @@
         (can ? '<p class="small pl-st-rem">' + S.icon('bell') + ' <span>' + esc(remLine(pv)) + '</span></p>' : '') +   /* Version 39.27 (R01): no question; the line says what will ring */
         '<button type="button" class="btn primary block" id="pl-rv-go">' + esc(t('plan_start')) + '</button>' + editB;
     }
-    v.innerHTML = '<div class="pl-rv">' + top + body + (id === 'start' ? '<p class="footnote">' + esc(footT(dd)) + '</p>' : '') + '</div>';   /* Version 39.8 (VD-07): the disclaimer once, on the Start card */
+    return body; };
+    /* Version 39.61 (phase C): from joining, one page (her days and weeks are in My plan's How it works) */
+    const one = !!S.mem.rvOne; const ids = one ? ['ready', 'steps'].concat(dkR ? ['doc'] : [], ['start']) : [id];
+    const body = ids.map((x, k) => { let b = bodyOf(x); if (!one) return b; b = b.split(nextB).join('').split(editB).join(''); return k ? b.replace(/<h1>/g, '<h2 class="pl-rv-h">').replace(/<\/h1>/g, '</h2>') : b; }).join(one ? '<hr class="pl-rv-sep">' : '') + (one ? editB : '');
+    v.innerHTML = '<div class="pl-rv' + (one ? ' pl-rv-one' : '') + '">' + (one ? '' : top) + body + (id === 'start' || one ? '<p class="footnote">' + esc(footT(dd)) + '</p>' : '') + '</div>';   /* Version 39.8 (VD-07): the disclaimer once, on the Start card */
     S.wire(v); wireWhy(v);
     const to = (k) => { stopAudio(); S.mem.rvCard = k; S.render(); window.scrollTo(0, 0); };
     const nx = v.querySelector('#pl-rv-next'); if (nx) nx.addEventListener('click', () => to(i + 1));
@@ -2792,7 +2796,7 @@
     v.querySelectorAll('[data-rv-when]').forEach((b) => b.addEventListener('click', () => { st.when = b.dataset.rvWhen; S.render(); }));
     v.querySelectorAll('[data-rv-at]').forEach((b) => b.addEventListener('click', () => { st.at = b.dataset.rvAt; S.render(); }));
     const go = v.querySelector('#pl-rv-go'); if (go) go.addEventListener('click', () => {
-      commitStart(st.when, st.at); S.mem.rvCard = 0; S.mem.rvStart = null; stopAudio(); S.save();
+      commitStart(st.when, st.at); S.mem.rvCard = 0; S.mem.rvStart = null; S.mem.rvOne = false; stopAudio(); S.save();
       if (S.alerts && S.alerts.auto) S.alerts.auto(true);   /* Version 39.27 (R01): reminders are on; Android's own "Allow" now if it still needs one */
       S.setHash('home');
     });
@@ -3207,8 +3211,8 @@
     const chip = (attr, val, label, on1) => '<button type="button" class="chip ob-c' + (on1 ? ' on' : '') + '" ' + attr + '="' + esc(String(val)) + '" aria-pressed="' + !!on1 + '">' + esc(label) + '</button>';
     const headF = (title, p) => '<div class="ob-top"><button type="button" class="iconbtn" id="pl-in-back" aria-label="' + esc(t('back')) + '">' + S.I.back + '</button><div class="progress" aria-hidden="true">' + Array.from({ length: total }, (x, i) => '<i class="' + (i <= (a.iq || 0) ? 'on' : '') + '"></i>').join('') + '</div></div><h1>' + esc(title) + '</h1>' + (p ? '<p>' + esc(p) + '</p>' : '');
     renderIntake(v, a, { head: headF, chip: chip, back: (fn) => { const b = v.querySelector('#pl-in-back'); if (b) b.addEventListener('click', fn); },
-      done: () => { const ans = Object.assign({}, a); delete ans.known; delete ans.edit; S.mem.planIntake = null; const dd = startFromIntake(ans); S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
-      prev: () => { S.mem.planIntake = null; S.setHash('plan'); }, redraw: () => S.render() });
+      done: () => { const ans = Object.assign({}, a); const one = !!ans.fromJoin; delete ans.known; delete ans.edit; delete ans.fromJoin; S.mem.planIntake = null; const dd = startFromIntake(ans); S.mem.rvOne = one && !!dd; S.mem.rvCard = 0; S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
+      prev: () => { const back = a.fromJoin ? 'your-sakhi' : 'plan'; S.mem.planIntake = null; S.setHash(back); }, redraw: () => S.render() });
   }
 
   /* ---------- Today: her plan's line in the Today card, and its cards in the "Sakhi says" slot ---------- */
@@ -4428,7 +4432,7 @@
         plan_all_diary: 'Start your diary, and Sakhi suggests plans from what you log.',
         plan_all_foot: 'Suggestions come from what you logged and what you told Sakhi. They are not a diagnosis. For medicines or supplements, ask a doctor.',
         plan_help_h: 'What you want help with', plan_help_none: 'Nothing picked yet.', plan_help_save: 'Save', plan_help_saved: 'Saved. Your suggestions are updated.', plan_cancel_b: 'Cancel',
-        plan_off_eye: 'Ready for you', plan_off_p: 'Made from your answers and your first log.', plan_off_b: 'See my plan', plan_off_later: 'Later',
+        plan_off_eye: 'Ready for you', plan_off_p: 'Made from your answers and your first log.', plan_off_p0: 'Made from your answers.', plan_off_b: 'See my plan', plan_off_later: 'Later',
         plan_rec_home: 'A plan for you', plan_rec_not: 'Not now', plan_fit_ttc_h: 'Trying for a baby now?', plan_fit_ttc_p: 'Getting ready for a baby has the steps for these months: your folic acid tablet, your food and your moves.', plan_fit_ttc_go: 'See Getting ready', plan_fit_cyc_h: 'Not trying for a baby now?', plan_fit_cyc_p: 'Getting ready for a baby is for the months before a pregnancy. Choose a plan for your periods, or keep this one.', plan_fit_pick: 'Choose my plan', plan_fit_keep: 'Keep {t}', plan_fit_hd: 'A different plan may fit now', plan_fit_pd: 'Your stage has changed. Choose a plan for now, or keep yours.', plan_fit_keep_d: 'Keep my plan', plan_fit_meno_h: '{t} may fit now', plan_fit_meno_p: 'A short chapter a week for hot flushes, sleep or worry, with strength and balance for your bones. What you logged stays.', plan_fit_meno_go: 'See {t}', plan_for_h_run: 'Your plan for this', plan_for_h_offer: 'A free plan for this',
         plan_m2_rv_p: 'Weeks {a} to {b}: {p}', plan_m2_rv_ch: 'Every week: a short chapter, and a look back at your week', plan_m2_rv_str: 'Twice a week, from day 2: {r}',
         plan_m2_tom: 'Tomorrow: {x}.', plan_m2_tl_skill: 'your skill', plan_m2_tl_move: 'your walk', plan_m2_tl_ca: 'a calcium food', plan_m2_tl_food: 'your plate', plan_rec_all: 'All plans', plan_paused_pill: 'After your 6-week check',
@@ -4838,7 +4842,7 @@
         plan_all_diary: 'अपनी डायरी शुरू करें, और Sakhi आपकी entries से प्लान सुझाएगी।',
         plan_all_foot: 'सुझाव आपकी entries और आपके बताए जवाबों से आते हैं। ये कोई निदान नहीं हैं। दवा या सप्लीमेंट के लिए डॉक्टर से पूछें।',
         plan_help_h: 'आपको किस बात में मदद चाहिए', plan_help_none: 'अभी कुछ नहीं चुना।', plan_help_save: 'सेव करें', plan_help_saved: 'सेव हो गया। आपके सुझाव बदल गए हैं।', plan_cancel_b: 'रद्द करें',
-        plan_off_eye: 'आपके लिए तैयार', plan_off_p: 'आपके जवाबों और पहली एंट्री से बना।', plan_off_b: 'मेरा प्लान देखें', plan_off_later: 'बाद में',
+        plan_off_eye: 'आपके लिए तैयार', plan_off_p: 'आपके जवाबों और पहली एंट्री से बना।', plan_off_p0: 'आपके जवाबों से बना।', plan_off_b: 'मेरा प्लान देखें', plan_off_later: 'बाद में',
         plan_rec_home: 'आपके लिए एक प्लान', plan_rec_not: 'अभी नहीं', plan_fit_ttc_h: 'अब बच्चे की कोशिश कर रही हैं?', plan_fit_ttc_p: '‘गर्भ के लिए तैयारी’ में इन महीनों के कदम हैं: folic acid की गोली, आपका खाना और व्यायाम।', plan_fit_ttc_go: '‘गर्भ के लिए तैयारी’ देखें', plan_fit_cyc_h: 'अभी बच्चे की कोशिश नहीं?', plan_fit_cyc_p: '‘गर्भ के लिए तैयारी’ प्रेगनेंसी से पहले के महीनों के लिए है। अपने पीरियड के लिए प्लान चुनें, या इसी को रखें।', plan_fit_pick: 'मेरा प्लान चुनें', plan_fit_keep: '{t} रखें', plan_fit_hd: 'अब कोई दूसरा प्लान ठीक रहेगा', plan_fit_pd: 'आपकी स्थिति बदली है। अभी के लिए प्लान चुनें, या अपना रखें।', plan_fit_keep_d: 'मेरा प्लान रखें', plan_fit_meno_h: '{t} अब ठीक रहेगा', plan_fit_meno_p: 'गर्मी के झोंकों, नींद या चिंता पर हर हफ़्ते एक छोटा अध्याय, और हड्डियों के लिए ताक़त व संतुलन। आपने जो दर्ज किया, वह रहेगा।', plan_fit_meno_go: '{t} देखें', plan_for_h_run: 'इसके लिए आपका प्लान', plan_for_h_offer: 'इसके लिए एक मुफ़्त प्लान',
         plan_m2_rv_p: 'हफ़्ते {a} से {b}: {p}', plan_m2_rv_ch: 'हर हफ़्ते: एक छोटा अध्याय, और अपने हफ़्ते पर एक नज़र', plan_m2_rv_str: 'हफ़्ते में दो बार, दूसरे दिन से: {r}',
         plan_m2_tom: 'कल: {x}।', plan_m2_tl_skill: 'आपका अभ्यास', plan_m2_tl_move: 'आपकी सैर', plan_m2_tl_ca: 'एक कैल्शियम वाला खाना', plan_m2_tl_food: 'आपकी थाली', plan_rec_all: 'सभी प्लान', plan_paused_pill: '6 हफ़्ते की जाँच के बाद',

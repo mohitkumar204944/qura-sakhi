@@ -3311,3 +3311,9 @@ who goes to a private doctor or hasn't said (free care stays for "Nowhere yet");
 Mohit, 3 Nov: "proceed with phase B". No new words. With no plan on Today, "How do you feel today?" moves into the card with her body today,
 as a line above its chips, and the "How I feel" button leaves Today; on a plan, Today is unchanged. Tips come one a day, only in her first week (or the
 week after her stage changes). The age lines (the lives audit's section 3) wait for the doctor before they are written.
+
+### 19.61 Version 39.61: phase C, joining that ends with her plan running (MODULE_API section 104)
+
+Mohit, 3 Nov: "proceed with phase C". UI words only: "Make my plan · about a minute" and "Just my diary for now" on Your Sakhi; its plan
+row "Your plan, from your answers" (was "Your plan, after your first log"); the plan offer's "Made from your answers." before her first
+log. Her plan's own questions and safety screens are unchanged; from joining, her plan's cards are one page.

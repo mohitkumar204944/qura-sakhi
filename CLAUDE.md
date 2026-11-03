@@ -467,6 +467,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       "How I feel"); on a plan, Today as Version 39.23 made it, her steps on the first screen;
     - Explore's For you without the pages her plan's tiles open.
     The age bands (the audit's R1) wait for the doctor. Contract: MODULE_API section 102; wording: section 19.59 (no new words).
+  - `node test/planfirst.mjs` (Version 39.61, phase C, joining that ends with her plan running; Mohit, 3 Nov: "proceed with phase C";
+    the advice's 4.2 and D1):
+    - "Your Sakhi" leads with "Make my plan", then her plan's questions without her goal again or a summary, Back to Your Sakhi;
+    - one page for her plan from joining (her steps and Start), and her plan offered on Today from the start ("Just my diary for now").
+    `web/test/taps/join-run.mjs` takes the path `plan`. Contract: MODULE_API section 104; wording: section 19.61 (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

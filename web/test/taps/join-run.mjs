@@ -1,5 +1,5 @@
 // Job 12: joining, from install to Today with her plan started, counted tap by tap on the real app.
-// Usage: node join-run.mjs <cycle|ttc|nopl> [tour|skip]
+// Usage: node join-run.mjs <cycle|ttc|nopl> [tour|skip|ys|plan]   (plan: Version 39.61's "Make my plan" on Your Sakhi)
 //   cycle: Priya, 28, regular periods with period pain (journey-video's cycle woman), 3 dates
 //   ttc:   Neha, 29, trying for a baby, 7 dates (enough for fertile days)
 //   nopl:  Priya, but she says "Not now" to the plan (the no-plan woman for the comparison)
@@ -65,9 +65,9 @@ mark('sign-up');
 await R.settle(800); await noteRead('ys'); await R.shot('join-ys-' + who, true);
 const ysScreens = await R.pageScreens();
 /* "Your Sakhi": the tour (primary) or Skip */
-if (path0 === 'ys' && await R.has('#view [data-xp-plan]')) {
-  /* the shortest path the app has today: the free plan's Start on "Your Sakhi" */
-  await T('#view [data-xp-plan]', 'Start (free plan on Your Sakhi)');
+if ((path0 === 'ys' && await R.has('#view [data-xp-plan]')) || (path0 === 'plan' && await R.has('#ys-plan'))) {
+  /* the free plan's Start on "Your Sakhi"; Version 39.61 (phase C): "Make my plan" there, the path a woman with a plan's goal now takes */
+  if (path0 === 'plan') await T('#ys-plan', 'Make my plan (Your Sakhi)'); else await T('#view [data-xp-plan]', 'Start (free plan on Your Sakhi)');
   for (let i = 0; i < 14; i++) {
     const h = await page.evaluate(() => location.hash); if (h === '#plan-reveal') break;
     await noteRead('plan q ' + i);
@@ -83,7 +83,7 @@ if (path0 === 'ys' && await R.has('#view [data-xp-plan]')) {
   const end0 = R.end(); console.log(JSON.stringify({ taps: end0.taps, scrolls: end0.scrolls, typed: end0.typed, screens: end0.screens.length, tips: end0.tips, sheets: end0.sheets, end: await page.evaluate(() => location.hash), plan: await page.evaluate(() => !!(window.Saathi.plan && window.Saathi.plan.running && window.Saathi.plan.running())) }, null, 1));
   for (let i = 1; i < phase.length; i++) console.log(phase[i].name.padEnd(32), 'taps', phase[i].taps - phase[i - 1].taps, 'scrolls', phase[i].scrolls - phase[i - 1].scrolls, 'screens+', phase[i].screens - phase[i - 1].screens);
   end0.path.forEach((p, i) => console.log(String(i + 1).padStart(3), p));
-  fs.writeFileSync(path.join(OUT, 'join-' + who + '-ys.json'), JSON.stringify({ job: end0, phases: phase, reads: readLog }, null, 1));
+  fs.writeFileSync(path.join(OUT, 'join-' + who + '-' + path0 + '.json'), JSON.stringify({ job: end0, phases: phase, reads: readLog }, null, 1));
   await browser.close(); process.exit(0);
 }
 if (path0 !== 'skip' && await R.has('#ys-tour')) {

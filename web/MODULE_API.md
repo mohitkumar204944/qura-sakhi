@@ -6708,3 +6708,34 @@ a card's second turn, Today's one card for her body and feelings with and withou
 and For you without her plan's tiles). Updated for what changed on purpose: `tours.mjs` 1b (a screen's own tip in her first week, on a
 day no other tip showed) and 2 (a tip put off is `off`), `goals.mjs` 8 and 11 and `afterbirth.mjs` 15a (her plan's tiles stay in My
 plan), `daily.mjs` 6 (the feelings line in the card with her body today).
+
+## 104. Version 39.61: phase C, joining that ends with her plan running
+
+Mohit, 3 Nov: "proceed with phase C" (`docs/personal-companion-advice-2026-11-03.md`, 4.2 and decision D1: "Joining ends with her plan
+running, and her first log becomes her first step. This replaces Version 39.10's order"). Version 39.60 and section 103 are the
+activity-tracking session's (PostHog), uncommitted when this was built.
+1. **Your Sakhi** (core `renderYourSakhi`): when her first goal has a plan (`prompts.planOffer`) and "What your dates show" doesn't
+   already offer it (`data-xp-plan`), "Make my plan · about a minute" (`#ys-plan`) leads; "Show me around" stays, and "Just my diary
+   for now" (`#ys-skip`) opens Today. Its plan row says "Your plan, from your answers" (`ys_plan_now`; it said "after your first log").
+2. **Her plan's questions straight away** (`S.plan.offerGo` with `planIntake.fromJoin`; the dates card's free plan sets it too, on Your
+   Sakhi): her goal and what joining holds aren't asked again (Version 39.10's `known`), there is no summary screen (`screensOf`: no
+   `sum` from joining; Change my answers is on the next page), and Back on her first question returns to Your Sakhi. Her plan's own
+   safety screens stay among her questions: pregnancy's "Before you start" (`psafe`), the pelvic floor plan's (`pfsafe`), the midlife
+   plan's bones and chest questions.
+3. **One page for her plan** (`renderReveal` with `S.mem.rvOne`, from joining only): her plan's ready card, her steps, her version's
+   doctor card when it has one, and Start (day, check-in time, what will ring), divided by lines, with Change my answers once and the
+   disclaimer; no Next and no card bar. Her days and weeks are in My plan's How it works (folded after week 1, Version 39.19). Every
+   other way in keeps the cards.
+4. **Her first log no longer holds her plan** (`offerCard`): Today offers her plan from the start, "Made from your answers."
+   (`plan_off_p0`), and after her first log, as before, "…and your first log." The Diary's first-log card stays.
+
+**Measured** (`web/test/taps/join-run.mjs`, the new path `plan`): install to her first plan step, the trying woman (7 dates) 52 taps and
+24 screens → 44 and 17; the period-pain woman (her dates' free plan on Your Sakhi, path `ys`) 42 and 24 (her usual path then) → 34 and
+17. The daily jobs aren't touched.
+
+**Strings.** `ys_make`, `ys_diary`, `ys_plan_now` (core); `plan_off_p0` (plan.js). English and Hindi. UI words only.
+
+**Tests.** `node test/planfirst.mjs` (16 checks: Your Sakhi's buttons and plan row, the questions without her goal or a summary, Back,
+the one page and Start, the dates card's free plan, "Just my diary for now" and the offer's words before and after her first log,
+pregnancy's "Before you start", Hindi at 360 px). Updated for what changed on purpose: `joining.mjs` (Today offers her plan from the
+start), `firstday.mjs` 5 and `companion.mjs` 1.

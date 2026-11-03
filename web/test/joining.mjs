@@ -114,7 +114,8 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
     check(tag + ': "Skip the tour" goes to Today', (await hashOf(page)) === '#home');
   }
   await go(page, 'home'); await closeTips(page);
-  check(tag + ': Today before her first log: no plan offer, 3 steps or fewer', !(await has(page, '#pl-off-go')) && (await todayRows(page)) <= 3 && await fits(page), [await todayRows(page)]);
+  const po = !!(await page.evaluate(() => (window.Saathi.state.prompts || {}).planOffer));   /* Version 39.61 (phase C): her first log no longer holds her plan back */
+  check(tag + ': Today: her plan offered from the start when her goal has one, 3 steps or fewer', (await has(page, '#pl-off-go')) === po && (await todayRows(page)) <= 3 && await fits(page), [po, await todayRows(page)]);
   await go(page, 'diary'); await closeTips(page);
   check(tag + ': Diary opens on her first log, with 3 reasons to log every day', await has(page, '#fl-card') && (await page.$$('#fl-card .fl-why .item')).length === 3 && await fits(page), (await view(page)).slice(0, 300));
   await shot(page, S.tile + '-' + lang + '-2-first-log');

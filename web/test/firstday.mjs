@@ -128,7 +128,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('4 after sign-up, "Your Sakhi" by her name, not straight into a plan', (await page.evaluate(() => location.hash)) === '#your-sakhi' && /Riya, here’s your Sakhi/.test(await view(page)) && !(s.mods.plan || {}).next, (await view(page)).slice(0, 300));
   await shot(page, '01-your-sakhi');
   await tap(page, '#ys-skip'); await closeTips(page);
-  check('5 Today before her first log: no plan offer yet', !(await has(page, '#pl-off-go')), (await view(page)).slice(0, 600));
+  check('5 Today straight after joining: her plan offered (Version 39.61: her first log no longer holds it), "Made from your answers."', (await has(page, '#pl-off-go')) && /Made from your answers\./.test(await view(page)), (await view(page)).slice(0, 600));
   await go(page, 'diary'); await closeTips(page);
   check('4 Diary opens on her first log, with why logging helps', await has(page, '#fl-card') && /Why log every day\?/.test(await view(page)), (await view(page)).slice(0, 400));
   await tap(page, '[data-fl-days="5"]'); await tap(page, '[data-fl-sign="d_tired"]'); await tap(page, '#fl-save');   /* Version 39.17: the same 5 as everywhere */ await settle(page, 600);

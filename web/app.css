@@ -1341,3 +1341,5 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 :root .pl-ctl { background: var(--glass-bar); -webkit-backdrop-filter: saturate(160%) blur(22px); backdrop-filter: saturate(160%) blur(22px); box-shadow: 0 -4px 16px rgba(47, 34, 51, 0.06); border-radius: 16px; }
 :root .intimate-qx { background: var(--glass-top); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); border-bottom-color: var(--glass-edge); }
 @media print { html { background: #FFFFFF !important; } body::before { display: none; } }
+/* Version 39.61 (phase C): the one-page plan from joining */
+.pl-rv-one .pl-rv-sep { border: 0; border-top: 1px solid var(--line); margin: 18px 0 6px; } .pl-rv-one .pl-rv-h { margin: 0 0 8px; }

@@ -351,7 +351,7 @@
   /* the buttons only explain draws: her report (with this card's question first), the plan offer, and "Got it" */
   function wireActs(v) {
     v.querySelectorAll('[data-xp-rp]').forEach((b) => b.addEventListener('click', () => { const f = findings().find((x) => x.key === b.dataset.xpRp); S.mem.rpFirst = f ? (RPQ[f.id] ? { k: RPQ[f.id] } : { f: f.key }) : null; S.setHash('report'); }));
-    v.querySelectorAll('[data-xp-plan]').forEach((b) => b.addEventListener('click', () => { if (S.plan && S.plan.offer) S.plan.offer(b.dataset.xpPlan); }));
+    v.querySelectorAll('[data-xp-plan]').forEach((b) => b.addEventListener('click', () => { const join = S.route && S.route() === 'your-sakhi'; if (S.plan && S.plan.offer) S.plan.offer(b.dataset.xpPlan); if (join && S.mem.planIntake) S.mem.planIntake.fromJoin = true; }));   /* Version 39.61 (phase C): from Your Sakhi, the one-page plan */
     v.querySelectorAll('[data-xp-off]').forEach((b) => b.addEventListener('click', () => { if (S.plan && S.plan.offerGo) S.plan.offerGo(); }));   /* Version 39.27 (R06) */
     v.querySelectorAll('[data-xp-got]').forEach((b) => b.addEventListener('click', () => { D().seen[b.dataset.xpGot] = S.toISO(S.today()); S.saveQuiet(); S.toast(t('explain_got_toast')); }));
   }

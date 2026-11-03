@@ -116,7 +116,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('3 ... and her goal is kept', await has(page, '[data-ob-goal="irregular"].on'));
   await tap(page, '#ob-next'); await tap(page, '#jd-none'); await tap(page, '[data-ob-lp="24"]'); await tap(page, '#ob-next'); await tap(page, '#ob-care-go'); await tap(page, '[data-ob-sh="me"]');   /* Version 39.26: the quick choices sit behind "I don't remember the dates" */
   await signUp(page);
-  check('1 no plan straight after joining: Today, and her first log first', (await page.evaluate(() => location.hash)) === '#home' && !(await has(page, '#pl-off-go')) && !((await st(page)).mods.plan || {}).next);
+  check('1 straight after joining: Today offers her plan (Version 39.61: her first log no longer comes first), and nothing has started', (await page.evaluate(() => location.hash)) === '#home' && (await has(page, '#pl-off-go')) && !((await st(page)).mods.plan || {}).next);
   await firstLog(page); await go(page, 'home');
   await tap(page, '#pl-off-go');
   v = await view(page);
