@@ -6660,11 +6660,19 @@ was already built (meno.js `stopDue`, from 40) and is kept by a check. No new he
    (`plan-goal`, `plan-reveal`, `plan-start`) join `PIN_ROUTES`, so on a shared phone with a PIN they ask it first. The POI card
    stays off a shared phone.
 
+5. **Version 39.58.1, the setup card's government steps** (Mohit, 3 Nov: "fix the ASHA and free care setup steps too"; the lives
+   audit's C4): "Save your ASHA or ANM's number" (`mods/asha.js` `setup`) only on the government route (her ASHA, or a government
+   centre), and "Look at free care near you" (`mods/access.js` `setup`) on it and for "Nowhere yet" (`S.care.route() === 'none'`: the
+   government option one tap away). A private doctor, or no answer, gets neither: Explore keeps its one Govt. services row. Pregnancy and
+   after a birth keep "Check the scheme money you can get" (money she can claim wherever she goes), unchanged. An older core without
+   `S.care` keeps both steps. Suites that check the government route's setup card seed `care: 'govt'` (`test/value.mjs` 6,
+   `test/baby.mjs` 16); `test/firstday.mjs` 3 answers "Nowhere yet".
+
 **State.** Nothing new is saved.
 
 **Strings.** `bleed_end`, `logged_stop` (core); "Negative on {d}." (pregtest.js). English and Hindi.
 
-**Tests.** `node test/lifefit.mjs` (31 checks: the doctor check on each care route and a shared phone, bleeding after menopause in
+**Tests.** `node test/lifefit.mjs` (37 checks; 39.58.1 added section 7, the setup steps by her care answer: the doctor check on each care route and a shared phone, bleeding after menopause in
 English and Hindi at 360 px and on a shared phone, one and two negative tests on each route, a positive, an old negative, the shared-
 phone offer and its PIN, the POI card, and the 12-month question). The walks behind it: `test/lives-walk.mjs`, `test/census-walk.mjs`
 and `test/stagejump-walk.mjs` (not pass/fail).

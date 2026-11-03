@@ -7,7 +7,9 @@
 // - 3 a negative test (C6): Today's "Period late?" says when it was negative and to test again in 3-7 days (the reviewed line);
 //   two negatives 5 days apart or more give the reviewed two-negatives line;
 // - 4 a shared phone (C8): her plan offered in plain words ("My plan"), its questions behind her PIN, the POI card kept off;
-// - 5 (already built, kept here so it stays): "A year since your last period · Have your periods stopped?" at 12 months from 40.
+// - 5 (already built, kept here so it stays): "A year since your last period · Have your periods stopped?" at 12 months from 40;
+// - 7 Version 39.58.1 (Mohit, 3 Nov: "fix the ASHA and free care setup steps too"): the setup card's ASHA number only on the
+//   government route, and "Look at free care near you" on it and for a woman with nowhere to go yet.
 // Usage: node test/lifefit.mjs [web dir]
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -216,6 +218,38 @@ const offerS = (x) => Object.assign({ dob: '1993-05-01', situation: {}, goals: [
   const a = await open({ seed: seedOf({ dob: '1980-02-01', situation: { midlife: true }, goals: ['meno', 'hot'], intake: { goal: 'hot', stage: 'meno' }, events: [{ d: ago(450), t: 'start' }, { d: ago(446), t: 'end' }, { d: ago(390), t: 'start' }, { d: ago(386), t: 'end' }] }) });
   const v = await view(a.page);
   check('5.1 46, periods changing, 12 months since her last period: "A year since your last period · Have your periods stopped?"', /A year since your last period/.test(v) && /Have your periods stopped\?/.test(v), v.slice(0, 400));
+  await done(a);
+}
+
+/* ---------- 7 (Version 39.58.1) the ASHA and free-care setup steps, by her care answer ---------- */
+/* Priya, 28, her last period logged: on Today in her first month, the next step; in Me after it, with free care seen, the one after */
+const setupS = (care, x) => Object.assign({ dob: '1998-05-01', situation: care === undefined ? {} : { care }, goals: ['track'], intake: { goal: 'track', stage: 'cycle' }, events: regular(10), joined: ago(5),
+  prompts: { planCall: ago(3), firstLog: ago(4) } }, x || {});
+const setupTxt = async (page, where) => { await go(page, where); return txt(page, '#view .setup-card'); };
+{
+  for (const [care, label] of [[undefined, 'not answered'], ['private', 'a private doctor']]) {
+    let a = await open({ seed: seedOf(setupS(care)) });
+    const td = await setupTxt(a.page, 'home');
+    await a.page.evaluate(() => { const S = window.Saathi; S.data('access').seenFree = true; S.saveQuiet(); }); const me = await setupTxt(a.page, 'me');
+    check('7.1 ' + label + ': no "Look at free care near you" on Today and no "Save your ASHA or ANM\'s number" in Me', !/Look at free care near you/.test(td) && !/ASHA|ANM/.test(td + ' ' + me), { td, me });
+    await done(a);
+  }
+  let a = await open({ seed: seedOf(setupS('govt')) });
+  const td = await setupTxt(a.page, 'home');
+  await a.page.evaluate(() => { const S = window.Saathi; S.data('access').seenFree = true; S.saveQuiet(); }); const me = await setupTxt(a.page, 'me');
+  check('7.2 a government centre: "Look at free care near you" on Today, then her ASHA\'s number in Me', /Look at free care near you/.test(td) && /Save your ASHA or ANM’s number/.test(me), { td, me });
+  await done(a);
+  a = await open({ seed: seedOf(setupS('asha', { joined: ago(200) })) });
+  check('7.3 her ASHA: "Save your ASHA or ANM\'s number" in Me', /Save your ASHA or ANM’s number/.test(await setupTxt(a.page, 'me')));
+  await done(a);
+  a = await open({ seed: seedOf(setupS('none')) });
+  const tn = await setupTxt(a.page, 'home');
+  await a.page.evaluate(() => { const S = window.Saathi; S.data('access').seenFree = true; S.saveQuiet(); }); const mn = await setupTxt(a.page, 'me');
+  check('7.4 nowhere yet: "Look at free care near you" stays (the government option one tap away), with no ASHA step', /Look at free care near you/.test(tn) && !/ASHA|ANM/.test(mn), { tn, mn });
+  await done(a);
+  a = await open({ seed: seedOf(setupS(undefined, { situation: { pregnant: true, pregnantSince: ago(140) }, goals: ['preg', 'food'], intake: { goal: 'food', stage: 'preg' }, events: [], joined: ago(200) })) });
+  const mp = await setupTxt(a.page, 'me');
+  check('7.5 pregnant, care not answered: no ASHA step in Me', !/ASHA|ANM/.test(mp), mp);
   await done(a);
 }
 

@@ -191,7 +191,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 
 /* ---------- 6. The setup card (rec 2); Version 37: the next step only, inside Today's slot ---------- */
 {
-  const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [] } });
+  const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [], situation: { stage: 'cycle', care: 'govt' } } });   /* Version 39.58.1: free care and her ASHA on the government route */
   const su = await text(page, '#view .setup-card');
   check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 2/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
   check('6 the web prototype has no phone-reminders step', !/reminders on this phone/.test(su));
@@ -218,7 +218,8 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 }
 {
   const { ctx, page, errs } = await open({ android: true, sample: 'meera' });
-  /* Version 39.2: she joined months ago, so the setup card waits in Me */
+  /* Version 39.2: she joined months ago, so the setup card waits in Me; Version 39.58.1: her ASHA step is the government route's */
+  await setState(page, () => { const S = window.Saathi; S.state.situation.care = 'govt'; S.save(); });
   await go(page, 'me');
   const su = await text(page, '#view .setup-card');
   check('6 pregnant, on Android: the next of plan reminders, scheme money and her ASHA (her dates and iron are done)', (await page.$$('#view .setup-it')).length === 1 && [/Turn on your plan’s reminders/, /Check the scheme money you can get/, /Save your ASHA or ANM’s number/].filter((r) => r.test(su)).length === 1 && /2 \/ 5/.test(su), su);

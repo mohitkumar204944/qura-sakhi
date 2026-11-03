@@ -116,7 +116,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   for (const x of ['[data-ob-lpm="60"]', '[data-ob-gap="g45"]', '[data-ob-dx="ns"]']) await tap(page, x);
   await tap(page, '#ob-next');
   check('3 no reminder question while joining: next is where she gets care (Version 39.28), then who uses this phone', await has(page, '[data-ob-care]') && !/When should Sakhi remind you/.test(await view(page)));
-  await tap(page, '#ob-care-go'); await settle(page, 200);
+  await tap(page, '[data-ob-care="none"]'); await settle(page, 200);   /* Version 39.58.1: "Nowhere yet", so her setup card keeps free care near her (day 4 below) */
   await tap(page, '[data-ob-sh="me"]'); await settle(page, 400);
   let s = await st(page);
   check('2 the guessed date is saved as a guess, about 2 months ago', s.events.some((e) => e.t === 'start' && e.approx && e.d === ago(60)), s.events);

@@ -454,7 +454,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "Ask a Qura doctor" on every plan's doctor check, and the free government doctor only on the government route;
     - "Bleeding", never "Period started", once her periods have stopped, and saving it says it needs a check;
     - a negative test on Today's "Period late?", with when to test again (two negatives: the reviewed two-negatives line);
-    - her plan offered on a shared phone in plain words, its questions behind her PIN.
+    - her plan offered on a shared phone in plain words, its questions behind her PIN;
+    - Version 39.58.1: the setup card's ASHA number only on the government route, and free care near her on it and for "Nowhere yet".
     The walks behind it (not pass/fail): `node test/lives-walk.mjs` (one woman per stage over months, plus 14 edge ages; ~20 minutes;
     `WHO=`, `EDGES=0`), `node test/census-walk.mjs` (what each tab shows each woman) and `node test/stagejump-walk.mjs` (stage changes).
     Contract: MODULE_API section 101; wording: section 19.58 of the review (no new health lines).

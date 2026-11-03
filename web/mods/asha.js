@@ -74,8 +74,10 @@
 
   /* for other modules (the pregnancy plan): is her ASHA's number saved? Read-only */
   S.asha = { saved: () => S.canSave() && !!tenDigits(D().phone) };
-  /* Home's setup card (Version 30): her ASHA's number, at every stage */
-  const setup = () => (S.canSave() ? { id: 'asha', order: 50, title: t('asha_setup'), sub: t('asha_help_s'), go: 'asha', done: S.asha.saved() } : null);
+  /* Home's setup card (Version 30): her ASHA's number. Version 39.58.1 (the lives audit, C4): only on the government route (her ASHA,
+     or a government centre), as Version 39.28 keeps the ASHA words for a woman who picks them; an older core keeps the step */
+  const docRoute = () => !!(S.care && S.care.gov && !S.care.gov());
+  const setup = () => (S.canSave() && !docRoute() ? { id: 'asha', order: 50, title: t('asha_setup'), sub: t('asha_help_s'), go: 'asha', done: S.asha.saved() } : null);
 
   S.register({
     id: 'asha',

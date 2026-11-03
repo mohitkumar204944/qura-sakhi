@@ -786,6 +786,9 @@
   function setup() {
     if (!S.canSave()) return null; const k = S.stageNow(); const d = S.data('access');
     if (k === 'preg' || k === 'post') return { id: 'schemes', order: 40, title: t('access_setup_sch'), sub: t('access_schemes_s'), go: 'access-schemes-' + k, done: !!d.seenSchemes || Object.keys(AD().claims).length > 0 };
+    /* Version 39.58.1 (the lives audit, C4): "Look at free care near you" on the government route, and for a woman with nowhere to go yet
+       (Version 39.28: the government option one tap away); a private doctor, or no answer, has Explore's one Govt. services row */
+    if (S.care && S.care.gov && !S.care.gov() && !(S.care.route && S.care.route() === 'none')) return null;
     return { id: 'free', order: 60, title: t('access_setup_free'), sub: t('access_setup_free_s'), go: 'access-free', done: !!d.seenFree };
   }
 

@@ -470,7 +470,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   check('16 at the tracking stage, the PMOS tile stays', /PMOS: food, yoga and moves/.test(await view(cyc)));
   await done(cyc);
   const SET = { planCall: ago(3), firstLog: ago(30), notifyAuto: ago(30) };   /* Me's setup card on */
-  const ms = await open({ seed: { dob: '1999-05-01', situation: { planning: true, pcos: true }, prompts: SET }, hash: 'me' });   /* 27: no check-up step first */
+  const ms = await open({ seed: { dob: '1999-05-01', situation: { planning: true, pcos: true, care: 'govt' }, prompts: SET }, hash: 'me' });   /* Version 39.58.1: the government route keeps her setup card's steps */   /* 27: no check-up step first */
   check('16 ...nor Me\'s setup ("Start your PMOS plan") while she tries', !/Start your PMOS plan/.test(await view(ms)) && /Set up Sakhi for you/.test(await view(ms)), (await view(ms)).slice(0, 500));
   await done(ms);
   const mc = await open({ seed: { dob: '1999-05-01', situation: { pcos: true }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' }, prompts: SET }, hash: 'me' });

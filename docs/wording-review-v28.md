@@ -3303,4 +3303,5 @@ No new health lines: each reuses a reviewed one.
 
 UI words: "Bleeding" (was "Period started") and "Bleeding stopped" once her periods have stopped; "Ask a Qura doctor" on every plan's
 doctor check (the free government doctor only for a woman who goes to government care); her plan's "Ready for you" on a shared phone,
-titled "My plan".
+titled "My plan". Version 39.58.1: "Save your ASHA or ANM's number" and "Look at free care near you" leave the setup card for a woman
+who goes to a private doctor or hasn't said (free care stays for "Nowhere yet"); no new words.
