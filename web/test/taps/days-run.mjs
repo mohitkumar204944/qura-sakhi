@@ -35,7 +35,7 @@ async function checkin(R) {
   if (!(await R.tapIf('#view [data-go="plan-checkin"]', 'check-in button on Today'))) { R.note('no check-in button on Today'); return; }
   await R.settle(800); await R.clearBlockers('check-in');
   const groups = await R.page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))]);
-  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; await R.tap('[data-ci^="' + g + ':"]', 'check-in answer ' + g); }
+  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; if (await R.has('.pl-ci-opt [data-ci^="' + g + ':"]')) continue; await R.tap('[data-ci^="' + g + ':"]', 'check-in answer ' + g); }
   await R.tapIf('#pl-ci-save', 'Save check-in'); await R.settle(900); await R.clearBlockers('after check-in');
   for (let k = 0; k < 3; k++) { const w = await R.where(); if (!w.sheet) break; if (!(await R.tapIf('#sheet-root .sheet-foot .btn.primary', 'sheet: ' + w.sheet))) await R.tapIf('#sheet-root .btn', 'sheet: ' + w.sheet); }
 }

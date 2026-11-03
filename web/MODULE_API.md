@@ -6605,7 +6605,9 @@ plans). Item by item:
    A step from a tool (`from`) is done when its tool says so, even after a partly answer (`one()`; it used to keep the answer).
 2. **Getting ready's folic acid tablet**, before she has said she has the tablets, is asked in the check-in (`ciAsk`: Done or Not
    today, no Partly, `noPart`), where it said "Do it now"; after her "Not yet" on its page that day, "Do it now" stays (Version
-   39.32's rule, `test/baby.mjs` 4). Her Done there means she has them (`S.ttc.folic.have()`): the 9 pm ring
+   39.32's rule, `test/baby.mjs` 4). The question is optional (Mohit, 3 Nov: "make the folic question optional"): it isn't one
+   of the questions left, Save works without it, and nothing is saved for it unanswered (`pl-ci-opt`; the tap counters skip it, as
+   the check-in's other optional cards). Her Done there means she has them (`S.ttc.folic.have()`): the 9 pm ring
    is booked and the step is a tick from then on. Today's row still opens the tablet page ("Not got it yet? See where").
 3. **The doctor loop.** Today's doctor finding (a `month` or `week` level, `mods/explain.js` `home()`) has "I've seen a doctor":
    off Today (as "Got it"), and her plan's doctor check done when her plan has one (`S.plan.docSeen()`). After 4 weeks on Today
@@ -6628,5 +6630,6 @@ plans). Item by item:
 10. **My PMOS plan's first question**: equal gaps say "your last 2 gaps were both 42 days" (`plan_in_from_eq2`, or "all" for more).
 11. **The anaemia page** says its 112 line once, at the top (the "See a doctor" card repeated it).
 
-`node test/allwalk.mjs` checks it (25 checks; 22 fail on 97b02b2). The baseline re-records `preg@2` (the pelvic floor step), and the
+`node test/allwalk.mjs` checks it (26 checks; 22 of the first 25 fail on 97b02b2). With the folic question optional, the taps are
+unchanged against 21a9a6d (the cycle woman 43, 55, 47 and 70; the trying woman 53, 57, 45 and 70). The baseline re-records `preg@2` (the pelvic floor step), and the
 golden replay re-records `post/preg/food/born-mid-run` (My plan after the birth: no suggestions or more plans).

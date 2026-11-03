@@ -3288,5 +3288,5 @@ New lines for the doctor:
 UI words: "I've seen a doctor" and "Still to see a doctor?" (Today's doctor finding, after 4 weeks); "The first 6 weeks are done"
 (day 42 after the birth); "From your diary: your last 2 gaps were both {a} days." and "…all {a} days."; the midlife skill "carry on
 through a flush" (waits with the midlife lines for the doctor and the psychologist). My pregnancy's pelvic floor set and Getting ready's
-folic acid tablet get the check-in's usual answers (Done, Partly, Not today; Done or Not today for the tablet). The anaemia page loses
+folic acid tablet get the check-in's usual answers (Done, Partly, Not today; for the tablet an optional Done or Not today). The anaemia page loses
 its second "Call 112 now if" line (the first, at the top, stays).

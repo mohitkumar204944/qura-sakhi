@@ -79,7 +79,7 @@ if (plan) await job(4, 'evening check-in from Today (nothing ticked yet)', { hm:
   await R.tap('#view [data-go="plan-checkin"]', 'How did today go? (Today)'); await R.settle(600); await R.clearBlockers();
   R.note('check-in page: ' + (await R.text('#view')).slice(0, 500));
   const groups = await R.page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))]);
-  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; await R.tap('[data-ci^="' + g + ':"]', 'answer ' + g); }
+  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; if (await R.has('.pl-ci-opt [data-ci^="' + g + ':"]')) continue; await R.tap('[data-ci^="' + g + ':"]', 'answer ' + g); }
   await R.tap('#pl-ci-save', 'Save'); await R.settle(1200); await R.clearBlockers();
   R.note('after save: ' + (await R.text('#view')).slice(0, 400));
 });
@@ -91,7 +91,7 @@ if (plan) await job(4.1, 'evening check-in after ticking on Today', { hm: '20:30
 if (plan) await job(4.2, 'evening check-in from the 8 pm notification', { hm: '20:01', hash: 'plan-checkin' }, async (R) => {
   R.note('(1 tap on the notification, outside the app, not counted)');
   const groups = await R.page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))]);
-  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; await R.tap('[data-ci^="' + g + ':"]', 'answer ' + g); }
+  for (const g of groups) { if (await R.has('[data-ci^="' + g + ':"].on')) continue; if (await R.has('.pl-ci-opt [data-ci^="' + g + ':"]')) continue; await R.tap('[data-ci^="' + g + ':"]', 'answer ' + g); }
   await R.tap('#pl-ci-save', 'Save');
 });
 /* 5 when her next period is likely: on Today's first screen? */

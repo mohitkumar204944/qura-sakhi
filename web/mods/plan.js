@@ -2879,10 +2879,10 @@
     const slpChips = () => '<div class="chips" role="group" aria-label="' + esc(t('plan_ci_slp')) + '">' + ['well', 'ok', 'bad'].concat(slpHot(d) ? ['hot'] : []).map((k) => '<button type="button" class="chip' + (m.slp === k ? ' on' : '') + '" data-ci-slp="' + k + '" aria-pressed="' + (m.slp === k) + '">' + esc(t('plan_slp_' + k)) + '</button>').join('') + '</div>';
     const slpQ = (a) => (a.bed ? '<div class="pl-ci-slp"><span class="small pl-ci-slp-h">' + esc(t('plan_ci_slp')) + '</span>' + slpChips() + '</div>' : '');
     const slpCard = () => '<div class="card pl-ci-slpc"><span class="eyebrow">' + esc(t('plan_ci_slp')) + '</span>' + slpChips() + '</div>';   /* Version 39.49 */
-    const left = open.length; const leftTxt = left ? tf(left === 1 ? 'plan_ci_left1' : 'plan_ci_left', { n: left }) : t('plan_ci_left0');
+    const left = open.filter((a) => !a.ciAsk).length;   /* Version 39.57: her folic question is optional */ const leftTxt = left ? tf(left === 1 ? 'plan_ci_left1' : 'plan_ci_left', { n: left }) : t('plan_ci_left0');
     const ico = (a) => '<span class="ico-sm hue hue-' + a.hue + '">' + a.icon + '</span>';
     const preRow = (a) => '<div class="pl-ci-row pl-ci-pre"><div class="row" style="gap:10px">' + ico(a) + '<span class="body"><strong>' + esc(nm(a, true)) + '</strong><span class="small pl-ci-ok">' + CI_SYM.d + esc(ciNote(a, lg)) + '</span></span></div>' + slpQ(a) + '</div>';
-    const askRow = (a) => '<div class="pl-ci-row"><div class="row" style="gap:10px">' + ico(a) + '<strong>' + esc(nm(a)) + '</strong></div><div class="chips" role="group" aria-label="' + esc(nm(a)) + '">' +
+    const askRow = (a) => '<div class="pl-ci-row' + (a.ciAsk ? ' pl-ci-opt' : '') + '"><div class="row" style="gap:10px">' + ico(a) + '<strong>' + esc(nm(a)) + '</strong></div><div class="chips" role="group" aria-label="' + esc(nm(a)) + '">' +
       (a.bed ? opt(a, 'd', 'plan_ci_yes') + opt(a, 'p', 'plan_ci_close') + opt(a, 'n', 'plan_ci_no') : opt(a, 'd', 'plan_ci_d') + (a.once || a.noPart ? '' : opt(a, 'p', 'plan_ci_p')) + opt(a, 'n', 'plan_ci_n')) + '</div>' + slpQ(a) + '</div>';
     v.innerHTML = hd + '<p class="small pl-ci-date">' + esc(S.fmtD(pToday(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' + leftTxt) + '</p>' +
       (firstCi && !ciDone(d) ? '<p class="small pl-ci-first">' + esc(t('plan_ci_first')) + '</p>' : '') +
@@ -2918,8 +2918,8 @@
     v.querySelectorAll('[data-ci-b]').forEach((b) => b.addEventListener('click', () => { m.bar = b.dataset.ciB; v.querySelectorAll('[data-ci-b]').forEach((x) => x.classList.toggle('on', x === b)); }));
     const rb = v.querySelector('#pl-ci-rest'); if (rb) rb.addEventListener('click', () => { const dd = D(); setRest(dd); remSync(dd); S.save(); m.saved = { rest: true, w: weekDays(dd, wkNow(dd)) }; S.render(); });
     v.querySelector('#pl-ci-save').addEventListener('click', () => {
-      if (asked.some((a) => !m.sel[a.id])) { v.querySelector('#pl-ci-err').hidden = false; return; }
-      const dd = D(); asked.forEach((a) => { if (pre.indexOf(a.id) >= 0 && m.sel[a.id] === 'd') return; markAction(dd, a, m.sel[a.id]); });   /* what counted already stays as it was counted */
+      if (asked.some((a) => !a.ciAsk && !m.sel[a.id])) { v.querySelector('#pl-ci-err').hidden = false; return; }
+      const dd = D(); asked.forEach((a) => { if (pre.indexOf(a.id) >= 0 && m.sel[a.id] === 'd') return; if (!m.sel[a.id]) return; markAction(dd, a, m.sel[a.id]); });   /* an optional question left empty saves nothing */   /* what counted already stays as it was counted */
       const x = dd.log[todayISO()] = dd.log[todayISO()] || {}; x.ci = 1; if (m.bar && anyMiss()) x.bar = m.bar; else delete x.bar;
       if (m.slp) x.slp = m.slp; else delete x.slp;   /* Version 39.22: a hard night goes in her diary as Poor sleep */
       if (pfSureAsk(dd) && m.pfs) x.pfs = m.pfs; if (pfWayAsk(dd) && m.pfw != null) x.pfw = +m.pfw; if (pfCmpAsk(dd) && m.pfc) x.pfc = m.pfc;   /* Version 39.56 */

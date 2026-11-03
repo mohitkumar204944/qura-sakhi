@@ -121,6 +121,13 @@ const tryS = (startAgo, o, x) => Object.assign({ dob: '1996-05-01', situation: {
   const fo = await stOf(a.page, 'folic');
   check('2.2 her Done means she has them: the 9 pm ring is booked and the step is a tick, done today', r.has && r.rem && r.rem.time === '21:00' && fo && fo.kind === 'tick' && fo.state === 'd', [r, fo]);
   await done(a);
+  /* Mohit, 3 Nov: "make the folic question optional" */
+  const b = await open({ seed: tryS(B(5)), hm: '20:30', hash: '#plan-checkin' });
+  const left = await txt(b.page, '#view');
+  await checkinAll(b.page, { folic: 'none' });
+  const r2 = await b.page.evaluate((d) => { const S = window.Saathi; const x = ((S.state.mods.plan || {}).log || {})[d] || {}; return { ci: x.ci, ck: (x.ck || {}).folic || null, has: S.ttc.folic.has(), rem: !!(S.state.reminders || []).find((y) => y.id === 'ttc-folic') }; }, TODAY);
+  check('2.3 the folic question is optional: "2 questions left", Save works without it, and nothing is saved or booked for it', /2 questions left/.test(left) && r2.ci === 1 && !r2.ck && !r2.has && !r2.rem, [left.slice(0, 120), r2]);
+  await done(b);
 }
 
 /* ---------- 3 the doctor loop ---------- */
