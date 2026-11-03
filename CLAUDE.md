@@ -490,6 +490,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - low mood leads with Tele-MANAS 14416;
     - the trying and midlife tips show on Explore.
     The test's section 7. Contract: MODULE_API section 107; wording: section 19.64 (the sign map for the doctor).
+  - `node test/stagerules.mjs` (Version 39.65, the stage-change rules; Mohit, 3 Nov: "proceed with the stage-change rules"; the advice's
+    4.11, decision D7: ask, never block; the case is `node test/stagejump-walk.mjs`):
+    - under 40, "Periods changing after 40" asks what is happening;
+    - under 40, "My periods have stopped" shows the POI line, a Qura doctor first, and her cycle keeps counting until "My doctor says
+      my periods have stopped";
+    - from 40, a period in the last 6 weeks asks first; a period after "stopped" asks "Have your periods come back?";
+    - Undo and "Changed by mistake" for every stage (a plan started on the mistake gives way to her earlier one, at its own week); no
+      midlife offer under 40; no next-period countdown in the Diary around 40.
+    Contract: MODULE_API section 108; wording: section 19.65 (four timings for the doctor).
   - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
     what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
     `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):

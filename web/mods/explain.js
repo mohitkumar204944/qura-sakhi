@@ -524,7 +524,7 @@
      get the doctor check?" waits while it shows, so Today has one doctor card at a time */
   const signOn = () => { if (!S.canSave() || S.state.settings.discreet) return false; const seen = D().seen;
     return open(findings()).some((x) => !seen[x.key] && !x.quiet && ['now', 'today', 'week', 'month'].indexOf(x.lv) >= 0 && !(x.lv !== 'now' && x.lv !== 'today' && S.plan && S.plan.docOwns && S.plan.docOwns(x.id))); };
-  S.explain = { signOn: signOn, openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
+  S.explain = { signOn: signOn, docNext: docNext, openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
   findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
     /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
     question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };

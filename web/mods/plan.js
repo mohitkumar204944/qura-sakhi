@@ -1583,7 +1583,7 @@
   function offerCard() {
     const p = S.state.prompts || {}; if (!on() || !S.canSave() || lossNow()) return '';   /* Version 39.58: a shared phone too; its title is "My plan", and its pages ask her PIN */
     const d = raw(); if ((packOf(d) && pausedFor(d) !== 'poi') || pendingOk(d) || upcoming(d)) return '';   /* Version 39.51: a plan held for her doctor shows the card */
-    if (poiHold() && stageNowKey() === 'meno') return disc() ? '' : p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml(!!(packOf(d) && pausedFor(d) === 'poi'));   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her; Version 39.53 (Mohit's phone test): while it holds her plan, Today shows it where her plan's steps were */
+    if ((poiHold() && stageNowKey() === 'meno') || poiAsk()) return disc() ? '' : p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml(!!(packOf(d) && pausedFor(d) === 'poi'));   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her; Version 39.53 (Mohit's phone test): while it holds her plan, Today shows it where her plan's steps were */
     if (!p.planOffer) return '';   /* Version 39.61 (phase C): her plan comes first; her first log no longer holds it */
     if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), pToday()) < 3) return '';
     const ik = S.state.intake || {}; const pk = ik.goal && goalsFor({ stage: stageNowKey() }).indexOf(ik.goal) >= 0 ? packFor(ik.goal, stageNowKey()) : null; if (!pk) return '';   /* Version 39.32: only a goal of her stage now */
@@ -2459,6 +2459,7 @@
        feeding goal becomes her recovery */
     if (name === 'tool' && p && p.route === 'post-recovery') { const d0 = raw(); if (d0 && recCi(d0)) setTimeout(() => { remSync(D()); S.saveQuiet(); }, 0); return; }
     if (name === 'babyDied') { const d0 = raw(); if (d0 && (d0.pack || 'cycle') === 'post') { const dd = D(); if (dd.goalKey === 'feed') { dd.goalKey = 'recovery'; dd.goalWas = 'feed'; } remSync(dd); } return; }
+    if (name === 'stageUndo' && p && p.at) { const d0 = raw(); if (d0 && d0.start && d0.started && d0.started >= p.at && S.diffDays(S.fromISO(d0.started), pToday()) <= 3) { if (d0.prevPlan && d0.prevPlan.pack) restorePrev(D()); else closePlan(D(), true); S.saveQuiet(); } return; }   /* Version 39.65 */
     if (name === 'babyBack') { const d0 = raw(); if (d0 && d0.goalWas) { const dd = D(); dd.goalKey = dd.goalWas; delete dd.goalWas; remSync(dd); } return; }   /* "Marked this by mistake": her goal back */
     if (name === 'pregEnd' && p && p.mistake) { const d0 = raw(); if (d0 && d0.pack === 'preg' && d0.prevPlan && d0.prevPlan.pack && d0.prevPlan.pack !== 'preg') restorePrev(D()); else if (d0 && d0.pack === 'preg' && d0.start) closePlan(D(), true); return; }   /* Version 39.35; Version 39.45: with no plan before it, the mistaken pregnancy plan ends and isn't kept as her last plan */
     if (name === 'tool' && p && p.type === 'calm') { const dc = raw(); if (dc && packOf(dc)) setTimeout(() => { const dd = D(); closeDay(dd); remSync(dd); S.saveQuiet(); }, 0); return; }   /* Version 39.22: she wound down (after this event: a full day's petal is an event too) */
@@ -2557,6 +2558,7 @@
     const st = stageNowKey(); const pk = packOf(d);
     const why = st === 'ttc' && CYC_PACKS.indexOf(pk) >= 0 ? 'ttc' : (st === 'cycle' && pk === 'ttc' ? 'nottc' : (st === 'meno' && ['cycle', 'pain', 'pms', 'ttc'].indexOf(pk) >= 0 ? 'meno' :
       (st === 'cycle' && pk === 'meno' ? (perFirst() ? 'per' : 'nomid') : null)));   /* Version 39.55 (the phone test): a midlife plan after "Tracking my periods" */   /* Version 39.51 (Mohit's phone): midlife now; heavy periods keep their plan */
+    const age = S.cycle && S.cycle.ageYears ? S.cycle.ageYears() : null; if (why === 'meno' && age != null && age < 40) return null;   /* Version 39.65: only a plan that fits her age */
     return why && d.fitKeep !== d.start + ':' + why ? why : null;
   }
   const perFirst = () => (S.state.goals || []).find((k) => ['pain', 'heavy', 'pms'].indexOf(k) >= 0) || null;   /* her first period goal */
@@ -3273,6 +3275,7 @@
         '<button type="button" class="btn sm primary" data-go="plan-reveal">' + esc(t('plan_sl_go_b')) + '</button>' + (run ? '<button type="button" class="btn sm" id="pl-next-drop">' + esc(t('plan_sl_keep')) + '</button>' : ''), true);
     }
     const chg = changedWhy(d); if (chg) return changedCard(d, chg, true);   /* Version 39.5 */
+    if (poiDue() && !(packOf(d) && pausedFor(d) === 'poi')) return poiHtml(false);   /* Version 39.65: before 40, her doctor first while her plan runs on (a plan held for her doctor shows the card in its own place, Version 39.53) */
     const fit = fitWhy(d); if (fit) return fitCard(d, fit);   /* Version 39.48: her stage moved between tracking and trying */
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return '';
     const k = cardKind(d); const dd = fullD(d); const acts = actionsFor(dd); const first = acts[0]; const day = planDay(dd); const easy = acts.find((a) => a.id === 'move') || first;   /* Version 39.13: a restart starts with her walk */
@@ -3387,12 +3390,17 @@
     Array.from({ length: 11 }, (x, i) => '<button type="button" class="chip' + (m.ms === i ? ' on' : '') + '" data-ci-ms="' + i + '" aria-pressed="' + (m.ms === i) + '">' + i + '</button>').join('') + '</div><div class="row spread small pl-ms-ends"><span>' + esc(t('plan_ms_lo')) + '</span><span>' + esc(t('plan_ms_hi')) + '</span></div></div>';
   /* periods that stopped before 40 need a gynaecologist first (the reviewed POI line): no midlife plan until her doctor has seen her */
   function poiHold() { const s0 = S.state.situation || {}; const age = S.cycle && S.cycle.ageYears ? S.cycle.ageYears() : null; return !!s0.stopped && age != null && age < 40 && !s0.poiOk; }   /* a declaration: pausedFor asks it */
+  /* Version 39.65 (the stage-change rules): under 40 she said her periods have stopped; her cycle counts until a doctor has seen her */
+  function poiAsk() { const s0 = S.state.situation || {}; const age = S.cycle && S.cycle.ageYears ? S.cycle.ageYears() : null; return !!s0.stopAsk && !s0.stopped && age != null && age < 40; }
+  const poiDue = () => (poiAsk() || (poiHold() && stageNowKey() === 'meno')) && !disc() && !((S.state.prompts || {}).poiNot && S.diffDays(S.fromISO(S.state.prompts.poiNot), pToday()) < 14);
   function wirePoi(v) {
     const po = v.querySelector('#pl-m2-poi-ok'); if (po) po.addEventListener('click', () => { S.state.situation = Object.assign({}, S.state.situation || {}, { poiOk: todayISO() }); S.state.prompts = Object.assign({}, S.state.prompts || {}); if (!S.state.prompts.planOffer) S.state.prompts.planOffer = todayISO(); S.save(); S.render(); });   /* her plan is offered now */
+    const ps = v.querySelector('#pl-m2-poi-stop'); if (ps && S.stopConfirm) ps.addEventListener('click', () => S.stopConfirm());   /* Version 39.65 */
     const pn = v.querySelector('#pl-m2-poi-not'); if (pn) pn.addEventListener('click', () => { S.state.prompts = Object.assign({}, S.state.prompts || {}, { poiNot: todayISO() }); S.saveQuiet(); S.render(); });
   }
-  const poiHtml = (top) => '<div class="card warn pl-offer pl-m2-poi" data-nofold="1" data-slot-keep="1"' + (top ? ' data-plan-top="1"' : '') + '><h3>' + esc(t('plan_m2_poi_h')) + '</h3><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap">' +
-    (S.routeOwner('cond-poi') ? '<button type="button" class="btn sm" data-go="cond-poi">' + esc(t('plan_m2_poi_read')) + '</button>' : '') + '<button type="button" class="btn sm primary" id="pl-m2-poi-ok">' + esc(t('plan_m2_poi_ok')) + '</button><button type="button" class="btn sm" id="pl-m2-poi-not">' + esc(t('plan_off_later')) + '</button></div></div>';
+  const poiHtml = (top) => '<div class="card warn pl-offer pl-m2-poi" data-nofold="1" data-slot-keep="1"' + (top ? ' data-plan-top="1"' : '') + '><h3>' + esc(t(poiAsk() ? 'stage_meno' : 'plan_m2_poi_h')) + '</h3><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap">' +   /* Version 39.65: in her words while her plan runs on */
+    '<button type="button" class="btn sm primary" data-ask="' + esc(t('stage_meno')) + '">' + esc(t('hs_doc_q')) + '</button>' + (S.explain && S.explain.docNext ? S.explain.docNext('gyn') : '') +   /* Version 39.65: a Qura doctor first, the gynaecologist beside it */
+    (S.routeOwner('cond-poi') ? '<button type="button" class="btn sm" data-go="cond-poi">' + esc(t('plan_m2_poi_read')) + '</button>' : '') + (poiAsk() ? '<button type="button" class="btn sm" id="pl-m2-poi-stop">' + esc(t('plan_m2_poi_stop')) + '</button>' : '<button type="button" class="btn sm" id="pl-m2-poi-ok">' + esc(t('plan_m2_poi_ok')) + '</button>') + '<button type="button" class="btn sm" id="pl-m2-poi-not">' + esc(t('plan_off_later')) + '</button></div></div>';
   /* which midlife card is due, first that applies, one at a time in Sakhi says (none on a shared phone): her periods stopped before
      45 at 40 to 44, a year after her last period (once); in weeks 4 to 7, for hot flushes (her goal or her diary), aches and tiredness or
      hormone medicine: her doctor and hormone therapy, her hormone medicine's own signs, blood tests; in weeks 12 to 16 her checks after
@@ -4384,7 +4392,7 @@
         plan_m2_w12_h: 'Your checks after 40', plan_m2_w12_p: 'After 40, BP, sugar and your bones need checking more often. See which checks, and how often.', plan_m2_w12_go: 'See the checks',
         plan_m2_v2_h: 'Your plan has a new version', plan_m2_v2_p: 'A short chapter a week for hot flushes, sleep and strength, and a few minutes of balance, in a fresh 12 weeks from today. What you logged stays.', plan_m2_v2_yes: 'Try it', plan_m2_v2_done: 'Your new 12 weeks start today.',
         plan_m2_sum_bone: 'Weak bones', plan_m2_sum_heart: 'Chest pain or very breathless when you walk', plan_m2_keep_s: 'Every day · from {p}', plan_stop_l_m: 'Pain, dizziness, chest pain, breathlessness that doesn’t settle, or bleeding.',
-        plan_m2_poi_h: 'Before a plan: see a gynaecologist', plan_m2_poi_ok: 'My doctor has seen me', plan_m2_poi_read: 'Read about POI',
+        plan_m2_poi_h: 'Before a plan: see a gynaecologist', plan_m2_poi_ok: 'My doctor has seen me', plan_m2_poi_stop: 'My doctor says my periods have stopped', plan_m2_poi_read: 'Read about POI',
         plan_m2_year: 'Your year', plan_m2_year_s: 'The skills that work for you, and a read a month, to month 12', plan_m2_wks: 'Weeks {a} to {b}',
         plan_m2_p_h: 'A short course for hot flushes, a chapter a week', plan_m2_p_q: 'A short course for worry and low mood, a chapter a week', plan_m2_p_r: 'One sleep rule a week', plan_m2_p_s: 'Strength, balance and food for your bones',
         plan_m2_str_all: '{r} runs twice a week from week 1, in every part.',
@@ -4795,7 +4803,7 @@
         plan_m2_w12_h: '40 के बाद आपकी जाँचें', plan_m2_w12_p: '40 के बाद BP, शुगर और हड्डियों की जाँच ज़्यादा बार ज़रूरी है। देखें कौन-सी जाँचें, और कितनी बार।', plan_m2_w12_go: 'जाँचें देखें',
         plan_m2_v2_h: 'आपके प्लान का नया रूप', plan_m2_v2_p: 'गर्मी के झोंकों, नींद और ताक़त पर हर हफ़्ते एक छोटा अध्याय, और कुछ मिनट संतुलन, आज से नए 12 हफ़्तों में। आपने जो दर्ज किया, वह रहेगा।', plan_m2_v2_yes: 'आज़माएँ', plan_m2_v2_done: 'आपके नए 12 हफ़्ते आज से शुरू।',
         plan_m2_sum_bone: 'कमज़ोर हड्डियाँ', plan_m2_sum_heart: 'चलते समय छाती में दर्द या साँस बहुत फूलना', plan_m2_keep_s: 'हर दिन · {p} से', plan_stop_l_m: 'दर्द, चक्कर, छाती में दर्द, ऐसा साँस फूलना जो ठीक न हो, या ख़ून आना।',
-        plan_m2_poi_h: 'प्लान से पहले: स्त्री रोग विशेषज्ञ को दिखाएँ', plan_m2_poi_ok: 'डॉक्टर ने मुझे देख लिया है', plan_m2_poi_read: 'POI के बारे में पढ़ें',
+        plan_m2_poi_h: 'प्लान से पहले: स्त्री रोग विशेषज्ञ को दिखाएँ', plan_m2_poi_ok: 'डॉक्टर ने मुझे देख लिया है', plan_m2_poi_stop: 'मेरी डॉक्टर ने कहा, पीरियड बंद हो गए हैं', plan_m2_poi_read: 'POI के बारे में पढ़ें',
         plan_m2_year: 'आपका साल', plan_m2_year_s: 'जो अभ्यास आपके काम आए, और हर महीने कुछ पढ़ने को, 12वें महीने तक', plan_m2_wks: 'हफ़्ते {a} से {b}',
         plan_m2_p_h: 'गर्मी के झोंकों के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_q: 'चिंता और उदासी के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_r: 'हर हफ़्ते नींद का एक नियम', plan_m2_p_s: 'ताक़त, संतुलन और हड्डियों के लिए खाना',
         plan_m2_str_all: '{r} पहले हफ़्ते से, हर हिस्से में, हफ़्ते में दो बार चलती है।',

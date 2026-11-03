@@ -205,7 +205,9 @@ const cleanup = async (x) => { check(x.name + ': no page errors', !x.errs.length
 {
   const T = await open({ seed: { dob: '1978-03-08', events: [{ d: ago(13), t: 'start' }, { d: ago(9), t: 'end' }] } });
   const { page } = T;
-  await tap(page, '#stage-btn'); await page.$eval('[data-stage="meno"]', (b) => b.click()); await settle(page); await tap(page, '#st-save');
+  await tap(page, '#stage-btn'); await page.$eval('[data-stage="meno"]', (b) => b.click()); await settle(page);
+  await page.$eval('[data-st-last="y"]', (b) => b.click()); await settle(page);   /* Version 39.65: a period in the last 6 weeks asks first */
+  await tap(page, '#st-save');
   await go(page, '#explain');
   /* Version 39.0 review (XS-1): the stop is dated to her last period's end, so later bleeding stays flagged */
   check('6 "periods stopped" right after a period: no "bleeding after your periods stopped"', !/Bleeding after your periods stopped/.test(await view(page)) && (await st(page)).situation.stoppedOn === ago(9), (await st(page)).situation.stoppedOn);

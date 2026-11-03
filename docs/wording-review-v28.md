@@ -3359,3 +3359,24 @@ Mohit, 3 Nov, answering the packet: "Qura first, gynaecologist second". A sign i
 first, and gets "See a gynaecologist" (new UI words; the baby plan's Hindi) or "See a doctor" second. Low mood or anxiety leads with
 "Call 14416" (Tele-MANAS), then "Ask a Qura doctor". **For the doctor:** which signs get which second doctor is the packet's
 section 2 map (`docs/doctor-ladder-packet-2026-11-03.md`, sections 7 and 8). The reviewed "see a doctor" lines are unchanged.
+
+### 19.65 Version 39.65: the stage-change rules (MODULE_API section 108)
+
+Mohit, 3 Nov: "proceed with the stage-change rules". New lines:
+- Under 40, picking "Periods changing after 40": "This is for women around 40 and older. What's happening for you?" Her choices are
+  "My periods have become irregular", "My periods have stopped" and "I tapped it by mistake".
+- Under 40, picking "My periods have stopped":
+  - the reviewed POI line, with "Ask a Qura doctor", "See a gynaecologist" and "Could you be pregnant? Take a test first";
+  - "Sakhi keeps counting your cycle until a doctor has seen you.";
+  - on the card: "My doctor says my periods have stopped".
+- From 40, with a period in the last 6 weeks †: "You logged a period on {d}. Have your periods stopped since then?"
+- A period after "stopped": "Your period came. Have your periods come back?" Her choices are "Yes, they've come back" and "No, my
+  periods have stopped". Under 40, within 4 months of the stop, Yes comes first †.
+- Undo: "Changed by mistake? Back to “{stage}”".
+
+**For the doctor (†):**
+1. The 6 weeks for "a period in the last 6 weeks".
+2. While no end of her last period is logged, a stop counted from 9 days after its start, so the period she is on is never "bleeding
+   after menopause".
+3. Under 40 and within 4 months, "Yes, they've come back" offered first.
+4. Under 40, her cycle keeps counting until she taps "My doctor says my periods have stopped".

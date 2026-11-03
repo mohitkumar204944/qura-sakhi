@@ -123,6 +123,9 @@ const menoS = (x) => Object.assign({ dob: '1972-01-15', situation: { midlife: tr
   const lbl = await txt(a.page, '#view [data-log="start"]'); const v = await view(a.page); await shot(a.page, '2-today');
   check('2.1 Today: "Bleeding", and no "Period started"', lbl === 'Bleeding' && !/Period started/.test(v), { lbl });
   await tap(a.page, '#view [data-log="start"]');
+  /* Version 39.65 (the stage-change rules): it asks first whether her periods have come back; "No" keeps the doctor line */
+  check('2.2a saving it asks "Have your periods come back?", "No" first at 56', /Have your periods come back\?/.test(await txt(a.page, '#sheet-root')) && (await a.page.$eval('#sheet-root .stack .btn', (e) => e.id).catch(() => '')) === 'pb-n');
+  await tap(a.page, '#sheet-root #pb-n');
   const toast1 = await txt(a.page, '.toast');
   check('2.2 saving it says it needs a check: "Saved. Any bleeding now needs a check with a doctor, even a little."', /Saved\. Any bleeding now needs a check with a doctor, even a little\./.test(toast1) && /What this means/.test(toast1) && /Undo/.test(toast1), toast1);
   const means = await a.page.evaluate(() => { const b = [...document.querySelectorAll('.toast button')].find((x) => /What this means/.test(x.innerText)); if (b) { b.click(); return true; } return false; }); await settle(a.page, 600);
@@ -139,7 +142,7 @@ const menoS = (x) => Object.assign({ dob: '1972-01-15', situation: { midlife: tr
   check('2.5 the + menu says "Bleeding"', fab.indexOf('Bleeding') >= 0 && fab.indexOf('Period started') < 0, fab);
   await done(a);
   a = await open({ seed: seedOf(menoS({ lang: 'hi' })) });
-  const hl = await txt(a.page, '#view [data-log="start"]'); await tap(a.page, '#view [data-log="start"]'); const ht = await txt(a.page, '.toast');
+  const hl = await txt(a.page, '#view [data-log="start"]'); await tap(a.page, '#view [data-log="start"]'); await tap(a.page, '#sheet-root #pb-n'); const ht = await txt(a.page, '.toast');
   check('2.6 Hindi: "ब्लीडिंग", and the reviewed line when it is saved', hl === 'ब्लीडिंग' && /अब थोड़ी सी भी ब्लीडिंग हो तो डॉक्टर से जाँच ज़रूरी है।/.test(ht), { hl, ht });
   check('2.7 Hindi at 360 px: no sideways scroll', await noScroll(a.page));
   await done(a);

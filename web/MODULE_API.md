@@ -6964,3 +6964,61 @@ packet's, marked † for the doctor.
 - burning: "See a doctor";
 - low mood: Tele-MANAS first;
 - the trying tip on Explore.
+
+## 108. Version 39.65: the stage-change rules
+
+Mohit, 3 Nov: "proceed with the stage-change rules" (`docs/personal-companion-advice-2026-11-03.md`, 4.11; decision D7: ask, never
+block). The case behind it: `node test/stagejump-walk.mjs` (Priya, 22, on My period plan, picks a midlife stage). Her records were
+always kept. What changes is what Sakhi asks and offers.
+1. **The stage sheet checks what Sakhi knows, and asks once before saving** (core `openStage`):
+   - **Under 40, "Periods changing after 40"**: "This is for women around 40 and older. What's happening for you?" (`st_age_q`). Save
+     waits for the answer:
+     - "My periods have become irregular": Tracking, with irregular periods as her first goal;
+     - "My periods have stopped": the next rule;
+     - "I tapped it by mistake": the sheet closes and nothing changes.
+   - **Under 40, "My periods have stopped"**:
+     - the sheet shows the reviewed POI line (`meno_tl_poi0`), with "Ask a Qura doctor" first, "See a gynaecologist" (Version 39.64)
+       and "Could you be pregnant? Take a test first" (the test pages);
+     - Save notes it (`situation.stopAsk`) and keeps her on Tracking: her cycle keeps counting, her period buttons and estimates
+       stay, and her plan runs on;
+     - the POI card leads Sakhi says, on a running plan too (plan.js `poiAsk`, `poiDue`). It offers "Ask a Qura doctor", "See a
+       gynaecologist" and "My doctor says my periods have stopped". That button (`S.stopConfirm`) counts them stopped from her last
+       period, as Version 39.53's "My doctor has seen me" does for the hold.
+   - **From 40, with a period in the last 6 weeks †, "My periods have stopped"**: "You logged a period on {d}. Have your periods
+     stopped since then?" "No, not yet" picks "Periods changing after 40". "Yes" counts them stopped, never from the period she is
+     on: from its logged end (Version 39.0's XS-1), or, while no end is logged, 9 days after its start if that is later.
+2. **Only a plan that fits her age** (plan.js `fitWhy`): no "My midlife plan may fit now" under 40.
+3. **A period after "stopped" asks first** (core `periodsBack`, from Today's button and the log sheet): "Your period came. Have your
+   periods come back?"
+   - Yes: her cycle counts again ("Periods changing after 40" from 40, Tracking before).
+   - No: Version 39.58's line, "Any bleeding now needs a check with a doctor".
+   - Under 40, within 4 months of the stop, Yes comes first †; otherwise No.
+   - Under 40, with only her word for it (`stopAsk`, her cycle still counting), her next period asks too, Yes first. Yes takes the
+     POI card away.
+   - Never in discreet mode.
+4. **Undo** (core `undoStage`; between Tracking, Trying, Periods changing after 40 and My periods have stopped):
+   - "Updated" has Undo;
+   - for 30 days the stage sheet offers "Changed by mistake? Back to “{stage}”" (`state.stageWas`);
+   - either puts back her stage, her estimates and her goals;
+   - a plan she started on the change 3 days ago or less gives way to the plan she had, at its own week (plan.js `stageUndo`, Version
+     39.35's `restorePrev`), or ends if there was none.
+   A pregnancy keeps its own "marked by mistake" (Version 39.35).
+5. **One truth:** while her periods change after 40, the Diary's day page shows no next-period countdown, as Today shows none.
+
+Updated for what changed on purpose: `lifefit.mjs` 2 (a period after "stopped" asks first; "No" keeps the line) and `fieldtest.mjs`
+6 (she answers the 6-week question first).
+
+**Strings.** Core: `st_age_q`, `st_age_irr`, `st_age_oops`, `st_poi_count`, `st_poi_test`, `st_poi_saved`, `st_last_q`, `st_last_y`,
+`st_last_n`, `st_mistake`, `st_back`, `back_q`, `back_y`, `back_n`, `back_done`. plan.js: `plan_m2_poi_stop`. English and Hindi.
+The lines marked † wait for the doctor (review 19.65).
+
+**Tests.** `node test/stagerules.mjs` (31 checks):
+- the age question and its three answers;
+- the POI line and her cycle counting on a running plan;
+- "My doctor says my periods have stopped";
+- the 6-week question;
+- "Have your periods come back?" both ways and its order, and after an unconfirmed stop;
+- Undo, "Changed by mistake", and a plan's earlier week coming back;
+- no midlife offer under 40;
+- the Diary's countdown;
+- Hindi at 360 px.

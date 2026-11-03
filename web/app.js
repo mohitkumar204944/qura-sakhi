@@ -277,7 +277,13 @@
       sos_h: 'Need help now?', sos_p: 'Tap a number to call. For any emergency, call 112.', call_b: 'Call', sos_signs: 'Danger signs: when to go now',
       stage_change: 'Change stage', stage_h: 'Where are you right now?', stage_cycle: 'Tracking my periods', stage_ttc: 'Trying for a baby', stage_preg: 'I am pregnant', stage_post: 'I had a baby', stage_meno: 'My periods have stopped',
       stage_preg_note: 'Add the due date on your scan report, or the first day of your last period.', stage_preg_note2: 'Add the first day of your last period, or the due date on your scan report.', stage_birth_date: 'When was your baby born?', stage_bf: 'I am breastfeeding',
-      stage_saved: 'Updated. Today now shows what fits you.', stage_log_first: 'Log the day your periods came back. Sakhi then counts your cycle again.', stage_now: 'Your stage',
+      stage_saved: 'Updated. Today now shows what fits you.',
+      /* Version 39.65 (the stage-change rules; the advice's 4.11): ask once, never block (lines marked † in review 19.65 wait for the doctor) */
+      st_age_q: 'This is for women around 40 and older. What’s happening for you?', st_age_irr: 'My periods have become irregular', st_age_oops: 'I tapped it by mistake',
+      st_poi_count: 'Sakhi keeps counting your cycle until a doctor has seen you.', st_poi_test: 'Could you be pregnant? Take a test first', st_poi_saved: 'Saved. Sakhi counts your cycle until a doctor has seen you.',
+      st_last_q: 'You logged a period on {d}. Have your periods stopped since then?', st_last_y: 'Yes, they’ve stopped', st_last_n: 'No, not yet',
+      st_mistake: 'Changed by mistake? Back to “{s}”', st_back: 'Back to “{s}”.',
+      back_q: 'Your period came. Have your periods come back?', back_y: 'Yes, they’ve come back', back_n: 'No, my periods have stopped', back_done: 'Updated. Sakhi counts your cycle again.', stage_log_first: 'Log the day your periods came back. Sakhi then counts your cycle again.', stage_now: 'Your stage',
       scan_edd: 'Due date on your scan report (EDD)', scan_edd_note: 'Most scan reports and MCP cards print an EDD. If yours does, Sakhi counts the weeks from it.', date_bad: 'That date does not look right. Please check it.',
       r_pain: 'Pain that stops your day is worth a doctor visit this month. Sudden severe pain on one side with a late period: call 112 now.',
       mid_eyebrow: 'Since your last period', mid_days: 'days', mid_months: 'months', mid_diary: 'This week’s symptom diary', mid_diary_done: 'This week’s diary: done', mid_note: 'Around 40 and after, gaps between periods change. Keep noting each period.', ring_period: 'Period', ring_usual: 'Usual range {a}–{b} days', ring_likely: 'Likely next', ring_aria: 'Cycle day {n}. A typical gap is {a} to {b} days.',
@@ -538,7 +544,12 @@
       sos_h: 'अभी मदद चाहिए?', sos_p: 'कॉल करने के लिए नंबर पर टैप करें। किसी भी आपातकाल में 112 पर कॉल करें।', call_b: 'कॉल करें', sos_signs: 'ख़तरे के संकेत: कब तुरंत जाएँ',
       stage_change: 'स्थिति बदलें', stage_h: 'आप अभी किस दौर में हैं?', stage_cycle: 'पीरियड का हिसाब रख रही हूँ', stage_ttc: 'बच्चे की कोशिश कर रही हूँ', stage_preg: 'मैं गर्भवती हूँ', stage_post: 'मेरा बच्चा हुआ है', stage_meno: 'मेरे पीरियड बंद हो गए हैं',
       stage_preg_note: 'स्कैन रिपोर्ट की डिलीवरी तारीख़, या पिछले पीरियड का पहला दिन दर्ज करें।', stage_preg_note2: 'पिछले पीरियड का पहला दिन, या स्कैन रिपोर्ट की डिलीवरी तारीख़ दर्ज करें।', stage_birth_date: 'बच्चे का जन्म कब हुआ?', stage_bf: 'मैं दूध पिला रही हूँ',
-      stage_saved: 'बदल दिया। “आज” पर अब वही दिखेगा जो आपके काम का है।', stage_log_first: 'जिस दिन पीरियड लौटे, वह दर्ज करें। फिर Sakhi चक्र दोबारा गिनेगी।', stage_now: 'आपकी स्थिति',
+      stage_saved: 'बदल दिया। “आज” पर अब वही दिखेगा जो आपके काम का है।',
+      st_age_q: 'यह लगभग 40 और उससे ज़्यादा उम्र की महिलाओं के लिए है। आपके साथ क्या हो रहा है?', st_age_irr: 'मेरे पीरियड अनियमित हो गए हैं', st_age_oops: 'मैंने ग़लती से चुना',
+      st_poi_count: 'जब तक डॉक्टर न देख लें, Sakhi आपका चक्र गिनती रहेगी।', st_poi_test: 'गर्भ की संभावना है? पहले टेस्ट करें', st_poi_saved: 'दर्ज हो गया। डॉक्टर के देखने तक Sakhi आपका चक्र गिनती रहेगी।',
+      st_last_q: 'आपने {d} को पीरियड दर्ज किया था। क्या उसके बाद पीरियड बंद हो गए हैं?', st_last_y: 'हाँ, बंद हो गए हैं', st_last_n: 'नहीं, अभी नहीं',
+      st_mistake: 'ग़लती से बदला? “{s}” पर वापस', st_back: '“{s}” पर वापस।',
+      back_q: 'पीरियड आया है। क्या आपके पीरियड फिर से आने लगे हैं?', back_y: 'हाँ, फिर से आने लगे हैं', back_n: 'नहीं, पीरियड बंद हैं', back_done: 'अपडेट हो गया। Sakhi फिर से आपका चक्र गिनेगी।', stage_log_first: 'जिस दिन पीरियड लौटे, वह दर्ज करें। फिर Sakhi चक्र दोबारा गिनेगी।', stage_now: 'आपकी स्थिति',
       scan_edd: 'स्कैन रिपोर्ट पर लिखी डिलीवरी की तारीख़ (EDD)', scan_edd_note: 'ज़्यादातर स्कैन रिपोर्ट और MCP कार्ड पर EDD लिखी होती है। अगर आपकी पर है, तो Sakhi हफ़्ते उसी से गिनेगी।', date_bad: 'यह तारीख़ सही नहीं लग रही। कृपया जाँच लें।',
       r_pain: 'जो दर्द आपका दिन रोक दे, उसके लिए इसी महीने डॉक्टर को दिखाएँ। देर से आए पीरियड के साथ एक तरफ़ अचानक तेज़ दर्द हो: अभी 112 पर कॉल करें।',
       mid_eyebrow: 'पिछले पीरियड से', mid_days: 'दिन', mid_months: 'महीने', mid_diary: 'इस हफ़्ते की लक्षण डायरी', mid_diary_done: 'इस हफ़्ते की डायरी: हो गई', mid_note: '40 के आसपास और बाद में पीरियड के बीच का अंतर बदलता है। हर पीरियड दर्ज करती रहें।', ring_period: 'पीरियड', ring_usual: 'आम दायरा {a}–{b} दिन', ring_likely: 'अगला संभावित', ring_aria: 'चक्र का दिन {n}। आम तौर पर अंतर {a} से {b} दिन होता है।',
@@ -2850,7 +2861,8 @@
     const before = state.events.slice();
     const ev = { d: d, t: type }; if (type === 'start') dropGuesses(d); if (type === 'end') dropEnds(d); state.events.push(ev); usageMark('diary'); save(); emit('log', { type: type }); render();
     const undo = { label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } };
-    if (!state.settings.discreet && stoppedNow() && type !== 'end') { toastAct(t('logged_stop'), [{ label: t('why_irr_b'), fn: () => setHash('explain') }, undo]); return; }   /* Version 39.58: bleeding after her periods stopped */
+    if (!state.settings.discreet && type === 'start' && !stoppedNow() && isISO(state.situation.stopAsk) && d >= state.situation.stopAsk) { periodsBack(undo); return; }   /* Version 39.65: under 40, a period after she said they stopped asks too */
+    if (!state.settings.discreet && stoppedNow() && type !== 'end') { if (type === 'start') { periodsBack(undo); return; } toastAct(t('logged_stop'), [{ label: t('why_irr_b'), fn: () => setHash('explain') }, undo]); return; }   /* Version 39.58: bleeding after her periods stopped; Version 39.65: a period asks first */
     toastAct(state.settings.discreet ? t('saved') : t('logged_' + type), [
       undo,
       { label: t('add_details'), fn: () => openLog(type, d, ev) }
@@ -3357,10 +3369,38 @@
       sh.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copyNum(b.dataset.copy, b.parentElement.querySelector('.sos-n'))));
     });
   }
+  /* Version 39.65 (the advice's 4.11, rule 4): a stage changed by mistake goes back: her stage, her estimates, her goals; a plan that
+     started on it 3 days ago or less gives way to the plan she had, at its own week (plan.js, the stageUndo event) */
+  function undoStage() {
+    const w = state.stageWas; if (!w || !w.sit) return;
+    state.situation = JSON.parse(JSON.stringify(w.sit)); state.goals = Array.isArray(w.goals) ? w.goals : state.goals; state.focus = w.focus || null;
+    state.prompts = state.prompts || {}; if (w.exAsked) state.prompts.exAsked = w.exAsked; delete state.prompts.exStage;
+    delete state.stageWas; emit('stageUndo', { at: w.at }); save(); toast(tf('st_back', { s: t('stage_' + w.st) })); setHash('home'); render();
+  }
+  /* Version 39.65 (rule 3): a period after "My periods have stopped" asks first. Yes: her cycle counts again (from 40, periods
+     changing). No: the doctor line, as Version 39.58. Under 40, within 4 months of the stop, Yes comes first (†) */
+  function periodsBack(undo) {
+    const s0 = state.situation; const age = ageYears(); const yFirst = age != null && age < 40 && ((isISO(s0.stoppedOn) && diffDays(fromISO(s0.stoppedOn), today()) <= 120) || isISO(s0.stopAsk));   /* under 40 with only her word for it, Yes first too */
+    const b = (id, key, pri) => '<button type="button" class="btn' + (pri ? ' primary' : '') + '" id="' + id + '">' + esc(t(key)) + '</button>';
+    sheet('<h2>' + esc(t('back_q')) + '</h2><div class="stack" style="gap:8px">' + (yFirst ? b('pb-y', 'back_y', true) + b('pb-n', 'back_n') : b('pb-n', 'back_n', true) + b('pb-y', 'back_y')) + '</div>', (sh) => {
+      $('#pb-y', sh).addEventListener('click', () => { s0.stopped = false; delete s0.stoppedOn; delete s0.poiOk; delete s0.stopAsk; s0.midlife = age == null ? !!s0.midlife : age >= 40; save(); closeSheet(); render(); toast(t('back_done')); });
+      $('#pb-n', sh).addEventListener('click', () => { closeSheet(); toastAct(t('logged_stop'), [{ label: t('why_irr_b'), fn: () => setHash('explain') }].concat(undo ? [undo] : [])); });
+    });
+  }
+  /* Version 39.65: "My doctor says my periods have stopped" (the POI card while she is under 40): now they count as stopped, from her
+     last period */
+  const stopConfirm = () => { const s0 = state.situation; s0.stopped = true; s0.midlife = true; s0.stoppedOn = lastBleedISO() || toISO(today()); s0.poiOk = toISO(today()); delete s0.stopAsk; save(); render(); };
   /* Where she is now, in one tap. Pregnancy and birth ask for the one date the maths needs. */
   function openStage(initial) {
     const s0 = state.situation; let pick = typeof initial === 'string' ? initial : stageNow(); if (pick === 'browse') pick = 'cycle'; if (pick === 'meno' && !s0.stopped && typeof initial !== 'string') pick = 'mid';
     let endWhy = '';   /* review life-6: leaving "Pregnant" asks whether it ended or was marked by mistake */
+    /* Version 39.65 (the stage-change rules, the advice's 4.11): check what Sakhi already knows, and ask once before saving; never
+       block. Under 40, "Periods changing after 40" asks what is happening, and "My periods have stopped" shows the POI line first
+       and keeps her cycle counting until a doctor has seen her; from 40, a period in the last 6 weeks asks whether they stopped since */
+    const age = ageYears(); const young = age != null && age < 40; let ageAns = ''; let lastAns = '';
+    const lsI = lastStart(); const recent = !!lsI && diffDays(lsI, today()) <= 42;
+    const was0 = stageNow(); const was = was0 === 'meno' ? (s0.stopped ? 'meno' : 'mid') : was0; const plain = (k) => ['cycle', 'ttc', 'mid', 'meno'].indexOf(k) >= 0;
+    const w0 = state.stageWas; const undoOk = !!(w0 && w0.sit && isISO(w0.at) && diffDays(fromISO(w0.at), today()) <= 30 && plain(w0.st) && plain(was) && w0.st !== was);
     const opts = [['cycle', 'stage_cycle', 'periods'], ['ttc', 'stage_ttc', 'ttc'], ['preg', 'stage_preg', 'preg'], ['post', 'stage_post', 'post'], ['mid', 'stage_mid', 'meno'], ['meno', 'stage_meno', 'meno']];
     const inRange = (val, a, b) => !!val && fromISO(val) >= addDays(today(), a) && fromISO(val) <= addDays(today(), b);
     /* Version 39.35: her diary's last period, and her week and due date from what she enters (the scan's date wins, as pregInfo) */
@@ -3368,7 +3408,10 @@
     const pregIs0 = (lmp, edd) => { const okE = inRange(edd, -28, 280), okL = inRange(lmp, -310, 0); if (!okE && !okL) return ''; const l = okE ? addDays(fromISO(edd), -280) : fromISO(lmp);
       return Math.max(0, Math.floor(diffDays(l, today()) / 7)) + ' ' + t('weeks_preg') + ' · ' + tf('due_on', { d: fmtD(addDays(l, 280), { day: 'numeric', month: 'short', year: 'numeric' }) }); };
     const pregIsLine = (lmp, edd) => { const s = pregIs0(lmp, edd); const g = s && inRange(edd, -28, 280) && inRange(lmp, -310, 0) ? pregGapW(lmp, edd) : 0; return s + (g ? ' ' + tf('stage_preg_gap', { n: g }) : ''); };   /* Version 39.40 */
-    const show = () => sheet('<h2>' + esc(t('stage_h')) + '</h2><div class="list">' + opts.map((o) => '<button type="button" class="item stage-opt' + (pick === o[0] ? ' on' : '') + '" data-stage="' + o[0] + '" aria-pressed="' + (pick === o[0]) + '"><span class="ico-sm hue hue-' + hueOf(o[2]) + '">' + icon(SECTION_ICONS[o[2]]) + '</span><span class="body"><strong>' + esc(t(o[1])) + '</strong></span>' + (pick === o[0] ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
+    const show = () => sheet('<h2>' + esc(t('stage_h')) + '</h2>' + (undoOk ? '<button type="button" class="linkbtn st-undo" id="st-undo">' + esc(tf('st_mistake', { s: t('stage_' + w0.st) })) + '</button>' : '') + '<div class="list">' + opts.map((o) => '<button type="button" class="item stage-opt' + (pick === o[0] ? ' on' : '') + '" data-stage="' + o[0] + '" aria-pressed="' + (pick === o[0]) + '"><span class="ico-sm hue hue-' + hueOf(o[2]) + '">' + icon(SECTION_ICONS[o[2]]) + '</span><span class="body"><strong>' + esc(t(o[1])) + '</strong></span>' + (pick === o[0] ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
+      (young && pick === 'mid' ? '<div class="card st-age"><p>' + esc(t('st_age_q')) + '</p><div class="list">' + [['irr', 'st_age_irr'], ['stop', 'stage_meno'], ['oops', 'st_age_oops']].map((o) => '<button type="button" class="item" data-st-age="' + o[0] + '"><span class="body"><strong>' + esc(t(o[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></div>' : '') +
+      (young && pick === 'meno' && !s0.stopped ? '<div class="card warn st-poi"><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="st-poi-ask">' + esc(t('hs_doc_q')) + '</button>' + (api.explain && api.explain.docNext ? api.explain.docNext('gyn') : '') + '</div><button type="button" class="linkbtn" id="st-poi-test">' + esc(t('st_poi_test')) + '</button><p class="small">' + esc(t('st_poi_count')) + '</p></div>' : '') +
+      (!young && pick === 'meno' && recent && !s0.stopped ? '<div class="card st-last"><p>' + esc(tf('st_last_q', { d: fmtD(lsI, { day: 'numeric', month: 'short' }) })) + '</p><div class="grid2">' + [['y', 'st_last_y'], ['n', 'st_last_n']].map((o) => '<button type="button" class="btn sm' + (lastAns === o[0] ? ' on' : '') + '" data-st-last="' + o[0] + '" aria-pressed="' + (lastAns === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
       (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
         return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
       (s0.pregnant && pick !== 'preg' && pick !== 'post' ? '<div class="card st-end"><p>' + esc(t('stage_end_q')) + '</p><div class="grid2">' + [['ended', 'stage_end_y'], ['mistake', 'stage_end_n']].map((o) => '<button type="button" class="btn sm' + (endWhy === o[0] ? ' on' : '') + '" data-st-end="' + o[0] + '" aria-pressed="' + (endWhy === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
@@ -3377,11 +3420,17 @@
       sh.querySelectorAll('[data-stage]').forEach((b) => b.addEventListener('click', () => { pick = b.dataset.stage; show(); }));
       const sl = sh.querySelector('#st-lost'); if (sl) sl.addEventListener('click', () => { closeSheet(); setTimeout(() => api.post.lost(), 0); });   /* Version 39.46 */
       sh.querySelectorAll('[data-st-end]').forEach((b) => b.addEventListener('click', () => { endWhy = b.dataset.stEnd; show(); }));
+      sh.querySelectorAll('[data-st-age]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.stAge; if (k === 'oops') { closeSheet(); return; } ageAns = k; pick = k === 'irr' ? 'cycle' : 'meno'; show(); }));   /* Version 39.65 */
+      sh.querySelectorAll('[data-st-last]').forEach((b) => b.addEventListener('click', () => { lastAns = b.dataset.stLast; if (lastAns === 'n') { lastAns = ''; pick = 'mid'; } show(); }));
+      const pa = $('#st-poi-ask', sh); if (pa) pa.addEventListener('click', () => { closeSheet(); ask(t('stage_meno')); });
+      const pt = $('#st-poi-test', sh); if (pt) pt.addEventListener('click', () => { closeSheet(); setHash('pregtest-when'); });
+      sh.querySelectorAll('.st-poi [data-go]').forEach((b) => b.addEventListener('click', () => { closeSheet(); setHash(b.dataset.go); }));
+      const su = $('#st-undo', sh); if (su) su.addEventListener('click', () => { closeSheet(); undoStage(); });
       const isL = $('#st-preg-is', sh); if (isL) ['#st-lmp', '#st-edd'].forEach((q) => { const el = $(q, sh); if (el) ['input', 'change'].forEach((ev) => el.addEventListener(ev, () => { isL.textContent = pregIsLine($('#st-lmp', sh).value, $('#st-edd', sh).value); })); });   /* Version 39.35 */
       $('#st-cancel', sh).addEventListener('click', closeSheet);
       $('#st-save', sh).addEventListener('click', () => {
         const val = (id) => { const el = $('#' + id, sh); return el ? el.value : ''; };
-        const clearPreg = endPregnancy;
+        const clearPreg = endPregnancy; let snap = null;
         if (pick === 'preg') {
           const edd = val('st-edd'), lmp = val('st-lmp');
           if (!edd && !lmp) { toast(t('stage_preg_note')); return; }
@@ -3394,19 +3443,26 @@
         } else {
           const wasStopped = !!s0.stopped;
           if (s0.pregnant && !endWhy) { toast(t('stage_end_q')); return; }
+          if (young && pick === 'mid') { toast(t('st_age_q')); return; }   /* Version 39.65: she answers the question first */
+          if (!young && pick === 'meno' && recent && !s0.stopped && lastAns !== 'y') { toast(tf('st_last_q', { d: fmtD(lsI, { day: 'numeric', month: 'short' }) })); return; }
+          if (plain(was) && !s0.pregnant && pick !== was) snap = { at: toISO(today()), st: was, sit: JSON.parse(JSON.stringify(s0)), goals: (state.goals || []).slice(), focus: state.focus ? JSON.parse(JSON.stringify(state.focus)) : null, exAsked: (state.prompts || {}).exAsked || null };
           if (s0.pregnant && endWhy === 'mistake') unmarkPregnant(); else clearPreg();
-          s0.planning = pick === 'ttc'; s0.stopped = pick === 'meno'; s0.midlife = pick === 'mid' || pick === 'meno';
+          const held = young && pick === 'meno' && !wasStopped;   /* Version 39.65: under 40 her cycle keeps counting until a doctor has seen her */
+          s0.planning = pick === 'ttc'; s0.stopped = pick === 'meno' && !held; s0.midlife = (pick === 'mid' || pick === 'meno') && !held;
+          if (held) s0.stopAsk = toISO(today()); else if (pick !== 'meno') delete s0.stopAsk;
+          if (ageAns === 'irr') state.goals = ['irregular'].concat((state.goals || []).filter((k) => k !== 'irregular'));   /* "irregular": her goal on Tracking */
           /* Version 32 (field-test audit 3.2): tracking or trying again means breastfeeding no longer pauses her count, and
              "periods stopped" keeps its day, so only bleeding logged after it is flagged */
           if (pick !== 'meno') s0.breastfeeding = false;
-          if (s0.stopped && !wasStopped) s0.stoppedOn = lastBleedISO() || toISO(today()); if (!s0.stopped) delete s0.stoppedOn;   /* review XS-1: bleeding after her last period still counts */
+          if (s0.stopped && !wasStopped) { const lb = lastBleedISO() || toISO(today()); const p9 = lastAns === 'y' && lsI && !periodEnd(toISO(lsI)) ? toISO(addDays(lsI, 9)) : '';   /* still on it (no end logged): 9 days after its start */ s0.stoppedOn = p9 > lb ? p9 : lb; } if (!s0.stopped) delete s0.stoppedOn;   /* review XS-1: bleeding after her last period still counts; Version 39.65: never the period she is on */
         }
         state.focus = null; if (state.prompts) delete state.prompts.exAsked;   /* Version 39.10: Today asks her goals for her new stage */
         state.prompts = state.prompts || {}; state.prompts.exStage = toISO(today());   /* Version 39.42: she just set it, so a plan offer in Sakhi says comes first (an older diary is asked as before) */
         const ls = lastStart(); const needLog = (pick === 'cycle' || pick === 'ttc') && s0.deliveredOn && diffDays(fromISO(s0.deliveredOn), today()) <= 365 && !(ls && ls > fromISO(s0.deliveredOn));
         save(); closeSheet();
         if (needLog) { setHash('home'); toast(t('stage_log_first')); openLog('start', toISO(today()), null); return; }   /* Version 39.48 (Mohit's switch walk): her first period after the birth moves her, so "Updated" waits until it is true */
-        toast(t('stage_saved'));
+        if (snap) { state.stageWas = snap; save(); toastAct(t(state.situation.stopAsk === toISO(today()) && pick === 'meno' ? 'st_poi_saved' : 'stage_saved'), [{ label: t('undo'), fn: undoStage }]); }   /* Version 39.65: Undo */
+        else toast(t('stage_saved'));
         setHash('home');
       });
     });
@@ -3772,6 +3828,7 @@
         const anyDet = !!(d.pads || d.clots || d.pain || d.leaked || d.two);
         if (!(d.t === 'start_detail' && !anyDet)) state.events.push(keepOld ? { d: d.d, t: 'end' } : { d: d.d, t: d.t, pads: d.pads, clots: d.clots, pain: d.pain, leaked: d.leaked, two: d.two });
         if (Object.keys(touched).length) { const nd = withTouched(state.daily[d.d] || []); if (nd.length) state.daily[d.d] = nd; else delete state.daily[d.d]; } save(); emit('log', { type: d.t }); close(); toast(t('saved')); render();
+        if (d.t === 'start' && !existing && !state.settings.discreet && ((stoppedNow() && d.d > (state.situation.stoppedOn || '')) || (isISO(state.situation.stopAsk) && d.d >= state.situation.stopAsk))) periodsBack(null);   /* Version 39.65 */
       });
       /* Deleting a start takes its period's end with it; Undo puts both back (Version 32) */
       const del = $('#log-del', root); if (del) del.addEventListener('click', () => {
@@ -4279,7 +4336,7 @@
       else if (d <= f.fwTo) out.push({ k: 'fw', text: t('dy_fw') + (ch ? ' · ' + t('chd_' + ch) : '') });
       else if (ch) out.push({ k: 'ch', text: t('chd_' + ch) });
     }
-    if (c.next) out.push({ k: 'before', text: n1('dy_before', diffDays(d, c.next)) }); else if (pr && diffDays(d, pr.next) > 0) out.push({ k: 'next', text: n1('dy_next', diffDays(d, pr.next)) });
+    if (c.next) out.push({ k: 'before', text: n1('dy_before', diffDays(d, c.next)) }); else if (pr && diffDays(d, pr.next) > 0 && !(isMidlife() && !state.situation.stopped)) out.push({ k: 'next', text: n1('dy_next', diffDays(d, pr.next)) });   /* Version 39.65: one truth, as Today around 40 and after */
     return out;
   }
   /* the facts card at the top of the day page (none when the day isn't a cycle day: a pregnancy, after a birth, a pause) */
@@ -5387,6 +5444,7 @@
     get state() { return state; }, get mem() { return mem; },
     $: $, esc: esc, pad2: pad2, toISO: toISO, fromISO: fromISO, addDays: addDays, diffDays: diffDays, today: today, planToday: planToday, monthKey: monthKey, clamp: clamp, addMonths: addMonths,
     mydoc: { get: myDocTel, open: openMyDoc }, callNowCard: callNowCard,   /* Version 39.40 */
+    stopConfirm: stopConfirm,   /* Version 39.65: the POI card's "My doctor says my periods have stopped" */
     t: t, tf: tf, tx: tx, one: one, fmtD: fmtD, fmtRange: fmtRange, I: I, icon: icon,
     save: modSave, saveQuiet: save, emit: emit, render: render, setHash: setHash, route: route, wire: wire, toast: toast, toastAct: toastAct, sheet: sheet, closeSheet: closeSheet, backRow: backRow, gate: gate,
     pregEnded: () => { endPregnancy(); save(); },   /* Version 39.2: "The pregnancy ended" on the check-ups page (preg.js) */
