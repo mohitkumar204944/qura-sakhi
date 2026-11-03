@@ -3269,4 +3269,5 @@ paid voice service (`web/tools/voice`), which waits for Mohit. Decision
 
 The phone test (3 Nov, Mohit's Flip5, "fix all 6"): no new wording. A half-done sets row shows its count ("{n} of {m} today · level
 {n}, {position}") in place of "Partly done"; breathing and letting go shows no squeeze lines, and its card gains the existing "Ask a
-Qura doctor about this"; the 112 cards turn ink with the same words.
+Qura doctor about this"; the 112 cards turn ink with the same words. UI words for a screen reader, every plan's week dots: "Week
+{w} of your plan: 1 full day so far" and "{d}: {a} of 1 step" (were "1 full days", "of 1 steps"; Hindi unchanged).

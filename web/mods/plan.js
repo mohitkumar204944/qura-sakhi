@@ -725,11 +725,11 @@
       const pt = S.joy && S.joy.petals ? S.joy.petals() : 0; const gd = S.routeOwner('joy') && !disc() ? '<button type="button" class="item quiet pl-garden-in" data-go="joy"><span class="ico-sm hue hue-green">' + S.icon('flower') + '</span><span class="body"><strong>' + esc(pt ? tf(pt === 1 ? 'plan_garden_1' : 'plan_garden_n', { n: pt }) : t('joy_h')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button>' : '';
       const mins2 = mins && movesOn(d) && cyc ? mins.replace('<span class="small">' + esc(t('plan_wk_min')) + '</span>', '<span class="small">' + esc(t('plan_wk_min')) + ' · <button type="button" class="linkbtn pl-addmin" data-go="plan-moves">+ ' + esc(t('plan_add_s')) + '</button></span>') : mins;
       return '<div class="card pl-wkc"><div class="row spread"><h3>' + esc(t('plan_wk_h')) + '</h3>' + (movesOn(d) ? '<button type="button" class="linkbtn pl-wp-link" id="pl-wp">' + esc(t('plan_wp_link')) + ' ' + S.I.chev + '</button>' : '<span class="small">' + esc(tf('plan_wk_days', { a: (wk - 1) * 7 + 1, b: wk * 7 })) + '</span>') + '</div>' +
-        '<div class="pl-r7" role="img" aria-label="' + esc(tf('plan_d7_aria', { w: wk, n: fdn })) + '">' + days + '</div><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' +
+        '<div class="pl-r7" role="img" aria-label="' + esc(d7Aria(wk, fdn)) + '">' + days + '</div><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' +
         (movesOn(d) && wpOf(d) ? '<p class="small pl-wp-sum">' + esc(wpRowSub(d)) + '</p>' : '') + mins2 + gd + '</div>';   /* what she planned, in one line */
     }
     return '<div class="card pl-wkc"><div class="row spread"><h3>' + esc(t('plan_wk_h')) + '</h3><span class="small">' + esc(tf('plan_wk_days', { a: (wk - 1) * 7 + 1, b: wk * 7 })) + '</span></div>' +
-      '<div class="pl-r7" role="img" aria-label="' + esc(tf('plan_d7_aria', { w: wk, n: fdn })) + '">' + days + '</div><p class="small pl-wk-leg">' + esc(legend) + '</p><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' + mins +
+      '<div class="pl-r7" role="img" aria-label="' + esc(d7Aria(wk, fdn)) + '">' + days + '</div><p class="small pl-wk-leg">' + esc(legend) + '</p><p class="pl-wk-line">' + esc((fdn === 1 ? t('plan_wk_full1') : tf('plan_wk_full', { n: fdn })) + (st ? ' · ' + st : '')) + '</p>' + mins +
       (movesOn(d) && cyc ? '<button type="button" class="linkbtn pl-addmin" data-go="plan-moves">+ ' + esc(t('plan_add')) + '</button>' : '') +
       (movesOn(d) ? '<div class="list"><button type="button" class="item" id="pl-wp"><span class="body"><strong>' + esc(t('plan_wp_row')) + '</strong><span>' + esc(wpRowSub(d)) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : '') + '</div>';   /* what she planned, under its name */
   }
@@ -4094,15 +4094,18 @@
     if (!allDoneToday(d)) return; const x = d.log[todayISO()] = d.log[todayISO()] || {}; if (x.fd) return; x.fd = 1;
     const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0; if (S.emit) S.emit('checkin', { quiet: true, day: todayISO() }); if (S.joy && S.joy.petals && S.joy.petals() > p0) x.petal = 1;
   }
+  /* the week's label and a day's count, for a screen reader (Mohit, 3 Nov: one full day, one step) */
+  const d7Aria = (wk, n) => (n === 1 ? tf('plan_d7_aria1', { w: wk }) : tf('plan_d7_aria', { w: wk, n: n }));
+  const d7Day = (day, c) => (c.n === 1 ? tf('plan_d7_t1', { d: day, a: c.a }) : tf('plan_d7_t', { d: day, a: c.a, n: c.n }));
   /* R5: her plan week as 7 dots: a full day (every step) ticked, a day with some steps soft, a rest day dashed, today ringed,
      a strength day ahead marked */
   function weekDots(d, mini) {
     const wk = wkNow(d); const td = todayISO(); const tp = packOf(d) === 'cycle' && !careTime(d) && !lightOn(d) ? todayPlan(d) : null; const sd = tp && Array.isArray(tp.strDays) ? tp.strDays : [];
-    return '<div class="pl-d7' + (mini ? ' mini' : '') + '" role="img" aria-label="' + esc(tf('plan_d7_aria', { w: wk, n: fullDays(d, wk) })) + '">' + weekDates(d, wk).map((iso, i) => {
+    return '<div class="pl-d7' + (mini ? ' mini' : '') + '" role="img" aria-label="' + esc(d7Aria(wk, fullDays(d, wk))) + '">' + weekDates(d, wk).map((iso, i) => {
       const fut = iso > td; const lg = dayLog(d, iso); const c = fut ? { a: 0, n: 0 } : dayCount(d, iso); const full = !fut && c.n > 0 && c.a === c.n; const some = !fut && !full && dayDone(d, iso);
       const str = iso === td ? sd.indexOf(i) >= 0 && !(lg.str || (lg.r || []).indexOf('strength') >= 0) : fut && sd.indexOf(i) >= 0;
       const cls = full ? 'full' : (!fut && lg.rest ? 'rest' : (some ? 'some' : (str ? 'str' : '')));
-      const day = weekdayOf(iso); const ti = !fut && lg.rest ? tf('plan_d7_rest', { d: day }) : (fut ? (str ? tf('plan_d7_str', { d: day }) : day) : tf('plan_d7_t', { d: day, a: c.a, n: c.n }));   /* each day's count, for a screen reader and a long press */
+      const day = weekdayOf(iso); const ti = !fut && lg.rest ? tf('plan_d7_rest', { d: day }) : (fut ? (str ? tf('plan_d7_str', { d: day }) : day) : d7Day(day, c));   /* each day's count, for a screen reader and a long press */
       return '<span class="pl-d7d' + (iso === td ? ' now' : '') + '" title="' + esc(ti) + '">' + (mini ? '' : '<span>' + esc(weekdayOf(iso, 'narrow')) + '</span>') + '<i class="' + cls + '">' + (mini ? '' : (full ? SVG_TICK : (cls === 'str' ? SVG_STR : ''))) + '</i></span>';
     }).join('') + '</div>';
   }
@@ -4595,7 +4598,7 @@
         plan_pday: 'plan day {n}', plan_t_next: 'Next step', plan_t_next_s: 'Next · {s}', plan_t_part: 'Partly done', plan_t_done: 'Done', plan_t_full: 'Day complete. Well done.',
         plan_t_undo: 'Tapped by mistake? Tap the tick again.', plan_t_more: 'Read more', plan_how_h: 'How', plan_how_r: 'About {n} minutes: {x}.', plan_bring_h: 'What keeping to your plan can bring',
         plan_wk_full: 'This week: {n} full days', plan_wk_full1: 'This week: 1 full day', plan_wk_str: 'strength on {d}', plan_wk_str_tom: 'strength tomorrow', plan_wk_str_now: 'strength today',
-        plan_d7_aria: 'Week {w} of your plan: {n} full days so far', plan_d7_t: '{d}: {a} of {n} steps', plan_d7_rest: '{d}: rest day', plan_d7_str: '{d}: strength day', plan_rev_short: '{n} of 7 days on your plan', plan_rev_short_f: 'all steps on {n}', plan_rev_open: 'Look back', plan_rev_tip_s: 'Your tip for this week', plan_min_n: '{n} min', plan_dc_h: 'Day complete', plan_dc_tom: 'Tomorrow', plan_dc_how: 'Add how it went (optional)',
+        plan_d7_aria: 'Week {w} of your plan: {n} full days so far', plan_d7_aria1: 'Week {w} of your plan: 1 full day so far', plan_d7_t: '{d}: {a} of {n} steps', plan_d7_t1: '{d}: {a} of 1 step', plan_d7_rest: '{d}: rest day', plan_d7_str: '{d}: strength day', plan_rev_short: '{n} of 7 days on your plan', plan_rev_short_f: 'all steps on {n}', plan_rev_open: 'Look back', plan_rev_tip_s: 'Your tip for this week', plan_min_n: '{n} min', plan_dc_h: 'Day complete', plan_dc_tom: 'Tomorrow', plan_dc_how: 'Add how it went (optional)',
         /* Version 39.15: My plan explains the plan (wording review 19.15) */
         plan_goal_l: 'Goal: {g} · {w}', plan_how_h2: 'How your plan works', plan_rh_day: 'Every day', plan_rh_day_s: '{n} steps, check-in {t}', plan_rh_day_s1: '1 step, check-in {t}', plan_rh_wk: 'Every week', plan_rh_wk_s: 'Look back, plan the week', plan_rh_wk_s2: 'A look back',
         plan_rh_m: 'Every 4 weeks', plan_rh_m_s: 'A 1-minute check', plan_rh_end: 'After 12 weeks', plan_rh_end_s: 'Your results', plan_steps_h: 'Your {n} daily steps', plan_steps_h1: 'Your daily step', plan_steps_same: 'Tick here or on Today: it’s the same tick.', plan_how_l: 'How to do it',
@@ -4998,7 +5001,7 @@
         plan_pday: 'प्लान का दिन {n}', plan_t_next: 'अगला क़दम', plan_t_next_s: 'अगला · {s}', plan_t_part: 'थोड़ा हुआ', plan_t_done: 'हो गया', plan_t_full: 'आज का दिन पूरा। शाबाश।',
         plan_t_undo: 'ग़लती से टैप हुआ? टिक पर फिर से टैप करें।', plan_t_more: 'और पढ़ें', plan_how_h: 'कैसे', plan_how_r: 'लगभग {n} मिनट: {x}।', plan_bring_h: 'प्लान पर लगातार चलने से क्या मिल सकता है',
         plan_wk_full: 'इस हफ़्ते: {n} दिन सारे क़दम पूरे', plan_wk_full1: 'इस हफ़्ते: 1 दिन सारे क़दम पूरे', plan_wk_str: '{d} को ताक़त का दिन', plan_wk_str_tom: 'कल ताक़त का दिन', plan_wk_str_now: 'आज ताक़त का दिन',
-        plan_d7_aria: 'आपके प्लान का हफ़्ता {w}: अब तक {n} दिन सारे क़दम पूरे', plan_d7_t: '{d}: {n} में से {a} क़दम', plan_d7_rest: '{d}: आराम का दिन', plan_d7_str: '{d}: ताक़त का दिन', plan_rev_short: '7 में से {n} दिन प्लान पर', plan_rev_short_f: '{n} दिन सारे क़दम', plan_rev_open: 'देखें', plan_rev_tip_s: 'इस हफ़्ते के लिए आपकी सलाह', plan_min_n: '{n} मिनट', plan_dc_h: 'आज का दिन पूरा', plan_dc_tom: 'कल', plan_dc_how: 'आज कैसा रहा, बताएँ (चाहें तो)',
+        plan_d7_aria: 'आपके प्लान का हफ़्ता {w}: अब तक {n} दिन सारे क़दम पूरे', plan_d7_aria1: 'आपके प्लान का हफ़्ता {w}: अब तक 1 दिन सारे क़दम पूरे', plan_d7_t: '{d}: {n} में से {a} क़दम', plan_d7_t1: '{d}: 1 में से {a} क़दम', plan_d7_rest: '{d}: आराम का दिन', plan_d7_str: '{d}: ताक़त का दिन', plan_rev_short: '7 में से {n} दिन प्लान पर', plan_rev_short_f: '{n} दिन सारे क़दम', plan_rev_open: 'देखें', plan_rev_tip_s: 'इस हफ़्ते के लिए आपकी सलाह', plan_min_n: '{n} मिनट', plan_dc_h: 'आज का दिन पूरा', plan_dc_tom: 'कल', plan_dc_how: 'आज कैसा रहा, बताएँ (चाहें तो)',
         plan_goal_l: 'लक्ष्य: {g} · {w}', plan_how_h2: 'आपका प्लान कैसे चलता है', plan_rh_day: 'हर दिन', plan_rh_day_s: '{n} क़दम, चेक-इन {t}', plan_rh_day_s1: '1 क़दम, चेक-इन {t}', plan_rh_wk: 'हर हफ़्ते', plan_rh_wk_s: 'पीछे देखें, हफ़्ता तय करें', plan_rh_wk_s2: 'एक नज़र पीछे',
         plan_rh_m: 'हर 4 हफ़्ते', plan_rh_m_s: '1 मिनट का चेक-इन', plan_rh_end: '12 हफ़्ते बाद', plan_rh_end_s: 'आपके नतीजे', plan_steps_h: 'आपके रोज़ के {n} क़दम', plan_steps_h1: 'आपका रोज़ का क़दम', plan_steps_same: 'यहाँ टिक करें या “आज” पर: दोनों एक ही हैं।', plan_how_l: 'कैसे करें',
         plan_wk_h: 'इस हफ़्ते', plan_wk_days: 'प्लान के दिन {a} से {b}', plan_wk_legend: 'हर गोले में {n} हिस्से: {x}।', plan_wk_legend0: 'हर गोला एक दिन है: सारे क़दम होने पर पूरा।', plan_pt_yoga: 'योग', plan_pt_move: 'सैर', plan_pt_food: 'खाना', plan_pt_sleep: 'नींद',

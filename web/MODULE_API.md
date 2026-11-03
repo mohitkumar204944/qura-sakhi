@@ -6585,8 +6585,11 @@ at the trying stage Version 39.48's card offers Getting ready (`CYC_PACKS`), and
   prolapse guide's, and the check-in's crisis card (Tele-MANAS 14416 and 112) were plain light cards.
 - The trainer her plan runs lights My plan's tab (`tabOf`: `post-pelvic` while `S.post.pfPlan()`, and `pf-go`); without her plan it
   stays Explore's, as the after-birth trainer.
+- Every plan's week dots (Today's `.pl-d7` and My plan's `.pl-r7`, section 57) tell a screen reader "1 full day so far" and "{day}: 0
+  of 1 step" for one (`plan_d7_aria1`, `plan_d7_t1`, as `plan_wk_full1`); they said "1 full days" and "0 of 1 steps" (Mohit, 3 Nov,
+  after the phone check of the fixes: "fix the aria label too"). Hindi's words were already right.
 
-`node test/pfplan.mjs` checks it (144 checks; section 17 holds the test pass, section 18 the phone test's fixes). `node test/pfplan-walk.mjs [who]` lives it: five women from a new install (stress leaks,
+`node test/pfplan.mjs` checks it (147 checks; section 17 holds the test pass, section 18 the phone test's fixes). `node test/pfplan-walk.mjs [who]` lives it: five women from a new install (stress leaks,
 urge leaks with periods stopped, heaviness with a doctor's check, pain when she squeezes, and period pain with her sets joined),
 screens and words to `test/shots/pfplan-walk/`. `test/progs.mjs` knows the new words, and the baseline re-records `pelvic@1` and the
 5 plans her sets join (ttc, heavy, meno, pain and pms version 2).

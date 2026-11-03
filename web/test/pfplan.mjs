@@ -680,6 +680,21 @@ const tabOn = (page) => page.$eval('#tabbar button.on', (b) => b.dataset.go).cat
   const t3 = await tabOn(a.page);
   check('18.15 P6: the trainer her plan runs lights My plan (also from the play button); without her plan, Explore as before', t1 === 'plan' && t2 === 'plan' && t3 === 'care', [t1, t2, t3]);
   await done(a);
+  /* the phone check of the fixes (Mohit, 3 Nov: "fix the aria label too"): what a screen reader says for one full day and one step */
+  const lab = (page, sel) => page.$eval(sel, (e) => e.getAttribute('aria-label')).catch(() => null);
+  const full1 = { pf: { 0: 3 }, p: { log: { [TODAY]: { ck: { find: 'd' } } } } };
+  a = await open({ seed: pel(B(3), full1) });
+  const w1 = await lab(a.page, '#view .today-card .pl-d7'); await go(a.page, 'plan'); const w2 = await lab(a.page, '#view .pl-r7');
+  check('18.16 the week dots and My plan\'s week say "1 full day so far", not "1 full days"', w1 === 'Week 1 of your plan: 1 full day so far' && w2 === w1, [w1, w2]);
+  await done(a);
+  a = await open({ seed: pel(B(3), { p: { pfRelax: TODAY } }) });
+  const t0 = await a.page.$eval('#view .today-card .pl-d7d.now', (e) => e.title).catch(() => '');
+  check('18.17 a day with one step says "0 of 1 step"', /: 0 of 1 step$/.test(t0), t0);
+  await done(a);
+  a = await open({ seed: Object.assign(pel(B(3), full1), { lang: 'hi' }) });
+  const w3 = await lab(a.page, '#view .today-card .pl-d7');
+  check('18.18 Hindi keeps its words ("1 दिन" was already right)', w3 === 'आपके प्लान का हफ़्ता 1: अब तक 1 दिन सारे क़दम पूरे', w3);
+  await done(a);
 }
 
 console.log('page errors', errsAll.length ? errsAll : 'none');
