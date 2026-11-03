@@ -459,6 +459,14 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     The walks behind it (not pass/fail): `node test/lives-walk.mjs` (one woman per stage over months, plus 14 edge ages; ~20 minutes;
     `WHO=`, `EDGES=0`), `node test/census-walk.mjs` (what each tab shows each woman) and `node test/stagejump-walk.mjs` (stage changes).
     Contract: MODULE_API section 101; wording: section 19.58 of the review (no new health lines).
+  - `node test/calmtoday.mjs` (Version 39.59, phase B, a calmer Today; Mohit, 3 Nov: "proceed with phase B"; the lives audit's R3, R4
+    and C3, and the advice's 4.3):
+    - tips one a day, only in her first week or the week after her stage changes, and one she puts off doesn't come back;
+    - a first-days read on 3 days at most, and a card that keeps coming back waits 30 days after its second turn;
+    - with no plan on Today, her log buttons and her feelings' chips in the card with her body today (no feelings card, no second
+      "How I feel"); on a plan, Today as Version 39.23 made it, her steps on the first screen;
+    - Explore's For you without the pages her plan's tiles open.
+    The age bands (the audit's R1) wait for the doctor. Contract: MODULE_API section 102; wording: section 19.59 (no new words).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

@@ -356,7 +356,8 @@ const plan = async (a) => (await st(a)).mods.plan;
   check('15a My food: no breastfeeding page', !/Food and water while you breastfeed/.test(await view(a)));
   await go(a, 'care');
   const ex = await view(a);
-  check('15a Explore: no Breastfeeding tile; her own check named without "baby\'s vaccines"', !/Breastfeeding Feed log/.test(ex) && !/Check-ups and baby's vaccines/.test(ex) && /Your own check at 6 weeks/.test(ex), ex.slice(0, 700));
+  await go(a, 'plan'); const mp = await view(a); await go(a, 'care');   /* Version 39.59: her plan's tiles live in My plan, not For you */
+  check('15a Explore: no Breastfeeding tile; her own check named without "baby\'s vaccines" (on My plan\'s tile)', !/Breastfeeding Feed log/.test(ex) && !/Check-ups and baby's vaccines/.test(ex + mp) && /Your own check at 6 weeks/.test(ex + mp), (ex + ' || ' + mp).slice(0, 900));
   await go(a, 'post'); await tap(a, '#pst-lost-undo');
   check('15a undo brings breastfeeding back', (await st(a)).situation.breastfeeding === true && !(await st(a)).situation.bfWas);
   await done(a);

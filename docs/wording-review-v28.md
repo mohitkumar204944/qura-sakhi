@@ -3305,3 +3305,9 @@ UI words: "Bleeding" (was "Period started") and "Bleeding stopped" once her peri
 doctor check (the free government doctor only for a woman who goes to government care); her plan's "Ready for you" on a shared phone,
 titled "My plan". Version 39.58.1: "Save your ASHA or ANM's number" and "Look at free care near you" leave the setup card for a woman
 who goes to a private doctor or hasn't said (free care stays for "Nowhere yet"); no new words.
+
+### 19.59 Version 39.59: phase B, a calmer Today (MODULE_API section 102)
+
+Mohit, 3 Nov: "proceed with phase B". No new words. With no plan on Today, "How do you feel today?" moves into the card with her body today,
+as a line above its chips, and the "How I feel" button leaves Today; on a plan, Today is unchanged. Tips come one a day, only in her first week (or the
+week after her stage changes). The age lines (the lives audit's section 3) wait for the doctor before they are written.

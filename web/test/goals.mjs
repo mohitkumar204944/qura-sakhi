@@ -217,7 +217,8 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
 for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', 'heavy', 'iron'], ['cycle', 'irregular', 'selfcheck']]) {
   const { ctx, page, errs } = await open({ seed: { goals: ['track', goal], mods: { plan: planOf(pack, goal, ago(5)) } }, hash: '#care' });
   const fy = await page.$$eval('#view section.care-sec:first-of-type [data-go]', (b) => b.map((x) => x.dataset.go));
-  check('8 ' + goal + ': For you starts with her goal\'s tools', fy[0] === first, fy);
+  const tiles = await page.evaluate(() => window.Saathi.plan.tileGo());   /* Version 39.59 (one home): a tool on her plan's tiles lives in My plan */
+  check('8 ' + goal + ': For you starts with her goal\'s tools (one on her plan\'s tiles stays in My plan)', fy[0] === first || (tiles.indexOf(first) >= 0 && fy.indexOf(first) < 0), { fy, tiles });
   check('8 ' + goal + ': no page errors', errs.length === 0, errs);
   await ctx.close();
 }
@@ -379,7 +380,7 @@ for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', '
   /* For you: an after-birth plan keeps its own tools once her periods come back */
   const n = await open({ seed: { situation: { deliveredOn: ago(120), breastfeeding: false }, events: [{ d: ago(20), t: 'start' }, { d: ago(15), t: 'end' }], mods: { plan: planOf('post', 'weight', ago(30)) } }, hash: '#care' });
   const nf = await n.page.$$eval('#view section.care-sec:first-of-type [data-go]', (x) => x.map((y) => y.dataset.go));
-  check('11 For you: an after-birth plan for weight leads with the after-birth tools, not the PMOS plan', nf[0] === 'post-pelvic' && nf.indexOf('plan-pmos') !== 0, nf);
+  check('11 For you: an after-birth plan for weight leads with the after-birth tools, not the PMOS plan (Version 39.59: not her plan\'s tiles, which My plan holds)', /^post-/.test(nf[0] || '') && nf.indexOf('plan-pmos') < 0 && nf.indexOf('post-pelvic') < 0, nf);
   await n.ctx.close();
 }
 

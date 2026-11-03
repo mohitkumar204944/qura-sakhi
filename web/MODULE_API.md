@@ -6676,3 +6676,35 @@ was already built (meno.js `stopDue`, from 40) and is kept by a check. No new he
 English and Hindi at 360 px and on a shared phone, one and two negative tests on each route, a positive, an old negative, the shared-
 phone offer and its PIN, the POI card, and the 12-month question). The walks behind it: `test/lives-walk.mjs`, `test/census-walk.mjs`
 and `test/stagejump-walk.mjs` (not pass/fail).
+
+## 102. Version 39.59: phase B, a calmer Today
+
+Mohit, 3 Nov: "proceed with phase B" (`docs/lives-audit-2026-11-03.md`, section 4: R3, R4 and C3; `docs/personal-companion-
+advice-2026-11-03.md`, 4.3). The age bands (R1) wait for the doctor (the audit's L1). No new words.
+1. **Tips** (R4; core `autoGate`, `tipWeek`, `endTour`): a tip comes on its own only in her first 7 days with Sakhi (`joined`) or
+   the 7 days after her stage changed (`prompts.exStage`), and one a day (`tourDay.n`; it was three). A tip that came on its own and
+   that she puts off ("Not now", Close, Back) is `off` at once (it came back once before). Her welcome tour on her first Today is
+   unchanged, and Me > How to use Sakhi plays any tour, as before.
+2. **Cards that end** (R3):
+   - Today's first-days read (`firstDaysRows`, `core-read`) shows on 3 days at most (`prompts.readDays` `{ n, d }`); Learn keeps it.
+   - A "Sakhi says" card that leads 3 days and waits 7 (Version 39.47) waits 30 days after its second turn (`ASIDE_LONG`;
+     `prompts.slotN` `{ key: { n, d } }`, which starts over after 60 days away). A card that keeps her safe always leads, unchanged.
+3. **Today** (advice 4.3), with no plan on Today (no running plan, and no card holding its place: `heroFeel`): her log buttons
+   (`.ract-row.hl-logs`) and her feelings' chips (`feelCard(disc, true)`, `.feel-card.feel-in`, "How do you feel today?" as a line) sit
+   in the card with her body today; there is no feelings card of its own and no "How I feel" button (`heroFeelNow`). While a plan runs,
+   Today stays as Version 39.23 made it: her steps start on the first screen (REGRESSIONS-08), her feelings card follows them, and
+   "How I feel" stays in the headline. Pregnancy, after a birth and a shared phone are unchanged (no chips).
+4. **One home** (C3): `S.plan.tileGo()` gives the pages her running plan's 4 tiles open, and Explore's For you leaves them out. Nothing
+   fills their places, so a tool kept lower stays lower. Explore keeps its length: the library row is phase D.
+
+**Measured** (`node test/census-walk.mjs`): with no plan on Today, 1 card and 1 tap fewer (day 1: Priya, Sana, Anjali, Neha 4–5 → 3–4
+cards; Priya on day 8 4 → 3); on a plan, day 8 as before (Kavita and Sunita 6 → 5 cards, 32 → 31 taps, from a card that waits). `node test/lives-walk.mjs` (Priya, Anjali, Riya, Meera, Kavita): tips in the first 30 days 3, 4, 4,
+4, 4 → 1, 1, 3, 3, 1 (Riya's and Meera's in their first week, one a day); Today's cards over months 5–7 → 2–6.
+
+**State.** `prompts.readDays`, `prompts.slotN`.
+
+**Tests.** `node test/calmtoday.mjs` (18 checks: tips by day and week, "Not now", Me's tours, a stage change's week, the read's 3 days,
+a card's second turn, Today's one card for her body and feelings with and without a plan, pregnancy and a shared phone, Hindi at 360 px,
+and For you without her plan's tiles). Updated for what changed on purpose: `tours.mjs` 1b (a screen's own tip in her first week, on a
+day no other tip showed) and 2 (a tip put off is `off`), `goals.mjs` 8 and 11 and `afterbirth.mjs` 15a (her plan's tiles stay in My
+plan), `daily.mjs` 6 (the feelings line in the card with her body today).

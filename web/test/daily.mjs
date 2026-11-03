@@ -224,7 +224,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
 {
   const a = await open({ seed: { intake: { goal: 'track' }, focus: { at: ago(2) } }, now: at(0, '09:30') });
   const fc = await txt(a.page, '#view .feel-card');
-  check('6 Home, no plan: "How do you feel today?" with 5 of the Diary\'s words and More (Version 39.17: "Feeling okay" first)', /TODAY · 10 SECONDS\nHow do you feel today\?/.test(fc) && (await a.page.$$('#view .feel-card [data-feel]')).length === 5 && /Feeling okay/.test(fc) && /Tired/.test(fc) && /Cramps/.test(fc) && /Low mood/.test(fc) && /Bloating/.test(fc) && (await has(a.page, '#feel-more')), fc);
+  check('6 Home, no plan: "How do you feel today?" with 5 of the Diary\'s words and More (Version 39.17: "Feeling okay" first)', /How do you feel today\?/.test(fc) && (await a.page.$$('#view .card.hero .feel-card [data-feel]')).length === 5 && /Feeling okay/.test(fc) && /Tired/.test(fc) && /Cramps/.test(fc) && /Low mood/.test(fc) && /Bloating/.test(fc) && (await has(a.page, '#feel-more')), fc);
   check('6 ... why it matters, and the notes meter: "Noted on N of 27 days", and what comes next', /A note a day shows what repeats in your cycle\./.test(fc) && /Noted on \d+ of 27 days/.test(fc) && /Next: /.test(fc), fc);
   check('6 ... the first days\' "Log today" row makes way for it', !(await has(a.page, '#view .today-core-log')));
   await tap(a.page, '#view .feel-card [data-feel="d_tired"]');

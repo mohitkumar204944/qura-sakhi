@@ -4188,6 +4188,8 @@
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
+    /* Version 39.59 (the lives audit, C3: one home): the pages her running plan's 4 tiles open, so Explore's For you leaves them out */
+    tileGo: () => { const d = runningD(); if (!d) return []; const sp = specOf(packOf(d), d.pv); return ((sp && sp.tiles) || []).map((x) => x.go).filter(Boolean); },
     /* Version 39.56: My pelvic floor plan, for the trainer (mods/post.js) and its chapters (mods/pfplan.js) */
     pelvic: { on: () => { const d = raw(); return !!(planOn() && d && packOf(d) && !pausedFor(d) && (pfLead(d) || pfJoined(fullD(d)))); },
       level: () => { const d = raw(); return d ? pfLevel(fullD(d)) : null; }, target: () => { const d = raw(); return d ? pfTarget(fullD(d), todayISO()) : 3; },

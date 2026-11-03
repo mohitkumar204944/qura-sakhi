@@ -85,7 +85,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
 {
   const done = { st: 'done', d: '2026-10-20' };
   for (const [hash, tours, n, h] of [['#diary', { home: done }, '1 of 3', 'Your calendar'], ['#care', { home: done, diary: done }, '1 of 3', 'Explore'], ['#me', { home: done, diary: done, care: done }, '1 of 3', 'Privacy on a shared phone']]   /* Version 39.2: Me's one Reminders row is on every build, so its tip shows too */) {
-    const { ctx, page, errs } = await open({ seed: seedApp({ fullTour: { st: 'reveal', d: '2026-10-20' }, tours }), hash });
+    const { ctx, page, errs } = await open({ seed: seedApp({ joined: new Date().toISOString().slice(0, 10), fullTour: { st: 'done', d: '2026-10-20' }, tours }), hash });   /* Version 39.59: tips come in her first week, one a day, so on a day no other tip has shown */
     const s = await waitTour(page);
     check('1b the first time she opens ' + hash + ', its own tip', s && s.hash === hash && s.n === n && s.h === h, s);
     check('1b no page errors (' + hash + ')', !errs.length, errs);
@@ -105,7 +105,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   check('2 a diary that never had the full tour gets it once', s && s.n === 'Today · 1 of 2', s);
   await tap(page, '#tour-later'); await sleep(1500);
   const after = await st(page);
-  check('2 Not now stops it on Today', !(await now(page)) && (await page.evaluate(() => location.hash)) === '#home' && after.full && after.full.st === 'stopped' && after.tours.home.st === 'later' && !after.tours.diary, after);
+  check('2 Not now stops it on Today', !(await now(page)) && (await page.evaluate(() => location.hash)) === '#home' && after.full && after.full.st === 'stopped' && after.tours.home.st === 'off' && !after.tours.diary, after);   /* Version 39.59: a tip put off doesn't come back */
   check('2 no page errors', !errs.length, errs);
   await ctx.close();
 }

@@ -1229,7 +1229,9 @@
     const byRoute = {}; all.forEach((x) => { if (!byRoute[x.route]) byRoute[x.route] = x; }); const res = [];
     const govt = (rt) => rt.indexOf('access-') === 0 || rt === 'asha';   /* Version 36: government services live in their own row */
     const gk = state.stage === 'app' ? goalNow() : null;
+    const onPlan = state.stage === 'app' && api.plan && api.plan.tileGo ? safe(() => api.plan.tileGo(), []) : [];   /* Version 39.59 (C3): one home: her plan's tiles live in My plan */
     (gk ? ['goal:' + gk] : []).concat(forYouKeys()).forEach((k) => ((k.indexOf('goal:') === 0 ? goalTools(k.slice(5)) : FOR_YOU[k]) || []).forEach((rt) => { const x = byRoute[rt]; if (x && !govt(rt) && res.indexOf(x) < 0 && res.length < 5 && !(rt === 'post-feed' && babyGone())) res.push(x); }));   /* Version 39.46 */
+    if (onPlan.length) for (let i = res.length - 1; i >= 0; i--) if (onPlan.indexOf(res[i].route) >= 0) res.splice(i, 1);   /* Version 39.59: no refill, so a tool kept lower stays lower */
     /* Version 39.38 (Mohit's 38-week walk): from 34 weeks her hospital bag, birth plan and contraction timer come right after her
        goal's first tool (that one leads, Version 38) */
     const late = state.situation.pregnant && (pregInfo() || {}).weeks >= 34 ? FOR_YOU.pregLate.map((rt) => byRoute[rt]).filter(Boolean) : [];
@@ -2031,9 +2033,10 @@
     save(); emit('log', { type: 'flow' }); return true;
   }
   function feelToggle(d, k) { let list = (state.daily[d] || []).slice(); const i = list.indexOf(k); if (i >= 0) list.splice(i, 1); else { list.push(k); list = okRule(list, k); } if (list.length) state.daily[d] = list; else delete state.daily[d]; save(); if (i < 0) emit('log', { type: 'daily' }); return i < 0; }
-  function feelCard(disc) {
+  /* Version 39.59 (the personal-companion advice, 4.3): her feelings sit in the card with her body today, not a card of their own */
+  function feelCard(disc, inHero) {
     if (disc || !feelOn()) return ''; const d = toISO(today()); const got = state.daily[d] || []; const plan = !!(api.plan && api.plan.running && safe(() => api.plan.running(), false));
-    return '<div class="card feel-card" data-nofold="1">' + (plan ? '' : '<span class="eyebrow">' + esc(t('feel_eb')) + '</span>') + '<h3>' + esc(t('feel_h')) + '</h3>' + feelChips(d, true) +
+    return '<div class="' + (inHero ? 'feel-card feel-in' : 'card feel-card') + '" data-nofold="1">' + (plan || inHero ? '' : '<span class="eyebrow">' + esc(t('feel_eb')) + '</span>') + (inHero ? '<p class="feel-q">' + esc(t('feel_h')) + '</p>' : '<h3>' + esc(t('feel_h')) + '</h3>') + feelChips(d, true) +
       '<p class="small' + (got.length ? ' feel-ok' : '') + '">' + esc(got.length ? t('feel_ok') : t('feel_why')) + '</p>' + (plan ? '' : meterHtml(true)) + '</div>';
   }
   function wireFeel(root, redraw) {
@@ -2083,6 +2086,9 @@
     if ((st === 'cycle' || st === 'ttc' || (st === 'meno' && !(state.situation || {}).stopped)) && !logged && !feelOn()) out.push({ id: 'core-log', order: 20, icon: 'drop', hue: 'rose', title: t('td_log'), sub: t('td_log_s'), go: 'diary' });
     const g = stageGroup(); const rd = readsOf();
     const a = g ? allArticles().filter((x) => x.group === g).find((x) => !rd[x.group + '.' + x.id]) : null;
+    const rdN = (state.prompts || {}).readDays || { n: 0, d: '' };   /* Version 39.59 (the lives audit, R3): on 3 days at most */
+    if (a && rdN.d !== tdS && rdN.n >= 3) return out;
+    if (a && rdN.d !== tdS && canSave()) { state.prompts = Object.assign({}, state.prompts || {}, { readDays: { n: rdN.n + 1, d: tdS } }); setTimeout(save, 0); }
     if (a) out.push({ id: 'core-read', order: 30, icon: GROUP_ICONS[a.group] || 'learn', hue: hueOf(a.group), title: L(a, 'title'), sub: t('td_read_s'), go: 'a-' + a.group + '.' + a.id });
     return out;
   }
@@ -2478,7 +2484,7 @@
      Sakhi" for 7 days while the next card leads, and comes back. A card that keeps her safe always leads: her baby's danger
      signs, a BP check after high BP in pregnancy, her support after a loss, a sign that doesn't wait, a positive test and her
      plan's change of stage (or a card marked data-slot-keep). */
-  const LEAD_DAYS = 3, ASIDE_DAYS = 7;
+  const LEAD_DAYS = 3, ASIDE_DAYS = 7, ASIDE_LONG = 30;
   const slotRoot = (h) => { const m = /^\s*<[a-z]+([^>]*)>/i.exec(h || ''); return m ? m[1] : ''; };
   const slotKey = (h) => { const a = slotRoot(h); const c = (/\bclass="([^"]*)"/.exec(a) || [])[1] || ''; const k = (/\bdata-key="([^"]*)"/.exec(a) || [])[1] || ''; return (c + (k ? '#' + k : '')).trim(); };
   const slotKeep = (h) => { const a = slotRoot(h); return /\bdata-slot-keep\b/.test(a) || /\b(pl-p2-nb|pl-p2-bp|pl-p2-died|pl-ps-now|pl-sl-pos|pl-chg)\b/.test((/\bclass="([^"]*)"/.exec(a) || [])[1] || ''); };
@@ -2492,7 +2498,8 @@
       if (!ld || ld.k !== k) { ld = { k: k, n: 1, d: td }; ch = true; break; }
       if (ld.d !== td) { ld.n += 1; ld.d = td; ch = true; }
       if (ld.n <= LEAD_DAYS) break;
-      aside[k] = toISO(addDays(today(), ASIDE_DAYS)); ld = null; ch = true;   /* it waits; the next card leads from today */
+      const tn = Object.assign({}, p.slotN || {}); const t0 = tn[k] && isISO(tn[k].d) && diffDays(fromISO(tn[k].d), today()) <= 60 ? tn[k].n : 0; tn[k] = { n: t0 + 1, d: td }; p.slotN = tn;
+      aside[k] = toISO(addDays(today(), t0 + 1 >= 2 ? ASIDE_LONG : ASIDE_DAYS)); ld = null; ch = true;   /* it waits; the next card leads from today. Version 39.59 (R3): after its second turn, 30 days */
     }
     const lead = slot.filter((h) => !out(h)), wait = slot.filter(out); slot.splice(0, slot.length, ...lead.concat(wait));
     if (ch) { state.prompts = Object.assign({}, p, { slotLead: ld, slotAside: aside }); setTimeout(save, 0); }
@@ -2504,7 +2511,7 @@
     const sit0 = state.situation; const birthD = sit0.deliveredOn ? diffDays(fromISO(sit0.deliveredOn), today()) : null;
     const afterBirth = !isPregnant() && birthD != null && birthD >= 0 && birthD <= 365 && !(ls && ls > fromISO(sit0.deliveredOn));
     const cyclesOff = !isPregnant() && !afterBirth && (sit0.hysterectomy || sit0.stopped);
-    let main = ''; let showLog = true; const A = api.art; let mini0 = false;
+    let main = ''; let showLog = true; const A = api.art; let mini0 = false; let heroFeel = false;
     const twoCol = (left, right) => '<div class="hero-row">' + left + right + '</div>';
     if (isPregnant()) {
       showLog = false; const pi = pregInfo(); const w = pi ? pi.weeks : null;
@@ -2622,12 +2629,15 @@
        check-ups, the next setup step, what's coming up. */
     const hu = headsUpCard(disc);   /* right under the round buttons */
     const stageLink = disc ? '' : '<div class="hero-foot"><button type="button" class="linkbtn" id="stage-btn">' + esc(t('stage_change')) + '</button></div>';
+    /* Version 39.59 (advice 4.3): with no plan on Today, her log buttons and her feelings' chips sit in the card with her body today; while
+       a plan runs (or a card holds its place) Today stays as Version 39.23 made it, her steps on the first screen and her feelings below */
+    heroFeel = !disc && !mini0 && !planTop.length && feelOn(); heroFeelNow = heroFeel;
     /* her plan's first three days: only her plan and what is urgent; the heads-up, free check-ups, setup and Coming up wait */
     /* Version 39.7: each module's card is its own entry (so "More from Sakhi (n)" counts them), and homeLast waits behind all */
     const slot = [vc].concat(items.filter((h) => h !== cu), planEarly() ? [] : [hu].concat(runHook('homeTop', [api]), [su, cu], runHook('homeLast', [api]))).filter(Boolean);
     leadSlot(slot);   /* Version 39.47 */
     const slotHtml = slot.length ? '<section class="slot"><p class="eyebrow slot-h">' + esc(t('slot_h')) + '</p>' + slot[0] + (slot.length > 1 ? '<details class="slot-more"' + (mem.slotMore ? ' open' : '') + '><summary class="linkbtn">' + esc(tf('slot_more', { n: slot.length - 1 })) + '</summary><div class="slot-in">' + slot.slice(1).join('') + '</div></details>' : '') + '</section>' : '';
-    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : '') + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 ? '' : actionsHtml(showLog, disc, inPeriod)) + td + planTop.join('') + feelCard(disc) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
+    v.innerHTML = weekStrip(disc) + '<div class="card hero' + (mini0 ? ' head' : '') + '" style="gap:' + (mini0 ? 8 : 10) + 'px">' + main + (mini0 ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row compact hl-logs"') : (heroFeel ? actionsHtml(showLog, disc, inPeriod).replace('class="ract-row"', 'class="ract-row hl-logs"') + feelCard(disc, true) : '')) + stageLink + '</div>' + urgentTop.join('') + acctCard() + bbCard + (mini0 || heroFeel ? '' : actionsHtml(showLog, disc, inPeriod)) + td + planTop.join('') + (heroFeel ? '' : feelCard(disc)) + ((state.prompts || {}).exStage && /class="card (pl-homerec|pl-offer)"/.test(slot[0] || '') ? '' : exCard(disc))   /* Version 39.42: just after she set her stage, not while Sakhi says offers her a plan; Version 39.10: her stage and goals, its own row (not the slot); V39.8 review REGRESSIONS-08: 44 px circles while a plan runs */ + slotHtml +
       (state.sample ? '<p class="footnote">' + esc(t('sample_note')) + '</p>' : '');
     const smo = v.querySelector('details.slot-more'); if (smo) smo.addEventListener('toggle', () => { mem.slotMore = smo.open; });
     wire(v); v.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => quickLog(b.dataset.log)));
@@ -2899,6 +2909,7 @@
   const stoppedNow = () => !!state.situation.stopped && !isPregnant();
   const startLbl = () => t(stoppedNow() ? 'bleeding' : 'period_started'), endLbl = () => t(stoppedNow() ? 'bleed_end' : 'period_ended');
   const earlyPost = () => { const s0 = state.situation; if (isPregnant() || !s0.deliveredOn) return false; const n = diffDays(fromISO(s0.deliveredOn), today()); const ls = lastStart(); return n >= 0 && n <= 42 && !(ls && ls > fromISO(s0.deliveredOn)); };
+  let heroFeelNow = false;   /* Version 39.59: renderHome sets it while it draws the hero */
   function actionsHtml(showLog, disc, inPeriod) {
     const R = (attrs, ico, label, cls, dot) => '<button type="button" class="ract' + (cls ? ' ' + cls : '') + '" ' + attrs + '><span class="rico">' + ico + (dot ? '<i class="rdot"></i>' : '') + '</span><span class="rl">' + esc(label) + '</span></button>';
     const ciDone = !!state.checkins[monthKey(today())]; const out = [];
@@ -2907,7 +2918,7 @@
     if (showLog) out.push(R('data-log="' + (open ? 'end' : 'start') + '"', I.drop, disc ? (open ? t('d_end') : t('d_start')) : (open ? endLbl() : startLbl()), 'primary'));
     if (showLog) out.push(R('data-log="spot"', SPOTS, disc ? t('d_spot') : t('spotting'), 'hue-rose'));
     else if (isPregnant() && ROUTES['preg-week'] && !disc) out.push(R('data-go="preg-week"', I.baby, t('this_week'), 'hue-sky'));
-    out.push(R('data-symlog="1"', sIco(KINDS.mood.ico), disc ? t('sym_h_d') : t('fab_feel'), 'hue-' + KINDS.mood.hue));   /* Version 39.23: the + menu's name and picture for the same page (V39.17 R3) */
+    if (!heroFeelNow) out.push(R('data-symlog="1"', sIco(KINDS.mood.ico), disc ? t('sym_h_d') : t('fab_feel'), 'hue-' + KINDS.mood.hue));   /* Version 39.59: not when her feelings' chips are right below it */   /* Version 39.23: the + menu's name and picture for the same page (V39.17 R3) */
     /* Version 39.1: "This month's signs" moved to Diary's What it shows */
     if (out.length < 4 && isPregnant() && ROUTES['preg-logs'] && !disc) out.push(R('data-go="preg-logs"', I.chart, t('my_logs'), 'hue-purple'));
     return '<div class="ract-row">' + out.join('') + '</div>';
@@ -3379,9 +3390,12 @@
   const hasTarget = (d) => d.steps.some((x) => stepOk(x) && document.querySelector(x.sel));
   const URGENT = '#view .xp-home-now, #view [data-xp-urgent], #view .flag.urgent, #view .xp-card.xp-now, #view .xp-card.xp-today, #view .xp-card.xp-week, #view #fl-card';   /* Version 39.10: Diary's tip waits for her first log */
   /* The gate for every tour that starts on its own: switched on, her own diary, unlocked, a minute after the last one, three a day. */
+  /* Version 39.59 (the lives audit, R4: 3 or 4 tips in her first month, some coming back): one a day, in her first week with Sakhi
+     or the week after her stage changed; a tour she puts off ends (endTour), and Me > How to use Sakhi still has them all */
+  const tipWeek = () => { const ex = (state.prompts || {}).exStage; return joinedDays() <= 7 || (isISO(ex) && diffDays(fromISO(ex), today()) <= 7); };
   function autoGate() {
-    if (state.settings.toursAuto === false || state.sample || mem.locked || Date.now() - tourEnded < 60000) return false;
-    const td = state.tourDay; return !(td && td.d === toISO(today()) && td.n >= 3);
+    if (state.settings.toursAuto === false || state.sample || mem.locked || Date.now() - tourEnded < 60000 || !tipWeek()) return false;
+    const td = state.tourDay; return !(td && td.d === toISO(today()) && td.n >= 1);
   }
   const countTour = () => { const day = toISO(today()); const n = state.tourDay && state.tourDay.d === day ? state.tourDay.n : 0; state.tourDay = { d: day, n: n + 1 }; save(); };
   function clearTour() { clearTimeout(tourTm); if (tour && tour.el) tour.el.removeEventListener('click', onTourTarget, true); tour = null; const r = document.getElementById('tour-root'); if (r) r.innerHTML = ''; }
@@ -3390,7 +3404,8 @@
     if (!tour) return; const id = tour.def.id; const forced = tour.forced; const chain = tour.chain; clearTour(); tourEnded = Date.now();
     state.tours = state.tours || {}; const prev = state.tours[id];
     if (how === 'done') state.tours[id] = { st: 'done', d: toISO(today()) };
-    else if (!forced || !prev || prev.st !== 'done') state.tours[id] = { st: prev && prev.st === 'later' ? 'off' : 'later', d: toISO(today()) };
+    else if (!forced) state.tours[id] = { st: 'off', d: toISO(today()) };   /* Version 39.59: a tip that came on its own doesn't come back */
+    else if (!prev || prev.st !== 'done') state.tours[id] = { st: prev && prev.st === 'later' ? 'off' : 'later', d: toISO(today()) };
     save();
     if (chain && how !== 'done') fullEnd('stopped', chain);   /* Not now, Close or Back on a first step stops the whole full tour */
   }
