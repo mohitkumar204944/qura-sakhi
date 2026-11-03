@@ -6764,10 +6764,11 @@ as before. The PostHog project must be in the EU region with "Discard client IP 
 
 **API.** `S.ph` for the tests: `on()`, `ready()`, `screen(r)`, `keep(e)`.
 
-**Tests.** `node test/posthog.mjs` (43 checks: no key (no line in the notice), turned off, on by default with a hostile PostHog config that switches recordings, heatmaps and
+**Tests.** `node test/posthog.mjs` (44 checks: no key (no line in the notice), turned off, on by default with a hostile PostHog config that switches recordings, heatmaps and
 surveys on from its side; the allowlists, neutral names, no screen words, number, Hindi, route or file path; no other address; private
-screens by capture time; an error without its message; discreet, shared, off and on again with a new id; Hindi at 360 px). The test
-browser hides `navigator.webdriver`, because posthog-js drops events from headless browsers as bots.
+screens by capture time; Version 39.62's All topics and guides as `library`; an error without its message; discreet, shared, off and on
+again with a new id; Hindi at 360 px). The test browser hides `navigator.webdriver`, because posthog-js drops events from headless browsers
+as bots.
 
 ## 104. Version 39.61: phase C, joining that ends with her plan running
 

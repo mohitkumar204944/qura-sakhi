@@ -2306,7 +2306,7 @@
      number, account or diary. Private screens, the lock, discreet mode, a shared phone and a sample woman send nothing, and
      every event passes phKeep's allowlist. The Flip5 test (3 Nov) showed why: recordings carried her answers in attributes. */
   const PH_PRIVATE = /^(loss|ttc-loss|pregtest-(options|abortion|after)|intimate|meno-intimate|contra-(ec|missed)|post-mood|teen|tell|backup|account|me-data|me-health|pic-check)/;
-  const PH_EXACT = ['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'report', 'report-show',
+  const PH_EXACT = ['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'library', 'report', 'report-show',
     'calm', 'plan', 'plan-start', 'plan-goal', 'plan-reveal', 'plan-checkin', 'plan-end', 'plan-progress', 'plan-plate', 'plan-body', 'plan-moves', 'plan-calm', 'plan-wind',
     'food', 'explain', 'docportal', 'lang', 'joy', 'joy-quiz', 'asha', 'asha-show', 'iron', 'journey', 'relief'];
   /* a screen that names a condition or a plan keeps only its kind; a screen nobody listed is "other", never its route */

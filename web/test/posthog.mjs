@@ -117,7 +117,7 @@ const tapAll = (page, n) => page.evaluate((k) => { const b = [...document.queryS
   check('3 posthog-js loads from the app\'s own files', await page.evaluate(() => window.Saathi.ph.ready() && [...document.scripts].some((s) => /vendor\/posthog\.js$/.test(s.src) && s.src.startsWith('file:'))));
   const words = new Set();
   const grab = async () => (await page.$eval('#view', (e) => e.innerText)).split(/\s+/).filter((w) => /^[A-Za-z]{6,}$/.test(w)).forEach((w) => words.add(w));
-  const walk = ['home', 'diary', 'plan', 'plan-pmos', 'per-lesson', 'relief-cramps', 'calm', 'cond-endo', 'preg-week', 'periods-pain', 'ask-call', 'report', 'help', 'home'];
+  const walk = ['home', 'diary', 'plan', 'plan-pmos', 'per-lesson', 'relief-cramps', 'calm', 'cond-endo', 'preg-week', 'periods-pain', 'ask-call', 'report', 'help', 'library', 'home'];
   for (const h of walk) { await go(page, h, 450); await grab(); await tapAll(page, 2); }
   /* a rage tap: four quick taps in one place; a dead tap: on plain text */
   await page.evaluate(() => { const el = document.querySelector('#view h1, #view h2, #view p'); for (let i = 0; i < 4; i++) el.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 40, clientY: 120 })); });
@@ -143,11 +143,12 @@ const tapAll = (page, n) => page.evaluate((k) => { const b = [...document.queryS
   check('3 every property is on the allowlist', extra.length === 0, extra);
   check('3 no $set or $set_once (no person profile)', evs.every((e) => !e.$set && !e.$set_once && !(e.properties || {}).$set));
   const screens = [...new Set(evs.map((e) => (e.properties || {}).screen))];
-  const OK_SCREENS = new Set(['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'report', 'report-show', 'calm', 'plan',
+  const OK_SCREENS = new Set(['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'library', 'report', 'report-show', 'calm', 'plan',
     'plan-start', 'plan-goal', 'plan-reveal', 'plan-checkin', 'plan-end', 'plan-progress', 'plan-plate', 'plan-body', 'plan-moves', 'plan-calm', 'plan-wind', 'food', 'explain', 'docportal', 'lang',
     'joy', 'joy-quiz', 'asha', 'asha-show', 'iron', 'journey', 'relief', 'lesson', 'article', 'condition', 'pregnancy-test', 'pregnancy', 'after-birth', 'midlife', 'trying', 'periods',
     'contraception', 'screening', 'selfcheck', 'care-access', 'tools', 'family', 'other']);
   check('3 screen names are neutral: a plan, lesson or condition keeps only its kind', screens.every((s) => OK_SCREENS.has(s)) && ['plan', 'lesson', 'relief', 'condition', 'pregnancy', 'periods'].every((s) => screens.includes(s)), screens);
+  check('3 All topics and guides is "library", not "other" (Version 39.62\'s route)', screens.includes('library'), screens);
   const pv = evs.filter((e) => e.event === '$pageview');
   check('3 time on the screen before goes with the next view', pv.some((e) => typeof (e.properties || {}).$prev_pageview_duration === 'number'), pv.map((e) => e.properties.$prev_pageview_duration));
   check('3 every event tells PostHog not to look up her location from the IP', evs.length > 0 && evs.every((e) => e.properties.$geoip_disable === true));
