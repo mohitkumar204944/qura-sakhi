@@ -29,7 +29,7 @@
       ob_help_h: 'What would you like help with?', ob_help_p: 'Pick any. Sakhi suggests plans from your answers and your diary. You can skip this.',
       ob_h_irregular: 'Irregular or late periods', ob_h_pmos: 'I have PMOS (PCOS)', ob_h_pain: 'Painful periods', ob_h_heavy: 'Heavy periods', ob_h_pms: 'Mood or body changes before periods', ob_h_skin: 'Acne or extra hair',
       ob_h_weight: 'Weight and fitness', ob_h_track: 'Just keeping track', ob_h_nausea: 'Nausea', ob_h_food: 'Food and activity', ob_h_iron: 'Iron and tablets', ob_h_sleep: 'Sleep', ob_h_mood: 'Worry or low mood',
-      ob_h_recovery: 'Recovering after the birth', ob_h_pelvic: 'Pelvic floor and leaks', ob_h_feed: 'Breastfeeding', ob_h_hot: 'Hot flushes and night sweats', ob_h_bones: 'Bones and strength', ob_h_aches: 'Aches and tiredness',
+      ob_h_recovery: 'Recovering after the birth', ob_h_pelvic: 'Pelvic floor and leaks', ob_h_leak: 'Leaking urine or heaviness', ob_gs_leak: 'Squeeze sets step by step, and when to see a doctor', ob_h_feed: 'Breastfeeding', ob_h_hot: 'Hot flushes and night sweats', ob_h_bones: 'Bones and strength', ob_h_aches: 'Aches and tiredness',
       welcome_h: 'Your cycle, your body, in your language', welcome_p: 'A free diary and plain-language help for Indian women. No ads, no scores, nothing sold. A Qura doctor is behind it when you want one.',
       start: 'Start my diary', try_sample: 'Explore with sample data', sample_priya: 'Priya, 27 · irregular cycles', sample_asha: 'Asha, 31 · regular cycles', browse_only: 'Just read the help pages',
       step: 'Step', of: 'of', dob_h: 'When were you born?', dob_p: 'The diary is for women 18 and over. We ask this first and keep it only on your profile.', day: 'DD', month: 'MM', year: 'YYYY',
@@ -65,7 +65,7 @@
       learn_h: 'Learn', search: 'Search topics', all: 'All', loading: 'The library is being written. Check back soon.', read: 'Read',
       see_doctor: 'When to see a doctor', qura_can: 'How Qura can help', ask_qura: 'Ask a Qura doctor about this', sources: 'Sources', draft: 'Draft for doctor review', no_results: 'No matches. Try another word.',
       help_h: 'Help and safety', call_now: 'Call 112 now if', today_if: 'See a doctor today if', weeks2: 'See a gynaecologist within about 2 weeks if', week_if: 'This week if', under18: 'Under 18', mood: 'Mood', after35: 'After 35',
-      s1a: 'Period late or a positive test, plus one-sided lower belly pain, shoulder-tip pain, dizziness or fainting', s1b: 'Soaking a pad every 1–2 hours and feeling dizzy or breathless', s1c: 'In pregnancy: bleeding, fits, severe headache with blurred vision, fluid leaking, baby moving less',
+      s1a: 'Period late or a positive test, plus one-sided lower belly pain, shoulder-tip pain, dizziness or fainting', s1b: 'Soaking a pad every 1–2 hours and feeling dizzy or breathless', s1d: 'Suddenly unable to control your bladder or bowel, with numbness between your legs, weak legs or bad back pain', s1c: 'In pregnancy: bleeding, fits, severe headache with blurred vision, fluid leaking, baby moving less',
       s2a: 'Soaking a pad every 1–2 hours (ask for a haemoglobin test; free at a government hospital)', s2b: 'Fever with heavy bleeding or severe belly pain', s2c: 'Burning when peeing with fever, shivering or back pain under the ribs',
       s3a: 'Any bleeding 12 months or more after your last period. Most causes aren\'t serious, but this always needs checking', s3b: 'No period for 90+ days (not pregnant, breastfeeding or on hormones): pregnancy test first, then a doctor', s3c: 'Hair growth worsening over months, or a deepening voice', s3d: 'Milky discharge from the nipples when not breastfeeding',
       s4a: 'Bleeding more than 8 days, clots the size of a ₹10 coin, or bleeding through clothes', s4b: 'Period pain that stops your day, or pain during sex: take this diary with you', s4c: 'Discharge that changed colour or smell, itching, or burning when peeing',
@@ -288,7 +288,7 @@
       ob_help_h: 'आपको किस बात में मदद चाहिए?', ob_help_p: 'जो भी सही लगे, चुनें। Sakhi आपके जवाबों और डायरी से प्लान सुझाती है। चाहें तो इसे छोड़ दें।',
       ob_h_irregular: 'अनियमित या देर से आने वाले पीरियड', ob_h_pmos: 'मुझे PMOS (PCOS) है', ob_h_pain: 'दर्द वाले पीरियड', ob_h_heavy: 'ज़्यादा ब्लीडिंग वाले पीरियड', ob_h_pms: 'पीरियड से पहले मूड या शरीर में बदलाव', ob_h_skin: 'मुँहासे या ज़्यादा बाल',
       ob_h_weight: 'वज़न और फ़िटनेस', ob_h_track: 'बस हिसाब रखना', ob_h_nausea: 'जी मिचलाना', ob_h_food: 'खाना और व्यायाम', ob_h_iron: 'आयरन और गोलियाँ', ob_h_sleep: 'नींद', ob_h_mood: 'चिंता या उदासी',
-      ob_h_recovery: 'डिलीवरी के बाद ठीक होना', ob_h_pelvic: 'पेल्विक फ़्लोर और पेशाब का रिसना', ob_h_feed: 'स्तनपान', ob_h_hot: 'गर्मी के झोंके और रात को पसीना', ob_h_bones: 'हड्डियाँ और ताक़त', ob_h_aches: 'दर्द और थकान',
+      ob_h_recovery: 'डिलीवरी के बाद ठीक होना', ob_h_pelvic: 'पेल्विक फ़्लोर और पेशाब का रिसना', ob_h_leak: 'पेशाब का रिसाव या भारीपन', ob_gs_leak: 'क़दम दर क़दम कसने के सेट, और डॉक्टर कब दिखाएँ', ob_h_feed: 'स्तनपान', ob_h_hot: 'गर्मी के झोंके और रात को पसीना', ob_h_bones: 'हड्डियाँ और ताक़त', ob_h_aches: 'दर्द और थकान',
       welcome_h: 'आपका चक्र, आपका शरीर, आपकी भाषा में', welcome_p: 'भारतीय महिलाओं के लिए मुफ़्त डायरी और आसान भाषा में मदद। कोई विज्ञापन नहीं, कोई score नहीं, कुछ बेचा नहीं जाता। जब चाहें, Qura की डॉक्टर साथ हैं।',
       start: 'डायरी शुरू करें', try_sample: 'नमूना डेटा के साथ देखें', sample_priya: 'प्रिया, 27 · अनियमित चक्र', sample_asha: 'आशा, 31 · नियमित चक्र', browse_only: 'सिर्फ़ मदद के पन्ने पढ़ें',
       step: 'चरण', of: 'में से', dob_h: 'आपका जन्म कब हुआ?', dob_p: 'यह डायरी 18 साल और उससे ऊपर की महिलाओं के लिए है। यह हम सबसे पहले पूछते हैं और सिर्फ़ आपकी प्रोफ़ाइल में रखते हैं।', day: 'दिन', month: 'महीना', year: 'साल',
@@ -324,7 +324,7 @@
       learn_h: 'जानें', search: 'विषय खोजें', all: 'सब', loading: 'यह library लिखी जा रही है। थोड़ी देर में देखें।', read: 'पढ़ें',
       see_doctor: 'डॉक्टर को कब दिखाएँ', qura_can: 'Qura कैसे मदद कर सकता है', ask_qura: 'इस बारे में Qura की डॉक्टर से पूछें', sources: 'स्रोत', draft: 'डॉक्टर की समीक्षा के लिए draft', no_results: 'कुछ नहीं मिला। दूसरा शब्द आज़माएँ।',
       help_h: 'मदद और सुरक्षा', call_now: 'अभी 112 पर कॉल करें अगर', today_if: 'आज ही डॉक्टर को दिखाएँ अगर', weeks2: 'लगभग 2 हफ़्ते में स्त्री रोग विशेषज्ञ को दिखाएँ अगर', week_if: 'इसी हफ़्ते अगर', under18: '18 से कम', mood: 'मन', after35: '35 के बाद',
-      s1a: 'पीरियड देर से या test positive, साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी', s1b: 'हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना', s1c: 'गर्भ में: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, बच्चे की हलचल कम',
+      s1a: 'पीरियड देर से या test positive, साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी', s1b: 'हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना', s1d: 'अचानक पेशाब या शौच पर क़ाबू न रहना, साथ में जाँघों के बीच सुन्नपन, पैरों में कमज़ोरी या कमर में तेज़ दर्द', s1c: 'गर्भ में: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, बच्चे की हलचल कम',
       s2a: 'हर 1–2 घंटे में pad भीगना (हीमोग्लोबिन जाँच माँगें; सरकारी अस्पताल में मुफ़्त)', s2b: 'भारी ब्लीडिंग या तेज़ पेट दर्द के साथ बुख़ार', s2c: 'पेशाब में जलन के साथ बुख़ार, कँपकँपी या पसलियों के नीचे पीठ दर्द',
       s3a: 'पिछले पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग। ज़्यादातर कारण गंभीर नहीं होते, पर जाँच हमेशा ज़रूरी है', s3b: '90+ दिन पीरियड नहीं (गर्भ, स्तनपान या हॉर्मोन नहीं): पहले गर्भ test, फिर डॉक्टर', s3c: 'महीनों में बाल बढ़ना बदतर, या आवाज़ भारी होना', s3d: 'स्तनपान न कराते हुए निप्पल से दूध जैसा स्राव',
       s4a: '8 दिन से ज़्यादा ब्लीडिंग, ₹10 के सिक्के जितने थक्के, या कपड़ों तक निकलना', s4b: 'पीरियड का दर्द जो दिन रोक दे, या संबंध में दर्द: यह डायरी साथ ले जाएँ', s4c: 'सफ़ेद पानी का रंग या गंध बदली, खुजली, या पेशाब में जलन',
@@ -1072,7 +1072,7 @@
   /* Version 36: plans are a tab of their own (Mohit, 23 Oct: "plan should be handy not deep hidden") */
   const planTab = () => state.stage === 'app' && !!ROUTES['plan'] && !!api.planOn();
   function tabOf(r) {
-    if ((r === 'plan' || r.startsWith('plan-') || ['mid-lesson', 'per-lesson', 'ttc-lesson', 'ttc-ready'].indexOf(r) >= 0) && planTab()) return 'plan';   /* Version 39.51 (Mohit's phone test): her plan's chapters, lessons and ready check are My plan's */
+    if ((r === 'plan' || r.startsWith('plan-') || ['mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge', 'ttc-lesson', 'ttc-ready'].indexOf(r) >= 0) && planTab()) return 'plan';   /* Version 39.51 (Mohit's phone test): her plan's chapters, lessons and ready check are My plan's */
     if (r.startsWith('a-') || r === 'learn' || r.startsWith('learn-')) return 'care';
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */
@@ -1312,9 +1312,15 @@
   const URG_LATE = /\blate\b|der se|der ho|देर|miss(ed)? (my )?period|period miss|period nahi(n)? aa|पीरियड नहीं आ|positive|पॉजिटिव|पोजिटिव/;
   const URG_SIDE = /one.?sided?|ek (taraf|tarf|side)|एक (तरफ|साइड)|shoulder|kandh|कंध/;
   const URG_HARM = /suicid|kill(ing)? my ?self|end (my|this) life|want to die|wanna die|self.?harm|(hurt|harm)(ing)? (my ?self|my baby)|khud ?kh?ushi|aa?tm(a)? ?hatya|आत्महत्या|खुदकुशी|mar(na| jaa?na) chah|mar jaa?u|jee?na nahi(n)? chah|मरना चाह|मर जाना चाह|मर जाऊ|जीना नहीं चाह|khud ko (nuksaa?n|chot|maar)|खुद को (नुकसान|चोट|मार)|(baby|bachch?e) ko (nuksaa?n|maar)|बच्चे को (नुकसान|मार)/;
+  /* Version 39.56 (My pelvic floor plan): Help's new sign, a loss of bladder or bowel control with numbness between the legs, weak
+     legs or bad back pain (s1d). Leaking urine on its own is not this sign. */
+  const URG_LOSS = /bladder|bowel|urine|\bpee\b|\bwee\b|stool|\bpoo|potty|पेशाब|peshab|pesab|शौच|shauch|latrine/;
+  const URG_HOLD = /control|\bhold|qaa?bu|kaa?bu|क़ाबू|काबू|\brok|रोक/;
+  const URG_NERVE = /numb|\bsunn|सुन्न|jhunjhun|झुनझुन|tingl|saddle|(weak|kamzor|kamjor|कमज़ोर|कमजोर) .{0,8}(legs?|pair|पैर|ta?ang|टांग|टाँग)|legs? .{0,8}(weak|kamzor|give way|gave way)|(pair|पैर) .{0,8}(kamzor|kamjor|sunn|कमज़ोर|कमजोर|सुन्न)|back pain|(kamar|कमर) .{0,10}(dard|दर्द)/;
   const urgentQ = (q) => {
     const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
     if (URG_HARM.test(qq)) return 'harm';
+    if (URG_LOSS.test(qq) && URG_HOLD.test(qq) && URG_NERVE.test(qq)) return 's1d';
     const dizzy = URG_DIZZY.test(qq);
     if (URG_LATE.test(qq) && (dizzy || URG_SIDE.test(qq))) return 's1a';
     const bleed = URG_BLEED.test(qq) || (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq)));
@@ -1648,7 +1654,7 @@
   const CARE_KEYS = ['private', 'govt', 'asha', 'none'];
   const careRoute = () => { const c = (state.situation || {}).care; return CARE_KEYS.indexOf(c) >= 0 ? c : null; };
   const careGov = () => { const c = careRoute(); return c === 'govt' || c === 'asha'; };
-  const OB_GOALS = { cycle: ['track', 'pain', 'heavy', 'pms'], pmos: ['irregular', 'weight', 'skin', 'pms', 'pain', 'heavy'], ttc: ['ready', 'irregular', 'weight'], preg: ['food', 'nausea', 'iron', 'sleep', 'mood'], post: ['recovery', 'feed', 'pelvic', 'mood', 'sleep', 'weight'], mid: ['hot', 'sleep', 'mood', 'heavy', 'bones', 'aches', 'weight'], meno: ['hot', 'sleep', 'mood', 'bones', 'aches', 'weight'] };   /* Version 39.51: aches and tiredness */
+  const OB_GOALS = { cycle: ['track', 'pain', 'heavy', 'pms', 'pelvic'], pmos: ['irregular', 'weight', 'skin', 'pms', 'pain', 'heavy', 'pelvic'], ttc: ['ready', 'irregular', 'weight', 'pelvic'],   /* Version 39.56: the pelvic floor at every stage */ preg: ['food', 'nausea', 'iron', 'sleep', 'mood'], post: ['recovery', 'feed', 'pelvic', 'mood', 'sleep', 'weight'], mid: ['hot', 'sleep', 'mood', 'heavy', 'bones', 'aches', 'weight', 'pelvic'], meno: ['hot', 'sleep', 'mood', 'bones', 'aches', 'weight', 'pelvic'] };   /* Version 39.51: aches and tiredness */
   const OB_GAPS = ['n', 'g45', 'g60', 'gt60', 'vary', 'lt21'];
   const OB_TOKEN = { cycle: 'track', ttc: 'ttc', preg: 'preg', post: 'baby', meno: 'meno' };
   /* her tile now (a diary from before Version 39.10, or after a stage change) */
@@ -1657,7 +1663,7 @@
     if (s === 'meno') return sit.stopped ? 'meno' : 'mid'; return OB_ENGINE[s] ? s : 'cycle'; };
   /* state.goals: her stage first, then her goals (PMOS by its own name once a doctor has said so) */
   const goalsList = (st, goals, pcos) => [OB_TOKEN[st] || 'track'].concat(goals.filter((k) => k !== 'track').map((k) => (k === 'irregular' && pcos ? 'pmos' : k))).concat(pcos && goals.indexOf('irregular') < 0 ? ['pmos'] : []);
-  const goalLabel = (k) => t(k === 'ready' ? 'plan_gl_ready' : 'ob_h_' + k);
+  const goalLabel = (k, tile) => t(k === 'ready' ? 'plan_gl_ready' : (k === 'pelvic' && (tile || obTileOf()) !== 'post' ? 'ob_h_leak' : 'ob_h_' + k));   /* Version 39.56: "Leaking urine or heaviness" outside the after-birth stage */
   function renderOnboard(v) {
     const ob = mem.ob || (mem.ob = obLoad() || { step: 1 }); obSave();
     const upd = !!ob.update; const sn = Math.min(ob.step, 4);
@@ -1703,7 +1709,7 @@
       const list = OB_GOALS[ob.tile] || OB_GOALS.cycle; ob.goals = (ob.goals || []).filter((k) => list.indexOf(k) >= 0);
       const gi = (k) => (api.plan && api.plan.goalIco ? safe(() => api.plan.goalIco(k), '') : '');
       v.innerHTML = '<div class="stack ob" style="gap:12px">' + head(t('ob_goal_h'), t('ob_goal_p')) + '<div class="list ob-goals">' + list.map((k) => { const on = ob.goals.indexOf(k) >= 0; const n = on ? ob.goals.indexOf(k) + 1 : 0;
-        return '<button type="button" class="item ob-opt ob-goal' + (on ? ' on' : '') + '" data-ob-goal="' + k + '" aria-pressed="' + on + '">' + gi(k) + '<span class="body"><strong>' + esc(goalLabel(k)) + '</strong><span>' + esc(t('ob_gs_' + k)) + '</span></span><span class="ob-tick" aria-hidden="true">' + (n ? n : '') + '</span></button>'; }).join('') + '</div>' +
+        return '<button type="button" class="item ob-opt ob-goal' + (on ? ' on' : '') + '" data-ob-goal="' + k + '" aria-pressed="' + on + '">' + gi(k) + '<span class="body"><strong>' + esc(goalLabel(k, ob.tile)) + '</strong><span>' + esc(t(k === 'pelvic' && ob.tile !== 'post' ? 'ob_gs_leak' : 'ob_gs_' + k)) + '</span></span><span class="ob-tick" aria-hidden="true">' + (n ? n : '') + '</span></button>'; }).join('') + '</div>' +
         '<p class="small pl-err" id="ob-goal-err" hidden>' + esc(t('ob_goal_need')) + '</p><button type="button" class="btn primary block" id="ob-next">' + esc(ob.goals.length ? tf('ob_goal_n', { n: ob.goals.length }) : t('continue')) + '</button></div>';
       v.querySelectorAll('[data-ob-goal]').forEach((b) => b.addEventListener('click', () => {
         const k = b.dataset.obGoal; const i = ob.goals.indexOf(k);
@@ -1944,7 +1950,7 @@
     const ysHtml = ysRead();   /* Version 39.47: when it offers her plan's Start, the plan row says so */
     const hid = st === 'preg' ? 'ys_hid_preg' : (st === 'post' ? 'ys_hid_post' : (st === 'meno' ? 'ys_hid_meno' : 'ys_hid_cycle'));
     v.innerHTML = '<div class="stack ob ys" style="gap:14px"><h1>' + esc(nm ? tf('ys_h', { name: nm }) : t('ys_h0')) + '</h1>' +
-      '<div class="chips ys-chips"><span class="pill ys-st hue-' + (tile === 'meno' ? 'teal' : hueOf(tile === 'pmos' ? 'pmos' : (OB_TILES.find((x) => x[0] === tile) || ['', 'periods'])[1])) + '">' + esc(t('ob_s7_' + tile)) + '</span>' + (f.goals || []).filter((k) => k !== 'track').map((k) => '<span class="pill muted">' + esc(goalLabel(k)) + '</span>').join('') + '</div>' +
+      '<div class="chips ys-chips"><span class="pill ys-st hue-' + (tile === 'meno' ? 'teal' : hueOf(tile === 'pmos' ? 'pmos' : (OB_TILES.find((x) => x[0] === tile) || ['', 'periods'])[1])) + '">' + esc(t('ob_s7_' + tile)) + '</span>' + (f.goals || []).filter((k) => k !== 'track').map((k) => '<span class="pill muted">' + esc(goalLabel(k, tile)) + '</span>').join('') + '</div>' +
       ysHtml + '<p class="eyebrow">' + esc(t('ys_helps')) + '</p><div class="list ys-rows">' + rows.map((k) => '<div class="item quiet"><span class="ico-sm hue hue-' + YS_ICO[k][1] + '">' + icon(YS_ICO[k][0]) + '</span><span class="body"><strong>' + esc(t(k === 'plan' && /data-xp-plan/.test(ysHtml) ? 'ys_plan_up' : 'ys_' + k)) + '</strong><span>' + esc(sub(k)) + '</span></span></div>').join('') + '</div>' +
       '<p class="small ys-hid">' + esc(t(hid) + ' ' + t('ys_hid_more')) + '</p>' +
       '<button type="button" class="btn primary block" id="ys-tour">' + esc(t('ys_tour')) + '</button><button type="button" class="btn ghost block" id="ys-skip">' + esc(t('ys_skip')) + '</button></div>';
@@ -2652,7 +2658,7 @@
   /* a private screen: behind her PIN when one is set (the same PIN as her health details) */
   function privateGo(route) { mem.pinNext = route; setHash(state.settings.pinHash && !mem.healthOk && PIN_ROUTES.indexOf(route) < 0 ? 'pin' : route); }
   /* review DP-2, DP-10: a private screen asks for the PIN on the page itself, however she reaches it: one title, and Back */
-  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson'];   /* Version 39.51: the midlife plan's chapters */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
+  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge'];   /* Version 39.51: the midlife plan's chapters; Version 39.56: the pelvic floor plan's */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
   const pinGated = (r) => state.stage === 'app' && !!state.settings.pinHash && !mem.healthOk && (r === 'pin' || (!!state.settings.discreet && PIN_ROUTES.indexOf(r) >= 0));
   function renderPinGate(v, r) {
     const next = r === 'pin' ? (mem.pinNext || 'home') : r;
@@ -4361,7 +4367,7 @@
     const sec = (title, items, cls) => '<div class="card ' + (cls || '') + '" data-say="1"><h3' + (String(cls || '').indexOf('dark') === 0 ? '' : ' style="color:var(--accent)"') + '>' + esc(title) + '</h3><ul>' + items.map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul></div>';
     v.innerHTML = (state.stage === 'app' ? backRow(t('help_h'), 'home', false) : '<h1>' + esc(t('help_h')) + '</h1>') + '<p class="small">' + esc(t('same_for_all')) + '</p>' + (state.stage === 'app' || state.stage === 'browse' ? helpTabs('help') : '') +
       '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] || ROUTES['access-doctor'] ? '<button type="button" class="linkbtn" data-go="' + (ROUTES['access-free'] ? 'access-free' : 'access-doctor') + '">' + esc(t(ROUTES['access-free'] ? 'access_free' : 'access_doctor')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
-      sec(t('call_now'), ['s1a', 's1b'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a', 's5b']) + sec(t('mood'), ['s6a', 's6b']) +
+      sec(t('call_now'), ['s1a', 's1b', 's1d'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a', 's5b']) + sec(t('mood'), ['s6a', 's6b']) +
       /* Version 39.7: the symptom guide by body area is a tab at the top now (Version 39.1 had it as a row here) */
       (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
       (state.stage === 'app' && waNum() && !mem.teen ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + (state.stage === 'app' ? '' : tourMenuHtml());
@@ -4924,7 +4930,7 @@
      - go: the screen a tap opens (the pill, the plan, the check-in), not Home.
      Android keeps 60 at most, soonest first. Only if some were left out, a last alarm asks her to open Sakhi. */
   const NOTIF_GO = { ttc: 'home', contra: 'contra-mine', iron: 'iron', post: 'post', screen: 'screen-mine', journey: 'journey', plan: 'plan-checkin', access: 'access-schemes-preg', checkin: 'checkin', backup: 'backup' };   /* plan: Version 37.2, its evening check-in (Version 36 opened the PMOS page, Version 35 the reminders list) */
-  const notifGo = (r) => (r.id === 'plan-nudge' ? 'plan-now' : r.id === 'plan-wind' ? 'plan-wind' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
+  const notifGo = (r) => (r.id === 'plan-nudge' ? 'plan-now' : r.id === 'plan-pf' ? 'pf-go' : r.id === 'plan-wind' ? 'plan-wind' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
   const notifCh = (r) => (r.kind === 'med' || ['contra', 'iron'].indexOf(r.mod) >= 0 || /^preg-(ifa|ca)$/.test(r.id) ? 'meds' : ['preg', 'post', 'screen', 'access'].indexOf(r.mod) >= 0 ? 'care' : r.mod === 'plan' ? 'plan' : 'other');
   const notifQuiet = () => !!(state.settings.discreet || state.settings.shared);
   /* Version 39.0 (plans review): the words on the lock screen are plain unless she turns them on. Her own reminders keep her

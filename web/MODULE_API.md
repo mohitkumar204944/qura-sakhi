@@ -6435,3 +6435,140 @@ with no dates, heavy periods at 44, and version 1 moved to version 2), with thei
 `test/shots/periodplan-walk/`. `test/progs.mjs` knows the new words; its draft example is now version 3. Suites that check
 version 1's plans seed `ppv2No` (she kept her plan); food, companion, minimal, myplanwalk and planfor check version 2 where
 joining starts it (no bedtime step, so no wind-down).
+
+## 99. Version 39.56: My pelvic floor plan
+
+Mohit, 2 Nov: "design the pelvic floor plan", then "proceed building" with the 10 recommended decisions
+(`docs/pelvic-floor-plan-advice-2026-11-02.md`, from the 24 Oct design, `docs/plans-design-and-build-2026-10-24-programmes.md`
+section 4). It is the one programme on the 24 Oct roadmap that was never built.
+
+**One plan, two tracks.** `pelvic` version 1 (`web/progs/v1.js`, "My pelvic floor plan", `plan_pk_pelvic`), for leaking urine or
+heaviness down below. It sits before `meno` in the file, so its goal leads at the tracking and midlife stages; Getting ready and
+the after-birth plan come earlier and keep their stages (`packFor('pelvic', 'ttc')` is Getting ready, `'post'` My recovery plan).
+The goal `pelvic` joins `GOALS.cycle`, `ttc` and `meno` (mods/plan.js) and `OB_GOALS` for every stage but pregnancy (app.js). Outside
+the after-birth stage its name is "Leaking urine or heaviness" (`ob_h_leak`, `ob_gs_leak`; core's `goalLabel(k, tile)`, plan.js's
+`obName(k, st)` and `goalName(k, st)`, by the intake's own stage); after a birth it stays "Pelvic floor and leaks".
+- Her track, from "When do you leak?" (screen `pftrack`: `pft` stress, urge, both, heavy or not sure, and `pfway`, how much it gets
+  in the way, 0 to 3, optional): leaks for 12 weeks; heaviness with a doctor first, then to week 16 after "a doctor said prolapse".
+  Both then keep strong to month 12 (the plan's `keep`, as every plan's); after a prolapse the 12 weeks carry on with 3 sets a day to
+  week 16.
+- "Before you start" (screen `pfsafe`, `pfflags`): 7 signs NICE NG123 1.3.20 sends to a doctor before exercises (can't pass urine
+  or dribbling all the time, leaking all the time after a long labour or an operation, burning, fever or blood in the urine, a bulge
+  that stays outside, wind or stool she can't hold, pain when she squeezes or with sex, a past operation for leaks or prolapse or
+  pelvic cancer treatment). Each shows its line as she ticks it; nothing has to be answered. A plan that asks nothing about her day
+  has no "Your day" (`screensOf`), and this one asks no time to move.
+
+**Her sets: 8 levels from her sets, never the calendar** (`PF_LV`, `pfLevel`): lying 3 s × 8, lying 5 s × 8, sitting 5 s × 10
+with 5 quick, sitting 7 s × 10 with 10 quick, standing 5, 8 and 10 s × 10 with 10 quick, then standing or walking. 5 days of sets at
+a level open the next; each 3 weeks away steps her back one level ("Welcome back"), never to the start unless the break is long. Her days are the trainer's (`S.post.pfDays`) and her Done in
+the check-in. Lying sets only (level 2) on the heaviness track until she says what the doctor said (`d.pfDoc`), and after a past
+operation or pelvic cancer until "My doctor said more is fine" (`d.pfOk`); a cap counts from the day it lifts, so she moves up one
+level. Pain (her safety answer, or "It hurts" twice in the trainer, `d.pfRelax`) makes her sets "Breathe and let go, a few minutes"
+(Wind down's slow breaths) until "A doctor checked it" (`d.pfPainOk`). 3 sets a day; 1 on a period day; 1 a day after week 12,
+except 3 to week 16 after "a prolapse" (`pfTarget`).
+
+**Today, at most 3 steps** (`slots: { max: 3, day1: 2 }`; adapters `pelvic.sets`, `pelvic.find`, `pelvic.checked`, `pelvic.urge`,
+`pelvic.habit`; `if` words `pfurge`, the urge track, and `pfgoal`, the pelvic floor among her goals):
+- her squeeze sets, "{n} of {m} today · level {n}, {position}", partly done after one set; its play button opens the trainer with a
+  set started (route `pf-go`, mods/pfplan.js: it draws the trainer at once, `S.post.renderPelvic`, and puts `post-pelvic` in its
+  place in her history, so Back returns to Today; the trainer's afterRender keeps the set's timer for it);
+- Find the right muscles on days 1 to 3 (day 1 has these 2 steps), and all of her first day at a new position (sitting at level 3,
+  standing at 5, walking at 8: "Your sets are {position} now: find the squeeze that way first, then start");
+- Get checked once by a doctor on the heaviness track, until "What did the doctor say?";
+- When the urge comes (urge or both) from day 4, opening `pf-urge` ("stop, squeeze, breathe, walk calmly"; from week 3 a little
+  longer each week);
+- one habit a fortnight from week 2, opening the week's chapter: the knack (week 2), water through the day (3 to 4), knees up on the
+  toilet, or less tea, coffee and cola for 2 weeks on the urge track (5 to 6; decision 5), lifting the safe way (7 to 8), one set
+  standing at a task (9 to 12).
+
+**The trainer** (mods/post.js `renderPelvic`), when her plan runs it or her sets join another plan (`S.plan.pelvic.on()`), and never
+in pregnancy: her level sets the hold, the squeezes, the quick squeezes (1 s squeeze, 2 s let go, after the holds) and the position,
+with its 3D still (`bridgedown`, `chairsit`, `wall`, `walk`; with no `web/fig`, no picture); a soft tone as each squeeze starts
+and as she lets go (decision 6: tones, vibration and big numbers, never a word; Dr. Megha's voice as an option needs new clips from
+the paid voice service, so it waits for Mohit); "Next level after {n} more days
+of sets"; "It hurts" stops a set; her plan's sets for the day (1 on a period day); the knack after a set from week 2 (stress and both
+tracks); in her first week, Find the right muscles first. Its intro and Back are for any stage (`pf_p_any`, back to Today); after a
+birth and in pregnancy it is as it was. Without a recent birth, no after-birth lines (the belly gap check, "3 months after the birth", the
+after-birth Qura doctor card and links): the prolapse guide as one row, and "Is it the right squeeze?" with a Qura doctor. A
+finished set syncs her rings (`S.plan.pelvic.sync`).
+
+**Her sets join another plan** as one step (`{ use: 'pelvic.sets', if: ['pfgoal'] }` at the end of ttc, heavy, meno, pain and pms
+version 2): Getting ready when the pelvic floor is any of her goals at the trying stage, My period plan and My midlife plan when it is
+a second or third goal. On a day already full, the sets are the one row under her steps until done (`pfJoinRow`, before the
+chapter). "Your plan for this" on the guide leads to the plan she runs.
+
+**Her evening.** The check-in after her last set, at her time, as every plan's; the evening ring names her last set ("Your last set,
+then how did today go? 1 minute", `REM_PF`). One new ring, her morning set at 8 am (`plan-pf`, `pfSync`; its reason: NICE's 3 sets a
+day for 3 months, and keeping going is where training fails), its words neutral, done for the day after a set, off in Me stays off;
+it opens `pf-go`. In the check-in, never on a shared phone or in discreet mode:
+- every week, the after-birth plan's reviewed "This week: any leaks?" (`lk`; "This week: any heaviness?" on the heaviness track);
+  not sure of her track, a leak asks "When did it happen?" and her answer sets it;
+- "Are you sure you’re squeezing the right way?" in weeks 1, 4 and 12 (`pfs`); "How much does it get in the way of your day?" in
+  weeks 4, 8 and 12 (`pfw`); "Compared with when you started?" at week 12 (`pfc`).
+Its 4-week measure is in the check-in, so the generic 4-week check (energy, sleep, mood) and its row don't come with it.
+
+**One card at a time, a Qura doctor first** (`cardKind` 'pf', `pfDue`, `pfCardHtml`, `wirePf`): her doctor-first signs lead (from
+day 1, before every other card; plain words on a shared phone) until "I’ve seen a doctor"; a past operation or pelvic cancer; pain;
+"What did the doctor say?" once she has ticked Get checked once; "Is it the right squeeze?" in weeks 2 to 4 and whenever she isn't
+sure (a Qura doctor first, then her own doctor or a women's health physiotherapist, with the government hospital's gynae OPD as one
+quiet line; decision 4); after 12 weeks while she still leaks, "Still leaking or heavy?" (the treatments after exercises, Tele-MANAS
+14416), after the end card. The end page's doctor card says the same, after "Still leaking or heavy?" (`plan_pf_end_p`).
+
+**A chapter a week** (`mods/perplan.js`'s pattern, `mods/pfplan.js`): f1 to f12 for every track, v1 to v4 (weeks 13 to 16) after "a
+doctor said prolapse"; route `pf-lesson`, under My plan, behind her PIN on a shared phone (with `pf-urge`); one row under her steps
+until read. Chapter 10 has the 112 line. `S.plan.pelvic.lesson()` gives the week's chapter.
+
+**Her results** (`pfResults`, on My progress): leaks (or heaviness) first and latest, how much it gets in the way at the start and
+latest, sure of the squeeze first and latest, and her level with her days of sets; on a shared phone only her level. It never says
+"cured".
+
+**The 112 line** (a new line for the doctor): "Suddenly unable to control your bladder or bowel, with numbness between your legs,
+weak legs or bad back pain" (`s1d`), in Help's "Call 112 now if", in the prolapse guide and in chapter 10.
+
+**Her stage changes.** A pregnancy pauses it (My pregnancy has its own pelvic floor step); after a birth My recovery plan takes over;
+at the trying stage Version 39.48's card offers Getting ready (`CYC_PACKS`), and Keep keeps it.
+
+**The minimalist baseline** (CLAUDE.md):
+- **Her evening:** one new ring, her morning set (its reason above); the check-in rings after her last set and names it; no spacing
+  rule, no cap.
+- **Today:** day 1 has 2 steps and no day more than 3; one Sakhi says card; one row under her steps (the chapter, or her joined sets).
+- **Ask less:** one new screen before her first step, "Before you start" (its reason: NICE NG123 1.3.20 sends these signs to a doctor
+  before 3 months of exercises, and constant leaking after a long labour can be a fistula); "When do you leak?"; nothing else, and no
+  "Your day".
+- **One home for each fact:** the trainer holds the sets, the guide the treatments, the check-in the measure (so no generic 4-week
+  check), the chapter the habit's how.
+- **Read once:** how it works folds after week 1, as every plan's.
+- **No new tours, tips or celebrations.** A missed week steps her back a level, never to the start.
+- **The shared phone:** "Your 2 minutes", neutral rings, no pelvic words on Today, no measures, the chapters behind her PIN.
+- **Taps:** see the build summary.
+
+**The test pass** (Mohit, 3 Nov: "can you throughly test for any bugs or gaps"; the test's section 17):
+- Her 8 am ring follows her plan: Stop my plan ends it (`closePlan`), a pause, a pregnancy or another plan rests or ends it and it
+  comes back with her plan (`pauseSync` runs `pfSync`), a plan she stopped earlier no longer makes a new plan's ring look deleted
+  (`pfMade` and `pfHeld` go with a fresh start, as the nudge's Version 39.32 fix), and a plan that starts tomorrow books it from
+  its first day (`commitStart`). A new plan's cards start fresh (what she put away belonged to the plan before); a doctor's
+  answer, "My doctor said more is fine" and the pain hold stay hers.
+- A set after midnight counts for the evening before: the trainer saves sets on the plan's day (`S.planToday`, the 4 am rule),
+  which the after-birth plan's squeezes gain too. A "Partly" in the check-in is a day of sets.
+- "Your plan is ready" names "your 8 am first set" among what will ring, says "Days 1 to 3: Find the right muscles" and "In your
+  first weeks: Get checked once by a doctor", and a plan her sets join says "Every day: your squeeze sets, 3 a day". My plan's "How
+  to do it" for her sets is her level's squeezes. Her habit opens the chapter that teaches it (route `pf-habit`; Chapters still
+  opens this week's).
+- The evening's "What got in the way?" has no "Weather or safety", and its tips and the weekly look-back's are the plan's own
+  (`plan_pf_tip_*`), with no cramps routine button.
+- Her report for the doctor: when she leaks and how much it gets in the way, her signs before she started, what the doctor said,
+  her leaks first and latest, her level.
+- Search: Help's new 112 sign in her words (a loss of bladder or bowel control, together with numbness, weak legs or bad back pain:
+  `URG_LOSS`, `URG_HOLD`, `URG_NERVE`) puts the urgent card first, as Version 39.30's signs do; leaking on its own does not.
+- The trainer: after a birth the after-birth lines stay even with this plan running; its tile says "Guided squeeze-and-relax timer,
+  step by step" (the belly gap check is for after a birth); "A doctor checked it: back to squeezes" in its breathing card (her sets
+  joined to another plan had no way back); "Your plan for this" when no plan of hers runs it; and her sets joined to another plan
+  show the 7 signs once before her first set ("None of these", "I've seen a doctor", a Qura doctor; `d.pfSafeAt`), with no set
+  until she answers, as the plan's own joining asks them.
+- "I can exercise" gets no prolapse chapters and no 16 weeks; after "a prolapse", "Still leaking or heavy?" waits for week 16; "What
+  happens when" says "If a doctor finds a prolapse".
+
+`node test/pfplan.mjs` checks it (128 checks; section 17 holds the test pass). `node test/pfplan-walk.mjs [who]` lives it: five women from a new install (stress leaks,
+urge leaks with periods stopped, heaviness with a doctor's check, pain when she squeezes, and period pain with her sets joined),
+screens and words to `test/shots/pfplan-walk/`. `test/progs.mjs` knows the new words, and the baseline re-records `pelvic@1` and the
+5 plans her sets join (ttc, heavy, meno, pain and pms version 2).

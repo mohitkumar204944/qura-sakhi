@@ -23,7 +23,7 @@
     t_contra: ['Contraception after birth', 'डिलीवरी के बाद गर्भनिरोध'],
     t_contra_s: ['What you can start, and when, while breastfeeding', 'स्तनपान के दौरान क्या और कब शुरू कर सकती हैं'],
     t_pelvic: ['Pelvic floor trainer', 'पेल्विक फ़्लोर व्यायाम'],
-    t_pelvic_s: ['Guided squeeze-and-relax timer, belly gap check', 'गिनती के साथ कसना और ढीला छोड़ना, पेट के गैप की जाँच'],
+    t_pelvic_s: ['Guided squeeze-and-relax timer, step by step', 'गिनती के साथ कसना और ढीला छोड़ना, क़दम दर क़दम'],   /* Version 39.56: the belly gap check is for after a birth only */
     t_checks: ["Check-ups and baby's vaccines", 'जाँच और बच्चे के टीके'],
     t_checks_s: ['ASHA visits, your 6-week check, iron and calcium, vaccine reminders', 'ASHA की विज़िट, आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, टीकों के रिमाइंडर'], t_checks_s_doc: ['Your 6-week check, iron and calcium, vaccine reminders', 'आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, टीकों के रिमाइंडर'],
 
@@ -298,6 +298,28 @@
     see_h: ['See a doctor if', 'डॉक्टर को दिखाएँ अगर'],
     prolapse: ['Heaviness or a bulge: what it can be', 'भारीपन या उभार: यह क्या हो सकता है'],
     pf_topic: ['Leaking or heaviness after birth', 'डिलीवरी के बाद लीक या भारीपन'],
+    /* Version 39.56: the trainer with My pelvic floor plan */
+    pf_p_any: ['These muscles hold up your bladder, womb and bowel. A few minutes a day, done the right way, helps stop leaks and eases heaviness. They take about 3 months to get stronger.', 'ये मांसपेशियाँ मूत्राशय, बच्चेदानी और आँतों को सहारा देती हैं। रोज़ कुछ मिनट, सही तरीक़े से, लीक रोकने और भारीपन कम करने में मदद करते हैं। इन्हें मज़बूत होने में लगभग 3 महीने लगते हैं।'],
+    pf_topic2: ['Leaking urine or heaviness', 'पेशाब का रिसाव या भारीपन'],
+    pf_lv: ['Level {n} of 8 · {p}', '8 में से लेवल {n} · {p}'],
+    pf_lv_do: ['{r} squeezes: hold each {h} seconds, then let go as long', '{r} बार कसें: हर बार {h} सेकंड रोकें, फिर उतनी ही देर ढीला छोड़ें'],
+    pf_lv_q: ['Then {q} quick squeezes: squeeze, let go', 'फिर {q} बार जल्दी-जल्दी: कसें, छोड़ें'],
+    pf_pos_lie: ['lying on your back, knees bent', 'पीठ के बल लेटकर, घुटने मोड़कर'], pf_pos_sit: ['sitting on a chair, feet flat', 'कुर्सी पर बैठकर, पैर ज़मीन पर'],
+    pf_pos_stand: ['standing, your back near a wall', 'खड़े होकर, पीठ दीवार के पास'], pf_pos_walk: ['standing, or walking slowly', 'खड़े होकर, या धीरे चलते हुए'],
+    pf_next: ['Next level after {n} more days of sets', '{n} और दिन सेट करने के बाद अगला लेवल'], pf_next1: ['Next level after 1 more day of sets', '1 और दिन सेट करने के बाद अगला लेवल'],
+    pf_top: ['The top level. Keep going: this keeps you strong.', 'सबसे ऊँचा लेवल। करती रहें: इससे आप मज़बूत बनी रहेंगी।'],
+    pf_capped: ['Your sets stay lying down until a doctor says more is fine.', 'जब तक डॉक्टर आगे बढ़ने को न कहें, आपके सेट लेटकर ही रहेंगे।'],
+    pf_back: ['Welcome back. One level back, to build up again.', 'फिर से स्वागत है। एक लेवल पीछे, ताकि ताक़त फिर से बने।'],
+    pf_go: ['Start a set', 'एक सेट शुरू करें'], ph_qs: ['Quick squeeze', 'जल्दी कसें'], ph_qr: ['Let go', 'छोड़ें'], qrep: ['Quick squeeze {i} of {n}', 'जल्दी: {n} में से {i}'],
+    pf_hurt: ['It hurts', 'दर्द हो रहा है'],
+    pf_hurt_t: ['Stopped. If it hurts again, your plan moves to breathing and letting go.', 'रोक दिया। फिर दर्द हुआ, तो आपका प्लान साँस लेने और ढीला छोड़ने पर चला जाएगा।'],
+    pf_hurt_t2: ['Your plan now has breathing and letting go instead of squeezes. See a doctor about the pain.', 'अब आपके प्लान में कसने की जगह साँस लेना और ढीला छोड़ना है। दर्द के लिए डॉक्टर को दिखाएँ।'],
+    pf_knack: ['Try the knack today: squeeze before you cough, sneeze, laugh or lift.', 'आज तरकीब आज़माएँ: खाँसने, छींकने, हँसने या उठाने से पहले कसें।'],
+    pf_done_m: ['Set done: {n} of {m} today. Well done.', 'सेट पूरा: आज {m} में से {n}। बहुत अच्छा।'],
+    pf_leave2: ['Leaving this screen stops the timer. A set counts only when it is finished.', 'यह स्क्रीन छोड़ने पर टाइमर रुक जाता है। सेट तभी गिना जाता है जब वह पूरा हो।'],
+    pf_relax_h: ['Breathe and let go', 'साँस लें और ढीला छोड़ें'],
+    pf_relax_p: ['No squeezes for now. Breathe slowly into your belly and let the muscles down below soften. A doctor should check the pain.', 'अभी कसना नहीं है। पेट में धीरे साँस लें और नीचे की मांसपेशियों को ढीला होने दें। दर्द की जाँच डॉक्टर करें।'],
+    pf_relax_b: ['Slow breaths with Dr. Megha', 'डॉ. मेघा के साथ धीमी साँसें'],
 
     /* check-ups */
     k_h: ["Check-ups and baby's vaccines", 'जाँच और बच्चे के टीके'],
@@ -814,61 +836,103 @@
   if (S.onOwnerChange) S.onOwnerChange(() => { stopAll(); editBirth = false; draft = null; moodQ = { q1: null, q2: null }; PF = null; pfDone = null; });
   const pfSets = (st, iso) => Number(st.pf[iso] || 0);
   function pfDaysDone(st, k) { let c = 0; for (let i = 0; i < k; i++) if (pfSets(st, S.toISO(S.addDays(S.today(), -i))) > 0) c++; return c; }
-  function pfPhaseLabel() { return PF.phase === 'ready' ? T('ph_ready') : (PF.phase === 'sq' ? T('ph_sq') : T('ph_rel')); }
+  function pfPhaseLabel() { return PF.phase === 'ready' ? T('ph_ready') : (PF.phase === 'sq' ? T('ph_sq') : (PF.phase === 'qs' ? T('ph_qs') : (PF.phase === 'qr' ? T('ph_qr') : T('ph_rel')))); }
   function pfPaint() {
     const ph = document.getElementById('pst-pph'), sec = document.getElementById('pst-psec'), rep = document.getElementById('pst-prep'), bar = document.getElementById('pst-pbar');
     if (!PF || !ph) return false;
-    const left = PF.paused ? PF.left : Math.max(0, PF.end - Date.now()); const tot = PF.phase === 'ready' ? 3000 : PF.hold * 1000;
-    ph.textContent = PF.paused ? T('pf_paused') + ' · ' + pfPhaseLabel() : pfPhaseLabel(); ph.dataset.phase = PF.phase;
-    sec.textContent = String(Math.ceil(left / 1000)); rep.textContent = TF('rep', { i: PF.i, n: PF.reps });
-    bar.style.width = (PF.phase === 'sq' ? Math.round((1 - left / tot) * 100) : (PF.phase === 'rel' ? Math.round((left / tot) * 100) : 0)) + '%';
+    const left = PF.paused ? PF.left : Math.max(0, PF.end - Date.now()); const tot = PF.phase === 'ready' ? 3000 : (PF.phase === 'qs' ? 1000 : (PF.phase === 'qr' ? 2000 : PF.hold * 1000));
+    const q = PF.phase === 'qs' || PF.phase === 'qr';   /* Version 39.56: the quick squeezes after the holds */
+    ph.textContent = PF.paused ? T('pf_paused') + ' · ' + pfPhaseLabel() : pfPhaseLabel(); ph.dataset.phase = PF.phase === 'qs' ? 'sq' : PF.phase;
+    sec.textContent = String(Math.ceil(left / 1000)); rep.textContent = q ? TF('qrep', { i: PF.qi, n: PF.quick }) : TF('rep', { i: PF.i, n: PF.reps });
+    bar.style.width = (PF.phase === 'sq' || PF.phase === 'qs' ? Math.round((1 - left / tot) * 100) : (PF.phase === 'rel' || PF.phase === 'qr' ? Math.round((left / tot) * 100) : 0)) + '%';
     return true;
   }
+  /* Version 39.56 (decision 6): a soft tone as each squeeze starts and as she lets go, for her plan's sets (no words) */
+  let pfAc = null;
+  const pfTone = (hz, ms) => { try { const C = window.AudioContext || window.webkitAudioContext; if (!C) return; pfAc = pfAc || new C(); if (pfAc.state === 'suspended' && pfAc.resume) pfAc.resume();
+    const o = pfAc.createOscillator(), g = pfAc.createGain(), t0 = pfAc.currentTime; o.type = 'sine'; o.frequency.value = hz; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
+    o.connect(g); g.connect(pfAc.destination); o.start(t0); o.stop(t0 + ms / 1000 + 0.05); } catch (e) { /* no sound on this phone */ } };
+  const pfCue = (up, quick) => { if (PF && PF.plan) pfTone(up ? 660 : 440, quick ? 80 : 160); };
+  const pfWake = () => { try { const C = window.AudioContext || window.webkitAudioContext; if (!C) return; pfAc = pfAc || new C(); if (pfAc.state === 'suspended' && pfAc.resume) pfAc.resume(); } catch (e) { /* no sound on this phone */ } };
+  document.addEventListener('click', (e) => { const b = e.target && e.target.closest ? e.target.closest('[data-today-nav], [data-pl-play], [data-go="post-pelvic"]') : null; if (b && pfPlan()) pfWake(); }, true);   /* the tap that lets the phone play her tones */
   function pfStep() {
     if (!PF || PF.paused) return;
     if (Date.now() < PF.end) { if (!pfPaint()) stopPfTick(); return; }
     const buzz = (ms) => { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* optional */ } };
-    if (PF.phase === 'ready') { PF.phase = 'sq'; PF.end = Date.now() + PF.hold * 1000; buzz(40); }
-    else if (PF.phase === 'sq') { PF.phase = 'rel'; PF.end = Date.now() + PF.hold * 1000; buzz(15); }
-    else if (PF.i < PF.reps) { PF.i += 1; PF.phase = 'sq'; PF.end = Date.now() + PF.hold * 1000; buzz(40); }
+    if (PF.phase === 'ready') { PF.phase = 'sq'; PF.end = Date.now() + PF.hold * 1000; buzz(40); pfCue(true); }
+    else if (PF.phase === 'sq') { PF.phase = 'rel'; PF.end = Date.now() + PF.hold * 1000; buzz(15); pfCue(false); }
+    else if (PF.phase === 'rel' && PF.i < PF.reps) { PF.i += 1; PF.phase = 'sq'; PF.end = Date.now() + PF.hold * 1000; buzz(40); pfCue(true); }
+    else if ((PF.phase === 'rel' || PF.phase === 'qr') && (PF.qi || 0) < (PF.quick || 0)) { PF.qi = (PF.qi || 0) + 1; PF.phase = 'qs'; PF.end = Date.now() + 1000; buzz(25); pfCue(true, true); }
+    else if (PF.phase === 'qs') { PF.phase = 'qr'; PF.end = Date.now() + 2000; pfCue(false, true); }
     else {
-      const st = PF.store; const k = todayISO(); st.pf[k] = pfSets(st, k) + 1; persist(); pfDone = { store: st, n: st.pf[k] }; PF = null; stopPfTick(); S.render(); return;
+      const st = PF.store; const k = pfDay(); st.pf[k] = pfSets(st, k) + 1; persist(); pfDone = { store: st, n: st.pf[k] }; PF = null; stopPfTick();
+      try { if (S.plan && S.plan.pelvic && S.plan.pelvic.sync) S.plan.pelvic.sync(); } catch (e) { /* her plan's rings follow */ }
+      S.render(); return;
     }
     if (!pfPaint()) stopPfTick();
   }
   const i13 = (d) => S.toISO(d) === todayISO();
+  const pfDay = () => S.toISO(S.planToday ? S.planToday() : S.today());   /* Version 39.56: a set after midnight is the evening before's, as her check-in */
+  /* Version 39.56 (My pelvic floor plan): her plan runs it, or joins her sets to another plan; never in pregnancy */
+  const pfPlan = () => !!(S.plan && S.plan.pelvic && S.plan.pelvic.on && S.plan.pelvic.on()) && !(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
+  const PF_POSE = { lie: 'bridgedown', sit: 'chairsit', stand: 'wall', walk: 'walk' };
+  const pfStill = (pos) => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false && (f.stills || []).indexOf(pos) >= 0 ? 'fig/s/' + pos + '.webp' : ''; };
   function renderPelvic(v) {
     stopAll();
     const st = store(); if (PF && PF.store !== st) PF = null; if (pfDone && pfDone.store !== st) pfDone = null;
+    const plan = pfPlan(); const P0 = plan ? S.plan.pelvic : null; const lv = plan ? P0.level() : null; const rl = !!(plan && P0.relax()); const m = plan ? P0.target() : 3;
+    const js = !!(plan && P0.joinSafe && P0.joinSafe());   /* her joined sets: the signs that need a doctor first, once */
+    if (plan && !rl && lv && !js && S.mem.pfAuto && !PF) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true }; }   /* Today's play button */
+    S.mem.pfAuto = false;
     const hold = [3, 5, 10].indexOf(Number(st.pfHold)) >= 0 ? Number(st.pfHold) : 5;
-    const k = todayISO(); const sets = pfSets(st, k);
+    const k = pfDay(); const sets = pfSets(st, k);
     let trainer = '';
     if (PF) {
       trainer = '<div class="card pst-center pst-trainer"><div class="pst-phase" id="pst-pph" data-phase="' + PF.phase + '"></div><div class="bigtimer" id="pst-psec">' + PF.hold + '</div><div class="pst-bar pst-full"><i id="pst-pbar" style="width:0%"></i></div><p class="small" id="pst-prep"></p>' +
-        '<div class="grid2 pst-full"><button type="button" class="btn secondary" id="pst-ppause">' + esc(PF.paused ? T('pf_resume') : T('pf_pause')) + '</button><button type="button" class="btn" id="pst-pstop">' + esc(T('pf_stop')) + '</button></div><p class="small">' + esc(T('pf_leave')) + '</p></div>';
+        '<div class="grid2 pst-full"><button type="button" class="btn secondary" id="pst-ppause">' + esc(PF.paused ? T('pf_resume') : T('pf_pause')) + '</button><button type="button" class="btn" id="pst-pstop">' + esc(T('pf_stop')) + '</button></div>' +
+        (PF.plan ? '<button type="button" class="linkbtn pst-hurt" id="pst-phurt">' + esc(T('pf_hurt')) + '</button>' : '') + '<p class="small">' + esc(T(PF.plan ? 'pf_leave2' : 'pf_leave')) + '</p></div>';
+    } else if (js) {
+      trainer = '<div class="card warn pst-jsafe"><h3>' + esc(t('plan_ps_h')) + '</h3><p class="small">' + esc(t('plan_pfs_join_p')) + '</p><ul class="pst-ul">' + P0.signs().map((k) => '<li>' + esc(t('plan_pfs_' + k)) + '</li>').join('') + '</ul>' +
+        '<div class="row wrap"><button type="button" class="btn sm primary" id="pst-jsafe-ok">' + esc(t('plan_pfs_none_b')) + '</button><button type="button" class="btn sm" id="pst-jsafe-seen">' + esc(t('plan_pf_safe_seen')) + '</button><button type="button" class="btn sm" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div></div>';
+    } else if (rl) {
+      trainer = '<div class="card pst-relax"><h3>' + esc(T('pf_relax_h')) + '</h3><p class="small">' + esc(T('pf_relax_p')) + '</p>' + (has('calm-breaths') ? '<button type="button" class="btn primary block" data-go="calm-breaths">' + esc(T('pf_relax_b')) + '</button>' : '') + '<button type="button" class="btn sm" id="pst-painok">' + esc(t('plan_pf_pain_ok')) + '</button></div>';   /* the test pass: a way back when her sets join another plan */
+    } else if (plan && lv) {
+      const img = pfStill(PF_POSE[lv.pos]);
+      const note = lv.back ? T('pf_back') : (lv.capped ? T('pf_capped') : (lv.top ? T('pf_top') : (lv.left === 1 ? T('pf_next1') : TF('pf_next', { n: lv.left }))));
+      trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done_m', { n: pfDone.n, m: m })) + '</strong></p>' + (P0.knack() ? '<p class="small pst-knack">' + esc(T('pf_knack')) + '</p>' : '') + '</div>' : '') +
+        '<div class="card pst-lv">' + (img ? '<img class="pst-pos" src="' + img + '" alt="" width="96" height="96" loading="lazy">' : '') + '<div class="pst-lv-b"><span class="eyebrow">' + esc(TF('pf_lv', { n: lv.n, p: T('pf_pos_' + lv.pos) })) + '</span><p><strong>' + esc(TF('pf_lv_do', { r: lv.reps, h: lv.hold })) + '</strong></p>' +
+        (lv.quick ? '<p class="small">' + esc(TF('pf_lv_q', { q: lv.quick })) + '</p>' : '') + '<p class="small pst-lv-n">' + esc(note) + '</p></div></div>' +
+        (P0.period() ? '<p class="small pst-pd">' + esc(t('plan_pf_pd')) + '</p>' : '') + '<button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_go')) + '</button>';
     } else {
       trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done', { n: pfDone.n })) + '</strong></p></div>' : '') +
         '<div class="card"><div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
     }
-    const ticks = '<div class="pst-ticks">' + [1, 2, 3].map((i) => '<span class="pst-tick' + (sets >= i ? ' on' : '') + '">' + (sets >= i ? '✓' : i) + '</span>').join('') + (sets > 3 ? '<span class="pill ok">+' + (sets - 3) + '</span>' : '') + '</div>';
+    const ticks = '<div class="pst-ticks">' + Array.from({ length: m }, (x, i) => i + 1).map((i) => '<span class="pst-tick' + (sets >= i ? ' on' : '') + '">' + (sets >= i ? '✓' : i) + '</span>').join('') + (sets > m ? '<span class="pill ok">+' + (sets - m) + '</span>' : '') + '</div>';
     const strip = '<div class="pst-strip">' + Array.from({ length: 14 }, (x, i) => S.addDays(S.today(), i - 13)).map((d) => { const n = pfSets(st, S.toISO(d)); return '<span class="pst-sd' + (n ? ' on' : '') + (i13(d) ? ' today' : '') + '" title="' + esc(dShort(d)) + '"><b class="num">' + d.getDate() + '</b><i>' + (n ? n : '·') + '</i></span>'; }).join('') + '</div>';
     /* Her 3-month course, counted from her first set (NICE: at least 3 months of daily training). */
     const pfDays = Object.keys(st.pf).filter((x) => /^\d{4}-\d{2}-\d{2}$/.test(x) && pfSets(st, x) > 0 && x <= k).sort();
     const day1 = pfDays.length ? S.diffDays(S.fromISO(pfDays[0]), S.today()) + 1 : 0;
     const course = pfDays.length ? '<p class="small pst-course">' + esc(day1 > 90 ? TF('pf_course_done', { n: pfDays.length }) : TF('pf_course', { d: day1, n: pfDays.length })) + '</p>' : '';
-    const pg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
-    v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : R.hub, false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : 'pf_p')) + '</p>' + trainer +
+    const pg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant()); const born = !!sitBirth();   /* after a birth, as it was */
+    const find = '<div class="card pst-find"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>'; const early = plan && !PF && P0.week() <= 1;   /* her first week: finding the muscles first */
+    v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early ? find : '') + trainer +   /* the test pass: her plan for this */
       '<div class="card"><div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div><div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
-      (S.canSave() ? '' : S.needDiary()) +
-      '<div class="card"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>' +
-      acc(T('gap_h'), '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
-      '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
-      askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+      (S.canSave() ? '' : S.needDiary()) + (early ? '' : find) +
+      (born || pg ? acc(T('gap_h'), '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
+        '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
+        askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic)
+        /* Version 39.56 (the walk): without a recent birth, no after-birth lines; the guide, and a Qura doctor to check the squeeze */
+        : (has('intimate-prolapse') ? '<div class="list pst-guide"><button type="button" class="item" data-go="intimate-prolapse"><span class="body"><strong>' + esc(T('prolapse')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button></div>' : '') +
+          '<div class="card soft pst-right"><h3>' + esc(t('plan_pf_right_h')) + '</h3><p class="small">' + esc(t('plan_pf_right_p')) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div>') +
+      '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v);
     v.querySelectorAll('[data-pst-hold]').forEach((b) => b.addEventListener('click', () => { const st2 = store(); st2.pfHold = Number(b.dataset.pstHold); persist(); S.render(); }));
-    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { pfDone = null; PF = { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0 }; S.render(); });
+    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { if (plan) pfWake(); pfDone = null; PF = plan && lv ? { store: store(), hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true } : { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0 }; S.render(); });
     const pb = v.querySelector('#pst-ppause'); if (pb) pb.addEventListener('click', () => { if (!PF) return; if (PF.paused) { PF.paused = false; PF.end = Date.now() + PF.left; } else { PF.paused = true; PF.left = Math.max(0, PF.end - Date.now()); } pb.textContent = PF.paused ? T('pf_resume') : T('pf_pause'); pfPaint(); });
     const xb = v.querySelector('#pst-pstop'); if (xb) xb.addEventListener('click', () => { PF = null; stopPfTick(); S.render(); });
+    v.querySelectorAll('#pst-jsafe-ok, #pst-jsafe-seen').forEach((b) => b.addEventListener('click', () => { try { S.plan.pelvic.joinSafeOk(); } catch (e) { /* her plan */ } S.render(); }));
+    const po = v.querySelector('#pst-painok'); if (po) po.addEventListener('click', () => { try { S.plan.pelvic.painOk(); } catch (e) { /* her plan */ } S.render(); });
+    const hb = v.querySelector('#pst-phurt'); if (hb) hb.addEventListener('click', () => { PF = null; stopPfTick(); let n = 1; try { n = S.plan.pelvic.hurt(); } catch (e) { /* her plan */ } S.toast(T(n >= 2 ? 'pf_hurt_t2' : 'pf_hurt_t')); S.render(); });   /* Version 39.56 */
     if (PF) { pfPaint(); pfTick = setInterval(pfStep, 200); }
   }
 
@@ -984,6 +1048,10 @@
   S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]),
     /* Version 39.5: pelvic floor sets on that day (a plan step counts from them) */
     pelvicOn: (iso) => !!(S.canSave() && Number((store().pf || {})[iso] || 0) > 0),
+    /* Version 39.56: My pelvic floor plan's levels and sets come from the trainer's days */
+    pfSets: (iso) => (S.canSave() ? Number((store().pf || {})[iso] || 0) : 0),
+    pfDays: () => { if (!S.canSave()) return []; const pf = store().pf || {}; return Object.keys(pf).filter((x) => okISO(x) && Number(pf[x]) > 0).sort(); },
+    renderPelvic: renderPelvic,   /* for pf-go (mods/pfplan.js): the trainer at once, with a set started */
     /* Version 39.46: for the after-birth plan's version 2 */
     died: died, lost: lostSheet, sixOn: () => !!S.reminders.get('post-6wk'), sixRemind: sixRemind, sixSync: sixSync,
     /* her plan's day ends at 4 am: a check saved before 4 am is the day before's, not its own date's */
@@ -1129,6 +1197,8 @@
       '.pst-trainer { gap: 12px; }',
       '.pst-phase { font-size: 20px; font-weight: 600; color: var(--fg); min-height: 28px; }',
       '.pst-phase[data-phase="sq"] { color: var(--accent); }',
+      '.pst-lv { display: flex; gap: 12px; align-items: center; }', '.pst-pos { width: 96px; height: 96px; object-fit: contain; flex: none; border-radius: 12px; }',
+      '.pst-lv-b { min-width: 0; display: grid; gap: 4px; }', '.pst-lv-b p { margin: 0; overflow-wrap: anywhere; }', '.pst-hurt { align-self: center; min-height: 44px; }', '.pst-relax { display: grid; gap: 8px; }',
       '.pst-bar { height: 12px; border-radius: 6px; background: var(--bg); overflow: hidden; }',
       '.pst-bar i { display: block; height: 100%; border-radius: 6px; background: var(--accent-strong); transition: width 0.2s linear; }',
       '.pst-vd { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }',
@@ -1154,7 +1224,7 @@
     sample: sample,
     afterRender: (v, route) => {
       if (route !== R.feed) stopFeedTick();
-      if (route !== R.pelvic) { stopPfTick(); PF = null; pfDone = null; }
+      if (route !== R.pelvic && route !== 'pf-go') { stopPfTick(); PF = null; pfDone = null; }   /* Version 39.56: pf-go draws the trainer */
       if (route !== R.rec) draft = null;
       if (route !== R.mood) moodQ = { q1: null, q2: null };
       if (route !== R.hub && route !== R.checks) editBirth = false;

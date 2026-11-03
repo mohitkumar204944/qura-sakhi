@@ -3196,3 +3196,73 @@ walking days", "From week {n}, in the week before your period: {r}".
 
 The phone test (2 Nov): "Relax, 5 minutes" is now "Relax, a few minutes" (Hindi "कुछ मिनट आराम"), as the slow breaths session is 4
 minutes (UI words). Nothing else new: the other fixes reuse reviewed or existing lines.
+
+### 19.56 Version 39.56: My pelvic floor plan (MODULE_API section 99)
+
+Reviewed lines it reuses, unchanged: the after-birth plan's weekly "This week: any leaks?" and its 3 answers; the prolapse guide
+(`intimate-prolapse`, doctor-verified 20 Oct: what it feels like, why, the two kinds of leaking, the treatment ladder, where to go,
+see a doctor), whose "burning, fever or blood in the urine is usually an infection, not a weak pelvic floor" the safety screen and
+the urge page reuse; the trainer's "Find the right muscles", its belly gap check, "See a doctor if" and its timer; Help's 112 and
+Tele-MANAS 14416 lines.
+
+New lines, waiting for the doctor and a women's health physiotherapist (decision 8: nothing ships to pilot women until both sign):
+- the goal "Leaking urine or heaviness" and "Squeeze sets step by step, and when to see a doctor";
+- the questions: "When do you leak?" (with a cough, sneeze, laugh or lift; with a sudden strong need, before I reach the toilet;
+  both; I feel heaviness or a bulge down below; not sure) and "How much does it get in the way of your day?" (not at all, a little,
+  quite a lot, a lot). They are our own words, not ICIQ-UI SF (a paid licence, decision 9): a reviewer compares them with its items
+  3 and 4;
+- "Before you start": the 7 signs and each line ("See a doctor today. Exercises don’t treat this."; "See a doctor this week. This can
+  be repaired, and it shouldn’t wait 3 months of exercises." with "The repair is free at government hospitals."; the infection line;
+  "See a doctor today. If it is very painful or bleeding, go now."; "See a doctor this week."; "Your plan starts with breathing and
+  letting go instead of squeezes. See a doctor about the pain."; "Show this plan to your doctor first. Your sets stay lying down until
+  your doctor or physiotherapist says more is fine.");
+- **the 112 line**: "Suddenly unable to control your bladder or bowel, with numbness between your legs, weak legs or bad back pain"
+  (Help's "Call 112 now if", the prolapse guide, chapter 10), for the doctor in particular;
+- the levels (for the physiotherapist): lying 3 s × 8 and 5 s × 8; sitting 5 s × 10 with 5 quick squeezes and 7 s × 10 with 10;
+  standing at a wall 5, 8 and 10 s × 10 with 10 quick; standing or walking; a let-go as long as each hold; quick squeezes of 1 s with
+  2 s to let go; a level every 5 days of sets, one back for each 3 weeks away; a soft tone as each squeeze starts and as she lets go; 3 sets a day, 1 on a period day ("lying down if you
+  like"), 1 a day after week 12, 3 to week 16 after a prolapse; the 3D stills for the positions;
+- the steps and their reasons: "Your squeeze sets", "Find the right muscles" (lying down: squeeze as if to stop wind and urine, lift,
+  then let go fully; at a new position, "Your sets are {position} now: find the squeeze that way first, then start"), "Get checked once by a doctor" (a doctor names the cause, not the app), "When the urge comes: stop, squeeze,
+  breathe" (and from week 3, "wait a few minutes more before you go, a little longer each week"), "Breathe and let go, a few minutes", the
+  5 habits (the knack; water, "about 6 to 8 glasses ... too little makes the bladder more urgent"; knees up on the toilet; "Less tea,
+  coffee and cola, for 2 weeks", decision 5; lifting the safe way; one set standing at a task), and `plan_fb_pfl`, `plan_fb_pf_find`,
+  `plan_fb_pf_chk`, `plan_fb_pf_urge`, `plan_fb_pf_habit`, `plan_fb_pf_relax`;
+- the trainer: "These muscles hold up your bladder, womb and bowel. A few minutes a day, done the right way, helps stop leaks and eases
+  heaviness. They take about 3 months to get stronger."; "It hurts" and its two lines; the knack after a set; "No squeezes for now.
+  Breathe slowly into your belly and let the muscles down below soften. A doctor should check the pain.";
+- the evening: "This week: any heaviness?", "Are you sure you’re squeezing the right way?" with "A Qura doctor or a physiotherapist can
+  check it with you.", "Compared with when you started?";
+- the cards: "See a doctor first"; "What did the doctor say?" (a prolapse, and exercises can help; I can exercise), and its toast "Keep 3 sets a day to week 16"; "Is it the right
+  squeeze?" (a Qura doctor first; your own doctor or a women’s health physiotherapist in person; the government hospital’s gynae OPD
+  as a quiet line); "Pain during your sets"; "Still leaking or heavy?" (a ring pessary, medicines for an urgent bladder, an operation;
+  your doctor decides with you) and "Feeling low or alone because of this? Tele-MANAS 14416 is free.";
+- the 16 chapters in `mods/pfplan.js` (English and Hindi): f1 the right squeeze, the let-go and the mistakes (no practising by stopping
+  urine on the toilet, as the trainer says); f2 the knack; f3 longer holds and quick squeezes; f4 water and the 4-week check; f5 on the toilet
+  (an Indian toilet already squats) and soft stools; f6 less pushing down (a cough over 3 weeks needs a doctor; less tea, coffee and
+  cola for an urgent bladder); f7 standing sets; f8 lifting the safe way and halfway; f9 sets in her day; f10 when to see a doctor
+  (the 112 line; today; soon, with bleeding after menopause within about 2 weeks and 2 urine infections in 6 months); f11 if
+  exercises aren’t enough (a pessary, medicines, a treatment inside the vagina after menopause, an operation, all her doctor’s
+  choice); f12 keep strong; after a prolapse, v1 a rest at the end of the day (10 minutes with a pillow under the hips), v2 a ring
+  pessary (and when to see a doctor this week with one), v3 sex and prolapse, v4 keep strong for life. "When the urge comes" (pf-urge):
+  stop, squeeze, breathe out and count to 5, walk calmly; from week 3, a little longer, "over 6 weeks your bladder learns to hold
+  more".
+
+UI words only: "My pelvic floor plan" (decision 10), "Your 2 minutes", "{n} of {m} today · level {n}, {position}", "Level {n} of
+8", "Next level after {n} more days of sets", "The top level. Keep going: this keeps you strong.", "Welcome back. One level back, to
+build up again.", "Start a set", "Quick squeeze", "Let go", "When did it happen?", "Not checked yet", "My doctor said more is fine",
+"A doctor checked it: back to squeezes", the reveal's "What happens when" rows, the results' headings, the tiles ("Squeeze sets",
+"Chapters", "Leaks and heaviness"), and the rings: "Your first set today. More after lunch and before bed." and "Your last set, then
+how did today go? 1 minute".
+
+The test pass (3 Nov), new lines for the doctor: the evening's tips for this plan ("A set takes a few minutes. Do one while the tea
+boils, or in bed before you sleep."; "On a tired day, do your sets lying down. They still count."; "If a squeeze hurts, stop and tap
+“It hurts” in your sets. A doctor should check the pain."; "No one can see a squeeze: do a set sitting with your family, or at a
+task."; "Your sets need no space: lying down, sitting or standing, at home."); "See a doctor first if any of these is true for you."
+(under "Before you start", her sets joined to another plan, with the 7 signs); "If a doctor finds a prolapse: 3 sets a day to week 16,
+then keep strong." UI words: "your {t} first set", "Days 1 to 3: {x}", "In your first weeks: {x}", "Every day: your squeeze sets, 3 a
+day", "None of these", and the trainer's tile "Guided squeeze-and-relax timer, step by step" (was "…, belly gap check").
+
+Decision 6: the count is tones, vibration and big numbers. Dr. Megha's voice as an option is not built: it needs new clips from the
+paid voice service (`web/tools/voice`), which waits for Mohit. Decision
+7's new 3D poses (the knack scenes, side-lying) wait for the physiotherapist.

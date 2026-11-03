@@ -106,7 +106,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
   for (const s of ['[data-ob-lang="en"]', '#w-start', '[data-ob-dec="1990"]', '[data-ob-y="1999"]', '[data-ob-st="pmos"]']) await tap(page, s);
   let v = await view(page);
-  check('1 after her stage: "What would you like help with?", her stage\'s 6 goals, up to 3', /What would you like help with\?/.test(v) && (await page.$$('[data-ob-goal]')).length === 6 && /Pick up to 3/.test(v) && /Irregular or late periods/.test(v), v.slice(0, 300));
+  check('1 after her stage: "What would you like help with?", her stage\'s 7 goals (Version 39.56: the pelvic floor), up to 3', /What would you like help with\?/.test(v) && (await page.$$('[data-ob-goal]')).length === 7 && /Pick up to 3/.test(v) && /Irregular or late periods/.test(v), v.slice(0, 300));
   await shot(page, '1-goal');
   await tap(page, '[data-ob-goal="irregular"]'); await tap(page, '#ob-next');
   /* 3. a restart in the middle of joining keeps her answers */

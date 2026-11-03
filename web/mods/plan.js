@@ -212,7 +212,7 @@
   function prune(d) { const keys = Object.keys(d.log); if (keys.length <= 400) return; keys.sort().slice(0, keys.length - 400).forEach((k) => { delete d.log[k]; }); }
   function addMin(d, n) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.min = S.clamp((x.min || 0) + n, 0, 600); prune(d); remSync(d); }
   function setHabit(d, id, val) { const td = todayISO(); const x = d.log[td] = d.log[td] || {}; x.plate = x.plate || {}; x.plate[id] = !!val; }
-  const remSync = (d) => { nudgeSync(d); windSync(d); folicSync(d); const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = recCi(d) ? recDone(todayISO()) : !!(x.ci || x.rest || allDoneToday(d)); const tt = remT(d); S.reminders.upsert(Object.assign({ id: 'plan', doneOn: ok ? todayISO() : null }, r.title && r.title.en === tt.en ? {} : { title: tt }), { quiet: true }); };   /* Version 39.47: its words follow her evening */   /* Version 39.46: to day 41 her recovery check is her check-in */   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
+  const remSync = (d) => { nudgeSync(d); windSync(d); folicSync(d); pfSync(d);   /* Version 39.56 */ const r = S.reminders.get('plan'); if (!r || !d.start) return; const x = dayLog(d, todayISO()); const ok = recCi(d) ? recDone(todayISO()) : !!(x.ci || x.rest || allDoneToday(d)); const tt = remT(d); S.reminders.upsert(Object.assign({ id: 'plan', doneOn: ok ? todayISO() : null }, r.title && r.title.en === tt.en ? {} : { title: tt }), { quiet: true }); };   /* Version 39.47: its words follow her evening */   /* Version 39.46: to day 41 her recovery check is her check-in */   /* Version 39.13: done only when every step is */   /* a done mark is never her setting a reminder */
   /* a pregnancy plan's reminder ends two weeks after her due date, in case nobody tells Sakhi the baby came */
   /* Version 39.6: a kept plan's reminder ends at month 12. Version 39.27 (R03): one that carries on rings past week 12, to 4 weeks
      after the last day she opened Sakhi (her plan's year at most), so it never rings on for months she isn't using it */
@@ -235,7 +235,7 @@
     if (r && !gone && packOf(d) === 'preg') { const u = remEnd(d); if (u && r.until !== u) { S.reminders.upsert({ id: 'plan', until: u }, { quiet: true }); S.saveQuiet(); } }
     if (r && !gone && planWeeks(d) && (r.until || null) !== remEnd(d)) { S.reminders.upsert({ id: 'plan', until: remEnd(d) }, { quiet: true }); S.saveQuiet(); }   /* review RESULTS-02; Version 39.27: its end follows her (remEnd) */
   } catch (e) { /* nothing to stop */ } };
-  const pauseSync = () => { pauseSync0(); const d = raw(); if (d) { nudgeSync(d); windSync(d); folicSync(d); } };   /* Version 39.12: her nudge follows her plan; 39.22: on by default, and her wind-down too */
+  const pauseSync = () => { pauseSync0(); const d = raw(); if (d) { nudgeSync(d); windSync(d); folicSync(d); pfSync(d); } };   /* Version 39.56: her morning set rests and comes back with her plan */   /* Version 39.12: her nudge follows her plan; 39.22: on by default, and her wind-down too */
 
   /* ---------- the moving drawings: one figure, its joints moved between two positions (looping like a GIF) ----------
      h head, n neck, p pelvis; a = arms [far, near] from the neck; l = legs [far, near] from the pelvis; side view faces right */
@@ -588,7 +588,7 @@
   const lateTest = (dd) => { if (!babyD(dd) || disc() || pregnant()) return false; const p = S.cycle && S.cycle.predict ? S.cycle.predict() : null; if (!p || !p.late || !p.next || p.daysTo > -14) return false;
     const lt = S.pregtest && S.pregtest.lastTest ? S.pregtest.lastTest() : null; return !(lt && lt >= S.toISO(p.next)); };
   const lateRow = (dd) => (lateTest(dd) && S.routeOwner('pregtest') ? '<button type="button" class="action pl-late" data-go="pregtest"><span class="ico hue hue-gold">' + S.I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(t('late_p')) + '</span></span><span class="go">' + S.I.chev + '</span></button>' : '');
-  const lessonRow = (dd) => { if (perV2(dd)) return perLessonRow(dd); if (menoV2(dd)) return m2LessonRow(dd); const id = lessonId(dd); if (lateTest(dd) || !id || !S.ttc || !S.ttc.lesson || S.ttc.lesson.read(id)) return '';
+  const lessonRow = (dd) => { const pj = pfJoinRow(dd); if (pj) return pj; if (pfLead(dd)) return pfLessonRow(dd); if (perV2(dd)) return perLessonRow(dd);   /* Version 39.56 */ if (menoV2(dd)) return m2LessonRow(dd); const id = lessonId(dd); if (lateTest(dd) || !id || !S.ttc || !S.ttc.lesson || S.ttc.lesson.read(id)) return '';
     return '<button type="button" class="item pl-les" data-go="ttc-lesson" data-pl-les="' + id + '"><span class="ico-sm hue hue-plum">' + S.icon('diary') + '</span><span class="body">' + (disc() ? '<strong>' + esc(t('plan_les_h')) + '</strong>' : '<span class="small">' + esc(t('plan_les_h')) + '</span><strong>' + esc(S.ttc.lesson.title(id)) + '</strong>') + '</span><span class="pill">' + esc(t('plan_les_read')) + '</span></button>'; };
   /* Version 39.32 (found on Mohit's phone): Getting ready's 12 weeks are its 4 parts, in My plan's one "Your 12 weeks" card
      (pathHtml in week 1, weeksCard after it), with her doctor month: 12 months after Months of trying's date, 6 at 35 to 39,
@@ -638,7 +638,7 @@
     const wp = v.querySelector('#pl-wp'); if (wp) wp.addEventListener('click', () => { S.mem.planWkFrom = 'plan'; S.setHash('plan-week'); });   /* Version 39.12 */
     const hl = v.querySelector('#pl-howlink'); if (hl) hl.addEventListener('click', () => openHow(d, acts));   /* Version 39.22 */
     wireBaby(v);   /* Version 39.32 */
-    wireMeno(v); wirePer(v);   /* Version 39.51; 39.55 */
+    wireMeno(v); wirePer(v); wirePf(v);   /* Version 39.51; 39.55; 39.56 */
   }
   /* ---------- Version 39.15 (audit R7 to R10, R15; the mockup's After 7): My plan explains the plan, top to bottom. Her goal and
      week; how her plan works; her daily steps, each with its reviewed reason and today's tick; this week as rings (a part for
@@ -648,10 +648,10 @@
   const foldOpen = (k) => !!(S.mem.plFold && S.mem.plFold[k]);
   const foldCard = (cls, title, line, inner) => '<div class="card ' + cls + ' pl-fold"><details data-pl-fold="' + cls + '"' + (foldOpen(cls) ? ' open' : '') + '><summary><span class="pl-fold-t"><strong>' + esc(title) + '</strong>' + (line ? '<span class="small">' + esc(line) + '</span>' : '') + '</span><span class="pl-fold-c" aria-hidden="true">' + S.I.chev + '</span></summary><div class="pl-fold-in">' + inner + '</div></details></div>';
   function rhythmGrid(d, acts) {
-    const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d); const at = timeOf(ciAt(d));
+    const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d) && !pfLead(d); const at = timeOf(ciAt(d));
     const nS = acts.filter((a) => !a.soft).length; const rc = recCi(d);
     const cols = postV2(d) ? [['plan_rh_day', tf(rc && !disc() ? 'plan_rh_day_rc' : (nS === 1 ? 'plan_rh_day_s1' : 'plan_rh_day_s'), { n: nS, t: at })], ['plan_rh_p42', t('plan_rh_p42_s')], ['plan_rh_p84', t('plan_rh_p84_s')]] :   /* Version 39.46 */
-      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) || perV2(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
+      [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) || perV2(d) || pfLead(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
     return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
   }
   /* Version 39.22: her first week reads how her plan works; after it, "How it works" by her week opens it */
@@ -744,7 +744,7 @@
     else if (pk === 'preg') tl = '<p class="small">' + esc(t('plan_rv_exp_preg')) + '</p>';
     const rows = []; const es = []; for (let k = Math.max(1, wk - 3); k < wk; k++) { const e = (d.weeks[k] || {}).e; if (e) es.push(tf('plan_sg_e_v', { n: k, e: t('plan_e_' + e) })); }
     if (es.length) rows.push([t('plan_sg_e'), es.slice(-2).join(' · ')]);
-    if (planWeeks(d) === N && !careTime(d) && !pregnant()) { const c = d.mcheck || {};
+    if (planWeeks(d) === N && !careTime(d) && !pregnant() && !pfLead(d)) { const c = d.mcheck || {};
       if (mcDue(d)) rows.push([t('plan_sg_mc'), t('plan_sg_mc_now')]);
       else { const nk = [1, 2, 3].find((k) => !c[k] && wk <= k * 4); if (nk) { const n = S.diffDays(pToday(), S.addDays(S.fromISO(d.start), nk * 28)); if (n > 0) rows.push([t('plan_sg_mc'), n === 1 ? t('plan_sg_mc_1') : tf('plan_sg_mc_n', { n: n })]); } else if (c[1] || c[2] || c[3]) rows.push([t('plan_sg_mc'), t('plan_sg_mc_done')]); } }
     const per = ['cycle', 'pain', 'heavy', 'pms'].indexOf(pk) >= 0 && !sit.stopped && !sit.hysterectomy;
@@ -775,7 +775,8 @@
   const REM_T = L('How did today go? 1 minute', 'आज का दिन कैसा रहा? 1 मिनट');
   /* Version 39.47 (Mohit's four-plan walk): to day 41 after a birth her evening is her recovery check, and the phone says so */
   const REM_RC = L('Your recovery check · 1 minute', 'आपकी रिकवरी जाँच · 1 मिनट');
-  const remT = (d) => (d && recCi(d) ? REM_RC : REM_T);
+  const REM_PF = L('Your last set, then how did today go? 1 minute', 'आख़िरी सेट, फिर आज का दिन कैसा रहा? 1 मिनट');   /* Version 39.56: her bedtime set rides on the evening ring */
+  const remT = (d) => (d && recCi(d) ? REM_RC : (d && pfLead(d) && !pfRelax(d) ? REM_PF : REM_T));
   /* only what changed (no reminder is touched on a day nothing changes): her folic acid to 12 weeks, and the evening's words */
   const remWords = (d) => { try { folicSync(d); const r = S.reminders.get('plan'); const tt = remT(d); if (r && r.title && r.title.en !== tt.en) S.reminders.upsert({ id: 'plan', title: tt }, { quiet: true }); } catch (e) { /* a reminder that can't be read never stops Today */ } };
   function remOnNow(d, quiet) { const at = ciAt(d); d.ciSet = at; S.reminders.upsert({ id: 'plan', mod: 'plan', title: remT(d), start: d.start && d.start > todayISO() ? d.start : todayISO(), until: remEnd(d), every: 1, time: at, on: true, doneOn: null }, quiet ? { quiet: true } : undefined); remSync(d); }
@@ -818,8 +819,8 @@
     }
     const tipK = disc() && w.b === 'pain' ? 'none' : (w.b || (w.e === 'low' ? 'tired' : 'none'));   /* Version 39.6 (P2-01): low energy gets the tired tip */
     const best = bestStep(d, k);
-    if (mini) return '<div class="pl-th-rev ok pl-sl-rev" data-nofold="1" data-disc-ok="1"><p class="small pl-rev-l"><strong>' + esc(revH(d, k)) + '</strong> · ' + esc(t('plan_tip_' + tipK)) + '</p><div class="row wrap">' + (k < pw && movesOn(d) && !wpOf(d, wk) ? '<button type="button" class="btn sm" id="pl-rev-plan">' + esc(t('plan_wp_b')) + '</button>' : '') + '<button type="button" class="btn sm" id="pl-rev-ok">' + esc(t('plan_got')) + '</button></div></div>';
-    return '<div class="' + cls + '" data-nofold="1" data-disc-ok="1"><h3>' + esc(revH(d, k)) + '</h3>' + (best && !disc() ? '<p class="small pl-best">' + esc(tf('plan_rev_best', { x: best.t, n: best.n })) + '</p>' : '') + '<p>' + esc(t('plan_tip_' + tipK)) + '</p>' + (tipK === 'pain' && S.routeOwner('relief-cramps') ? '<button type="button" class="btn sm" data-go="relief-cramps">' + esc(t('plan_tiles_moves')) + '</button>' : '') +
+    if (mini) return '<div class="pl-th-rev ok pl-sl-rev" data-nofold="1" data-disc-ok="1"><p class="small pl-rev-l"><strong>' + esc(revH(d, k)) + '</strong> · ' + esc(tipT(d, tipK)) + '</p><div class="row wrap">' + (k < pw && movesOn(d) && !wpOf(d, wk) ? '<button type="button" class="btn sm" id="pl-rev-plan">' + esc(t('plan_wp_b')) + '</button>' : '') + '<button type="button" class="btn sm" id="pl-rev-ok">' + esc(t('plan_got')) + '</button></div></div>';
+    return '<div class="' + cls + '" data-nofold="1" data-disc-ok="1"><h3>' + esc(revH(d, k)) + '</h3>' + (best && !disc() ? '<p class="small pl-best">' + esc(tf('plan_rev_best', { x: best.t, n: best.n })) + '</p>' : '') + '<p>' + esc(tipT(d, tipK)) + '</p>' + (tipK === 'pain' && !pfLead(d) && S.routeOwner('relief-cramps') ? '<button type="button" class="btn sm" data-go="relief-cramps">' + esc(t('plan_tiles_moves')) + '</button>' : '') +
       (k < pw ? '<p class="small">' + esc(cyc ? tf('plan_rev_next', { t: target(d, k + 1) }) : t(holds(d, k) && weekDays(d, k) < 3 ? 'plan_rev_hold' : 'plan_rev_keep')) + '</p>' : '') +
       (k < pw && movesOn(d) && !wpOf(d, wk) ? '<div class="row wrap"><button type="button" class="btn sm primary" id="pl-rev-plan">' + esc(t('plan_wp_b')) + '</button><button type="button" class="btn sm" id="pl-rev-ok">' + esc(t('plan_got')) + '</button></div>' : '<button type="button" class="btn sm" id="pl-rev-ok">' + esc(t('plan_got')) + '</button>') + '</div>';   /* Version 39.12 (gap 4) */
   }
@@ -844,7 +845,7 @@
     const endFree = S.routeOwner('access-doctor') ? '<button type="button" class="btn sm" data-go="access-doctor">' + esc(t('plan_rv_free')) + '</button>' : '';
     const endRest = '<button type="button" class="btn sm primary" data-go="report-show">' + esc(t('plan_end_show')) + '</button>' +
       (disc() ? '' : '<button type="button" class="btn sm" data-ask="' + esc(tf('plan_ask_r', { t: packTitle(d) })) + '">' + esc(t('plan_rv_qura')) + '</button>');
-    const endCard = '<div class="card soft pl-end-doc"><h3>' + esc(t('plan_end_doc_h')) + '</h3><p class="small">' + esc(t('plan_end_doc_p')) + '</p>' + (perV2(d) ? '<p class="small pl-per-end">' + esc(t('plan_per_end')) + '</p>' : '') + '<div class="row wrap">' + byRoute(endFree, endRest) + '</div></div>';
+    const endCard = '<div class="card soft pl-end-doc"><h3>' + esc(t('plan_end_doc_h')) + '</h3><p class="small">' + esc(t('plan_end_doc_p')) + '</p>' + (pfLead(d) ? '<p class="small pl-pf-end"><strong>' + esc(t('plan_pf_end_h')) + '</strong> ' + esc(t('plan_pf_end_p')) + '</p>' : '') + (perV2(d) ? '<p class="small pl-per-end">' + esc(t('plan_per_end')) + '</p>' : '') + '<div class="row wrap">' + byRoute(endFree, endRest) + '</div></div>';
     v.innerHTML = hd + pendBanner() + '<div class="card pl-intro">' + (S.art ? S.art.sakhi({ pose: 'cheer', look: (S.state.settings || {}).look }) : '') + '<h2>' + esc(t(kept ? 'plan_year_h' : 'plan_end_h')) + '</h2><p>' + esc(tf('plan_fin_days', { n: n, t: tot })) + '</p><p class="small">' + esc(t(n < 12 ? 'plan_fin_low' : 'plan_fin_p')) + '</p></div>' +
       (mcDue(d) === 3 ? '<div class="card pl-mc-end"><h3>' + esc(t('plan_mc_end_h')) + '</h3><p class="small">' + esc(t('plan_mc_row_s')) + '</p><button type="button" class="btn sm primary" data-go="plan-check">' + esc(tf('plan_mc_b', { n: N })) + '</button></div>' : '') +   /* Version 39.12 (gap 6) */
       menoRes(d) + resultCard(d) + (docTold(d) && !disc() ? '<p class="small pl-told">' + esc(docTold(d)) + '</p>' : '') + endCard +
@@ -1376,7 +1377,7 @@
     return [{ title: t('plan_past_h'), lines: [line] }];
   }
   /* Version 39.6 (journey audit P2-03): her report carries what she said at the start, her result and her doctor check */
-  function sumMore(dd, lines) { if (disc()) return; const nl = nowLine(dd); if (nl) lines.push(tf('plan_sum_now', { x: nl })); const mc = mcSum(dd); if (mc) lines.push(mc); const r = resultText(dd); if (r) lines.push(r); const dt = docTold(dd); if (dt) lines.push(dt); else if (docCase(dd) && dd.doc !== 'done') lines.push(t('plan_sum_doc_no')); }
+  function sumMore(dd, lines) { if (disc()) return; const nl = nowLine(dd); if (nl) lines.push(tf('plan_sum_now', { x: nl })); if (pfLead(dd)) pfSum(dd, lines);   /* Version 39.56 */ const mc = mcSum(dd); if (mc) lines.push(mc); const r = resultText(dd); if (r) lines.push(r); const dt = docTold(dd); if (dt) lines.push(dt); else if (docCase(dd) && dd.doc !== 'done') lines.push(t('plan_sum_doc_no')); }
   function summaryNow() {
     if (!on() || !S.canSave()) return []; const d = raw(); const pk = packOf(d); if (!pk) return [];
     const dd = fullD(d); const wk = wkNow(dd); const kept = !!(dd.keep && weekNo(dd) > N);
@@ -1440,7 +1441,7 @@
   /* [route, title, sub, duration, icon, hue, fits her now, active, paused, points]; points are [n, why] pairs, the biggest gives the why */
   function catalogue() {
     const s = signals(); const st = s.stage; const preg = st === 'preg'; const post = s.birth != null; const early = post && s.birth < 42; const moveOk = !preg && !early;
-    const g = (k) => s.goals.indexOf(k) >= 0; const pt = (c, n, why) => (c ? [n, why] : null); const gl = (k, n) => pt(g(k), n, tf('plan_why_g', { k: t('ob_h_' + k) }));
+    const g = (k) => s.goals.indexOf(k) >= 0; const pt = (c, n, why) => (c ? [n, why] : null); const gl = (k, n) => pt(g(k), n, tf('plan_why_g', { k: obName(k) }));
     const jd = (S.state.mods || {}).journey || {}; const jOn = (id) => !!(S.canSave() && jd.active === id && jd.start && S.diffDays(S.fromISO(jd.start), pToday()) < 21);
     const pd = S.canSave() ? raw() : null; const pOn = !!(pd && pd.start && (packOf(pd) || upcoming(pd)));
     const poiNo = poiHold() && !(pOn && !(pd && pausedFor(pd)));   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, no plan row beside the gynaecologist card (it said "After your 6-week check") */
@@ -1534,12 +1535,12 @@
     if (S.mem.planHelp) {
       const sel = S.mem.planHelp;
       return '<div class="card pl-helpcard" id="pl-help"><h3>' + esc(t('ob_help_h')) + '</h3><div class="chips" role="group" aria-label="' + esc(t('ob_help_h')) + '">' +
-        opts.map((k) => '<button type="button" class="chip' + (sel[k] ? ' on' : '') + '" data-pl-help="' + k + '" aria-pressed="' + !!sel[k] + '">' + esc(t('ob_h_' + k)) + '</button>').join('') + '</div>' +
+        opts.map((k) => '<button type="button" class="chip' + (sel[k] ? ' on' : '') + '" data-pl-help="' + k + '" aria-pressed="' + !!sel[k] + '">' + esc(obName(k)) + '</button>').join('') + '</div>' +
         '<div class="grid2"><button type="button" class="btn" id="pl-help-no">' + esc(t('plan_cancel_b')) + '</button><button type="button" class="btn primary" id="pl-help-save">' + esc(t('plan_help_save')) + '</button></div></div>';
     }
     const on1 = opts.filter(helpOn);
     return '<div class="card pl-helpcard" id="pl-help"><div class="row spread"><h3>' + esc(t('plan_help_h')) + '</h3><button type="button" class="linkbtn" id="pl-help-edit">' + esc(t('plan_change')) + '</button></div>' +
-      (disc() ? '' : (on1.length ? '<div class="pl-picks">' + on1.map((k) => '<span class="pill">' + esc(t('ob_h_' + k)) + '</span>').join('') + '</div>' : '<p class="small">' + esc(t('plan_help_none')) + '</p>')) + '</div>';
+      (disc() ? '' : (on1.length ? '<div class="pl-picks">' + on1.map((k) => '<span class="pill">' + esc(obName(k)) + '</span>').join('') + '</div>' : '<p class="small">' + esc(t('plan_help_none')) + '</p>')) + '</div>';
   }
   function wireHelp(v) {
     const ed = v.querySelector('#pl-help-edit'); if (ed) ed.addEventListener('click', () => { const sel = {}; helpOpts().forEach((k) => { if (helpOn(k)) sel[k] = true; }); S.mem.planHelp = sel; S.render(); });
@@ -1569,7 +1570,7 @@
     const run = runningD();
     const row = (attr, ttl, sub) => '<div class="card soft pl-for" data-nofold="1"><span class="eyebrow">' + esc(t(run ? 'plan_for_h_run' : 'plan_for_h_offer')) + '</span><div class="list"><button type="button" class="item" ' + attr + '><span class="body"><strong>' + esc(ttl) + '</strong>' + (sub ? '<span class="small">' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + S.I.chev + '</span></button></div></div>';
     if (run) {
-      if (packOf(run) !== pk && !(perV2(run) && perGoalOn(run, goal))) return '';   /* Version 39.55: any of her period goals leads to her period plan */
+      if (packOf(run) !== pk && !(perV2(run) && perGoalOn(run, goal)) && !(goal === 'pelvic' && pfJoined(fullD(run)))) return '';   /* Version 39.56: her sets in the plan she runs */   /* Version 39.55: any of her period goals leads to her period plan */
       let sub = ''; const ML = S.midlife && S.midlife.lesson;
       if (menoV2(run) && FOR_PART[topic] && ML && weekNo(run) <= N) { const ord = m2Order(run); let p = FOR_PART[topic]; if (ord.indexOf(p) < 0) p = p === 'h' ? 'q' : (p === 'q' ? 'h' : p); const i = ord.indexOf(p); if (i >= 0) sub = tf('plan_m2_rv_p', { a: i * 4 + 1, b: i * 4 + 4, p: ML.part(p) }); }
       return row('data-go="plan"', packTitle(run), sub);
@@ -1618,8 +1619,8 @@
      team. One engine: the V35 plan for regular periods, PMOS, skin, weight and trying, and light plans built from Sakhi's own
      reviewed routines for period pain, heavy bleeding, mood before periods, pregnancy, after a birth and 40+. Everything stays
      on her phone, and nothing promises a result. ---------- */
-  const GOALS = { cycle: ['irregular', 'pmos', 'pain', 'heavy', 'pms', 'skin', 'weight', 'track'], ttc: ['ready', 'irregular', 'pmos', 'weight', 'track'],
-    preg: ['food', 'nausea', 'iron', 'sleep', 'mood', 'track'], post: ['recovery', 'pelvic', 'feed', 'mood', 'sleep', 'weight', 'track'], meno: ['hot', 'sleep', 'mood', 'bones', 'aches', 'heavy', 'weight', 'track'] };
+  const GOALS = { cycle: ['irregular', 'pmos', 'pain', 'heavy', 'pms', 'skin', 'weight', 'pelvic', 'track'], ttc: ['ready', 'irregular', 'pmos', 'weight', 'pelvic', 'track'],   /* Version 39.56: the pelvic floor */
+    preg: ['food', 'nausea', 'iron', 'sleep', 'mood', 'track'], post: ['recovery', 'pelvic', 'feed', 'mood', 'sleep', 'weight', 'track'], meno: ['hot', 'sleep', 'mood', 'bones', 'aches', 'heavy', 'weight', 'pelvic', 'track'] };
   const stKey = (st) => (GOALS[st] ? st : 'cycle');
   /* Version 39.8: the check-in's symbols and the look-back's faces */
   const CI_SYM = { d: '<svg class="ci-sym" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -1627,7 +1628,8 @@
     n: '<svg class="ci-sym" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' };
   const FACE_M = { low: 'M8 16.6q4-3.4 8 0', ok: 'M8.4 15.4h7.2', good: 'M8 14.2q4 3.8 8 0' };
   const face = (k) => (FACE_M[k] ? '<svg class="face face-' + k + '" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.6"/><circle cx="9" cy="10" r="1.2" class="fe"/><circle cx="15" cy="10" r="1.2" class="fe"/><path d="' + FACE_M[k] + '" class="fm"/></svg>' : '');
-  const goalName = (k) => t(k === 'ready' ? 'plan_gl_ready' : 'ob_h_' + k);
+  const obName = (k, st) => t(k === 'pelvic' && stKey(st || stageNowKey()) !== 'post' ? 'ob_h_leak' : 'ob_h_' + k);   /* Version 39.56: "Leaking urine or heaviness" outside the after-birth stage */
+  const goalName = (k, st) => (k === 'ready' ? t('plan_gl_ready') : obName(k, st));
   /* Version 39.8: a picture for each goal's row: [icon, hue] */
   const GOAL_ICO = { irregular: ['clock', 'rose'], pmos: ['chart', 'gold'], pain: ['bottle', 'orange'], heavy: ['drop', 'rose'], pms: ['heart', 'plum'], skin: ['sparkle', 'orange'], weight: ['target', 'teal'], track: ['diary', 'sky'],
     aches: ['lift', 'gold'], ready: ['flower', 'green'], food: ['plate', 'green'], nausea: ['leaf', 'green'], iron: ['drop', 'rose'], sleep: ['moon', 'sky'], mood: ['heart', 'plum'], recovery: ['care', 'rose'], pelvic: ['lift', 'teal'], feed: ['baby', 'gold'],
@@ -1674,6 +1676,8 @@
       else if (k === 'also') r = alsoGoal(v, c.goal);   /* Version 39.55: another of her goals (her first goal leads) */
       else if (k === 'period') r = periodToday(c.day);   /* a day she bleeds */
       else if (k === 'before') r = beforeAt(c.day);   /* the 7 days before her likely days, and those days until her period comes */
+      else if (k === 'pfurge') r = pfUrge(c.d);   /* Version 39.56: the urge track (urge or both) */
+      else if (k === 'pfgoal') r = pfGoal();   /* the pelvic floor is one of her goals: her sets join this plan */
       else if (k === 'hbdone') r = hbDone(c.d, c.day);   /* her Hb test, ticked or saved */   /* Version 39.34: a sign that doesn't wait, until she checks her answers again */
       return neg ? !r : r;
     });
@@ -1754,7 +1758,7 @@
   const beforeAt = (iso) => perWin(iso, 7);
   const kitDayAt = (iso) => perWin(iso, 2);
   /* the reveal's line for a step of her cycle (Version 39.55) */
-  const PI_WIN = { periodDays: 'plan_pi_pd', before: 'plan_pi_bf', kitday: 'plan_pi_kd' };
+  const PI_WIN = { periodDays: 'plan_pi_pd', before: 'plan_pi_bf', kitday: 'plan_pi_kd', pfd13: 'plan_pf_pi_d13' };   /* Version 39.56: Find the right muscles, days 1 to 3 */
   const alsoGoal = (g, lead) => !!g && g !== lead && (S.state.goals || []).indexOf(g) >= 0;
   const perV2 = (d) => !!(d && ['pain', 'heavy', 'pms'].indexOf(d.pack || '') >= 0 && (d.pv || 1) >= 2);
   const perGoalOn = (d, g) => perV2(d) && ((d.goalKey || d.pack) === g || alsoGoal(g, d.goalKey || d.pack));
@@ -1773,7 +1777,66 @@
   const folicRun = (d) => { if (!babyD(d)) return folicCarry(d) && !pausedFor(d) && !selfPaused(d); if (packOf(d) && !pausedFor(d) && !selfPaused(d) && !finished(fullD(d))) return true;
     if (pregnant()) { const pi = S.preg && S.preg.info ? S.preg.info() : null; return !!(pi && pi.weeks != null && pi.weeks < 12); } return false; };
   const folicSync = (d) => { try { if (d && S.ttc && S.ttc.folic) S.ttc.folic.sync(folicRun(d), ((dayLog(d, todayISO()).ck) || {}).folic === 'd'); } catch (e) { /* this build has no trying pages */ } };
+  /* ---------- Version 39.56: My pelvic floor plan (Mohit, 2 Nov: "proceed building"; docs/pelvic-floor-plan-advice-2026-11-02.md) ----------
+     Her sets in 8 levels that unlock from her sets, never the calendar: 5 days of sets at a level opens the next, and 3 weeks away
+     steps her back one. Lying sets only (level 2) until a doctor has checked heaviness, or after a past operation for leaks or
+     prolapse or pelvic cancer treatment until her doctor or physiotherapist says more is fine (a cap counts from the day it lifts,
+     so she moves up one level, not to where her days would have taken her). Breathing and letting go after pain (her safety
+     answer, or "It hurts" twice in the trainer) until a doctor has checked it. 3 sets a day, 1 on a period day, 1 a day after
+     week 12 (3 to week 16 after "a doctor said prolapse"). The same sets join My period plan, My midlife plan and Getting ready as
+     one step when the pelvic floor is one of her goals. */
+  const PF_LV = [['lie', 3, 8, 0], ['lie', 5, 8, 0], ['sit', 5, 10, 5], ['sit', 7, 10, 10], ['stand', 5, 10, 10], ['stand', 8, 10, 10], ['stand', 10, 10, 10], ['walk', 10, 10, 10]];
+  const PFS = ['retain', 'const', 'uti', 'bulge', 'bowel', 'pain', 'mesh'];   /* her safety answers, in the screen's order */
+  const PFS_DOC = ['retain', 'bulge', 'const', 'bowel', 'uti'];   /* a doctor first, the most urgent first */
+  const pfLead = (d) => !!d && (d.pack || 'cycle') === 'pelvic';
+  const pfGoal = () => (S.state.goals || []).indexOf('pelvic') >= 0;
+  const pfSetsOn = (iso) => { try { return S.post && S.post.pfSets ? S.post.pfSets(iso) : 0; } catch (e) { return 0; } };
+  const pfIk = (d) => (pfLead(d) ? ikOf(d) : {});
+  const pfFlag = (d, k) => (pfIk(d).pfflags || []).indexOf(k) >= 0;
+  const pfUrge = (d) => { const k = pfIk(d).pft; return k === 'urge' || k === 'both'; };
+  const pfRelax = (d) => !!d && (pfFlag(d, 'pain') || !!d.pfRelax) && !d.pfPainOk;
+  const pfCapOn = (d, iso) => (pfLead(d) && ((pfIk(d).pft === 'heavy' && !(d.pfDoc && d.pfDoc.at <= iso)) || (pfFlag(d, 'mesh') && !(d.pfOk && d.pfOk <= iso))) ? 2 : 8);
+  /* the days she did a set: the trainer's, and her Done in the check-in */
+  function pfDays(d) {
+    const s = {}; try { (S.post && S.post.pfDays ? S.post.pfDays() : []).forEach((x) => { s[x] = 1; }); } catch (e) { /* no trainer in this build */ }
+    const lg = (d && d.log) || {}; Object.keys(lg).forEach((x) => { const c0 = ((lg[x] || {}).ck || {}).sets; if (c0 === 'd' || c0 === 'p') s[x] = 1;   /* the test pass: some sets away from the phone count too */ });
+    const td = todayISO(); return Object.keys(s).filter((x) => x <= td).sort();
+  }
+  function pfLevel(d) {
+    let lv = 1, n = 0, prev = null; const td = todayISO();
+    const away = (a, b) => Math.floor(S.diffDays(S.fromISO(a), b) / 21);   /* one level back for each 3 weeks away */
+    pfDays(d).forEach((x) => { const k = prev ? away(prev, S.fromISO(x)) : 0; if (k > 0) { lv = Math.max(1, lv - k); n = 0; } n++; if (n >= 5) { if (lv < pfCapOn(d, x)) { lv++; n = 0; } else n = 5; } prev = x; });
+    let back = false; if (prev && prev < td) { const k = away(prev, pToday()); if (k > 0) { lv = Math.max(1, lv - k); n = 0; back = true; } }
+    const cap = pfCapOn(d, td); if (lv > cap) lv = cap; const L0 = PF_LV[lv - 1];
+    return { n: lv, pos: L0[0], hold: L0[1], reps: L0[2], quick: L0[3], left: lv >= cap ? 0 : Math.max(1, 5 - n), back: back, capped: cap < 8 && lv >= cap, top: lv >= 8, fresh: !back && [3, 5, 8].indexOf(lv) >= 0 && (n === 0 || (n === 1 && prev === td)) };   /* fresh: her first day at a new position, all that day */
+  }
+  const pfSecs = (lv) => 3 + lv.reps * lv.hold * 2 + lv.quick * 3;   /* get ready, each squeeze and its let-go, the quick squeezes */
+  const pfMins = (lv) => Math.max(1, Math.round(pfSecs(lv) / 60));
+  const pfTarget = (d, iso) => { if (pfRelax(d) || periodToday(iso)) return 1; const wk = d && d.start ? weekAt(d, iso) : 1; if (wk > N) return pfLead(d) && d.pfDoc && d.pfDoc.said === 'pop' && wk <= 16 ? 3 : 1; return 3; };
+  /* her habit for the fortnight, from week 2: the knack, water, the toilet (less tea and coffee on the urge track), lifting, a set at a task */
+  const pfHabit = (d, iso) => { const wk = weekAt(d, iso); return wk === 2 ? 'h1' : (wk <= 4 ? 'h2' : (wk <= 6 ? (pfUrge(d) ? 'h3u' : 'h3') : (wk <= 8 ? 'h4' : (wk <= 12 ? 'h5' : null)))); };
+  const pfShared = () => disc() || !!(S.state.settings || {}).shared;
+  const pfPop = (d) => !!(pfLead(d) && pfIk(d).pft === 'heavy' && d.pfDoc && d.pfDoc.said === 'pop');   /* a doctor found a prolapse */
+  const PF_HCH = { h1: 'f2', h2: 'f4', h3: 'f5', h3u: 'f6', h4: 'f8', h5: 'f9' };   /* each habit's chapter */
   const ADAPT = {
+    /* Version 39.56 (My pelvic floor plan): her squeeze sets (the trainer; its play button starts a set), or breathing and letting
+       go after pain; Find the right muscles; Get checked once (heaviness, until she says what the doctor said); When the urge
+       comes; her habit for the fortnight (the week's chapter teaches it) */
+    'pelvic.sets': (d, c, x, st) => {
+      const sh = pfShared();
+      if (pfRelax(d)) { const did = !!(S.calm && S.calm.doneOn && S.calm.doneOn(c.day)); const nm = t(sh ? 'plan_pf_sets_d' : 'plan_pf_relax');
+        return [{ id: 'sets', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: nm, name: nm, sub: t('plan_pf_relax_s'), go: S.calm ? 'calm-breaths' : 'plan-r-calm', state: st('sets', did), why: 'plan_fb_pf_relax', priv: true, how: t('post_pf_relax_p'),
+          play: S.calm ? 'calm-breaths' : null, playMin: S.calm && S.calm.mins ? S.calm.mins('breaths') : 0, playDay: true }]; }
+      const n = pfSetsOn(c.day); const m = pfTarget(d, c.day); const lv = pfLevel(d); const nm = t(sh ? 'plan_pf_sets_d' : 'plan_pf_sets'); const s0 = st('sets', n >= m);
+      return [{ id: 'sets', icon: S.icon('flower'), hue: 'plum', kind: 'tick', title: nm, name: nm, sub: tf('plan_pf_sets_s', { n: Math.min(n, m), m: m, l: tf('plan_pf_lv', { n: lv.n, p: t('plan_pf_pos_' + lv.pos) }) }), go: 'post-pelvic', state: s0 || (n > 0 ? 'p' : null), why: 'plan_fb_pfl', priv: true,
+        play: 'pf-go', playMin: pfMins(lv), playDay: true, how: tf('post_pf_lv_do', { r: lv.reps, h: lv.hold }) + (lv.quick ? '. ' + tf('post_pf_lv_q', { q: lv.quick }) : '') + '.' }];   /* the test pass: her level's squeezes */
+    },
+    'pelvic.find': (d, c, x, st) => { if (pfRelax(d)) return []; const pd = planDayAt(d, c.day); const lv = pd > 3 && c.day === todayISO() ? pfLevel(d) : null; if (pd > 3 && !(lv && lv.fresh)) return [];   /* days 1 to 3, and her first day at a new position */
+      return [{ id: 'find', icon: S.icon('sparkle'), hue: 'plum', kind: 'tick', title: t('plan_pf_find'), name: t('plan_pf_find'), sub: lv ? tf('plan_pf_find_n', { p: t('plan_pf_pos_' + lv.pos) }) : t('plan_pf_find_s'), go: 'post-pelvic', state: st('find'), why: 'plan_fb_pf_find', priv: true, win: lv ? undefined : 'pfd13' }]; },
+    'pelvic.checked': (d, c, x, st) => (d.pfDoc ? [] : [{ id: 'checked', icon: S.icon('steth'), hue: 'rose', kind: 'tick', title: t('plan_pf_chk'), name: t('plan_pf_chk'), sub: t('plan_pf_chk_s'), go: S.routeOwner('intimate-prolapse') ? 'intimate-prolapse' : 'plan', state: st('checked'), why: 'plan_fb_pf_chk', priv: true, once: true }]),
+    'pelvic.urge': (d, c, x, st) => [{ id: 'urge', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: t('plan_pf_urge'), name: t('plan_pf_urge'), sub: t(weekAt(d, c.day) >= 3 ? 'plan_pf_urge_s2' : 'plan_pf_urge_s1'), go: 'pf-urge', state: st('urge'), why: 'plan_fb_pf_urge', priv: true }],
+    'pelvic.habit': (d, c, x, st) => { const k = pfHabit(d, c.day); return k ? [{ id: 'habit', icon: S.icon('leaf'), hue: 'green', kind: 'tick', title: t('plan_pf_' + k), name: t('plan_pf_' + k), sub: t('plan_pf_' + k + '_s'), go: 'pf-habit', state: st('habit'), why: 'plan_fb_pf_habit', priv: true }] : []; },   /* the test pass: the chapter that teaches it */
+
     /* Version 39.55 (My period plan): Relax with Dr. Megha (Wind down's slow breaths; any session she plays that day counts), a rest
        lying down on a heavy day (yoga nidra), her Hb test to day 21 until it is done (a result she saves counts), and her calm-week
        plan in the 7 days before her period (its tool is the 3-minute routine for a hard moment) */
@@ -1955,7 +2018,7 @@
     const pk = packFor(a.goal, a.stage); const sp = pk ? specOf(pk) : null; const out = ['goal']; if (!sp) return out;
     const ik = sp.intake || {}; const c = { goal: a.goal, day: todayISO() };
     (ik.screens || []).forEach((x) => { if (progIf(x.if, c)) out.push(x.id); });
-    if (!daySkip(a)) out.push('day'); if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
+    if (!daySkip(a) && qsOf('day', a).length) out.push('day');   /* Version 39.56: a plan that asks nothing about her day has no Your day */ if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
     if (a.goal === 'weight') out.push('body'); out.push('sum'); return out;
   }
   /* her goals now: no "heavy periods" once her periods have stopped (bleeding after that needs a doctor, not a plan) */
@@ -1973,6 +2036,8 @@
     tired: ['plan_in_tired', [['y', 'plan_yes'], ['n', 'plan_no']]],
     pms: ['plan_in_pms', [['mood', 'plan_pm_mood'], ['irr', 'plan_pm_irr'], ['anx', 'plan_pm_anx'], ['bloat', 'plan_pm_bloat'], ['breast', 'plan_pm_breast'], ['head', 'plan_pm_head'], ['crave', 'plan_pm_crave']], 'multi'],
     pmsLevel: ['plan_in_pmsl', [['little', 'plan_pl_little'], ['lot', 'plan_pl_lot']]],
+    pft: ['plan_in_pft', [['stress', 'plan_pft_stress'], ['urge', 'plan_pft_urge'], ['both', 'plan_pft_both'], ['heavy', 'plan_pft_heavy'], ['ns', 'plan_dx_ns']]],   /* Version 39.56 */
+    pfway: ['plan_in_pfway', [['0', 'plan_pw_0'], ['1', 'plan_pw_1'], ['2', 'plan_pw_2'], ['3', 'plan_pw_3']]],
     endo: ['plan_in_endo', [['y', 'plan_yes'], ['n', 'plan_no']]],   /* Version 39.55: a doctor's diagnosis opens the endometriosis swaps */
     act: ['plan_s_level', [['0', 'plan_lv_0'], ['1', 'plan_lv_1'], ['2', 'plan_lv_2']]],
     food: ['plan_s_food', [['veg', 'plan_f_veg'], ['egg', 'plan_f_egg'], ['nonveg', 'plan_f_nonveg'], ['jain', 'plan_f_jain']]],
@@ -1993,19 +2058,22 @@
     if (id === 'pain') return ['pain', 'painDays'];
     if (id === 'heavy') return ['pads', 'clots', 'tired'];
     if (id === 'pms') return ['pms', 'pmsLevel'];
+    if (id === 'pftrack') return ['pft', 'pfway'];   /* Version 39.56 */
     if (id === 'pain2') return ['pain', 'painDays', 'endo'];   /* Version 39.55 */
     /* Version 39.3: how she eats for every plan; activity where her steps use it; bedtime and work where sleep is a step */
     /* Version 39.3 (journey audit P2-21): her knees or back where the plan has moves, so they can be swapped */
     if (id === 'day') { const sp = specOf(pk); return sp ? ((sp.intake || {}).day || []).slice() : ['act', 'food', 'milk', 'bed', 'work']; }   /* Version 39.4: from her plan's spec */
     return [];
   }
-  const SCREEN_H = { baby: ['plan_in_baby_h', 'plan_in_baby_p'], cyc: ['plan_in_cyc_h', 'plan_in_now_p'], pain: ['plan_in_pain_h', 'plan_in_now_p'], pain2: ['plan_in_pain_h', 'plan_in_now_p'], heavy: ['plan_in_heavy_h', 'plan_in_now_p'], pms: ['plan_in_pms_h', 'plan_in_now_p'], day: ['plan_in_day_h', 'plan_in_day_p'] };
+  const SCREEN_H = { baby: ['plan_in_baby_h', 'plan_in_baby_p'], cyc: ['plan_in_cyc_h', 'plan_in_now_p'], pain: ['plan_in_pain_h', 'plan_in_now_p'], pain2: ['plan_in_pain_h', 'plan_in_now_p'], heavy: ['plan_in_heavy_h', 'plan_in_now_p'], pms: ['plan_in_pms_h', 'plan_in_now_p'], pftrack: ['plan_in_pf_h', 'plan_in_now_p'], day: ['plan_in_day_h', 'plan_in_day_p'] };
   /* the summary's rows: [label, what she said, the screen that asks it] */
   function sumRows(a) {
     const pk = packFor(a.goal, a.stage); const l = screensOf(a); const rows = [[t('plan_in_sum_goal'), goalName(a.goal), 'goal']];
     if (l.indexOf('baby') >= 0) { const fl = Array.isArray(a.bflags) ? a.bflags : []; const fls = S.ttc && S.ttc.flagList ? S.ttc.flagList() : []; const nm = (k) => (BMEDS.indexOf(k) >= 0 ? t('plan_bf_' + k) : tx(fls.find((f) => f.k === k) || { en: k, hi: k }));
       const ord = BMEDS.concat(fls.map((f) => f.k)).filter((k) => fl.indexOf(k) >= 0);   /* in the screen's order */
       rows.push([t('plan_in_baby_h'), ord.length ? ord.map(nm).join(' · ') : t('plan_sg_none'), 'baby']); if (a.trying) rows.push([t('plan_in_trying'), t('plan_tr_' + a.trying), 'baby']); }   /* Version 39.32 */
+    if (l.indexOf('pftrack') >= 0 && a.pft) rows.push([t('plan_in_pft'), t(a.pft === 'ns' ? 'plan_dx_ns' : 'plan_pft_' + a.pft) + (a.pfway != null ? ' · ' + t('plan_pw_' + a.pfway) : ''), 'pftrack']);   /* Version 39.56 */
+    if (l.indexOf('pfsafe') >= 0) { const fl = (a.pfflags || []).filter((k) => PFS.indexOf(k) >= 0); rows.push([t('plan_ps_h'), fl.length ? fl.map((k) => t('plan_pfs_' + k)).join(' · ') : t('plan_sg_none'), 'pfsafe']); }
     if (l.indexOf('psafe') >= 0) rows.push([t('plan_ps_h'), t(a.pnow === 'y' ? 'plan_ps_t_now' : 'plan_ps_t_' + psTier(a.pflags, gwAt(todayISO()))), 'psafe']);   /* Version 39.34 */
     const sym = ['cyc', 'pain', 'pain2', 'heavy', 'pms'].find((x) => l.indexOf(x) >= 0); const now = nowLineOf(ikOfAnswers(a), pk);
     if (sym && now) rows.push([t('plan_in_sum_now'), now, sym]);
@@ -2050,7 +2118,7 @@
       return '<h2 class="ob-h2">' + esc(t(q[0])) + '</h2><div class="chips" role="group" aria-label="' + esc(t(q[0])) + '">' + q[1].map((o) => mk(o, ctx.chip(multi ? 'data-pl-m' : 'data-pl-q', k + ':' + o[0], t(o[1]), multi ? (cur || []).indexOf(o[0]) >= 0 : String(cur) === o[0]))).join('') + '</div>'; };
     let html = '';
     if (id === 'goal') {
-      html = ctx.head(t('plan_in_goal_h'), t('plan_in_goal_p')) + '<div class="list">' + goalsFor(a).map((k) => '<button type="button" class="item ob-opt' + (a.goal === k ? ' on' : '') + '" data-pl-goal="' + k + '" aria-pressed="' + (a.goal === k) + '">' + goalIco(k) + '<span class="body"><strong>' + esc(goalName(k)) + '</strong></span>' + (a.goal === k ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>';
+      html = ctx.head(t('plan_in_goal_h'), t('plan_in_goal_p')) + '<div class="list">' + goalsFor(a).map((k) => '<button type="button" class="item ob-opt' + (a.goal === k ? ' on' : '') + '" data-pl-goal="' + k + '" aria-pressed="' + (a.goal === k) + '">' + goalIco(k) + '<span class="body"><strong>' + esc(goalName(k, a.stage)) + '</strong></span>' + (a.goal === k ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>';
     } else if (id === 'when') {
       html = ctx.head(t('plan_in_when_h'), t('plan_in_when_p')) + '<div class="list">' + Q.when[1].map((o) => '<button type="button" class="item ob-opt' + (a.when === o[0] ? ' on' : '') + '" data-pl-when="' + o[0] + '" aria-pressed="' + (a.when === o[0]) + '"><span class="body"><strong>' + esc(t(o[1])) + '</strong></span></button>').join('') + '</div>';
     } else if (id === 'sum') {
@@ -2065,6 +2133,13 @@
       /* Version 39.34: before her first step, 2 safety questions; her MCP card's marks come ticked; nothing has to be answered */
       if (!Array.isArray(a.pflags)) a.pflags = psPre();
       html = ctx.head(t('plan_ps_h'), t('plan_ps_p')) + psafeHtml(a, gwAt(todayISO())) + '<button type="button" class="btn primary block" id="pl-in-next">' + esc(t('continue')) + '</button>';
+    } else if (id === 'pfsafe') {
+      /* Version 39.56: before her first set, the signs that need a doctor before exercises (NICE NG123 1.3.20), each with its line
+         as she ticks it; nothing has to be answered */
+      if (!Array.isArray(a.pfflags)) a.pfflags = [];
+      html = ctx.head(t('plan_ps_h'), t('plan_pfs_p')) + '<div class="list pl-bflags pl-pfs">' + PFS.map((k) => { const on1 = a.pfflags.indexOf(k) >= 0;
+        return '<label class="item pl-bf pl-pfs-i"><input type="checkbox" data-pl-pfs="' + k + '"' + (on1 ? ' checked' : '') + '><span class="body">' + esc(t('plan_pfs_' + k)) + (on1 ? '<span class="small pl-pfs-w">' + esc(t('plan_pfs_' + k + '_w')) + '</span>' : '') + '</span></label>'; }).join('') + '</div>' +
+        '<p class="small">' + esc(t('plan_pfs_none')) + '</p><button type="button" class="btn primary block" id="pl-in-next">' + esc(t('continue')) + '</button>';
     } else if (id === 'baby') {
       /* Version 39.32 (packet B1 to B19): a few things first. Her answers choose her version. The verified list is ticked as she
          ticked it on Months of trying, and her goal ticks its own line (PMOS, very irregular periods). How long she has been trying
@@ -2090,6 +2165,7 @@
     v.querySelectorAll('[data-pl-edit]').forEach((b) => b.addEventListener('click', () => { if (b.dataset.plEdit === 'day') a.dayShow = true; if (b.dataset.plEdit === 'when') a.whenShow = true; const k = screensOf(a).indexOf(b.dataset.plEdit); if (k >= 0) { a.iq = k; a.edit = true; ctx.redraw(); } }));   /* "Change" shows every question, the joining answers too */
     const mk = v.querySelector('#pl-in-make'); if (mk) mk.addEventListener('click', () => ctx.done());
     v.querySelectorAll('[data-pl-bf]').forEach((c) => c.addEventListener('change', () => { const k = c.dataset.plBf; a.bflags = (a.bflags || []).filter((x) => x !== k); if (c.checked) a.bflags.push(k); }));   /* Version 39.32 */
+    v.querySelectorAll('[data-pl-pfs]').forEach((c) => c.addEventListener('change', () => { const k = c.dataset.plPfs; a.pfflags = (a.pfflags || []).filter((x) => x !== k); if (c.checked) a.pfflags.push(k); ctx.redraw(); }));   /* Version 39.56 */
     if (id === 'psafe') wirePsafe(v, a, gwAt(todayISO()));   /* Version 39.34 */
     v.querySelectorAll('[data-pl-q]').forEach((b) => b.addEventListener('click', () => {
       const kv = kv2(b.dataset.plQ); a[kv[0]] = kv[1];
@@ -2113,7 +2189,7 @@
         if (!ok) { if (er) er.hidden = false; return; }
         a.h = h; a.w = wt; a.waist = wa ? +wa : null; next(); return;
       }
-      const miss = qsOf(id, a).filter((k) => k !== 'milk' && k !== 'endo' && (Q[k][2] === 'multi' ? !(a[k] || []).length : a[k] == null || a[k] === ''));
+      const miss = qsOf(id, a).filter((k) => k !== 'milk' && k !== 'endo' && k !== 'pfway' && (Q[k][2] === 'multi' ? !(a[k] || []).length : a[k] == null || a[k] === ''));
       if (miss.length) { if (er) er.hidden = false; return; }
       next();
     });
@@ -2138,7 +2214,8 @@
   const upcoming = (d) => !!(d && d.start && d.start > todayISO() && d.go);
   const ikBase = (a) => ({ at: todayISO(), stage: a.stage || 'cycle', goal: a.goal || null, gap: a.gap || null, skips: a.skips || null, dx: a.goal === 'pmos' ? 'y' : (a.dx || null), signs: (a.signs || []).filter((x) => x !== 'none'),
     pain: a.pain || null, painDays: a.painDays || null, endo: a.endo || null, pads: a.pads || null, clots: a.clots || null, tired: a.tired || null, pms: (a.pms || []).slice(), pmsLevel: a.pmsLevel || null,
-    act: a.act == null ? null : +a.act, food: a.food || null, milk: a.milk || null, lim: (a.lim || []).filter((x) => x !== 'none'), bed: a.bed || null, work: a.work || null, when: a.when || null, mbone: dayAsks(a, 'mbone') ? a.mbone || null : null, mheart: dayAsks(a, 'mheart') ? a.mheart || null : null });   /* Version 39.51: the midlife plan's moves, kept only by a plan that asks them (Mohit's fourth phone test) */
+    act: a.act == null ? null : +a.act, food: a.food || null, milk: a.milk || null, lim: (a.lim || []).filter((x) => x !== 'none'), bed: a.bed || null, work: a.work || null, when: a.when || null, mbone: dayAsks(a, 'mbone') ? a.mbone || null : null, mheart: dayAsks(a, 'mheart') ? a.mheart || null : null,
+    pft: a.pft || null, pfway: a.pfway != null ? a.pfway : null, pfflags: (a.pfflags || []).filter((k) => PFS.indexOf(k) >= 0) });   /* Version 39.56 */   /* Version 39.51: the midlife plan's moves, kept only by a plan that asks them (Mohit's fourth phone test) */
   const dayAsks = (a, k) => qsOf('day', a).indexOf(k) >= 0;
   const BMEDS = ['meds', 'diab', 'ntd', 'scd'];
   /* Version 39.32 (packet B20, B21): her version. Medicines first: a daily medicine, diabetes, a past pregnancy with a spine or
@@ -2263,8 +2340,8 @@
     const fr = fairOf(Array.isArray(d.past) ? d.past[0] : null, d);   /* review FIXES-04: after Stop, past[0] is the plan she stopped */
     if (fr) { d.base = fr.base; d.hab0 = fr.hab0; } else { delete d.base; delete d.hab0; }
     delete d.pauseAsk;   /* review ENGINE-08: each plan gets its own pause offer */
-    ['wplan', 'light', 'quietAt', 'mcheck', 'mcNot', 'w4Seen', 'w12Seen', 'mpv2No'].forEach((k) => { delete d[k]; });   /* Version 39.51: the midlife cards too */   /* Version 39.12: her weeks, checks and a lighter week belong to the plan they were made in */
-    if (fresh) { delete d.nudgeMade; delete d.nudgeHeld; }   /* Version 39.32 (found on Mohit's phone): a plan she stopped earlier made a nudge, so the new plan's nudge looked deleted and the 6 pm the Start card named never rang */
+    ['wplan', 'light', 'quietAt', 'mcheck', 'mcNot', 'w4Seen', 'w12Seen', 'mpv2No', 'pfSafeSeen', 'pfMeshSeen', 'pfPainSeen', 'pfRightSeen', 'pfEndSeen', 'pfChkNot'].forEach((k) => { delete d[k]; });   /* Version 39.56: her pelvic floor cards start fresh (a doctor's answer stays hers) */   /* Version 39.51: the midlife cards too */   /* Version 39.12: her weeks, checks and a lighter week belong to the plan they were made in */
+    if (fresh) { delete d.nudgeMade; delete d.nudgeHeld; delete d.pfMade; delete d.pfHeld; }   /* Version 39.32 (found on Mohit's phone): a plan she stopped earlier made a nudge, so the new plan's nudge looked deleted and the 6 pm the Start card named never rang */
     if (n.intake) S.state.intake = n.intake;
     delete d.next; if (S.state.prompts) delete S.state.prompts.reveal;
     if (!fresh) S.reminders.remove('plan');
@@ -2272,7 +2349,7 @@
     remOnNow(d, true);
     if (babyD(d) && S.ttc && S.ttc.setFlags) S.ttc.setFlags((d.intake || {}).bflags || []);   /* Version 39.32: Months of trying shows the same ticks */
     if (pregV2(d) && S.preg && S.preg.setRisks) S.preg.setRisks((d.intake || {}).pflags || []);   /* Version 39.34: her MCP card shows the same marks */
-    folicSync(d);
+    folicSync(d); pfSync(d);   /* Version 39.56: her morning set, from her first day */
     if (prev) d.prevPlan = prev; else delete d.prevPlan;   /* Version 39.35 */
     return d;
   }
@@ -2441,7 +2518,7 @@
   }
   function archive(d) { const e = pastEntry(d); if (e) d.past = [e].concat(Array.isArray(d.past) ? d.past : []).slice(0, 5); }
   /* the plan ends and is kept as "Your last plan": Stop, or (V39.9 review FIXES-07) her after-birth plan at the baby's first birthday */
-  function closePlan(dd, drop) { if (!drop) archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); ['nudge', 'nudgeHeld', 'nudgeMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.12 */
+  function closePlan(dd, drop) { if (!drop) archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); S.reminders.remove('plan-pf'); ['nudge', 'nudgeHeld', 'nudgeMade', 'pfRing', 'pfHeld', 'pfMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.56: her morning set too */   /* Version 39.12 */
   const pastBirthday = (d) => { const b = (S.state.situation || {}).deliveredOn; return !!(d && d.start && (d.pack || 'cycle') === 'post' && d.go !== false && d.start <= todayISO() && typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) && !pregnant() && S.diffDays(S.fromISO(b), pToday()) > 365); };
   /* Version 39.5 (P2-04): the same goal again, within a month of her last plan's end, starts where she is. Review ENGINE-06:
      the plan screen shows it too, before she starts */
@@ -2468,7 +2545,7 @@
      "Trying for a baby", with no folic acid; "Your plan has changed" knew only a pregnancy and a birth. Now one card offers the
      plan for now. Her plan runs on until she chooses, and "Keep" keeps it, remembered apart from "Your plan has changed" so a
      pregnancy still asks. */
-  const CYC_PACKS = ['cycle', 'pain', 'heavy', 'pms'];
+  const CYC_PACKS = ['cycle', 'pain', 'heavy', 'pms', 'pelvic'];   /* Version 39.56: trying for a baby, Getting ready (her sets join it) */
   function fitWhy(d) {
     if (!planOn() || !d || !d.start || pendingOk(d) || d.start > todayISO() || pregnant() || pausedFor(d) || selfPaused(d) || finished(fullD(d))) return null;
     const st = stageNowKey(); const pk = packOf(d);
@@ -2601,7 +2678,7 @@
   const whyBtn = (why, cls, pk) => { const k = whyArt(why, pk); return k ? '<button type="button" class="linkbtn ' + (cls || '') + '" data-why-art="' + esc(k) + '">' + esc(t('plan_why')) + '</button>' : ''; };
   const wireWhy = (v) => v.querySelectorAll('[data-why-art]').forEach((b) => b.addEventListener('click', () => { if (S.openAnswer) S.openAnswer(b.dataset.whyArt); }));
   /* Version 39.55: a step of her cycle says when it comes (not on a shared phone); My period plan's iron food and Hb test as they are */
-  const piLine = (d, a) => (perV2(d) && a.id === 'iron' ? t('plan_pi_iron') : (perV2(d) && a.id === 'hb' ? tf('plan_pi_phb', { x: a.name || a.title }) : (a.win && PI_WIN[a.win] && !disc() ? tf(PI_WIN[a.win], { x: a.name || a.title }) :
+  const piLine = (d, a) => (pfLead(d) && a.id === 'checked' ? tf('plan_pf_pi_soon', { x: a.name || a.title }) : perV2(d) && a.id === 'iron' ? t('plan_pi_iron') : (perV2(d) && a.id === 'hb' ? tf('plan_pi_phb', { x: a.name || a.title }) : (a.win && PI_WIN[a.win] && !disc() ? tf(PI_WIN[a.win], { x: a.name || a.title }) :
     tf(a.every && a.every < 7 ? 'plan_pi_days' : 'plan_pi_goal', { x: a.name || a.title, n: a.every }))));
   function stepsList(d) {
     const sp = packOf(d) ? specD(d) : null; const out = []; if (!sp) return out;   /* Version 39.4: from her plan's spec (list) */
@@ -2669,7 +2746,8 @@
         (disc() ? '<p class="small">' + esc(t('plan_fb_any')) + '</p>' : '') +
         (pk === 'cycle' ? '<p class="small">' + esc(tf('plan_rv_week', { m: target(dd, 1), n: daySuggest(dd, 1) })) + '</p><p class="small">' + esc(t('plan_rv_also')) + '</p>' : '') + nextB;
     } else if (id === 'days') {
-      const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'].concat(pregV2(dd) && !disc() ? pregRvRows() : []) : (postV2(dd) ? [[14, 'plan_rv_p14'], [42, 'plan_rv_p42'], [84, 'plan_rv_p84']].filter((x) => (bDays(todayISO()) || 0) < x[0]).map((x) => x[1]).concat([died() ? 'plan_rv_p365b' : 'plan_rv_p365']) : (menoV2(dd) ? m2RvRows(dd) : (perV2(dd) ? perRvRows(dd) : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12'])));   /* Version 39.55 */   /* Version 39.36: what comes later in her pregnancy; Version 39.46: her year after the birth */
+      const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'].concat(pregV2(dd) && !disc() ? pregRvRows() : []) : (postV2(dd) ? [[14, 'plan_rv_p14'], [42, 'plan_rv_p42'], [84, 'plan_rv_p84']].filter((x) => (bDays(todayISO()) || 0) < x[0]).map((x) => x[1]).concat([died() ? 'plan_rv_p365b' : 'plan_rv_p365']) : (menoV2(dd) ? m2RvRows(dd) : (perV2(dd) ? perRvRows(dd) : (pfLead(dd) ? pfRvRows(dd) : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12']))));   /* Version 39.55 */   /* Version 39.36: what comes later in her pregnancy; Version 39.46: her year after the birth */
+      if (pfJoined(dd)) rows.push({ x: t('plan_pf_rv_join') });   /* Version 39.56: her sets join this plan */
       body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', postV2(dd) && earlyAt(todayISO()) && !disc() ? 'plan_rv_d2p' : 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(rvAt()) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
         '<div class="card soft"><p>' + esc(t('plan_rv_miss')) + '</p></div>' +
         (src ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(src) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') +
@@ -2718,8 +2796,27 @@
      recovery check's own "Leaking"). Never on a shared phone. */
   const LK = ['never', 'some', 'most'];
   const weekAsk = (d, key) => postV2(d) && bDays(todayISO()) >= 42 && !(S.state.settings || {}).shared && !disc() && ![1, 2, 3, 4, 5, 6].some((i) => dayLog(d, S.toISO(S.addDays(pToday(), -i)))[key]);
-  const lkAsk = (d) => weekAsk(d, 'lk');
-  const lkQ = (m) => '<div class="card pl-ci-lk"><span class="eyebrow">' + esc(t('plan_lk_h')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_lk_h')) + '">' + LK.map((k) => '<button type="button" class="chip' + (m.lk === k ? ' on' : '') + '" data-ci-lk="' + k + '" aria-pressed="' + (m.lk === k) + '">' + esc(t('plan_lk_' + k)) + '</button>').join('') + '</div>' + (m.lk === 'some' || m.lk === 'most' ? '<p class="small">' + esc(t('post_tp_leak')) + '</p>' : '') + '</div>';
+  const lkAsk = (d) => (pfLead(d) ? pfAsk(d) && ![1, 2, 3, 4, 5, 6].some((i) => dayLog(d, S.toISO(S.addDays(pToday(), -i))).lk) : weekAsk(d, 'lk'));   /* Version 39.56: every week of My pelvic floor plan */
+  /* Version 39.56: My pelvic floor plan's measure in her own words: "sure" in weeks 1, 4 and 12, "gets in the way" in weeks 4, 8
+     and 12, "compared with when you started" at week 12; never on a shared phone or in discreet mode. Not sure of her track, a leak
+     asks when it happened, and her answer sets it (the urge step joins). */
+  const pfAsk = (d) => pfLead(d) && !!packOf(d) && !(S.state.settings || {}).shared && !disc();
+  const pfWeekHas = (d, key) => { const wk = weekNo(d); const s0 = S.fromISO(d.start); for (let i = 0; i < 7; i++) { const iso = S.toISO(S.addDays(s0, (wk - 1) * 7 + i)); if (iso !== todayISO() && dayLog(d, iso)[key] != null) return true; } return false; };
+  const pfSureAsk = (d) => pfAsk(d) && [1, 4, 12].indexOf(weekNo(d)) >= 0 && !pfWeekHas(d, 'pfs');
+  const pfWayAsk = (d) => pfAsk(d) && [4, 8, 12].indexOf(weekNo(d)) >= 0 && !pfWeekHas(d, 'pfw');
+  const pfCmpAsk = (d) => pfAsk(d) && weekNo(d) === 12 && !pfWeekHas(d, 'pfc');
+  const pfChip = (m, key, k, lab) => '<button type="button" class="chip' + (m[key] === k ? ' on' : '') + '" data-ci-pf="' + key + ':' + k + '" aria-pressed="' + (m[key] === k) + '">' + esc(t(lab)) + '</button>';
+  const pfRowQ = (m, h, key, opts) => '<div class="pl-ci-pfq"><span class="small pl-ci-slp-h">' + esc(t(h)) + '</span><div class="chips" role="group" aria-label="' + esc(t(h)) + '">' + opts.map((o) => pfChip(m, key, o[0], o[1])).join('') + '</div></div>';
+  function pfQ(d, m) {
+    const out = [];
+    if (pfSureAsk(d)) out.push(pfRowQ(m, 'plan_pf_sure', 'pfs', [['y', 'plan_yes'], ['ns', 'plan_dx_ns'], ['n', 'plan_no']]) + (m.pfs === 'ns' || m.pfs === 'n' ? '<p class="small pl-ci-pfs-l">' + esc(t('plan_pf_sure_line')) + '</p>' : ''));
+    if (pfWayAsk(d)) out.push(pfRowQ(m, 'plan_in_pfway', 'pfw', [['0', 'plan_pw_0'], ['1', 'plan_pw_1'], ['2', 'plan_pw_2'], ['3', 'plan_pw_3']]));
+    if (pfCmpAsk(d)) out.push(pfRowQ(m, 'plan_pf_cmp', 'pfc', [['b', 'plan_pf_cmp_b'], ['s', 'plan_pf_cmp_s'], ['w', 'plan_pf_cmp_w']]));
+    return out.length ? '<div class="card pl-ci-pf">' + out.join('') + '</div>' : '';
+  }
+  const lkQ = (m, d) => { const pf = pfLead(d); const hv = pf && ikOf(d).pft === 'heavy'; const h = t(hv ? 'plan_lk_hv' : 'plan_lk_h'); const lk = m.lk === 'some' || m.lk === 'most';
+    return '<div class="card pl-ci-lk"><span class="eyebrow">' + esc(h) + '</span><div class="chips" role="group" aria-label="' + esc(h) + '">' + LK.map((k) => '<button type="button" class="chip' + (m.lk === k ? ' on' : '') + '" data-ci-lk="' + k + '" aria-pressed="' + (m.lk === k) + '">' + esc(t('plan_lk_' + k)) + '</button>').join('') + '</div>' +
+      (lk && !pf ? '<p class="small">' + esc(t('post_tp_leak')) + '</p>' : '') + (lk && pf && ikOf(d).pft === 'ns' ? pfRowQ(m, 'plan_pf_when', 'pfwhen', [['stress', 'plan_pft_stress'], ['urge', 'plan_pft_urge'], ['both', 'plan_pft_both']]) : '') + '</div>'; };
   /* the weekly "How are you in yourself?" after day 41, in the recovery check's own reviewed words and its crisis card; it waits for
      the psychologist (SAKHI_CONFIG.drafts only), and to day 41 the recovery check asks it every evening */
   const MD = ['ok', 'low', 'anx', 'harm'];
@@ -2739,6 +2836,7 @@
     const d = D(); const acts = actionsFor(d); const m = S.mem.planCi = S.mem.planCi && S.mem.planCi.day === todayISO() ? S.mem.planCi : { day: todayISO(), sel: {}, bar: null, saved: null, edit: false };
     if (m.slp === undefined) m.slp = dayLog(d, todayISO()).slp || null;   /* Version 39.22: how she slept last night */
     if (m.mv === undefined) m.mv = dayLog(d, todayISO()).mv || null;   /* Version 39.34: her baby's movements today */
+    if (m.pfs === undefined) { const l0 = dayLog(d, todayISO()); m.pfs = l0.pfs || null; m.pfw = l0.pfw != null ? String(l0.pfw) : null; m.pfc = l0.pfc || null; m.pfwhen = null; }   /* Version 39.56 */
     if (m.lk === undefined) m.lk = dayLog(d, todayISO()).lk || null; if (m.md === undefined) m.md = dayLog(d, todayISO()).md || null;   /* Version 39.46 */
     if (m.ms === undefined) { const ms0 = dayLog(d, todayISO()).ms; m.ms = ms0 == null ? null : +ms0; }   /* Version 39.51: her weekly number */
     const firstCi = !Object.keys(d.log).some((k) => k >= d.start && k < todayISO() && (d.log[k] || {}).ci);
@@ -2786,8 +2884,8 @@
       (pre.length && !m.edit ? '<button type="button" class="linkbtn pl-ci-edit" id="pl-ci-edit">' + esc(t('plan_ci_change')) + '</button>' : '') +
       (!disc() && (fd0 || fd1) ? '<div class="card pl-ci-fast"><span class="eyebrow">' + esc(t('plan_fast_h')) + '</span><div class="chips">' +
         [['pl-ci-fast-today', 'plan_fast_today', fastOn(d), fd0], ['pl-ci-fast-tom', 'plan_fast_tom', fastOn(d, S.toISO(S.addDays(pToday(), 1))), fd1]].filter((x) => x[3]).map((x) => '<button type="button" class="chip' + (x[2] ? ' on' : '') + '" id="' + x[0] + '" aria-pressed="' + !!x[2] + '">' + esc(t(x[1])) + '</button>').join('') + '</div></div>' : '') +   /* Version 39.9 */
-      '<div class="card" id="pl-ci-bar"' + (anyMiss() ? '' : ' hidden') + '><span class="eyebrow">' + esc(t('plan_rev_b')) + '</span><div class="chips">' + BARS.filter((x) => !(disc() && x === 'pain')).map((x) => '<button type="button" class="chip' + (m.bar === x ? ' on' : '') + '" data-ci-b="' + x + '">' + esc(t('plan_b_' + x)) + '</button>').join('') + '</div></div>' +
-      (painAsk(d) ? '<div class="card pl-ci-pain">' + painQ(d) + '</div>' : '') + (ptAsk(d) ? ptCard(m) : '') + (pxAsk(d) ? pxQ(m) : '') +   /* Version 39.55 */ (mvAsk(d) ? mvQ(m) : '') + (lkAsk(d) ? lkQ(m) : '') + (mdAsk(d) ? mdQ(m) : '') + (slpAsk(d) && !asked.some((a) => a.bed) ? slpCard() : '') +   /* Version 39.46 */   /* Version 39.27 (R05): she skipped it on Today */
+      '<div class="card" id="pl-ci-bar"' + (anyMiss() ? '' : ' hidden') + '><span class="eyebrow">' + esc(t('plan_rev_b')) + '</span><div class="chips">' + BARS.filter((x) => !(disc() && x === 'pain') && !(pfLead(d) && x === 'out')).map((x) => '<button type="button" class="chip' + (m.bar === x ? ' on' : '') + '" data-ci-b="' + x + '">' + esc(t('plan_b_' + x)) + '</button>').join('') + '</div></div>' +
+      (painAsk(d) ? '<div class="card pl-ci-pain">' + painQ(d) + '</div>' : '') + (ptAsk(d) ? ptCard(m) : '') + (pxAsk(d) ? pxQ(m) : '') +   /* Version 39.55 */ (mvAsk(d) ? mvQ(m) : '') + (lkAsk(d) ? lkQ(m, d) : '') + pfQ(d, m) + (mdAsk(d) ? mdQ(m) : '') + (slpAsk(d) && !asked.some((a) => a.bed) ? slpCard() : '') +   /* Version 39.46 */   /* Version 39.27 (R05): she skipped it on Today */
       (slpRest(d) && !slpAsk(d) && !asked.some((a) => a.bed) ? slpCard() : '') + (msAsk(d) || m.ms != null ? msQ(d, m) : '') +   /* Version 39.51: Rest asks how she slept; her weekly number */
       (S.feel && S.feel.on() ? '<div class="card pl-ci-feel"><span class="eyebrow">' + esc(t('feel_h')) + '</span>' + S.feel.chips(todayISO()) + '</div>' : '') +   /* Version 39.16 (R11): one evening ritual fills her plan and her Diary */
       '<p class="small pl-err" id="pl-ci-err" hidden>' + esc(t('plan_ci_need')) + '</p><button type="button" class="btn primary block" id="pl-ci-save">' + esc(t('plan_help_save')) + '</button>';
@@ -2795,6 +2893,7 @@
     v.querySelectorAll('[data-ci-pt]').forEach((b) => b.addEventListener('click', () => { const kv = kv2(b.dataset.ciPt); m.pt = m.pt || ptLoad(); m.pt[kv[0]] = m.pt[kv[0]] === kv[1] ? null : kv[1]; S.render(); }));   /* Version 39.55 */
     v.querySelectorAll('[data-ci-ptw]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ciPtw; m.pt = m.pt || ptLoad(); m.pt.w[k] = !m.pt.w[k]; S.render(); }));
     v.querySelectorAll('[data-ci-px]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ciPx; m.px = m.px === k ? null : k; S.render(); }));
+    v.querySelectorAll('[data-ci-pf]').forEach((b) => b.addEventListener('click', () => { const kv = kv2(b.dataset.ciPf); m[kv[0]] = m[kv[0]] === kv[1] ? null : kv[1]; S.render(); }));   /* Version 39.56 */
     v.querySelectorAll('[data-ci-lk]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ciLk; m.lk = m.lk === k ? null : k; S.render(); }));   /* Version 39.46 */
     v.querySelectorAll('[data-ci-md]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.ciMd; m.md = m.md === k ? null : k; S.render(); }));
     v.querySelectorAll('[data-ci-ms]').forEach((b) => b.addEventListener('click', () => { const n = +b.dataset.ciMs; m.ms = m.ms === n ? null : n;   /* Version 39.51 */
@@ -2815,6 +2914,8 @@
       const dd = D(); asked.forEach((a) => { if (pre.indexOf(a.id) >= 0 && m.sel[a.id] === 'd') return; markAction(dd, a, m.sel[a.id]); });   /* what counted already stays as it was counted */
       const x = dd.log[todayISO()] = dd.log[todayISO()] || {}; x.ci = 1; if (m.bar && anyMiss()) x.bar = m.bar; else delete x.bar;
       if (m.slp) x.slp = m.slp; else delete x.slp;   /* Version 39.22: a hard night goes in her diary as Poor sleep */
+      if (pfSureAsk(dd) && m.pfs) x.pfs = m.pfs; if (pfWayAsk(dd) && m.pfw != null) x.pfw = +m.pfw; if (pfCmpAsk(dd) && m.pfc) x.pfc = m.pfc;   /* Version 39.56 */
+      if (pfLead(dd) && ikOf(dd).pft === 'ns' && m.pfwhen && (m.lk === 'some' || m.lk === 'most')) dd.intake = Object.assign({}, ikOf(dd), { pft: m.pfwhen });   /* her answer sets her track */
       if (lkAsk(dd) && m.lk) x.lk = m.lk; if (mdAsk(dd) && m.md) x.md = m.md;   /* Version 39.46 */
       if (m.ms != null && msAsk(dd)) x.ms = m.ms;   /* Version 39.51 */
       if (ptAsk(dd) && m.pt) { const p = m.pt; x.pt = { soak: p.soak || null, night: !!p.w.night, day: !!p.w.day }; if (S.cycle && S.cycle.setFlowToday) S.cycle.setFlowToday({ soak: p.soak || null, clots: p.clots || null, leaked: !!p.w.leak }); }   /* Version 39.55 */
@@ -2826,7 +2927,7 @@
       const p0 = S.joy && S.joy.petals ? S.joy.petals() : 0; const tomL = ciTom(fullD(dd));
       const done = acts.filter((a) => m.sel[a.id] === 'd' || m.sel[a.id] === 'p'); const dl = done.filter((a) => m.sel[a.id] === 'd'); const pool = dl.length ? dl : done;
       const first = pool.length ? pool[(planDay(dd) - 1) % pool.length] : null;   /* Version 39.6 (P2-01): each evening, the reason of another step she did */
-      const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : t('plan_tip_' + b));   /* Version 39.12: her own if-then plan first */
+      const wpl = wpOf(dd); const tipOf = (b) => (wpl && wpl.ifb === b && wpl.ift ? tf('plan_ci_if', { x: ifText(b, wpl.ift) }) : tipT(dd, b));   /* Version 39.12: her own if-then plan first */
       m.saved = { why: first ? first.why : null, line: first ? t(first.why || 'plan_fb_any') : t('plan_ci_none'), a: done.length, n: held(acts.map((a) => Object.assign({}, a, { state: m.sel[a.id] || a.state }))).length, dn: acts.filter((a) => m.sel[a.id] === 'd').length, pn: acts.filter((a) => m.sel[a.id] === 'p').length, w: weekDays(dd, wkNow(dd)), tip: m.bar && m.bar !== 'none' && anyMiss() ? tipOf(m.bar) : '', first: firstCi,
         goal: done.length ? goalLine(dd) : '', str: ciStr(fullD(dd)), tom: tomL,
         slp: m.slp || null, md: mdAsk(dd) ? m.md || null : null, mv: mvAsk(dd) ? m.mv || null : null, side: mvAsk(dd), wind: windPick(dd), windOn: acts.some(windStep) && !(S.calm && S.calm.doneOn(todayISO())),
@@ -2960,6 +3061,7 @@
     if (pk === 'heavy' || perGoalOn(d, 'heavy')) { const h = heavyCompare(d); if (h.b || h.s) out.push('<div class="card"><h3>' + esc(t('plan_res_heavy')) + '</h3>' + cmp(h.b ? esc(tf('plan_prog_pain_n', { a: h.bh, n: h.b })) : (ik.pads ? said(t('plan_pa_' + ik.pads.slice(1))) : '–'), h.s ? esc(tf('plan_prog_pain_n', { a: h.sh, n: h.s })) : '–') + '</div>'); }
     if (perV2(d)) out.push(perWayCards(d));   /* Version 39.55: her evening answers, day by day */
     if (disc()) return out.slice(0, 1).join('');   /* a shared phone: only the days she followed her plan */
+    if (pfLead(d)) out.push.apply(out, pfResults(d));   /* Version 39.56 */
     if (postV2(d)) { const lk = leakCmp(d); if (lk) out.push('<div class="card pl-res-lk"><h3>' + esc(t('plan_res_lk')) + '</h3>' + cmp(esc(lk.a), esc(lk.b), 'plan_prog_first', 'plan_prog_last') + '</div>'); }   /* Version 39.46 */
     if (pk === 'ttc' && S.ttc && S.ttc.prepDone) { const pr = S.ttc.prepDone(); const br = babyD(d) ? resultOf(d, true) : null; if (br && br.only) out.push('<div class="card pl-bres"><h3>' + esc(br.h) + '</h3><p>' + esc(br.only) + '</p></div>');   /* Version 39.32 (packet K1); Version 39.33: her checklist's count only in its own card */
       out.push('<div class="card pl-prep-res"><h3>' + esc(t('plan_res_prep_h')) + '</h3><p>' + esc(tf('plan_res_prep', { a: pr.a, b: pr.b })) + '</p><button type="button" class="btn sm" data-go="ttc-prep">' + esc(t('plan_res_prep_b')) + '</button></div>'); }
@@ -3163,9 +3265,11 @@
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return '';
     const k = cardKind(d); const dd = fullD(d); const acts = actionsFor(dd); const first = acts[0]; const day = planDay(dd); const easy = acts.find((a) => a.id === 'move') || first;   /* Version 39.13: a restart starts with her walk */
     if (postV2(dd) && S.post && S.post.sixSync) S.post.sixSync();   /* Version 39.46: a changed birth date moves her 6-week check */
+    pfSync(d);   /* Version 39.56: her morning set's ring follows her day */
     remWords(dd);   /* Version 39.47: as Today draws, her tablet's reminder follows her weeks, and the evening's its words */
     if (k === 'post2' || k === 'pv2') return postCardHtml(dd, k === 'pv2' ? 'pv2' : postDue(dd));   /* Version 39.46 */
     if (k === 'meno2' || k === 'mpv2') return menoCardHtml(dd, k === 'mpv2' ? 'mpv2' : menoDue(dd));   /* Version 39.51 */
+    if (k === 'pf') return pfCardHtml(dd, pfDue(dd));   /* Version 39.56 */
     if (k === 'per2' || k === 'ppv2') return perCardHtml(dd, k === 'ppv2' ? 'ppv2' : perDue(dd));   /* Version 39.55 */
     if (k === 'pause') return card('pl-sl-pause', t('plan_sl_pause_h'), t('plan_sl_pause_p'), '<button type="button" class="btn sm primary" id="pl-pause-go">' + esc(t('plan_pause')) + '</button><button type="button" class="btn sm" id="pl-pause-not">' + esc(t('plan_rec_not')) + '</button>', true);
     if (k === 'end') return card('pl-sl-end', t(dd.keep ? 'plan_year_h' : 'plan_end_h'), babyD(dd) && !dd.keep ? t('plan_bend_p') : tf('plan_end_p', { n: followedDays(dd), t: (dd.keep ? keepUntil(dd) : planWeeks(dd)) * 7 }), '<button type="button" class="btn sm primary" data-go="plan">' + esc(t('plan_end_b')) + '</button>', true);
@@ -3311,6 +3415,110 @@
   function perLessonRow(dd) {
     const id = perLessonId(dd); const PL = S.perplan && S.perplan.lesson; if (!id || !PL || !PL.has(id) || PL.read(id)) return ''; const pv = disc();
     return '<button type="button" class="item pl-les pl-per-les" data-go="per-lesson" data-per-les="' + id + '"><span class="ico-sm hue hue-plum">' + S.icon('diary') + '</span><span class="body">' + (pv ? '<strong>' + esc(t('plan_m2_les_h')) + '</strong>' : '<span class="small">' + esc(t('plan_m2_les_h')) + '</span><strong>' + esc(PL.title(id)) + '</strong>') + '</span><span class="chev">' + S.I.chev + '</span></button>';
+  }
+  /* Version 39.56 (My pelvic floor plan): one card at a time, a Qura doctor first. Her safety answers that need a doctor first lead
+     until she has seen one; a past operation or pelvic cancer, until her doctor says more is fine; pain, until a doctor has checked
+     it; on the heaviness track, what the doctor said once she has been; "Is it the right squeeze?" in weeks 2 to 4 and whenever
+     she isn't sure; from week 12, "Still leaking or heavy?" with the treatments after exercises and Tele-MANAS. */
+  /* Version 39.56 (the test pass): her report for the doctor: when she leaks and how much it gets in the way, her signs before she
+     started, what the doctor said, her leaks (or heaviness) first and latest, her level and her days of sets */
+  const pfByWk = (d, key) => { const L = []; const s0 = S.fromISO(d.start); for (let w = 1; w <= wkNow(d); w++) { let v = null; for (let i = 0; i < 7; i++) { const x = dayLog(d, S.toISO(S.addDays(s0, (w - 1) * 7 + i)))[key]; if (x != null) v = x; } if (v != null) L.push({ w: w, v: v }); } return L; };
+  function pfSum(dd, lines) {
+    const ik = ikOf(dd); const hv = ik.pft === 'heavy';
+    if (ik.pft) lines.push(t('plan_in_pft') + ' ' + t(ik.pft === 'ns' ? 'plan_dx_ns' : 'plan_pft_' + ik.pft) + (ik.pfway != null ? ' · ' + t('plan_pw_' + ik.pfway) : ''));
+    const fl = (ik.pfflags || []).filter((k) => PFS.indexOf(k) >= 0); if (fl.length) lines.push(t('plan_ps_h') + ': ' + fl.map((k) => t('plan_pfs_' + k)).join('; '));
+    if (dd.pfDoc) lines.push(t('plan_pf_doc_h') + ' ' + t(dd.pfDoc.said === 'pop' ? 'plan_pf_doc_pop' : 'plan_pf_doc_ok'));
+    const L = pfByWk(dd, 'lk'); if (L.length) { const f = L[0], l = L[L.length - 1]; const w = (x) => tf('plan_res_lk_w', { x: t('plan_lk_' + x.v), n: x.w }); lines.push(t(hv ? 'plan_pf_res_hv' : 'plan_res_lk') + ': ' + w(f) + (L.length > 1 ? ' → ' + w(l) : '')); }
+    const lv = pfLevel(dd); lines.push(tf('plan_pf_res_lv_s', { n: lv.n, d: pfDays(dd).filter((x) => x >= dd.start).length }));
+    if (pfRelax(dd)) lines.push(t('plan_pf_pain_h'));
+  }
+  /* the evening's and the look-back's tips, the plan's own (it has no walks) */
+  const tipT = (d, b) => (d && pfLead(d) && b !== 'none' ? t('plan_pf_tip_' + b) : t('plan_tip_' + b));
+  const pfSureLast = (dd) => { let r = null; Object.keys(dd.log || {}).sort().forEach((k) => { const v = (dd.log[k] || {}).pfs; if (v && k >= dd.start) r = { v: v, at: k }; }); return r; };
+  const pfLkLast = (dd) => { let r = null; Object.keys(dd.log || {}).sort().forEach((k) => { const v = (dd.log[k] || {}).lk; if (v && k >= dd.start) r = v; }); return r; };
+  const pfChkTicked = (dd) => Object.keys(dd.log || {}).some((k) => k >= dd.start && (!dd.pfChkNot || k > dd.pfChkNot) && ((dd.log[k] || {}).ck || {}).checked === 'd');
+  function pfDue(dd) {
+    if (!pfLead(dd)) return ''; const fl = pfIk(dd).pfflags || [];
+    if (PFS_DOC.some((k) => fl.indexOf(k) >= 0) && !dd.pfSafeSeen) return 'safe';
+    if (disc()) return '';
+    if (fl.indexOf('mesh') >= 0 && !dd.pfOk && !dd.pfMeshSeen) return 'mesh';
+    if (pfRelax(dd) && !dd.pfPainSeen) return 'pain';
+    if (pfIk(dd).pft === 'heavy' && !dd.pfDoc && pfChkTicked(dd)) return 'doc';
+    const wk = weekNo(dd); const sl = pfSureLast(dd); const unsure = !!sl && sl.v !== 'y';
+    if (!dd.pfRightSeen ? ((wk >= 2 && wk <= 4) || unsure) : (unsure && sl.at > dd.pfRightSeen)) return 'right';
+    if (wk > (pfPop(dd) ? 16 : N) && !dd.pfEndSeen && pfLkLast(dd) !== 'never') return 'end';   /* after a prolapse, the end of her 16 weeks */
+    return '';
+  }
+  function pfCardHtml(dd, k) {
+    const pc = (cls, h, p, btns, warn, ok) => '<div class="card ' + (warn ? 'warn' : 'soft') + ' pl-slot pl-sl-pf ' + cls + '" data-nofold="1"' + (ok ? ' data-disc-ok="1"' : '') + '><h3>' + esc(h) + '</h3>' + p + '<div class="row wrap">' + btns + '</div></div>';
+    const b = (id, key, pri) => '<button type="button" class="btn sm' + (pri ? ' primary' : '') + '" data-pf="' + id + '">' + esc(t(key)) + '</button>';
+    const ask = disc() ? '' : '<button type="button" class="btn sm primary" data-ask="' + esc(packTitle(dd)) + '">' + esc(t('ask_qura')) + '</button>';
+    const P = (key) => '<p class="small">' + esc(t(key)) + '</p>'; const fl = pfIk(dd).pfflags || [];
+    if (k === 'safe') return pc('pl-pf-safe', t('plan_pf_safe_h'), disc() ? P('plan_pf_safe_d') : PFS_DOC.filter((x) => fl.indexOf(x) >= 0).map((x) => P('plan_pfs_' + x + '_w')).join('') + (fl.indexOf('const') >= 0 ? P('plan_pfs_const_g') : ''), ask + b('safe-seen', 'plan_pf_safe_seen'), true, true);
+    if (k === 'mesh') return pc('pl-pf-mesh', t('plan_pf_mesh_h'), P('plan_pfs_mesh_w'), ask + b('mesh-ok', 'plan_pf_mesh_ok') + b('mesh-later', 'plan_got'));
+    if (k === 'pain') return pc('pl-pf-pain', t('plan_pf_pain_h'), P('plan_pf_pain_p'), ask + b('pain-seen', 'plan_got') + b('pain-ok', 'plan_pf_pain_ok'));
+    if (k === 'doc') return pc('pl-pf-doc', t('plan_pf_doc_h'), '', b('doc-pop', 'plan_pf_doc_pop', true) + b('doc-ok', 'plan_pf_doc_ok') + b('doc-not', 'plan_pf_doc_not'));
+    if (k === 'right') return pc('pl-pf-right', t('plan_pf_right_h'), P('plan_pf_right_p') + P('plan_pf_right_g'), ask + b('right-ok', 'plan_got'));
+    if (k === 'end') return pc('pl-pf-end', t('plan_pf_end_h'), P('plan_pf_end_p') + P('plan_pf_low') + telRow(['14416']), ask + (S.routeOwner('intimate-prolapse') ? '<button type="button" class="btn sm" data-go="intimate-prolapse">' + esc(t('plan_pf_tile_g')) + '</button>' : '') + b('end-ok', 'plan_got'));
+    return '';
+  }
+  function wirePf(v) {
+    v.querySelectorAll('[data-pf]').forEach((btn) => btn.addEventListener('click', () => { const k = btn.dataset.pf; const dd = D(); const td = todayISO();
+      if (k === 'safe-seen') dd.pfSafeSeen = td; else if (k === 'mesh-ok') { dd.pfOk = td; S.toast(t('plan_pf_doc_ok_t')); } else if (k === 'mesh-later') dd.pfMeshSeen = td;
+      else if (k === 'pain-seen') dd.pfPainSeen = td; else if (k === 'pain-ok') { dd.pfPainOk = td; dd.pfHurt = 0; dd.pfRelax = null; }
+      else if (k === 'doc-pop' || k === 'doc-ok') { dd.pfDoc = { at: td, said: k === 'doc-pop' ? 'pop' : 'ok' }; S.toast(t(k === 'doc-pop' ? 'plan_pf_doc_pop_t' : 'plan_pf_doc_ok_t')); }
+      else if (k === 'doc-not') dd.pfChkNot = td;
+      else if (k === 'right-ok') dd.pfRightSeen = td; else if (k === 'end-ok') dd.pfEndSeen = td;
+      remSync(dd); S.save(); S.render(); }));
+  }
+  /* "Your plan is ready": what comes when */
+  function pfRvRows(dd) {
+    if (disc()) return ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12'];
+    const hv = pfIk(dd).pft === 'heavy'; const rl = pfRelax(dd); const out = [{ x: t(rl ? 'plan_pf_relax_s' : 'plan_pf_rv_d1') }];
+    if (hv) out.push({ x: t('plan_pf_rv_chk') }); if (!rl) out.push({ x: t('plan_pf_rv_lv') }); if (pfUrge(dd)) out.push({ x: t('plan_pf_rv_urge') });
+    return out.concat([{ x: t('plan_pf_rv_h') }, { x: t('plan_m2_rv_ch') }, { x: t('plan_pf_rv_w4') }, 'plan_rv_w12', { x: t(hv ? 'plan_pf_rv_16' : 'plan_pf_rv_keep') }]);
+  }
+  /* the week's chapter, one row under her steps until she reads it; on a full day of another plan, her sets as that row */
+  const pfLessonId = (dd) => { const wk = weekNo(dd); if (wk < 1) return null; if (wk <= N) return 'f' + wk; return pfPop(dd) && wk <= 16 ? 'v' + (wk - N) : null; };
+  function pfLessonRow(dd) {
+    const id = pfLessonId(dd); const PL = S.pfplan && S.pfplan.lesson; if (!id || !PL || !PL.has(id) || PL.read(id)) return ''; const pv = disc();
+    return '<button type="button" class="item pl-les pl-pf-les" data-go="pf-lesson" data-pf-les="' + id + '"><span class="ico-sm hue hue-plum">' + S.icon('diary') + '</span><span class="body">' + (pv ? '<strong>' + esc(t('plan_m2_les_h')) + '</strong>' : '<span class="small">' + esc(t('plan_m2_les_h')) + '</span><strong>' + esc(PL.title(id)) + '</strong>') + '</span><span class="chev">' + S.I.chev + '</span></button>';
+  }
+  const pfJoined = (dd) => !pfLead(dd) && pfGoal() && !!packOf(dd) && !pausedFor(dd) && specFlat(dd, todayISO()).some((x) => x.use === 'pelvic.sets');
+  function pfJoinRow(dd) {
+    if (!pfJoined(dd) || actionsFor(dd).some((a) => a.id === 'sets')) return ''; const td = todayISO(); const n = pfSetsOn(td); const m = pfTarget(dd, td); if (n >= m) return '';
+    return '<button type="button" class="item pl-les pl-pf-join" data-go="post-pelvic"><span class="ico-sm hue hue-plum">' + S.icon('flower') + '</span><span class="body"><strong>' + esc(t(pfShared() ? 'plan_pf_sets_d' : 'plan_pf_sets')) + '</strong><span class="small">' + esc(tf('plan_pf_sets_n', { n: n, m: m })) + '</span></span><span class="chev">' + S.I.chev + '</span></button>';
+  }
+  /* her results: leaks (or heaviness) by week, first and latest; how much it gets in the way, at the start and latest; sure of the
+     squeeze, first and latest; her level and the days she did her sets */
+  function pfResults(d) {
+    const out = []; const ik = ikOf(d); const hv = ik.pft === 'heavy'; const lv = pfLevel(d); const nd = pfDays(d).filter((x) => x >= d.start).length;
+    const lvCard = '<div class="card pl-res-pflv"><h3>' + esc(t('plan_pf_res_lv')) + '</h3><p class="small">' + esc(tf('plan_pf_res_lv_s', { n: lv.n, d: nd })) + '</p></div>';
+    if (disc()) return [lvCard];
+    const byWk = (key) => { const L = []; const s0 = S.fromISO(d.start); for (let w = 1; w <= wkNow(d); w++) { let v = null; for (let i = 0; i < 7; i++) { const x = dayLog(d, S.toISO(S.addDays(s0, (w - 1) * 7 + i)))[key]; if (x != null) v = x; } if (v != null) L.push({ w: w, v: v }); } return L; };
+    const pair = (cls, h, L, nm, a0) => { const f = L[0], l = L[L.length - 1]; const a = a0 != null ? a0 : (f ? tf('plan_res_lk_w', { x: nm(f.v), n: f.w }) : '–'); const z = l && (a0 != null || L.length > 1) ? tf('plan_res_lk_w', { x: nm(l.v), n: l.w }) : '…';
+      out.push('<div class="card ' + cls + '"><h3>' + esc(t(h)) + '</h3>' + cmp(esc(a), esc(z), 'plan_prog_first', 'plan_prog_last') + '</div>'); };
+    const lk = byWk('lk'); if (lk.length) pair('pl-res-lk', hv ? 'plan_pf_res_hv' : 'plan_res_lk', lk, (v) => t('plan_lk_' + v));
+    const wy = byWk('pfw'); if (ik.pfway != null || wy.length) pair('pl-res-pfw', 'plan_pf_res_way', wy, (v) => t('plan_pw_' + v), ik.pfway != null ? t('plan_pw_' + ik.pfway) : null);
+    const su = byWk('pfs'); if (su.length) pair('pl-res-pfs', 'plan_pf_res_sure', su, (v) => t(v === 'y' ? 'plan_yes' : (v === 'n' ? 'plan_no' : 'plan_dx_ns')));
+    out.push(lvCard); return out;
+  }
+  /* one new ring, her morning set (the 3-a-day dose); her bedtime set is named on the evening ring. Off in Me stays off. */
+  const PF_AT = '08:00';
+  const PF_REM = L('Your first set today. More after lunch and before bed.', 'आज का पहला सेट। और दोपहर के खाने के बाद और सोने से पहले।');
+  function pfSync(d, loud) {
+    try {
+      if (!d || !S.reminders) return; const r = S.reminders.get('plan-pf'); const td = todayISO();
+      const up = !!(d.start && d.start > td && d.go !== false && (d.pack || 'cycle') === 'pelvic');   /* the test pass: a plan that starts tomorrow rings from its first day */
+      const ok = pfLead(d) && planOn() && d.pfRing !== false && (up || (!!packOf(d) && !pausedFor(d) && !selfPaused(d) && !finished(fullD(d)) && d.start <= td));
+      if (!ok) { if (r) { if (d.pfRing !== false) d.pfHeld = true; S.reminders.remove('plan-pf'); } return; }
+      if (!r && !loud && !d.pfHeld && d.pfMade) { d.pfRing = false; S.saveQuiet(); return; }   /* she deleted it in Reminders: it stays off */
+      delete d.pfHeld;
+      const done = pfSetsOn(td) > 0 || ((dayLog(d, td).ck || {}).sets === 'd');
+      const w = { id: 'plan-pf', mod: 'plan', title: PF_REM, start: up ? d.start : (r && r.start && r.start <= td ? r.start : td), until: remEnd(d), every: 1, time: (r && r.time) || d.pfAt || PF_AT, doneOn: done && !up ? td : null };
+      if (r && r.time === w.time && r.start === w.start && (r.until || null) === (w.until || null) && (r.doneOn || null) === w.doneOn && (r.title || {}).en === w.title.en) return;
+      S.reminders.upsert(r ? w : Object.assign({ on: true }, w), loud ? undefined : { quiet: true }); d.pfMade = true;
+    } catch (e) { /* no reminders in this build */ }
   }
   const ppv2Offer = (dd) => ['pain', 'heavy', 'pms'].indexOf(dd.pack || '') >= 0 && !perV2(dd) && !dd.ppv2No && !disc() && !!specOf(dd.pack, 2);
   const perStarts = (dd) => (S.state.events || []).filter((e) => e.t === 'start' && dd.start && e.d >= dd.start).length;
@@ -3478,13 +3686,14 @@
   }
   function cardKind(d) {
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return ''; const dd = fullD(d); const day = planDay(dd); const pr = S.state.prompts || {};
-    if (finished(dd)) return (dd.keep ? dd.yearSeen : dd.endSeen) ? '' : 'end';   /* review RESULTS-07: her year's end shows once too */
+    if (finished(dd)) return (dd.keep ? dd.yearSeen : dd.endSeen) ? (pfLead(dd) && pfDue(dd) === 'end' ? 'pf' : '') : 'end';   /* Version 39.56: then "Still leaking or heavy?" */   /* review RESULTS-07: her year's end shows once too */
     if (postV2(dd) && postDue(dd)) return 'post2';   /* Version 39.46: one after-birth card at a time, before every other card */
     if (pv2Offer(dd)) return 'pv2';   /* Version 39.46: version 1 is offered version 2, once */
     if (menoV2(dd) && menoDue(dd)) return 'meno2';   /* Version 39.51: one midlife card at a time */
     if (mpv2Offer(dd)) return 'mpv2';   /* Version 39.51: version 1 is offered version 2, once */
     if (perV2(dd) && perDue(dd)) return 'per2';   /* Version 39.55: one period-plan card at a time */
-    if (ppv2Offer(dd)) return 'ppv2';   /* Version 39.55: version 1 is offered version 2, once */
+    if (ppv2Offer(dd)) return 'ppv2';
+    if (pfLead(dd) && pfDue(dd)) return 'pf';   /* Version 39.56: one pelvic-floor card at a time */   /* Version 39.55: version 1 is offered version 2, once */
     if (babyD(dd) && !disc() && posDue(dd)) return 'pos';   /* Version 39.32 (packet J3): a positive test she saved, once */
     if (pregV2(dd) && psafeDue(dd) && (psafeDue(dd) === 'now' || !aside('pl-sl-psafe'))) return 'psafe';   /* Version 39.47: a sign that doesn't wait always leads */   /* Version 39.34: her safety answers again (the day after a sign that doesn't wait; at 14 and 28 weeks) */
     if (day === 1 && actionsFor(dd).length && !ciDone(dd)) return babyD(dd) && !disc() && docCase(dd) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) ? 'doc' : 'd1';   /* Version 39.32: her doctor card from day 1 (the mockup's Today) */
@@ -3504,7 +3713,7 @@
   }
   function afterHomePlan(v) {
     wirePostCard(v);   /* Version 39.46 */
-    wireMeno(v); wirePer(v);   /* Version 39.51; 39.55 */
+    wireMeno(v); wirePer(v); wirePf(v);   /* Version 39.51; 39.55; 39.56 */
     if (v.querySelector('.pl-sl-rev')) wireReview(v);
     const ro = v.querySelector('#pl-rev-open'); if (ro) ro.addEventListener('click', () => { S.mem.planRevOpen = todayISO() + ':' + (weekNo(D()) - 1); S.render(); });   /* Version 39.14 */
     const dy = v.querySelector('#pl-doc-yes'); if (dy) dy.addEventListener('click', () => { const dd = D(); dd.doc = 'done'; dd.docAt = todayISO(); if (S.explain && S.explain.seenIds) S.explain.seenIds(SEEN_IDS[packOf(dd)] || []); S.saveQuiet(); S.render(); });
@@ -3575,7 +3784,7 @@
     return tf(s.tom ? 'plan_th_str_tom' : 'plan_th_str', { d: weekdayOf(s.iso), a: s.a, t: s.t });
   }
   const ciStr = (d) => { const s = strNext(d); if (!s) return ''; return tf('plan_ci_str', { a: s.a, t: s.t }) + (s.a < s.t && s.iso ? ' · ' + tf('plan_ci_str_nx', { d: s.tom ? t('plan_when_tom') : weekdayOf(s.iso) }) : ''); };
-  const ciTom = (d) => { if (packOf(d) !== 'cycle') return menoV2(d) || perV2(d) ? m2Tom(d) : '';   /* Version 39.55 (the phone test): her period's days change tomorrow's steps */ const tn = S.toISO(S.addDays(pToday(), 1)); const last = d.keep ? keepUntil(d) : planWeeks(d); if (last && weekAt(d, tn) > last) return '';
+  const ciTom = (d) => { if (packOf(d) !== 'cycle') return menoV2(d) || perV2(d) || pfLead(d) ? m2Tom(d) : '';   /* Version 39.55 (the phone test): her period's days change tomorrow's steps */ const tn = S.toISO(S.addDays(pToday(), 1)); const last = d.keep ? keepUntil(d) : planWeeks(d); if (last && weekAt(d, tn) > last) return '';
     const tp = todayPlan(d, tn); return tf('plan_ci_tomr', { r: rName(tp.routine), n: routineMins(tp.routine, d) }); };
   /* her goal: what a check-in is a step towards (new health lines: wording review section 19.12) */
   const CG = ['irregular', 'pmos', 'skin', 'weight', 'ready', 'pain', 'heavy', 'pms', 'food', 'nausea', 'iron', 'sleep', 'mood', 'recovery', 'pelvic', 'feed', 'hot', 'bones', 'aches'];
@@ -3662,6 +3871,7 @@
       if (d.nudge !== false && d.when && NUDGE_AT[d.when] && movesOn(d)) xs.push([NUDGE_AT[d.when], tf(AFTER_MEAL.indexOf(d.when) >= 0 ? 'plan_st_r_walk' : 'plan_st_r_move', { t: timeOf(NUDGE_AT[d.when]) })]);
       const pw = d.wind === false ? null : windSoon(d);   /* Version 39.45: and the one her bedtime brings later */
       if (pw && pw.at && !windNear(d, pw.at)) xs.push([pw.at, pw.n > 1 ? tf('plan_st_r_wind_n', { t: timeOf(pw.at), n: pw.n }) : tf('plan_st_r_wind', { t: timeOf(pw.at) })]);
+      if (pfLead(d) && d.pfRing !== false) { const pr = S.reminders.get('plan-pf'); const at = (pr && pr.time) || d.pfAt || PF_AT; if (!pr || pr.on !== false) xs.push([at, tf('plan_st_r_pf', { t: timeOf(at) })]); }   /* Version 39.56: her morning set */
     } catch (e) { /* the check-in alone */ }
     const ord = (hm) => { const m = hmMin(hm); return m < 4 * 60 ? m + 24 * 60 : m; };
     const l = xs.sort((a, b) => ord(a[0]) - ord(b[0])).map((x) => x[1]); if (al.period && al.period() && !disc()) l.push(t('plan_st_r_per'));   /* discreet: no health words */
@@ -3760,7 +3970,7 @@
   const mcQs = (d) => ['e', 's', 'm'].concat(packOf(d) === 'cycle' && (['pmos', 'skin'].indexOf(d.goalKey) >= 0 || !!(S.state.situation || {}).pcos) ? ['sk'] : []);
   const mcK = (d) => { const wk = weekNo(d); return wk >= 13 ? 3 : (wk >= 9 ? 2 : (wk >= 5 ? 1 : 0)); };
   const mcDue = (d) => {
-    if (!d || !planOn() || !packOf(d) || pausedFor(d) || selfPaused(d) || planWeeks(d) !== N || careTime(d) || disc() || pregnant() || babyD(d)) return 0;   /* Version 39.32: Getting ready has its ready check instead */
+    if (!d || !planOn() || !packOf(d) || pausedFor(d) || selfPaused(d) || planWeeks(d) !== N || careTime(d) || disc() || pregnant() || babyD(d) || pfLead(d)) return 0;   /* Version 39.32: Getting ready has its ready check instead; Version 39.56: the pelvic floor plan's is in its check-in */
     const k = mcK(d); if (!k || (d.mcheck || {})[k]) return 0; if (k < 3 && weekNo(d) > k * 4 + 2) return 0; if (k === 3 && d.keep && weekNo(d) > N + 4) return 0;
     if (d.mcNot && S.diffDays(S.fromISO(d.mcNot), pToday()) < 3) return 0; return k;
   };
@@ -3966,6 +4176,18 @@
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
+    /* Version 39.56: My pelvic floor plan, for the trainer (mods/post.js) and its chapters (mods/pfplan.js) */
+    pelvic: { on: () => { const d = raw(); return !!(planOn() && d && packOf(d) && !pausedFor(d) && (pfLead(d) || pfJoined(fullD(d)))); },
+      level: () => { const d = raw(); return d ? pfLevel(fullD(d)) : null; }, target: () => { const d = raw(); return d ? pfTarget(fullD(d), todayISO()) : 3; },
+      relax: () => { const d = raw(); return !!d && pfRelax(d); }, period: () => periodToday(todayISO()),
+      joinSafe: () => { const d = raw(); return !!(d && !pfLead(d) && !d.pfSafeAt); }, joinSafeOk: () => { const d = D(); d.pfSafeAt = todayISO(); S.save(); },   /* the test pass: her joined sets' safety signs, once */
+      signs: () => PFS.slice(),
+      knack: () => { const d = raw(); if (!d || !d.start || disc()) return false; const k = pfIk(d).pft; return weekNo(fullD(d)) >= 2 && k !== 'heavy' && k !== 'urge'; },
+      lesson: () => { const d = raw(); return d && pfLead(d) && packOf(d) ? pfLessonId(fullD(d)) : null; }, habitCh: () => { const d = raw(); const h = d && pfLead(d) && packOf(d) ? pfHabit(fullD(d), todayISO()) : null; return (h && PF_HCH[h]) || null; }, track: () => { const d = raw(); return d && pfLead(d) ? pfIk(d).pft || 'ns' : null; },
+      urge: () => { const d = raw(); return !!d && pfUrge(d); }, week: () => { const d = raw(); return d && d.start ? weekNo(fullD(d)) : 0; },
+      painOk: () => { const d = D(); d.pfPainOk = todayISO(); d.pfHurt = 0; d.pfRelax = null; S.save(); },   /* Version 39.56 (the test pass): a doctor checked the pain */
+      hurt: () => { const d = D(); d.pfHurt = (d.pfHurt || 0) + 1; if (d.pfHurt >= 2 && !pfRelax(d)) { d.pfRelax = todayISO(); d.pfPainOk = null; d.pfPainSeen = null; } S.save(); return d.pfHurt; },
+      sync: () => { const d = raw(); if (d && d.start) { pfSync(d); remSync(d); } } },
     poi: () => poiHold(),
     period: { kitToday: () => { const d = raw(); return !!(planOn() && d && perV2(d) && packOf(d) && !pausedFor(d) && actionsFor(fullD(d)).some((a) => a.id === 'kitready')); },   /* the test pass: core's heads-up card steps aside */
       lesson: () => { const d = raw(); return d && perV2(d) && packOf(d) ? perLessonId(fullD(d)) : null; }, on: () => { const d = raw(); return !!(planOn() && d && perV2(d) && packOf(d) && !pausedFor(d)); } },   /* Version 39.55: for mods/perplan.js */   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, her doctor first (core's goals card waits) */
@@ -4282,7 +4504,7 @@
         plan_lk_h: 'This week: any leaks?', plan_lk_never: 'Never', plan_lk_some: 'Sometimes', plan_lk_most: 'Most days', plan_md_h: 'How are you in yourself this week?', plan_md_low: 'Low or worried most days for 2 weeks or more? Talk to your doctor this week, or call Tele-MANAS 14416, free.',
         plan_rv_p14: 'From day 14: a short walk, 3 days a week', plan_rv_p42: 'Around day 42: your own check, then back to strong', plan_rv_p84: 'From week 12: is your body ready for more?', plan_rv_p365: 'To your baby’s first birthday', plan_rv_p365b: 'To a year after the birth', plan_rv_d2p: 'At {t}, your recovery check: 1 minute, with the signs that can’t wait.', plan_st_r_six: 'your 6-week check on {d}',
         plan_pq_h: 'Your year, in 5 parts', plan_pq_1: 'Rest and heal · days 0 to 13', plan_pq_1p: 'Your evening check, gentle squeezes, rest', plan_pq_2: 'Settle · days 14 to 41', plan_pq_2p: 'Short walks, choosing a method, your 6-week check', plan_pq_3: 'Back to strong · weeks 7 to 18', plan_pq_3p: 'After your 6-week check: more walking, gentle moves, then strength', plan_pq_4: 'Keep going · to 6 months', plan_pq_4p: 'Your steps carry on. Periods can come back any time.', plan_pq_5: 'Your first year · to {d}', plan_pq_5p: 'Your steps, and a look back at your year',
-        plan_rh_day_rc: '{n} steps, recovery check {t}', plan_th_rc_at: 'Recovery check at {t}', plan_p2_un_hd: 'Ready for a little more?', plan_p2_un_pd: 'Start when your doctor says so, or when you feel ready.', plan_rv_len_p: 'To your baby’s first birthday · a few minutes a day', plan_rv_len_pb: 'A year after the birth · a few minutes a day', plan_st_at_pp: 'Each evening, 1 minute: your recovery check, to day 41.', plan_st_r_rc: 'your {t} recovery check', plan_p2_six_wait: 'Back to strong opens on {d}.', plan_rh_p42: 'Around day 42', plan_rh_p42_s: 'Your own check, then back to strong', plan_rh_p84: 'From week 12', plan_rh_p84_s: 'Is your body ready for more?', plan_res_lk: 'Leaks', plan_res_lk_w: '{x} · week {n}', plan_st_r_per: 'a note the day before your period', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
+        plan_rh_day_rc: '{n} steps, recovery check {t}', plan_th_rc_at: 'Recovery check at {t}', plan_p2_un_hd: 'Ready for a little more?', plan_p2_un_pd: 'Start when your doctor says so, or when you feel ready.', plan_rv_len_p: 'To your baby’s first birthday · a few minutes a day', plan_rv_len_pb: 'A year after the birth · a few minutes a day', plan_st_at_pp: 'Each evening, 1 minute: your recovery check, to day 41.', plan_st_r_rc: 'your {t} recovery check', plan_p2_six_wait: 'Back to strong opens on {d}.', plan_rh_p42: 'Around day 42', plan_rh_p42_s: 'Your own check, then back to strong', plan_rh_p84: 'From week 12', plan_rh_p84_s: 'Is your body ready for more?', plan_res_lk: 'Leaks', plan_res_lk_w: '{x} · week {n}', plan_st_r_per: 'a note the day before your period', plan_st_r_pf: 'your {t} first set', plan_pf_pi_d13: 'Days 1 to 3: {x}', plan_pf_pi_soon: 'In your first weeks: {x}', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
         plan_in_now_p: 'So Sakhi knows where you’re starting, and can show you what changes.', plan_in_sum_h: 'Here’s what you told Sakhi', plan_in_sum_p: 'Check it, then Sakhi makes your plan.',
         plan_in_sum_goal: 'What you want to work on', plan_in_sum_now: 'Now', plan_in_sum_when: 'Your time to move', plan_in_make: 'Make my plan',
         plan_ci_first: 'This takes a minute. Your answers stay on this phone.', plan_ci_tom: 'Tomorrow: the same steps. See you at {t}.', plan_ci_see: 'See you tomorrow at {t}.',
@@ -4290,6 +4512,44 @@
         /* Version 37.2: a companion that notices (docs/ux-gaps-2026-10-24.md; wording-review section 15) */
         plan_cnt_dp: '{d} done, {p} partly today', plan_ci_week: '{w} of 7 days this week',
         plan_per: 'Your period came after {n} days. Sakhi noted it for your results.', plan_per_ab: 'Your period came about {n} days after the last one. Sakhi noted it for your results.', plan_per0: 'Your period is noted. Sakhi keeps it for your results.', plan_per_pain: 'Your cramps routine is on Today on your period days.', plan_per_q: 'Your period came after {n} days.', plan_per_ab_q: 'Your period came about {n} days after the last one.', plan_per0_q: 'Your period is noted.', plan_pain_q: 'Pain today?',
+        plan_pk_pelvic: 'My pelvic floor plan',   /* Version 39.56 */
+        plan_pf_sets: 'Your squeeze sets', plan_pf_sets_d: 'Your 2 minutes', plan_pf_sets_s: '{n} of {m} today · {l}', plan_pf_sets_n: '{n} of {m} today', plan_pf_lv: 'level {n}, {p}',
+        plan_pf_pos_lie: 'lying down', plan_pf_pos_sit: 'sitting', plan_pf_pos_stand: 'standing', plan_pf_pos_walk: 'standing or walking', plan_pf_pd: 'One set is enough on a period day, lying down if you like.',
+        plan_pf_relax: 'Breathe and let go, a few minutes', plan_pf_relax_s: 'In place of squeezes, until a doctor has checked the pain',
+        plan_pf_find: 'Find the right muscles', plan_pf_find_s: 'Lying down: squeeze as if to stop wind and urine, lift, then let go fully', plan_pf_find_n: 'Your sets are {p} now: find the squeeze that way first, then start',
+        plan_pf_chk: 'Get checked once by a doctor', plan_pf_chk_s: 'A doctor names the cause, not the app. Until then, your sets stay lying down.',
+        plan_pf_urge: 'When the urge comes: stop, squeeze, breathe', plan_pf_urge_s1: 'Stand still, squeeze a few times, breathe out slowly, then walk calmly', plan_pf_urge_s2: 'Then wait a few minutes more before you go, a little longer each week',
+        plan_pf_h1: 'Squeeze before you cough, sneeze or lift', plan_pf_h1_s: 'The knack. It can stop a leak as it starts.', plan_pf_h2: 'Water through the day', plan_pf_h2_s: 'A little at a time, about 6 to 8 glasses. Too little makes the bladder more urgent.',
+        plan_pf_h3: 'On the toilet: knees up, breathe out', plan_pf_h3_s: 'Feet on a low stool, lean forward, and don’t push hard', plan_pf_h3u: 'Less tea, coffee and cola, for 2 weeks', plan_pf_h3u_s: 'Then see if the urge is calmer. Keep drinking water.',
+        plan_pf_h4: 'Lift the safe way', plan_pf_h4_s: 'Squeeze first, breathe out as you lift, and keep it close to you', plan_pf_h5: 'One set standing, at a task', plan_pf_h5_s: 'While you cook, wash or wait: squeeze and hold, the way you learned',
+        plan_fb_pfl: 'Squeezing your pelvic floor every day, the right way, makes the muscles stronger. It takes about 3 months.', plan_fb_pf_find: 'Finding the right muscles first makes every set count.',
+        plan_fb_pf_chk: 'Heaviness can have more than one cause. A doctor’s check tells you which, and which exercises are safe.', plan_fb_pf_urge: 'Calming the urge and stretching the time between toilet visits trains the bladder. It takes a few weeks.',
+        plan_fb_pf_habit: 'Small changes in your day take strain off your pelvic floor.', plan_fb_pf_relax: 'Pain when you squeeze can mean the muscles are too tight. Breathing and letting go comes first.',
+        plan_in_pf_h: 'About the leaks or heaviness', plan_in_pft: 'When do you leak?', plan_pft_stress: 'With a cough, sneeze, laugh or lift', plan_pft_urge: 'With a sudden strong need, before I reach the toilet', plan_pft_both: 'Both', plan_pft_heavy: 'I feel heaviness or a bulge down below',
+        plan_in_pfway: 'How much does it get in the way of your day?', plan_pw_0: 'Not at all', plan_pw_1: 'A little', plan_pw_2: 'Quite a lot', plan_pw_3: 'A lot',
+        plan_pfs_p: 'Tick any that are true for you. Some need a doctor before exercises. Nothing has to be answered.', plan_pfs_join_p: 'See a doctor first if any of these is true for you.', plan_pfs_none_b: 'None of these', plan_pfs_none: 'None of these? Tap Continue.',
+        plan_pfs_retain: 'I can’t pass urine, or it dribbles all the time', plan_pfs_retain_w: 'See a doctor today. Exercises don’t treat this.',
+        plan_pfs_const: 'Leaking all the time, day and night, after a long labour or an operation', plan_pfs_const_w: 'See a doctor this week. This can be repaired, and it shouldn’t wait 3 months of exercises.', plan_pfs_const_g: 'The repair is free at government hospitals.',
+        plan_pfs_uti: 'Burning, fever, or blood in the urine', plan_pfs_uti_w: 'See a doctor. This is usually an infection, not a weak pelvic floor.',
+        plan_pfs_bulge: 'A bulge that stays outside', plan_pfs_bulge_w: 'See a doctor today. If it is very painful or bleeding, go now.', plan_pfs_bowel: 'Wind or stool I can’t hold', plan_pfs_bowel_w: 'See a doctor this week.',
+        plan_pfs_pain: 'Pain when I squeeze, or pain with sex', plan_pfs_pain_w: 'Your plan starts with breathing and letting go instead of squeezes. See a doctor about the pain.',
+        plan_pfs_mesh: 'A past operation for leaks or prolapse, or cancer treatment in the pelvis', plan_pfs_mesh_w: 'Show this plan to your doctor first. Your sets stay lying down until your doctor or physiotherapist says more is fine.',
+        plan_lk_hv: 'This week: any heaviness?', plan_pf_sure: 'Are you sure you’re squeezing the right way?', plan_pf_sure_line: 'A Qura doctor or a physiotherapist can check it with you.', plan_pf_when: 'When did it happen?',
+        plan_pf_cmp: 'Compared with when you started?', plan_pf_cmp_b: 'Better', plan_pf_cmp_s: 'The same', plan_pf_cmp_w: 'Worse',
+        plan_pf_safe_h: 'See a doctor first', plan_pf_safe_d: 'Your answers before you started need a doctor first.', plan_pf_safe_seen: 'I’ve seen a doctor',
+        plan_pf_right_h: 'Is it the right squeeze?', plan_pf_right_p: 'A Qura doctor can talk it through on a free call. Your own doctor or a women’s health physiotherapist can check it in person.', plan_pf_right_g: 'A government hospital’s gynae OPD can check it too, at little or no cost.',
+        plan_pf_doc_h: 'What did the doctor say?', plan_pf_doc_pop: 'A prolapse, and exercises can help', plan_pf_doc_ok: 'I can exercise', plan_pf_doc_not: 'Not checked yet',
+        plan_pf_doc_pop_t: 'Your sets now move on to sitting and standing as they unlock. Keep 3 sets a day to week 16.', plan_pf_doc_ok_t: 'Your sets now move on as they unlock.',
+        plan_pf_mesh_h: 'Show this plan to your doctor first', plan_pf_mesh_ok: 'My doctor said more is fine', plan_pf_pain_h: 'Pain during your sets', plan_pf_pain_p: 'Your sets are now breathing and letting go. See a doctor about the pain: a Qura doctor first, or your own.', plan_pf_pain_ok: 'A doctor checked it: back to squeezes',
+        plan_pf_end_h: 'Still leaking or heavy?', plan_pf_end_p: 'A doctor can treat this. After exercises there are more treatments: a ring pessary, medicines for an urgent bladder, and an operation. Your doctor decides with you.', plan_pf_low: 'Feeling low or alone because of this? Tele-MANAS 14416 is free.',
+        plan_pf_rv_d1: 'Days 1 to 3: find the right muscles. Your sets start lying down.', plan_pf_rv_lv: 'After every 5 days of sets, a new level: longer holds, then sitting and standing.', plan_pf_rv_urge: 'From day 4: when the urge comes, stop, squeeze, breathe.',
+        plan_pf_rv_chk: 'Get checked once by a doctor. Until then, your sets stay lying down.', plan_pf_rv_h: 'From week 2: one small habit, a new one every 2 weeks.', plan_pf_rv_w4: 'Weeks 1, 4 and 12: are you sure it’s the right squeeze? A Qura doctor can help.',
+        plan_pf_rv_16: 'If a doctor finds a prolapse: 3 sets a day to week 16, then keep strong.', plan_pf_rv_join: 'Every day: your squeeze sets, 3 a day', plan_pf_rv_keep: 'After 12 weeks: keep strong with one set a day.',
+        plan_pf_res_lv: 'Your level', plan_pf_res_lv_s: 'Level {n} of 8 · sets on {d} days', plan_pf_res_way: 'Gets in the way of your day', plan_pf_res_sure: 'Sure of the squeeze', plan_pf_res_hv: 'Heaviness',
+        plan_pf_tile: 'Squeeze sets', plan_pf_tile_ch: 'Chapters', plan_pf_tile_g: 'Leaks and heaviness',
+        plan_pf_tip_time: 'A set takes a few minutes. Do one while the tea boils, or in bed before you sleep.', plan_pf_tip_tired: 'On a tired day, do your sets lying down. They still count.',
+        plan_pf_tip_pain: 'If a squeeze hurts, stop and tap “It hurts” in your sets. A doctor should check the pain.', plan_pf_tip_family: 'No one can see a squeeze: do a set sitting with your family, or at a task.',
+        plan_pf_tip_out: 'Your sets need no space: lying down, sitting or standing, at home.',
         plan_pk_period: 'My period plan',   /* Version 39.55 */
         plan_a_kit: 'Your period kit', plan_a_kit_s: 'Warmth, the cramps routine and a rest position', plan_a_kitready: 'Get your kit ready', plan_a_kitready_s: 'Your period is likely soon: a hot water bag, pads or cloth, and a quiet place to rest',
         plan_a_restday: 'Rest today, or walk 10 minutes', plan_a_restday_s: 'Your choice on a period day. Either one counts.', plan_a_pdiary: 'Your pain diary for your doctor', plan_a_pdiary_s: 'A minute a week, to take to your doctor',
@@ -4652,13 +4912,51 @@
         plan_lk_h: 'इस हफ़्ते: कोई लीक?', plan_lk_never: 'कभी नहीं', plan_lk_some: 'कभी-कभी', plan_lk_most: 'ज़्यादातर दिन', plan_md_h: 'इस हफ़्ते आप अंदर से कैसी हैं?', plan_md_low: '2 हफ़्ते या उससे ज़्यादा से ज़्यादातर दिन उदास या चिंतित? इस हफ़्ते डॉक्टर से बात करें, या Tele-MANAS 14416 पर मुफ़्त कॉल करें।',
         plan_rv_p14: '14वें दिन से: हफ़्ते में 3 दिन थोड़ी सैर', plan_rv_p42: 'लगभग 42वें दिन: आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rv_p84: '12वें हफ़्ते से: क्या शरीर और के लिए तैयार है?', plan_rv_p365: 'बच्चे के पहले जन्मदिन तक', plan_rv_p365b: 'डिलीवरी के एक साल तक', plan_rv_d2p: '{t} आपकी रिकवरी जाँच: 1 मिनट, उन संकेतों के साथ जिनमें देर नहीं करनी।', plan_st_r_six: '{d} को आपकी 6 हफ़्ते की जाँच',
         plan_pq_h: 'आपका साल, 5 हिस्सों में', plan_pq_1: 'आराम और ठीक होना · दिन 0 से 13', plan_pq_1p: 'शाम की जाँच, हल्के कसाव, आराम', plan_pq_2: 'संभलना · दिन 14 से 41', plan_pq_2p: 'थोड़ी सैर, गर्भनिरोध चुनना, 6 हफ़्ते की जाँच', plan_pq_3: 'दोबारा मज़बूती · हफ़्ते 7 से 18', plan_pq_3p: '6 हफ़्ते की जाँच के बाद: ज़्यादा सैर, हल्के व्यायाम, फिर ताक़त वाले', plan_pq_4: 'जारी रखें · 6 महीने तक', plan_pq_4p: 'आपके क़दम जारी रहेंगे। पीरियड कभी भी लौट सकते हैं।', plan_pq_5: 'पहला साल · {d} तक', plan_pq_5p: 'आपके क़दम, और साल पर एक नज़र',
-        plan_rh_day_rc: '{n} क़दम, रिकवरी जाँच {t}', plan_th_rc_at: 'रिकवरी जाँच {t}', plan_p2_un_hd: 'थोड़ा और करने को तैयार?', plan_p2_un_pd: 'डॉक्टर के कहने पर, या जब आप तैयार महसूस करें, तब शुरू करें।', plan_rv_len_p: 'बच्चे के पहले जन्मदिन तक · रोज़ कुछ मिनट', plan_rv_len_pb: 'डिलीवरी के एक साल तक · रोज़ कुछ मिनट', plan_st_at_pp: 'हर शाम, 1 मिनट: आपकी रिकवरी जाँच, 41वें दिन तक।', plan_st_r_rc: '{t} की रिकवरी जाँच', plan_p2_six_wait: '{d} से दोबारा मज़बूती शुरू होगी।', plan_rh_p42: 'लगभग 42वें दिन', plan_rh_p42_s: 'आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rh_p84: '12वें हफ़्ते से', plan_rh_p84_s: 'क्या शरीर और के लिए तैयार है?', plan_res_lk: 'लीक', plan_res_lk_w: '{x} · हफ़्ता {n}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
+        plan_rh_day_rc: '{n} क़दम, रिकवरी जाँच {t}', plan_th_rc_at: 'रिकवरी जाँच {t}', plan_p2_un_hd: 'थोड़ा और करने को तैयार?', plan_p2_un_pd: 'डॉक्टर के कहने पर, या जब आप तैयार महसूस करें, तब शुरू करें।', plan_rv_len_p: 'बच्चे के पहले जन्मदिन तक · रोज़ कुछ मिनट', plan_rv_len_pb: 'डिलीवरी के एक साल तक · रोज़ कुछ मिनट', plan_st_at_pp: 'हर शाम, 1 मिनट: आपकी रिकवरी जाँच, 41वें दिन तक।', plan_st_r_rc: '{t} की रिकवरी जाँच', plan_p2_six_wait: '{d} से दोबारा मज़बूती शुरू होगी।', plan_rh_p42: 'लगभग 42वें दिन', plan_rh_p42_s: 'आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rh_p84: '12वें हफ़्ते से', plan_rh_p84_s: 'क्या शरीर और के लिए तैयार है?', plan_res_lk: 'लीक', plan_res_lk_w: '{x} · हफ़्ता {n}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_st_r_pf: '{t} का पहला सेट', plan_pf_pi_d13: 'दिन 1 से 3: {x}', plan_pf_pi_soon: 'पहले हफ़्तों में: {x}', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
         plan_in_now_p: 'ताकि Sakhi जाने कि आप कहाँ से शुरू कर रही हैं, और आपको दिखा सके कि क्या बदला।', plan_in_sum_h: 'आपने Sakhi को यह बताया', plan_in_sum_p: 'एक बार देख लें, फिर Sakhi आपका प्लान बनाएगी।',
         plan_in_sum_goal: 'आप किस पर काम करना चाहती हैं', plan_in_sum_now: 'अभी', plan_in_sum_when: 'चलने-फिरने का आपका समय', plan_in_make: 'मेरा प्लान बनाएँ',
         plan_ci_first: 'इसमें एक मिनट लगता है। आपके जवाब इसी फ़ोन पर रहते हैं।', plan_ci_tom: 'कल: यही क़दम। {t} फिर मिलेंगे।', plan_ci_see: 'कल {t} फिर मिलेंगे।',
         plan_sum_days: 'हफ़्ते में लगभग {a} दिन प्लान पूरा किया', plan_sum_goal: 'इस पर काम: {g}',
         plan_cnt_dp: 'आज {d} हो गए, {p} थोड़े', plan_ci_week: 'इस हफ़्ते 7 में से {w} दिन',
         plan_per: 'आपका पीरियड {n} दिन बाद आया। Sakhi ने इसे आपके नतीजों के लिए दर्ज कर लिया।', plan_per_ab: 'आपका पीरियड पिछले से लगभग {n} दिन बाद आया। Sakhi ने इसे आपके नतीजों के लिए दर्ज कर लिया।', plan_per0: 'आपका पीरियड दर्ज हो गया। Sakhi इसे आपके नतीजों के लिए रखती है।', plan_per_pain: 'पीरियड के दिनों में ऐंठन का तरीक़ा “आज” पर रहेगा।', plan_per_q: 'आपका पीरियड {n} दिन बाद आया।', plan_per_ab_q: 'आपका पीरियड पिछले से लगभग {n} दिन बाद आया।', plan_per0_q: 'आपका पीरियड दर्ज हो गया।', plan_pain_q: 'आज दर्द है?',
+        plan_pk_pelvic: 'मेरा पेल्विक फ़्लोर प्लान',   /* Version 39.56 */
+        plan_pf_sets: 'कसने के आपके सेट', plan_pf_sets_d: 'आपके 2 मिनट', plan_pf_sets_s: 'आज {m} में से {n} · {l}', plan_pf_sets_n: 'आज {m} में से {n}', plan_pf_lv: 'लेवल {n}, {p}',
+        plan_pf_pos_lie: 'लेटकर', plan_pf_pos_sit: 'बैठकर', plan_pf_pos_stand: 'खड़े होकर', plan_pf_pos_walk: 'खड़े होकर या चलते हुए', plan_pf_pd: 'पीरियड के दिन एक सेट काफ़ी है, चाहें तो लेटकर।',
+        plan_pf_relax: 'साँस लें और ढीला छोड़ें, कुछ मिनट', plan_pf_relax_s: 'कसने की जगह, जब तक डॉक्टर दर्द की जाँच न कर लें',
+        plan_pf_find: 'सही मांसपेशियाँ पहचानें', plan_pf_find_s: 'लेटकर: ऐसे कसें जैसे गैस और पेशाब रोक रही हों, ऊपर खींचें, फिर पूरा ढीला छोड़ें', plan_pf_find_n: 'अब आपके सेट {p} हैं: पहले इसी तरह कसना पहचानें, फिर शुरू करें',
+        plan_pf_chk: 'एक बार डॉक्टर से जाँच करवाएँ', plan_pf_chk_s: 'कारण डॉक्टर बताती हैं, ऐप नहीं। तब तक आपके सेट लेटकर ही रहेंगे।',
+        plan_pf_urge: 'जब तेज़ हाजत हो: रुकें, कसें, साँस लें', plan_pf_urge_s1: 'रुककर खड़ी हों, कुछ बार कसें, धीरे साँस छोड़ें, फिर आराम से चलें', plan_pf_urge_s2: 'फिर जाने से पहले कुछ मिनट और रुकें, हर हफ़्ते थोड़ा ज़्यादा',
+        plan_pf_h1: 'खाँसने, छींकने या उठाने से पहले कसें', plan_pf_h1_s: 'यह तरकीब लीक को शुरू होते ही रोक सकती है।', plan_pf_h2: 'दिन भर पानी', plan_pf_h2_s: 'थोड़ा-थोड़ा, लगभग 6 से 8 गिलास। बहुत कम पानी से मूत्राशय में और जल्दी हाजत होती है।',
+        plan_pf_h3: 'शौच के समय: घुटने ऊपर, साँस बाहर', plan_pf_h3_s: 'पैर छोटे पीढ़े पर, आगे झुकें, और ज़ोर न लगाएँ', plan_pf_h3u: '2 हफ़्ते के लिए चाय, कॉफ़ी और कोला कम', plan_pf_h3u_s: 'फिर देखें कि हाजत शांत हुई या नहीं। पानी पीती रहें।',
+        plan_pf_h4: 'सही तरीक़े से उठाएँ', plan_pf_h4_s: 'पहले कसें, उठाते समय साँस छोड़ें, और बोझ शरीर के पास रखें', plan_pf_h5: 'किसी काम के समय खड़े होकर एक सेट', plan_pf_h5_s: 'खाना बनाते, धोते या इंतज़ार करते हुए: कसें और रोकें, जैसा आपने सीखा',
+        plan_fb_pfl: 'रोज़ सही तरीक़े से pelvic floor कसने से मांसपेशियाँ मज़बूत होती हैं। इसमें लगभग 3 महीने लगते हैं।', plan_fb_pf_find: 'पहले सही मांसपेशियाँ पहचानने से हर सेट काम आता है।',
+        plan_fb_pf_chk: 'भारीपन के एक से ज़्यादा कारण हो सकते हैं। डॉक्टर की जाँच बताती है कौन सा, और कौन से व्यायाम सुरक्षित हैं।', plan_fb_pf_urge: 'हाजत को शांत करना और शौचालय जाने के बीच का समय बढ़ाना मूत्राशय को सिखाता है। इसमें कुछ हफ़्ते लगते हैं।',
+        plan_fb_pf_habit: 'दिन की छोटी आदतें pelvic floor पर ज़ोर कम करती हैं।', plan_fb_pf_relax: 'कसते समय दर्द का मतलब हो सकता है कि मांसपेशियाँ बहुत कसी हुई हैं। पहले साँस लेना और ढीला छोड़ना।',
+        plan_in_pf_h: 'लीक या भारीपन के बारे में', plan_in_pft: 'पेशाब कब लीक होता है?', plan_pft_stress: 'खाँसने, छींकने, हँसने या उठाने पर', plan_pft_urge: 'अचानक तेज़ हाजत में, शौचालय पहुँचने से पहले', plan_pft_both: 'दोनों', plan_pft_heavy: 'नीचे भारीपन या उभार महसूस होता है',
+        plan_in_pfway: 'यह आपके दिन में कितनी रुकावट डालता है?', plan_pw_0: 'बिल्कुल नहीं', plan_pw_1: 'थोड़ी', plan_pw_2: 'काफ़ी', plan_pw_3: 'बहुत ज़्यादा',
+        plan_pfs_p: 'जो आप पर लागू हो, उस पर टिक करें। कुछ में व्यायाम से पहले डॉक्टर ज़रूरी हैं। कुछ भी जवाब देना ज़रूरी नहीं।', plan_pfs_join_p: 'इनमें से कुछ भी आप पर लागू हो, तो पहले डॉक्टर को दिखाएँ।', plan_pfs_none_b: 'इनमें से कुछ नहीं', plan_pfs_none: 'इनमें से कुछ नहीं? आगे पर टैप करें।',
+        plan_pfs_retain: 'पेशाब नहीं हो पाता, या हर समय बूँद-बूँद टपकता है', plan_pfs_retain_w: 'आज ही डॉक्टर को दिखाएँ। व्यायाम से इसका इलाज नहीं होता।',
+        plan_pfs_const: 'लंबी डिलीवरी या ऑपरेशन के बाद, दिन-रात हर समय लीक', plan_pfs_const_w: 'इसी हफ़्ते डॉक्टर को दिखाएँ। इसकी मरम्मत हो सकती है, और इसे 3 महीने के व्यायाम तक नहीं रुकना चाहिए।', plan_pfs_const_g: 'सरकारी अस्पतालों में इसकी मरम्मत मुफ़्त है।',
+        plan_pfs_uti: 'पेशाब में जलन, बुख़ार, या ख़ून', plan_pfs_uti_w: 'डॉक्टर को दिखाएँ। यह आम तौर पर इन्फ़ेक्शन होता है, कमज़ोर pelvic floor नहीं।',
+        plan_pfs_bulge: 'उभार जो बाहर ही रहे', plan_pfs_bulge_w: 'आज ही डॉक्टर को दिखाएँ। बहुत दर्द हो या ख़ून आए, तो अभी जाएँ।', plan_pfs_bowel: 'गैस या शौच रोक नहीं पाती', plan_pfs_bowel_w: 'इसी हफ़्ते डॉक्टर को दिखाएँ।',
+        plan_pfs_pain: 'कसने पर दर्द, या संबंध में दर्द', plan_pfs_pain_w: 'आपका प्लान कसने की जगह साँस लेने और ढीला छोड़ने से शुरू होगा। दर्द के लिए डॉक्टर को दिखाएँ।',
+        plan_pfs_mesh: 'लीक या prolapse का पुराना ऑपरेशन, या पेडू में कैंसर का इलाज', plan_pfs_mesh_w: 'पहले यह प्लान अपनी डॉक्टर को दिखाएँ। जब तक डॉक्टर या फ़िज़ियोथेरेपिस्ट आगे बढ़ने को न कहें, आपके सेट लेटकर ही रहेंगे।',
+        plan_lk_hv: 'इस हफ़्ते: कोई भारीपन?', plan_pf_sure: 'क्या आपको यक़ीन है कि आप सही तरीक़े से कस रही हैं?', plan_pf_sure_line: 'Qura की डॉक्टर या फ़िज़ियोथेरेपिस्ट आपके साथ इसकी जाँच कर सकती हैं।', plan_pf_when: 'यह कब हुआ?',
+        plan_pf_cmp: 'शुरुआत के मुक़ाबले?', plan_pf_cmp_b: 'बेहतर', plan_pf_cmp_s: 'वैसा ही', plan_pf_cmp_w: 'ख़राब',
+        plan_pf_safe_h: 'पहले डॉक्टर को दिखाएँ', plan_pf_safe_d: 'शुरू करने से पहले के आपके जवाबों के लिए पहले डॉक्टर ज़रूरी हैं।', plan_pf_safe_seen: 'मैं डॉक्टर को दिखा चुकी हूँ',
+        plan_pf_right_h: 'क्या कसने का तरीक़ा सही है?', plan_pf_right_p: 'Qura की डॉक्टर मुफ़्त कॉल पर इस बारे में बात कर सकती हैं। आपकी डॉक्टर या महिलाओं की फ़िज़ियोथेरेपिस्ट इसे सामने से जाँच सकती हैं।', plan_pf_right_g: 'सरकारी अस्पताल की स्त्री रोग OPD में भी इसकी जाँच हो सकती है, कम या बिना ख़र्च के।',
+        plan_pf_doc_h: 'डॉक्टर ने क्या कहा?', plan_pf_doc_pop: 'Prolapse है, और व्यायाम मदद कर सकते हैं', plan_pf_doc_ok: 'मैं व्यायाम कर सकती हूँ', plan_pf_doc_not: 'अभी जाँच नहीं हुई',
+        plan_pf_doc_pop_t: 'अब लेवल खुलने पर आपके सेट बैठकर और खड़े होकर होंगे। हफ़्ते 16 तक रोज़ 3 सेट करती रहें।', plan_pf_doc_ok_t: 'अब लेवल खुलने पर आपके सेट आगे बढ़ेंगे।',
+        plan_pf_mesh_h: 'पहले यह प्लान अपनी डॉक्टर को दिखाएँ', plan_pf_mesh_ok: 'डॉक्टर ने कहा आगे बढ़ना ठीक है', plan_pf_pain_h: 'सेट के दौरान दर्द', plan_pf_pain_p: 'अब आपके सेट साँस लेने और ढीला छोड़ने के हैं। दर्द के लिए डॉक्टर को दिखाएँ: पहले Qura की डॉक्टर, या अपनी डॉक्टर।', plan_pf_pain_ok: 'डॉक्टर ने जाँच ली: फिर से कसना',
+        plan_pf_end_h: 'अब भी लीक या भारीपन?', plan_pf_end_p: 'डॉक्टर इसका इलाज कर सकती हैं। व्यायाम के बाद और भी इलाज हैं: ring pessary, तेज़ हाजत के लिए दवाएँ, और ऑपरेशन। आपकी डॉक्टर आपके साथ तय करती हैं।', plan_pf_low: 'इसकी वजह से उदास या अकेली महसूस करती हैं? Tele-MANAS 14416 मुफ़्त है।',
+        plan_pf_rv_d1: 'दिन 1 से 3: सही मांसपेशियाँ पहचानें। आपके सेट लेटकर शुरू होंगे।', plan_pf_rv_lv: 'हर 5 दिन के सेट के बाद नया लेवल: ज़्यादा देर रोकना, फिर बैठकर और खड़े होकर।', plan_pf_rv_urge: 'दिन 4 से: जब तेज़ हाजत हो, रुकें, कसें, साँस लें।',
+        plan_pf_rv_chk: 'एक बार डॉक्टर से जाँच करवाएँ। तब तक आपके सेट लेटकर ही रहेंगे।', plan_pf_rv_h: 'हफ़्ते 2 से: एक छोटी आदत, हर 2 हफ़्ते में नई।', plan_pf_rv_w4: 'हफ़्ते 1, 4 और 12: क्या यक़ीन है कि कसने का तरीक़ा सही है? Qura की डॉक्टर मदद कर सकती हैं।',
+        plan_pf_rv_16: 'डॉक्टर को prolapse मिले, तो: हफ़्ते 16 तक रोज़ 3 सेट, फिर मज़बूत बनी रहें।', plan_pf_rv_join: 'रोज़: कसने के आपके सेट, दिन में 3', plan_pf_rv_keep: '12 हफ़्ते के बाद: रोज़ एक सेट से मज़बूत बनी रहें।',
+        plan_pf_res_lv: 'आपका लेवल', plan_pf_res_lv_s: '8 में से लेवल {n} · {d} दिन सेट', plan_pf_res_way: 'दिन में रुकावट', plan_pf_res_sure: 'कसने के तरीक़े पर यक़ीन', plan_pf_res_hv: 'भारीपन',
+        plan_pf_tile: 'कसने के सेट', plan_pf_tile_ch: 'अध्याय', plan_pf_tile_g: 'लीक और भारीपन',
+        plan_pf_tip_time: 'एक सेट में कुछ मिनट लगते हैं। चाय उबलते समय करें, या सोने से पहले बिस्तर पर।', plan_pf_tip_tired: 'थकान वाले दिन सेट लेटकर करें। वे भी गिने जाते हैं।',
+        plan_pf_tip_pain: 'अगर कसने में दर्द हो, तो रुकें और अपने सेट में “दर्द हो रहा है” पर टैप करें। दर्द की जाँच डॉक्टर करें।', plan_pf_tip_family: 'कसना किसी को दिखता नहीं: परिवार के साथ बैठे हुए या किसी काम के समय एक सेट करें।',
+        plan_pf_tip_out: 'सेट के लिए जगह नहीं चाहिए: लेटकर, बैठकर या खड़े होकर, घर पर।',
         plan_pk_period: 'मेरा पीरियड प्लान',   /* Version 39.55 */
         plan_a_kit: 'पीरियड की आपकी किट', plan_a_kit_s: 'गर्माहट, ऐंठन वाली दिनचर्या और आराम की एक मुद्रा', plan_a_kitready: 'अपनी किट तैयार रखें', plan_a_kitready_s: 'पीरियड शायद जल्द आएगा: गर्म पानी की थैली, पैड या कपड़ा, और आराम की एक शांत जगह',
         plan_a_restday: 'आज आराम करें, या 10 मिनट टहलें', plan_a_restday_s: 'पीरियड के दिन आपकी मर्ज़ी। दोनों में से कोई भी गिना जाएगा।', plan_a_pdiary: 'डॉक्टर के लिए दर्द की डायरी', plan_a_pdiary_s: 'हफ़्ते में एक मिनट, डॉक्टर को दिखाने के लिए',

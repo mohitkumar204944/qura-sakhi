@@ -185,7 +185,8 @@
         { id: 'hb', kind: 'adapter', use: 'ttc.hb' },
         { id: 'prep', kind: 'link', go: 'ttc-prep', title: '@plan_a_prep', icon: 'check', hue: 'green', why: 'plan_fb_prep', priv: true, when: 'days:3', if: ['route', 'pday:2-'], from: 'ttc-prep', check: true },
         { id: 'his', kind: 'adapter', use: 'ttc.his' }
-      ] }
+      ] },
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
     doctor: [{ id: 'start', any: ['ans:bdoc=std', 'ans:bdoc=gyn', 'ans:bdoc=meds', 'ans:bdoc=both'], text: '@plan_bdoc' }, { id: 'due', due: 'ttc-trying', text: '@plan_doc_ttc', go: 'ttc' }]
@@ -231,10 +232,31 @@
         { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm', when: 'days:0,2,5', if: ['ans:tired=y', '!hbdone'] },
         { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:2,5', if: ['week:7-'] },
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', grow: 'hold', why: 'plan_fb_move_g', when: 'days:0,2,5' }
-      ] }
+      ] },
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
     doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb', go: 'cond-anaemia' }]
+  },
+  {
+    id: 'pelvic', ver: 1, status: 'live', tier: 'habit',
+    title: [{ text: '@plan_pk_pelvic' }], discreetTitle: '@plan_h_d',
+    goals: [{ goal: 'pelvic' }],
+    life: { pause: ['preg', 'post', 'loss'] },
+    clock: 'weeks', length: { weeks: 12 }, keep: { weekly: 17, until: 52 },
+    intake: { screens: [{ id: 'pftrack' }, { id: 'pfsafe' }] },
+    slots: { max: 3, day1: 2 }, hero: 'week', rest: 0,
+    tiles: [{ go: 'post-pelvic', text: '@plan_pf_tile', icon: 'flower', hue: 'plum', priv: true }, { go: 'pf-lesson', text: '@plan_pf_tile_ch', icon: 'diary', hue: 'orange', priv: true }, { go: 'intimate-prolapse', text: '@plan_pf_tile_g', icon: 'heart', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 1, r: 'R1', at: '2026-11-02', what: 'Version 39.56: My pelvic floor plan, for leaking urine or heaviness. One safety screen first; her squeeze sets 3 a day in 8 levels that unlock from her sets; Find the right muscles on days 1 to 3; one habit a fortnight from week 2; When the urge comes on the urge track; heaviness gets checked once by a doctor before more than lying sets. A chapter a week, her weekly leaks in her own words, and a Qura doctor first for what the plan can\'t do' }],
+    steps: [
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets' },
+      { id: 'find', kind: 'adapter', use: 'pelvic.find' },
+      { id: 'checked', kind: 'adapter', use: 'pelvic.checked', if: ['ans:pft=heavy'] },
+      { id: 'urge', kind: 'adapter', use: 'pelvic.urge', if: ['pday:4-', 'pfurge'] },
+      { id: 'habit', kind: 'adapter', use: 'pelvic.habit', if: ['week:2-12'] }
+    ],
+    list: [{ use: 'today' }],
+    doctor: []
   },
   {
     id: 'meno', ver: 1, status: 'live', tier: 'habit',
@@ -285,7 +307,8 @@
       { first: [
         { id: 'str', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:move', hue: 'green', why: 'plan_fb_any', when: 'days:1,4', if: ['ans:mheart=y'] },
         { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_bones', when: 'days:1,4' }
-      ] }
+      ] },
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
     doctor: []
@@ -339,7 +362,8 @@
       ] },
       { id: 'pdiary', kind: 'tick', go: 'cond-endo', title: '@plan_a_pdiary', sub: '@plan_a_pdiary_s', icon: 'chart', hue: 'sky', why: 'plan_fb_pdiary', priv: true, when: 'days:6', if: ['ans:endo=y'] },
       { id: 'hb', kind: 'adapter', use: 'period.hb', if: ['also:heavy'] },
-      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] }
+      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] },
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
     doctor: [{ id: 'start', any: ['ans:pain=stop'], text: '@plan_rv_doc_pain' }, { id: 'start', any: ['ans:painDays=4'], text: '@plan_rv_doc_pdays' }]
@@ -385,7 +409,8 @@
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g', when: 'days:1,3,5', if: ['!period'] },
       { id: 'ca', kind: 'adapter', use: 'food.calcium', go: 'food', why: 'plan_fb_pca', when: 'days:0,1,2,3,4' },
       { id: 'hb', kind: 'adapter', use: 'period.hb', if: ['also:heavy'] },
-      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] }
+      { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] },
+      { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
     doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms', go: 'periods-pms' }]

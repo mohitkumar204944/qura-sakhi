@@ -427,6 +427,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     "fix all 6") section 8.
     Contract: MODULE_API section 98; wording: section 19.55 of the review (new lines wait for doctor review, the days-before
     chapters for a psychologist too).
+  - `node test/pfplan.mjs` (Version 39.56, My pelvic floor plan; Mohit, 2 Nov: "design the pelvic floor plan", then "proceed
+    building"; advice `docs/pelvic-floor-plan-advice-2026-11-02.md`):
+    - `pelvic` version 1 for "Leaking urine or heaviness" at the tracking and midlife stages: "When do you leak?" (stress, urge, both,
+      heaviness), "Before you start" (the signs that need a doctor first), then her squeeze sets in 8 levels that unlock from her
+      sets in the trainer (`post-pelvic`, tones and big numbers), Find the right muscles, a habit a fortnight, When the urge comes,
+      and on the heaviness track Get checked once (lying sets until a doctor has seen her; 16 weeks after a prolapse);
+    - the weekly leaks question, "sure" and "gets in the way" in the check-in, one card at a time with a Qura doctor first, 16
+      chapters (`mods/pfplan.js`, route `pf-lesson`), one new ring (her morning set), and the 112 line for a sudden loss of control;
+    - her sets join My period plan, My midlife plan and Getting ready as one step (`pfgoal`).
+    The walk is `node test/pfplan-walk.mjs [asha|kamla|sunita|rani|priya]` (screens and words to `test/shots/pfplan-walk/`); the
+    test pass's fixes (3 Nov) are section 17 of the test.
+    Contract: MODULE_API section 99; wording: section 19.56 of the review (new lines wait for the doctor and a women's health
+    physiotherapist).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
