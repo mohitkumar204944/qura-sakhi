@@ -3713,7 +3713,7 @@
     if (!disc() && (wk === 5 || wk === 9) && !(dd.weeks[(wk === 5 ? 1 : 2) * 4] || {}).seenM && inWeek) return 'month';
     if (dd.keep && !disc() && wk === keepWeekly(dd) && inWeek && !dd.m4Seen) return 'm4';   /* Version 39.6: month 4, her results */
     if (wk >= 2 && inWeek && !(dd.carried && !dd.endSeen) && reviewCard(dd, true)) return 'rev';   /* Version 39.37: the end card holds week 12 */
-    if (docCase(dd) && day >= 2 && (day <= 21 || docOpen(dd)) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) && !aside('pl-sl-doc')) return 'doc';   /* Version 39.6: every plan's own check */
+    if (docCase(dd) && day >= 2 && (day <= 21 || docOpen(dd)) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) && !aside('pl-sl-doc') && !(S.explain && S.explain.signOn && S.explain.signOn())) return 'doc';   /* Version 39.63: a sign from her diary leads; this waits */   /* Version 39.6: every plan's own check */
     if (!disc() && dd.doc === 'done' && !dd.docSaid && SAID[pk] && docCase(dd) && dd.docAt && S.diffDays(S.fromISO(dd.docAt), pToday()) <= 30) return 'said';
     if (!disc() && dueEntry(dd) && dd.dueSeen !== todayISO().slice(0, 7)) return 'due';
     if (disc()) return '';
@@ -4192,6 +4192,7 @@
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
+    titleNow: () => { const d = runningD(); return d ? packTitle(d) : ''; },   /* Version 39.63: a topic for the call form */
     /* Version 39.59 (the lives audit, C3: one home): the pages her running plan's 4 tiles open, so Explore's For you leaves them out */
     tileGo: () => { const d = runningD(); if (!d) return []; const sp = specOf(packOf(d), d.pv); return ((sp && sp.tiles) || []).map((x) => x.go).filter(Boolean); },
     /* Version 39.56: My pelvic floor plan, for the trainer (mods/post.js) and its chapters (mods/pfplan.js) */

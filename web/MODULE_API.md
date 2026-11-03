@@ -6883,3 +6883,47 @@ guides' own weeks (review 19.62, for the doctor to glance).
 
 **Not changed.** A locked app hides the Help button, as before (`mem.locked`, the shared-phone rest screen and the PIN lock).
 PostHog names the library "other" until section 103's list has it.
+
+## 106. Version 39.63: phase E, the doctor ladder's first part
+
+Mohit, 3 Nov: "proceed with phase E" (`docs/personal-companion-advice-2026-11-03.md`, 4.9 and decision D4). The advice puts a doctor
+packet first: `docs/doctor-ladder-packet-2026-11-03.md` asks the doctor which doctor each sign in her diary should name first
+(sections 2 to 4). That part waits for the answers. This version builds what doesn't need them. UI words only.
+1. **3 taps to a sent call request, no typing** (core `ask`, `askDirect`, `renderAskCall`):
+   - "Ask a Qura doctor" opens the call form straight away, with her topic in it. Before, it opened the doctor screen, then the
+     form.
+   - The doctor screen stays first in a pregnancy (her own doctor and the gynaecologist for the pregnancy), on the government route
+     (the free government doctor), and where no call can be made. If Qura's side says it isn't taking calls, the form goes back to
+     the doctor screen (`loadCalls` now redraws the form too).
+   - The form offers up to 4 topics to tap (`.ac-tops`): the page she came from, her plan's name (`S.plan.titleNow`), her goals
+     (not "just tracking"), and what she asked before. The first is chosen when she came without a topic. She can still type, and an
+     empty topic still asks for one.
+   - Measured, from Today's sign: 4 taps (the row, Ask, Ask for a call, Send), down to 3. From a guide: 3 down to 2. From Help: 4
+     and typing, down to 3 and none.
+2. **One label.** Help's row says "Ask a Qura doctor" (`hs_doc_q`) and opens the form with the page she was on as the topic
+   (`pageTopic`: a guide's or a topic's title, a page's heading; none on the tabs or Me). In a pregnancy it stays "See a doctor",
+   to the doctor screen. `doc_b` ("Speak to a doctor") is "Ask a Qura doctor" wherever it shows: the Help page, Tell, and the
+   modules' doctor buttons.
+3. **One doctor card on Today** (`S.explain.signOn`, plan.js `cardKind`): her plan's "Did you get the doctor check?" waits while a
+   sign from her diary that the check doesn't cover is on Today (any level from "this month" up). It comes back when she puts the
+   sign away ("Got it"). "I've seen a doctor" on the sign still counts as her plan's check (Version 39.57), and a check that covers
+   the sign still leads.
+4. **Her own doctor first** for a "See a doctor today" sign: "Call my doctor" (`.xp-mydoc`, her saved number, Version 39.40) leads.
+   The free care near her follows. Without a saved number it leads, as before. Never in discreet mode.
+
+**Waits for the doctor (the packet):**
+- which doctor each sign names first ("See a gynaecologist", "See a doctor" or a Qura doctor), and the line under it;
+- what "See a gynaecologist" opens;
+- the order of a doctor card's buttons.
+
+**Strings.** `hs_doc_q`, and `doc_b` changed (core). English and Hindi. UI words only. The other languages keep their own
+`doc_b` until they're translated.
+
+**Tests.** `node test/ladder.mjs` (27 checks):
+- the taps from a sign, a guide and Help;
+- typing;
+- the doctor screen in a pregnancy, on the government route and without a server;
+- one label;
+- one doctor card on Today;
+- "Call my doctor";
+- Hindi at 360 px.

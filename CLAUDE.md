@@ -478,6 +478,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the violence, abortion and STI pages in Help's "Private help", 2 taps from every screen at every stage (PLACES-05);
     - Learn's Start here and Today's first-days read by her week, her days after a birth, her goal and a late period (F4).
     Contract: MODULE_API section 105; wording: section 19.62 (UI words only; the reading order for the doctor to glance).
+  - `node test/ladder.mjs` (Version 39.63, phase E, the doctor ladder's first part; Mohit, 3 Nov: "proceed with phase E"; the advice's 4.9):
+    - "Ask a Qura doctor" opens the call form straight away, with topics to tap: 3 taps to a sent request from a sign, a guide or Help;
+    - the doctor screen stays first in a pregnancy, on the government route and without a server; one label ("Ask a Qura doctor");
+    - one doctor card on Today (her plan's check waits for a sign from her diary); "Call my doctor" first for a sign for today.
+    Which doctor each sign names waits for the doctor: `docs/doctor-ladder-packet-2026-11-03.md`. Contract: MODULE_API section 106;
+    wording: section 19.63 (UI words only).
   - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
     what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
     `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):

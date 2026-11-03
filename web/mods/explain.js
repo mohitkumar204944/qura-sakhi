@@ -315,7 +315,9 @@
     if (f.lv === 'now') { if (x.call === '14416') main.push('<a class="btn sm xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>'); main.push('<a class="btn sm xp-call" href="tel:112">' + esc(t('call_b')) + ' 112</a>'); main.push(b('data-go="help"', t('explain_numbers'))); }
     else if (f.lv === 'today' || f.lv === 'week' || f.lv === 'month') {
       /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
-      if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), 'primary'));
+      const md = f.lv === 'today' && S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;   /* Version 39.63: her own doctor first, when she saved the number */
+      if (md) main.push('<a class="btn sm primary xp-mydoc" href="tel:' + esc(md) + '">' + esc(t('mydoc_call')) + '</a>');
+      if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), md ? '' : 'primary'));
       if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), 'primary'));
       if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
     } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
@@ -504,7 +506,11 @@
   /* Version 39.6 (journey audit P2-14): her plan's doctor check is done, so today's cards about the same thing rest
      (a late period of 90 days or more always shows) */
   const seenIds = (ids) => { if (!S.canSave()) return; const d = D(); findings().forEach((f) => { if (ids.indexOf(f.id) >= 0 && !(f.id === 'late_now' && f.lv !== 'watch')) d.seen[f.key] = S.toISO(S.today()); }); S.saveQuiet(); };
-  S.explain = { openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
+  /* Version 39.63 (phase E): a sign from her diary on Today that her plan's own doctor check doesn't cover; her plan's "Did you
+     get the doctor check?" waits while it shows, so Today has one doctor card at a time */
+  const signOn = () => { if (!S.canSave() || S.state.settings.discreet) return false; const seen = D().seen;
+    return open(findings()).some((x) => !seen[x.key] && !x.quiet && ['now', 'today', 'week', 'month'].indexOf(x.lv) >= 0 && !(x.lv !== 'now' && x.lv !== 'today' && S.plan && S.plan.docOwns && S.plan.docOwns(x.id))); };
+  S.explain = { signOn: signOn, openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
   findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
     /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
     question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };

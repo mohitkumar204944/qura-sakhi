@@ -269,7 +269,8 @@ async function signUp(a) {
 {
   let a = await open({});
   await tap(a, '#help-btn');
-  check('6 unanswered: "See a doctor · A call with a Qura doctor, or a free government doctor"', /See a doctor\s*A call with a Qura doctor, or a free government doctor/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
+  /* Version 39.63 (phase E): one label, "Ask a Qura doctor" */
+  check('6 unanswered: "Ask a Qura doctor · A call with a Qura doctor, or a free government doctor"', /Ask a Qura doctor\s*A call with a Qura doctor, or a free government doctor/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
   check('6 ... no "My ASHA" row, and 112 still first', !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
   await done(a);
   a = await open({ seed: { mods: { asha: { phone: '9876543210' } } } });

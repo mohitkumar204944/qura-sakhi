@@ -306,7 +306,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   check('10 Help is in the header, not a tab; the language button moved to Me', (await has(page, '#topbar #help-btn')) && !(await has(page, '#topbar [data-langs]')));
   await tap(page, '#help-btn');
   const hs = await page.$eval('#sheet-root', (e) => e.innerText);
-  check('10 Help: call 112, see a doctor, when to see a doctor', /Call 112 now/.test(hs) && /See a doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
+  check('10 Help: call 112, ask a Qura doctor (Version 39.63: one label), when to see a doctor', /Call 112 now/.test(hs) && /Ask a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
   await tap(page, '#hs-doc');
   check('10 "See a doctor" opens the doctor page', (await page.evaluate(() => location.hash)) === '#ask');
   await tap(page, '#help-btn'); await tap(page, '#hs-guide');

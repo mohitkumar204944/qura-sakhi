@@ -240,7 +240,7 @@
       dr_last: 'Last period started {d} and lasted {n} days', dr_last_open: 'Last period started {d}', dr_gaps: 'Days between periods: {list} (average {a})', dr_heavy: 'Heavy flow, clots or leaks in {n} of the last {m} periods', dr_months: '{n} of {m} months',
       ch_meds: 'Medicines', ch_care: 'Pregnancy, baby and check-ups', ch_period: 'Period', ch_plan: 'Your plan', ch_other: 'Other reminders', ch_neutral: 'Reminders', notif_late: 'Open Sakhi: your dates need a look.', ex_h: 'Ring on time?', ex_p: 'Android can ring reminders up to an hour late unless you allow “Alarms and reminders” for Sakhi. It matters most for the pill.', ex_b: 'Allow', ci_rem: 'Remind me every month', ci_rem_s: 'A reminder for this check-in, once a month', bk_rem: 'Remind me every month', bk_rem_s: 'Your diary is only on this phone. A fresh code keeps it safe.', remind_on: 'Reminder on', remind_off: 'Reminder off',
       tw2_pl: 'Whenever you want to, note your day here in one tap. Until then, just ask and read.', td2_pp: 'What you noted most, over the weeks and months.', td3_pp: 'Tap + for today’s symptoms, mood or a note. Try it now.', tm3_h: 'Reminders', tm3_p: 'Turn on phone reminders for your period, medicines and check-ups. Nothing shows on the lock screen.', tm3_pd: 'Turn on phone reminders. Nothing shows on the lock screen.', tm4_h: 'Your data and backup', tm4_p: 'Your diary stays only on this phone. Make a backup code here to move it to a new phone.', tm4_pd: 'Your notes stay only on this phone. Make a backup code here to move them to a new phone.', tour_resume: 'Finish the tour? It shows where everything is.', tht3_h: 'Your trying-for-a-baby tools', tht3_p: 'In Explore, Trying for a baby has your tools: the before-pregnancy checklist, the signs log and more.', tour_resume_b: 'Continue the tour',
-      doc_b: 'Speak to a doctor', doc_short: 'Doctor', doc_h: 'Not an emergency?', doc_p: 'Speak to a Qura doctor. The first 20-minute call is free, in your language.', em_numbers: 'Emergency numbers',
+      doc_b: 'Ask a Qura doctor', hs_doc_q: 'Ask a Qura doctor',   /* Version 39.63: one label */ doc_short: 'Doctor', doc_h: 'Not an emergency?', doc_p: 'Speak to a Qura doctor. The first 20-minute call is free, in your language.', em_numbers: 'Emergency numbers',
       today_short: 'Today', period_ended: 'Period ended', sym_h: 'Symptoms', sym_h_d: 'Add a note', checkin_b: 'This month', ci_done_b: 'This month: done', ci_title: 'This month: {m}', my_logs: 'My logs',
       day_period: 'Period', day_flow: 'Add flow and pain details', sym_pain: 'Pain', sym_body: 'Body', sym_mood: 'Mood', sym_disch: 'Discharge', sym_done: 'Done', yesterday_l: 'Yesterday',
       d_acne: 'Acne', d_ok: 'Feeling okay', d_calm: 'Calm', d_happy: 'Happy', d_anxious: 'Anxious', d_irritable: 'Irritable', d_disch_ok: 'Usual', d_disch_bad: 'Unusual colour or smell', d_itch: 'Itching', d_pbleed: 'Bleeding or spotting', d_moveless: 'Baby moving less',
@@ -501,7 +501,7 @@
       dr_last: 'पिछला पीरियड {d} को शुरू हुआ और {n} दिन चला', dr_last_open: 'पिछला पीरियड {d} को शुरू हुआ', dr_gaps: 'पीरियड के बीच के दिन: {list} (औसत {a})', dr_heavy: 'पिछले {m} में से {n} पीरियड में भारी ब्लीडिंग, थक्के या लीक', dr_months: '{m} में से {n} महीने',
       ch_meds: 'दवाएँ', ch_care: 'गर्भ, शिशु और जाँच', ch_period: 'पीरियड', ch_plan: 'आपका प्लान', ch_other: 'दूसरे रिमाइंडर', ch_neutral: 'रिमाइंडर', notif_late: 'Sakhi खोलें: आपकी तारीख़ें एक बार देख लें।', ex_h: 'समय पर बजे?', ex_p: 'जब तक आप Sakhi के लिए “Alarms and reminders” की अनुमति न दें, Android रिमाइंडर एक घंटे तक देर से बजा सकता है। गोली के लिए यह सबसे ज़रूरी है।', ex_b: 'अनुमति दें', ci_rem: 'हर महीने याद दिलाएँ', ci_rem_s: 'इस चेक-इन के लिए महीने में एक रिमाइंडर', bk_rem: 'हर महीने याद दिलाएँ', bk_rem_s: 'आपकी डायरी सिर्फ़ इसी फ़ोन पर है। नया कोड उसे सुरक्षित रखता है।', remind_on: 'रिमाइंडर चालू', remind_off: 'रिमाइंडर बंद',
       tw2_pl: 'जब चाहें, यहाँ एक टैप में अपना दिन नोट करें। तब तक बस पूछें और पढ़ें।', td2_pp: 'आपने सबसे ज़्यादा क्या नोट किया, हफ़्तों और महीनों के साथ।', td3_pp: 'आज के लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', tm3_h: 'रिमाइंडर', tm3_p: 'पीरियड, दवाओं और जाँच के लिए फ़ोन रिमाइंडर चालू करें। लॉक स्क्रीन पर कुछ नहीं दिखता।', tm3_pd: 'फ़ोन रिमाइंडर चालू करें। लॉक स्क्रीन पर कुछ नहीं दिखता।', tm4_h: 'आपका डेटा और बैकअप', tm4_p: 'आपकी डायरी सिर्फ़ इसी फ़ोन पर रहती है। नए फ़ोन पर ले जाने के लिए यहाँ बैकअप कोड बनाएँ।', tm4_pd: 'आपके नोट सिर्फ़ इसी फ़ोन पर रहते हैं। नए फ़ोन पर ले जाने के लिए यहाँ बैकअप कोड बनाएँ।', tour_resume: 'टूर पूरा करें? इसमें दिखता है कि क्या कहाँ है।', tht3_h: 'बच्चे की कोशिश के आपके टूल', tht3_p: '“खोजें” में “बच्चे की कोशिश” पर आपके टूल हैं: गर्भ से पहले की चेकलिस्ट, संकेत रिकॉर्ड और भी।', tour_resume_b: 'टूर जारी रखें',
-      doc_b: 'डॉक्टर से बात करें', doc_short: 'डॉक्टर', doc_h: 'इमरजेंसी नहीं है?', doc_p: 'Qura की डॉक्टर से बात करें। पहली 20 मिनट की कॉल मुफ़्त है, आपकी भाषा में।', em_numbers: 'इमरजेंसी नंबर',
+      doc_b: 'Qura की डॉक्टर से पूछें', hs_doc_q: 'Qura की डॉक्टर से पूछें', doc_short: 'डॉक्टर', doc_h: 'इमरजेंसी नहीं है?', doc_p: 'Qura की डॉक्टर से बात करें। पहली 20 मिनट की कॉल मुफ़्त है, आपकी भाषा में।', em_numbers: 'इमरजेंसी नंबर',
       today_short: 'आज', period_ended: 'पीरियड ख़त्म', sym_h: 'लक्षण', sym_h_d: 'नोट जोड़ें', checkin_b: 'इस महीने', ci_done_b: 'इस महीने का: हो गया', ci_title: 'इस महीने: {m}', my_logs: 'मेरे रिकॉर्ड',
       day_period: 'पीरियड', day_flow: 'ब्लीडिंग और दर्द का ब्यौरा जोड़ें', sym_pain: 'दर्द', sym_body: 'शरीर', sym_mood: 'मन', sym_disch: 'सफ़ेद पानी', sym_done: 'हो गया', yesterday_l: 'कल',
       d_acne: 'मुँहासे', d_ok: 'ठीक हूँ', d_calm: 'शांत', d_happy: 'ख़ुश', d_anxious: 'घबराहट', d_irritable: 'चिड़चिड़ापन', d_disch_ok: 'सामान्य', d_disch_bad: 'रंग या गंध बदली', d_itch: 'खुजली', d_pbleed: 'ब्लीडिंग या spotting', d_moveless: 'बच्चे की हलचल कम',
@@ -1034,7 +1034,16 @@
   const canSave = () => state.stage === 'app';
   const needDiary = () => '<div class="card warn"><h3>' + esc(t('need_diary_h')) + '</h3><p class="small">' + esc(t('need_diary_p')) + '</p><button type="button" class="btn primary sm" data-start-diary="1">' + esc(t('start')) + '</button></div>';
   /* "Ask a Qura doctor about this": the topic joins her list of questions for the call, kept on this phone (renderAsk) */
-  const ask = (topic) => { if (topic) { state.askTopics = (state.askTopics || []).filter((x) => x !== topic).concat([topic]).slice(-8); save(); } mem.acTopic = topic || null; if (topic && mem.ac && !mem.ac.sending && !mem.ac.done) mem.ac.topic = topic;   /* review FIXES-11; V39.9 review FIXES-08: a button with no topic keeps what she typed */ setHash('ask'); };   /* review DOCTOR-11: the call form starts from this topic */
+  const ask = (topic) => { if (topic) { state.askTopics = (state.askTopics || []).filter((x) => x !== topic).concat([topic]).slice(-8); save(); } mem.acTopic = topic || null; if (topic && mem.ac && !mem.ac.sending && !mem.ac.done) mem.ac.topic = topic;   /* review FIXES-11; V39.9 review FIXES-08: a button with no topic keeps what she typed */ setHash(askDirect() ? 'ask-call' : 'ask'); };   /* Version 39.63 */
+  /* Version 39.63 (phase E, the doctor ladder): "Ask a Qura doctor" opens the call form straight away, her topic filled in, so a
+     doctor card is 3 taps from a sent request. The doctor screen stays first in a pregnancy (her own doctor), on the government
+     route (the free doctor), and where no call can be made (WhatsApp or booking). */
+  const askDirect = () => callCan() && !isPregnant() && !careGov() && !(mem.calls && mem.calls.available === false);
+  /* the page she is on, as the topic for the doctor: an article's or a topic's title, a page's heading; none on the tabs or Me */
+  const pageTopic = () => { const r = route(); if (r.indexOf('a-') === 0) { const a = findArticle(r.slice(2)); return a ? L(a, 'title') : ''; }
+    if (r.indexOf('topic-') === 0) return t('sec_' + r.slice(6));
+    if (['home', 'diary', 'care', 'library', 'learn', 'me', 'plan', 'help', 'ask', 'ask-call', 'tell'].indexOf(r) >= 0 || r.indexOf('me-') === 0) return '';
+    const h = $('#view h1'); return h ? h.innerText.replace(/\s+/g, ' ').trim().slice(0, 80) : ''; };   /* review DOCTOR-11: the call form starts from this topic */
   /* Every sheet gets its own speaker (the top bar's sits behind the backdrop), unless it has a Listen button of its own. */
   const sheet = (inner, onWire) => { if (tour && tour.def.moment) clearTour(); if (!sheetUp()) sheetDirty = false; const root = $('#sheet-root'); const say = api.readAloud && inner.indexOf('ans-listen') < 0 && inner.indexOf('data-nosay') < 0 ? '<button type="button" class="iconbtn sheet-say" id="sheet-say" aria-label="' + esc(t('tour_listen')) + '">' + I.speaker + '</button>' : ''; root.innerHTML = '<div class="sheet-bg" id="sheet-bg"><div class="sheet" role="dialog"><div class="handle"></div>' + say + inner + '</div></div>'; $('#sheet-bg', root).addEventListener('click', (e) => { if (e.target.id === 'sheet-bg') closeSheet(); }); const sb = $('#sheet-say', root); if (sb) sb.addEventListener('click', () => api.readAloud(root.querySelector('.sheet'))); wire(root); if (onWire) onWire(root.querySelector('.sheet')); dropTriageLinks(root); };
   const closeSheet = (quiet) => { const was = sheetUp(); $('#sheet-root').innerHTML = ''; if (was && state.stage === 'app' && route() === 'home' && (fullTourDue() || homeTipDue())) queueTour('home');   /* a sheet held the first tour back (her PIN): it starts now */ if (tour && tour.def.moment) clearTour(); if (was && sheetDirty && quiet !== true) { sheetDirty = false; render(); } sheetDirty = false; };
@@ -1066,15 +1075,15 @@
     return pages.length ? '<p class="small hs-priv-h">' + esc(t('hs_priv')) + '</p><div class="list hs-priv">' + pages.map((x) => '<button type="button" class="item" data-hs-go="' + x[0] + '"><span class="ico-sm hue hue-rose">' + x[2] + '</span><span class="body"><strong>' + esc(t(x[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '';
   }
   function openHelpSheet() {
-    const joining = state.stage !== 'app' && state.stage !== 'browse';
+    const joining = state.stage !== 'app' && state.stage !== 'browse'; const from = pageTopic();
     const row = (id, ico, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>';
     sheet('<h2>' + esc(t('help')) + '</h2><div class="list hs-list"><a class="item hs-sos hs-112" id="hs-112" href="tel:112"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('hs_112')) + '</strong><span>' + esc(t('hs_112_s')) + '</span></span><span class="chev">' + I.chev + '</span></a>' +
-      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t('hs_doc'), (isPregnant() ? t('hs_doc_s_preg') : t(careGov() ? 'hs_doc_s' : 'hs_doc_s_doc'))) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
+      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t(isPregnant() ? 'hs_doc' : 'hs_doc_q'), (isPregnant() ? t('hs_doc_s_preg') : t(careGov() ? 'hs_doc_s' : 'hs_doc_s_doc'))) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
       (modRoute('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>' + (joining ? '' : privHelp()), (sh) => {
       sh.querySelectorAll('[data-hs-go]').forEach((b) => b.addEventListener('click', () => { closeSheet(true); setHash(b.dataset.hsGo); }));
       $('#hs-sos', sh).addEventListener('click', () => { closeSheet(true); openSOS(); });
       $('#hs-harm', sh).addEventListener('click', () => { closeSheet(true); openHarm(); });
-      const hd = $('#hs-doc', sh); if (hd) hd.addEventListener('click', () => { closeSheet(true); ask(''); });
+      const hd = $('#hs-doc', sh); if (hd) hd.addEventListener('click', () => { closeSheet(true); ask(isPregnant() ? '' : from); });   /* Version 39.63: the page she was on */
       const hl = $('#hs-loss', sh); if (hl) hl.addEventListener('click', () => { closeSheet(true); setHash('loss'); });
       const hg = $('#hs-guide', sh); if (hg) hg.addEventListener('click', () => { closeSheet(true); setHash('help'); });
       const ha = $('#hs-asha', sh); if (ha) ha.addEventListener('click', () => { closeSheet(true); setHash('asha'); });
@@ -4591,7 +4600,7 @@
       const by = {}; (Array.isArray(j.requests) ? j.requests : []).forEach((x) => { if (x && x.ref) by[x.ref] = x.status; });
       let moved = false; callsOf().forEach((c) => { if (by[c.ref] && by[c.ref] !== c.status) { c.status = by[c.ref]; moved = true; } });
       if (moved) save();
-      if ((moved || was !== mem.calls.available) && route() === 'ask') render();
+      if ((moved || was !== mem.calls.available) && (route() === 'ask' || route() === 'ask-call')) render();
     }, () => { mem.calls = { available: !!was, at: Date.now() }; });
   }
   /* text the server accepts: no control characters, at most n UTF-16 units, never half an emoji */
@@ -4679,8 +4688,15 @@
     });
   }
   function renderAskCall(v) {
-    if (!callCan()) { location.hash = '#ask'; return; }
+    if (!callCan() || (mem.calls && mem.calls.available === false && !(mem.ac && (mem.ac.done || mem.ac.err || mem.ac.sending)))) { location.replace('#ask'); return; }   /* a refusal she was just told about stays on the form */
+    loadCalls();   /* Version 39.63: she may come straight here */
     const a = mem.ac || (mem.ac = { topic: mem.acTopic || '', time: '', ticks: {}, lang: null, err: null, sending: false, done: null, shown: null });
+    /* Version 39.63: topics she can tap instead of typing: the page she came from, her plan, her goals, what she asked before; the
+       first is chosen when she came without one */
+    const tops = []; const addT = (x) => { x = clipLine(x, 120); if (x && tops.indexOf(x) < 0) tops.push(x); };
+    addT(mem.acTopic); addT(api.plan && api.plan.titleNow ? safe(() => api.plan.titleNow(), '') : ''); const gk = [].concat(...Object.keys(OB_GOALS).map((k) => OB_GOALS[k])); (state.goals || []).forEach((g) => { if (g !== 'track' && gk.indexOf(g) >= 0) addT(goalLabel(g)); });
+    (state.askTopics || []).slice(-2).reverse().forEach(addT); tops.length = Math.min(tops.length, 4);
+    if (!a.topic && tops.length && !a.picked) a.topic = tops[0];
     const phone = acct.phone ? showPhone(acct.phone) : t('ac_phone_your');
     const book = '<a class="btn block" id="ac-book" href="' + BOOK_URL + '" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('book_link')) + '</a>';
     if (a.done) {
@@ -4695,7 +4711,7 @@
     const TIMES = ['morning', 'afternoon', 'evening', 'any'];
     v.innerHTML = backRow(t('ac_h'), 'ask', false) + '<p>' + esc(tf('ac_p', { phone: phone })) + ' ' + esc(t('ask_cost')) + '</p>' +
       (a.err ? '<div class="card warn" role="alert" id="ac-err"><p>' + esc(a.err) + '</p>' + (a.errBook ? book : '') + '</div>' : '') +
-      '<div class="card" data-nofold="1"><label for="ac-topic"><strong>' + esc(t('ac_topic')) + '</strong></label><input id="ac-topic" maxlength="120" autocomplete="off" value="' + esc(a.topic) + '" placeholder="' + esc(t('ac_topic_ph')) + '"></div>' +
+      '<div class="card" data-nofold="1"><label for="ac-topic"><strong>' + esc(t('ac_topic')) + '</strong></label>' + (tops.length ? '<div class="chips ac-tops" role="group" aria-label="' + esc(t('ac_topic')) + '">' + tops.map((x) => '<button type="button" class="chip' + (a.topic === x ? ' on' : '') + '" data-ac-top="' + esc(x) + '" aria-pressed="' + (a.topic === x) + '">' + esc(x) + '</button>').join('') + '</div>' : '') + '<input id="ac-topic" maxlength="120" autocomplete="off" value="' + esc(a.topic) + '" placeholder="' + esc(t('ac_topic_ph')) + '"></div>' +
       '<div class="card" data-nofold="1"><h3>' + esc(t('ac_time')) + '</h3><div class="chips" role="group" aria-label="' + esc(t('ac_time')) + '">' + TIMES.map((x) => '<button type="button" class="chip' + ((a.time || 'any') === x ? ' on' : '') + '" data-ac-time="' + x + '" aria-pressed="' + ((a.time || 'any') === x) + '">' + esc(t('ac_t_' + x)) + '</button>').join('') + '</div></div>' +
       '<div class="card" data-nofold="1" id="ac-share"><h3>' + esc(t('ac_share_h')) + '</h3><p class="small">' + esc(t('ac_share_p')) + '</p>' +
         (all.length ? '<div class="list">' + all.map((x) => '<label class="item"><span class="body"><strong>' + esc(x.title) + '</strong><span>' + esc(x.lines.length === 1 ? t('ac_lines_1') : tf('ac_lines', { n: x.lines.length })) + '</span></span><input type="checkbox" data-ac-sec="' + x.key + '"' + (a.ticks[x.key] ? ' checked' : '') + '></label>').join('') + '</div>' : '') +
@@ -4704,7 +4720,8 @@
         sent.map((x) => '<h4>' + esc(x.title) + '</h4><ul class="rp-lines" lang="' + esc(lang) + '">' + x.lines.map((l) => '<li>' + esc(l) + '</li>').join('') + '</ul>').join('') + (fit.cut ? '<p class="small">' + esc(t('ac_trimmed')) + '</p>' : '') + '</div>' +
       '<div class="card" data-nofold="1"><p class="small">' + esc(t('ac_consent')) + '</p><button type="button" class="btn primary block" id="ac-send"' + (a.sending ? ' disabled' : '') + '>' + I.steth + ' ' + esc(t(a.sending ? 'ac_sending' : 'ac_send')) + '</button></div>';
     wire(v);
-    $('#ac-topic', v).addEventListener('input', (e) => { a.topic = e.target.value; });
+    $('#ac-topic', v).addEventListener('input', (e) => { a.topic = e.target.value; a.picked = true; });
+    v.querySelectorAll('[data-ac-top]').forEach((b) => b.addEventListener('click', () => { a.topic = b.dataset.acTop; a.picked = true; render(); }));
     v.querySelectorAll('[data-ac-time]').forEach((b) => b.addEventListener('click', () => { a.time = b.dataset.acTime; render(); }));
     v.querySelectorAll('[data-ac-sec]').forEach((c) => c.addEventListener('change', () => { a.ticks[c.dataset.acSec] = c.checked; render(); }));
     v.querySelectorAll('[data-ac-lang]').forEach((b) => b.addEventListener('click', () => { a.lang = b.dataset.acLang; render(); }));

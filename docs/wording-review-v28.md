@@ -3341,3 +3341,14 @@ guides in the order of her day:
 - Explore's quick questions follow the same rule: in a pregnancy, the danger signs first, the baby's movements from 20 weeks and the
   sugar test from 24 to 29 weeks.
 Please say if any of these weeks should move.
+
+### 19.63 Version 39.63: phase E, the doctor ladder's first part (MODULE_API section 106)
+
+Mohit, 3 Nov: "proceed with phase E". UI words only: "Ask a Qura doctor" on Help's row (was "See a doctor"; in a pregnancy it
+stays "See a doctor") and on the Help page's button (was "Speak to a doctor"). The call form offers her own page titles, plan and
+goals as topics to tap; there are no new words there. A "see a doctor today" sign puts "Call my doctor" (Version 39.40's words)
+first when she saved the number.
+
+**The doctor's questions are in their own packet:** `docs/doctor-ladder-packet-2026-11-03.md`. It asks which doctor each sign in
+her diary should name first (a gynaecologist, a doctor, or a Qura doctor), gives two new lines for it, and asks the order of a
+doctor card's buttons. Nothing there is built yet.
