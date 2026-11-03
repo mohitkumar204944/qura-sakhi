@@ -278,7 +278,7 @@ for (const lang of ['en', 'hi']) {
   const q = await a.page.evaluate(() => { const f = (k) => { const b = document.querySelector('#view .qa-tile[data-qa="' + k + '"]'); return b ? (b.querySelector('svg.sign') ? 'sign' : (b.querySelector('svg.food') ? 'food' : (b.querySelector('svg.spot') ? 'spot' : '-'))) : 'none'; }; return { pain: f('cycle.painful-periods'), late: f('cycle.missed-period-what-to-do-first') }; });
   check('11 quick answers: "Period pain" with its own drawing; the others keep their group\'s picture', q.pain === 'sign' && q.late === 'spot', q);
   errsAll.push(...a.errs); await a.ctx.close();
-  const b = await open({ seed: PREG(20), hash: '#care' });
+  const b = await open({ seed: PREG(16), hash: '#care' });   /* Version 39.62: before 20 weeks her first 3 questions are danger signs, check-ups and tablets */
   const qb = await b.page.evaluate(() => { const f = (k) => { const x = document.querySelector('#view .qa-tile[data-qa="' + k + '"]'); return x ? (x.querySelector('svg.food') ? 'food' : (x.querySelector('svg.spot') ? 'spot' : '-')) : 'none'; }; return { tablets: f('pregnancy.iron-folic-acid-calcium-td'), danger: f('pregnancy.danger-signs-call-112') }; });
   check('11 pregnancy: "Tablets" with a tablet; "Danger signs" keeps the Help shield', qb.tablets === 'food' && qb.danger === 'spot', qb);
   errsAll.push(...b.errs); await b.ctx.close();

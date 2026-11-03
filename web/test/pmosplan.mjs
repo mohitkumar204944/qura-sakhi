@@ -391,10 +391,12 @@ for (const [days, paused] of [[21, true], [50, false]]) {
 {
   const { ctx, page, errs } = await open({ seed: { prompts: { notifyIntro: ago(3) } }, hash: '#care' });
   const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
-  /* Version 39.2: Contents (all guides and articles) sits right under search, then For you */
-  check('11 Explore opens with Contents, then For you (her plan first), then Govt. services; My plan is a tab, so no Plans row', all[0] === 'learn' && all[1] === 'plan-pmos' && fy[0] === 'plan-pmos' && all.indexOf('access-free') > all.indexOf(fy[fy.length - 1]) && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
+  /* Version 39.62 (phase D): For you right under search; Contents and, off the government route, Govt. services are in the library */
+  check('11 Explore opens with For you (her plan first); My plan is a tab, so no Plans row', all[0] === 'plan-pmos' && fy[0] === 'plan-pmos' && all.indexOf('learn') < 0 && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
   check('11 For you has no government pages: they sit in Govt. services', !fy.some((r) => /^access-|^asha$/.test(r)), fy);
-  check('11 Govt. services is one row, and its topic card is gone', /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText)) && !(await has(page, '#view [data-go="topic-free"]')));
+  await go(page, 'library');
+  check('11 Govt. services is one row (in the library), and its topic card is gone', /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText).catch(() => '')) && !(await has(page, '#view [data-go="topic-free"]')));
+  await go(page, 'care');
   /* Version 39.2 (journey audit J-24): she joined months ago, so the setup card waits in Me, one step at a time */
   await go(page, 'home');
   check('11 after 30 days the setup card is not on Today', !(await has(page, '#view .setup-card')));

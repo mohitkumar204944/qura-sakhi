@@ -3317,3 +3317,27 @@ week after her stage changes). The age lines (the lives audit's section 3) wait 
 Mohit, 3 Nov: "proceed with phase C". UI words only: "Make my plan · about a minute" and "Just my diary for now" on Your Sakhi; its plan
 row "Your plan, from your answers" (was "Your plan, after your first log"); the plan offer's "Made from your answers." before her first
 log. Her plan's own questions and safety screens are unchanged; from joining, her plan's cards are one page.
+
+### 19.62 Version 39.62: phase D, Explore and Learn by her day (MODULE_API section 105)
+
+Mohit, 3 Nov: "proceed with phase D". UI words only:
+- Explore's row "All topics and guides", with "Your topics, every guide and article" under it;
+- the library's "More questions";
+- Help's "Private help", above the violence, abortion and STI pages' own reviewed titles.
+In a pregnancy that group shows "Pregnant and didn't plan it" (her choices) in place of the abortion page, and after a loss it has
+no abortion row.
+
+**For the doctor to glance (order only, no new lines).** Learn's Start here, and Today's first-days read, now pick the reviewed
+guides in the order of her day:
+- a pregnancy:
+  - to 12 weeks: registering, the four check-ups, the tablets, the danger signs;
+  - 13 to 23 weeks: the check-ups, the danger signs, the tablets, the baby's movements from 16 weeks;
+  - 24 to 33 weeks: the sugar test and blood pressure, the movements, the danger signs;
+  - from 34 weeks: the danger signs, the movements, then the two after-birth guides;
+- after a birth: the two after-birth guides and the schemes, and no pregnancy guide;
+- midlife:
+  - with periods stopped: her goal's guide, early menopause (before 45), then bleeding after menopause;
+  - with periods still coming: no bleeding-after-menopause guide yet;
+- Explore's quick questions follow the same rule: in a pregnancy, the danger signs first, the baby's movements from 20 weeks and the
+  sugar test from 24 to 29 weeks.
+Please say if any of these weeks should move.

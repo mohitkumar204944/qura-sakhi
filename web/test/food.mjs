@@ -142,7 +142,7 @@ async function goalFlow(page, goal, until) {
 
 /* ---------- 4. Explore and search in her words (diet audit 5.2, journey audit P3-06) ---------- */
 {
-  const a = await open({ seed: { events: regular(10) }, hash: '#care' });
+  const a = await open({ seed: { events: regular(10) }, hash: '#library' });   /* Version 39.62: her topics are in the library */
   /* her stage's own topic stays first (pregnancy, a loss), and My food comes straight after it */
   check('4 Explore: the Food card comes right after her first topic', (await a.page.$$eval('#view .topic-grid [data-go]', (bs) => bs.map((b) => b.dataset.go)))[1] === 'food', await a.page.$$eval('#view .topic-grid [data-go]', (bs) => bs.map((b) => b.dataset.go)));
   for (const q of ['khana', 'nashta', 'recipe', 'jain', 'sabzi', 'doodh', 'sattu', 'क्या खाएं', 'thali']) { const r = await search(a.page, q); check('4 search "' + q + '" opens My food first', r[0] === 'food', r.slice(0, 4)); }
@@ -150,8 +150,8 @@ async function goalFlow(page, goal, until) {
   const s2 = await search(a.page, 'जननी सुरक्षा');
   check('4 "जननी सुरक्षा" is a scheme, not the safety page first', s2[0] !== 'intimate-safety', s2.slice(0, 4));
   errsAll.push(...a.errs); await a.ctx.close();
-  const b = await open({ seed: { events: regular(10), settings: { discreet: true, toursAuto: false, notify: true } }, hash: '#care' });
-  check('4 a shared phone: no Food card among the topics', !(await has(b.page, '#view .topic-grid [data-go="food"]')));
+  const b = await open({ seed: { events: regular(10), settings: { discreet: true, toursAuto: false, notify: true } }, hash: '#library' });
+  check('4 a shared phone: no Food card among the topics', await has(b.page, '#view .topic-grid') && !(await has(b.page, '#view .topic-grid [data-go="food"]')));
   errsAll.push(...b.errs); await b.ctx.close();
 }
 

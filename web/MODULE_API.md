@@ -6799,3 +6799,87 @@ activity-tracking session's (PostHog), uncommitted when this was built.
 the one page and Start, the dates card's free plan, "Just my diary for now" and the offer's words before and after her first log,
 pregnancy's "Before you start", Hindi at 360 px). Updated for what changed on purpose: `joining.mjs` (Today offers her plan from the
 start), `firstday.mjs` 5 and `companion.mjs` 1.
+
+## 105. Version 39.62: phase D, Explore and Learn by her day
+
+Mohit, 3 Nov: "proceed with phase D" (`docs/personal-companion-advice-2026-11-03.md`, 4.6, phase D and decision D3).
+1. **Explore's first screen** (core `renderCare`):
+   - search, unchanged;
+   - For you: her first 3 tools (`forYouTiles`, its order and rules, cut to 3) and her first 3 questions (`qaList`);
+   - the government's free care, only for the government route and "Nowhere yet" (`freeFirst`, Version 39.28's rule);
+   - her topic, one row (`.care-topic`: the first of `topicsFor()` with anything in it);
+   - "All topics and guides" (route `library`);
+   - Help and safety.
+   No topic grid, Contents or dos and don'ts here. In discreet mode: search, the library row and Help. The line that says what
+   Explore holds (`care_p`) shows in her first week and before she signs up, then folds away (explanation she reads once).
+2. **The library** (route `library`, `renderLibrary`; under the Explore tab, Back to Explore, open in browse mode):
+   - "More questions": her stage's dos and don'ts, then her questions after the first 3;
+   - her topics grid as Explore had it (My food second; a shared phone's full grid);
+   - the government's free care when Explore doesn't show it;
+   - Contents (Learn).
+   Explore's tour points at `.care-lib` (her topic and the library row).
+3. **Her questions by her day** (`qaList`, `QA_GOAL`):
+   - cycles and PMOS: a late period first, then her goals (pain, heavy, irregular, weight, skin);
+   - a pregnancy: danger signs, then baby's movements from 20 weeks, and the sugar test from 24 to 29 weeks;
+   - from 6 weeks after a birth, contraception after the birth;
+   - trying, with a late period: the pregnancy test;
+   - midlife: her goals (hot flushes, sleep, mood, bones, aches). Once her periods have stopped, bleeding after menopause comes
+     next and "Periods after 40" goes. While they still come, bleeding after menopause comes last.
+4. **PLACES-05 in Help** (`privHelp`, the Help sheet):
+   - "Private help" holds the violence, abortion and STI pages, under their own reviewed titles;
+   - they are 2 taps from every screen, at every stage, on a shared phone and in discreet mode;
+   - in a pregnancy, "Pregnant and didn't plan it" (her choices) stands for the abortion page;
+   - after a loss there is no abortion row, as in her topics (Version 39.0);
+   - a page the build holds back isn't offered;
+   - none while she joins, when only sheet rows work.
+5. **Learn by her day** (`dayRead`, the advice's F4), used by Learn's Start here and Today's first-days read:
+   - a pregnancy by her week:
+     - to 12 weeks: registering, the check-ups, her tablets, the danger signs;
+     - 13 to 23 weeks: the check-ups, the danger signs, her tablets, and the baby's movements from 16 weeks;
+     - 24 to 33 weeks: the sugar test, the movements, the danger signs;
+     - from 34 weeks: the danger signs, the movements, the after-birth guides;
+     - "Register before 12 weeks" never after 12 weeks, and the after-birth guides never before 34;
+   - after a birth: only the after-birth guides and the schemes;
+   - midlife: her goal's guide first;
+     - with her periods stopped: early menopause (before 45) and bleeding after menopause, without periods after 40 or
+       contraception;
+     - with her periods still coming: no bleeding after menopause, and no early menopause from 45;
+   - trying: the pregnancy test first when her period is late, and PMOS and a baby for PMOS;
+   - cycles and PMOS:
+     - a late period first, then a girl's first periods, then her goals' guides, then period dos and don'ts on a period day;
+     - never the girls' guide from 18;
+   - then the rest of her chapter in book order.
+   A plan's weekly chapter keeps its one home on Today and My plan, so Learn doesn't repeat it.
+
+**Measured** (`node test/census-walk.mjs`, the 8 census women at 360 × 800; before on 1f578f2):
+- Explore: 20 to 24 taps and 2.4 to 2.9 screens, down to 10 taps and 1.4 to 1.5 screens on days 1 and 8. The intro line folds from
+  her 9th day, the same first week as the tips (Version 39.59).
+- All six places on day 8: 141 to 167 taps, down to 130 to 154 (11 to 14 fewer for each woman); 12.4 to 13.4 screens, down to
+  11.3 to 12.2.
+- Learn and Today are unchanged. The Help sheet goes from 7 taps to 10 (the three private pages).
+- Joining and the daily jobs keep their paths, so their tap counters weren't run.
+
+**Tests.** `node test/library.mjs` (94 checks):
+- Explore's first screen for the 8 women, and its folded line;
+- her questions by her day;
+- the library, the government route, "Nowhere yet" and discreet mode;
+- PLACES-05 at 10 stages and from 7 screens, search, and joining;
+- Start here and Today's read by her day;
+- Hindi at 360 px.
+Updated for what changed on purpose:
+- `places.mjs`: her topics and Contents in the library; 11, the three pages through Help;
+- `value.mjs` 2, 3 and 9: For you under search, and Govt. services on Explore only on the government route;
+- `joining.mjs`: her topics in the library, and the abortion page through Help;
+- `food.mjs` 4;
+- `knowledge.mjs` 4 and 14: dos and don'ts in the library;
+- `companion.mjs` 10b: her first 3 questions;
+- `pictures.mjs` 11: 16 weeks;
+- `pmosplan.mjs` 11;
+- `latepreg.mjs` 6: For you's 3 tools, and the contraction timer on Today from 37 weeks;
+- `check.mjs`: the route `library`.
+
+**Strings.** `lib_h`, `lib_s`, `qa_more`, `hs_priv` (core). English and Hindi. UI words only. The reading order uses the reviewed
+guides' own weeks (review 19.62, for the doctor to glance).
+
+**Not changed.** A locked app hides the Help button, as before (`mem.locked`, the shared-phone rest screen and the PIN lock).
+PostHog names the library "other" until section 103's list has it.

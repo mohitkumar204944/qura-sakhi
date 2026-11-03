@@ -133,10 +133,10 @@ const POST = { situation: { deliveredOn: ago(20), breastfeeding: true }, events:
   errsAll.push(...errs); await ctx.close();
 }
 
-/* ---------- 4. Her stage's dos and don'ts lead "Your questions" ---------- */
+/* ---------- 4. Her stage's dos and don'ts lead her questions (Version 39.62: the library's "More questions") ---------- */
 for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['pregnant', PREG, 'pregnancy.dos-and-donts'], ['after a birth', POST, 'pregnancy.after-birth-dos-and-donts']]) {
-  const { ctx, page, errs } = await open({ seed: seed, hash: '#care' });
-  check('4 ' + name + ': "Dos and don\'ts" is the first, wide tile of Your questions', (await page.$eval('#view .qa-sec .qa-wide', (e) => e.dataset.qa).catch(() => '')) === key, await page.$eval('#view .qa-sec', (e) => e.innerHTML.slice(0, 300)).catch(() => ''));
+  const { ctx, page, errs } = await open({ seed: seed, hash: '#library' });
+  check('4 ' + name + ': "Dos and don\'ts" is the first, wide tile of More questions', (await page.$eval('#view .qa-sec .qa-wide', (e) => e.dataset.qa).catch(() => '')) === key, await page.$eval('#view .qa-sec', (e) => e.innerHTML.slice(0, 300)).catch(() => ''));
   await tap(page, '#view .qa-wide');
   check('4 ' + name + ': it opens as an answer sheet with Listen', (await sheetKey(page)) === key && (await has(page, '#ans-listen')));
   if (name === 'pregnant') {
@@ -147,8 +147,8 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   errsAll.push(...errs); await ctx.close();
 }
 {
-  const { ctx, page, errs } = await open({ seed: { settings: { discreet: true } }, hash: '#care' });
-  check('4 discreet mode: no Your questions, so no dos and don\'ts tile', !(await has(page, '#view .qa-wide')));
+  const { ctx, page, errs } = await open({ seed: { settings: { discreet: true } }, hash: '#library' });
+  check('4 discreet mode: no Your questions, so no dos and don\'ts tile', await has(page, '#view .topic-grid') && !(await has(page, '#view .qa-wide')));
   errsAll.push(...errs); await ctx.close();
 }
 
@@ -462,8 +462,8 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
     await search(c.page, 'delivery ke baad kya kare'); const q2 = await quick(c.page);
     check('14 the stage she types picks the dos and don\'ts (KNOWLEDGE-08)', q1 === 'pregnancy.dos-and-donts' && q2 === 'pregnancy.after-birth-dos-and-donts', [q1, q2]);
     errsAll.push(...c.errs); await c.ctx.close();
-    const m = await open({ seed: { dob: '1972-05-01', situation: { stopped: true }, events: [] }, hash: '#care' });
-    const tile = await has(m.page, '#view .qa-wide'); await search(m.page, 'kya kare'); const mq = await quick(m.page);
+    const m = await open({ seed: { dob: '1972-05-01', situation: { stopped: true }, events: [] }, hash: '#library' });   /* Version 39.62: the tile is in the library */
+    const tile = await has(m.page, '#view .qa-wide') && (await m.page.$eval('#view .qa-wide', (e) => e.dataset.qa)) === 'cycle.period-dos-and-donts'; await search(m.page, 'kya kare'); const mq = await quick(m.page);
     check('14 periods stopped: no periods dos-and-don\'ts tile or quick answer (KNOWLEDGE-08)', !tile && mq !== 'cycle.period-dos-and-donts', [tile, mq]);
     errsAll.push(...m.errs); await m.ctx.close();
     const l = await open({ seed: { situation: { pregEndedOn: ago(14), pregEndedHow: 'loss' }, events: [] } });

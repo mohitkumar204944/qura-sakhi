@@ -147,6 +147,7 @@
       d_start: 'Start', d_end: 'Stop', d_spot: 'Mark', d_day: 'Day', d_weeks: 'weeks', d_hidden: 'Hidden for privacy. Tap the number to show.', d_first: 'Add your first entry to begin.', d_reminder: 'Reminder', today_h: 'Today',
       more: 'More', less: 'Less', show_more: 'Show more', show_less: 'Show less',
       weeks_preg: 'weeks pregnant', due_on: 'Due around {d}', this_week: 'This week', pw_visits: 'Check-up visits', preg_set_date: 'Add the due date from your scan report, or the first day of your last period, to see your week.', preg_date_b: 'Add the date', preg_yes_b: 'I am pregnant',
+      lib_h: 'All topics and guides', lib_s: 'Your topics, every guide and article', qa_more: 'More questions', hs_priv: 'Private help',   /* Version 39.62 */
       for_you: 'For you', care_topics: 'All topics', topic_count: '{n} guides and tools', res_tools: 'Guides and tools', res_articles: 'Articles to read', search_all: 'Search: period, safed pani, PCOD, pregnancy…',
       yob_h: 'What year were you born?', yob_p: 'Sakhi is for women 18 and over. We keep only the year, on this phone.', yob_ph: 'For example 1996', yob_month: 'Which month were you born?', yob_bad: 'Please type a year like 1996',
       goal_h: 'What would you like help with?', goal_p: 'Pick any that fit. You can change this later on the Me page.', g_track: 'Keeping track of my periods', g_avoid: 'Avoiding pregnancy', g_ttc: 'Trying for a baby', g_preg: 'I am pregnant', g_baby: 'I had a baby recently', g_pmos: 'PMOS (PCOS) or irregular periods', g_meno: 'Periods changing after 40', g_learn: 'Just learning', baby_date: 'When was your baby born?', ob_birth_l: 'Date of birth', pill_q: 'I take the pill or another hormone medicine', lp_h_preg: 'First day of your last period', lp_p_preg: 'This gives your due date. Skip it if you do not remember; you can add a scan date later.',
@@ -409,6 +410,7 @@
       d_start: 'शुरू', d_end: 'बंद', d_spot: 'निशान', d_day: 'दिन', d_weeks: 'हफ़्ते', d_hidden: 'गोपनीयता के लिए छिपा है। देखने के लिए नंबर पर टैप करें।', d_first: 'शुरू करने के लिए पहली entry डालें।', d_reminder: 'रिमाइंडर', today_h: 'आज',
       more: 'और पढ़ें', less: 'कम', show_more: 'और दिखाएँ', show_less: 'कम दिखाएँ',
       weeks_preg: 'हफ़्ते की गर्भवती', due_on: 'डिलीवरी लगभग {d}', this_week: 'इस हफ़्ते', pw_visits: 'जाँच की मुलाक़ातें', preg_set_date: 'अपना हफ़्ता देखने के लिए स्कैन रिपोर्ट पर लिखी डिलीवरी की तारीख़ या पिछले पीरियड का पहला दिन डालें।', preg_date_b: 'तारीख़ डालें', preg_yes_b: 'मैं गर्भवती हूँ',
+      lib_h: 'सभी विषय और गाइड', lib_s: 'आपके विषय, हर गाइड और लेख', qa_more: 'और सवाल', hs_priv: 'निजी मदद',
       for_you: 'आपके लिए', care_topics: 'सभी विषय', topic_count: '{n} गाइड और टूल', res_tools: 'गाइड और टूल', res_articles: 'पढ़ने के लिए लेख', search_all: 'खोजें: पीरियड, सफ़ेद पानी, PCOD, गर्भ…',
       yob_h: 'आप किस साल पैदा हुईं?', yob_p: 'Sakhi 18 साल और उससे ऊपर की महिलाओं के लिए है। हम सिर्फ़ साल रखते हैं, इसी फ़ोन पर।', yob_ph: 'जैसे 1996', yob_month: 'आप किस महीने में पैदा हुईं?', yob_bad: 'कृपया 1996 जैसा साल लिखें',
       goal_h: 'आपको किस बात में मदद चाहिए?', goal_p: 'जो भी सही लगे, चुनें। बाद में “मैं” पन्ने पर बदल सकती हैं।', g_track: 'पीरियड का हिसाब रखना', g_avoid: 'गर्भ से बचना', g_ttc: 'बच्चे की कोशिश', g_preg: 'मैं गर्भवती हूँ', g_baby: 'हाल ही में बच्चा हुआ है', g_pmos: 'PMOS (PCOS) या अनियमित पीरियड', g_meno: '40 के बाद पीरियड में बदलाव', g_learn: 'बस जानकारी चाहिए', baby_date: 'बच्चे का जन्म कब हुआ?', ob_birth_l: 'जन्म की तारीख़', pill_q: 'मैं pill या कोई और हॉर्मोन वाली दवा लेती हूँ', lp_h_preg: 'पिछले पीरियड का पहला दिन', lp_p_preg: 'इससे डिलीवरी की तारीख़ निकलती है। याद न हो तो छोड़ दें; scan की तारीख़ बाद में डाल सकती हैं।',
@@ -972,7 +974,7 @@
     if (mem.teen || (age != null && age < 18)) l = ['teen'].concat(l.filter((x) => x !== 'teen'));   /* review PLACES-09: teen mode too */
     if (state.stage === 'app' && lossWeeks()) l = ['loss'].concat(l.filter((x) => ['contra', 'ttc', 'pregtest'].indexOf(x) < 0));   /* after a loss: its own topic, nothing about trying or preventing */
     return l; };
-  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check'];
+  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'library', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check'];
   function register(m) {
     if (!m || !m.id) return;
     MODS.push(m);
@@ -999,7 +1001,7 @@
   /* A module saves right after she does something on its screen: that counts as using a tool (once a day in the garden). */
   const modSave = () => { save(); const r = route(); if (state.stage === 'app' && Date.now() - lastTap < 1500 && modRoute(r) && !/^(joy|docportal|lang)/.test(r)) emit('tool', { route: r, quiet: QUIET.test(r) }); };
   const hueOf = (k) => (api.art ? api.art.hueOf(k) : 'rose');
-  const isOpen = (r) => ['learn', 'help', 'tell', 'ask', 'ask-call', 'care', 'account'].indexOf(r) >= 0 || r.startsWith('a-') || r.startsWith('learn-') || r.startsWith('topic-') || OPEN.some((o) => (o.endsWith('*') ? r.startsWith(o.slice(0, -1)) : o === r));
+  const isOpen = (r) => ['learn', 'help', 'tell', 'ask', 'ask-call', 'care', 'library', 'account'].indexOf(r) >= 0 || r.startsWith('a-') || r.startsWith('learn-') || r.startsWith('topic-') || OPEN.some((o) => (o.endsWith('*') ? r.startsWith(o.slice(0, -1)) : o === r));
   const modRoute = (r) => { if (ROUTES[r]) return { fn: (v) => ROUTES[r].fn(v), mod: ROUTES[r].mod }; const p = PREFIXES.filter((x) => r.startsWith(x.p)).sort((a, b) => b.p.length - a.p.length)[0]; return p ? { fn: (v) => p.fn(v, r.slice(p.p.length)), mod: p.mod } : null; };
 
   /* Reminders: one shared list so the reminders centre, home and the doctor summary all see the same thing.
@@ -1055,12 +1057,21 @@
   /* Version 37: Help in the header, one tap from every screen (docs/companion-journey-2026-10-23.md, section 7.8) */
   /* Version 39.27 (minimalism audit R07): the first row dials 112 (the phone's dialer, number filled in), with every other
      helpline under it. While she joins, only the rows that open on top of the screen show. */
+  /* Version 39.62 (phase D; PLACES-05): the violence, abortion and STI pages, 2 taps from every screen at every stage now that
+     Explore's topics are behind one row. In a pregnancy her choices page stands for the abortion page; after a loss there is
+     none, as in her topics (Version 39.0). Their own titles, under one quiet label. */
+  function privHelp() {
+    const pages = [['intimate-safety', 'intimate_safety', I.lock], [isPregnant() ? 'pregtest-options' : 'pregtest-abortion', isPregnant() ? 'pregtest_opts' : 'pregtest_abort', I.users], ['intimate-sti', 'intimate_sti', I.check]]
+      .filter((x) => modRoute(x[0]) && !triageHidden(x[0]) && !(x[0] === 'pregtest-abortion' && state.stage === 'app' && lossWeeks()));
+    return pages.length ? '<p class="small hs-priv-h">' + esc(t('hs_priv')) + '</p><div class="list hs-priv">' + pages.map((x) => '<button type="button" class="item" data-hs-go="' + x[0] + '"><span class="ico-sm hue hue-rose">' + x[2] + '</span><span class="body"><strong>' + esc(t(x[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '';
+  }
   function openHelpSheet() {
     const joining = state.stage !== 'app' && state.stage !== 'browse';
     const row = (id, ico, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>';
     sheet('<h2>' + esc(t('help')) + '</h2><div class="list hs-list"><a class="item hs-sos hs-112" id="hs-112" href="tel:112"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('hs_112')) + '</strong><span>' + esc(t('hs_112_s')) + '</span></span><span class="chev">' + I.chev + '</span></a>' +
       row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t('hs_doc'), (isPregnant() ? t('hs_doc_s_preg') : t(careGov() ? 'hs_doc_s' : 'hs_doc_s_doc'))) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
-      (modRoute('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>', (sh) => {
+      (modRoute('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>' + (joining ? '' : privHelp()), (sh) => {
+      sh.querySelectorAll('[data-hs-go]').forEach((b) => b.addEventListener('click', () => { closeSheet(true); setHash(b.dataset.hsGo); }));
       $('#hs-sos', sh).addEventListener('click', () => { closeSheet(true); openSOS(); });
       $('#hs-harm', sh).addEventListener('click', () => { closeSheet(true); openHarm(); });
       const hd = $('#hs-doc', sh); if (hd) hd.addEventListener('click', () => { closeSheet(true); ask(''); });
@@ -1084,7 +1095,7 @@
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */
     if (['help', 'tell', 'ask'].indexOf(r) >= 0) return state.stage === 'app' ? '' : 'help';
-    if (['care', 'pattern', 'fertile', 'midlife', 'pregnancy'].indexOf(r) >= 0 || modRoute(r)) return 'care';
+    if (['care', 'library', 'pattern', 'fertile', 'midlife', 'pregnancy'].indexOf(r) >= 0 || modRoute(r)) return 'care';
     return r;
   }
   function renderTabbar() {
@@ -1143,7 +1154,7 @@
     if (mem.under18) return renderUnder18(v);
     if (state.stage === 'welcome') return renderWelcome(v);
     if (state.stage === 'onboard') return renderOnboard(v);
-    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, tell: renderTell, care: renderCare, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) renderArticle(v, r.slice(2));
     else if (r.startsWith('learn-')) { const g = r.slice(6); if ((CONTENT.groups || []).some((x) => x.group === g)) { mem.learnGroup = g; mem.learnSet = true; } safe(() => location.replace('#learn')); }   /* Version 39.7: a chapter of the book, from a module's link */
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
@@ -1525,22 +1536,27 @@
   const canListen = () => !!(window.SakhiAndroid && window.SakhiAndroid.listen);
   const searchBox = (id, val, mic) => '<div class="searchbox' + (mic && canListen() ? ' has-mic' : '') + '">' + I.search + '<input id="' + id + '" type="search" enterkeyhint="search" placeholder="' + esc(t('search_all')) + '" value="' + esc(val || '') + '" aria-label="' + esc(t('search_all')) + '">' + (mic && canListen() ? '<button type="button" class="mic" id="' + id + '-mic" aria-label="' + esc(t('voice_b')) + '">' + MIC + '</button>' : '') + '</div>';
   const wireSearch = (v, id, key) => { const qi = $('#' + id, v); if (!qi) return; qi.addEventListener('input', (e) => { mem[key] = e.target.value; if (e.target.value.trim().length >= 3) usageMark('search'); const pos = e.target.selectionStart; render(); const n = $('#' + id); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }); };
+  /* Version 39.62 (phase D, the advice's 4.6): Explore's first screen is search, For you (her first 3 tools, then her first 3
+     questions by her day), her topic, and one row to the library. Her topics, her other questions, her stage's dos and don'ts and
+     every guide (Contents) are a tap away there. The government's free care stays on this screen for the government route and for
+     "Nowhere yet" (Version 39.28). The abortion, STI and violence pages are in Help, 2 taps from every screen (PLACES-05). */
+  const freeHtml = () => (ROUTES['access-free'] ? '<div class="list care-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('access_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
+  const freeFirst = () => careGov() || careRoute() === 'none';
+  const contentsHtml = () => '<div class="list care-contents"><button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('contents_h')) + '</strong><span>' + esc(tf('all_articles_d', { n: learnGroups().reduce((n, g) => n + (g.articles || []).length, 0) })) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
   function renderCare(v) {
-    const all = visibleTiles(); const q = (mem.careQ || '').trim(); let body = '';
+    const all = visibleTiles(); const q = (mem.careQ || '').trim(); const disc = !!state.settings.discreet; let body = '';
     if (q) body = searchResults(q, all);
     else {
-      const fy = forYouTiles(all);
-      const nRec = planTab() && canSave() && api.plan && api.plan.recs ? safe(() => api.plan.recs().length, 0) : 0;
-      body = (nRec < 0 ? '' : '') +   /* Version 37: no Plans row here; My plan is a tab */
-        (fy.length ? '<section class="care-sec"><h2>' + esc(t('for_you')) + '</h2><div class="list">' + fy.map(tileHtml).join('') + '</div></section>' : '') +
-        (ROUTES['access-free'] ? '<div class="list care-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('access_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '') +
-        qaHtml(!!state.settings.discreet) +
-        topicGrid(all);   /* Version 39.2: her stage's topics first, then All topics */
+      const fy = forYouTiles(all).slice(0, 3);   /* Version 37: no Plans row here; My plan is a tab */
+      const top = disc ? null : topicsFor().find((sec) => topicN(all, sec) > 0);
+      body = (fy.length ? '<section class="care-sec"><h2>' + esc(t('for_you')) + '</h2><div class="list">' + fy.map(tileHtml).join('') + '</div></section>' : '') +
+        qaHtml(disc, qaList(disc).slice(0, 3), 'qa_h', false) + (freeFirst() ? freeHtml() : '') +
+        '<div class="list care-lib">' + (top ? '<button type="button" class="item care-topic" data-go="topic-' + top + '"><span class="ico-sm hue hue-' + hueOf(top) + '">' + icon(SECTION_ICONS[top]) + '</span><span class="body"><strong>' + esc(t('sec_' + top)) + '</strong><span>' + esc(tf('topic_count', { n: topicN(all, top) })) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '') +
+        '<button type="button" class="item care-lib-go" data-go="library"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('lib_h')) + '</strong><span>' + esc(t('lib_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
     }
     if (!q) body += '<button type="button" class="item quiet" data-go="help"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('help_h')) + '</strong><span>' + esc(t('hs_guide_s')) + '</span></span><span class="chev">' + I.chev + '</span></button>';
-    /* Version 39.2: Contents (every guide and article) sits right under search */
-    const contents = q ? '' : '<div class="list care-contents"><button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('contents_h')) + '</strong><span>' + esc(tf('all_articles_d', { n: learnGroups().reduce((n, g) => n + (g.articles || []).length, 0) })) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
-    v.innerHTML = '<h1>' + esc(t('care_h')) + '</h1><p class="small care-p">' + esc(t('care_p')) + '</p>' + searchBox('care-q', mem.careQ, true) + contents + body;
+    /* Version 39.62: the line that says what Explore holds is for her first week (explanation she reads once folds after it) */
+    v.innerHTML = '<h1>' + esc(t('care_h')) + '</h1>' + (state.stage !== 'app' || joinedDays() <= 7 ? '<p class="small care-p">' + esc(t('care_p')) + '</p>' : '') + searchBox('care-q', mem.careQ, true) + body;
     wire(v); wireSearch(v, 'care-q', 'careQ'); wireOneTap(v);
     const mic = $('#care-q-mic', v);
     if (mic) mic.addEventListener('click', () => {
@@ -1548,7 +1564,14 @@
       safe(() => window.SakhiAndroid.listen(langMeta(state.lang).locale || 'en-IN', t('voice_prompt')));
     });
   }
-  const topicCard = (all, sec) => { const n = all.filter((x) => x.section === sec && x.place !== 'help').length + articlesFor(TOPIC_GROUPS[sec] || []).length; if (!n || (sec === 'free' && ROUTES['access-free'])) return '';
+  /* Version 39.62: the library behind Explore's one row */
+  function renderLibrary(v) {
+    const all = visibleTiles(); const disc = !!state.settings.discreet;
+    v.innerHTML = backRow(t('lib_h'), 'care', false) + qaHtml(disc, qaList(disc).slice(3), 'qa_more', true) + topicGrid(all) + (freeFirst() ? '' : freeHtml()) + contentsHtml();
+    wire(v); wireOneTap(v);
+  }
+  const topicN = (all, sec) => (sec === 'free' && ROUTES['access-free'] ? 0 : all.filter((x) => x.section === sec && x.place !== 'help').length + articlesFor(TOPIC_GROUPS[sec] || []).length);
+  const topicCard = (all, sec) => { const n = topicN(all, sec); if (!n) return '';
     return '<button type="button" class="topic-card hue-' + hueOf(sec) + '" data-go="topic-' + sec + '">' + (api.art ? api.art.spot(sec) : '<span class="ico-sm hue">' + icon(SECTION_ICONS[sec]) + '</span>') + '<strong>' + esc(t('sec_' + sec)) + '</strong><span class="small">' + esc(tf('topic_count', { n: n })) + '</span></button>'; };
   function topicGrid(all) {
     const full = SECTIONS.filter((sec) => DRAWERS.indexOf(sec) < 0); const disc = !!state.settings.discreet;
@@ -2094,8 +2117,7 @@
     const out = []; const st = stageNow(); const tdS = toISO(today());
     const logged = (state.daily[tdS] || []).length || state.events.some((e) => e.d === tdS) || (state.prompts || {}).firstLog === tdS;
     if ((st === 'cycle' || st === 'ttc' || (st === 'meno' && !(state.situation || {}).stopped)) && !logged && !feelOn()) out.push({ id: 'core-log', order: 20, icon: 'drop', hue: 'rose', title: t('td_log'), sub: t('td_log_s'), go: 'diary' });
-    const g = stageGroup(); const rd = readsOf();
-    const a = g ? allArticles().filter((x) => x.group === g).find((x) => !rd[x.group + '.' + x.id]) : null;
+    const a = dayRead();   /* Version 39.62: by her day, as Learn's Start here */
     const rdN = (state.prompts || {}).readDays || { n: 0, d: '' };   /* Version 39.59 (the lives audit, R3): on 3 days at most */
     if (a && rdN.d !== tdS && rdN.n >= 3) return out;
     if (a && rdN.d !== tdS && canSave()) { state.prompts = Object.assign({}, state.prompts || {}, { readDays: { n: rdN.n + 1, d: tdS } }); setTimeout(save, 0); }
@@ -3124,14 +3146,33 @@
     };
     draw(); if (focus !== 'note') tourMoment('day');
   }
-  /* Version 37: her stage's common questions, one tap each. They sat under Home's ask box; Explore has them now, under its search. */
-  function qaHtml(disc) {
+  /* Version 37: her stage's common questions, one tap each. They sat under Home's ask box; Explore has them now, under its search.
+     Version 39.62 (phase D): in the order of her day (her goal, a late period, her pregnancy week, the weeks after a birth, whether
+     her periods have stopped); Explore shows the first 3, and the library her stage's dos and don'ts and the rest. */
+  const QA_GOAL = { pain: 'pain', heavy: 'heavy', irregular: 'irreg', weight: 'pmfood', skin: 'pmsigns', hot: 'hot', sleep: 'sleep', mood: 'sleep', bones: 'bones', aches: 'bones' };
+  function qaList(disc) {
+    if (disc) return [];
     const sk = stageNow(); const pm = sk === 'cycle' && (state.situation.pcos || (state.goals || []).indexOf('pmos') >= 0);
-    const list = disc ? [] : (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => !(x[0] === 'feed' && babyGone())).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) : !!findArticle(x[1]));   /* Version 39.46 */
-    /* Version 39.7 (journey audit P3-04): her stage's dos and don'ts, first */
-    const dk = disc ? null : dosKey(null, true); const dA = dk ? findArticle(dk) : null;
+    const list = (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => !(x[0] === 'feed' && babyGone())).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) : !!findArticle(x[1]));   /* Version 39.46 */
+    const ri = sk === 'cycle' || sk === 'ttc' ? rangeInfo() : null; const late = !!ri && today() > ri.to; let lead = []; let drop = []; let last = [];
+    if (sk === 'preg') { const w = (pregInfo() || {}).weeks || 0; lead = ['danger'].concat(w >= 20 ? ['moves'] : [], w >= 24 && w < 30 ? ['sugarbp'] : []); }
+    else if (sk === 'post') { const b = state.situation.deliveredOn; lead = isISO(b) && diffDays(fromISO(b), today()) >= 42 ? ['ppcontra'] : []; }
+    else if (sk === 'ttc') lead = late ? ['ptest'] : [];
+    else {
+      lead = (late ? ['late'] : []).concat((state.goals || []).map((k) => QA_GOAL[k]).filter(Boolean));
+      if (sk === 'meno' && stoppedNow()) { lead.push('pmb'); drop = ['after40']; }
+      else if (sk === 'meno') last = ['pmb'];   /* "Bleeding after menopause" stays, last, while her periods still come */
+    }
+    const kept = list.filter((x) => drop.indexOf(x[0]) < 0);
+    const first = []; lead.forEach((k) => { const x = kept.find((y) => y[0] === k); if (x && first.indexOf(x) < 0) first.push(x); });
+    const rest = kept.filter((x) => first.indexOf(x) < 0);
+    return first.concat(rest.filter((x) => last.indexOf(x[0]) < 0), rest.filter((x) => last.indexOf(x[0]) >= 0));
+  }
+  function qaHtml(disc, list, head, withDos) {
+    /* Version 39.7 (journey audit P3-04): her stage's dos and don'ts, first (Version 39.62: in the library) */
+    const dk = disc || !withDos ? null : dosKey(null, true); const dA = dk ? findArticle(dk) : null;
     const dos = dA ? '<button type="button" class="qa-wide hue-' + hueOf(dA.group) + '" data-qa="' + esc(dk) + '">' + spotFor(dA.group === 'pregnancy' ? (afterBirthNow() ? 'post' : 'preg') : 'periods', true) + '<span><strong>' + esc(t('qa_dos')) + '</strong><span class="small">' + esc(L(dA, 'title')) + '</span></span></button>' : '';
-    return list.length ? '<section class="care-sec qa-sec"><h2>' + esc(t('qa_h')) + '</h2>' + dos + '<div class="qa-grid">' + list.map((x) => '<button type="button" class="qa-tile hue-' + (x[2] === 'danger' ? 'rose' : hueOf(x[2])) + '" data-qa="' + esc(x[1]) + '">' + qaPic(x) + '<span>' + esc(t('qa_' + x[0])) + '</span></button>').join('') + '</div></section>' : '';
+    return list.length || dos ? '<section class="care-sec qa-sec"><h2>' + esc(t(head)) + '</h2>' + dos + (list.length ? '<div class="qa-grid">' + list.map((x) => '<button type="button" class="qa-tile hue-' + (x[2] === 'danger' ? 'rose' : hueOf(x[2])) + '" data-qa="' + esc(x[1]) + '">' + qaPic(x) + '<span>' + esc(t('qa_' + x[0])) + '</span></button>').join('') + '</div>' : '') + '</section>' : '';
   }
   const MIC = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>';
   function wireOneTap(v) {
@@ -3446,7 +3487,7 @@
     { id: 'home-meno', route: 'home', auto: () => !planEarly(), title: 'tour_hmeno', hue: 'purple', order: 20, when: () => notDisc() && stageNow() === 'meno', steps: [
       { sel: '#view .qa-grid', h: 'thm1_h', p: 'thm1_p' }, { sel: '#view .qa-tile[data-qa="midlife.bleeding-after-menopause"]', h: 'thm2_h', p: 'thm2_p' }] },
     { id: 'diary', route: 'diary', title: 'tour_diary', titleD: 'tour_diary_d', hue: 'sky', auto: true, steps: [{ sel: '.diary-paper .cal', h: 'td1_h', p: 'td1_p', pd: 'td1_pd' }, { sel: '.tabs [data-tab="tr"]', h: 'td2_h', p: () => (noPeriodsNow() ? 'td2_pp' : 'td2_p'), pd: 'td2_pd' }, { sel: '#fab', h: 'td3_h', p: () => (noPeriodsNow() ? 'td3_pp' : 'td3_p'), pd: 'td3_pd', tryIt: true }] },
-    { id: 'care', route: 'care', title: 'tour_care', hue: 'teal', auto: true, browse: true, steps: [{ sel: '.topic-grid', h: 'tc1_h', p: 'tc1_p', pd: 'tc1_pd' }, { sel: '[data-lang-read]', h: 'tc2_h', p: 'tc2_p' }, { sel: '#help-btn', h: 'tc3_h', p: 'tc3_p' }] },
+    { id: 'care', route: 'care', title: 'tour_care', hue: 'teal', auto: true, browse: true, steps: [{ sel: '#view .care-lib', h: 'tc1_h', p: 'tc1_p', pd: 'tc1_pd' }, { sel: '[data-lang-read]', h: 'tc2_h', p: 'tc2_p' }, { sel: '#help-btn', h: 'tc3_h', p: 'tc3_p' }] },   /* Version 39.62: her topic and the library row (the topic grid is a tap away) */
     { id: 'help', route: 'help', title: 'tour_help', hue: 'orange', auto: false, browse: true, steps: [{ sel: '.doc-card', h: 'th1_h', p: 'th1_p' }, { sel: '#sos-btn', h: 'th2_h', p: 'th2_p' }] },
     /* Version 34.1: Me points to what she needs early, reminders and her backup, rather than "Delete everything" */
     { id: 'me', route: 'me', title: 'tour_me', hue: 'purple', auto: true, steps: [{ sel: '#me-privacy', h: 'tm1_h', p: 'tm1_p', pw: 'tm1_pw' }, { sel: '#view [data-go="me-reminders"]', h: 'tm3_h', p: 'tm3_p', pd: 'tm3_pd' }, { sel: '#view [data-go="me-data"]', h: 'tm4_h', p: 'tm4_p', pd: 'tm4_pd' }] },
@@ -4400,12 +4441,43 @@
      she hasn't read there */
   const STAGE_GROUP = { cycle: 'cycle', ttc: 'conceive', preg: 'pregnancy', post: 'pregnancy', meno: 'midlife', browse: 'cycle' };
   const stageGroup = () => { if (state.stage !== 'app' && state.stage !== 'browse') return null; if (state.stage === 'app' && afterLossNow()) return null; const sk = stageNow(); if (sk === 'cycle' && (state.situation.pcos || (state.goals || []).indexOf('pmos') >= 0)) return 'pmos'; return STAGE_GROUP[sk] || null; };
+  /* Version 39.62 (phase D; the advice's F4): her next read follows her day, not the book's order. A pregnancy reads by her week,
+     the time after a birth only the after-birth guides, midlife by whether her periods have stopped, and cycles and trying by her
+     goal and a late period. Then the rest of her chapter in book order, leaving out what isn't hers now. Today's first-days read
+     and Learn's Start here both use it. A plan's weekly chapter keeps its own home on Today and My plan. */
+  const READ_GOAL = { pain: 'cycle.painful-periods', heavy: 'cycle.heavy-bleeding-how-to-tell', pms: 'mind_body.mood-and-the-cycle', weight: 'pmos.food-for-hormones', irregular: 'pmos.what-pmos-is', skin: 'pmos.signs-to-notice' };
+  const READ_MID = { hot: 'hot-flushes-night-sweats', sleep: 'sleep-mood-dryness-midlife', mood: 'sleep-mood-dryness-midlife', bones: 'bones-heart-after-40', aches: 'bones-heart-after-40', heavy: 'periods-after-40' };
+  function dayRead() {
+    const g = stageGroup(); if (!g) return null; const rd = readsOf(); const gl = state.goals || []; const age = ageYears();
+    const ri = isPregnant() ? null : rangeInfo(); const late = !!ri && today() > ri.to; let lead = []; let skip = [];
+    if (isPregnant()) {
+      const w = (pregInfo() || {}).weeks; const ab = ['after-birth-first-six-weeks', 'after-birth-dos-and-donts'];
+      if (w == null) skip = ab;
+      else if (w < 13) { lead = ['register-by-12-weeks', 'four-antenatal-visits', 'iron-folic-acid-calcium-td', 'danger-signs-call-112']; skip = ab; }
+      else if (w < 24) { lead = ['four-antenatal-visits', 'danger-signs-call-112', 'iron-folic-acid-calcium-td'].concat(w >= 16 ? ['babys-movements'] : []); skip = ['register-by-12-weeks'].concat(ab); }
+      else if (w < 34) { lead = ['sugar-test-blood-pressure-pmos', 'babys-movements', 'danger-signs-call-112']; skip = ['register-by-12-weeks'].concat(ab); }
+      else { lead = ['danger-signs-call-112', 'babys-movements'].concat(ab); skip = ['register-by-12-weeks', 'sugar-test-blood-pressure-pmos']; }
+    } else if (g === 'pregnancy') {   /* after a birth: only the after-birth guides and the schemes (review KNOWLEDGE-11) */
+      lead = ['after-birth-first-six-weeks', 'after-birth-dos-and-donts', 'government-support-schemes'];
+      skip = allArticles().filter((a) => a.group === g && lead.indexOf(a.id) < 0).map((a) => a.id);
+    } else if (g === 'midlife') {
+      const gk = gl.map((k) => READ_MID[k]).filter(Boolean);
+      if (stoppedNow()) { lead = gk.concat(age != null && age < 45 ? ['early-menopause-poi'] : [], ['bleeding-after-menopause']); skip = ['periods-after-40', 'contraception-perimenopause']; }
+      else { lead = gk; skip = ['bleeding-after-menopause'].concat(age != null && age >= 45 ? ['early-menopause-poi'] : []); }
+    } else if (g === 'conceive') {
+      lead = (late ? ['pregnancy-test-when-and-how'] : []).concat(state.situation.pcos ? ['getting-ready-india-preconception-checklist', 'pmos.pmos-planning-a-baby'] : []); skip = ['after-a-pregnancy-loss-care-and-support'];
+    } else {   /* cycle and PMOS: a late period, then her goals, then her period's dos and don'ts on a period day */
+      const bd = bleedingDays(); const td = bd[toISO(today())]; const teen = mem.teen || (age != null && age < 18);
+      lead = (late ? ['cycle.missed-period-what-to-do-first'] : []).concat(teen ? ['cycle.first-periods-for-teens'] : [], gl.map((k) => READ_GOAL[k]).filter((k) => k && (g === 'pmos' || k.indexOf('pmos.') !== 0)), td && td !== 'spot' ? ['cycle.period-dos-and-donts'] : []);
+      skip = teen ? [] : ['first-periods-for-teens'];
+    }
+    const key = (id) => (id.indexOf('.') > 0 ? id : g + '.' + id); const seen = {};
+    return lead.map((id) => findArticle(key(id))).filter(Boolean).concat(allArticles().filter((a) => a.group === g && skip.indexOf(a.id) < 0))
+      .filter((a) => { const k = a.group + '.' + a.id; return seen[k] ? false : (seen[k] = true); }).find((a) => !rd[a.group + '.' + a.id]) || null;
+  }
   function continueRow() {
-    const g = stageGroup(); if (!g) return ''; const rd = readsOf(); let arts = allArticles().filter((x) => x.group === g);
-    /* review KNOWLEDGE-11: after a birth, the after-birth guides come first in her chapter */
-    if (afterBirthNow()) { const pb = (x) => /^after-birth/.test(x.id); arts = arts.filter(pb).concat(arts.filter((x) => !pb(x))); }
-    const a = arts.find((x) => !rd[x.group + '.' + x.id]); if (!a) return '';
-    const any = arts.some((x) => rd[x.group + '.' + x.id]);
+    const g = stageGroup(); if (!g) return ''; const rd = readsOf(); const a = dayRead(); if (!a) return '';
+    const any = allArticles().some((x) => x.group === g && rd[x.group + '.' + x.id]);
     return '<div class="list learn-next"><button type="button" class="item" data-go="a-' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><span class="eyebrow">' + esc(t(any ? 'learn_next' : 'learn_start')) + '</span><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>';
   }
   const freeRow = () => (ROUTES['access-free'] ? '<div class="list learn-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('learn_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');

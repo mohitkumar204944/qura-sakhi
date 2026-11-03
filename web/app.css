@@ -1343,3 +1343,5 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 @media print { html { background: #FFFFFF !important; } body::before { display: none; } }
 /* Version 39.61 (phase C): the one-page plan from joining */
 .pl-rv-one .pl-rv-sep { border: 0; border-top: 1px solid var(--line); margin: 18px 0 6px; } .pl-rv-one .pl-rv-h { margin: 0 0 8px; }
+/* Version 39.62 (phase D): Help's private pages under one quiet label, closer to their rows than the sheet's gap */
+.hs-priv-h { margin: 2px 4px -6px; }

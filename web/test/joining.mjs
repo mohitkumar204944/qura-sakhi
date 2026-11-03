@@ -51,7 +51,8 @@ const KEYS = /\b(ob|ys|fl|fx|td|fd|plan_off|tour)_[a-z0-9_]+\b/;   /* a string k
 const fits = async (page) => (await noScroll(page)) && !KEYS.test(await view(page));
 const todayRows = (page) => page.$$eval('#view .today-card .today-it', (x) => x.length).catch(() => 0);
 const slotFirst = (page) => page.$eval('#view .slot', (s) => (s.children[1] || {}).className || '').catch(() => '');
-const topics = (page) => page.$$eval('#view .topic-grid [data-go]', (x) => x.map((y) => y.dataset.go.replace('topic-', '')));
+/* Version 39.62 (phase D): her topics are in the library, one row from Explore */
+const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) await go(page, 'library'); return page.$$eval('#view .topic-grid [data-go]', (x) => x.map((y) => y.dataset.go.replace('topic-', ''))); };
 const search = async (page, q) => { await go(page, 'care'); await page.evaluate((x) => { window.Saathi.mem.careQ = x; window.Saathi.render(); }, q); await sleep(300); const r = await page.$$eval('#view section.care-sec [data-go]', (x) => x.map((y) => y.dataset.go)); await page.evaluate(() => { window.Saathi.mem.careQ = ''; }); return r; };
 const closeTips = async (page) => { for (let k = 0; k < 6; k++) { const did = await page.evaluate(() => { const b = document.querySelector('#tour-root #tour-later, #tour-root #tour-next'); if (b) { b.click(); return true; } return false; }); if (!did) break; await sleep(300); } };
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: true });
@@ -134,8 +135,8 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   check(tag + ': then Today offers her plan, first in "Sakhi says", with 3 steps or fewer', /pl-offer/.test(await slotFirst(page)) && (await todayRows(page)) <= 3 && await fits(page), [await slotFirst(page), await todayRows(page)]);
   await shot(page, S.tile + '-' + lang + '-3-today-offer');
   /* Explore and Learn: her stage only; search still finds the rest */
-  await go(page, 'care'); const tp = await topics(page);
-  check(tag + ': Explore shows her stage\'s topics only, with no "All topics"', S.hide.every((x) => tp.indexOf(x) < 0) && tp.indexOf('intimate') >= 0 && !(await has(page, '#topics-all')) && await fits(page), tp);
+  await go(page, 'care'); const exFits = await fits(page); const tp = await topics(page);
+  check(tag + ': Explore shows her stage\'s topics only, with no "All topics" (Version 39.62: in the library)', S.hide.every((x) => tp.indexOf(x) < 0) && tp.indexOf('intimate') >= 0 && !(await has(page, '#topics-all')) && exFits && await fits(page), tp);
   const found = await search(page, S.q);
   check(tag + ': search still finds another stage\'s pages ("' + S.q + '")', found.some((x) => S.qr.test(x)), found.slice(0, 8));
   await go(page, 'learn'); const ch = await page.$$eval('#view .tabs [data-g]', (x) => x.map((y) => y.dataset.g));
@@ -147,7 +148,9 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   check(tag + ': pregnancy loss in 2 taps', (await hashOf(page)) === '#loss');
   await go(page, 'topic-intimate');
   check(tag + ': STIs and safety in 2 taps of Explore (Intimate health)', await has(page, '#view [data-go="intimate-sti"]') && await has(page, '#view [data-go="intimate-safety"]'));
-  if (S.abort) { await go(page, 'topic-pregtest'); check(tag + ': abortion in 2 taps of Explore (Missed period)', tp.indexOf('pregtest') >= 0 && await has(page, '#view [data-go="pregtest-abortion"]'), tp); }
+  if (S.abort) { await go(page, 'topic-pregtest'); check(tag + ': abortion from her Missed period topic (in the library)', tp.indexOf('pregtest') >= 0 && await has(page, '#view [data-go="pregtest-abortion"]'), tp);
+    /* Version 39.62 (phase D; PLACES-05): and 2 taps from every screen, through Help */
+    await tap(page, '#help-btn'); check(tag + ': abortion in 2 taps (Help, then the page)', await has(page, '#sheet-root .hs-priv [data-hs-go="pregtest-abortion"]')); await page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await sleep(200); }
   else { const ab = await search(page, 'abortion'); check(tag + ': abortion found by search', ab.indexOf('pregtest-abortion') >= 0, ab.slice(0, 6)); }
   /* the plan for her first goal (English runs: through its questions to its cards) */
   if (lang === 'en') {

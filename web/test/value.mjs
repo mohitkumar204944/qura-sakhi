@@ -88,17 +88,20 @@ for (const who of ['meera', 'asha']) {
 for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['sunita', ['post-recovery', 'post-pelvic', 'iron']], ['asha', ['contra-mine', 'contra-missed', 'tools-reminders']], ['kamla', ['screen-mine', 'meno-diary']]]) {
   const { ctx, page, errs } = await open({ hash: '#care', sample: who });
   const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
-  /* Version 39.2: Contents (all guides and articles) sits right under search, then For you */
-  check('2 ' + who + ': Explore opens with Contents, then For you, her tools first, then Govt. services; no Plans row (My plan is a tab)', all[0] === 'learn' && all[1] === fy[0] && all.indexOf('plan') < 0 && want.every((r, i) => fy[i] === r) && !fy.some((r) => /^access-|^asha$/.test(r)) && all.indexOf('access-free') === all.indexOf(fy[fy.length - 1]) + 1, [all.slice(0, 8), fy]);
+  /* Version 39.62 (phase D): For you right under search (Contents is in the library); Govt. services on Explore only on the government
+     route or "Nowhere yet", else in the library */
+  const gov = await page.evaluate(() => ['govt', 'asha', 'none'].indexOf((window.Saathi.state.situation || {}).care) >= 0);
+  await go(page, 'library'); const lib = await gos(page, '#view [data-go]'); await go(page, 'care');
+  check('2 ' + who + ': Explore opens with For you, her tools first; no Plans row (My plan is a tab); Govt. services on Explore only on the government route, else in the library', all[0] === fy[0] && all.indexOf('learn') < 0 && all.indexOf('plan') < 0 && want.every((r, i) => fy[i] === r) && !fy.some((r) => /^access-|^asha$/.test(r)) && (gov ? all.indexOf('access-free') >= 0 && lib.indexOf('access-free') < 0 : all.indexOf('access-free') < 0 && lib.indexOf('access-free') >= 0), [all.slice(0, 8), fy, gov, lib.slice(-4)]);
   check('2 ' + who + ': no page errors', !errs.length, errs);
   await ctx.close();
 }
 {
   const { ctx, page, errs } = await open({ hash: '#care' });
-  const topics = await gos(page, '#view .topic-grid [data-go]');
+  await go(page, 'library'); const topics = await gos(page, '#view .topic-grid [data-go]'); await go(page, 'care');   /* Version 39.62: her topics are in the library */
   /* Version 39.2 (journey audit MIN-12): the four tool drawers left the topics; their tools live in Me, Diary, Learn and My plan */
   check('2 no tool drawers among the topics, and Govt. services is a row, not a topic card', ['topic-plans', 'topic-records', 'topic-support', 'topic-fun'].every((x) => topics.indexOf(x) < 0) && topics.indexOf('topic-tools') < 0 && topics.indexOf('topic-free') < 0, topics);
-  const cv = await view(page);
+  await go(page, 'library'); const cv = await view(page); await go(page, 'care');   /* Version 39.62: in the library off the government route */
   check('2 Govt. services keeps its name', cv.indexOf('Govt. services') >= 0);
   await go(page, 'topic-free');
   const free = await gos(page, '#view .list [data-go]');
@@ -128,8 +131,8 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   check('3 the schemes row counts her claims', /My claims: 2/.test(await view(page)));
   check('3 the emergency line: 112, and 108 or 102 for a free ambulance', /Emergency: call 112, or 108 or 102 for a free ambulance/.test(await view(page)));
   check('3 opening it is noted on the phone, for her setup card', await page.evaluate(() => !!window.Saathi.state.mods.access.seenFree));
-  await go(page, 'care');
-  check('3 Care has one Govt. services row', (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length === 1 && /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText)));
+  await go(page, 'care'); const ex = (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length; await go(page, 'library');   /* Version 39.62: Explore or the library, never both */
+  check('3 Care has one Govt. services row', ex + (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length === 1 && /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText).catch(() => '') + (ex ? 'Govt. services' : '')));
   check('3 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -293,8 +296,8 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   check('9 Hindi: the setup card and the slot', /Sakhi को अपने लिए तैयार करें/.test(v) && /Sakhi कहती है/i.test(v), v.slice(0, 600));
   await go(page, 'access-free');
   check('9 Hindi: Govt. services', /सरकारी सेवाएँ/.test(await view(page)) && /एम्बुलेंस/.test(await view(page)));
-  await go(page, 'care');
-  check('9 Hindi: Explore, Govt. services and her topics, with no Plans row and no drawers', /खोजें/.test(await view(page)) && !/आपके लिए प्लान/.test(await view(page)) && /सरकारी सेवाएँ/.test(await view(page)) && /आपके लिए विषय/.test(await view(page)) && !/बस मज़े के लिए/.test(await view(page)));
+  await go(page, 'care'); const ev = await view(page); await go(page, 'library'); const lv = await view(page);   /* Version 39.62: her topics in the library */
+  check('9 Hindi: Explore, Govt. services and her topics, with no Plans row and no drawers', /खोजें/.test(ev) && !/आपके लिए प्लान/.test(ev + lv) && /सरकारी सेवाएँ/.test(ev + lv) && /आपके लिए विषय/.test(lv) && !/बस मज़े के लिए/.test(ev + lv));
   check('9 no page errors', !errs.length, errs);
   await ctx.close();
 }

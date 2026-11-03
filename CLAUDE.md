@@ -472,6 +472,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "Your Sakhi" leads with "Make my plan", then her plan's questions without her goal again or a summary, Back to Your Sakhi;
     - one page for her plan from joining (her steps and Start), and her plan offered on Today from the start ("Just my diary for now").
     `web/test/taps/join-run.mjs` takes the path `plan`. Contract: MODULE_API section 104; wording: section 19.61 (UI words only).
+  - `node test/library.mjs` (Version 39.62, phase D, Explore and Learn by her day; Mohit, 3 Nov: "proceed with phase D"; the advice's 4.6):
+    - Explore's first screen: search, For you (her first 3 tools and her first 3 questions, by her day), her topic, and "All topics
+      and guides" (route `library`: dos and don'ts and her other questions, her topics, Govt. services off the government route, Contents);
+    - the violence, abortion and STI pages in Help's "Private help", 2 taps from every screen at every stage (PLACES-05);
+    - Learn's Start here and Today's first-days read by her week, her days after a birth, her goal and a late period (F4).
+    Contract: MODULE_API section 105; wording: section 19.62 (UI words only; the reading order for the doctor to glance).
   - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
     what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
     `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):

@@ -323,10 +323,10 @@ for (const [stage, goal] of [['cycle', 'track']]) {
 {
   const { ctx, page, errs } = await open({ hash: '#care', seed: { situation: { pregnant: true, pregnantSince: ago(170) }, events: [] } });
   const qa = await page.$$eval('#view .qa-sec .qa-tile', (b) => b.map((x) => x.innerText.trim()));
-  check('10b pregnant: Explore has her questions, Danger signs first', qa[0] === 'Danger signs' && qa.length >= 4 && /Your questions/.test(await view(page)), qa);
+  check('10b pregnant: Explore has her questions, Danger signs first (Version 39.62: her first 3; the rest in the library)', qa[0] === 'Danger signs' && qa.length === 3 && /Your questions/.test(await view(page)), qa);
   const order = await page.evaluate(() => [...document.querySelectorAll('#view h2')].map((x) => x.innerText));
-  /* Version 39.2: the topics heading is "Topics for you" (her stage's topics, then All topics) */
-  check('10b her questions come after For you and before the topics', order.indexOf('Your questions') > order.indexOf('For you') && order.indexOf('Your questions') < order.indexOf('Topics for you'), order);
+  /* Version 39.62 (phase D): her topics are in the library, behind the row under her questions */
+  check('10b her questions come after For you and before the library row', order.indexOf('Your questions') > order.indexOf('For you') && order.indexOf('Topics for you') < 0 && await page.evaluate(() => { const q = document.querySelector('#view .qa-sec'); const l = document.querySelector('#view [data-go="library"]'); return !!q && !!l && !!(q.compareDocumentPosition(l) & 4); }), order);
   await tap(page, '#view .qa-sec .qa-tile');
   check('10b one tap opens the answer', /go now, not tomorrow/i.test(await page.$eval('#sheet-root', (e) => e.innerText).catch(() => '')));
   await page.evaluate(() => window.Saathi.closeSheet()); await settle(page);

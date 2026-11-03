@@ -7,7 +7,8 @@
 //   4 "My baby is born" starts on today's date with "I am breastfeeding" ticked;
 //   5 bleeding in a pregnancy is "Bleeding" in the Diary (My cycles and Days), not a cycle that runs to now or "Period started",
 //     with no "Add a past period"; her last period before it stays a period;
-//   6 from 34 weeks For you has her hospital bag, birth plan and contraction timer, right after her goal's first tool;
+//   6 from 34 weeks For you has her hospital bag, birth plan and contraction timer, right after her goal's first tool (Version 39.62:
+//     her first 3 tools, so the contraction timer is on Today from 37 weeks);
 //   7 the week page's "Call 112 now if" card has a Call 112 button;
 //   8 in a pregnancy Help's "See a doctor" and the screen it opens say her gynaecologist looks after the pregnancy;
 //   9 Hindi at 360 px; 10 no page errors.
@@ -160,7 +161,10 @@ const fyRoutes = (a) => a.page.$$eval('.care-sec .list [data-go]', (xs) => xs.ma
 {
   const a = await open({ seed: withPlan(30, {}, { situation: sit(38) }), hash: 'care' });
   const r = await fyRoutes(a);
-  check('6 38 weeks: For you has the hospital bag, birth plan and contraction timer, after her goal\'s first tool', r.slice(1, 4).join() === 'pregtools-bag,pregtools-birth,pregtools-contractions' && r.length <= 5, r);
+  /* Version 39.62 (phase D): For you holds her first 3 tools; from 37 weeks the contraction timer is on Today (Version 39.40) */
+  check('6 38 weeks: For you has the hospital bag and birth plan, after her goal\'s first tool', r.slice(1, 3).join() === 'pregtools-bag,pregtools-birth' && r.length <= 3, r);
+  await a.page.evaluate(() => { location.hash = 'home'; }); await settle(a.page, 500);
+  check('6 ... and the contraction timer on Today', await a.page.$('#view [data-go="pregtools-contractions"]').then((x) => !!x));
   await done(a);
   const b = await open({ seed: withPlan(30, {}, { situation: sit(20) }), hash: 'care' });
   const r2 = await fyRoutes(b);
