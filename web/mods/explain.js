@@ -308,6 +308,17 @@
     const g = pairGoal(f); if (!g) return '';
     return '<p class="xp-or">' + esc(t('explain_pair_h')) + '</p><div class="xp-plan">' + (S.plan.goalIco ? S.plan.goalIco(g) : '') + '<span class="body"><strong>' + esc(t(PAIR_T[g])) + '</strong><span>' + esc(tf('explain_pair_s', { g: t('plan_gv_' + g) })) + '</span></span><button type="button" class="btn sm xp-start" data-xp-plan="' + g + '">' + esc(t('explain_pair_go')) + '</button></div>';
   }
+  /* Version 39.64 (phase E, part 2; Mohit, 3 Nov: "Qura first, gynaecologist second"): beside "Ask a Qura doctor", the doctor a sign
+     needs: a gynaecologist, or a doctor (MBBS). The map is the packet's (docs/doctor-ladder-packet-2026-11-03.md, section 2), for the
+     doctor to confirm. Low mood leads with Tele-MANAS instead. */
+  const DOC_NEXT = { bleed_after_stop: 'gyn', aftersex: 'gyn', spot_between: 'gyn', period_long: 'gyn', flow_heavy: 'gyn', pain_severe: 'gyn', sexpain: 'gyn', gap_long: 'gyn', gap_short: 'gyn', late_now: 'gyn', androgen: 'gyn', disch: 'gyn', m_hot: 'gyn', neck: 'doc', hb_low: 'doc', burn: 'doc', m_palp: 'doc' };
+  const MIND = ['mood', 'pp_mood'];
+  /* her own doctor's number if she saved it; else, on the government route, the free government gynaecologist (or doctor); else care
+     near her */
+  const docNext = (k) => { const lbl = t(k === 'gyn' ? 'xp_gyn' : 'hs_doc'); const n = S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;
+    if (n) return '<a class="btn sm xp-doc" href="tel:' + esc(n) + '">' + esc(lbl) + '</a>';
+    const go = S.care && S.care.gov && S.care.gov() ? (k === 'gyn' ? 'a-services.see-gynaecologist-government-hospital' : 'access-doctor') : (S.routeOwner('access-care') ? 'access-care' : 'access-free');
+    return '<button type="button" class="btn sm xp-doc" data-go="' + go + '">' + esc(lbl) + '</button>'; };
   function actsHtml(f, compact, noPair) {
     const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
     const goOk = x.go && (S.routeOwner(x.go) || ['diary', 'help', 'care', 'learn'].indexOf(x.go) >= 0 || x.go.indexOf('topic-') === 0 || x.go.indexOf('a-') === 0);
@@ -318,7 +329,10 @@
       const md = f.lv === 'today' && S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;   /* Version 39.63: her own doctor first, when she saved the number */
       if (md) main.push('<a class="btn sm primary xp-mydoc" href="tel:' + esc(md) + '">' + esc(t('mydoc_call')) + '</a>');
       if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), md ? '' : 'primary'));
-      if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), 'primary'));
+      const mind = f.lv !== 'today' && MIND.indexOf(f.id) >= 0;   /* Version 39.64: low mood, Tele-MANAS first (Mohit, 3 Nov) */
+      if (mind) main.push('<a class="btn sm primary xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>');
+      if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), mind ? '' : 'primary'));
+      if (f.lv !== 'today' && DOC_NEXT[f.id]) main.push(docNext(DOC_NEXT[f.id]));
       if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
     } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
     const ck = CHECK[f.id];
@@ -433,7 +447,7 @@
         explain_p: 'Sakhi looks at what you logged and explains it in plain words. This is not a diagnosis. Only a doctor who examines you can say what is causing something.',
         explain_none: 'Nothing unusual in what you logged in the last few weeks.', explain_why: 'Common reasons', explain_do: 'What you can do', explain_see: 'When to see a doctor',
         explain_more: 'Read more', explain_got: 'Got it', explain_got_toast: 'Hidden from Today. It stays on this page.', explain_means: 'What this means', explain_numbers: 'Emergency numbers', explain_free: 'Free doctor or hospital',
-        explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_still: 'Still to see a doctor?', explain_seen_doc: 'I’ve seen a doctor', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
+        xp_gyn: 'See a gynaecologist', explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_still: 'Still to see a doctor?', explain_seen_doc: 'I’ve seen a doctor', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
         explain_how: 'How Sakhi works out your numbers', explain_h_day: 'Cycle day: day 1 is the day your period starts. Today is day {n}.', explain_h_gap: 'Gap: the days from one period start to the next.',
         explain_h_usual: 'Usual gap: 21 to 35 days, or 21 to 45 in the first few years of periods.', explain_h_likely: 'Likely next period: shown only when your last gaps differ by 21 days or less. It runs from your shortest gap minus 2 days to your longest gap plus 2 days.',
         explain_h_out: 'Left out of the maths: gaps touched by hormonal contraception, a pregnancy or the year after a birth, and a second start less than 10 days after the last one.',
@@ -449,7 +463,7 @@
         explain_p: 'Sakhi आपकी दर्ज की गई बातों को देखकर आसान भाषा में समझाती है। यह diagnosis नहीं है। कारण क्या है, यह सिर्फ़ जाँच करने वाली डॉक्टर बता सकती हैं।',
         explain_none: 'पिछले कुछ हफ़्तों में आपने जो दर्ज किया, उसमें कुछ असामान्य नहीं है।', explain_why: 'आम कारण', explain_do: 'आप क्या कर सकती हैं', explain_see: 'डॉक्टर को कब दिखाएँ',
         explain_more: 'और पढ़ें', explain_got: 'समझ गई', explain_got_toast: '“आज” से हटा दिया। यह इस पन्ने पर रहेगा।', explain_means: 'इसका मतलब क्या है', explain_numbers: 'आपातकालीन नंबर', explain_free: 'मुफ़्त डॉक्टर या अस्पताल',
-        explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_still: 'अभी डॉक्टर को दिखाना बाक़ी है?', explain_seen_doc: 'मैं डॉक्टर को दिखा चुकी हूँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
+        xp_gyn: 'स्त्री रोग विशेषज्ञ को दिखाएँ', explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_still: 'अभी डॉक्टर को दिखाना बाक़ी है?', explain_seen_doc: 'मैं डॉक्टर को दिखा चुकी हूँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
         explain_how: 'Sakhi आपके नंबर कैसे निकालती है', explain_h_day: 'चक्र का दिन: पीरियड शुरू होने का दिन, दिन 1 है। आज दिन {n} है।', explain_h_gap: 'अंतर: एक पीरियड की शुरुआत से अगले पीरियड की शुरुआत तक के दिन।',
         explain_h_usual: 'आम अंतर: 21 से 35 दिन, या पीरियड के शुरुआती कुछ सालों में 21 से 45 दिन।', explain_h_likely: 'अगला संभावित पीरियड: तभी दिखता है जब आपके पिछले अंतर आपस में 21 दिन से ज़्यादा अलग न हों। यह आपके सबसे छोटे अंतर से 2 दिन पहले से, सबसे लंबे अंतर के 2 दिन बाद तक होता है।',
         explain_h_out: 'गिनती से बाहर: हॉर्मोन वाले गर्भनिरोध, गर्भ या डिलीवरी के बाद के पहले साल से जुड़े अंतर, और पिछली शुरुआत के 10 दिन के अंदर दर्ज की गई दूसरी शुरुआत।',

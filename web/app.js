@@ -3490,10 +3490,10 @@
       { sel: '#view .card.hero', h: () => (earlyPost() ? 'tpp1_h' : 'tpp1_hl'), p: () => (earlyPost() ? 'tpp1_p' : 'tpp1_pl'), vars: () => ({ b: t('pp_go') }) },
       { sel: '#view .ract-row', h: 'thp2_h', p: () => (earlyPost() ? 'tpp2_p' : 'tpp2_pl'), vars: () => ({ a: t('pp_rec_b'), b: t('pp_feed_b') }) },
       { sel: '#view .today-card', h: 'tw4_h', p: 'tw4_p', when: () => !firstDaysOnly() }] },
-    { id: 'home-ttc', route: 'home', auto: () => !planEarly(), title: 'tour_httc', hue: 'green', order: 20, when: () => notDisc() && stageNow() === 'ttc', steps: [
+    { id: 'home-ttc', route: 'care', auto: () => !planEarly(), title: 'tour_httc', hue: 'green', order: 20, when: () => notDisc() && stageNow() === 'ttc', steps: [
       /* Version 34.1: Home no longer links to her trying tools (they're in Care), so the second step points there */
-      { sel: '#view .qa-grid', h: 'tht2_h', p: 'tht2_p' }, { sel: '#tabbar [data-go="care"]', h: 'tht3_h', p: 'tht3_p' }] },
-    { id: 'home-meno', route: 'home', auto: () => !planEarly(), title: 'tour_hmeno', hue: 'purple', order: 20, when: () => notDisc() && stageNow() === 'meno', steps: [
+      { sel: '#view .qa-grid', h: 'tht2_h', p: 'tht2_p' }, { sel: '#view .care-topic', h: 'tht3_h', p: 'tht3_p' }] },   /* Version 39.64 (Mohit, 3 Nov): her questions moved to Explore in Version 37, so the tip shows there */
+    { id: 'home-meno', route: 'care', auto: () => !planEarly(), title: 'tour_hmeno', hue: 'purple', order: 20, when: () => notDisc() && stageNow() === 'meno', steps: [
       { sel: '#view .qa-grid', h: 'thm1_h', p: 'thm1_p' }, { sel: '#view .qa-tile[data-qa="midlife.bleeding-after-menopause"]', h: 'thm2_h', p: 'thm2_p' }] },
     { id: 'diary', route: 'diary', title: 'tour_diary', titleD: 'tour_diary_d', hue: 'sky', auto: true, steps: [{ sel: '.diary-paper .cal', h: 'td1_h', p: 'td1_p', pd: 'td1_pd' }, { sel: '.tabs [data-tab="tr"]', h: 'td2_h', p: () => (noPeriodsNow() ? 'td2_pp' : 'td2_p'), pd: 'td2_pd' }, { sel: '#fab', h: 'td3_h', p: () => (noPeriodsNow() ? 'td3_pp' : 'td3_p'), pd: 'td3_pd', tryIt: true }] },
     { id: 'care', route: 'care', title: 'tour_care', hue: 'teal', auto: true, browse: true, steps: [{ sel: '#view .care-lib', h: 'tc1_h', p: 'tc1_p', pd: 'tc1_pd' }, { sel: '[data-lang-read]', h: 'tc2_h', p: 'tc2_p' }, { sel: '#help-btn', h: 'tc3_h', p: 'tc3_p' }] },   /* Version 39.62: her topic and the library row (the topic grid is a tap away) */

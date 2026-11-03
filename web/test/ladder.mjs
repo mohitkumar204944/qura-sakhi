@@ -7,6 +7,10 @@
 // - 4 one doctor card on Today: her plan's "Did you get the doctor check?" waits while a sign from her diary shows, and comes
 //   back when she puts the sign away ("I've seen a doctor" counts as the check, Version 39.57); a check that covers the sign leads;
 // - 5 "See a doctor today": "Call my doctor" first when she saved the number;
+// - 7 Version 39.64 (part 2; Mohit, 3 Nov: "Qura first, gynaecologist second"): every sign keeps "Ask a Qura doctor" first, with
+//   "See a gynaecologist" or "See a doctor" second where the packet's map says (her own doctor's number if saved; the free
+//   government gynaecologist on the government route; else care near her); low mood leads with Tele-MANAS; no line steers her away
+//   from the Qura doctor; the trying and midlife tips show on Explore;
 // - 6 Hindi at 360 px; no page errors.
 // Usage: node test/ladder.mjs [web dir]
 import fs from 'node:fs';
@@ -170,6 +174,37 @@ const sent = (page) => page.evaluate(() => (window.Saathi.state.calls || []).map
   a = await open({ seed: sd(), hash: '#explain' });
   const b2 = await a.page.$$eval('#view .xp-card.xp-today .xp-acts a, #view .xp-card.xp-today .xp-acts button', (b) => b.map((x) => [x.innerText.trim(), x.classList.contains('primary')]));
   check('5 ... without the number: free care near her first, as before', !(await has(a.page, '#view .xp-mydoc')) && b2[0] && b2[0][1], b2);
+  await done(a);
+}
+
+/* ---------- 7. Part 2: the doctor a sign needs, second ---------- */
+const acts = (page, cls) => page.$$eval('#view .xp-card' + (cls || '') + ' .xp-acts a, #view .xp-card' + (cls || '') + ' .xp-acts button', (b) => b.map((x) => ({ t: x.innerText.trim(), p: x.classList.contains('primary'), go: x.dataset.go || x.getAttribute('href') || '' })));
+const card = (page, id) => page.evaluate((x) => { const f = (window.Saathi.explain.findings() || []).find((y) => y.id === x); if (!f) return null; const c = [...document.querySelectorAll('#view .xp-card')].find((e) => e.innerText.indexOf(window.Saathi.explain.label(f).t) >= 0); return c ? [...c.querySelectorAll('.xp-acts a, .xp-acts button')].map((b) => ({ t: b.innerText.trim(), p: b.classList.contains('primary'), go: b.dataset.go || b.getAttribute('href') || '' })) : null; }, id);
+{
+  let a = await open({ seed: { events: heavy(12) }, hash: '#explain' });
+  let c = await card(a.page, 'flow_heavy');
+  check('7 heavy flow: "Ask a Qura doctor" first, then "See a gynaecologist" (care near her)', c && /Ask a Qura doctor/.test(c[0].t) && c[0].p && c[1].t === 'See a gynaecologist' && !c[1].p && /^access-(care|free)$/.test(c[1].go), c);
+  check('7 ... and no line that sends her away from the Qura doctor', !/needs a gynaecologist/i.test(await view(a.page)));
+  await done(a);
+  a = await open({ seed: { events: heavy(12), mydoc: { tel: '9876500000' } }, hash: '#explain' });
+  c = await card(a.page, 'flow_heavy');
+  check('7 ... her doctor saved: "See a gynaecologist" calls her number', c && c[1] && c[1].go === 'tel:9876500000', c);
+  await done(a);
+  a = await open({ seed: { events: heavy(12), situation: { care: 'govt' } }, hash: '#explain' });
+  c = await card(a.page, 'flow_heavy');
+  check('7 ... the government route: the free government gynaecologist', c && c[1] && c[1].go === 'a-services.see-gynaecologist-government-hospital', c);
+  await done(a);
+  a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['burn'], kind: 'cycle' } } }, hash: '#explain' });
+  c = await card(a.page, 'burn');
+  check('7 burning when she pees: "Ask a Qura doctor", then "See a doctor"', c && /Ask a Qura doctor/.test(c[0].t) && c[1] && c[1].t === 'See a doctor', c);
+  await done(a);
+  a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['mood'], kind: 'cycle' } } }, hash: '#explain' });
+  c = await card(a.page, 'mood');
+  check('7 low mood: Tele-MANAS 14416 first, then "Ask a Qura doctor"', c && c[0].go === 'tel:14416' && c[0].p && /Ask a Qura doctor/.test((c[1] || {}).t || ''), c);
+  await done(a);
+  a = await open({ seed: { situation: { care: 'private', planning: true }, goals: ['ready'], joined: ago(2), tours: {}, settings: { toursAuto: true, notify: true } }, hash: '#care' });
+  await settle(a.page, 1500);
+  check('7 the trying-for-a-baby tip shows on Explore, at her questions', /Questions for planning a baby/.test(await txt(a.page, '#tour-root')), await txt(a.page, '#tour-root'));
   await done(a);
 }
 

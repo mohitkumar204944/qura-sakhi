@@ -13,6 +13,9 @@ The advice says the doctor packet comes first. This is it.
 signs that need an exam, a scan or prescription medicine, such as bleeding after menopause. The lives audit (3 Nov) found that on
 Sunita's page. The reviewed "see a doctor" lines in each card stay word for word. Only the buttons under them change.
 
+**Update, 3 Nov:** Mohit answered sections 2 to 4 for the product (section 7, built as Version 39.64). The sign map waits for you, and
+so do the private pages in Help (section 8).
+
 **Built now, without waiting (Version 39.63, UI only):** the 3-tap request, one label, one doctor card at a time on Today, and her
 own doctor's Call first for a "see a doctor today" sign. See section 5. Everything in sections 2 to 4 waits for your answers.
 
@@ -104,3 +107,37 @@ saved the number (built now, section 5). "Now" signs keep Call 112, unchanged.
 4. Low mood: Tele-MANAS 14416 first, then "a doctor"? Should a Qura doctor be offered at all for low mood?
 5. Section 3's "Qura’s doctors can help with food, sleep and habits. This check needs a gynaecologist." Is that fair and clear?
 6. Section 4's order: is her own doctor's Call before "Ask a Qura doctor" right?
+
+---
+
+## 7. Mohit's answers (3 Nov), built as Version 39.64
+
+Mohit answered sections 2 to 4 himself, for the product. The sign map in section 2 still waits for the doctor (†).
+- **Qura first, gynaecologist second.** Every sign keeps "Ask a Qura doctor" as its first button. "See a gynaecologist" (or "See a
+  doctor" for an MBBS sign) is the second, for the signs section 2 marks. This replaces the "Proposed first" column: the right
+  doctor is offered beside the Qura doctor, not before it.
+- **No line that steers her away from the Qura doctor.** Section 3's "This check needs a gynaecologist" is dropped. His words: "No
+  recommend a qura doctor".
+- **A woman near a PHC:** the button says "See a gynaecologist".
+  - It opens her own doctor's number if she saved it.
+  - Otherwise, on the government route, it opens the guide to seeing a gynaecologist at a government hospital, or the free doctor
+    page for an MBBS sign.
+  - Otherwise it opens Care near me.
+- **Low mood:** Tele-MANAS 14416 first, then "Ask a Qura doctor".
+- **The locked app** keeps Help hidden, for privacy.
+
+**Still for the doctor:**
+1. Section 2's map: is each sign's second doctor right (gynaecologist, or an MBBS doctor)?
+2. Section 8 below.
+
+## 8. For the doctor to glance: the private pages in Help (Version 39.62)
+
+Phase D moved three pages from Explore's topic grid into Help's "Private help": "Violence and your safety", "Safe, legal abortion"
+and "STI tests: free and private". Each is now 2 taps from every screen, at every stage, through the Help button on every screen.
+- In a pregnancy, "Pregnant and didn't plan it" (her choices, without judgement) stands for the abortion page.
+- After a loss there is no abortion row, as in her topics.
+- On a shared phone the group shows, with the pages' own titles.
+
+Search still finds all three, and their topics are a tap further, in the library.
+
+**Question:** is Help the right place for them, with these titles, on a shared phone too?

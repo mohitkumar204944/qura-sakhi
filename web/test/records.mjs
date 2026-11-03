@@ -164,7 +164,8 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   await diaryShows(a.page);
   const b = await a.page.$$eval('#view .xp-dcard.xp-month .xp-acts:not(.xp-more) .btn', (x) => x.map((y) => y.textContent.trim()));
   /* Version 39.25 (Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a Qura doctor first */
-  check('5 a "this month" card: a Qura doctor, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a Qura doctor about this | My report for the doctor', b);
+  /* Version 39.64 (phase E; Mohit, 3 Nov: "Qura first, gynaecologist second"): the doctor the sign needs comes second */
+  check('5 a "this month" card: a Qura doctor, then the gynaecologist, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a Qura doctor about this | See a gynaecologist | My report for the doctor', b);
   check('5 ... and "Check the signs", a free plan beside it and "What this means"', /Check the signs \(2 minutes\)/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
   await tap(a.page, '#view .xp-dcard.xp-month [data-xp-rp]');
   const q = await a.page.$$eval('#view ol.steps li', (x) => x.map((y) => y.textContent));

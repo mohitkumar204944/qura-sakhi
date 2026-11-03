@@ -3352,3 +3352,10 @@ first when she saved the number.
 **The doctor's questions are in their own packet:** `docs/doctor-ladder-packet-2026-11-03.md`. It asks which doctor each sign in
 her diary should name first (a gynaecologist, a doctor, or a Qura doctor), gives two new lines for it, and asks the order of a
 doctor card's buttons. Nothing there is built yet.
+
+### 19.64 Version 39.64: phase E, the doctor ladder's second part (MODULE_API section 107)
+
+Mohit, 3 Nov, answering the packet: "Qura first, gynaecologist second". A sign in her diary keeps "Ask a Qura doctor about this"
+first, and gets "See a gynaecologist" (new UI words; the baby plan's Hindi) or "See a doctor" second. Low mood or anxiety leads with
+"Call 14416" (Tele-MANAS), then "Ask a Qura doctor". **For the doctor:** which signs get which second doctor is the packet's
+section 2 map (`docs/doctor-ladder-packet-2026-11-03.md`, sections 7 and 8). The reviewed "see a doctor" lines are unchanged.

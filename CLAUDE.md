@@ -484,6 +484,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - one doctor card on Today (her plan's check waits for a sign from her diary); "Call my doctor" first for a sign for today.
     Which doctor each sign names waits for the doctor: `docs/doctor-ladder-packet-2026-11-03.md`. Contract: MODULE_API section 106;
     wording: section 19.63 (UI words only).
+    Version 39.64 (Mohit, 3 Nov, answering the packet: "Qura first, gynaecologist second"):
+    - every sign keeps "Ask a Qura doctor" first, with "See a gynaecologist" or "See a doctor" second (her number, the government
+      route's guide, or Care near me);
+    - low mood leads with Tele-MANAS 14416;
+    - the trying and midlife tips show on Explore.
+    The test's section 7. Contract: MODULE_API section 107; wording: section 19.64 (the sign map for the doctor).
   - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
     what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
     `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):

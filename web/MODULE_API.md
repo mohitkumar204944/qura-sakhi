@@ -6927,3 +6927,35 @@ packet first: `docs/doctor-ladder-packet-2026-11-03.md` asks the doctor which do
 - one doctor card on Today;
 - "Call my doctor";
 - Hindi at 360 px.
+
+## 107. Version 39.64: phase E, the doctor ladder's second part
+
+Mohit, 3 Nov, answering the doctor packet's questions himself (`docs/doctor-ladder-packet-2026-11-03.md`, section 7): "Qura first,
+gynaecologist second", the gynaecologist button as "See a gynaecologist", "Tele-MANAS, then Qura" for low mood, and no line that
+steers her away from the Qura doctor ("No recommend a qura doctor"). The locked app keeps Help hidden.
+1. **The doctor a sign needs, second** (`mods/explain.js` `DOC_NEXT`, `docNext`; the finding cards on What your diary shows and the
+   Diary):
+   - every sign at "this week" or "this month" keeps "Ask a Qura doctor about this" first;
+   - "See a gynaecologist" (`xp_gyn`) or "See a doctor" comes second, for the packet's map, which the doctor confirms:
+     - a gynaecologist: bleeding after menopause or after sex, spotting, a long or heavy period, pain that stopped her day, pain
+       during sex, long or short gaps, no period for 90 days, PMOS signs, discharge, hot flushes;
+     - a doctor (MBBS): the sugar-test sign, low Hb, burning when she pees, a racing heartbeat;
+   - the button calls her own doctor's number when she saved it (never in discreet mode);
+   - otherwise, on the government route, it opens the guide to a gynaecologist at a government hospital, or the free doctor page for
+     an MBBS sign;
+   - otherwise it opens Care near me (Govt. services without its data).
+2. **Low mood** (`MIND`: low mood or anxiety, low mood after the birth): "Call 14416" (Tele-MANAS) first, then "Ask a Qura doctor".
+3. **The trying-for-a-baby and midlife tips** (`home-ttc`, `home-meno`) show on Explore, where their quick answers moved in Version
+   37. On Today they ended at once. The trying tip's second step points at her topic, Trying for a baby. The midlife tip's second
+   step, bleeding after menopause, shows where that question is among her first three: once her periods have stopped.
+
+**Strings.** `xp_gyn` (explain.js). English and Hindi (the baby plan's Hindi for a gynaecologist). UI words only. The map is the
+packet's, marked † for the doctor.
+
+**Tests.** `node test/ladder.mjs` section 7 (now 34 checks):
+- heavy flow: "Ask a Qura doctor", then "See a gynaecologist", with no line against the Qura doctor;
+- her saved number;
+- the government route;
+- burning: "See a doctor";
+- low mood: Tele-MANAS first;
+- the trying tip on Explore.
