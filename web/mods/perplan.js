@@ -191,7 +191,7 @@
   const call = (n) => '<a class="btn danger sm" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>';
   const topic = () => { const P = S.plan && S.plan.period; const id = P && P.lesson(); return id && L[id] ? tx(GOAL[id.charAt(0)]) : tx(GOAL.p); };
   function cardHtml(c) {
-    if (c.u) return '<div class="card urgent per-les" role="alert" data-say="1"><p class="per-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent per-les" role="alert" data-say="1"><p class="per-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     const ask = c.ask ? '<button type="button" class="btn sm primary" data-ask="' + esc(topic()) + '">' + esc(t('ask_qura')) + '</button>' : '';
     return '<div class="card per-les' + (c.warn ? ' warn' : '') + (c.b === TRY ? ' per-try' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="per-p">' + T(x) + '</p>').join('') + (go || ask ? '<div class="row wrap">' + ask + go + '</div>' : '') + '</div>';

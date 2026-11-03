@@ -6568,7 +6568,25 @@ at the trying stage Version 39.48's card offers Getting ready (`CYC_PACKS`), and
 - "I can exercise" gets no prolapse chapters and no 16 weeks; after "a prolapse", "Still leaking or heavy?" waits for week 16; "What
   happens when" says "If a doctor finds a prolapse".
 
-`node test/pfplan.mjs` checks it (128 checks; section 17 holds the test pass). `node test/pfplan-walk.mjs [who]` lives it: five women from a new install (stress leaks,
+**The phone test** (Mohit's Flip5, 3 Nov; "fix all 6"; the test's section 18):
+- Her sets take the better of her check-in's answer and the trainer's count. The check-in fills each step in as it stands and saves
+  it, and a saved answer used to win, so a "Partly" after her first set kept 3 of 3 at "Partly done" and her day never completed.
+  `markAction` keeps the mode a step was in beside its answer (`log[day].ckm[id]`, here 's' squeezes or 'r' breathing and letting
+  go; `unmark` clears it), and her sets read only an answer given in their own mode (`pfAns`; an answer from before has no mode and
+  is a squeeze answer). So the day she moves to breathing and letting go, that step doesn't show her squeezes' "Partly done", and a
+  breathing "Done" is not a day of squeezes for her level.
+- A step can carry `subP`, its line while partly done: her sets say their count ("1 of 3 today · level 1, lying down") where other
+  steps say "Partly done" (discreet mode keeps "Partly done").
+- The trainer in week 1 leads with Find the right muscles only before her first set of the day; after it, her set's result and Start
+  come first and Find stays below.
+- Breathing and letting go teaches no squeezes: the trainer shows no Find card, no squeeze ticks (her last 14 days stay) and no "Is
+  it the right squeeze?"; its card has Slow breaths, "Ask a Qura doctor about this" and "A doctor checked it: back to squeezes".
+- Every urgent card is ink (`card dark urgent`, section 93): the 112 cards in the pelvic floor, midlife and period chapters, the
+  prolapse guide's, and the check-in's crisis card (Tele-MANAS 14416 and 112) were plain light cards.
+- The trainer her plan runs lights My plan's tab (`tabOf`: `post-pelvic` while `S.post.pfPlan()`, and `pf-go`); without her plan it
+  stays Explore's, as the after-birth trainer.
+
+`node test/pfplan.mjs` checks it (144 checks; section 17 holds the test pass, section 18 the phone test's fixes). `node test/pfplan-walk.mjs [who]` lives it: five women from a new install (stress leaks,
 urge leaks with periods stopped, heaviness with a doctor's check, pain when she squeezes, and period pain with her sets joined),
 screens and words to `test/shots/pfplan-walk/`. `test/progs.mjs` knows the new words, and the baseline re-records `pelvic@1` and the
 5 plans her sets join (ttc, heavy, meno, pain and pms version 2).

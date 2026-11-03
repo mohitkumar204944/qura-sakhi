@@ -1349,7 +1349,7 @@
       const nm = disc() && (a.priv || a.kind === 'minutes') ? discNm(a, acts) : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : (a.titleT || a.title)));   /* Version 39.22: Today keeps the short bedtime name; tonight's session is its line */
       const sub0 = disc() && a.priv ? '' : (rt ? (YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') + (rtBtn ? '' : ' · ') : '') + (rtBtn ? '' : rtMin) :   /* Version 39.22: when first, so a cut line keeps it */ (a.id === 'fast' && !fastCare() ? '' : (a.subT || a.sub)));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
       return { id: ids[a.id] || 'plan-' + a.id, order: 25 + i, plan: true, icon: a.icon, hue: a.hue, title: nm,
-        sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a.state === 'p' ? t('plan_t_part') : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : sub0)),
+        sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a.state === 'p' ? (sub0 && a.subP ? a.subP : t('plan_t_part')) : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : sub0)),
         go: tick ? null : a.go, at: a.at || null, tick: tick, ok: ok, next: a === nx, fold: full,
         nav: !ok && sb ? a.go : (!ok && a.play && !rest ? a.play : null), actLabel: sb ? (rtBtn ? rtMin : t('plan_start_b')) : (a.play ? tf('calm_min', { n: a.playMin }) : null), night: !!a.play && !a.playDay, primary: !ok && sb && a === nx && !ciNow,   /* R1, R14: one pink button, the next step's Start or the evening check-in */
         act: tick && !ok ? () => { const d2 = D(); markAction(d2, a, 'd'); closeDay(d2); remSync(d2); } : null,
@@ -1794,12 +1794,16 @@
   const pfIk = (d) => (pfLead(d) ? ikOf(d) : {});
   const pfFlag = (d, k) => (pfIk(d).pfflags || []).indexOf(k) >= 0;
   const pfUrge = (d) => { const k = pfIk(d).pft; return k === 'urge' || k === 'both'; };
+  /* Mohit's phone test: her check-in's answer for her sets, only in the mode it was given ('s' squeezes, 'r' breathing and letting go;
+     an answer from before the fix was a squeeze answer), and the better of it and what the trainer counted, so a later set still counts */
+  const pfAns = (lg, md) => { const v = ((lg || {}).ck || {}).sets; return v && (((lg || {}).ckm || {}).sets || 's') === md ? v : null; };
+  const pfBest = (a, b) => (a === 'd' || b === 'd' ? 'd' : (a === 'p' || b === 'p' ? 'p' : (a || b || null)));
   const pfRelax = (d) => !!d && (pfFlag(d, 'pain') || !!d.pfRelax) && !d.pfPainOk;
   const pfCapOn = (d, iso) => (pfLead(d) && ((pfIk(d).pft === 'heavy' && !(d.pfDoc && d.pfDoc.at <= iso)) || (pfFlag(d, 'mesh') && !(d.pfOk && d.pfOk <= iso))) ? 2 : 8);
   /* the days she did a set: the trainer's, and her Done in the check-in */
   function pfDays(d) {
     const s = {}; try { (S.post && S.post.pfDays ? S.post.pfDays() : []).forEach((x) => { s[x] = 1; }); } catch (e) { /* no trainer in this build */ }
-    const lg = (d && d.log) || {}; Object.keys(lg).forEach((x) => { const c0 = ((lg[x] || {}).ck || {}).sets; if (c0 === 'd' || c0 === 'p') s[x] = 1;   /* the test pass: some sets away from the phone count too */ });
+    const lg = (d && d.log) || {}; Object.keys(lg).forEach((x) => { const c0 = pfAns(lg[x], 's'); if (c0 === 'd' || c0 === 'p') s[x] = 1;   /* the test pass: some sets away from the phone count too (a breathing day is not a day of squeezes) */ });
     const td = todayISO(); return Object.keys(s).filter((x) => x <= td).sort();
   }
   function pfLevel(d) {
@@ -1825,10 +1829,10 @@
     'pelvic.sets': (d, c, x, st) => {
       const sh = pfShared();
       if (pfRelax(d)) { const did = !!(S.calm && S.calm.doneOn && S.calm.doneOn(c.day)); const nm = t(sh ? 'plan_pf_sets_d' : 'plan_pf_relax');
-        return [{ id: 'sets', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: nm, name: nm, sub: t('plan_pf_relax_s'), go: S.calm ? 'calm-breaths' : 'plan-r-calm', state: st('sets', did), why: 'plan_fb_pf_relax', priv: true, how: t('post_pf_relax_p'),
+        return [{ id: 'sets', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: nm, name: nm, sub: t('plan_pf_relax_s'), go: S.calm ? 'calm-breaths' : 'plan-r-calm', state: pfBest(did ? 'd' : null, pfAns(c.lg, 'r')), mode: 'r', why: 'plan_fb_pf_relax', priv: true, how: t('post_pf_relax_p'),
           play: S.calm ? 'calm-breaths' : null, playMin: S.calm && S.calm.mins ? S.calm.mins('breaths') : 0, playDay: true }]; }
-      const n = pfSetsOn(c.day); const m = pfTarget(d, c.day); const lv = pfLevel(d); const nm = t(sh ? 'plan_pf_sets_d' : 'plan_pf_sets'); const s0 = st('sets', n >= m);
-      return [{ id: 'sets', icon: S.icon('flower'), hue: 'plum', kind: 'tick', title: nm, name: nm, sub: tf('plan_pf_sets_s', { n: Math.min(n, m), m: m, l: tf('plan_pf_lv', { n: lv.n, p: t('plan_pf_pos_' + lv.pos) }) }), go: 'post-pelvic', state: s0 || (n > 0 ? 'p' : null), why: 'plan_fb_pfl', priv: true,
+      const n = pfSetsOn(c.day); const m = pfTarget(d, c.day); const lv = pfLevel(d); const nm = t(sh ? 'plan_pf_sets_d' : 'plan_pf_sets'); const sb = tf('plan_pf_sets_s', { n: Math.min(n, m), m: m, l: tf('plan_pf_lv', { n: lv.n, p: t('plan_pf_pos_' + lv.pos) }) });
+      return [{ id: 'sets', icon: S.icon('flower'), hue: 'plum', kind: 'tick', title: nm, name: nm, sub: sb, subP: n > 0 ? sb : undefined, go: 'post-pelvic', state: pfBest(n >= m ? 'd' : (n > 0 ? 'p' : null), pfAns(c.lg, 's')), mode: 's', why: 'plan_fb_pfl', priv: true,   /* Mohit's phone test: partly done, her count */
         play: 'pf-go', playMin: pfMins(lv), playDay: true, how: tf('post_pf_lv_do', { r: lv.reps, h: lv.hold }) + (lv.quick ? '. ' + tf('post_pf_lv_q', { q: lv.quick }) : '') + '.' }];   /* the test pass: her level's squeezes */
     },
     'pelvic.find': (d, c, x, st) => { if (pfRelax(d)) return []; const pd = planDayAt(d, c.day); const lv = pd > 3 && c.day === todayISO() ? pfLevel(d) : null; if (pd > 3 && !(lv && lv.fresh)) return [];   /* days 1 to 3, and her first day at a new position */
@@ -2396,6 +2400,7 @@
   function markAction(d, a, val) {
     if (a.kind === 'check') return;
     const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); x.ck[a.id] = val;
+    if (a.mode) { x.ckm = Object.assign({}, x.ckm || {}); x.ckm[a.id] = a.mode; }   /* Version 39.56 (Mohit's phone test): the mode her step was in (her sets: squeezes, or breathing and letting go) */
     if (a.kind === 'minutes') { const want = val === 'd' ? a.mins : (val === 'p' ? Math.round(a.mins / 2) : 0); const rm = x.rmin || 0; const m0 = x.min || 0; if (m0 - rm < want) { x.min = rm + want; x.tkm = Object.assign({}, x.tkm || {}); x.tkm[a.id] = (x.tkm[a.id] || 0) + (x.min - m0); } }   /* Version 39.13: walking minutes, apart from the yoga's; 39.14: what a tick added, so its undo takes only that */
     if (a.kind === 'habit') { x.plate = x.plate || {}; x.plate[a.habit] = val !== 'n'; }
     if (a.kind === 'routine' && a.r === 'strength' && val === 'd') x.str = true;
@@ -2827,7 +2832,7 @@
   const slpAsk = (d) => packOf(d) === 'meno' && (d.goalKey === 'hot' || d.goalKey === 'sleep');
   const hotRecent = () => { const dl = S.state.daily || {}; return Object.keys(dl).some((k) => k <= todayISO() && S.diffDays(S.fromISO(k), pToday()) <= 30 && (dl[k] || []).indexOf('d_hotflush') >= 0); };
   const slpHot = (d) => !disc() && !(S.state.settings || {}).shared && (d.goalKey === 'hot' || ((packOf(d) === 'meno' || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())) && hotRecent()));
-  const crisisHtml = () => '<div class="card urgent pl-ci-crisis" role="alert"><h3>' + esc(t('post_fl_harm_h')) + '</h3><p class="small">' + esc(t(died() ? 'post_fl_harm_b' : 'post_fl_harm')) + '</p>' + telRow(['14416', '112']) + '</div>';
+  const crisisHtml = () => '<div class="card dark urgent pl-ci-crisis" role="alert"><h3>' + esc(t('post_fl_harm_h')) + '</h3><p class="small">' + esc(t(died() ? 'post_fl_harm_b' : 'post_fl_harm')) + '</p>' + telRow(['14416', '112']) + '</div>';
   const mdQ = (m) => '<div class="card pl-ci-md"><span class="eyebrow">' + esc(t('plan_md_h')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_md_h')) + '">' + MD.map((k) => '<button type="button" class="chip' + (m.md === k ? ' on' : '') + '" data-ci-md="' + k + '" aria-pressed="' + (m.md === k) + '">' + esc(t(k === 'harm' && died() ? 'post_mo_harm_b' : 'post_mo_' + k)) + '</button>').join('') + '</div>' +
     (m.md === 'harm' ? crisisHtml() : (m.md === 'low' || m.md === 'anx' ? '<p class="small">' + esc(t('plan_md_low')) + '</p>' : '')) + '</div>';
   function renderCheckin(v) {
@@ -4076,6 +4081,7 @@
   /* a tap on a ticked step's tick: not done after all (the minutes her tick added go too, never the ones she walked) */
   function unmark(d, a) {
     const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); delete x.ck[a.id];   /* Version 39.51 (Mohit's phone test): unanswered, as before her tick */
+    if (x.ckm && x.ckm[a.id]) { x.ckm = Object.assign({}, x.ckm); delete x.ckm[a.id]; }   /* Version 39.56 */
     const tk = x.tkm && x.tkm[a.id]; if (a.kind === 'minutes' && tk) { x.min = Math.max(x.rmin || 0, (x.min || 0) - tk); x.tkm = Object.assign({}, x.tkm); delete x.tkm[a.id]; }
     const tr = a.kind === 'routine' && a.r && x.tkr ? x.tkr[a.r] : 0; if (tr) { x.min = Math.max(0, (x.min || 0) - tr); x.rmin = Math.max(0, (x.rmin || 0) - tr); x.tkr = Object.assign({}, x.tkr); delete x.tkr[a.r]; }   /* Version 39.41 */
     if (a.kind === 'habit') { x.plate = Object.assign({}, x.plate || {}); x.plate[a.habit] = false; }

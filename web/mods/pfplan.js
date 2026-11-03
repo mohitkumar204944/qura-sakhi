@@ -128,7 +128,7 @@
   const topic = () => t('plan_pk_pelvic');
   function cardHtml(c) {
     if (c.pic === 'sling') return slingSvg();
-    if (c.u) return '<div class="card urgent pf-les" role="alert" data-say="1"><p class="pf-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent pf-les" role="alert" data-say="1"><p class="pf-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     const ask = c.ask ? '<button type="button" class="btn sm primary" data-ask="' + esc(topic()) + '">' + esc(t('ask_qura')) + '</button>' : '';
     return '<div class="card pf-les' + (c.warn ? ' warn' : '') + (c.b === TRY ? ' pf-try' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="pf-p">' + T(x) + '</p>').join('') + (go || ask ? '<div class="row wrap">' + ask + go + '</div>' : '') + '</div>';

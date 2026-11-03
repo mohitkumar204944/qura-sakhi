@@ -8,7 +8,8 @@
 // - 6 her steps over the weeks (the urge, a habit a fortnight, Get checked once), at most 3, 1 set on a period day;
 // - 7 the evening: leaks or heaviness each week, sure in weeks 1, 4 and 12, gets in the way in weeks 4, 8 and 12, compared at 12;
 // - 8 one card at a time with a Qura doctor first; 9 the chapters; 10 her results; 11 her sets joining another plan;
-// - 12 a shared phone and discreet mode; 13 her stage changes; 14 Hindi at 360 px; 15 joining from a new install.
+// - 12 a shared phone and discreet mode; 13 her stage changes; 14 Hindi at 360 px; 15 joining from a new install;
+// - 17 the test pass (3 Nov); 18 the phone test's fixes (3 Nov, Mohit's Flip5: "fix all 6").
 // Usage: node test/pfplan.mjs [web dir]
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -594,6 +595,90 @@ async function answerAll(page) {
   await done(a);
   a = await open({ seed: pel(B(5)), hash: '#post-pelvic' });
   check('17.33 and not on the trainer her own plan runs', !(await has(a.page, '.pl-for')));
+  await done(a);
+}
+
+// ---------- 18 the phone test's fixes (3 Nov, Mohit's Flip5: "fix all 6") ----------
+const ink = (page) => page.evaluate(() => { const c = document.querySelector('#view .card.urgent'); if (!c) return null; const pr = document.createElement('div'); pr.style.background = 'var(--ink)'; document.body.appendChild(pr);
+  const want = getComputedStyle(pr).backgroundColor; pr.remove(); return { dark: c.classList.contains('dark'), bg: getComputedStyle(c).backgroundColor, want: want, tel: !!c.querySelector('a[href="tel:112"]') }; });
+const tabOn = (page) => page.$eval('#tabbar button.on', (b) => b.dataset.go).catch(() => null);
+{
+  /* P1: her check-in said "Partly" after her first set; the two sets after it make the step done and her day complete */
+  let a = await open({ seed: pel(B(3), { pf: { 0: 1 } }), hm: '20:30', hash: '#plan-checkin' });
+  await tap(a.page, '[data-ci="find:d"]'); await tap(a.page, '#pl-ci-save');
+  const lg = await a.page.evaluate((d) => (window.Saathi.state.mods.plan.log || {})[d] || {}, TODAY);
+  check('18.1 (her check-in kept her sets as they stood: Partly, with its mode)', (lg.ck || {}).sets === 'p' && (lg.ckm || {}).sets === 's', lg);
+  await go(a.page, 'post-pelvic'); await tap(a.page, '#pst-pstart'); await runSet(a.page); await tap(a.page, '#pst-pstart'); await runSet(a.page);
+  await go(a.page, 'home');
+  const s1 = await a.page.evaluate(() => window.Saathi.plan.actions().map((x) => x.id + ':' + x.state).join()); const v1 = await view(a.page);
+  check('18.2 P1: then her 3 of 3 sets are done, not "Partly done", and her day is complete', s1 === 'sets:d,find:d' && !/Partly done/.test(v1) && /All 2 done today/.test(v1), [s1, v1.slice(0, 700)]);
+  await done(a);
+  /* P1 in breathing and letting go: her squeezes' "Partly" from earlier that day is not the breathing step's */
+  a = await open({ seed: pel(B(3), { pf: { 0: 2 }, p: { pfRelax: TODAY, log: { [TODAY]: { ci: 1, ck: { sets: 'p' } } } } }) });
+  const r1 = await a.page.evaluate(() => { const x = window.Saathi.plan.actions()[0]; return { t: x.title, s: x.state }; });
+  check('18.3 P1: the day she moves to breathing and letting go, its step is not "Partly done" from her squeezes', /Breathe and let go/.test(r1.t) && !r1.s && !/Partly done/.test(await view(a.page)), [r1, (await view(a.page)).slice(0, 600)]);
+  await done(a);
+  a = await open({ seed: pel(B(3), { p: { pfRelax: TODAY } }), hm: '20:30', hash: '#plan-checkin' });
+  await tap(a.page, '[data-ci="sets:d"]'); if (await has(a.page, '[data-ci="find:d"]')) await tap(a.page, '[data-ci="find:d"]'); await tap(a.page, '#pl-ci-save');
+  const lg2 = await a.page.evaluate((d) => (window.Saathi.state.mods.plan.log || {})[d] || {}, TODAY);
+  check('18.4 P1: her check-in while breathing and letting go keeps its mode', (lg2.ck || {}).sets === 'd' && (lg2.ckm || {}).sets === 'r', lg2);
+  await done(a);
+  const lg5 = {}; for (let k = 1; k <= 5; k++) lg5[ago(k)] = { ci: 1, ck: { sets: 'd' }, ckm: { sets: 'r' } };
+  a = await open({ seed: pel(B(6), { p: { log: lg5 } }) });
+  check('18.5 P1: 5 days of breathing are not 5 days of squeezes (level 1 stays; 17.14 is the squeeze version)', (await lvl(a.page)).n === 1, await lvl(a.page));
+  await done(a);
+  /* P2: a half-done sets row says her count */
+  a = await open({ seed: pel(B(3), { pf: { 0: 1 } }) });
+  const v2 = await view(a.page);
+  check('18.6 P2: a half-done sets row says her count, not "Partly done"', /Your squeeze sets 1 of 3 today · level 1, lying down/.test(v2) && !/Your squeeze sets Partly done/.test(v2), v2.slice(0, 700));
+  await done(a);
+  a = await open({ seed: pel(B(3), { pf: { 0: 1 }, x: { settings: { discreet: true, notify: true } } }) });
+  const v3 = await view(a.page);
+  check('18.7 P2: in discreet mode only "Partly done", as before', !/1 of 3 today/.test(v3) && /Partly done/.test(v3), v3.slice(0, 700));
+  await done(a);
+}
+{
+  /* P3: week 1, the Find card leads until her first set of the day */
+  let a = await open({ seed: pel(B(2)), hash: '#post-pelvic' });
+  const ord = (p) => p.evaluate(() => { const f = document.querySelector('#view .pst-find'), s = document.querySelector('#pst-pstart'), ok = document.querySelector('#view .card.ok');
+    const before = (x, y) => !!(x && y && (x.compareDocumentPosition(y) & Node.DOCUMENT_POSITION_FOLLOWING)); return { findFirst: before(f, s), okFirst: before(ok, f), startFirst: before(s, f) }; });
+  const o1 = await ord(a.page);
+  check('18.8 P3: week 1, before her first set: Find the right muscles first', o1.findFirst, o1);
+  await tap(a.page, '#pst-pstart'); await runSet(a.page);
+  const o2 = await ord(a.page);
+  check('18.9 P3: after it, her set\'s result and Start come before Find, which stays on the page', o2.okFirst && o2.startFirst && await has(a.page, '#view .pst-find'), o2);
+  await done(a);
+  /* P4: breathing and letting go teaches no squeezes */
+  for (const dd of [B(3), B(10)]) {
+    a = await open({ seed: pel(dd, { pf: { 0: 2 }, p: { pfRelax: TODAY } }), hash: '#post-pelvic' });
+    const rv = await view(a.page);
+    check('18.10 P4: breathing and letting go (plan day ' + (dd + 1) + '): no Find card, squeeze ticks or "Is it the right squeeze?"; its card has Slow breaths, a Qura doctor and the way back',
+      !(await has(a.page, '#view .pst-find')) && !(await has(a.page, '#view .pst-ticks')) && !(await has(a.page, '#view .pst-right')) && await has(a.page, '.pst-relax [data-go="calm-breaths"]') && await has(a.page, '.pst-relax [data-ask]') && await has(a.page, '.pst-relax #pst-painok') && !/Squeeze as if/.test(rv), rv.slice(0, 900));
+    await done(a);
+  }
+  a = await open({ w: 360, h: 780, seed: Object.assign(pel(B(3), { pf: { 0: 2 }, p: { pfRelax: TODAY } }), { lang: 'hi' }), hash: '#post-pelvic' });
+  check('18.11 P4: in Hindi at 360 px the breathing card and its Qura doctor fit', await noScroll(a.page) && await has(a.page, '.pst-relax [data-ask]'), (await view(a.page)).slice(0, 500));
+  await done(a);
+}
+{
+  /* P5: the 112 cards in ink, as Help's "Call 112 now" */
+  let a = await open({ seed: pel(B(3)) });
+  await a.page.evaluate(() => { window.Saathi.mem.pfLes = 'f10'; location.hash = 'pf-lesson'; }); await settle(a.page, 400);
+  const k1 = await ink(a.page);
+  check('18.12 P5: chapter 10\'s 112 card is ink', !!k1 && k1.dark && k1.bg === k1.want && k1.tel, k1);
+  await go(a.page, 'intimate-prolapse');
+  const k2 = await ink(a.page);
+  check('18.13 P5: and the prolapse guide\'s', !!k2 && k2.dark && k2.bg === k2.want && k2.tel, k2);
+  await done(a);
+  const plain = ['app.js'].concat(fs.readdirSync(path.join(root, 'mods')).filter((f) => /\.js$/.test(f)).map((f) => 'mods/' + f)).filter((f) => /class="card urgent/.test(fs.readFileSync(path.join(root, f), 'utf8')));
+  check('18.14 P5: no urgent card without its ink anywhere (the midlife and period chapters, the check-in\'s crisis card)', plain.length === 0, plain);
+  /* P6: the trainer her plan runs is My plan's */
+  a = await open({ seed: pel(B(3)), hash: '#post-pelvic' });
+  const t1 = await tabOn(a.page); await go(a.page, 'pf-go'); const t2 = await tabOn(a.page);
+  await done(a);
+  a = await open({ seed: seedOf({ goals: ['track'], intake: { goal: 'track', stage: 'cycle' }, dob: '1985-01-01' }), hash: '#post-pelvic' });
+  const t3 = await tabOn(a.page);
+  check('18.15 P6: the trainer her plan runs lights My plan (also from the play button); without her plan, Explore as before', t1 === 'plan' && t2 === 'plan' && t3 === 'care', [t1, t2, t3]);
   await done(a);
 }
 

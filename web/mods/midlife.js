@@ -132,7 +132,7 @@
   const tileT = (r) => { const x = (S.tiles ? S.tiles() : []).find((y) => y.route === r); return x ? t(x.title) : r; };
   const call = (n) => '<a class="btn danger sm" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>';
   function cardHtml(c) {
-    if (c.u) return '<div class="card urgent mid-les" role="alert" data-say="1"><p class="mid-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent mid-les" role="alert" data-say="1"><p class="mid-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     return '<div class="card mid-les' + (c.warn ? ' warn' : '') + (c.b === SKILL ? ' mid-skill' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="mid-p">' + T(x) + '</p>').join('') + (go ? '<div class="row wrap">' + go + '</div>' : '') + '</div>';
   }

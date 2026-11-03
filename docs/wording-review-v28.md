@@ -3266,3 +3266,7 @@ day", "None of these", and the trainer's tile "Guided squeeze-and-relax timer, s
 Decision 6: the count is tones, vibration and big numbers. Dr. Megha's voice as an option is not built: it needs new clips from the
 paid voice service (`web/tools/voice`), which waits for Mohit. Decision
 7's new 3D poses (the knack scenes, side-lying) wait for the physiotherapist.
+
+The phone test (3 Nov, Mohit's Flip5, "fix all 6"): no new wording. A half-done sets row shows its count ("{n} of {m} today · level
+{n}, {position}") in place of "Partly done"; breathing and letting go shows no squeeze lines, and its card gains the existing "Ask a
+Qura doctor about this"; the 112 cards turn ink with the same words.

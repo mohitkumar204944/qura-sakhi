@@ -437,7 +437,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       chapters (`mods/pfplan.js`, route `pf-lesson`), one new ring (her morning set), and the 112 line for a sudden loss of control;
     - her sets join My period plan, My midlife plan and Getting ready as one step (`pfgoal`).
     The walk is `node test/pfplan-walk.mjs [asha|kamla|sunita|rani|priya]` (screens and words to `test/shots/pfplan-walk/`); the
-    test pass's fixes (3 Nov) are section 17 of the test.
+    test pass's fixes (3 Nov) are section 17 of the test, the phone test's 6 (Mohit's Flip5, "fix all 6") section 18.
     Contract: MODULE_API section 99; wording: section 19.56 of the review (new lines wait for the doctor and a women's health
     physiotherapist).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter

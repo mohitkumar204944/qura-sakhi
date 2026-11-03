@@ -895,7 +895,7 @@
       trainer = '<div class="card warn pst-jsafe"><h3>' + esc(t('plan_ps_h')) + '</h3><p class="small">' + esc(t('plan_pfs_join_p')) + '</p><ul class="pst-ul">' + P0.signs().map((k) => '<li>' + esc(t('plan_pfs_' + k)) + '</li>').join('') + '</ul>' +
         '<div class="row wrap"><button type="button" class="btn sm primary" id="pst-jsafe-ok">' + esc(t('plan_pfs_none_b')) + '</button><button type="button" class="btn sm" id="pst-jsafe-seen">' + esc(t('plan_pf_safe_seen')) + '</button><button type="button" class="btn sm" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div></div>';
     } else if (rl) {
-      trainer = '<div class="card pst-relax"><h3>' + esc(T('pf_relax_h')) + '</h3><p class="small">' + esc(T('pf_relax_p')) + '</p>' + (has('calm-breaths') ? '<button type="button" class="btn primary block" data-go="calm-breaths">' + esc(T('pf_relax_b')) + '</button>' : '') + '<button type="button" class="btn sm" id="pst-painok">' + esc(t('plan_pf_pain_ok')) + '</button></div>';   /* the test pass: a way back when her sets join another plan */
+      trainer = '<div class="card pst-relax"><h3>' + esc(T('pf_relax_h')) + '</h3><p class="small">' + esc(T('pf_relax_p')) + '</p>' + (has('calm-breaths') ? '<button type="button" class="btn primary block" data-go="calm-breaths">' + esc(T('pf_relax_b')) + '</button>' : '') + '<button type="button" class="btn sm secondary" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button><button type="button" class="btn sm" id="pst-painok">' + esc(t('plan_pf_pain_ok')) + '</button></div>';   /* the test pass: a way back when her sets join another plan */
     } else if (plan && lv) {
       const img = pfStill(PF_POSE[lv.pos]);
       const note = lv.back ? T('pf_back') : (lv.capped ? T('pf_capped') : (lv.top ? T('pf_top') : (lv.left === 1 ? T('pf_next1') : TF('pf_next', { n: lv.left }))));
@@ -914,16 +914,16 @@
     const day1 = pfDays.length ? S.diffDays(S.fromISO(pfDays[0]), S.today()) + 1 : 0;
     const course = pfDays.length ? '<p class="small pst-course">' + esc(day1 > 90 ? TF('pf_course_done', { n: pfDays.length }) : TF('pf_course', { d: day1, n: pfDays.length })) + '</p>' : '';
     const pg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant()); const born = !!sitBirth();   /* after a birth, as it was */
-    const find = '<div class="card pst-find"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>'; const early = plan && !PF && P0.week() <= 1;   /* her first week: finding the muscles first */
+    const find = '<div class="card pst-find"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>'; const early = plan && !PF && !rl && !sets && P0.week() <= 1;   /* her first week: finding the muscles first, until her first set of the day (Mohit's phone test: then her set's result and Start come first) */
     v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early ? find : '') + trainer +   /* the test pass: her plan for this */
-      '<div class="card"><div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div><div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
-      (S.canSave() ? '' : S.needDiary()) + (early ? '' : find) +
+      '<div class="card">' + (rl ? '' : '<div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div>') + '<div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
+      (S.canSave() ? '' : S.needDiary()) + (early || rl ? '' : find) +   /* Mohit's phone test: breathing and letting go teaches no squeezes */
       (born || pg ? acc(T('gap_h'), '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
         '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
         askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic)
         /* Version 39.56 (the walk): without a recent birth, no after-birth lines; the guide, and a Qura doctor to check the squeeze */
         : (has('intimate-prolapse') ? '<div class="list pst-guide"><button type="button" class="item" data-go="intimate-prolapse"><span class="body"><strong>' + esc(T('prolapse')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button></div>' : '') +
-          '<div class="card soft pst-right"><h3>' + esc(t('plan_pf_right_h')) + '</h3><p class="small">' + esc(t('plan_pf_right_p')) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div>') +
+          (rl ? '' : '<div class="card soft pst-right"><h3>' + esc(t('plan_pf_right_h')) + '</h3><p class="small">' + esc(t('plan_pf_right_p')) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div>')) +
       '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v);
     v.querySelectorAll('[data-pst-hold]').forEach((b) => b.addEventListener('click', () => { const st2 = store(); st2.pfHold = Number(b.dataset.pstHold); persist(); S.render(); }));
@@ -1052,6 +1052,7 @@
     pfSets: (iso) => (S.canSave() ? Number((store().pf || {})[iso] || 0) : 0),
     pfDays: () => { if (!S.canSave()) return []; const pf = store().pf || {}; return Object.keys(pf).filter((x) => okISO(x) && Number(pf[x]) > 0).sort(); },
     renderPelvic: renderPelvic,   /* for pf-go (mods/pfplan.js): the trainer at once, with a set started */
+    pfPlan: pfPlan,   /* Version 39.56 (Mohit's phone test): core lights My plan's tab when her plan runs the trainer */
     /* Version 39.46: for the after-birth plan's version 2 */
     died: died, lost: lostSheet, sixOn: () => !!S.reminders.get('post-6wk'), sixRemind: sixRemind, sixSync: sixSync,
     /* her plan's day ends at 4 am: a check saved before 4 am is the day before's, not its own date's */
