@@ -3271,3 +3271,22 @@ The phone test (3 Nov, Mohit's Flip5, "fix all 6"): no new wording. A half-done 
 {n}, {position}") in place of "Partly done"; breathing and letting go shows no squeeze lines, and its card gains the existing "Ask a
 Qura doctor about this"; the 112 cards turn ink with the same words. UI words for a screen reader, every plan's week dots: "Week
 {w} of your plan: 1 full day so far" and "{d}: {a} of 1 step" (were "1 full days", "of 1 steps"; Hindi unchanged).
+
+### 19.57 Version 39.57: the all-plans walk's gaps (MODULE_API section 100)
+
+Mohit, 3 Nov: "fix all 11", after the walk in `docs/plans-walkthrough-2026-11-03.md`.
+
+New lines for the doctor:
+- "Where to get a test", for a woman who goes to her own doctor: "Chemists sell strip and card tests without a prescription, and your
+  doctor can test you. It is also free at a government health centre." (was: chemists, then her ASHA's free Nishchay kits and the
+  ANM at the sub-centre).
+- A positive result, her own doctor: the lines lose "Registering with your ANM is free too, with free check-ups and tablets" and
+  "and the ANM gives them free"; "The check is also free at the sub-centre, PHC or Ayushman Arogya Mandir" stays as the one quiet line.
+- Trying for a baby: a positive result without "Didn't plan this? You have choices, and each one is simpler the earlier you act"; the
+  missed-period page's choices (unplanned pregnancy, abortion, after an abortion) as one row, "Your choices", at the end.
+
+UI words: "I've seen a doctor" and "Still to see a doctor?" (Today's doctor finding, after 4 weeks); "The first 6 weeks are done"
+(day 42 after the birth); "From your diary: your last 2 gaps were both {a} days." and "…all {a} days."; the midlife skill "carry on
+through a flush" (waits with the midlife lines for the doctor and the psychologist). My pregnancy's pelvic floor set and Getting ready's
+folic acid tablet get the check-in's usual answers (Done, Partly, Not today; Done or Not today for the tablet). The anaemia page loses
+its second "Call 112 now if" line (the first, at the top, stays).

@@ -440,6 +440,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     test pass's fixes (3 Nov) are section 17 of the test, the phone test's 6 (Mohit's Flip5, "fix all 6") section 18.
     Contract: MODULE_API section 99; wording: section 19.56 of the review (new lines wait for the doctor and a women's health
     physiotherapist).
+  - `node test/allwalk.mjs` (Version 39.57, the all-plans walk's gaps; Mohit, 3 Nov: "fix all 11"; the walk and its findings:
+    `docs/plans-walkthrough-2026-11-03.md`):
+    - My pregnancy's pelvic floor set and Getting ready's folic acid answered in the check-in (Done there means she has her tablets);
+    - "I've seen a doctor" on Today's doctor finding, "Still to see a doctor?" after 4 weeks, and her plan's own doctor check leading;
+    - the missed-period pages: her own doctor's route, and while she tries, the test first with her choices one quiet row; no
+      "Period late?" on Today after a positive test;
+    - the period card's first question first; day 42 after a birth; My plan after a plan change; the midlife skill's name; "both 42
+      days"; the anaemia page's 112 line once.
+    Contract: MODULE_API section 100; wording: section 19.57 of the review (the test pages' new lines wait for doctor review).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

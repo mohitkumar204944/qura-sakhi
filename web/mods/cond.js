@@ -552,8 +552,7 @@
         { en: 'Sprouting, soaking and fermenting (sprouts, idli, dosa, dhokla) help the body absorb more iron.', hi: 'अंकुरित करना, भिगोना और ख़मीर उठाना (स्प्राउट्स, इडली, डोसा, ढोकला) से शरीर ज़्यादा आयरन ले पाता है।' }]) +
       P({ en: 'Once you are anaemic, food alone is often not enough. You may need tablets as well.', hi: 'एक बार ख़ून की कमी हो जाए तो अक्सर सिर्फ़ खाना काफ़ी नहीं होता। गोलियाँ भी लगती हैं।' }, 'small') + '</div>';
 
-    const doctor = '<div class="card warn"><h3>' + esc(t('see_doctor')) + '</h3>' +
-      flagLead('urgent', t('call_now'), t('s1b')) +
+    const doctor = '<div class="card warn"><h3>' + esc(t('see_doctor')) + '</h3>' +   /* Version 39.57: the 112 line leads the page, once */
       flag('', { en: 'Chest pain, fainting, or breathless while resting: get medical help today; call 112 if it is severe.', hi: 'सीने में दर्द, बेहोशी, या आराम में भी साँस फूलना: आज ही इलाज लें; ज़्यादा हो तो 112 पर कॉल करें।' }) +
       ul([{ en: 'Within a few weeks: periods heavy month after month, periods that get in the way of your work, sleep or going out (whatever the chart says), or a heavy-bleeding chart total of 100 or more. See a gynaecologist and take the chart.', hi: 'कुछ हफ़्तों में: हर महीने भारी पीरियड, ऐसे पीरियड जो आपके काम, नींद या बाहर जाने में रुकावट डालें (चार्ट कुछ भी कहे), या ब्लीडिंग चार्ट का कुल 100 या ज़्यादा। स्त्री रोग विशेषज्ञ को चार्ट के साथ दिखाएँ।' },
         { en: 'This week: ' + t('s4a'), hi: 'इसी हफ़्ते: ' + t('s4a') },

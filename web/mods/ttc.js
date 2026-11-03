@@ -317,7 +317,7 @@
   S.ttc = Object.assign(S.ttc, {
     flagList: () => FLAGS.map((f) => ({ k: f.k, en: f.en, hi: f.hi })), flagsOn: flagsOn, setFlags: setFlags, since: () => store().since || null,
     prepHas: (k) => !!((store().prep || {})[k]), prepAt: prepAtOf, vf: (k) => VF[k] || null, ohss: () => OHSS,
-    folic: { has: () => !!folic().has, askedOn: () => folic().ask || null, sync: folicSync },
+    folic: { has: () => !!folic().has, askedOn: () => folic().ask || null, sync: folicSync, have: () => { folicSet({ has: S.toISO(S.today()), ask: null }); persist(); } },   /* Version 39.57: her Done in the check-in */
     lesson: { title: (id) => (LESSONS[id] ? tx(LESSONS[id].h) : ''), read: lessonRead, priv: (id) => !!(LESSONS[id] && LESSONS[id].priv), ids: () => Object.keys(LESSONS) },
     ready: { last: () => { const l = readyList(); return l.length ? l[l.length - 1].at : null; }, n: () => readyList().length },
     calmOn: calmOn, setCalm: (on) => { if (S.canSave()) store().calmOn = !!on; }, prep: (k) => prepOf(k) || null

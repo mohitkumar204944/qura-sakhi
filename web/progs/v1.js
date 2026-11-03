@@ -60,7 +60,7 @@
         iron: [{ id: 'iron', kind: 'adapter', use: 'journey.iron' }],
         '*': [{ id: 'food', kind: 'adapter', use: 'preg.food' }]
       } },
-      { id: 'pf', kind: 'link', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', check: true, if: ['gw:13-', 'pday:4-', 'route'] }
+      { id: 'pf', kind: 'tick', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', play: true, if: ['gw:13-', 'pday:4-', 'route'] }
     ],
     list: [{ use: 'today' }, { use: 'pyoga' }],
     doctor: []

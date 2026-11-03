@@ -385,7 +385,8 @@
     if (!S.canSave()) return null;
     /* Version 37.2: while her plan's own doctor check for late periods shows, "no period yet" (before 90 days) is that card */
     const planDoc = !!(S.plan && S.plan.docShowing && S.plan.docShowing());
-    const seen = D().seen; return open(findings()).filter((x) => !seen[x.key] && !x.quiet && !(planDoc && x.id === 'late_now' && x.lv === 'watch'))[0] || null;
+    const owns = (x) => x.lv !== 'now' && x.lv !== 'today' && !!(S.plan && S.plan.docOwns && S.plan.docOwns(x.id));   /* Version 39.57: her plan's doctor check is this finding's home on Today */
+    const seen = D().seen; return open(findings()).filter((x) => !seen[x.key] && !x.quiet && !(planDoc && x.id === 'late_now' && x.lv === 'watch') && !owns(x))[0] || null;
   };
   /* Version 39.27 (minimalism audit R06): a doctor finding and her waiting plan, due together, are one card on Today: the finding
      and the doctor first, then "And meanwhile, a free plan" (the pair Version 39.25 draws on "Your Sakhi" and in the Diary), so
@@ -403,7 +404,11 @@
     const f = homeF(); if (!f) return '';
     if ((f.lv === 'month' || f.lv === 'week') && pendPair()) return pairCard(f, pendPair());
     if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(seeOf(f)) + '</p><div class="row wrap">' + (f.ext && f.ext.call === '14416' ? '<a class="btn sm xp-call" href="tel:14416" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm xp-call" href="tel:112" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 112</a><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div></div>';
-    return '<button type="button" class="action xp-home" data-go="explain" data-xp-lv="' + f.lv + '"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(t('explain_lv_' + f.lv)) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
+    /* Version 39.57 (the all-plans walk): a doctor finding she can answer, and after 4 weeks on Today not "this month" again */
+    const doc = f.lv === 'month' || f.lv === 'week'; const sh = D().shown = D().shown || {}; if (doc && !sh[f.key]) { sh[f.key] = S.toISO(S.today()); S.saveQuiet(); }
+    const lvT = f.lv === 'month' && sh[f.key] && S.diffDays(S.fromISO(sh[f.key]), S.today()) >= 28 ? t('explain_lv_still') : t('explain_lv_' + f.lv);
+    const row = '<button type="button" class="action xp-home" data-go="explain" data-xp-lv="' + f.lv + '"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(lvT) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
+    return doc ? '<div class="xp-home-wrap">' + row + '<button type="button" class="linkbtn xp-seen" data-xp-seen="' + esc(f.key) + '">' + esc(t('explain_seen_doc')) + '</button></div>' : row;
   }
 
   S.register({
@@ -426,7 +431,7 @@
         explain_p: 'Sakhi looks at what you logged and explains it in plain words. This is not a diagnosis. Only a doctor who examines you can say what is causing something.',
         explain_none: 'Nothing unusual in what you logged in the last few weeks.', explain_why: 'Common reasons', explain_do: 'What you can do', explain_see: 'When to see a doctor',
         explain_more: 'Read more', explain_got: 'Got it', explain_got_toast: 'Hidden from Today. It stays on this page.', explain_means: 'What this means', explain_numbers: 'Emergency numbers', explain_free: 'Free doctor or hospital',
-        explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
+        explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_still: 'Still to see a doctor?', explain_seen_doc: 'I’ve seen a doctor', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
         explain_how: 'How Sakhi works out your numbers', explain_h_day: 'Cycle day: day 1 is the day your period starts. Today is day {n}.', explain_h_gap: 'Gap: the days from one period start to the next.',
         explain_h_usual: 'Usual gap: 21 to 35 days, or 21 to 45 in the first few years of periods.', explain_h_likely: 'Likely next period: shown only when your last gaps differ by 21 days or less. It runs from your shortest gap minus 2 days to your longest gap plus 2 days.',
         explain_h_out: 'Left out of the maths: gaps touched by hormonal contraception, a pregnancy or the year after a birth, and a second start less than 10 days after the last one.',
@@ -442,7 +447,7 @@
         explain_p: 'Sakhi आपकी दर्ज की गई बातों को देखकर आसान भाषा में समझाती है। यह diagnosis नहीं है। कारण क्या है, यह सिर्फ़ जाँच करने वाली डॉक्टर बता सकती हैं।',
         explain_none: 'पिछले कुछ हफ़्तों में आपने जो दर्ज किया, उसमें कुछ असामान्य नहीं है।', explain_why: 'आम कारण', explain_do: 'आप क्या कर सकती हैं', explain_see: 'डॉक्टर को कब दिखाएँ',
         explain_more: 'और पढ़ें', explain_got: 'समझ गई', explain_got_toast: '“आज” से हटा दिया। यह इस पन्ने पर रहेगा।', explain_means: 'इसका मतलब क्या है', explain_numbers: 'आपातकालीन नंबर', explain_free: 'मुफ़्त डॉक्टर या अस्पताल',
-        explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
+        explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_still: 'अभी डॉक्टर को दिखाना बाक़ी है?', explain_seen_doc: 'मैं डॉक्टर को दिखा चुकी हूँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
         explain_how: 'Sakhi आपके नंबर कैसे निकालती है', explain_h_day: 'चक्र का दिन: पीरियड शुरू होने का दिन, दिन 1 है। आज दिन {n} है।', explain_h_gap: 'अंतर: एक पीरियड की शुरुआत से अगले पीरियड की शुरुआत तक के दिन।',
         explain_h_usual: 'आम अंतर: 21 से 35 दिन, या पीरियड के शुरुआती कुछ सालों में 21 से 45 दिन।', explain_h_likely: 'अगला संभावित पीरियड: तभी दिखता है जब आपके पिछले अंतर आपस में 21 दिन से ज़्यादा अलग न हों। यह आपके सबसे छोटे अंतर से 2 दिन पहले से, सबसे लंबे अंतर के 2 दिन बाद तक होता है।',
         explain_h_out: 'गिनती से बाहर: हॉर्मोन वाले गर्भनिरोध, गर्भ या डिलीवरी के बाद के पहले साल से जुड़े अंतर, और पिछली शुरुआत के 10 दिन के अंदर दर्ज की गई दूसरी शुरुआत।',
@@ -474,11 +479,13 @@
       '.xp-plan .ico-sm { flex-shrink: 0; } .xp-plan .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; } .xp-plan .body strong { color: var(--fg); font-size: 15px; overflow-wrap: anywhere; } .xp-plan .body span { font-size: 13px; color: var(--text); overflow-wrap: anywhere; }',
       '.xp-plan .xp-start { flex-shrink: 0; background: var(--h-green); color: var(--card); border: none; font-weight: 700; }',
       '.xp-pair .xp-means { align-self: flex-start; padding: 0; min-height: 36px; }',   /* Version 39.27 (R06) */
+      '.xp-home-wrap { display: grid; gap: 0; } .xp-home-wrap .xp-seen { justify-self: end; min-height: 40px; padding: 0 8px; }',   /* Version 39.57 */
       '.xp-card.xp-now, .diary-paper .xp-card.xp-now { background: var(--ink); } .xp-now h3, .xp-now .xp-top .small, .xp-now .xp-dsee, .xp-now .xp-see p, .xp-now .xp-see b, .xp-now .xp-what { color: var(--ink-text) !important; }'
     ].join('\n'),
     home: home,
     summary: () => { const f = open(findings()); return f.length ? [{ title: t('explain_h'), lines: f.map((x) => t('explain_lv_' + x.lv) + ': ' + title(x)) }] : []; },
     afterRender: (v, route) => {
+      if (route === 'home') v.querySelectorAll('[data-xp-seen]').forEach((b) => b.addEventListener('click', () => { D().seen[b.dataset.xpSeen] = S.toISO(S.today()); S.saveQuiet(); try { if (S.plan && S.plan.docSeen) S.plan.docSeen(); } catch (e) { /* her plan */ } S.toast(t('explain_got_toast')); S.render(); }));   /* Version 39.57 */
       if (route === 'home' && v.querySelector('.xp-pair')) { wireActs(v.querySelector('.xp-pair')); return; }   /* Version 39.27 (R06) */
       if (route !== 'diary' || !S.canSave() || S.flags.discreet) return;
       /* Version 39.1: What it shows has the cards themselves */
@@ -497,7 +504,8 @@
   /* Version 39.6 (journey audit P2-14): her plan's doctor check is done, so today's cards about the same thing rest
      (a late period of 90 days or more always shows) */
   const seenIds = (ids) => { if (!S.canSave()) return; const d = D(); findings().forEach((f) => { if (ids.indexOf(f.id) >= 0 && !(f.id === 'late_now' && f.lv !== 'watch')) d.seen[f.key] = S.toISO(S.today()); }); S.saveQuiet(); };
-  S.explain = { findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
+  S.explain = { openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
+  findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
     /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
     question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };
 })(window.Saathi);

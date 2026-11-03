@@ -54,7 +54,7 @@
         N2('“It will never stop” → “It passes, usually in a few minutes.”', '“यह कभी नहीं रुकेगा” → “यह गुज़र जाता है, अक्सर कुछ मिनटों में।”'),
         N2('“Something is wrong with me” → “My body is cooling down. It isn’t dangerous.”', '“मुझे कुछ हो गया है” → “मेरा शरीर ठंडा हो रहा है। यह ख़तरनाक नहीं है।”')] },
       { b: SKILL, l: [N2('Pick the calmer thought that fits you best, and say it to yourself each time a flush starts.', 'जो शांत सोच आपको सबसे ठीक लगे, उसे चुनें, और हर झोंके की शुरुआत में ख़ुद से कहें।')] }] },
-    h3: { h: N2('Carry on, and keep cool', 'काम जारी रखें, ठंडक बनाए रखें'), sk: N2('carry on', 'काम जारी रखें'), cards: [
+    h3: { h: N2('Carry on, and keep cool', 'काम जारी रखें, ठंडक बनाए रखें'), sk: N2('carry on through a flush', 'झोंके में भी काम जारी रखें'), cards: [
       { l: [N2('Rushing out of the room or stopping everything can make a flush feel like an emergency. Staying with what you’re doing, as best you can, teaches your mind that it isn’t one.',
         'कमरे से भाग जाना या सब कुछ रोक देना झोंके को किसी आफ़त जैसा बना देता है। जितना हो सके, जो कर रही हैं उसे करती रहें; इससे मन सीखता है कि यह आफ़त नहीं है।')] },
       { l: [N2('Some things help you feel cooler: a layer you can take off, cotton clothes, cool water, a fan. Notice what sets your flushes off, such as a hot drink, spicy food or a warm room. These make you more comfortable; they don’t stop the flushes.',

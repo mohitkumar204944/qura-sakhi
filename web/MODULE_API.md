@@ -6593,3 +6593,40 @@ at the trying stage Version 39.48's card offers Getting ready (`CYC_PACKS`), and
 urge leaks with periods stopped, heaviness with a doctor's check, pain when she squeezes, and period pain with her sets joined),
 screens and words to `test/shots/pfplan-walk/`. `test/progs.mjs` knows the new words, and the baseline re-records `pelvic@1` and the
 5 plans her sets join (ttc, heavy, meno, pain and pms version 2).
+
+## 100. Version 39.57: the all-plans walk's gaps
+
+Mohit, 3 Nov: "can you do a proper walkthrough of all plans one by one and highlight major issues or gaps with UX and
+functionalities", then "fix all 11". The walk and its findings: `docs/plans-walkthrough-2026-11-03.md` (four walks, 20 women, the 7
+plans). Item by item:
+
+1. **My pregnancy's pelvic floor set** (`progs/v1.js` preg v2, `id: 'pf'`) is a tick with the trainer to play (`play`, 2 minutes),
+   not a check that only the trainer counts: the check-in asks it (Done, Partly, Not today), and a set in the trainer still counts.
+   A step from a tool (`from`) is done when its tool says so, even after a partly answer (`one()`; it used to keep the answer).
+2. **Getting ready's folic acid tablet**, before she has said she has the tablets, is asked in the check-in (`ciAsk`: Done or Not
+   today, no Partly, `noPart`), where it said "Do it now"; after her "Not yet" on its page that day, "Do it now" stays (Version
+   39.32's rule, `test/baby.mjs` 4). Her Done there means she has them (`S.ttc.folic.have()`): the 9 pm ring
+   is booked and the step is a tick from then on. Today's row still opens the tablet page ("Not got it yet? See where").
+3. **The doctor loop.** Today's doctor finding (a `month` or `week` level, `mods/explain.js` `home()`) has "I've seen a doctor":
+   off Today (as "Got it"), and her plan's doctor check done when her plan has one (`S.plan.docSeen()`). After 4 weeks on Today
+   (`explain.shown[key]`), "See a doctor this month" reads "Still to see a doctor?". While her plan's own doctor check applies to
+   the finding (`SEEN_IDS`, not `late_now`), the finding steps aside on Today (`S.plan.docOwns`) and the plan's "Did you get the
+   doctor check?" leads (`data-slot-first`), past day 21 while the finding is open (`S.explain.openIds`).
+4. **The doctor route on the missed-period pages** (`mods/pregtest.js`): "Where to get a test" says a chemist and her doctor, with
+   one quiet line for the free test; a positive result keeps one quiet free line (the ANM's registering and tablets go). The
+   12-week end page's order (a Qura doctor, then the free government doctor) is Version 39.28's and stays.
+5. **Trying for a baby** (`situation.planning`): the missed-period page leads with the test, and its choices are one quiet row at the
+   end ("Your choices"), with no abortion rows of their own; a positive result has no "Didn't plan this?" and no "Your choices",
+   only the pregnancy guide. Today's "Period late? A home test is the first step" goes once a positive test is saved since her last
+   period started (`S.pregtest.lastPos`); Sakhi says' "Your test is positive" holds it.
+6. **"Your period today" in the check-in** asks whether a pad soaked through first; clots and "Did it get in your way?" follow once
+   she answers (or when the day already has them). "Pain today?" was already asked once (Today or the check-in, never both).
+7. **After the birth, day 42**: the stage card says "The first 6 weeks are done", not "Week 6 of 6" beside her plan's "Week 7".
+8. **My plan after a plan change** shows the change card and her new stage's goals (the new plan's start) with no suggestions or
+   more plans (`renderPlans` `bare`) until she answers it (`test/goals.mjs` 3 and 10 keep the goals). "For period cramps" isn't offered in the first 6 weeks after a birth.
+9. **My midlife plan**: the hot-flush skill "carry on" is "carry on through a flush".
+10. **My PMOS plan's first question**: equal gaps say "your last 2 gaps were both 42 days" (`plan_in_from_eq2`, or "all" for more).
+11. **The anaemia page** says its 112 line once, at the top (the "See a doctor" card repeated it).
+
+`node test/allwalk.mjs` checks it (25 checks; 22 fail on 97b02b2). The baseline re-records `preg@2` (the pelvic floor step), and the
+golden replay re-records `post/preg/food/born-mid-run` (My plan after the birth: no suggestions or more plans).
