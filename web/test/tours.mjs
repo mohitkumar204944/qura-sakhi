@@ -350,14 +350,14 @@ async function replay(page) {
   await T.ctx.close();
 }
 
-/* ---------- 11. Trying for a baby: the full tour includes her own Today part ---------- */
+/* ---------- 11. Trying for a baby: the full tour includes her own part (Version 39.64: on Explore, at her questions, where they moved
+   in Version 37; Mohit, 3 Nov: "Point them at Explore") ---------- */
 {
   const T = await pilotInstall({ stage: 'ttc' });
   const seen = await replay(T.page);
-  const home = seen.filter((x) => x.hash === '#home');
-  check('11 trying: Today in two parts, the second where her tools are', home.length === 3 && home[2].n === 'Today · 1 of 1' && home[2].h === 'Your trying-for-a-baby tools' && /^In Explore/.test(home[2].p), home.map((x) => x.n + ' ' + x.h + ' ' + x.p.slice(0, 20)));
-  check('11 between the two Today parts the button says Next, not "Next: Today"', home[1].go === 'Next', home[1]);
-  check('11 then Diary as usual', seen[3] && seen[3].hash === '#diary' && home[2].go === 'Next: Diary', seen.map((x) => x.hash));
+  const home = seen.filter((x) => x.hash === '#home'); const ex = seen.filter((x) => x.hash === '#care');
+  check('11 trying: Today in its own two steps, then Diary as usual', home.length === 2 && home[1].go === 'Next: Diary' && seen[2] && seen[2].hash === '#diary', home.map((x) => x.n + ' ' + x.h + ' ' + x.go));
+  check('11 her own part on Explore: her questions, then her topic', ex.some((x) => x.h === 'Questions for planning a baby') && ex.some((x) => x.h === 'Your trying-for-a-baby tools' && /^In Explore/.test(x.p)), ex.map((x) => x.n + ' ' + x.h));
   await T.ctx.close();
 }
 

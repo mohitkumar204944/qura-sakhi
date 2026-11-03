@@ -6946,8 +6946,13 @@ steers her away from the Qura doctor ("No recommend a qura doctor"). The locked 
    - otherwise it opens Care near me (Govt. services without its data).
 2. **Low mood** (`MIND`: low mood or anxiety, low mood after the birth): "Call 14416" (Tele-MANAS) first, then "Ask a Qura doctor".
 3. **The trying-for-a-baby and midlife tips** (`home-ttc`, `home-meno`) show on Explore, where their quick answers moved in Version
-   37. On Today they ended at once. The trying tip's second step points at her topic, Trying for a baby. The midlife tip's second
-   step, bleeding after menopause, shows where that question is among her first three: once her periods have stopped.
+   37:
+   - On Today their first step had nothing to point at, so the tip on its own ended at once. The full tour skipped to the trying
+     tip's second step, the Explore tab, and showed none of the midlife tip.
+   - Now the trying tip points at her questions, then her topic, Trying for a baby.
+   - The midlife tip's second step, bleeding after menopause, shows where that question is among her first three: once her periods
+     have stopped.
+   - `tours.mjs` 11 follows: the trying woman's full tour has her own part on Explore, and Today in its two steps.
 
 **Strings.** `xp_gyn` (explain.js). English and Hindi (the baby plan's Hindi for a gynaecologist). UI words only. The map is the
 packet's, marked † for the doctor.
