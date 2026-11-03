@@ -3290,3 +3290,17 @@ UI words: "I've seen a doctor" and "Still to see a doctor?" (Today's doctor find
 through a flush" (waits with the midlife lines for the doctor and the psychologist). My pregnancy's pelvic floor set and Getting ready's
 folic acid tablet get the check-in's usual answers (Done, Partly, Not today; for the tablet an optional Done or Not today). The anaemia page loses
 its second "Call 112 now if" line (the first, at the top, stays).
+
+### 19.58 Version 39.58: the lives audit's quick fixes (MODULE_API section 101)
+
+Mohit, 3 Nov: "proceed with the quick fixes first", on `docs/lives-audit-2026-11-03.md`.
+
+No new health lines: each reuses a reviewed one.
+- After her periods have stopped, saving bleeding or spotting: "Saved." and the reviewed "Any bleeding now needs a check with a doctor,
+  even a little." (from "You told us your periods have stopped…").
+- Today's "Period late?" after one negative test: "Negative on {d}." and the reviewed "If your period still hasn't come, test again in
+  3–7 days with first morning urine." (the test page's line); after two, the test page's reviewed two-negatives line, as it is.
+
+UI words: "Bleeding" (was "Period started") and "Bleeding stopped" once her periods have stopped; "Ask a Qura doctor" on every plan's
+doctor check (the free government doctor only for a woman who goes to government care); her plan's "Ready for you" on a shared phone,
+titled "My plan".

@@ -74,7 +74,7 @@
       tell_h: 'Tell a person', tell_p: 'Write to Qura’s team on WhatsApp. A person reads messages on working days, Monday to Saturday.', tell_urgent: 'This is not for emergencies. For an emergency call 112. For thoughts of harming yourself call 14416 or 112.',
       tell_wa: 'Open WhatsApp', tell_none: 'Qura’s WhatsApp line is not in this version of Sakhi yet. You can still book a free call with a Qura doctor.', help_wa_note: 'Sakhi only opens WhatsApp with a hello. Nothing from your diary goes with it, and you choose what to write.', help_wa_shared: 'Others use this phone: the chat will show in WhatsApp like any other.',
       help_wa_hello: 'Hello Qura team, I am writing from the Sakhi app.', ask_wa_hello: 'Hello Qura team, I would like to book the free call with a Qura doctor. I am writing from the Sakhi app.',
-      t_bleed: 'Bleeding', t_pain: 'Pain', t_missed: 'Missed period', t_mood: 'Mood', t_other: 'Something else',
+      t_bleed: 'Bleeding', bleed_end: 'Bleeding stopped', logged_stop: 'Saved. Any bleeding now needs a check with a doctor, even a little.', t_pain: 'Pain', t_missed: 'Missed period', t_mood: 'Mood', t_other: 'Something else',
       ask_h: 'Talk to a Qura doctor', ask_p: 'A free 20-minute video or phone call with a Qura doctor (BAMS). She can order tests and help with cycles, weight, sleep and diet. For hormone medicines like the pill, HRT or letrozole you need an MBBS gynaecologist; Qura refers.',
       ask_how_h: 'How to book', ask_how_wa: 'Message Qura on WhatsApp, and a person there sets a time for your call.', ask_how_web: 'Book a time on Qura’s website. Sakhi only opens the page: nothing from your diary goes with it.', ask_wa: 'Book on WhatsApp',
       ask_q_h: 'Your questions for the call', ask_q_p: 'Saved on this phone only. Keep them in front of you on the call.', ask_q_clear: 'Clear the list', book_link: 'Book at quranutrition.com',
@@ -333,7 +333,7 @@
       tell_h: 'किसी को बताएँ', tell_p: 'Qura की टीम को WhatsApp पर लिखें। सोमवार से शनिवार, कामकाजी दिनों में एक व्यक्ति मैसेज पढ़ता है।', tell_urgent: 'यह emergency के लिए नहीं है। Emergency में 112। ख़ुद को नुक़सान के विचार में 14416 या 112।',
       tell_wa: 'WhatsApp खोलें', tell_none: 'Qura की WhatsApp लाइन अभी Sakhi के इस वर्ज़न में नहीं है। आप फिर भी Qura की डॉक्टर के साथ मुफ़्त कॉल बुक कर सकती हैं।', help_wa_note: 'Sakhi सिर्फ़ एक नमस्ते के साथ WhatsApp खोलती है। आपकी डायरी से कुछ भी साथ नहीं जाता, और क्या लिखना है यह आप तय करती हैं।', help_wa_shared: 'इस फ़ोन को दूसरे भी इस्तेमाल करते हैं: यह चैट बाकी चैट की तरह WhatsApp में दिखेगी।',
       help_wa_hello: 'नमस्ते Qura टीम, मैं Sakhi ऐप से लिख रही हूँ।', ask_wa_hello: 'नमस्ते Qura टीम, मुझे Qura की डॉक्टर के साथ मुफ़्त कॉल बुक करनी है। मैं Sakhi ऐप से लिख रही हूँ।',
-      t_bleed: 'ब्लीडिंग', t_pain: 'दर्द', t_missed: 'पीरियड नहीं आया', t_mood: 'मन', t_other: 'कुछ और',
+      t_bleed: 'ब्लीडिंग', bleed_end: 'ब्लीडिंग रुकी', logged_stop: 'दर्ज हो गया। अब थोड़ी सी भी ब्लीडिंग हो तो डॉक्टर से जाँच ज़रूरी है।', t_pain: 'दर्द', t_missed: 'पीरियड नहीं आया', t_mood: 'मन', t_other: 'कुछ और',
       ask_h: 'Qura की डॉक्टर से बात करें', ask_p: 'Qura की डॉक्टर (BAMS) से 20 मिनट की मुफ़्त वीडियो या फ़ोन कॉल। वह test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। pill, HRT या letrozole जैसी हॉर्मोन दवाओं के लिए MBBS स्त्री रोग विशेषज्ञ चाहिए; Qura refer करता है।',
       ask_how_h: 'बुक कैसे करें', ask_how_wa: 'Qura को WhatsApp पर मैसेज करें, वहाँ एक व्यक्ति आपकी कॉल का समय तय करेगा।', ask_how_web: 'Qura की वेबसाइट पर समय बुक करें। Sakhi सिर्फ़ पेज खोलती है: आपकी डायरी से कुछ भी साथ नहीं जाता।', ask_wa: 'WhatsApp पर बुक करें',
       ask_q_h: 'कॉल के लिए आपके सवाल', ask_q_p: 'सिर्फ़ इसी फ़ोन पर सेव हैं। कॉल के समय इन्हें सामने रखें।', ask_q_clear: 'लिस्ट हटाएँ', book_link: 'quranutrition.com पर बुक करें',
@@ -2576,7 +2576,8 @@
         const chance0 = (side.match(/<p class="small chance[^"]*">[\s\S]*?<\/p>/) || [''])[0];
         /* Version 39.25 (insights audit G5): "Period late?" under her cycle with or without a plan (not on a shared phone) */
         const posNow = !!(late0 && ls && api.pregtest && api.pregtest.lastPos && (api.pregtest.lastPos() || '') >= toISO(ls));   /* Version 39.57: a positive test she saved answers it */
-        const lateRow = late0 && !shp && !disc && !posNow ? '<button type="button" class="action hl-late-go" data-go="' + (ROUTES['pregtest'] ? 'pregtest' : 'explain') + '"><span class="ico hue hue-gold">' + I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(t('late_p')) + '</span></span><span class="go">' + I.chev + '</span></button>' : '';
+        const negNote = late0 && ls && !posNow && api.pregtest && api.pregtest.negNote ? safe(() => api.pregtest.negNote(toISO(ls)), '') : '';   /* Version 39.58 (the lives audit, C6): her negative test, and what comes next */
+        const lateRow = late0 && !shp && !disc && !posNow ? '<button type="button" class="action hl-late-go' + (negNote ? ' hl-late-neg' : '') + '" data-go="' + (ROUTES['pregtest'] ? (negNote ? 'pregtest-when' : 'pregtest') : 'explain') + '"><span class="ico hue hue-gold">' + I.help + '</span><span class="body"><strong>' + esc(t('qa_late')) + '</strong><span class="small">' + esc(negNote || t('late_p')) + '</span></span><span class="go">' + I.chev + '</span></button>' : '';
         if (mini) {
           mini0 = true; const dayL = '<p class="lead hl-day">' + esc((inPeriod ? t('period_day') : t('cycle_day')) + ' ' + num) + '</p>';
           const say = shp ? dayL + (late0 ? '<p class="small">' + esc(tf('past_range', { n: lateN })) + '</p>' : '') + chance0
@@ -2660,7 +2661,7 @@
   /* a private screen: behind her PIN when one is set (the same PIN as her health details) */
   function privateGo(route) { mem.pinNext = route; setHash(state.settings.pinHash && !mem.healthOk && PIN_ROUTES.indexOf(route) < 0 ? 'pin' : route); }
   /* review DP-2, DP-10: a private screen asks for the PIN on the page itself, however she reaches it: one title, and Back */
-  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge'];   /* Version 39.51: the midlife plan's chapters; Version 39.56: the pelvic floor plan's */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
+  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge', 'plan-goal', 'plan-reveal', 'plan-start'];   /* Version 39.58: her plan's questions, cards and Start, now offered on a shared phone */   /* Version 39.51: the midlife plan's chapters; Version 39.56: the pelvic floor plan's */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
   const pinGated = (r) => state.stage === 'app' && !!state.settings.pinHash && !mem.healthOk && (r === 'pin' || (!!state.settings.discreet && PIN_ROUTES.indexOf(r) >= 0));
   function renderPinGate(v, r) {
     const next = r === 'pin' ? (mem.pinNext || 'home') : r;
@@ -2717,8 +2718,10 @@
     if (type === 'start' && !sure && longOpen()) { askNewPeriod(); return; }
     const before = state.events.slice();
     const ev = { d: d, t: type }; if (type === 'start') dropGuesses(d); if (type === 'end') dropEnds(d); state.events.push(ev); usageMark('diary'); save(); emit('log', { type: type }); render();
+    const undo = { label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } };
+    if (!state.settings.discreet && stoppedNow() && type !== 'end') { toastAct(t('logged_stop'), [{ label: t('why_irr_b'), fn: () => setHash('explain') }, undo]); return; }   /* Version 39.58: bleeding after her periods stopped */
     toastAct(state.settings.discreet ? t('saved') : t('logged_' + type), [
-      { label: t('undo'), fn: () => { state.events = before; save(); render(); toast(t('undone')); } },
+      undo,
       { label: t('add_details'), fn: () => openLog(type, d, ev) }
     ]);
   }
@@ -2891,13 +2894,17 @@
   const PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   const SPOTS = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="8" cy="9" r="2.2"/><circle cx="15.5" cy="7.5" r="1.6"/><circle cx="13" cy="15" r="2.4"/></svg>';
   /* The first six weeks after a birth, before any period: the bleeding is from the birth, so no period buttons. */
+  /* Version 39.58 (the lives audit, C5): her periods have stopped, so any bleeding is "Bleeding", never a period, and saving it says it
+     needs a check (off_p_stopped's reviewed line) */
+  const stoppedNow = () => !!state.situation.stopped && !isPregnant();
+  const startLbl = () => t(stoppedNow() ? 'bleeding' : 'period_started'), endLbl = () => t(stoppedNow() ? 'bleed_end' : 'period_ended');
   const earlyPost = () => { const s0 = state.situation; if (isPregnant() || !s0.deliveredOn) return false; const n = diffDays(fromISO(s0.deliveredOn), today()); const ls = lastStart(); return n >= 0 && n <= 42 && !(ls && ls > fromISO(s0.deliveredOn)); };
   function actionsHtml(showLog, disc, inPeriod) {
     const R = (attrs, ico, label, cls, dot) => '<button type="button" class="ract' + (cls ? ' ' + cls : '') + '" ' + attrs + '><span class="rico">' + ico + (dot ? '<i class="rdot"></i>' : '') + '</span><span class="rl">' + esc(label) + '</span></button>';
     const ciDone = !!state.checkins[monthKey(today())]; const out = [];
     if (showLog && !disc && earlyPost() && ROUTES['post-recovery']) { out.push(R('data-go="post-recovery"', I.heart, t('pp_rec_b'), 'hue-plum')); if (ROUTES['post-feed'] && !babyGone()) out.push(R('data-go="post-feed"', I.clock, t('pp_feed_b'), 'hue-sky')); showLog = false; }
     const open = openPeriod();
-    if (showLog) out.push(R('data-log="' + (open ? 'end' : 'start') + '"', I.drop, disc ? (open ? t('d_end') : t('d_start')) : (open ? t('period_ended') : t('period_started')), 'primary'));
+    if (showLog) out.push(R('data-log="' + (open ? 'end' : 'start') + '"', I.drop, disc ? (open ? t('d_end') : t('d_start')) : (open ? endLbl() : startLbl()), 'primary'));
     if (showLog) out.push(R('data-log="spot"', SPOTS, disc ? t('d_spot') : t('spotting'), 'hue-rose'));
     else if (isPregnant() && ROUTES['preg-week'] && !disc) out.push(R('data-go="preg-week"', I.baby, t('this_week'), 'hue-sky'));
     out.push(R('data-symlog="1"', sIco(KINDS.mood.ico), disc ? t('sym_h_d') : t('fab_feel'), 'hue-' + KINDS.mood.hue));   /* Version 39.23: the + menu's name and picture for the same page (V39.17 R3) */
@@ -3284,8 +3291,8 @@
   function openFab(e) {
     const root = fabRoot(); const disc = !!state.settings.discreet; const tStr = toISO(today()); const open = openPeriod();
     const canPeriod = !isPregnant() && !state.situation.hysterectomy && !earlyPost(); const items = [];
-    if (canPeriod) items.push({ log: open ? 'end' : 'start', ico: I.drop, label: disc ? (open ? t('d_end') : t('d_start')) : (open ? t('period_ended') : t('period_started')), cls: 'primary' });
-    if (canPeriod && !open && longOpen()) items.push({ log: 'end', ico: I.drop, label: disc ? t('d_end') : t('period_ended'), cls: 'hue-rose' });   /* a long period (Version 32) */
+    if (canPeriod) items.push({ log: open ? 'end' : 'start', ico: I.drop, label: disc ? (open ? t('d_end') : t('d_start')) : (open ? endLbl() : startLbl()), cls: 'primary' });
+    if (canPeriod && !open && longOpen()) items.push({ log: 'end', ico: I.drop, label: disc ? t('d_end') : endLbl(), cls: 'hue-rose' });   /* a long period (Version 32) */
     if (canPeriod) items.push({ log: 'spot', ico: SPOTS, label: disc ? t('d_spot') : t('spotting'), cls: 'hue-rose' });
     items.push({ day: 'feel', ico: sIco(KINDS.mood.ico), label: t('fab_feel'), cls: 'hue-' + KINDS.mood.hue });   /* Version 39.17 (R3): "Symptoms" and "Mood" opened one page; one door now */
     items.push({ day: 'note', ico: sIco(KINDS.note.ico), label: t('note_h'), cls: 'hue-' + KINDS.note.hue });
@@ -3589,7 +3596,7 @@
       const detOnly = d.t === 'start_detail';   /* Version 39.1: details for another day of her period */
       root.innerHTML = '<div class="sheet-bg" id="sheet-bg"><div class="sheet" role="dialog" aria-label="' + esc(t('log_h')) + '"><div class="handle"></div><h2>' + esc(detOnly ? t('day_flow') : t('log_h')) + '</h2>' +
         (detOnly ? '<p class="small">' + esc(fmtD(fromISO(d.d), { weekday: 'short', day: 'numeric', month: 'short' })) + '</p>' :
-        '<div class="stack" style="gap:6px"><label>' + esc(t('what_log')) + '</label><div class="grid3">' + [['start', 'period_started'], ['end', 'ended'], ['spot', 'spotting']].map((x) => '<button type="button" class="btn sm ' + (d.t === x[0] ? 'on' : '') + '" data-type="' + x[0] + '">' + esc(t(x[1])) + '</button>').join('') + '</div></div>' +
+        '<div class="stack" style="gap:6px"><label>' + esc(t('what_log')) + '</label><div class="grid3">' + [['start', stoppedNow() ? 'bleeding' : 'period_started'], ['end', stoppedNow() ? 'bleed_end' : 'ended'], ['spot', 'spotting']].map((x) => '<button type="button" class="btn sm ' + (d.t === x[0] ? 'on' : '') + '" data-type="' + x[0] + '">' + esc(t(x[1])) + '</button>').join('') + '</div></div>' +
         '<div class="stack" style="gap:6px"><label for="log-date">' + esc(t('on_date')) + '</label><input type="date" id="log-date" value="' + esc(d.d) + '" max="' + toISO(today()) + '"></div>') +
         (d.t === 'spot' ? '' : '<div class="eyebrow">' + esc(t('flow_h')) + '</div>' + opt('pads', 'pads', ['pads_1', 'pads_2', 'pads_3', 'pads_4']) + (d.pads === 'pads_4' || d.clots === 'clots_2' ? '<div class="card warn" style="gap:4px"><p class="small" style="color:var(--fg)">' + esc(t('r2')) + '</p></div>' : '') + opt('clots', 'clots', ['clots_0', 'clots_1', 'clots_2']) + '<div class="grid2"><button type="button" class="btn sm ' + (d.leaked ? 'on' : '') + '" data-tog="leaked">' + esc(t('leaked')) + '</button><button type="button" class="btn sm ' + (d.two ? 'on' : '') + '" data-tog="two">' + esc(t('twopads')) + '</button></div>' + opt('pain', 'pain', ['pain_0', 'pain_1', 'pain_2', 'pain_3']) + (d.pain === 'pain_3' ? '<div class="card warn" style="gap:4px"><p class="small" style="color:var(--fg)">' + esc(t('r_pain')) + '</p></div>' : '')) +
         '<div class="stack" style="gap:6px"><label>' + esc(t('daily_h')) + '</label><div class="chips">' + feelSet().map((x) => x[0]).map((k) => '<button type="button" class="chip ' + (d.daily.includes(k) ? 'on' : '') + '" data-daily="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div></div>' +
@@ -4213,7 +4220,7 @@
       const parts = [];
       state.events.filter((e) => e.d === ds).forEach((e) => {
         const det = () => { ['pads', 'pain', 'clots'].forEach((f) => { if (e[f] && e[f] !== 'clots_0' && STR.en[e[f]]) parts.push('<span class="dy-tag">' + esc(f === 'pain' ? t(e[f]) : tf('dy_' + f, { x: t(e[f]) })) + '</span>'); }); if (e.leaked) parts.push('<span class="dy-tag">' + esc(t('leaked')) + '</span>'); if (e.two) parts.push('<span class="dy-tag">' + esc(t('twopads')) + '</span>'); };
-        if (e.t === 'start') { parts.push('<span class="dy-tag p">' + esc(t(inPregAt(e.d) ? 't_bleed' : 'period_started')) + '</span>'); det(); }   /* Version 39.38 */
+        if (e.t === 'start') { parts.push('<span class="dy-tag p">' + esc(t(inPregAt(e.d) || (stoppedNow() && e.d > (state.situation.stoppedOn || '')) ? 't_bleed' : 'period_started')) + '</span>'); det(); }   /* Version 39.38 */
         else if (e.t === 'start_detail') det();
         else if (e.t === 'end') { parts.push('<span class="dy-tag p">' + esc(t(inPregAt(e.d) ? 't_bleed' : 'period_ended')) + '</span>'); det(); }
         else if (e.t === 'spot') parts.push('<span class="dy-tag p">' + esc(t('spotting')) + '</span>');

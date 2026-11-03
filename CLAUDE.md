@@ -449,6 +449,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the period card's first question first; day 42 after a birth; My plan after a plan change; the midlife skill's name; "both 42
       days"; the anaemia page's 112 line once.
     Contract: MODULE_API section 100; wording: section 19.57 of the review (the test pages' new lines wait for doctor review).
+  - `node test/lifefit.mjs` (Version 39.58, the lives audit's quick fixes; Mohit, 3 Nov: "proceed with the quick fixes first"; the audit:
+    `docs/lives-audit-2026-11-03.md`, after `docs/personal-companion-advice-2026-11-03.md`):
+    - "Ask a Qura doctor" on every plan's doctor check, and the free government doctor only on the government route;
+    - "Bleeding", never "Period started", once her periods have stopped, and saving it says it needs a check;
+    - a negative test on Today's "Period late?", with when to test again (two negatives: the reviewed two-negatives line);
+    - her plan offered on a shared phone in plain words, its questions behind her PIN.
+    The walks behind it (not pass/fail): `node test/lives-walk.mjs` (one woman per stage over months, plus 14 edge ages; ~20 minutes;
+    `WHO=`, `EDGES=0`), `node test/census-walk.mjs` (what each tab shows each woman) and `node test/stagejump-walk.mjs` (stage changes).
+    Contract: MODULE_API section 101; wording: section 19.58 of the review (no new health lines).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

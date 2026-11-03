@@ -6633,3 +6633,38 @@ plans). Item by item:
 `node test/allwalk.mjs` checks it (26 checks; 22 of the first 25 fail on 97b02b2). With the folic question optional, the taps are
 unchanged against 21a9a6d (the cycle woman 43, 55, 47 and 70; the trying woman 53, 57, 45 and 70). The baseline re-records `preg@2` (the pelvic floor step), and the
 golden replay re-records `post/preg/food/born-mid-run` (My plan after the birth: no suggestions or more plans).
+
+## 101. Version 39.58: the lives audit's quick fixes
+
+Mohit, 3 Nov: "proceed with the quick fixes first", on `docs/lives-audit-2026-11-03.md` (one woman per stage lived over weeks and
+months, `node test/lives-walk.mjs`; its section 5, phase A). Four fixes; the audit's fifth ("Have your periods stopped?" at 12 months)
+was already built (meno.js `stopDue`, from 40) and is kept by a check. No new health wording: each new line reuses a reviewed one.
+1. **The doctor check** (plan.js slot `doc`, "Did you get the doctor check?", every plan that has one): "Ask a Qura doctor"
+   (`.pl-doc-qura`, `data-ask` with her plan's name; on a shared phone the call form with no topic) in every plan, where only My
+   period plan had it. "Free government doctor" only on the government route (`S.care.gov()`), in its order (`byRoute`); on the
+   doctor route (a private doctor, nowhere yet, or not answered) it goes, as Version 39.28 says. (Anjali, PMOS, saw only "Free
+   government doctor" from day 48 to day 85.)
+2. **Bleeding after her periods stopped** (core `stoppedNow`, `startLbl`, `endLbl`; `situation.stopped`, not pregnant):
+   - Today's button, the + menu and the log sheet say "Bleeding" (`bleeding`), never "Period started", and "Bleeding stopped"
+     (`bleed_end`) for its end; Days tags a start after `stoppedOn` "Bleeding" (`t_bleed`), as in a pregnancy.
+   - Saving a start or spotting says "Saved. Any bleeding now needs a check with a doctor, even a little." (`logged_stop`: off_p_stopped's
+     reviewed line) with "What this means" (What your diary shows, where `bleed_after_stop` leads) and Undo. A shared phone keeps its
+     plain button and "Noted.".
+3. **A negative test on Today** (core `lateRow`; `S.pregtest.negNote(from)`): "Period late?" after a negative test saved since her last
+   period started says "Negative on {d}." and the reviewed "If your period still hasn't come, test again in 3–7 days with first morning
+   urine."; two negatives 5 days apart or more give the reviewed two-negatives line (`NEG2`, the same object as the page's, with its
+   doctor-route words). The row opens "When can I test?" (`pregtest-when`), where her next test is saved. A positive still takes the row
+   away (Version 39.57).
+4. **Her plan on a shared phone** (plan.js `offerCard`): discreet mode no longer hides "Ready for you". Its title is her plan's plain
+   one ("My plan", `packTitle`), its words were already plain, and it carries `data-disc-ok`. Her plan's questions, cards and Start
+   (`plan-goal`, `plan-reveal`, `plan-start`) join `PIN_ROUTES`, so on a shared phone with a PIN they ask it first. The POI card
+   stays off a shared phone.
+
+**State.** Nothing new is saved.
+
+**Strings.** `bleed_end`, `logged_stop` (core); "Negative on {d}." (pregtest.js). English and Hindi.
+
+**Tests.** `node test/lifefit.mjs` (31 checks: the doctor check on each care route and a shared phone, bleeding after menopause in
+English and Hindi at 360 px and on a shared phone, one and two negative tests on each route, a positive, an old negative, the shared-
+phone offer and its PIN, the POI card, and the 12-month question). The walks behind it: `test/lives-walk.mjs`, `test/census-walk.mjs`
+and `test/stagejump-walk.mjs` (not pass/fail).
