@@ -6936,7 +6936,7 @@ steers her away from the Qura doctor ("No recommend a qura doctor"). The locked 
 1. **The doctor a sign needs, second** (`mods/explain.js` `DOC_NEXT`, `docNext`; the finding cards on What your diary shows and the
    Diary):
    - every sign at "this week" or "this month" keeps "Ask a Qura doctor about this" first;
-   - "See a gynaecologist" (`xp_gyn`) or "See a doctor" comes second, for the packet's map, which the doctor confirms:
+   - "See a gynaecologist" (`explain_gyn`) or "See a doctor" comes second, for the packet's map, which the doctor confirms:
      - a gynaecologist: bleeding after menopause or after sex, spotting, a long or heavy period, pain that stopped her day, pain
        during sex, long or short gaps, no period for 90 days, PMOS signs, discharge, hot flushes;
      - a doctor (MBBS): the sugar-test sign, low Hb, burning when she pees, a racing heartbeat;
@@ -6954,7 +6954,7 @@ steers her away from the Qura doctor ("No recommend a qura doctor"). The locked 
      have stopped.
    - `tours.mjs` 11 follows: the trying woman's full tour has her own part on Explore, and Today in its two steps.
 
-**Strings.** `xp_gyn` (explain.js). English and Hindi (the baby plan's Hindi for a gynaecologist). UI words only. The map is the
+**Strings.** `explain_gyn` (explain.js). English and Hindi (the baby plan's Hindi for a gynaecologist). UI words only. The map is the
 packet's, marked † for the doctor.
 
 **Tests.** `node test/ladder.mjs` section 7 (now 34 checks):
