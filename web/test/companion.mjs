@@ -125,10 +125,8 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('1 an unanswered question stops her with a line, not an error', !(await page.$eval('#pl-in-err', (e) => e.hidden)) && /About your periods/.test(await view(page)));
   for (const s of ['[data-pl-q="gap:g45"]', '[data-pl-q="skips:y"]', '[data-pl-q="dx:ns"]', '[data-pl-m="signs:acne"]']) await tap(page, s);
   await tap(page, '#pl-in-next');
-  /* Version 39.3: milk, and knees or back (for the moves), join her day */
-  check('1 then her day: activity, food, milk, knees or back, sleep and work (Version 37.1: the check-in time moved to the Start screen)', /Your day/.test(await view(page)) && ['act', 'food', 'milk', 'bed', 'work'].join() === (await page.$$eval('[data-pl-q]', (b) => Array.from(new Set(b.map((x) => x.dataset.plQ.replace(/:.*/, '')))).join())) && (await has(page, '[data-pl-m="lim:none"]')) && !(await has(page, '[data-pl-q^="remind:"]')));
-  for (const s of ['[data-pl-q="act:0"]', '[data-pl-q="food:veg"]', '[data-pl-m="lim:none"]', '[data-pl-q="bed:late"]', '[data-pl-q="work:day"]']) await tap(page, s);
-  await tap(page, '#pl-in-next');
+  /* Version 39.66: her day (activity, food, milk, knees or back, sleep and work) waits for Today, each on the day a step uses it */
+  check('1 then no "Your day": her day\'s questions wait for Today (Version 39.66)', !/Your day/.test(await view(page)) && !(await has(page, '[data-pl-q^="act:"]')) && !(await has(page, '[data-pl-q^="remind:"]')));
   check('1 "When can you move for 10 minutes?"', /When can you move for 10 minutes\?/.test(await view(page)));
   await tap(page, '[data-pl-when="dinner"]');
   /* Version 39.3 (diet audit F2): her height and weight are asked only when her goal is her weight */
@@ -142,14 +140,14 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('2 what it is made from, in her words, with the sign she ticked', /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 300));
   await shot(page, '2-reveal');
   v = await revealWords(page);
-  check('2 her steps: walking from 10 minutes, one food change every two weeks, a bedtime (Version 39.45: from day 4, in "What happens when")', /Walking that grows from 10 minutes a day/.test(v) && /One food change every two weeks, starting with: Half the plate sabzi/.test(v) && /From day 4: wind down, in bed by midnight/.test(v) && !/A regular bedtime/.test(v));
+  check('2 her steps: walking from 10 minutes, one food change every two weeks, a bedtime (Version 39.45: from day 4, in "What happens when"; 39.66: asked on day 4, so named without a time)', /Walking that grows from 10 minutes a day/.test(v) && /One food change every two weeks, starting with: Half the plate sabzi/.test(v) && /From day 4: a regular bedtime/.test(v) && !/A regular bedtime:/.test(v));
   check('2 what happens when, with no percentage or promise', /What happens when/.test(v) && /Week 4: a look at your first month/.test(v) && /It is different for every woman/.test(v) && !/%|guarantee|cure|fix your/i.test(v));
   check('2 skipped months: one doctor check, and a pregnancy test first if she could be pregnant', /Periods that skip months/.test(v) && /do a pregnancy test first/.test(v));
   check('2 the Start screen: when to start, and the evening check-in time (Version 39.27: 10 pm, after her 9:15 pm walk)', /When do you want to start\?/.test(v) && (await has(page, '[data-rv-at="22:00"].on')));
   await tap(page, '#pl-rv-go'); await settle(page, 600);
   await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; document.getElementById('tour-root') && (document.getElementById('tour-root').innerHTML = ''); }); await go(page, 'home');
   let s = await st(page);
-  check('2 what joining saved: her goal, gap, skipped months and day; the plan; the reminder after her walk (10 pm)', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && s.mods.plan.bed === 'late' && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '22:00') && JSON.stringify(s.goals) === '["irregular","track"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);   /* Version 39.48: the plan she starts leads her goals */
+  check('2 what joining saved: her goal, gap, skipped months and day; the plan; the reminder after her walk (10 pm)', s.intake.goal === 'irregular' && s.intake.gap === 'g45' && s.intake.skips === 'y' && s.mods.plan.pack === 'cycle' && s.mods.plan.remAt === '20:00' && !s.mods.plan.bed && ['act', 'food', 'milk', 'lim', 'bed', 'work'].every((k) => (s.mods.plan.dayAsk || []).indexOf(k) >= 0) && s.mods.plan.when === 'dinner' && s.reminders.some((r) => r.id === 'plan' && r.time === '22:00') && JSON.stringify(s.goals) === '["irregular","track"]' && !s.situation.pcos, [s.intake, s.mods.plan.remAt, s.reminders, s.goals]);   /* Version 39.48: the plan she starts leads her goals */
   check('2 the full tour did not start on its own (Version 39.10: "Your Sakhi" and its short tour are her welcome)', s.fullTour && s.fullTour.st === 'first');
   const td = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
   check('2 Today: a greeting by name, her plan and day, and her 3 steps on day 1 (Version 39.13: yoga and the walk apart; 39.43: her bedtime from day 4)', /Good evening, Riya/.test(td) && /my cycle plan/i.test(td) && /PLAN DAY 1/.test(td) && /0 of 3 done today/.test(td) && /Cycle care yoga\nBefore a meal[\s\S]*?\n\d+ min\n/.test(td) && /Walk 10 minutes/.test(td) && /Half the plate sabzi/.test(td) && !/In bed by midnight/.test(td), td);   /* Version 39.22: tonight's session under her bedtime */
@@ -285,8 +283,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   await tap(page, '[data-pl-pick="pain"]');
   check('existing woman: her goal\'s questions come first (period pain)', /About your period pain/.test(await view(page)));
   await tap(page, '[data-pl-q="pain:pk"]'); await tap(page, '[data-pl-q="painDays:23"]'); await tap(page, '#pl-in-next');
-  for (const sel of ['[data-pl-q="act:1"]', '[data-pl-m="lim:none"]']) await tap(page, sel);   /* Version 39.55: My period plan asks no bedtime or work */
-  await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="evening"]'); await tap(page, '#pl-in-make');
+  await tap(page, '[data-pl-when="evening"]'); await tap(page, '#pl-in-make');   /* Version 39.66: her day's questions wait for Today */
   check('existing woman: her plan\'s reveal', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /My period plan/.test(await view(page)));   /* Version 39.55 */
   await revealWords(page); await tap(page, '[data-rv-at="18:00"]');
   await tap(page, '#pl-rv-go'); await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; });

@@ -872,7 +872,7 @@
     if (!S.canSave()) { v.innerHTML = hd + S.needDiary(); S.wire(v); return; }
     if (pauseWhy()) { renderHub(v); return; }   /* paused: the plan's page says why (a blank page before) */
     const dt0 = S.food ? S.food.diet() : null;   /* review FOOD-05: how she eats, as saved (vegetarian unless she said otherwise) */
-    const d = D(); const f = S.mem.planForm = S.mem.planForm || { goal: d.goal || null, level: d.level == null ? null : d.level, lim: d.limits ? Object.assign({}, d.limits) : null, food: dt0 ? dt0.type : (d.food || null), milk: dt0 && dt0.milk === false ? 'n' : 'y', region: regionOf(d) };
+    const d = D(); const dw = dayWait(d); const f = S.mem.planForm = S.mem.planForm || { goal: d.goal || null, level: d.level == null || dw.indexOf('act') >= 0 ? null : d.level, lim: d.limits && dw.indexOf('lim') < 0 ? Object.assign({}, d.limits) : null, food: dt0 ? dt0.type : (d.food || null), milk: dt0 && dt0.milk === false ? 'n' : 'y', region: regionOf(d) };
     const chips = (name, opts, cur, key) => '<div class="chips" role="group" aria-label="' + esc(t(name)) + '">' + opts.map((o) => '<button type="button" class="chip' + (cur === o[0] ? ' on' : '') + '" data-pl-f="' + key + '" data-v="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div>';
     const lim = f.lim; const limCur = lim == null ? null : (lim.knees && lim.back ? 'both' : (lim.knees ? 'knees' : (lim.back ? 'back' : 'none')));
     const pin = pinRegion();
@@ -896,7 +896,8 @@
       if (!f.goal || f.level == null || !f.lim || !f.food || !f.region) { const e = v.querySelector('#pl-err'); if (e) e.hidden = false; return; }
       const dd = D(); const pcos = !!(S.state.situation || {}).pcos; const gk = !pcos && (f.goal === 'weight' || f.goal === 'skin') ? f.goal : 'pmos';
       dd.next = { pack: 'cycle', goalKey: gk, goal: f.goal, level: f.level, limits: f.lim, food: f.food, region: f.region, focus: f.goal === 'weight' ? 'weight' : (dd.focus || 'habits'),
-        remAt: dd.remAt && dd.remAt >= '17:00' ? dd.remAt : '20:00', when: dd.when || null, bed: dd.bed || null, work: dd.work || null, intake: (dd.start && dd.intake) || S.state.intake || null, at: todayISO() };
+        remAt: dd.remAt && dd.remAt >= '17:00' ? dd.remAt : '20:00', when: dd.when || null, bed: dd.bed || null, work: dd.work || null, intake: (dd.start && dd.intake) || S.state.intake || null, at: todayISO(),
+        dayAsk: dayWait(dd).filter((k) => ['act', 'lim', 'food', 'milk'].indexOf(k) < 0) };   /* Version 39.66: answered here; her bedtime and her day wait on */
       if (S.food && S.food.set) S.food.set(f.food, f.milk !== 'n');   /* review FOOD-05: My food and My plate follow her answer */
       S.state.prompts = Object.assign({}, S.state.prompts || {}, { reveal: todayISO() }); S.mem.planForm = null; S.mem.rvCard = 0; S.mem.rvStart = null;
       S.save(); S.setHash('plan-reveal');
@@ -1606,6 +1607,7 @@
   function afterHome(v) {
     const og = v.querySelector('#pl-off-go'); if (og) og.addEventListener('click', offerGo);
     wirePoi(v);   /* Version 39.51 */
+    v.querySelectorAll('[data-pl-dq]').forEach((b) => b.addEventListener('click', () => { const i = b.dataset.plDq.indexOf(':'); dayAnswer(b.dataset.plDq.slice(0, i), b.dataset.plDq.slice(i + 1)); }));   /* Version 39.66 */
     const on1 = v.querySelector('#pl-off-not'); if (on1) on1.addEventListener('click', () => { S.state.prompts = S.state.prompts || {}; S.state.prompts.planOfferNot = todayISO(); S.saveQuiet(); S.render(); });
     const b = v.querySelector('#pl-rec-not'); if (b) b.addEventListener('click', () => { S.state.prompts = S.state.prompts || {}; S.state.prompts.planRec = todayISO(); S.saveQuiet(); S.render(); });
   }
@@ -2011,6 +2013,13 @@
      when she can move (plans with moves); her body (Version 39.3: only for a weight goal; My body takes it any time); and,
      Version 37.1, what she told Sakhi, to check before her plan is made */
   /* Version 39.36 (Mohit's walkthrough, 29 Oct): "Your day" only when it asks something My food doesn't already hold */
+  /* Version 39.66 (plan questions on their day; the advice's phase C, the minimalist baseline: ask on the day it changes something):
+     before Start, "Your day" asks only the midlife plan's safety questions (weak bones, chest pain when she walks). How active
+     she is, how she eats, milk, her knees or back, her bedtime and her day wait for the first day a step uses them (dayQKey).
+     Change on the summary's Your day row still shows them all. */
+  const DAY_NOW = ['mbone', 'mheart'];
+  const dayWait = (d) => (d && Array.isArray(d.dayAsk) ? d.dayAsk : []);   /* what still waits for its day: its default isn't her answer */
+  const qsAsk = (id, a) => (id === 'day' && !a.dayShow ? qsOf('day', a).filter((k) => DAY_NOW.indexOf(k) >= 0) : qsOf(id, a));   /* dayShow: "Change" on Your day itself */
   const daySkip = (a) => { if (a.dayShow) return false; const fk = !!(S.food && S.food.known && S.food.known()); const kn = a.known || []; const q = qsOf('day', a); return q.length > 0 && q.every((k) => kn.indexOf(k) >= 0 || (fk && (k === 'food' || k === 'milk'))); };   /* Version 39.46: or answers she gave before */
   const dayFill = (a) => { if (a.food == null && S.food && S.food.known && S.food.known()) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; } };
   /* Version 39.51 (Mohit's phone test, 31 Oct): her time to move comes from the plan she is on, so a new plan doesn't ask it
@@ -2022,7 +2031,7 @@
     const pk = packFor(a.goal, a.stage); const sp = pk ? specOf(pk) : null; const out = ['goal']; if (!sp) return out;
     const ik = sp.intake || {}; const c = { goal: a.goal, day: todayISO() };
     (ik.screens || []).forEach((x) => { if (progIf(x.if, c)) out.push(x.id); });
-    if (!daySkip(a) && qsOf('day', a).length) out.push('day');   /* Version 39.56: a plan that asks nothing about her day has no Your day */ if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
+    if (!daySkip(a) && qsAsk('day', a).length) out.push('day');   /* Version 39.56: a plan that asks nothing about her day has no Your day */ if ((ik.when === true || (Array.isArray(ik.when) && progIf(ik.when, c))) && (a.whenShow || !whenRun())) out.push('when');   /* Version 39.51: not again while a plan holds it */
     if (a.goal === 'weight') out.push('body'); if (!a.fromJoin) out.push('sum'); return out;   /* Version 39.61: from joining, the one-page plan has Change my answers */
   }
   /* her goals now: no "heavy periods" once her periods have stopped (bleeding after that needs a doctor, not a plan) */
@@ -2081,7 +2090,7 @@
     if (l.indexOf('psafe') >= 0) rows.push([t('plan_ps_h'), t(a.pnow === 'y' ? 'plan_ps_t_now' : 'plan_ps_t_' + psTier(a.pflags, gwAt(todayISO()))), 'psafe']);   /* Version 39.34 */
     const sym = ['cyc', 'pain', 'pain2', 'heavy', 'pms'].find((x) => l.indexOf(x) >= 0); const now = nowLineOf(ikOfAnswers(a), pk);
     if (sym && now) rows.push([t('plan_in_sum_now'), now, sym]);
-    if (l.indexOf('day') >= 0 || daySkip(a)) { dayFill(a);   /* Version 39.36 */
+    if (l.indexOf('day') >= 0 || daySkip(a) || dayHeld(a)) { dayFill(a);   /* Version 39.36; Version 39.66: or what her plan before holds, to change */
       const q = qsOf('day', a); const bedK = a.bed ? 'plan_bd_' + (a.bed === 'late' ? 'late' : a.bed.slice(1)) : null;
       const bits = [q.indexOf('act') >= 0 && a.act != null ? t('plan_lv_' + a.act) : null, q.indexOf('food') >= 0 && a.food ? t('plan_f_' + a.food) : null, bedK ? t(bedK) : null, a.work ? t('plan_wk_' + a.work) : null, a.mbone === 'y' ? t('plan_m2_sum_bone') : null, a.mheart === 'y' ? t('plan_m2_sum_heart') : null].filter(Boolean);
       if (bits.length) rows.push([t('plan_in_day_h'), bits.join(' · '), 'day']);
@@ -2104,17 +2113,25 @@
     const gap = long ? cat(open) : (hi - lo > 21 ? 'vary' : cat(m));
     return { gap: gap, skips: g.some((x) => x > 60) || open > 60 ? 'y' : 'n', n: g.length, lo: lo, hi: hi, open: long ? open : 0 };
   }
+  /* Version 39.51 (Mohit's phone): what her plan before holds, so it isn't asked again; only what this screen asks (his fourth phone
+     test). Version 39.66: her bedtime and her day too, and never what still waits for its day; the summary shows them, with Change. */
+  function dayPre(a) {
+    if (a.dayPre) return; a.dayPre = true; const d0 = raw() || {}; const ik0 = d0.intake || {}; const qd = qsOf('day', a); const asks = (k) => !!d0.start && qd.indexOf(k) >= 0 && dayWait(d0).indexOf(k) < 0;
+    if (asks('act') && a.act == null) { const lv = ik0.act != null ? ik0.act : d0.level; if (lv != null) a.act = String(lv); }
+    if (asks('lim') && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } }
+    if (asks('bed') && a.bed == null && d0.bed) a.bed = d0.bed;
+    if (asks('work') && a.work == null && d0.work) a.work = d0.work;
+    /* Version 39.51 (Mohit's phone test): her bones and heart answers too, from the midlife plan she is on; "My doctor says I can do more" stays hers */
+    if (asks('mbone') && menoV2(d0) && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
+    if (asks('mheart') && menoV2(d0) && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart;
+  }
+  const dayHeld = (a) => { dayPre(a); const q = qsOf('day', a); return ['act', 'lim', 'bed', 'work'].some((k) => q.indexOf(k) >= 0 && a[k] != null); };   /* her answers from the plan before */
   function renderIntake(v, a, ctx) {
     const list = screensOf(a); a.iq = S.clamp(a.iq || 0, 0, list.length - 1); const id = list[a.iq];
     const dg = id === 'cyc' ? diaryGaps() : null;
     if (dg && a.gap == null && !a.dgSeen) { a.gap = dg.gap; a.skips = a.skips || dg.skips; a.dgSeen = true; }
     if (id === 'day' && a.food == null && S.food && S.food.diet) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; }
-    if (id === 'day' && !a.dayPre) { a.dayPre = true; const d0 = raw() || {}; const ik0 = d0.intake || {}; const qd = qsOf('day', a); const asks = (k) => !!d0.start && qd.indexOf(k) >= 0;   /* Version 39.51 (Mohit's phone): what her plan before holds, so it isn't asked again; only what this screen asks (his fourth phone test) */
-      if (asks('act') && a.act == null) { const lv = ik0.act != null ? ik0.act : d0.level; if (lv != null) a.act = String(lv); }
-      if (asks('lim') && a.lim == null) { if (Array.isArray(ik0.lim)) a.lim = ik0.lim.length ? ik0.lim.slice() : ['none']; else if (d0.limits) { const l = ['knees', 'back'].filter((k) => d0.limits[k]); a.lim = l.length ? l : ['none']; } }
-      /* Version 39.51 (Mohit's phone test): her bones and heart answers too, from the midlife plan she is on; "My doctor says I can do more" stays hers */
-      if (asks('mbone') && menoV2(d0) && a.mbone == null && ['y', 'n', 'ns'].indexOf(ik0.mbone) >= 0) a.mbone = ik0.mbone;
-      if (asks('mheart') && menoV2(d0) && a.mheart == null && ['y', 'n', 'ok'].indexOf(ik0.mheart) >= 0) a.mheart = ik0.mheart; }
+    if (id === 'day') dayPre(a);
     const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
     const prev = () => { if (a.iq <= 0 || (a.fromJoin && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi */
     const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
@@ -2157,7 +2174,7 @@
         '<p class="small">' + esc(t('plan_in_bnone')) + '</p>' + (known ? '' : ask('trying')) +
         '<button type="button" class="btn primary block" id="pl-in-next">' + esc(t('continue')) + '</button>';
     } else {
-      const qs = qsOf(id, a).filter((k) => a.edit || (a.known || []).indexOf(k) < 0); const w = warnOf(id, a);
+      const qs = qsAsk(id, a).filter((k) => a.edit || (a.known || []).indexOf(k) < 0); const w = warnOf(id, a);
       html = ctx.head(t(SCREEN_H[id][0]), SCREEN_H[id][1] ? t(SCREEN_H[id][1]) : '') + (dg ? '<p class="small pl-in-from">' + esc((dg.lo === dg.hi ? tf(dg.n === 2 ? 'plan_in_from_eq2' : 'plan_in_from_eq', { n: dg.n, a: dg.lo }) : tf('plan_in_from', { n: dg.n, a: dg.lo, b: dg.hi })) + (dg.open ? ' ' + tf('plan_in_from_open', { n: dg.open }) : '')) + '</p>' : '') + qs.map(ask).join('') +
         '<div class="card warn" id="pl-in-warn"' + (w ? '' : ' hidden') + '><p class="small">' + (w ? esc(t(w)) : '') + '</p></div>' +
         '<p class="small pl-err" id="pl-in-err" hidden>' + esc(t('plan_s_need')) + '</p><button type="button" class="btn primary block" id="pl-in-next">' + esc(t('continue')) + '</button>';
@@ -2193,7 +2210,7 @@
         if (!ok) { if (er) er.hidden = false; return; }
         a.h = h; a.w = wt; a.waist = wa ? +wa : null; next(); return;
       }
-      const miss = qsOf(id, a).filter((k) => k !== 'milk' && k !== 'endo' && k !== 'pfway' && (Q[k][2] === 'multi' ? !(a[k] || []).length : a[k] == null || a[k] === ''));
+      const miss = qsAsk(id, a).filter((k) => k !== 'milk' && k !== 'endo' && k !== 'pfway' && (Q[k][2] === 'multi' ? !(a[k] || []).length : a[k] == null || a[k] === ''));
       if (miss.length) { if (er) er.hidden = false; return; }
       next();
     });
@@ -2204,7 +2221,7 @@
      card starts it, today, tomorrow or on Monday. A running plan carries on until then, and so do its answers (S.state.intake),
      so a goal change can't leak into the plan she is on. */
   const nextOf = (d) => (d && d.next && d.next.pack ? d.next : null);
-  const NEXT_KEYS = ['pack', 'goalKey', 'goal', 'focus', 'level', 'limits', 'food', 'region', 'when', 'bed', 'work', 'intake'];
+  const NEXT_KEYS = ['pack', 'goalKey', 'goal', 'focus', 'level', 'limits', 'food', 'region', 'when', 'bed', 'work', 'intake', 'dayAsk'];
   /* the waiting plan as a plan, to draw it (starting today) */
   function viewOf(d) {
     const n = nextOf(d); const v = Object.assign({ log: {}, weeks: {}, body: [] }, d); if (!n) return v;
@@ -2308,10 +2325,14 @@
     if (st === 'post') { const cur = raw(); const fl = cur && cur.pack === 'preg' ? (ikOf(cur).pflags || []) : []; const pm = fl.filter((k) => ['r_bp', 'r_gdm'].indexOf(k) >= 0); if (pm.length) ik.pm = pm; }   /* Version 39.46: high BP or sugar in her pregnancy */
     if (!pk || !on() || !S.canSave()) { S.state.intake = ik; return null; }   /* "Just keeping track": her answers, no plan */
     const d = D();
-    d.next = { pack: pk, goalKey: a.goal, intake: ik, at: todayISO(),
-      level: a.act == null ? (d.level == null ? 0 : d.level) : S.clamp(+a.act, 0, 2), limits: a.lim ? { knees: a.lim.indexOf('knees') >= 0, back: a.lim.indexOf('back') >= 0 } : (d.limits || { knees: false, back: false }), food: a.food || d.food || 'veg', region: d.region || null,
+    /* Version 39.66: what "Your day" didn't ask and she hasn't answered before waits for its day; meanwhile the gentlest level, gentle
+       moves for her knees and back, her food from My food (or veg), and no bedtime target */
+    const fk = !!(S.food && S.food.known && S.food.known()); const qd = qsOf('day', { goal: a.goal, stage: st }); const was = dayWait(d);   /* still waiting on the plan she is on: its defaults aren't answers */
+    const later = qd.filter((k) => DAY_NOW.indexOf(k) < 0 && a[k] == null && (was.indexOf(k) >= 0 || (!(k === 'act' && d.level != null) && !(k === 'lim' && d.limits) && !((k === 'food' || k === 'milk') && (fk || d.food)) && !(k === 'bed' && d.bed) && !(k === 'work' && d.work))));
+    d.next = { pack: pk, goalKey: a.goal, intake: ik, at: todayISO(), dayAsk: later,
+      level: a.act == null ? (d.level == null ? 0 : d.level) : S.clamp(+a.act, 0, 2), limits: a.lim ? { knees: a.lim.indexOf('knees') >= 0, back: a.lim.indexOf('back') >= 0 } : (d.limits || (later.indexOf('lim') >= 0 ? { knees: true, back: true } : { knees: false, back: false })), food: a.food || d.food || 'veg', region: d.region || null,
       goal: pk === 'cycle' ? ({ skin: 'skin', weight: 'weight' }[a.goal] || 'cycles') : (pk === 'pain' ? 'pain' : 'cycles'), focus: a.goal === 'weight' && pk !== 'ttc' ? 'weight' : 'habits',   /* Version 39.32: Getting ready keeps 150 minutes a week (packet F4) */
-      remAt: d.remAt && d.remAt >= '17:00' ? d.remAt : '20:00', when: a.when || null, bed: a.bed || null, work: a.work || null,
+      remAt: d.remAt && d.remAt >= '17:00' ? d.remAt : '20:00', when: a.when || null, bed: a.bed || (later.indexOf('bed') < 0 && d.bed) || null, work: a.work || (later.indexOf('work') < 0 && d.work) || null,   /* Version 39.66: carried, as her level and food are */
       body: a.h && a.w ? { h: +a.h, w: +a.w, waist: a.waist ? +a.waist : null } : null };
     S.state.prompts = Object.assign({}, S.state.prompts || {}, { reveal: todayISO() }); S.mem.rvCard = 0; S.mem.rvStart = null;
     return d;
@@ -2424,6 +2445,40 @@
   const perNow = (d) => !!(d && d.per && d.per.at && S.diffDays(S.fromISO(d.per.at), pToday()) <= 1 && !disc() && d.per.d === latestStart());   /* undone or replaced: gone */
   const perLine0 = (d, q) => (d.per.days ? tf(d.per.guess ? (q ? 'plan_per_ab_q' : 'plan_per_ab') : (q ? 'plan_per_q' : 'plan_per'), { n: d.per.days }) : t(q ? 'plan_per0_q' : 'plan_per0')) + (packOf(d) === 'pain' && !q ? ' ' + t('plan_per_pain') : '');   /* q: "Pain today?" takes the place of "noted for your results" */
   const perLine = (d, q) => (babyD(d) && !q ? t('plan_bper') : perLine0(d, q));   /* Version 39.32 (packet J1): a fresh start, no failure words */
+  /* Version 39.66 (plan questions on their day): a question that waited, one at a time, under her week on Today on the first day a
+     step uses it, in "Your day"'s own words; one tap answers it and her steps follow at once. Her knees or back first (a routine
+     today), then how she eats and milk (a food step), her bedtime and her day (the bedtime step's day), then how active she is (her
+     move). Never in discreet mode or on a shared phone, where the defaults stay. */
+  const isFood = (a) => FOOD_IDS.indexOf(a.id) >= 0 || /^(food|plan-plate|preg-diet)/.test(a.go || '');   /* her food habit, her iron or calcium food, food while she breastfeeds */
+  const bedDue = (dd) => { try { return stepsFor(Object.assign({}, dd, { bed: 'b23' })).some((a) => a.id === 'sleep'); } catch (e) { return false; } };   /* the bedtime step's day has come */
+  function dayQKey(dd, acts) {
+    const ks = Array.isArray(dd.dayAsk) ? dd.dayAsk : []; if (!ks.length || disc() || (S.state.settings || {}).shared) return null;
+    const on = (k) => ks.indexOf(k) >= 0; const has = (f) => acts.some(f);
+    if (on('lim') && has((a) => a.kind === 'routine')) return 'lim';
+    if (on('food') && has(isFood)) return 'food';
+    if (on('milk') && has(isFood)) return 'milk';
+    if (on('bed') && !has((a) => a.id === 'sleep') && bedDue(dd)) return 'bed';
+    if (on('work') && !on('bed') && has((a) => a.id === 'sleep')) return 'work';
+    if (on('act') && has((a) => a.id === 'move')) return 'act';
+    return null;
+  }
+  const DQ_OPTS = { lim: [['none', 'plan_lim_none'], ['knees', 'plan_lim_knees'], ['back', 'plan_lim_back'], ['both', 'plan_lim_both']] };   /* knees, back or both in one tap, as My plan's settings ask it */
+  const dayQHtml = (k) => '<div class="pl-dq" data-nofold="1"><p class="small"><strong>' + esc(t(Q[k][0])) + '</strong></p><div class="chips" role="group" aria-label="' + esc(t(Q[k][0])) + '">' +
+    (DQ_OPTS[k] || Q[k][1]).map((o) => '<button type="button" class="chip" data-pl-dq="' + k + ':' + o[0] + '">' + (k === 'food' && S.food && S.food.mark ? S.food.mark(o[0]) : '') + esc(t(o[1])) + '</button>').join('') + '</div></div>';
+  function dayAnswer(k, v) {
+    const dd = D(); const ik = dd.intake = Object.assign({}, dd.intake || {}); const o = {};
+    if (k === 'lim') { dd.limits = { knees: v === 'knees' || v === 'both', back: v === 'back' || v === 'both' }; o.lim = v === 'none' ? [] : (v === 'both' ? ['knees', 'back'] : [v]); }
+    else if (k === 'food') { dd.food = v; o.food = v; if (S.food && S.food.set) S.food.set(v, ik.milk !== 'n'); }
+    else if (k === 'milk') { o.milk = v; if (S.food && S.food.set) S.food.set(dd.food || foodOf(dd), v !== 'n'); }
+    else if (k === 'bed') { dd.bed = v; o.bed = v; } else if (k === 'work') { dd.work = v; o.work = v; }
+    else if (k === 'act') { dd.level = S.clamp(+v, 0, 2); o.act = +v; }
+    Object.assign(ik, o); if (S.state.intake) S.state.intake = Object.assign({}, S.state.intake, o);   /* her answers, where her next plan reads them */
+    dd.dayAsk = (dd.dayAsk || []).filter((x) => x !== k); if (k === 'bed' && v === 'b22') dd.dayAsk = dd.dayAsk.filter((x) => x !== 'work');   /* no bedtime step: nothing to ask about her day */
+    if (k === 'bed' || k === 'work') { try { remSync(dd); } catch (e) { /* her reminders follow on the next draw */ } }
+    S.save(); S.render();
+    const wr = k === 'bed' && S.reminders ? S.reminders.get('plan-wind') : null;   /* the ring her bedtime brings, named as the Start card names it */
+    if (wr && wr.on !== false && wr.time) S.toast(tf('plan_st_rem', { l: tf('plan_st_r_wind', { t: timeOf(wr.time) }) }));
+  }
   /* Version 39.27 (minimalism audit R05): the pain plan measures pain. On the first 3 days of each period, "Pain today?" once,
      with the day page's own 4 answers; one tap saves it on that period for her results. If she skips it on Today, the evening
      check-in asks. Never on a shared phone or in discreet mode. */
@@ -2579,7 +2634,7 @@
   /* Version 39.46: after the birth, her pregnancy's answers for "Your day" (how she eats, her knees or back), so it isn't asked again */
   const postPre = () => { const ik = S.state.intake || {}; const d0 = raw() || {}; const a = { stage: 'post', goal: 'recovery', iq: 1 };
     if (ik.food) { a.food = ik.food; a.milk = ik.milk || 'y'; }
-    if (Array.isArray(ik.lim)) a.lim = ik.lim.filter((k) => k === 'knees' || k === 'back'); else if (d0.limits) a.lim = ['knees', 'back'].filter((k) => d0.limits[k]);
+    if (Array.isArray(ik.lim)) a.lim = ik.lim.filter((k) => k === 'knees' || k === 'back'); else if (d0.limits && dayWait(d0).indexOf('lim') < 0) a.lim = ['knees', 'back'].filter((k) => d0.limits[k]);
     a.known = ['food', 'milk', 'lim'].filter((k) => a[k] != null); return a; };
   function wireChange(v) {
     const g = v.querySelector('#pl-chg-go'); if (g) g.addEventListener('click', () => { const w = g.dataset.chg; S.mem.planIntake = w === 'preg' ? { stage: 'preg', iq: 0 } : postPre();   /* Version 39.35: her goal, asked (it chooses her step) */ S.setHash('plan-goal'); });
@@ -2711,9 +2766,10 @@
     const s = (sp.steps || []).filter((x) => x.use === 'bed')[0]; const m = s && (s.if || []).map((w) => /^pday:(\d+)-$/.exec(w)).filter(Boolean)[0]; const n = m ? +m[1] : 0;
     if (n < 2 || (d.start && d.start <= todayISO() && planDay(d) >= n)) return null;
     const st0 = d.start || todayISO(); const a = stepsFor(Object.assign(fullD(d), { start: st0 }), S.toISO(S.addDays(S.fromISO(st0), n - 1))).filter((x) => x.id === s.id)[0];
+    if (!a && dayWait(d).indexOf('bed') >= 0) return { n: n, a: null };   /* Version 39.66: her bedtime is asked on its day, so it is named without a time */
     return a ? { n: n, a: a } : null;
   }
-  const laterLine = (l) => tf('plan_rv_from', { n: l.n, x: S.state.lang === 'en' ? l.a.title.charAt(0).toLowerCase() + l.a.title.slice(1) : l.a.title });
+  const laterLine = (l) => tf('plan_rv_from', { n: l.n, x: !l.a ? t('plan_rv_bed0') : (S.state.lang === 'en' ? l.a.title.charAt(0).toLowerCase() + l.a.title.slice(1) : l.a.title) });
   /* about how many minutes a day her first steps take */
   const dayMins = (d) => actionsFor(d).reduce((n, a) => n + (a.kind === 'minutes' ? a.mins : (a.r ? routineMins(a.r, d) : (/^relief-/.test(a.go) ? 3 : 0))), 0);
   /* Version 37.1: her plan as cards, one idea each (docs/first-days-audit-2026-10-24.md, 5.3 and 5.5): it's ready; your steps;
@@ -3259,9 +3315,11 @@
     if (full) return top + cr + nightBar() + dayDoneHtml(dd, ci, '<div class="pl-wk">' + weekDots(dd) + (wl ? '<p class="small pl-wl">' + wl + '</p>' : '') + '</div>');   /* R2: a full day closes itself */
     /* R1, R5: her week as 7 small dots (today ringed) and today's count on one line; a notice, else her week's line, under it.
        Two short lines, as Version 39.13's were, so her steps keep their place on the first screen at 360 px. */
+    const dq = pq ? null : dayQKey(dd, acts);   /* Version 39.66: a question on its day */
     return top + cr + nightBar() + '<div class="pl-t7">' + weekDots(dd, true) + '<span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' +
       (sub ? '<p class="small pl-th-y pl-th-str">' + esc(sub) + '</p>' : (wl ? '<p class="small pl-wl">' + wl + '</p>' : '')) +
       (pq ? painQ(dd) + (perNow(dd) ? '<p class="small pl-th-y">' + esc(t('plan_per_pain')) + '</p>' : '') : '') +   /* Version 39.27 (R05) */
+      (dq ? dayQHtml(dq) : '') +
       (offer ? '<div class="pl-th-rest"><span class="small">' + esc(t('plan_rest_q')) + '</span><button type="button" class="btn sm" id="pl-rest-yes">' + esc(t('plan_rest_yes')) + '</button></div>' : '');
   }
   /* the plan's card for the slot: her plan waiting to be started, her first day, the doctor check, a Qura doctor on day 3,
@@ -4517,7 +4575,7 @@
         plan_rv_cyc: 'Periods often take 3 to 6 months to change. Keep noting them: that’s how Sakhi sees the change.',
         plan_rv_doc_h2: 'Alongside your plan: one doctor check', plan_rv_doc_when: 'You can start your steps today. Get the check in the next 3 weeks; Sakhi will ask you about it.', plan_rv_doc_soon: 'You can start your steps today. Please see a doctor soon.',
         plan_st_h: 'When do you want to start?', plan_st_day: 'Your first day', plan_st_today: 'Today', plan_st_tom: 'Tomorrow', plan_st_mon: 'Monday, {d}', plan_st_at: 'Sakhi checks in at', plan_st_at_p: 'Each evening, 1 minute: “How did today go?”',
-        plan_st_rem: 'Reminders are on: {l}. Nothing shows on the lock screen. Change them any time in Me > Reminders.', plan_st_off: 'Your phone reminders are off, so nothing will ring. You can turn them on in Me > Reminders.', plan_st_block: 'Your phone isn’t letting Sakhi ring reminders. You can allow them in Me > Reminders.', plan_st_r_ci: 'your {t} check-in', plan_st_r_walk: 'your {t} walk', plan_st_r_move: 'your {t} time to move', plan_st_r_wind: 'your {t} wind-down', plan_st_r_wind_n: 'your {t} wind-down from day {n}', plan_rv_from: 'From day {n}: {x}',
+        plan_st_rem: 'Reminders are on: {l}. Nothing shows on the lock screen. Change them any time in Me > Reminders.', plan_st_off: 'Your phone reminders are off, so nothing will ring. You can turn them on in Me > Reminders.', plan_st_block: 'Your phone isn’t letting Sakhi ring reminders. You can allow them in Me > Reminders.', plan_st_r_ci: 'your {t} check-in', plan_st_r_walk: 'your {t} walk', plan_st_r_move: 'your {t} time to move', plan_st_r_wind: 'your {t} wind-down', plan_st_r_wind_n: 'your {t} wind-down from day {n}', plan_rv_from: 'From day {n}: {x}', plan_rv_bed0: 'a regular bedtime',
         /* Version 39.46: after the birth, version 2 (review section 19.46; the new lines wait for the doctor) */
         plan_p2_nb_h: 'This week: signs in your baby that can’t wait', plan_p2_bp_h: 'Your BP check this week', plan_p2_bp_p: 'You had high BP in your pregnancy. It can stay high after the birth, so get it checked this week, and again at your 6-week check.', plan_p2_tom: 'Remind me tomorrow',
         plan_p2_six_bp: 'You had high BP in your pregnancy: ask for a BP check at this visit.', plan_p2_six_gdm: 'You had sugar in your pregnancy: ask for the 75 g sugar test at this visit, then once a year.', plan_p2_from: 'From your pregnancy', plan_p2_six_rem: 'Remind me on {d}', plan_p2_six_went: 'I went',
@@ -4926,7 +4984,7 @@
         plan_rv_cyc: 'पीरियड में बदलाव आने में अक्सर 3 से 6 महीने लगते हैं। उन्हें दर्ज करती रहें: इसी से Sakhi बदलाव देख पाती है।',
         plan_rv_doc_h2: 'प्लान के साथ: एक बार डॉक्टर की जाँच', plan_rv_doc_when: 'आप अपने क़दम आज से शुरू कर सकती हैं। जाँच अगले 3 हफ़्तों में करवा लें; Sakhi आपसे इसके बारे में पूछेगी।', plan_rv_doc_soon: 'आप अपने क़दम आज से शुरू कर सकती हैं। कृपया जल्दी डॉक्टर को दिखाएँ।',
         plan_st_h: 'आप कब से शुरू करना चाहती हैं?', plan_st_day: 'आपका पहला दिन', plan_st_today: 'आज', plan_st_tom: 'कल', plan_st_mon: 'सोमवार, {d}', plan_st_at: 'Sakhi इस समय पूछेगी', plan_st_at_p: 'हर शाम, 1 मिनट: “आज का दिन कैसा रहा?”',
-        plan_st_rem: 'रिमाइंडर चालू हैं: {l}। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।', plan_st_off: 'आपके फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_block: 'आपका फ़ोन Sakhi को रिमाइंडर बजाने नहीं दे रहा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_r_ci: '{t} का चेक-इन', plan_st_r_walk: '{t} की सैर', plan_st_r_move: '{t} चलने-फिरने का समय', plan_st_r_wind: '{t} सुकून के पल', plan_st_r_wind_n: '{n}वें दिन से {t} सुकून के पल', plan_rv_from: '{n}वें दिन से: {x}',
+        plan_st_rem: 'रिमाइंडर चालू हैं: {l}। लॉक स्क्रीन पर कुछ नहीं दिखता। इन्हें कभी भी मैं > रिमाइंडर में बदलें।', plan_st_off: 'आपके फ़ोन रिमाइंडर बंद हैं, इसलिए कुछ नहीं बजेगा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_block: 'आपका फ़ोन Sakhi को रिमाइंडर बजाने नहीं दे रहा। आप इन्हें मैं > रिमाइंडर में चालू कर सकती हैं।', plan_st_r_ci: '{t} का चेक-इन', plan_st_r_walk: '{t} की सैर', plan_st_r_move: '{t} चलने-फिरने का समय', plan_st_r_wind: '{t} सुकून के पल', plan_st_r_wind_n: '{n}वें दिन से {t} सुकून के पल', plan_rv_from: '{n}वें दिन से: {x}', plan_rv_bed0: 'सोने का एक तय समय',
         plan_p2_nb_h: 'इस हफ़्ते: बच्चे में ऐसे संकेत जिनमें देर न करें', plan_p2_bp_h: 'इस हफ़्ते अपना BP जँचवाएँ', plan_p2_bp_p: 'आपकी प्रेग्नेंसी में BP ज़्यादा था। डिलीवरी के बाद भी यह ज़्यादा रह सकता है, इसलिए इस हफ़्ते जँचवाएँ, और फिर 6 हफ़्ते की जाँच पर।', plan_p2_tom: 'कल याद दिलाएँ',
         plan_p2_six_bp: 'आपकी प्रेग्नेंसी में BP ज़्यादा था: इस जाँच में BP ज़रूर जँचवाएँ।', plan_p2_six_gdm: 'आपकी प्रेग्नेंसी में शुगर बढ़ी थी: इस जाँच में 75 g शुगर टेस्ट करवाएँ, फिर हर साल एक बार।', plan_p2_from: 'आपकी प्रेग्नेंसी से', plan_p2_six_rem: '{d} को याद दिलाएँ', plan_p2_six_went: 'मैं जाँच करवा आई',
         plan_p2_un_h: 'थोड़ा और चलने-फिरने के लिए तैयार?', plan_p2_un_p: '6 हफ़्ते पर आपकी अपनी जाँच के बाद, या डॉक्टर के कहने पर, दोबारा मज़बूती शुरू होती है।', plan_p2_un_six: 'मैं 6 हफ़्ते की जाँच करवा आई', plan_p2_un_doc: 'डॉक्टर ने कहा मैं व्यायाम कर सकती हूँ', plan_p2_un_ready: 'मैं धीरे-धीरे शुरू करने को तैयार हूँ', plan_p2_un_not: 'अभी नहीं', plan_p2_un_open: 'दोबारा मज़बूती: ज़्यादा सैर, और हफ़्ते में 2 दिन {r}।',

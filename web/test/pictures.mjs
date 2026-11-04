@@ -232,23 +232,19 @@ for (const lang of ['en', 'hi']) {
   errsAll.push(...c.errs); await c.ctx.close();
 }
 
-/* ---------- 9. Joining: a picture on each goal; the veg and non-veg marks ---------- */
+/* ---------- 9. Joining: a picture on each goal; the veg and non-veg marks (Version 39.66: on Today's question) ---------- */
 {
   const a = await open({ seed: { intake: null }, hash: '#plan-goal' });
   const g = await a.page.evaluate(() => { const rows = Array.from(document.querySelectorAll('#view [data-pl-goal]')); return { n: rows.length, ico: rows.filter((r) => r.querySelector('.ico-sm svg')).length, tall: rows.every((r) => r.getBoundingClientRect().height >= 44) }; });
   check('9 "What do you want to work on?": a picture on every goal row, each row 44 px or taller', g.n >= 6 && g.ico === g.n && g.tall, g);
-  /* walk to the question about how she eats */
-  await tap(a.page, '#view [data-pl-goal="pain"]');
-  let marks = null;
-  for (let i = 0; i < 6; i++) {
-    if (await has(a.page, '#view [data-pl-q^="food:"]')) { marks = await a.page.evaluate(() => Array.from(document.querySelectorAll('#view [data-pl-q^="food:"]')).map((b) => b.dataset.plQ + ':' + (b.querySelector('svg.food-mk') ? 'mark' : '-') + ':' + Math.round(b.getBoundingClientRect().height))); break; }
-    await a.page.evaluate(() => { const gs = {}; document.querySelectorAll('#view [data-pl-q]').forEach((b) => { const k = b.dataset.plQ.split(':')[0]; if (!gs[k]) { gs[k] = 1; b.click(); } }); });
-    await settle(a.page, 200); if (await has(a.page, '#pl-in-next')) await tap(a.page, '#pl-in-next');
-  }
-  check('9 ... how she eats: vegetarian, eggs, fish or meat and Jain each with its mark', marks && marks.length === 4 && marks.every((x) => x.split(':')[2] === 'mark'), marks);
-  check('9 ... chips 44 px or taller', marks && marks.every((x) => +x.split(':')[3] >= 44), marks);
-  await shot(a.page, '09-join-food');
   errsAll.push(...a.errs); await a.ctx.close();
+  /* Version 39.66: how she eats is asked on Today, on the first day her food step comes */
+  const f = await open({ seed: { intake: { goal: 'pmos', stage: 'cycle' }, mods: { plan: planOf('cycle', 'pmos', ago(0), { dayAsk: ['food', 'milk'] }) } } });
+  const marks = await f.page.evaluate(() => Array.from(document.querySelectorAll('#view .pl-dq [data-pl-dq^="food:"]')).map((b) => b.dataset.plDq + ':' + (b.querySelector('svg.food-mk') ? 'mark' : '-') + ':' + Math.round(b.getBoundingClientRect().height)));
+  check('9 ... how she eats, on Today: vegetarian, eggs, fish or meat and Jain each with its mark', marks.length === 4 && marks.every((x) => x.split(':')[2] === 'mark'), marks);
+  check('9 ... chips 44 px or taller', marks.length === 4 && marks.every((x) => +x.split(':')[3] >= 44), marks);
+  await shot(f.page, '09-today-food');
+  errsAll.push(...f.errs); await f.ctx.close();
   const b = await open({ hash: '#food' });
   check('9 My food: the same marks on how she eats', (await count(b.page, '#view [data-food-type] svg.food-mk')) === 4);
   check('11 My food: each food page row with a drawing', (await count(b.page, '#view .food-rows .food-ico svg.food')) >= 2 && (await count(b.page, '#view .food-rows .food-ico svg.food')) === (await count(b.page, '#view .food-rows [data-go]')));

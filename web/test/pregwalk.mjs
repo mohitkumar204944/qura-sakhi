@@ -271,7 +271,10 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   check('g15 the plan uses My food\'s answer', nx.food === 'egg' && (nx.intake || {}).milk === 'n', { food: nx.food, milk: (nx.intake || {}).milk });
   await done(fk2);
   const nf = await open({ seed: { situation: sit(10) } });
-  check('g15 with no answer in My food, "Your day" asks (4 screens)', (await nf.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }))) === 4);
+  const nfc = await nf.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }));
+  await nf.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(nf.page, 300);
+  const nx2 = (await st(nf)).mods.plan.next || {};
+  check('g15 with no answer in My food, how she eats waits for her food step on Today (Version 39.66: 3 screens, no "Your day")', nfc === 3 && ['food', 'milk'].every((k) => (nx2.dayAsk || []).indexOf(k) >= 0), { nfc, dayAsk: nx2.dayAsk });
   await done(nf);
 }
 

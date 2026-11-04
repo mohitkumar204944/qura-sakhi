@@ -95,7 +95,7 @@ async function startFromSummary(a) {
 /* ---------- 1 starting ---------- */
 {
   const a = await open({ seed: { mods: { preg: { mcp: { risk: { r_cs: true } } } } } });
-  check('1 the pregnancy stage opens My pregnancy version 2: 4 screens (her goal, Before you start, her day, the summary)', (await a.page.evaluate(() => window.Saathi.plan.packFor('food', 'preg') + ':' + window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }) + ':' + window.Saathi.plan.progs.list().find((x) => x.id === 'preg').ver)) === 'preg:4:2');
+  check('1 the pregnancy stage opens My pregnancy version 2: 3 screens (her goal, Before you start, the summary; Version 39.66: her day waits for Today)', (await a.page.evaluate(() => window.Saathi.plan.packFor('food', 'preg') + ':' + window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }) + ':' + window.Saathi.plan.progs.list().find((x) => x.id === 'preg').ver)) === 'preg:3:2');
   await a.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(a.page, 600);
   const v = await view(a);
   check('1 Before you start: its 2 questions, Help\'s own pregnancy line, her MCP card\'s marks and 2 lines of its own, "Not sure?"', new RegExp('^Before you start Two questions keep your plan safe for you\\. Your answers stay on this phone\\. Right now, do you have any of these\\? ' + esc(S1C) + ' None of these Yes, one of these Has your doctor told you any of these\\? ' + LABELS.map(esc).join(' ') + ' Not sure\\? Tick it\\. Sakhi keeps your walk easy until your doctor says\\. Your full plan ').test(v), v.slice(0, 900));

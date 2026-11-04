@@ -141,8 +141,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('3 her periods screen says why Sakhi asks, and doesn\'t ask again what she said while joining (the gap, a diagnosis)', /So Sakhi knows where you’re starting, and can show you what changes/.test(v) && !(await has(page, '[data-pl-q^="gap:"]')) && !(await has(page, '[data-pl-q^="dx:"]')) && await has(page, '[data-pl-q="skips:y"]'), v.slice(0, 300));
   await tap(page, '[data-pl-q="skips:y"]'); await tap(page, '[data-pl-m="signs:acne"]'); await tap(page, '#pl-in-next');
   v = await view(page);
-  check('3 her day: why Sakhi asks, and no reminder question', /So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
-  for (const q of ['act:0', 'food:veg', 'bed:late', 'work:day']) await tap(page, '[data-pl-q="' + q + '"]'); await tap(page, '[data-pl-m="lim:none"]'); await tap(page, '#pl-in-next');
+  check('3 no "Your day" (Version 39.66: her day\'s questions wait for Today), and no reminder question', !/So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
   check('3 her walk time says what Sakhi does with it', /Sakhi puts your walk at this time each day/.test(await view(page)));
   await tap(page, '[data-pl-when="dinner"]');   /* Version 39.3: no body screen unless her goal is her weight */
   v = await view(page);
@@ -150,7 +149,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await shot(page, '01-summary');
   await tap(page, '[data-pl-edit="cyc"]');
   check('3 "Change" on her periods shows every question again, her joining answers in', await has(page, '[data-pl-q="gap:g45"].on') && await has(page, '[data-pl-q="dx:ns"].on'));
-  await tap(page, '#pl-in-next'); await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="dinner"]');   /* her day and her time are kept */
+  await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="dinner"]');   /* her time is kept (Version 39.66: no "Your day" between) */
   check('3 ... and back on the summary, nothing lost', /Here’s what you told Sakhi/.test(await view(page)) && /36 to 45 days apart · some months skipped/.test(await view(page)), (await view(page)).slice(0, 500));
   await tap(page, '[data-pl-edit="when"]');
   check('3 "Change" opens that question', await has(page, '[data-pl-when]'));
@@ -172,7 +171,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 no check-in before Start (her plan shows instead)', !(await has(page, '#pl-ci-save')) && (await has(page, '.pl-rv')));
   await page.evaluate(() => { window.Saathi.mem.rvCard = 0; }); await go(page, 'plan-reveal');
   const words = await cardsToStart(page);
-  check('4 card 2: her steps, each with what it does for her (Version 39.45: her first day\'s 3; her bedtime "From day 4")', /Your 3 steps/.test(words) && /From day 4: wind down, in bed by midnight/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /Walking that grows from 10 minutes a day/.test(words) && /helps your body use insulin better/.test(words) && /This week: 50 minutes, about 10 a day/.test(words), words.slice(0, 900));
+  check('4 card 2: her steps, each with what it does for her (Version 39.45: her first day\'s 3; her bedtime "From day 4"; 39.66: asked on day 4, so named without a time)', /Your 3 steps/.test(words) && /From day 4: a regular bedtime/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /Walking that grows from 10 minutes a day/.test(words) && /helps your body use insulin better/.test(words) && /This week: 50 minutes, about 10 a day/.test(words), words.slice(0, 900));
   check('4 card 3: how each day works, the check-in time, a missed day', /How each day works/.test(words) && /Tap Done when you do one/.test(words) && /At 8 pm, Sakhi asks “How did today go\?” It takes 1 minute/.test(words) && /Missed a day\? Nothing to catch up/.test(words), words.slice(0, 1600));
   check('4 card 4: what happens at weeks 1, 4 and 12', /Every week: a short look back/.test(words) && /Week 4: a look at your first month/.test(words) && /Week 12: your results, next to where you started/.test(words) && /It is different for every woman/.test(words));
   check('4 a doctor check card for skipped months, alongside her plan', /Alongside your plan: one doctor check/.test(words) && /You can start your steps today/.test(words));
@@ -180,7 +179,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
   v = await view(page);
   check('6 the Start screen: today, tomorrow or Monday, and an evening check-in time', /When do you want to start\?/.test(v) && /Today/.test(v) && /Tomorrow/.test(v) && /Monday, 2 Nov/.test(v) && /6 pm/.test(v) && /9 pm/.test(v) && !/8 am|1 pm/.test(v), v.slice(0, 600));
-  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4; 39.45: named with its day)', /Reminders are on: your 6 pm time to move, your 8 pm check-in and your 11:30 pm wind-down from day 4\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
+  check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4; 39.45: named with its day; 39.66: named on day 4, when her bedtime is asked)', /Reminders are on: your 6 pm time to move and your 8 pm check-in\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
   await shot(page, '03-start');
   await closeTips(page);
   await tap(page, '#pl-rv-go'); await settle(page, 1500);

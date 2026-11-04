@@ -261,12 +261,12 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   let v = await view(a.page);
   check('7.1 My plan > period pain: its questions with the endometriosis one (no "Something went wrong")', /About your period pain/.test(v) && /endometriosis or adenomyosis\?/.test(v) && !/Something went wrong/.test(v), v.slice(0, 300));
   await tap(a.page, '[data-pl-q="pain:pk"]'); await tap(a.page, '[data-pl-q="painDays:23"]'); await tap(a.page, '#pl-in-next');
-  check('7.1 ... Continue without the endometriosis answer, to "Your day" with no bedtime or work', await has(a.page, '[data-pl-q^="act:"]') && !(await has(a.page, '[data-pl-q^="bed:"]')) && !(await has(a.page, '[data-pl-q^="work:"]')), (await view(a.page)).slice(0, 300));
+  check('7.1 ... Continue without the endometriosis answer, to her time to move (Version 39.66: her day waits for Today)', await has(a.page, '[data-pl-when]') && !(await has(a.page, '[data-pl-q^="act:"]')) && !(await has(a.page, '[data-pl-q^="bed:"]')) && !(await has(a.page, '[data-pl-q^="work:"]')), (await view(a.page)).slice(0, 300));
   await done(a);
   a = await open({ seed: NOPLAN('pain'), hash: '#plan' });
   await tap(a.page, '#view [data-pl-pick="pain"]');
   for (const q of ['pain:pk', 'painDays:23', 'endo:y']) await tap(a.page, '[data-pl-q="' + q + '"]');
-  await tap(a.page, '#pl-in-next'); await tap(a.page, '[data-pl-q="act:0"]'); await tap(a.page, '[data-pl-m="lim:none"]'); await tap(a.page, '#pl-in-next');
+  await tap(a.page, '#pl-in-next');
   if (await has(a.page, '[data-pl-when="evening"]')) await tap(a.page, '[data-pl-when="evening"]');
   v = await view(a.page);
   check('7.1 ... her summary says what she told Sakhi, the doctor\'s diagnosis too', /endometriosis or adenomyosis \(a doctor said\)/.test(v), v.slice(0, 400));

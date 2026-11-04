@@ -84,6 +84,23 @@ async function goalFlow(page, goal, until) {
   return [];
 }
 
+/* Version 39.66: her plan's questions to Start, then what waits for its day; and Today's question about how she eats, once it comes */
+async function planWaits(page, goal) {
+  await goalFlow(page, goal, null); await tap(page, '#pl-in-make');
+  for (let i = 0; i < 8 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
+  await tap(page, '#pl-rv-go'); await settle(page, 1200);
+  return page.evaluate(() => ((((window.Saathi.state.mods || {}).plan || {}).dayAsk) || []).slice());
+}
+async function foodQ(page) {
+  await go(page, 'home');
+  for (let i = 0; i < 4; i++) {
+    const k = await page.$$eval('#view .pl-dq [data-pl-dq]', (b) => (b.length ? b[0].dataset.plDq.split(':')[0] : null));
+    if (!k || k === 'food') return page.$$eval('#view .pl-dq [data-pl-dq^="food:"]', (b) => b.map((x) => x.dataset.plDq.split(':')[1]));
+    await tap(page, '#view .pl-dq [data-pl-dq^="' + k + ':"]');
+  }
+  return [];
+}
+
 /* ---------- 1. My food: how she eats, and her stage's food pages (diet audit 5.1, 3.2) ---------- */
 {
   const a = await open({ seed: { events: regular(10) }, hash: '#food' });
@@ -157,15 +174,19 @@ async function goalFlow(page, goal, until) {
 
 /* ---------- 5. Joining asks only what the plan uses (journey audit P2-02, P2-21, P2-23, J-05) ---------- */
 {
+  /* Version 39.66: no "Your day" before Start; what the plan uses waits for the day a step uses it */
   const a = await open({ seed: { events: regular(10) } });
-  const kh = await goalFlow(a.page, 'heavy', 'food');
-  check('5 heavy periods: "Your day" asks how she eats and about milk, not activity, bedtime or work', kh.indexOf('food') >= 0 && kh.indexOf('milk') >= 0 && ['act', 'bed', 'work'].every((k) => kh.indexOf(k) < 0), kh);
+  const kh = await planWaits(a.page, 'heavy');
+  check('5 heavy periods: how she eats and milk wait for her day, not activity, bedtime or work', kh.indexOf('food') >= 0 && kh.indexOf('milk') >= 0 && ['act', 'bed', 'work'].every((k) => kh.indexOf(k) < 0), kh);
   check('5 ... and her knees or back (the plan has moves)', kh.indexOf('lim') >= 0, kh);
-  check('5 ... with Jain among the answers, and vegetarian already chosen', await has(a.page, '[data-pl-q="food:jain"]') && await has(a.page, '[data-pl-q="food:veg"].on'));
-  const kp = await goalFlow(a.page, 'pain', 'food');
-  /* Version 39.55: My period plan has no bedtime step, so bedtime and work aren't asked; her walk and strength use the rest */
-  check('5 painful periods: activity and her knees or back are asked (her moves use them), not bedtime or work', ['act', 'food', 'milk', 'lim'].every((k) => kp.indexOf(k) >= 0) && ['bed', 'work'].every((k) => kp.indexOf(k) < 0), kp);
+  const fq = await foodQ(a.page);
+  check('5 ... on Today, how she eats, with Jain among the answers', fq.indexOf('jain') >= 0 && fq.indexOf('veg') >= 0, fq);
   errsAll.push(...a.errs); await a.ctx.close();
+  const a2 = await open({ seed: { events: regular(10) } });
+  const kp = await planWaits(a2.page, 'pain');
+  /* Version 39.55: My period plan has no bedtime step, so bedtime and work aren't asked; her walk and strength use the rest */
+  check('5 painful periods: activity and her knees or back wait for her day (her moves use them), not bedtime or work', ['act', 'food', 'milk', 'lim'].every((k) => kp.indexOf(k) >= 0) && ['bed', 'work'].every((k) => kp.indexOf(k) < 0), kp);
+  errsAll.push(...a2.errs); await a2.ctx.close();
   const b = await open({ seed: { events: cyc6([40, 44, 38, 42, 39, 45], 10) } });
   await go(b.page, 'plan'); await tap(b.page, '#view [data-pl-pick="irregular"]');
   check('5 irregular periods: her diary answers the gap question, which she can change', /From your diary: your last 6 gaps were 38 to 45 days/.test(await vtext(b.page)) && await has(b.page, '[data-pl-q="gap:g45"].on'), (await vtext(b.page)).slice(0, 400));

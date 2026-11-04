@@ -29,8 +29,10 @@ async function session(day, hm, label, fn, hash) {
   const j = R.end(); log.push({ day: day + 1, hm, label, onOpen, blockers, slot, firstScreen, taps: j.taps, scrolls: j.scrolls, path: j.path, tips: j.tips, badges: j.badges, sheets: j.sheets, toasts: j.toasts, notes: j.notes, screens: j.screens, errs: R.errs.slice() });
   state = await R.dump(); await R.ctx.close();
 }
+/* Version 39.66: a question her plan asks on its day, answered first (its first answer, as join-run answers her plan's questions) */
+async function dayQs(R) { for (let k = 0; k < 3; k++) { if (!(await R.tapIf('#view .pl-dq [data-pl-dq]', 'her plan\'s question on Today'))) break; } }
 /* her plan's ticks on Today (the round ticks), then the check-in from Today's pink button */
-async function ticks(R) { for (let k = 0; k < 5; k++) { if (!(await R.tapIf('#view .today-card [data-today-act]', 'tick a step'))) break; await R.clearBlockers('tick'); } }
+async function ticks(R) { await dayQs(R); for (let k = 0; k < 5; k++) { if (!(await R.tapIf('#view .today-card [data-today-act]', 'tick a step'))) break; await R.clearBlockers('tick'); } }
 async function checkin(R) {
   if (!(await R.tapIf('#view [data-go="plan-checkin"]', 'check-in button on Today'))) { R.note('no check-in button on Today'); return; }
   await R.settle(800); await R.clearBlockers('check-in');

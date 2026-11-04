@@ -3380,3 +3380,15 @@ Mohit, 3 Nov: "proceed with the stage-change rules". New lines:
    after menopause".
 3. Under 40 and within 4 months, "Yes, they've come back" offered first.
 4. Under 40, her cycle keeps counting until she taps "My doctor says my periods have stopped".
+
+### 19.66 Version 39.66: plan questions on their day (MODULE_API section 109)
+
+Mohit, 4 Nov: "proceed with plan questions on their day". "Your day"'s own questions now come on Today, one at a time, on the first
+day a step uses the answer. Before Start, only the midlife plan's two safety questions stay.
+
+**New UI line:** "From day 4: a regular bedtime" (`plan_rv_bed0`: "a regular bedtime", "सोने का एक तय समय", inside the reviewed
+"From day {n}: {x}"), while her bedtime waits for day 4. It takes the place of "From day 4: wind down, in bed by midnight", which
+needs her answer.
+
+**For the doctor (†):** until she answers about her knees or back, her plan uses the gentle moves for both (as if she had said yes).
+Is that the right default?

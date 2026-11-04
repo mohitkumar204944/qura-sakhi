@@ -7023,3 +7023,51 @@ The lines marked † wait for the doctor (review 19.65).
 - no midlife offer under 40;
 - the Diary's countdown;
 - Hindi at 360 px.
+
+## 109. Version 39.66: plan questions on their day
+
+Mohit, 4 Nov: "proceed with plan questions on their day". This is the advice's phase C leftover
+(`docs/personal-companion-advice-2026-11-03.md`, 4.2: "Each question is asked on the day it first matters") and the minimalist
+baseline: "Ask less: only what the plan uses, on the day it changes something".
+1. **Before Start** (plan.js `DAY_NOW`, `qsAsk`): "Your day" asks only the midlife plan's two safety questions (weak bones, chest pain
+   when she walks). For every other plan there is no "Your day" screen. "Change" on the summary's Your day row (`a.dayShow`) still
+   shows every question; "Change" on another screen doesn't bring them in.
+2. **At Start** (`startFromIntake`, `d.dayAsk`, one of `NEXT_KEYS`):
+   - the plan's own day questions (its spec's `intake.day`) that weren't asked wait for their day: how active she is, how she eats,
+     milk, her knees or back, her bedtime and her day;
+   - an answer she gave before isn't asked again (an earlier plan's level, limits, bedtime or day; My food's diet), and her bedtime and
+     her day carry on to the next plan as her level and food already did;
+   - a default isn't an answer (`dayWait`): what still waits on the plan she is on keeps waiting on the next one, the summary and
+     Change don't fill it in (`dayPre`), and after a birth her pregnancy's gentle default isn't taken as her knees or back;
+   - meanwhile the gentlest level (0), gentle moves for her knees and back (both limits on), her food from My food or veg, and no
+     bedtime target.
+3. **The summary** (`sumRows`, `dayHeld`): when she changes plans, "Your day" shows the answers her plan before holds, with Change.
+4. **On Today, one question at a time** (`dayQKey`, `dayQHtml`, `dayAnswer`), under her week where "Pain today?" sits. It shows on
+   the first day a step uses the answer, in "Your day"'s own words, and one tap answers it:
+   - her knees or back on a day with a routine (No, Knees, Back or Both, as My plan's settings ask it);
+   - how she eats, then milk, on a day with a food step (her food habit, her calcium food or her iron food; saved to My food too);
+   - her bedtime on the day her bedtime step joins (`bedDue`: day 4 on My PMOS plan), then her day;
+   - how active she is, on a day with her move.
+   Her steps follow at once (the routine's moves, the food, the bedtime step and its rings). Her answer is saved with her plan's
+   answers and with `S.state.intake`, where her next plan reads them. A question she leaves stays as that one row on the days its step
+   comes. Never in discreet mode or on a shared phone, where the defaults stay. A plan started before this version (no `dayAsk`) asks
+   nothing.
+5. **Her bedtime before day 4** (`laterStep`, `laterLine`): while it waits, the reveal's "What happens when" and My plan say "From day 4:
+   a regular bedtime" (`plan_rv_bed0`), with no time; the Start card names only the rings she has. When she answers, the wind-down it
+   brings is named in the Start card's words ("Reminders are on: your 11 pm wind-down. …").
+6. **My PMOS plan's own page** (`renderStart`): no answer shown for what still waits; what it asks stops waiting, her bedtime and her
+   day wait on.
+
+**Strings.** One new UI line, `plan_rv_bed0` ("a regular bedtime", "सोने का एक तय समय", from `plan_pi_bed`). The questions are "Your
+day"'s own (`plan_s_lim`, `plan_lim_*` with `plan_lim_both`, `plan_s_food`, `plan_in_milk`, `plan_in_bed`, `plan_in_work`,
+`plan_s_level`), and the wind-down line is the Start card's (`plan_st_rem`, `plan_st_r_wind`).
+
+**Tests.** `node test/onday.mjs` (28 checks):
+- no "Your day" before Start, and the midlife plan's two safety questions;
+- what waits at Start, with gentle moves, and My food not asked again;
+- Today's one question by her steps, answered in one tap; knees, back or both;
+- the bedtime question on day 4 and not before, its wind-down named, then her day;
+- a default isn't an answer: a new plan, the summary and Change, My PMOS plan's page;
+- nothing in discreet mode, on a shared phone, or for a plan from before;
+- Hindi at 360 px.
+The suites that walked through "Your day" (`companion`, `firstday`, `food`, `pictures`) now check what waits, and Today's question.

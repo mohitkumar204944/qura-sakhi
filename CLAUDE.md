@@ -499,6 +499,13 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - Undo and "Changed by mistake" for every stage (a plan started on the mistake gives way to her earlier one, at its own week); no
       midlife offer under 40; no next-period countdown in the Diary around 40.
     Contract: MODULE_API section 108; wording: section 19.65 (four timings for the doctor).
+  - `node test/onday.mjs` (Version 39.66, plan questions on their day; Mohit, 4 Nov: "proceed with plan questions on their day"):
+    - no "Your day" before Start (only the midlife plan's two safety questions stay);
+    - how active she is, how she eats and milk, her knees or back, her bedtime and her day are asked on Today, one at a time, on the
+      first day a step uses them (gentle moves meanwhile); never in discreet mode or on a shared phone;
+    - a default is never taken as her answer, and a new plan carries her answers (the summary shows them, with Change);
+    - "From day 4: a regular bedtime" until she answers on day 4.
+    Contract: MODULE_API section 109; wording: section 19.66 (one UI line; one default for the doctor).
   - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
     what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
     `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):

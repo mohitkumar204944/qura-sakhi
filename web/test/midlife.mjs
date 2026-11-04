@@ -411,9 +411,9 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   await tap(a.page, '#pl-fit-go');
   const mi = await a.page.evaluate(() => window.Saathi.mem.planIntake || null);
   check('12.1 See it: her midlife goal’s plan questions', (await a.page.evaluate(() => location.hash)) === '#plan-goal' && mi && mi.stage === 'meno' && mi.goal === 'hot', mi);
-  /* 2 "Your day" holds what her PMOS plan holds */
-  const on = await a.page.$$eval('#view [data-pl-q].on, #view [data-pl-m].on', (x) => x.map((y) => y.dataset.plQ || y.dataset.plM));
-  check('12.2 "Your day": how active she is and her knees, from her plan before', on.indexOf('act:1') >= 0 && on.indexOf('lim:knees') >= 0, on); await done(a);
+  /* 2 "Your day" holds what her PMOS plan holds (Version 39.66: it asks only her bones and heart; the rest comes with her) */
+  const pi = await a.page.evaluate(() => { const m = window.Saathi.mem.planIntake || {}; return { act: m.act, lim: m.lim }; });
+  check('12.2 "Your day": only her bones and heart asked; how active she is and her knees come from her plan before', await has(a.page, '#view [data-pl-q^="mbone:"]') && !(await has(a.page, '#view [data-pl-q^="act:"]')) && !(await has(a.page, '#view [data-pl-m^="lim:"]')) && pi.act === '1' && (pi.lim || []).join() === 'knees', pi); await done(a);
   a = await open({ seed: pmosMid() }); await tap(a.page, '#pl-fit-keep');
   check('12.1 Keep: her plan stays, and the card goes', !(await has(a.page, '#view .pl-fit')) && (await st(a.page)).mods.plan.pack === 'cycle', await view(a.page)); await done(a);
   a = await open({ seed: pmosMid({ intake: { goal: 'heavy', stage: 'meno' }, goals: ['meno', 'heavy'], mods: { plan: planOf('heavy', 'heavy', 1) } }) });
