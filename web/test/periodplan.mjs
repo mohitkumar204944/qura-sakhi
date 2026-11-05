@@ -220,9 +220,9 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   v = await view(a.page);
   check('5.2 Hindi at 360 px: "मेरा पीरियड प्लान", fits', /मेरा पीरियड प्लान/.test(v) && await noScroll(a.page), v.slice(0, 300));
   await done(a);
-  a = await open({ seed: per('heavy', B(5), { x: { mods: { cond: { labs: [{ k: 'hb', v: 9.8, u: 'g/dL', d: ago(2), lo: 12, hi: 15 }] }, plan: planOf('heavy', B(5)) } } }), hash: '#cond-anaemia' });
+  a = await open({ seed: per('heavy', B(5), { x: { mods: { cond: { labs: [{ k: 'hb', v: 9.8, u: 'g/dL', d: ago(2), lo: 12, hi: 15 }] }, plan: planOf('heavy', B(5)) } } }), hash: '#cond-labs' });
   v = await view(a.page);
-  check('5.3 beside her Hb results: the fixed line (below 8, see a doctor this week)', /below 8, see a doctor this week/.test(v), v.slice(0, 700));
+  check('5.3 beside her Hb results (her lab results, Version 39.68: the anaemia page is gone): the fixed line (below 8, see a doctor this week)', /below 8, see a doctor this week/.test(v), v.slice(0, 700));
   await go(a.page, 'home');
   check('5.3 a saved Hb result counts as her Hb test done', !(await ids(a.page)).includes('hb'), await ids(a.page));
   await done(a);
@@ -268,10 +268,9 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   for (const q of ['pain:pk', 'painDays:23', 'endo:y']) await tap(a.page, '[data-pl-q="' + q + '"]');
   await tap(a.page, '#pl-in-next');
   if (await has(a.page, '[data-pl-when="evening"]')) await tap(a.page, '[data-pl-when="evening"]');
+  if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
   v = await view(a.page);
-  check('7.1 ... her summary says what she told Sakhi, the doctor\'s diagnosis too', /endometriosis or adenomyosis \(a doctor said\)/.test(v), v.slice(0, 400));
-  await tap(a.page, '#pl-in-make');
-  check('7.1 ... and her plan keeps it (the endometriosis version)', (((await st(a.page)).mods.plan || {}).next || {}).intake.endo === 'y');
+  check('7.1 ... no answers summary (Version 39.68), and her plan keeps what she told Sakhi (the endometriosis version)', !/Here’s what you told Sakhi/.test(v) && (((await st(a.page)).mods.plan || {}).next || {}).intake.endo === 'y', v.slice(0, 400));
   await done(a);
   /* 7.2 "Your plan is ready": each step says when it comes, and "What happens when" names her cycle's steps that aren't today's */
   a = await open({ seed: NOPLAN('pain') });
@@ -361,14 +360,14 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   a = await open({ seed: NOPLAN('pain', { prompts: { setup: 'off', planCall: ago(3), firstLog: ago(2), planOffer: ago(2) } }) });
   check('7.3 Today\'s offer: "My period plan"', (await txt(a.page, '#view .pl-offer h3')) === 'My period plan', await txt(a.page, '#view .pl-offer'));
   await done(a);
-  /* 7.4 "Your plan for this": heavy periods joining her pain plan lead from the anaemia guide to it; without heavy, no row */
+  /* 7.4 "Your plan for this": heavy periods joining her pain plan lead from the fibroids guide to it (Version 39.68: the anaemia guide is gone); without heavy, no row */
   a = await open({ seed: per('pain', B(9), { also: ['heavy'] }) });
-  await go(a.page, 'cond-anaemia');
-  check('7.4 pain leads, heavy joins: the anaemia guide shows "My period plan"', /My period plan/.test(await txt(a.page, '#view .pl-for')), await txt(a.page, '#view .pl-for'));
+  await go(a.page, 'cond-fibroids');
+  check('7.4 pain leads, heavy joins: the fibroids guide shows "My period plan"', /My period plan/.test(await txt(a.page, '#view .pl-for')), await txt(a.page, '#view .pl-for'));
   await done(a);
   a = await open({ seed: per('pain', B(9)) });
-  await go(a.page, 'cond-anaemia');
-  check('7.4 ... pain alone: no plan row on the anaemia guide', !(await has(a.page, '#view .pl-for')));
+  await go(a.page, 'cond-fibroids');
+  check('7.4 ... pain alone: no plan row on the fibroids guide', !(await has(a.page, '#view .pl-for')));
   await done(a);
 }
 

@@ -172,7 +172,7 @@ const startIt = async (page) => { for (let i = 0; i < 8 && !(await has(page, '#p
   let a = await open({ seed: pmosS(10, { dayAsk: ['act', 'lim'], bed: 'b23', work: 'day' }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 600);
   await answer(a.page);
-  check('5 changing plans while answers wait: no "Your day" on the summary (nothing she said to show)', !!lastSum && !/Your day/.test(lastSum), lastSum.slice(0, 500));
+  check('5 changing plans while answers wait: no summary, her new plan is made (Version 39.68)', !lastSum && /plan-reveal/.test(await hash(a.page)), await hash(a.page));
   await startIt(a.page); let p = await plan(a.page);
   check('5 ... the new plan still waits for her knees or back and her activity, gentle meanwhile', p.goalKey === 'pain' && ['act', 'lim'].every((k) => (p.dayAsk || []).indexOf(k) >= 0) && p.limits.knees && p.limits.back && p.level === 0, { goalKey: p.goalKey, dayAsk: p.dayAsk, limits: p.limits, level: p.level });
   check('5 ... and keeps her bedtime and her day', p.bed === 'b23' && p.work === 'day', { bed: p.bed, work: p.work });
@@ -181,9 +181,7 @@ const startIt = async (page) => { for (let i = 0; i < 8 && !(await has(page, '#p
   a = await open({ seed: pmosS(10, { dayAsk: ['lim'], level: 1, intake: CIK({ act: 1 }) }, { intake: CIK({ act: 1 }) }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 600);
   await answer(a.page, true);
-  check('5 her answer from the plan before on the summary, with Change: "Your day: Some days"', /Your day/.test(lastSum) && /Some days/.test(lastSum) && await has(a.page, '[data-pl-edit="day"]'), lastSum.slice(0, 500));
-  await tap(a.page, '[data-pl-edit="day"]');
-  check('5 ... Change shows her day\'s questions: her activity filled in, her knees or back not (it still waits)', await has(a.page, '[data-pl-q="act:1"].on') && await has(a.page, '[data-pl-m^="lim:"]') && !(await has(a.page, '[data-pl-m^="lim:"].on')), (await txt(a.page, '#view')).slice(0, 400));
+  check('5 her answer from the plan before: no summary to check it on (Version 39.68), her new plan is made', !lastSum && /plan-reveal/.test(await hash(a.page)), await hash(a.page));
   await done(a);
   a = await open({ seed: pmosS(10, { dayAsk: ['lim'], level: 1, intake: CIK({ act: 1 }) }, { intake: CIK({ act: 1 }) }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 600);

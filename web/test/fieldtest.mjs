@@ -344,7 +344,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const { page } = T;
   check('13 no chance of pregnancy in a tester\'s APK', !/chance of pregnancy/i.test(await view(page)));
   const tiles = await page.evaluate(() => window.Saathi.tiles ? null : null);
-  await go(page, '#selfcheck-pmos');   /* Version 39.1: Pattern check is gone; the PMOS self-check is the held-back tool */
+  await go(page, '#intimate-check');   /* Version 39.68: the self-checks are gone; the discharge check is the held-back tool */
   check('13 a held-back tool says it is not in this version', /Not in this version/.test(await view(page)));
   await go(page, '#care');
   const care = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
@@ -352,7 +352,7 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   await go(page, '#explain');
   check('13 What your diary shows stays', !/Not in this version/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '13' }));
-  const D = await open({ seed: { events: regular(10, 8) }, hash: '#selfcheck-pmos' });
+  const D = await open({ seed: { events: regular(10, 8) }, hash: '#intimate-check' });
   check('13 a demo build still has them', !/Not in this version/.test(await view(D.page)));
   await cleanup(Object.assign(D, { name: '13 demo' }));
 }
@@ -372,8 +372,8 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const T = await open({ app: 'test-0.33-pilot', seed: { events: regular(10, 8) } });
   const { page } = T;
   check('19 pilot: the chance of pregnancy shows, for a woman not trying for a baby', /Medium chance of pregnancy from sex today|High chance of pregnancy from sex today/.test(await view(page)), (await view(page)).slice(0, 500));
-  await go(page, '#selfcheck-pmos');   /* Version 39.1: Pattern check is gone; the PMOS self-check is the held-back tool */
-  check('19 pilot: the self-checks are back', !/Not in this version/.test(await view(page)));
+  await go(page, '#intimate-check');   /* Version 39.68: the self-checks are gone; the discharge check is the held-back tool */
+  check('19 pilot: the held-back tools are back (the discharge check)', !/Not in this version/.test(await view(page)) && (await page.evaluate(() => location.hash)) === '#intimate-check');
   await go(page, '#topic-ttc');
   const ttc = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
   check('19 pilot: Care\'s trying-for-a-baby page links to the fertile tool again', ttc.indexOf('fertile') >= 0, ttc);
@@ -392,18 +392,18 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const T = await open({ seed: { events: regular(10, 3), situation: { care: 'govt' } }, hash: '#ask', cfg: { grievance: 'Test Officer, Trinaya Wellness LLP' } });
   const { page } = T;
   const ids = await page.$$eval('#view .card', (cs) => cs.map((c) => c.id || ''));
-  check('15 the free government doctor comes first on the doctor screen', ids[0] === 'ask-free', ids);
+  check('15 no free government doctor card on the doctor screen, the government route included (Version 39.68)', ids.indexOf('ask-free') < 0, ids);
   check('15 the Qura card says who the doctors are and what costs money', /Ayurveda \(BAMS\)/.test(await view(page)) && /tests and plans cost money/.test(await view(page)));
   await go(page, '#me-about');
   check('15 the notice names the Grievance Officer the build gives, and where the account is kept', /Grievance Officer: Test Officer/.test(await view(page)) && /Mumbai \(Supabase\)/.test(await view(page)) && !/\[NAME/.test(await view(page)));
-  await go(page, '#access-schemes-preg'); await page.evaluate(() => document.querySelectorAll('#view details').forEach((d) => { d.open = true; }));
-  check('15 the PMMVY helpline is 1515', /Helpline 1515/.test(await view(page)) && !/14408/.test(await view(page)));
+  await go(page, '#access-schemes-preg');
+  check('15 the scheme pages are gone: the pregnancy schemes land on Explore (Version 39.68)', (await page.evaluate(() => location.hash)) === '#care');
   await cleanup(Object.assign(T, { name: '15' }));
 }
 {
   const T = await open({ seed: { situation: { deliveredOn: ago(20), breastfeeding: true }, checkins: { '2026-10': { at: ago(1), chips: ['breast'], kind: 'post' } } }, hash: '#explain' });
   const btns = await T.page.$$eval('.xp-card button', (bs) => bs.map((b) => b.dataset.go || (b.dataset.ask ? 'ask' : '')));
-  check('15 "see a doctor today" points to free care, not to booking a call', btns.indexOf('access-free') >= 0 && btns.indexOf('ask') < 0, btns);
+  check('15 "see a doctor today" points to free care near her (Care near me, Version 39.68), not to booking a call', btns.indexOf('access-care') >= 0 && btns.indexOf('ask') < 0, btns);
   await cleanup(Object.assign(T, { name: '15 explain' }));
 }
 

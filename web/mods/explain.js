@@ -317,7 +317,7 @@
      near her */
   const docNext = (k) => { const lbl = t(k === 'gyn' ? 'explain_gyn' : 'hs_doc'); const n = S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;
     if (n) return '<a class="btn sm xp-doc" href="tel:' + esc(n) + '">' + esc(lbl) + '</a>';
-    const go = S.care && S.care.gov && S.care.gov() ? (k === 'gyn' ? 'a-services.see-gynaecologist-government-hospital' : 'access-doctor') : (S.routeOwner('access-care') ? 'access-care' : 'access-free');
+    const go = S.routeOwner('access-care') ? 'access-care' : null; if (!go) return '';   /* Version 39.68 (the doctors' review): the government doctor pages are gone; Care near me lists the places near her */
     return '<button type="button" class="btn sm xp-doc" data-go="' + go + '">' + esc(lbl) + '</button>'; };
   function actsHtml(f, compact, noPair) {
     const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
@@ -328,7 +328,8 @@
       /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
       const md = f.lv === 'today' && S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;   /* Version 39.63: her own doctor first, when she saved the number */
       if (md) main.push('<a class="btn sm primary xp-mydoc" href="tel:' + esc(md) + '">' + esc(t('mydoc_call')) + '</a>');
-      if (f.lv === 'today' && S.routeOwner('access-free')) main.push(b('data-go="access-free"', t('explain_free'), md ? '' : 'primary'));
+      const freeGo = f.lv !== 'today' ? null : (S.routeOwner('access-free') ? 'access-free' : (S.routeOwner('access-care') ? 'access-care' : null));   /* Version 39.68: the Govt. services hub is gone; Care near me lists the doctors and hospitals near her */
+      if (freeGo) main.push(b('data-go="' + freeGo + '"', t('explain_free'), md ? '' : 'primary'));
       const mind = f.lv !== 'today' && MIND.indexOf(f.id) >= 0;   /* Version 39.64: low mood, Tele-MANAS first (Mohit, 3 Nov) */
       if (mind) main.push('<a class="btn sm primary xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>');
       if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), mind ? '' : 'primary'));

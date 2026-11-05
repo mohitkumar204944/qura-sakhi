@@ -143,19 +143,9 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   v = await view(page);
   check('3 no "Your day" (Version 39.66: her day\'s questions wait for Today), and no reminder question', !/So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
   check('3 her walk time says what Sakhi does with it', /Sakhi puts your walk at this time each day/.test(await view(page)));
-  await tap(page, '[data-pl-when="dinner"]');   /* Version 39.3: no body screen unless her goal is her weight */
+  await tap(page, '[data-pl-when="evening"]'); await settle(page, 600);   /* Version 39.3: no body screen unless her goal is her weight */
   v = await view(page);
-  check('3 the summary shows what she told Sakhi', /Here’s what you told Sakhi/.test(v) && /Irregular or late periods/.test(v) && /36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /After dinner/.test(v), v.slice(0, 700));
-  await shot(page, '01-summary');
-  await tap(page, '[data-pl-edit="cyc"]');
-  check('3 "Change" on her periods shows every question again, her joining answers in', await has(page, '[data-pl-q="gap:g45"].on') && await has(page, '[data-pl-q="dx:ns"].on'));
-  await tap(page, '#pl-in-next'); await tap(page, '[data-pl-when="dinner"]');   /* her time is kept (Version 39.66: no "Your day" between) */
-  check('3 ... and back on the summary, nothing lost', /Here’s what you told Sakhi/.test(await view(page)) && /36 to 45 days apart · some months skipped/.test(await view(page)), (await view(page)).slice(0, 500));
-  await tap(page, '[data-pl-edit="when"]');
-  check('3 "Change" opens that question', await has(page, '[data-pl-when]'));
-  await tap(page, '[data-pl-when="evening"]');
-  check('3 the changed answer shows on the summary', /In the evening/.test(await view(page)), (await view(page)).slice(0, 600));
-  await tap(page, '#pl-in-make'); await settle(page, 600);
+  check('3 her last answer makes her plan, from what she told Sakhi (Version 39.68: no answers summary)', !/Here’s what you told Sakhi/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 700));
   check('4 "Make my plan" opens her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /Your plan is ready, Riya/.test(await view(page)), [await page.evaluate(() => location.hash), (await view(page)).slice(0, 300)]);
   v = await view(page);
   check('4 card 1: her goal, what it is made from, and how long it takes', /Your goal: more regular periods/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /12 weeks · from about 20 minutes a day/.test(v), v.slice(0, 500));
@@ -185,7 +175,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '#pl-rv-go'); await settle(page, 1500);
   check('6 Start brings the phone\'s own "Allow", once (Version 39.27)', (await page.evaluate(() => window.__asked)) === 1);
   let p = await pop(page);
-  check('6 after Start: Today, one tip on her plan, no sheet', (await page.evaluate(() => location.hash)) === '#home' && !p.sheet && /Your plan for today/.test(p.tour) && /1 of 1/.test(p.tour), [p, (await st(page)).tours, (await st(page)).tourDay]);
+  check('6 after Start: Today, no tip and no sheet (Version 39.68: no tip starts on its own)', (await page.evaluate(() => location.hash)) === '#home' && !p.sheet && !p.tour, [p, (await st(page)).tours, (await st(page)).tourDay]);
   check('8 no petal on Start', !p.joy, [p, await page.evaluate(() => (document.querySelector('#joy-root') || {}).innerText || ''), (await st(page)).mods.joy]);
   await closeTips(page); await settle(page, 2500);
   p = await pop(page);
@@ -208,7 +198,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '#pl-ci-save'); await settle(page, 300);
   v = await view(page);
   check('8 after the first check-in: tomorrow, and when (one "Tomorrow" line: Version 39.37)', (/Tomorrow: the same steps\. See you at 8 pm\./.test(v) && (v.match(/Tomorrow:/g) || []).length === 1) || (/See you tomorrow at 8 pm\./.test(v) && !/Tomorrow: the same steps/.test(v)), v.slice(0, 500));
-  check('8 the check-in celebrates what day 1 earned, once: its own petal line, no panel over it (Version 39.37)', /A petal for your garden/.test(v) && !(await pop(page)).joy);
+  check('8 the check-in has no petal (Version 39.68: My garden is gone), and no panel over it', !/A petal for your garden/.test(v) && !(await pop(page)).joy);
   await shot(page, '05-first-checkin');
   /* day 2: yesterday */
   await jump(page, 1, '09:00'); await closeTips(page);
@@ -221,7 +211,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   const yd3 = await page.$$eval('#view .today-card .pl-d7d', (x) => { const i = x.findIndex((y) => y.classList.contains('now')); const y = x[i - 1]; return y ? { c: y.querySelector('i').className, t: y.title } : null; });
   check('8 day 3: small steps add up', /3 days in: small steps add up./.test(v) && yd3 && yd3.c === '' && /: 0 of 3 steps$/.test(yd3.t), [yd3, v.slice(0, 900)]);
   await jump(page, 3, '09:00'); await closeTips(page);
-  check('8 day 4: the cards that waited come back (setup, Coming up)', /Set up Sakhi for you/.test(await page.$eval('#view .slot', (e) => e.textContent).catch(() => '')));
+  check('8 day 4: the cards that waited come back (Coming up); no setup card, as its last step was free care (Version 39.68: Govt. services is gone)', ((x) => /Coming up/.test(x) && !/Set up Sakhi for you/.test(x))(await page.$eval('#view .slot', (e) => e.textContent).catch(() => '')));
   check('8 day 4: "no period yet" is folded into the plan\'s doctor check (Version 37.2)', (await page.$eval('#view .slot', (s) => s.children[1] ? s.children[1].innerText.split('\n')[0] : '').catch(() => '')) === 'Did you get the doctor check?' && !(await has(page, '#view [data-xp-lv="watch"]')));
   await jump(page, 4, '20:05', 'plan-checkin');
   check('8 later check-ins have no first-time line', !/This takes a minute/.test(await view(page)));
@@ -309,7 +299,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await go(page, 'plan-settings'); await tap(page, '#pl-chg');   /* Version 39.15: Plan settings is a page of its own */
   await tap(page, '[data-pl-goal="pain"]');
   for (let i = 0; i < 6; i++) {
-    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); break; }
+    if (!/plan-goal/.test((await page.evaluate(() => location.hash)))) break;   /* Version 39.68: her last answer makes the plan */
     if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
     const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
     for (const g of groups) { const [k, kind] = g.split('|'); await tap(page, '[data-pl-' + kind + '^="' + k + ':"]'); }
@@ -327,7 +317,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   /* again, and this time she starts it */
   await go(page, 'plan-settings'); await tap(page, '#pl-chg');   /* Version 39.15: Plan settings is a page of its own */ await tap(page, '[data-pl-goal="pain"]');
   for (let i = 0; i < 6; i++) {
-    if (await has(page, '#pl-in-make')) { await tap(page, '#pl-in-make'); break; }
+    if (!/plan-goal/.test((await page.evaluate(() => location.hash)))) break;   /* Version 39.68: her last answer makes the plan */
     if (await has(page, '[data-pl-when]')) { await tap(page, '[data-pl-when="evening"]'); continue; }
     const groups = await page.$$eval('[data-pl-q],[data-pl-m]', (bs) => [...new Set(bs.map((b) => (b.dataset.plQ || b.dataset.plM).replace(/:.*/, '') + '|' + (b.dataset.plQ ? 'q' : 'm')))]);
     for (const g of groups) { const [k, kind] = g.split('|'); await tap(page, '[data-pl-' + kind + '^="' + k + ':"]'); }

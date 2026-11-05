@@ -414,6 +414,7 @@
   const PART_ST = [['cycle', 'ttc', 'meno'], ['preg'], ['post'], ['meno'], ['cycle', 'post'], ['ttc'], [], ['post', 'preg', 'meno']];   /* consent and respect: for everyone, in More cards */
   S.access = Object.assign(S.access || {}, { lv: (k) => (LV[k] ? { label: LV[k].label, where: LV[k].where } : null), partner: () => PARTNER.map((p, i) => ({ id: 'p' + i, st: PART_ST[i] || [], h: p.h, items: p.items, go: p.go || [] })), claimed: (k, since) => { const c = claimOf(k); return c && !(since && /^\d{4}-\d{2}-\d{2}$/.test(since) && !(c.started && c.started >= since)) ? stepOf(c) : null; } });
   function claimSync() {
+    if (S.retired && S.retired('access-schemes')) { S.reminders.remove('access-pmmvy'); S.reminders.remove('access-pmmvy2'); return; }   /* Version 39.68 (the doctors' review): the scheme pages are gone, and so are their reminders */
     /* V39.9 review FIXES-02: Sakhi moves only the dates; a reminder she switched off stays off */
     const keep = (r) => { const was = S.reminders.get(r.id); S.reminders.upsert(Object.assign(r, { on: was ? was.on !== false : true }), was ? { quiet: true } : undefined); };
     const c = claimOf('pmmvy'); const by = pmmvyBy(c);
@@ -504,7 +505,7 @@
      One page for every free doctor, scheme and helper. Each row opens a page that already exists, so nothing here is new health
      wording. Care's first row and Help's doctor card open it. Opening it ticks "look at free care" in her setup (app.js). */
   /* Version 39.7 (journey audit P3-13): the Learn guides that explain how to use free care, on the page that offers it */
-  const HOW_FREE = ['services.see-gynaecologist-government-hospital', 'services.doctor-visit-bring-and-ask', 'services.reading-prescription-tests'];
+  const HOW_FREE = ['services.doctor-visit-bring-and-ask'];   /* Version 39.68: the other two guides are gone (the doctors' review) */
   function howFree() {
     const arts = S.article ? HOW_FREE.map((k) => S.article(k)).filter(Boolean) : []; if (!arts.length) return '';
     return '<h2>' + esc(t('access_howfree')) + '</h2><div class="list">' + arts.map((a) => '<button type="button" class="item" data-go="a-' + esc(a.key) + '"><span class="ico-sm hue hue-sky">' + S.icon('learn') + '</span><span class="body"><strong>' + esc(a.title) + '</strong><span>' + esc(a.summary) + '</span></span><span class="chev">' + S.I.chev + '</span></button>').join('') + '</div>';
@@ -939,7 +940,7 @@
       '.st-ring { background: none !important; padding: 0; border: 2.5px solid var(--accent); } .st-home.seen .st-ring { border-color: var(--line); } .st-ring .sakhi { width: 100%; height: 100%; }',
     home: home,
     setup: setup,
-    summary: () => { if (!S.canSave()) return []; const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return []; return [{ title: t('access_my_h'), lines: ks.map((k) => { const c = cl[k]; const st = stepOf(c); return tx(SCH[k].name).split(':')[0] + ': ' + t('access_step_' + st) + (c[st] && st !== 'ready' ? ' (' + fmtL(S.fromISO(c[st])) + ')' : ''); }) }]; },
+    summary: () => { if (!S.canSave() || (S.retired && S.retired('access-schemes'))) return [];   /* Version 39.68: the scheme pages are gone, and so is the report's claims line */ const cl = AD().claims; const ks = TRACK.filter((k) => cl[k]); if (!ks.length) return []; return [{ title: t('access_my_h'), lines: ks.map((k) => { const c = cl[k]; const st = stepOf(c); return tx(SCH[k].name).split(':')[0] + ': ' + t('access_step_' + st) + (c[st] && st !== 'ready' ? ' (' + fmtL(S.fromISO(c[st])) + ')' : ''); }) }]; },
     afterRender: () => {}
   });
 })(window.Saathi);

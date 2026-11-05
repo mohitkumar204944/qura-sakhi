@@ -102,11 +102,12 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
   check('2 a tap starts that plan’s questions', (await hash(a.page)) === '#plan-goal' && mi && mi.goal === 'pain', { h: await hash(a.page), mi }); await done(a);
   a = await open({});
   const offers = {};
-  for (const [route, goal] of [['a-cycle.heavy-bleeding-how-to-tell', 'heavy'], ['a-mind_body.mood-and-the-cycle', 'pms'], ['a-pmos.what-pmos-is', 'pmos'], ['a-cycle.why-cycles-become-irregular', 'irregular'],
-    ['periods-pain', 'pain'], ['periods-pms', 'pms'], ['cond-anaemia', 'heavy'], ['cond-fibroids', 'heavy'], ['cond-endo', 'pain'], ['relief-cramps', 'pain']]) {
+  /* Version 39.68 (the doctors' review): the mood guide and the PMS, anaemia and endometriosis pages are gone */
+  for (const [route, goal] of [['a-cycle.heavy-bleeding-how-to-tell', 'heavy'], ['a-pmos.what-pmos-is', 'pmos'], ['a-cycle.why-cycles-become-irregular', 'irregular'],
+    ['periods-pain', 'pain'], ['cond-fibroids', 'heavy'], ['relief-cramps', 'pain']]) {
     await go(a.page, route); offers[route] = await a.page.$eval('#view .pl-for [data-pl-for]', (b) => b.dataset.plFor).catch(() => null);
   }
-  check('2 heavy, PMS, PMOS and irregular guides, and the period, condition and cramps pages, each offer their plan', JSON.stringify(offers) === JSON.stringify({ 'a-cycle.heavy-bleeding-how-to-tell': 'heavy', 'a-mind_body.mood-and-the-cycle': 'pms', 'a-pmos.what-pmos-is': 'pmos', 'a-cycle.why-cycles-become-irregular': 'irregular', 'periods-pain': 'pain', 'periods-pms': 'pms', 'cond-anaemia': 'heavy', 'cond-fibroids': 'heavy', 'cond-endo': 'pain', 'relief-cramps': 'pain' }), offers);
+  check('2 heavy, PMOS and irregular guides, and the period pain, fibroids and cramps pages, each offer their plan', JSON.stringify(offers) === JSON.stringify({ 'a-cycle.heavy-bleeding-how-to-tell': 'heavy', 'a-pmos.what-pmos-is': 'pmos', 'a-cycle.why-cycles-become-irregular': 'irregular', 'periods-pain': 'pain', 'cond-fibroids': 'heavy', 'relief-cramps': 'pain' }), offers);
   await done(a);
   /* a quick answer's sheet, from a guide's "Also asked" */
   a = await open({ hash: '#a-cycle.what-is-a-menstrual-cycle' });
@@ -145,11 +146,14 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
 {
   const a = await open({ seed: m2('hot', 2) });
   const lead = {};
-  for (const k of ['midlife.bleeding-after-menopause', 'pmos.who-treats-what', 'intimate.burning-when-peeing']) {
+  for (const k of ['midlife.bleeding-after-menopause', 'intimate.burning-when-peeing']) {
     await go(a.page, 'a-' + k); lead[k] = { qura1: await has(a.page, '#view #art-ask.primary'), qura: await has(a.page, '#view #art-ask'), govtFirst: await has(a.page, '#view .btn.primary[data-go="access-doctor"]') };
   }
-  check('5 "Who treats what" leads with "Ask a Qura doctor about this" (a Qura doctor does the first assessment)', lead['pmos.who-treats-what'].qura1 && !lead['pmos.who-treats-what'].govtFirst, lead);
-  check('5 the bleeding and burning guides keep the in-person doctor first, with a Qura doctor advised beside it', ['midlife.bleeding-after-menopause', 'intimate.burning-when-peeing'].every((k) => lead[k].qura && !lead[k].qura1), lead);
+  /* Version 39.68 (the doctors' review): "Who treats what" is gone (its message goes into the app's words), and so is the free government
+     doctor page, so the bleeding and burning guides lead with a Qura doctor, who checks and recommends a gynaecologist */
+  await go(a.page, 'a-pmos.who-treats-what');
+  check('5 "Who treats what" is gone: it lands on Learn', (await hash(a.page)) === '#learn', await hash(a.page));
+  check('5 the bleeding and burning guides lead with "Ask a Qura doctor about this"', ['midlife.bleeding-after-menopause', 'intimate.burning-when-peeing'].every((k) => lead[k].qura1 && !lead[k].govtFirst), lead);
   await go(a.page, 'iron');
   check('5 the iron tablets page asks a Qura doctor', /Ask a Qura doctor/.test(await txt(a.page, '#view [data-ask]')), await txt(a.page, '#view [data-ask]')); await done(a);
 }

@@ -95,7 +95,7 @@ const pageH = (page) => page.$eval('#view', (v) => v.scrollHeight);
   check('2 ... and all 4 fit on the first screen', await a.page.$eval('#view .pl-steps-card', (c) => c.getBoundingClientRect().bottom <= 780));
   const path = await txt(a.page, '#view .pl-path');
   check('2 the 12 weeks: this week and next, then "All 12 weeks"', /This week\s+60 minutes a week/.test(path) && /Next week\s+70 minutes a week/.test(path) && /All 12 weeks/.test(path), path);
-  check('2 this week (her garden at its foot), the tools and her settings (a gear by her title) stay open', await has(a.page, '#view .pl-wkc .pl-r7') && await has(a.page, '#view .pl-wkc .pl-garden-in') && await has(a.page, '#view .pl-gear[data-go="plan-settings"]'));
+  check('2 this week (her garden at its foot), the tools and her settings (a gear by her title) stay open', await has(a.page, '#view .pl-wkc .pl-r7') && !(await has(a.page, '#view .pl-garden-in')) && await has(a.page, '#view .pl-gear[data-go="plan-settings"]'));   /* Version 39.68: no garden */
   await a.page.$eval('#pl-whyall', (b) => b.click()); await settle(a.page, 300);
   check('3 "Why these 4 steps?" opens every reason and how to do it', /Why these 4 steps\?/.test(await sheetTxt(a.page)) && /A regular bedtime helps your body clock/.test(await sheetTxt(a.page)), (await sheetTxt(a.page)).slice(0, 200));
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 200);

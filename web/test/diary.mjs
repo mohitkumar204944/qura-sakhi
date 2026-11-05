@@ -217,13 +217,13 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
   const a = await open(seedOf(5));
   /* Version 39.17 (Diary audit R4): the Today strip's notes meter says it, with the same "Why?" */
   const few = await txt(a.page, '#view .cal-today .meter-nx');
-  check('5 four cycles: "Next: 2 more periods, and your fertile days show." (the Calendar\'s own line has gone)', /Next: 2 more periods, and your fertile days show\./.test(few) && !(await has(a.page, '#view .fw-few')), few);
+  check('5 four cycles: the Calendar says "2 more periods to log" (Version 39.68: no meter)', /2 more periods to log\./.test(await txt(a.page, '#view .fw-few')), await txt(a.page, '#view .fw-few'));
   await tap(a.page, '#view #fw-why');
   check('5 "Why?" says why, and that there is no safe day', /Why 6 cycles\?/.test(await txt(a.page, '#sheet-root')) && /There is no safe day/.test(await txt(a.page, '#sheet-root')));
   await shot(a.page, '5-few');
   check('5 no page errors', !a.errs.length, a.errs); await a.ctx.close();
   const b = await open(seedOf(6));
-  check('5 one more to go: "Next: 1 more period, and your fertile days show."', /Next: 1 more period, and your fertile days show\./.test(await txt(b.page, '#view .cal-today .meter-nx')), await txt(b.page, '#view .cal-today'));
+  check('5 one more to go: "1 more period to log."', /1 more period to log\./.test(await txt(b.page, '#view .fw-few')), await txt(b.page, '#view .fw-few'));
   await b.ctx.close();
   const c = await open(seedOf(8));
   check('5 with her fertile days showing, no line', !(await has(c.page, '#view .fw-few')) && !/fertile days show/.test(await txt(c.page, '#view')) && await has(c.page, '#view .cal .day.ov'));
@@ -238,7 +238,7 @@ for (const [name, x] of [['a shared phone', { settings: { discreet: true } }], [
 /* ---------- 6. Hindi, 360 px ---------- */
 {
   const { ctx, page, errs } = await open(seedOf(5, { lang: 'hi' }), { w: 360 });
-  check('6 Hindi: the tab is "चक्र" and the meter says when fertile days start', /चक्र/.test(await txt(page, '#view .dtabs')) && /फ़र्टाइल दिन दिखेंगे/.test(await txt(page, '#view .cal-today .meter-nx')), [await txt(page, '#view .dtabs'), await txt(page, '#view .cal-today')]);
+  check('6 Hindi: the tab is "चक्र" and the Calendar says when fertile days start (Version 39.68: no meter)', /चक्र/.test(await txt(page, '#view .dtabs')) && /फ़र्टाइल दिन/.test(await txt(page, '#view .fw-few')), [await txt(page, '#view .dtabs'), await txt(page, '#view .cal-today')]);
   await dayOpen(page, '2026-10-01');
   const sh = await sheetTxt(page);
   check('6 Hindi day page: flow, the sex log and no untranslated words', /ब्लीडिंग: दिन में कितने pad/.test(sh) && /संबंध/.test(sh) && /बिना गर्भनिरोधक/.test(sh) && /सिर्फ़ इसी फ़ोन पर/.test(sh) && !/\b(sx|fw|ed|dy|day|mc|charts)_[a-z0-9_]+\b/.test(sh), sh.slice(0, 400));

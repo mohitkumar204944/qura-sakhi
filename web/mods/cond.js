@@ -409,6 +409,8 @@
       S.toast(t('saved')); mem.lab = { k: f.k, v: '', u: f.u, d: f.d, lo: f.lo, hi: f.hi, err: '' }; S.render();
     });
   }
+  /* the fixed Hb line (reviewed, Version 39.55). Version 39.68 (the doctors' review): the anaemia page is gone, so it sits beside her Hb results here */
+  const HB_FIX = { en: 'If your report or doctor says your Hb is below 8, see a doctor this week; today if you’re breathless, dizzy or have chest pain.', hi: 'अगर आपकी रिपोर्ट या डॉक्टर कहें कि आपका Hb 8 से कम है, तो इसी हफ़्ते डॉक्टर को दिखाएँ; साँस फूले, चक्कर आए या सीने में दर्द हो, तो आज ही।' };
   function labCards() {
     const labs = labsR(); if (!labs.length) return '<div class="card"><p class="small">' + esc(t('cond_lab_none')) + '</p></div>';
     return TESTS.map((T) => {
@@ -418,7 +420,7 @@
       const last = list[list.length - 1]; const same = list.filter((e) => unitKey(e.u) === unitKey(last.u));
       return '<div class="card"><div class="row spread" style="align-items:flex-start"><h3 style="min-width:0">' + h(T.name) + '</h3><span class="small num" style="color:var(--fg);font-weight:600;flex-shrink:0">' + esc(num(last.v) + ' ' + last.u) + '</span></div>' +
         labChart(same) + (last.lo != null || last.hi != null ? '<p class="small"><i class="cond-bandsw"></i> ' + esc(tf('cond_lab_band', { r: rangeText(last) })) + (same.some(outside) ? ' ' + esc(t('cond_lab_gold')) : '') + '</p>' : '') + (same.length < list.length ? '<p class="small">' + esc(t('cond_lab_units_note')) + '</p>' : '') +
-        '<div class="list">' + list.slice().reverse().map((e) => '<div class="item quiet cond-labrow"><span class="body"><strong class="cond-tnum">' + esc(num(e.v) + ' ' + e.u) + ' · ' + esc(fmtL(e.d)) + '</strong><span>' + esc(t('cond_lab_range_lbl')) + ': ' + esc(rangeText(e)) + '</span>' + (outside(e) ? '<span class="pill accent cond-flag">' + esc(t('cond_lab_out')) + '</span>' : '') + '</span><button type="button" class="btn ghost sm" data-ldel="' + esc(e.id) + '">' + esc(t('cond_del')) + '</button></div>').join('') + '</div></div>';
+        '<div class="list">' + list.slice().reverse().map((e) => '<div class="item quiet cond-labrow"><span class="body"><strong class="cond-tnum">' + esc(num(e.v) + ' ' + e.u) + ' · ' + esc(fmtL(e.d)) + '</strong><span>' + esc(t('cond_lab_range_lbl')) + ': ' + esc(rangeText(e)) + '</span>' + (outside(e) ? '<span class="pill accent cond-flag">' + esc(t('cond_lab_out')) + '</span>' : '') + '</span><button type="button" class="btn ghost sm" data-ldel="' + esc(e.id) + '">' + esc(t('cond_del')) + '</button></div>').join('') + '</div>' + (T.k === 'hb' ? P(HB_FIX, 'small cond-hb-fix') : '') + '</div>';
     }).join('');
   }
   function renderLabs(v) {
@@ -508,7 +510,7 @@
     const hbCard = '<div class="card"><h2>' + h({ en: 'Your Hb results', hi: 'आपके Hb नतीजे' }) + '</h2>' +
       (!can ? P({ en: 'Hb results you save on the lab results page show here.', hi: 'Lab results वाले पन्ने पर सेव किए Hb नतीजे यहाँ दिखते हैं।' }, 'small') :
         (hbs.length ? '<div class="list">' + hbs.map((e) => '<div class="item quiet"><span class="body"><strong class="cond-tnum">' + esc(num(e.v) + ' ' + e.u) + ' · ' + esc(fmtL(e.d)) + '</strong><span>' + esc(t('cond_lab_range_lbl')) + ': ' + esc(rangeText(e)) + '</span>' + (outside(e) ? '<span class="pill accent cond-flag">' + esc(t('cond_lab_out')) + '</span>' : '') + '</span></div>').join('') + '</div>' +
-          P({ en: 'If your report or doctor says your Hb is below 8, see a doctor this week; today if you’re breathless, dizzy or have chest pain.', hi: 'अगर आपकी रिपोर्ट या डॉक्टर कहें कि आपका Hb 8 से कम है, तो इसी हफ़्ते डॉक्टर को दिखाएँ; साँस फूले, चक्कर आए या सीने में दर्द हो, तो आज ही।' }, 'small cond-hb-fix') :
+          P(HB_FIX, 'small cond-hb-fix') :
           P({ en: 'No Hb result saved yet. Ask your ANM or the Ayushman Arogya Mandir for a free Hb test.', hi: 'अभी कोई Hb नतीजा सेव नहीं है। मुफ़्त Hb जाँच के लिए अपनी ANM या आयुष्मान आरोग्य मंदिर से कहें।', doc: { en: 'No Hb result saved yet. Ask your doctor for an Hb test; it is also free at the Ayushman Arogya Mandir.', hi: 'अभी कोई Hb नतीजा सेव नहीं है। डॉक्टर से Hb जाँच के लिए कहें; यह आयुष्मान आरोग्य मंदिर में मुफ़्त भी होती है।' } }, 'small')) +
         '<button type="button" class="btn sm" style="align-self:flex-start" id="cond-addhb">' + h({ en: 'Add an Hb result', hi: 'Hb नतीजा जोड़ें' }) + '</button>') + '</div>';
 

@@ -81,11 +81,6 @@
       { l: [N2('Only a doctor can name a cause, such as endometriosis, adenomyosis or fibroids, and treat it.', 'सिर्फ़ डॉक्टर ही कारण बता सकती हैं, जैसे endometriosis, adenomyosis या fibroids, और उसका इलाज कर सकती हैं।')] },
       { l: [QURA], ask: true },
       { b: TRY, l: [N2('Take your pain record from Sakhi to your doctor.', 'Sakhi से अपना दर्द का रिकॉर्ड डॉक्टर के पास ले जाएँ।')] }] },
-    p12: { h: N2('Keeping it going', 'इसे जारी रखना'), cards: [
-      { l: [N2('Your results show your periods in your own numbers. Periods vary from month to month, so look at several.', 'आपके नतीजे आपके पीरियड आपके अपने आँकड़ों में दिखाते हैं। पीरियड हर महीने अलग होते हैं, इसलिए कई पीरियड देखें।')] },
-      { b: TRY, l: [N2('Choose what you keep: Relax, moving on 3 days, and your kit for period days.', 'चुनें कि क्या जारी रखेंगी: आराम, 3 दिन हरकत, और पीरियड के दिनों की अपनी किट।')] },
-      { warn: true, b: N2('Still hard?', 'अब भी मुश्किल है?'), l: [N2('A doctor can treat painful periods. Take your record with you.', 'दर्द वाले पीरियड का इलाज डॉक्टर कर सकती हैं। अपना रिकॉर्ड साथ ले जाएँ।')], ask: true }] },
-
     h1: { h: N2('Is my bleeding heavy?', 'क्या मेरी ब्लीडिंग ज़्यादा है?'), cards: [
       { l: [N2('Heavy bleeding is judged by your life: changing at night, leaking through clothes, staying home, or feeling tired.', 'ज़्यादा ब्लीडिंग आपकी ज़िंदगी से पहचानी जाती है: रात में बदलना, कपड़ों तक निकल जाना, घर पर रुकना, या थकान।')] },
       { u: N2('Soaking a pad or cloth every hour for 2 hours or more, or bleeding with dizziness or fainting: call 112 now.', 'हर घंटे पैड या कपड़ा भीगना, 2 घंटे या ज़्यादा तक, या ब्लीडिंग के साथ चक्कर या बेहोशी: अभी 112 पर फ़ोन करें।'), tel: ['112'] },
@@ -116,10 +111,6 @@
       { l: [N2('Tiredness from low Hb is real. Move gently, and stand up slowly.', 'कम Hb की थकान सच्ची है। धीरे-धीरे हरकत करें, और धीरे से उठें।')] },
       { warn: true, b: N2('Stop and rest', 'रुकें और आराम करें'), l: [N2('If you feel dizzy, breathless or your heart races. Chest pain or fainting: call 112 now.', 'अगर चक्कर आए, साँस फूले या दिल तेज़ धड़के। सीने में दर्द या बेहोशी: अभी 112 पर फ़ोन करें।')] },
       { b: TRY, l: [N2('Walk gently on your 3 days, and rest lying down on your heaviest days.', 'अपने 3 दिनों में धीरे टहलें, और सबसे ज़्यादा ब्लीडिंग वाले दिनों में लेटकर आराम करें।')] }] },
-    h8: { h: N2('Telling your family', 'परिवार को बताना'), cards: [
-      { l: [N2('Heavy periods are tiring. Let someone at home know when you need rest or help with heavy work.', 'ज़्यादा ब्लीडिंग थका देती है। घर में किसी को बताएँ कि कब आपको आराम या भारी काम में मदद चाहिए।')] },
-      U181,
-      { b: TRY, l: [N2('Tell one person at home what helps you on a heavy day.', 'घर में एक व्यक्ति को बताएँ कि ज़्यादा ब्लीडिंग वाले दिन आपको क्या मदद करता है।')] }] },
     h9: { h: N2('Other reasons Hb gets low', 'Hb कम होने के और कारण'), cards: [
       { l: [N2('Low Hb has other causes too: worms, too little vitamin B12 or folate, or a blood condition that runs in families. Iron can’t fix all of them.', 'Hb कम होने के और कारण भी हैं: पेट के कीड़े, विटामिन B12 या फ़ोलेट की कमी, या परिवार में चलने वाली ख़ून की कोई बीमारी। आयरन इन सबको ठीक नहीं कर सकता।')] },
       { l: [N2('If your Hb stays low after treatment, your doctor will look further.', 'इलाज के बाद भी Hb कम रहे, तो डॉक्टर आगे जाँच करेंगी।')] },
@@ -131,20 +122,11 @@
     h11: { h: N2('The repeat test', 'दोबारा टेस्ट'), cards: [
       { l: [N2('If you were treated for low Hb, a repeat test shows whether the treatment is working. Many doctors check after about a month, and again later.', 'कम Hb का इलाज हुआ हो, तो दोबारा टेस्ट से पता चलता है कि इलाज काम कर रहा है या नहीं। कई डॉक्टर लगभग एक महीने बाद, और फिर बाद में जाँचती हैं।')] },
       { b: TRY, l: [N2('Ask your doctor when to repeat your Hb test, and add the result in Sakhi.', 'अपनी डॉक्टर से पूछें कि Hb टेस्ट दोबारा कब करवाना है, और नतीजा Sakhi में जोड़ें।')], go: 'cond-anaemia', gol: '@tile' }] },
-    h12: { h: N2('Keeping it going', 'इसे जारी रखना'), cards: [
-      { l: [N2('Your results show your periods and your Hb in your own numbers. Periods vary from month to month, so look at several.', 'आपके नतीजे आपके पीरियड और Hb आपके अपने आँकड़ों में दिखाते हैं। पीरियड हर महीने अलग होते हैं, इसलिए कई पीरियड देखें।')] },
-      { b: TRY, l: [N2('Choose what you keep: your iron food, rest on heavy days, and your period notes.', 'चुनें कि क्या जारी रखेंगी: आयरन वाला खाना, ज़्यादा ब्लीडिंग वाले दिनों में आराम, और पीरियड के नोट।')] },
-      { warn: true, b: N2('Still heavy?', 'अब भी ज़्यादा ब्लीडिंग?'), l: [N2('A gynaecologist can look for causes and treat the bleeding. Take your notes with you.', 'स्त्री रोग विशेषज्ञ कारण ढूँढकर ब्लीडिंग का इलाज कर सकती हैं। अपने नोट साथ ले जाएँ।')], ask: true }] },
-
     m1: { h: N2('Is it PMS? Your month, mapped', 'क्या यह PMS है? आपका महीना, नक़्शे पर'), cards: [
       { l: [N2('PMS means changes in your mood or body in the days before your period that ease once bleeding starts.', 'PMS का मतलब है पीरियड से पहले के दिनों में मन या शरीर के बदलाव, जो ब्लीडिंग शुरू होते ही कम हो जाते हैं।')] },
       { l: [N2('Noting how you feel each day, the good days too, for 2 cycles shows whether your hard days follow your cycle.', '2 चक्र तक हर दिन नोट करना कि आप कैसा महसूस करती हैं, अच्छे दिन भी, दिखाता है कि आपके मुश्किल दिन आपके चक्र के साथ आते हैं या नहीं।')] },
       UHARM,
       { b: TRY, l: [N2('Each evening, tap how you feel in your check-in, even on good days.', 'हर शाम अपनी जाँच में टैप करें कि आप कैसा महसूस करती हैं, अच्छे दिनों में भी।')] }] },
-    m2: { h: N2('Notice, name, pause', 'पहचानें, नाम दें, रुकें'), cards: [
-      { l: [N2('In the days before your period, a small thing can spark a big feeling. Your thoughts, feelings and actions are linked.', 'पीरियड से पहले के दिनों में छोटी-सी बात बड़ी भावना जगा सकती है। आपकी सोच, भावनाएँ और काम आपस में जुड़े हैं।')] },
-      { l: [N2('A pause helps: notice the feeling, name it (“this is my hard week”), take one slow breath, then choose what to do.', 'रुकना मदद करता है: भावना पहचानें, उसे नाम दें (“यह मेरा मुश्किल हफ़्ता है”), एक धीमी साँस लें, फिर तय करें कि क्या करना है।')] },
-      { b: TRY, l: [N2('Use the pause once a day this week.', 'इस हफ़्ते दिन में एक बार रुकने का अभ्यास करें।')] }] },
     m3: { h: N2('Stress makes the hard days louder', 'तनाव मुश्किल दिनों को और भारी बनाता है'), cards: [
       { l: [N2('Stress and too little sleep make the days before your period harder.', 'तनाव और कम नींद पीरियड से पहले के दिनों को और मुश्किल बनाते हैं।')] },
       { l: [N2('Calm breath every day, not only on hard days, lowers stress over time.', 'रोज़ शांत साँस, सिर्फ़ मुश्किल दिनों में नहीं, समय के साथ तनाव कम करती है।')] },
@@ -166,9 +148,6 @@
       { l: [N2('Step away for 5 minutes, breathe out slowly, and come back when you are calmer. Make up afterwards if you need to.', '5 मिनट के लिए हट जाएँ, धीरे साँस छोड़ें, और शांत होकर लौटें। ज़रूरत हो, तो बाद में बात सुलझा लें।')] },
       { u: N2('If you fear you could hurt your child or anyone, put the child somewhere safe, step away, and call for help: Tele-MANAS 14416, or 112 in danger.', 'अगर डर लगे कि आप अपने बच्चे या किसी को चोट पहुँचा सकती हैं, तो बच्चे को सुरक्षित जगह रखें, दूर हट जाएँ, और मदद के लिए फ़ोन करें: Tele-MANAS 14416, या ख़तरे में 112।'), tel: ['14416', '112'] },
       { b: TRY, l: [N2('Plan where you can step away to at home.', 'तय करें कि घर में आप कहाँ हट सकती हैं।')] }] },
-    m8: { h: N2('Plan the hard week', 'मुश्किल हफ़्ते की योजना'), cards: [
-      { l: [N2('Your notes show which days are hardest. Move big jobs away from them, and plan rest.', 'आपके नोट दिखाते हैं कि कौन-से दिन सबसे मुश्किल हैं। बड़े काम उनसे हटा दें, और आराम की योजना बनाएँ।')] },
-      { b: TRY, l: [N2('Make your calm-week plan: an early night, a lighter day, 10 minutes outside, or your own.', 'अपने शांत हफ़्ते की योजना बनाएँ: जल्दी सोना, हल्का दिन, 10 मिनट बाहर, या अपनी।')] }] },
     m9: { h: N2('Sleep', 'नींद'), cards: [
       { l: [N2('A steady get-up time and a calm last hour before bed help your mood.', 'रोज़ एक ही समय पर उठना और सोने से पहले का शांत घंटा मन को अच्छा रखते हैं।')] },
       { l: [N2('Awake for about 20 minutes? Sit up, keep the light low, and do something calm until you feel sleepy.', 'लगभग 20 मिनट से नींद नहीं आ रही? उठकर बैठ जाएँ, रोशनी कम रखें, और नींद आने तक कुछ शांत करें।')] },

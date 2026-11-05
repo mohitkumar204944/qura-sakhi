@@ -355,7 +355,7 @@ for (const g of ['hot', 'sleep']) {
   /* day 7 of her plan week, the weekly diary's day */
   const a = await open({ seed: { dob: '1979-03-01', intake: { goal: g, stage: 'meno' }, events: regular(20), mods: { plan: planOf('meno', g, 6, { goal: 'cycles' }) }, reminders: [planRem(6, '20:00')], settings: { notify: true } } });
   const ids = await a.page.evaluate(() => (window.Saathi.plan.actions() || []).map((x) => x.id));
-  check('5 the weekly symptom diary: ' + (g === 'hot' ? 'no step for the hot-flush goal (her chip counts)' : 'still a step for the sleep goal'), g === 'hot' ? ids.indexOf('diary') < 0 : ids.indexOf('diary') >= 0, ids);
+  check('5 the weekly symptom diary: no step for ' + (g === 'hot' ? 'the hot-flush goal (her chip counts)' : 'the sleep goal either (Version 39.68: the Diary logs the same signs)'), ids.indexOf('diary') < 0, ids);
   await done(a);
 }
 
@@ -400,6 +400,7 @@ for (const lang of ['en', 'hi']) {
   check('7 ... Copy stays, small, under them', await has(a.page, '#view .pst-copies [data-pst-copy="108"]'));
   await go(a.page, 'post');
   check('7 the after-birth page\'s danger card: Call 112, 108 and 14416', await has(a.page, '#view a.pst-call[href="tel:112"]') && await has(a.page, '#view a.pst-call[href="tel:108"]') && await has(a.page, '#view a.pst-call[href="tel:14416"]'));
+  await go(a.page, 'home');   /* Version 39.68: Help is on Today */
   await tap(a.page, '#help-btn');
   check('7 Help\'s first row dials 112: "Call 112 now"', await a.page.evaluate(() => { const f = document.querySelector('#sheet-root .hs-list > *'); return !!f && f.tagName === 'A' && f.getAttribute('href') === 'tel:112' && /Call 112 now/.test(f.textContent); }));
   await tap(a.page, '#hs-sos');
@@ -407,13 +408,9 @@ for (const lang of ['en', 'hi']) {
   await done(a);
 }
 {
-  /* Help while she joins */
+  /* Version 39.68 (the doctors' review: "not needed from the first screen"): no Help while she joins */
   const a = await open({ seed: false, hash: '' });
-  check('7 Help shows on the first joining screen', await has(a.page, '#help-btn'));
-  await tap(a.page, '#help-btn');
-  check('7 ... with the rows that open on top of joining: 112, other helplines, thoughts of harm', await has(a.page, '#hs-112') && await has(a.page, '#hs-sos') && await has(a.page, '#hs-harm') && !(await has(a.page, '#hs-doc')) && !(await has(a.page, '#hs-guide')), await sheet(a.page));
-  await tap(a.page, '#hs-harm');
-  check('7 ... and they open there', /14416/.test(await sheet(a.page)));
+  check('7 no Help button on the first joining screen', !(await has(a.page, '#help-btn')));
   await done(a);
 }
 

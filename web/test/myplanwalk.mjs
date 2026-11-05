@@ -143,7 +143,7 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
   const s2 = await st(a);
   check('3 ... then the PMOS plan: Getting ready is her last plan, once', s2.mods.plan.pack === 'cycle' && pasts(s2) === 'ttc:' + ago(1), pasts(s2));
   await go(a, 'plan');
-  check('3 ... My plan: "Your last plan: Getting ready for a baby"', /Your last plan Getting ready for a baby/.test(await txt(a, '#view .pl-past')), await txt(a, '#view .pl-past'));
+  check('3 ... My plan shows no "Your last plan" card (Version 39.68), and her last plan is kept: Getting ready', !(await has(a, '#view .pl-past')) && /^ttc:/.test(pasts(await st(a))), pasts(await st(a)));
   await done(a);
   /* the same with no plan before her pregnancy plan (Mohit's phone: "My pregnancy plan · 29 Oct to 30 Oct") */
   const b = await open({ seed: cycSeed({ settings: { notify: true } }), wait: 1200 });
@@ -157,13 +157,13 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
   /* a phone that already holds one: mended when Sakhi opens */
   const PP = (o) => Object.assign({ pack: 'preg', goalKey: 'food', pv: 2, start: ago(1), end: ago(0), days: 1, wk: 1, weeks: {} }, o || {});
   const c = await open({ seed: pm(0, { past: [PP(), { pack: 'cycle', goalKey: 'irregular', pv: 1, start: ago(200), end: ago(120), days: 40, wk: 12, weeks: {} }] }), hash: 'plan' });
-  check('3 a phone like Mohit\'s (the PMOS plan, and a pregnancy plan of 29 to 30 Oct with no pregnancy behind it): her last plan is the one before', /^Your last plan My cycle plan · /.test(await txt(c, '#view .pl-past')) && pasts(await st(c)) === 'cycle:' + ago(200), { card: await txt(c, '#view .pl-past'), p: pasts(await st(c)) });
+  check('3 a phone like Mohit\'s (the PMOS plan, and a pregnancy plan of 29 to 30 Oct with no pregnancy behind it): her last plan is the one before', !(await has(c, '#view .pl-past')) && pasts(await st(c)) === 'cycle:' + ago(200), { card: await txt(c, '#view .pl-past'), p: pasts(await st(c)) });
   await done(c);
   const d = await open({ seed: trying({ mods: { plan: Object.assign({}, TTC, { past: [{ pack: 'ttc', goalKey: 'ready', pv: 2, start: ago(1), end: ago(0), days: 1, wk: 1, weeks: {} }] }) } }), hash: 'plan' });
   check('3 a phone with a copy of the plan she runs (Getting ready brought back): the copy is gone', pasts(await st(d)) === '' && !(await has(d, '#view .pl-past')), pasts(await st(d)));
   await done(d);
   const e = await open({ seed: pm(0, { past: [PP({ start: ago(300), end: ago(100), days: 150, wk: 12 })] }, { situation: { care: 'private', deliveredOn: ago(100) } }), hash: 'plan' });
-  check('3 after a birth, her pregnancy plan stays her last plan', /My pregnancy/i.test(await txt(e, '#view .pl-past')) && pasts(await st(e)) === 'preg:' + ago(300), { card: await txt(e, '#view .pl-past'), p: pasts(await st(e)) });
+  check('3 after a birth, her pregnancy plan stays her last plan', !(await has(e, '#view .pl-past')) && pasts(await st(e)) === 'preg:' + ago(300), { card: await txt(e, '#view .pl-past'), p: pasts(await st(e)) });
   await done(e);
   const f = await open({ seed: pm(0, { past: [PP({ start: ago(90), end: ago(10), days: 20 })] }, { situation: { care: 'private', pregEndedOn: ago(10), pregEndedHow: 'loss' } }), hash: 'plan' });
   check('3 after a loss, it is kept (and, as before, not on show: review SAFETY-07)', pasts(await st(f)) === 'preg:' + ago(90) && !(await has(f, '#view .pl-past')), pasts(await st(f)));

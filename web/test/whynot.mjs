@@ -289,7 +289,7 @@ const longPeriod = () => { const ev = regular(30, 2); ev[ev.length - 1] = { d: a
   /* a "see a doctor today" card keeps "Free doctor or hospital" and offers no plan */
   const a = await open({ seed: { situation: { deliveredOn: ago(20) }, events: regular(330, 2), checkins: { [TODAY.slice(0, 7)]: { chips: ['stitch'], hot: 'hot_0', note: '', at: ago(1), kind: 'post' } } }, hash: 'explain' });
   const tc = await txt(a.page, '#view .xp-card.xp-today');
-  check('6 a today card keeps "Free doctor or hospital"', await has(a.page, '#view .xp-card.xp-today [data-go="access-free"]') && !(await has(a.page, '#view .xp-card.xp-today .xp-plan')), tc);
+  check('6 a today card keeps "Free doctor or hospital" (Care near me, Version 39.68)', await has(a.page, '#view .xp-card.xp-today [data-go="access-care"]') && !(await has(a.page, '#view .xp-card.xp-today .xp-plan')), tc);
   await done(a);
 }
 

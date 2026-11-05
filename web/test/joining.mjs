@@ -88,7 +88,7 @@ const STAGES = [
   { tile: 'preg', goals: ['nausea', 'food'], lmp: dayISO(100), st: 'preg', log: 'go', hide: ['meno', 'ttc', 'pregtest'], q: 'menopause', qr: OTHER_MENO, noCh: ['cycle', 'pmos', 'midlife'], abort: false },
   { tile: 'post', goals: ['recovery', 'feed'], birth: dayISO(30), bf: 'yes', st: 'post', log: 'go', hide: ['preg', 'meno', 'ttc'], q: 'menopause', qr: OTHER_MENO, noCh: ['midlife', 'pmos'], abort: true },
   { tile: 'mid', goals: ['hot', 'sleep'], dec: 1970, y: 1978, st: 'meno', log: 'save', hide: ['preg', 'post', 'ttc'], q: 'pregnancy', qr: OTHER_PREG, noCh: ['pregnancy', 'conceive'], abort: true },
-  { tile: 'meno', goals: ['hot', 'bones'], dec: 1960, y: 1968, mp: '2', st: 'meno', log: 'go', hide: ['preg', 'post', 'ttc'], q: 'pregnancy', qr: OTHER_PREG, noCh: ['pregnancy', 'conceive'], abort: true }
+  { tile: 'meno', goals: ['hot', 'bones'], dec: 1960, y: 1968, mp: '2', st: 'meno', log: 'save',   /* Version 39.68: no weekly symptom diary; her first log is today's signs */ hide: ['preg', 'post', 'ttc'], q: 'pregnancy', qr: OTHER_PREG, noCh: ['pregnancy', 'conceive'], abort: true }
 ];
 
 /* ---------- 1. Every stage, in English and in Hindi, from joining to her plan's questions ---------- */
@@ -106,15 +106,19 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   check(tag + ': "Your Sakhi" greets her by name, with 3 rows and what stays out of her way', (await hashOf(page)) === '#your-sakhi' && /Asha/.test(ys) && (await page.$$('#view .ys-rows .item')).length === 3 && await has(page, '#view .ys-hid') && await fits(page), ys.slice(0, 300));
   check(tag + ': no tabs on "Your Sakhi"', await page.$eval('#tabbar', (e) => e.hidden || !e.offsetHeight).catch(() => true));
   await shot(page, S.tile + '-' + lang + '-1-your-sakhi');
+  let tourN = null;
   if (lang === 'en') {
     await tap(page, '#ys-tour'); let n = 0;
     for (let k = 0; k < 5; k++) { await page.waitForSelector('#tour-root #tour-next', { timeout: 4000 }).catch(() => null); if (!(await has(page, '#tour-root #tour-next'))) break; n++; await tap(page, '#tour-root #tour-next'); await sleep(450); }
-    check(tag + ': "Show me around": 3 steps on Today, ending in Diary', n === 3 && (await hashOf(page)) === '#diary', [n, await hashOf(page)]);
+    tourN = n;
+    check(tag + ': "Show me around": 2 or 3 steps on Today, ending in Diary', (n === 2 || n === 3) && (await hashOf(page)) === '#diary', [n, await hashOf(page)]);
   } else {
     await tap(page, '#ys-skip'); await sleep(400);
     check(tag + ': "Skip the tour" goes to Today', (await hashOf(page)) === '#home');
   }
   await go(page, 'home'); await closeTips(page);
+  /* Version 39.68 (no first-days read on Today): "This is your day" only when her day has steps to show */
+  if (tourN !== null) check(tag + ': ... the tour\'s "This is your day" only when Today has steps to show', (tourN === 3) === (await has(page, '#view .today-card')), [tourN, await has(page, '#view .today-card')]);
   const po = !!(await page.evaluate(() => (window.Saathi.state.prompts || {}).planOffer));   /* Version 39.61 (phase C): her first log no longer holds her plan back */
   check(tag + ': Today: her plan offered from the start when her goal has one, 3 steps or fewer', (await has(page, '#pl-off-go')) === po && (await todayRows(page)) <= 3 && await fits(page), [po, await todayRows(page)]);
   await go(page, 'diary'); await closeTips(page);
@@ -141,21 +145,21 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   check(tag + ': search still finds another stage\'s pages ("' + S.q + '")', found.some((x) => S.qr.test(x)), found.slice(0, 8));
   await go(page, 'learn'); const ch = await page.$$eval('#view .tabs [data-g]', (x) => x.map((y) => y.dataset.g));
   check(tag + ': Learn leaves out other stages\' chapters', ch.length > 1 && S.noCh.every((x) => ch.indexOf(x) < 0), ch);
-  /* safety within 2 taps */
-  await tap(page, '#help-btn');
-  check(tag + ': Help (1 tap) holds 112, "someone hurting you" and pregnancy loss', await has(page, '#sheet-root #hs-sos') && await has(page, '#sheet-root #hs-harm') && await has(page, '#sheet-root #hs-loss'));
+  /* safety within 2 taps (Version 39.68: Help is on Today only) */
+  await go(page, 'home'); await closeTips(page); await tap(page, '#help-btn');
+  check(tag + ': Help (1 tap from Today) holds 112, "someone hurting you" and pregnancy loss', await has(page, '#sheet-root #hs-sos') && await has(page, '#sheet-root #hs-harm') && await has(page, '#sheet-root #hs-loss'));
   await tap(page, '#sheet-root #hs-loss'); await sleep(300);
   check(tag + ': pregnancy loss in 2 taps', (await hashOf(page)) === '#loss');
   await go(page, 'topic-intimate');
-  check(tag + ': STIs and safety in 2 taps of Explore (Intimate health)', await has(page, '#view [data-go="intimate-sti"]') && await has(page, '#view [data-go="intimate-safety"]'));
+  check(tag + ': no STI or safety pages in Intimate health (Version 39.68: the doctors removed them)', !(await has(page, '#view [data-go="intimate-sti"]')) && !(await has(page, '#view [data-go="intimate-safety"]')));
   if (S.abort) { await go(page, 'topic-pregtest'); check(tag + ': abortion from her Missed period topic (in the library)', tp.indexOf('pregtest') >= 0 && await has(page, '#view [data-go="pregtest-abortion"]'), tp);
     /* Version 39.62 (phase D; PLACES-05): and 2 taps from every screen, through Help */
-    await tap(page, '#help-btn'); check(tag + ': abortion in 2 taps (Help, then the page)', await has(page, '#sheet-root .hs-priv [data-hs-go="pregtest-abortion"]')); await page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await sleep(200); }
+    const ab = await search(page, 'abortion'); check(tag + ': abortion found by search (Version 39.68: Help has no Private help)', ab.indexOf('pregtest-abortion') >= 0, ab.slice(0, 6)); }
   else { const ab = await search(page, 'abortion'); check(tag + ': abortion found by search', ab.indexOf('pregtest-abortion') >= 0, ab.slice(0, 6)); }
   /* the plan for her first goal (English runs: through its questions to its cards) */
   if (lang === 'en') {
     await go(page, 'home'); await tap(page, '#pl-off-go'); await sleep(300);
-    check(tag + ': "See my plan" opens her plan\'s own questions, not a goal picker', (await hashOf(page)) === '#plan-goal' && !(await has(page, '[data-pl-goal]')), await hashOf(page));
+    check(tag + ': "See my plan" opens her plan\'s own questions (or her plan, with none to ask: Version 39.68, no answers summary), not a goal picker', ['#plan-goal', '#plan-reveal'].indexOf(await hashOf(page)) >= 0 && !(await has(page, '[data-pl-goal]')), await hashOf(page));
     await answer(page);
     s = await st(page); const d = s.mods.plan || {}; const nx = d.next || d;
     check(tag + ': her first goal chose the plan', (await hashOf(page)) === '#plan-reveal' && (nx.goalKey === g1 || JSON.stringify(d).indexOf('"goalKey":"' + g1 + '"') >= 0), [await hashOf(page), nx.goalKey, nx.pack]);

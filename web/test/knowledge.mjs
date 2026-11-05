@@ -93,26 +93,26 @@ const POST = { situation: { deliveredOn: ago(20), breastfeeding: true }, events:
   errsAll.push(...errs); await ctx.close();
   const tb = await open({ cfg: { app: 'test-0.39' }, hash: '#a-intimate.discharge-itching-odour' });
   check('1 a tester build: the held-back check never shows as a tool (the guide still does)', !(await has(tb.page, '#view [data-go="intimate-check"]')) && (await has(tb.page, '#view .article [data-go="intimate"]')), await gos(tb.page, '#view .article [data-go]'));
-  await go(tb.page, 'a-conceive.why-no-app-can-name-your-fertile-day');
+  await go(tb.page, 'a-conceive.ovulation-strips-temperature-progesterone');   /* Version 39.68: the fertile-day article is gone */
   check('1 a tester build: no fertile-days tool (fertile days are held back there)', !(await has(tb.page, '#view .article [data-go="fertile"]')));
   errsAll.push(...tb.errs); await tb.ctx.close();
 }
 
 /* ---------- 2. The book ---------- */
 {
-  const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { mods: { joy: { reads: { 'pregnancy.register-by-12-weeks': 1, 'cycle.painful-periods': 1 } } } }), hash: '#learn' });
-  check('2 a pregnant woman: the book opens at Pregnancy and schemes', /Pregnancy and schemes/.test(await page.$eval('#view .tabs button.on', (e) => e.innerText).catch(() => '')));
-  check('2 her chapter counts what she has read', /1 of 10 read/.test(await view(page)), (await view(page)).slice(0, 500));
+  const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { mods: { joy: { reads: { 'pregnancy.four-antenatal-visits': 1, 'cycle.painful-periods': 1 } } } }), hash: '#learn' });   /* Version 39.68: 8 pregnancy guides */
+  check('2 a pregnant woman: the book opens at Pregnancy (Version 39.68: no schemes in its name)', (await page.$eval('#view .tabs button.on', (e) => e.innerText.trim()).catch(() => '')) === 'Pregnancy');
+  check('2 her chapter counts what she has read', /1 of 8 read/.test(await view(page)), (await view(page)).slice(0, 500));
   const cont = await page.$eval('#view .learn-next [data-go]', (e) => [e.dataset.go, e.innerText]).catch(() => null);
-  check('2 Continue reading: the next guide she hasn\'t read in her chapter', cont && cont[0] === 'a-pregnancy.four-antenatal-visits' && /Continue reading/i.test(cont[1]), cont);
-  check('2 a tick on what she has read', await has(page, '#view .art-read[data-go="a-pregnancy.register-by-12-weeks"] .art-tick'));
-  check('2 the chapter ends with "Where to get it free" (Govt. services)', (await gos(page, '#view .learn-free [data-go]')).indexOf('access-free') >= 0);
+  check('2 Continue reading: the next guide she hasn\'t read in her chapter', cont && /^a-pregnancy\./.test(cont[0]) && cont[0] !== 'a-pregnancy.four-antenatal-visits' && /Continue reading/i.test(cont[1]), cont);
+  check('2 a tick on what she has read', await has(page, '#view .art-read[data-go="a-pregnancy.four-antenatal-visits"] .art-tick'));
+  check('2 no "Where to get it free" row (Version 39.68: the Govt. services pages are gone)', !(await has(page, '#view .learn-free')) && (await gos(page, '#view [data-go]')).indexOf('access-free') < 0);
   await tap(page, '#view .tabs [data-g="all"]');
-  check('2 All: every chapter of her stage shows its count (Version 39.10: no Periods and cycles in pregnancy)', /Pregnancy and schemes\s*1 of 10 read/.test(await view(page)) && !/Periods and cycles/.test(await view(page)), (await view(page)).slice(0, 700));
+  check('2 All: every chapter of her stage shows its count (Version 39.10: no Periods and cycles in pregnancy)', /Pregnancy\s*1 of 8 read/.test(await view(page)) && !/Periods and cycles/.test(await view(page)), (await view(page)).slice(0, 700));
   await go(page, 'learn');
   check('2 her own choice of chapter stays for the session', await page.$eval('#view .tabs button.on', (e) => e.dataset.g === 'all').catch(() => false));
   await page.evaluate(() => { location.hash = 'learn-services'; }); await settle(page, 600);
-  check('2 a chapter link (learn-services) opens the book at Free services, and Back leaves it', (await route(page)) === 'learn' && /Free services/.test(await page.$eval('#view .tabs button.on', (e) => e.innerText).catch(() => '')), await route(page));
+  check('2 a chapter link (learn-services) opens the book at Doctors, privacy and family (Version 39.68), and Back leaves it', (await route(page)) === 'learn' && /Doctors, privacy and family/.test(await page.$eval('#view .tabs button.on', (e) => e.innerText).catch(() => '')), await route(page));
   errsAll.push(...errs); await ctx.close();
   const l = await open({ seed: { situation: { pregEndedOn: ago(14), pregEndedHow: 'loss' }, events: [] }, hash: '#learn' });
   check('2 after a loss the book opens at All, and offers no Continue', (await l.page.$eval('#view .tabs button.on', (e) => e.dataset.g).catch(() => '')) === 'all' && !(await has(l.page, '#view .learn-next')));
@@ -163,12 +163,12 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   await search(p.page, 'sonography'); check('5 "sonography": the four check-ups guide, first', (await quick(p.page)) === 'pregnancy.four-antenatal-visits', await quick(p.page));
   await search(p.page, 'tika'); check('5 pregnant, "tika": My pregnancy plan is the first tool (the Td injections)', (await firstTool(p.page)) === 'preg-plan', await firstTool(p.page));
   /* review KNOWLEDGE-04: Kilkari is named on the pregnancy plan's scheme item, so that comes first, then the pregnancy schemes */
-  await search(p.page, 'kilkari'); check('5 "kilkari": the pregnancy plan\'s scheme item first, then the pregnancy schemes', (await firstTool(p.page)) === 'preg-plan' && (await gos(p.page, '#view .care-sec .list [data-go]')).indexOf('access-schemes-preg') >= 0, await gos(p.page, '#view .care-sec .list [data-go]'));
+  await search(p.page, 'kilkari'); check('5 "kilkari": the pregnancy plan\'s scheme item first, and no scheme page (Version 39.68)', (await firstTool(p.page)) === 'preg-plan' && !(await gos(p.page, '#view .care-sec .list [data-go]')).some((x) => /^access-schemes/.test(x)), await gos(p.page, '#view .care-sec .list [data-go]'));
   errsAll.push(...p.errs); await p.ctx.close();
   const c = await open({});
   await search(c.page, 'kya kare'); check('5 not pregnant, "kya kare": the periods dos and don\'ts', (await quick(c.page)) === 'cycle.period-dos-and-donts');
   await search(c.page, 'sex'); check('5 not pregnant, "sex": no pregnancy quick answer', (await quick(c.page)) === '');
-  await search(c.page, 'safe days'); check('5 "safe days": why no app can name a fertile day, first', (await quick(c.page)) === 'conceive.why-no-app-can-name-your-fertile-day', await quick(c.page));
+  await search(c.page, 'safe days'); check('5 "safe days": not the fertile-day article the doctors removed (Version 39.68)', !/why-no-app/.test(await quick(c.page)), await quick(c.page));
   await search(c.page, 'jaapa'); check('5 "jaapa": the after-birth dos and don\'ts', (await quick(c.page)) === 'pregnancy.after-birth-dos-and-donts');
   await search(c.page, 'breast lump'); check('5 "breast lump": the breast check first, not breastfeeding', (await firstTool(c.page)) === 'screen-breast', await firstTool(c.page));
   await search(c.page, 'pap smear'); check('5 "pap smear": cervical screening first', (await firstTool(c.page)) === 'screen-cervix', await firstTool(c.page));
@@ -297,11 +297,11 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
 {
   const { ctx, page, errs } = await open({});
   const arts = async (sec) => { await go(page, 'topic-' + sec); return gos(page, '#view .topic-tail [data-go^="a-"], #view [data-go^="a-"]'); };
-  check('12 Pregnancy loss now has its article', (await arts('loss')).indexOf('a-conceive.after-a-pregnancy-loss-care-and-support') >= 0);
+  check('12 Pregnancy loss: no article (Version 39.68: the doctors removed it; the loss pages stay)', !(await arts('loss')).some((x) => /pregnancy-loss/.test(x)));
   check('12 After the birth: the first six weeks and its dos and don\'ts', (await arts('post')).filter((x) => /after-birth/.test(x)).length >= 2);
   check('12 Contraception: contraception in perimenopause', (await arts('contra')).indexOf('a-midlife.contraception-perimenopause') >= 0);
   await go(page, 'access-free');
-  check('12 Govt. services: "How to use free care", three Learn guides', /How to use free care/.test(await view(page)) && (await gos(page, '#view [data-go^="a-services."]')).length === 3);
+  check('12 Govt. services lands on Explore (Version 39.68)', (await route(page)) === 'care', await route(page));
   errsAll.push(...errs); await ctx.close();
   /* Version 39.28: scheme money is the government route's item (situation.care) */
   const p = await open({ seed: Object.assign({}, PREG, { situation: Object.assign({}, PREG.situation, { care: 'govt' }) }), hash: '#preg-plan' });
@@ -309,32 +309,13 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   errsAll.push(...p.errs); await p.ctx.close();
 }
 
-/* ---------- 12b. Schemes: PMMVY's two parts, a finder that knows her stage, the pads card (P3-07 to P3-09; sources check) ---------- */
+/* ---------- 12b. Schemes (P3-07 to P3-09). Version 39.68 (the doctors' review): the scheme pages are gone, however she reaches them ---------- */
 {
-  const b = await open({ seed: Object.assign({}, POST, { situation: { deliveredOn: ago(100), breastfeeding: true }, mods: { access: { claims: { pmmvy: { started: ago(200), applied: ago(150), got: ago(120) } } } } }), hash: '#access-schemes-post' });
-  await b.page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await settle(b.page, 200);
-  const blk = await b.page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText).catch(() => '');
-  check('12b PMMVY: two "received" steps, and at 14 weeks the line about the second part', /Part 1 received/.test(blk) && /Part 2 received/.test(blk) && /claim the second part \(₹2,000\)/.test(blk), blk.slice(0, 400));
-  check('12b ... and her claims list says so', /Part 2 received\?/.test(await b.page.$eval('#view .access-my', (e) => e.innerText).catch(() => '')));
-  check('12b JSY is on the after-birth list (it is paid after the birth)', await has(b.page, '#sch-jsy'));
-  await b.page.$eval('[data-claim-step="pmmvy|got2"]', (x) => x.click()); await settle(b.page, 300);
-  check('12b "Part 2 received" is saved', !!((await st(b.page)).mods.access.claims.pmmvy.got2));
+  const b = await open({ seed: PREG });
+  for (const h of ['access-schemes', 'access-schemes-preg', 'access-schemes-post', 'access-schemes-period', 'access-free']) {
+    await go(b.page, h); check('12b #' + h + ' lands on Explore', (await route(b.page)) === 'care', await route(b.page));
+  }
   errsAll.push(...b.errs); await b.ctx.close();
-  const p = await open({ seed: PREG, hash: '#access-schemes' });
-  const v = await view(p.page);
-  check('12b the finder uses her diary: "pregnant" and no pregnancy question', /From your diary: pregnant · no baby in the last year/.test(v) && !/Are you pregnant now\?/.test(v), v.slice(0, 500));
-  await tap(p.page, '#access-ask-all');
-  check('12b ... "Answer these myself" brings the questions back', /Are you pregnant now\?/.test(await view(p.page)));
-  check('12b the general list has the free pads card and no TB scheme', (await has(p.page, '#sch-pads')) && !(await has(p.page, '#sch-nikshay')));
-  await go(p.page, 'access-free');
-  check('12b Govt. services: a pregnant woman\'s schemes row opens the pregnancy schemes', (await gos(p.page, '#view .list [data-go^="access-schemes"]'))[0] === 'access-schemes-preg');
-  await go(p.page, 'access-schemes-preg'); await p.page.$eval('#sch-pmmvy', (d) => { d.open = true; });
-  const pv = await p.page.$eval('#sch-pmmvy', (e) => e.innerText);
-  check('12b PMMVY, checked at the official source: one check-up within 6 months, register in pregnancy for a second girl, Odisha and Telangana', /at least one antenatal check-up within 6 months of your last period/.test(pv) && /register during the pregnancy/.test(pv) && /MAMATA-PMMVY/.test(pv) && /MCH Kit/.test(pv) && /PM-KISAN in her own name/.test(pv), pv.slice(0, 500));
-  errsAll.push(...p.errs); await p.ctx.close();
-  const g = await open({ seed: { dob: '2010-05-01' }, hash: '#access-schemes-period' });
-  check('12b Periods: "Free and ₹6 pads for girls" first', (await g.page.$$eval('#view details[id^="sch-"]', (x) => x.map((y) => y.id))).indexOf('sch-pads') >= 0);
-  errsAll.push(...g.errs); await g.ctx.close();
 }
 
 /* ---------- 13. Hindi, 360 px, no errors ---------- */
@@ -366,7 +347,8 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   }
   /* FACTS-02: every language's pregnancy symptoms still name fever and swelling */
   /* V39.8 review SAFETY-01: each language has its own full list now (Marathi ताप and सूज, Bengali জ্বর and ফুলে, Tamil காய்ச்சல் and வீக்கம்) */
-  for (const [lang, want] of [['mr', ['ताप', 'सूज']], ['bn', ['জ্বর', 'ফুলে']], ['ta', ['காய்ச்சல்', 'வீக்கம்']], ['te', ['జ్వరం', 'వాపు']]]) {
+  /* Version 39.68 (the doctors' review): Hindi and English only */
+  for (const [lang, want] of [['hi', ['बुखार', 'सूजन']], ['en', ['fever', 'swelling']]]) {
     const { ctx, page, errs } = await open({ seed: Object.assign({ lang: lang }, PREG), hash: '#access-symptoms' });
     await tap(page, '#view [data-area="preg"]'); const v = (await allText(page)).toLowerCase();
     check('14 ' + lang + ': the symptom guide\'s pregnancy signs include fever and swelling (FACTS-02)', want.every((w) => v.indexOf(w) >= 0), want);
@@ -385,27 +367,13 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
     check('14 pregnancy, goal mood: the calm step doesn\'t open "Stress and periods" (KNOWLEDGE-10)', w2.indexOf('mind_body.stress-and-periods') < 0, w2);
     errsAll.push(...b.errs); await b.ctx.close();
   }
-  /* FACTS-05: the schemes guide's PMMVY bullet matches the checked card */
+  /* FACTS-05 to 07, Version 39.68 (the doctors' review): the schemes guide and the scheme pages are gone, and so are their reminders */
   {
-    const c = JSON.parse(CONTENT); const a = c.groups.find((g) => g.group === 'pregnancy').articles.find((x) => x.id === 'government-support-schemes');
-    const en = a.body_en.find((x) => /PMMVY/.test(x)) || ''; const hi = a.body_hi.find((x) => /PMMVY/.test(x)) || '';
-    check('14 the Learn schemes guide: one check-up within 6 months, a second child registered in pregnancy, PM-KISAN in her own name (FACTS-05)', /within 6 months of your last period/.test(en) && /register during the pregnancy/.test(en) && /PM-KISAN in your own name/.test(en) && /6 महीने के अंदर/.test(hi) && /गर्भ के दौरान ही पंजीकरण/.test(hi), en);
-    check('14 ... its FAQ source is the PMMVY portal (the old link fails its certificate check)', a.sources.some((s) => /pmmvy\.wcd\.gov\.in\/Home\/FrequentlyAskedQuestions/.test(s)) && !a.sources.some((s) => /spniwcd/.test(s)));
-  }
-  /* FACTS-06: the finder's "From your diary" follows a stage change in the same session */
-  {
-    const { ctx, page, errs } = await open({ hash: '#access-schemes' });
-    const before = await txt(page, '#view .access-diary');
-    await page.evaluate((x) => { const S = window.Saathi; S.state.situation.pregnant = true; S.state.situation.pregnantSince = x; S.save(); }, ago(60));
-    await go(page, 'access-schemes-preg'); const after = await txt(page, '#view .access-diary');
-    check('14 the finder: "not pregnant", then she marks a pregnancy, then "pregnant" (FACTS-06)', /not pregnant/.test(before) && /From your diary: pregnant/.test(after), [before, after]);
-    errsAll.push(...errs); await ctx.close();
-  }
-  /* FACTS-07: Part 1 paid in pregnancy, then the birth: the second part's reminder comes */
-  {
-    const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { mods: { access: { claims: { pmmvy: { started: ago(60), applied: ago(50), got: ago(30), docs: {} } } } } }) });
-    await page.evaluate((x) => { const S = window.Saathi; S.state.situation.pregnant = false; S.state.situation.deliveredOn = x; S.save(); }, ago(20)); await go(page, 'home');
-    check('14 PMMVY Part 1 in pregnancy, then the birth: the "second part" reminder is set (FACTS-07)', await page.evaluate(() => !!window.Saathi.reminders.get('access-pmmvy2')));
+    const c = JSON.parse(CONTENT);
+    check('14 the Learn schemes guide is gone (FACTS-05)', !c.groups.find((g) => g.group === 'pregnancy').articles.some((x) => x.id === 'government-support-schemes'));
+    const { ctx, page, errs } = await open({ seed: Object.assign({}, PREG, { mods: { access: { claims: { pmmvy: { started: ago(60), applied: ago(50), got: ago(30), docs: {} } } } }, reminders: [{ id: 'access-pmmvy2', mod: 'access', title: { en: 'PMMVY: the second part', hi: 'PMMVY: दूसरा हिस्सा' }, kind: 'custom', dates: [ago(-60)], time: '10:00', on: true }] }) });
+    await page.evaluate((x) => { const S = window.Saathi; S.state.situation.pregnant = false; S.state.situation.deliveredOn = x; S.save(); }, ago(20)); await go(page, 'learn'); await go(page, 'home');
+    check('14 PMMVY Part 1 in pregnancy, then the birth: no "second part" reminder, and the old one is gone (FACTS-07)', await page.evaluate(() => !window.Saathi.reminders.get('access-pmmvy2') && !window.Saathi.reminders.get('access-pmmvy')));
     errsAll.push(...errs); await ctx.close();
   }
   /* FACTS-08, KNOWLEDGE-06: the pads line in Hindi */
@@ -413,31 +381,6 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
     const { ctx, page, errs } = await open({ lang: 'hi', seed: { lang: 'hi' }, hash: '#periods-products' });
     const v = await allText(page);
     check('14 Hindi pads line reads whole (FACTS-08)', v.indexOf('₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है; कुछ राज्य अब ये मुफ़्त देते हैं।') >= 0 && v.indexOf('मिल सकता ह कुछ') < 0);
-    errsAll.push(...errs); await ctx.close();
-  }
-  /* FACTS-09: the apply-now line needs a check-up within 6 months; a second child has no 270-day deadline or second part */
-  {
-    const late = await open({ seed: Object.assign({}, { situation: { pregnant: true, pregnantSince: ago(217) }, events: [] }, { mods: { preg: { mcp: { anc: [ago(0)] } }, access: { claims: { pmmvy: { started: ago(5), docs: {} } } } } }), hash: '#access-schemes-preg' });
-    const early = await open({ seed: Object.assign({}, { situation: { pregnant: true, pregnantSince: ago(217) }, events: [] }, { mods: { preg: { mcp: { anc: [ago(70)] } }, access: { claims: { pmmvy: { started: ago(5), docs: {} } } } } }), hash: '#access-schemes-preg' });
-    const ap = /once your pregnancy is registered you can apply for the first part/;
-    check('14 PMMVY: a check-up 217 days after her last period doesn\'t offer "apply now"; one at 147 days does (FACTS-09)', !ap.test(await allText(late.page)) && ap.test(await allText(early.page)));
-    errsAll.push(...late.errs, ...early.errs); await late.ctx.close(); await early.ctx.close();
-    const b = await open({ seed: { situation: { deliveredOn: ago(20) }, events: [], mods: { access: { claims: { pmmvy: { started: ago(5), docs: {}, second: true } } } } }, hash: '#access-schemes-post' });
-    const v = await allText(b.page);
-    check('14 PMMVY, second child after the birth: no 270-day "Register by", no reminder, no second part (FACTS-09)', /For a second child, register during the pregnancy/.test(v) && !/Register by/.test(v) && !(await b.page.evaluate(() => !!window.Saathi.reminders.get('access-pmmvy'))) && (await b.page.$$eval('#view [data-claim-step^="pmmvy|"]', (x) => x.length)) === 3);
-    errsAll.push(...b.errs); await b.ctx.close();
-  }
-  /* FACTS-11: the pads card is never "For everyone" */
-  {
-    const { ctx, page, errs } = await open({ hash: '#access-schemes-period' });
-    const g = await page.evaluate(() => { const el = document.querySelector('#view #sch-pads'); const l = el && el.closest('.list'); const h = l && l.previousElementSibling; return h ? h.textContent : (el && el.closest('details') ? 'later' : ''); });
-    check('14 a woman of 30, nothing answered: the girls\' pads card isn\'t under "For everyone" (FACTS-11)', g && !/For everyone/.test(g), g);
-    errsAll.push(...errs); await ctx.close();
-  }
-  /* FACTS-12: a Ni-kshay claim tracked before V39.7 can still be opened */
-  {
-    const { ctx, page, errs } = await open({ seed: { mods: { access: { claims: { nikshay: { started: ago(40), applied: ago(30), docs: {} } } } } }, hash: '#access-schemes' });
-    check('14 a Ni-kshay claim from before: its card is on the all list, so she can update or stop it (FACTS-12)', await has(page, '#view #sch-nikshay'));
     errsAll.push(...errs); await ctx.close();
   }
   /* KNOWLEDGE-02, 04, 07, 08: search */
@@ -468,7 +411,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
     errsAll.push(...m.errs); await m.ctx.close();
     const l = await open({ seed: { situation: { pregEndedOn: ago(14), pregEndedHow: 'loss' }, events: [] } });
     await search(l.page, 'ab kya kare');
-    check('14 after a loss: "ab kya kare" gives the loss guide (KNOWLEDGE-08)', (await quick(l.page)) === 'conceive.after-a-pregnancy-loss-care-and-support', await quick(l.page));
+    check('14 after a loss: "ab kya kare" doesn\'t give the loss article the doctors removed (KNOWLEDGE-08, Version 39.68)', !/pregnancy-loss/.test(await quick(l.page)), await quick(l.page));
     errsAll.push(...l.errs); await l.ctx.close();
     const tn = await open({ seed: { dob: '2011-05-01' } });
     await search(tn.page, 'hpv vaccine');
@@ -497,10 +440,6 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
     await tap(page, '#view [data-area="breast"]');
     check('14 the symptom guide after tapping a body area: Help\'s tabs are still there, sharing the width (KNOWLEDGE-09)', (await has(page, '#view .help-tabs.dtabs')) && (await noScroll(page)));
     errsAll.push(...errs); await ctx.close();
-    const f = await open({ seed: PREG, hash: '#access-schemes-preg' }); const had = await has(f.page, '#view .art-min');
-    await tap(f.page, '#view [data-q]');
-    check('14 the scheme finder after an answer: "Read it in 1 minute" is still there (KNOWLEDGE-09)', had && (await has(f.page, '#view .art-min')), had);
-    errsAll.push(...f.errs); await f.ctx.close();
   }
   /* KNOWLEDGE-11: after a birth, Learn starts with the after-birth guides */
   {

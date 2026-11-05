@@ -121,7 +121,7 @@ const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) aw
   await go(a.page, 'learn');
   check('3 Sach ya Myth sits with the library', await has(a.page, '#view .learn-quiz [data-go="joy-quiz"]'));
   await go(a.page, 'plan');
-  check('3 her garden sits on My plan', await has(a.page, '#view .pl-garden [data-go="joy"]'));
+  check('3 no garden on My plan (Version 39.68: My garden is gone)', !(await has(a.page, '#view .pl-garden, #view [data-go="joy"]')));
   const s1 = await search(a.page, 'bhasha');
   check('3 search still finds Language', s1.indexOf('lang') >= 0, s1.slice(0, 5));
   errsAll.push(...a.errs); await a.ctx.close();
@@ -167,7 +167,7 @@ const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) aw
   check('6 the goal her diary points to is marked "Suggested"', /Suggested/.test(await txt(a.page, '#view [data-pl-pick="heavy"]')), await txt(a.page, '#view [data-pl-pick="heavy"]'));
   errsAll.push(...a.errs); await a.ctx.close();
   const j = await open({ seed: { events: regular(10) }, hash: '#journey-iron' });
-  check('6 a journey page is for reading: no Start, and a way to My plan', !(await has(j.page, '#jr-start')) && await has(j.page, '#view [data-go="plan"]'));
+  check('6 a journey page lands on Explore (Version 39.68: 21 small steps is gone)', (await j.page.evaluate(() => location.hash)) === '#care');
   errsAll.push(...j.errs); await j.ctx.close();
 }
 
@@ -216,25 +216,25 @@ const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) aw
   errsAll.push(...a.errs); await a.ctx.close();
 }
 
-/* ---------- 11. The gate: Help, 112, loss, violence, STI and abortion within 2 taps of Explore, and in search ---------- */
+/* ---------- 11. The gate (Version 39.68, the doctors' review: Help on Today only; the violence and STI pages and Help's Private
+   help are gone): Help, 112 and pregnancy loss within 2 taps of Today, and in search ---------- */
 {
-  const a = await open({ seed: { events: regular(10) }, hash: '#care' });
+  const a = await open({ seed: { events: regular(10) }, hash: '#home' });
   await tap(a.page, '#help-btn');
-  check('11 Help: 1 tap (the top bar)', await has(a.page, '#sheet-root .hs-list'));
+  check('11 Help: 1 tap from Today (the top bar)', await has(a.page, '#sheet-root .hs-list'));
+  check('11 no Private help in it', !(await has(a.page, '#sheet-root [data-hs-go]')) && !(await has(a.page, '#sheet-root .hs-priv')));
   await tap(a.page, '#hs-sos');
   check('11 112: 2 taps (Help, then emergency numbers)', /112/.test(await txt(a.page, '#sheet-root')));
-  await a.page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await go(a.page, 'care');
-  /* Version 39.62 (phase D): Explore's topics are a tap further, so the three pages are in Help, 2 taps from every screen */
-  const reach = async (route) => { await go(a.page, 'care'); await tap(a.page, '#help-btn');
-    if (!(await has(a.page, '#sheet-root [data-hs-go="' + route + '"]'))) return false; await tap(a.page, '#sheet-root [data-hs-go="' + route + '"]'); return (await a.page.evaluate(() => location.hash)) === '#' + route; };
-  check('11 STI: 2 taps (Help, then STI tests)', await reach('intimate-sti'));
-  check('11 violence: 2 taps (Help, then Violence and your safety)', await reach('intimate-safety'));
-  check('11 abortion: 2 taps (Help, then Safe, legal abortion)', await reach('pregtest-abortion'));
+  await a.page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet());
   await go(a.page, 'care'); const inGrid = await has(a.page, '#view [data-go="topic-loss"]');
-  await tap(a.page, '#help-btn'); await tap(a.page, '#hs-loss');
-  check('11 pregnancy loss: 2 taps from any screen (Help, then Pregnancy loss), not in her grid', !inGrid && (await a.page.evaluate(() => location.hash)) === '#loss' && await has(a.page, '#view [data-go="loss-types"]'));
-  for (const [q, r] of [['miscarriage', /^loss/], ['violence', /intimate-safety/], ['sti', /intimate-sti/], ['abortion', /pregtest-abortion/]]) {
+  check('11 no Help button on Explore', !(await has(a.page, '#help-btn')));
+  await go(a.page, 'home'); await tap(a.page, '#help-btn'); await tap(a.page, '#hs-loss');
+  check('11 pregnancy loss: 2 taps from Today (Help, then Pregnancy loss), not in her grid', !inGrid && (await a.page.evaluate(() => location.hash)) === '#loss' && await has(a.page, '#view [data-go="loss-types"]'));
+  for (const [q, r] of [['miscarriage', /^loss/], ['abortion', /pregtest-abortion/]]) {
     const res = await search(a.page, q); check('11 search "' + q + '" finds it', res.some((x) => r.test(x)), res.slice(0, 5));
+  }
+  for (const q of ['violence', 'sti']) {
+    const res = await search(a.page, q); check('11 search "' + q + '" no longer finds the pages the doctors removed', !res.some((x) => /intimate-safety|intimate-sti/.test(x)), res.slice(0, 5));
   }
   errsAll.push(...a.errs); await a.ctx.close();
 }
@@ -291,7 +291,7 @@ const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) aw
   errsAll.push(...d.errs); await d.ctx.close();
   /* PLACES-07: a finished journey points to My plan, and doesn't start again */
   const e = await open({ seed: { mods: { journey: { active: 'iron', start: ago(25), done: { 1: ago(25), 2: ago(24) }, finished: {} } } }, hash: '#journey-iron' });
-  check('13 PLACES-07 a finished journey: no "Do it again", and "Open My plan"', !(await has(e.page, '#jr-again')) && await has(e.page, '#view [data-go="plan"]'));
+  check('13 PLACES-07 a journey, finished or not, lands on Explore (Version 39.68: 21 small steps is gone)', (await e.page.evaluate(() => location.hash)) === '#care');
   errsAll.push(...e.errs); await e.ctx.close();
   /* PLACES-08: the checklist has one name */
   const f = await open({ seed: Object.assign({}, PREG(20), { mods: { plan: planOf('cycle', 'irregular', ago(80), { chg: ago(80) + ':cycle' }) } }), hash: '#plan' });

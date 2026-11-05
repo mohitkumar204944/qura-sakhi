@@ -7098,3 +7098,99 @@ picture. Both now use files `web/fig` already has. No new renders and no new wor
 - day 16's button opening Strength at home with both moves in 3D, and no button in a pregnancy.
 
 `node test/fig-coverage.mjs` lists every routine step's 3D still and loop, and exits 1 if a step has none.
+
+## 111. Version 39.68: the doctors' feature review, part 1 (the removals)
+
+Dr. Megha and the gynaecologist marked every feature of Version 39.65 Keep, Remove, Amend or Defer, then answered Claude's
+15 questions. The record is `docs/feature-review-2026-11-05.md`, and Mohit's word on 5 Nov was "go, commit 39.67 first and
+keep 18 for now". Part 1 only removes things. The emergency line, the wording and the behaviour changes are parts 2 to 4.
+
+1. **Retired pages** (core `RETIRED`, `retired(r)`; `api.retired(r)`):
+   - What is retired: the Govt. services pages (`access-free`, `access-doctor`, `access-online`, `access-schemes*`), My ASHA
+     (`asha*`), `cond-anaemia`, `cond-endo`, `cond-hyst`, `docportal*`, `intimate-safety`, `intimate-sti`, `journey*`,
+     `loss-grief`, `meno-diary`, `midlife`, `periods-pms`, `periods-postpone`, `selfcheck*`, `teen-mind`, `teen-puberty`,
+     `teen-services`, `tools-summary`, `ttc-signs`, `ttc-ready`, My garden (`joy`, `joy-month*`; `joy-quiz` stays) and Tell a
+     person (`tell`).
+   - However she reaches one (a link, a quick answer, an old hash), she lands on Explore.
+   - `dropTriageLinks` also removes every `[data-go]` to a retired page, and every link to a removed article, from each screen
+     and sheet.
+   - `api.routeOwner(r)` and `api.toolShown(r)` say no for a retired page, so a module's `S.routeOwner(x) ? button : ''` draws
+     nothing.
+   - Core cards that tested `ROUTES[...]` directly check `retired()` too. These are Explore's and Learn's Govt. services rows,
+     Help's doctor card and the doctor screen's free card.
+   - Retired code stays in the modules, dormant.
+2. **Retired tiles** (`RETIRED_TILES`): `access-care`, `plan-body`, `plan-plate`, `plan-pmos`, `preg-logs`, `pregnancy` and
+   `tools-reminders` leave Explore and search (`visibleTiles`). Their pages stay where the doctors kept them:
+   - her plan's tools;
+   - My food's plate;
+   - the pregnancy card's numbers;
+   - the one Reminders page;
+   - Care near me, behind every "See a doctor" (What your diary shows now sends both care routes there).
+3. **Learn**: the 12 removed articles are out of `content.json` (72 → 60), and so is every list in the code that named them. An
+   old `a-` hash opens Learn.
+4. **Chapters** (`mods/perplan.js`, `mods/pfplan.js`):
+   - These chapters are gone: heavy 8 and 12, PMS 2 and 8, pain 12, and the pelvic floor plan's ring pessary.
+   - Week 8 of the heavy-periods track shows the pain track's "Telling your family" (`PER_SHARED`, the doctors' note on p8).
+   - The other weeks without a chapter show none.
+5. **Today**:
+   - The week's look-back leaves Today (`cardKind` no longer returns `rev`). It stays on My plan, where she gives her energy.
+   - The notes meter is gone from Today and the Diary. The calendar always says when her fertile days will show (`fwFew`).
+   - No tip starts on its own (`TIPS_AUTO`). The full tour, "Show me around" and "How to use Sakhi" stay.
+   - No first-days read. Learn's Start here keeps the same reads.
+   - No petals (`joy.js`: `GARDEN = false`; `S.joy.petals()` is 0). What she reads still ticks Learn's book.
+6. **Her plan**:
+   - No "Here's what you told Sakhi": her last question makes the plan.
+   - No Plan your week buttons, link or row. `plan-week` stays only to ask her time when she turns her move reminder on.
+   - No "Your last plan" card. Her report keeps the line about it.
+   - No + minutes on Moves and calm or My plan.
+   - Getting ready (`ttc` version 2) has no ready check and no strength step. Its changelog R2 records this.
+7. **Help**:
+   - The Help button is on Today only: not on other screens, and not while she joins.
+   - The Help sheet has no Private help (`privHelp` is gone), My ASHA or Tell a person.
+8. **Languages**: Hindi and English only (`mods/lang.js` registers no languages). `tidyState` moves Marathi to Hindi, and
+   Bengali, Tamil and Telugu to English. Read-aloud and the Language page stay.
+9. **"My baby has died"** is gone from the stage sheet and the after-birth hub. In its place, leaving "I had a baby" for any
+   other stage sets `situation.babyOff`. Its effects:
+   - `S.post.died()` counts `babyOff`, so every baby line stops at once: feeding, the vaccine reminders, the baby cards.
+   - Her own recovery lines stay.
+   - No words are shown.
+   - Choosing "I had a baby" again clears it.
+10. **What the removals left behind** (found while bringing the older suites up to date):
+   - Help's doctor row says "A call with a Qura doctor" on both care routes, and Help's tour step says the same. Explore's tour
+     has no Help step, because Help is on Today.
+   - The setup card leaves out any step that opens a retired page. "Look at free care near you", "Check the scheme money you can
+     get" and "Save your ASHA or ANM's number" are gone.
+   - No reminder rings for a retired page:
+     - `tidyState` drops 21 small steps' 9 am reminder (by its module, `journey`; a live module named like a retired page, such as
+       `midlife`, keeps its reminders);
+     - the schemes module's `claimSync` books no PMMVY reminder and drops the old ones;
+     - the report for the doctor has no "My claims" line. What she saved stays in her diary.
+   - 21 small steps has no row on Today.
+   - A sign that needs a doctor today, when she has saved no number: "Free doctor or hospital" opens Care near me (it opened
+     Govt. services).
+   - The midlife hero has no weekly diary button. A woman whose periods have stopped makes her first log in the Diary (today's
+     signs, under the card's own words), not in the weekly diary.
+   - The reviewed fixed Hb line (Version 39.55, "below 8, see a doctor this week") moves to her lab results, beside her Hb
+     results. The period plan's "Your Hb test" step opens them (My plan in a tester's build, where lab results are held back).
+   - The bleeding after menopause and burning guides lead with "Ask a Qura doctor", because their free government doctor button
+     is gone.
+
+**Strings.** None new. Two lose their clause "or a free government doctor", in English and Hindi: `hs_doc_s_doc` and `th1_p`.
+`hs_doc_s`, `tc3_h` and `tc3_p` are gone.
+
+**Tests.** `node test/retire.mjs` (35 checks):
+- the 30 retired pages land on Explore;
+- the kept pages open;
+- no retired link, removed article or empty list on 11 screens for 5 women on both care routes;
+- Explore and search;
+- Learn's 60 articles;
+- Today, the Diary, tips, the Help button and sheet, Me and petals;
+- My plan, Moves, the summary, the baby plan's steps and the chapters;
+- the languages, and the baby's lines stopping;
+- what the removals left behind (item 10): the old reminders, Help's doctor row, the setup card, the report, the first log after
+  her periods stop, and the fixed Hb line.
+
+The older suites that tested something removed now check that it is gone, or test it where it lives now.
+
+`test/smoke.mjs` and `test/check.mjs` skip retired pages (`S.retired`).
+

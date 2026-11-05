@@ -18,7 +18,7 @@ page.on('pageerror', (e) => errs.push(where + ' :: ' + String(e.message).slice(0
 page.on('console', (m) => { if (m.type() === 'error' && !/content\.json|Failed to load|net::|fonts/.test(m.text())) errs.push(where + ' :: ' + m.text().slice(0, 200)); });
 await page.goto(pathToFileURL(path.join(root, 'index.html')).href + '#home', { waitUntil: 'domcontentloaded' });
 await page.waitForFunction(() => !!window.Saathi);
-const info = await page.evaluate(() => { const S = window.Saathi; const r = []; S.modules.forEach((m) => { Object.keys(m.routes || {}).forEach((x) => r.push(x)); (m.testRoutes || []).slice(0, 4).forEach((x) => r.push(x)); }); S.sections.forEach((s) => r.push('topic-' + s)); return { mods: S.modules.map((m) => m.id), routes: r, tiles: S.tiles().length }; });
+const info = await page.evaluate(() => { const S = window.Saathi; const r = []; S.modules.forEach((m) => { Object.keys(m.routes || {}).forEach((x) => r.push(x)); (m.testRoutes || []).slice(0, 4).forEach((x) => r.push(x)); }); for (let i = r.length - 1; i >= 0; i--) if (S.retired && S.retired(r[i])) r.splice(i, 1);   /* Version 39.68: retired pages redirect */ S.sections.forEach((s) => r.push('topic-' + s)); return { mods: S.modules.map((m) => m.id), routes: r, tiles: S.tiles().length }; });
 const problems = [];
 const setups = [];
 for (const p of ['blank', 'browse', 'priya', 'asha', 'meera', 'sunita', 'kamla']) for (const lang of ['en', 'hi']) setups.push({ p, lang });

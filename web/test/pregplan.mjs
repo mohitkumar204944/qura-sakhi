@@ -85,8 +85,8 @@ const PF_P = 'Doing these in pregnancy lowers the chance of leaking urine late i
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 /* her plan's answers on the next screens, then the reveal's cards to Start */
 async function startFromSummary(a) {
-  for (let i = 0; i < 4 && !(await has(a, '#pl-in-make')); i++) await tap(a, '#pl-in-next');
-  await tap(a, '#pl-in-make'); await settle(a.page, 600);
+  for (let i = 0; i < 4 && (await has(a, '#pl-in-next')); i++) await tap(a, '#pl-in-next');   /* Version 39.68: her last answer makes the plan */
+  await settle(a.page, 600);
   if (!/plan-reveal/.test(await a.page.evaluate(() => location.hash))) await go(a, 'plan-reveal');
   for (let i = 0; i < 8 && !(await has(a, '#pl-rv-go')); i++) await tap(a, '#pl-rv-next');
   await tap(a, '#pl-rv-go'); await settle(a.page, 800);
@@ -95,7 +95,7 @@ async function startFromSummary(a) {
 /* ---------- 1 starting ---------- */
 {
   const a = await open({ seed: { mods: { preg: { mcp: { risk: { r_cs: true } } } } } });
-  check('1 the pregnancy stage opens My pregnancy version 2: 3 screens (her goal, Before you start, the summary; Version 39.66: her day waits for Today)', (await a.page.evaluate(() => window.Saathi.plan.packFor('food', 'preg') + ':' + window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }) + ':' + window.Saathi.plan.progs.list().find((x) => x.id === 'preg').ver)) === 'preg:3:2');
+  check('1 the pregnancy stage opens My pregnancy version 2: 2 screens (her goal, Before you start; Version 39.66: her day waits for Today; Version 39.68: no answers summary)', (await a.page.evaluate(() => window.Saathi.plan.packFor('food', 'preg') + ':' + window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }) + ':' + window.Saathi.plan.progs.list().find((x) => x.id === 'preg').ver)) === 'preg:2:2');
   await a.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(a.page, 600);
   const v = await view(a);
   check('1 Before you start: its 2 questions, Help\'s own pregnancy line, her MCP card\'s marks and 2 lines of its own, "Not sure?"', new RegExp('^Before you start Two questions keep your plan safe for you\\. Your answers stay on this phone\\. Right now, do you have any of these\\? ' + esc(S1C) + ' None of these Yes, one of these Has your doctor told you any of these\\? ' + LABELS.map(esc).join(' ') + ' Not sure\\? Tick it\\. Sakhi keeps your walk easy until your doctor says\\. Your full plan ').test(v), v.slice(0, 900));
@@ -113,9 +113,9 @@ async function startFromSummary(a) {
   await a.page.$eval('[data-pl-ps="r_gdm"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(a.page, 200);
   await shot(a, 'before-you-start');
   await tap(a, '#pl-in-next');
-  for (let i = 0; i < 3 && !(await has(a, '#pl-in-make')); i++) await tap(a, '#pl-in-next');
+  for (let i = 0; i < 3 && (await has(a, '#pl-in-next')); i++) await tap(a, '#pl-in-next');   /* Version 39.68 */
   const sv = await view(a);
-  check('1 the summary: Before you start, as she answered', /Before you start Easy walking, until your doctor says Change/.test(sv), sv.slice(0, 600));
+  check('1 Before you start, then her plan straight away (Version 39.68: no answers summary)', !/Here’s what you told Sakhi/.test(sv) && /Your plan is ready/.test(sv), sv.slice(0, 600));
   await startFromSummary(a);
   const s = await st(a); const d = s.mods.plan || {};
   check('1 started: version 2, her ticks, the week she gave them, no sign that doesn\'t wait', d.pack === 'preg' && d.pv === 2 && JSON.stringify((d.intake || {}).pflags) === '["r_gdm"]' && d.intake.psafeW === 10 && !d.intake.pnow, { pv: d.pv, ik: d.intake });

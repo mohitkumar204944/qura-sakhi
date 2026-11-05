@@ -90,7 +90,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
 /* ---------- 1 starting ---------- */
 {
   const a = await open({ seed: { mods: { ttc: { flags: { fibroids: true } } } } });
-  check('1 every trying-stage goal opens Getting ready (version 2): 4 screens, 5 for a weight goal (her body; Version 39.66: her day waits for Today)', (await a.page.evaluate(() => ['ready', 'irregular', 'pmos', 'weight'].map((g) => window.Saathi.plan.packFor(g, 'ttc') + ':' + window.Saathi.plan.intake.count({ stage: 'ttc', goal: g })).join())) === 'ttc:4,ttc:4,ttc:4,ttc:5'
+  check('1 every trying-stage goal opens Getting ready (version 2): 3 screens, 4 for a weight goal (her body; Version 39.66: her day waits for Today; Version 39.68: no answers summary)', (await a.page.evaluate(() => ['ready', 'irregular', 'pmos', 'weight'].map((g) => window.Saathi.plan.packFor(g, 'ttc') + ':' + window.Saathi.plan.intake.count({ stage: 'ttc', goal: g })).join())) === 'ttc:3,ttc:3,ttc:3,ttc:4'
     && (await a.page.evaluate(() => window.Saathi.plan.progs.list().find((x) => x.id === 'ttc').ver)) === 2);
   await a.page.evaluate(() => window.Saathi.plan.offer('pmos')); await settle(a.page, 600);
   const v = await view(a); const fl = await a.page.evaluate(() => window.Saathi.ttc.flagList().map((f) => f.en));
@@ -102,10 +102,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   await tap(a, '[data-pl-bf="fibroids"]'); await tap(a, '[data-pl-bf="meds"]'); await tap(a, '#pl-in-next');
   check('1 Continue with no answer to how long (Version 39.66: no "Your day", her time to move next)', !/Your day/.test(await view(a)) && await has(a, '[data-pl-when="evening"]'));
   await tap(a, '[data-pl-when="evening"]');
-  check('1 the minimalist baseline: no body screen unless her goal is weight', !/Your body \(optional\)/.test(await view(a)) && /Here’s what you told Sakhi/.test(await view(a)));
-  const sm = await view(a);
-  check('1 the summary shows her ticks', /A few things first I take a medicine every day, for example for fits, BP, sugar, thyroid, acne or skin · PMOS \(PCOS\) diagnosed by a doctor Change/.test(sm) && !/How long have you been trying/.test(sm), sm.slice(0, 500));
-  await tap(a, '#pl-in-make');
+  check('1 the minimalist baseline: no body screen unless her goal is weight; her last answer makes the plan (Version 39.68)', !/Your body \(optional\)/.test(await view(a)) && /plan-reveal/.test(await a.page.evaluate(() => location.hash)));
   for (let i = 0; i < 5 && (await has(a, '#pl-rv-next')); i++) await tap(a, '#pl-rv-next');
   await tap(a, '#pl-rv-go');
   const s = await st(a); const d = s.mods.plan;
@@ -116,8 +113,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   await b.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(b.page, 600);
   check('1 with a date on Months of trying, how long isn\'t asked', !/How long have you been trying/.test(await view(b)) && /A few things first/.test(await view(b)));
   await tap(b, '#pl-in-next'); await tap(b, '[data-pl-when="evening"]');
-  check('1 none ticked: "None of these" in the summary', /A few things first None of these Change/.test(await view(b)));
-  await tap(b, '#pl-in-make');
+  await settle(b.page, 600);
   check('1 the standard version: no doctor card in the reveal (Today shows her routine card from day 1)', (await b.page.$$eval('.pl-rv .progress i', (x) => x.length)) === 4);
   await done(b);
 }
@@ -228,7 +224,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const d2 = await day(1);
   check('5 day 2: her Hb test is the 4th step', d2.map((x) => x.id).join() === 'folic,move,food,hb' && d2[3].title === 'Haemoglobin (Hb) test' && d2[3].kind === 'check' && d2[3].sub === 'Anaemia is common and is easier to fix before pregnancy than during it.', d2);
   const d3 = await day(2);
-  check('5 day 3: the 1-minute ready check comes first', d3.map((x) => x.id).join() === 'folic,move,food,ready', d3);
+  check('5 day 3: no 1-minute ready check (Version 39.68: the before-pregnancy checklist covers it)', d3.every((x) => x.id !== 'ready'), d3);
   const hbDone = await day(1, {}, { mods: { plan: baby(1), ttc: { prep: { hb: true }, prepAt: { hb: TODAY } } } });
   check('5 the day she ticks her Hb test on the checklist, it is done', hbDone[3].id === 'hb' && hbDone[3].state === 'd', hbDone);
   const hbOld = await day(4, {}, { mods: { plan: baby(4), ttc: { prep: { hb: true }, prepAt: { hb: ago(1) }, ready: [{ at: ago(1), a: {} }] } } });
@@ -238,9 +234,9 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const hisD = await day(12, {}, { settings: { discreet: true }, mods: { plan: baby(12), ttc: { prep: { hb: true }, ready: [{ at: ago(10), a: {} }] } } });
   check('5 never on a shared phone', hisD.every((x) => x.id !== 'his'), hisD);
   const s7 = await day(43, {}, { mods: { plan: baby(43), ttc: { prep: { hb: true }, ready: [{ at: ago(5), a: {} }] } } });
-  check('5 week 7: strength twice a week', s7[3] && s7[3].id === 'str' && s7[3].r === 'strength', s7);
+  check('5 week 7: no strength step (Version 39.68: not specific to getting pregnant)', s7.every((x) => x.id !== 'str'), s7);
   const g7 = await day(43, {}, { situation: { planning: true, deliveredOn: ago(120) }, mods: { plan: baby(43), ttc: { prep: { hb: true }, ready: [{ at: ago(5), a: {} }] } } });
-  check('5 within 6 months of a birth: Gentle start instead', g7[3] && g7[3].id === 'str' && g7[3].r === 'gentle', g7);
+  check('5 within 6 months of a birth: no Gentle start step either', g7.every((x) => x.id !== 'str'), g7);
   const s6 = await day(36, {}, { mods: { plan: baby(36), ttc: { prep: { hb: true }, ready: [{ at: ago(5), a: {} }] } } });
   check('5 not before week 7', s6.every((x) => x.id !== 'str'), s6);
   const mx = await day(43, { intake: IK({ bset: 'mix' }) }, { mods: { plan: baby(43, { intake: IK({ bset: 'mix' }) }), ttc: { prep: { hb: true }, ready: [{ at: ago(5), a: {} }] } } });
@@ -295,7 +291,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
      and her 12 weeks fold after week 1 */
   const lg = {}; for (let i = 7; i >= 2; i--) lg[ago(i)] = { min: 15, ci: 1, ck: { folic: 'd', move: 'd', food: 'd' } };
   const lb = await open({ seed: withPlan(7, { weeks: {}, log: lg }) });
-  check('8 week 2, day 1: the look-back row, and the lesson waits for it', (await has(lb, '#view .pl-rev-row')) && !(await has(lb, '#view .pl-les')));
+  check('8 week 2, day 1: no look-back row on Today (Version 39.68), so the lesson shows', !(await has(lb, '#view .pl-rev-row')) && (await has(lb, '#view .pl-les')));
   await done(lb);
   const w2 = await open({ seed: withPlan(8) });
   check('8 the look-back seen: the lesson row', (await has(w2, '#view .pl-les')) && !(await has(w2, '#view .pl-rev-row')));
@@ -336,25 +332,10 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
 {
   const ticks = {}; for (let i = 0; i < 7; i++) ticks[ago(i)] = { ck: { folic: 'd' } };
   const a = await open({ seed: withPlan(3, { log: ticks }, { mods: { plan: baby(3, { log: ticks }), ttc: { folic: { has: ago(3) } } } }) });
-  check('9 day 4: the ready check is today\'s 4th step', (await ids(a)).join() === 'folic,move,food,ready');
+  check('9 day 4: no ready check step (Version 39.68)', (await ids(a)).indexOf('ready') < 0, await ids(a));
   await go(a, 'ttc-ready');
-  const v = await view(a);
-  check('9 its 6 questions, no score', /^1-minute ready check How ready do you feel\? 6 quick questions, just for you\. There is no score\. Greens or other vegetables Most days Some days Rarely Fruit/.test(v) && /His part Started Not yet Not for us/.test(v), v.slice(0, 700));
-  check('9 her folic acid answer starts from her ticks', await has(a, '[data-rd="folic:every"].on'));
-  await tap(a, '#ttc-rd-save');
-  check('9 every answer first', !(await st(a)).mods.ttc.ready && !(await a.page.$eval('#ttc-rd-err', (e) => e.hidden)));
-  for (const k of ['veg:some', 'fruit:rare', 'tob:daily', 'move:some', 'his:not']) await tap(a, '[data-rd="' + k + '"]');
-  check('9 tobacco: the checklist\'s quitline line', /They lower the chance of pregnancy and harm the baby\. Free help to quit: National Tobacco Quitline 1800-11-2356\./.test(await view(a)));
-  await tap(a, '#ttc-rd-save');
-  const s = await st(a);
-  check('9 saved, and the step is done today', s.mods.ttc.ready.length === 1 && s.mods.ttc.ready[0].a.folic === 'every' && (await acts(a))[3].state === 'd');
+  check('9 the ready check page lands on Explore (Version 39.68: the before-pregnancy checklist covers it)', (await a.page.evaluate(() => location.hash)) === '#care');
   await done(a);
-  const b = await open({ seed: withPlan(40, {}, { mods: { plan: baby(40), ttc: { ready: [{ at: ago(38), a: { veg: 'rare', fruit: 'rare', folic: 'not', tob: 'none', move: 'rare', his: 'not' } }, { at: ago(1), a: { veg: 'most', fruit: 'some', folic: 'every', tob: 'none', move: 'some', his: 'started' } }] } } }), hash: 'ttc-ready' });
-  check('9 then and now, side by side', /Then and now/.test(await view(b)) && /Greens or other vegetables Rarely · Most days/.test(await view(b)), (await view(b)).slice(0, 700));
-  await done(b);
-  const c = await open({ seed: withPlan(3, {}, { settings: { discreet: true } }), hash: 'ttc-ready' });
-  check('9 a shared phone: "Just for me", and his part isn\'t asked', /^1-minute ready check Just for me/i.test(await view(c)) && !/His part/.test(await view(c)));
-  await done(c);
 }
 
 /* ---------- 10 moments ---------- */
@@ -446,7 +427,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const was = await open({ seed: { mods: { plan: { nudgeMade: true, past: [], log: {}, weeks: {}, body: [] } } } });
   await was.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(was.page, 600);
   await tap(was, '#pl-in-next'); await tap(was, '[data-pl-when="evening"]');
-  await tap(was, '#pl-in-make'); for (let i = 0; i < 5 && (await has(was, '#pl-rv-next')); i++) await tap(was, '#pl-rv-next'); await tap(was, '#pl-rv-go');
+  await settle(was.page, 600); for (let i = 0; i < 5 && (await has(was, '#pl-rv-next')); i++) await tap(was, '#pl-rv-next'); await tap(was, '#pl-rv-go');
   const ng = await was.page.evaluate(() => ({ r: window.Saathi.reminders.get('plan-nudge'), off: window.Saathi.state.mods.plan.nudge === false }));
   check('16 after a plan she stopped, the new plan\'s 6 pm nudge rings (it isn\'t taken for one she deleted)', ng.r && ng.r.time === '18:00' && ng.r.on !== false && !ng.off, ng);
   await done(was);
@@ -456,7 +437,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   await said.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(said.page, 600);
   check('16 PMOS she told Sakhi comes ticked on "A few things first"', await said.page.$eval('[data-pl-bf="pcos"]', (c) => c.checked));
   await tap(said, '#pl-in-next'); await tap(said, '[data-pl-when="evening"]');
-  await tap(said, '#pl-in-make'); for (let i = 0; i < 5 && (await has(said, '#pl-rv-next')); i++) await tap(said, '#pl-rv-next'); await tap(said, '#pl-rv-go');
+  await settle(said.page, 600); for (let i = 0; i < 5 && (await has(said, '#pl-rv-next')); i++) await tap(said, '#pl-rv-next'); await tap(said, '#pl-rv-go');
   const sk = (await st(said)).mods.plan.intake || {};
   check('16 ...so her plan is a gynaecologist first, with the PMOS food and moves', sk.bdoc === 'gyn' && sk.bset === 'mix', sk);
   await done(said);
@@ -467,10 +448,10 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   await go(pm, 'plan-pmos'); check('16 ...and its page opens My plan, Getting ready first', /What do you want to work on\?/.test(await view(pm)) && /Getting ready for a baby/.test(await view(pm)), (await view(pm)).slice(0, 400));
   await done(pm);
   const cyc = await open({ seed: { situation: { pcos: true }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' } }, hash: 'topic-cond' });
-  check('16 at the tracking stage, the PMOS tile stays', /PMOS: food, yoga and moves/.test(await view(cyc)));
+  check('16 at the tracking stage, no PMOS plan tile in Explore either (Version 39.68: it is My PMOS plan again)', !/PMOS: food, yoga and moves/.test(await view(cyc)));
   await done(cyc);
   const SET = { planCall: ago(3), firstLog: ago(30), notifyAuto: ago(30) };   /* Me's setup card on */
-  const ms = await open({ seed: { dob: '1999-05-01', situation: { planning: true, pcos: true, care: 'govt' }, prompts: SET }, hash: 'me' });   /* Version 39.58.1: the government route keeps her setup card's steps */   /* 27: no check-up step first */
+  const ms = await open({ seed: { dob: '1999-05-01', situation: { planning: true, pcos: true, care: 'govt' }, events: [], prompts: SET }, hash: 'me' });   /* Version 39.68: free care and her ASHA are gone, so her last period's step keeps the card on */   /* 27: no check-up step first */
   check('16 ...nor Me\'s setup ("Start your PMOS plan") while she tries', !/Start your PMOS plan/.test(await view(ms)) && /Set up Sakhi for you/.test(await view(ms)), (await view(ms)).slice(0, 500));
   await done(ms);
   const mc = await open({ seed: { dob: '1999-05-01', situation: { pcos: true }, goals: ['pmos'], intake: { goal: 'pmos', stage: 'cycle' }, prompts: SET }, hash: 'me' });
@@ -508,7 +489,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   /* "How to do it" names a page with no tile by its step (found on Mohit's phone: "ttc-folic") */
   const wy = await open({ seed: withPlan(2), hash: 'plan' }); const ix = await ids(wy); const lab = {};
   for (const id of ['folic', 'ready']) { const i = ix.indexOf(id); if (i < 0) continue; await tap(wy, '[data-pl-how="' + i + '"]'); lab[id] = await wy.page.$eval('.pl-why-b [data-go]', (b) => b.textContent.trim()).catch(() => null); await wy.page.evaluate(() => window.Saathi.closeSheet()); await settle(wy.page, 300); }
-  check('17 "How to do it" names her tablet\'s page and the ready check, never their address', lab.folic === 'My folic acid tablet' && lab.ready === '1-minute ready check', { ix, lab });
+  check('17 "How to do it" names her tablet\'s page, never its address (Version 39.68: no ready check)', lab.folic === 'My folic acid tablet' && !lab.ready, { ix, lab });
   await done(wy);
   const r = await open({ seed: withPlan(8, {}, { mods: { plan: baby(8), ttc: { les: { w2: ago(1) } } } }), hash: 'plan' });
   check('17 a lesson read keeps its tick on the same line', /The first|Week 2/.test(await view(r)) && (await r.page.evaluate(() => / ✓/.test((document.querySelector('.pl-baby-tools [data-go="ttc-lesson"]') || {}).textContent || ''))));
@@ -547,7 +528,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const b = await open({});
   await b.page.evaluate(() => window.Saathi.plan.offer('ready')); await settle(b.page, 600);
   await tap(b, '#pl-in-next'); await tap(b, '[data-pl-when="evening"]');
-  await tap(b, '#pl-in-make'); for (let i = 0; i < 5 && (await has(b, '#pl-rv-next')); i++) await tap(b, '#pl-rv-next');
+  await settle(b.page, 600); for (let i = 0; i < 5 && (await has(b, '#pl-rv-next')); i++) await tap(b, '#pl-rv-next');
   check('18 the Start card, before her plan has a version: the same foot line', (await has(b, '#pl-rv-go')) && FOOT.test(await view(b)));
   await done(b);
   const s = await open({ seed: withPlan(0, {}, { settings: { discreet: true } }), hash: 'plan' });

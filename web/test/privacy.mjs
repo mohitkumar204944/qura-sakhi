@@ -51,16 +51,10 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
 /* ---------- 1. Help that reaches a person, with nothing about her health in the link ---------- */
 {
   const { ctx, page, errs } = await open({ hash: '#help' });
-  check('1 Help offers "Tell a person" when there is a WhatsApp line', !!(await page.$('#view [data-go="tell"]')));
+  check('1 Help no longer offers "Tell a person" (Version 39.68, the doctors\' review)', !(await page.$('#view [data-go="tell"]')));
   check('1 Help makes no reply-time promise', !FALSE_PROMISE.test(await view(page)), await view(page));
   await go(page, 'tell');
-  const tell = await view(page);
-  const href = await page.$eval('#tell-wa', (a) => a.getAttribute('href'));
-  check('1 Tell opens WhatsApp to Qura\'s number with a hello only', href === 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hello Qura team, I am writing from the Sakhi app.'), href);
-  check('1 Tell says what happens and keeps the emergency numbers', /A person reads messages on working days/.test(tell) && /For an emergency call 112/.test(tell) && /14416/.test(tell) && !!(await page.$('#sos-btn')), tell);
-  check('1 Tell has no message box and no false "Received"', !(await page.$('#view textarea')) && !FALSE_PROMISE.test(tell), tell);
-  await page.evaluate(() => { document.querySelector('#tell-wa').addEventListener('click', (e) => e.preventDefault()); }); await tap(page, '#tell-wa'); await sleep(150);
-  check('1 opening WhatsApp leaves only a dated mark on the phone', await page.evaluate(() => { const l = window.Saathi.state.leads; const x = l[l.length - 1]; return l.length === 1 && Object.keys(x).sort().join() === 'd,via' && x.via === 'whatsapp'; }));
+  check('1 the Tell page lands on Explore (Version 39.68)', (await page.evaluate(() => location.hash)) === '#care');
   /* "Ask a Qura doctor about this" keeps her questions on the phone; the WhatsApp text never carries them */
   await page.evaluate(() => { window.Saathi.ask('Heavy bleeding'); }); await sleep(250);
   await page.evaluate(() => { window.Saathi.ask('Thyroid test'); }); await sleep(250);
@@ -80,7 +74,7 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
   await go(page, 'ask');
   check('2 without a number, Ask offers Qura\'s booking page', (await page.$eval('#ask-web', (a) => a.getAttribute('href'))) === 'https://quranutrition.com/book-consultation' && !(await page.$('#ask-wa')));
   await go(page, 'tell');
-  check('2 an old link to Tell explains and offers the doctor call', /not in this version of Sakhi yet/.test(await view(page)) && !!(await page.$('#view [data-ask]')));
+  check('2 an old link to Tell lands on Explore (Version 39.68: Tell a person is gone)', (await page.evaluate(() => location.hash)) === '#care');
   await go(page, 'checkin');
   check('2 no page errors', errs.length === 0, errs);
   await ctx.close();
@@ -93,22 +87,22 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
   await ctx.close();
 }
 {
-  const { ctx, page, errs } = await open({ hash: '#tell', lang: 'hi', seed: { lang: 'hi' } });
-  const href = await page.$eval('#tell-wa', (a) => a.getAttribute('href'));
-  check('4 Hindi: the hello is in Hindi, the screen has no promise', decodeURIComponent(href.split('?text=')[1]) === 'नमस्ते Qura टीम, मैं Sakhi ऐप से लिख रही हूँ।' && !/कार्यदिवस में जवाब|मिल गया/.test(await view(page)), href);
+  const { ctx, page, errs } = await open({ hash: '#ask', lang: 'hi', seed: { lang: 'hi' } });   /* Version 39.68: Tell a person is gone; Ask's hello is the one left */
+  const href = await page.$eval('#ask-wa', (a) => a.getAttribute('href'));
+  check('4 Hindi: the hello is in Hindi, the screen has no promise', /^नमस्ते Qura टीम/.test(decodeURIComponent(href.split('?text=')[1])) && !/कार्यदिवस में जवाब|मिल गया/.test(await view(page)), href);
   check('4 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 
-/* ---------- 2. No screen capture while a privacy setting is on; the lock takes Sakhi's PIN ---------- */
+/* ---------- 2. Screen capture (Version 39.68, the doctors' answer 5: no screenshot block, whatever she turns on); the lock takes Sakhi's PIN ---------- */
 {
   const { ctx, page, errs } = await open({ hash: '#me-privacy', bio: true });
   check('5 nothing on: screen capture allowed', JSON.stringify(await calls(page, 'setSecure')) === JSON.stringify([['setSecure', false]]), await calls(page, 'setSecure'));
   await page.$eval('[data-set="discreet"]', (el) => el.click()); await sleep(200);
-  check('5 discreet mode on: capture blocked', (await calls(page, 'setSecure')).slice(-1)[0][1] === true);
+  check('5 discreet mode on: capture still allowed', (await calls(page, 'setSecure')).every((c) => c[1] === false));
   check('5 no fingerprint switch without app lock', !(await page.$('[data-set="bio"]')));
   await page.evaluate(() => { const s = window.Saathi.state; s.settings.discreet = false; s.settings.pinHash = 'x'; window.Saathi.saveQuiet(); window.Saathi.render(); }); await sleep(200);
-  check('5 app lock on: capture still blocked', (await calls(page, 'setSecure')).slice(-1)[0][1] === true);
+  check('5 app lock on: capture still allowed', (await calls(page, 'setSecure')).every((c) => c[1] === false));
   check('5 the fingerprint switch is there, off by default', (await page.$eval('[data-set="bio"]', (el) => el.checked)) === false && /The phone’s own PIN never does/.test(await view(page)));
   await page.evaluate(() => { window.Saathi.mem.locked = true; window.Saathi.render(); }); await sleep(500);
   check('5 locked, fingerprint not turned on: no fingerprint button, no prompt', !(await page.$('#lock-bio')) && (await calls(page, 'biometric')).length === 0);

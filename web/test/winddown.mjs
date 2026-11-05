@@ -94,7 +94,7 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   check('1 one "Why these 4 steps?" opens every reason', /Why these 4 steps\?/.test(why) && (why.match(/Wind down|Walk|swap|yoga/gi) || []).length >= 4 && /body clock/.test(why), why.slice(0, 300));
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page);
   check('1 the check-in button is a plain one here (Today keeps the pink one), no "same tick" line', await has(a.page, '#view .pl-steps-f .pl-ci-go:not(.primary)') && !(await has(a.page, '#view .pl-steps-same')));
-  check('1 This week: Plan the week in its title, no ring legend, her garden at its foot', await has(a.page, '#view .pl-wkc .pl-wp-link#pl-wp') && !(await has(a.page, '#view .pl-wk-leg')) && await has(a.page, '#view .pl-wkc .pl-garden-in[data-go="joy"]') && !(await has(a.page, '#view .pl-garden')));
+  check('1 This week: no Plan the week and no garden (Version 39.68), no ring legend', !(await has(a.page, '#view #pl-wp')) && !(await has(a.page, '#view .pl-wk-leg')) && !(await has(a.page, '#view .pl-garden-in, #view .pl-garden')));
   const wc = await txt(a.page, '#view .pl-weeks');
   check('1 her 12 weeks and what consistency brings: one card, this week and next, her stage', /This week\s+100 minutes a week/.test(wc) && /Next week\s+110 minutes a week · new: No sweet drinks/.test(wc) && /Weeks 4 to 12: Habits get easier/.test(wc) && !(await has(a.page, '#view .card.pl-cons')), wc.slice(0, 300));
   check('1 ... with her 4-week check in it while it is due', await has(a.page, '#view .pl-weeks .pl-mc-in [data-go="plan-check"]') && !(await has(a.page, '#view > .pl-mc-rowl')));

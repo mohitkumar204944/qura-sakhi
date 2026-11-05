@@ -100,10 +100,6 @@
       { l: [N2('Heaviness is often worse in the evening, after hours of standing. A short rest lying down eases the dragging.', 'भारीपन अक्सर शाम को ज़्यादा होता है, घंटों खड़े रहने के बाद। लेटकर थोड़ा आराम खिंचाव कम करता है।'),
         N2('Lie on your back for 10 minutes with a pillow under your hips, and do one set lying down.', 'कूल्हों के नीचे तकिया रखकर 10 मिनट पीठ के बल लेटें, और लेटकर एक सेट करें।')] },
       { b: TRY, l: [N2('Plan your heaviest jobs for the morning, and sit for tasks you can do sitting.', 'सबसे भारी काम सुबह के लिए रखें, और जो काम बैठकर हो सकें, वे बैठकर करें।')] }] },
-    v2: { h: N2('A ring pessary', 'रिंग पेसरी'), cards: [
-      { l: [N2('A pessary is a soft silicone ring that a doctor places inside the vagina to hold things up. It needs no operation, and many women can’t feel it.', 'Pessary एक नरम silicone की अंगूठी है जिसे डॉक्टर योनि के अंदर रखती हैं ताकि सब अपनी जगह रहे। इसमें ऑपरेशन नहीं होता, और कई महिलाओं को यह महसूस नहीं होती।'),
-        N2('It needs a check, and cleaning or a change, every few months at the clinic. Your exercises still help with a pessary in place.', 'हर कुछ महीने क्लिनिक में इसकी जाँच, और सफ़ाई या बदलाव ज़रूरी है। Pessary लगे होने पर भी आपके व्यायाम मदद करते हैं।')] },
-      { warn: true, b: N2('With a pessary, see a doctor this week if', 'Pessary लगी हो, तो इसी हफ़्ते डॉक्टर को दिखाएँ अगर'), l: [N2('You have bleeding, a bad smell, pain, or your check is overdue.', 'ब्लीडिंग हो, बदबू आए, दर्द हो, या जाँच का समय निकल गया हो।')], ask: true }] },
     v3: { h: N2('Sex and prolapse', 'संबंध और prolapse'), cards: [
       { l: [N2('Sex is safe with a prolapse, and it doesn’t make it worse. Some positions are more comfortable, such as lying on your side.', 'Prolapse के साथ संबंध सुरक्षित है, और इससे यह बढ़ता नहीं। कुछ मुद्राएँ ज़्यादा आरामदायक होती हैं, जैसे करवट लेकर लेटना।'),
         N2('Empty your bladder first. Squeezing and letting go during sex can feel good, and is a set too.', 'पहले पेशाब कर लें। संबंध के दौरान कसना और ढीला छोड़ना अच्छा लग सकता है, और यह भी एक सेट है।')] },

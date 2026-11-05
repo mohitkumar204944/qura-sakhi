@@ -67,10 +67,11 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await page.screenshot({ path: path.join(shots, 'tours-1-yoursakhi.png') });
   await tap(page, '#ys-tour');
   const seen = []; let s = await waitTour(page);
-  check('1 "Show me around" starts the first-day tour on Today', s && s.hash === '#home' && s.n === '1 of 3' && s.h === 'This is your day', s);
+  /* Version 39.68 (the doctors' review: no first-days read on Today): with no plan, her day has no steps to show yet, so the tour starts at the tabs */
+  check('1 "Show me around" starts the first-day tour on Today', s && s.hash === '#home' && s.n === '1 of 2' && s.h === 'Your plan and Explore', s);
   await page.screenshot({ path: path.join(shots, 'tours-1-home.png') });
   for (let k = 0; s && k < 10; k++) { seen.push(s); s = await next(page); }
-  check('1 three steps on Today: her day, the tabs, Diary; the last button says "Start my diary"', seen.length === 3 && seen.every((x) => x.hash === '#home') && seen.map((x) => x.h).join('|') === 'This is your day|Your plan and Explore|Your diary starts here' && seen[2].go === 'Start my diary', seen.map((x) => x.hash + ' ' + x.n + ' ' + x.h + ' ' + x.go));
+  check('1 two steps on Today: the tabs, Diary; the last button says "Start my diary"', seen.length === 2 && seen.every((x) => x.hash === '#home') && seen.map((x) => x.h).join('|') === 'Your plan and Explore|Your diary starts here' && seen[1].go === 'Start my diary', seen.map((x) => x.hash + ' ' + x.n + ' ' + x.h + ' ' + x.go));
   await sleep(1500);
   check('1 it opens Diary on her first log, and Diary\'s own tip waits for it', (await page.evaluate(() => location.hash)) === '#diary' && !!(await page.$('#fl-card')) && !(await now(page)));
   const after = await st(page);
@@ -81,13 +82,14 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await ctx.close();
 }
 
-/* ---------- 1b. One tip the first time she opens each screen (docs/companion-journey-2026-10-23.md, section 9) ---------- */
+/* ---------- 1b. One tip the first time she opens each screen (docs/companion-journey-2026-10-23.md, section 9). Version 39.68 (the
+   doctors' review): tips no longer start on their own; "Show me around" and How to use Sakhi still show them ---------- */
 {
   const done = { st: 'done', d: '2026-10-20' };
   for (const [hash, tours, n, h] of [['#diary', { home: done }, '1 of 3', 'Your calendar'], ['#care', { home: done, diary: done }, '1 of 3', 'Explore'], ['#me', { home: done, diary: done, care: done }, '1 of 3', 'Privacy on a shared phone']]   /* Version 39.2: Me's one Reminders row is on every build, so its tip shows too */) {
     const { ctx, page, errs } = await open({ seed: seedApp({ joined: new Date().toISOString().slice(0, 10), fullTour: { st: 'done', d: '2026-10-20' }, tours }), hash });   /* Version 39.59: tips come in her first week, one a day, so on a day no other tip has shown */
     const s = await waitTour(page);
-    check('1b the first time she opens ' + hash + ', its own tip', s && s.hash === hash && s.n === n && s.h === h, s);
+    check('1b the first time she opens ' + hash + ', no tip starts on its own (not "' + h + '", ' + n + ')', !s, s);
     check('1b no page errors (' + hash + ')', !errs.length, errs);
     await ctx.close();
   }
@@ -237,10 +239,10 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   check('9 signup went through the server: a code, the check, her details', ['POST otp/start', 'POST otp/verify', 'PATCH me'].every((k) => hits.includes(k)), hits);
   await tap(page, '#ys-tour');
   const seen = []; let s = await waitTour(page, 6000);
-  check('9 "Show me around": the first-day tour on her first Today, not the full tour', s && s.hash === '#home' && s.n === '1 of 3', s);
+  check('9 "Show me around": the first-day tour on her first Today, not the full tour', s && s.hash === '#home' && s.n === '1 of 2', s);   /* Version 39.68: no steps to show yet */
   await sleep(1800);   /* she reads it: the reminders question's moment comes and goes while the tour is up */
   for (let k = 0; s && k < 10; k++) { seen.push(s); const sh = await page.$eval('#sheet-root', (e) => e.innerText).catch(() => ''); if (/Get a heads-up|Ring on time/.test(sh)) seen.push({ hash: 'SHEET', n: sh.slice(0, 40) }); s = await next(page); }
-  check('9 three steps on Today, with nothing popping up in between', seen.length === 3 && seen.every((x) => x.hash === '#home'), seen.map((x) => x.hash + ' ' + x.n));
+  check('9 two steps on Today, with nothing popping up in between', seen.length === 2 && seen.every((x) => x.hash === '#home'), seen.map((x) => x.hash + ' ' + x.n));
   check('9 it wasn\'t asked about reminders during the tour', !(await page.evaluate(() => (window.Saathi.state.prompts || {}).notifyAuto)) && !(await page.evaluate(() => window.__calls.some((c) => c[0] === 'askNotify'))));
   check('9 the full tour didn\'t start', (await st(page)).full.st === 'first');
   await page.waitForSelector('#fl-save'); await tap(page, '#fl-save');   /* the tour ends on her first log; she saves it */
@@ -253,14 +255,14 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   await page.evaluate(() => { location.hash = '#me-help'; }); await page.waitForSelector('[data-tour-full]'); await tap(page, '[data-tour-full]');
   const full = await walk(page);
   const screens = [...new Set(full.map((x) => x.hash))];
-  check('9 the replay walks Today, Diary, Explore, Help and Me, 13 steps', JSON.stringify(screens) === JSON.stringify(['#home', '#diary', '#care', '#help', '#me']) && full.length === 13, full.map((x) => x.hash + ' ' + x.n));
+  check('9 the replay walks Today, Diary, Explore, Help and Me, 12 steps (Version 39.68: Explore has no Help step)', JSON.stringify(screens) === JSON.stringify(['#home', '#diary', '#care', '#help', '#me']) && full.length === 12, full.map((x) => x.hash + ' ' + x.n));
   check('9 every count names its screen', full.every((x) => /^(Today|Diary|Explore|Help|Me) · \d of \d$/.test(x.n)), full.map((x) => x.n));
   const lastOf = (h) => full.filter((x) => x.hash === h).pop() || {};
   check('9 the last step on each screen names the next one', ['Next: Diary', 'Next: Explore', 'Next: Help', 'Next: Me'].every((g, i) => lastOf(['#home', '#diary', '#care', '#help'][i]).go === g) && lastOf('#me').go === 'Done', full.map((x) => x.go));
   const me = full.filter((x) => x.hash === '#me').map((x) => x.h);
   check('9 Me points to privacy, reminders and her backup, not "Delete everything"', JSON.stringify(me) === JSON.stringify(['Privacy on a shared phone', 'Reminders', 'Your data and backup']), me);
-  check('9 the doctor steps name the free government doctor too', full.some((x) => x.hash === '#care' && /free government doctor/.test(x.p)) && full.some((x) => x.hash === '#help' && /free government doctor/.test(x.p)), full.filter((x) => /care|help/.test(x.hash)).map((x) => x.p));
-  check('9 Explore\'s last step points to the Help button', lastOf('#care').h === 'Help, any time', lastOf('#care'));
+  check('9 no step names the free government doctor (Version 39.68: the Govt. services pages are gone); Help\'s names a Qura doctor', !full.some((x) => /free government doctor/.test(x.p)) && full.some((x) => x.hash === '#help' && /Qura doctor/.test(x.p)), full.filter((x) => /care|help/.test(x.hash)).map((x) => x.p));
+  check('9 Explore\'s last step is "Listen to any page" (Version 39.68: Help is on Today only)', lastOf('#care').h === 'Listen to any page', lastOf('#care'));
   const after = await st(page);
   check('9 it ends on Me with a word on replaying it, and the full tour is done', /whole tour/.test(await toast(page)) && (await page.evaluate(() => location.hash)) === '#me' && after.full && after.full.st === 'done', after.full);
   check('9 the pilot build has its full tools: the fertile tool on the trying-for-a-baby page', await page.evaluate(() => { location.hash = '#topic-ttc'; return new Promise((ok) => setTimeout(() => ok([...document.querySelectorAll('[data-go]')].some((x) => x.dataset.go === 'fertile')), 800)); }));
@@ -325,10 +327,10 @@ async function replay(page) {
   await T.page.$eval('.tour-dim', (d) => d.click()); await sleep(400);
   check('10 a tap on the dimmed screen does nothing: the tip is still there', JSON.stringify(await now(T.page)) === JSON.stringify(s), await now(T.page));
   s = await next(T.page);
-  check('10 on step 2', s && s.n === '2 of 3', s);
+  check('10 on step 2', s && s.n === '2 of 2', s);   /* Version 39.68: her first Today has no steps to show yet */
   await T.page.evaluate(() => window.__sakhiBack());  await sleep(400);
-  check('10 Android Back goes back a step, not out', (await now(T.page)) && (await now(T.page)).n === '1 of 3', await now(T.page));
-  await next(T.page); await next(T.page); await next(T.page);
+  check('10 Android Back goes back a step, not out', (await now(T.page)) && (await now(T.page)).n === '1 of 2', await now(T.page));
+  await next(T.page); await next(T.page);
   await T.page.waitForSelector('#fl-save'); await tap(T.page, '#fl-save'); await sleep(400);   /* the first-day tour ends on her first log */
   await T.page.evaluate(() => { location.hash = '#me-help'; }); await T.page.waitForSelector('[data-tour-full]'); await tap(T.page, '[data-tour-full]');
   s = await waitTour(T.page, 5000); await next(T.page); s = await next(T.page);
@@ -377,7 +379,7 @@ async function replay(page) {
     check('13 (' + how + ') the PIN box doesn\'t cover the sign-up screen', !T.pinBeforeSignup);
     check('13 (' + how + ') it opens on her first Today', T.pinOnHome);
     const seen = await walk(T.page);
-    check('13 (' + how + ') then Today\'s own tip runs, once the PIN box has gone', seen.length === 2 && seen[0].n === '1 of 2' && seen.every((x) => x.hash === '#home'), seen.map((x) => x.n));
+    check('13 (' + how + ') then no tip starts on its own once the PIN box has gone (Version 39.68)', seen.length === 0, seen.map((x) => x.n));
     if (how === 'set') {
       check('13 (set) her PIN is kept', !!(await T.page.evaluate(() => window.Saathi.state.settings.pinHash)));
       const full = await replay(T.page);

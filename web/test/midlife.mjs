@@ -345,7 +345,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   /* 3 her bones and heart answers, through the real questions */
   a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400) } });
   const sum = await startVia(a.page, { stage: 'meno', goal: 'hot', iq: 1 }, Object.assign({}, PICK, { mbone: 'y' }));
-  check('11.3 "Here’s what you told Sakhi" shows her weak bones and chest pain when she walks', /Weak bones/.test(sum) && /Chest pain or very breathless when you walk/.test(sum), sum.slice(0, 500));
+  check('11.3 no "Here’s what you told Sakhi" before her plan (Version 39.68: the doctors removed the answers summary)', !sum, sum.slice(0, 300));
   let p0 = (await st(a.page)).mods.plan || {};
   check('11.3 her answers are saved with her plan', p0.pack === 'meno' && p0.pv === 2 && (p0.intake || {}).mheart === 'y' && (p0.intake || {}).mbone === 'y', p0.intake);
   await a.page.clock.setSystemTime(at('10:00')); await a.page.evaluate(() => { const d = JSON.parse(localStorage.getItem('qura-saathi-v1')); const p = d.mods.plan; const back = (x, n) => { const t = new Date(x + 'T12:00:00Z'); t.setUTCDate(t.getUTCDate() - n); return t.toISOString().slice(0, 10); }; p.start = back(p.start, 1); p.started = p.start; localStorage.setItem('qura-saathi-v1', JSON.stringify(d)); });
@@ -398,7 +398,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   const all = (pg) => pg.$eval('#view', (e) => e.textContent.replace(/\s+/g, ' '));   /* folded cards too */
   check('11.12 while the plan runs, no "Start the weekly symptom diary" prompt', !/Start the weekly symptom diary/.test(await all(a.page)), await all(a.page)); await done(a);
   a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400), prompts: SETUP, joined: ago(2) } });
-  check('11.12 with no plan it is still offered', /Start the weekly symptom diary/.test(await all(a.page)), await all(a.page)); await done(a);
+  check('11.12 with no plan, no weekly symptom diary prompt either (Version 39.68: the Diary logs the same signs)', !/Start the weekly symptom diary/.test(await all(a.page)), await all(a.page)); await done(a);
 }
 
 // ---------- 12 the phone test's 6 fixes ----------
@@ -448,13 +448,12 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   /* 1 "Your last plan": not a plan changed on the day it started with no day followed; the one before it */
   const past = [{ pack: 'cycle', goalKey: 'pmos', pv: 1, start: TODAY, end: TODAY, days: 0, wk: 1, weeks: {} }, { pack: 'meno', goalKey: 'hot', pv: 2, start: ago(1), end: TODAY, days: 1, wk: 1, weeks: {} }];
   let a = await open({ seed: m2('hot', 0, { past: past }), hash: '#plan' });
-  const lp = await txt(a.page, '#view .pl-past');
-  check('13.1 a plan changed the day it started: "Your last plan" is the one before it, in "1 day"', /My midlife plan · 29 Oct to 30 Oct · followed on 1 day$/.test(lp) && !/0 days/.test(lp), lp);
+  check('13.1 My plan shows no "Your last plan" card (Version 39.68: the doctors removed it)', !(await has(a.page, '#view .pl-past')));
   const rep = await a.page.evaluate(() => JSON.stringify(window.Saathi.summaries().filter((m) => m.mod === 'plan')));
   check('13.1 the report for her doctor too', /Before this: My midlife plan, 29 Oct 2026 to 30 Oct 2026, followed on 1 day"/.test(rep) && !/My PMOS plan/.test(rep), rep.slice(0, 600));
   check('13.1 her list of plans stays as it was', ((await st(a.page)).mods.plan.past || []).length === 2); await done(a);
   a = await open({ seed: m2('hot', 0, { past: [{ pack: 'cycle', goalKey: 'pmos', pv: 1, start: ago(10), end: TODAY, days: 0, wk: 2, weeks: {} }] }), hash: '#plan' });
-  check('13.1 a plan she had for 10 days and didn’t follow still shows', /My PMOS plan · 20 Oct to 30 Oct · followed on 0 days/.test(await txt(a.page, '#view .pl-past')), await txt(a.page, '#view .pl-past')); await done(a);
+  check('13.1 a plan she had for 10 days and didn’t follow is kept, with no card', !(await has(a.page, '#view .pl-past')) && ((await st(a.page)).mods.plan.past || []).length === 1); await done(a);
   /* 2 Strength at home: no repeat row in version 2; Gentle start in its place while her heart answer waits for her doctor */
   a = await open({ seed: m2('hot', B(2)), hash: '#plan' });
   check('13.2 version 2: no "Strength at home" row under My plan (a step, and on Moves and calm)', !(await has(a.page, '#view .pl-moves-row')) && /Strength at home runs twice a week from week 1, in every part/.test(await txt(a.page, '#view .pl-m2-str')), await txt(a.page, '#view .pl-m2-str')); await done(a);
@@ -483,33 +482,28 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   a = await open({ seed: { dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3) }, reminders: [planRem(3)] } });
   await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'meno', goal: 'hot', iq: 1 }; }); await go(a.page, 'plan-goal');
   const w1 = await walkTo(a.page);
-  check('13.3 a new plan while one runs: no "When can you move for 10 minutes?", her time in the summary', !w1.saw && /Your time to move After dinner/.test(w1.sum), w1);
-  await tap(a.page, '[data-pl-edit="when"]');
-  check('13.3 Change asks it', await has(a.page, '[data-pl-when]'));
-  await tap(a.page, '[data-pl-when="evening"]');
-  check('13.3 and the summary shows her new time', /Your time to move In the evening/.test(await view(a.page)), (await view(a.page)).slice(0, 400));
-  await tap(a.page, '#pl-in-make');
-  check('13.3 her new plan keeps the time she chose', ((await st(a.page)).mods.plan.next || {}).when === 'evening', (await st(a.page)).mods.plan.next); await done(a);
+  /* Version 39.68 (the doctors' review): no answers summary, so her plan comes straight after its questions */
+  check('13.3 a new plan while one runs: no "When can you move for 10 minutes?", and no summary', !w1.saw && !w1.sum, w1);
+  check('13.3 her new plan keeps her time from the plan she is on', ((await st(a.page)).mods.plan.next || {}).when === 'dinner', (await st(a.page)).mods.plan.next); await done(a);
   a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400) } });
   await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'meno', goal: 'hot', iq: 1 }; }); await go(a.page, 'plan-goal');
   const w2 = await walkTo(a.page);
-  check('13.3 her first plan still asks it', w2.saw && /Your time to move In the evening/.test(w2.sum), w2); await done(a);
+  { const p2 = (await st(a.page)).mods.plan || {}; check('13.3 her first plan still asks it, and keeps her answer', w2.saw && ((p2.next || p2).when === 'evening'), [w2, p2.next || p2]); } await done(a);
 }
 
 // ---------- 14 the third phone test's 2 gaps ----------
 {
   /* 1 "Your last plan": never a plan changed on the day it started, even when her check-in that day counted it */
   let a = await open({ seed: m2('hot', 0, { past: [{ pack: 'cycle', goalKey: 'pmos', pv: 1, start: TODAY, end: TODAY, days: 1, wk: 1, weeks: {} }, { pack: 'meno', goalKey: 'hot', pv: 2, start: ago(5), end: ago(1), days: 3, wk: 1, weeks: {} }] }), hash: '#plan' });
-  const lp = await txt(a.page, '#view .pl-past');
-  check('14.1 a plan changed the day it started, after a check-in: "Your last plan" is the one before it', /My midlife plan · 25 Oct to 29 Oct · followed on 3 days/.test(lp) && !/PMOS/.test(lp), lp); await done(a);
+  check('14.1 a plan changed the day it started, after a check-in: no "Your last plan" card (Version 39.68), and both stay in her list', !(await has(a.page, '#view .pl-past')) && ((await st(a.page)).mods.plan.past || []).length === 2); await done(a);
   /* Mohit's phone: her midlife plan restarted on the day it started, after her check-in */
   a = await open({ seed: m2('hot', 0, { log: { [TODAY]: { ci: 1 } }, past: [{ pack: 'meno', goalKey: 'hot', pv: 2, start: ago(1), end: TODAY, days: 1, wk: 1, weeks: {} }] }) });
   await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'meno', goal: 'hot', iq: 1 }; }); await go(a.page, 'plan-goal');
   for (let i = 0; i < 12 && (await a.page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) { if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make'); else if (await has(a.page, '[data-pl-when]')) await tap(a.page, '[data-pl-when="evening"]'); else if (await has(a.page, '#pl-in-next')) await tap(a.page, '#pl-in-next'); else break; }
   for (let i = 0; i < 8 && !(await has(a.page, '#pl-rv-go')); i++) { if (await has(a.page, '#pl-rv-next')) await tap(a.page, '#pl-rv-next'); else break; }
   await tap(a.page, '#pl-rv-go'); await go(a.page, 'plan');
-  const past = (await st(a.page)).mods.plan.past || []; const lp2 = await txt(a.page, '#view .pl-past');
-  check('14.1 restarted the same day: the copy stays out of "Your last plan" at once', past.some((x) => x.start === TODAY && x.pack === 'meno' && x.days === 1) && /My midlife plan · 29 Oct to 30 Oct · followed on 1 day$/.test(lp2), { lp2, past: past.map((x) => x.pack + ' ' + x.start + ' ' + x.end + ' ' + x.days) }); await done(a);
+  const past = (await st(a.page)).mods.plan.past || [];
+  check('14.1 restarted the same day: her day is kept in her list, with no "Your last plan" card (Version 39.68)', past.some((x) => x.start === TODAY && x.pack === 'meno' && x.days === 1) && !(await has(a.page, '#view .pl-past')), { past: past.map((x) => x.pack + ' ' + x.start + ' ' + x.end + ' ' + x.days) }); await done(a);
   /* 2 "Your day": her bones and heart answers from the midlife plan she is on */
   const day = async (seed, goal) => { const b = await open({ seed: seed }); await b.page.evaluate((g) => { window.Saathi.mem.planIntake = { stage: 'meno', goal: g, iq: 1 }; }, goal); await go(b.page, 'plan-goal'); return b; };
   a = await day(m2('hot', B(3), { a: { mbone: 'y', mheart: 'y' } }), 'sleep');
@@ -517,7 +511,8 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   a = await day(m2('hot', B(3), { a: { mheart: 'ok' } }), 'hot');
   check('14.2 after "My doctor says I can do more": No shows, with no warning', await has(a.page, '[data-pl-q="mheart:n"].on') && !(await has(a.page, '[data-pl-q="mheart:y"].on')) && !/see your doctor/.test(await txt(a.page, '#pl-in-warn')), (await view(a.page)).slice(-500));
   await tap(a.page, '#pl-in-next');
-  check('14.2 and her doctor’s OK goes with her new plan', (await a.page.evaluate(() => (window.Saathi.mem.planIntake || {}).mheart)) === 'ok', await a.page.evaluate(() => window.Saathi.mem.planIntake)); await done(a);
+  { const pi = await a.page.evaluate(() => window.Saathi.mem.planIntake || null); const nx = ((await st(a.page)).mods.plan || {}).next || {};   /* Version 39.68: no summary, so the plan is made at once */
+    check('14.2 and her doctor’s OK goes with her new plan', (pi && pi.mheart === 'ok') || (nx.intake || {}).mheart === 'ok', [pi, nx.intake]); } await done(a);
   a = await day({ dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5), mods: { plan: planOf('cycle', 'pmos', 3) }, reminders: [planRem(3)] }, 'hot');
   check('14.2 from a plan that never asked them (PMOS): both wait for her answer', await has(a.page, '[data-pl-q="mheart:y"]') && !(await has(a.page, '[data-pl-q^="mbone:"].on')) && !(await has(a.page, '[data-pl-q^="mheart:"].on'))); await done(a);
 }

@@ -151,70 +151,29 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   await ctx.close();
 }
 
-/* ---------- 2. My claims ---------- */
+/* ---------- 2. My claims. Version 39.68 (the doctors' review): the scheme pages are gone, and with them the claims' reminders and the report's
+   claims line; what she saved stays in her diary ---------- */
 {
   const before = sent.length;
-  const birth = isoAgo(50), by = isoAdd(birth, 270);
-  const { ctx, page, errs } = await open({ hash: '#access-schemes-post', seed: { situation: { stage: 'post', deliveredOn: birth, care: 'govt' }, events: [] } });
-  const fmt = (d) => page.evaluate((x) => window.Saathi.fmtD(window.Saathi.fromISO(x), { day: 'numeric', month: 'short', year: 'numeric' }), d);
-  check('2 no "My claims" card before she tracks one', !(await page.$('.access-my')));
-  check('2 a scheme Sakhi can\'t track has no button (JSSK)', !!(await page.$('#sch-jssk')) && !(await page.$('#sch-jssk [data-claim-start]')));
-  await page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await tap(page, '[data-claim-start="pmmvy"]'); await sleep(300);
-  let cl = await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access.claims)));
-  check('2 "Track my claim" saves PMMVY in her diary, from today', JSON.stringify(cl) === JSON.stringify({ pmmvy: { started: isoAgo(0), docs: {} } }), cl);
-  check('2 the card stays open, with its papers as five ticks', await page.$eval('#sch-pmmvy', (d) => d.open) && (await page.$$('#sch-pmmvy [data-claim-doc]')).length === 5 && /Papers to keep ready/.test(await page.$eval('#sch-pmmvy', (e) => e.innerText)));
-  const byTxt = await fmt(by);
-  check('2 PMMVY\'s last date: 270 days after the birth', (await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText)).includes('Register by ' + byTxt), byTxt);
-  check('2 "My claims" at the top shows the step and the date', /PMMVY: Pradhan Mantri Matru Vandana Yojana/.test(await page.$eval('.access-my', (e) => e.innerText)) && (await page.$eval('.access-my', (e) => e.innerText)).includes('Getting papers ready · Register by ' + byTxt));
-  let r = await rem(page, 'access-pmmvy');
-  check('2 reminders a month and a week before the last date, at 10 am', r && JSON.stringify(r.dates) === JSON.stringify([isoAdd(by, -30), isoAdd(by, -7)]) && r.time === '10:00' && r.title.en === 'PMMVY: register soon', r);
-  await page.$eval('[data-claim-doc="pmmvy|0"]', (e) => e.click()); await sleep(250);
-  check('2 ticking a paper keeps it', (await page.evaluate(() => window.Saathi.state.mods.access.claims.pmmvy.docs[0])) === 1 && await page.$eval('[data-claim-doc="pmmvy|0"]', (e) => e.checked && e.closest('label').classList.contains('done')));
-  await tap(page, '[data-claim-step="pmmvy|applied"]'); await sleep(250);
-  cl = await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access.claims.pmmvy)));
-  check('2 "Applied" keeps today\'s date and stops the reminders', cl.applied === isoAgo(0) && !cl.got && !(await rem(page, 'access-pmmvy')) && !(await page.$eval('#sch-pmmvy .access-claim', (e) => /Register by/.test(e.innerText))), cl);
-  check('2 "My claims" shows "Applied" with its date', (await page.$eval('.access-my', (e) => e.innerText)).includes('Applied · ' + (await fmt(isoAgo(0)))));
+  const birth = isoAgo(50);
+  const seed = { situation: { stage: 'post', deliveredOn: birth, care: 'govt' }, events: [], mods: { access: { claims: { pmmvy: { started: isoAgo(60), applied: isoAgo(55), got: isoAgo(5), docs: {} } } } } };
+  const { ctx, page, errs } = await open({ hash: '#access-schemes-post', seed });
+  await sleep(300);
+  check('2 the after-birth schemes page lands on Explore', (await page.evaluate(() => location.hash)) === '#care');
+  for (const h of ['access-schemes-preg', 'access-schemes', 'access-free']) { await go(page, h); check('2 #' + h + ' lands on Explore', (await page.evaluate(() => location.hash)) === '#care'); }
+  await go(page, 'home');
+  check('2 her old claim books no reminder (the second part\'s included)', !(await rem(page, 'access-pmmvy')) && !(await rem(page, 'access-pmmvy2')));
   await go(page, 'report');
-  check('2 the report shows the claim', /My claims: PMMVY: Applied \(/.test(await view(page)));
-  await go(page, 'access-schemes-post'); await page.$eval('#sch-pmmvy', (d) => { d.open = true; });
-  await tap(page, '[data-claim-step="pmmvy|got"]'); await sleep(250);
-  cl = await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access.claims.pmmvy)));
-  check('2 "Money or card received" keeps both dates', cl.applied === isoAgo(0) && cl.got === isoAgo(0), cl);
-  await tap(page, '[data-claim-step="pmmvy|ready"]'); await sleep(250);
-  cl = await page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.mods.access.claims.pmmvy)));
-  check('2 back to "Getting papers ready": the dates go and the reminders return', !cl.applied && !cl.got && !!(await rem(page, 'access-pmmvy')), cl);
-  await page.$eval('[data-q="ration"][data-o="y"]', (b) => b.click()); await sleep(200);
-  check('2 the finder\'s answers are still never saved (only her claims, and the dates she first opened Get care free and the finder)', (await page.evaluate(() => Object.keys(window.Saathi.state.mods.access))).every((k) => ['claims', 'seenSchemes', 'seenFree'].indexOf(k) >= 0) && !/"ration"/.test(await page.evaluate(() => localStorage.getItem('qura-saathi-v1'))));
-  await page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await tap(page, '[data-claim-stop="pmmvy"]'); await sleep(250);
-  check('2 "Stop tracking" removes the claim and its reminders', JSON.stringify(await page.evaluate(() => window.Saathi.state.mods.access.claims)) === '{}' && !(await rem(page, 'access-pmmvy')) && !(await page.$('.access-my')));
-  check('2 no birth-cost card on the after-birth list', !/₹37,600/.test(await view(page)));
+  check('2 the report has no "My claims" line', !/My claims/.test(await view(page)));
+  check('2 what she saved stays in her diary', await page.evaluate(() => !!window.Saathi.state.mods.access.claims.pmmvy));
   check('2 nothing about her claims went to any server', !sent.slice(before).some((x) => /pmmvy|claim/i.test(x)), sent.slice(before));
   check('2 no page errors', errs.length === 0, errs);
-  await ctx.close();
-}
-{
-  const { ctx, page, errs } = await open({ hash: '#access-schemes-preg', seed: pregSeed(20, { mods: { preg: { mcp: { anc: [isoAgo(60), isoAgo(14)] } } } }) });
-  check('2 pregnancy list: the birth-cost card, with its official source', /₹37,600/.test(await view(page)) && !!(await page.$('#view a[href^="https://static.pib.gov.in/"]')));
-  await page.$eval('#sch-pmmvy', (d) => { d.open = true; }); await tap(page, '[data-claim-start="pmmvy"]'); await sleep(300);
-  const blk = await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText);
-  /* Version 39.7 (sources check): the 2022 guidelines ask for one check-up; the line says some offices still ask for two */
-  check('2 pregnant, after her check-ups: she can apply for the first part now', /You have had a check-up, so once your pregnancy is registered you can apply for the first part \(₹3,000\) now/.test(blk) && /Some offices still ask for two check-ups/.test(blk) && !/Register by/.test(blk) && !(await rem(page, 'access-pmmvy')), blk);
-  await page.evaluate((d) => { const S = window.Saathi; S.state.mods.preg.mcp.anc = [d]; S.save(); S.render(); }, isoAgo(14)); await sleep(250);
-  await page.$eval('#sch-pmmvy', (d) => { d.open = true; });
-  check('2 after one check-up: the "apply now" line already shows (Version 39.7: the 2022 guidelines need one)', /first part/.test(await page.$eval('#sch-pmmvy .access-claim', (e) => e.innerText)));
-  check('2 pregnant: no errors', errs.length === 0, errs);
-  await ctx.close();
-}
-{
-  const { ctx, page, errs } = await open({ hash: '#access-schemes-preg', lang: 'hi', seed: pregSeed(20, { lang: 'hi' }) });
-  check('2 Hindi: the claim button and the birth-cost card', /मेरा दावा ट्रैक करें/.test(await page.$eval('#view', (e) => e.textContent)) && /₹37,600/.test(await view(page)));
-  check('2 Hindi: no errors', errs.length === 0, errs);
   await ctx.close();
 }
 
 /* ---------- 3. The report for the doctor ---------- */
 {
-  const seed = { askTopics: ['Weekly iron tablet'], mods: { access: { claims: { pmmvy: { started: isoAgo(5), docs: {}, applied: isoAgo(2) } } } } };
+  const seed = { askTopics: ['Weekly iron tablet'], mods: { iron: { plan: 'post', start: isoAgo(10), log: { [isoAgo(1)]: 1, [isoAgo(2)]: 1 } } } };   /* Version 39.68: the claims line is gone; the iron tablets' line stands in */
   const { ctx, page, errs } = await open({ hash: '#report', android: true, seed });
   const qs = () => page.$$eval('#view ol.steps li', (l) => l.map((x) => x.textContent));
   check('3 her own question comes first', (await qs())[0] === 'Weekly iron tablet' && (await qs()).slice(-1)[0] === 'Is there anything here I should keep an eye on?', await qs());
@@ -224,7 +183,7 @@ const planOf = (page) => page.evaluate(() => JSON.parse(JSON.stringify((window.S
   await tap(page, '[data-rp-lang="hi"]'); await sleep(250);
   const v = await view(page);
   check('3 the report turns Hindi, the app stays English', /मेरे सवाल/.test(v) && /शुरू/.test(v) && /Report language/.test(v) && (await page.evaluate(() => window.Saathi.state.lang)) === 'en' && JSON.parse(await page.evaluate(() => localStorage.getItem('qura-saathi-v1'))).lang === 'en', v.slice(0, 600));
-  check('3 the tools\' lines turn Hindi too', /मेरे दावे: PMMVY: आवेदन किया/.test(v));
+  check('3 the tools\' lines turn Hindi too', /आयरन की गोलियाँ/.test(v) && /डिलीवरी के बाद/.test(v), v.slice(0, 900));
   check('3 the report\'s language is never saved, even by a module that saves while giving its summary', !/rpLang/.test(await page.evaluate(() => localStorage.getItem('qura-saathi-v1'))) && (await page.evaluate(() => window.__savedLangs)).length > 0 && (await page.evaluate(() => window.__savedLangs)).every((x) => x === 'en'), await page.evaluate(() => window.__savedLangs));
   await tap(page, '#rp-send'); await sleep(200);
   const sh = await page.evaluate(() => window.__shared);

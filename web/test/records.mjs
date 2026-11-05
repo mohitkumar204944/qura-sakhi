@@ -131,31 +131,20 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   check('3 no Pattern check tile in Conditions', cond.indexOf('pattern') < 0, cond);
   await go(a.page, 'care');
   const fy = await a.page.$$eval('#view section.care-sec:first-of-type [data-go]', (x) => x.map((y) => y.dataset.go));
-  check('3 For you (irregular periods) has no Pattern check', fy.indexOf('pattern') < 0 && fy.indexOf('selfcheck') >= 0, fy);
+  check('3 For you (irregular periods) has no Pattern check and no self-check (Version 39.68)', fy.indexOf('pattern') < 0 && !fy.some((g) => /^selfcheck/.test(g)), fy);
   await go(a.page, 'cond');
-  check('3 the Conditions page links the self-check, not Pattern check', !(await has(a.page, '#view [data-go="pattern"]')) && await has(a.page, '#view [data-go="selfcheck"]'));
+  check('3 the Conditions page links neither Pattern check nor a self-check (Version 39.68)', !(await has(a.page, '#view [data-go="pattern"]')) && !(await has(a.page, '#view [data-go^="selfcheck"]')));
   await go(a.page, 'pattern');
-  check('3 an old #pattern link lands on the PMOS self-check', await a.page.evaluate(() => location.hash) === '#selfcheck-pmos', await a.page.evaluate(() => location.hash));
+  check('3 an old #pattern link lands on the Diary (Version 39.68: no self-check)', await a.page.evaluate(() => location.hash) === '#diary', await a.page.evaluate(() => location.hash));
   errsAll.push(...a.errs); await a.ctx.close();
 }
 
-/* ---------- 4. The PMOS self-check asks Pattern check's two questions ---------- */
+/* ---------- 4. The PMOS self-check (Version 39.68: gone, the doctors' review) ---------- */
 {
   const a = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) }, hash: '#selfcheck-pmos' });
-  check('4 "Has a doctor already told you that you have PMOS?" is asked, with nothing chosen yet', /Has a doctor already told you that you have PMOS\?/.test(await view(a.page)) && !(await has(a.page, '#view [data-sc-dx].on')));
-  await tap(a.page, '#view [data-sc-dx="y"]');
-  check('4 ... and "Yes" is saved as her PMOS line', (await st(a.page)).situation.pcos === true);
-  await tap(a.page, '#view [data-sc-nip="y"]');
-  check('4 the nipple question: "Yes" shows the prolactin line', /prolactin/.test(await txt(a.page, '#view .sc-nip')), await txt(a.page, '#view .sc-nip'));
-  const qs = ['gaps', 'few', 'hair', 'acne', 'thin', 'test', 'scan', 'patch', 'baby']; for (const k of qs) await tap(a.page, '#view [data-sc="' + k + '"][data-v="' + (k === 'gaps' || k === 'hair' ? 'y' : 'n') + '"]');
-  const v = await view(a.page);
-  check('4 the count is still of the 9 signs (the extra questions aren\'t counted)', /You said yes to 2 of the 9 signs/.test(v), v.slice(-1200));
-  check('4 the result: free care first, then her report, then a Qura doctor', await a.page.evaluate(() => { const b = [...document.querySelectorAll('#view .sc-res ~ .btn, #view .sc-res ~ .grid2 .btn, #view .sc-res ~ .card ~ .btn, #view .sc-res ~ .card ~ .grid2 .btn')].map((x) => x.textContent.trim()); return b.indexOf('Free government doctor') === 0 && b.indexOf('My report for the doctor') === 1 && b.indexOf('Talk to a Qura doctor about this') === 2; }));
-  check('4 "Read about it" opens the PMOS article', await has(a.page, '#view [data-go="a-pmos.what-pmos-is"]'));
-  check('4 irregular periods in her answers offer the 12-week plan', /A 12-week plan for your periods/.test(v));
-  await tap(a.page, '#sc-plan');
-  check('4 ... which opens its questions at her goal', await a.page.evaluate(() => location.hash === '#plan-goal' && ['pmos', 'irregular'].indexOf((window.Saathi.mem.planIntake || {}).goal) >= 0));
-  await shot(a.page, '04-selfcheck'); errsAll.push(...a.errs); await a.ctx.close();
+  await settle(a.page, 300);
+  check('4 the PMOS self-check lands on Explore (Version 39.68: the doctors removed the self-checks)', (await a.page.evaluate(() => location.hash)) === '#care', await a.page.evaluate(() => location.hash));
+  errsAll.push(...a.errs); await a.ctx.close();
 }
 
 /* ---------- 5. The same buttons on every signal ---------- */
@@ -166,7 +155,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   /* Version 39.25 (Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a Qura doctor first */
   /* Version 39.64 (phase E; Mohit, 3 Nov: "Qura first, gynaecologist second"): the doctor the sign needs comes second */
   check('5 a "this month" card: a Qura doctor, then the gynaecologist, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a Qura doctor about this | See a gynaecologist | My report for the doctor', b);
-  check('5 ... and "Check the signs", a free plan beside it and "What this means"', /Check the signs \(2 minutes\)/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
+  check('5 ... a free plan beside it and "What this means", and no "Check the signs" (Version 39.68: no self-checks)', !/Check the signs/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
   await tap(a.page, '#view .xp-dcard.xp-month [data-xp-rp]');
   const q = await a.page.$$eval('#view ol.steps li', (x) => x.map((y) => y.textContent));
   check('5 her report opens with that card\'s question first', /^#report/.test(await a.page.evaluate(() => location.hash)) && /gaps between periods are often longer than 35 days/.test(q[0] || ''), q);
@@ -181,17 +170,17 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   errsAll.push(...a.errs, ...p.errs); await p.ctx.close();
 }
 
-/* ---------- 6. "Check the signs" where a validated check exists ---------- */
+/* ---------- 6. "Check the signs" where a validated check exists (Version 39.68: the doctors removed the self-checks) ---------- */
 {
   const a = await open({ seed: { events: cyc([28, 29, 28, 30, 28, 29], 3).map((e, i, all) => (e.t === 'start' && e.d === all.filter((x) => x.t === 'start').pop().d ? Object.assign({}, e, { pain: 'pain_3', pads: 'pads_4' }) : e)) } });
   await diaryShows(a.page);
   const gos = await a.page.$$eval('#view [data-xp-check]', (x) => x.map((y) => y.dataset.go));
-  check('6 period pain that stopped her day → the endometriosis check; heavy flow → the fibroids check', gos.indexOf('selfcheck-endo') >= 0 && gos.indexOf('selfcheck-fibroids') >= 0, gos);
+  check('6 period pain that stopped her day, heavy flow: no "Check the signs" (Version 39.68)', gos.length === 0 && await has(a.page, '#view .xp-dcard'), gos);
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10), mods: { selfcheck: { pmos: { d: ago(5), n: 3, m: 9, yes: ['gaps', 'few', 'hair'] } } } } });
   await diaryShows(b.page);
-  check('6 after the PMOS check in the last 90 days: "You did this check on …" instead of the button', /You did this check on 22 Oct: yes to 3 of 9/.test(await txt(b.page, '#view .xp-dcard.xp-month')) && !(await has(b.page, '#view .xp-dcard.xp-month [data-xp-check]')), await txt(b.page, '#view .xp-dcard.xp-month'));
-  check('6 ... and it is listed under "Checks you did"', /Checks you did/.test(await view(b.page)) && /22 Oct: yes to 3 of 9/.test(await txt(b.page, '#view .wis-checks')));
+  check('6 an old PMOS check: no "You did this check on …" and no button (Version 39.68)', !/You did this check on/.test(await txt(b.page, '#view .xp-dcard.xp-month')) && !(await has(b.page, '#view .xp-dcard.xp-month [data-xp-check]')) && await has(b.page, '#view .xp-dcard.xp-month'), await txt(b.page, '#view .xp-dcard.xp-month'));
+  check('6 ... and no "Checks you did" list', !/Checks you did/.test(await view(b.page)) && !(await has(b.page, '#view .wis-checks')));
   errsAll.push(...b.errs); await b.ctx.close();
   const c = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) }, config: { app: 'test-0.39' } });
   await diaryShows(c.page);
@@ -215,7 +204,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   await go(a.page, 'report');
   check('7 her report marks that period heavy', /heavy/i.test(await txt(a.page, '#view .rp-table tbody tr:last-child')), await txt(a.page, '#view .rp-table'));
   await go(a.page, 'selfcheck-fibroids');
-  check('7 the fibroids check\'s diary line counts it', /you logged 1 heavy periods|you logged 1 heavy period/.test(await view(a.page)));
+  check('7 the fibroids check lands on Explore (Version 39.68: no self-checks)', (await a.page.evaluate(() => location.hash)) === '#care');
   await go(a.page, 'diary'); await a.page.evaluate(() => { window.Saathi.mem.diaryTab = 'days'; window.Saathi.render(); }); await settle(a.page, 300);
   check('7 Days shows that day\'s details', /Soaked one every 1–2 hours|pads/i.test(await txt(a.page, '#view [data-dy="' + ago(1) + '"]')), await txt(a.page, '#view [data-dy="' + ago(1) + '"]'));
   errsAll.push(...a.errs); await a.ctx.close();
@@ -358,7 +347,7 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
   const a12 = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) }, hash: '#diary' });
   await go(a12.page, 'pattern'); const h1 = await a12.page.evaluate(() => location.hash);
   await a12.page.evaluate(() => history.back()); await settle(a12.page, 500); const h2 = await a12.page.evaluate(() => location.hash);
-  check('13 FLOWS-04 #pattern lands on the PMOS self-check, and Back leaves it', h1 === '#selfcheck-pmos' && h2 === '#diary', [h1, h2]);
+  check('13 FLOWS-04 #pattern lands on the Diary (Version 39.68: no self-check), and Back isn\'t trapped', h1 === '#diary' && h2 === '#diary', [h1, h2]);
   errsAll.push(...a12.errs); await a12.ctx.close();
   const t12 = await open({ seed: { events: cyc([40, 29, 42, 30, 28, 29], 10) }, hash: '#diary', config: { app: 'test-0.39' } });
   await go(t12.page, 'pattern');

@@ -531,6 +531,23 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
     install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
     `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then
+  - `node test/retire.mjs` (Version 39.68, the doctors' feature review, part 1; Mohit, 5 Nov: "go"; the record and the answers:
+    `docs/feature-review-2026-11-05.md`): what Dr. Megha and the gynaecologist removed is gone however she reaches it (core
+    `RETIRED`, `RETIRED_TILES`, `S.retired`; links dropped by `dropTriageLinks`), and what they kept stays:
+    - gone: the Govt. services pages, My ASHA, My garden and petals, 21 small steps, the doctor's-view preview, Tell a person,
+      the self-check, the violence and STI pages, 12 Learn articles and 6 chapters;
+    - gone from Today and Help: Today's look-back, the notes meter, tips that start on their own, the first-days read, Help on
+      every screen (Today only now, and not while she joins), Help's Private help;
+    - gone from her plan: the answers summary, Plan your week, Your last plan, + minutes, and the baby plan's ready check and
+      strength step;
+    - gone too: Marathi, Bengali, Tamil and Telugu (Hindi and English only), and "My baby has died" (leaving "I had a baby" stops
+      every baby line, `situation.babyOff`);
+    - and what they left behind (MODULE_API 111, item 10): setup steps and reminders for the removed pages, the report's claims
+      line, "or a free government doctor" in Help, the midlife first log in the Diary, and the fixed Hb line on her lab results.
+
+    This supersedes those parts of the entries above. Parts 2 to 4 (the emergency line, the wording, the behaviour) are still to
+    come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the doctors'
+    sign-off of 138 rows: section 19.68 of the review.
     `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
     `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/maths.mjs`

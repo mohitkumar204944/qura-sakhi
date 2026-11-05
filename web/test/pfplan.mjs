@@ -117,8 +117,9 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   check('2.5 a tick shows its line (leaking all the time: this week, it can be repaired)', /See a doctor this week\. This can be repaired/.test(await view(a.page)), await view(a.page));
   await tap(a.page, '#pl-in-next');
   const sm = await view(a.page);
-  check('2.6 her summary, with no "Your day" or time to move (the plan uses neither)', /Leaking urine or heaviness/.test(sm) && /When do you leak\? Both/.test(sm) && /Before you start Leaking all the time/.test(sm) && !/Your day|time to move/i.test(sm), sm);
-  await tap(a.page, '#pl-in-make');
+  /* Version 39.68 (the doctors' review): no answers summary; her plan comes next */
+  check('2.6 no summary: her plan comes next, with no "Your day" or time to move (the plan uses neither)', /Your plan is ready/.test(sm) && !/Here’s what you told Sakhi/.test(sm) && !/Your day|time to move/i.test(sm), sm);
+  if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
   const nx = await a.page.evaluate(() => (window.Saathi.state.mods.plan || {}).next || null);
   check('2.7 her answers are kept for the plan', nx && nx.pack === 'pelvic' && nx.intake.pft === 'both' && nx.intake.pfflags.join() === 'const' && nx.intake.pfway == null, nx && nx.intake);
   for (let i = 0; i < 4 && !(await has(a.page, '.pl-tl')); i++) { const b = await a.page.$('#pl-rv-next'); if (!b) break; await b.click(); await settle(a.page, 300); }
@@ -343,7 +344,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   await tap(a.page, '#pf-les-done');
   check('9.3 Done marks it read, and the row goes', !(await has(a.page, '.pl-pf-les')));
   const ids16 = await a.page.evaluate(() => window.Saathi.pfplan.lesson.ids());
-  check('9.4 16 chapters: 12 for every track, 4 more after "a doctor said prolapse"', ids16.length === 16 && ids16.filter((x) => /^f\d+$/.test(x)).length === 12 && ids16.filter((x) => /^v\d$/.test(x)).length === 4, ids16);
+  check('9.4 15 chapters: 12 for every track, 3 more after "a doctor said prolapse" (Version 39.68: the doctors removed one)', ids16.length === 15 && ids16.filter((x) => /^f\d+$/.test(x)).length === 12 && ids16.filter((x) => /^v\d$/.test(x)).length === 3 && ids16.indexOf('v2') < 0, ids16);
   await a.page.evaluate(() => { window.Saathi.mem.pfLes = 'f10'; location.hash = 'pf-lesson'; }); await settle(a.page, 400);
   check('9.5 the warning-signs chapter has Call 112 now', /Call 112 now if you suddenly can’t control your bladder or bowel/.test(await view(a.page)) && await has(a.page, 'a[href="tel:112"]'));
   await go(a.page, 'pf-urge');
@@ -438,7 +439,7 @@ async function startPelvic(page, pft, flags) {
   await page.evaluate(() => window.Saathi.plan.offer('pelvic')); await settle(page, 500);
   await tap(page, '[data-pl-q="pft:' + (pft || 'stress') + '"]'); await tap(page, '#pl-in-next');
   for (const k of (flags || [])) { await page.$eval('[data-pl-pfs="' + k + '"]', (x) => { x.checked = true; x.dispatchEvent(new Event('change', { bubbles: true })); }); await settle(page, 300); }
-  await tap(page, '#pl-in-next'); await tap(page, '#pl-in-make');
+  await tap(page, '#pl-in-next'); if (await has(page, '#pl-in-make')) await tap(page, '#pl-in-make');   /* Version 39.68: no answers summary */
   for (let i = 0; i < 6 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
   if (await has(page, '#pl-rv-go')) await tap(page, '#pl-rv-go');
   await go(page, 'home');
@@ -507,7 +508,7 @@ async function startPelvic(page, pft, flags) {
   await done(a);
   a = await open({ seed: seedOf({ goals: ['pelvic'], intake: { goal: 'pelvic', stage: 'cycle' }, dob: '1985-01-01', mods: {} }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pelvic')); await settle(a.page, 500);
-  await tap(a.page, '[data-pl-q="pft:stress"]'); await tap(a.page, '#pl-in-next'); await tap(a.page, '#pl-in-next'); await tap(a.page, '#pl-in-make');
+  await tap(a.page, '[data-pl-q="pft:stress"]'); await tap(a.page, '#pl-in-next'); await tap(a.page, '#pl-in-next'); if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
   let rv = '';
   for (let i = 0; i < 6 && !(await has(a.page, '#pl-rv-go')); i++) { rv += ' ' + await view(a.page); if (await has(a.page, '#pl-rv-next')) await tap(a.page, '#pl-rv-next'); else break; }
   check('17.17 "Your plan is ready" says when each step comes: Days 1 to 3, Find the right muscles', /Days 1 to 3: Find the right muscles/.test(rv) && !/Every day: Find the right muscles/.test(rv), rv.slice(0, 900));

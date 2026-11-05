@@ -238,7 +238,8 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   /* SAFETY-01, FIXES-01: a loss she types or Sakhi holds comes before any stage word; her pregnancy before period words */
   const l = await open({ seed: { situation: { pregEndedOn: ago(14), pregEndedHow: 'loss' }, events: regular(80) }, hash: '#care' });
   const lq = await askAll(l.page, ['garbhpat ke baad kya kare', 'गर्भपात के बाद क्या करें', 'garbh gir gaya kya kare', 'गर्भ गिरने के बाद क्या करें', 'pregnancy loss ke baad kya kare', 'kya kare']);
-  check('8 SAFETY-01 14 days after a loss: her words about it get the loss guide, never the pregnancy dos and don\'ts', Object.values(lq).every((x) => x === Q.loss), lq);
+  /* Version 39.68 (the doctors' review): the loss article is gone (the loss pages stay); her words still never get the pregnancy dos and don'ts */
+  check('8 SAFETY-01 14 days after a loss: her words about it never get the pregnancy dos and don\'ts, nor the removed loss article', Object.values(lq).every((x) => x !== Q.preg && x !== Q.loss), lq);
   errsAll.push(...l.errs); await l.ctx.close();
   const p1 = await open({ seed: PREG(12), hash: '#care' });
   const pq = await askAll(p1.page, ['period jaisa dard kya kare', 'पीरियड जैसा दर्द क्या करें', 'kya kare']);
@@ -252,7 +253,7 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   errsAll.push(...b1.errs); await b1.ctx.close();
   const c1 = await open({ hash: '#care' });
   const cq = await askAll(c1.page, ['गर्भनिरोधक गोली भूल गई क्या करें', 'pregnancy rokne ke liye kya kare', 'pregnant hone ke liye kya kare', 'pregnancy me kya kare', 'kya kare', 'garbhpat ke baad kya kare']);
-  check('8 SAFETY-01 not pregnant: contraception and "to get pregnant" are not the pregnancy guide; a stage she names still is', cq['गर्भनिरोधक गोली भूल गई क्या करें'] !== Q.preg && cq['pregnancy rokne ke liye kya kare'] !== Q.preg && cq['pregnant hone ke liye kya kare'] !== Q.preg && cq['pregnancy me kya kare'] === Q.preg && cq['kya kare'] === Q.cycle && cq['garbhpat ke baad kya kare'] === Q.loss, cq);
+  check('8 SAFETY-01 not pregnant: contraception and "to get pregnant" are not the pregnancy guide; a stage she names still is', cq['गर्भनिरोधक गोली भूल गई क्या करें'] !== Q.preg && cq['pregnancy rokne ke liye kya kare'] !== Q.preg && cq['pregnant hone ke liye kya kare'] !== Q.preg && cq['pregnancy me kya kare'] === Q.preg && cq['kya kare'] === Q.cycle && cq['garbhpat ke baad kya kare'] !== Q.preg && cq['garbhpat ke baad kya kare'] !== Q.loss, cq);   /* Version 39.68: no loss article */
   /* FIXES-03: a question mark after a phrase */
   await searchQ(c1.page, 'pregnancy test?'); const pt = await tools(c1.page);
   check('8 FIXES-03 "pregnancy test?" still leads with When to test', pt[0] === 'pregtest-when', pt);
@@ -266,28 +267,16 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   await searchQ(d1.page, 'bachcha kam hil raha hai'); const kt = await tools(d1.page);
   check('8 SAFETY-02 ... and her baby\'s movements lead with the kick counter, not trying for a baby', kt[0] === 'pregtools-kicks', kt);
   await searchQ(d1.page, '9 tarikh?'); const nt = await tools(d1.page);
-  check('8 FIXES-03 pregnant: "9 tarikh?" still leads with her pregnancy schemes', nt[0] === 'access-schemes-preg', nt);
+  check('8 FIXES-03 pregnant: "9 tarikh?" finds no scheme page (Version 39.68: the scheme pages are gone)', !nt.some((x) => /^access-/.test(x)), nt);
   errsAll.push(...d1.errs); await d1.ctx.close();
 
-  /* FIXES-02: a PMMVY reminder she switched off stays off when Today or a schemes page checks the claim */
-  for (const [rid, claim] of [['access-pmmvy2', { started: ago(120), applied: ago(110), got: ago(100), docs: {} }], ['access-pmmvy', { started: ago(10), docs: {} }]]) {
-    const a = await open({ seed: { situation: { deliveredOn: ago(20), breastfeeding: true }, events: [], mods: { access: { claims: { pmmvy: claim } } } }, hash: '#access-schemes-post' });
-    const r0 = await remOf(a.page, rid); await remOff(a.page, rid);
-    await go(a.page, 'home'); await dayTo(a.page, 1); await go(a.page, 'access-schemes-post');
-    check('8 FIXES-02 "' + rid + '": switched off, it stays off after Today, the next day and the schemes page', r0 && r0.on && JSON.stringify(await remOf(a.page, rid)) === JSON.stringify({ on: false }), [r0, await remOf(a.page, rid)]);
+  /* FIXES-02 and FIXES-05 lived on the scheme pages. Version 39.68 (the doctors' review): those pages are gone, and so are their reminders */
+  {
+    const a = await open({ seed: { situation: { deliveredOn: ago(20), breastfeeding: true }, events: [], mods: { access: { claims: { pmmvy: { started: ago(120), applied: ago(110), got: ago(100), docs: {} } } } } }, hash: '#access-schemes-post' });
+    await settle(a.page, 300);
+    check('8 FIXES-02 the schemes page lands on Explore, and no PMMVY reminder is booked', (await a.page.evaluate(() => location.hash)) === '#care' && !(await remOf(a.page, 'access-pmmvy2')) && !(await remOf(a.page, 'access-pmmvy')), [await a.page.evaluate(() => location.hash), await remOf(a.page, 'access-pmmvy2')]);
     errsAll.push(...a.errs); await a.ctx.close();
   }
-  /* FIXES-05: the PMMVY card's lines for a second child, check-ups before this pregnancy, and an older baby */
-  const card = (page) => page.$eval('[data-claim="pmmvy"]', (e) => e.textContent).catch(() => '');
-  const pm = async (seed) => { const a = await open({ seed, hash: '#access-schemes-preg' }); const v = await card(a.page); errsAll.push(...a.errs); await a.ctx.close(); return v; };
-  const anc = (xs) => ({ preg: { mcp: { anc: xs } } });
-  const second = await pm({ situation: { pregnant: true, pregnantSince: ago(140) }, events: [], mods: Object.assign(anc([ago(70)]), { access: { claims: { pmmvy: { started: ago(10), docs: {}, second: true } } } }) });
-  const first = await pm({ situation: { pregnant: true, pregnantSince: ago(140) }, events: [], mods: Object.assign(anc([ago(70)]), { access: { claims: { pmmvy: { started: ago(10), docs: {}, second: false } } } }) });
-  check('8 FIXES-05 a second child: no "first part (₹3,000) now" line (a first child still gets it)', !/first part \(₹3,000\)/.test(second) && /first part \(₹3,000\)/.test(first), [second.slice(0, 300), first.slice(0, 300)]);
-  const before = await pm({ situation: { pregnant: true, pregnantSince: ago(42) }, events: [], mods: Object.assign(anc([ago(200), ago(150)]), { access: { claims: { pmmvy: { started: ago(5), docs: {} } } } }) });
-  check('8 FIXES-05 check-ups from before this pregnancy don\'t count', !/first part \(₹3,000\)/.test(before), before.slice(0, 300));
-  const older = await pm({ situation: { pregnant: true, pregnantSince: ago(140), deliveredOn: ago(730) }, events: [], mods: Object.assign(anc([ago(70)]), { access: { claims: { pmmvy: { started: ago(10), applied: ago(8), got: ago(2), docs: {} } } } }) });
-  check('8 FIXES-05 an older baby\'s birth: no past "Register by" date and no "second part" in a new pregnancy', !/Register by/.test(older) && !/second part/.test(older), older.slice(0, 300));
 
   /* FIXES-04: a pause never switches back on a plan reminder she switched off, even after a time change during it */
   const REM = [{ id: 'plan', kind: 'custom', mod: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज कैसा रहा? 1 मिनट' }, time: '20:00', every: 1, on: true, start: ago(30) }];
@@ -302,7 +291,7 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   /* FIXES-07: an after-birth plan at her baby's first birthday is kept as "Your last plan" */
   const k = await open({ seed: { situation: { deliveredOn: ago(366) }, events: [], intake: { goal: 'weight', stage: 'post' }, mods: { plan: planOf('post', 'weight', ago(345), { keep: true }) } } });
   const ks = (await st(k.page)).mods.plan; await go(k.page, 'plan');
-  check('8 FIXES-07 the first birthday: her after-birth plan ends, and My plan shows it as "Your last plan"', !ks.start && (ks.past || []).length === 1 && ks.past[0].pack === 'post' && ks.past[0].end >= ago(7) && ks.past[0].end <= ago(1) && /Your last plan/.test(await view(k.page)), { start: ks.start, past: ks.past });
+  check('8 FIXES-07 the first birthday: her after-birth plan ends and is kept (Version 39.68: My plan shows no "Your last plan")', !ks.start && (ks.past || []).length === 1 && ks.past[0].pack === 'post' && ks.past[0].end >= ago(7) && ks.past[0].end <= ago(1) && !/Your last plan/.test(await view(k.page)), { start: ks.start, past: ks.past });
   errsAll.push(...k.errs); await k.ctx.close();
   const k2 = await open({ seed: { situation: { deliveredOn: ago(450) }, events: [], intake: { goal: 'weight', stage: 'post' }, mods: { plan: planOf('post', 'weight', ago(90)) } } });
   const ks2 = (await st(k2.page)).mods.plan;

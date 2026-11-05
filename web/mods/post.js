@@ -1012,11 +1012,13 @@
     if (has('pregtools-birth') && n != null && n <= 7) tools.push(['pregtools-birth', 'birthprep', 'birthprep_s', S.I.heart]);
     const gone = died();   /* Version 39.46: no baby lines, and her support first */
     if (gone) for (let i = tools.length - 1; i >= 0; i--) if (tools[i][0] === R.feed) tools.splice(i, 1);
-    const lostTop = gone ? '<div class="card pst-lost"><h3>' + esc(T('lost_h')) + '</h3><p class="small">' + esc(T('lost_talk')) + '</p><div class="pst-row"><a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' + (has('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(T('lost_sup')) + '</button>' : '') + '</div><button type="button" class="linkbtn" id="pst-lost-undo">' + esc(T('lost_undo')) + '</button></div>' : '';
+    /* Version 39.68: the words of a loss only for a mother who said so before this version (babyDied); leaving the stage (babyOff)
+       stops the baby lines with no words */
+    const lostTop = gone && (S.state.situation || {}).babyDied ? '<div class="card pst-lost"><h3>' + esc(T('lost_h')) + '</h3><p class="small">' + esc(T('lost_talk')) + '</p><div class="pst-row"><a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' + (has('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(T('lost_sup')) + '</button>' : '') + '</div><button type="button" class="linkbtn" id="pst-lost-undo">' + esc(T('lost_undo')) + '</button></div>' : '';
     v.innerHTML = S.backRow(T('h'), 'care', false) + lostTop + '<p class="small">' + esc(T(gone ? 'p_b' : 'p')) + '</p>' + hero +
       '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x === 'u_4' && gone ? 'u_4b' : x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108', '14416'], 'pst-onDark') + '</div>' +
       '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
-      askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + (b && !gone && S.canSave() ? '<button type="button" class="linkbtn pst-lost-l" id="pst-lost">' + esc(T('lost_link')) + '</button>' : '') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+      askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v); wireCopy(v);
     const lo = v.querySelector('#pst-lost'); if (lo) lo.addEventListener('click', lostSheet);   /* Version 39.46 */
     const lu = v.querySelector('#pst-lost-undo'); if (lu) lu.addEventListener('click', () => { const s0 = Object.assign({}, S.state.situation || {}); delete s0.babyDied; if (s0.bfWas) s0.breastfeeding = true; delete s0.bfWas; S.state.situation = s0; S.emit('babyBack', {}); S.saveQuiet(); S.render(); });
@@ -1024,7 +1026,11 @@
 
   /* ---------- Version 39.46: "My baby has died" (one tap here and in core's stage sheet). Every baby line stops: feeding, the vaccine
      reminders, her baby's age; what is hers stays: her check to day 41, her own 6-week check, contraception. Undo on the hub. ---------- */
-  const died = () => { const s0 = S.state.situation || {}; const b = birthISO(); return !!(s0.babyDied && b && s0.babyDied >= b); };
+  /* Version 39.68 (the doctors' answer, 5 Nov: "Any change of stage away from 'I had a baby' quietly stops everything about the
+     baby. No special words anywhere."): no "My baby has died" any more; core's stage sheet sets babyOff when she leaves the
+     stage, and every baby line stops as before (a babyDied already saved still counts, with its Undo on the hub) */
+  const died = () => { const s0 = S.state.situation || {}; const b = birthISO(); const off = s0.babyDied || s0.babyOff; return !!(off && b && off >= b); };
+  const stopBaby = () => { VAX_IDS.forEach((id) => S.reminders.remove(id)); S.emit('babyDied', {}); };
   function lostSheet() {
     if (!S.sheet || !S.canSave()) return;
     S.sheet('<div class="pst-lost-sh"><h2>' + esc(T('lost_h')) + '</h2><p>' + esc(T('lost_q_p')) + '</p><div class="grid2"><button type="button" class="btn primary" id="pst-lost-yes">' + esc(T('lost_q_yes')) + '</button><button type="button" class="btn" id="pst-lost-no">' + esc(t('cancel')) + '</button></div></div>', (sh) => {
@@ -1045,7 +1051,7 @@
   /* ---------- hooks ---------- */
   function stopAll() { stopFeedTick(); stopPfTick(); }
   /* Version 38: her plan's daily recovery check (plan.js, every after-birth goal until day 42) is done only by this check */
-  S.post = Object.assign(S.post || {}, { checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]),
+  S.post = Object.assign(S.post || {}, { stopBaby: () => stopBaby(), checkedToday: () => !!(S.canSave() && (store().rec || {})[todayISO()]), checkedOn: (iso) => !!(S.canSave() && (store().rec || {})[iso]),
     /* Version 39.5: pelvic floor sets on that day (a plan step counts from them) */
     pelvicOn: (iso) => !!(S.canSave() && Number((store().pf || {})[iso] || 0) > 0),
     /* Version 39.56: My pelvic floor plan's levels and sets come from the trainer's days */

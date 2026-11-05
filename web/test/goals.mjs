@@ -89,7 +89,7 @@ const count = (s, re) => (String(s).match(re) || []).length;
   await ctx.close();
   const b = await open({ seed: Object.assign({}, PREG, { mods: { journey: { active: 'iron', start: ago(2), done: {}, finished: {} } } }) });
   await go(b.page, 'home');
-  check('1 without a plan, the journey row and the pregnancy plan\'s own "Due now" row are back', (await has(b.page, '#view .today-journey')) && (await has(b.page, '#view .today-preg-plan')));
+  check('1 without a plan, the pregnancy plan\'s own "Due now" row is back, and no journey row (Version 39.68: 21 small steps is gone)', !(await has(b.page, '#view .today-journey')) && (await has(b.page, '#view .today-preg-plan')));
   await b.ctx.close();
 }
 
@@ -171,7 +171,7 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
   await go(page, 'home');
   const v = await view(page);
   check('5 from 40: Today shows days since her last period, not a cycle ring', /Since your last period/i.test(v) && /50\s+days/.test(v) && !(await has(page, '#view .ringwrap')) && !/Cycle day|Typical gap/.test(v), v.slice(0, 600));
-  check('5 ... with her weekly symptom diary one tap away', (await has(page, '#view .hero [data-go="meno-diary"]')) && /This week’s diary: done/.test(v));
+  check('5 ... and no weekly symptom diary button (Version 39.68: the Diary logs the same signs)', !(await has(page, '#view [data-go="meno-diary"]')) && !/This week’s (symptom )?diary/.test(v));
   await go(page, 'plan-progress');   /* Version 39.5 */
   const pv = await view(page);
   check('5 results from her weekly diary: hot flushes before and since', /Weeks with hot flushes/.test(pv) && /4 weeks before you started\s+4 of 4 weeks/.test(pv) && /Last 4 weeks\s+1 of 4 weeks/.test(pv), pv.match(/Weeks with hot flushes.{0,160}/s));
@@ -206,15 +206,13 @@ for (const [food, re] of [['veg', /Poha with lemon/], ['egg', /Eggs today/], ['n
   const noOther = !/Other plans/.test(await view(page)) && (await has(page, '#view [data-go="plan-settings"]')); await go(page, 'plan-settings');   /* Version 39.15: Plan settings is a page of its own */
   check('7 while a plan runs, no "Other plans" (Change what I work on stays, in Plan settings)', noOther && (await has(page, '#pl-chg')));
   await go(page, 'selfcheck-pmos');
-  const on = (k, v) => page.$eval('[data-sc="' + k + '"][data-v="' + v + '"]', (b) => b.getAttribute('aria-pressed') === 'true').catch(() => false);
-  check('7 the PMOS self-check opens with what she told Sakhi', (await on('gaps', 'y')) && !(await on('few', 'y')) && !(await on('few', 'n')) && (await on('acne', 'y')) && (await on('hair', 'n')) && /Some answers come from what you told Sakhi for your plan/.test(await view(page)));
-  check('7 ... and still waits for the answers only she can give before any verdict', !(await has(page, '#sc-verdict')));
+  check('7 the PMOS self-check lands on Explore (Version 39.68: the doctors removed the self-checks)', (await page.evaluate(() => location.hash)) === '#care', await page.evaluate(() => location.hash));
   check('7 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 
 /* ---------- 8. For you leads with her goal ---------- */
-for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', 'heavy', 'iron'], ['cycle', 'irregular', 'selfcheck']]) {
+for (const [pack, goal, first] of [['pain', 'pain', 'periods-pain'], ['heavy', 'heavy', 'iron'], ['cycle', 'irregular', 'explain']]) {   /* Version 39.68: no self-check */
   const { ctx, page, errs } = await open({ seed: { goals: ['track', goal], mods: { plan: planOf(pack, goal, ago(5)) } }, hash: '#care' });
   const fy = await page.$$eval('#view section.care-sec:first-of-type [data-go]', (b) => b.map((x) => x.dataset.go));
   const tiles = await page.evaluate(() => window.Saathi.plan.tileGo());   /* Version 39.59 (one home): a tool on her plan's tiles lives in My plan */

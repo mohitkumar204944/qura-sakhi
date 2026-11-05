@@ -175,9 +175,9 @@ const around = (starts, keys) => { const o = {}; starts.forEach((s) => { o[ago(s
   await tab(a.page, 'cal');
   const first = await a.page.$eval('#diary-body', (b) => (b.firstElementChild || {}).className || '');
   const st = await txt(a.page, '#diary-body .cal-today');
-  check('4 the Calendar opens on today: her cycle day and next period, the 5 and the meter', /cal-today/.test(first) && /Day 11 of your cycle/.test(st) && /until your next period/.test(st) && /Noted on \d+ of 27 days/.test(st), { first, st });
-  check('4 ... the meter says when her fertile days show, so the Calendar\'s own line has gone', /fertile days show/.test(st) && !(await has(a.page, '#diary-body .fw-few')), st);
-  await tap(a.page, '#diary-body .cal-today #fw-why');
+  check('4 the Calendar opens on today: her cycle day and next period and the 5, with no notes meter (Version 39.68)', /cal-today/.test(first) && /Day 11 of your cycle/.test(st) && /until your next period/.test(st) && !/Noted on \d+ of/.test(st), { first, st });
+  check('4 ... the Calendar\'s own line says when her fertile days show (Version 39.68: the meter is gone)', await has(a.page, '#diary-body .fw-few'), st);
+  await tap(a.page, '#diary-body #fw-why');   /* Version 39.68: in the Calendar's own line */
   check('4 ... with its "Why?"', /Why 6 cycles\?/.test(await txt(a.page, '#sheet-root')));
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 200);
   await tap(a.page, '#diary-body .cal-today [data-feel="d_tired"]');

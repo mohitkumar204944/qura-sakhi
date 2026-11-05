@@ -134,7 +134,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('3 the last step (tonight\'s wind-down) closes the day: "Day complete", "All 4 done today"', /Day complete\nAll 4 done today/.test(dc), dc);
   check('3 ... her goal, her week and tomorrow', /A step towards more regular periods\./.test(dc) && /This week: 1 full day/.test(dc) && /TOMORROW\n/.test(dc), dc);
   check('3 ... and tomorrow\'s lines never say "today" (Version 39.27)', !/TOMORROW\n[\s\S]*\btoday\b/i.test(dc.split(/TOMORROW\n/)[1] ? 'TOMORROW\n' + dc.split(/TOMORROW\n/)[1].split('\n').slice(0, 2).join('\n') : ''), dc);
-  check('3 ... a petal for her garden, once', lg.fd === 1 && lg.petal === 1 && (await has(a.page, '#view .today-card .pl-dc-pet[data-go="joy"]')), lg);
+  check('3 ... and no petal (Version 39.68: My garden is gone)', lg.fd === 1 && !lg.petal && !(await has(a.page, '#view .pl-dc-pet')), lg);
   check('3 ... no check-in needed: the reminder rests, "Add how it went (optional)" is a quiet link', (await remDone(a.page)) === TODAY && !(await has(a.page, '#view .today-card .btn.primary')) && (await has(a.page, '#view .today-card .pl-dc-how[data-go="plan-checkin"]')), await remDone(a.page));
   check('3 ... her 4 ticked steps fold under it, a tap away', (await has(a.page, '#view .today-card details.today-fold:not([open])')) && /Your 4 steps/.test(dc) && (await a.page.$$('#view .today-fold .today-ok')).length === 4);
   await shot(a.page, '3-day-complete');
@@ -148,14 +148,15 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
 {
   const a = await open({ seed: cyc(ago(7), { log: logged(7, 5) }), now: at(0, '09:30') });
   const lb0 = await txt(a.page, '#view .today-card .pl-sl-rev');
-  check('1 a new week: the look-back is one line inside her Today card, right under her steps', /Week 1 is done\n5 of 7 days on your plan/.test(lb0) && (await has(a.page, '#view .today-card #pl-rev-open')) && !(await has(a.page, '#view .today-card [data-pl-e]')), lb0);
-  await tap(a.page, '#pl-rev-open'); const lb = await txt(a.page, '#view .today-card .pl-sl-rev');
-  check('1 ... a tap opens it there: what she did, and her energy', /Week 1 is done · 5 of 7 days on your plan/.test(lb) && /How was your energy this week\?/.test(lb) && !(await has(a.page, '#view .slot .pl-sl-rev')) && (await a.page.evaluate(() => { const r = document.querySelector('#view .today-card .pl-sl-rev'); const s = document.querySelector('#view .today-plan-list'); return !!(r && s && (s.compareDocumentPosition(r) & Node.DOCUMENT_POSITION_FOLLOWING)); })), lb);
-  await tap(a.page, '#view .today-card [data-pl-e="good"]');
-  const lb2 = await txt(a.page, '#view .today-card .pl-sl-rev');
-  check('1 ... one tap answers it, then her tip and Plan your week (not pink: her steps keep the one pink button)', /Week 1 is done ·/.test(lb2) && (await has(a.page, '#view .today-card #pl-rev-plan:not(.primary)')) && (await has(a.page, '#view .today-card #pl-rev-ok')), lb2);
-  await tap(a.page, '#view .today-card #pl-rev-ok');
-  check('1 ... "Got it" puts it away', !(await has(a.page, '#view .pl-sl-rev')));
+  check('1 a new week: no look-back on Today (Version 39.68: the week dots show her week)', !(await has(a.page, '#view #pl-rev-open, #view .pl-sl-rev')), lb0);
+  /* Version 39.68: the look-back lives on My plan */
+  await go(a.page, 'plan'); const lb = await txt(a.page, '#view .pl-review');
+  check('1 ... on My plan: what she did, and her energy', /Week 1 is done/.test(lb) && /5 of 7 days/.test(lb) && /How was your energy this week\?/i.test(lb), lb);
+  await tap(a.page, '#view .pl-review [data-pl-e="good"]');
+  const lb2 = await txt(a.page, '#view .pl-review');
+  check('1 ... one tap answers it, then her tip, with no Plan your week (Version 39.68)', /Week 1 is done/.test(lb2) && !(await has(a.page, '#view #pl-rev-plan')) && (await has(a.page, '#view #pl-rev-ok')), lb2);
+  await tap(a.page, '#view #pl-rev-ok');
+  check('1 ... "Got it" puts it away', !(await has(a.page, '#view .pl-review')));
   await done(a);
 }
 /* ---------- 4: a link step keeps its one-tap row; My ASHA stays off Today, My plan and Diary (the government route: on her doctor's
@@ -176,9 +177,9 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   await go(a.page, 'diary');
   check('4 the Diary has no My ASHA', !/ASHA/.test(await view(a.page)));
   await go(a.page, 'access-free');
-  check('4 Get care free keeps it', await has(a.page, '#view [data-go="asha"]'));
+  check('4 Get care free is gone, and My ASHA with it (Version 39.68)', (await a.page.evaluate(() => location.hash)) === '#care' && !(await has(a.page, '#view [data-go="asha"]')));
   await go(a.page, 'help');
-  check('4 Help keeps it', await has(a.page, '#view [data-go="asha"]'));
+  check('4 Help has no My ASHA either', !(await has(a.page, '#view [data-go="asha"]')));
   await done(a);
 }
 /* ---------- 5: My plan explains the plan ---------- */
@@ -203,8 +204,8 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const wk = await txt(a.page, '#view .pl-wkc');
   const rings = await a.page.$$eval('#view .pl-wkc .pl-r4', (x) => x.map((s) => ({ n: s.querySelectorAll('circle').length, d: s.querySelectorAll('circle.d').length })));
   check('5 this week as rings, a part for each step (Monday all 4, Sunday 3)', rings.length === 7 && rings[0].n === 4 && rings[0].d === 3 && rings[1].d === 4, rings);
-  check('5 ... her full days, her minutes, and Plan the week right here (the legend is week 1\'s, Version 39.22)', !/Each ring has 4 parts/.test(wk) && /This week: 1 full day · strength on Thursday/.test(wk) && /Active minutes/.test(wk) && (await has(a.page, '#view .pl-wkc #pl-wp')), wk);
-  check('5 her garden sits at the foot of her week (Version 39.22)', await has(a.page, '#view .pl-wkc .pl-garden-in[data-go="joy"]'));
+  check('5 ... her full days, her minutes, and Plan the week right here (the legend is week 1\'s, Version 39.22)', !/Each ring has 4 parts/.test(wk) && /This week: 1 full day · strength on Thursday/.test(wk) && /Active minutes/.test(wk) && !(await has(a.page, '#view #pl-wp')), wk);   /* Version 39.68: no Plan the week */
+  check('5 no garden at the foot of her week (Version 39.68: My garden is gone)', !(await has(a.page, '#view .pl-garden-in, #view .pl-garden')));
   await a.page.$eval('#view .pl-weeks .pl-path-more summary', (x) => x.click()); await settle(a.page, 200);   /* Version 39.22: in her 12 weeks, behind "All 12 weeks" */
   const cs = await txt(a.page, '#view .pl-cons-in');
   check('5 what consistency brings: the reviewed timeline, "You are here" at weeks 1 to 4', /What consistency brings/.test(cs) && /Weeks 1 to 4\nYou are here\nMany women feel more energy and sleep better\./.test(cs) && /3 to 6 months/.test(cs), cs);
@@ -212,8 +213,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('5 "Fasting today?" is no longer on My plan (it is in her food step)', !/Fasting today\?/.test(await view(a.page)));
   check('5 settings are one row; My ASHA is not in her care team', (await has(a.page, '#view [data-go="plan-settings"]')) && !(await has(a.page, '#view #pl-rem')) && !(await has(a.page, '#view #pl-stop')));
   await shot(a.page, '5-myplan');
-  await tap(a.page, '#view #pl-wp');
-  check('5 Plan this week opens her week', (await a.page.evaluate(() => location.hash)) === '#plan-week');
+  check('5 no Plan this week (Version 39.68, the doctors\' review)', !(await has(a.page, '#view #pl-wp')));
   await go(a.page, 'plan-settings'); const st = await view(a.page);
   check('5 Plan settings, a page of its own: her reminder, the nudge, pause, change, stop', /Plan settings/.test(st) && /Remind me every day/.test(st) && /Nudge at my time to move/.test(st) && /Pause for a week/.test(st) && /Change what I work on/.test(st) && /Stop my plan/.test(st), st);
   await tap(a.page, '#pl-stop'); await tap(a.page, '#pl-stop-yes');
@@ -225,7 +225,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const a = await open({ seed: { intake: { goal: 'track' }, focus: { at: ago(2) } }, now: at(0, '09:30') });
   const fc = await txt(a.page, '#view .feel-card');
   check('6 Home, no plan: "How do you feel today?" with 5 of the Diary\'s words and More (Version 39.17: "Feeling okay" first)', /How do you feel today\?/.test(fc) && (await a.page.$$('#view .card.hero .feel-card [data-feel]')).length === 5 && /Feeling okay/.test(fc) && /Tired/.test(fc) && /Cramps/.test(fc) && /Low mood/.test(fc) && /Bloating/.test(fc) && (await has(a.page, '#feel-more')), fc);
-  check('6 ... why it matters, and the notes meter: "Noted on N of 27 days", and what comes next', /A note a day shows what repeats in your cycle\./.test(fc) && /Noted on \d+ of 27 days/.test(fc) && /Next: /.test(fc), fc);
+  check('6 ... why it matters, with no notes meter (Version 39.68, the doctors\' review)', /A note a day shows what repeats in your cycle\./.test(fc) && !/Noted on \d+ of/.test(fc), fc);
   check('6 ... the first days\' "Log today" row makes way for it', !(await has(a.page, '#view .today-core-log')));
   await tap(a.page, '#view .feel-card [data-feel="d_tired"]');
   check('6 one tap notes it in her Diary (today\'s entry), on the phone', JSON.stringify((await a.page.evaluate(() => window.Saathi.state.daily))[TODAY]) === '["d_tired"]' && /Noted today\./.test(await txt(a.page, '#view .feel-card')) && (await has(a.page, '#view .feel-card [data-feel="d_tired"].on')));

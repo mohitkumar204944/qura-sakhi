@@ -163,6 +163,7 @@ const ttcAt = (startAgo, x) => trying(Object.assign({ mods: { plan: Object.assig
   check('5 "Why these 3 steps?" with "Your 3 daily steps"', daily && why === 'Why these ' + daily[1] + ' steps?', { daily: daily && daily[0], why });
   await done(a);
   const c = await open({ seed: cycSeed({ mods: { plan: PMOS(8) }, intake: PMOS(8).intake }) });
+  await go(c, 'plan');   /* Version 39.68: the look-back lives on My plan */
   check('4 the PMOS plan keeps "Week 1 is done"', /Week 1 is done/.test(await tc(c, '#view')) && !/Plan week/.test(await tc(c, '#view')));
   await done(c);
 }

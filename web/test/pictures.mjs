@@ -99,7 +99,7 @@ async function page2tiles(page) {
 /* ---------- 2. "Foods that help" strips on the long food pages ---------- */
 {
   /* [route, seed, the food section's heading when the page is long and leads with safety (a chip at the top jumps to it)] */
-  const pages = [['cond-anaemia', {}, 'Food that builds blood'], ['meno-bones', { dob: '1976-05-01' }], ['preg-diet', PREG(20)], ['periods-fasting', {}, 'Sargi and sehri ideas']];
+  const pages = [['meno-bones', { dob: '1976-05-01' }], ['preg-diet', PREG(20)], ['periods-fasting', {}, 'Sargi and sehri ideas']];   /* Version 39.68: the anaemia page is gone */
   for (const [r, seed, jump] of pages) {
     const a = await open({ seed, hash: '#' + r });
     const s = await a.page.evaluate(() => { const el = document.querySelector('#view .food-strip'); if (!el) return null; const r0 = el.getBoundingClientRect(); return { n: el.querySelectorAll('.fs-it svg.food').length, top: r0.top + window.scrollY, names: Array.from(el.querySelectorAll('.fs-it > span')).map((x) => x.textContent), say: !!el.querySelector(':scope > .say-b') }; });
@@ -361,7 +361,7 @@ for (const lang of ['en', 'hi']) {
 
 /* ---------- 15. Hindi, dark mode, a shared phone, 360 px, no page errors ---------- */
 {
-  const routes = ['home', 'help', 'plan-plate', 'plan-progress', 'food', 'care', 'a-cycle.painful-periods', 'pic-check', 'cond-anaemia', 'plan'];
+  const routes = ['home', 'help', 'plan-plate', 'plan-progress', 'food', 'care', 'a-cycle.painful-periods', 'pic-check', 'plan'];   /* Version 39.68: the anaemia page is gone */
   const bad = [];
   for (const lang of ['en', 'hi']) {
     for (const theme of ['light', 'dark']) {
@@ -382,7 +382,7 @@ for (const lang of ['en', 'hi']) {
 /* ---------- 16. The 25 Oct review of V39.8 (MODULE_API 51.1): 21 findings confirmed, all fixed ---------- */
 {
   /* SAFETY-01, PICTURES-01, REGRESSIONS-01: the danger pictures in each language's own words */
-  const OWN = { mr: ['गरोदरपणात:', 'रक्तस्राव', 'ताप', 'सूज'], bn: ['গর্ভাবস্থায়:', 'রক্তপাত', 'জ্বর', 'ফুলে'], ta: ['கர்ப்ப காலத்தில்:', 'இரத்தப்போக்கு', 'காய்ச்சல்', 'வீக்கம்'], te: ['గర్భంలో:', 'రక్తస్రావం', 'జ్వరం', 'వాపు'] };
+  const OWN = { hi: ['गर्भ में:', 'ब्लीडिंग', 'बुखार', 'सूजन'] };   /* Version 39.68 (the doctors' review): Hindi and English only */
   for (const lang of Object.keys(OWN)) {
     const a = await open({ seed: { lang: lang }, hash: '#help' });
     const g = await a.page.evaluate(() => ({ h: (document.querySelector('#view .dgrid .dg-h') || {}).textContent || '', w: Array.from(document.querySelectorAll('#view .dgrid .dg-it span')).map((x) => x.textContent) }));
@@ -420,13 +420,13 @@ for (const lang of ['en', 'hi']) {
     errsAll.push(...p.errs); await p.ctx.close();
   }
   /* SAFETY-02, PICTURES-05, REGRESSIONS-06: strips follow how she eats and her stage */
+  /* Version 39.68 (the doctors' review): the anaemia page and its strip (the one with sprouts) are gone; no strip left shows plain sprouts in a pregnancy */
   const pg = await open({ seed: PREG(20), hash: '#cond-anaemia' });
+  check('16 the anaemia page lands on Explore', (await pg.page.evaluate(() => location.hash)) === '#care');
+  await go(pg.page, 'preg-diet');
   const pgn = await pg.page.$$eval('#view .food-strip .fs-it > span', (xs) => xs.map((x) => x.textContent));
-  check('16 pregnant: the anaemia strip says "Sprouts, cooked", never plain "Sprouts" (SAFETY-02)', pgn.indexOf('Sprouts, cooked') >= 0 && pgn.indexOf('Sprouts') < 0, pgn);
+  check('16 pregnant: her food strip never says plain "Sprouts" (SAFETY-02)', pgn.length >= 5 && pgn.indexOf('Sprouts') < 0, pgn);
   errsAll.push(...pg.errs); await pg.ctx.close();
-  const jn = await open({ seed: { mods: { food: { type: 'jain', milk: true } } }, hash: '#cond-anaemia' });
-  check('16 Jain: no sprouts on the anaemia strip', !(await jn.page.$$eval('#view .food-strip .fs-it > span', (xs) => xs.map((x) => x.textContent))).some((x) => /Sprouts/.test(x)));
-  errsAll.push(...jn.errs); await jn.ctx.close();
   const nm = await open({ seed: { mods: { food: { type: 'veg', milk: false } } }, hash: '#periods-fasting' });
   const nmn = await nm.page.$$eval('#view .food-strip .fs-it > span', (xs) => xs.map((x) => x.textContent));
   check('16 no milk: the fasting strip shows no curd, paneer or chaas (REGRESSIONS-06)', nmn.length >= 5 && !nmn.some((x) => /Curd|Paneer|Chaas/.test(x)), nmn);

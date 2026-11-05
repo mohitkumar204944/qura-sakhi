@@ -137,7 +137,7 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
   const { ctx, page, errs } = await open({ app: 'test-0.32-demo' });
   await go(page, '#me-data');
   const r = await rows(page);
-  check('5 report, backup, sharing and the doctor view are here', ['report', 'backup', 'docportal'].every((g) => r.some((x) => x.go === g)) && !!(await page.$('#me-c4')));
+  check('5 report, backup and sharing are here, and no doctor view (Version 39.68)', ['report', 'backup'].every((g) => r.some((x) => x.go === g)) && !r.some((x) => x.go === 'docportal') && !!(await page.$('#me-c4')));
   check('5 no approval tag unless prototype labels are on', !/Needs approval/.test(await view(page)));
   check('5 sharing is off and says so', /Share with my Qura doctor\s*Off/.test(await view(page)) && (await page.$eval('#me-c4', (e) => e.getAttribute('role'))) === 'switch');
   await page.$eval('#me-c4', (el) => el.click()); await sleep(200);
@@ -154,7 +154,7 @@ const CONDITIONS = /PMOS|PCOS|Pregnant|Breastfeeding|Planning a baby|periods hav
 {
   const { ctx, page, errs } = await open();
   await go(page, '#me-look');
-  check('6 appearance: three themes, four looks, the garden', (await page.$$('[data-theme-pick]')).length === 3 && (await page.$$('[data-look]')).length === 4 && !!(await page.$('#view [data-go="joy"]')));
+  check('6 appearance: three themes, four looks, and no garden (Version 39.68)', (await page.$$('[data-theme-pick]')).length === 3 && (await page.$$('[data-look]')).length === 4 && !(await page.$('#view [data-go="joy"]')));
   await tap(page, '[data-theme-pick="dark"]'); await sleep(150);
   check('6 a theme choice saves', await page.evaluate(() => window.Saathi.state.settings.theme === 'dark'));
   await go(page, '#me-help');

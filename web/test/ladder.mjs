@@ -93,13 +93,13 @@ const sent = (page) => page.evaluate(() => (window.Saathi.state.calls || []).map
   await tap(a, '#ac-send');
   check('1 ... sent in 2 taps', a.taps === 2 && await has(a.page, '#ac-done'), a.taps);
   await done(a);
+  /* Version 39.68 (the doctors' review): Help is on Today only; a guide asks with its own button, its title the topic */
   a = await open({ hash: '#a-cycle.painful-periods' });
-  await tap(a, '#help-btn');
-  check('1 Help: "Ask a Qura doctor"', /Ask a Qura doctor/.test(await txt(a.page, '#sheet-root #hs-doc')), await txt(a.page, '#sheet-root #hs-doc'));
-  await tap(a, '#sheet-root #hs-doc');
-  check('1 ... the page she was on is the topic', (await hashOf(a.page)) === '#ask-call' && (await topic(a.page)) === 'Painful periods', [await hashOf(a.page), await topic(a.page)]);
+  check('1 a guide has no Help button', !(await has(a.page, '#help-btn')));
+  await tap(a, '#art-ask');
+  check('1 ... its "Ask a Qura doctor" makes the page she was on the topic', (await hashOf(a.page)) === '#ask-call' && (await topic(a.page)) === 'Painful periods', [await hashOf(a.page), await topic(a.page)]);
   await tap(a, '#ac-send');
-  check('1 ... sent in 3 taps from Help', a.taps === 3 && await has(a.page, '#ac-done'), a.taps);
+  check('1 ... sent in 2 taps', a.taps === 2 && await has(a.page, '#ac-done'), a.taps);
   await done(a);
   a = await open({});
   await tap(a, '#help-btn'); await tap(a, '#sheet-root #hs-doc');
@@ -128,7 +128,7 @@ const sent = (page) => page.evaluate(() => (window.Saathi.state.calls || []).map
   await done(a);
   a = await open({ seed: { situation: { care: 'govt' } }, hash: '#a-cycle.painful-periods' });
   await tap(a, '#art-ask');
-  check('2 the government route: the doctor screen, with the free government doctor', (await hashOf(a.page)) === '#ask' && await has(a.page, '#ask-free'));
+  check('2 the government route: the doctor screen, with no free government doctor card (Version 39.68)', (await hashOf(a.page)) === '#ask' && !(await has(a.page, '#ask-free')));
   await done(a);
   a = await open({ cfg: PILOT, hash: '#a-cycle.painful-periods' });
   await tap(a, '#art-ask');
@@ -192,7 +192,7 @@ const card = (page, id) => page.evaluate((x) => { const f = (window.Saathi.expla
   await done(a);
   a = await open({ seed: { events: heavy(12), situation: { care: 'govt' } }, hash: '#explain' });
   c = await card(a.page, 'flow_heavy');
-  check('7 ... the government route: the free government gynaecologist', c && c[1] && c[1].go === 'a-services.see-gynaecologist-government-hospital', c);
+  check('7 ... the government route: "See a gynaecologist" opens Care near me (Version 39.68: the government-hospital guide is gone)', c && c[1] && c[1].t === 'See a gynaecologist' && c[1].go === 'access-care', c);
   await done(a);
   a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['burn'], kind: 'cycle' } } }, hash: '#explain' });
   c = await card(a.page, 'burn');
@@ -204,13 +204,13 @@ const card = (page, id) => page.evaluate((x) => { const f = (window.Saathi.expla
   await done(a);
   a = await open({ seed: { situation: { care: 'private', planning: true }, goals: ['ready'], joined: ago(2), tours: {}, settings: { toursAuto: true, notify: true } }, hash: '#care' });
   await settle(a.page, 1500);
-  check('7 the trying-for-a-baby tip shows on Explore, at her questions', /Questions for planning a baby/.test(await txt(a.page, '#tour-root')), await txt(a.page, '#tour-root'));
+  check('7 the trying-for-a-baby tip doesn\'t start on its own (Version 39.68: tips that start on their own are gone)', !/Questions for planning a baby/.test(await txt(a.page, '#tour-root')), await txt(a.page, '#tour-root'));
   await done(a);
 }
 
 /* ---------- 6. Hindi at 360 px ---------- */
 {
-  const a = await open({ seed: { lang: 'hi' }, hash: '#a-cycle.painful-periods' });
+  const a = await open({ seed: { lang: 'hi' }, hash: '#home' });   /* Version 39.68: Help is on Today */
   await tap(a, '#help-btn');
   check('6 Hindi: Help\'s row', /Qura की डॉक्टर से पूछें/.test(await txt(a.page, '#sheet-root #hs-doc')));
   await tap(a, '#sheet-root #hs-doc');

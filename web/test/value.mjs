@@ -65,17 +65,20 @@ async function careSearch(page, q) {
 }
 
 /* ---------- 1. Search finds the tool she means (rec 4) ---------- */
-const WANT = [['free doctor', ['access-doctor', 'access-free']], ['doctor', ['ask', 'access-doctor']], ['iron', ['iron']], ['pmmvy', ['access-schemes', 'access-schemes-preg']], ['scheme money', ['access-schemes', 'access-schemes-preg']],
-  ['report', ['report']], ['asha', ['asha']], ['pregnancy plan', ['preg-plan']], ['near me', ['access-care']], ['hospital', ['access-care', 'access-doctor']], ['reminder', ['tools-reminders']], ['pcod', ['selfcheck', 'cond', 'explain']],
-  ['white discharge', ['intimate-check', 'intimate']], ['safed pani', ['intimate', 'intimate-check']], ['मुफ़्त डॉक्टर', ['access-doctor', 'access-free']], ['आयरन', ['iron']], ['योजना', ['access-schemes', 'access-schemes-preg']], ['डॉक्टर', ['ask', 'access-doctor']]];
+/* Version 39.68 (the doctors' review): the Govt. services pages, My ASHA, Care near me, the self-checks and the Reminders tile are gone.
+   A search for one of them finds what is left; an empty list means "anything, but nothing removed" */
+const WANT = [['free doctor', ['ask']], ['doctor', ['ask']], ['iron', ['iron']], ['pmmvy', []], ['scheme money', []],
+  ['report', ['report']], ['asha', []], ['pregnancy plan', ['preg-plan']], ['near me', []], ['hospital', []], ['reminder', []], ['pcod', []],
+  ['white discharge', ['intimate-check', 'intimate']], ['safed pani', ['intimate', 'intimate-check']], ['मुफ़्त डॉक्टर', ['ask']], ['आयरन', ['iron']], ['योजना', []], ['डॉक्टर', ['ask']]];
+const GONE = /^(access-(doctor|free|online|schemes|care)|asha$|selfcheck|tools-reminders$|tools-summary$|journey|joy$|docportal$|tell$|midlife$|meno-diary$|cond-(anaemia|endo|hyst)$)/;   /* the symptom guide (access-symptoms) stays */
 for (const who of ['meera', 'asha']) {
   const { ctx, page, errs } = await open({ hash: '#care', sample: who });
   const miss = []; let dup = false;
-  for (const [q, ok] of WANT) { const r = await careSearch(page, q); if (ok.indexOf(r[0]) < 0) miss.push(q + ' -> ' + r.slice(0, 3).join(',')); if (new Set(r).size !== r.length) dup = true; }
-  check('1 ' + who + ': all 18 of the audit\'s searches put the tool she means first', !miss.length, miss);
+  for (const [q, ok] of WANT) { const r = await careSearch(page, q); if ((ok.length && ok.indexOf(r[0]) < 0) || r.some((x) => GONE.test(x))) miss.push(q + ' -> ' + r.slice(0, 3).join(',')); if (new Set(r).size !== r.length) dup = true; }
+  check('1 ' + who + ': all 18 of the audit\'s searches put the tool she means first, and none finds a page the doctors removed (Version 39.68)', !miss.length, miss);
   check('1 ' + who + ': one row per screen (iron, ASHA and the free doctor page sit in several topics)', !dup);
   const pm = await careSearch(page, 'pmmvy');
-  check('1 ' + who + ': scheme money puts her own stage\'s page first', who === 'meera' ? pm[0] === 'access-schemes-preg' : pm[0] === 'access-schemes', pm);
+  check('1 ' + who + ': scheme money finds no scheme page (Version 39.68: the Govt. services pages are gone)', !pm.some((r) => /^access-/.test(r)), pm);
   const plan = await careSearch(page, 'plan');
   check('1 ' + who + ': "plan" finds the pregnancy plan, not "unplanned" pregnancy', plan[0] === 'preg-plan', plan);
   await go(page, 'home');
@@ -85,14 +88,14 @@ for (const who of ['meera', 'asha']) {
 }
 
 /* ---------- 2. Explore: her tools first, named groups (recs 3, 5, 9); Govt. services in one row (Version 36) ---------- */
-for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['sunita', ['post-recovery', 'post-pelvic', 'iron']], ['asha', ['contra-mine', 'contra-missed', 'tools-reminders']], ['kamla', ['screen-mine', 'meno-diary']]]) {
+for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['sunita', ['post-recovery', 'post-pelvic', 'iron']], ['asha', ['contra-mine', 'contra-missed', 'explain']], ['kamla', ['screen-mine', 'meno', 'meno-hrt']]]) {   /* Version 39.68: no Reminders tile, no weekly symptom diary */
   const { ctx, page, errs } = await open({ hash: '#care', sample: who });
   const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
   /* Version 39.62 (phase D): For you right under search (Contents is in the library); Govt. services on Explore only on the government
      route or "Nowhere yet", else in the library */
   const gov = await page.evaluate(() => ['govt', 'asha', 'none'].indexOf((window.Saathi.state.situation || {}).care) >= 0);
   await go(page, 'library'); const lib = await gos(page, '#view [data-go]'); await go(page, 'care');
-  check('2 ' + who + ': Explore opens with For you, her tools first; no Plans row (My plan is a tab); Govt. services on Explore only on the government route, else in the library', all[0] === fy[0] && all.indexOf('learn') < 0 && all.indexOf('plan') < 0 && want.every((r, i) => fy[i] === r) && !fy.some((r) => /^access-|^asha$/.test(r)) && (gov ? all.indexOf('access-free') >= 0 && lib.indexOf('access-free') < 0 : all.indexOf('access-free') < 0 && lib.indexOf('access-free') >= 0), [all.slice(0, 8), fy, gov, lib.slice(-4)]);
+  check('2 ' + who + ': Explore opens with For you, her tools first; no Plans row (My plan is a tab); no Govt. services on Explore or in the library (Version 39.68)', all[0] === fy[0] && all.indexOf('learn') < 0 && all.indexOf('plan') < 0 && want.every((r, i) => fy[i] === r) && !fy.some((r) => /^access-|^asha$/.test(r)) && all.indexOf('access-free') < 0 && lib.indexOf('access-free') < 0, [all.slice(0, 8), fy, gov, lib.slice(-4)]);
   check('2 ' + who + ': no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -102,37 +105,32 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   /* Version 39.2 (journey audit MIN-12): the four tool drawers left the topics; their tools live in Me, Diary, Learn and My plan */
   check('2 no tool drawers among the topics, and Govt. services is a row, not a topic card', ['topic-plans', 'topic-records', 'topic-support', 'topic-fun'].every((x) => topics.indexOf(x) < 0) && topics.indexOf('topic-tools') < 0 && topics.indexOf('topic-free') < 0, topics);
   await go(page, 'library'); const cv = await view(page); await go(page, 'care');   /* Version 39.62: in the library off the government route */
-  check('2 Govt. services keeps its name', cv.indexOf('Govt. services') >= 0);
+  check('2 no Govt. services row in the library (Version 39.68)', cv.indexOf('Govt. services') < 0);
   await go(page, 'topic-free');
   const free = await gos(page, '#view .list [data-go]');
-  check('2 Govt. services (the group) lists the hub, the free doctor, care near me, schemes, online and ASHA; Qura\'s doctor is in Support', ['access-free', 'access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha'].every((x) => free.indexOf(x) >= 0) && free[0] === 'access-free' && free.indexOf('ask') < 0, free);
+  check('2 the services group keeps its guides and lists no removed page (Version 39.68); Qura\'s doctor is in Support', free.length > 0 && !free.some((x) => GONE.test(x)) && free.indexOf('ask') < 0, free);
   await go(page, 'topic-support');
   check('2 Ask a Qura doctor sits in Support', (await gos(page, '#view .list [data-go]')).indexOf('ask') >= 0);
   await go(page, 'topic-records');
   const recs = await gos(page, '#view .list [data-go]');
-  check('2 My records: the report for the doctor, reports and the summary', ['report', 'tools-reports', 'tools-summary'].every((x) => recs.indexOf(x) >= 0), recs);
+  check('2 My records: the report for the doctor and reports; no summary (Version 39.68: the report does the same job)', ['report', 'tools-reports'].every((x) => recs.indexOf(x) >= 0) && recs.indexOf('tools-summary') < 0, recs);
   await go(page, 'topic-plans');
   const plans = await gos(page, '#view .list [data-go]');
-  check('2 My plans and reminders: reminders, medicines, iron and the journeys', ['tools-reminders', 'tools-meds', 'iron', 'journey'].every((x) => plans.indexOf(x) >= 0), plans);
+  check('2 My plans and reminders: medicines and iron; no Reminders tile and no journeys (Version 39.68: Me lists every reminder)', ['tools-meds', 'iron'].every((x) => plans.indexOf(x) >= 0) && plans.indexOf('tools-reminders') < 0 && plans.indexOf('journey') < 0, plans);
   await go(page, 'topic-fun');
   check('2 Just for fun has no Doctor\'s view while prototype labels are off', (await gos(page, '#view .list [data-go]')).indexOf('docportal') < 0);
   check('2 no page errors', !errs.length, errs);
   await ctx.close();
 }
 
-/* ---------- 3. Get care free: one page for every free doctor, scheme and helper (rec 3) ---------- */
+/* ---------- 3. Get care free (rec 3). Version 39.68: the doctors removed the Govt. services pages ---------- */
 {
-  const { ctx, page, errs } = await open({ hash: '#help', seed: { mods: { access: { claims: { pmmvy: { ready: isoAgo(3) }, jsy: { ready: isoAgo(3) } } } } } });
-  check('3 Help\'s doctor card opens Get care free', !!(await page.$('#view .doc-card [data-go="access-free"]')));
-  await tap(page, '#view .doc-card [data-go="access-free"]'); await sleep(250);
-  const rows = await gos(page, '#view .list [data-go]');
-  /* Version 39.7: then the three Learn guides on how to use free care */
-  check('3 rows: free government doctors, care near me, schemes, do it online, ASHA (government only), then how to use free care', JSON.stringify(rows.filter((r) => r.indexOf('a-') !== 0)) === JSON.stringify(['access-doctor', 'access-care', 'access-schemes', 'access-online', 'asha']) && rows.filter((r) => r.indexOf('a-services.') === 0).length === 3, rows);
-  check('3 the schemes row counts her claims', /My claims: 2/.test(await view(page)));
-  check('3 the emergency line: 112, and 108 or 102 for a free ambulance', /Emergency: call 112, or 108 or 102 for a free ambulance/.test(await view(page)));
-  check('3 opening it is noted on the phone, for her setup card', await page.evaluate(() => !!window.Saathi.state.mods.access.seenFree));
-  await go(page, 'care'); const ex = (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length; await go(page, 'library');   /* Version 39.62: Explore or the library, never both */
-  check('3 Care has one Govt. services row', ex + (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length === 1 && /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText).catch(() => '') + (ex ? 'Govt. services' : '')));
+  const { ctx, page, errs } = await open({ hash: '#help' });
+  check('3 Help\'s doctor card: a Qura doctor, and no Get care free link', !(await page.$('#view .doc-card [data-go="access-free"]')) && !!(await page.$('#view .doc-card [data-ask]')));
+  await go(page, 'access-free'); await sleep(250);
+  check('3 Get care free lands on Explore', (await page.evaluate(() => location.hash)) === '#care');
+  const ex = (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length; await go(page, 'library');
+  check('3 Explore and the library have no Govt. services row', ex + (await gos(page, '#view [data-go]')).filter((r) => r === 'access-free').length === 0 && !(await page.$('#view .care-free')));
   check('3 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -171,9 +169,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 }
 {
   const { ctx, page, errs } = await open({ seed: { mods: { journey: { active: 'iron', start: isoAgo(2), done: { 1: isoAgo(2) }, finished: {} } } } });
-  check('4 today\'s journey step is a row in Today, with Done for today', /Day 3 of 21/.test(await card(page, '#view .today-card')) && !!(await page.$('#view .today-journey [data-today-act]')));
-  await tap(page, '#view .today-journey [data-today-act]'); await sleep(300);
-  check('4 one tap marks the step done', await page.evaluate(() => !!window.Saathi.state.mods.journey.done[3]) && !(await page.$('#view .today-journey')));
+  check('4 a journey she was on: no row on Today (Version 39.68: 21 small steps is gone)', !/Day 3 of 21/.test(await card(page, '#view .today-card')) && !(await page.$('#view .today-journey')));
   check('4 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -194,27 +190,25 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
 
 /* ---------- 6. The setup card (rec 2); Version 37: the next step only, inside Today's slot ---------- */
 {
-  const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [], situation: { stage: 'cycle', care: 'govt' } } });   /* Version 39.58.1: free care and her ASHA on the government route */
+  /* Version 39.68 (the doctors' review): no free care or ASHA steps, the government route included */
+  const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [], situation: { stage: 'cycle', care: 'govt' } } });
   const su = await text(page, '#view .setup-card');
-  check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 2/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
+  check('6 a new woman: Set up Sakhi for you, the next step only, with the count', /Set up Sakhi for you/.test(su) && /Log your last period/.test(su) && /0 \/ 1/.test(su) && (await page.$$('#view .setup-it')).length === 1, su);
   check('6 the web prototype has no phone-reminders step', !/reminders on this phone/.test(su));
   check('6 the first-week petals card is gone', !/first three petals/.test(await view(page)));
   await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
   check('6 "Log your last period" opens the period log', !!(await page.$('#sheet-root .sheet')));
   await page.evaluate(() => window.Saathi.closeSheet()); await sleep(150);
   await setState(page, (d) => { const S = window.Saathi; S.state.events.push({ d, t: 'start' }); S.save(); }, isoAgo(10)); await go(page, 'learn'); await go(page, 'home');
-  const su2 = await text(page, '#view .setup-card');
-  check('6 her period noted: the count goes up and the next step is free care near her (Mohit, 26 Oct: My ASHA stays off Today)', /1 \/ 2/.test(su2) && /Look at free care near you/.test(su2) && !/ASHA/.test(su2) && !/Log your last period/.test(su2), su2);
-  await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
-  check('6 that step opens Get care free', await page.evaluate(() => location.hash === '#access-free'));
-  await go(page, 'home');
-  check('6 every step on Today done: the card is gone from Today', !(await page.$('#view .setup-card')));
-  await go(page, 'me'); const su3 = await text(page, '#view .setup-card');
-  check('6 Me keeps her ASHA\'s number as a step', /2 \/ 3/.test(su3) && /Save your ASHA or ANM’s number/.test(su3), su3);
-  await page.$eval('#view .setup-it', (b) => b.click()); await sleep(300);
-  check('6 that step opens My ASHA', await page.evaluate(() => location.hash === '#asha'));
+  check('6 her period noted: every step done, so the card is gone from Today (no "Look at free care near you")', !(await page.$('#view .setup-card')) && !/Look at free care near you/.test(await view(page)));
   await go(page, 'me');
-  await tap(page, '#setup-hide'); await sleep(250);
+  check('6 ... and Me has no "Save your ASHA or ANM’s number" step', !/Save your ASHA or ANM’s number/.test(await text(page, '#view .setup-card')));
+  check('6 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  const { ctx, page, errs } = await open({ seed: { dob: '1999-03-01', events: [], situation: { stage: 'cycle' } } });
+  await tap(page, '#setup-hide'); await sleep(250); await go(page, 'learn'); await go(page, 'home');
   check('6 "Hide this" hides it, and it stays hidden', !(await page.$('#view .setup-card')) && (await page.evaluate(() => window.Saathi.state.prompts.setup)) === 'off');
   check('6 no page errors', !errs.length, errs);
   await ctx.close();
@@ -225,7 +219,7 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   await setState(page, () => { const S = window.Saathi; S.state.situation.care = 'govt'; S.save(); });
   await go(page, 'me');
   const su = await text(page, '#view .setup-card');
-  check('6 pregnant, on Android: the next of plan reminders, scheme money and her ASHA (her dates and iron are done)', (await page.$$('#view .setup-it')).length === 1 && [/Turn on your plan’s reminders/, /Check the scheme money you can get/, /Save your ASHA or ANM’s number/].filter((r) => r.test(su)).length === 1 && /2 \/ 5/.test(su), su);
+  check('6 pregnant, on Android: the next step is her plan\'s reminders (her dates and iron are done); no scheme money or ASHA step (Version 39.68)', (await page.$$('#view .setup-it')).length === 1 && /Turn on your plan’s reminders/.test(su) && !/Check the scheme money you can get|Save your ASHA or ANM’s number/.test(su) && /2 \/ 3/.test(su), su);
   await setState(page, () => { const S = window.Saathi; S.state.settings.discreet = true; S.save(); }); await go(page, 'learn'); await go(page, 'me');
   check('6 discreet mode: no setup card', !(await page.$('#view .setup-card')));
   check('6 no page errors', !errs.length, errs);
@@ -295,9 +289,9 @@ for (const [who, want] of [['meera', ['preg-plan', 'iron', 'preg-week']], ['suni
   const v = await view(page);
   check('9 Hindi: the setup card and the slot', /Sakhi को अपने लिए तैयार करें/.test(v) && /Sakhi कहती है/i.test(v), v.slice(0, 600));
   await go(page, 'access-free');
-  check('9 Hindi: Govt. services', /सरकारी सेवाएँ/.test(await view(page)) && /एम्बुलेंस/.test(await view(page)));
+  check('9 Hindi: Govt. services lands on Explore (Version 39.68)', (await page.evaluate(() => location.hash)) === '#care');
   await go(page, 'care'); const ev = await view(page); await go(page, 'library'); const lv = await view(page);   /* Version 39.62: her topics in the library */
-  check('9 Hindi: Explore, Govt. services and her topics, with no Plans row and no drawers', /खोजें/.test(ev) && !/आपके लिए प्लान/.test(ev + lv) && /सरकारी सेवाएँ/.test(ev + lv) && /आपके लिए विषय/.test(lv) && !/बस मज़े के लिए/.test(ev + lv));
+  check('9 Hindi: Explore and her topics, with no Plans row, no drawers and no Govt. services (Version 39.68)', /खोजें/.test(ev) && !/आपके लिए प्लान/.test(ev + lv) && !/सरकारी सेवाएँ/.test(ev + lv) && /आपके लिए विषय/.test(lv) && !/बस मज़े के लिए/.test(ev + lv));
   check('9 no page errors', !errs.length, errs);
   await ctx.close();
 }

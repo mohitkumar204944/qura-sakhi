@@ -234,18 +234,30 @@ const plan = async (a) => (await st(a)).mods.plan;
   await done(b);
 }
 
-/* ---------- 8 "My baby has died" ---------- */
+/* ---------- 8 "My baby has died" (Version 39.68, the doctors' review: the words go; leaving "I had a baby" stops every baby line;
+   a mother who marked it before this version keeps what it gave her) ---------- */
 {
   const VAX = { id: 'post-vax-6w', mod: 'post', title: { en: 'Vaccines', hi: 'टीके' }, kind: 'checkup', dates: [ago(-20)], time: '09:00', on: true };
+  const b = await open({ seed: pseed(10, 9, {}, { reminders: [REM, VAX] }), hash: 'post' });
+  check('8 the after-birth page has no "My baby has died" (Version 39.68)', !(await has(b, '#pst-lost')));
+  await go(b, 'home'); await tap(b, '#stage-btn');
+  check('8 ... nor the stage sheet', !(await has(b, '#st-lost')));
+  await tap(b, '[data-stage="cycle"]'); await tap(b, '#st-save'); await settle(b.page, 800);
+  const sb = await st(b);
+  check('8 leaving "I had a baby": every baby line stops at once (no vaccine reminders, her feeding goal becomes her recovery)', sb.situation.babyOff === TODAY && !sb.situation.babyDied && (await remIds(b)).indexOf('post-vax') < 0 && sb.mods.plan.goalKey === 'recovery', { off: sb.situation.babyOff, rem: await remIds(b), goal: sb.mods.plan.goalKey });
+  await go(b, 'post');
+  check('8 ... with no words of a loss: no "We are so sorry", no Undo for it', !/We are so sorry|Marked this by mistake/.test(await view(b)) && !/Feeds today|Next vaccines/.test(await view(b)), (await view(b)).slice(0, 400));
+  await go(b, 'home');
+  check('8 ... and nothing about a loss in Sakhi says', !/We are so sorry/.test(await slot(b)), await slot(b));
+  await done(b);
   const a = await open({ seed: pseed(10, 9, {}, { reminders: [REM, VAX] }), hash: 'post' });
-  check('8 the after-birth page has "My baby has died"', await has(a, '#pst-lost'));
-  await tap(a, '#pst-lost');
+  await a.page.evaluate(() => window.Saathi.post.lost()); await settle(a.page, 400);   /* as a mother who said so before Version 39.68 */
   const sh = await txt(a, '#sheet-root');
-  check('8 it asks once, saying what stops and what stays', /We are so sorry/.test(sh) && /Sakhi will stop everything about your baby/.test(sh) && /What is for you stays/.test(sh), sh);
+  check('8 a mark from before: it asked once, saying what stops and what stays', /We are so sorry/.test(sh) && /Sakhi will stop everything about your baby/.test(sh) && /What is for you stays/.test(sh), sh);
   await tap(a, '#pst-lost-yes'); await settle(a.page, 800);
   const s = await st(a);
   check('8 marked: no vaccine reminders, her feeding goal becomes her recovery, no celebration', s.situation.babyDied === TODAY && (await remIds(a)).indexOf('post-vax') < 0 && s.mods.plan.goalKey === 'recovery' && !/petal/i.test(await txt(a, '.toast, #toast')), { rem: await remIds(a), goal: s.mods.plan.goalKey });
-  check('8 the after-birth page: her support first (14416, support after a loss), no feeds, no vaccines, no baby\'s age', /We are so sorry Talk to someone: Tele-MANAS 14416, free, any time\. Call 14416 Support after a loss/.test(await view(a)) && !/Feeds today|Next vaccines|Your baby is/.test(await view(a)), (await view(a)).slice(0, 500));
+  check('8 the after-birth page: her support first (14416, support after a loss), no feeds, no vaccines, no baby\'s age', /We are so sorry Talk to someone: Tele-MANAS 14416, free, any time\. Call 14416/.test(await view(a)) && !/Feeds today|Next vaccines|Your baby is/.test(await view(a)), (await view(a)).slice(0, 600));
   await go(a, 'home');
   const v = await view(a);
   check('8 Today: "days since birth", "Your recovery", no Feeding button, no feeding step, her support in Sakhi says', /days since birth/.test(v) && /Your recovery/.test(v) && !/Recovery and feeding/.test(v) && !(await ids(a)).some((k) => ['feed', 'bfood'].indexOf(k) >= 0) && /We are so sorry/.test(await slot(a)), v.slice(0, 800));
@@ -261,16 +273,8 @@ const plan = async (a) => (await st(a)).mods.plan;
   await go(a, 'post');
   check('8 the after-birth page: no baby in its first line or its urgent box', /The first weeks after a birth are for healing/.test(await view(a)) && /Thoughts of harming yourself: 14416 or 112/.test(await view(a)) && !/or your baby/.test(await view(a)));
   await go(a, 'post'); await tap(a, '#pst-lost-undo');
-  check('8 "Marked this by mistake? Undo": her feeding goal comes back', !(await st(a)).situation.babyDied && (await has(a, '#pst-lost')) && (await plan(a)).goalKey === 'feed', (await plan(a)).goalKey);
+  check('8 "Marked this by mistake? Undo": her feeding goal comes back', !(await st(a)).situation.babyDied && (await plan(a)).goalKey === 'feed', (await plan(a)).goalKey);
   await done(a);
-  const b = await open({ seed: pseed(25, 24) });
-  await tap(b, '#stage-btn'); await tap(b, '[data-stage="post"]');
-  check('8 the stage sheet has it too', await has(b, '#st-lost'));
-  await tap(b, '#st-lost'); await settle(b.page, 300);
-  check('8 ... opening the same question', /Sakhi will stop everything about your baby/.test(await txt(b, '#sheet-root')));
-  await tap(b, '#pst-lost-yes'); await go(b, 'home');
-  check('8 after it: the contraception card without the feeding question', /You can get pregnant again soon after a birth/.test(await slot(b)) || !(await has(b, '[data-p2-feed]')), await slot(b));
-  await done(b);
 }
 
 /* ---------- 9 the new danger sign ---------- */
@@ -349,7 +353,7 @@ const plan = async (a) => (await st(a)).mods.plan;
 {
   /* a: "My baby has died" on the old plan, My food, the plan picker, Explore; undo */
   const a = await open({ seed: pseed(10, 9, { pv: 1 }), hash: 'post' });
-  await tap(a, '#pst-lost'); await tap(a, '#pst-lost-yes'); await settle(a.page, 600);
+  await a.page.evaluate(() => window.Saathi.post.lost()); await settle(a.page, 400); await tap(a, '#pst-lost-yes'); await settle(a.page, 600);   /* a mark from before Version 39.68 */
   const s1 = (await st(a)).situation;
   check('15a after "My baby has died" she no longer breastfeeds a baby; the old plan has no food-while-breastfeeding step', s1.breastfeeding === false && s1.bfWas === true && !(await ids(a)).includes('bfood'), { sit: s1, ids: await ids(a) });
   await go(a, 'food');
@@ -405,8 +409,8 @@ const plan = async (a) => (await st(a)).mods.plan;
     mods: { plan: { pack: 'preg', goalKey: 'food', start: ago(60), started: ago(60), go: true, pv: 2, level: 0, limits: { knees: false, back: false }, food: 'veg', focus: 'habits', goal: 'cycles', remAt: '20:00', log: {}, weeks: {}, body: [], intake: PIK } } }, wait: 1200 });
   await tap(h, '#stage-btn'); await tap(h, '[data-stage="post"]'); await tap(h, '#st-save'); await settle(h.page, 1200);
   await tap(h, '#pl-chg-go');
-  const skipped = !/So your steps fit your day/.test(await view(h)) && (await has(h, '#pl-in-make'));
-  check('15g after the birth, "Your day" isn\'t asked again (her pregnancy\'s answers): straight to her answers and "Make my plan"', skipped, (await view(h)).slice(0, 400));
+  const skipped = !/So your steps fit your day|told Sakhi/.test(await view(h)) && (await h.page.evaluate(() => location.hash)) === '#plan-reveal';
+  check('15g after the birth, "Your day" isn\'t asked again (her pregnancy\'s answers): straight to her new plan (Version 39.68: no answers summary)', skipped, (await view(h)).slice(0, 400));
   if (await has(h, '#pl-in-make')) await tap(h, '#pl-in-make'); await settle(h.page, 500);
   for (let i = 0; i < 8 && !(await has(h, '#pl-rv-go')); i++) if (await has(h, '#pl-rv-next')) await tap(h, '#pl-rv-next'); else break;
   if (await has(h, '#pl-rv-go')) await tap(h, '#pl-rv-go'); await settle(h.page, 800);

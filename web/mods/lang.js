@@ -739,12 +739,14 @@
   S.register({
     id: ID,
     demoPersona: 'blank',
-    langs: LANGS,
-    strings: STRINGS,
+    /* Version 39.68 (the doctors' review): Hindi and English only; Marathi, Bengali, Tamil and Telugu are no longer offered (a
+       woman who chose one moves to its fallback, core load()); read-aloud and this page stay */
+    langs: [],
+    strings: { en: STRINGS.en, hi: STRINGS.hi },
     routes: { lang: renderLang },
     open: ['lang'],
     tiles: [{ section: 'tools', route: 'lang', title: 'lang_tile', sub: 'lang_tile_s', icon: 'speaker', order: 90, gated: false,
-      keywords: 'language bhasha bhasa marathi bengali bangla tamil telugu hindi english read aloud voice speak listen audio sunao भाषा मराठी বাংলা தமிழ் తెలుగు सुनें' }],
+      keywords: 'language bhasha bhasa hindi english read aloud voice speak listen audio sunao भाषा सुनें' }],
     css: [
       '.iconbtn.lang-say.on { background: var(--accent-strong); color: #FFFFFF; }',
       '.lang-row { border: 2px solid transparent; }',

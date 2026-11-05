@@ -141,14 +141,14 @@ for (const [who, sd] of Object.entries(W)) {
   check('3 More questions: her stage\'s dos and don\'ts first, then the questions Explore doesn\'t show', (await p.$eval('#view .qa-sec .qa-wide', (e) => e.dataset.qa).catch(() => '')) === 'cycle.period-dos-and-donts' && ql.length === 3 && !ql.some((k) => qe.indexOf(k) >= 0) && /More questions/.test(await view(p)), { qe, ql });
   const tp = await p.$$eval('#view .topic-grid [data-go]', (b) => b.map((x) => x.dataset.go));
   check('3 her topics, My food second', tp[0] === 'topic-periods' && tp[1] === 'food' && tp.length >= 5, tp);
-  check('3 Govt. services and Contents are here', await has(p, '#view .care-free [data-go="access-free"]') && await has(p, '#view .care-contents [data-go="learn"]'));
+  check('3 Contents is here, and no Govt. services (Version 39.68: the doctors removed those pages)', !(await has(p, '#view .care-free')) && await has(p, '#view .care-contents [data-go="learn"]'));
   await tap(p, '#view .backrow button, #view [data-back]').catch(() => {});
   await done(a);
   let b = await open({ seed: Object.assign({}, W.sana, { situation: { care: 'govt' } }), hash: '#care' });
-  check('3 the government route: Govt. services on Explore, not again in the library', await has(b.page, '#view .care-free') && (await go(b.page, 'library'), !(await has(b.page, '#view .care-free'))));
+  check('3 the government route: no Govt. services on Explore or in the library (Version 39.68)', !(await has(b.page, '#view .care-free')) && (await go(b.page, 'library'), !(await has(b.page, '#view .care-free'))));
   await done(b);
   b = await open({ seed: Object.assign({}, W.sana, { situation: { care: 'none' } }), hash: '#care' });
-  check('3 "Nowhere yet": Govt. services on Explore', await has(b.page, '#view .care-free'));
+  check('3 "Nowhere yet": no Govt. services either (Version 39.68)', !(await has(b.page, '#view .care-free')));
   await done(b);
   b = await open({ seed: Object.assign({}, W.sana, { settings: { discreet: true } }), hash: '#care' });
   const dc = await census(b.page);
@@ -158,8 +158,8 @@ for (const [who, sd] of Object.entries(W)) {
   await done(b);
 }
 
-/* ---------- 4. PLACES-05: violence, abortion and STI pages, 2 taps from every screen ---------- */
-const priv = (page) => page.$$eval('#sheet-root .hs-priv [data-hs-go]', (b) => b.map((x) => x.dataset.hsGo));
+/* ---------- 4. PLACES-05. Version 39.68 (the doctors' review): Help is on Today only (a reader has its tab), with no Private help; the violence
+   and STI pages are gone; the abortion page stays, found by search and from her Missed period topic ---------- */
 const STAGES = [
   ['tracking', W.priya, 'pregtest-abortion'], ['trying', W.neha, 'pregtest-abortion'], ['pregnant', W.riya, 'pregtest-options'], ['after a birth', W.meera, 'pregtest-abortion'],
   ['midlife', W.kavita, 'pregtest-abortion'], ['periods stopped', W.sunita, 'pregtest-abortion'],
@@ -168,50 +168,49 @@ const STAGES = [
   ['just reading', { stage: 'browse', events: [] }, 'pregtest-abortion']
 ];
 for (const [nm, sd, ab] of STAGES) {
-  const a = await open({ seed: sd, hash: sd.stage === 'browse' ? '#care' : '#home' }); const p = a.page;
+  const browse = sd.stage === 'browse';
+  const a = await open({ seed: sd, hash: browse ? '#care' : '#home' }); const p = a.page;
   if (await has(p, '#rest-open')) await tap(p, '#rest-open');   /* a shared phone opens on "Your diary is closed" */
-  if (!(await has(p, '#help-btn'))) { check('4 ' + nm + ': the Help button', false, { hash: await p.evaluate(() => location.hash), v: (await view(p)).slice(0, 160), top: await txt(p, '#topbar') }); await done(a); continue; }
-  await tap(p, '#help-btn'); const pr = await priv(p);
-  const want = ['intimate-safety'].concat(ab ? [ab] : [], ['intimate-sti']);
-  check('4 ' + nm + ': Help has the private pages under one label', pr.join() === want.join() && /Private help/.test(await txt(p, '#sheet-root')), pr);
-  let ok = true;
-  for (const r of want) {
-    await go(p, sd.stage === 'browse' ? 'care' : 'diary'); await tap(p, '#help-btn'); await tap(p, '#sheet-root [data-hs-go="' + r + '"]');
-    const h = await p.evaluate(() => location.hash); const v = await view(p);
-    if (h !== '#' + r || v.length < 80 || /not ready|Needs approval/i.test(v)) { ok = false; check('4 ' + nm + ': ' + r + ' opens', false, { h, v: v.slice(0, 120) }); }
+  if (browse) check('4 ' + nm + ': Help is a tab', await has(p, '#tabbar [data-go="help"]'));
+  else if (!(await has(p, '#help-btn'))) { check('4 ' + nm + ': the Help button on Today', false, { hash: await p.evaluate(() => location.hash), v: (await view(p)).slice(0, 160), top: await txt(p, '#topbar') }); await done(a); continue; }
+  else {
+    await tap(p, '#help-btn');
+    check('4 ' + nm + ': Help from Today: 112, and no Private help', /112/.test(await txt(p, '#sheet-root')) && !(await has(p, '#sheet-root .hs-priv')) && !/Private help/.test(await txt(p, '#sheet-root')));
+    await p.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await settle(p);
   }
-  check('4 ' + nm + ': each opens in 2 taps (Help, then the page)', ok);
+  for (const r of ['intimate-safety', 'intimate-sti']) { await go(p, r); check('4 ' + nm + ': ' + r + ' lands on Explore', (await p.evaluate(() => location.hash)) === '#care'); }
+  if (ab) { await go(p, ab); const h = await p.evaluate(() => location.hash); const v = await view(p);
+    check('4 ' + nm + ': ' + ab + ' still opens', h === '#' + ab && v.length >= 80 && !/not ready|Needs approval/i.test(v), { h, v: v.slice(0, 120) }); }
   await done(a);
 }
 {
-  /* every tab has the Help button, so the pages are 2 taps from each */
-  const a = await open({ seed: W.priya }); const p = a.page; const miss = [];
-  for (const r of ['home', 'plan', 'diary', 'care', 'library', 'learn', 'me']) { await go(p, r); if (!(await has(p, '#help-btn'))) miss.push(r); else { await tap(p, '#help-btn'); if ((await priv(p)).length !== 3) miss.push(r + ':rows'); await p.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await settle(p); } }
-  check('4 from Today, My plan, Diary, Explore, the library, Learn and Me: Help, then the page', !miss.length, miss);
-  for (const [q, r] of [['violence', /intimate-safety/], ['sti', /intimate-sti/], ['abortion', /pregtest-abortion/]]) {
+  const a = await open({ seed: W.priya }); const p = a.page; const where = [];
+  for (const r of ['home', 'plan', 'diary', 'care', 'library', 'learn', 'me']) { await go(p, r); if (await has(p, '#help-btn')) where.push(r); }
+  check('4 the Help button is on Today only', where.join() === 'home', where);
+  for (const [q, r, keep] of [['violence', /intimate-safety/, false], ['sti', /intimate-sti/, false], ['abortion', /pregtest-abortion/, true]]) {
     await go(p, 'care'); await p.fill('#care-q', q); await settle(p, 300);
     const res = await p.$$eval('#view [data-go]', (b) => b.map((x) => x.dataset.go));
-    check('4 search "' + q + '" still finds it', res.some((x) => r.test(x)), res.slice(0, 6));
+    check('4 search "' + q + '" ' + (keep ? 'still finds it' : 'finds no removed page'), keep ? res.some((x) => r.test(x)) : !res.some((x) => r.test(x)), res.slice(0, 6));
     await p.fill('#care-q', ''); await settle(p, 200);
   }
   await done(a);
-  /* while she joins, Help has only the rows that work then */
+  /* while she joins: no Help button (Version 39.68: "not needed from the first screen") */
   const j = await open({ seed: { stage: 'onboard' }, hash: '#home' });
-  if (await has(j.page, '#help-btn')) { await tap(j.page, '#help-btn'); check('4 while she joins: no private rows (pages open after joining)', (await priv(j.page)).length === 0); }
-  else check('4 while she joins: no private rows (pages open after joining)', true);
+  check('4 while she joins: no Help button', !(await has(j.page, '#help-btn')));
   await done(j);
 }
 
 /* ---------- 5. Learn's Start here and Today's read follow her day ---------- */
 const startHere = async (seed) => { const a = await open({ seed, hash: '#learn' }); const s = await a.page.$eval('#view .learn-next [data-go]', (e) => e.dataset.go.slice(2)).catch(() => ''); await done(a); return s; };
 const preg = (days) => Object.assign({}, W.riya, { situation: { care: 'private', pregnant: true, pregnantSince: ago(days) } });
-check('5 pregnant, 8 weeks: register before 12 weeks', (await startHere(preg(56))) === 'pregnancy.register-by-12-weeks');
+{ const r = await startHere(preg(56)); check('5 pregnant, 8 weeks: her four check-ups (Version 39.68: "Register before 12 weeks" is gone)', r === 'pregnancy.four-antenatal-visits', r); }
 check('5 pregnant, 20 weeks: her four check-ups, not "Register before 12 weeks"', (await startHere(preg(140))) === 'pregnancy.four-antenatal-visits');
 check('5 pregnant, 28 weeks: the sugar test and her blood pressure', (await startHere(preg(196))) === 'pregnancy.sugar-test-blood-pressure-pmos');
 check('5 pregnant, 36 weeks: the signs that mean go now', (await startHere(preg(252))) === 'pregnancy.danger-signs-call-112');
 check('5 pregnant, 20 weeks, the check-ups read: the danger signs next', (await startHere(Object.assign(preg(140), { mods: { joy: { reads: { 'pregnancy.four-antenatal-visits': ago(1) } } } }))) === 'pregnancy.danger-signs-call-112');
 check('5 3 weeks after the birth: the first six weeks after birth', (await startHere(W.meera)) === 'pregnancy.after-birth-first-six-weeks');
-check('5 ... with both after-birth guides read: the schemes, never a pregnancy guide', (await startHere(Object.assign({}, W.meera, { mods: { joy: { reads: { 'pregnancy.after-birth-first-six-weeks': ago(2), 'pregnancy.after-birth-dos-and-donts': ago(1) } } } }))) === 'pregnancy.government-support-schemes');
+{ const r = await startHere(Object.assign({}, W.meera, { mods: { joy: { reads: { 'pregnancy.after-birth-first-six-weeks': ago(2), 'pregnancy.after-birth-dos-and-donts': ago(1) } } } }));
+  check('5 ... with both after-birth guides read: never a pregnancy guide (Version 39.68: the schemes guide is gone)', !/^pregnancy\.(four-antenatal|dos-and-donts|danger-signs|sugar-test|babys-movements|register|government)/.test(r), r); }
 check('5 periods stopped, hot flushes: hot flushes, not "Perimenopause: what it is"', (await startHere(W.sunita)) === 'midlife.hot-flushes-night-sweats');
 check('5 periods stopped, no goal: bleeding after menopause', (await startHere(Object.assign({}, W.sunita, { goals: [] }))) === 'midlife.bleeding-after-menopause');
 check('5 periods changing, no goal: perimenopause first (the book\'s order)', (await startHere(Object.assign({}, W.kavita, { goals: [] }))) === 'midlife.perimenopause-indian-age');
@@ -223,7 +222,7 @@ check('5 tracking, 28: what a cycle is; never the girls\' guide', (await startHe
   /* Today's read in her first days (no plan) is the same pick */
   const a = await open({ seed: Object.assign(preg(140), { focus: { tile: 'preg', goals: ['food'], at: ago(1) } }) });
   const go2 = await a.page.$$eval('#view [data-go^="a-"]', (b) => b.map((x) => x.dataset.go.slice(2)));
-  check('5 Today\'s first-days read at 20 weeks: her four check-ups, as Learn', go2.indexOf('pregnancy.four-antenatal-visits') >= 0 && go2.indexOf('pregnancy.register-by-12-weeks') < 0, go2);
+  check('5 Today has no first-days read at 20 weeks (Version 39.68: Learn\'s Start here gives it)', go2.indexOf('pregnancy.four-antenatal-visits') < 0 && go2.indexOf('pregnancy.register-by-12-weeks') < 0, go2);
   await done(a);
 }
 
@@ -232,7 +231,7 @@ check('5 tracking, 28: what a cycle is; never the girls\' guide', (await startHe
   const a = await open({ seed: Object.assign({}, W.kavita, { lang: 'hi' }), hash: '#care' }); const p = a.page;
   check('6 Hindi: Explore at 360 px, no sideways scroll, the library row in Hindi', await noScroll(p) && /सभी विषय और गाइड/.test(await view(p)));
   await go(p, 'library'); check('6 Hindi: the library at 360 px', await noScroll(p) && /और सवाल/.test(await view(p)));
-  await go(p, 'home'); await tap(p, '#help-btn'); check('6 Hindi: Help\'s private pages under "निजी मदद"', /निजी मदद/.test(await txt(p, '#sheet-root')) && await noScroll(p));
+  await go(p, 'home'); await tap(p, '#help-btn'); check('6 Hindi: Help from Today at 360 px, with no Private help (Version 39.68)', /112/.test(await txt(p, '#sheet-root')) && !/निजी मदद/.test(await txt(p, '#sheet-root')) && await noScroll(p));
   await done(a);
 }
 

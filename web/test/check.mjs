@@ -52,6 +52,7 @@ const reg = await page.evaluate((ids) => {
     const en = Object.keys((m.strings || {}).en || {}); const hi = Object.keys((m.strings || {}).hi || {});
     out[id] = {
       routes: Object.keys(m.routes || {}), prefixes: Object.keys(m.prefixes || {}), testRoutes: m.testRoutes || [], tiles: (m.tiles || []).map((t) => t.route),
+      retired: Object.keys(m.routes || {}).concat(m.testRoutes || []).filter((r) => S.retired && S.retired(r)),   /* Version 39.68: retired pages redirect, so they aren't rendered */
       badKeys: en.filter((k) => !k.startsWith(id + '_')).slice(0, 20), missingHi: en.filter((k) => hi.indexOf(k) < 0).slice(0, 40), missingEn: hi.filter((k) => en.indexOf(k) < 0).slice(0, 20),
       badRoutes: Object.keys(m.routes || {}).filter((r) => !(r === id || r.startsWith(id + '-'))), demoPersona: m.demoPersona || 'asha', hooks: ['home', 'me', 'summary', 'under18', 'sample', 'afterRender', 'beforeRender', 'topbar'].filter((h) => typeof m[h] === 'function')
     };
@@ -101,7 +102,7 @@ async function inspect(lang) {
 for (const id of ids) {
   const rg = reg[id]; if (!rg) continue;
   const M = report.modules[id];
-  const routes = [...new Set([...rg.routes, ...rg.testRoutes])];
+  const routes = [...new Set([...rg.routes, ...rg.testRoutes])].filter((r) => rg.retired.indexOf(r) < 0);
   if (rg.badKeys.length) M.issues.push('string keys without "' + id + '_" prefix: ' + rg.badKeys.join(', '));
   if (rg.missingHi.length) M.issues.push('EN keys missing in HI: ' + rg.missingHi.join(', '));
   if (rg.missingEn.length) M.issues.push('HI keys missing in EN: ' + rg.missingEn.join(', '));

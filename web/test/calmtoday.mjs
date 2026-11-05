@@ -95,20 +95,14 @@ const tipS = (joinedAgo, x) => Object.assign({ dob: '1998-05-01', goals: ['track
   if (run) { await run.evaluate((b) => b.click()); await settle(a.page, 1500); }
   check('1.2 Me > How to use Sakhi still plays one', !!run && await tipUp(a.page));
   await done(a);
+  /* Version 39.68 (the doctors' review): tips no longer start on their own, in her first week or after a stage change */
   a = await open({ seed: seedOf(tipS(2)) }); await settle(a.page, 1500);
-  const first = await tipUp(a.page); await shot(a.page, '1-first-tip');
-  const id = await a.page.evaluate(() => { const b = [...document.querySelectorAll('.tour-pop button')].find((x) => /Not now/.test(x.innerText)); if (b) b.click(); return true; }); await settle(a.page, 400);
-  const tours = await a.page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.tours || {})));
-  check('1.3 her first week: a tip comes, and "Not now" ends it (it doesn\'t come back)', first && id && Object.values(tours).some((x) => x.st === 'off'), tours);
+  check('1.3 her first week: no tip starts on its own (Version 39.68)', !(await tipUp(a.page)));
   await go(a.page, 'diary'); await settle(a.page, 1500);
-  check('1.4 one a day: Diary\'s own tip waits for another day', !(await tipUp(a.page)));
-  await dayTo(a.page, 1);
-  const tours2 = await a.page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state.tours || {})));
-  const homeAgain = Object.keys(tours2).filter((k) => tours2[k].st === 'off').length;
-  check('1.5 the next day, the tip she put off stays off', homeAgain >= 1);
+  check('1.4 ... nor on Diary', !(await tipUp(a.page)));
   await done(a);
   a = await open({ seed: seedOf(tipS(200, { prompts: { planCall: ago(3), firstLog: ago(100), setup: 'off', exStage: ago(2) } })) }); await settle(a.page, 1500);
-  check('1.6 the week after her stage changed: a tip may come again', await tipUp(a.page));
+  check('1.6 the week after her stage changed: no tip on its own either', !(await tipUp(a.page)));
   await done(a);
 }
 
@@ -118,7 +112,7 @@ const tipS = (joinedAgo, x) => Object.assign({ dob: '1998-05-01', goals: ['track
   let a = await open({ seed: seedOf(tipS(1, { settings: { toursAuto: false, notify: true }, focus: { tile: 'cycle', goals: ['track'], at: ago(1) } })) });
   const read = 'What a menstrual cycle is'; const seen = [];
   for (let n = 0; n < 5; n++) { if (n) await dayTo(a.page, n); seen.push(/What a menstrual cycle is/.test(await view(a.page))); }
-  check('2.1 the first-days read shows on 3 days, then leaves Today (Learn keeps it)', seen.join() === 'true,true,true,false,false', { read, seen });
+  check('2.1 no first-days read on Today (Version 39.68: Learn\'s Start here keeps it)', seen.join() === 'false,false,false,false,false', { read, seen });
   await done(a);
   /* a card that keeps coming back: whichever leads Sakhi says, put aside after its turn */
   a = await open({ seed: seedOf(tipS(1, { settings: { toursAuto: false, notify: true }, situation: { care: 'govt' }, focus: { tile: 'cycle', goals: ['track'], at: ago(1) }, reminders: [planRem(3)], prompts: { planCall: ago(3), firstLog: ago(1) } })) });

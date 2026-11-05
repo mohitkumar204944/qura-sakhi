@@ -86,7 +86,7 @@ async function goalFlow(page, goal, until) {
 
 /* Version 39.66: her plan's questions to Start, then what waits for its day; and Today's question about how she eats, once it comes */
 async function planWaits(page, goal) {
-  await goalFlow(page, goal, null); await tap(page, '#pl-in-make');
+  await goalFlow(page, goal, null); if (await has(page, '#pl-in-make')) await tap(page, '#pl-in-make');   /* Version 39.68: no answers summary, so her plan comes straight after */
   for (let i = 0; i < 8 && !(await has(page, '#pl-rv-go')); i++) { if (await has(page, '#pl-rv-next')) await tap(page, '#pl-rv-next'); else break; }
   await tap(page, '#pl-rv-go'); await settle(page, 1200);
   return page.evaluate(() => ((((window.Saathi.state.mods || {}).plan || {}).dayAsk) || []).slice());
@@ -108,7 +108,7 @@ async function foodQ(page) {
   check('1 My food: Vegetarian is chosen unless she says otherwise', /How you eat/.test(v) && await has(a.page, '#view [data-food-type="veg"].on') && (await a.page.$$('#view [data-food-type]')).length === 4);
   check('1 ... with Jain and "I don\'t take milk, curd or paneer"', /Jain: no onion, garlic or root vegetables/.test(v) && /I don’t take milk, curd or paneer/.test(v));
   const rows = await a.page.$$eval('#view .food-rows [data-go]', (x) => x.map((y) => y.dataset.go));
-  check('1 tracking her periods: her plate, food that builds blood, fasting days', rows.join() === 'plan-plate,cond-anaemia,periods-fasting', rows);
+  check('1 tracking her periods: her plate and fasting days (Version 39.68: the anaemia page is gone)', rows.join() === 'plan-plate,periods-fasting', rows);
   await shot(a.page, '01-my-food'); errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: PREG(20), hash: '#food' });
   const rb = await b.page.$$eval('#view .food-rows [data-go]', (x) => x.map((y) => y.dataset.go));
@@ -163,7 +163,9 @@ async function foodQ(page) {
   /* her stage's own topic stays first (pregnancy, a loss), and My food comes straight after it */
   check('4 Explore: the Food card comes right after her first topic', (await a.page.$$eval('#view .topic-grid [data-go]', (bs) => bs.map((b) => b.dataset.go)))[1] === 'food', await a.page.$$eval('#view .topic-grid [data-go]', (bs) => bs.map((b) => b.dataset.go)));
   for (const q of ['khana', 'nashta', 'recipe', 'jain', 'sabzi', 'doodh', 'sattu', 'क्या खाएं', 'thali']) { const r = await search(a.page, q); check('4 search "' + q + '" opens My food first', r[0] === 'food', r.slice(0, 4)); }
-  for (const [q, r0] of [['vrat', 'periods-fasting'], ['iftar', 'periods-fasting'], ['yoga', 'plan-moves'], ['जननी सुरक्षा', 'access-schemes'], ['janani suraksha', 'access-schemes']]) { const r = await search(a.page, q); check('4 search "' + q + '" finds ' + r0 + ' first', r[0] === r0, r.slice(0, 4)); }
+  for (const [q, r0] of [['vrat', 'periods-fasting'], ['iftar', 'periods-fasting'], ['yoga', 'plan-moves']]) { const r = await search(a.page, q); check('4 search "' + q + '" finds ' + r0 + ' first', r[0] === r0, r.slice(0, 4)); }
+  /* Version 39.68 (the doctors' review): the scheme pages are gone, so the scheme's name finds none of them */
+  for (const q of ['जननी सुरक्षा', 'janani suraksha']) { const r = await search(a.page, q); check('4 search "' + q + '" finds no scheme page', !r.some((x) => /^access-/.test(x)), r.slice(0, 4)); }
   const s2 = await search(a.page, 'जननी सुरक्षा');
   check('4 "जननी सुरक्षा" is a scheme, not the safety page first', s2[0] !== 'intimate-safety', s2.slice(0, 4));
   errsAll.push(...a.errs); await a.ctx.close();
@@ -298,7 +300,7 @@ async function foodQ(page) {
   const i1 = await open({ seed: Object.assign({}, PREG(30)) });
   const r1 = await search(i1.page, 'baby moving fast'), r2 = await search(i1.page, 'calcium tablet');
   check('9 FOOD-09 pregnant: "baby moving fast" opens the kick counter first, not fasting', r1[0] === 'pregtools-kicks', r1);
-  check('9 FOOD-09 pregnant: "calcium tablet" opens her medicines first, food pages not in the top 3', r2[0] === 'tools-meds' && ['food', 'preg-diet', 'plan-plate'].every((k) => r2.slice(0, 3).indexOf(k) < 0), r2);
+  check('9 FOOD-09 pregnant: "calcium tablet" opens her medicines first, food pages not in the top 2 (Version 39.68: two pregnancy tiles fewer)', r2[0] === 'tools-meds' && ['food', 'preg-diet', 'plan-plate'].every((k) => r2.slice(0, 2).indexOf(k) < 0), r2);
   errsAll.push(...i1.errs); await i1.ctx.close();
   const i2 = await open({ seed: { situation: { deliveredOn: ago(12), breastfeeding: true }, events: [] } });
   const r3 = await search(i2.page, 'doodh kam');
@@ -309,7 +311,7 @@ async function foodQ(page) {
   check('9 FOOD-10 pregnant: "thali" doesn\'t offer My plate', (await search(j.page, 'thali')).indexOf('plan-plate') < 0, await search(j.page, 'thali'));
   errsAll.push(...j.errs); await j.ctx.close();
   const k = await open({ seed: { events: regular(10) } });
-  check('9 FOOD-11 "bmi" opens My body first', (await search(k.page, 'bmi'))[0] === 'plan-body', await search(k.page, 'bmi'));
+  check('9 FOOD-11 "bmi": no My body tile (Version 39.68: it lives in the PMOS plan), the weight and waist guide first', (await search(k.page, 'bmi'))[0] === 'a-mind_body.weight-and-waist', await search(k.page, 'bmi'));
   check('9 FOOD-11 one name for the third answer: "Fish or meat too"', (await k.page.evaluate(() => window.Saathi.t('plan_f_nonveg'))) === 'Fish or meat too' && (await k.page.evaluate(() => window.Saathi.t('food_t_nonveg'))) === 'Fish or meat too');
   errsAll.push(...k.errs); await k.ctx.close();
 }

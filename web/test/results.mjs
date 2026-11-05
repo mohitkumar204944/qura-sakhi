@@ -75,7 +75,7 @@ const errsAll = [];
   check('1 the end page: her days, her result, the card for everyone, what next, then the details', order.join() === 'pl-intro,pl-head-res,pl-end-doc,pl-sec,pl-details', order);
   check('1 her result is before and since, as counts (no judging word)', /Days between periods/.test(await txt(a.page, '#view .pl-head-res')) && /45/.test(await txt(a.page, '#view .pl-head-res')) && !/better|worse|improv/i.test(await txt(a.page, '#view .pl-head-res')), await txt(a.page, '#view .pl-head-res'));
   /* Version 39.28: on the doctor route (she hasn't said where she goes) a Qura doctor comes before the free government doctor */
-  check('1 one card for everyone: "Show this page to a doctor", "Show my doctor", a Qura doctor, then the free government doctor', /Show this page to a doctor/.test(v) && (await a.page.$$eval('#view .pl-end-doc .btn', (x) => x.map((y) => y.dataset.go || 'ask'))).join() === 'report-show,ask,access-doctor', await a.page.$$eval('#view .pl-end-doc .btn', (x) => x.map((y) => y.dataset.go || 'ask')));
+  check('1 one card for everyone: "Show this page to a doctor", "Show my doctor" and a Qura doctor (Version 39.68: no free government doctor page)', /Show this page to a doctor/.test(v) && (await a.page.$$eval('#view .pl-end-doc .btn', (x) => x.map((y) => y.dataset.go || 'ask'))).join() === 'report-show,ask', await a.page.$$eval('#view .pl-end-doc .btn', (x) => x.map((y) => y.dataset.go || 'ask')));
   check('1 no "If nothing has changed" judgement any more', !/If nothing has changed/.test(v));
   check('1 what next: her steps carry on, "Work on something else" or "Stop my plan" (Version 39.27, no gate); details folded', /Your steps carry on/.test(v) && !/Keep my habits/.test(v) && /Work on something else/.test(v) && /Stop my plan/.test(v) && await a.page.evaluate(() => !document.querySelector('#view details.pl-details').open));
   await shot(a.page, '01-end');
@@ -121,11 +121,11 @@ const errsAll = [];
 {
   const docCard = async (pack, goal, ik, extra) => { const x = await open({ seed: Object.assign({ events: regular(10), intake: Object.assign({ goal: goal }, ik), mods: { plan: planOf(pack, goal, ago(4), { intake: Object.assign({ goal: goal }, ik) }) } }, extra || {}) }); const r = { t: await txt(x.page, '#view .pl-sl-doc'), go: await x.page.$$eval('#view .pl-sl-doc [data-go]', (y) => y.map((z) => z.dataset.go)) }; errsAll.push(...x.errs); await x.ctx.close(); return r; };
   const h = await docCard('heavy', 'heavy', { pads: 'p23', clots: 'n', tired: 'y' });
-  check('4 heavy periods, often tired: "ask for an Hb test", with the anaemia page', /Hb test/.test(h.t) && h.go.indexOf('cond-anaemia') >= 0, h);
+  check('4 heavy periods, often tired: "ask for an Hb test" (Version 39.68: no anaemia page)', /Hb test/.test(h.t) && h.go.indexOf('cond-anaemia') < 0, h);
   const p = await docCard('pain', 'pain', { pain: 'pk', painDays: '4' });
-  check('4 pain on 4 days or more: a doctor check, and "Check the signs" (the endometriosis self-check)', /4 days or more/.test(p.t) && p.go.indexOf('selfcheck-endo') >= 0, p);
+  check('4 pain on 4 days or more: a doctor check (Version 39.68: no endometriosis self-check)', /4 days or more/.test(p.t) && p.go.indexOf('selfcheck-endo') < 0, p);
   const m = await docCard('pms', 'pms', { pms: ['mood'], pmsLevel: 'lot' });
-  check('4 PMS that affects her day a lot: a doctor can help, with the mood log', /a doctor can help/.test(m.t) && m.go.indexOf('periods-pms') >= 0, m);
+  check('4 PMS that affects her day a lot: a doctor can help (Version 39.68: no mood log page)', /a doctor can help/.test(m.t) && m.go.indexOf('periods-pms') < 0, m);
   const n = await docCard('pms', 'pms', { pms: ['mood'], pmsLevel: 'little' });
   check('4 ... and no card when it affects her day a little', !n.t, n);
   /* trying: her own dates */

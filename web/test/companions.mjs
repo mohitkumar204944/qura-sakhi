@@ -140,99 +140,54 @@ for (const [label, seed] of [['under 30', { dob: '1999-03-01' }], ['pregnant', {
 {
   const before = sent.length;
   const { ctx, page, errs } = await open({ hash: '#help' });
-  check('4 Help offers My ASHA or ANM', !!(await page.$('#view [data-go="asha"]')));
+  check('4 Help no longer offers My ASHA (Version 39.68, the doctors\' review)', !(await page.$('#view [data-go="asha"]')));
   await go(page, 'asha');
-  await page.fill('#asha-phone', '12345'); await tap(page, '#asha-save'); await sleep(200);
-  check('4 a wrong number is refused', /Enter a 10-digit mobile number/.test(await view(page)) && !(await page.evaluate(() => (window.Saathi.state.mods.asha || {}).phone)));
-  await tap(page, '[data-asha-role="anm"]'); await page.fill('#asha-name', 'Rekha'); await page.fill('#asha-phone', '+91 98765 01234'); await tap(page, '#asha-save'); await sleep(250);
-  check('4 saved as 10 digits, with her role and name', JSON.stringify(await page.evaluate(() => window.Saathi.state.mods.asha)) === JSON.stringify({ name: 'Rekha', phone: '9876501234', role: 'anm' }));
-  check('4 one tap to call', (await page.$eval('#asha-call', (a) => a.getAttribute('href'))) === 'tel:+919876501234');
-  await page.evaluate(() => { window.Saathi.ask('Weekly iron tablet'); }); await sleep(200);
-  await go(page, 'asha-show');
-  const show = await view(page);
-  check('4 the show screen: about her and her questions, in big type', /For my ASHA or ANM/.test(show) && /Asha, age 34/.test(show) && /My last period started on/.test(show) && /Weekly iron tablet/.test(show) && /Nothing was sent/.test(show), show);
-  check('4 nothing about her ASHA went to any server', !sent.slice(before).some((x) => /9876501234|Rekha/.test(x)), sent.slice(before));
-  await go(page, 'asha'); await tap(page, '#asha-edit'); await sleep(150); await tap(page, '#asha-del'); await sleep(200);
-  check('4 her ASHA\'s number can be removed', !(await page.evaluate(() => (window.Saathi.state.mods.asha || {}).phone)) && !!(await page.$('#asha-phone')));
+  check('4 the My ASHA page lands on Explore (Version 39.68)', (await page.evaluate(() => location.hash)) === '#care');
   check('4 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 
-/* ---------- 5. Do it online, and Hindi ---------- */
+/* ---------- 5. Do it online, and Hindi (Version 39.68: Do it online and My ASHA are gone; Care near me stays) ---------- */
 {
   const { ctx, page, errs } = await open({ hash: '#access-online' });
-  const links = await page.$$eval('#view .access-on a.btn', (as) => as.map((a) => a.getAttribute('href')));
-  check('5 six official links, all https on gov.in', links.length === 6 && links.every((u) => /^https:\/\/[a-z0-9.-]+\.gov\.in\//.test(u)), links);
-  check('5 the warning about OTPs and paying anyone', /Never share an OTP with someone who calls you/.test(await view(page)));
-  check('5 no form: Sakhi fills in nothing', !(await page.$('#view input, #view form')));
+  check('5 Do it online lands on Explore', (await page.evaluate(() => location.hash)) === '#care');
   await go(page, 'access-care');
-  check('5 Care near me leads to My ASHA and to Do it online', !!(await page.$('#view [data-go="asha"]')) && !!(await page.$('#view [data-go="access-online"]')));
+  check('5 Care near me still opens, without My ASHA or Do it online', /Care near me/.test(await view(page)) && !(await page.$('#view [data-go="asha"]')) && !(await page.$('#view [data-go="access-online"]')));
   check('5 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 {
   const { ctx, page, errs } = await open({ hash: '#iron', lang: 'hi', seed: { lang: 'hi' } });
   check('6 Hindi: the iron page', /आयरन की गोलियाँ/.test(await view(page)) && /हफ़्ते की गोली/.test(await view(page)));
-  await go(page, 'asha'); check('6 Hindi: My ASHA', /मेरी ASHA या ANM/.test(await view(page)));
-  await go(page, 'access-online'); check('6 Hindi: Do it online', /सरकारी साइट खोलें/.test(await view(page)));
   await go(page, 'home'); check('6 Hindi: the setup card and its check-ups step', /Sakhi को अपने लिए तैयार करें/.test(await view(page)) && /अपनी जाँचों की तारीख़ें जोड़ें/.test(await view(page)));
   await page.$eval('#setup-hide', (e) => e.click()); await sleep(250); check('6 Hindi: the check-ups card', /आपके लिए मुफ़्त जाँच/.test(await view(page)));
   check('6 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 
-/* ---------- 7. Free doctor and care (Version 29) ---------- */
+/* ---------- 7. Free doctor and care (Version 29); Version 39.68 (the doctors' review): the government pages are gone ---------- */
 {
-  const before = sent.length;
   const { ctx, page, errs } = await open({ hash: '#access-doctor' });
-  const cards = await page.$$eval('#view [data-doc]', (c) => c.map((x) => x.dataset.doc));
-  const heads = await page.$$eval('#view h2', (h) => h.map((x) => x.textContent));
-  check('7 eight services in three groups: a doctor, pregnancy, hospital care and support', JSON.stringify(cards) === JSON.stringify(['esanj', 'ors', 'aarogya', 'pmsma', 'uwin', 'amb', 'pmjay', 'tmanas']) && JSON.stringify(heads) === JSON.stringify(['A doctor, free', 'In pregnancy', 'Hospital care and support']), { cards, heads });
-  const links = await page.$$eval('#view a[href]', (a) => a.map((x) => ({ href: x.getAttribute('href'), target: x.target, rel: x.rel })));
-  const web = links.filter((l) => /^https?:/.test(l.href)), tel = links.filter((l) => /^tel:/.test(l.href)).map((l) => l.href);
-  check('7 every web link is an official government site (Aarogya Setu: its official app listing), opened outside Sakhi', web.length === 8 && web.every((l) => (/^https:\/\/[a-z0-9.-]+\.(gov|nic)\.in\//.test(l.href) || l.href === 'https://play.google.com/store/apps/details?id=nic.goi.aarogyasetu') && l.target === '_blank' && /noopener/.test(l.rel)), web);
-  check('7 numbers to call: 102 and 108 ambulances, Tele-MANAS 14416 and its toll-free number', JSON.stringify(tel) === JSON.stringify(['tel:102', 'tel:108', 'tel:14416', 'tel:18008914416']), tel);
-  check('7 nothing about her in any link (her number, PIN code or name)', !links.some((l) => /9876543210|560001|Asha/i.test(l.href)), links);
-  const v = await view(page);
-  check('7 what to pick on eSanjeevani, and where the Obs & Gynae OPDs are', /Choose your state’s Obs & Gynae \(women’s health\) OPD if it has one, or else the General OPD/.test(v) && /Obs & Gynae OPDs on 22 Oct 2026: Delhi/.test(v));
-  check('7 the warnings: OTPs, C-section under PM-JAY, thoughts of harm', /Never share an OTP with someone who calls you/.test(v) && /a C-section or a high-risk delivery is mainly done in government hospitals/.test(v) && /Thoughts of harming yourself or the baby: call 14416 or 112 now/.test(v));
-  check('7 Sakhi books nothing: no form or input on the page, and it says so', !(await page.$('#view input, #view form, #view textarea')) && /Sakhi books nothing and sends nothing/.test(v));
-  check('7 Qura\'s doctor is one tap away too', !!(await page.$('#view [data-ask]')));
-  await go(page, 'access-care');
-  check('7 Care near me leads here first', (await page.$eval('#view .list [data-go]', (b) => b.dataset.go)) === 'access-doctor');
+  check('7 the free government doctor page lands on Explore', (await page.evaluate(() => location.hash)) === '#care');
+  await go(page, 'access-free');
+  check('7 ... and so does Get care free', (await page.evaluate(() => location.hash)) === '#care');
   await go(page, 'ask');
-  check('7 the Doctor screen offers the free government options', !!(await page.$('#view #ask-free [data-go="access-doctor"]')) && /Free government options/.test(await view(page)));
-  check('7 the Doctor screen\'s booking button has a normal-size icon', (await page.$eval('#ask-web > svg, #ask-wa > svg', (e) => e.getBoundingClientRect().width)) <= 24);
+  check('7 the Doctor screen has no free government card, and Qura\'s doctor stays', !(await page.$('#view #ask-free')) && !!(await page.$('#view [data-ask], #view #ask-web, #view #ask-wa, #view #ac-send, #view textarea')));
   await go(page, 'help');
-  check('7 Help\'s doctor card links here, through Get care free (Version 30)', !!(await page.$('#view .doc-card [data-go="access-free"]')));
-  await tap(page, '#view .doc-card [data-go="access-free"]'); await sleep(250);
-  check('7 Get care free lists the free doctor page', !!(await page.$('#view [data-go="access-doctor"]')));
-  await go(page, 'help');
-  check('7 a tile in the Care hub, in its tools and in pregnancy', JSON.stringify(await page.evaluate(() => window.Saathi.tiles().filter((x) => x.route === 'access-doctor').map((x) => x.section).sort())) === JSON.stringify(['preg', 'tools']));
-  await go(page, 'intimate-safety');
-  const safe = await page.$$eval('#view a[href]', (a) => a.map((x) => x.getAttribute('href')));
-  check('7 the safety page: book a visit to a One Stop Centre, or find the nearest', safe.includes('https://missionshakti.wcd.gov.in/appointmentBooking') && safe.includes('https://missionshakti.wcd.gov.in/statisticsOsc'), safe);
-  check('7 nothing was sent anywhere', !sent.slice(before).some((x) => /gov\.in|play\.google/.test(x)), sent.slice(before));
+  check('7 Help\'s doctor card has no Get care free link', !(await page.$('#view .doc-card [data-go="access-free"], #view .doc-card [data-go="access-doctor"]')));
+  await go(page, 'care');
+  check('7 no tile for them in the Care hub', !(await page.$('#view [data-go="access-doctor"], #view [data-go="access-free"]')));
   check('7 no page errors', errs.length === 0, errs);
   await ctx.close();
 }
 {
   const preg = { situation: { stage: 'preg', pregnant: true, pregnantSince: isoAgo(24 * 7), care: 'govt' }, events: [] };
-  const { ctx, page, errs } = await open({ hash: '#access-doctor', seed: preg });
-  check('7 pregnant: the pregnancy services come first', (await page.$eval('#view h2', (h) => h.textContent)) === 'In pregnancy');
-  await go(page, 'preg-plan');
+  const { ctx, page, errs } = await open({ hash: '#preg-plan', seed: preg });
   const hrefs = (id) => page.$$eval('[data-plan="' + id + '"] a[href]', (a) => a.map((x) => x.getAttribute('href')));
-  check('7 the pregnancy plan: Td books on U-WIN, PMSMA finds a centre', (await hrefs('td')).includes('https://uwinselfregistration.mohfw.gov.in/login') && (await hrefs('pmsma')).includes('https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/'));
+  check('7 the pregnancy plan: Td books on U-WIN, PMSMA finds a centre', (await hrefs('td')).includes('https://uwinselfregistration.mohfw.gov.in/login') && (await hrefs('pmsma')).includes('https://pmsma.mohfw.gov.in/pmsma-nearest-health-facility/'), { td: await hrefs('td'), pmsma: await hrefs('pmsma') });
   await page.evaluate(() => { const S = window.Saathi; S.state.mods.preg.mcp.td1 = '2026-06-01'; S.state.mods.preg.mcp.td2 = '2026-07-01'; S.save(); }); await go(page, 'learn'); await go(page, 'preg-plan');
   check('7 once both Td doses are in her MCP card, no U-WIN button', !(await hrefs('td')).length);
   check('7 pregnant: no page errors', errs.length === 0, errs);
-  await ctx.close();
-}
-{
-  const { ctx, page, errs } = await open({ hash: '#access-doctor', lang: 'hi', seed: { lang: 'hi' } });
-  const v = await view(page);
-  check('7 Hindi: the page', /मुफ़्त डॉक्टर और इलाज/.test(v) && /आपके राज्य में Obs & Gynae \(महिला स्वास्थ्य\) OPD हो तो उसे चुनें/.test(v) && /मुफ़्त एम्बुलेंस: 102 और 108/.test(v));
-  check('7 Hindi: no errors', errs.length === 0, errs);
   await ctx.close();
 }
 

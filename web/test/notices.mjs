@@ -158,16 +158,16 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   const { ctx, page, errs } = await open({ seed: { intake: IK, mods: { plan: planOf('pain', 'pain', ago(7), { goal: 'pain', log: log }) } } });
   await go(page, 'home');
   let v = await view(page);
-  check('4 a new week: the look-back is inside her Today card (Version 39.14), one line until she taps it', /^Week 1 is done/.test(await txt(page, '#view .today-card .pl-sl-rev')) && !(await has(page, '#view .slot .pl-sl-rev')), await txt(page, '#view .today-card'));
-  await tap(page, '#pl-rev-open'); v = await view(page);
-  check('4 it leads with what she did, and the week\'s own barrier', /Week 1 is done · \d of 7 days on your plan/.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v), v.slice(0, 1200));
-  check('4 one question: her energy (what got in the way comes from the check-ins)', (await page.$$('#view .pl-sl-rev [data-pl-e]')).length === 3 && !(await has(page, '#view [data-pl-b]')));
-  await tap(page, '#view .pl-sl-rev [data-pl-e="ok"]');
+  check('4 a new week: no look-back on Today (Version 39.68: the week dots show her week; it stays on My plan)', !(await has(page, '#view .pl-sl-rev, #view #pl-rev-open')), await txt(page, '#view .today-card'));
+  await go(page, 'plan'); v = await view(page);   /* Version 39.68: the look-back lives on My plan */
+  check('4 it leads with what she did, and the week\'s own barrier', /Week 1 is done/.test(v) && /You followed your plan on \d of 7 days/.test(v) && /No time on 3 days\./.test(v) && !/target/i.test(v), v.slice(0, 1200));
+  check('4 one question: her energy (what got in the way comes from the check-ins)', (await page.$$('#view .pl-review [data-pl-e]')).length === 3 && !(await has(page, '#view [data-pl-b]')));
+  await tap(page, '#view .pl-review [data-pl-e="ok"]');
   check('4 her answer brings the tip for that barrier', /Split it up/.test(await view(page)));
   let s = await st(page);
   check('4 the week keeps her energy and the barrier', s.mods.plan.weeks[1].e === 'ok' && s.mods.plan.weeks[1].b === 'time', s.mods.plan.weeks);
   await tap(page, '#pl-rev-ok');
-  check('4 "Got it" puts it away', !(await has(page, '#view .pl-sl-rev')));
+  check('4 "Got it" puts it away', !(await has(page, '#view .pl-review')));
   await ctx.close();
   const one = {}; one[ago(28)] = { ci: 1, ck: { move: 'd' }, min: 10 };
   const m = await open({ seed: { intake: IK, mods: { plan: planOf('cycle', 'irregular', ago(28), { log: one, doc: 'done' }) } } });
@@ -228,7 +228,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(page, 'plan-end');
   const v = await view(page);
   check('6 a light plan ends the same way', /Your 12 weeks are done/.test(v) && /You followed your plan on 2 of 84 days/.test(v) && /What next\?/.test(v), v.slice(0, 500));
-  check('6 pain that stopped her day: a doctor is offered at the end', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc [data-go="access-doctor"]')));
+  check('6 pain that stopped her day: a doctor is offered at the end', /Show this page to a doctor/.test(v) && (await has(page, '#view .pl-end-doc button')) && !(await has(page, '#view [data-go="access-doctor"]')));
   await ctx.close();
   const p = await open({ seed: { events: [], situation: { pregnant: true, pregnantSince: ago(150) }, mods: { plan: planOf('preg', 'food', ago(90)) } } });
   await go(p.page, 'home');
@@ -259,7 +259,8 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(b.page, 'home');
   const td = await txt(b.page, '#view .today-card');
   check('7 discreet: the heavy plan\'s iron step says only "Your plan for today" (or "Your step {n}" beside another hidden step, Version 39.47)', /Your plan for today|Your step \d/.test(td) && !HEALTH.test(td), td);
-  check('7 discreet: the look-back shows, in plain words', (await has(b.page, '#view .pl-sl-rev')) && !HEALTH.test(await txt(b.page, '#view .pl-sl-rev')), await txt(b.page, '#view .pl-sl-rev'));
+  await go(b.page, 'plan');   /* Version 39.68: the look-back lives on My plan */
+  check('7 discreet: the look-back shows, in plain words', (await has(b.page, '#view .pl-review')) && !HEALTH.test(await txt(b.page, '#view .pl-review')), await txt(b.page, '#view .pl-review'));
   await go(b.page, 'plan');
   check('7 discreet: a light plan\'s page has no health words', !HEALTH.test(await view(b.page)), (await view(b.page)).match(/.{0,60}(period|PMOS|insulin|hormone|cramp|iron|regular periods|waist).{0,40}/i));
   check('7 no page errors', errs.length === 0 && b.errs.length === 0, errs.concat(b.errs));

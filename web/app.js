@@ -24,7 +24,7 @@
   /* ---------- strings ---------- */
   const STR = {
     en: {
-      tagline: 'free · Hindi · English', home: 'Today', diary: 'Diary', notes: 'Notes', learn: 'Learn', help: 'Help', me: 'Me', plans_tab: 'My plan', cal_plan: 'Your plan', slot_h: 'Sakhi says', slot_more: 'More from Sakhi ({n})', hs_112: 'Call 112 now', hs_112_s: 'Emergency, any kind', hs_other: 'Other helplines', hs_other_s: 'Every emergency number, in one tap', hs_harm: 'Thoughts of harming myself or my baby', hs_harm_s: 'Tele-MANAS 14416 and 112: free, any time', harm_h: 'You are not alone. Call now.', disc_urg_now: 'Something you noted needs help now', disc_urg_check: 'Something you noted needs a check', disc_urg_open: 'Open', today_plan_n: 'Your plan: {n} steps', tab_keep_h: 'Keep your tablet reminder?', tab_keep_p: 'Your iron or calcium tablet reminder is still on. Keep it if your doctor or ASHA told you to carry on.', tab_keep_y: 'Keep it', tab_keep_n: 'Turn it off', notif_words: 'Show what each reminder is about', notif_words_d: 'Off: Sakhi’s reminders show only “A reminder from Sakhi” or “Time for your tablet”, so nobody else can read them on your screen. Reminders you wrote yourself keep your words.', notif_n_med: 'Time for your tablet', notif_n_care: 'A reminder from Sakhi. Tap to see.', hs_doc: 'See a doctor', hs_doc_s: 'A free government doctor, or a call with a Qura doctor', hs_guide: 'When to see a doctor', hs_guide_s: 'The safety guide, the same for everyone', today_hi_0: 'Hello', today_hi_m: 'Good morning', today_hi_a: 'Good afternoon', today_hi_e: 'Good evening', today_hi_n: '{g}, {name}', today_all: 'All done for today.', feel_eb: 'Today · 10 seconds', feel_h: 'How do you feel today?', feel_more: 'More', feel_why: 'A note a day shows what repeats in your cycle.', feel_ok: 'Noted today. Tap again to change it.', meter_n: 'Noted on {n} of {d} days', meter_fw: 'Next: {n} more periods, and your fertile days show.', meter_fw1: 'Next: 1 more period, and your fertile days show.', meter_pat: 'Next: {n} more periods with notes, and Sakhi shows what repeats for you.', meter_pat1: 'Next: 1 more period with notes, and Sakhi shows what repeats for you.', meter_rep: 'Next: {n} more periods with notes, and Sakhi shows what repeats for you, with a fuller report for your doctor.', meter_rep1: 'Next: 1 more period with notes, and Sakhi shows what repeats for you, with a fuller report for your doctor.', legend_dots: 'Dots: what you noted', legend_key: 'What the marks mean', today_why: 'Why?', today_tick: 'Mark done: {x}', today_untick: 'Done: {x}. Tap to undo', today_fold: 'Your {n} steps', today_fold1: 'Your step', feel_h_d: 'How did you feel?', day_more: 'More signs', day_less: 'Fewer signs', fab_feel: 'How I feel', noted_n: 'Noted · {n} of {d} days this month', pat_ready: 'What repeats for you is ready', pat_see: 'See it', dy_d: 'Day {n}', dy_grp: 'Period from {d} · {n}-day cycle', dy_grp_now: 'Period from {d} · this cycle', dy_grp_x: 'Period from {d}', dy_grp_d: 'From {d}', dy_grp_old: 'Earlier', dy_grp_preg: 'In your pregnancy', wis_ci_pmos: 'Skin and hair signs, once a month', wis_ci_pmos_s: 'About a minute. The signs a doctor asks about in PMOS.', wis_ci_mid: 'Midlife signs, once a month', wis_ci_mid_s: 'About a minute. The signs a doctor asks about after 40.', wis_ci_preg: 'Pregnancy signs, once a month', wis_ci_post: 'Signs after the birth, once a month', wis_ci_ps: 'About a minute. The signs to tell your doctor about.', cal_pw: 'Week {n} of your pregnancy', pp_bleed: 'Bleeding after the birth', pp_bleed_s: 'Opens your recovery check, with its warning signs',
+      tagline: 'free · Hindi · English', home: 'Today', diary: 'Diary', notes: 'Notes', learn: 'Learn', help: 'Help', me: 'Me', plans_tab: 'My plan', cal_plan: 'Your plan', slot_h: 'Sakhi says', slot_more: 'More from Sakhi ({n})', hs_112: 'Call 112 now', hs_112_s: 'Emergency, any kind', hs_other: 'Other helplines', hs_other_s: 'Every emergency number, in one tap', hs_harm: 'Thoughts of harming myself or my baby', hs_harm_s: 'Tele-MANAS 14416 and 112: free, any time', harm_h: 'You are not alone. Call now.', disc_urg_now: 'Something you noted needs help now', disc_urg_check: 'Something you noted needs a check', disc_urg_open: 'Open', today_plan_n: 'Your plan: {n} steps', tab_keep_h: 'Keep your tablet reminder?', tab_keep_p: 'Your iron or calcium tablet reminder is still on. Keep it if your doctor or ASHA told you to carry on.', tab_keep_y: 'Keep it', tab_keep_n: 'Turn it off', notif_words: 'Show what each reminder is about', notif_words_d: 'Off: Sakhi’s reminders show only “A reminder from Sakhi” or “Time for your tablet”, so nobody else can read them on your screen. Reminders you wrote yourself keep your words.', notif_n_med: 'Time for your tablet', notif_n_care: 'A reminder from Sakhi. Tap to see.', hs_doc: 'See a doctor', hs_guide: 'When to see a doctor', hs_guide_s: 'The safety guide, the same for everyone', today_hi_0: 'Hello', today_hi_m: 'Good morning', today_hi_a: 'Good afternoon', today_hi_e: 'Good evening', today_hi_n: '{g}, {name}', today_all: 'All done for today.', feel_eb: 'Today · 10 seconds', feel_h: 'How do you feel today?', feel_more: 'More', feel_why: 'A note a day shows what repeats in your cycle.', feel_ok: 'Noted today. Tap again to change it.', meter_n: 'Noted on {n} of {d} days', meter_fw: 'Next: {n} more periods, and your fertile days show.', meter_fw1: 'Next: 1 more period, and your fertile days show.', meter_pat: 'Next: {n} more periods with notes, and Sakhi shows what repeats for you.', meter_pat1: 'Next: 1 more period with notes, and Sakhi shows what repeats for you.', meter_rep: 'Next: {n} more periods with notes, and Sakhi shows what repeats for you, with a fuller report for your doctor.', meter_rep1: 'Next: 1 more period with notes, and Sakhi shows what repeats for you, with a fuller report for your doctor.', legend_dots: 'Dots: what you noted', legend_key: 'What the marks mean', today_why: 'Why?', today_tick: 'Mark done: {x}', today_untick: 'Done: {x}. Tap to undo', today_fold: 'Your {n} steps', today_fold1: 'Your step', feel_h_d: 'How did you feel?', day_more: 'More signs', day_less: 'Fewer signs', fab_feel: 'How I feel', noted_n: 'Noted · {n} of {d} days this month', pat_ready: 'What repeats for you is ready', pat_see: 'See it', dy_d: 'Day {n}', dy_grp: 'Period from {d} · {n}-day cycle', dy_grp_now: 'Period from {d} · this cycle', dy_grp_x: 'Period from {d}', dy_grp_d: 'From {d}', dy_grp_old: 'Earlier', dy_grp_preg: 'In your pregnancy', wis_ci_pmos: 'Skin and hair signs, once a month', wis_ci_pmos_s: 'About a minute. The signs a doctor asks about in PMOS.', wis_ci_mid: 'Midlife signs, once a month', wis_ci_mid_s: 'About a minute. The signs a doctor asks about after 40.', wis_ci_preg: 'Pregnancy signs, once a month', wis_ci_post: 'Signs after the birth, once a month', wis_ci_ps: 'About a minute. The signs to tell your doctor about.', cal_pw: 'Week {n} of your pregnancy', pp_bleed: 'Bleeding after the birth', pp_bleed_s: 'Opens your recovery check, with its warning signs',
       care_plans: 'Plans for you', care_plans_s: 'Food, yoga, short routines and more, picked from your diary', care_plans_n: '{n} suggested from your diary',
       ob_help_h: 'What would you like help with?', ob_help_p: 'Pick any. Sakhi suggests plans from your answers and your diary. You can skip this.',
       ob_h_irregular: 'Irregular or late periods', ob_h_pmos: 'I have PMOS (PCOS)', ob_h_pain: 'Painful periods', ob_h_heavy: 'Heavy periods', ob_h_pms: 'Mood or body changes before periods', ob_h_skin: 'Acne or extra hair',
@@ -186,7 +186,7 @@
       care_private: 'A private gynaecologist or doctor', care_private_s: 'A clinic or a private hospital', care_govt: 'A government hospital or health centre', care_govt_s: 'PHC, CHC, district hospital or Ayushman Arogya Mandir',
       care_asha: 'My ASHA or ANM', care_asha_s: 'She visits me at home', care_none: 'Nowhere yet', care_none_s: 'Sakhi shows you both kinds', care_change: 'You can change this any time in Me.',
       me_care: 'Where I get care', me_care_none: 'Not chosen yet', care_note: 'This changes where Sakhi sends you for check-ups, tests and tablets. Emergency numbers stay the same for everyone.', care_saved: 'Saved.',
-      hs_doc_s_doc: 'A call with a Qura doctor, or a free government doctor', hs_doc_s_preg: 'Your ANM or gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep', hs_doc_s_preg_doc: 'Your gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep',
+      hs_doc_s_doc: 'A call with a Qura doctor', hs_doc_s_preg: 'Your ANM or gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep', hs_doc_s_preg_doc: 'Your gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep',
       /* Version 39.38: the ask screen in a pregnancy says it first, in the reviewed words of her pregnancy page (preg.js hub_ask_p) */
       ask_p_preg: 'A free call with a Qura doctor (BAMS) can help with food, weight and sleep. Your ANM or gynaecologist looks after the pregnancy itself, medicines and scans.', ask_p_preg_doc: 'A free call with a Qura doctor (BAMS) can help with food, weight and sleep. Your gynaecologist looks after the pregnancy itself, medicines and scans.',
       ob_sh_h: 'Does anyone else use this phone?', ob_sh_me: 'Only me', ob_sh_some: 'Sometimes', ob_sh_fam: 'Yes, my family uses it',
@@ -207,8 +207,8 @@
       howto_h: 'How to use Sakhi', howto_p: 'Short tours you can replay any time.', tours_auto: 'Show a tour on new screens', tours_auto_d: 'A short tour the first time you open a screen', tour_voice: 'Read tours aloud', tour_voice_d: 'Sakhi reads each step. Off at first, for shared phones.', tours_again: 'Show the tours again', tours_again_done: 'The tours will show again.',
       tw1_h: 'Your week', tw1_p: 'Each circle is a day. Tap a day to note what happened.', tw2_h: 'One tap to note', tw2_p: 'These buttons save today in one tap. You can always undo.', tw3_h: 'Ask anything', tw3_p: 'Type a question in Hindi or English. Try it now: tap the box.', tw3_pm: 'Type a question, or tap the mic and speak in Hindi. Try it now.',
       td1_h: 'Your calendar', td1_p: 'Tap any day to fill it in or fix a date. Dots show what you noted.', td1_pd: 'Tap any day to add or change a note.', td2_h: 'Cycles', td2_p: 'Your cycles first, then anything to check and what you noted most, over the months.', td2_pd: 'Your notes over the months.', td3_h: 'Add for today', td3_p: 'Tap + for today’s period, symptoms, mood or a note. Try it now.', td3_pd: 'Tap + to add a note for today. Try it now.',
-      tc1_h: 'Explore', tc1_p: 'Every guide and tool, by topic: periods, pregnancy, after birth, midlife and more.', tc1_pd: 'Pick a topic to read.', tc2_h: 'Listen to any page', tc2_p: 'Tap the speaker and Sakhi reads the page aloud.', tc3_h: 'Help, any time', tc3_p: 'Tap Help any time: call 112, a free government doctor, or a call with a Qura doctor (the first call is free).', tw4_h: 'Your plan for today', tw4_p: 'Your steps for today. Tap Done as you go, and in the evening tell Sakhi how the day went.',
-      th1_h: 'Talk to a doctor', th1_p: 'For questions that can wait a day or two: a free government doctor, or a call with a Qura doctor.', th2_h: 'In an emergency', th2_p: 'Call 112 straight away. Every emergency number is here.',
+      tc1_h: 'Explore', tc1_p: 'Every guide and tool, by topic: periods, pregnancy, after birth, midlife and more.', tc1_pd: 'Pick a topic to read.', tc2_h: 'Listen to any page', tc2_p: 'Tap the speaker and Sakhi reads the page aloud.', tw4_h: 'Your plan for today', tw4_p: 'Your steps for today. Tap Done as you go, and in the evening tell Sakhi how the day went.',
+      th1_h: 'Talk to a doctor', th1_p: 'For questions that can wait a day or two: a call with a Qura doctor.', th2_h: 'In an emergency', th2_p: 'Call 112 straight away. Every emergency number is here.',
       tm1_h: 'Privacy on a shared phone', tm1_p: 'Lock Sakhi, use plain words, or show the app as Notes.', tm1_pw: 'Lock Sakhi with a PIN, or use plain words on Today.', tour_diary_d: 'Your notes', tm2_h: 'Delete everything', tm2_p: 'Removes everything Sakhi saved on this phone, after you confirm.',
       tour_hpreg: 'Today, in pregnancy', tour_hpost: 'Today, after the birth', tour_httc: 'Trying for a baby', tour_hmeno: 'Midlife', tour_day: 'A day in your diary', tour_day_d: 'A day in your notes', tour_ans: 'Quick answers', tour_ci: 'Monthly check-in', tour_ring: 'Your cycle ring', tour_g_screens: 'Screens', tour_g_features: 'Features', tour_step1: '1 short step', tour_q: 'What does this show?',
       thp1_h: 'Your week of pregnancy', thp1_p: 'The big number is your week of pregnancy, and the drawing shows your baby’s size. Tap {b} to see what’s changing.', thp2_h: 'One tap', thp2_p: '{a}, symptoms and your monthly check-in. {b} keeps your weight, BP, sugar, Hb and tablets.', thp3_h: 'Ask anything', thp3_p: 'Type a question, or tap one below. The first one, {b}, tells you when to call 112.', thp3_pm: 'Type or speak a question, or tap one below. The first one, {b}, tells you when to call 112.',
@@ -293,7 +293,7 @@
       demo_h: 'Demo', demo_p: 'Show the app as one of the sample women. Your settings stay; the sample entries replace what is on this phone.', demo_sure: 'This replaces the entries on this phone with the sample. To keep yours, make a backup code first (Me, then Move to a new phone).', demo_yes: 'Replace with the sample', demo_doc: "Doctor's view", demo_welcome: 'Clear the sample and start from the welcome screen', cal_a_spot: 'spotting', cal_a_range: 'likely period dates', bars_aria: 'Gaps between periods, in days: {list}'
     },
     hi: {
-      tagline: 'मुफ़्त · हिंदी · English', home: 'आज', diary: 'डायरी', notes: 'नोट्स', learn: 'जानें', help: 'मदद', me: 'मैं', plans_tab: 'मेरा प्लान', cal_plan: 'आपका प्लान', slot_h: 'Sakhi कहती है', slot_more: 'Sakhi की और बातें ({n})', hs_112: '112 पर अभी कॉल करें', hs_112_s: 'कोई भी इमरजेंसी', hs_other: 'दूसरी हेल्पलाइन', hs_other_s: 'सभी इमरजेंसी नंबर, एक टैप में', hs_harm: 'ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल', hs_harm_s: 'Tele-MANAS 14416 और 112: मुफ़्त, कभी भी', harm_h: 'आप अकेली नहीं हैं। अभी कॉल करें।', disc_urg_now: 'आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए', disc_urg_check: 'आपने जो दर्ज किया, उसकी जाँच ज़रूरी है', disc_urg_open: 'खोलें', today_plan_n: 'आपका प्लान: {n} क़दम', tab_keep_h: 'गोली का रिमाइंडर रखना है?', tab_keep_p: 'आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें।', tab_keep_y: 'रखें', tab_keep_n: 'बंद करें', notif_words: 'हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है', notif_words_d: 'बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं।', notif_n_med: 'आपकी गोली का समय', notif_n_care: 'Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ।', hs_doc: 'डॉक्टर को दिखाएँ', hs_doc_s: 'मुफ़्त सरकारी डॉक्टर, या Qura की डॉक्टर से कॉल', hs_guide: 'डॉक्टर को कब दिखाएँ', hs_guide_s: 'सुरक्षा गाइड, सबके लिए एक जैसी', today_hi_0: 'नमस्ते', today_hi_m: 'सुप्रभात', today_hi_a: 'नमस्ते', today_hi_e: 'शुभ संध्या', today_hi_n: '{g}, {name}', today_all: 'आज का सब हो गया।', feel_eb: 'आज · 10 सेकंड', feel_h: 'आज आप कैसा महसूस कर रही हैं?', feel_more: 'और', feel_why: 'रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है।', feel_ok: 'आज का नोट हो गया। बदलने के लिए फिर टैप करें।', meter_n: '{d} में से {n} दिन नोट किए', meter_fw: 'अगला: {n} और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_fw1: 'अगला: 1 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_pat: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_pat1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_rep: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', meter_rep1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', legend_dots: 'बिंदु: आपने जो नोट किया', legend_key: 'निशानों का मतलब', today_why: 'क्यों?', today_tick: 'हो गया पर टिक करें: {x}', today_untick: 'हो गया: {x}। हटाने के लिए टैप करें', today_fold: 'आपके {n} क़दम', today_fold1: 'आपका क़दम', feel_h_d: 'उस दिन कैसा लगा?', day_more: 'और लक्षण', day_less: 'कम लक्षण', fab_feel: 'मैं कैसी हूँ', noted_n: 'दर्ज · इस महीने {d} में से {n} दिन', pat_ready: 'आपके साथ क्या दोहराता है, अब तैयार है', pat_see: 'देखें', dy_d: 'दिन {n}', dy_grp: '{d} से पीरियड · {n} दिन का चक्र', dy_grp_now: '{d} से पीरियड · यह चक्र', dy_grp_x: '{d} से पीरियड', dy_grp_d: '{d} से', dy_grp_preg: 'आपकी गर्भावस्था में', dy_grp_old: 'पहले के दिन', wis_ci_pmos: 'त्वचा और बालों के लक्षण, महीने में एक बार', wis_ci_pmos_s: 'लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं।', wis_ci_mid: '40 के बाद के लक्षण, महीने में एक बार', wis_ci_mid_s: 'लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं।', wis_ci_preg: 'गर्भावस्था के लक्षण, महीने में एक बार', wis_ci_post: 'डिलीवरी के बाद के लक्षण, महीने में एक बार', wis_ci_ps: 'लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं।', cal_pw: 'गर्भावस्था का {n}वाँ हफ़्ता', pp_bleed: 'डिलीवरी के बाद ब्लीडिंग', pp_bleed_s: 'आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ',
+      tagline: 'मुफ़्त · हिंदी · English', home: 'आज', diary: 'डायरी', notes: 'नोट्स', learn: 'जानें', help: 'मदद', me: 'मैं', plans_tab: 'मेरा प्लान', cal_plan: 'आपका प्लान', slot_h: 'Sakhi कहती है', slot_more: 'Sakhi की और बातें ({n})', hs_112: '112 पर अभी कॉल करें', hs_112_s: 'कोई भी इमरजेंसी', hs_other: 'दूसरी हेल्पलाइन', hs_other_s: 'सभी इमरजेंसी नंबर, एक टैप में', hs_harm: 'ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल', hs_harm_s: 'Tele-MANAS 14416 और 112: मुफ़्त, कभी भी', harm_h: 'आप अकेली नहीं हैं। अभी कॉल करें।', disc_urg_now: 'आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए', disc_urg_check: 'आपने जो दर्ज किया, उसकी जाँच ज़रूरी है', disc_urg_open: 'खोलें', today_plan_n: 'आपका प्लान: {n} क़दम', tab_keep_h: 'गोली का रिमाइंडर रखना है?', tab_keep_p: 'आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें।', tab_keep_y: 'रखें', tab_keep_n: 'बंद करें', notif_words: 'हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है', notif_words_d: 'बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं।', notif_n_med: 'आपकी गोली का समय', notif_n_care: 'Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ।', hs_doc: 'डॉक्टर को दिखाएँ', hs_guide: 'डॉक्टर को कब दिखाएँ', hs_guide_s: 'सुरक्षा गाइड, सबके लिए एक जैसी', today_hi_0: 'नमस्ते', today_hi_m: 'सुप्रभात', today_hi_a: 'नमस्ते', today_hi_e: 'शुभ संध्या', today_hi_n: '{g}, {name}', today_all: 'आज का सब हो गया।', feel_eb: 'आज · 10 सेकंड', feel_h: 'आज आप कैसा महसूस कर रही हैं?', feel_more: 'और', feel_why: 'रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है।', feel_ok: 'आज का नोट हो गया। बदलने के लिए फिर टैप करें।', meter_n: '{d} में से {n} दिन नोट किए', meter_fw: 'अगला: {n} और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_fw1: 'अगला: 1 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_pat: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_pat1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_rep: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', meter_rep1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', legend_dots: 'बिंदु: आपने जो नोट किया', legend_key: 'निशानों का मतलब', today_why: 'क्यों?', today_tick: 'हो गया पर टिक करें: {x}', today_untick: 'हो गया: {x}। हटाने के लिए टैप करें', today_fold: 'आपके {n} क़दम', today_fold1: 'आपका क़दम', feel_h_d: 'उस दिन कैसा लगा?', day_more: 'और लक्षण', day_less: 'कम लक्षण', fab_feel: 'मैं कैसी हूँ', noted_n: 'दर्ज · इस महीने {d} में से {n} दिन', pat_ready: 'आपके साथ क्या दोहराता है, अब तैयार है', pat_see: 'देखें', dy_d: 'दिन {n}', dy_grp: '{d} से पीरियड · {n} दिन का चक्र', dy_grp_now: '{d} से पीरियड · यह चक्र', dy_grp_x: '{d} से पीरियड', dy_grp_d: '{d} से', dy_grp_preg: 'आपकी गर्भावस्था में', dy_grp_old: 'पहले के दिन', wis_ci_pmos: 'त्वचा और बालों के लक्षण, महीने में एक बार', wis_ci_pmos_s: 'लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं।', wis_ci_mid: '40 के बाद के लक्षण, महीने में एक बार', wis_ci_mid_s: 'लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं।', wis_ci_preg: 'गर्भावस्था के लक्षण, महीने में एक बार', wis_ci_post: 'डिलीवरी के बाद के लक्षण, महीने में एक बार', wis_ci_ps: 'लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं।', cal_pw: 'गर्भावस्था का {n}वाँ हफ़्ता', pp_bleed: 'डिलीवरी के बाद ब्लीडिंग', pp_bleed_s: 'आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ',
       care_plans: 'आपके लिए प्लान', care_plans_s: 'खाना, योग, छोटे तरीक़े और बहुत कुछ, आपकी डायरी से चुने हुए', care_plans_n: 'आपकी डायरी से {n} सुझाव',
       ob_help_h: 'आपको किस बात में मदद चाहिए?', ob_help_p: 'जो भी सही लगे, चुनें। Sakhi आपके जवाबों और डायरी से प्लान सुझाती है। चाहें तो इसे छोड़ दें।',
       ob_h_irregular: 'अनियमित या देर से आने वाले पीरियड', ob_h_pmos: 'मुझे PMOS (PCOS) है', ob_h_pain: 'दर्द वाले पीरियड', ob_h_heavy: 'ज़्यादा ब्लीडिंग वाले पीरियड', ob_h_pms: 'पीरियड से पहले मूड या शरीर में बदलाव', ob_h_skin: 'मुँहासे या ज़्यादा बाल',
@@ -454,7 +454,7 @@
       care_private: 'प्राइवेट गायनेकोलॉजिस्ट या डॉक्टर', care_private_s: 'क्लिनिक या प्राइवेट अस्पताल', care_govt: 'सरकारी अस्पताल या स्वास्थ्य केंद्र', care_govt_s: 'PHC, CHC, ज़िला अस्पताल या आयुष्मान आरोग्य मंदिर',
       care_asha: 'मेरी ASHA या ANM', care_asha_s: 'वे घर आकर मिलती हैं', care_none: 'अभी कहीं नहीं', care_none_s: 'Sakhi आपको दोनों तरह की जगहें दिखाएगी', care_change: 'इसे कभी भी "मैं" पेज पर बदल सकती हैं।',
       me_care: 'मैं कहाँ दिखाती हूँ', me_care_none: 'अभी नहीं चुना', care_note: 'इससे बदलता है कि Sakhi जाँच, टेस्ट और गोलियों के लिए आपको कहाँ भेजे। इमरजेंसी नंबर सबके लिए वही रहते हैं।', care_saved: 'सेव हो गया।',
-      hs_doc_s_doc: 'Qura की डॉक्टर से कॉल, या मुफ़्त सरकारी डॉक्टर', hs_doc_s_preg: 'गर्भ के लिए आपकी ANM या स्त्री रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर', hs_doc_s_preg_doc: 'गर्भ के लिए आपकी स्त्री रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर',
+      hs_doc_s_doc: 'Qura की डॉक्टर से कॉल', hs_doc_s_preg: 'गर्भ के लिए आपकी ANM या स्त्री रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर', hs_doc_s_preg_doc: 'गर्भ के लिए आपकी स्त्री रोग विशेषज्ञ; खाने, वज़न और नींद के लिए Qura की डॉक्टर',
       ask_p_preg: 'Qura की डॉक्टर (BAMS) से मुफ़्त कॉल में खाने, वज़न और नींद पर मदद मिल सकती है। गर्भ की देखभाल, दवाएँ और scan आपकी ANM या स्त्री रोग विशेषज्ञ देखती हैं।', ask_p_preg_doc: 'Qura की डॉक्टर (BAMS) से मुफ़्त कॉल में खाने, वज़न और नींद पर मदद मिल सकती है। गर्भ की देखभाल, दवाएँ और scan आपकी स्त्री रोग विशेषज्ञ देखती हैं।',
       ob_sh_h: 'क्या यह फ़ोन कोई और भी चलाता है?', ob_sh_me: 'सिर्फ़ मैं', ob_sh_some: 'कभी-कभी', ob_sh_fam: 'हाँ, घर वाले भी',
       ob_kit_h: 'अपनी डायरी निजी रखें', ob_kit_lock: 'फ़िंगरप्रिंट या PIN से लॉक', ob_kit_plain: 'स्क्रीन पर सादे शब्द', ob_kit_plain_d: '"पीरियड" जैसे शब्द नहीं दिखेंगे', ob_kit_notes: 'ऐप "Notes" नाम से दिखे', ob_kit_p: 'ये सब कभी भी "मैं" पेज पर बदल सकती हैं।', ob_done: 'हो गया',
@@ -474,8 +474,8 @@
       howto_h: 'Sakhi कैसे इस्तेमाल करें', howto_p: 'छोटे टूर, जिन्हें कभी भी फिर देख सकती हैं।', tours_auto: 'नई स्क्रीन पर टूर दिखाएँ', tours_auto_d: 'किसी स्क्रीन को पहली बार खोलने पर एक छोटा टूर', tour_voice: 'टूर पढ़कर सुनाएँ', tour_voice_d: 'Sakhi हर क़दम पढ़कर सुनाती है। शेयर्ड फ़ोन के लिए यह शुरू में बंद रहता है।', tours_again: 'टूर फिर से दिखाएँ', tours_again_done: 'टूर फिर से दिखेंगे।',
       tw1_h: 'आपका हफ़्ता', tw1_p: 'हर गोला एक दिन है। जो हुआ, नोट करने के लिए दिन पर टैप करें।', tw2_h: 'एक टैप में नोट', tw2_p: 'ये बटन आज का हाल एक टैप में सेव करते हैं। ग़लती हो तो वापस ले सकती हैं।', tw3_h: 'कुछ भी पूछें', tw3_p: 'हिंदी या अंग्रेज़ी में सवाल लिखें। अभी आज़माएँ: बॉक्स पर टैप करें।', tw3_pm: 'सवाल लिखें, या माइक दबाकर हिंदी में बोलें। अभी आज़माएँ।',
       td1_h: 'आपका कैलेंडर', td1_p: 'किसी भी दिन को भरने या तारीख़ ठीक करने के लिए उस पर टैप करें। बिंदु बताते हैं कि आपने क्या नोट किया।', td1_pd: 'नोट जोड़ने या बदलने के लिए किसी भी दिन पर टैप करें।', td2_h: 'चक्र', td2_p: 'पहले आपके चक्र, फिर जिसकी जाँच करनी है और आपने सबसे ज़्यादा क्या नोट किया, महीनों के साथ।', td2_pd: 'महीनों के साथ आपके नोट।', td3_h: 'आज के लिए जोड़ें', td3_p: 'आज का पीरियड, लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', td3_pd: 'आज के लिए नोट जोड़ने को + दबाएँ। अभी आज़माएँ।',
-      tc1_h: 'खोजें', tc1_p: 'हर गाइड और टूल, विषय के हिसाब से: पीरियड, प्रेग्नेंसी, डिलीवरी के बाद, 40 के बाद और भी।', tc1_pd: 'पढ़ने के लिए कोई विषय चुनें।', tc2_h: 'कोई भी पन्ना सुनें', tc2_p: 'स्पीकर दबाएँ, Sakhi पन्ना पढ़कर सुनाएगी।', tc3_h: 'मदद, कभी भी', tc3_p: 'कभी भी "मदद" दबाएँ: 112 पर कॉल, मुफ़्त सरकारी डॉक्टर, या Qura की डॉक्टर से कॉल (पहली कॉल मुफ़्त)।', tw4_h: 'आज का आपका प्लान', tw4_p: 'आज के आपके क़दम। करते जाएँ और "हो गया" दबाएँ, और शाम को Sakhi को बताएँ कि दिन कैसा रहा।',
-      th1_h: 'डॉक्टर से बात', th1_p: 'जो सवाल एक-दो दिन रुक सकते हैं: मुफ़्त सरकारी डॉक्टर, या Qura की डॉक्टर से कॉल।', th2_h: 'इमरजेंसी में', th2_p: 'तुरंत 112 पर कॉल करें। सारे इमरजेंसी नंबर यहाँ हैं।',
+      tc1_h: 'खोजें', tc1_p: 'हर गाइड और टूल, विषय के हिसाब से: पीरियड, प्रेग्नेंसी, डिलीवरी के बाद, 40 के बाद और भी।', tc1_pd: 'पढ़ने के लिए कोई विषय चुनें।', tc2_h: 'कोई भी पन्ना सुनें', tc2_p: 'स्पीकर दबाएँ, Sakhi पन्ना पढ़कर सुनाएगी।', tw4_h: 'आज का आपका प्लान', tw4_p: 'आज के आपके क़दम। करते जाएँ और "हो गया" दबाएँ, और शाम को Sakhi को बताएँ कि दिन कैसा रहा।',
+      th1_h: 'डॉक्टर से बात', th1_p: 'जो सवाल एक-दो दिन रुक सकते हैं: Qura की डॉक्टर से कॉल।', th2_h: 'इमरजेंसी में', th2_p: 'तुरंत 112 पर कॉल करें। सारे इमरजेंसी नंबर यहाँ हैं।',
       tm1_h: 'शेयर्ड फ़ोन पर निजता', tm1_p: 'Sakhi को लॉक करें, सादे शब्द चुनें, या ऐप को Notes जैसा दिखाएँ।', tm1_pw: 'Sakhi पर PIN लगाएँ, या “आज” पर सादे शब्द रखें।', tour_diary_d: 'आपके नोट्स', tm2_h: 'सब कुछ मिटाएँ', tm2_p: 'पुष्टि करने के बाद, Sakhi ने इस फ़ोन पर जो भी सेव किया, सब मिट जाता है।',
       tour_hpreg: 'आज, प्रेग्नेंसी में', tour_hpost: 'आज, डिलीवरी के बाद', tour_httc: 'बच्चे की कोशिश', tour_hmeno: '40 के बाद', tour_day: 'डायरी का एक दिन', tour_day_d: 'नोट्स का एक दिन', tour_ans: 'झटपट जवाब', tour_ci: 'महीने का चेक-इन', tour_ring: 'चक्र का गोला', tour_g_screens: 'स्क्रीन', tour_g_features: 'फ़ीचर', tour_step1: '1 छोटा क़दम', tour_q: 'यह क्या दिखाता है?',
       thp1_h: 'प्रेग्नेंसी का हफ़्ता', thp1_p: 'बड़ा नंबर आपकी प्रेग्नेंसी का हफ़्ता है, और चित्र बच्चे का आकार दिखाता है। क्या बदल रहा है, देखने के लिए "{b}" दबाएँ।', thp2_h: 'एक टैप में', thp2_p: '"{a}", लक्षण और महीने का चेक-इन। "{b}" में आपका वज़न, BP, sugar, Hb और गोलियाँ रहती हैं।', thp3_h: 'कुछ भी पूछें', thp3_p: 'सवाल लिखें, या नीचे से एक चुनें। पहला, "{b}", बताता है कि कब 112 पर कॉल करें।', thp3_pm: 'सवाल लिखें या बोलें, या नीचे से एक चुनें। पहला, "{b}", बताता है कि कब 112 पर कॉल करें।',
@@ -624,7 +624,11 @@
     const l = Object.keys(state.daily || {}).concat((state.events || []).map((e) => e && e.d)).filter(isISO).sort(); return l[0] || null; }
   /* Version 39.11: the sex log, one entry a day: 'n' without a method, 'y' with one (only on this phone) */
   function cleanSex(o) { const out = {}; if (o && typeof o === 'object' && !Array.isArray(o)) Object.keys(o).forEach((k) => { if (isISO(k) && (o[k] === 'n' || o[k] === 'y')) out[k] = o[k]; }); return out; }
-  function tidyState() { if (!isISO(state.joined) && state.stage === 'app') { const j = joinedFrom(); if (j) state.joined = j; } state.daily = cleanDaily(state.daily); state.sex = cleanSex(state.sex); state.events = (Array.isArray(state.events) ? state.events : []).filter((e) => e && typeof e.d === 'string' && typeof e.t === 'string'); }
+  function tidyState() { if (!isISO(state.joined) && state.stage === 'app') { const j = joinedFrom(); if (j) state.joined = j; }
+    /* Version 39.68 (the doctors' review): Hindi and English only; Marathi moves to Hindi, Bengali, Tamil and Telugu to English */
+    if (state.lang && state.lang !== 'en' && state.lang !== 'hi') state.lang = state.lang === 'mr' ? 'hi' : 'en';
+    if (Array.isArray(state.reminders)) state.reminders = state.reminders.filter((r) => !(r && r.mod === 'journey' && retired('journey')));   /* Version 39.68: 21 small steps' 9 am reminder rings no more (named, so a live module named like a retired page, such as midlife, keeps its reminders) */
+    state.daily = cleanDaily(state.daily); state.sex = cleanSex(state.sex); state.events = (Array.isArray(state.events) ? state.events : []).filter((e) => e && typeof e.d === 'string' && typeof e.t === 'string'); }
   /* Version 32 (field-test audit 2.6): the WebView writes localStorage to disk in batches, up to a minute late, so an entry made
      just before Android closes Sakhi could be lost. The Android app keeps a second copy, written at once on every save; at
      start the newer of the two wins (savedAt). A copy that can't be read is set aside under KEY-rescue, never silently
@@ -1066,7 +1070,7 @@
     const tb = $('#topbar'); const inApp = state.stage === 'app'; const cur = langMeta(state.lang);
     const short = (l) => l.short || (l.code === 'en' ? 'EN' : String(l.label || l.name || l.code).slice(0, 3));
     tb.innerHTML = '<div class="brand"><span class="bname">' + (state.settings.discreet ? esc(t('notes_brand')) : '<span class="bq">Qura</span> <span class="bsub">Sakhi</span>') + '</span></div>' +
-      '<div class="topbar-actions">' + (mem.locked ? '' : '<button type="button" class="docbtn" id="help-btn" aria-label="' + esc(t('help')) + '">' + I.help + '<span>' + esc(t('help')) + '</span></button>' +   /* Version 39.27 (R07): Help from the first joining screen */ runHook('topbar', [api], true) + (inApp ? '' : '<button type="button" class="iconbtn langbtn lang-' + esc(cur.script || 'latn') + '" data-langs="1" aria-label="' + esc(t('lang_h')) + '">' + esc(short(cur)) + '</button>') +
+      '<div class="topbar-actions">' + (mem.locked ? '' : (inApp && route() === 'home' ? '<button type="button" class="docbtn" id="help-btn" aria-label="' + esc(t('help')) + '">' + I.help + '<span>' + esc(t('help')) + '</span></button>' : '') +   /* Version 39.68 (the doctors' review): Help on Today only, not on every screen and not while she joins */ runHook('topbar', [api], true) + (inApp ? '' : '<button type="button" class="iconbtn langbtn lang-' + esc(cur.script || 'latn') + '" data-langs="1" aria-label="' + esc(t('lang_h')) + '">' + esc(short(cur)) + '</button>') +
       /* Version 39.2 (diet audit F15): Me has a label, in English and Hindi, so a woman in the wrong language still finds it */
       (inApp ? '<button type="button" class="docbtn mebtn" data-go="me" aria-label="' + esc(t('me')) + '">' + I.person + '<span>Me / मैं</span></button>' : '')) + '</div>';
     const lb = tb.querySelector('[data-langs]'); if (lb) lb.addEventListener('click', openLangs);
@@ -1077,20 +1081,12 @@
   /* Version 37: Help in the header, one tap from every screen (docs/companion-journey-2026-10-23.md, section 7.8) */
   /* Version 39.27 (minimalism audit R07): the first row dials 112 (the phone's dialer, number filled in), with every other
      helpline under it. While she joins, only the rows that open on top of the screen show. */
-  /* Version 39.62 (phase D; PLACES-05): the violence, abortion and STI pages, 2 taps from every screen at every stage now that
-     Explore's topics are behind one row. In a pregnancy her choices page stands for the abortion page; after a loss there is
-     none, as in her topics (Version 39.0). Their own titles, under one quiet label. */
-  function privHelp() {
-    const pages = [['intimate-safety', 'intimate_safety', I.lock], [isPregnant() ? 'pregtest-options' : 'pregtest-abortion', isPregnant() ? 'pregtest_opts' : 'pregtest_abort', I.users], ['intimate-sti', 'intimate_sti', I.check]]
-      .filter((x) => modRoute(x[0]) && !triageHidden(x[0]) && !(x[0] === 'pregtest-abortion' && state.stage === 'app' && lossWeeks()));
-    return pages.length ? '<p class="small hs-priv-h">' + esc(t('hs_priv')) + '</p><div class="list hs-priv">' + pages.map((x) => '<button type="button" class="item" data-hs-go="' + x[0] + '"><span class="ico-sm hue hue-rose">' + x[2] + '</span><span class="body"><strong>' + esc(t(x[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '';
-  }
   function openHelpSheet() {
     const joining = state.stage !== 'app' && state.stage !== 'browse'; const from = pageTopic();
     const row = (id, ico, title, sub) => '<button type="button" class="item" id="' + id + '"><span class="ico-sm hue hue-rose">' + ico + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span><span class="chev">' + I.chev + '</span></button>';
     sheet('<h2>' + esc(t('help')) + '</h2><div class="list hs-list"><a class="item hs-sos hs-112" id="hs-112" href="tel:112"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('hs_112')) + '</strong><span>' + esc(t('hs_112_s')) + '</span></span><span class="chev">' + I.chev + '</span></a>' +
-      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t(isPregnant() ? 'hs_doc' : 'hs_doc_q'), (isPregnant() ? t('hs_doc_s_preg') : t(careGov() ? 'hs_doc_s' : 'hs_doc_s_doc'))) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
-      (modRoute('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>' + (joining ? '' : privHelp()), (sh) => {
+      row('hs-sos', I.users, t('hs_other'), t('hs_other_s')) + row('hs-harm', I.heart, t('hs_harm'), t('hs_harm_s')) + (joining ? '' : (modRoute('loss') ? row('hs-loss', icon('flower'), t('loss_hub'), t('loss_hub_s')) : '') + row('hs-doc', I.steth, t(isPregnant() ? 'hs_doc' : 'hs_doc_q'), (isPregnant() ? t('hs_doc_s_preg') : t('hs_doc_s_doc'))   /* Version 39.68: no free government doctor page to offer */) +   /* Version 39.10: pregnancy loss, 2 taps from every screen (Explore shows only her stage) */ row('hs-guide', I.help, t('hs_guide'), t('hs_guide_s')) +
+      (modRoute('asha') && !retired('asha') && state.stage === 'app' && (careGov() || (api.asha && safe(() => api.asha.saved(), false))) ? row('hs-asha', I.person, t('asha_h'), '') : '') + (state.stage === 'app' && waNum() && !mem.teen && !retired('tell') ? row('hs-tell', I.person, t('tell'), t('tell_sub')) : '')) + '</div>', (sh) => {   /* Version 39.68: no Private help, My ASHA or Tell a person (the doctors' review) */
       sh.querySelectorAll('[data-hs-go]').forEach((b) => b.addEventListener('click', () => { closeSheet(true); setHash(b.dataset.hsGo); }));
       $('#hs-sos', sh).addEventListener('click', () => { closeSheet(true); openSOS(); });
       $('#hs-harm', sh).addEventListener('click', () => { closeSheet(true); openHarm(); });
@@ -1145,7 +1141,7 @@
   /* With app lock, shared-phone or discreet mode on, the screen can't be captured: no screenshot, no screen recording, no
      picture in the recent-apps list (FLAG_SECURE, audit fix 2). Otherwise she can still screenshot her own report. */
   let secureNow = null;
-  const secureSync = () => { const B = window.SakhiAndroid; if (!B || !B.setSecure) return; const on = !!(state.settings.pinHash || state.settings.shared || state.settings.discreet); if (on !== secureNow) { secureNow = on; safe(() => B.setSecure(on)); } };
+  const secureSync = () => { const B = window.SakhiAndroid; if (!B || !B.setSecure) return; const on = false; if (on !== secureNow) { secureNow = on; safe(() => B.setSecure(on)); } };   /* Version 39.68 (the doctors' answer 5): no screenshot block; Shared phone, discreet mode and the PIN stay */
   /* the day the screen was drawn for: coming back to Sakhi, or Home left open past midnight, draws today (Version 32, field-test
      audit 3.2) */
   let shownDay = null;
@@ -1175,7 +1171,9 @@
     if (state.stage === 'welcome') return renderWelcome(v);
     if (state.stage === 'onboard') return renderOnboard(v);
     const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
-    if (r.startsWith('a-')) renderArticle(v, r.slice(2));
+    if (r.startsWith('a-')) { if (artGone(r)) safe(() => location.replace('#learn')); else renderArticle(v, r.slice(2)); }   /* Version 39.68: an article the doctors removed opens Learn */
+    else if (MOVED[r]) safe(() => location.replace('#' + MOVED[r]));
+    else if (retired(r)) safe(() => location.replace('#care'));   /* Version 39.68: a retired page, however she reached it */
     else if (r.startsWith('learn-')) { const g = r.slice(6); if ((CONTENT.groups || []).some((x) => x.group === g)) { mem.learnGroup = g; mem.learnSet = true; } safe(() => location.replace('#learn')); }   /* Version 39.7: a chapter of the book, from a module's link */
     else if (state.stage === 'browse' && !isOpen(r)) renderBrowseHome(v);
     else if (triageHidden(r) || triageHidden(r.split('-')[0])) renderNotYet(v);   /* Version 39.1: a held-back check is held back however she reaches it (selfcheck-pmos too) */
@@ -1207,7 +1205,24 @@
   const TRIAGE_RELEASE = false;
   const TRIAGE = ['selfcheck', 'intimate-check', 'cond-labs', 'meno-score', 'midlife', 'pregtest-abortion', 'access-symptoms', 'preg-symptoms', 'pregtools-kicks', 'pregtools-contractions'];
   const triageHidden = (r) => TRIAGE.indexOf(r) >= 0 && !TRIAGE_RELEASE && !fullTools();
-  function dropTriageLinks(root) { if (!root || TRIAGE_RELEASE || fullTools()) return; root.querySelectorAll('[data-go]').forEach((b) => { if (TRIAGE.indexOf(b.dataset.go) >= 0) b.remove(); }); }
+  /* Version 39.68 (the doctors' feature review, 4 and 5 Nov 2026: Dr. Megha and the gynaecologist marked every feature Keep,
+     Remove, Amend or Defer; docs/feature-review-2026-11-05.md). A retired page is gone however she reaches it (a link, a quick
+     answer, an old hash: she lands on Explore), and every link to it leaves the screen it was on. A retired tile leaves Explore
+     and search, while its page stays where the doctors kept it: her plan's tools, My food, the pregnancy card, Help. */
+  const RETIRED = ['access-doctor', 'access-free', 'access-online', 'access-schemes', 'asha', 'cond-anaemia', 'cond-endo', 'cond-hyst', 'docportal',
+    'intimate-safety', 'intimate-sti', 'journey', 'loss-grief', 'meno-diary', 'midlife', 'periods-pms', 'periods-postpone', 'selfcheck', 'teen-mind',
+    'teen-puberty', 'teen-services', 'tools-summary', 'ttc-signs', 'ttc-ready', 'joy', 'tell'];
+  const RETIRED_TILES = ['access-care', 'plan-body', 'plan-plate', 'plan-pmos', 'preg-logs', 'pregnancy', 'tools-reminders'];
+  const MOVED = {};   /* a retired page that opens another page instead (none now) */
+  const KEPT = ['joy-quiz'];   /* Sach ya Myth? stays (joy.js), the garden goes */
+  const retired = (r) => !!r && KEPT.indexOf(r) < 0 && RETIRED.some((x) => r === x || r.indexOf(x + '-') === 0);
+  const ONLY_IN = {};   /* a page reachable only from some screens (none now: Care near me stays wherever a "See a doctor" leads to it) */
+  const artGone = (g) => g.indexOf('a-') === 0 && (CONTENT.groups || []).length > 0 && !findArticle(g.slice(2));   /* a Learn article the doctors removed */
+  function dropTriageLinks(root) {
+    if (!root) return; const held = !TRIAGE_RELEASE && !fullTools(); const r0 = route();
+    root.querySelectorAll('[data-go]').forEach((b) => { const g = b.dataset.go || '';
+      if ((held && TRIAGE.indexOf(g) >= 0) || retired(g) || artGone(g) || (ONLY_IN[g] && ONLY_IN[g].indexOf(r0) < 0)) b.remove(); });
+  }
   function renderNotYet(v) { v.innerHTML = backRow(t('ny_h'), 'care', false) + '<div class="card soft"><p>' + esc(t('ny_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" data-go="care">' + esc(t('care')) + '</button><button type="button" class="btn sm" data-go="help">' + esc(t('help')) + '</button></div></div>'; wire(v); }
   /* ---------- care hub ---------- */
   const CORE_TILES = [
@@ -1220,7 +1235,7 @@
   const tileText = (x, k) => (typeof x[k] === 'string' ? t(x[k]) : tx(x[k]));
   const TOPIC_GROUPS = { periods: ['cycle', 'mind_body'], cond: ['pmos'], ttc: ['conceive'], preg: ['pregnancy'], intimate: ['intimate'], meno: ['midlife'], free: ['services'] };
   /* Version 39.7 (journey audit P3-13): an article may sit in a second topic, so no topic is left with nothing to read */
-  const TOPIC_ARTS = { loss: ['conceive.after-a-pregnancy-loss-care-and-support'], post: ['pregnancy.after-birth-first-six-weeks', 'pregnancy.after-birth-dos-and-donts', 'pregnancy.government-support-schemes'], contra: ['midlife.contraception-perimenopause'], teen: ['cycle.first-periods-for-teens', 'services.under-18-daughter-sister', 'intimate.pads-cloth-cups-tampons'], pregtest: ['conceive.pregnancy-test-when-and-how', 'cycle.missed-period-what-to-do-first'], screen: ['midlife.bleeding-after-menopause', 'pmos.pmos-long-term'] };
+  const TOPIC_ARTS = { loss: [], post: ['pregnancy.after-birth-first-six-weeks', 'pregnancy.after-birth-dos-and-donts'], contra: ['midlife.contraception-perimenopause'], teen: ['cycle.first-periods-for-teens', 'services.under-18-daughter-sister', 'intimate.pads-cloth-cups-tampons'], pregtest: ['conceive.pregnancy-test-when-and-how', 'cycle.missed-period-what-to-do-first'], screen: ['midlife.bleeding-after-menopause', 'pmos.pmos-long-term'] };
   const SECTION_ICONS = { periods: 'drop', contra: 'pill', pregtest: 'check', ttc: 'flower', preg: 'baby', post: 'heart', loss: 'leaf', intimate: 'lock', cond: 'chart', screen: 'ribbon', meno: 'moon', teen: 'users', tools: 'bell', free: 'steth', plans: 'bell', records: 'file', support: 'heart', fun: 'sparkle' };
   /* The five tools most likely to matter at her stage, first match wins. */
   const FOR_YOU = {
@@ -1257,7 +1272,7 @@
     out.push('cycle'); return out;
   }
   /* Doctor's view is an internal demo; the core pregnancy screen is reached from Home when the pregnancy module is there. */
-  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false)) && !triageHidden(x.route) && !(x.route === 'fertile' && !fullTools() && !FERT_RELEASE)).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']) && (x.route !== 'report' || canSave())).map((x) => (x.section === 'tools' ? Object.assign({}, x, { section: sectionOf(x) }) : x));
+  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false)) && !triageHidden(x.route) && !retired(x.route) && RETIRED_TILES.indexOf(x.route) < 0 && !(x.route === 'fertile' && !fullTools() && !FERT_RELEASE)).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']) && (x.route !== 'report' || canSave())).map((x) => (x.section === 'tools' ? Object.assign({}, x, { section: sectionOf(x) }) : x));
   /* Version 39.0: for 6 weeks after a pregnancy ends any other way than a birth */
   const lossWeeks = () => { const e = state.situation.pregEndedOn; return !isPregnant() && isISO(e) && diffDays(fromISO(e), today()) >= 0 && diffDays(fromISO(e), today()) < 42; };
   function forYouTiles(all) {
@@ -1451,14 +1466,13 @@
     [['kya kare', 'kya karen', 'kya karein', 'kya na kare', 'kya na karen', 'kya nahi kare', 'kya nahi karna', 'kya karna chahiye', 'precaution', 'precautions', 'dos and donts', "dos and don'ts", 'do and dont', 'savdhani', 'sawdhani', 'parhez', 'parhej', 'nahana', 'सावधानी', 'क्या करें', 'क्या न करें', 'क्या नहीं करना', 'परहेज़', 'परहेज', 'नहाना'], 'dos'],
     [['safar', 'travel', 'yatra', 'sex', 'sambandh', 'सफ़र', 'सफर', 'यात्रा', 'सेक्स', 'संबंध'], 'dos-preg'],
     [['jaapa', 'japa', 'sawa mahina', 'sava mahina', 'chhilla', 'chilla', 'जापा', 'सवा महीना', 'छिल्ला'], 'pregnancy.after-birth-dos-and-donts'],
-    [['safe day', 'safe days', 'safe period', 'safe time', 'सेफ डे', 'सुरक्षित दिन'], 'conceive.why-no-app-can-name-your-fertile-day'],
+    [['safe day', 'safe days', 'safe period', 'safe time', 'सेफ डे', 'सुरक्षित दिन']],
     [['tanke', 'taanke', 'stitches', 'टांके', 'टाँके'], 'pregnancy.after-birth-first-six-weeks'],
     [['sonography', 'sonografi', 'ultrasound', 'usg', 'सोनोग्राफी', 'अल्ट्रासाउंड'], 'pregnancy.four-antenatal-visits', 'preg']   /* review KNOWLEDGE-04: in pregnancy only */
   ];
   const DOS = { preg: 'pregnancy.dos-and-donts', post: 'pregnancy.after-birth-dos-and-donts', cycle: 'cycle.period-dos-and-donts' };
   /* review KNOWLEDGE-08: a stage she names in her words wins; otherwise her stage's guide. None for midlife; within 6 weeks of
      a loss, the loss guide as the quick answer (and no dos-and-don'ts tile). */
-  const LOSS_ART = 'conceive.after-a-pregnancy-loss-care-and-support';
   /* review SAFETY-01, FIXES-01: a loss she types or Sakhi holds comes before any stage word. Care after a loss or an
      abortion is the loss guide; asking for an abortion gets no guide (the tools lead); in pregnancy, a loss happening now is the
      danger guide. Contraception and "to get pregnant" are not pregnancy questions, "after the pregnancy" is the after-birth
@@ -1480,13 +1494,13 @@
     const qq = q ? ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ' : '';
     if (qq && (DOS_W.miss.test(qq) || DOS_W.abort.test(qq))) {
       const asked = qq.replace(DOS_W.ask, ' ');
-      if (DOS_W.after.test(qq)) return tile ? null : LOSS_ART;
+      if (DOS_W.after.test(qq)) return null;   /* Version 39.68: the loss guide article is gone (the doctors' review); her search answers as usual */
       if (DOS_W.abort.test(qq) && DOS_W.want.test(asked)) return null;
       if (isPregnant()) return DANGER_ART;
-      return tile ? null : LOSS_ART;
+      return null;   /* Version 39.68: the loss guide article is gone (the doctors' review); her search answers as usual */
     }
     if (qq && DOS_W.contra.test(qq)) return null;
-    if (lossWeeks() && !afterBirthNow()) return tile ? null : LOSS_ART;
+    if (lossWeeks() && !afterBirthNow()) return null;   /* Version 39.68: the loss guide article is gone (the doctors' review); her search answers as usual */
     if (qq && DOS_W.post.test(qq)) return DOS.post;
     if (qq && DOS_W.ttc.test(qq)) return null;
     if (qq && DOS_W.preg.test(qq)) return DOS.preg;
@@ -1560,7 +1574,7 @@
      questions by her day), her topic, and one row to the library. Her topics, her other questions, her stage's dos and don'ts and
      every guide (Contents) are a tap away there. The government's free care stays on this screen for the government route and for
      "Nowhere yet" (Version 39.28). The abortion, STI and violence pages are in Help, 2 taps from every screen (PLACES-05). */
-  const freeHtml = () => (ROUTES['access-free'] ? '<div class="list care-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('access_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
+  const freeHtml = () => (ROUTES['access-free'] && !retired('access-free') ? '<div class="list care-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('access_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
   const freeFirst = () => careGov() || careRoute() === 'none';
   const contentsHtml = () => '<div class="list care-contents"><button type="button" class="item quiet" data-go="learn"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('contents_h')) + '</strong><span>' + esc(tf('all_articles_d', { n: learnGroups().reduce((n, g) => n + (g.articles || []).length, 0) })) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
   function renderCare(v) {
@@ -1590,7 +1604,7 @@
     v.innerHTML = backRow(t('lib_h'), 'care', false) + qaHtml(disc, qaList(disc).slice(3), 'qa_more', true) + topicGrid(all) + (freeFirst() ? '' : freeHtml()) + contentsHtml();
     wire(v); wireOneTap(v);
   }
-  const topicN = (all, sec) => (sec === 'free' && ROUTES['access-free'] ? 0 : all.filter((x) => x.section === sec && x.place !== 'help').length + articlesFor(TOPIC_GROUPS[sec] || []).length);
+  const topicN = (all, sec) => (sec === 'free' && ROUTES['access-free'] && !retired('access-free') ? 0 : all.filter((x) => x.section === sec && x.place !== 'help').length + articlesFor(TOPIC_GROUPS[sec] || []).length);
   const topicCard = (all, sec) => { const n = topicN(all, sec); if (!n) return '';
     return '<button type="button" class="topic-card hue-' + hueOf(sec) + '" data-go="topic-' + sec + '">' + (api.art ? api.art.spot(sec) : '<span class="ico-sm hue">' + icon(SECTION_ICONS[sec]) + '</span>') + '<strong>' + esc(t('sec_' + sec)) + '</strong><span class="small">' + esc(tf('topic_count', { n: n })) + '</span></button>'; };
   function topicGrid(all) {
@@ -2024,13 +2038,15 @@
     const card = (h, ks, inner) => '<section class="card fl-card" id="fl-card" data-nofold="1"><h3>' + esc(t(h)) + '</h3>' + why(ks) + inner + '</section>';
     if (st === 'preg') return card('fl_preg_h', ['fl_pw1', 'fl_pw2', 'fl_pw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['preg-week'] ? 'preg-week' : 'preg-plan') + '">' + esc(t('fl_preg_b')) + '</button>');
     if (st === 'post') return card('fl_post_h', ['fl_bw1', 'fl_bw2', 'fl_bw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['post-recovery'] ? 'post-recovery' : 'post') + '">' + esc(t('fl_post_b')) + '</button>');
-    if (st === 'meno' && (state.situation || {}).stopped) return card('fl_meno_h', ['fl_mw1', 'fl_mw2', 'fl_mw3'], '<button type="button" class="btn primary block" data-fl-go="' + (ROUTES['meno-diary'] ? 'meno-diary' : 'meno') + '">' + esc(t('fl_meno_b')) + '</button>');
-    const ls = lastStart(); const m = mem.fl || (mem.fl = { days: null, signs: [] });
-    const lp = ls ? '<div class="item quiet fl-lp"><span class="body"><span>' + esc(t('fl_last')) + '</span><strong>' + esc(fmtD(ls, { day: 'numeric', month: 'short' }) + ' · ' + (diffDays(ls, today()) === 0 ? t('today_b') : (diffDays(ls, today()) === 1 ? t('yesterday') : tf('fl_ago', { n: diffDays(ls, today()) })))) + '</strong></span><button type="button" class="linkbtn" data-fl-lp="1">' + esc(t('fl_change')) + '</button></div>'
+    const stopped = st === 'meno' && !!(state.situation || {}).stopped;
+    if (stopped && ROUTES['meno-diary'] && !retired('meno-diary')) return card('fl_meno_h', ['fl_mw1', 'fl_mw2', 'fl_mw3'], '<button type="button" class="btn primary block" data-fl-go="meno-diary">' + esc(t('fl_meno_b')) + '</button>');
+    /* Version 39.68 (the doctors' review: no weekly symptom diary, the Diary logs the same signs): after her periods stop, her first log is today's signs, here */
+    const ls = stopped ? null : lastStart(); const m = mem.fl || (mem.fl = { days: null, signs: [] });
+    const lp = stopped ? '' : ls ? '<div class="item quiet fl-lp"><span class="body"><span>' + esc(t('fl_last')) + '</span><strong>' + esc(fmtD(ls, { day: 'numeric', month: 'short' }) + ' · ' + (diffDays(ls, today()) === 0 ? t('today_b') : (diffDays(ls, today()) === 1 ? t('yesterday') : tf('fl_ago', { n: diffDays(ls, today()) })))) + '</strong></span><button type="button" class="linkbtn" data-fl-lp="1">' + esc(t('fl_change')) + '</button></div>'
       : '<button type="button" class="btn block" data-fl-lp="1">' + esc(t('fl_lp_q')) + '</button>';
     const days = ls ? '<p class="fl-q">' + esc(t('fl_days')) + '</p><div class="chips" role="group" aria-label="' + esc(t('fl_days')) + '">' + ['3', '4', '5', '6', '7'].map((n) => '<button type="button" class="chip' + (m.days === n ? ' on' : '') + '" data-fl-days="' + n + '" aria-pressed="' + (m.days === n) + '">' + esc(n === '7' ? '7+' : n) + '</button>').join('') + '</div>' : '';
     const signs = '<p class="fl-q">' + esc(t('fl_anything')) + '</p><div class="chips" role="group" aria-label="' + esc(t('fl_anything')) + '">' + feelSet().map((x) => x[0]).map((k) => '<button type="button" class="chip' + (m.signs.indexOf(k) >= 0 ? ' on' : '') + '" data-fl-sign="' + k + '" aria-pressed="' + (m.signs.indexOf(k) >= 0) + '">' + esc(t(k)) + '</button>').join('') + '</div>';
-    return card('fl_why_h', ['fl_w1', 'fl_w2', 'fl_w3'], '<p class="eyebrow fl-h">' + esc(t('fl_h')) + '</p><div class="list">' + lp + '</div>' + days + signs + '<button type="button" class="btn primary block" id="fl-save">' + esc(t('fl_save')) + '</button>');
+    return card(stopped ? 'fl_meno_h' : 'fl_why_h', stopped ? ['fl_mw1', 'fl_mw2', 'fl_mw3'] : ['fl_w1', 'fl_w2', 'fl_w3'], '<p class="eyebrow fl-h">' + esc(t('fl_h')) + '</p>' + (lp ? '<div class="list">' + lp + '</div>' : '') + days + signs + '<button type="button" class="btn primary block" id="fl-save">' + esc(t('fl_save')) + '</button>');
   }
   function wireFirstLog(v) {
     const c = $('#fl-card', v); if (!c) return; const m = mem.fl || (mem.fl = { days: null, signs: [] });
@@ -2090,7 +2106,7 @@
   function feelCard(disc, inHero) {
     if (disc || !feelOn()) return ''; const d = toISO(today()); const got = state.daily[d] || []; const plan = !!(api.plan && api.plan.running && safe(() => api.plan.running(), false));
     return '<div class="' + (inHero ? 'feel-card feel-in' : 'card feel-card') + '" data-nofold="1">' + (plan || inHero ? '' : '<span class="eyebrow">' + esc(t('feel_eb')) + '</span>') + (inHero ? '<p class="feel-q">' + esc(t('feel_h')) + '</p>' : '<h3>' + esc(t('feel_h')) + '</h3>') + feelChips(d, true) +
-      '<p class="small' + (got.length ? ' feel-ok' : '') + '">' + esc(got.length ? t('feel_ok') : t('feel_why')) + '</p>' + (plan ? '' : meterHtml(true)) + '</div>';
+      '<p class="small' + (got.length ? ' feel-ok' : '') + '">' + esc(got.length ? t('feel_ok') : t('feel_why')) + '</p></div>';   /* Version 39.68: no notes meter (the doctors' review) */
   }
   function wireFeel(root, redraw) {
     root.querySelectorAll('[data-feel]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.feel; const d0 = toISO(today()); const p0 = patN(); const on = feelToggle(d0, k); usageMark('diary'); if (redraw) redraw(); else render();
@@ -2115,21 +2131,6 @@
     (state.events || []).forEach((e) => { if (e.d && e.d.slice(0, 7) === mk && e.d <= tS) set[e.d] = 1; });
     return Object.keys(set).length;
   };
-  /* R12: how much she noted this month, and what her next entries unlock: a reason to come back, never a streak to lose.
-     why: the Calendar's own "Why 6 cycles?" link, since the meter now says when her fertile days show (Version 39.17, R4) */
-  function meterHtml(inCard, why) {
-    if (!canSave() || !feelStage()) return '';
-    const td = today(); const days = td.getDate(); const n = notedMonth(); const nx = meterNext();
-    const fwy = why && nx && !state.settings.discreet && fertWhy() === 'few' ? ' <button type="button" class="linkbtn" id="fw-why">' + esc(t('fw_why')) + '</button>' : '';
-    return '<div class="' + (inCard ? '' : 'card soft ') + 'meter" data-nofold="1"><div class="row spread"><strong>' + esc(tf('meter_n', { n: n, d: days })) + '</strong><span class="small">' + esc(t('months')[td.getMonth()]) + '</span></div><span class="meter-bar" aria-hidden="true"><i style="width:' + Math.round((n / days) * 100) + '%"></i></span>' + (nx ? '<p class="small meter-nx"><span>' + esc(nx) + '</span>' + fwy + '</p>' : '') + '</div>';
-  }
-  const meterNext = () => {
-    const fw = state.settings.discreet ? null : fertWhy();
-    if (fw === 'few') { const k = Math.max(1, 6 - usable().length); return k === 1 ? t('meter_fw1') : tf('meter_fw', { n: k }); }
-    const irr = fw === 'irregular';   /* Version 39.27 (R04): her gaps can't give fertile days yet; what repeats, and a fuller report, can */
-    const p = patterns(); if (p && p.n < 3) { const k = 3 - p.n; return k === 1 ? t(irr ? 'meter_rep1' : 'meter_pat1') : tf(irr ? 'meter_rep' : 'meter_pat', { n: k }); }
-    return '';
-  };
   function firstDaysRows(disc) {
     const f = state.focus; if (disc || !f || !canSave() || state.sample) return [];
     if (diffDays(fromISO(f.at), today()) > 30) return [];
@@ -2137,12 +2138,7 @@
     const out = []; const st = stageNow(); const tdS = toISO(today());
     const logged = (state.daily[tdS] || []).length || state.events.some((e) => e.d === tdS) || (state.prompts || {}).firstLog === tdS;
     if ((st === 'cycle' || st === 'ttc' || (st === 'meno' && !(state.situation || {}).stopped)) && !logged && !feelOn()) out.push({ id: 'core-log', order: 20, icon: 'drop', hue: 'rose', title: t('td_log'), sub: t('td_log_s'), go: 'diary' });
-    const a = dayRead();   /* Version 39.62: by her day, as Learn's Start here */
-    const rdN = (state.prompts || {}).readDays || { n: 0, d: '' };   /* Version 39.59 (the lives audit, R3): on 3 days at most */
-    if (a && rdN.d !== tdS && rdN.n >= 3) return out;
-    if (a && rdN.d !== tdS && canSave()) { state.prompts = Object.assign({}, state.prompts || {}, { readDays: { n: rdN.n + 1, d: tdS } }); setTimeout(save, 0); }
-    if (a) out.push({ id: 'core-read', order: 30, icon: GROUP_ICONS[a.group] || 'learn', hue: hueOf(a.group), title: L(a, 'title'), sub: t('td_read_s'), go: 'a-' + a.group + '.' + a.id });
-    return out;
+    return out;   /* Version 39.68 (the doctors' review): no first-days read on Today; Learn's Start here gives the same reads */
   }
   /* Version 39.10: a woman who joined before it tells Sakhi her stage and goals, once (and again after a stage change) */
   function exCard(disc) {
@@ -2677,7 +2673,7 @@
       const ds = diffDays(ls, today()); const wkDone = !!safe(() => api.meno.thisWeek(), false);
       const big = inPeriod ? ds + 1 : (ds <= 60 ? ds : Math.floor(ds / 30.4)); const unit = inPeriod ? t('period_day') : t(ds <= 60 ? 'mid_days' : 'mid_months');
       main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(t(inPeriod ? 'ring_period' : 'mid_eyebrow')) + '</div><div class="big num" id="bignum">' + big + '</div><p class="lead">' + esc(unit) + '</p>' +
-        (ROUTES['meno-diary'] ? '<button type="button" class="btn sm" data-go="meno-diary">' + esc(t(wkDone ? 'mid_diary_done' : 'mid_diary')) + '</button>' : '') + '</div>', '') +
+        (ROUTES['meno-diary'] && !retired('meno-diary') ? '<button type="button" class="btn sm" data-go="meno-diary">' + esc(t(wkDone ? 'mid_diary_done' : 'mid_diary')) + '</button>' : '') + '</div>', '') +
         '<p class="small">' + esc(t('mid_note')) + '</p>';
     } else if (!ls) {
       main = twoCol('<div class="hero-main"><div class="eyebrow">' + esc(disc ? t('today_h') : t('cycle_day')) + '</div><p class="lead">' + esc(disc ? t('d_first') : t('first_log')) + '</p><button type="button" class="btn sm" id="log-last">' + esc(disc ? t('d_log_last') : t('log_last')) + '</button></div>', !disc && A ? '<div class="hero-art">' + A.sakhi({ pose: 'hi', look: state.settings.look, label: t('sakhi_alt') }) + '</div>' : '');
@@ -2953,7 +2949,7 @@
     if (k === 'preg') steps.push({ id: 'dates', order: 10, title: t('setup_dates'), sub: t('setup_dates_s'), act: () => openStage('preg'), done: !!pregInfo() });
     else if (k !== 'post' && !sit.stopped && !sit.hysterectomy) steps.push({ id: 'period', order: 10, title: t('setup_period'), sub: t('setup_period_s'), act: () => openLog('start', toISO(today()), null), done: !!lastStart() });
     /* Version 39.27 (R01): no reminder row: phone reminders are on from the start */
-    HOOKS.setup.forEach((h) => { const x = safe(() => h.fn(api), null); (Array.isArray(x) ? x : [x]).forEach((y) => { if (y && y.id && y.title && (y.go || y.act) && (onMe || y.id !== 'asha')) steps.push(y); }); });   /* Mohit, 26 Oct: My ASHA stays off Today (in Me, Help and Explore) */
+    HOOKS.setup.forEach((h) => { const x = safe(() => h.fn(api), null); (Array.isArray(x) ? x : [x]).forEach((y) => { if (y && y.id && y.title && (y.go || y.act) && (onMe || y.id !== 'asha') && !(y.go && retired(y.go))) steps.push(y); }); });   /* Version 39.68: no step for a removed page */   /* Mohit, 26 Oct: My ASHA stays off Today (in Me, Help and Explore) */
     setupSteps = steps.sort((a, b) => (a.order || 50) - (b.order || 50)).slice(0, 5);
     const n = setupSteps.filter((x) => x.done).length; if (!setupSteps.length || n === setupSteps.length) { setupSteps = []; return ''; }
     /* the steps still to do, three at most; the count says how far she is */
@@ -3001,22 +2997,22 @@
   /* Six common questions for each stage: [label key, article ('group.id') or '#route', picture]. */
   const QA = {
     cycle: [['late', 'cycle.missed-period-what-to-do-first', 'periods'], ['pain', 'cycle.painful-periods', 'periods'], ['disch', 'intimate.discharge-itching-odour', 'intimate'], ['heavy', 'cycle.heavy-bleeding-how-to-tell', 'periods'], ['pmos', 'pmos.what-pmos-is', 'cond'], ['irreg', 'cycle.why-cycles-become-irregular', 'periods']],
-    ttc: [['ptest', 'conceive.pregnancy-test-when-and-how', 'pregtest'], ['ready', 'conceive.getting-ready-india-preconception-checklist', 'ttc'], ['fertile', 'conceive.why-no-app-can-name-your-fertile-day', 'ttc'], ['pmosbaby', 'pmos.pmos-planning-a-baby', 'cond'], ['ttcdoc', 'conceive.when-to-see-a-fertility-doctor', 'ttc'], ['partner', 'conceive.partner-health-and-semen-test', 'ttc']],
-    preg: [['danger', 'pregnancy.danger-signs-call-112', 'danger'], ['checkups', 'pregnancy.four-antenatal-visits', 'preg'], ['tablets', 'pregnancy.iron-folic-acid-calcium-td', 'preg'], ['moves', 'pregnancy.babys-movements', 'preg'], ['schemes', 'pregnancy.government-support-schemes', 'tools'], ['sugarbp', 'pregnancy.sugar-test-blood-pressure-pmos', 'preg']],
-    post: [['six', 'pregnancy.after-birth-first-six-weeks', 'post'], ['feed', '#post-feed', 'post'], ['ppmood', '#post-mood', 'post'], ['ppcontra', '#post-contra', 'contra'], ['heal', '#post-recovery', 'post'], ['schemes', 'pregnancy.government-support-schemes', 'tools']],
+    ttc: [['ptest', 'conceive.pregnancy-test-when-and-how', 'pregtest'], ['ready', 'conceive.getting-ready-india-preconception-checklist', 'ttc'], ['pmosbaby', 'pmos.pmos-planning-a-baby', 'cond'], ['ttcdoc', 'conceive.when-to-see-a-fertility-doctor', 'ttc'], ['partner', 'conceive.partner-health-and-semen-test', 'ttc']],
+    preg: [['danger', 'pregnancy.danger-signs-call-112', 'danger'], ['checkups', 'pregnancy.four-antenatal-visits', 'preg'], ['tablets', 'pregnancy.iron-folic-acid-calcium-td', 'preg'], ['moves', 'pregnancy.babys-movements', 'preg'], ['sugarbp', 'pregnancy.sugar-test-blood-pressure-pmos', 'preg']],
+    post: [['six', 'pregnancy.after-birth-first-six-weeks', 'post'], ['feed', '#post-feed', 'post'], ['ppmood', '#post-mood', 'post'], ['ppcontra', '#post-contra', 'contra'], ['heal', '#post-recovery', 'post']],
     meno: [['hot', 'midlife.hot-flushes-night-sweats', 'meno'], ['after40', 'midlife.periods-after-40', 'meno'], ['hrt', 'midlife.hormone-therapy-explained', 'meno'], ['bones', 'midlife.bones-heart-after-40', 'meno'], ['sleep', 'midlife.sleep-mood-dryness-midlife', 'meno'], ['pmb', 'midlife.bleeding-after-menopause', 'meno']],
     pmos: [['irreg', 'cycle.why-cycles-become-irregular', 'periods'], ['pmos', 'pmos.what-pmos-is', 'cond'], ['pmsigns', 'pmos.signs-to-notice', 'cond'], ['pmtests', 'pmos.tests-and-why', 'cond'], ['pmfood', 'pmos.food-for-hormones', 'cond'], ['late', 'cycle.missed-period-what-to-do-first', 'periods']],
-    browse: [['first', 'cycle.first-periods-for-teens', 'teen'], ['myths', 'cycle.common-period-myths', 'periods'], ['pads', 'intimate.pads-cloth-cups-tampons', 'intimate'], ['disch', 'intimate.discharge-itching-odour', 'intimate'], ['moodcycle', 'mind_body.mood-and-the-cycle', 'mind_body'], ['lines', 'services.helplines-directory', 'services']]
+    browse: [['first', 'cycle.first-periods-for-teens', 'teen'], ['myths', 'cycle.common-period-myths', 'periods'], ['pads', 'intimate.pads-cloth-cups-tampons', 'intimate'], ['disch', 'intimate.discharge-itching-odour', 'intimate']]
   };
   /* One-tap symptoms for today, and where "What helps" goes. */
   const DAY = {
-    cycle: [['d_cramps', 'cycle.painful-periods'], ['d_headache', '#periods-pms'], ['d_bloat', '#periods-pms'], ['d_mood', 'mind_body.mood-and-the-cycle'], ['d_tired', 'mind_body.thyroid-and-anaemia-tests'], ['d_sleep', 'mind_body.sleep-and-hormones']],
+    cycle: [['d_cramps', 'cycle.painful-periods'], ['d_headache', '#periods-pms'], ['d_bloat', '#periods-pms'], ['d_tired', 'mind_body.thyroid-and-anaemia-tests'], ['d_sleep', 'mind_body.sleep-and-hormones']],
     preg: [['d_nausea', '#preg-symptoms'], ['d_back', '#preg-symptoms'], ['d_heartburn', '#preg-symptoms'], ['d_swell', 'pregnancy.danger-signs-call-112'], ['d_tired', '#preg-symptoms'], ['d_sleep', '#preg-symptoms']],
     post: [['d_tired', 'pregnancy.after-birth-first-six-weeks'], ['d_sleep', 'pregnancy.after-birth-first-six-weeks'], ['d_mood', '#post-mood'], ['d_breast', '#post-feed'], ['d_back', '#post-recovery']],
     meno: [['d_hotflush', 'midlife.hot-flushes-night-sweats'], ['d_sleep', 'midlife.sleep-mood-dryness-midlife'], ['d_mood', 'midlife.sleep-mood-dryness-midlife'], ['d_joint', 'midlife.bones-heart-after-40'], ['d_tired', 'mind_body.thyroid-and-anaemia-tests']]
   };
   DAY.ttc = DAY.cycle;
-  const openQA = (target) => { if (!target) return; if (target.charAt(0) === '#') { const r = target.slice(1); if (ROUTES[r] || modRoute(r)) setHash(r); return; } openAnswer(target); };
+  const openQA = (target) => { if (!target) return; if (target.charAt(0) === '#') { const r = target.slice(1); if ((ROUTES[r] || modRoute(r)) && !retired(r)) setHash(MOVED[r] || r); return; } openAnswer(target); };
   /* Version 39.8: a quick answer's own drawing where one fits; the rest keep their group's picture */
   const QA_ART = { heavy: ['sign', 'bleed'], pain: ['sign', 'belly'], tablets: ['food', 'tablet'], pmfood: ['food', 'thali'], bones: ['food', 'milk'] };
   const qaPic = (x) => { const a = QA_ART[x[0]]; const h = a && api.art && api.art[a[0]] ? api.art[a[0]](a[1]) : ''; return h ? h.replace('<svg class="', '<svg class="spot qa-pic ') : spotFor(x[2], true); };
@@ -3089,7 +3085,7 @@
   const kindsOn = (ds) => { const got = state.daily[ds] || []; const ks = SYM.filter((c) => c[2].some((x) => got.indexOf(x[0]) >= 0)).map((c) => c[0].slice(4)); if ((state.notes || {})[ds]) ks.push('note'); if (api.plan && api.plan.dayDone && safe(() => api.plan.dayDone(ds), false)) ks.push('plan'); return ks; };
   const kdots = (ds) => { const ks = kindsOn(ds); return ks.length ? '<span class="kd" aria-hidden="true">' + ks.slice(0, 4).map((k) => '<i class="hue-' + KINDS[k].hue + '"></i>').join('') + '</span>' : ''; };
   /* Where "What helps" goes for each symptom: her stage's list first, then these. */
-  const HELP = { d_acne: 'pmos.signs-to-notice', d_anxious: 'mind_body.mood-and-the-cycle', d_irritable: '#periods-pms', d_disch_ok: 'intimate.discharge-itching-odour', d_disch_bad: 'intimate.discharge-itching-odour', d_itch: 'intimate.discharge-itching-odour', d_pbleed: 'pregnancy.danger-signs-call-112', d_moveless: 'pregnancy.danger-signs-call-112', d_joint: 'midlife.bones-heart-after-40', d_hotflush: 'midlife.hot-flushes-night-sweats', d_back: 'cycle.painful-periods', d_breast: 'cycle.what-is-a-menstrual-cycle', d_nausea: 'conceive.pregnancy-test-when-and-how', d_heartburn: 'mind_body.simple-indian-plate', d_swell: 'pregnancy.danger-signs-call-112' };
+  const HELP = { d_acne: 'pmos.signs-to-notice', d_irritable: '#periods-pms', d_disch_ok: 'intimate.discharge-itching-odour', d_disch_bad: 'intimate.discharge-itching-odour', d_itch: 'intimate.discharge-itching-odour', d_pbleed: 'pregnancy.danger-signs-call-112', d_moveless: 'pregnancy.danger-signs-call-112', d_joint: 'midlife.bones-heart-after-40', d_hotflush: 'midlife.hot-flushes-night-sweats', d_back: 'cycle.painful-periods', d_breast: 'cycle.what-is-a-menstrual-cycle', d_nausea: 'conceive.pregnancy-test-when-and-how', d_heartburn: 'mind_body.simple-indian-plate', d_swell: 'pregnancy.danger-signs-call-112' };
   const helpFor = (k) => { const row = (DAY[stageNow()] || []).find((x) => x[0] === k); return row ? row[1] : (HELP[k] || null); };
   /* One sheet to log any day: period start, end and spotting for that day, symptoms by group, then a note.
      focus: 'feel', 'more', 'sym', 'mood' or 'note' scrolls straight to that part (the + menu and Home's More use it).
@@ -3174,7 +3170,7 @@
   function qaList(disc) {
     if (disc) return [];
     const sk = stageNow(); const pm = sk === 'cycle' && (state.situation.pcos || (state.goals || []).indexOf('pmos') >= 0);
-    const list = (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => !(x[0] === 'feed' && babyGone())).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) : !!findArticle(x[1]));   /* Version 39.46 */
+    const list = (pm ? QA.pmos : (QA[sk] || QA.cycle)).filter((x) => !(x[0] === 'feed' && babyGone())).filter((x) => x[1].charAt(0) === '#' ? !!(ROUTES[x[1].slice(1)] || modRoute(x[1].slice(1))) && !retired(x[1].slice(1)) : !!findArticle(x[1]));   /* Version 39.46; Version 39.68: never a retired page */
     const ri = sk === 'cycle' || sk === 'ttc' ? rangeInfo() : null; const late = !!ri && today() > ri.to; let lead = []; let drop = []; let last = [];
     if (sk === 'preg') { const w = (pregInfo() || {}).weeks || 0; lead = ['danger'].concat(w >= 20 ? ['moves'] : [], w >= 24 && w < 30 ? ['sugarbp'] : []); }
     else if (sk === 'post') { const b = state.situation.deliveredOn; lead = isISO(b) && diffDays(fromISO(b), today()) >= 42 ? ['ppcontra'] : []; }
@@ -3213,73 +3209,61 @@
     'cycle.painful-periods': { plan: 'pain', tool: 'relief-cramps', guide: 'periods-pain', also: ['cycle.heavy-bleeding-how-to-tell', 'cycle.how-to-keep-a-period-diary', 'intimate.pain-during-sex'] },
     'cycle.spotting-between-periods': { tool: 'screen-cervix', also: ['intimate.safe-sex-infections-testing', 'cycle.heavy-bleeding-how-to-tell', 'midlife.bleeding-after-menopause'] },
     'cycle.first-periods-for-teens': { tool: 'periods-products', guide: 'teen-first', also: ['services.under-18-daughter-sister', 'cycle.common-period-myths', 'intimate.pads-cloth-cups-tampons'] },
-    'cycle.common-period-myths': { tool: 'joy-quiz', guide: 'periods-myths', also: ['cycle.period-dos-and-donts', 'intimate.hygiene-myths', 'mind_body.talking-to-family'] },
+    'cycle.common-period-myths': { tool: 'joy-quiz', guide: 'periods-myths', also: ['cycle.period-dos-and-donts', 'intimate.hygiene-myths'] },
     'cycle.how-to-keep-a-period-diary': { tool: 'report', also: ['cycle.usual-gap-between-periods', 'services.doctor-visit-bring-and-ask', 'cycle.why-cycles-become-irregular'] },
     'cycle.period-dos-and-donts': { plan: 'pain', tool: 'relief-cramps', guide: 'periods-myths', also: ['cycle.common-period-myths', 'cycle.painful-periods', 'cycle.heavy-bleeding-how-to-tell'] },
     'pmos.what-pmos-is': { plan: 'pmos', tool: 'selfcheck', guide: 'cond', also: ['pmos.signs-to-notice', 'pmos.tests-and-why', 'pmos.same-signs-different-cause'] },
     'pmos.signs-to-notice': { tool: 'selfcheck', also: ['pmos.tests-and-why', 'pmos.what-pmos-is', 'pmos.lean-pmos'] },
-    'pmos.tests-and-why': { tool: 'cond-labs', also: ['mind_body.thyroid-and-anaemia-tests', 'pmos.same-signs-different-cause', 'services.reading-prescription-tests'] },
+    'pmos.tests-and-why': { tool: 'cond-labs', also: ['mind_body.thyroid-and-anaemia-tests', 'pmos.same-signs-different-cause'] },
     'pmos.same-signs-different-cause': { tool: 'selfcheck', also: ['pmos.tests-and-why', 'mind_body.thyroid-and-anaemia-tests', 'pmos.what-pmos-is'] },
     'pmos.food-for-hormones': { plan: 'pmos', tool: 'food', also: ['mind_body.simple-indian-plate', 'pmos.movement-sleep-stress', 'mind_body.weight-and-waist'] },
     'pmos.movement-sleep-stress': { plan: 'pmos', tool: 'plan-moves', also: ['mind_body.movement-busy-day', 'mind_body.sleep-and-hormones', 'mind_body.stress-and-periods'] },
     'pmos.pmos-planning-a-baby': { tool: 'ttc-prep', guide: 'ttc', also: ['conceive.getting-ready-india-preconception-checklist', 'conceive.when-to-see-a-fertility-doctor', 'pmos.what-pmos-is'] },
     'pmos.pmos-long-term': { tool: 'screen-mine', also: ['pmos.lean-pmos', 'mind_body.weight-and-waist', 'pregnancy.sugar-test-blood-pressure-pmos'] },
     'pmos.lean-pmos': { tool: 'plan-body', also: ['pmos.what-pmos-is', 'pmos.food-for-hormones', 'mind_body.weight-and-waist'] },
-    'pmos.who-treats-what': { guide: 'access-doctor', also: ['services.how-qura-helps', 'services.see-gynaecologist-government-hospital', 'pmos.tests-and-why'] },
     'conceive.getting-ready-india-preconception-checklist': { plan: 'ready', tool: 'ttc-prep', guide: 'ttc', also: ['conceive.folic-acid-and-tests-before-pregnancy', 'conceive.partner-health-and-semen-test', 'pmos.pmos-planning-a-baby'] },
-    'conceive.why-no-app-can-name-your-fertile-day': { tool: 'fertile', guide: 'ttc-signs', also: ['conceive.ovulation-strips-temperature-progesterone', 'conceive.pregnancy-test-when-and-how', 'cycle.usual-gap-between-periods'] },
     'conceive.folic-acid-and-tests-before-pregnancy': { tool: 'ttc-prep', guide: 'ttc-tests', also: ['conceive.getting-ready-india-preconception-checklist', 'mind_body.thyroid-and-anaemia-tests', 'pregnancy.iron-folic-acid-calcium-td'] },
     'conceive.when-to-see-a-fertility-doctor': { tool: 'ttc-trying', guide: 'ttc', also: ['conceive.partner-health-and-semen-test', 'pmos.pmos-planning-a-baby', 'conceive.ovulation-strips-temperature-progesterone'] },
-    'conceive.ovulation-strips-temperature-progesterone': { tool: 'ttc-signs', also: ['conceive.why-no-app-can-name-your-fertile-day', 'conceive.when-to-see-a-fertility-doctor', 'conceive.pregnancy-test-when-and-how'] },
-    'conceive.pregnancy-test-when-and-how': { tool: 'pregtest-read', guide: 'pregtest', also: ['cycle.missed-period-what-to-do-first', 'pregnancy.register-by-12-weeks', 'conceive.why-no-app-can-name-your-fertile-day'] },
-    'conceive.partner-health-and-semen-test': { tool: 'ttc-partner', also: ['conceive.when-to-see-a-fertility-doctor', 'conceive.getting-ready-india-preconception-checklist', 'mind_body.talking-to-family'] },
-    'conceive.after-a-pregnancy-loss-care-and-support': { tool: 'loss-recovery', guide: 'loss', also: [] },
-    'pregnancy.register-by-12-weeks': { tool: 'preg-plan', guide: 'preg', also: ['pregnancy.four-antenatal-visits', 'pregnancy.iron-folic-acid-calcium-td', 'pregnancy.government-support-schemes'] },
+    'conceive.ovulation-strips-temperature-progesterone': { tool: 'ttc-signs', also: ['conceive.when-to-see-a-fertility-doctor', 'conceive.pregnancy-test-when-and-how'] },
+    'conceive.pregnancy-test-when-and-how': { tool: 'pregtest-read', guide: 'pregtest', also: ['cycle.missed-period-what-to-do-first'] },
+    'conceive.partner-health-and-semen-test': { tool: 'ttc-partner', also: ['conceive.when-to-see-a-fertility-doctor', 'conceive.getting-ready-india-preconception-checklist'] },
     'pregnancy.four-antenatal-visits': { tool: 'preg-plan', also: ['pregnancy.danger-signs-call-112', 'pregnancy.sugar-test-blood-pressure-pmos', 'pregnancy.dos-and-donts'] },
     'pregnancy.iron-folic-acid-calcium-td': { tool: 'iron', also: ['pregnancy.four-antenatal-visits', 'mind_body.thyroid-and-anaemia-tests', 'pregnancy.dos-and-donts'] },
     'pregnancy.sugar-test-blood-pressure-pmos': { tool: 'preg-logs', also: ['pregnancy.four-antenatal-visits', 'pregnancy.danger-signs-call-112', 'pmos.pmos-long-term'] },
     'pregnancy.danger-signs-call-112': { tool: 'help', also: ['pregnancy.babys-movements', 'pregnancy.four-antenatal-visits', 'pregnancy.dos-and-donts'] },
     'pregnancy.babys-movements': { tool: 'pregtools-kicks', also: ['pregnancy.danger-signs-call-112', 'pregnancy.four-antenatal-visits', 'pregnancy.dos-and-donts'] },
-    'pregnancy.government-support-schemes': { tool: 'access-schemes-preg', also: ['pregnancy.register-by-12-weeks', 'services.free-government-services', 'services.see-gynaecologist-government-hospital'] },
-    'pregnancy.after-birth-first-six-weeks': { tool: 'post-recovery', guide: 'post', also: ['pregnancy.after-birth-dos-and-donts', 'pregnancy.government-support-schemes', 'mind_body.simple-indian-plate'] },
+    'pregnancy.after-birth-first-six-weeks': { tool: 'post-recovery', guide: 'post', also: ['pregnancy.after-birth-dos-and-donts', 'mind_body.simple-indian-plate'] },
     'pregnancy.dos-and-donts': { tool: 'preg-plan', also: ['pregnancy.danger-signs-call-112', 'pregnancy.four-antenatal-visits', 'pregnancy.iron-folic-acid-calcium-td'] },
-    'pregnancy.after-birth-dos-and-donts': { tool: 'post-recovery', guide: 'post', also: ['pregnancy.after-birth-first-six-weeks', 'pregnancy.government-support-schemes', 'mind_body.simple-indian-plate'] },
+    'pregnancy.after-birth-dos-and-donts': { tool: 'post-recovery', guide: 'post', also: ['pregnancy.after-birth-first-six-weeks', 'mind_body.simple-indian-plate'] },
     'intimate.discharge-itching-odour': { tool: 'intimate-check', guide: 'intimate', also: ['intimate.hygiene-myths', 'intimate.safe-sex-infections-testing', 'intimate.burning-when-peeing'] },
     'intimate.burning-when-peeing': { tool: 'access-doctor', also: ['intimate.discharge-itching-odour', 'intimate.safe-sex-infections-testing', 'intimate.hygiene-myths'] },
     'intimate.safe-sex-infections-testing': { tool: 'intimate-sti', also: ['intimate.discharge-itching-odour', 'intimate.pain-during-sex', 'intimate.burning-when-peeing'] },
     'intimate.pain-during-sex': { guide: 'intimate', also: ['intimate.low-desire', 'cycle.painful-periods', 'midlife.sleep-mood-dryness-midlife'] },
-    'intimate.low-desire': { also: ['intimate.pain-during-sex', 'mind_body.mood-and-the-cycle', 'midlife.sleep-mood-dryness-midlife'] },
+    'intimate.low-desire': { also: ['intimate.pain-during-sex', 'midlife.sleep-mood-dryness-midlife'] },
     'intimate.pads-cloth-cups-tampons': { guide: 'periods-products', also: ['cycle.first-periods-for-teens', 'intimate.hygiene-myths', 'cycle.period-dos-and-donts'] },
     'intimate.hygiene-myths': { tool: 'joy-quiz', also: ['intimate.discharge-itching-odour', 'cycle.common-period-myths', 'intimate.pads-cloth-cups-tampons'] },
-    'intimate.did-not-want-the-sex': { tool: 'intimate-safety', also: ['services.helplines-directory'] },
     'midlife.perimenopause-indian-age': { plan: 'meno', tool: 'meno-diary', guide: 'meno', also: ['midlife.periods-after-40', 'midlife.hot-flushes-night-sweats', 'midlife.contraception-perimenopause'] },
     'midlife.periods-after-40': { plan: 'meno', tool: 'meno-diary', also: ['midlife.bleeding-after-menopause', 'cycle.heavy-bleeding-how-to-tell', 'midlife.perimenopause-indian-age'] },
     'midlife.hot-flushes-night-sweats': { plan: 'hot', tool: 'relief-hot', also: ['midlife.hormone-therapy-explained', 'midlife.sleep-mood-dryness-midlife', 'midlife.perimenopause-indian-age'] },
     'midlife.hormone-therapy-explained': { guide: 'meno-hrt', also: ['midlife.hot-flushes-night-sweats', 'midlife.early-menopause-poi', 'midlife.bones-heart-after-40'] },
     'midlife.early-menopause-poi': { guide: 'cond-poi', also: ['midlife.hormone-therapy-explained', 'midlife.bones-heart-after-40', 'midlife.perimenopause-indian-age'] },
     'midlife.bones-heart-after-40': { plan: 'bones', tool: 'screen-mine', guide: 'meno-bones', also: ['midlife.hormone-therapy-explained', 'mind_body.weight-and-waist', 'midlife.early-menopause-poi'] },
-    'midlife.bleeding-after-menopause': { tool: 'access-doctor', also: ['midlife.periods-after-40', 'cycle.spotting-between-periods', 'services.see-gynaecologist-government-hospital'] },
+    'midlife.bleeding-after-menopause': { tool: 'access-doctor', also: ['midlife.periods-after-40', 'cycle.spotting-between-periods'] },
     'midlife.sleep-mood-dryness-midlife': { plan: 'sleep', tool: 'relief-sleep', guide: 'meno-intimate', also: ['midlife.hot-flushes-night-sweats', 'mind_body.sleep-and-hormones', 'intimate.pain-during-sex'] },
     'midlife.contraception-perimenopause': { tool: 'contra-chooser', guide: 'contra', also: ['midlife.perimenopause-indian-age', 'midlife.periods-after-40', 'cycle.missed-period-what-to-do-first'] },
-    'mind_body.mood-and-the-cycle': { plan: 'pms', tool: 'periods-pms', also: ['mind_body.stress-and-periods', 'mind_body.sleep-and-hormones', 'intimate.low-desire'] },
-    'mind_body.stress-and-periods': { tool: 'relief-calm', also: ['mind_body.mood-and-the-cycle', 'cycle.why-cycles-become-irregular', 'mind_body.sleep-and-hormones'] },
+    'mind_body.stress-and-periods': { tool: 'relief-calm', also: ['cycle.why-cycles-become-irregular', 'mind_body.sleep-and-hormones'] },
     'mind_body.sleep-and-hormones': { plan: 'sleep', tool: 'relief-sleep', also: ['mind_body.stress-and-periods', 'mind_body.movement-busy-day', 'pmos.movement-sleep-stress'] },
     'mind_body.simple-indian-plate': { tool: 'food', also: ['pmos.food-for-hormones', 'mind_body.weight-and-waist', 'mind_body.thyroid-and-anaemia-tests'] },
     'mind_body.movement-busy-day': { tool: 'plan-moves', also: ['pmos.movement-sleep-stress', 'mind_body.weight-and-waist', 'mind_body.sleep-and-hormones'] },
     'mind_body.weight-and-waist': { tool: 'plan-body', also: ['mind_body.simple-indian-plate', 'mind_body.movement-busy-day', 'pmos.lean-pmos'] },
-    'mind_body.talking-to-family': { tool: 'family', also: ['cycle.common-period-myths', 'services.under-18-daughter-sister', 'mind_body.mood-and-the-cycle'] },
-    'mind_body.thyroid-and-anaemia-tests': { tool: 'cond-labs', also: ['cycle.heavy-bleeding-how-to-tell', 'pmos.tests-and-why', 'services.reading-prescription-tests'] },
-    'services.helplines-directory': { tool: 'help', also: ['services.free-government-services', 'services.see-gynaecologist-government-hospital', 'services.your-data-privacy'] },
-    'services.free-government-services': { tool: 'access-free', also: ['services.see-gynaecologist-government-hospital', 'services.doctor-visit-bring-and-ask', 'pregnancy.government-support-schemes'] },
-    'services.see-gynaecologist-government-hospital': { tool: 'access-doctor', also: ['services.doctor-visit-bring-and-ask', 'services.reading-prescription-tests', 'services.free-government-services'] },
-    'services.doctor-visit-bring-and-ask': { tool: 'report', also: ['services.reading-prescription-tests', 'services.see-gynaecologist-government-hospital', 'cycle.how-to-keep-a-period-diary'] },
-    'services.reading-prescription-tests': { tool: 'tools-meds', also: ['services.doctor-visit-bring-and-ask', 'pmos.tests-and-why', 'mind_body.thyroid-and-anaemia-tests'] },
-    'services.how-qura-helps': { tool: 'ask', also: ['pmos.who-treats-what', 'services.your-data-privacy', 'services.free-government-services'] },
-    'services.your-data-privacy': { also: ['services.how-qura-helps', 'services.helplines-directory'] },
-    'services.under-18-daughter-sister': { tool: 'family', guide: 'teen', also: ['cycle.first-periods-for-teens', 'mind_body.talking-to-family', 'services.helplines-directory'] }
+    'mind_body.thyroid-and-anaemia-tests': { tool: 'cond-labs', also: ['cycle.heavy-bleeding-how-to-tell', 'pmos.tests-and-why'] },
+    'services.doctor-visit-bring-and-ask': { tool: 'report', also: ['cycle.how-to-keep-a-period-diary'] },
+    'services.how-qura-helps': { tool: 'ask', also: ['services.your-data-privacy'] },
+    'services.your-data-privacy': { also: ['services.how-qura-helps'] },
+    'services.under-18-daughter-sister': { tool: 'family', guide: 'teen', also: ['cycle.first-periods-for-teens'] }
   };
   /* the guide that is the long read of an article: its foot offers the article as a 1-minute read */
-  const GUIDE_ART = { 'periods-pain': 'cycle.painful-periods', 'periods-myths': 'cycle.common-period-myths', 'periods-products': 'intimate.pads-cloth-cups-tampons', 'teen-first': 'cycle.first-periods-for-teens', 'meno-hrt': 'midlife.hormone-therapy-explained', 'meno-bones': 'midlife.bones-heart-after-40', 'cond-poi': 'midlife.early-menopause-poi', 'cond-fibroids': 'cycle.heavy-bleeding-how-to-tell', 'post': 'pregnancy.after-birth-first-six-weeks', 'access-schemes-preg': 'pregnancy.government-support-schemes', 'pregtest': 'conceive.pregnancy-test-when-and-how', 'ttc-prep': 'conceive.getting-ready-india-preconception-checklist', 'ttc-signs': 'conceive.ovulation-strips-temperature-progesterone', 'loss': 'conceive.after-a-pregnancy-loss-care-and-support', 'preg-mcp': 'pregnancy.register-by-12-weeks', 'pregtools-kicks': 'pregnancy.babys-movements', 'intimate-sti': 'intimate.safe-sex-infections-testing', 'intimate-check': 'intimate.discharge-itching-odour', 'meno-intimate': 'midlife.sleep-mood-dryness-midlife', 'access-free': 'services.free-government-services', 'access-doctor': 'services.see-gynaecologist-government-hospital', 'family': 'mind_body.talking-to-family', 'teen': 'services.under-18-daughter-sister' };
+  const GUIDE_ART = { 'periods-pain': 'cycle.painful-periods', 'periods-myths': 'cycle.common-period-myths', 'periods-products': 'intimate.pads-cloth-cups-tampons', 'teen-first': 'cycle.first-periods-for-teens', 'meno-hrt': 'midlife.hormone-therapy-explained', 'meno-bones': 'midlife.bones-heart-after-40', 'cond-poi': 'midlife.early-menopause-poi', 'cond-fibroids': 'cycle.heavy-bleeding-how-to-tell', 'post': 'pregnancy.after-birth-first-six-weeks', 'pregtest': 'conceive.pregnancy-test-when-and-how', 'ttc-prep': 'conceive.getting-ready-india-preconception-checklist', 'ttc-signs': 'conceive.ovulation-strips-temperature-progesterone', 'pregtools-kicks': 'pregnancy.babys-movements', 'intimate-sti': 'intimate.safe-sex-infections-testing', 'intimate-check': 'intimate.discharge-itching-odour', 'meno-intimate': 'midlife.sleep-mood-dryness-midlife', 'teen': 'services.under-18-daughter-sister' };
   const CORE_R = ['help', 'report', 'ask', 'learn', 'diary'];
   const artOk = (r) => { if (!r) return false; const tl = CORE_TILES.concat(TILES).filter((x) => x.route === r); if (tl.length) return visibleTiles().some((x) => x.route === r); return CORE_R.indexOf(r) >= 0 || api.toolShown(r); };
   const routeTitle = (r) => { if (r === 'help') return t('sos_signs'); if (r === 'report') return t('rp_h'); if (r === 'ask') return t('ask_h'); const x = CORE_TILES.concat(TILES).find((y) => y.route === r); if (x) return tileText(x, 'title'); if (r.indexOf('relief-') === 0) return t('relief_' + r.slice(7) + '_t');
@@ -3415,7 +3399,7 @@
       (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
         return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
       (s0.pregnant && pick !== 'preg' && pick !== 'post' ? '<div class="card st-end"><p>' + esc(t('stage_end_q')) + '</p><div class="grid2">' + [['ended', 'stage_end_y'], ['mistake', 'stage_end_n']].map((o) => '<button type="button" class="btn sm' + (endWhy === o[0] ? ' on' : '') + '" data-st-end="' + o[0] + '" aria-pressed="' + (endWhy === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
-      (pick === 'post' ? '<div class="card"><label for="st-birth">' + esc(t('stage_birth_date')) + '</label><input type="date" id="st-birth" max="' + toISO(today()) + '" value="' + esc(s0.deliveredOn || (s0.pregnant ? toISO(today()) : '')) + '"><label class="row" style="font-weight:500"><input type="checkbox" id="st-bf" style="width:22px;height:22px;min-height:0;accent-color:var(--accent)"' + (s0.pregnant || s0.breastfeeding !== false ? ' checked' : '') + '> ' + esc(t('stage_bf')) + '</label>' + (s0.deliveredOn && !s0.pregnant && api.post && api.post.lost && !babyGone() ? '<button type="button" class="linkbtn st-lost" id="st-lost">' + esc(t('post_lost_link')) + '</button>' : '') + '</div>' : '') +   /* Version 39.46 */
+      (pick === 'post' ? '<div class="card"><label for="st-birth">' + esc(t('stage_birth_date')) + '</label><input type="date" id="st-birth" max="' + toISO(today()) + '" value="' + esc(s0.deliveredOn || (s0.pregnant ? toISO(today()) : '')) + '"><label class="row" style="font-weight:500"><input type="checkbox" id="st-bf" style="width:22px;height:22px;min-height:0;accent-color:var(--accent)"' + (s0.pregnant || s0.breastfeeding !== false ? ' checked' : '') + '> ' + esc(t('stage_bf')) + '</label>' + '</div>' : '') +   /* Version 39.46; Version 39.68: no "My baby has died" (the doctors' review) */
       '<div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="st-cancel">' + esc(t('cancel')) + '</button><button type="button" class="btn primary" id="st-save">' + esc(t('save')) + '</button></div></div>', (sh) => {
       sh.querySelectorAll('[data-stage]').forEach((b) => b.addEventListener('click', () => { pick = b.dataset.stage; show(); }));
       const sl = sh.querySelector('#st-lost'); if (sl) sl.addEventListener('click', () => { closeSheet(); setTimeout(() => api.post.lost(), 0); });   /* Version 39.46 */
@@ -3439,7 +3423,7 @@
           s0.planning = false; s0.stopped = false; delete s0.midlife;
         } else if (pick === 'post') {
           const b = val('st-birth'); if (!inRange(b, -730, 0)) { toast(t('date_bad')); return; }
-          clearPreg(null, true); delete s0.pregEndedOn; setBirth(b); s0.breastfeeding = !!($('#st-bf', sh) || {}).checked; s0.planning = false; s0.stopped = false; delete s0.stoppedOn;
+          clearPreg(null, true); delete s0.pregEndedOn; delete s0.babyOff; setBirth(b); s0.breastfeeding = !!($('#st-bf', sh) || {}).checked; s0.planning = false; s0.stopped = false; delete s0.stoppedOn;
         } else {
           const wasStopped = !!s0.stopped;
           if (s0.pregnant && !endWhy) { toast(t('stage_end_q')); return; }
@@ -3453,6 +3437,8 @@
           if (ageAns === 'irr') state.goals = ['irregular'].concat((state.goals || []).filter((k) => k !== 'irregular'));   /* "irregular": her goal on Tracking */
           /* Version 32 (field-test audit 3.2): tracking or trying again means breastfeeding no longer pauses her count, and
              "periods stopped" keeps its day, so only bleeding logged after it is flagged */
+          /* Version 39.68 (the doctors' answer): leaving "I had a baby" quietly stops everything about the baby, at once */
+          if (was === 'post' && s0.deliveredOn) { s0.babyOff = toISO(today()); if (api.post && api.post.stopBaby) safe(() => api.post.stopBaby()); }
           if (pick !== 'meno') s0.breastfeeding = false;
           if (s0.stopped && !wasStopped) { const lb = lastBleedISO() || toISO(today()); const p9 = lastAns === 'y' && lsI && !periodEnd(toISO(lsI)) ? toISO(addDays(lsI, 9)) : '';   /* still on it (no end logged): 9 days after its start */ s0.stoppedOn = p9 > lb ? p9 : lb; } if (!s0.stopped) delete s0.stoppedOn;   /* review XS-1: bleeding after her last period still counts; Version 39.65: never the period she is on */
         }
@@ -3552,7 +3538,7 @@
     { id: 'home-meno', route: 'care', auto: () => !planEarly(), title: 'tour_hmeno', hue: 'purple', order: 20, when: () => notDisc() && stageNow() === 'meno', steps: [
       { sel: '#view .qa-grid', h: 'thm1_h', p: 'thm1_p' }, { sel: '#view .qa-tile[data-qa="midlife.bleeding-after-menopause"]', h: 'thm2_h', p: 'thm2_p' }] },
     { id: 'diary', route: 'diary', title: 'tour_diary', titleD: 'tour_diary_d', hue: 'sky', auto: true, steps: [{ sel: '.diary-paper .cal', h: 'td1_h', p: 'td1_p', pd: 'td1_pd' }, { sel: '.tabs [data-tab="tr"]', h: 'td2_h', p: () => (noPeriodsNow() ? 'td2_pp' : 'td2_p'), pd: 'td2_pd' }, { sel: '#fab', h: 'td3_h', p: () => (noPeriodsNow() ? 'td3_pp' : 'td3_p'), pd: 'td3_pd', tryIt: true }] },
-    { id: 'care', route: 'care', title: 'tour_care', hue: 'teal', auto: true, browse: true, steps: [{ sel: '#view .care-lib', h: 'tc1_h', p: 'tc1_p', pd: 'tc1_pd' }, { sel: '[data-lang-read]', h: 'tc2_h', p: 'tc2_p' }, { sel: '#help-btn', h: 'tc3_h', p: 'tc3_p' }] },   /* Version 39.62: her topic and the library row (the topic grid is a tap away) */
+    { id: 'care', route: 'care', title: 'tour_care', hue: 'teal', auto: true, browse: true, steps: [{ sel: '#view .care-lib', h: 'tc1_h', p: 'tc1_p', pd: 'tc1_pd' }, { sel: '[data-lang-read]', h: 'tc2_h', p: 'tc2_p' }] },   /* Version 39.62: her topic and the library row (the topic grid is a tap away). Version 39.68: Help is on Today only, so no Help step here */
     { id: 'help', route: 'help', title: 'tour_help', hue: 'orange', auto: false, browse: true, steps: [{ sel: '.doc-card', h: 'th1_h', p: 'th1_p' }, { sel: '#sos-btn', h: 'th2_h', p: 'th2_p' }] },
     /* Version 34.1: Me points to what she needs early, reminders and her backup, rather than "Delete everything" */
     { id: 'me', route: 'me', title: 'tour_me', hue: 'purple', auto: true, steps: [{ sel: '#me-privacy', h: 'tm1_h', p: 'tm1_p', pw: 'tm1_pw' }, { sel: '#view [data-go="me-reminders"]', h: 'tm3_h', p: 'tm3_p', pd: 'tm3_pd' }, { sel: '#view [data-go="me-data"]', h: 'tm4_h', p: 'tm4_p', pd: 'tm4_pd' }] },
@@ -3658,6 +3644,9 @@
   }
   /* auto: the first eligible tour for this screen, in order (her stage's Home first). force: a replay from "How to use Sakhi",
      or the next screen of the full tour. */
+  /* Version 39.68 (the doctors' review, "screen should not have excess words"): the tips that came one a day in her first week,
+     and the first-visit tips on each screen, no longer start on their own */
+  const TIPS_AUTO = false;
   function queueTour(r) {
     clearTimeout(tourTm);
     const force = mem.tourForce && mem.tourForce.route === r ? mem.tourForce : null;
@@ -3670,7 +3659,7 @@
         const legs = fullLegs(); const first = legs.length ? tourDef(legs[0]) : null;
         if (first && first.route === 'home' && hasTarget(first)) { countTour(); startFullTour(false, legs); return; }
       }
-      if (!autoGate()) return;
+      if (!TIPS_AUTO || !autoGate()) return;   /* Version 39.68: no tip starts on its own; the full tour and "How to use Sakhi" stay */
       if (r === 'home' && api.plan && safe(() => api.plan.offering && api.plan.offering(), false)) return;   /* Version 39.10: while her plan's offer is up, Today's tips wait */
       const def = TOURS.filter((x) => x.route === r && autoOk(x) && tourFits(x) && unseen(x)).sort((x, y) => (x.order || 50) - (y.order || 50)).find(hasTarget);
       if (def) { countTour(); startTour(def.id, false); }
@@ -3678,7 +3667,7 @@
   }
   /* A feature that opens in a sheet (the day page, a quick answer) gets its tour the first time it opens. */
   function tourMoment(name) {
-    if (tourOpening || tour) return;
+    if (!TIPS_AUTO || tourOpening || tour) return;
     const def = TOURS.find((x) => x.moment === name && autoOk(x) && tourFits(x) && unseen(x)); if (!def || !autoGate()) return;
     clearTimeout(tourTm);
     tourTm = setTimeout(() => { if (!tour && autoGate() && $('#sheet-root').innerHTML && hasTarget(def)) { countTour(); startTour(def.id, false); } }, 450);
@@ -3867,7 +3856,7 @@
     const tS = toISO(today()); const fs = dayFacts(tS); const a = fs[0] && fs[0].k !== 'x' ? fs[0].text : ''; const nx = fs.find((x) => x.k === 'next' || x.k === 'before');
     const wn = state.settings.discreet || state.settings.shared ? null : whyNot();   /* Version 39.25 (G1): a guessed start has its own box on the calendar */
     return '<div class="card cal-today" data-nofold="1" data-say="1">' + (a ? '<p class="ct-cyc"><strong>' + esc(a) + '</strong>' + (nx ? ' <span>· ' + esc(nx.text) + '</span>' : '') + '</p>' : '') + (wn && wn.k !== 'guess' ? reasonHtml(wn) : '') +
-      '<h3>' + esc(t('feel_h')) + '</h3>' + feelChips(tS, true) + meterHtml(true, true) + '</div>';
+      '<h3>' + esc(t('feel_h')) + '</h3>' + feelChips(tS, true) + '</div>';
   }
   function renderCalendar(v) {
     const base = mem.calMonth ? fromISO(mem.calMonth) : new Date(today().getFullYear(), today().getMonth(), 1); const y = base.getFullYear(), m = base.getMonth();
@@ -3898,7 +3887,7 @@
     const strip = calToday();
     const pw = pgi && pgi.weeks != null && !state.settings.discreet ? '<div class="card soft cal-pw" data-nofold="1"><span class="ico-sm hue hue-sky">' + I.baby + '</span><strong>' + esc(tf('cal_pw', { n: pgi.weeks })) + '</strong>' + (ROUTES['preg-week'] ? '<button type="button" class="btn sm" data-go="preg-week">' + esc(t('this_week')) + '</button>' : '') + '</div>' : '';
     v.innerHTML = strip + pw + '<div class="card"><div class="row spread"><button type="button" class="iconbtn" id="cal-prev" aria-label="prev">' + I.back + '</button><div class="cal-mo hand">' + esc(t('months')[m]) + ' ' + y + '</div><button type="button" class="iconbtn" id="cal-next" aria-label="next" style="transform:scaleX(-1)">' + I.back + '</button></div><div class="dotrule" aria-hidden="true"></div><div class="cal">' + t('dows').map((x) => '<span class="dow">' + esc(x) + '</span>').join('') + cells + '</div>' + (gq ? guessBox(gq) : '') + (preg ? '' : '<button type="button" class="btn block cal-edit-b" id="cal-edit">' + PEN_I + esc(t(state.settings.discreet ? 'mc_edit' : 'ce_b')) + '</button>') + '</div>' +   /* Version 39.23 */
-      (strip ? '' : fwFew()) +   /* Version 39.11: when her fertile days will start (Version 39.17: the strip's meter says it) */
+      fwFew() +   /* Version 39.11: when her fertile days will start (Version 39.68: always here, the meter is gone) */
       (preg ? (anyB && !state.settings.discreet ? '<div class="legend"><span><i class="sw" style="background:var(--bleed-light)"></i>' + esc(t('bleeding')) + '</span></div>' : '') : '<div class="legend">' + periodKey(pr, false, ri, anyPred) + '</div>') + (fz.length ? fertKey() : '') +
       /* Version 39.16 (R13): the period marks, then her notes' dots in one line; "?" opens the full key */
       '<div class="legend legend-dots"><span class="lk lk-dots" aria-hidden="true"><i class="hue-' + KINDS.pain.hue + '"></i><i class="hue-' + KINDS.body.hue + '"></i><i class="hue-' + KINDS.mood.hue + '"></i></span><span>' + esc(t('legend_dots')) + '</span><button type="button" class="tour-q" id="cal-key" aria-label="' + esc(t('legend_key')) + '">?</button></div><p class="small">' + esc(t('cal_note')) + (preg ? '' : ' ' + esc(t(fz.length ? 'fert_note' : 'no_contra'))) + '</p>';
@@ -4511,7 +4500,7 @@
      the time after a birth only the after-birth guides, midlife by whether her periods have stopped, and cycles and trying by her
      goal and a late period. Then the rest of her chapter in book order, leaving out what isn't hers now. Today's first-days read
      and Learn's Start here both use it. A plan's weekly chapter keeps its own home on Today and My plan. */
-  const READ_GOAL = { pain: 'cycle.painful-periods', heavy: 'cycle.heavy-bleeding-how-to-tell', pms: 'mind_body.mood-and-the-cycle', weight: 'pmos.food-for-hormones', irregular: 'pmos.what-pmos-is', skin: 'pmos.signs-to-notice' };
+  const READ_GOAL = { pain: 'cycle.painful-periods', heavy: 'cycle.heavy-bleeding-how-to-tell', weight: 'pmos.food-for-hormones', irregular: 'pmos.what-pmos-is', skin: 'pmos.signs-to-notice' };
   const READ_MID = { hot: 'hot-flushes-night-sweats', sleep: 'sleep-mood-dryness-midlife', mood: 'sleep-mood-dryness-midlife', bones: 'bones-heart-after-40', aches: 'bones-heart-after-40', heavy: 'periods-after-40' };
   function dayRead() {
     const g = stageGroup(); if (!g) return null; const rd = readsOf(); const gl = state.goals || []; const age = ageYears();
@@ -4519,19 +4508,19 @@
     if (isPregnant()) {
       const w = (pregInfo() || {}).weeks; const ab = ['after-birth-first-six-weeks', 'after-birth-dos-and-donts'];
       if (w == null) skip = ab;
-      else if (w < 13) { lead = ['register-by-12-weeks', 'four-antenatal-visits', 'iron-folic-acid-calcium-td', 'danger-signs-call-112']; skip = ab; }
-      else if (w < 24) { lead = ['four-antenatal-visits', 'danger-signs-call-112', 'iron-folic-acid-calcium-td'].concat(w >= 16 ? ['babys-movements'] : []); skip = ['register-by-12-weeks'].concat(ab); }
-      else if (w < 34) { lead = ['sugar-test-blood-pressure-pmos', 'babys-movements', 'danger-signs-call-112']; skip = ['register-by-12-weeks'].concat(ab); }
-      else { lead = ['danger-signs-call-112', 'babys-movements'].concat(ab); skip = ['register-by-12-weeks', 'sugar-test-blood-pressure-pmos']; }
+      else if (w < 13) { lead = ['four-antenatal-visits', 'iron-folic-acid-calcium-td', 'danger-signs-call-112']; skip = ab; }
+      else if (w < 24) { lead = ['four-antenatal-visits', 'danger-signs-call-112', 'iron-folic-acid-calcium-td'].concat(w >= 16 ? ['babys-movements'] : []); skip = [].concat(ab); }
+      else if (w < 34) { lead = ['sugar-test-blood-pressure-pmos', 'babys-movements', 'danger-signs-call-112']; skip = [].concat(ab); }
+      else { lead = ['danger-signs-call-112', 'babys-movements'].concat(ab); skip = ['sugar-test-blood-pressure-pmos']; }
     } else if (g === 'pregnancy') {   /* after a birth: only the after-birth guides and the schemes (review KNOWLEDGE-11) */
-      lead = ['after-birth-first-six-weeks', 'after-birth-dos-and-donts', 'government-support-schemes'];
+      lead = ['after-birth-first-six-weeks', 'after-birth-dos-and-donts'];
       skip = allArticles().filter((a) => a.group === g && lead.indexOf(a.id) < 0).map((a) => a.id);
     } else if (g === 'midlife') {
       const gk = gl.map((k) => READ_MID[k]).filter(Boolean);
       if (stoppedNow()) { lead = gk.concat(age != null && age < 45 ? ['early-menopause-poi'] : [], ['bleeding-after-menopause']); skip = ['periods-after-40', 'contraception-perimenopause']; }
       else { lead = gk; skip = ['bleeding-after-menopause'].concat(age != null && age >= 45 ? ['early-menopause-poi'] : []); }
     } else if (g === 'conceive') {
-      lead = (late ? ['pregnancy-test-when-and-how'] : []).concat(state.situation.pcos ? ['getting-ready-india-preconception-checklist', 'pmos.pmos-planning-a-baby'] : []); skip = ['after-a-pregnancy-loss-care-and-support'];
+      lead = (late ? ['pregnancy-test-when-and-how'] : []).concat(state.situation.pcos ? ['getting-ready-india-preconception-checklist', 'pmos.pmos-planning-a-baby'] : []); skip = [];
     } else {   /* cycle and PMOS: a late period, then her goals, then her period's dos and don'ts on a period day */
       const bd = bleedingDays(); const td = bd[toISO(today())]; const teen = mem.teen || (age != null && age < 18);
       lead = (late ? ['cycle.missed-period-what-to-do-first'] : []).concat(teen ? ['cycle.first-periods-for-teens'] : [], gl.map((k) => READ_GOAL[k]).filter((k) => k && (g === 'pmos' || k.indexOf('pmos.') !== 0)), td && td !== 'spot' ? ['cycle.period-dos-and-donts'] : []);
@@ -4546,7 +4535,7 @@
     const any = allArticles().some((x) => x.group === g && rd[x.group + '.' + x.id]);
     return '<div class="list learn-next"><button type="button" class="item" data-go="a-' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><span class="eyebrow">' + esc(t(any ? 'learn_next' : 'learn_start')) + '</span><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>';
   }
-  const freeRow = () => (ROUTES['access-free'] ? '<div class="list learn-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('learn_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
+  const freeRow = () => (ROUTES['access-free'] && !retired('access-free') ? '<div class="list learn-free"><button type="button" class="item" data-go="access-free"><span class="ico-sm hue hue-' + hueOf('free') + '">' + I.steth + '</span><span class="body"><strong>' + esc(t('learn_free')) + '</strong><span>' + esc(t('access_free_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '');
   /* Version 39.10: other stages' chapters stay out of her way (search still finds every guide) */
   const LEARN_OK = { cycle: ['cycle', 'pmos', 'conceive', 'intimate', 'mind_body', 'services'], ttc: ['conceive', 'cycle', 'pmos', 'intimate', 'mind_body', 'services'], preg: ['pregnancy', 'intimate', 'mind_body', 'services'], post: ['pregnancy', 'cycle', 'intimate', 'mind_body', 'services'], meno: ['midlife', 'cycle', 'intimate', 'mind_body', 'services'] };
   const learnGroups = () => { const all = CONTENT.groups || []; const ok = state.stage === 'app' && !state.settings.discreet ? LEARN_OK[stageNow()] : null; return ok ? all.filter((g) => ok.indexOf(g.group) >= 0) : all; };
@@ -4618,7 +4607,7 @@
   function renderHelp(v) {
     const sec = (title, items, cls) => '<div class="card ' + (cls || '') + '" data-say="1"><h3' + (String(cls || '').indexOf('dark') === 0 ? '' : ' style="color:var(--accent)"') + '>' + esc(title) + '</h3><ul>' + items.map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul></div>';
     v.innerHTML = (state.stage === 'app' ? backRow(t('help_h'), 'home', false) : '<h1>' + esc(t('help_h')) + '</h1>') + '<p class="small">' + esc(t('same_for_all')) + '</p>' + (state.stage === 'app' || state.stage === 'browse' ? helpTabs('help') : '') +
-      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] || ROUTES['access-doctor'] ? '<button type="button" class="linkbtn" data-go="' + (ROUTES['access-free'] ? 'access-free' : 'access-doctor') + '">' + esc(t(ROUTES['access-free'] ? 'access_free' : 'access_doctor')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
+      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] && !retired('access-free') ? '<button type="button" class="linkbtn" data-go="access-free">' + esc(t('access_free')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
       sec(t('call_now'), ['s1a', 's1b', 's1d'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a', 's5b']) + sec(t('mood'), ['s6a', 's6b']) +
       /* Version 39.7: the symptom guide by body area is a tab at the top now (Version 39.1 had it as a row here) */
       (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
@@ -4822,7 +4811,7 @@
        and the Qura card says plainly who the doctors are and what costs money */
     /* Version 39.28: for a woman who sees a private doctor (or hasn't said), the free government doctor comes after Qura's ways */
     const late = wa || !careGov();
-    const freeCard = ROUTES['access-doctor'] ? '<div class="card" id="ask-free"><h3>' + esc(t('ask_free_h')) + '</h3><p class="small">' + esc(t('ask_free_p')) + '</p><button type="button" class="btn sm' + (late || callCard ? '' : ' primary') + '" data-go="access-doctor">' + esc(t('access_doctor')) + '</button></div>' : '';
+    const freeCard = ROUTES['access-doctor'] && !retired('access-doctor') ? '<div class="card" id="ask-free"><h3>' + esc(t('ask_free_h')) + '</h3><p class="small">' + esc(t('ask_free_p')) + '</p><button type="button" class="btn sm' + (late || callCard ? '' : ' primary') + '" data-go="access-doctor">' + esc(t('access_doctor')) + '</button></div>' : '';
     v.innerHTML = '<div class="row">' + backBtn('home') + '<h1 style="font-size:24px">' + esc(t('ask_h')) + '</h1></div><p>' + esc(t(isPregnant() ? 'ask_p_preg' : 'ask_p')) + '</p>' + myDocAsk() + (late ? '' : freeCard) + callCard +   /* Version 39.38 */
       '<div class="card"><h3>' + esc(t(callCard ? 'ac_or_book' : 'ask_how_h')) + '</h3>' +
       (wa ? '<p class="small">' + esc(t('ask_how_wa')) + '</p><a class="btn' + (callCard ? '' : ' primary') + ' block" id="ask-wa" href="' + esc(waLink('ask_wa_hello')) + '" target="_blank" rel="noopener">' + I.steth + ' ' + esc(t('ask_wa')) + '</a>' + waNote()
@@ -5457,7 +5446,7 @@
     /* review KNOWLEDGE-09: a module that redraws its own page in place gets core's rows back (all of them check first) */
     redrawn: (v) => { const r = route(); safe(() => guideRow(v, r)); safe(() => helpTabsOn(v, r)); safe(() => sayButtons(v)); safe(() => jumpRow(v)); },
     openAnswer: openAnswer, article: (key) => { const a = findArticle(key); return a ? { key: key, title: L(a, 'title'), summary: L(a, 'summary') } : null; }, dangerLine: (k, lang) => dangerLine(k, lang), learnRead: (key) => !!readsOf()[key], stageNow: stageNow, openDay: openDay, openLog: openLog, kinds: KINDS, openStage: openStage, startTour: (id) => startTour(id, true), startFullTour: () => startFullTour(true), tours: () => TOURS.map((x) => x.id), tourMoment: tourMoment,
-    langs: LANGS, langMeta: langMeta, modules: MODS, sections: SECTIONS, tiles: () => CORE_TILES.concat(TILES), routes: () => Object.keys(ROUTES), routeOwner: (r) => { const m = modRoute(r); return m ? m.mod : null; },   /* exact routes and prefix routes (relief-hot, journey-iron) */
+    langs: LANGS, langMeta: langMeta, modules: MODS, sections: SECTIONS, tiles: () => CORE_TILES.concat(TILES), routes: () => Object.keys(ROUTES), routeOwner: (r) => { if (retired(r)) return null; const m = modRoute(r); return m ? m.mod : null; },   /* Version 39.68: a retired page has no owner, so its buttons don't draw */   /* exact routes and prefix routes (relief-hot, journey-iron) */
     coreSummary: coreSummary, summaries: () => HOOKS.summary.map((h) => ({ mod: h.mod, sections: safe(() => h.fn(api), []) || [] })),
     loadSample: loadSample, sampleIds: () => Object.keys(samples), strings: STR,
     onOwnerChange: (fn) => { if (typeof fn === 'function') ownerFns.push(fn); },
@@ -5467,7 +5456,7 @@
     planOn: () => demoBuild() || PLAN_RELEASE,   /* Version 35: the PMOS plan, until its wording is reviewed (PLAN_RELEASE) */
     setupShows: (id) => setupShown.indexOf(id) >= 0,
     helpKeys: (st) => (OB_HELP[st] || OB_HELP.cycle).slice(),   /* "What would you like help with?" for a stage (Version 36) */
-    toolShown: (r) => !!modRoute(r) && !triageHidden(r) && !triageHidden(r.split('-')[0]),   /* a route this build shows (not a held-back triage tool) */   /* Home's setup card lists this step now (a module's own Home card can wait) */   /* phone alerts: Android only, and she turns them on */
+    toolShown: (r) => !!modRoute(r) && !triageHidden(r) && !triageHidden(r.split('-')[0]) && !retired(r),   /* Version 39.68: a page the doctors removed (or moved) */ retired: (r) => retired(r) || !!MOVED[r],   /* a route this build shows (not a held-back triage tool) */   /* Home's setup card lists this step now (a module's own Home card can wait) */   /* phone alerts: Android only, and she turns them on */
     /* Run fn against a sample woman's data without touching the real diary (used by the doctor-view preview). */
     withSample: (id, fn) => { if (!samples[id]) return null; const keep = state; holdSave = true; let out = null; try { state = samples[id](); runHook('sample', [id, api]); out = fn(api); } catch (e) { if (window.console) console.error('[saathi]', e); } finally { state = keep; holdSave = false; } return out; },
     reset: () => { const lang = state.lang; state = defaults(); state.lang = lang; mem = freshMem(); }

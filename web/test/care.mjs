@@ -163,7 +163,7 @@ async function signUp(a) {
   check('3 ... her doctor\'s dose first and picked: "As my doctor prescribed"', JSON.stringify(plans) === JSON.stringify(['doctor*', 'preg', 'post', 'weekly']) && /As my doctor prescribed/.test(v) && !/My doctor’s dose/.test(v), plans);
   check('3 ... "How often did your doctor say?": Every day, Every other day, Once a week', /How often did your doctor say\?\s*Every day\s*Every other day\s*Once a week/.test(v) && !(await a.page.$eval('#iron-every-row', (e) => e.hidden)), v.slice(0, 900));
   check('3 ... the weekly tablet "is free at government health centres", not "your ASHA or ANM can give you"', /is free at government health centres under Anemia Mukt Bharat/.test(v) && !/your ASHA or ANM can give you/.test(v));
-  check('3 ... the free tablet as one quiet line, to the schemes for her stage; "Your ticks stay on this phone."', /Free iron tablets at government health centres \(Anemia Mukt Bharat\)/.test(v) && await a.page.$eval('#view .care-alt', (e) => e.dataset.go) === 'access-schemes-period' && /Your ticks stay on this phone\./.test(v) && !/from your ASHA, ANM, Anganwadi or PHC/.test(v));
+  check('3 ... no quiet line to the schemes (Version 39.68: the Govt. services pages are gone); "Your ticks stay on this phone."', !(await has(a, '#view .care-alt')) && !/Free iron tablets at government health centres \(Anemia Mukt Bharat\)/.test(v) && /Your ticks stay on this phone\./.test(v) && !/from your ASHA, ANM, Anganwadi or PHC/.test(v));
   await shot(a, 'iron-doc-pick');
   await tap(a, '#iron-every-row [data-iron-every="7"]');
   check('3 "Once a week" asks which day', !(await a.page.$eval('#iron-day-row', (e) => e.hidden)));
@@ -221,7 +221,7 @@ async function signUp(a) {
   check('4 ... the second check-up with her gynaecologist, her reports in one file', /Your second check-up with your gynaecologist is due between 14 and 26 weeks\. Ask for your BP, weight, Hb and urine to be checked, and keep your reports together in one file\./.test(await txt(a, '[data-plan="anc2"]')) && !(await has(a, '[data-plan="anc2"] [data-go="preg-mcp"]')), await txt(a, '[data-plan="anc2"]'));
   check('4 ... the anomaly scan: "Your gynaecologist will tell you where to book it."', /Your gynaecologist will tell you where to book it\./.test(await txt(a, '[data-plan="scan2"]')));
   check('4 ... iron and calcium "your doctor prescribed"; Td at her check-ups, no U-WIN button', /Take the iron tablet your doctor prescribed\./.test(await txt(a, '[data-plan="ifa"]')) && /Take the calcium your doctor prescribed, with meals\./.test(await txt(a, '[data-plan="ca"]')) && /at your check-ups/.test(await txt(a, '[data-plan="td"]')) && !(await has(a, '[data-plan="td"] a[href*="uwin"]')));
-  check('4 ... one quiet line: "Free at government hospitals: check-ups on the 9th (PMSMA), the birth (JSSK) and scheme money (PMMVY)"', /Free at government hospitals: check-ups on the 9th \(PMSMA\), the birth \(JSSK\) and scheme money \(PMMVY\)/.test(v) && await a.page.$eval('#view .care-alt', (e) => e.dataset.go) === 'access-schemes-preg');
+  check('4 ... no quiet line to the schemes (Version 39.68: the Govt. services pages are gone)', !(await has(a, '#view .care-alt')) && !/Free at government hospitals: check-ups on the 9th/.test(v));
   check('4 ... a missed one: "ask your gynaecologist", not the ANM', /If you missed one, ask your gynaecologist about it at your next visit\./.test(tc) && !/ask your ANM/.test(tc));
   check('4 ... no "MCP card" anywhere in her due items', !/MCP card/.test(await all(a, '#view .pg-plan')));
   check('4 ... her reminders ring for check-ups and tests, with no PMSMA days', /At 10 am on the first day of each check-up and test\./.test(v) && !/PMSMA day/.test(v));
@@ -270,32 +270,32 @@ async function signUp(a) {
   let a = await open({});
   await tap(a, '#help-btn');
   /* Version 39.63 (phase E): one label, "Ask a Qura doctor" */
-  check('6 unanswered: "Ask a Qura doctor · A call with a Qura doctor, or a free government doctor"', /Ask a Qura doctor\s*A call with a Qura doctor, or a free government doctor/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
+  check('6 unanswered: "Ask a Qura doctor · A call with a Qura doctor" (Version 39.68: no free government doctor page)', /Ask a Qura doctor\s*A call with a Qura doctor/.test(await txt(a, '#hs-doc')) && !/government/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
   check('6 ... no "My ASHA" row, and 112 still first', !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
   await done(a);
   a = await open({ seed: { mods: { asha: { phone: '9876543210' } } } });
   await tap(a, '#help-btn');
-  check('6 ... "My ASHA" when she saved her ASHA\'s number', await has(a, '#hs-asha'));
+  check('6 ... no "My ASHA" even when she saved her ASHA\'s number (Version 39.68: My ASHA is gone)', !(await has(a, '#hs-asha')));
   await done(a);
   a = await open({ seed: { situation: { care: 'govt' } } });
   await tap(a, '#help-btn');
-  check('6 a government centre: "A free government doctor, or a call with a Qura doctor", "My ASHA", 112 first', /A free government doctor, or a call with a Qura doctor/.test(await txt(a, '#hs-doc')) && await has(a, '#hs-asha') && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
+  check('6 a government centre: "A call with a Qura doctor", no "My ASHA", 112 first (Version 39.68)', /A call with a Qura doctor/.test(await txt(a, '#hs-doc')) && !/government/.test(await txt(a, '#hs-doc')) && !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
   await done(a);
   a = await open({ hash: 'ask' });
   let ids = await a.page.$$eval('#view .card', (cs) => cs.map((c) => c.id || ''));
-  check('6 the doctor screen, unanswered: Qura\'s ways first, the free government doctor after them', ids.indexOf('ask-free') > 0 && ids[0] !== 'ask-free', ids);
+  check('6 the doctor screen, unanswered: no free government doctor card (Version 39.68)', ids.indexOf('ask-free') < 0, ids);
   await done(a);
   a = await open({ hash: 'ask', seed: { situation: { care: 'govt' } } });
   ids = await a.page.$$eval('#view .card', (cs) => cs.map((c) => c.id || ''));
-  check('6 ... a government centre: the free government doctor first, as before', ids[0] === 'ask-free', ids);
+  check('6 ... nor on the government route', ids.indexOf('ask-free') < 0, ids);
   await done(a);
   /* My plan's care team: the same order */
   const team = async (care) => { const b = await open({ hash: 'plan', seed: { situation: care ? { care } : {}, intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', 3) } } });
     const r = await b.page.$$eval('#view .pl-care .item', (x) => x.map((y) => y.dataset.go || (y.dataset.ask ? 'ask' : (y.dataset.mydoc ? 'mydoc' : '')))); await done(b); return r; };
   let tm = await team(null);
-  check('6 My plan\'s care team, unanswered: her own doctor (Version 39.41), a Qura doctor, then the free government doctor', tm[0] === 'mydoc' && tm[1] === 'ask' && tm[2] === 'access-doctor', tm);
+  check('6 My plan\'s care team, unanswered: her own doctor (Version 39.41), then a Qura doctor; no free government doctor (Version 39.68)', tm[0] === 'mydoc' && tm[1] === 'ask' && tm.indexOf('access-doctor') < 0, tm);
   tm = await team('govt');
-  check('6 ... a government centre: the free government doctor first, as before', tm[0] === 'access-doctor' && tm[1] === 'ask', tm);
+  check('6 ... a government centre: a Qura doctor first, no free government doctor page (Version 39.68)', tm[0] === 'ask' && tm.indexOf('access-doctor') < 0, tm);
 }
 
 /* ---------- 7: What your diary shows ---------- */
@@ -331,7 +331,7 @@ async function signUp(a) {
       if (!m || x[k] == null || !(other in d)) { abad.push(g.group + '/' + x.id + ' ' + k); continue; }
       if (typeof d[k] === 'string') { nOv++; if (d[k] === x[k] || typeof d[other] !== 'string') abad.push(g.group + '/' + x.id + ' ' + k); }
       else for (const i of Object.keys(d[k])) { nOv++; if (x[k][+i] == null || d[k][i] === x[k][+i] || d[other][i] == null) abad.push(g.group + '/' + x.id + ' ' + k + '[' + i + ']'); } } }
-  check('9 every Learn override sits on a real paragraph, in both languages, and changes it (' + nOv + ' paragraphs)', nOv >= 140 && !abad.length, abad);
+  check('9 every Learn override sits on a real paragraph, in both languages, and changes it (' + nOv + ' paragraphs)', nOv >= 130 && !abad.length, abad);   /* Version 39.68: 12 articles fewer */
   check('9 the government services guides keep their words (no overrides in the services group)', !arts.groups.find((g) => g.group === 'services').articles.some((x) => x.doc));
   /* the switch: the same key reads her route's words */
   const KEYS = ['contra_hub_p', 'preg_hub_scan', 'post_s_ask', 'screen_where_p', 'pregtools_b_tip', 'plan_rv_doc_hb', 'pw_v1'];
@@ -361,10 +361,7 @@ for (const [care, want, not] of [[null, /Your doctor decides these doses/, /Your
 }
 {
   let a = await open({ hash: 'cond-anaemia' });
-  check('9 the anaemia page, unanswered: "your doctor may prescribe iron"', /your doctor may prescribe iron, often for about 3 months/.test(await all(a, '#view')) && !/the doctor or ANM may give the red tablet daily/.test(await all(a, '#view')));
-  await done(a);
-  a = await open({ hash: 'cond-anaemia', seed: { situation: { care: 'govt' } } });
-  check('9 ... a government centre: the red tablet from the doctor or ANM, as before', /the doctor or ANM may give the red tablet daily/.test(await all(a, '#view')));
+  check('9 the anaemia page lands on Explore (Version 39.68: the doctors removed it; the iron tablets page stays)', (await a.page.evaluate(() => location.hash)) === '#care');
   await done(a);
   a = await open({ hash: 'a-pregnancy.iron-folic-acid-calcium-td', w: 360, seed: { lang: 'hi' } });
   const v = await all(a, '#view');

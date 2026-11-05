@@ -87,8 +87,8 @@ const PF_P = 'Doing these in pregnancy lowers the chance of leaking urine late i
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 /* her plan's answers on the next screens, then the reveal's cards to Start */
 async function startFromSummary(a) {
-  for (let i = 0; i < 4 && !(await has(a, '#pl-in-make')); i++) await tap(a, '#pl-in-next');
-  await tap(a, '#pl-in-make'); await settle(a.page, 600);
+  for (let i = 0; i < 4 && (await has(a, '#pl-in-next')); i++) await tap(a, '#pl-in-next');   /* Version 39.68: her last answer makes the plan */
+  await settle(a.page, 600);
   if (!/plan-reveal/.test(await a.page.evaluate(() => location.hash))) await go(a, 'plan-reveal');
   for (let i = 0; i < 8 && !(await has(a, '#pl-rv-go')); i++) await tap(a, '#pl-rv-next');
   await tap(a, '#pl-rv-go'); await settle(a.page, 800);
@@ -261,9 +261,7 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   const n3 = await fk.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }));
   await fk.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(fk.page, 600); await tap(fk, '#pl-in-next');
   const sv = await view(fk);
-  check('g15 My food holds how she eats: no "Your day" (3 screens), and the summary shows it with Change', n3 === 3 && /Here’s what you told Sakhi/.test(sv) && /Your day Eggs too Change/.test(sv), { n3, sv: sv.slice(0, 300) });
-  await tap(fk, '[data-pl-edit="day"]');
-  check('g15 Change opens "Your day"', /^Your day/.test(await view(fk)) && (await has(fk, '[data-pl-q="food:egg"].on')));
+  check('g15 My food holds how she eats: no "Your day" (2 screens), and her plan is made straight away (Version 39.68)', n3 === 2 && /Your plan is ready/.test(sv) && !/Here’s what you told Sakhi/.test(sv), { n3, sv: sv.slice(0, 300) });
   await done(fk);
   const fk2 = await open({ seed: { situation: sit(10), mods: { food: { type: 'egg', milk: false } } } });
   await fk2.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(fk2.page, 300);
@@ -274,7 +272,7 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   const nfc = await nf.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }));
   await nf.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(nf.page, 300);
   const nx2 = (await st(nf)).mods.plan.next || {};
-  check('g15 with no answer in My food, how she eats waits for her food step on Today (Version 39.66: 3 screens, no "Your day")', nfc === 3 && ['food', 'milk'].every((k) => (nx2.dayAsk || []).indexOf(k) >= 0), { nfc, dayAsk: nx2.dayAsk });
+  check('g15 with no answer in My food, how she eats waits for her food step on Today (Version 39.66: no "Your day"; Version 39.68: 2 screens)', nfc === 2 && ['food', 'milk'].every((k) => (nx2.dayAsk || []).indexOf(k) >= 0), { nfc, dayAsk: nx2.dayAsk });
   await done(nf);
 }
 

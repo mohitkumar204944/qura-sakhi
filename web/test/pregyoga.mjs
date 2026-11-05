@@ -128,8 +128,8 @@ try {
     await r0.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(r0.page, 600);
     await tap(r0, '[data-pl-pnow="n"]');
     if (tick) { await r0.page.$eval('[data-pl-ps="' + tick + '"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(r0.page, 200); }
-    for (let i = 0; i < 4 && !(await has(r0, '#pl-in-make')); i++) await tap(r0, '#pl-in-next');
-    await tap(r0, '#pl-in-make'); await settle(r0.page, 600);
+    for (let i = 0; i < 4 && !(await has(r0, '#pl-in-make')) && (await has(r0, '#pl-in-next')); i++) await tap(r0, '#pl-in-next');   /* Version 39.68: no answers summary, so her plan comes next */
+    if (await has(r0, '#pl-in-make')) await tap(r0, '#pl-in-make'); await settle(r0.page, 600);
     if (!/plan-reveal/.test(await r0.page.evaluate(() => location.hash))) await go(r0, 'plan-reveal');
     for (let i = 0; i < 8 && !(await has(r0, '.pl-rv-steps')); i++) await tap(r0, '#pl-rv-next');
     const rv = await txt(r0, '.pl-rv-steps');

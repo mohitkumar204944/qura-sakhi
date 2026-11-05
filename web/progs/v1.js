@@ -169,7 +169,7 @@
     intake: { screens: [{ id: 'baby' }], day: ['act', 'food', 'milk', 'lim'], when: true },
     slots: { max: 4 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'ttc-prep', text: '@ttc_prep', icon: 'check', hue: 'green', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-28', what: 'Version 39.32: the full Getting ready programme: start questions and versions, her folic acid tablet, food by her situation, gentler yoga before her period, strength from week 7, a lesson a week, the ready check, her doctor card' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-28', what: 'Version 39.32: the full Getting ready programme: start questions and versions, her folic acid tablet, food by her situation, gentler yoga before her period, strength from week 7, a lesson a week, the ready check, her doctor card' }, { ver: 2, r: 'R2', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): no 1-minute ready check (the before-pregnancy checklist covers it) and no strength step from week 7 (not specific to getting pregnant)' }],
     steps: [
       { id: 'folic', kind: 'adapter', use: 'ttc.folic' },
       { first: [
@@ -178,9 +178,6 @@
       ] },
       { id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food_t' },
       { first: [
-        { id: 'ready', kind: 'adapter', use: 'ttc.ready' },
-        { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:1,4', if: ['week:7-', '!birth:0-182', '!ans:bset=mix'] },
-        { id: 'str', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:yoga', hue: 'green', why: 'plan_fb_move_g', when: 'days:1,4', if: ['week:7-', 'birth:0-182', '!ans:bset=mix'] },
         { id: 'calm', kind: 'adapter', use: 'ttc.calm' },
         { id: 'hb', kind: 'adapter', use: 'ttc.hb' },
         { id: 'prep', kind: 'link', go: 'ttc-prep', title: '@plan_a_prep', icon: 'check', hue: 'green', why: 'plan_fb_prep', priv: true, when: 'days:3', if: ['route', 'pday:2-'], from: 'ttc-prep', check: true },
@@ -201,7 +198,7 @@
     intake: { screens: [{ id: 'heavy' }], day: ['food', 'milk', 'lim'], when: true },
     slots: { max: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'iron', text: '@iron_h', icon: 'drop', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: after the 21 days, one iron food a day from her own foods, changing over 7 days' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: after the 21 days, one iron food a day from her own foods, changing over 7 days' }, { ver: 1, r: 'R5', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): the Hb card no longer opens the anaemia page, which is gone' }],
     steps: [
       { id: 'iron', kind: 'adapter', use: 'journey.iron' },
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'light', grow: 'hold', why: 'plan_fb_move_g' }
@@ -210,7 +207,7 @@
       { use: 'item', icon: 'drop', hue: 'rose', text: '@plan_pi_iron', why: 'plan_fb_iron', priv: true },
       { use: 'walk', mins: 'light', why: 'plan_fb_move_g' }
     ],
-    doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb', go: 'cond-anaemia' }]
+    doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb' }]
   },
   {
     id: 'heavy', ver: 2, status: 'live', tier: 'habit',
@@ -222,7 +219,7 @@
     intake: { screens: [{ id: 'heavy' }], day: ['food', 'milk', 'lim'], when: true },
     slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'iron', text: '@iron_h', icon: 'drop', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by heavy periods. An iron food every day, her Hb test in weeks 1 to 2, a rest lying down on period days, a light walk on 3 days (after her Hb test when she is often tired or dizzy), strength from week 7, the period note in her check-in; period pain joins with her kit. A chapter a week, and her periods in her own numbers' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by heavy periods. An iron food every day, her Hb test in weeks 1 to 2, a rest lying down on period days, a light walk on 3 days (after her Hb test when she is often tired or dizzy), strength from week 7, the period note in her check-in; period pain joins with her kit. A chapter a week, and her periods in her own numbers' }, { ver: 2, r: 'R2', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): the Hb card no longer opens the anaemia page, which is gone' }],
     steps: [
       { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true, if: ['also:pain'] },
       { id: 'iron', kind: 'adapter', use: 'journey.iron' },
@@ -236,7 +233,7 @@
       { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
-    doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb', go: 'cond-anaemia' }]
+    doctor: [{ id: 'start', any: ['ans:pads=p12', 'ans:clots=y', 'sit:stopped'], text: '@plan_rv_doc_heavy' }, { id: 'start', any: ['ans:tired=y'], text: '@plan_rv_doc_hb' }]
   },
   {
     id: 'pelvic', ver: 1, status: 'live', tier: 'habit',
@@ -267,8 +264,8 @@
     moves: true,
     intake: { day: ['act', 'food', 'milk', 'lim'], when: true },
     slots: { max: 3 }, hero: 'week', rest: 2,
-    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'meno-diary', text: '@meno_diary', icon: 'diary', hue: 'orange', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: a calcium food on 3 days a week for 40+ bones (food.calcium); the review\'s fix: no repeat inside a week' }, { ver: 1, r: 'R5', at: '2026-10-28', what: 'Version 39.27 (minimalism audit R05): the hot-flush goal counts days with hot flushes from her quick chip; the weekly diary step is for her other goals (its tile stays for more detail)' }],
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'calm', text: '@calm_h', icon: 'moon', hue: 'purple' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: a calcium food on 3 days a week for 40+ bones (food.calcium); the review\'s fix: no repeat inside a week' }, { ver: 1, r: 'R5', at: '2026-10-28', what: 'Version 39.27 (minimalism audit R05): the hot-flush goal counts days with hot flushes from her quick chip; the weekly diary step is for her other goals (its tile stays for more detail)' }, { ver: 1, r: 'R6', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): no midlife symptom diary (the Diary logs the same signs), so its tile goes, and the weekly diary step with it; Wind down takes its tile' }],
     steps: [
       { goal: {
         hot: [{ id: 'hot', kind: 'tick', go: 'relief-hot', title: '@relief_hot_t', icon: 'leaf', hue: 'orange', why: 'plan_fb_hot', priv: true, from: 'relief:hot' }],
@@ -280,7 +277,6 @@
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g' }
       ] },
       { goal: { weight: [{ id: 'food', kind: 'adapter', use: 'plate', why: 'plan_fb_food' }], bones: [{ id: 'ca', kind: 'adapter', use: 'food.calcium', when: 'days:0,2,5' }] } },
-      { id: 'diary', kind: 'tick', go: 'meno-diary', title: '@tile', icon: 'diary', hue: 'orange', why: 'plan_fb_any', priv: true, when: 'days:6', if: ['route', '!goal:hot'], from: 'meno-diary', check: true }
     ],
     list: [{ use: 'today' }],
     doctor: []
@@ -294,8 +290,8 @@
     moves: true,
     intake: { day: ['act', 'food', 'milk', 'lim', 'mbone', 'mheart'], when: true },
     slots: { max: 4 }, hero: 'week', rest: 2,
-    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'meno-diary', text: '@meno_diary', icon: 'diary', hue: 'orange', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.51: Cool, calm and strong: three 4-week parts in the order her goal needs (a short CBT course for hot flushes or for worry, one sleep rule a week, strength and balance), a chapter a week, her weekly 0 to 10, the bones and heart questions, one card at a time (before 45, week 4, week 12), then a Learn article a month to month 12' }],
+    tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'calm', text: '@calm_h', icon: 'moon', hue: 'purple' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.51: Cool, calm and strong: three 4-week parts in the order her goal needs (a short CBT course for hot flushes or for worry, one sleep rule a week, strength and balance), a chapter a week, her weekly 0 to 10, the bones and heart questions, one card at a time (before 45, week 4, week 12), then a Learn article a month to month 12' }, { ver: 2, r: 'R2', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): no midlife symptom diary (the Diary logs the same signs), so its tile goes; Wind down takes its tile' }],
     steps: [
       { id: 'skill', kind: 'adapter', use: 'meno.skill' },
       { first: [
@@ -323,7 +319,7 @@
     intake: { screens: [{ id: 'pain' }], day: ['act', 'food', 'milk', 'lim', 'bed', 'work'], when: true },
     slots: { max: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'relief-cramps', text: '@relief_cramps_t', icon: 'leaf', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): the doctor card no longer offers the endometriosis self-check, which is gone' }],
     steps: [
       { id: 'cramps', kind: 'tick', go: 'relief-cramps', title: '@relief_cramps_t', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps' },
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_movep' },
@@ -334,7 +330,7 @@
       { use: 'walk', mins: 'suggest', cap: 30, why: 'plan_fb_movep' },
       { use: 'bed' }
     ],
-    doctor: [{ id: 'start', any: ['ans:pain=stop'], text: '@plan_rv_doc_pain', check: 'selfcheck-endo' }, { id: 'start', any: ['ans:painDays=4'], text: '@plan_rv_doc_pdays', check: 'selfcheck-endo' }]
+    doctor: [{ id: 'start', any: ['ans:pain=stop'], text: '@plan_rv_doc_pain' }, { id: 'start', any: ['ans:painDays=4'], text: '@plan_rv_doc_pdays' }]
   },
   {
     id: 'pain', ver: 2, status: 'live', tier: 'habit',
@@ -346,7 +342,7 @@
     intake: { screens: [{ id: 'pain2' }], day: ['act', 'food', 'milk', 'lim'], when: true },
     slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'relief-cramps', text: '@relief_cramps_t', icon: 'leaf', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by period pain. Her cycle sets the steps: her kit and Pain today? on period days; her kit ready and Cycle care yoga before her period; Relax, moving on 3 days and strength between. Heavy periods and the days before join where they matter. A chapter a week, and her periods in her own numbers' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by period pain. Her cycle sets the steps: her kit and Pain today? on period days; her kit ready and Cycle care yoga before her period; Relax, moving on 3 days and strength between. Heavy periods and the days before join where they matter. A chapter a week, and her periods in her own numbers' }, { ver: 2, r: 'R2', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): no pain-diary step (the Diary and Pain today? log her pain each day)' }],
     steps: [
       { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true },
       { first: [
@@ -360,7 +356,6 @@
         { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_str', when: 'days:2,5', if: ['week:5-'] },
         { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_movep', when: 'days:0,2,5' }
       ] },
-      { id: 'pdiary', kind: 'tick', go: 'cond-endo', title: '@plan_a_pdiary', sub: '@plan_a_pdiary_s', icon: 'chart', hue: 'sky', why: 'plan_fb_pdiary', priv: true, when: 'days:6', if: ['ans:endo=y'] },
       { id: 'hb', kind: 'adapter', use: 'period.hb', if: ['also:heavy'] },
       { id: 'iron', kind: 'adapter', use: 'journey.iron', if: ['also:heavy'] },
       { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
@@ -378,7 +373,7 @@
     intake: { screens: [{ id: 'pms' }], day: ['act', 'food', 'milk', 'lim', 'bed', 'work'], when: true },
     slots: { max: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'plan-r-calm', text: '@plan_r_calm', icon: 'sparkle', hue: 'sky' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): the doctor card no longer opens the PMS log, which is gone' }],
     steps: [
       { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm' },
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'ladder', cap: 30, grow: 'hold', why: 'plan_fb_move_g' },
@@ -389,7 +384,7 @@
       { use: 'walk', mins: 'suggest', cap: 30, why: 'plan_fb_move_g' },
       { use: 'bed' }
     ],
-    doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms', go: 'periods-pms' }]
+    doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms' }]
   },
   {
     id: 'pms', ver: 2, status: 'live', tier: 'habit',
@@ -401,7 +396,7 @@
     intake: { screens: [{ id: 'pms' }], day: ['act', 'food', 'milk', 'lim'], when: true },
     slots: { max: 4, day1: 3 }, hero: 'week', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'plan-r-calm', text: '@plan_r_calm', icon: 'sparkle', hue: 'sky' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by the days before her period. Calm breath every day, her calm-week plan in the 7 days before her period, a calcium food on 5 days, moving on 3 days, the note in her check-in; period pain and heavy periods join where they matter. A chapter a week, and her hard days in her own numbers' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-11-02', what: 'Version 39.55: My period plan, led by the days before her period. Calm breath every day, her calm-week plan in the 7 days before her period, a calcium food on 5 days, moving on 3 days, the note in her check-in; period pain and heavy periods join where they matter. A chapter a week, and her hard days in her own numbers' }, { ver: 2, r: 'R2', at: '2026-11-05', what: 'Version 39.68 (the doctors\' review): the doctor card no longer opens the PMS log, which is gone' }],
     steps: [
       { id: 'kit', kind: 'tick', go: 'relief-cramps', title: '@plan_a_kit', sub: '@plan_a_kit_s', icon: 'leaf', hue: 'rose', why: 'plan_fb_cramps', priv: true, when: 'periodDays', from: 'relief:cramps', play: true, if: ['also:pain'] },
       { id: 'calm', kind: 'routine', go: 'plan-r-calm', title: '@plan_r_calm', icon: 'sparkle', hue: 'sky', why: 'plan_fb_calm' },
@@ -413,7 +408,7 @@
       { id: 'sets', kind: 'adapter', use: 'pelvic.sets', if: ['pfgoal'] }
     ],
     list: [{ use: 'today' }],
-    doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms', go: 'periods-pms' }]
+    doctor: [{ id: 'start', any: ['ans:pmsLevel=lot'], text: '@plan_rv_doc_pms' }]
   },
   {
     id: 'cycle', ver: 1, status: 'live', tier: 'habit',

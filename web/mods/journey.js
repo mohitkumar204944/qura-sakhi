@@ -124,6 +124,7 @@
   }
   /* Home's Today: today's step, until it is done, with one tap. Plain words in discreet mode. */
   function today() {
+    if (S.retired && S.retired('journey')) return null;   /* Version 39.68: 21 small steps is gone */
     if (!S.canSave() || (S.plan && S.plan.running && S.plan.running())) return null; const d = (S.state.mods || {}).journey;   /* Version 38: her plan's steps are Today's */ if (!d || !d.active || !J[d.active] || !d.start) return null;
     const dd = Object.assign({ done: {}, finished: {} }, d); if (finished(dd)) return null; const n = dayN(dd); if ((dd.done || {})[n]) return null;
     const x = J[d.active].days[n - 1]; const disc = !!(S.state.settings || {}).discreet; const id = d.active;

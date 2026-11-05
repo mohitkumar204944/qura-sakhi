@@ -5,6 +5,9 @@
    check-in that raised a red flag. */
 (function (S) {
   'use strict';
+  /* Version 39.68 (the doctors' review, 5 Nov 2026): My garden and its petals are gone; Sach ya Myth?, Did you know? and the
+     reading ticks stay */
+  const GARDEN = false;
   if (!S) return;
   const t = S.t, tf = S.tf, esc = S.esc, tx = S.tx;
   const PER_DAY = 3, PER_MONTH = 12, QUIZ_PER_DAY = 5;
@@ -224,6 +227,7 @@
     if (L.indexOf(name) < 0) L.push(name);
     const after = monthPetals(d, mk); const newB = stamp(d);
     S.saveQuiet();
+    if (!GARDEN) return;   /* Version 39.68: what she read still ticks Learn's book; no petal grows */
     if (after > before && !p.quiet) fresh = { mk: mk, idx: after - 1 };   /* Version 39.27: a quiet one grows no petal on screen either */
     setTimeout(refreshStrip, 80);
     if (p.quiet) return;
@@ -235,8 +239,8 @@
 
   /* Version 37.1: her first check-in shows what she earned on her plan's first day, once. If the check-in just celebrated a
      petal of its own, only a waiting badge follows. */
-  S.joy = { deck: deck, petals: () => (S.canSave() ? monthPetals(D(), S.monthKey(S.today())) : 0), release: () => {
-    const h = held; held = null; if (!h) return false;
+  S.joy = { deck: deck, petals: () => (GARDEN && S.canSave() ? monthPetals(D(), S.monthKey(S.today())) : 0), release: () => {
+    const h = held; held = null; if (!h || !GARDEN) return false;
     const just = Date.now() - (celebrate.at || 0) < 1000;
     if (h.n && !just) celebrate(h.bloom ? 'bloom' : 'petal', { mk: h.mk, n: h.n });
     if (h.b) setTimeout(() => celebrate('badge', { b: h.b }), h.n || just ? (h.bloom ? 5400 : 3100) : 0);
@@ -412,7 +416,7 @@
     demoPersona: 'priya',
     /* Tour: the flower and Today's card, on a Home visit after her first petal (so there is something to explain). */
     tours: [
-      { id: 'garden', route: 'home', kind: 'feature', order: 60, title: 'joy_tour', hue: 'orange', when: () => S.canSave() && !!S.art, auto: () => monthPetals(D(), S.monthKey(S.today())) >= 1, steps: [
+      { id: 'garden', route: 'home', kind: 'feature', order: 60, title: 'joy_tour', hue: 'orange', when: () => GARDEN && S.canSave() && !!S.art, auto: () => monthPetals(D(), S.monthKey(S.today())) >= 1, steps: [
         { sel: '#view .joy-strip', h: 'joy_t1_h', p: 'joy_t1_p' }, { sel: '#view .joy-strip .joy-today', h: 'joy_t2_h', p: 'joy_t2_p' }] }
     ],
     strings: {
@@ -476,7 +480,7 @@
       { section: 'tools', route: 'joy-quiz', title: 'joy_quiz_h', sub: 'joy_quiz_tile_s', icon: 'sparkle', order: 2, gated: false, keywords: 'myth fact quiz sach bhram card सच भ्रम' }
     ],
     event: (name, payload) => onEvent(name, payload || {}),
-    me: () => (S.canSave() && S.art ? '<h2>' + esc(t('joy_h')) + '</h2><div class="list"><button type="button" class="item" data-go="joy"><span class="ico-sm hue hue-orange">' + S.I.flower + '</span><span class="body"><strong>' + esc(t('joy_h')) + '</strong><span>' + esc(tf('joy_petals_n', { n: monthPetals(D(), S.monthKey(S.today())) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : ''),
+    me: () => (GARDEN && S.canSave() && S.art ? '<h2>' + esc(t('joy_h')) + '</h2><div class="list"><button type="button" class="item" data-go="joy"><span class="ico-sm hue hue-orange">' + S.I.flower + '</span><span class="body"><strong>' + esc(t('joy_h')) + '</strong><span>' + esc(tf('joy_petals_n', { n: monthPetals(D(), S.monthKey(S.today())) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>' : ''),
     under18: () => '<button type="button" class="btn block" data-go="joy-quiz">' + esc(t('joy_quiz_h')) + '</button>',
     sample: (id) => sample(id),
     homeLast: () => dykHtml(),   /* Version 39.7: after setup and Coming up, never ahead of them */

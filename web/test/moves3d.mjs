@@ -322,19 +322,15 @@ for (const [lang, w, h] of [['en', 360, 800], ['hi', 360, 800], ['en', 360, 640]
   await ctx.close();
 }
 {
-  /* 21 small steps, PMOS day 16: "Do 10 squats or 10 push-ups against a wall" opens Strength at home, where both are in 3D */
+  /* 21 small steps, PMOS day 16 (Version 39.67). Version 39.68 (the doctors' review): the journeys are gone; Strength at home keeps its
+     squats and wall push-ups in 3D */
   const { ctx, page, errs } = await open({ seed: { mods: { journey: { active: 'pmos', start: ago(15), done: {}, finished: {} } } } });
   await go(page, 'journey-pmos');
-  const day = await txt(page, '.jr-today');
-  check('8 journey: day 16 is the squats day', /Day 16/i.test(day) && /squats/.test(day), day);
-  check('8 journey: day 16 has an Open button to Strength at home', await has(page, '.jr-today [data-go="plan-r-strength"]'));
-  await tap(page, '.jr-today [data-go="plan-r-strength"]');
+  check('8 journey: 21 small steps is gone, so its page lands on Explore', (await page.evaluate(() => location.hash)) === '#care');
+  await go(page, 'plan-r-strength');
   const v = await view(page);
-  check('8 journey: it opens Strength at home, with its squats and wall push-ups in 3D', /Chair squats/.test(v) && /Wall push-ups/.test(v) && (await has(page, '#pl-pstart')) &&
+  check('8 Strength at home: its squats and wall push-ups in 3D', /Chair squats/.test(v) && /Wall push-ups/.test(v) && (await has(page, '#pl-pstart')) &&
     (await page.$$eval('.pl-pitem img.pl-3d', (e) => e.map((x) => x.getAttribute('src')))).filter((s) => s === 'fig/s/chair.webp' || s === 'fig/s/wall.webp').length === 2, v.slice(0, 300));
-  await page.evaluate(() => { location.hash = 'journey-pmos'; window.Saathi.state.situation.pregnant = true; });
-  await settle(page, 400); await page.evaluate(() => window.Saathi.render()); await settle(page, 300);
-  check('8 journey: in a pregnancy, no button to Strength at home', (await has(page, '.jr-today')) && !(await has(page, '.jr-today [data-go="plan-r-strength"]')), await txt(page, '.jr-today'));
   check('8 journey: no page errors', !errs.length, errs);
   await ctx.close();
 }

@@ -194,7 +194,7 @@ const fyRoutes = (a) => a.page.$$eval('.care-sec .list [data-go]', (xs) => xs.ma
   await done(g);
   const c = await open({ seed: { situation: { care: 'private' } } });
   await c.page.evaluate(() => window.Saathi.openHelp ? window.Saathi.openHelp() : document.querySelector('[data-help], #help-btn, .help-btn').click()); await settle(c.page, 500);
-  check('8 not pregnant: as before', /A call with a Qura doctor, or a free government doctor/.test(await txt(c, '#hs-doc')), await txt(c, '#hs-doc'));
+  check('8 not pregnant: "A call with a Qura doctor" (Version 39.68: no free government doctor page)', /A call with a Qura doctor/.test(await txt(c, '#hs-doc')) && !/government/.test(await txt(c, '#hs-doc')), await txt(c, '#hs-doc'));
   await done(c);
 }
 

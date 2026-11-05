@@ -158,9 +158,10 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* day 8 of a plan (week 2, index 0), last week's look-back answered, "No time" on 2 days */
   const l = logged(7, 4); l[ago(3)] = Object.assign({}, l[ago(3)], { bar: 'time' }); l[ago(4)] = Object.assign({}, l[ago(4)], { bar: 'time' });
   const a = await open({ seed: cyc(ago(7), { log: l, weeks: { 1: { e: 'ok', b: 'time', d: TODAY } } }), now: at(0, '10:00') });
-  await tap(a.page, '#pl-rev-open');   /* Version 39.14: one line on Today until she taps it */
-  check('7 the look-back offers "Plan your week · 30 seconds" (Version 39.14: inside the Today card)', /Plan your week · 30 seconds/.test(await txt(a.page, '#view .today-card .pl-sl-rev')), await txt(a.page, '#view .today-card'));
-  await tap(a.page, '#view #pl-rev-plan');
+  /* Version 39.68 (the doctors' review): no look-back on Today and no way to Plan your week from her screens; the page stays for
+     her time to move, asked when she turns her move reminder on */
+  check('7 no look-back on Today and no Plan your week button', !(await has(a.page, '#pl-rev-open')) && !(await has(a.page, '#pl-rev-plan')) && !(await has(a.page, '#pl-wp')), await txt(a.page, '#view .today-card'));
+  await go(a.page, 'plan-week');
   const w = await view(a.page);
   check('7 Plan your week: her strength days, her time, and last week\'s barrier', (await a.page.evaluate(() => location.hash)) === '#plan-week' && /Week 2 · 27 Oct to 2 Nov · 30 seconds/.test(w) && /Your 2 strength days/.test(w) && /Last week, “No time” got in the way on 2 days\./.test(w) && /If I’m short of time, I’ll…/.test(w), w);
   check('7 ... "After dinner" already picked (her time)', await has(a.page, '[data-wp-w="dinner"].on'));
@@ -171,7 +172,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('7 two days in a row are refused', /Pick 2 days, not two in a row\./.test(await txt(a.page, '#pl-wp-err')), [sel, await txt(a.page, '#pl-wp-err')]);
   await tap(a.page, '[data-wp-d="3"]'); await tap(a.page, '[data-wp-d="5"]'); await tap(a.page, '[data-wp-t="split"]'); await tap(a.page, '#pl-wp-save');
   const d = await plan(a.page);
-  check('7 saving keeps her week: strength days, time, and her if-then plan', JSON.stringify((d.wplan || {})[2]) === JSON.stringify({ when: 'dinner', at: TODAY, str: [2, 5], ifb: 'time', ift: 'split' }) && d.weeks[1].seen === true, [d.wplan, d.weeks]);
+  check('7 saving keeps her week: strength days, time, and her if-then plan', JSON.stringify((d.wplan || {})[2]) === JSON.stringify({ when: 'dinner', at: TODAY, str: [2, 5], ifb: 'time', ift: 'split' }), [d.wplan, d.weeks]);
   await go(a.page, 'home'); await a.page.clock.setFixedTime(at(2, '10:00')); await go(a.page, 'home');
   check('7 her own strength day comes on Today (in 2 days, index 2)', /Strength at home\nWhy\?\n\d+ min/.test(await txt(a.page, '#view .today-card')), await txt(a.page, '#view .today-card'));
   /* the barrier she planned for: the check-in's tip is her own plan */
@@ -181,7 +182,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('7 the check-in reminds her of her own plan for that barrier', /You planned: “I’ll split it into two short walks\.”/.test(await view(a.page)), await view(a.page));
   /* "Plan this week" shows what she planned (Version 39.15: in My plan's This week); "Same as last week" next week */
   await go(a.page, 'plan');
-  check('7 This week: "Plan the week" in its title, what she planned in one line (Version 39.22)', /This week\s*Plan the week/.test(await txt(a.page, '#view .pl-wkc')) && /Strength: Thu, Sun · After dinner/.test(await txt(a.page, '#view .pl-wkc')), await txt(a.page, '#view .pl-wkc'));
+  check('7 This week: her plan days in its title (Version 39.68: no Plan the week), what she planned in one line', /This week\s*Plan days 8 to 14/.test(await txt(a.page, '#view .pl-wkc')) && !/Plan the week/.test(await txt(a.page, '#view .pl-wkc')) && /Strength: Thu, Sun · After dinner/.test(await txt(a.page, '#view .pl-wkc')), await txt(a.page, '#view .pl-wkc'));
   await a.page.clock.setFixedTime(at(7, '10:00')); await go(a.page, 'plan-week');
   await tap(a.page, '#pl-wp-same');
   const d2 = await plan(a.page);
@@ -208,7 +209,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const sc = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => [x.id, x.body, x.go]));
   check('8 on: a daily reminder at her time, which opens today\'s routine', r && r.time === '21:15' && r.every === 1 && r.mod === 'plan' && sc.length && sc[0][0] === 'r-plan-nudge-' + TODAY && sc[0][1] === 'Time for your walk, right after the meal. Tap to start.' && sc[0][2] === 'plan-now', [r, sc.slice(0, 2)]);   /* Version 39.22: a walk right after her meal */
   /* her walk (a +10) alone: the nudge still comes, for her yoga (Version 39.13) */
-  await go(a.page, 'plan-moves'); await tap(a.page, '[data-pl-add="10"]'); await settle(a.page, 1200);
+  await go(a.page, 'home'); await tap(a.page, '#view .today-plan-move [data-today-act]'); await settle(a.page, 1200);   /* Version 39.68: no +10 on Moves; her walk from Today */
   check('12 after her walk alone, the nudge still comes: her yoga is left', !(await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)));
   await go(a.page, 'plan-now');
   check('8 the nudge opens today\'s routine', (await a.page.evaluate(() => location.hash)) === '#plan-r-cycle');
@@ -262,7 +263,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('9 saved: her answers, waist and weight, also in My body', JSON.stringify(d.mcheck[1]) === JSON.stringify({ at: TODAY, e: 'better', s: 'same', m: 'better', sk: 'worse', waist: 84, w: 65.8 }) && d.body.some((x) => x.d === TODAY && x.waist === 84 && x.w === 65.8 && x.h === 158), [d.mcheck, d.body]);
   check('9 the result: what she did beside what she noticed', /Your first 4 weeks/.test(r) && /WHAT YOU DID\n\d+\ndays you moved\n2\nstrength days/.test(r) && /WHAT YOU NOTICED\nEnergy\nBetter\nSleep\nSame/.test(r) && /Waist\n86 → 84 cm/.test(r) && /Weight\n66\.4 → 65\.8 kg/.test(r), r);
   check('9 ... never a judgement on her body', !/(lost|gained|great|well done|too high|overweight|good news)/i.test(r.slice(r.indexOf('WHAT YOU NOTICED'))), r);
-  check('9 ... "Worse" brings a doctor, and her periods line', /Something feels worse\? A doctor can help you find out why\./.test(r) && (await has(a.page, '#view [data-go="access-doctor"]')) && /Periods often take 3 to 6 months to change/.test(r) && /Your next check: in 4 weeks\./.test(r), r);
+  check('9 ... "Worse" brings a doctor, and her periods line', /Something feels worse\? A doctor can help you find out why\./.test(r) && (await has(a.page, '#view [data-ask]')) && !(await has(a.page, '#view [data-go="access-doctor"]')) && /Periods often take 3 to 6 months to change/.test(r) && /Your next check: in 4 weeks\./.test(r), r);
   await shot(a.page, '9-result');
   await go(a.page, 'home');
   check('9 the month card\'s job is done', !(await has(a.page, '#view .pl-sl-m')));
@@ -374,12 +375,13 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const w1 = {}; for (let i = 7; i >= 1; i--) { const di = 7 - i; w1[ago(i)] = { min: 15, ci: 1, ck: { move: 'd' } }; }
   [7, 4, 2].forEach((i) => { const di = 7 - i; w1[ago(i)] = { min: 18, rmin: 8, r: [di === 3 ? 'strength' : 'cycle'], str: di === 3 ? true : undefined, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }; });
   const lb = await open({ seed: cyc(ago(7), { log: w1 }), now: at(0, '10:00') });
-  check('12 the look-back on Today: "7 of 7 days on your plan, all steps on 3" (Version 39.14: inside the Today card)', /Week 1 is done\n7 of 7 days on your plan, all steps on 3/.test(await txt(lb.page, '#view .today-card .pl-sl-rev')), await txt(lb.page, '#view .today-card'));
+  check('12 no look-back on Today (Version 39.68: it lives on My plan)', !(await has(lb.page, '#view .pl-sl-rev, #view #pl-rev-open')), await txt(lb.page, '#view .today-card'));
   await go(lb.page, 'plan');
   check('12 ... and on My plan: "All your steps on 3 of 7 days."', /You followed your plan on 7 of 7 days\./.test(await txt(lb.page, '#view .pl-review')) && /All your steps on 3 of 7 days\./.test(await txt(lb.page, '#view .pl-review')), await txt(lb.page, '#view .pl-review'));
   await done(lb);
   const lb0 = await open({ seed: cyc(ago(7), { log: logged(7, 5) }), now: at(0, '10:00') });
-  check('12 ... and no such line when there were none', /5 of 7 days on your plan/.test(await txt(lb0.page, '#view .today-card .pl-sl-rev')) && !/all steps on/.test(await txt(lb0.page, '#view .today-card .pl-sl-rev')), await txt(lb0.page, '#view .today-card'));
+  await go(lb0.page, 'plan');
+  check('12 ... and no such line when there were none', /You followed your plan on 5 of 7 days\./.test(await txt(lb0.page, '#view .pl-review')) && !/All your steps on/.test(await txt(lb0.page, '#view .pl-review')), await txt(lb0.page, '#view .pl-review'));
   await done(lb0);
   /* the other plans keep their own steps */
   const pn = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(9), { log: logged(9, 4) }) } }, now: at(0, '10:00') });

@@ -3392,3 +3392,34 @@ needs her answer.
 
 **For the doctor (†):** until she answers about her knees or back, her plan uses the gentle moves for both (as if she had said yes).
 Is that the right default?
+
+### 19.68 Version 39.68: the doctors' feature review, part 1 (MODULE_API section 111)
+
+**Status, 5 Nov 2026: signed off.** Dr. Megha and the gynaecologist marked every feature on the review page
+(claude.ai/artifact/3GYSkDHo6bYuzwN76YVAbP; the marks are under Mohit's account, 4 and 5 Nov). Claude then asked 15 questions
+on the same page. Question 15 asked whether their Keep marks on the 175 rows marked "Wording waits for doctor review"
+count as their sign-off on that wording, and they answered **yes** (5 Nov, 19:24). The full record is
+`docs/feature-review-2026-11-05.md`.
+
+- **138 rows kept: their wording is signed off.** These rows are listed below by area. Each row stands for the
+  wording it showed: the screen on the review page, and the version section above it came from.
+- **28 rows were amended.** Their new wording is drafted in parts 3 and 4 of this build, and the doctors read the
+  changed lines once (and the Hindi) before they ship.
+- **9 rows were removed.** They are gone from the app; parts 1 and 2 remove them.
+
+Part 1 adds no health wording. It only removes things, so nothing in it needs review. Two lines lose their clause "or a free
+government doctor" because that page is gone: Help's doctor row and Help's tour step. The fixed Hb line ("below 8, see a doctor
+this week") moves, word for word, to her lab results, beside her Hb results. MODULE_API section 111, item 10, lists the rest.
+
+The 138 kept rows:
+
+- **Joining and sign-up** (2): Your last periods on a calendar; "Your Sakhi": what your dates show.
+- **Today** (1): Why no date shows, and its fix.
+- **Diary** (1): "Bleeding after the birth" opens the recovery check.
+- **Getting ready for a baby** (20): "A few things first"; Her version: medicines first, see a gynaecologist first, both or standard; Walk or move, growing over the weeks; One food habit; The calm few minutes; Her Hb test; Her version's doctor card; "Your test is positive: Yes, move me on"; A fresh start; Week 1 · The first month counts; Week 2 · It’s for both of you; Week 3 · Food that gets your body ready; Week 6 · How long it usually takes; Week 7 · Moving, and weight, gently; Week 8 · The waiting week; Week 9 · Steady first; Week 11 · What elders may say; Week 12 · Your plan, and when the test is positive; This month: the tests doctors do for both of you; This month: his test, if it isn’t done yet.
+- **My pregnancy plan** (13): My pregnancy (to the birth); "Before you start": 2 safety questions; Her tier: green, amber or red; Walk or move, by her tier; Pregnancy yoga on 2 days a week (green tier); Food this week, by trimester; Pelvic floor, 1 set a day from week 13; The step for her goal; "A quick check" at 14 and 28 weeks; Baby's movements in the check-in, from 28 weeks; "Sleep on your side" from 28 weeks; Hospital bag, birth plan and labour timer (34 to 37 weeks on); "My baby is born".
+- **My recovery plan (after a birth)** (9): The daily recovery check, to day 41; Walk a little, then a short walk from day 14; Her baby's signs in week 1; Her own 6-week check; Back to strong from day 42; "Is my body ready?" from week 12; Her method before sex starts again; The weekly leaks question; The weekly mood question.
+- **My midlife plan** (23): "Your day": weak bones and chest pain when she walks; Today's skill; Walk, growing to 30 minutes; Her weekly 0 to 10 in the check-in, from day 7; "Hot flushes woke me"; Hormone therapy card (before 45); Checks after 40 (weeks 12 to 16); Night-sweats doctor card; What a hot flush is; Thoughts that turn up the heat; Carry on, and keep cool; Mood in midlife; Worry thoughts; One thing that lifts you; Sleep and mood; One get-up time; Bed is for sleep; Light, naps and tea; When sleep needs a doctor; Muscle after 40; Steady on your feet; Lift and bend the safe way; Food for strong bones.
+- **My period plan** (33): Her period questions; "Your period today" in the check-in (heavy); Get your kit ready, and Cycle care yoga; Her calm-week plan (PMS); Moving on 3 days, strength from week 5; An iron or calcium food between periods; Her Hb test (heavy periods); Week 4: "When to see a doctor", and her doctor cards; Her results by period; Pain · Why periods hurt; Pain · Your period-week kit; Pain · Is my pain the usual kind?; Pain · Moving on the days in between; Pain · A strong body; Pain · Medicines: ask, don’t guess; Pain · Pain days at college or work; Pain · What helped you?; Pain · Calm evenings before your period; Pain · What a doctor checks; Heavy periods · Is my bleeding heavy?; Heavy periods · Your Hb test; Heavy periods · Food helps, tablets treat; Heavy periods · What the doctor checks; Heavy periods · Iron tablets, if your doctor gives them; Heavy periods · Other reasons Hb gets low; Heavy periods · Heavy periods can be treated; Heavy periods · The repeat test; PMS · Is it PMS? Your month, mapped; PMS · Stress makes the hard days louder; PMS · Moving, gently; PMS · Sleep; PMS · One thing for me; PMS · My calm-week plan, for keeping.
+- **My pelvic floor plan** (24): My pelvic floor plan; "When do you leak?"; "Before you start": 7 signs that need a doctor first; Squeeze sets in 8 levels; Find the right muscles; One habit a fortnight; When the urge comes (urge track); Get checked once (heaviness track); Weekly leaks question, "sure" and "gets in the way"; Her sets join My period plan, My midlife plan and Getting ready; Find your pelvic floor; The knack; Longer holds, and quick squeezes; Water through the day; On the toilet; Less pushing down; Standing sets; Lifting the safe way; Sets in your day; If exercises aren’t enough; Keep strong; A rest at the end of the day; Sex and prolapse; Keep strong for life.
+- **Moves, Wind down and Feel better now** (12): Steady on your feet (midlife); Pregnancy yoga, to 13 weeks; Pregnancy yoga, 14 to 27 weeks; Pregnancy yoga, from 28 weeks; Yoga nidra; 3 sounds for sleep with a timer; Captions and pictures that move with her voice; Keeps playing after Back, with a bar above the tabs; For period cramps; For nausea in pregnancy; When you feel anxious or low; For hot flushes.

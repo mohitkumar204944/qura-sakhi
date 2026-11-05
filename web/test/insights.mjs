@@ -209,7 +209,7 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   await tab(page, 'days');
   check('7 Hindi: the Days tab', /दिन 24/.test(await view(page)) && /से पीरियड · यह चक्र/.test(await view(page)) && (await page.$eval('[data-tab="days"]', (b) => b.innerText)) === 'दिन');
   await go(page, 'a-conceive.why-no-app-can-name-your-fertile-day');
-  check('7 the library article no longer says Sakhi never names fertile days', /सिर्फ़ आपकी तारीख़ों से अंदाज़े के रूप में/.test(await view(page)) && !/दो चीज़ें यह ऐप कभी नहीं करेगा/.test(await view(page)));
+  check('7 the fertile-day article lands on Learn (Version 39.68: the doctors removed it)', (await page.evaluate(() => location.hash)) === '#learn', await page.evaluate(() => location.hash));
   check('7 no page errors', !errs.length, errs);
   await ctx.close();
 }

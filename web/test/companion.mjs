@@ -131,8 +131,8 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await tap(page, '[data-pl-when="dinner"]');
   /* Version 39.3 (diet audit F2): her height and weight are asked only when her goal is her weight */
   check('1 no body question when her goal isn\'t her weight', !/Your body \(optional\)/.test(await view(page)) && !(await has(page, '#pl-in-skip')));
-  check('1 last, what she told Sakhi, to check', /Here’s what you told Sakhi/.test(await view(page)) && (await has(page, '#pl-in-make')));
-  await tap(page, '#pl-in-make'); await settle(page, 600);
+  await settle(page, 600);
+  check('1 her last answer makes her plan: no "Here’s what you told Sakhi" (Version 39.68)', !/Here’s what you told Sakhi/.test(await view(page)) && (await page.evaluate(() => location.hash)) === '#plan-reveal');
   /* 2. the reveal */
   check('2 "Make my plan" opens her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal');
   v = await view(page);
@@ -163,7 +163,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   check('4 a "Not today" asks what got in the way', !(await page.$eval('#pl-ci-bar', (e) => e.hidden)));
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   v = await view(page);
-  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 3 done today · 1 of 7 days this week/.test(v) && !/Tomorrow, add: Yoga/.test(v) && /Tomorrow: Gentle start/.test(v) &&   /* Version 39.51: tomorrow is Gentle start, so no "add yoga" */ /Split it up/.test(v) && /A petal for your garden/.test(v), v.slice(0, 400));
+  check('4 she hears what it does for her, and her count for the day and the week', /helps your body use insulin better/.test(v) && /2 of 3 done today · 1 of 7 days this week/.test(v) && !/Tomorrow, add: Yoga/.test(v) && /Tomorrow: Gentle start/.test(v) &&   /* Version 39.51: tomorrow is Gentle start, so no "add yoga" */ /Split it up/.test(v) && !/A petal for your garden/.test(v), v.slice(0, 400));   /* Version 39.68: no petals */
   check('4 and when Sakhi asks again (one "Tomorrow" line: Version 39.37)', (/Tomorrow: the same steps\. See you at 10 pm\./.test(v) && (v.match(/Tomorrow:/g) || []).length === 1) || (/See you tomorrow at 10 pm\./.test(v) && !/Tomorrow: the same steps/.test(v)), v.slice(0, 500));
   check('4 no "streak" anywhere', !/streak/i.test(v));
   await shot(page, '4-feedback');
@@ -283,7 +283,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   await tap(page, '[data-pl-pick="pain"]');
   check('existing woman: her goal\'s questions come first (period pain)', /About your period pain/.test(await view(page)));
   await tap(page, '[data-pl-q="pain:pk"]'); await tap(page, '[data-pl-q="painDays:23"]'); await tap(page, '#pl-in-next');
-  await tap(page, '[data-pl-when="evening"]'); await tap(page, '#pl-in-make');   /* Version 39.66: her day's questions wait for Today */
+  await tap(page, '[data-pl-when="evening"]'); await settle(page, 600);   /* Version 39.66: her day's questions wait for Today; Version 39.68: her last answer makes the plan */
   check('existing woman: her plan\'s reveal', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /My period plan/.test(await view(page)));   /* Version 39.55 */
   await revealWords(page); await tap(page, '[data-rv-at="18:00"]');
   await tap(page, '#pl-rv-go'); await page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; });
@@ -306,7 +306,8 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   check('10 Help: call 112, ask a Qura doctor (Version 39.63: one label), when to see a doctor', /Call 112 now/.test(hs) && /Ask a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
   await tap(page, '#hs-doc');
   check('10 "See a doctor" opens the doctor page', (await page.evaluate(() => location.hash)) === '#ask');
-  await tap(page, '#help-btn'); await tap(page, '#hs-guide');
+  check('10 the doctor page has no Help button (Version 39.68: Help on Today only)', !(await has(page, '#help-btn')));
+  await go(page, 'home'); await tap(page, '#help-btn'); await tap(page, '#hs-guide');
   check('10 "When to see a doctor" opens the safety guide, with a way back', (await page.evaluate(() => location.hash)) === '#help' && (await has(page, '#view .backrow [data-back]')) && /Call 112 now if/.test(await view(page)));
   await go(page, 'care');
   const cv = await view(page);

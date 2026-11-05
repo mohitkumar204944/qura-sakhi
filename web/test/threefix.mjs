@@ -206,10 +206,10 @@ const fillLog = (startAgo, upto) => { const l = {}; for (let i = 0; i < upto; i+
 {
   const a = await open({ seed: cycSeed({ mods: { plan: PMOS(0) }, intake: PMOS(0).intake }), hm: '21:00', hash: 'plan-checkin' });
   await a.page.$$eval('[data-ci$=":d"]', (xs) => xs.forEach((x) => x.click())); await settle(a.page, 300); await tap(a, '#pl-ci-save');
-  check('8 the check-in says "A petal for your garden" itself: no petal panel over it', /A petal for your garden/.test(await txt(a, '#pl-ci-fb')) && !(await has(a, '.joy-pop')));
+  check('8 the check-in has no petal line and no petal panel (Version 39.68: My garden is gone)', !/A petal for your garden/.test(await txt(a, '#pl-ci-fb')) && !(await has(a, '.joy-pop')));
   await settle(a.page, 3600);
   const t8 = await txt(a, '#toast-root');
-  check('8 the first petal\'s badge: a short note, not a panel over the page', !(await has(a, '.joy-burst')) && /New badge/.test(t8), t8);
+  check('8 no badge either, and no panel over the page (Version 39.68)', !(await has(a, '.joy-burst')) && !/New badge/.test(t8), t8);
   await a.page.evaluate(() => window.Saathi.toast('Well done.')); await settle(a.page, 900); await go(a, 'plan');
   check('8 a toast stays with the screen it was for', (await txt(a, '#toast-root')) === '');
   await a.page.evaluate(() => { window.Saathi.toast('Saved.'); location.hash = 'home'; }); await settle(a.page, 300);

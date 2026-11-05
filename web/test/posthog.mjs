@@ -117,7 +117,7 @@ const tapAll = (page, n) => page.evaluate((k) => { const b = [...document.queryS
   check('3 posthog-js loads from the app\'s own files', await page.evaluate(() => window.Saathi.ph.ready() && [...document.scripts].some((s) => /vendor\/posthog\.js$/.test(s.src) && s.src.startsWith('file:'))));
   const words = new Set();
   const grab = async () => (await page.$eval('#view', (e) => e.innerText)).split(/\s+/).filter((w) => /^[A-Za-z]{6,}$/.test(w)).forEach((w) => words.add(w));
-  const walk = ['home', 'diary', 'plan', 'plan-pmos', 'per-lesson', 'relief-cramps', 'calm', 'cond-endo', 'preg-week', 'periods-pain', 'ask-call', 'report', 'help', 'library', 'home'];
+  const walk = ['home', 'diary', 'plan', 'plan-pmos', 'per-lesson', 'relief-cramps', 'calm', 'cond-fibroids', 'preg-week',   /* Version 39.68: cond-endo is gone */ 'periods-pain', 'ask-call', 'report', 'help', 'library', 'home'];
   for (const h of walk) { await go(page, h, 450); await grab(); await tapAll(page, 2); }
   /* a rage tap: four quick taps in one place; a dead tap: on plain text */
   await page.evaluate(() => { const el = document.querySelector('#view h1, #view h2, #view p'); for (let i = 0; i < 4; i++) el.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 40, clientY: 120 })); });
@@ -128,7 +128,7 @@ const tapAll = (page, n) => page.evaluate((k) => { const b = [...document.queryS
   /* 5. private screens: nothing at all while she is there, taps included */
   /* judged by when each event was taken, not sent: a dead tap is reported a few seconds after it */
   await go(page, 'loss', 500); const t0 = Date.now(); await tapAll(page, 4); await page.mouse.click(60, 300);
-  await go(page, 'intimate-sti', 500); await tapAll(page, 4);
+  await go(page, 'pregtest-abortion', 500); await tapAll(page, 4);   /* Version 39.68: the STI page is gone */
   await flush(); const t1 = Date.now();
   await go(page, 'home', 500); await flush();
   const inPrivate = phEvents(reqs).filter((e) => { const at = Date.parse(e.timestamp); return at >= t0 && at <= t1; });

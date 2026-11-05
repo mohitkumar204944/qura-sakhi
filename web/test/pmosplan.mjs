@@ -78,9 +78,9 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   const tag = '1 ' + cfg.app + ' (' + cfg.platform + ')';
   const { ctx, page, errs } = await open({ cfg: cfg, hash: '#topic-cond' });
   check(tag + ': the plan is on (PLAN_RELEASE)', (await page.evaluate(() => window.Saathi.plan.on())) === true);
-  check(tag + ': the plan heads the PMOS topic', (await gos(page, '#view .list [data-go]'))[0] === 'plan-pmos', await gos(page, '#view .list [data-go]'));
+  check(tag + ': no PMOS plan tile in the PMOS topic (Version 39.68: "It is My PMOS plan again")', (await gos(page, '#view .list [data-go]')).indexOf('plan-pmos') < 0, await gos(page, '#view .list [data-go]'));
   /* Version 39.3: "yoga" finds the yoga moves first, and the PMOS plan with them */
-  check(tag + ': search for "yoga" finds the moves and the plan', ((r) => r[0] === 'plan-moves' && r.indexOf('plan-pmos') >= 0)(await careSearch(page, 'yoga')), await careSearch(page, 'yoga'));
+  check(tag + ': search for "yoga" finds the moves (Version 39.68: the plan is My plan\'s, not a tile)', ((r) => r[0] === 'plan-moves' && r.indexOf('plan-pmos') < 0)(await careSearch(page, 'yoga')), await careSearch(page, 'yoga'));
   check(tag + ': the Plans tab is there', await has(page, '#tabbar [data-go="plan"]'));
   await setPlan(page, started({ start: ago(10) }));
   await go(page, 'home');
@@ -160,14 +160,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   await go(page, 'plan-plate');
   check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
   await go(page, 'plan-moves');
-  await tap(page, '[data-pl-add="20"]');
-  check('3 +20 on Yoga and moves adds 20 minutes to today', (await plan(page)).log[TODAY].min === 20);
-  check('3 the toast says what was added, with Undo', /20 minutes added/.test(await page.$eval('#toast-root', (e) => e.innerText)) && (await has(page, '#toast-root [data-ta="0"]')));
-  await tap(page, '#toast-root [data-ta="0"]');
-  check('3 Undo takes the 20 minutes back', !(await plan(page)).log[TODAY].min);
-  await tap(page, '[data-pl-add="20"]');
-  await go(page, 'plan-pmos');
-  check('3 ... and her week counts them', /Active minutes\n20 of 50/.test(await view(page)));
+  check('3 no "+ minutes" chips on Yoga and moves (Version 39.68: her minutes come from her Done)', !(await has(page, '[data-pl-add]')));
   await go(page, 'plan-plate');
   await page.$eval('[data-pl-hab="half"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(page, 300);
   check('3 ticking the food habit saves it for today', (await plan(page)).log[TODAY].plate.half === true);
@@ -392,10 +385,10 @@ for (const [days, paused] of [[21, true], [50, false]]) {
   const { ctx, page, errs } = await open({ seed: { prompts: { notifyIntro: ago(3) } }, hash: '#care' });
   const all = await gos(page, '#view [data-go]'); const fy = await gos(page, '#view section.care-sec:first-of-type [data-go]');
   /* Version 39.62 (phase D): For you right under search; Contents and, off the government route, Govt. services are in the library */
-  check('11 Explore opens with For you (her plan first); My plan is a tab, so no Plans row', all[0] === 'plan-pmos' && fy[0] === 'plan-pmos' && all.indexOf('learn') < 0 && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
+  check('11 Explore opens with For you; My plan is a tab, so no Plans row and no PMOS plan tile (Version 39.68)', all[0] === fy[0] && fy.indexOf('plan-pmos') < 0 && all.indexOf('plan-pmos') < 0 && all.indexOf('learn') < 0 && !(await has(page, '#view .care-plans')), [all.slice(0, 10), fy]);
   check('11 For you has no government pages: they sit in Govt. services', !fy.some((r) => /^access-|^asha$/.test(r)), fy);
   await go(page, 'library');
-  check('11 Govt. services is one row (in the library), and its topic card is gone', /Govt\. services/.test(await page.$eval('#view .care-free', (e) => e.innerText).catch(() => '')) && !(await has(page, '#view [data-go="topic-free"]')));
+  check('11 no Govt. services row in the library (Version 39.68), and its topic card is gone', !(await has(page, '#view .care-free')) && !(await has(page, '#view [data-go="topic-free"]')));
   await go(page, 'care');
   /* Version 39.2 (journey audit J-24): she joined months ago, so the setup card waits in Me, one step at a time */
   await go(page, 'home');
@@ -406,8 +399,9 @@ for (const [days, paused] of [[21, true], [50, false]]) {
   /* Version 39.3: "yoga" finds the moves first and "khana" My food first, each with the plan; "BMI" finds the plan first */
   { const yo = await careSearch(page, 'yoga'), kh = await careSearch(page, 'khana'), bm = await careSearch(page, 'bmi');
     /* the V39.3 review (FOOD-11): "BMI" opens My body first, with the plan */
-    check('11 search: "yoga" finds the moves, "khana" My food, "BMI" My body, each with the plan', yo[0] === 'plan-moves' && yo.indexOf('plan-pmos') >= 0 && kh[0] === 'food' && kh.indexOf('plan-pmos') >= 0 && bm[0] === 'plan-body' && bm.indexOf('plan-pmos') >= 0, [yo, kh, bm]); }
-  check('11 search: "pcod" still finds the PMOS self-check or guide first', ['selfcheck', 'cond', 'explain'].includes((await careSearch(page, 'pcod'))[0]), await careSearch(page, 'pcod'));
+    check('11 search: "yoga" finds the moves and "khana" My food; no plan, plate or body tiles (Version 39.68)', yo[0] === 'plan-moves' && kh[0] === 'food' && ![].concat(yo, kh, bm).some((r) => /^plan-(pmos|body|plate)$/.test(r)), [yo, kh, bm]); }
+  { const pc = await careSearch(page, 'pcod'); const guide = await page.$$eval('#view [data-go^="a-pmos."], #view [data-qa^="pmos."]', (x) => x.length).catch(() => 0);
+    check('11 search: "pcod" finds a PMOS guide, and no removed self-check or plan tile (Version 39.68)', guide > 0 && !pc.some((r) => /^selfcheck|^plan-pmos$/.test(r)), [pc, guide]); }
   check('11 search: "plan" still finds the pregnancy plan first', (await careSearch(page, 'plan'))[0] === 'preg-plan', await careSearch(page, 'plan'));
   check('11 no page errors', !errs.length, errs);
   await ctx.close();
@@ -493,7 +487,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   check('14 long gaps without a diagnosis: the PMOS self-check is not offered as a plan (Version 39.1)', !ids.includes('selfcheck-pmos'), ids);
   check('14 ... and nothing says she has PMOS', !/You told Sakhi you have PMOS|matched PMOS/.test(await view(page)) && !ids.includes('plan-pmos'), ids);
   await go(page, 'diary'); await page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(page, 400);
-  check('14 ... her long gaps offer "Check the signs" (the PMOS self-check) in What it shows', (await gos(page, '#view [data-xp-check]')).includes('selfcheck-pmos'), await gos(page, '#view [data-xp-check]'));
+  check('14 ... and no "Check the signs" in What it shows (Version 39.68: the self-checks are gone)', !(await gos(page, '#view [data-xp-check]')).length, await gos(page, '#view [data-xp-check]'));
   await go(page, 'home');
   check('14 Home: no "A plan for you" brings a self-check', !(await gos(page, '#view .pl-homerec [data-go]')).includes('selfcheck-pmos'));
   check('14 no page errors', !errs.length, errs);
