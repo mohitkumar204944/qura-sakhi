@@ -472,8 +472,10 @@ def knees3(k):
     _knees(k, -14)
 
 
-def rest(k):
+def rest(k, breath=0.0):
     supine(k)
+    if breath:
+        _inhale(k, breath, lying=True)
     for s in LR:
         ank = k.rig.matrix_world @ k.rig.data.bones['lowerleg02.' + s].tail_local
         k.leg(s, (SX[s] * 0.19, ank.y, 0.08), knee=(SX[s] * 0.3, ank.y + 0.3, 1.0), toes=(SX[s] * 0.55, -0.7, 0.45), sole=(SX[s] * 0.3, -0.6, -0.75))
@@ -542,8 +544,10 @@ def butterfly2(k):
     _butterfly(k, 1)
 
 
-def sit(k):
+def sit(k, breath=0.0):
     seated(k)
+    if breath:
+        _inhale(k, breath)
     k.leg('L', (-0.13, -0.25, 0.07), knee=(0.9, -0.3, 0.15), toes=(-0.9, -0.2, -0.3), sole=(0, 0.55, 0.85))
     k.leg('R', (0.13, -0.18, 0.07), knee=(-0.9, -0.3, 0.15), toes=(0.9, -0.2, -0.3), sole=(0, 0.55, 0.85))
     for s in LR:
@@ -557,14 +561,16 @@ def sit(k):
 NOSE = V((0, -0.107, 0.004))   # her nose tip, from her head bone's base (measured on her face)
 
 
-def nostril(k):
+def nostril(k, breath=0.0, left=False):
     """Anulom vilom ("close your right nostril with your thumb"): sitting as she does to breathe, her right hand at her nose
     in Nasika mudra, the thumb at her right nostril and the ring finger at her left, the first two fingers folded; her left
-    hand stays on her knee, her eyes closed."""
-    sit(k)
-    k.arm('R', k.at('head') + NOSE + V((-0.025, -0.065, -0.10)), elbow=k.sh('R') + V((-0.09, -0.2, -0.12)), palm=(0, 1, 0),
-          fingers=(0.25, 0.25, 1))
-    k.shape('R', 'nasika')
+    hand stays on her knee, her eyes closed. left (Version 39.69): the hand rolls a little to her left, so the ring finger
+    closes her left nostril and the thumb comes off the right."""
+    sit(k, breath)
+    off, fg = (V((0.016, 0.0, 0.003)), (-0.05, 0.25, 1)) if left else (V((0, 0, 0)), (0.25, 0.25, 1))
+    k.arm('R', k.at('head') + NOSE + V((-0.025, -0.065, -0.10)) + off, elbow=k.sh('R') + V((-0.09, -0.2, -0.12)), palm=(0, 1, 0),
+          fingers=fg)
+    k.shape('R', 'nasikaL' if left else 'nasika')
 
 
 # ---------- strength (side, with props) ----------
@@ -582,9 +588,11 @@ def chair(k):
     k.shape('LR', 'flat')
 
 
-def chairsit(k):
+def chairsit(k, breath=0.0):
     """Sitting tall on the chair, feet apart, hands on her thighs (the seated forward bend's start)."""
     k.body((0, 0.25, 0.555))
+    if breath:
+        _inhale(k, breath)
     for s in LR:
         k.leg(s, (SX[s] * 0.13, -0.08, 0.066), knee=(SX[s] * 0.15, -0.9, 0.5))
     for s in LR:
@@ -855,10 +863,12 @@ def _sidearms(k):
     k.shape('LR', 'floor')
 
 
-def sidelie(k):
+def sidelie(k, breath=0.0):
     """"Lie on your side, left or right, a pillow between your knees. Let your body go loose": her knees bent and stacked, the
     pillow between them (stage.PILLOW, placed from her knees), her eyes closed."""
     _sidebody(k, curl=12)
+    if breath:
+        _inhale(k, breath)
     _sideleg(k, 'R', 42, 78); _sideleg(k, 'L', 46, 82, out=-7)
     _sidearms(k); k.eyes_closed()
     k.ground()
@@ -1056,27 +1066,265 @@ def butterflywall2(k):
     _butterflywall(k, 1)
 
 
+# ---------- Version 39.69: the moves that held still (Mohit, 5 Nov: "every exercise this 3d model should show how to move body
+# part by actually showing hows its working"). Her breath in and out for the breathing and resting steps; coming into the held
+# poses (a clip that plays once and holds, ONCE in mods/plan.js); Steady on your feet's two balance moves at a wall; the belly gap
+# check after a birth; standing with her back near a wall for the pelvic floor trainer. ----------
+def _inhale(k, a=1.0, lying=False):
+    """A breath in, set before her arms so her hands stay where they rest: sitting or on her side, her chest lifts and opens and
+    her shoulders rise a little; lying on her back, her chest rises from the mat while her head stays down."""
+    if lying:
+        k.spine(bend=2.4 * a, weights=[0, 0, 0.3, 1, 1]); k.neck(bend=-2.4 * a)
+    else:
+        k.spine(bend=-3.2 * a, weights=[0, 0, 0.4, 1, 1]); k.neck(bend=2.2 * a)
+    for s in LR:
+        k.shrug(s, 4.0 * a)
+
+
+def sitin(k):
+    sit(k, 1.0)
+
+
+def restin(k):
+    rest(k, 1.0)
+
+
+def chairsitin(k):
+    chairsit(k, 1.0)
+
+
+def sideliein(k):
+    sidelie(k, 1.0)
+
+
+def nostrilin(k):
+    nostril(k, 1.0)
+
+
+def nostrilL(k):
+    nostril(k, 0.0, True)
+
+
+def nostrilLin(k):
+    nostril(k, 1.0, True)
+
+
+# coming into tree: her weight onto her right foot, her left foot up her leg to her calf, then her arms up
+def treemid(k):
+    k.body((-0.03, -0.022, 0.80))
+    k.leg('R', (-0.075, -0.03, 0.066), knee=(-0.08, -0.7, 0.45))
+    k.leg('L', (0.0, -0.025, 0.18), knee=(0.8, -0.35, 0.5), toes=(-0.05, -0.55, -0.83), sole=(-0.55, 0, -0.83))
+    namaste(k)
+
+
+def treefoot(k):
+    k.body((-0.035, -0.022, 0.791))
+    k.leg('R', (-0.075, -0.03, 0.066), knee=(-0.08, -0.7, 0.45))
+    k.leg('L', (-0.035, -0.0, 0.34), knee=(0.75, -0.2, 0.55), toes=(-0.1, -0.15, -1), sole=(-1, 0, 0))
+    namaste(k)
+
+
+def _treewallarms(k):
+    sh = k.sh('R')
+    k.arm('R', (SIDE_WALL_X + 0.035, sh.y - 0.02, sh.z - 0.06), elbow=sh + V((-0.2, 0.35, -0.35)), palm=(-1, 0, 0), fingers=(0, -0.15, 1))
+    k.shape('R', 'flat')
+    hp = k.hip('L')
+    k.arm('L', hp + V((0.075, -0.01, 0.13)), elbow=k.sh('L') + V((0.45, 0.25, -0.2)), palm=(-1, 0.1, 0), fingers=(0, -0.45, -0.89))
+    k.shape('L', 'flat')
+
+
+def treewall0(k):
+    """Standing at the wall before the tree: her right hand on the wall, her left on her hip, both feet down."""
+    k.body((-0.03, -0.022, 0.80))
+    k.leg('R', (-0.075, -0.03, 0.066), knee=(-0.08, -0.7, 0.45)); k.leg('L', (0.045, -0.03, 0.066), knee=(0.05, -0.7, 0.45))
+    _treewallarms(k)
+
+
+def treewallmid(k):
+    k.body((-0.033, -0.022, 0.795))
+    k.leg('R', (-0.075, -0.03, 0.066), knee=(-0.08, -0.7, 0.45))
+    k.leg('L', (0.0, -0.025, 0.16), knee=(0.6, -0.45, 0.5), toes=(-0.05, -0.55, -0.83), sole=(-0.55, 0, -0.83))
+    _treewallarms(k)
+
+
+# coming into child pose: kneeling up, sitting back on her heels, then folding forward with her arms long on the mat
+def _heelslegs(k, wide=False):
+    for s in LR:
+        if wide:
+            k.leg(s, (SX[s] * 0.05, 0.38, 0.065), knee=(SX[s] * 1.0, -0.35, 0.06), toes=(-SX[s] * 0.25, 0.94, -0.24), sole=(-SX[s] * 0.1, 0.24, 0.97))
+        else:
+            k.leg(s, (SX[s] * 0.08, 0.35, 0.065), knee=(SX[s] * 0.1, -0.8, -0.4), toes=(0, 0.97, -0.24), sole=(0, 0.24, 0.97))
+
+
+def _heelsit(k, wide):
+    _place_hips(k, (0, 0.31, 0.24), 0)
+    _heelslegs(k, wide)
+    for s in LR:
+        thigh_hand(k, s, bend=14)
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def heelsit(k):
+    _heelsit(k, False)
+
+
+def heelsitwide(k):
+    _heelsit(k, True)
+
+
+def _childmid(k, wide):
+    _place_hips(k, (0, 0.30, 0.22), 38)
+    k.spine(bend=16); k.neck(bend=4)
+    _heelslegs(k, wide)
+    for s in LR:
+        floor_arm(k, s, (SX[s] * 0.12, -1), bend=22)
+    k.shape('LR', 'floor')
+    k.ground()
+
+
+def childmid(k):
+    _childmid(k, False)
+
+
+def childwidemid(k):
+    _childmid(k, True)
+
+
+# Steady on your feet: "Stand side-on to a wall with one hand on it. Lift one foot a little off the floor and hold"
+def _wallside(k, lift):
+    stand(k, feet=0.09); k.shift((-0.05, 0, 0))
+    if lift:
+        k.body(k.P0 + V((-0.085, 0, -0.004)))
+        k.leg('L', (0.035, -0.11, 0.235), knee=(0.05, -0.8, 0.75))   # her left foot a hand's width off the floor, its knee forward
+    sh = k.sh('R')
+    k.arm('R', (SIDE_WALL_X + 0.035, sh.y - 0.02, sh.z - 0.06), elbow=sh + V((-0.2, 0.35, -0.35)), palm=(-1, 0, 0), fingers=(0, -0.15, 1))
+    k.shape('R', 'flat')
+    k.point('L', (0.12, 0.02, -1), bend=8); k.relax('L', (-1, 0.2, 0))
+    k.ground()
+
+
+def wallside(k):
+    _wallside(k, False)
+
+
+def legwall(k):
+    _wallside(k, True)
+
+
+# "Walk slowly along a wall with one hand on it, one foot right in front of the other, heel to toe": on the spot, as the walk is
+# filmed, each foot coming through to land just in front of the other's toes, her left hand on the wall at her left
+LEFT_WALL_X = 0.42
+
+
+def _tandem(k, front, mid):
+    stand(k, feet=0.0)
+    back = 'L' if front == 'R' else 'R'
+    if mid:   # the back foot comes through, lifted a little and just outside the standing one
+        k.body(k.P0 + V((0.012 * SX[front], 0, 0.004)))
+        k.leg(front, (0.0, 0.0, 0.066), knee=(SX[front] * 0.05, -0.7, 0.45))
+        k.leg(back, (SX[back] * 0.045, -0.005, 0.115), knee=(SX[back] * 0.05, -0.8, 0.55))
+    else:
+        k.leg(front, (0.0, -0.125, 0.066), knee=(SX[front] * 0.05, -0.7, 0.45))
+        k.leg(back, (0.0, 0.125, 0.066), knee=(SX[back] * 0.05, -0.7, 0.45))
+    sh = k.sh('L')
+    k.arm('L', (LEFT_WALL_X - 0.035, sh.y - 0.27, sh.z - 0.1), elbow=sh + V((0.3, 0.15, -0.4)), palm=(1, 0, 0), fingers=(0, -0.35, 1))   # on the wall a little ahead of her
+    k.shape('L', 'flat')
+    k.point('R', (-0.1, 0.03, -1), bend=10); k.relax('R', (1, 0.2, 0))
+    k.ground()
+
+
+def tandem(k):     # left foot in front: the step's still
+    _tandem(k, 'L', False)
+
+
+def tandemmid(k):  # her right foot coming through
+    _tandem(k, 'L', True)
+
+
+def tandem2(k):    # right foot in front
+    _tandem(k, 'R', False)
+
+
+def tandemmid2(k):  # her left foot coming through
+    _tandem(k, 'R', True)
+
+
+# the belly gap check after a birth: on her back, knees bent; her right hand's fingertips at her belly button; then her head and
+# shoulders lift a little and she looks down at her tummy
+def _gap(k, up):
+    supine(k)
+    for s in LR:
+        k.leg(s, (SX[s] * 0.1, -0.42, 0.066), knee=(SX[s] * 0.1, -0.3, 1.0))
+    if up:
+        k.spine(bend=12, weights=[0, 0, 0.2, 1, 1]); k.neck(bend=24)
+    nav = (k.at('spine04') + k.at('spine03')) / 2
+    k.arm('R', V((-0.075, nav.y + 0.02, nav.z + 0.12)), elbow=k.sh('R') + V((-0.3, -0.1, 0.25)), palm=-UP, fingers=(0.85, 0.0, -0.5))
+    k.shape('R', 'tips')
+    floor_arm(k, 'L', (0.15, -1), bend=30); k.shape('L', 'floor')
+    k.ground()
+
+
+def gapdown(k):
+    _gap(k, False)
+
+
+def gapup(k):
+    _gap(k, True)
+
+
+def pfstand(k):
+    """The pelvic floor trainer's standing level, "standing, your back near a wall": tall, her arms by her sides, the wall a hand's
+    width behind her (placed from her pose, after_props)."""
+    stand(k, feet=0.09)
+    for s in LR:
+        k.point(s, (SX[s] * 0.12, 0.03, -1), bend=8); k.relax(s, (-SX[s], 0.2, 0))
+    k.ground()
+
+
+
 POSES = {n: f for n, f in globals().items() if callable(f) and not n.startswith('_') and n not in (
     'stand', 'arms_side', 'namaste', 'overhead', 'supine', 'seated', 'unit', 'D', 'V', 'Vector', 'sun_cobra', 'swing', 'floor_arm',
     'thigh_hand')}
 POSES['sun_cobra'] = sun_cobra
 
+
+def _breathed(base, lying):
+    def f(k):
+        base(k); _inhale(k, 1.0, lying)
+    return f
+
+
+# Version 39.69: her breath in on a held pose (her hands and feet stay where the pose put them); folded over in child pose her back
+# rises as she breathes in, as it does lying on her back
+for _n, _lying in (('tree', False), ('treewall', False), ('child', True), ('childwide', True), ('legwall', False), ('bridgedown', True),
+                   ('pfstand', False), ('prays', False)):
+    POSES[_n + 'in'] = _breathed(POSES[_n], _lying)
+
 # Loosen up is filmed from her side, where its arm circle reads as forward, up, back and down, and its shoulder roll shows
 FRONT = {'pray', 'opens', 'armsup', 'tiptoe', 'tree', 'triangle', 'wide', 'butterfly', 'butterfly2', 'sit', 'nostril',
          'palm', 'treewall', 'butterflytall', 'butterflytall2'}
+FRONT |= {'treemid', 'treefoot', 'treein', 'treewall0', 'treewallmid', 'treewallin', 'sitin', 'nostrilin', 'nostrilL', 'nostrilLin', 'praysin'}   # Version 39.69
+# Steady's one-leg stand from her left and a little in front (stage.VIEWS 'front3ql'): the wall at her right side shows behind her,
+# and so does her lifted foot
+FRONT3QL = {'wallside', 'legwall', 'legwallin'}
+# Anulom vilom close up, from her head to her chest (CLOSE: the frame's half width and height, metres), so her hand shows
+CLOSE = {n: (0.27, 0.44) for n in ('nostril', 'nostrilin', 'nostrilL', 'nostrilLin')}
 # against a wall she is seen a little from her right, so the wall at her back shows (stage.VIEWS 'front3q')
 FRONT3Q = {'butterflywall', 'butterflywall2'}
 # the wide sit-to-stand too, so her wide feet show
 FRONT3Q |= {'chairupw', 'chairwide'}
+# Version 39.69: heel to toe along a wall at her left, from her right and in front, so her hand on the wall and the wall itself show
+FRONT3Q |= {'tandem', 'tandemmid', 'tandem2', 'tandemmid2'}
 # lean and sway at a table from her right side and a little behind (stage.VIEWS 'sideback'): her profile and bump show, and her
 # hips' circle reads as one, where straight from the side only its forward and back would show (and from in front the table
 # and her own body hide her hips)
 LEANV = {'leantable', 'leanleft', 'leanback', 'leanright', 'leanfore'}
 # child pose with her knees wide, from behind her and to one side (stage.VIEWS 'backq'): her wide knees and her hips back towards
 # her heels show
-BACKQ = {'childwide'}
+BACKQ = {'childwide', 'heelsitwide', 'childwidemid', 'childwidein'}
 # lying on her side she faces you, along the mat, seen from a little above (stage.VIEWS 'lie')
-LIE = {'sidelie', 'sidedown', 'sideleg'}
+LIE = {'sidelie', 'sidedown', 'sideleg', 'sideliein'}
 # knees to chest rocks from side to side, across her body, so it is filmed three-quarters from her feet (stage.VIEWS)
 QUARTER = {'knees', 'knees2', 'knees3'}
 PROPS = {'chair': 'chair', 'chairup': 'chair', 'chairsit': 'chair', 'chairfwd': 'chair', 'wall': 'wall', 'wallout': 'wall', 'stepfloor': 'step', 'step': 'step',
@@ -1084,10 +1332,15 @@ PROPS = {'chair': 'chair', 'chairup': 'chair', 'chairsit': 'chair', 'chairfwd': 
          'treewall': 'sidewall', 'leanfwd': 'wall', 'leanfwd2': 'wall', 'seatmid': 'chair', 'seatmarch': 'chair', 'seatmarch2': 'chair',
          'butterflywall': 'backwall', 'butterflywall2': 'backwall', 'sidelie': 'pillow', 'butterflytall': 'sheet', 'butterflytall2': 'sheet',
          **{n: 'table' for n in ('leantable', 'leanleft', 'leanback', 'leanright', 'leanfore')},
-         **{n: 'chair' for n in ('chairupw', 'chairwide', 'seatshrug', 'seatroll')}}
+         **{n: 'chair' for n in ('chairupw', 'chairwide', 'seatshrug', 'seatroll')},
+         # Version 39.69
+         'treewall0': 'sidewall', 'treewallmid': 'sidewall', 'treewallin': 'sidewall', 'wallside': 'sidewall', 'legwall': 'sidewall', 'legwallin': 'sidewall',
+         'chairsitin': 'chair', 'sideliein': 'pillow', 'pfstandin': 'nearwall',
+         **{n: 'leftwall' for n in ('tandem', 'tandemmid', 'tandem2', 'tandemmid2')}, 'pfstand': 'nearwall'}
 NO_MAT = {'chair', 'chairup', 'chairsit', 'chairfwd', 'wall', 'wallout', 'stepfloor', 'step', 'calfdown', 'calf', 'walk', 'walk2',
           'leanfwd', 'leanfwd2', 'seatmid', 'seatmarch', 'seatmarch2', 'leantable', 'leanleft', 'leanback', 'leanright', 'leanfore',
           'chairupw', 'chairwide', 'seatshrug', 'seatroll'} | set(STEPPING)
+NO_MAT |= {'chairsitin', 'wallside', 'legwall', 'legwallin', 'tandem', 'tandemmid', 'tandem2', 'tandemmid2', 'pfstand', 'pfstandin'}   # Version 39.69
 
 # the app's loops: [from, to, seconds, hold]; locust starts from its own prone position (arms by her sides)
 LOOPS = {
@@ -1135,7 +1388,39 @@ LOOPS = {
     'chairwide': {'dur': 4, 'seq': [(0, 'chairupw'), (0.1, 'chairupw'), (0.55, 'chairwide'), (0.7, 'chairwide'), (1.0, 'chairupw')]},
     'butterflywall': ('butterflywall', 'butterflywall2', 2, False),
     'butterflytall': ('butterflytall', 'butterflytall2', 2, False),
+    # Version 39.69 (Mohit, 5 Nov: "i dont want any still picture all exercises model should be doing right moves"). A held pose is
+    # two clips: coming into it (<name>-in, played once; once: True ends the clip on the pose) and then holding it, breathing (<name>,
+    # looping), so the player never shows a still
+    'tree-in': {'dur': 3.5, 'once': True, 'seq': [(0, 'pray'), (0.3, 'treemid'), (0.6, 'treefoot'), (1.0, 'tree')]},
+    'tree': {'dur': 10, 'seq': [(0, 'tree'), (0.4, 'treein'), (1.0, 'tree')]},
+    'treewall-in': {'dur': 3, 'once': True, 'seq': [(0, 'treewall0'), (0.4, 'treewallmid'), (1.0, 'treewall')]},
+    'treewall': {'dur': 10, 'seq': [(0, 'treewall'), (0.4, 'treewallin'), (1.0, 'treewall')]},
+    'child-in': {'dur': 4.5, 'once': True, 'seq': [(0, 'kneel'), (0.35, 'heelsit'), (0.7, 'childmid'), (1.0, 'child')]},
+    'child': {'dur': 10, 'seq': [(0, 'child'), (0.4, 'childin'), (1.0, 'child')]},
+    'childwide-in': {'dur': 4, 'once': True, 'seq': [(0, 'heelsitwide'), (0.15, 'heelsitwide'), (0.6, 'childwidemid'), (1.0, 'childwide')]},
+    'childwide': {'dur': 10, 'seq': [(0, 'childwide'), (0.4, 'childwidein'), (1.0, 'childwide')]},
+    'legwall-in': {'dur': 2.5, 'once': True, 'seq': [(0, 'wallside'), (0.25, 'wallside'), (1.0, 'legwall')]},
+    'legwall': {'dur': 10, 'seq': [(0, 'legwall'), (0.4, 'legwallin'), (1.0, 'legwall')]},
+    # the pelvic floor trainer's positions (mods/post.js PF_POSE): a squeeze can't be seen from outside, so she lies, sits or stands
+    # still and breathes (her tummy, bottom and thighs don't move); walking is the walk
+    'bridgedown': {'dur': 10, 'seq': [(0, 'bridgedown'), (0.4, 'bridgedownin'), (1.0, 'bridgedown')]},
+    'pfstand': {'dur': 10, 'seq': [(0, 'pfstand'), (0.4, 'pfstandin'), (1.0, 'pfstand')]},
+    # her breath, as the breathing steps count it: in for 4 seconds, out for 6
+    'sit': {'dur': 10, 'seq': [(0, 'sit'), (0.4, 'sitin'), (1.0, 'sit')]},
+    'rest': {'dur': 10, 'seq': [(0, 'rest'), (0.4, 'restin'), (1.0, 'rest')]},
+    'sidelie': {'dur': 10, 'seq': [(0, 'sidelie'), (0.4, 'sideliein'), (1.0, 'sidelie')]},
+    'chairsit': {'dur': 10, 'seq': [(0, 'chairsit'), (0.4, 'chairsitin'), (1.0, 'chairsit')]},
+    # Anulom vilom, one round in 20 seconds: in through the left (her thumb on the right), the hand rolls to close the left, out
+    # through the right; in through the right, the hand rolls back, out through the left
+    'nostril': {'dur': 20, 'seq': [(0, 'nostril'), (0.2, 'nostrilin'), (0.23, 'nostrilLin'), (0.5, 'nostrilL'), (0.7, 'nostrilLin'), (0.73, 'nostrilin'),
+                                   (1.0, 'nostril')]},
+    # heel to toe along the wall, two steps
+    'tandem': {'dur': 4, 'seq': [(0, 'tandem'), (0.25, 'tandemmid'), (0.5, 'tandem2'), (0.75, 'tandemmid2'), (1.0, 'tandem')]},
+    # the belly gap check: her head and shoulders up, a moment to feel, and down
+    'gapcheck': {'dur': 6, 'seq': [(0, 'gapdown'), (0.3, 'gapup'), (0.75, 'gapup'), (1.0, 'gapdown')]},
 }
+# Version 39.69: the regular set's new loops (render-all.sh renders them with the rest)
+NEW_LOOPS = ['tree-in', 'tree', 'child-in', 'child', 'legwall-in', 'legwall', 'sit', 'rest', 'chairsit', 'nostril', 'tandem', 'gapcheck', 'bridgedown', 'pfstand']
 # the sun salutation flows from each position to the next (1.2 seconds). Her standing positions share one camera and her
 # positions on the mat another, so she fills the frame in both; the flows down to the mat and back up carry the camera across.
 SUN = ['prays', 'reach', 'fwdbend', 'lunge', 'plank', 'ashtanga', 'sun_cobra', 'downdog', 'lunge2', 'fwdbend', 'reach', 'prays']
@@ -1151,13 +1436,13 @@ DRAWINGS = ['pray', 'armsup', 'tree', 'triangle', 'wide', 'warmup', 'warmup2', '
             'bridgedown', 'bridge', 'knees', 'knees2', 'rest', 'sitlong', 'twist', 'butterfly', 'butterfly2', 'sit', 'chairup', 'chair',
             'wallout', 'wall', 'stepfloor', 'step', 'calfdown', 'calf']
 # positions the app has no drawing for, used by its steps all the same
-EXTRA = ['chairsit', 'chairfwd', 'nostril']
+EXTRA = ['chairsit', 'chairfwd', 'nostril', 'pfstand', 'legwall', 'tandem', 'gapup']   # Version 39.69: the last four
 # pregnancy yoga, each body's stills and loops (render-preg.sh): her usual figure (b0) only for what the regular set lacks;
 # the middle three months (b2) and the last three (b3) for every step of R.preg2 and R.preg3
 PREG = {
-    'b0': {'stills': ['palm', 'treewall', 'catsmall', 'childwide', 'butterflytall'], 'loops': ['palm', 'catsmall', 'butterflytall']},
+    'b0': {'stills': ['palm', 'treewall', 'catsmall', 'childwide', 'butterflytall'], 'loops': ['palm', 'catsmall', 'butterflytall', 'treewall-in', 'treewall', 'childwide-in', 'childwide']},
     'b2': {'stills': ['warmup', 'palm', 'treewall', 'wall', 'chair', 'cat', 'butterflytall', 'sit', 'sideleg', 'sidelie'],
-           'loops': ['warmup', 'palm', 'wall', 'chair', 'cat', 'butterflytall', 'sideleg']},
+           'loops': ['warmup', 'palm', 'wall', 'chair', 'cat', 'butterflytall', 'sideleg', 'treewall-in', 'treewall', 'sit', 'sidelie']},
     'b3': {'stills': ['seatmarch', 'chairwide', 'chairsit', 'wall', 'leantable', 'allfours', 'butterflywall', 'sideleg', 'sidelie'],
-           'loops': ['seatmarch', 'chairwide', 'wall', 'leantable', 'allfours', 'butterflywall', 'sideleg']},
+           'loops': ['seatmarch', 'chairwide', 'wall', 'leantable', 'allfours', 'butterflywall', 'sideleg', 'chairsit', 'sidelie']},
 }

@@ -8,7 +8,8 @@ BG = (0.965, 0.95, 0.935)
 # where the camera stands, seen from her: in front, at her right side, or three-quarters from her right side towards her
 # feet and higher (for a move whose motion runs across her body, which a side view hides)
 VIEWS = {'front': (0, -1, 0), 'side': (-1, 0, 0), 'quarter': (-0.64, -0.77, 0), 'lie': (0, -1, 0), 'front3q': (-0.5, -0.87, 0),
-         'sideback': (-0.9, 0.44, 0), 'backq': (-0.62, 0.78, 0)}
+         'sideback': (-0.9, 0.44, 0), 'backq': (-0.62, 0.78, 0),
+         'front3ql': (0.5, -0.87, 0)}   # Version 39.69: from her left and in front, so a wall at her right shows behind her
 TILT = {'quarter': 20.0, 'lie': 24.0, 'sideback': 10.0, 'backq': 22.0}   # lying on her side, seen from a little above so her body and the mat show
 FIT = {'quarter': 0.8}   # seen on a diagonal, her box is wider than she is: she lies corner to corner in it
 
@@ -95,6 +96,8 @@ def prop(kind, **o):
         y = o['y']; box((0, y - 0.06, 1.0), (1.6, 0.12, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
     elif kind == 'sidewall':   # a wall at her right side (the tree at a wall), its face at x
         x = o['x']; box((x - 0.06, 0, 1.0), (0.12, 1.6, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
+    elif kind == 'leftwall':   # a wall at her left side (heel to toe along a wall, Version 39.69), its face at x
+        x = o['x']; box((x + 0.06, 0, 1.0), (0.12, 1.6, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
     elif kind == 'backwall':   # a wall behind her (the butterfly against a wall), its face at y
         y = o['y']; box((0, y + 0.06, 1.0), (1.8, 0.12, 2.0), mat('wall', (0.86, 0.82, 0.76), 0.85))
     elif kind == 'table':      # a table in front of her (lean and sway), its near edge at y, its top at h

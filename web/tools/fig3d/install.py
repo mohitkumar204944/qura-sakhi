@@ -1,5 +1,6 @@
 # Copies the rendered moves into the app: python3 install.py <final dir> <web dir> [<pregnancy final dir>:<prefix> ...]
-#   fig/v/<loop>.webm   each loop (moves.LOOPS) and each flow of the sun salutation (sun-01 .. sun-11)
+#   fig/v/<loop>.webm   each loop (moves.LOOPS) and each flow of the sun salutation (sun-01 .. sun-11); sun-00 her first position
+#                       breathing (Version 39.69), and <pose>-in, coming into a held pose before its loop (Version 39.69)
 #   fig/s/<pose>.webp   a still of every position (the app's 43 drawings and moves.EXTRA), and sun-00 .. sun-11, each sun
 #                       salutation position framed as its flow is
 #   fig/fig.js          what is there, for the player (window.SAKHI_FIG)
@@ -39,13 +40,16 @@ for d, pre in EXTRA:
     for p in sorted(glob.glob(os.path.join(d, 'stills', '*.png'))):
         name = pre + os.path.basename(p)[:-4]; still(p, os.path.join(OUT, 's', name + '.webp')); stills.append(name)
 loops.sort(); stills.sort()
-sun = len(glob.glob(os.path.join(OUT, 'v', 'sun-*.webm')))
+sun = len([p for p in glob.glob(os.path.join(OUT, 'v', 'sun-*.webm')) if not p.endswith('sun-00.webm')])
 man = {'v': 1, 'loops': loops, 'stills': stills, 'sun': sun}
+if os.path.exists(os.path.join(OUT, 'v', 'sun-00.webm')):
+    man['sun0'] = 1   # Version 39.69: the sun salutation's first position, breathing
 with open(os.path.join(OUT, 'fig.js'), 'w') as f:
     f.write('/* The 3D figure\'s moves (Version 39.39), made by web/tools/fig3d/install.py from its renders: do not edit by hand.\n'
             '   loops: fig/v/<name>.webm, one per moving drawing; stills: fig/s/<pose>.webp; sun: fig/v/sun-01..NN.webm, the sun\n'
             '   salutation\'s flows, with fig/s/sun-00..NN.webp its positions; b2- and b3-: pregnancy yoga on her with a bump, the\n'
-            '   middle and the last three months (Version 39.54). */\n')
+            '   middle and the last three months (Version 39.54); <pose>-in: coming into a held pose, played once before its loop; sun0:\n'
+            '   fig/v/sun-00.webm, her first position breathing (Version 39.69). */\n')
     f.write('window.SAKHI_FIG = ' + json.dumps(man) + ';\n')
 with open(os.path.join(OUT, 'CREDITS.md'), 'w') as f:
     f.write('# The 3D figure\n\n'

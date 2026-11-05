@@ -95,3 +95,34 @@ B=~/Applications/Blender.app/Contents/MacOS/Blender
 $B -b work/sakhi.blend --python render.py -- sheet work/sheet cobra,child   # small stills of the positions named
 FIG_SIZE=360x300 FIG_SAMPLES=2 FIG_STEP=2 $B -b work/sakhi.blend --python render.py -- loop work/test/march march   # a quick loop
 ```
+
+## Every exercise moving (Version 39.69)
+
+Mohit, 5 Nov: "i dont want any still picture all exercises model should be doing right moves". `moves.NEW_LOOPS` (in
+`render-all.sh` too) and `moves.PREG`'s new loops make every step move:
+- **a held pose is two clips**: `<pose>-in` comes into it once (`once: True`, ending on the pose), then `<pose>` holds it while she
+  breathes. These are tree, tree at a wall, child pose, child pose with her knees wide, and Steady's one-leg stand at a wall;
+- **the breathing steps breathe**, in for 4 and out for 6:
+  - sitting (`sit`), on her back (`rest`, and `bridgedown` with her knees bent for the pelvic floor trainer);
+  - on her side (`sidelie`), on a chair (`chairsit`), standing with her back near a wall (`pfstand`);
+  - Anulom vilom (`nostril`), close up (`CLOSE`), her hand rolling from her thumb on her right nostril to her ring finger on her left;
+- **heel to toe at a wall** (`tandem`) on the spot, her left hand on a wall at her left;
+- **the belly gap check** after a birth (`gapcheck`);
+- **the sun salutation's first position**, palms together and breathing: `FIG_SUN_ONLY0=1 $B -b work/sakhi.blend --python render.py
+  -- sun work/final/sun` renders `sun00-*` alone, and `encode.py` makes `sun-00.webm`.
+
+`_inhale` (a breath in) is set before a pose's arms where the pose takes a `breath`. Otherwise `_breathed` adds it after the pose,
+and her hands stay where the pose put them.
+
+`kit.py` keeps her arm bones at a scale of 1. A planted hand is solved again frame by frame, and that solve had let a tiny scale
+grow over a long loop, until her hands stretched to the frame's edges.
+
+A hold that follows a coming-in clip is framed with that clip's positions too (`render.py`), so the camera doesn't jump when the
+player hands over from one to the other.
+
+Slow breaths can render every second frame (`FIG_STEP=2`), and `encode.py` shows each for two frames' time. A breath moves her chest
+a pixel or two over ten seconds, so the clip looks the same at half the render time. Moves into a pose, the hand at the nose, heel to
+toe and the gap check render every frame. `FIG_KEEP=1` carries on a stopped render, keeping the frames it has. Run one Blender at a
+time on an 8 GB Mac: four at once rendered about a third as fast in total.
+
+`node ../../test/fig-coverage.mjs` fails on any routine step that holds still.

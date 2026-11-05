@@ -845,7 +845,42 @@
     ph.textContent = PF.paused ? T('pf_paused') + ' · ' + pfPhaseLabel() : pfPhaseLabel(); ph.dataset.phase = PF.phase === 'qs' ? 'sq' : PF.phase;
     sec.textContent = String(Math.ceil(left / 1000)); rep.textContent = q ? TF('qrep', { i: PF.qi, n: PF.quick }) : TF('rep', { i: PF.i, n: PF.reps });
     bar.style.width = (PF.phase === 'sq' || PF.phase === 'qs' ? Math.round((1 - left / tot) * 100) : (PF.phase === 'rel' || PF.phase === 'qr' ? Math.round((left / tot) * 100) : 0)) + '%';
+    pfFigPause();
     return true;
+  }
+  /* Version 39.69 (Mohit, 5 Nov: "i dont want any still picture all exercises model should be doing right moves"): her position
+     for the level, moving, on the 3D figure (web/fig): lying with her knees bent, sitting on a chair or standing with her back near
+     a wall, breathing slowly; or walking slowly. A squeeze can't be seen from outside, and nothing else moves when it's done
+     right (her tummy, bottom and thighs stay still), so the figure shows only that. It pauses with her set. "Reduce motion", or a
+     clip that can't play, shows the position's still; without web/fig there is no picture, as before. */
+  const pfReduced = () => { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
+  function pfMove(pos) {
+    const f = window.SAKHI_FIG; if (!f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
+    const k = PF_POSE[pos] || PF_POSE.lie; const still = pfStill(k); const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
+    const m = loop && !pfReduced() ? '<video class="pst-fig-m" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+      : (still ? '<img class="pst-fig-m" src="' + still + '" alt="">' : '');
+    return m ? '<div class="pst-fig" id="pst-fig">' + m + '</div>' : '';
+  }
+  /* the belly gap check after a birth, on the figure: on her back, knees bent, her fingertips at her belly button; her head and
+     shoulders lift a little as she looks down at her tummy and feels, then she lies back */
+  function gapFig() {
+    const f = window.SAKHI_FIG; if (!f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
+    const still = pfStill('gapup'); const loop = (f.loops || []).indexOf('gapcheck') >= 0 ? 'fig/v/gapcheck.webm' : '';
+    const m = loop && !pfReduced() ? '<video class="pst-fig-m" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+      : (still ? '<img class="pst-fig-m" src="' + still + '" alt="">' : '');
+    return m ? '<div class="pst-fig pst-gapfig">' + m + '</div>' : '';
+  }
+  function wirePfMove(v) {
+    v.querySelectorAll('.pst-fig video').forEach((vd) => {
+      const toStill = () => { const src = vd.getAttribute('data-still'); if (!vd.isConnected) return; if (!src) { vd.closest('.pst-fig').remove(); return; }
+        const im = document.createElement('img'); im.className = vd.className; im.src = src; im.alt = ''; vd.replaceWith(im); };
+      vd.addEventListener('error', toStill);
+      try { vd.muted = true; const p = vd.play(); if (p && p.catch) p.catch((e) => { if (e && e.name === 'NotAllowedError') toStill(); }); } catch (e) { toStill(); }
+    });
+  }
+  function pfFigPause() {
+    const vd = document.querySelector('#pst-fig video'); if (!vd || !PF) return;
+    if (PF.paused && !vd.paused) vd.pause(); else if (!PF.paused && vd.paused) { const p = vd.play(); if (p && p.catch) p.catch(() => { /* the still stays */ }); }
   }
   /* Version 39.56 (decision 6): a soft tone as each squeeze starts and as she lets go, for her plan's sets (no words) */
   let pfAc = null;
@@ -875,21 +910,21 @@
   const pfDay = () => S.toISO(S.planToday ? S.planToday() : S.today());   /* Version 39.56: a set after midnight is the evening before's, as her check-in */
   /* Version 39.56 (My pelvic floor plan): her plan runs it, or joins her sets to another plan; never in pregnancy */
   const pfPlan = () => !!(S.plan && S.plan.pelvic && S.plan.pelvic.on && S.plan.pelvic.on()) && !(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
-  const PF_POSE = { lie: 'bridgedown', sit: 'chairsit', stand: 'wall', walk: 'walk' };
+  const PF_POSE = { lie: 'bridgedown', sit: 'chairsit', stand: 'pfstand', walk: 'walk' };   /* Version 39.69: standing, her back near a wall (no longer the wall push-up) */
   const pfStill = (pos) => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false && (f.stills || []).indexOf(pos) >= 0 ? 'fig/s/' + pos + '.webp' : ''; };
   function renderPelvic(v) {
     stopAll();
     const st = store(); if (PF && PF.store !== st) PF = null; if (pfDone && pfDone.store !== st) pfDone = null;
     const plan = pfPlan(); const P0 = plan ? S.plan.pelvic : null; const lv = plan ? P0.level() : null; const rl = !!(plan && P0.relax()); const m = plan ? P0.target() : 3;
     const js = !!(plan && P0.joinSafe && P0.joinSafe());   /* her joined sets: the signs that need a doctor first, once */
-    if (plan && !rl && lv && !js && S.mem.pfAuto && !PF) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true }; }   /* Today's play button */
+    if (plan && !rl && lv && !js && S.mem.pfAuto && !PF) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos }; }   /* Today's play button */
     S.mem.pfAuto = false;
     const hold = [3, 5, 10].indexOf(Number(st.pfHold)) >= 0 ? Number(st.pfHold) : 5;
     const k = pfDay(); const sets = pfSets(st, k);
     let trainer = '';
     if (PF) {
-      trainer = '<div class="card pst-center pst-trainer"><div class="pst-phase" id="pst-pph" data-phase="' + PF.phase + '"></div><div class="bigtimer" id="pst-psec">' + PF.hold + '</div><div class="pst-bar pst-full"><i id="pst-pbar" style="width:0%"></i></div><p class="small" id="pst-prep"></p>' +
-        '<div class="grid2 pst-full"><button type="button" class="btn secondary" id="pst-ppause">' + esc(PF.paused ? T('pf_resume') : T('pf_pause')) + '</button><button type="button" class="btn" id="pst-pstop">' + esc(T('pf_stop')) + '</button></div>' +
+      trainer = '<div class="card pst-center pst-trainer">' + pfMove(PF.pos) + '<div class="pst-phase" id="pst-pph" data-phase="' + PF.phase + '"></div><div class="bigtimer" id="pst-psec">' + PF.hold + '</div><div class="pst-bar pst-full"><i id="pst-pbar" style="width:0%"></i></div><p class="small" id="pst-prep"></p>' +
+        '<div class="grid2 pst-full pst-ctl"><button type="button" class="btn secondary" id="pst-ppause">' + esc(PF.paused ? T('pf_resume') : T('pf_pause')) + '</button><button type="button" class="btn" id="pst-pstop">' + esc(T('pf_stop')) + '</button></div>' +
         (PF.plan ? '<button type="button" class="linkbtn pst-hurt" id="pst-phurt">' + esc(T('pf_hurt')) + '</button>' : '') + '<p class="small">' + esc(T(PF.plan ? 'pf_leave2' : 'pf_leave')) + '</p></div>';
     } else if (js) {
       trainer = '<div class="card warn pst-jsafe"><h3>' + esc(t('plan_ps_h')) + '</h3><p class="small">' + esc(t('plan_pfs_join_p')) + '</p><ul class="pst-ul">' + P0.signs().map((k) => '<li>' + esc(t('plan_pfs_' + k)) + '</li>').join('') + '</ul>' +
@@ -897,15 +932,14 @@
     } else if (rl) {
       trainer = '<div class="card pst-relax"><h3>' + esc(T('pf_relax_h')) + '</h3><p class="small">' + esc(T('pf_relax_p')) + '</p>' + (has('calm-breaths') ? '<button type="button" class="btn primary block" data-go="calm-breaths">' + esc(T('pf_relax_b')) + '</button>' : '') + '<button type="button" class="btn sm secondary" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button><button type="button" class="btn sm" id="pst-painok">' + esc(t('plan_pf_pain_ok')) + '</button></div>';   /* the test pass: a way back when her sets join another plan */
     } else if (plan && lv) {
-      const img = pfStill(PF_POSE[lv.pos]);
       const note = lv.back ? T('pf_back') : (lv.capped ? T('pf_capped') : (lv.top ? T('pf_top') : (lv.left === 1 ? T('pf_next1') : TF('pf_next', { n: lv.left }))));
       trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done_m', { n: pfDone.n, m: m })) + '</strong></p>' + (P0.knack() ? '<p class="small pst-knack">' + esc(T('pf_knack')) + '</p>' : '') + '</div>' : '') +
-        '<div class="card pst-lv">' + (img ? '<img class="pst-pos" src="' + img + '" alt="" width="96" height="96" loading="lazy">' : '') + '<div class="pst-lv-b"><span class="eyebrow">' + esc(TF('pf_lv', { n: lv.n, p: T('pf_pos_' + lv.pos) })) + '</span><p><strong>' + esc(TF('pf_lv_do', { r: lv.reps, h: lv.hold })) + '</strong></p>' +
+        '<div class="card pst-lv">' + pfMove(lv.pos) + '<div class="pst-lv-b"><span class="eyebrow">' + esc(TF('pf_lv', { n: lv.n, p: T('pf_pos_' + lv.pos) })) + '</span><p><strong>' + esc(TF('pf_lv_do', { r: lv.reps, h: lv.hold })) + '</strong></p>' +
         (lv.quick ? '<p class="small">' + esc(TF('pf_lv_q', { q: lv.quick })) + '</p>' : '') + '<p class="small pst-lv-n">' + esc(note) + '</p></div></div>' +
         (P0.period() ? '<p class="small pst-pd">' + esc(t('plan_pf_pd')) + '</p>' : '') + '<button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_go')) + '</button>';
     } else {
       trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done', { n: pfDone.n })) + '</strong></p></div>' : '') +
-        '<div class="card"><div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
+        '<div class="card pst-free">' + pfMove('lie') + '<div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
     }
     const ticks = '<div class="pst-ticks">' + Array.from({ length: m }, (x, i) => i + 1).map((i) => '<span class="pst-tick' + (sets >= i ? ' on' : '') + '">' + (sets >= i ? '✓' : i) + '</span>').join('') + (sets > m ? '<span class="pill ok">+' + (sets - m) + '</span>' : '') + '</div>';
     const strip = '<div class="pst-strip">' + Array.from({ length: 14 }, (x, i) => S.addDays(S.today(), i - 13)).map((d) => { const n = pfSets(st, S.toISO(d)); return '<span class="pst-sd' + (n ? ' on' : '') + (i13(d) ? ' today' : '') + '" title="' + esc(dShort(d)) + '"><b class="num">' + d.getDate() + '</b><i>' + (n ? n : '·') + '</i></span>'; }).join('') + '</div>';
@@ -918,16 +952,16 @@
     v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early ? find : '') + trainer +   /* the test pass: her plan for this */
       '<div class="card">' + (rl ? '' : '<div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div>') + '<div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
       (S.canSave() ? '' : S.needDiary()) + (early || rl ? '' : find) +   /* Mohit's phone test: breathing and letting go teaches no squeezes */
-      (born || pg ? acc(T('gap_h'), '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
+      (born || pg ? acc(T('gap_h'), gapFig() + '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
         '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
         askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic)
         /* Version 39.56 (the walk): without a recent birth, no after-birth lines; the guide, and a Qura doctor to check the squeeze */
         : (has('intimate-prolapse') ? '<div class="list pst-guide"><button type="button" class="item" data-go="intimate-prolapse"><span class="body"><strong>' + esc(T('prolapse')) + '</strong></span><span class="chev">' + S.I.chev + '</span></button></div>' : '') +
           (rl ? '' : '<div class="card soft pst-right"><h3>' + esc(t('plan_pf_right_h')) + '</h3><p class="small">' + esc(t('plan_pf_right_p')) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button></div>')) +
       '<p class="footnote">' + esc(T('nodx')) + '</p>';
-    S.wire(v);
+    S.wire(v); wirePfMove(v);
     v.querySelectorAll('[data-pst-hold]').forEach((b) => b.addEventListener('click', () => { const st2 = store(); st2.pfHold = Number(b.dataset.pstHold); persist(); S.render(); }));
-    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { if (plan) pfWake(); pfDone = null; PF = plan && lv ? { store: store(), hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true } : { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0 }; S.render(); });
+    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { if (plan) pfWake(); pfDone = null; PF = plan && lv ? { store: store(), hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos } : { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, pos: 'lie' }; S.render(); });
     const pb = v.querySelector('#pst-ppause'); if (pb) pb.addEventListener('click', () => { if (!PF) return; if (PF.paused) { PF.paused = false; PF.end = Date.now() + PF.left; } else { PF.paused = true; PF.left = Math.max(0, PF.end - Date.now()); } pb.textContent = PF.paused ? T('pf_resume') : T('pf_pause'); pfPaint(); });
     const xb = v.querySelector('#pst-pstop'); if (xb) xb.addEventListener('click', () => { PF = null; stopPfTick(); S.render(); });
     v.querySelectorAll('#pst-jsafe-ok, #pst-jsafe-seen').forEach((b) => b.addEventListener('click', () => { try { S.plan.pelvic.joinSafeOk(); } catch (e) { /* her plan */ } S.render(); }));
@@ -1204,7 +1238,12 @@
       '.pst-trainer { gap: 12px; }',
       '.pst-phase { font-size: 20px; font-weight: 600; color: var(--fg); min-height: 28px; }',
       '.pst-phase[data-phase="sq"] { color: var(--accent); }',
-      '.pst-lv { display: flex; gap: 12px; align-items: center; }', '.pst-pos { width: 96px; height: 96px; object-fit: contain; flex: none; border-radius: 12px; }',
+      '.pst-lv { display: grid; gap: 12px; }',
+      '.pst-fig { width: 100%; max-width: 280px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #EBEBEB; }', '.pst-fig-m { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; }',
+      '.pst-free { display: grid; gap: 10px; }', '.pst-gapfig { margin-bottom: 10px; }', '@media (max-height: 720px) { .pst-fig { max-width: 160px; } }',
+      /* Version 39.69: with the picture above, Pause and Stop stay above the tab bar on a short phone, as the player's do */
+      '.pst-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); }',
+      '@media (min-width: 600px) { .pst-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }',
       '.pst-lv-b { min-width: 0; display: grid; gap: 4px; }', '.pst-lv-b p { margin: 0; overflow-wrap: anywhere; }', '.pst-hurt { align-self: center; min-height: 44px; }', '.pst-relax { display: grid; gap: 8px; }',
       '.pst-bar { height: 12px; border-radius: 6px; background: var(--bg); overflow: hidden; }',
       '.pst-bar i { display: block; height: 100%; border-radius: 6px; background: var(--accent-strong); transition: width 0.2s linear; }',

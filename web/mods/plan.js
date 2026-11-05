@@ -398,9 +398,9 @@
     sun: { hue: 'gold', first: 'reach', back: true, steps: null },
     /* Version 39.51: the midlife plan's few minutes of balance at a wall, Today's skill in Strong and steady (drafts for the
        physiotherapist; the 3D loops are the nearest poses until the new ones are made) */
-    steady: { hue: 'gold', first: 'march', steps: [
-      { pose: 'march', s: 30, side: true, n: L('One leg at the wall', 'दीवार के पास एक पैर पर'), p: L('Stand side-on to a wall with one hand on it. Lift one foot a little off the floor and hold, up to 30 seconds.', 'दीवार की तरफ़ बग़ल से खड़ी हों, एक हाथ दीवार पर। एक पैर ज़मीन से थोड़ा उठाकर रोकें, 30 सेकंड तक।') },
-      { pose: 'walk', s: 45, n: L('Heel to toe at the wall', 'दीवार के साथ एड़ी से पंजा'), p: L('Walk slowly along a wall with one hand on it, one foot right in front of the other, heel to toe. 10 steps, then turn and come back.', 'दीवार पर एक हाथ रखकर धीरे-धीरे चलें, एक पैर ठीक दूसरे के आगे, एड़ी से पंजा मिलाकर। 10 क़दम, फिर मुड़कर वापस।') },
+    steady: { hue: 'gold', first: 'march', ffig: 'legwall', steps: [   /* Version 39.69: the 3D figure does the two balance moves at the wall (legwall, tandem) */
+      { pose: 'march', fig: 'legwall', s: 30, side: true, n: L('One leg at the wall', 'दीवार के पास एक पैर पर'), p: L('Stand side-on to a wall with one hand on it. Lift one foot a little off the floor and hold, up to 30 seconds.', 'दीवार की तरफ़ बग़ल से खड़ी हों, एक हाथ दीवार पर। एक पैर ज़मीन से थोड़ा उठाकर रोकें, 30 सेकंड तक।') },
+      { pose: 'walk', fig: 'tandem', s: 45, n: L('Heel to toe at the wall', 'दीवार के साथ एड़ी से पंजा'), p: L('Walk slowly along a wall with one hand on it, one foot right in front of the other, heel to toe. 10 steps, then turn and come back.', 'दीवार पर एक हाथ रखकर धीरे-धीरे चलें, एक पैर ठीक दूसरे के आगे, एड़ी से पंजा मिलाकर। 10 क़दम, फिर मुड़कर वापस।') },
       { pose: 'calf', s: 30, n: L('Heel raises', 'एड़ी उठाना'), p: L('Hold a wall or a chair. Rise up on your toes and come down slowly. 15 times.', 'दीवार या कुर्सी पकड़ें। पंजों पर उठें और धीरे से नीचे आएँ। 15 बार।') }] }
   };
   /* Version 39.52 (Mohit, 1 Nov: "build the pregnancy yoga by trimester"): yoga for each three months of a pregnancy, from the
@@ -1073,7 +1073,7 @@
      that can't play and SAKHI_CONFIG.fig === false all keep the drawings. */
   const FIG = () => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false ? f : null; };
   const figStill = (pose) => { const f = FIG(); return f && (f.stills || []).indexOf(pose) >= 0 ? 'fig/s/' + pose + '.webp' : ''; };
-  const figKey = (s) => s.fig || (ANIM[s.pose] ? s.pose : '');
+  const figKey = (s) => s.fig || s.pose;   /* Version 39.69: a step's own loop whenever web/fig has one, the held poses and breaths too */
   /* Version 39.54: pregnancy yoga's steps carry her body for those three months (fb: web/fig's b2- or b3- set, '' her usual
      figure), and fall back to the drawings, with her bump, where that body's file isn't there */
   const figName = (s, n) => (s.fb || '') + n;   /* a routine's card picture takes its ffig, the 3D position of the step its drawing (first) shows */
@@ -1085,9 +1085,14 @@
     if (s.sun && s.si != null && f.sun) {
       still = 'fig/s/sun-' + S.pad2(s.si) + '.webp';
       if (s.flow && prev && prev.pose !== s.pose && s.si >= 1 && s.si <= f.sun) { clip = 'fig/v/sun-' + S.pad2(s.si) + '.webm'; loop = false; }
+      else if (s.si === 0 && f.sun0) clip = 'fig/v/sun-00.webm';   /* Version 39.69: her first position breathing, palms together */
     } else { still = figStill(figName(s, s.fig || s.pose)); clip = figLoop(s); }
     if (!still && !clip) return '';
     if (!clip || reduced()) return still ? '<img class="pl-3d' + mir + '" id="pl-fig3d" src="' + still + '" alt="">' : '';
+    /* Version 39.69 (Mohit, 5 Nov: "i dont want any still picture all exercises model should be doing right moves"): a held pose
+       comes in first, once (its -in clip, from standing or kneeling into the pose), then holds, breathing, on its loop */
+    const kin = !s.sun && figKey(s) ? figName(s, figKey(s)) + '-in' : ''; const inClip = kin && (f.loops || []).indexOf(kin) >= 0 ? 'fig/v/' + kin + '.webm' : '';
+    if (inClip) return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + inClip + '" data-next="' + clip + '"' + (still ? ' data-still="' + still + '"' : '') + ' muted playsinline autoplay preload="auto"></video>';
     return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + clip + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') +
       ' muted playsinline autoplay preload="auto"' + (loop ? ' loop' : '') + '></video>';
   }
@@ -1100,6 +1105,8 @@
       const im = document.createElement('img'); im.className = vd.className; im.id = 'pl-fig3d'; im.src = src; im.alt = ''; vd.replaceWith(im);
     };
     vd.addEventListener('error', toStill);
+    const next = vd.getAttribute('data-next');   /* Version 39.69: into the pose, then the hold */
+    if (next) vd.addEventListener('ended', () => { if (!vd.isConnected || !vd.getAttribute('data-next')) return; vd.removeAttribute('data-next'); vd.loop = true; vd.src = next; const st = vd.getAttribute('data-still'); if (st) vd.poster = st; const p = vd.play(); if (p && p.catch) p.catch(() => { /* the hold's first frame stays */ }); });
     try { vd.muted = true; const p = vd.play(); if (p && p.catch) p.catch((e) => { if (e && e.name === 'NotAllowedError') toStill(); }); } catch (e) { toStill(); }
   }
   /* Version 39.39, the rest screen (mockup claude.ai/artifact/4mTtM4VPZWwrHs5bb1r2Ka): a rest after each move and set, 15 seconds

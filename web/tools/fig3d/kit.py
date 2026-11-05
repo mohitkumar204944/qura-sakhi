@@ -33,6 +33,8 @@ SHAPES = {
     'mudra': {'spread': 0.5, 'curl': (16, 26, 14), 'thumb': (14, 24, 16), 'tspread': 0.4, 'index': (36, 42, 24)},
     'nasika': {'spread': 0.9, 'curl': (22, 28, 14), 'thumb': (0, 10, 10), 'tspread': 0.25, 'index': (85, 100, 60),   # at her nose
                'middle': (85, 100, 60)},
+    # Version 39.69: the same hand closing her left nostril: the ring and little fingers press in, the thumb lifts away from the right
+    'nasikaL': {'spread': 0.9, 'curl': (34, 38, 18), 'thumb': (0, 2, 2), 'tspread': -0.15, 'index': (85, 100, 60), 'middle': (85, 100, 60)},
 }
 
 
@@ -286,11 +288,14 @@ class Kit:
             self.pb['wrist.' + s].constraints['aim'].influence = 0.0
             for n in names:
                 self.pb[n].matrix = M[n]; self.upd()
+            for n in names:   # Version 39.69: joints turn, never stretch (a solve's tiny scale grew frame by frame in a long loop)
+                self.pb[n].scale = (1, 1, 1)
+            self.upd()
             q = self.pb['wrist.' + s].rotation_quaternion
             tw = (2 * math.atan2(q.y, q.w) + math.pi) % (2 * math.pi) - math.pi     # the wrist's turn about the forearm
             fa = self.pb['lowerarm02.' + s]
             fa.rotation_quaternion = fa.rotation_quaternion @ Quaternion((0, 1, 0), 0.8 * tw); self.upd()
-            self.pb['wrist.' + s].matrix = M['wrist.' + s]; self.upd()
+            self.pb['wrist.' + s].matrix = M['wrist.' + s]; self.pb['wrist.' + s].scale = (1, 1, 1); self.upd()
 
     def resolve(self, sides, aim):
         """Solves these arms again from her rest pose to the targets as they are now, as a pose does, and bakes them: a loop
@@ -298,7 +303,7 @@ class Kit:
         elbow, so it never runs on the baked pose.)"""
         for s in sides:
             for b in ARM:
-                p = self.pb[b + '.' + s]; p.rotation_quaternion = (1, 0, 0, 0); p.location = (0, 0, 0)
+                p = self.pb[b + '.' + s]; p.rotation_quaternion = (1, 0, 0, 0); p.location = (0, 0, 0); p.scale = (1, 1, 1)
             self.pb['lowerarm02.' + s].constraints['ik'].influence = 1.0
             self.pb['wrist.' + s].constraints['aim'].influence = aim[s]
         self.bake(sides)

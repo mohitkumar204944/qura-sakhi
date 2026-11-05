@@ -288,8 +288,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Version 39.67 (the 3D moves audit, `docs/3d-moves-audit-2026-11-04.md`; Mohit, 4 Nov: "Yes, fix both"), the test's section 8:
     the cramps routine's child's pose and knees to chest in 3D, with Pause and Next above the tab bar, and the 21 small steps'
     squats day opening Strength at home. `node test/fig-coverage.mjs` lists each routine step's 3D still and loop, and fails on a
-    step with none: run it after a re-render. Still open (section 1 of the audit): Steady on your feet's two balance moves and the
-    pelvic floor trainer's standing level show borrowed poses. Contract: MODULE_API section 110.
+    step with none, or (Version 39.69) one that holds still: run it after a re-render. Contract: MODULE_API section 110.
+  - `node test/showmove.mjs` (Version 39.69, every exercise moving, never a still; Mohit, 5 Nov: "i dont want any still picture all
+    exercises model should be doing right moves", and no see-through model; the audit's section 6):
+    - a held pose comes into the pose once (`<pose>-in`), then holds, breathing: tree, tree at a wall, child pose (the cramps
+      routine's too), Steady's one-leg stand;
+    - the breathing steps breathe; Anulom vilom close up, her hand changing sides; the sun salutation's first position (`sun-00`);
+    - Steady's two balance moves at the wall, and the belly gap check after a birth;
+    - the pelvic floor trainer shows her level's position moving, breathing (a squeeze can't be seen from outside), pausing with
+      her set;
+    - stills only for "reduce motion", a clip that can't play and the lists.
+    After a re-render, `render-all.sh` and `moves.PREG` render the new loops (`moves.NEW_LOOPS`), then
+    `FIG_SUN_ONLY0=1 ... render.py -- sun` for `sun-00` alone. Contract: MODULE_API section 112 (no new wording; Steady's moves still
+    go to the physiotherapist).
   - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
     - Call buttons on the labour timer;
     - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;

@@ -12,11 +12,19 @@ D = sys.argv[1]; FPS = 24; PREVIEW = (400, 333)
 os.makedirs(os.path.join(D, 'video'), exist_ok=True); os.makedirs(os.path.join(D, 'webp'), exist_ok=True)
 
 
+def step_of(frames):
+    """Version 39.69: a loop rendered every nth frame (FIG_STEP, for a slow breath) shows each frame for n frames' time, so it keeps
+    its length; the step is read from the frames' numbers."""
+    import re
+    n = [int(re.search(r'-(\d+)\.png$', p).group(1)) for p in frames[:2]] if len(frames) > 1 else [1, 2]
+    return max(1, n[1] - n[0])
+
+
 def mp4(frames, out):
-    lst = out + '.txt'
+    lst = out + '.txt'; st = step_of(frames)
     with open(lst, 'w') as f:
         for p in frames:
-            f.write("file '%s'\nduration %.6f\n" % (p, 1.0 / FPS))
+            f.write("file '%s'\nduration %.6f\n" % (p, st / FPS))
         f.write("file '%s'\n" % frames[-1])
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-r', str(FPS), '-c:v', 'libx264',
                     '-pix_fmt', 'yuv420p', '-crf', '20', '-movflags', '+faststart', out], check=True)
@@ -24,10 +32,10 @@ def mp4(frames, out):
 
 
 def webm(frames, out):
-    lst = out + '.txt'
+    lst = out + '.txt'; st = step_of(frames)
     with open(lst, 'w') as f:
         for p in frames:
-            f.write("file '%s'\nduration %.6f\n" % (p, 1.0 / FPS))
+            f.write("file '%s'\nduration %.6f\n" % (p, st / FPS))
         f.write("file '%s'\n" % frames[-1])
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-r', str(FPS), '-c:v', 'libvpx-vp9',
                     '-b:v', '0', '-crf', '28', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2', '-pix_fmt', 'yuv420p', '-an', out], check=True)
@@ -36,7 +44,7 @@ def webm(frames, out):
 
 def webp(frames, out):
     ims = [Image.open(p).convert('RGB').resize(PREVIEW, Image.LANCZOS) for p in frames]
-    ims[0].save(out, save_all=True, append_images=ims[1:], duration=round(1000 / FPS), loop=0, quality=74, method=4)
+    ims[0].save(out, save_all=True, append_images=ims[1:], duration=round(1000 * step_of(frames) / FPS), loop=0, quality=74, method=4)
 
 
 for d in sorted(glob.glob(os.path.join(D, 'loops', '*'))):
@@ -46,11 +54,12 @@ for d in sorted(glob.glob(os.path.join(D, 'loops', '*'))):
         webp(fr, os.path.join(D, 'webp', m + '.webp')); print('loop', m, len(fr))
 
 allsun = []
-for i in range(1, 12):
+for i in range(0, 12):   # 0: her first position breathing (Version 39.69), a loop before the flows
     fr = sorted(glob.glob(os.path.join(D, 'sun', 'sun%02d-*.png' % i)))
     if fr:
         mp4(fr, os.path.join(D, 'video', 'sun-%02d.mp4' % i)); webm(fr, os.path.join(D, 'video', 'sun-%02d.webm' % i))
-        allsun += fr + [fr[-1]] * 18
+        if i:
+            allsun += fr + [fr[-1]] * 18
 if allsun:
     mp4(allsun, os.path.join(D, 'video', 'sun.mp4')); webp(allsun, os.path.join(D, 'webp', 'sun.webp')); print('sun', len(allsun))
 

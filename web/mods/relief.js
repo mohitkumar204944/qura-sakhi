@@ -68,7 +68,9 @@
     const f = window.SAKHI_FIG; const k = FIG3[key];
     if (!k || !f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
     const still = (f.stills || []).indexOf(k) >= 0 ? 'fig/s/' + k + '.webp' : ''; const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
-    const m = loop && !reduced() ? '<video class="rl-3d" id="rl-fig3d" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+    const inClip = loop && (f.loops || []).indexOf(k + '-in') >= 0 ? 'fig/v/' + k + '-in.webm' : '';   /* Version 39.69: into the pose once, then the hold */
+    const m = loop && !reduced() ? (inClip ? '<video class="rl-3d" id="rl-fig3d" src="' + inClip + '" data-next="' + loop + '"' + (still ? ' data-still="' + still + '"' : '') + ' muted playsinline autoplay preload="auto"></video>'
+      : '<video class="rl-3d" id="rl-fig3d" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>')
       : (still ? '<img class="rl-3d" src="' + still + '" alt="">' : '');
     return m ? '<div class="rl-figbox">' + m + '</div>' : '';
   }
@@ -80,6 +82,8 @@
       const im = document.createElement('img'); im.className = vd.className; im.src = src; im.alt = ''; vd.replaceWith(im);
     };
     vd.addEventListener('error', toStill);
+    const next = vd.getAttribute('data-next');   /* Version 39.69: into the pose, then the hold */
+    if (next) vd.addEventListener('ended', () => { if (!vd.isConnected || !vd.getAttribute('data-next')) return; vd.removeAttribute('data-next'); vd.loop = true; vd.src = next; const st = vd.getAttribute('data-still'); if (st) vd.poster = st; const p = vd.play(); if (p && p.catch) p.catch(() => { /* the hold's first frame stays */ }); });
     try { vd.muted = true; const p = vd.play(); if (p && p.catch) p.catch((e) => { if (e && e.name === 'NotAllowedError') toStill(); }); } catch (e) { toStill(); }
   }
   function renderPlayer(v, id) {

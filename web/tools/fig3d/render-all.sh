@@ -9,7 +9,9 @@ log() { echo "$(date +%H:%M:%S) $*" | tee -a $W/final/progress.log; }
 log build; $B -b --python $F/char.py -- $W/sakhi.blend 2>&1 | grep -E "BUILT|Error" | tee -a $W/final/progress.log
 log portrait; $B -b $W/sakhi.blend --python $F/look.py -- $W/final/face.png 2>&1 | grep -E "RENDERED|Error" | tee -a $W/final/progress.log
 log stills; $B -b $W/sakhi.blend --python $F/render.py -- stills $W/final/stills 2>&1 | grep -E "STILL|Error" | tail -2 | tee -a $W/final/progress.log
-for m in chair wall step bridge cobra locust camel march walk calf armsup triangle butterfly twist knees warmup chairfwd; do
+# Version 39.69: then the held poses (coming in, then holding), the breaths, Steady's balance moves and the belly gap check (moves.NEW_LOOPS)
+for m in chair wall step bridge cobra locust camel march walk calf armsup triangle butterfly twist knees warmup chairfwd \
+         tree-in tree child-in child legwall-in legwall sit rest chairsit nostril tandem gapcheck bridgedown pfstand; do
   log "loop $m"; $B -b $W/sakhi.blend --python $F/render.py -- loop $W/final/loops/$m $m 2>&1 | grep -E "LOOP|Error" | tee -a $W/final/progress.log
 done
 log sun; $B -b $W/sakhi.blend --python $F/render.py -- sun $W/final/sun 2>&1 | grep -E "SUN|Error" | tail -3 | tee -a $W/final/progress.log

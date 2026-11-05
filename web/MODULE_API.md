@@ -7194,3 +7194,56 @@ The older suites that tested something removed now check that it is gone, or tes
 
 `test/smoke.mjs` and `test/check.mjs` skip retired pages (`S.retired`).
 
+## 112. Version 39.69: every exercise moving, never a still
+
+Mohit, 5 Nov, on his Flip5's pelvic floor page: "the model is not functional", then "i dont want any still picture all exercises
+model should be doing right moves" (and no see-through model). The woman on the 3D figure (`web/fig`, made by
+`web/tools/fig3d`) now does every exercise. Stills stay only for "reduce motion", a clip that can't play, and the routine list's
+and the rest's thumbnails. The 3D moves audit, `docs/3d-moves-audit-2026-11-04.md`, section 6, has the whole list.
+
+1. **The player** (`mods/plan.js`):
+   - `figKey` is a step's `fig` or its `pose`: every step plays its own loop when `web/fig` has one, not only the poses with a
+     drawing animation (`ANIM`).
+   - A held pose comes in first. When `fig.js` lists `<name>-in`, the step plays that clip once (`data-next`, no `loop`, its still
+     kept as `data-still`), then switches to `<name>`, its breathing hold, looping. These are: tree, tree at a wall, child pose,
+     child pose with the knees wide, and Steady's one-leg stand.
+   - The breathing steps breathe, in for 4 and out for 6 (`sit`, `rest`, `sidelie`, `chairsit`). Anulom vilom (`nostril`) is close
+     up, her hand changing sides through one round in 20 seconds.
+   - The sun salutation's first position plays `fig/v/sun-00.webm`, palms together, breathing (`fig.js` `sun0`).
+   - Steady on your feet: `fig: 'legwall'` (her hand on the wall, a foot lifted a little) and `fig: 'tandem'` (heel to toe along the
+     wall). The routine's card picture is `ffig: 'legwall'`.
+2. **The cramps routine** (`mods/relief.js`): child pose comes in (`child-in`), then holds.
+3. **The pelvic floor trainer** (`mods/post.js`, `pfMove`):
+   - Her level's position moves: on the level card (in place of the small still), in the set (the set's `PF.pos`) and on the card
+     without a plan (lying).
+   - The positions are `bridgedown` (lying, knees bent), `chairsit` and `pfstand` (her back near a wall), each breathing, and
+     `walk`.
+   - The figure pauses with her set.
+   - A squeeze can't be seen from outside, and nothing else moves when it's done right, so the figure only breathes.
+   - The standing level's still is `pfstand`, no longer the wall push-up.
+   - Pause and Stop stay above the tab bar (`.pst-ctl`, sticky, as the player's).
+4. **The belly gap check** after a birth (`gapFig`): `gapcheck`, her head and shoulders lifting with her fingertips at her belly
+   button, its still `gapup`.
+5. **The renders** (`web/tools/fig3d`):
+   - `moves.py`: the new positions, `_inhale` and `_breathed` for each held pose's breath, `once: True` clips, `CLOSE`, the views
+     `front3ql` and `BACKQ`, and the walls `leftwall` and `nearwall`.
+   - `render.py`: `once`, `CLOSE`, the walls, and `sun-00` before the flows (`FIG_SUN_ONLY0=1`). A hold is framed with its coming-in
+     clip's positions too, so the camera stays put between the two. `FIG_STEP=2` renders a slow breath every second frame
+     (`encode.py` keeps its length) and `FIG_KEEP=1` carries on a stopped render.
+   - `kit.py`: the arm bones keep a scale of 1 (a planted hand's frame-by-frame solve let a tiny scale grow until her hands
+     stretched).
+   - `encode.py`: `sun-00`.
+   - `install.py`: `sun0`, with `sun` still counting the flows.
+   - `render-all.sh` and `moves.PREG` list the new loops.
+
+**Strings.** None new.
+
+**Tests.**
+- `node test/showmove.mjs`:
+  - 1, the trainer's figure for each level, in a set, Pause, "reduce motion", `fig: false`, a clip that can't play, without a plan,
+    and 360 px in English and Hindi;
+  - 2, the player: tree and child pose coming in then holding, the breathing steps, the sun's first position, Steady, the
+    fallbacks, and the cramps routine;
+  - 3, the gap check.
+- `node test/fig-coverage.mjs` now exits 1 on a step that holds still.
+- `node test/moves3d.mjs`: its still checks are now these clips.

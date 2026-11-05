@@ -18,6 +18,7 @@ BIG = tuple(int(x) for x in os.environ.get('FIG_SIZE', '720x600').split('x'))
 SAMPLES = int(os.environ.get('FIG_SAMPLES', '40'))
 sc = bpy.context.scene; sc.render.fps = FPS
 sc.frame_step = int(os.environ.get('FIG_STEP', '1'))   # every nth frame, for a quick look at a loop
+sc.render.use_overwrite = not os.environ.get('FIG_KEEP')   # Version 39.69: FIG_KEEP=1 carries on a stopped render, keeping its frames
 k = Kit()
 SET = []   # what the stage added, cleared between stills
 
@@ -38,7 +39,7 @@ def build_set(view, size, samples):
 def view_of(names):
     return ('front' if names[0] in moves.FRONT else 'quarter' if names[0] in moves.QUARTER else 'lie' if names[0] in moves.LIE
             else 'front3q' if names[0] in moves.FRONT3Q else 'sideback' if names[0] in moves.LEANV else 'backq' if names[0] in moves.BACKQ
-            else 'side')
+            else 'front3ql' if names[0] in moves.FRONT3QL else 'side')
 
 
 def pose(name):
@@ -81,11 +82,13 @@ def props_for(names):
             m = stage.prop('calfwall', y=moves.CALF_WALL_Y)
         elif kind == 'sidewall':
             m = stage.prop('sidewall', x=moves.SIDE_WALL_X)
+        elif kind == 'leftwall':
+            m = stage.prop('leftwall', x=moves.LEFT_WALL_X)
         elif kind == 'sheet':
             m = stage.prop('sheet', h=moves.SHEET_H)
         elif kind == 'table':
             m = stage.prop('table', y=moves.TABLE_NEAR, h=moves.TABLE_TOP)
-        elif kind in ('backwall', 'pillow'):
+        elif kind in ('backwall', 'pillow', 'nearwall'):
             continue   # placed from her pose (after_props)
         else:
             m = stage.prop('step', front=moves.STEP_FRONT, h=moves.STEP_H) + stage.prop('rail', a=moves.RAIL_A, b=moves.RAIL_B); framed += m
@@ -110,6 +113,12 @@ def after_props(names, snaps):
         for n in names:
             apply(snaps[n]); y = max(y, body_extent(1, 0.25, 0.95))
         made += stage.prop('backwall', y=y + 0.004)
+    if 'nearwall' in kinds:   # standing with her back near a wall (the pelvic floor trainer's standing level): a hand's width behind
+        y = -1e9
+        for n in names:
+            if moves.PROPS.get(n) == 'nearwall':
+                apply(snaps[n]); y = max(y, body_extent(1, 0.25, 1.5))
+        made += stage.prop('backwall', y=y + 0.05)
     for n in names:
         if moves.PROPS.get(n) == 'pillow':
             apply(snaps[n]); a, b = k.at('lowerleg01.L'), k.at('lowerleg01.R'); hp = (k.hip('L') + k.hip('R')) / 2
@@ -130,6 +139,9 @@ def stage_for(names, size, samples):
             a, b = k.bbox(framed)
             lo = V((min(lo.x, a.x), min(lo.y, a.y), min(lo.z, a.z))); hi = V((max(hi.x, b.x), max(hi.y, b.y), max(hi.z, b.z)))
     SET.extend(after_props(names, snaps))
+    close = moves.CLOSE.get(names[0])
+    if close:   # close up (Version 39.69): her head and chest, so a hand at her face shows
+        lo = V((-close[0], lo.y, hi.z - close[1])); hi = V((close[0], hi.y, hi.z))
     if not any(n in moves.NO_MAT for n in names):
         if view in ('front', 'lie'):   # facing the camera, the mat runs across the frame
             cx, cy = (lo.x + hi.x) / 2, (lo.y + hi.y) / 2; half = max(0.9, (hi.x - lo.x) / 2 + 0.15); dep = max(0.62, hi.y - lo.y + 0.16)
@@ -256,10 +268,15 @@ elif MODE == 'loop':
     else:
         a, b, dur, hold = L
         seq = [(0, a), (0.3, b), (0.7, b), (1.0, a)] if hold else [(0, a), (0.5, b), (1.0, a)]
-    snaps = stage_for(list(dict.fromkeys(n for _, n in seq)), BIG, SAMPLES)
-    N = round(dur * FPS)
-    key_seq([(1 + round(t * N), snaps[n]) for t, n in seq], cyclic=True)
-    sc.frame_start, sc.frame_end = 1, N    # the last key (frame N + 1) is the first again, so the loop closes
+    names = list(dict.fromkeys(n for _, n in seq))
+    # Version 39.69: a hold that follows its coming-in clip (<name>-in) is framed with that clip's positions too, so the camera
+    # doesn't jump when the player hands over from one to the other
+    names += [n for _, n in moves.LOOPS.get(name + '-in', {}).get('seq', []) if n not in names]
+    snaps = stage_for(names, BIG, SAMPLES)
+    N = round(dur * FPS); once = isinstance(L, dict) and L.get('once')
+    key_seq([(1 + round(t * N), snaps[n]) for t, n in seq], cyclic=not once)
+    # the last key (frame N + 1) is the first again, so the loop closes; a clip played once (Version 39.69) ends on its last key
+    sc.frame_start, sc.frame_end = 1, N + (1 if once else 0)
     sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = os.path.join(OUT, name + '-')
     bpy.ops.render.render(animation=True); print('LOOP', name, N, flush=True)
     open(os.path.join(OUT, '.done'), 'w').write(str(N))   # a finished loop, so render-preg.sh can carry on after a stop
@@ -283,6 +300,14 @@ elif MODE == 'sun':
         if f:
             cam.keyframe_insert('location', frame=f); cam.keyframe_insert('rotation_euler', frame=f)
     T = round(1.2 * FPS)
+    if 'praysin' in moves.POSES:   # Version 39.69: sun-00, the first position breathing (in for 4 seconds, out for 6), looping
+        pose('praysin'); sin = snapshot(); T0 = 10 * FPS
+        clear_anim(); cam.animation_data_clear(); key_seq([(1, snaps['prays']), (1 + round(0.4 * T0), sin), (1 + T0, snaps['prays'])], cyclic=True)
+        sc.frame_start, sc.frame_end = 1, T0; aim('prays')
+        sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = os.path.join(OUT, 'sun00-')
+        bpy.ops.render.render(animation=True); print('SUN', 0, 'prays', flush=True)
+        if os.environ.get('FIG_SUN_ONLY0'):
+            sys.exit(0)
     snaps_mid = {}
     for (a, b), n in moves.SUN_MID.items():
         pose(n); snaps_mid[(a, b)] = snapshot()

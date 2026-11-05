@@ -151,14 +151,14 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   await settle(page, 58000); await toRest(page);
   check('3 Gentle start rests 10 seconds', (await has(page, '#pl-rest')) && secs(await txt(page, '#pl-rtime')) >= 9 && secs(await txt(page, '#pl-rtime')) <= 10, await txt(page, '#pl-rtime'));
   for (let i = 0; i < 12 && !/Vrikshasana/.test(await view(page)); i++) await tap(page, (await has(page, '#pl-skip')) ? '#pl-skip' : '#pl-next');
-  check('3 the tree pose, right side, plays its still (a held pose)', /Right side/i.test(await view(page)) && (await attr(page, 'img#pl-fig3d', 'src')) === 'fig/s/tree.webp', (await view(page)).slice(0, 120));
+  check('3 the tree pose, right side: she comes into it first, then the hold (Version 39.69: never a still)', /Right side/i.test(await view(page)) && (await attr(page, 'video#pl-fig3d', 'src')) === 'fig/v/tree-in.webm' && (await attr(page, 'video#pl-fig3d', 'data-next')) === 'fig/v/tree.webm', (await view(page)).slice(0, 120));
   await settle(page, 20500);
   check('3 no rest between her right and left side', /Left side/i.test(await view(page)) && !(await has(page, '#pl-rest')), (await view(page)).slice(0, 120));
-  check('3 the left side is the same picture, mirrored', await has(page, 'img#pl-fig3d.pl-mirror'));
+  check('3 the left side is the same picture, mirrored', await has(page, '#pl-fig3d.pl-mirror'));
   for (let i = 0; i < 20 && !/Pavanamuktasana/.test(await view(page)); i++) await tap(page, (await has(page, '#pl-skip')) ? '#pl-skip' : '#pl-next');
   await settle(page, 30500);
   check('3 no rest before Shavasana (it is the rest)', /Shavasana/.test(await view(page)) && !(await has(page, '#pl-rest')), (await view(page)).slice(0, 120));
-  check('3 Shavasana shows her lying still, eyes closed', (await attr(page, 'img#pl-fig3d', 'src')) === 'fig/s/rest.webp');
+  check('3 Shavasana: lying with her eyes closed, breathing (Version 39.69: her loop)', (await attr(page, 'video#pl-fig3d', 'src')) === 'fig/v/rest.webm');
   check('3 no page errors', !errs.length, errs);
   await ctx.close();
 }
@@ -167,7 +167,7 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
 {
   const { ctx, page, errs } = await open({ plan: { start: ago(40) } });
   await go(page, 'plan-r-sun'); await tap(page, '#pl-pstart'); await tap(page, '#pl-next');
-  check('4 the sun salutation opens on its first position, a still', /Round 1/i.test(await view(page)) && (await attr(page, 'img#pl-fig3d', 'src')) === 'fig/s/sun-00.webp', (await view(page)).slice(0, 120));
+  check('4 the sun salutation opens on its first position, palms together, breathing (Version 39.69: sun-00)', /Round 1/i.test(await view(page)) && (await attr(page, 'video#pl-fig3d', 'src')) === 'fig/v/sun-00.webm', (await view(page)).slice(0, 120));
   await settle(page, 6500);
   const s1 = await page.$eval('video#pl-fig3d', (v) => ({ src: v.getAttribute('src'), loop: v.loop })).catch(() => null);
   check('4 each next position flows in once (no loop), with no rest between', !(await has(page, '#pl-rest')) && !!s1 && s1.src === 'fig/v/sun-01.webm' && s1.loop === false, s1);
@@ -181,10 +181,10 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   await k.ctx.close();
   const c = await open();
   await go(c.page, 'plan-r-calm'); await tap(c.page, '#pl-pstart');
-  check('4 Anulom vilom shows her right hand at her nose, eyes closed, as its words say', (await attr(c.page, 'img#pl-fig3d', 'src')) === 'fig/s/nostril.webp');
+  check('4 Anulom vilom: her right hand at her nose, changing sides as she breathes (Version 39.69: her loop)', (await attr(c.page, 'video#pl-fig3d', 'src')) === 'fig/v/nostril.webm' && (await attr(c.page, 'video#pl-fig3d', 'poster')) === 'fig/s/nostril.webp');
   await settle(c.page, 180500);
   check('4 Calm breath has no rests', /Move 2 of 3/i.test(await view(c.page)) && !(await has(c.page, '#pl-rest')), (await view(c.page)).slice(0, 120));
-  check('4 Bhramari shows her sitting, eyes closed', (await attr(c.page, 'img#pl-fig3d', 'src')) === 'fig/s/sit.webp');
+  check('4 Bhramari: sitting, eyes closed, breathing', (await attr(c.page, 'video#pl-fig3d', 'src')) === 'fig/v/sit.webm');
   check('4 no page errors', !errs.length && !k.errs.length && !c.errs.length, [errs, k.errs, c.errs]);
   await c.ctx.close();
 }
@@ -196,11 +196,11 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   check('5 "reduce motion" on the phone: her still, no video', (await attr(s.page, 'img#pl-fig3d', 'src')) === 'fig/s/warmup.webp' && !(await has(s.page, 'video')));
   await s.ctx.close();
   // a loop the manifest lists but the build lacks: the video fails and the move's still takes its place
-  const b = await open({ pre: () => { window.SAKHI_FIG.loops.push('tree'); } });
+  const b = await open({ pre: () => { window.SAKHI_FIG.loops.push('triangle-in'); } });   /* Version 39.69: every move has its loop now, so a coming-in clip the build lacks */
   await go(b.page, 'plan-r-gentle'); await tap(b.page, '#pl-pstart');
-  for (let i = 0; i < 12 && !/Vrikshasana/.test(await view(b.page)); i++) await tap(b.page, (await has(b.page, '#pl-skip')) ? '#pl-skip' : '#pl-next');
+  for (let i = 0; i < 12 && !/Trikonasana/.test(await view(b.page)); i++) await tap(b.page, (await has(b.page, '#pl-skip')) ? '#pl-skip' : '#pl-next');
   await sleep(800); await settle(b.page, 300);
-  check('5 a video that can\'t play gives way to the move\'s still', (await attr(b.page, 'img#pl-fig3d', 'src')) === 'fig/s/tree.webp' && !(await has(b.page, 'video')));
+  check('5 a video that can\'t play gives way to the move\'s still', (await attr(b.page, 'img#pl-fig3d', 'src')) === 'fig/s/triangle.webp' && !(await has(b.page, 'video')));
   check('5 ... with no page errors', !b.errs.length, b.errs);
   await b.ctx.close();
   for (const [tag, o] of [['SAKHI_CONFIG.fig false', { cfg: { fig: false } }], ['a build without web/fig', { pre: () => { window.SAKHI_FIG = undefined; } }]]) {
@@ -261,7 +261,7 @@ const rlTo = async (page, re) => { for (let i = 0; i < 6 && !re.test(await txt(p
   check('8 cramps: Warmth has no figure (nothing to show)', !(await has(page, '#rl-step .rl-figbox')), await rl(page));
   await rlTo(page, /Child/);
   const c = await rl(page);
-  check('8 cramps: Child\'s pose shows its 3D still (a hold), the same as Cycle care\'s', /Child/.test(c.h) && c.img === 'fig/s/child.webp' && !c.video, c);
+  check('8 cramps: Child\'s pose comes in first, then holds, as Cycle care\'s (Version 39.69)', /Child/.test(c.h) && c.video === 'fig/v/child-in.webm' && !c.img, c);
   await shot(page, '8-cramps-child');
   await rlTo(page, /Knees/);
   const k = await rl(page);
