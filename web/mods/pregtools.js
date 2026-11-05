@@ -19,7 +19,7 @@
     t_birth_s: ['Labour signs, normal birth, C-section, pain relief, the first hour', 'लेबर के संकेत, नॉर्मल डिलीवरी, ऑपरेशन, दर्द में राहत, पहला घंटा'],
     min: ['min', 'मिनट'], sec: ['sec', 'सेकंड'], remove: ['Remove', 'हटाएँ'], more: ['Related', 'इससे जुड़े'],
     schemes: ['Scheme money you can claim', 'योजनाओं का पैसा जो आपको मिल सकता है'], schemes_s: ['What to claim, where, and which papers', 'क्या मिलेगा, कहाँ से, और कौन से काग़ज़'],
-    amb_h: ['Free ambulance', 'मुफ़्त एम्बुलेंस'], amb108: ['Ambulance', 'एम्बुलेंस'], amb102: ['Ambulance for pregnant women and babies', 'गर्भवती महिलाओं और बच्चों की एम्बुलेंस'], amb112: ['Emergency, any kind', 'आपातकाल, किसी भी तरह का'],
+    amb_h: ['Free ambulance', 'मुफ़्त एम्बुलेंस'], amb108: ['Ambulance', 'एम्बुलेंस'], amb102: ['Ambulance for pregnant women and babies', 'गर्भवती महिलाओं और बच्चों की एम्बुलेंस'],
     amb_note: ['Under JSSK the ambulance is free: from home to a government hospital, between hospitals if you are referred, and back home after the birth. In many states 102 is the ambulance for pregnant women and 108 is for emergencies; some states run only one of them. Your ASHA knows which number works in your area.', 'JSSK के तहत एम्बुलेंस मुफ़्त है: घर से सरकारी अस्पताल तक, refer होने पर एक अस्पताल से दूसरे तक, और डिलीवरी के बाद घर वापस। कई राज्यों में 102 गर्भवती महिलाओं की एम्बुलेंस है और 108 इमरजेंसी की; कुछ राज्यों में इनमें से एक ही चलता है। आपके इलाक़े में कौन सा नंबर चलता है, यह आपकी ASHA जानती हैं।'],
 
     /* kick counter */
@@ -81,7 +81,7 @@
     go_5: ['Constant, severe pain with no break between contractions', 'लगातार तेज़ दर्द, दो दर्दों के बीच कोई आराम नहीं'],
     go_6: ['Fever, or you feel very unwell', 'बुख़ार, या तबीयत बहुत ख़राब लगे'],
     go_7: ['Labour pains before 37 weeks', '37 हफ़्ते से पहले लेबर जैसे दर्द'],
-    go_call: ['Call 108 or 102 for a free ambulance, or 112.', 'मुफ़्त एम्बुलेंस के लिए 108 या 102 पर, या 112 पर कॉल करें।'],
+    go_call: ['Call 108 or 102 for a free ambulance.', 'मुफ़्त एम्बुलेंस के लिए 108 या 102 पर कॉल करें।'],
     w_h: ['When to go to hospital', 'अस्पताल कब जाएँ'],
     w_1: ['At your 36-week visit, ask your doctor or ANM when they want you to come in, and to which hospital.', '36 हफ़्ते वाली जाँच में अपनी डॉक्टर या ANM से पूछें कि कब आना है और किस अस्पताल में।'],
     w_1_doc: ['At your 36-week visit, ask your doctor when they want you to come in, and to which hospital.', '36 हफ़्ते वाली जाँच में अपनी डॉक्टर से पूछें कि कब आना है और किस अस्पताल में।'],   /* Version 39.40: her doctor's route */
@@ -211,7 +211,7 @@
     const md = S.mydoc && S.mydoc.get() && !(S.care && S.care.gov && S.care.gov()) ? S.mydoc.get() : null;
     const callA = (n, p) => '<a class="btn sm' + (p ? ' primary' : '') + '" href="tel:' + esc(n) + '">' + esc(t('call_b')) + '</a>';
     return (md ? '<div class="list ptl-mydoc"><div class="helpline"><div style="min-width:0"><div class="n num">' + esc(md) + '</div><div class="what">' + esc(t('mydoc_h')) + '</div></div>' + callA(md, true) + '</div></div>' : '') +
-      '<div class="stack"><h2>' + esc(T('amb_h')) + '</h2><div class="list">' + [['108', 'amb108'], ['102', 'amb102'], ['112', 'amb112']].map((x, i) => '<div class="helpline"><div style="min-width:0"><div class="n num">' + x[0] + '</div><div class="what">' + esc(T(x[1])) + '</div></div>' + (call ? callA(x[0], !md && !i) : '<button type="button" class="btn sm" data-ptl-copy="' + x[0] + '">' + esc(t('copy')) + '</button>') + '</div>').join('') + '</div><p class="small">' + esc(T('amb_note')) + '</p></div>';
+      '<div class="stack"><h2>' + esc(T('amb_h')) + '</h2><div class="list">' + [['108', 'amb108'], ['102', 'amb102']].map((x, i) => '<div class="helpline"><div style="min-width:0"><div class="n num">' + x[0] + '</div><div class="what">' + esc(T(x[1])) + '</div></div>' + (call ? callA(x[0], !md && !i) : '<button type="button" class="btn sm" data-ptl-copy="' + x[0] + '">' + esc(t('copy')) + '</button>') + '</div>').join('') + '</div><p class="small">' + esc(T('amb_note')) + '</p></div>';
   }
   function wireCopy(v) {
     v.querySelectorAll('[data-ptl-copy]').forEach((b) => b.addEventListener('click', () => {
@@ -259,7 +259,7 @@
     else if (w != null && w < 28) note = '<div class="card soft"><p class="small" style="color:var(--fg)">' + esc(TF('k_early', { w: w })) + '</p></div>';
     /* Version 39.35 (Mohit's walkthrough, 29 Oct): "Baby moving less? Get help" opens this page, so its 2 lines come with Call buttons */
     const flags = '<div class="flag urgent">' + fi(S.I.help) + '<span class="ptl-ft">' + esc(T('k_now')) + '</span></div><div class="flag">' + fi(S.I.clock) + '<span class="ptl-ft">' + esc(T('k_today')) + '</span></div>' +
-      '<div class="row wrap ptl-calls">' + ['112', '108', '102'].map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>';
+      '<div class="row wrap ptl-calls">' + (S.emNums ? S.emNums(['112', '108', '102']) : ['108', '102']).map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>';
     let counter = '';
     if (K) {
       counter = '<div class="card ptl-center"><div class="eyebrow">' + esc(T('k_counting')) + '</div><div class="bigtimer" id="ptl-k-time">' + clock((Date.now() - K.start) / 1000) + '</div>' +

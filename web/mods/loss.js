@@ -32,7 +32,8 @@
     '14416': { en: 'Tele-MANAS: someone to talk to, free, 24×7', hi: 'Tele-MANAS: बात करने के लिए, मुफ़्त, 24×7' },
     '181': { en: 'Women Helpline: if someone is hurting or threatening you', hi: 'महिला हेल्पलाइन: अगर कोई आपको चोट पहुँचा रहा है या धमका रहा है' }
   };
-  const lines = (nums) => '<div class="list">' + nums.map((n) => '<div class="helpline"><div class="loss-hl"><div class="n num">' + esc(n) + '</div><div class="what">' + T(HL[n]) + '</div></div><button type="button" class="btn sm" data-loss-copy="' + esc(n) + '">' + esc(t('copy')) + '</button></div>').join('') + '</div>';
+  const lines = (nums0) => { const nums = nums0.filter((n) => !S.emNums || S.emNums([n]).indexOf(n) >= 0); if (!nums.length) return '';   /* Version 39.70: no 112, Tele-MANAS, 181 or Childline */
+    return '<div class="list">' + nums.map((n) => '<div class="helpline"><div class="loss-hl"><div class="n num">' + esc(n) + '</div><div class="what">' + T(HL[n]) + '</div></div><button type="button" class="btn sm" data-loss-copy="' + esc(n) + '">' + esc(t('copy')) + '</button></div>').join('') + '</div>'; };
   function wireCopy(v) {
     v.querySelectorAll('[data-loss-copy]').forEach((b) => b.addEventListener('click', () => {
       const n = b.dataset.lossCopy; const done = () => S.toast(t('copied') + ' ' + n);
@@ -46,8 +47,8 @@
 
   /* ---------- shared text ---------- */
   const URGENT = {
-    en: 'Bleeding that soaks a pad every hour, feeling faint or dizzy, severe belly pain, or pain on one side with a positive test: call 112 or go to the nearest hospital now.',
-    hi: 'हर घंटे pad भीग जाए इतनी ब्लीडिंग, चक्कर या बेहोशी जैसा लगना, पेट में तेज़ दर्द, या test positive के साथ एक तरफ़ दर्द: अभी 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ।'
+    en: 'Bleeding that soaks a pad every hour, feeling faint or dizzy, severe belly pain, or pain on one side with a positive test: go to the nearest hospital now.',
+    hi: 'हर घंटे pad भीग जाए इतनी ब्लीडिंग, चक्कर या बेहोशी जैसा लगना, पेट में तेज़ दर्द, या test positive के साथ एक तरफ़ दर्द: अभी सबसे पास के अस्पताल जाएँ।'
   };
   const RED_NOW = [
     { en: 'Bleeding that soaks a thick pad every hour, for 2 hours in a row', hi: 'इतनी ब्लीडिंग कि हर घंटे एक मोटा pad भीग जाए, लगातार 2 घंटे तक' },
@@ -74,8 +75,6 @@
       P({ en: "We're so sorry. Whatever happened, and however early, it was not your fault. Read only what you need, when you need it. Nothing here is saved unless you choose to save it.", hi: 'हमें बहुत दुख है। जो भी हुआ, जितनी भी जल्दी हुआ, उसमें आपकी कोई ग़लती नहीं थी। जो ज़रूरी लगे, जब ज़रूरी लगे, बस उतना ही पढ़ें। यहाँ कुछ भी save नहीं होता, जब तक आप ख़ुद न चुनें।' }, 'lead loss-open') +
       '<div class="list">' + item('loss-types', 'learn', 'loss_types', 'loss_types_s') + item('loss-recovery', 'drop', 'loss_recovery', 'loss_recovery_s') + item('loss-grief', 'heart', 'loss_grief', 'loss_grief_s') + item('loss-again', 'leaf', 'loss_again', 'loss_again_s') + '</div>' +
       stillPregnant +
-      '<div class="card soft"><h3>' + T({ en: 'Someone to talk to, any time', hi: 'बात करने के लिए कोई, कभी भी' }) + '</h3>' +
-      P({ en: "Tele-MANAS is the government's free mental health helpline. It answers day and night, in many Indian languages. You can call just to talk about the loss; you don't need to be ill.", hi: 'Tele-MANAS सरकार की मुफ़्त मानसिक स्वास्थ्य हेल्पलाइन है। यह दिन-रात, कई भारतीय भाषाओं में जवाब देती है। आप सिर्फ़ इस दुख के बारे में बात करने के लिए भी कॉल कर सकती हैं; बीमार होना ज़रूरी नहीं।' }, 'small') + lines(['14416']) + '</div>' +
       flag(URGENT, true) +
       '<p class="note">' + privacy() + '</p>';
     S.wire(v); wireCopy(v);
@@ -110,7 +109,7 @@
         P({ en: 'A positive test, then a period-like bleed a few days later, before a scan could see the pregnancy. It is a very early miscarriage and usually needs no treatment. It was still a pregnancy, and it is okay to feel sad.', hi: 'Test positive आया, फिर कुछ दिन बाद पीरियड जैसी ब्लीडिंग, scan में गर्भ दिखने से पहले ही। यह बहुत जल्दी का मिसकैरेज है और आम तौर पर इसमें इलाज की ज़रूरत नहीं होती। फिर भी यह गर्भ था, और दुखी होना ठीक है।' }) +
         P({ en: 'See a doctor if the bleeding is very heavy, or if a test is still positive 3 weeks later.', hi: 'ब्लीडिंग बहुत ज़्यादा हो, या 3 हफ़्ते बाद भी test positive आए, तो डॉक्टर को दिखाएँ।' }, 'small')) +
       acc({ en: 'Ectopic pregnancy', hi: 'Ectopic (बच्चेदानी के बाहर गर्भ)' },
-        P({ en: 'The pregnancy grows outside the womb, almost always in a fallopian tube. It can never grow into a baby. As it grows it can burst the tube and bleed inside, which is why one-sided pain, shoulder-tip pain, dizziness or fainting need 112 at once.', hi: 'गर्भ बच्चेदानी के बाहर ठहर जाता है, लगभग हमेशा एक नली (fallopian tube) में। यह कभी बच्चा नहीं बन सकता। बढ़ने पर नली फट सकती है और अंदर ख़ून बह सकता है, इसीलिए एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी हो तो तुरंत 112।' }) +
+        P({ en: 'The pregnancy grows outside the womb, almost always in a fallopian tube. It can never grow into a baby. As it grows it can burst the tube and bleed inside, which is why one-sided pain, shoulder-tip pain, dizziness or fainting need the nearest hospital at once.', hi: 'गर्भ बच्चेदानी के बाहर ठहर जाता है, लगभग हमेशा एक नली (fallopian tube) में। यह कभी बच्चा नहीं बन सकता। बढ़ने पर नली फट सकती है और अंदर ख़ून बह सकता है, इसीलिए एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी हो तो तुरंत सबसे पास के अस्पताल जाएँ।' }) +
         P({ en: 'A gynaecologist treats it in a hospital: by watching it closely, with an injection (methotrexate), or with keyhole surgery. Often no reason is found. Most women can get pregnant again, even with one tube.', hi: 'इसका इलाज अस्पताल में स्त्री रोग विशेषज्ञ करती हैं: ध्यान से निगरानी, एक इंजेक्शन (methotrexate), या दूरबीन से ऑपरेशन। अक्सर कोई कारण नहीं मिलता। ज़्यादातर महिलाएँ फिर से गर्भवती हो सकती हैं, एक नली के साथ भी।' }, 'small')) +
       acc({ en: 'Molar pregnancy', hi: 'मोलर प्रेग्नेंसी' },
         P({ en: "When the egg and sperm joined, the genetic material went wrong. The placenta tissue grows into a cluster of small cysts, and a baby either doesn't form (complete mole) or cannot survive (partial mole). It happens by chance; neither partner did anything wrong.", hi: 'अंडे और शुक्राणु के मिलते समय genetic सामग्री में गड़बड़ी हो गई। आँवल (placenta) का tissue छोटे-छोटे दानों के गुच्छे जैसा बढ़ने लगता है, और बच्चा या तो बनता ही नहीं (complete mole) या बच नहीं सकता (partial mole)। यह संयोग से होता है; पति-पत्नी में से किसी की ग़लती नहीं।' }) +
@@ -140,7 +139,7 @@
     own();
     v.innerHTML = S.backRow(t('loss_recovery'), 'loss', false) +
       P({ en: 'Most women feel physically better within a few days to two weeks. Here is what is usual, and what needs a doctor.', hi: 'ज़्यादातर महिलाएँ कुछ दिनों से दो हफ़्तों में शरीर से बेहतर महसूस करने लगती हैं। यहाँ बताया है कि क्या सामान्य है, और कब डॉक्टर ज़रूरी है।' }, 'small') +
-      '<div class="card dark"><h3>' + T({ en: 'Call 112 or go to a hospital now', hi: 'अभी 112 पर कॉल करें या अस्पताल जाएँ' }) + '</h3>' + ul(RED_NOW) + '</div>' +
+      '<div class="card dark"><h3>' + T({ en: 'Go to the nearest hospital now', hi: 'अभी सबसे पास के अस्पताल जाएँ या अस्पताल जाएँ' }) + '</h3>' + ul(RED_NOW) + '</div>' +
       '<div class="card warn"><h3 style="color:var(--accent)">' + T({ en: 'Go to a hospital today', hi: 'आज ही अस्पताल जाएँ' }) + '</h3>' + ul(RED_TODAY) + P({ en: 'These can mean an infection or tissue left inside. Both are treatable.', hi: 'इनका मतलब infection या अंदर बचा tissue हो सकता है। दोनों का इलाज होता है।' }, 'small') + '</div>' +
       '<div class="card"><h2>' + T({ en: 'Bleeding and pain', hi: 'ब्लीडिंग और दर्द' }) + '</h2>' + ul([
         { en: 'Bleeding is like a heavy period for the first day or so, then gets lighter and may turn brown. It can go on for 1 to 2 weeks.', hi: 'पहले एक-दो दिन ब्लीडिंग भारी पीरियड जैसी होती है, फिर कम होती है और भूरी हो सकती है। यह 1 से 2 हफ़्ते तक चल सकती है।' },
@@ -166,7 +165,7 @@
       '<div class="row wrap">' + goBtn('contra-free', { en: 'Free methods near you', hi: 'आपके पास मुफ़्त तरीक़े' }) + goBtn('contra-chooser', { en: 'Which method suits me', hi: 'मेरे लिए कौन-सा तरीक़ा' }) + '</div></div>' +
       '<h2>' + T({ en: 'After a particular kind of loss', hi: 'किसी ख़ास तरह के नुक़सान के बाद' }) + '</h2>' +
       acc({ en: 'After an ectopic pregnancy', hi: 'Ectopic के बाद' }, ul([
-        { en: 'Go to every hCG blood test until the level is back to zero. Until then the tube can still burst: sudden pain, shoulder pain or weakness means 112.', hi: 'जब तक hCG का स्तर शून्य न हो जाए, हर blood test पर जाएँ। तब तक नली फट सकती है: अचानक दर्द, कंधे में दर्द या कमज़ोरी हो तो 112।' },
+        { en: 'Go to every hCG blood test until the level is back to zero. Until then the tube can still burst: sudden pain, shoulder pain or weakness means the nearest hospital, now.', hi: 'जब तक hCG का स्तर शून्य न हो जाए, हर blood test पर जाएँ। तब तक नली फट सकती है: अचानक दर्द, कंधे में दर्द या कमज़ोरी हो तो अभी सबसे पास के अस्पताल जाएँ।' },
         { en: 'After the methotrexate injection: no alcohol, and no folic acid tablets, multivitamins or painkillers like ibuprofen until your doctor says. Use reliable contraception for at least 3 months, because the medicine can harm a baby.', hi: 'Methotrexate इंजेक्शन के बाद: डॉक्टर के कहने तक शराब नहीं, और folic acid की गोली, multivitamin या ibuprofen जैसी दर्द की दवा नहीं। कम से कम 3 महीने पक्का गर्भनिरोध रखें, क्योंकि यह दवा बच्चे को नुक़सान पहुँचा सकती है।' },
         { en: 'After keyhole surgery, full recovery can take 4 to 6 weeks.', hi: 'दूरबीन के ऑपरेशन के बाद पूरी तरह ठीक होने में 4 से 6 हफ़्ते लग सकते हैं।' }
       ])) +

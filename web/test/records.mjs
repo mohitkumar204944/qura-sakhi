@@ -165,7 +165,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   const p = await open({ seed: Object.assign({}, PREG(14), { daily: { [ago(0)]: ['d_pbleed'] } }) });
   await go(p.page, 'explain');
   const pb = await p.page.$$eval('#view .xp-now .btn', (x) => x.map((y) => y.textContent.trim()));
-  check('5 a "call 112" card: a call button, no Qura doctor', pb.some((x) => /Call 112/.test(x)) && !pb.some((x) => /Qura/.test(x)), pb);
+  check('5 a "go now" card: a call button for her ambulance (Version 39.70: 102 in pregnancy), no Qura doctor', pb.some((x) => /Call 102/.test(x)) && !pb.some((x) => /Call 112/.test(x)) && !pb.some((x) => /Qura/.test(x)), pb);
   check('5 ... and one button to Help, not two', (await p.page.$$('#view .xp-now [data-go="help"]')).length === 1, pb);
   errsAll.push(...a.errs, ...p.errs); await p.ctx.close();
 }
@@ -283,11 +283,12 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
     const a = await open({ seed: { events: cyc(gaps, 10) } }); const f = await ids(a.page);
     check('13 ENGINE-01 gaps ' + gaps.join(',') + ': ' + want, f.indexOf(want) >= 0, f); errsAll.push(...a.errs); await a.ctx.close();
   }
-  /* ENGINE-02, PRIVACY-02: thoughts of harm call Tele-MANAS 14416 first on What it shows and the explain page too */
+  /* ENGINE-02, PRIVACY-02: thoughts of harm call Tele-MANAS 14416 first on What it shows and the explain page too. Version 39.70 (the
+     doctors' answer 2): an old harm answer shows no card and no number on either */
   const h = await open({ seed: { situation: { deliveredOn: ago(10) }, events: [], mods: { post: { rec: { [ago(0)]: Object.assign({}, REC_OK, { mood: 'harm' }) } } } } });
   await diaryShows(h.page); const c1 = await h.page.$$eval('#view .xp-now a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')));
   await go(h.page, 'explain'); const c2 = await h.page.$$eval('#view .xp-now a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')));
-  check('13 ENGINE-02 thoughts of harm: What it shows and the explain page call 14416 first, then 112', c1.join() === 'tel:14416,tel:112' && c2.join() === 'tel:14416,tel:112', [c1, c2]);
+  check('13 ENGINE-02 an old harm answer: no call card on What it shows or the explain page', !c1.length && !c2.length, [c1, c2]);
   errsAll.push(...h.errs); await h.ctx.close();
   /* ENGINE-03, PRIVACY-01: a "call 112" card reads on Diary's paper, light and dark */
   for (const theme of ['light', 'dark']) {
@@ -392,7 +393,7 @@ const unlock = async (page, pin) => { for (const k of pin) await tap(page, '#vie
   /* PRIVACY-04: a "call 112" row on My plan can call */
   const a4b = await open({ seed: Object.assign({}, PREG(14), { daily: { [ago(0)]: ['d_pbleed'] }, intake: { goal: 'food', stage: 'preg' }, mods: { plan: planOf('preg', 'food', ago(5)) } }) });
   await go(a4b.page, 'plan');
-  check('13 PRIVACY-04 a "call 112" row on My plan has its call button', await has(a4b.page, '#view .pl-xp a[href="tel:112"]'));
+  check('13 PRIVACY-04 a "go now" row on My plan has its call button (Version 39.70: her ambulance, 102)', await has(a4b.page, '#view .pl-xp a[href="tel:102"]'));
   errsAll.push(...a4b.errs); await a4b.ctx.close();
   /* PRIVACY-06: with a PIN, the self-check doesn't show her PMOS diagnosis */
   const a6b = await open({ seed: { situation: { pcos: true }, events: cyc([40, 29, 42, 30, 28, 29], 10), settings: { toursAuto: false, notify: true, pinHash: PINH('2468') } } });

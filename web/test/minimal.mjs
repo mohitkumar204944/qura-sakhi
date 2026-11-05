@@ -13,7 +13,8 @@
 //   5 each plan measures what it promises: "Pain today?" on her period's first days (Today, then the check-in), never on a
 //     shared phone; the hot-flush chip and its days; the weekly diary only for the other menopause goals;
 //   6 a doctor finding and her plan's offer in one card on Today, nothing folded, at 360 px in English and Hindi;
-//   7 safety one tap closer: Call buttons on the after-birth danger cards, Help's first row dials 112, Help while she joins;
+//   7 safety one tap closer: Call buttons on the after-birth danger cards, Help's first row dials 112, Help while she joins
+//     (Version 39.70: the nearest hospital and her ambulance, 108 after a birth; no 112, Tele-MANAS or 181);
 //   8 Hindi at 360 px, no sideways scroll, no page errors.
 // Usage: node test/minimal.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
@@ -396,15 +397,15 @@ for (const lang of ['en', 'hi']) {
 /* ---------- 7 safety one tap closer ---------- */
 {
   const a = await open({ hash: '#post-feed', seed: { dob: '1994-05-01', situation: { deliveredOn: ago(10), breastfeeding: true }, events: [], intake: { goal: 'feed' } } });
-  check('7 the feeding page\'s danger card: Call 108, Call 102 and Call 112 open the dialer', await has(a.page, '#view a.pst-call[href="tel:108"]') && await has(a.page, '#view a.pst-call[href="tel:102"]') && await has(a.page, '#view a.pst-call[href="tel:112"]'));
+  check('7 the feeding page\'s danger card: Call 108 and Call 102 open the dialer, and no 112 (Version 39.70)', await has(a.page, '#view a.pst-call[href="tel:108"]') && await has(a.page, '#view a.pst-call[href="tel:102"]') && !(await has(a.page, '#view a.pst-call[href="tel:112"]')));
   check('7 ... Copy stays, small, under them', await has(a.page, '#view .pst-copies [data-pst-copy="108"]'));
   await go(a.page, 'post');
-  check('7 the after-birth page\'s danger card: Call 112, 108 and 14416', await has(a.page, '#view a.pst-call[href="tel:112"]') && await has(a.page, '#view a.pst-call[href="tel:108"]') && await has(a.page, '#view a.pst-call[href="tel:14416"]'));
+  check('7 the after-birth page\'s danger card: Call 108, and no 112 or 14416 (Version 39.70)', await has(a.page, '#view a.pst-call[href="tel:108"]') && !(await has(a.page, '#view a.pst-call[href="tel:112"]')) && !(await has(a.page, '#view a.pst-call[href="tel:14416"]')));
   await go(a.page, 'home');   /* Version 39.68: Help is on Today */
   await tap(a.page, '#help-btn');
-  check('7 Help\'s first row dials 112: "Call 112 now"', await a.page.evaluate(() => { const f = document.querySelector('#sheet-root .hs-list > *'); return !!f && f.tagName === 'A' && f.getAttribute('href') === 'tel:112' && /Call 112 now/.test(f.textContent); }));
+  check('7 Help\'s first row dials her ambulance: "Go to the nearest hospital now", 108 (Version 39.70)', await a.page.evaluate(() => { const f = document.querySelector('#sheet-root .hs-list > *'); return !!f && f.tagName === 'A' && f.getAttribute('href') === 'tel:108' && /Go to the nearest hospital now/.test(f.textContent) && /Ambulance: call 108/.test(f.textContent); }));
   await tap(a.page, '#hs-sos');
-  check('7 ... "Other helplines" lists every number', /108/.test(await sheet(a.page)) && /181/.test(await sheet(a.page)), await sheet(a.page));
+  check('7 ... "Other helplines" lists the ambulances, without 181', /108/.test(await sheet(a.page)) && /102/.test(await sheet(a.page)) && !/181/.test(await sheet(a.page)), await sheet(a.page));
   await done(a);
 }
 {
@@ -428,7 +429,7 @@ for (const lang of ['en', 'hi']) {
   const a = await open({ w: 360, h: 800, seed: { lang: 'hi', mods: { plan: planOf('cycle', 'irregular', 84) }, reminders: [planRem(84, '20:00')], settings: { notify: true } } });
   check('8 hi: day 85\'s row', /आपके 12 हफ़्ते पूरे हुए आपके क़दम जारी रहेंगे।/.test(await txt(a.page, '#view .pl-carry')) && await noScroll(a.page), await txt(a.page, '#view .pl-carry'));
   await tap(a.page, '#help-btn');
-  check('8 hi: Help\'s first row', /112 पर अभी कॉल करें/.test(await sheet(a.page)), await sheet(a.page));
+  check('8 hi: Help\'s first row', /अभी सबसे पास के अस्पताल जाएँ/.test(await sheet(a.page)) && /एम्बुलेंस: 108 पर कॉल करें/.test(await sheet(a.page)), await sheet(a.page));
   await done(a);
 }
 {

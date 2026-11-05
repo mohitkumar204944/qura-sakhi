@@ -21,7 +21,7 @@
   const persist = () => { if (S.canSave()) S.save(); };
 
   const TRY = N2('Try this week', 'इस हफ़्ते आज़माएँ');
-  const LOW = N2('Feeling low or alone because of this? Tele-MANAS 14416 is free, any time.', 'इसकी वजह से उदास या अकेली महसूस करती हैं? Tele-MANAS 14416 मुफ़्त है, किसी भी समय।');
+  const LOW = N2('Feeling low or alone because of this? Talk to your doctor.', 'इसकी वजह से उदास या अकेली महसूस करती हैं? अपनी डॉक्टर से बात करें।');
   const WHY = N2('Pelvic floor exercises, done the right way every day for at least 3 months, are the first treatment doctors advise for leaking urine and for mild heaviness. They work best with a little help: a doctor or physiotherapist can check your squeeze.',
     'रोज़ सही तरीक़े से, कम से कम 3 महीने pelvic floor के व्यायाम, पेशाब लीक होने और हल्के भारीपन का पहला इलाज है जो डॉक्टर बताती हैं। थोड़ी मदद से ये सबसे अच्छा काम करते हैं: डॉक्टर या फ़िज़ियोथेरेपिस्ट आपके कसने के तरीक़े की जाँच कर सकती हैं।');
   /* a chapter: h (its title) and cards: { b: heading, l: lines, go/gol: a button, ask: a Qura doctor, warn, u: urgent with tel } */
@@ -79,7 +79,7 @@
         N2('One set while the tea boils, one while you wait for water at the tap, one after you brush your teeth at night.', 'एक सेट जब चाय उबले, एक जब नल पर पानी का इंतज़ार हो, एक रात को दाँत साफ़ करने के बाद।')] },
       { b: TRY, l: [N2('Pick one task for one set each day this week, and do it standing.', 'इस हफ़्ते रोज़ एक सेट के लिए एक काम चुनें, और उसे खड़े होकर करें।')] }] },
     f10: { h: N2('When to see a doctor', 'डॉक्टर को कब दिखाएँ'), cards: [
-      { u: N2('Call 112 now if you suddenly can’t control your bladder or bowel, with numbness between your legs, weak legs or bad back pain.', '112 पर अभी कॉल करें अगर अचानक पेशाब या शौच पर क़ाबू न रहे, साथ में जाँघों के बीच सुन्नपन, पैरों में कमज़ोरी या कमर में तेज़ दर्द हो।'), tel: ['112'] },
+      { u: N2('Go to the nearest hospital now if you suddenly can’t control your bladder or bowel, with numbness between your legs, weak legs or bad back pain.', 'अभी सबसे पास के अस्पताल जाएँ अगर अचानक पेशाब या शौच पर क़ाबू न रहे, साथ में जाँघों के बीच सुन्नपन, पैरों में कमज़ोरी या कमर में तेज़ दर्द हो।'), tel: ['112'] },
       { warn: true, b: N2('See a doctor today', 'आज ही डॉक्टर को दिखाएँ'), l: [N2('You can’t pass urine at all, or a bulge is stuck outside, very painful or bleeding.', 'पेशाब बिल्कुल न हो पाए, या उभार बाहर अटक जाए, बहुत दर्द हो या ख़ून आए।')] },
       { b: N2('See a doctor soon', 'जल्दी डॉक्टर को दिखाएँ'), l: [N2('Burning, fever or blood in your urine: usually an infection, not a weak pelvic floor.', 'पेशाब में जलन, बुख़ार या ख़ून: आम तौर पर इन्फ़ेक्शन, कमज़ोर pelvic floor नहीं।'),
         N2('Leaking all the time, day and night: it can be repaired, and it shouldn’t wait.', 'दिन-रात हर समय लीक: इसकी मरम्मत हो सकती है, और इसे रुकना नहीं चाहिए।'),
@@ -124,7 +124,7 @@
   const topic = () => t('plan_pk_pelvic');
   function cardHtml(c) {
     if (c.pic === 'sling') return slingSvg();
-    if (c.u) return '<div class="card dark urgent pf-les" role="alert" data-say="1"><p class="pf-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent pf-les" role="alert" data-say="1"><p class="pf-p">' + T(c.u) + '</p><div class="row wrap">' + (S.emNums ? S.emNums(c.tel || ['112']) : ['108']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     const ask = c.ask ? '<button type="button" class="btn sm primary" data-ask="' + esc(topic()) + '">' + esc(t('ask_qura')) + '</button>' : '';
     return '<div class="card pf-les' + (c.warn ? ' warn' : '') + (c.b === TRY ? ' pf-try' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="pf-p">' + T(x) + '</p>').join('') + (go || ask ? '<div class="row wrap">' + ask + go + '</div>' : '') + '</div>';

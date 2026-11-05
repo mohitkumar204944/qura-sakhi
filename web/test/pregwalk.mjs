@@ -81,7 +81,7 @@ const LABELS = ['My doctor told me to rest, or not to exercise', 'Marked as a hi
 const S1C = 'In pregnancy: bleeding, leaking water, fever, severe headache or blurred vision, fits, swelling of face or hands, or the baby moving less after 28 weeks';   /* core's s1c, from the reviewed danger list (app.js DANGER) */
 const K_TODAY = "Fewer or weaker movements than usual: call your hospital or doctor straight away and get checked today, even if it is the middle of the night. Don't wait until tomorrow, and don't go to sleep on it.";
 const K_NOW = 'No movement at all, or the movements have stopped: go to hospital now. Free ambulance 108 or 102.';
-const LV_NOW = 'Call 112, or 108 or 102 for a free ambulance, and go to the nearest district hospital or the hospital where you are registered. Do not wait to see if it settles.';
+const LV_NOW = 'Go to the nearest hospital now, or the hospital where you are registered. Ambulance: 108, or 102 in pregnancy. Do not wait to see if it settles.';   /* Version 39.70 */
 const SIDE = 'From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and between your knees helps.';
 const PF_P = 'Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth.';
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -111,7 +111,7 @@ const stageTo = async (a, st, o) => { await tap(a, '#stage-btn'); await tap(a, '
   if (o && o.end) await tap(a, '[data-st-end="' + o.end + '"]'); await tap(a, '#st-save'); await settle(a.page, 1200); };
 const startPreg = async (a) => { await a.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'preg', goal: 'food', pflags: [], pnow: 'n' })); await settle(a.page, 300);
   await go(a, 'plan-reveal'); for (let i = 0; i < 8 && !(await has(a, '#pl-rv-go')); i++) await tap(a, '#pl-rv-next'); await tap(a, '#pl-rv-go'); await settle(a.page, 1000); };
-const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred vision: see a doctor today. Heavy bleeding or fits: call 112 now.";
+const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred vision: see a doctor today. Heavy bleeding or fits: go to the nearest hospital now.";   /* Version 39.70 */
 
 /* ---------- 1 the kick page ---------- */
 {
@@ -119,7 +119,7 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   for (let i = 0; i < 4 && !(await has(a, '.pg-less')); i++) await settle(a.page, 500);
   await tap(a, '.pg-less');
   const v = await view(a);
-  check('1 "Baby moving less? Get help": the kick page\'s 2 lines, then Call 112, 108 and 102, before the counter', (await tels(a, '.ptl-calls')) === '112,108,102' && v.indexOf(K_NOW) >= 0 && v.indexOf(K_TODAY) > v.indexOf(K_NOW) && v.indexOf('Call 112 Call 108 Call 102') > v.indexOf(K_TODAY) && v.indexOf('Call 112 Call 108 Call 102') < v.indexOf('Start counting'), v.slice(0, 700));
+  check('1 "Baby moving less? Get help": the kick page\'s 2 lines, then Call 102 and 108 (Version 39.70), before the counter', (await tels(a, '.ptl-calls')) === '102,108' && v.indexOf(K_NOW) >= 0 && v.indexOf(K_TODAY) > v.indexOf(K_NOW) && v.indexOf('Call 102 Call 108') > v.indexOf(K_TODAY) && v.indexOf('Call 102 Call 108') < v.indexOf('Start counting'), v.slice(0, 700));
   await shot(a, 'kick');
   await done(a);
 }
@@ -129,7 +129,7 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
   const a = await open({ seed: { situation: sit(30), events: [{ d: ago(2), t: 'start' }] }, wait: 1200 });
   const bd = await a.page.evaluate(() => window.Saathi.cycle.bleedingDays());
   check('2 a start inside her pregnancy with no end: only the day she logged, no guessed days', bd[ago(2)] === 'start' && !bd[ago(1)] && !bd[TODAY] && !bd[iso(TODAY, 1)], bd);
-  check('2 Today\'s pregnancy card: the reviewed line with Call 112', (await txt(a, '.pg-bleed')) === BLEED && (await tels(a, '.pg-bleed-call')) === '112');
+  check('2 Today\'s pregnancy card: the reviewed line with Call 102 (Version 39.70)', (await txt(a, '.pg-bleed')) === BLEED && (await tels(a, '.pg-bleed-call')) === '102');
   await shot(a, 'bleed-today');
   await done(a);
   const old = await open({ seed: { situation: sit(30), events: [{ d: ago(3), t: 'start' }] } });

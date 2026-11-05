@@ -224,7 +224,7 @@ const topics = async (page) => { if (!(await has(page, '#view .topic-grid'))) aw
   check('11 Help: 1 tap from Today (the top bar)', await has(a.page, '#sheet-root .hs-list'));
   check('11 no Private help in it', !(await has(a.page, '#sheet-root [data-hs-go]')) && !(await has(a.page, '#sheet-root .hs-priv')));
   await tap(a.page, '#hs-sos');
-  check('11 112: 2 taps (Help, then emergency numbers)', /112/.test(await txt(a.page, '#sheet-root')));
+  check('11 the ambulance: 2 taps (Help, then emergency numbers; Version 39.70: 108 and 102, no 112)', /108/.test(await txt(a.page, '#sheet-root')) && /102/.test(await txt(a.page, '#sheet-root')) && !/112/.test(await txt(a.page, '#sheet-root')));
   await a.page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet());
   await go(a.page, 'care'); const inGrid = await has(a.page, '#view [data-go="topic-loss"]');
   check('11 no Help button on Explore', !(await has(a.page, '#help-btn')));

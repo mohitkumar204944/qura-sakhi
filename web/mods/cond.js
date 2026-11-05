@@ -266,7 +266,7 @@
   }
 
   /* ---------- fibroids, cysts, polyps ---------- */
-  const TORSION = { en: 'Sudden, severe pain on one side of the lower belly with vomiting: go to a hospital emergency now, or call 112 or 108. A cyst can twist the ovary and cut off its blood; quick surgery can save the ovary.', hi: 'पेट के निचले हिस्से में एक तरफ़ अचानक तेज़ दर्द और साथ में उल्टी: अभी अस्पताल की emergency में जाएँ, या 112 या 108 पर कॉल करें। सिस्ट अंडाशय को मरोड़ सकती है और उसका ख़ून रोक सकती है; जल्दी ऑपरेशन से अंडाशय बच सकता है।' };
+  const TORSION = { en: 'Sudden, severe pain on one side of the lower belly with vomiting: go to the nearest hospital now (ambulance: 108). A cyst can twist the ovary and cut off its blood; quick surgery can save the ovary.', hi: 'पेट के निचले हिस्से में एक तरफ़ अचानक तेज़ दर्द और साथ में उल्टी: अभी अस्पताल की emergency में जाएँ, या अभी सबसे पास के अस्पताल जाएँ (एम्बुलेंस: 108)। सिस्ट अंडाशय को मरोड़ सकती है और उसका ख़ून रोक सकती है; जल्दी ऑपरेशन से अंडाशय बच सकता है।' };
   function renderFibroids(v) {
     const block = (title, what, signs, tests, treat, extra) => '<div class="card"><h2>' + h(title) + '</h2>' + P(what) +
       sub({ en: 'Signs', hi: 'संकेत' }) + ul(signs) + sub({ en: 'Tests', hi: 'जाँच' }) + P(tests) + sub({ en: 'Treatment', hi: 'इलाज' }) + (Array.isArray(treat) ? ul(treat) : P(treat)) + (extra || '') + '</div>';
@@ -555,7 +555,7 @@
       P({ en: 'Once you are anaemic, food alone is often not enough. You may need tablets as well.', hi: 'एक बार ख़ून की कमी हो जाए तो अक्सर सिर्फ़ खाना काफ़ी नहीं होता। गोलियाँ भी लगती हैं।' }, 'small') + '</div>';
 
     const doctor = '<div class="card warn"><h3>' + esc(t('see_doctor')) + '</h3>' +   /* Version 39.57: the 112 line leads the page, once */
-      flag('', { en: 'Chest pain, fainting, or breathless while resting: get medical help today; call 112 if it is severe.', hi: 'सीने में दर्द, बेहोशी, या आराम में भी साँस फूलना: आज ही इलाज लें; ज़्यादा हो तो 112 पर कॉल करें।' }) +
+      flag('', { en: 'Chest pain, fainting, or breathless while resting: get medical help today; go to the nearest hospital if it is severe.', hi: 'सीने में दर्द, बेहोशी, या आराम में भी साँस फूलना: आज ही इलाज लें; ज़्यादा हो तो सबसे पास के अस्पताल जाएँ।' }) +
       ul([{ en: 'Within a few weeks: periods heavy month after month, periods that get in the way of your work, sleep or going out (whatever the chart says), or a heavy-bleeding chart total of 100 or more. See a gynaecologist and take the chart.', hi: 'कुछ हफ़्तों में: हर महीने भारी पीरियड, ऐसे पीरियड जो आपके काम, नींद या बाहर जाने में रुकावट डालें (चार्ट कुछ भी कहे), या ब्लीडिंग चार्ट का कुल 100 या ज़्यादा। स्त्री रोग विशेषज्ञ को चार्ट के साथ दिखाएँ।' },
         { en: 'This week: ' + t('s4a'), hi: 'इसी हफ़्ते: ' + t('s4a') },
         { en: 'Any bleeding a year or more after your last period.', hi: 'आख़िरी पीरियड के एक साल या ज़्यादा बाद कोई भी ब्लीडिंग।' }]) + '</div>';
@@ -602,7 +602,7 @@
       P({ en: 'IVF with donor eggs is an established way to get pregnant after POI. If you are about to have cancer treatment, ask about freezing eggs or embryos first.', hi: 'POI के बाद गर्भ के लिए donor अंडों से IVF एक जाना-माना तरीक़ा है। अगर कैंसर का इलाज शुरू होने वाला है, तो पहले अंडे या embryo freeze करवाने के बारे में पूछें।' }) +
       '<button type="button" class="btn sm" style="align-self:flex-start" data-go="ttc-tests">' + h({ en: 'Tests when trying for a baby', hi: 'बच्चे की कोशिश में जाँचें' }) + '</button></div>' +
       '<div class="card"><h2>' + h({ en: 'Your feelings matter too', hi: 'आपकी भावनाएँ भी मायने रखती हैं' }) + '</h2>' +
-      P({ en: 'Hearing that your ovaries have stopped early can be a shock, especially if you hoped for children. Talk to someone you trust. Tele-MANAS 14416 is free, any time.', hi: 'यह सुनना कि अंडाशय जल्दी रुक गए, सदमा दे सकता है, ख़ासकर अगर आप बच्चा चाहती थीं। किसी भरोसेमंद से बात करें। Tele-MANAS 14416 मुफ़्त है, कभी भी।' }) +
+      P({ en: 'Hearing that your ovaries have stopped early can be a shock, especially if you hoped for children. Talk to someone you trust.', hi: 'यह सुनना कि अंडाशय जल्दी रुक गए, सदमा दे सकता है, ख़ासकर अगर आप बच्चा चाहती थीं। किसी भरोसेमंद से बात करें।' }) +
       P({ en: 'Where to go: the gynaecology OPD of a district hospital or medical college.', hi: 'कहाँ जाएँ: ज़िला अस्पताल या मेडिकल कॉलेज की gynaecology OPD।' }, 'small') + '</div>' +
       askCard({ en: 'Periods stopped before 40 (POI)', hi: '40 से पहले पीरियड बंद (POI)' }, { en: 'A Qura doctor can go through your reports, help with sleep, diet and bone care, and refer you to a gynaecologist for HRT.', hi: 'Qura की डॉक्टर आपकी reports देख सकती हैं, नींद, खाने और हड्डियों की देखभाल में मदद करती हैं, और HRT के लिए स्त्री रोग विशेषज्ञ के पास refer करती हैं।' }) +
       sources(['eshre', 'nhsEarly']);

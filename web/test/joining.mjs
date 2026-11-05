@@ -3,7 +3,7 @@
 // phone, sign-up), "Your Sakhi" and its short tour, her first log in Diary, and her plan offered on Today only after it (her
 // first goal chooses the plan). Also: goals capped at 3, numbered, "Just tracking" on its own, period pain, heavy periods and
 // mood before periods under both period tiles; other stages' topics and chapters out of Explore and Learn but found by search;
-// Help, 112, "someone hurting you" and pregnancy loss within 2 taps of any screen, STIs and abortion within 2 taps of Explore;
+// Help, the nearest hospital (Version 39.70: the ambulance, and no row for harm) and pregnancy loss within 2 taps of any screen, STIs and abortion within 2 taps of Explore;
 // Today at 3 steps or fewer; a shared phone (plain words: no "Your Sakhi", no first-log card, no plan offer); a girl under 18
 // (reading, no account); a woman who joined before Version 39.10 (asked once on Today); no page errors, no sideways scroll and
 // no untranslated keys on any of these screens.
@@ -147,7 +147,7 @@ for (const lang of ['en', 'hi']) for (const S of STAGES) {
   check(tag + ': Learn leaves out other stages\' chapters', ch.length > 1 && S.noCh.every((x) => ch.indexOf(x) < 0), ch);
   /* safety within 2 taps (Version 39.68: Help is on Today only) */
   await go(page, 'home'); await closeTips(page); await tap(page, '#help-btn');
-  check(tag + ': Help (1 tap from Today) holds 112, "someone hurting you" and pregnancy loss', await has(page, '#sheet-root #hs-sos') && await has(page, '#sheet-root #hs-harm') && await has(page, '#sheet-root #hs-loss'));
+  check(tag + ': Help (1 tap from Today) holds the nearest hospital with the ambulance, the other numbers and pregnancy loss, and no row for harm (Version 39.70)', await has(page, '#sheet-root #hs-112[href^="tel:10"]') && await has(page, '#sheet-root #hs-sos') && !(await has(page, '#sheet-root #hs-harm')) && await has(page, '#sheet-root #hs-loss'));
   await tap(page, '#sheet-root #hs-loss'); await sleep(300);
   check(tag + ': pregnancy loss in 2 taps', (await hashOf(page)) === '#loss');
   await go(page, 'topic-intimate');

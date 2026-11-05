@@ -30,8 +30,6 @@
     m: N2('Noting your days for 2 cycles, and skills from CBT (a way of working with thoughts and habits), are what UK gynaecologists (RCOG) recommend first for the days before a period, with regular exercise.',
       '2 चक्र तक अपने दिन नोट करना, और CBT (सोच और आदतों पर काम करने का एक तरीक़ा) के अभ्यास, वही हैं जो ब्रिटेन के स्त्री रोग विशेषज्ञ (RCOG) पीरियड से पहले के दिनों के लिए सबसे पहले सुझाते हैं, नियमित व्यायाम के साथ।')
   };
-  const U181 = { u: N2('If someone at home hurts or scares you, help is there: call 181, free, any time. In danger right now, call 112.', 'अगर घर में कोई आपको चोट पहुँचाता है या डराता है, तो मदद है: 181 पर फ़ोन करें, मुफ़्त, किसी भी समय। अभी ख़तरा हो, तो 112 पर फ़ोन करें।'), tel: ['181', '112'] };
-  const UHARM = { u: N2('Thoughts of harming yourself? Call Tele-MANAS on 14416: free, any time. In danger right now, call 112.', 'ख़ुद को नुक़सान पहुँचाने के ख़याल आते हैं? Tele-MANAS को 14416 पर फ़ोन करें: मुफ़्त, किसी भी समय। अभी ख़तरा हो, तो 112 पर फ़ोन करें।'), tel: ['14416', '112'] };
   const QURA = N2('On a free call, a Qura doctor goes through your periods and your diary with you, can order tests, and refers you to a gynaecologist when you need medicines.',
     'मुफ़्त कॉल पर Qura डॉक्टर आपके साथ आपके पीरियड और डायरी देखती हैं, जाँच लिखवा सकती हैं, और दवाओं की ज़रूरत हो तो स्त्री रोग विशेषज्ञ के पास भेजती हैं।');
   /* a chapter: h its title, cards: l lines, b a heading, go a page it opens (gol its label: a string key, '@tile' or words), ask a
@@ -48,7 +46,7 @@
     p3: { h: N2('Is my pain the usual kind?', 'क्या मेरा दर्द आम दर्द है?'), cards: [
       { l: [N2('Usual period pain starts with your period or a day before, and eases within about 3 days.', 'आम पीरियड का दर्द पीरियड के साथ या एक दिन पहले शुरू होता है, और लगभग 3 दिन में कम हो जाता है।')] },
       { warn: true, b: N2('See a doctor if', 'डॉक्टर को दिखाएँ अगर'), l: [N2('The pain stops your day, keeps getting worse, started after years of easy periods, or comes with pain during sex, bleeding between periods, a fever or unusual discharge.', 'दर्द से आपके दिन का काम रुकता है, बढ़ता जा रहा है, बरसों के आसान पीरियड के बाद शुरू हुआ, या इसके साथ संबंध के समय दर्द, पीरियड के बीच ब्लीडिंग, बुख़ार या असामान्य स्राव है।')], ask: true },
-      { u: N2('Severe pain on one side with a late period or a positive test, or fainting: call 112 now.', 'देर से आए पीरियड या पॉज़िटिव टेस्ट के साथ एक तरफ़ तेज़ दर्द, या बेहोशी: अभी 112 पर फ़ोन करें।'), tel: ['112'] },
+      { u: N2('Severe pain on one side with a late period or a positive test, or fainting: go to the nearest hospital now.', 'देर से आए पीरियड या पॉज़िटिव टेस्ट के साथ एक तरफ़ तेज़ दर्द, या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।'), tel: ['112'] },
       { b: TRY, l: [N2('Each period day, answer “Pain today?” in your check-in. Your answers become your record for a doctor.', 'पीरियड के हर दिन, अपनी शाम की जाँच में “आज दर्द है?” का जवाब दें। आपके जवाब डॉक्टर के लिए आपका रिकॉर्ड बनते हैं।')] }] },
     p4: { h: N2('Moving on the days in between', 'बीच के दिनों में हरकत'), cards: [
       { l: [N2('Regular movement on the days between your periods can make periods less painful over time. Any movement counts.', 'पीरियड के बीच के दिनों में नियमित हरकत समय के साथ पीरियड का दर्द कम कर सकती है। हर तरह की हरकत गिनी जाती है।')] },
@@ -68,7 +66,6 @@
       { b: TRY, l: [N2('Keep a small kit in your bag: a spare pad or cloth, water, and your slow breath.', 'अपने बैग में एक छोटी किट रखें: एक अतिरिक्त पैड या कपड़ा, पानी, और अपनी धीमी साँस।')] }] },
     p8: { h: N2('Telling your family', 'परिवार को बताना'), cards: [
       { l: [N2('Period pain is common and real. Telling someone at home what helps you, rest, warmth or a hand with the work, can make the hard days lighter.', 'पीरियड का दर्द आम और सच्चा है। घर में किसी को बताना कि आपको क्या मदद करता है, आराम, गर्माहट या काम में हाथ बँटाना, मुश्किल दिनों को हल्का कर सकता है।')] },
-      U181,
       { b: TRY, l: [N2('Tell one person at home what helps you on a pain day.', 'घर में एक व्यक्ति को बताएँ कि दर्द वाले दिन आपको क्या मदद करता है।')] }] },
     p9: { h: N2('What helped you?', 'आपको किससे मदद मिली?'), cards: [
       { l: [N2('Look back at your last periods: what helped most? Warmth, the cramps routine, rest, or moving between periods?', 'अपने पिछले पीरियड देखें: सबसे ज़्यादा किससे मदद मिली? गर्माहट, ऐंठन वाली दिनचर्या, आराम, या पीरियड के बीच हरकत?')] },
@@ -83,7 +80,7 @@
       { b: TRY, l: [N2('Take your pain record from Sakhi to your doctor.', 'Sakhi से अपना दर्द का रिकॉर्ड डॉक्टर के पास ले जाएँ।')] }] },
     h1: { h: N2('Is my bleeding heavy?', 'क्या मेरी ब्लीडिंग ज़्यादा है?'), cards: [
       { l: [N2('Heavy bleeding is judged by your life: changing at night, leaking through clothes, staying home, or feeling tired.', 'ज़्यादा ब्लीडिंग आपकी ज़िंदगी से पहचानी जाती है: रात में बदलना, कपड़ों तक निकल जाना, घर पर रुकना, या थकान।')] },
-      { u: N2('Soaking a pad or cloth every hour for 2 hours or more, or bleeding with dizziness or fainting: call 112 now.', 'हर घंटे पैड या कपड़ा भीगना, 2 घंटे या ज़्यादा तक, या ब्लीडिंग के साथ चक्कर या बेहोशी: अभी 112 पर फ़ोन करें।'), tel: ['112'] },
+      { u: N2('Soaking a pad or cloth every hour for 2 hours or more, or bleeding with dizziness or fainting: go to the nearest hospital now.', 'हर घंटे पैड या कपड़ा भीगना, 2 घंटे या ज़्यादा तक, या ब्लीडिंग के साथ चक्कर या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।'), tel: ['112'] },
       { b: TRY, l: [N2('On each period day, answer “Your period today” in your check-in: 3 taps.', 'पीरियड के हर दिन, अपनी शाम की जाँच में “आज आपका पीरियड” का जवाब दें: 3 टैप।')] }] },
     h2: { h: N2('Your Hb test', 'आपका Hb टेस्ट'), cards: [
       { l: [N2('Heavy periods can use up your iron and lower your haemoglobin (Hb). Low Hb makes you tired and breathless.', 'ज़्यादा ब्लीडिंग से शरीर का आयरन घट सकता है और हीमोग्लोबिन (Hb) कम हो सकता है। Hb कम हो, तो थकान और साँस फूलना होता है।')] },
@@ -109,7 +106,7 @@
       { b: TRY, l: [N2('Get your heavy-day things ready before your period comes.', 'पीरियड आने से पहले ज़्यादा ब्लीडिंग वाले दिन की चीज़ें तैयार रखें।')] }] },
     h7: { h: N2('Energy and moving with low Hb', 'कम Hb में ताक़त और हरकत'), cards: [
       { l: [N2('Tiredness from low Hb is real. Move gently, and stand up slowly.', 'कम Hb की थकान सच्ची है। धीरे-धीरे हरकत करें, और धीरे से उठें।')] },
-      { warn: true, b: N2('Stop and rest', 'रुकें और आराम करें'), l: [N2('If you feel dizzy, breathless or your heart races. Chest pain or fainting: call 112 now.', 'अगर चक्कर आए, साँस फूले या दिल तेज़ धड़के। सीने में दर्द या बेहोशी: अभी 112 पर फ़ोन करें।')] },
+      { warn: true, b: N2('Stop and rest', 'रुकें और आराम करें'), l: [N2('If you feel dizzy, breathless or your heart races. Chest pain or fainting: go to the nearest hospital now.', 'अगर चक्कर आए, साँस फूले या दिल तेज़ धड़के। सीने में दर्द या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।')] },
       { b: TRY, l: [N2('Walk gently on your 3 days, and rest lying down on your heaviest days.', 'अपने 3 दिनों में धीरे टहलें, और सबसे ज़्यादा ब्लीडिंग वाले दिनों में लेटकर आराम करें।')] }] },
     h9: { h: N2('Other reasons Hb gets low', 'Hb कम होने के और कारण'), cards: [
       { l: [N2('Low Hb has other causes too: worms, too little vitamin B12 or folate, or a blood condition that runs in families. Iron can’t fix all of them.', 'Hb कम होने के और कारण भी हैं: पेट के कीड़े, विटामिन B12 या फ़ोलेट की कमी, या परिवार में चलने वाली ख़ून की कोई बीमारी। आयरन इन सबको ठीक नहीं कर सकता।')] },
@@ -125,7 +122,6 @@
     m1: { h: N2('Is it PMS? Your month, mapped', 'क्या यह PMS है? आपका महीना, नक़्शे पर'), cards: [
       { l: [N2('PMS means changes in your mood or body in the days before your period that ease once bleeding starts.', 'PMS का मतलब है पीरियड से पहले के दिनों में मन या शरीर के बदलाव, जो ब्लीडिंग शुरू होते ही कम हो जाते हैं।')] },
       { l: [N2('Noting how you feel each day, the good days too, for 2 cycles shows whether your hard days follow your cycle.', '2 चक्र तक हर दिन नोट करना कि आप कैसा महसूस करती हैं, अच्छे दिन भी, दिखाता है कि आपके मुश्किल दिन आपके चक्र के साथ आते हैं या नहीं।')] },
-      UHARM,
       { b: TRY, l: [N2('Each evening, tap how you feel in your check-in, even on good days.', 'हर शाम अपनी जाँच में टैप करें कि आप कैसा महसूस करती हैं, अच्छे दिनों में भी।')] }] },
     m3: { h: N2('Stress makes the hard days louder', 'तनाव मुश्किल दिनों को और भारी बनाता है'), cards: [
       { l: [N2('Stress and too little sleep make the days before your period harder.', 'तनाव और कम नींद पीरियड से पहले के दिनों को और मुश्किल बनाते हैं।')] },
@@ -141,12 +137,10 @@
       { b: TRY, l: [N2('When a harsh thought comes, say or write a kinder one beside it.', 'जब कठोर सोच आए, तो उसके साथ एक नरम सोच बोलें या लिखें।')] }] },
     m6: { h: N2('People around you', 'आपके आसपास के लोग'), cards: [
       { l: [N2('Only if it feels safe: tell one person how the days before your period feel, and ask for one thing that helps.', 'सिर्फ़ अगर सुरक्षित लगे: एक व्यक्ति को बताएँ कि पीरियड से पहले के दिन कैसे लगते हैं, और एक ऐसी चीज़ माँगें जो मदद करे।')] },
-      U181,
       { b: TRY, l: [N2('Choose one person, and one thing to ask for.', 'एक व्यक्ति चुनें, और माँगने के लिए एक चीज़।')] }] },
     m7: { h: N2('When anger flares', 'जब ग़ुस्सा भड़के'), cards: [
       { l: [N2('Notice your body’s signs first: a hot face, a tight jaw, clenched fists.', 'पहले शरीर के संकेत पहचानें: गर्म चेहरा, कसा जबड़ा, भिंची मुट्ठियाँ।')] },
       { l: [N2('Step away for 5 minutes, breathe out slowly, and come back when you are calmer. Make up afterwards if you need to.', '5 मिनट के लिए हट जाएँ, धीरे साँस छोड़ें, और शांत होकर लौटें। ज़रूरत हो, तो बाद में बात सुलझा लें।')] },
-      { u: N2('If you fear you could hurt your child or anyone, put the child somewhere safe, step away, and call for help: Tele-MANAS 14416, or 112 in danger.', 'अगर डर लगे कि आप अपने बच्चे या किसी को चोट पहुँचा सकती हैं, तो बच्चे को सुरक्षित जगह रखें, दूर हट जाएँ, और मदद के लिए फ़ोन करें: Tele-MANAS 14416, या ख़तरे में 112।'), tel: ['14416', '112'] },
       { b: TRY, l: [N2('Plan where you can step away to at home.', 'तय करें कि घर में आप कहाँ हट सकती हैं।')] }] },
     m9: { h: N2('Sleep', 'नींद'), cards: [
       { l: [N2('A steady get-up time and a calm last hour before bed help your mood.', 'रोज़ एक ही समय पर उठना और सोने से पहले का शांत घंटा मन को अच्छा रखते हैं।')] },
@@ -157,8 +151,7 @@
       { b: TRY, l: [N2('In your calm week, plan one small thing for yourself each day.', 'अपने शांत हफ़्ते में हर दिन अपने लिए एक छोटा काम तय करें।')] }] },
     m11: { h: N2('When to get more help', 'और मदद कब लें'), cards: [
       { l: [N2('For some women, the days before a period bring anger, hopelessness or feeling out of control that hurts work or family. This can be treated.', 'कुछ महिलाओं के लिए पीरियड से पहले के दिन ऐसा ग़ुस्सा, निराशा या बेकाबू महसूस होना लाते हैं जो काम या परिवार पर असर डालता है। इसका इलाज हो सकता है।')] },
-      { l: [N2('A doctor can help with talking therapy and medicines. Take your notes.', 'डॉक्टर बातचीत वाली therapy और दवाओं से मदद कर सकती हैं। अपने नोट साथ ले जाएँ।')], ask: true },
-      { u: N2('Low most of the month, or thoughts of harm, is not PMS: call Tele-MANAS on 14416, free, any time. In danger right now, call 112.', 'महीने के ज़्यादातर दिन उदास रहना, या नुक़सान के ख़याल, PMS नहीं है: Tele-MANAS को 14416 पर फ़ोन करें, मुफ़्त, किसी भी समय। अभी ख़तरा हो, तो 112 पर फ़ोन करें।'), tel: ['14416', '112'] }] },
+      { l: [N2('A doctor can help with talking therapy and medicines. Take your notes.', 'डॉक्टर बातचीत वाली therapy और दवाओं से मदद कर सकती हैं। अपने नोट साथ ले जाएँ।')], ask: true }] },
     m12: { h: N2('My calm-week plan, for keeping', 'मेरे शांत हफ़्ते की योजना, आगे के लिए'), cards: [
       { l: [N2('Your notes show your hard days, cycle by cycle. Cycles vary, so look at several.', 'आपके नोट आपके मुश्किल दिन, एक-एक चक्र करके, दिखाते हैं। चक्र अलग-अलग होते हैं, इसलिए कई चक्र देखें।')] },
       { b: TRY, l: [N2('Keep the 2 or 3 steps that helped most, and start them a week before each period.', 'जिन 2 या 3 कदमों से सबसे ज़्यादा मदद मिली, उन्हें रखें, और हर पीरियड से एक हफ़्ता पहले शुरू करें।')] },
@@ -170,7 +163,7 @@
   const call = (n) => '<a class="btn danger sm" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>';
   const topic = () => { const P = S.plan && S.plan.period; const id = P && P.lesson(); return id && L[id] ? tx(GOAL[id.charAt(0)]) : tx(GOAL.p); };
   function cardHtml(c) {
-    if (c.u) return '<div class="card dark urgent per-les" role="alert" data-say="1"><p class="per-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent per-les" role="alert" data-say="1"><p class="per-p">' + T(c.u) + '</p><div class="row wrap">' + (S.emNums ? S.emNums(c.tel || ['112']) : ['108']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     const ask = c.ask ? '<button type="button" class="btn sm primary" data-ask="' + esc(topic()) + '">' + esc(t('ask_qura')) + '</button>' : '';
     return '<div class="card per-les' + (c.warn ? ' warn' : '') + (c.b === TRY ? ' per-try' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="per-p">' + T(x) + '</p>').join('') + (go || ask ? '<div class="row wrap">' + ask + go + '</div>' : '') + '</div>';

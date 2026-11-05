@@ -8,7 +8,7 @@
 //     each and above the ambulance numbers; Today's "Due now" names "Your doctor's and ambulance numbers" on her route;
 //   4 the labour pain timer on Today's pregnancy card from 37 weeks;
 //   5 the week page says when her weeks come from the scan;
-//   6 "Call 112 now if" and its Call button in one card;
+//   6 "Call 112 now if" and its Call button in one card (Version 39.70: "Go to the nearest hospital now if", Call 102 in pregnancy);
 //   7 Your numbers: the spread of as many gaps as there are, and periods without the bleeding in a pregnancy;
 //   8 the labour timer's "ask your doctor" on her doctor's route;
 //   9 Hindi at 360 px; 10 the number never leaves the phone, and no page errors.
@@ -85,11 +85,11 @@ const scan39 = (o) => sit(39, Object.assign({ pregnantSince: ago(50), scanEdd: i
 /* ---------- 1 the labour pain timer calls ---------- */
 {
   const a = await open({ seed: { situation: sit(39) }, hash: 'pregtools-contractions' });
-  check('1 the labour timer: Call 108, 102 and 112', (await tels(a, '#view .stack .helpline')) === '108,102,112' && !(await has(a, '#view [data-ptl-copy]')), await tels(a, '#view'));
+  check('1 the labour timer: Call 108 and 102 (Version 39.70: no 112)', (await tels(a, '#view .stack .helpline')) === '108,102' && !(await has(a, '#view [data-ptl-copy]')), await tels(a, '#view'));
   check('1 ... and "ask your doctor" on her doctor\'s route (8)', /ask your doctor when they want you to come in/.test(await view(a)) && !/doctor or ANM/.test(await view(a)));
   await done(a);
   const k = await open({ seed: { situation: sit(39) }, hash: 'pregtools-kicks' });
-  check('1 the kick page: its Call buttons above, and the list as before', (await tels(k, '#view .ptl-calls')) === '112,108,102' && (await has(k, '#view [data-ptl-copy]')));
+  check('1 the kick page: its Call buttons above, and the list as before', (await tels(k, '#view .ptl-calls')) === '102,108' && (await has(k, '#view [data-ptl-copy]')));
   await done(k);
   const g = await open({ seed: { situation: sit(39, { care: 'govt' }), mydoc: { tel: DOC } }, hash: 'pregtools-contractions' });
   check('8 the government route: "your doctor or ANM", and no doctor\'s row', /ask your doctor or ANM/.test(await view(g)) && !(await has(g, '#view .ptl-mydoc')));
@@ -185,15 +185,15 @@ const reqs = [];
 {
   const a = await open({ seed: { situation: sit(39, { pregnantSince: ago(273), scanEdd: iso(TODAY, 7) }) }, hash: 'preg-week' });
   check('5 weeks from the scan: the hub\'s words', /Counted from the due date on your scan report\. Your doctor's count wins\. Every baby grows at its own pace\./.test(await view(a)), (await view(a)).slice(0, 200));
-  const inside = await a.page.evaluate(() => { const c = document.querySelector('#view .pg-urg'); const b = c && c.querySelector('.pg-call a[href="tel:112"]'); if (!b) return false; const r = c.getBoundingClientRect(), q = b.getBoundingClientRect(); return q.top >= r.top && q.bottom <= r.bottom && q.left > r.left; });
-  check('6 "Call 112 now if" and its Call 112 in one card', inside && (await has(a, '#view .pg-urg [data-go="help"]')));
+  const inside = await a.page.evaluate(() => { const c = document.querySelector('#view .pg-urg'); const b = c && c.querySelector('.pg-call a[href="tel:102"]'); if (!b) return false; const r = c.getBoundingClientRect(), q = b.getBoundingClientRect(); return q.top >= r.top && q.bottom <= r.bottom && q.left > r.left; });
+  check('6 "Go to the nearest hospital now if" and its Call 102 in one card (Version 39.70)', inside && (await has(a, '#view .pg-urg [data-go="help"]')));
   await done(a);
   const b = await open({ seed: { situation: sit(39) }, hash: 'preg-week' });
   check('5 weeks from her last period: as before', /Counted from the first day of the last period\. Every baby grows at its own pace\./.test(await view(b)));
   await done(b);
   for (const h of ['preg-plan']) {
     const c = await open({ seed: { situation: sit(39) }, hash: h });
-    check('6 ' + h + ': the same card', (await tels(c, '#view .pg-urg .pg-call')) === '112');
+    check('6 ' + h + ': the same card', (await tels(c, '#view .pg-urg .pg-call')) === '102');
     await done(c);
   }
 }
@@ -214,7 +214,7 @@ const reqs = [];
   const a = await open({ w: 360, seed: Object.assign(withPlan(30, {}, { situation: scan39({ pregnantSince: ago(50) }), events: pEv }), { lang: 'hi' }), hash: 'plan' });
   check('9 Hindi at 360 px: My plan\'s My doctor row', /मेरी डॉक्टर/.test(await tc(a, '#view .pl-mydoc')) && (await noScroll(a)));
   await go(a, 'pregtools-contractions');
-  check('9 Hindi at 360 px: the labour timer calls', (await tels(a, '#view .stack .helpline')) === '108,102,112' && (await noScroll(a)) && /अपनी डॉक्टर से पूछें/.test(await view(a)));
+  check('9 Hindi at 360 px: the labour timer calls', (await tels(a, '#view .stack .helpline')) === '108,102' && (await noScroll(a)) && /अपनी डॉक्टर से पूछें/.test(await view(a)));
   await go(a, 'home'); await tap(a, '#stage-btn'); if (!(await has(a, '#st-preg-is'))) await tap(a, '[data-stage="preg"]');
   check('9 Hindi at 360 px: the dates line', /हफ़्ते का फ़र्क है/.test(await txt(a, '#st-preg-is')) && (await noScroll(a)), await txt(a, '#st-preg-is'));
   await shot(a, 'hi-stage');

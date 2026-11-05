@@ -485,7 +485,7 @@
     screen_mammo_h: 'About mammograms',
     screen_not_dx: 'Not a diagnosis. Most of these signs turn out to be something other than cancer. Each one still deserves a check.',
     screen_when_h: 'How soon', screen_when_p: 'Any sign here that is new for you, or does not settle: see a doctor within 2 weeks. Do not wait for your next screening date.',
-    screen_call112: 'call 112 now',
+    screen_call112: 'go to the nearest hospital now',
     screen_where_h: 'Where to get checked free', screen_where_p: 'Start at your Ayushman Arogya Mandir or PHC. If something needs a closer look, they refer you to the NCD clinic at the CHC or district hospital, also free.', screen_where_p_doc: 'Start with your doctor, or free at your Ayushman Arogya Mandir or PHC. If something needs a closer look there, they refer you to the NCD clinic at the CHC or district hospital, also free.',
     screen_quit_h: 'Want to stop tobacco?', screen_quit_d: 'National Tobacco Quitline, free, Government of India',
     screen_free_w: 'free', screen_signs_short: 'Warning signs', screen_sum_hint: 'Tap a check-up to add the date you remember.'
@@ -543,7 +543,7 @@
     screen_mammo_h: 'मैमोग्राम के बारे में',
     screen_not_dx: 'यह diagnosis नहीं है। इनमें से ज़्यादातर संकेत कैंसर के अलावा किसी और वजह से होते हैं। फिर भी हर एक की जाँच ज़रूरी है।',
     screen_when_h: 'कितनी जल्दी', screen_when_p: 'यहाँ का कोई भी संकेत जो आपके लिए नया हो, या ठीक न हो: 2 हफ़्ते के अंदर डॉक्टर को दिखाएँ। अगली जाँच की तारीख़ का इंतज़ार न करें।',
-    screen_call112: 'अभी 112 पर कॉल करें',
+    screen_call112: 'अभी सबसे पास के अस्पताल जाएँ',
     screen_where_h: 'मुफ़्त जाँच कहाँ', screen_where_p: 'अपने आयुष्मान आरोग्य मंदिर या PHC से शुरू करें। और ध्यान से देखने की ज़रूरत हो तो वे CHC या ज़िला अस्पताल के NCD clinic भेजते हैं, वहाँ भी मुफ़्त।', screen_where_p_doc: 'अपनी डॉक्टर से शुरू करें, या आयुष्मान आरोग्य मंदिर या PHC पर मुफ़्त। वहाँ और ध्यान से देखने की ज़रूरत हो तो वे CHC या ज़िला अस्पताल के NCD clinic भेजते हैं, वहाँ भी मुफ़्त।',
     screen_quit_h: 'तंबाकू छोड़ना चाहती हैं?', screen_quit_d: 'राष्ट्रीय तंबाकू Quitline, मुफ़्त, भारत सरकार',
     screen_free_w: 'मुफ़्त', screen_signs_short: 'चेतावनी के संकेत', screen_sum_hint: 'जो तारीख़ याद है, उसे डालने के लिए किसी जाँच पर टैप करें।'

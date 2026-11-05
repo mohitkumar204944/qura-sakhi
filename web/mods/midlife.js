@@ -73,8 +73,7 @@
       { l: [N2('Changing hormones, poor sleep and a busy life can all bring worry, irritability or low days in midlife. It’s common, and it can be helped.',
         'बदलते हॉर्मोन, ख़राब नींद और भागदौड़ भरी ज़िंदगी, इन सबसे इस उम्र में चिंता, चिड़चिड़ापन या उदासी आ सकती है। यह आम है, और इसमें मदद मिल सकती है।')] },
       { l: [N2('What you think, how you feel and what you do are linked. Change one, and the others often follow.', 'आप क्या सोचती हैं, कैसा महसूस करती हैं और क्या करती हैं, ये आपस में जुड़े हैं। एक बदले, तो अक्सर बाक़ी भी बदलते हैं।')] },
-      { b: SKILL, l: [N2('Once a day, stop and notice: how am I feeling, and what am I thinking? Just notice. You don’t have to fix it.', 'दिन में एक बार रुककर देखें: मैं कैसा महसूस कर रही हूँ, और क्या सोच रही हूँ? बस देखें। ठीक करना ज़रूरी नहीं।')] },
-      { u: N2('Thoughts of harming yourself? Call Tele-MANAS on 14416: free, any time. In danger right now, call 112.', 'ख़ुद को नुक़सान पहुँचाने के ख़याल आते हैं? Tele-MANAS को 14416 पर फ़ोन करें: मुफ़्त, किसी भी समय। अभी ख़तरा हो, तो 112 पर फ़ोन करें।'), tel: ['14416', '112'] }] },
+      { b: SKILL, l: [N2('Once a day, stop and notice: how am I feeling, and what am I thinking? Just notice. You don’t have to fix it.', 'दिन में एक बार रुककर देखें: मैं कैसा महसूस कर रही हूँ, और क्या सोच रही हूँ? बस देखें। ठीक करना ज़रूरी नहीं।')] }] },
     q2: { h: N2('Worry thoughts', 'चिंता वाली सोच'), sk: N2('a kinder answer', 'एक नरम जवाब'), cards: [
       { l: [N2('Worry often jumps to the worst: “Something bad will happen.” “I can’t cope.”', 'चिंता अक्सर सबसे बुरा सोचती है: “कुछ बुरा होगा।” “मुझसे नहीं होगा।”')] },
       { l: [N2('Ask yourself: what would I tell a friend who thought this? Then tell yourself the same.', 'ख़ुद से पूछें: अगर मेरी सहेली ऐसा सोचती, तो मैं उससे क्या कहती? फिर वही बात ख़ुद से कहें।')] },
@@ -132,7 +131,7 @@
   const tileT = (r) => { const x = (S.tiles ? S.tiles() : []).find((y) => y.route === r); return x ? t(x.title) : r; };
   const call = (n) => '<a class="btn danger sm" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>';
   function cardHtml(c) {
-    if (c.u) return '<div class="card dark urgent mid-les" role="alert" data-say="1"><p class="mid-p">' + T(c.u) + '</p><div class="row wrap">' + (c.tel || ['112']).map(call).join('') + '</div></div>';
+    if (c.u) return '<div class="card dark urgent mid-les" role="alert" data-say="1"><p class="mid-p">' + T(c.u) + '</p><div class="row wrap">' + (S.emNums ? S.emNums(c.tel || ['112']) : ['108']).map(call).join('') + '</div></div>';
     const go = c.go && S.routeOwner(c.go) ? '<button type="button" class="btn sm" data-go="' + c.go + '">' + (c.gol === '@tile' ? esc(tileT(c.go)) : (typeof c.gol === 'string' ? esc(t(c.gol)) : T(c.gol))) + '</button>' : '';
     return '<div class="card mid-les' + (c.warn ? ' warn' : '') + (c.b === SKILL ? ' mid-skill' : '') + '" data-say="1">' + (c.b ? '<h3>' + T(c.b) + '</h3>' : '') + c.l.map((x) => '<p class="mid-p">' + T(x) + '</p>').join('') + (go ? '<div class="row wrap">' + go + '</div>' : '') + '</div>';
   }

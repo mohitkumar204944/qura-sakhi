@@ -190,7 +190,7 @@ for (const lang of ['en', 'hi']) {
   const said = await spoken(a.page);
   const other = await a.page.evaluate(() => { const cs = Array.from(document.querySelectorAll('#view .card[data-say]')); const c = cs.find((x) => !x.querySelector('.dgrid')); return c ? (c.querySelector('h3, h2') || c).textContent.trim() : ''; });
   /* the speech engine reads numbers digit by digit ("1 1 2") */
-  check('6 ' + lang + ': ... the danger card\'s speaker reads its heading and its signs', said.indexOf(want[0]) >= 0 && said.indexOf(want[5]) >= 0 && (lang === 'hi' ? /1 ?1 ?2/.test(said) : /Call 1 ?1 ?2/.test(said)), said.slice(0, 300));
+  check('6 ' + lang + ': ... the danger card\'s speaker reads its heading and its signs', said.indexOf(want[0]) >= 0 && said.indexOf(want[5]) >= 0 && (lang === 'hi' ? /अभी सबसे पास के अस्पताल जाएँ/.test(said) : /Go to the nearest hospital now/.test(said)), said.slice(0, 300));   /* Version 39.70: Help's line */
   check('6 ' + lang + ': ... and not the other cards', other && said.indexOf(other) < 0, { other, said: said.slice(0, 300) });
   check('5 ' + lang + ': 360 px, no sideways scroll', await noScroll(a.page));
   /* 7: Hindi type */

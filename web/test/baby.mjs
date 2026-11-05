@@ -306,7 +306,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   const a = await open({ seed: withPlan(0) });
   await tap(a, '.pl-les');
   const v = await view(a);
-  check('8 week 1: the story, the verified tablet and Hb lines, and the warning signs with Call 112', /^Week 1 · The first month counts Rekha and Amit decided this was the year\./.test(v) && /It protects the baby's spine and brain, which form before most women know they are pregnant\./.test(v) && /Anaemia is common and is easier to fix before pregnancy than during it\./.test(v) && /Period late or a positive test, with pain on one side of the lower belly, shoulder-tip pain, dizziness or fainting: call 112 now\./.test(v) && (await has(a, 'a[href="tel:112"]')) && (await a.page.$$('[data-say]')).length >= 4, v.slice(0, 900));
+  check('8 week 1: the story, the verified tablet and Hb lines, and the warning signs with Call 108 (Version 39.70)', /^Week 1 · The first month counts Rekha and Amit decided this was the year\./.test(v) && /It protects the baby's spine and brain, which form before most women know they are pregnant\./.test(v) && /Anaemia is common and is easier to fix before pregnancy than during it\./.test(v) && /Period late or a positive test, with pain on one side of the lower belly, shoulder-tip pain, dizziness or fainting: go to the nearest hospital now\./.test(v) && (await has(a, 'a[href="tel:108"]')) && !(await has(a, 'a[href="tel:112"]')) && (await a.page.$$('[data-say]')).length >= 4, v.slice(0, 900));
   await tap(a, '#ttc-les-done');
   check('8 Done: read, and the row leaves Today', (await st(a)).mods.ttc.les.w1 === TODAY && !(await has(a, '.pl-les')));
   await done(a);

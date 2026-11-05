@@ -1037,7 +1037,7 @@
     wireAdd(v);
   }
 
-  /* Version 39.52: pregnancy yoga's stop card (the moves' own stop signs, ACOG's in our words, and Help's "Call 112 now" line), the
+  /* Version 39.52: pregnancy yoga's stop card (the moves' own stop signs, ACOG's in our words, and Help's "Go to the nearest hospital now" line), the
      note when it isn't open to her, and "Feeling unwell?" (stop now and rest; Stop for today holds her walk and yoga until she
      checks her answers again, as a sign that doesn't wait does) */
   const pyNowCard = () => '<div class="card dark pl-urg pl-pynow" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3><p class="small">' + esc(t('plan_py_now')) + '</p><p class="small">' + esc(t('s1c')) + '</p>' + telRow(['112', '108', '102']) + '</div>';
@@ -2278,7 +2278,7 @@
   }
   /* ---------- Version 39.34: My pregnancy version 2, safety first ----------
      Before her first step, the safety screen (the reason: safety). Right now: Help's own pregnancy line; a yes shows Help's
-     "Call 112 now" card and holds her walk until she checks her answers again, which Sakhi asks the next day. Told by her
+     "Go to the nearest hospital now" card and holds her walk until she checks her answers again, which Sakhi asks the next day. Told by her
      doctor: her MCP card's marks (ticked as she ticked them there, and saved back to it) and 2 lines of its own. Red (told to
      rest, marked high-risk, high BP, Hb under 7, twins from 28 weeks): no walking target. Amber (any other line, or "Not
      sure"): an easy 10-minute walk. Green: the light walk that grows. The pelvic floor from week 13 in every tier. Her answers
@@ -2289,9 +2289,9 @@
   const psTier = (fl, gw) => { const l = Array.isArray(fl) ? fl : []; return l.some((k) => PS_RED.indexOf(k) >= 0) || (l.indexOf('r_tw') >= 0 && gw != null && gw >= 28) ? 'red' : (l.length ? 'amber' : 'green'); };
   const psName = (k) => (k === 'rest' || k === 'unsure' ? t('plan_ps_' + k) : (S.preg && S.preg.riskName ? S.preg.riskName(k) : k));
   const psPre = () => (S.preg && S.preg.risks ? S.preg.risks().filter((k) => PSAFE.indexOf(k) >= 0) : []);
-  const telRow = (ns) => '<div class="row wrap">' + ns.map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>';
+  const telRow = (ns0) => { const ns = S.emNums ? S.emNums(ns0) : ns0; return !ns.length ? '' : '<div class="row wrap">' + ns.map((n, i) => '<a class="btn sm' + (i ? '' : ' primary') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>'; };   /* Version 39.70: 112 is the ambulance (102 in pregnancy) */
   const lvNow = () => (S.access && S.access.lv ? S.access.lv('now') : null);
-  const nowH = () => (lvNow() ? tx(lvNow().label) : t('call_b') + ' 112');
+  const nowH = () => (lvNow() ? tx(lvNow().label) : t('hs_112'));   /* Version 39.70: "Go to the nearest hospital now" */
   const psNowCard = () => '<div class="card dark pl-urg pl-ps-go" data-xp-urgent="1"><h3>' + esc(nowH()) + '</h3>' + (lvNow() ? '<p class="small">' + esc(tx(lvNow().where)) + '</p>' : '') + telRow(['112', '108', '102']) + '<p class="small">' + esc(t('plan_ps_now_p')) + '</p></div>';
   const psTierCard = (fl, gw) => { const tr = psTier(fl, gw); return '<div class="card ' + (tr === 'green' ? 'ok' : 'warn') + ' pl-ps-tier" data-tier="' + tr + '"><h3>' + esc(t('plan_ps_t_' + tr)) + '</h3><p class="small">' + esc(t('plan_ps_t_' + tr + '_p')) + '</p></div>'; };
   function psafeHtml(a, gw) {
@@ -2914,7 +2914,7 @@
       (lk && !pf ? '<p class="small">' + esc(t('post_tp_leak')) + '</p>' : '') + (lk && pf && ikOf(d).pft === 'ns' ? pfRowQ(m, 'plan_pf_when', 'pfwhen', [['stress', 'plan_pft_stress'], ['urge', 'plan_pft_urge'], ['both', 'plan_pft_both']]) : '') + '</div>'; };
   /* the weekly "How are you in yourself?" after day 41, in the recovery check's own reviewed words and its crisis card; it waits for
      the psychologist (SAKHI_CONFIG.drafts only), and to day 41 the recovery check asks it every evening */
-  const MD = ['ok', 'low', 'anx', 'harm'];
+  const MD = ['ok', 'low', 'anx'];   /* Version 39.70 (the doctors' answer 2): no harm chip */
   const mdAsk = (d) => !!(window.SAKHI_CONFIG || {}).drafts && weekAsk(d, 'md');
   /* Version 39.49 (night sweats and sleep): the midlife plan's hot-flush and sleep goals ask "How did you sleep?" on a card of its
      own, as a bedtime step does in other plans. "Hot flushes woke me" joins its answers for her hot-flush goal, or for a midlife
@@ -2922,9 +2922,8 @@
   const slpAsk = (d) => packOf(d) === 'meno' && (d.goalKey === 'hot' || d.goalKey === 'sleep');
   const hotRecent = () => { const dl = S.state.daily || {}; return Object.keys(dl).some((k) => k <= todayISO() && S.diffDays(S.fromISO(k), pToday()) <= 30 && (dl[k] || []).indexOf('d_hotflush') >= 0); };
   const slpHot = (d) => !disc() && !(S.state.settings || {}).shared && (d.goalKey === 'hot' || ((packOf(d) === 'meno' || !!(S.cycle && S.cycle.isMidlife && S.cycle.isMidlife())) && hotRecent()));
-  const crisisHtml = () => '<div class="card dark urgent pl-ci-crisis" role="alert"><h3>' + esc(t('post_fl_harm_h')) + '</h3><p class="small">' + esc(t(died() ? 'post_fl_harm_b' : 'post_fl_harm')) + '</p>' + telRow(['14416', '112']) + '</div>';
-  const mdQ = (m) => '<div class="card pl-ci-md"><span class="eyebrow">' + esc(t('plan_md_h')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_md_h')) + '">' + MD.map((k) => '<button type="button" class="chip' + (m.md === k ? ' on' : '') + '" data-ci-md="' + k + '" aria-pressed="' + (m.md === k) + '">' + esc(t(k === 'harm' && died() ? 'post_mo_harm_b' : 'post_mo_' + k)) + '</button>').join('') + '</div>' +
-    (m.md === 'harm' ? crisisHtml() : (m.md === 'low' || m.md === 'anx' ? '<p class="small">' + esc(t('plan_md_low')) + '</p>' : '')) + '</div>';
+  const mdQ = (m) => '<div class="card pl-ci-md"><span class="eyebrow">' + esc(t('plan_md_h')) + '</span><div class="chips" role="group" aria-label="' + esc(t('plan_md_h')) + '">' + MD.map((k) => '<button type="button" class="chip' + (m.md === k ? ' on' : '') + '" data-ci-md="' + k + '" aria-pressed="' + (m.md === k) + '">' + esc(t('post_mo_' + k)) + '</button>').join('') + '</div>' +
+    (m.md === 'low' || m.md === 'anx' || m.md === 'harm' ? '<p class="small">' + esc(t('plan_md_low')) + '</p>' : '') + '</div>';
   function renderCheckin(v) {
     const d0 = raw(); if (!on() || !S.canSave() || !packOf(d0) || pausedFor(d0) || finished(fullD(d0))) { renderMyPlan(v); return; }
     if (recCi(d0)) { v.innerHTML = ''; location.replace('#post-recovery'); return; }   /* Version 39.46: to day 41 her evening form is the recovery check (its reminder opens it) */
@@ -2955,7 +2954,7 @@
       const goal = s.goal && !disc() ? '<span class="eyebrow">' + esc(t('plan_ci_goal_h')) + '</span><p class="lead pl-ci-goal">' + esc(s.goal) + '</p>' : '';   /* her goal */
       v.innerHTML = hd + '<div class="card ok pl-fb" id="pl-ci-fb">' + goal + '<p class="' + (goal ? 'pl-ci-why' : 'lead') + '">' + esc(s.line) + '</p>' + (disc() ? '' : whyBtn(s.why, 'pl-why', packOf(d))) + '<p class="small">' + esc(countLine(s.dn, s.pn, s.n) + ' · ' + tf('plan_ci_week', { w: s.w })) + '</p>' + (s.add ? '<p class="small pl-ci-add">' + esc(s.add) + '</p>' : '') +
         (s.str ? '<p class="small pl-ci-str">' + esc(s.str) + '</p>' : '') + (s.tom ? '<p class="small pl-ci-tomr">' + esc(s.tom) + '</p>' : '') +
-        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first && !s.tom ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(ciAt(d)) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + (s.md === 'harm' ? crisisHtml() : '') + (s.mv && s.mv !== 'usual' ? mvOut(s.mv) : (s.side ? sideCard() : '') + nightHtml(s)) +
+        (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first && !s.tom ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(ciAt(d)) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + (s.mv && s.mv !== 'usual' ? mvOut(s.mv) : (s.side ? sideCard() : '') + nightHtml(s)) +
         '<div class="grid2"><button type="button" class="btn primary" data-go="home">' + esc(t('plan_ci_home')) + '</button><button type="button" class="btn" data-go="plan">' + esc(t('plan_ci_plan')) + '</button></div>';
       S.wire(v); wireWhy(v); return;
     }
@@ -3257,7 +3256,7 @@
     const f = S.explain.top(); if (!f || ['now', 'today'].indexOf(f.lv) < 0) return; const lb = S.explain.label(f);   /* Version 39.37: one home: Today and Cycles hold the rest */
     const el = document.createElement('div'); el.className = 'list pl-xp';
     el.innerHTML = '<button type="button" class="item"><span class="ico-sm hue hue-' + esc(lb.hue) + '">' + S.I.help + '</span><span class="body"><strong>' + esc(lb.t) + '</strong><span>' + esc(lb.lv) + '</span></span><span class="chev">' + S.I.chev + '</span></button>' +
-      (lb.call ? '<div class="row wrap pl-xp-call">' + (lb.call === '14416' ? '<a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm primary" href="tel:112">' + esc(t('call_b')) + ' 112</a></div>' : '');   /* review PRIVACY-04 */
+      (lb.call ? '<div class="row wrap pl-xp-call"><a class="btn sm primary" href="tel:' + lb.call + '">' + esc(t('call_b')) + ' ' + lb.call + '</a></div>' : '');   /* Version 39.70: the ambulance */   /* review PRIVACY-04 */
     el.querySelector('button').addEventListener('click', () => S.setHash('explain'));
     const h = v.querySelector('.pl-head') || v.querySelector('h1'); if (h && h.parentNode === v) h.insertAdjacentElement('afterend', el); else v.insertBefore(el, v.firstChild);   /* Version 39.22: after her title and its gear */
   }
@@ -3565,7 +3564,7 @@
     if (k === 'pain') return pc('pl-pf-pain', t('plan_pf_pain_h'), P('plan_pf_pain_p'), ask + b('pain-seen', 'plan_got') + b('pain-ok', 'plan_pf_pain_ok'));
     if (k === 'doc') return pc('pl-pf-doc', t('plan_pf_doc_h'), '', b('doc-pop', 'plan_pf_doc_pop', true) + b('doc-ok', 'plan_pf_doc_ok') + b('doc-not', 'plan_pf_doc_not'));
     if (k === 'right') return pc('pl-pf-right', t('plan_pf_right_h'), P('plan_pf_right_p') + P('plan_pf_right_g'), ask + b('right-ok', 'plan_got'));
-    if (k === 'end') return pc('pl-pf-end', t('plan_pf_end_h'), P('plan_pf_end_p') + P('plan_pf_low') + telRow(['14416']), ask + (S.routeOwner('intimate-prolapse') ? '<button type="button" class="btn sm" data-go="intimate-prolapse">' + esc(t('plan_pf_tile_g')) + '</button>' : '') + b('end-ok', 'plan_got'));
+    if (k === 'end') return pc('pl-pf-end', t('plan_pf_end_h'), P('plan_pf_end_p') + P('plan_pf_low'), ask + (S.routeOwner('intimate-prolapse') ? '<button type="button" class="btn sm" data-go="intimate-prolapse">' + esc(t('plan_pf_tile_g')) + '</button>' : '') + b('end-ok', 'plan_got'));
     return '';
   }
   function wirePf(v) {
@@ -3724,7 +3723,7 @@
     const card = (cls, h, p, btns, extra, ok) => '<div class="card soft pl-slot pl-sl-post ' + cls + '" data-nofold="1"' + (ok ? ' data-disc-ok="1"' : '') + '><h3>' + esc(h) + '</h3>' + (p ? '<p class="small">' + esc(p) + '</p>' : '') + (extra || '') + (btns ? '<div class="row wrap">' + btns + '</div>' : '') + '</div>';
     const b = (id, key, pri) => '<button type="button" class="btn sm' + (pri ? ' primary' : '') + '" data-p2="' + id + '">' + esc(t(key)) + '</button>';
     const n = bDays(todayISO()); const bd = (S.state.situation || {}).deliveredOn;
-    if (k === 'died') return card('pl-p2-died', t('post_lost_h'), t('post_lost_talk'), '<a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' + (S.routeOwner('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(t('post_lost_sup')) + '</button>' : '') + b('died-ok', 'plan_rec_not'));
+    if (k === 'died') return card('pl-p2-died', t('post_lost_h'), '', (S.routeOwner('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(t('post_lost_sup')) + '</button>' : '') + b('died-ok', 'plan_rec_not'));
     if (k === 'nb') { const sg = S.post && S.post.babySigns ? S.post.babySigns() : null; if (!sg) return '';
       return '<div class="card warn pl-slot pl-sl-post pl-p2-nb" data-nofold="1"><h3>' + esc(t('plan_p2_nb_h')) + '</h3><p class="small"><strong>' + esc(sg.h) + '</strong></p><ul class="small pl-p2-ul">' + sg.list.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul><p class="small">' + esc(sg.note) + '</p>' + telRow(['108', '102']) + '<div class="row wrap">' + b('nb-ok', 'plan_got') + '</div></div>'; }
     if (k === 'bp') return card('pl-p2-bp', t('plan_p2_bp_h'), t('plan_p2_bp_p'), b('bp-done', 'plan_sl_doc_yes', true) + b('bp-later', 'plan_p2_tom'));
@@ -4461,20 +4460,20 @@
         plan_py_h: 'Pregnancy yoga', plan_py_go: 'Go gently in a cool room, with water nearby, and skip any move that doesn’t feel right. You should be able to talk while you move.',
         plan_py_stop: 'Dizziness, a headache, breathlessness before you start, or a calf that hurts or swells. Stop, rest, and tell your doctor today.', plan_py_now: 'Chest pain, fainting, or regular painful tightenings in your tummy.',
         plan_py_unwell: 'Feeling unwell?', plan_py_unwell_h: 'Stop now and rest', plan_py_uw_ok: 'I feel fine now', plan_py_uw_stop: 'Stop for today',
-        plan_py_rest_h: 'Rest now', plan_py_rest_p: 'Your walk and yoga wait until you check your answers again; Sakhi asks you tomorrow. If you feel worse, don’t wait: call 112.',
+        plan_py_rest_h: 'Rest now', plan_py_rest_p: 'Your walk and yoga wait until you check your answers again; Sakhi asks you tomorrow. If you feel worse, don’t wait: go to the nearest hospital.',
         plan_py_hard: 'Next time, go more slowly and skip any move that feels hard. If something felt wrong, tell your doctor.',
         plan_py_lock_plan: 'Yoga for your pregnancy comes with My pregnancy plan, after two safety questions.', plan_py_lock_doc: 'Yoga opens when your doctor says exercise is fine for you. Then change your answers in My safety answers.', plan_py_lock_now: 'No yoga until you check your answers again.',
         plan_py_lock_v1: 'Yoga for your pregnancy comes with the newer My pregnancy plan. To switch, tap “{x}” in {y}. What you logged stays.',
         plan_fb_pyoga: 'Gentle yoga in pregnancy can ease aches and help you sleep and feel calmer.',
         plan_in_mbone: 'Has a doctor said your bones are weak, or did a bone break after a small fall?', plan_in_mheart: 'Chest pain, fainting, or getting very breathless when you walk?',
-        plan_m2_heart_w: 'Please see your doctor before you do more. Until then your walk stays easy, and Gentle start takes the place of Strength at home. Chest pain right now, or pain spreading to your jaw or arm: call 112.',
+        plan_m2_heart_w: 'Please see your doctor before you do more. Until then your walk stays easy, and Gentle start takes the place of Strength at home. Chest pain right now, or pain spreading to your jaw or arm: go to the nearest hospital.',
         plan_m2_bone_w: 'Every move in this plan is bone-safe, with no jumps. Ask your doctor about a bone scan and tablets.',
         plan_ms_eye: 'Once a week', plan_ms_q: 'This week, how much did {x} get in your way?', plan_ms_hot: 'hot flushes and night sweats', plan_ms_sleep: 'poor sleep', plan_ms_mood: 'worry or low mood', plan_ms_body: 'aches, stiffness or tiredness', plan_ms_lo: '0 · not at all', plan_ms_hi: '10 · very much',
         plan_m2_e45_h: 'Your periods stopped before 45', plan_m2_read: 'Read more',
         plan_m2_w4_h: 'Hot flushes still getting in your way?', plan_m2_w4_h2: 'Your doctor can help too',
         plan_m2_w4_p: 'The most effective treatment for hot flushes is hormone therapy, prescribed by an MBBS gynaecologist. Your plan works beside it, or on its own.',
         plan_m2_w4_on: 'You take hormone medicine: keep to your doctor’s plan, and see your doctor about it once a year.',
-        plan_m2_hrt: 'Call 112 now if one calf is swollen and painful, you are suddenly breathless, or one side of your body feels weak or speaking is hard.',
+        plan_m2_hrt: 'Go to the nearest hospital now if one calf is swollen and painful, you are suddenly breathless, or one side of your body feels weak or speaking is hard.',
         plan_m2_aches: 'Aches and tiredness: ask your doctor which blood tests you need, often Hb and thyroid.',
         plan_m2_w12_h: 'Your checks after 40', plan_m2_w12_p: 'After 40, BP, sugar and your bones need checking more often. See which checks, and how often.', plan_m2_w12_go: 'See the checks',
         plan_m2_v2_h: 'Your plan has a new version', plan_m2_v2_p: 'A short chapter a week for hot flushes, sleep and strength, and a few minutes of balance, in a fresh 12 weeks from today. What you logged stays.', plan_m2_v2_yes: 'Try it', plan_m2_v2_done: 'Your new 12 weeks start today.',
@@ -4618,7 +4617,7 @@
         plan_p2_c_h: 'Before sex starts again: choose your method', plan_p2_c_p: 'You can get pregnant before your first period comes back.', plan_p2_c_p0: 'You can get pregnant again soon after a birth, even before your first period.', plan_p2_c_go: 'See my choices', plan_p2_c_have: 'I have a method',
         plan_p2_v2_h: 'Your recovery plan has more now', plan_p2_v2_p: 'It follows your body to your baby’s first birthday: your evening check, your 6-week check, then back to strong. Your days and answers stay.', plan_p2_v2_yes: 'Switch to it', plan_p2_v2_done: 'Your recovery plan is up to date.',
         plan_a_pwalk: 'Walk a little, as you feel able', plan_a_pf: 'Your pelvic floor squeezes', plan_a_pf5: '5 gentle squeezes', plan_a_pf5_s: 'Your pelvic floor, during a feed', plan_a_pf5_s0: 'Your pelvic floor, lying or sitting', plan_a_pf10: '10 squeezes, and the knack', plan_a_pf10_s: 'Squeeze before you cough, sneeze or lift',
-        plan_lk_h: 'This week: any leaks?', plan_lk_never: 'Never', plan_lk_some: 'Sometimes', plan_lk_most: 'Most days', plan_md_h: 'How are you in yourself this week?', plan_md_low: 'Low or worried most days for 2 weeks or more? Talk to your doctor this week, or call Tele-MANAS 14416, free.',
+        plan_lk_h: 'This week: any leaks?', plan_lk_never: 'Never', plan_lk_some: 'Sometimes', plan_lk_most: 'Most days', plan_md_h: 'How are you in yourself this week?', plan_md_low: 'Low or worried most days for 2 weeks or more? Talk to your doctor this week.',
         plan_rv_p14: 'From day 14: a short walk, 3 days a week', plan_rv_p42: 'Around day 42: your own check, then back to strong', plan_rv_p84: 'From week 12: is your body ready for more?', plan_rv_p365: 'To your baby’s first birthday', plan_rv_p365b: 'To a year after the birth', plan_rv_d2p: 'At {t}, your recovery check: 1 minute, with the signs that can’t wait.', plan_st_r_six: 'your 6-week check on {d}',
         plan_pq_h: 'Your year, in 5 parts', plan_pq_1: 'Rest and heal · days 0 to 13', plan_pq_1p: 'Your evening check, gentle squeezes, rest', plan_pq_2: 'Settle · days 14 to 41', plan_pq_2p: 'Short walks, choosing a method, your 6-week check', plan_pq_3: 'Back to strong · weeks 7 to 18', plan_pq_3p: 'After your 6-week check: more walking, gentle moves, then strength', plan_pq_4: 'Keep going · to 6 months', plan_pq_4p: 'Your steps carry on. Periods can come back any time.', plan_pq_5: 'Your first year · to {d}', plan_pq_5p: 'Your steps, and a look back at your year',
         plan_rh_day_rc: '{n} steps, recovery check {t}', plan_th_rc_at: 'Recovery check at {t}', plan_p2_un_hd: 'Ready for a little more?', plan_p2_un_pd: 'Start when your doctor says so, or when you feel ready.', plan_rv_len_p: 'To your baby’s first birthday · a few minutes a day', plan_rv_len_pb: 'A year after the birth · a few minutes a day', plan_st_at_pp: 'Each evening, 1 minute: your recovery check, to day 41.', plan_st_r_rc: 'your {t} recovery check', plan_p2_six_wait: 'Back to strong opens on {d}.', plan_rh_p42: 'Around day 42', plan_rh_p42_s: 'Your own check, then back to strong', plan_rh_p84: 'From week 12', plan_rh_p84_s: 'Is your body ready for more?', plan_res_lk: 'Leaks', plan_res_lk_w: '{x} · week {n}', plan_st_r_per: 'a note the day before your period', plan_st_r_pf: 'your {t} first set', plan_pf_pi_d13: 'Days 1 to 3: {x}', plan_pf_pi_soon: 'In your first weeks: {x}', plan_and: ' and ', plan_rem_after: '{t}, after your walk',
@@ -4658,7 +4657,7 @@
         plan_pf_doc_h: 'What did the doctor say?', plan_pf_doc_pop: 'A prolapse, and exercises can help', plan_pf_doc_ok: 'I can exercise', plan_pf_doc_not: 'Not checked yet',
         plan_pf_doc_pop_t: 'Your sets now move on to sitting and standing as they unlock. Keep 3 sets a day to week 16.', plan_pf_doc_ok_t: 'Your sets now move on as they unlock.',
         plan_pf_mesh_h: 'Show this plan to your doctor first', plan_pf_mesh_ok: 'My doctor said more is fine', plan_pf_pain_h: 'Pain during your sets', plan_pf_pain_p: 'Your sets are now breathing and letting go. See a doctor about the pain: a Qura doctor first, or your own.', plan_pf_pain_ok: 'A doctor checked it: back to squeezes',
-        plan_pf_end_h: 'Still leaking or heavy?', plan_pf_end_p: 'A doctor can treat this. After exercises there are more treatments: a ring pessary, medicines for an urgent bladder, and an operation. Your doctor decides with you.', plan_pf_low: 'Feeling low or alone because of this? Tele-MANAS 14416 is free.',
+        plan_pf_end_h: 'Still leaking or heavy?', plan_pf_end_p: 'A doctor can treat this. After exercises there are more treatments: a ring pessary, medicines for an urgent bladder, and an operation. Your doctor decides with you.', plan_pf_low: 'Feeling low or alone because of this? Talk to your doctor.',
         plan_pf_rv_d1: 'Days 1 to 3: find the right muscles. Your sets start lying down.', plan_pf_rv_lv: 'After every 5 days of sets, a new level: longer holds, then sitting and standing.', plan_pf_rv_urge: 'From day 4: when the urge comes, stop, squeeze, breathe.',
         plan_pf_rv_chk: 'Get checked once by a doctor. Until then, your sets stay lying down.', plan_pf_rv_h: 'From week 2: one small habit, a new one every 2 weeks.', plan_pf_rv_w4: 'Weeks 1, 4 and 12: are you sure it’s the right squeeze? A Qura doctor can help.',
         plan_pf_rv_16: 'If a doctor finds a prolapse: 3 sets a day to week 16, then keep strong.', plan_pf_rv_join: 'Every day: your squeeze sets, 3 a day', plan_pf_rv_keep: 'After 12 weeks: keep strong with one set a day.',
@@ -4872,20 +4871,20 @@
         plan_py_h: 'प्रेग्नेंसी योग', plan_py_go: 'ठंडे कमरे में, पास में पानी रखकर, आराम से करें, और जो हरकत ठीक न लगे उसे छोड़ दें। करते समय आप बात कर पाएँ, इतना ही ज़ोर लगाएँ।',
         plan_py_stop: 'चक्कर, सिरदर्द, शुरू करने से पहले ही साँस फूलना, या पिंडली में दर्द या सूजन। रुकें, आराम करें, और आज ही अपनी डॉक्टर को बताएँ।', plan_py_now: 'छाती में दर्द, बेहोशी, या पेट में बार-बार दर्द वाला कसाव।',
         plan_py_unwell: 'तबीयत ठीक नहीं?', plan_py_unwell_h: 'अभी रुकें और आराम करें', plan_py_uw_ok: 'अब मैं ठीक हूँ', plan_py_uw_stop: 'आज के लिए बस',
-        plan_py_rest_h: 'अब आराम करें', plan_py_rest_p: 'जवाब दोबारा देखने तक टहलना और योग रुके रहेंगे; सखी कल पूछेगी। तबीयत और बिगड़े, तो इंतज़ार न करें: 112 पर कॉल करें।',
+        plan_py_rest_h: 'अब आराम करें', plan_py_rest_p: 'जवाब दोबारा देखने तक टहलना और योग रुके रहेंगे; सखी कल पूछेगी। तबीयत और बिगड़े, तो इंतज़ार न करें: सबसे पास के अस्पताल जाएँ।',
         plan_py_hard: 'अगली बार और धीरे करें, और जो हरकत मुश्किल लगे उसे छोड़ दें। कुछ ठीक न लगा हो, तो अपनी डॉक्टर को बताएँ।',
         plan_py_lock_plan: 'प्रेग्नेंसी का योग “मेरा प्रेग्नेंसी प्लान” के साथ आता है, दो सुरक्षा सवालों के बाद।', plan_py_lock_doc: 'जब आपकी डॉक्टर कहें कि व्यायाम आपके लिए ठीक है, तब योग खुलेगा। फिर “मेरे सुरक्षा जवाब” में अपने जवाब बदलें।', plan_py_lock_now: 'जवाब दोबारा देखने तक योग नहीं।',
         plan_py_lock_v1: 'प्रेग्नेंसी का योग नए “मेरा प्रेग्नेंसी प्लान” के साथ आता है। बदलने के लिए, {y} में “{x}” दबाएँ। आपका लिखा हुआ रहता है।',
         plan_fb_pyoga: 'प्रेग्नेंसी में हल्का योग दर्द-तकलीफ़ कम कर सकता है, और नींद व मन को शांत रखने में मदद करता है।',
         plan_in_mbone: 'क्या डॉक्टर ने कहा है कि आपकी हड्डियाँ कमज़ोर हैं, या हल्का-सा गिरने पर कोई हड्डी टूटी?', plan_in_mheart: 'चलते समय छाती में दर्द, बेहोशी, या साँस बहुत फूलना?',
-        plan_m2_heart_w: 'और ज़्यादा करने से पहले अपनी डॉक्टर को दिखाएँ। तब तक आपकी सैर हल्की रहेगी, और घर पर ताक़त की जगह आसान शुरुआत होगी। अभी छाती में दर्द हो, या दर्द जबड़े या बाँह तक जाए: 112 पर फ़ोन करें।',
+        plan_m2_heart_w: 'और ज़्यादा करने से पहले अपनी डॉक्टर को दिखाएँ। तब तक आपकी सैर हल्की रहेगी, और घर पर ताक़त की जगह आसान शुरुआत होगी। अभी छाती में दर्द हो, या दर्द जबड़े या बाँह तक जाए: सबसे पास के अस्पताल जाएँ।',
         plan_m2_bone_w: 'इस प्लान का हर व्यायाम हड्डियों के लिए सुरक्षित है, कोई उछल-कूद नहीं। अपनी डॉक्टर से हड्डियों की जाँच (bone scan) और गोलियों के बारे में पूछें।',
         plan_ms_eye: 'हफ़्ते में एक बार', plan_ms_q: 'इस हफ़्ते {x} ने आपको कितना परेशान किया?', plan_ms_hot: 'गर्मी के झोंकों और रात के पसीने', plan_ms_sleep: 'ख़राब नींद', plan_ms_mood: 'चिंता या उदासी', plan_ms_body: 'दर्द, अकड़न या थकान', plan_ms_lo: '0 · बिल्कुल नहीं', plan_ms_hi: '10 · बहुत ज़्यादा',
         plan_m2_e45_h: 'आपके पीरियड 45 से पहले बंद हुए', plan_m2_read: 'और पढ़ें',
         plan_m2_w4_h: 'गर्मी के झोंके अब भी परेशान करते हैं?', plan_m2_w4_h2: 'आपकी डॉक्टर भी मदद कर सकती हैं',
         plan_m2_w4_p: 'गर्मी के झोंकों का सबसे असरदार इलाज हॉर्मोन therapy है, जो MBBS स्त्री रोग विशेषज्ञ लिखते हैं। आपका प्लान इसके साथ भी चलता है, और अकेले भी।',
         plan_m2_w4_on: 'आप हॉर्मोन वाली दवा लेती हैं: डॉक्टर के बताए अनुसार लें, और साल में एक बार इसके लिए डॉक्टर को दिखाएँ।',
-        plan_m2_hrt: 'अभी 112 पर फ़ोन करें अगर एक पिंडली सूजी हो और दर्द हो, अचानक साँस फूले, या शरीर का एक हिस्सा कमज़ोर लगे या बोलने में मुश्किल हो।',
+        plan_m2_hrt: 'अभी सबसे पास के अस्पताल जाएँ अगर एक पिंडली सूजी हो और दर्द हो, अचानक साँस फूले, या शरीर का एक हिस्सा कमज़ोर लगे या बोलने में मुश्किल हो।',
         plan_m2_aches: 'दर्द और थकान: अपनी डॉक्टर से पूछें कि कौन-सी ख़ून की जाँचें ज़रूरी हैं, अक्सर Hb और थायरॉइड।',
         plan_m2_w12_h: '40 के बाद आपकी जाँचें', plan_m2_w12_p: '40 के बाद BP, शुगर और हड्डियों की जाँच ज़्यादा बार ज़रूरी है। देखें कौन-सी जाँचें, और कितनी बार।', plan_m2_w12_go: 'जाँचें देखें',
         plan_m2_v2_h: 'आपके प्लान का नया रूप', plan_m2_v2_p: 'गर्मी के झोंकों, नींद और ताक़त पर हर हफ़्ते एक छोटा अध्याय, और कुछ मिनट संतुलन, आज से नए 12 हफ़्तों में। आपने जो दर्ज किया, वह रहेगा।', plan_m2_v2_yes: 'आज़माएँ', plan_m2_v2_done: 'आपके नए 12 हफ़्ते आज से शुरू।',
@@ -5026,7 +5025,7 @@
         plan_p2_c_h: 'संबंध फिर शुरू होने से पहले: गर्भनिरोध का तरीक़ा चुनें', plan_p2_c_p: 'पहला पीरियड लौटने से पहले भी गर्भ ठहर सकता है।', plan_p2_c_p0: 'डिलीवरी के कुछ समय बाद, पहले पीरियड से पहले भी, फिर से गर्भ ठहर सकता है।', plan_p2_c_go: 'मेरे विकल्प देखें', plan_p2_c_have: 'मेरे पास तरीक़ा है',
         plan_p2_v2_h: 'आपके रिकवरी प्लान में अब और भी है', plan_p2_v2_p: 'यह बच्चे के पहले जन्मदिन तक आपके शरीर के साथ चलता है: शाम की जाँच, 6 हफ़्ते की जाँच, फिर दोबारा मज़बूती। आपके दिन और जवाब वैसे ही रहेंगे।', plan_p2_v2_yes: 'इसे अपनाएँ', plan_p2_v2_done: 'आपका रिकवरी प्लान अपडेट हो गया।',
         plan_a_pwalk: 'जितना हो सके, थोड़ा चलें', plan_a_pf: 'पेल्विक फ़्लोर के कसाव', plan_a_pf5: '5 हल्के कसाव', plan_a_pf5_s: 'पेल्विक फ़्लोर, दूध पिलाते समय', plan_a_pf5_s0: 'पेल्विक फ़्लोर, लेटकर या बैठकर', plan_a_pf10: '10 कसाव, और खाँसी से पहले कसना', plan_a_pf10_s: 'खाँसने, छींकने या कुछ उठाने से पहले कस लें',
-        plan_lk_h: 'इस हफ़्ते: कोई लीक?', plan_lk_never: 'कभी नहीं', plan_lk_some: 'कभी-कभी', plan_lk_most: 'ज़्यादातर दिन', plan_md_h: 'इस हफ़्ते आप अंदर से कैसी हैं?', plan_md_low: '2 हफ़्ते या उससे ज़्यादा से ज़्यादातर दिन उदास या चिंतित? इस हफ़्ते डॉक्टर से बात करें, या Tele-MANAS 14416 पर मुफ़्त कॉल करें।',
+        plan_lk_h: 'इस हफ़्ते: कोई लीक?', plan_lk_never: 'कभी नहीं', plan_lk_some: 'कभी-कभी', plan_lk_most: 'ज़्यादातर दिन', plan_md_h: 'इस हफ़्ते आप अंदर से कैसी हैं?', plan_md_low: '2 हफ़्ते या उससे ज़्यादा से ज़्यादातर दिन उदास या चिंतित? इस हफ़्ते डॉक्टर से बात करें।',
         plan_rv_p14: '14वें दिन से: हफ़्ते में 3 दिन थोड़ी सैर', plan_rv_p42: 'लगभग 42वें दिन: आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rv_p84: '12वें हफ़्ते से: क्या शरीर और के लिए तैयार है?', plan_rv_p365: 'बच्चे के पहले जन्मदिन तक', plan_rv_p365b: 'डिलीवरी के एक साल तक', plan_rv_d2p: '{t} आपकी रिकवरी जाँच: 1 मिनट, उन संकेतों के साथ जिनमें देर नहीं करनी।', plan_st_r_six: '{d} को आपकी 6 हफ़्ते की जाँच',
         plan_pq_h: 'आपका साल, 5 हिस्सों में', plan_pq_1: 'आराम और ठीक होना · दिन 0 से 13', plan_pq_1p: 'शाम की जाँच, हल्के कसाव, आराम', plan_pq_2: 'संभलना · दिन 14 से 41', plan_pq_2p: 'थोड़ी सैर, गर्भनिरोध चुनना, 6 हफ़्ते की जाँच', plan_pq_3: 'दोबारा मज़बूती · हफ़्ते 7 से 18', plan_pq_3p: '6 हफ़्ते की जाँच के बाद: ज़्यादा सैर, हल्के व्यायाम, फिर ताक़त वाले', plan_pq_4: 'जारी रखें · 6 महीने तक', plan_pq_4p: 'आपके क़दम जारी रहेंगे। पीरियड कभी भी लौट सकते हैं।', plan_pq_5: 'पहला साल · {d} तक', plan_pq_5p: 'आपके क़दम, और साल पर एक नज़र',
         plan_rh_day_rc: '{n} क़दम, रिकवरी जाँच {t}', plan_th_rc_at: 'रिकवरी जाँच {t}', plan_p2_un_hd: 'थोड़ा और करने को तैयार?', plan_p2_un_pd: 'डॉक्टर के कहने पर, या जब आप तैयार महसूस करें, तब शुरू करें।', plan_rv_len_p: 'बच्चे के पहले जन्मदिन तक · रोज़ कुछ मिनट', plan_rv_len_pb: 'डिलीवरी के एक साल तक · रोज़ कुछ मिनट', plan_st_at_pp: 'हर शाम, 1 मिनट: आपकी रिकवरी जाँच, 41वें दिन तक।', plan_st_r_rc: '{t} की रिकवरी जाँच', plan_p2_six_wait: '{d} से दोबारा मज़बूती शुरू होगी।', plan_rh_p42: 'लगभग 42वें दिन', plan_rh_p42_s: 'आपकी अपनी जाँच, फिर दोबारा मज़बूती', plan_rh_p84: '12वें हफ़्ते से', plan_rh_p84_s: 'क्या शरीर और के लिए तैयार है?', plan_res_lk: 'लीक', plan_res_lk_w: '{x} · हफ़्ता {n}', plan_st_r_per: 'पीरियड से एक दिन पहले एक सूचना', plan_st_r_pf: '{t} का पहला सेट', plan_pf_pi_d13: 'दिन 1 से 3: {x}', plan_pf_pi_soon: 'पहले हफ़्तों में: {x}', plan_and: ' और ', plan_rem_after: '{t}, आपकी सैर के बाद',
@@ -5065,7 +5064,7 @@
         plan_pf_doc_h: 'डॉक्टर ने क्या कहा?', plan_pf_doc_pop: 'Prolapse है, और व्यायाम मदद कर सकते हैं', plan_pf_doc_ok: 'मैं व्यायाम कर सकती हूँ', plan_pf_doc_not: 'अभी जाँच नहीं हुई',
         plan_pf_doc_pop_t: 'अब लेवल खुलने पर आपके सेट बैठकर और खड़े होकर होंगे। हफ़्ते 16 तक रोज़ 3 सेट करती रहें।', plan_pf_doc_ok_t: 'अब लेवल खुलने पर आपके सेट आगे बढ़ेंगे।',
         plan_pf_mesh_h: 'पहले यह प्लान अपनी डॉक्टर को दिखाएँ', plan_pf_mesh_ok: 'डॉक्टर ने कहा आगे बढ़ना ठीक है', plan_pf_pain_h: 'सेट के दौरान दर्द', plan_pf_pain_p: 'अब आपके सेट साँस लेने और ढीला छोड़ने के हैं। दर्द के लिए डॉक्टर को दिखाएँ: पहले Qura की डॉक्टर, या अपनी डॉक्टर।', plan_pf_pain_ok: 'डॉक्टर ने जाँच ली: फिर से कसना',
-        plan_pf_end_h: 'अब भी लीक या भारीपन?', plan_pf_end_p: 'डॉक्टर इसका इलाज कर सकती हैं। व्यायाम के बाद और भी इलाज हैं: ring pessary, तेज़ हाजत के लिए दवाएँ, और ऑपरेशन। आपकी डॉक्टर आपके साथ तय करती हैं।', plan_pf_low: 'इसकी वजह से उदास या अकेली महसूस करती हैं? Tele-MANAS 14416 मुफ़्त है।',
+        plan_pf_end_h: 'अब भी लीक या भारीपन?', plan_pf_end_p: 'डॉक्टर इसका इलाज कर सकती हैं। व्यायाम के बाद और भी इलाज हैं: ring pessary, तेज़ हाजत के लिए दवाएँ, और ऑपरेशन। आपकी डॉक्टर आपके साथ तय करती हैं।', plan_pf_low: 'इसकी वजह से उदास या अकेली महसूस करती हैं? अपनी डॉक्टर से बात करें।',
         plan_pf_rv_d1: 'दिन 1 से 3: सही मांसपेशियाँ पहचानें। आपके सेट लेटकर शुरू होंगे।', plan_pf_rv_lv: 'हर 5 दिन के सेट के बाद नया लेवल: ज़्यादा देर रोकना, फिर बैठकर और खड़े होकर।', plan_pf_rv_urge: 'दिन 4 से: जब तेज़ हाजत हो, रुकें, कसें, साँस लें।',
         plan_pf_rv_chk: 'एक बार डॉक्टर से जाँच करवाएँ। तब तक आपके सेट लेटकर ही रहेंगे।', plan_pf_rv_h: 'हफ़्ते 2 से: एक छोटी आदत, हर 2 हफ़्ते में नई।', plan_pf_rv_w4: 'हफ़्ते 1, 4 और 12: क्या यक़ीन है कि कसने का तरीक़ा सही है? Qura की डॉक्टर मदद कर सकती हैं।',
         plan_pf_rv_16: 'डॉक्टर को prolapse मिले, तो: हफ़्ते 16 तक रोज़ 3 सेट, फिर मज़बूत बनी रहें।', plan_pf_rv_join: 'रोज़: कसने के आपके सेट, दिन में 3', plan_pf_rv_keep: '12 हफ़्ते के बाद: रोज़ एक सेट से मज़बूत बनी रहें।',

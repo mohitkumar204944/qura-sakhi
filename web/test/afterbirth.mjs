@@ -10,7 +10,8 @@
 //     Gentle start; "Is my body ready?" from week 12 opens Strength at home;
 //   6 leaks, her main measure: the weekly question from day 42, and My progress;
 //   7 the weekly mood question waits for the psychologist (drafts only), in the recovery check's reviewed words;
-//   8 "My baby has died": every baby line stops, what is hers stays, her support first, no celebration, undo;
+//   8 "My baby has died": every baby line stops, what is hers stays, her support first, no celebration, undo (Version 39.70: no
+//     Tele-MANAS or harm lines);
 //   9 the new danger sign; 10 version 1 runs on, with one offer; 11 My plan's 5 parts and how it works;
 //   12 the minimalist baseline (3 steps on day 1, never more than 4, one card, the shared phone); 13 Hindi at 360 px;
 //   14 no page errors; 15 the bug hunt's fixes ("My baby has died" everywhere, after midnight, a moved birth date, late joiners,
@@ -228,9 +229,10 @@ const plan = async (a) => (await st(a)).mods.plan;
   await done(a);
   const b = await open({ seed: pseed(60, 59, { six: ago(20) }), hm: '21:00', hash: 'plan-checkin', cfg: { drafts: true } });
   const m = await txt(b, '#view .pl-ci-md');
-  check('7 with drafts on: the recovery check\'s own mood words', /How are you in yourself this week\? Okay Low or teary Worried or panicky Thoughts of harming myself or my baby/i.test(m), m);
-  await tap(b, '[data-ci-md="harm"]');
-  check('7 "Thoughts of harming myself or my baby": its reviewed crisis card, Call 14416 and 112', /Get help now: call 14416 or 112/.test(await txt(b, '#view .pl-ci-crisis')) && (await b.page.$$eval('#view .pl-ci-crisis a[href^="tel:"]', (xs) => xs.map((x) => x.getAttribute('href')).join())) === 'tel:14416,tel:112');
+  check('7 with drafts on: the recovery check\'s own mood words, without the harm chip (Version 39.70, the doctors\' answer 2)', /How are you in yourself this week\? Okay Low or teary Worried or panicky/i.test(m) && !/harming/i.test(m), m);
+  check('7 no harm chip and no crisis card (Version 39.70)', !(await has(b, '[data-ci-md="harm"]')) && !(await has(b, '#view .pl-ci-crisis')));
+  await tap(b, '[data-ci-md="low"]');
+  check('7 "Low or teary": the low-mood line, talk to your doctor, and no number to call', /Talk to your doctor/.test(await txt(b, '#view .pl-ci-md')) && !(await has(b, '#view .pl-ci-md a[href^="tel:"]')), await txt(b, '#view .pl-ci-md'));
   await done(b);
 }
 
@@ -257,7 +259,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   await tap(a, '#pst-lost-yes'); await settle(a.page, 800);
   const s = await st(a);
   check('8 marked: no vaccine reminders, her feeding goal becomes her recovery, no celebration', s.situation.babyDied === TODAY && (await remIds(a)).indexOf('post-vax') < 0 && s.mods.plan.goalKey === 'recovery' && !/petal/i.test(await txt(a, '.toast, #toast')), { rem: await remIds(a), goal: s.mods.plan.goalKey });
-  check('8 the after-birth page: her support first (14416, support after a loss), no feeds, no vaccines, no baby\'s age', /We are so sorry Talk to someone: Tele-MANAS 14416, free, any time\. Call 14416/.test(await view(a)) && !/Feeds today|Next vaccines|Your baby is/.test(await view(a)), (await view(a)).slice(0, 600));
+  check('8 the after-birth page: her support first ("We are so sorry"; Version 39.70: no Tele-MANAS), no feeds, no vaccines, no baby\'s age', /We are so sorry/.test(await view(a)) && !/Tele-MANAS|14416/.test(await view(a)) && !/Feeds today|Next vaccines|Your baby is/.test(await view(a)), (await view(a)).slice(0, 600));
   await go(a, 'home');
   const v = await view(a);
   check('8 Today: "days since birth", "Your recovery", no Feeding button, no feeding step, her support in Sakhi says', /days since birth/.test(v) && /Your recovery/.test(v) && !/Recovery and feeding/.test(v) && !(await ids(a)).some((k) => ['feed', 'bfood'].indexOf(k) >= 0) && /We are so sorry/.test(await slot(a)), v.slice(0, 800));
@@ -268,10 +270,10 @@ const plan = async (a) => (await st(a)).mods.plan;
   await go(a, 'post-checks');
   check('8 Check-ups: her own 6-week check, no baby\'s vaccines', /Your own check at 6 weeks/.test(await view(a)) && !/Remind me of the vaccines|BCG|Pentavalent/.test(await view(a)));
   await go(a, 'post-recovery');
-  check('8 her recovery check: "Thoughts of harming myself", without the baby', /Thoughts of harming myself/.test(await view(a)) && !/harming myself or my baby/.test(await view(a)));
+  check('8 her recovery check: no harm chip at all (Version 39.70, the doctors\' answer 2)', !/harming/i.test(await view(a)));
   check('8 ... and her self-care lines without the baby', /drink water through the day/.test(await view(a)) && /Avoid lifting anything heavy for the first weeks/.test(await view(a)) && !/heavier than your baby|every time you feed/.test(await view(a)));
   await go(a, 'post');
-  check('8 the after-birth page: no baby in its first line or its urgent box', /The first weeks after a birth are for healing/.test(await view(a)) && /Thoughts of harming yourself: 14416 or 112/.test(await view(a)) && !/or your baby/.test(await view(a)));
+  check('8 the after-birth page: no baby in its first line or its urgent box', /The first weeks after a birth are for healing/.test(await view(a)) && !/harming|14416/.test(await view(a)) && !/or your baby/.test(await view(a)));   /* Version 39.70 */
   await go(a, 'post'); await tap(a, '#pst-lost-undo');
   check('8 "Marked this by mistake? Undo": her feeding goal comes back', !(await st(a)).situation.babyDied && (await plan(a)).goalKey === 'feed', (await plan(a)).goalKey);
   await done(a);
@@ -282,7 +284,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   const a = await open({ seed: pseed(5, 4), hash: 'post-recovery' });
   check('9 "Fever and feeling very unwell" in her warning signs', /Fever and feeling very unwell/.test(await view(a)));
   await a.page.$$eval('[data-pst-g="danger"]', (xs) => { const b = xs.find((x) => x.dataset.pstV === 'ill'); if (b) b.click(); }); await settle(a.page, 400);
-  check('9 ... a "now" sign: Call 112', /serious infection. Call 112 or go to hospital now/.test(await view(a)), (await view(a)).slice(0, 900));
+  check('9 ... a "now" sign: go to the nearest hospital now (Version 39.70)', /serious infection\. Go to the nearest hospital now/.test(await view(a)), (await view(a)).slice(0, 900));
   await done(a);
 }
 

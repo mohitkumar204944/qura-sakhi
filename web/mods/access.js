@@ -99,15 +99,10 @@
       free: L('ICTC: a confidential HIV test with counselling. Suraksha clinic (STI/RTI clinic): a check-up and treatment for infections passed on through sex; your partner can be treated too.', 'ICTC: गोपनीय HIV जाँच, सलाह के साथ। सुरक्षा क्लिनिक (STI/RTI क्लिनिक): संबंध से फैलने वाले इन्फ़ेक्शन की जाँच और इलाज; आपके साथी का इलाज भी हो सकता है।'),
       find: L('Mostly at district hospitals, medical colleges and many CHCs. Call 1097, the free NACO helpline, or open the official lists below (by state and district).', 'ज़्यादातर ज़िला अस्पताल, मेडिकल कॉलेज और कई CHC में। 1097 पर कॉल करें, NACO की मुफ़्त हेल्पलाइन, या नीचे की सरकारी सूचियाँ खोलें (राज्य और ज़िले के हिसाब से)।'),
       links: [['ictc', L('ICTC list by district (NACO, PDF)', 'ज़िलेवार ICTC सूची (NACO, PDF)')], ['dsrc', L('Suraksha clinic list (NACO, PDF)', 'सुरक्षा क्लिनिक सूची (NACO, PDF)')]] },
-    { k: 'osc', icon: 'help', pill: 'free',
-      name: L('One Stop Centre (Sakhi)', 'वन स्टॉप सेंटर (सखी)'),
-      free: L('For any woman facing violence, at home or outside: medical help, police help, legal aid and counselling under one roof, open 24 hours, and a safe place to stay for up to 5 days.', 'घर में या बाहर हिंसा झेल रही किसी भी महिला के लिए: एक ही जगह इलाज, पुलिस मदद, क़ानूनी सहायता और सलाह, 24 घंटे खुला, और 5 दिन तक सुरक्षित रहने की जगह।'),
-      find: L('Call 181, the Women Helpline, any time. Find the nearest centre on the Mission Shakti site.', 'कभी भी 181, महिला हेल्पलाइन, पर कॉल करें। नज़दीकी सेंटर मिशन शक्ति की साइट पर खोजें।'),
-      links: [['osc', L('Find your nearest One Stop Centre (official)', 'नज़दीकी वन स्टॉप सेंटर खोजें (सरकारी)')]] },
     { k: 'afhc', icon: 'flower', pill: 'gov',
       name: L('Adolescent Friendly Health Clinic', 'किशोर-अनुकूल स्वास्थ्य क्लिनिक (AFHC)'),
-      free: L('For girls and boys aged 10–19: a doctor, ANM or counsellor talks with you in private about periods, body changes, food, sex and relationships, mood, drugs or alcohol, and violence. Weekly iron tablets too.', '10–19 साल की लड़कियों और लड़कों के लिए: डॉक्टर, ANM या counsellor अकेले में बात करते हैं, पीरियड, शरीर के बदलाव, खाना, संबंध, मन, नशा और हिंसा के बारे में। हफ़्ते की आयरन गोली भी।'),
-      find: L('At PHCs, CHCs, district hospitals and medical colleges. Ask at the counter for the AFHC, or ask your ASHA or school. Under 18? A parent or trusted adult can come with you, and Childline 1098 is there for you.', 'PHC, CHC, ज़िला अस्पताल और मेडिकल कॉलेज में। काउंटर पर AFHC पूछें, या अपनी ASHA या स्कूल से। 18 से कम? माता-पिता या भरोसे का कोई बड़ा साथ आ सकता है, और Childline 1098 आपके लिए है।'),
+      free: L('For girls and boys aged 10–19: a doctor, ANM or counsellor talks with you in private about periods, body changes, food, sex and relationships, mood, and drugs or alcohol. Weekly iron tablets too.', '10–19 साल की लड़कियों और लड़कों के लिए: डॉक्टर, ANM या counsellor अकेले में बात करते हैं, पीरियड, शरीर के बदलाव, खाना, संबंध, मन और नशे के बारे में। हफ़्ते की आयरन गोली भी।'),
+      find: L('At PHCs, CHCs, district hospitals and medical colleges. Ask at the counter for the AFHC, or ask your ASHA or school. Under 18? A parent or trusted adult can come with you.', 'PHC, CHC, ज़िला अस्पताल और मेडिकल कॉलेज में। काउंटर पर AFHC पूछें, या अपनी ASHA या स्कूल से। 18 से कम? माता-पिता या भरोसे का कोई बड़ा साथ आ सकता है।'),
       links: [['afhc', L('About AFHCs (NHM)', 'AFHC के बारे में (NHM)')]] },
     { k: 'pmjay', icon: 'file', pill: 'card',
       name: L('Hospitals that take the Ayushman card', 'आयुष्मान card वाले अस्पताल'),
@@ -182,7 +177,7 @@
   const protoCard = (pin) => '<div class="card soft"><div class="row spread"><h3>' + esc(t('access_pin_for')) + ' <span class="num hl">' + esc(pin) + '</span></h3><button type="button" class="btn ghost sm" id="access-pin-clear">' + esc(t('access_pin_change')) + '</button></div>' +
     P(L('In the live app this page will list the real facilities near this PIN from government directories, with timings and distance. This prototype does not invent names or addresses, so for now it shows the kinds of free care every PIN has and the official links to find them.', 'असली app में यह पन्ना सरकारी सूचियों से इस PIN के पास की असली जगहें, समय और दूरी के साथ दिखाएगा। यह prototype नाम या पते नहीं गढ़ता, इसलिए अभी हर PIN पर मिलने वाले मुफ़्त इलाज के प्रकार और उन्हें खोजने के सरकारी link दिखाता है।'), 'small', 'color:var(--fg)') + '</div>';
 
-  const EMERG = L('Emergency: call 112, or 108 or 102 for a free ambulance. Do not wait to find the right centre.', 'Emergency: 112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102। सही केंद्र खोजने में देर न करें।');
+  const EMERG = L('Emergency: go to the nearest hospital now. Ambulance: 108, or 102 in pregnancy. Do not wait to find the right centre.', 'Emergency: अभी सबसे पास के अस्पताल जाएँ। एम्बुलेंस: 108, गर्भ में 102। सही केंद्र खोजने में देर न करें।');   /* Version 39.70 */
   function renderCare(v) {
     /* her account's PIN code until she types another one (or clears it) on this screen */
     const pin = mem.pinSet ? mem.pin : (mem.pin || accPin()); const fromAcc = !mem.pinSet && !mem.pin && !!pin;
@@ -198,11 +193,11 @@
       '<div class="flag urgent">' + E(EMERG) + '</div>' +
       '<h2>' + E(pin ? L('Free care near you', 'आपके पास मुफ़्त इलाज') : L('Free care every PIN has', 'हर PIN पर मिलने वाला मुफ़्त इलाज')) + '</h2>' +
       '<div class="list">' + CARE.map(careCard).join('') + '</div>' +
-      '<div class="card ok">' + P(L('Not sure which scheme money you can get? The scheme finder asks five quick questions.', 'कौन सी योजना का पैसा मिल सकता है, पता नहीं? योजना खोजने वाला पन्ना पाँच छोटे सवाल पूछता है।'), '', 'color:var(--ok)') + '<button type="button" class="btn sm access-inline" data-go="access-schemes">' + esc(t('access_schemes')) + '</button></div>' +
+      (S.retired && S.retired('access-schemes') ? '' : '<div class="card ok">' + P(L('Not sure which scheme money you can get? The scheme finder asks five quick questions.', 'कौन सी योजना का पैसा मिल सकता है, पता नहीं? योजना खोजने वाला पन्ना पाँच छोटे सवाल पूछता है।'), '', 'color:var(--ok)') + '<button type="button" class="btn sm access-inline" data-go="access-schemes">' + esc(t('access_schemes')) + '</button></div>') +   /* Version 39.70: no scheme finder card once its page is retired (39.68) */
       '<h2>' + esc(t('helplines')) + '</h2><div class="list">' +
-      copyRow('104', L('Health advice', 'स्वास्थ्य सलाह')) + copyRow('102', L('Ambulance in pregnancy and for babies', 'गर्भ और बच्चों के लिए एम्बुलेंस')) + copyRow('181', L('Women Helpline, any time', 'महिला हेल्पलाइन, कभी भी')) +
+      copyRow('104', L('Health advice', 'स्वास्थ्य सलाह')) + copyRow('102', L('Ambulance in pregnancy and for babies', 'गर्भ और बच्चों के लिए एम्बुलेंस')) +
       copyRow('1097', L('HIV and STI helpline (NACO)', 'HIV और STI हेल्पलाइन (NACO)')) + copyRow('14555', L('Ayushman card (PM-JAY) helpline', 'आयुष्मान card (PM-JAY) हेल्पलाइन')) + '</div>' +
-      srcList(['aam', 'jssk', 'ja', 'ictc', 'dsrc', 'naco', 'osc', 'afhc', 'nha']);
+      srcList(['aam', 'jssk', 'ja', 'ictc', 'dsrc', 'naco', 'afhc', 'nha']);   /* Version 39.70: no One Stop Centre */
     S.wire(v); wireCopy(v);
     const inp = v.querySelector('#access-pin');
     const go = () => {
@@ -312,7 +307,7 @@
     rksk: {
       name: L('RKSK: clinics and help for teenagers', 'RKSK: किशोरों के लिए क्लिनिक और मदद'),
       line: L('Private talks with a counsellor or doctor for ages 10–19', '10–19 साल के लिए counsellor या डॉक्टर से अकेले में बात'),
-      benefit: L('Adolescent Friendly Health Clinics at PHCs, CHCs, district hospitals and medical colleges: a trained doctor, ANM or counsellor talks in private about periods, body changes, food, sex and relationships, mood, drugs or alcohol, and violence. Weekly iron tablets. Peer educators in many villages.', 'PHC, CHC, ज़िला अस्पताल और मेडिकल कॉलेज में किशोर-अनुकूल स्वास्थ्य क्लिनिक: प्रशिक्षित डॉक्टर, ANM या counsellor पीरियड, शरीर के बदलाव, खाना, संबंध, मन, नशा और हिंसा पर अकेले में बात करते हैं। हफ़्ते की आयरन गोली। कई गाँवों में साथी शिक्षक (peer educator) भी।'),
+      benefit: L('Adolescent Friendly Health Clinics at PHCs, CHCs, district hospitals and medical colleges: a trained doctor, ANM or counsellor talks in private about periods, body changes, food, sex and relationships, mood, and drugs or alcohol. Weekly iron tablets. Peer educators in many villages.', 'PHC, CHC, ज़िला अस्पताल और मेडिकल कॉलेज में किशोर-अनुकूल स्वास्थ्य क्लिनिक: प्रशिक्षित डॉक्टर, ANM या counsellor पीरियड, शरीर के बदलाव, खाना, संबंध, मन और नशे पर अकेले में बात करते हैं। हफ़्ते की आयरन गोली। कई गाँवों में साथी शिक्षक (peer educator) भी।'),
       who: L('Girls and boys aged 10–19, married or unmarried.', '10–19 साल की लड़कियाँ और लड़के, शादीशुदा हों या नहीं।'),
       how: L('Ask at the hospital counter for the AFHC, or ask your ASHA or school. A parent or trusted adult can come along. Childline 1098 is there for anyone under 18.', 'अस्पताल के काउंटर पर AFHC पूछें, या अपनी ASHA या स्कूल से। माता-पिता या भरोसे का कोई बड़ा साथ आ सकता है। 18 से कम उम्र के लिए Childline 1098।'),
       docs: L('None.', 'कुछ नहीं।'),
@@ -638,8 +633,8 @@
      3. For your husband or partner
      ===================================================================== */
   /* Version 39.7 (journey audit P3-15): the danger signs come from core's one list (Help reads it too) */
-  const dangerItem = () => (S.dangerLine ? L('Learn the danger signs: ' + S.dangerLine('preg', 'en') + '. Any of these: call 112 or 102 now and take her to hospital.', 'ख़तरे के लक्षण पहचानें: ' + S.dangerLine('preg', 'hi') + '। इनमें से कुछ भी हो: अभी 112 या 102 पर कॉल करें और अस्पताल ले जाएँ।')
-    : L('Learn the danger signs: bleeding, fits, severe headache with blurred vision, fluid leaking, or the baby moving less. Any of these: call 112 or 102 now and take her to hospital.', 'ख़तरे के लक्षण पहचानें: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, या बच्चे की हलचल कम होना। इनमें से कुछ भी हो: अभी 112 या 102 पर कॉल करें और अस्पताल ले जाएँ।'));
+  const dangerItem = () => (S.dangerLine ? L('Learn the danger signs: ' + S.dangerLine('preg', 'en') + '. Any of these: take her to the nearest hospital now (ambulance: 102).', 'ख़तरे के लक्षण पहचानें: ' + S.dangerLine('preg', 'hi') + '। इनमें से कुछ भी हो: अभी सबसे पास के अस्पताल ले जाएँ (एम्बुलेंस: 102)।')
+    : L('Learn the danger signs: bleeding, fits, severe headache with blurred vision, fluid leaking, or the baby moving less. Any of these: take her to the nearest hospital now (ambulance: 102).', 'ख़तरे के लक्षण पहचानें: ब्लीडिंग, दौरे, धुंधली नज़र के साथ तेज़ सिरदर्द, पानी निकलना, या बच्चे की हलचल कम होना। इनमें से कुछ भी हो: अभी सबसे पास के अस्पताल ले जाएँ (एम्बुलेंस: 102)।'));
   const PARTNER = [
     { h: L('Her periods', 'उनके पीरियड'), go: ['periods-pain'], items: [
       L('Periods are normal and healthy. Nothing about them is dirty or impure; she can eat, cook, sleep and pray as she wishes.', 'पीरियड सामान्य और सेहत की निशानी हैं। इनमें कुछ भी गंदा या अपवित्र नहीं; वे जैसा चाहें खा, पका, सो और पूजा कर सकती हैं।'),
@@ -670,12 +665,10 @@
       L('A problem can be on either side, or both. It is nobody’s fault, and many causes can be treated.', 'दिक़्क़त किसी की भी तरफ़ हो सकती है, या दोनों की। इसमें किसी का दोष नहीं, और कई कारणों का इलाज होता है।')] },
     { h: L('Consent and respect', 'सहमति और सम्मान'), go: ['intimate-safety'], items: [
       L('Sex needs her yes, every time, also in marriage. If she says no, or sex hurts her, stop. Pain during sex is a reason to see a doctor, not to push.', 'संबंध के लिए हर बार उनकी हाँ ज़रूरी है, शादी में भी। वे मना करें, या संबंध से दर्द हो, तो रुकें। संबंध में दर्द डॉक्टर को दिखाने की वजह है, ज़बरदस्ती की नहीं।'),
-      L('Decisions about pregnancy and contraception are made together. Never force, threaten or trick her about them.', 'गर्भ और गर्भनिरोध के फ़ैसले मिलकर होते हैं। इनके बारे में कभी ज़बरदस्ती, धमकी या धोखा न करें।'),
-      L('Hitting, threats, insults, controlling her money or her movements are domestic violence. The Protection of Women from Domestic Violence Act, 2005 protects her; 181 helps any time.', 'मारना, धमकाना, अपमान करना, उनके पैसे या आने-जाने पर रोक लगाना घरेलू हिंसा है। घरेलू हिंसा से महिलाओं का संरक्षण अधिनियम, 2005 उनकी रक्षा करता है; 181 कभी भी मदद करती है।')] },
+      L('Decisions about pregnancy and contraception are made together. Never force, threaten or trick her about them.', 'गर्भ और गर्भनिरोध के फ़ैसले मिलकर होते हैं। इनके बारे में कभी ज़बरदस्ती, धमकी या धोखा न करें।'),] },
     { h: L('Signs she may need help for her mind', 'जब उन्हें मन की मदद चाहिए'), go: ['post-mood'], items: [
       L('Low or empty mood most days for 2 weeks or more; no interest in things she enjoyed; crying a lot; not sleeping even when she can; feeling worthless or guilty; panic or constant worry.', '2 हफ़्ते या ज़्यादा, लगभग रोज़ उदासी या ख़ालीपन; पसंद की चीज़ों में मन न लगना; बहुत रोना; मौक़ा होने पर भी नींद न आना; ख़ुद को बेकार या दोषी मानना; घबराहट या लगातार चिंता।'),
-      L('This is common after a birth, a loss and around menopause, and it is treatable. Listen without blame, share the load, and go with her to a doctor. Tele-MANAS 14416 is free, any time, for her and for you.', 'यह डिलीवरी, गर्भ के नुक़सान और मेनोपॉज़ के आसपास आम है, और इसका इलाज है। बिना दोष दिए सुनें, बोझ बाँटें, और उनके साथ डॉक्टर के पास जाएँ। Tele-MANAS 14416 मुफ़्त है, कभी भी, उनके लिए और आपके लिए भी।'),
-      L('If she talks about harming herself or the baby: stay with her and call 14416 or 112 now.', 'अगर वे ख़ुद को या बच्चे को नुक़सान पहुँचाने की बात करें: उनके साथ रहें और अभी 14416 या 112 पर कॉल करें।')] }
+      L('This is common after a birth, a loss and around menopause, and it is treatable. Listen without blame, share the load, and go with her to a doctor.', 'यह डिलीवरी, गर्भ के नुक़सान और मेनोपॉज़ के आसपास आम है, और इसका इलाज है। बिना दोष दिए सुनें, बोझ बाँटें, और उनके साथ डॉक्टर के पास जाएँ।')] }
   ];
 
   function renderPartner(v) {
@@ -683,8 +676,8 @@
       '<div class="card soft access-hand"><div class="eyebrow">' + esc(t('access_partner_eyebrow')) + '</div>' + P(L('Show this page to your husband or partner, or read it together. It is written for him. Switch the language at the top: EN or हिंदी.', 'यह पन्ना अपने पति या साथी को दिखाएँ, या साथ में पढ़ें। यह उनके लिए लिखा है। भाषा ऊपर बदलें: EN या हिंदी।'), '', 'color:var(--fg)') + '</div>' +
       '<p class="lead">' + E(L('Her health is a family matter. Small things you do every day make the biggest difference.', 'उनकी सेहत परिवार की ज़िम्मेदारी है। रोज़ की छोटी-छोटी बातें सबसे बड़ा फ़र्क़ लाती हैं।')) + '</p>' +
       PARTNER.map((s) => '<div class="card"><h3>' + E(s.h) + '</h3>' + ul(s.items) + goBtns(s.go) + '</div>').join('') +
-      '<h2>' + esc(t('helplines')) + '</h2><div class="list">' + copyRow('112', L('Emergency', 'आपातकाल')) + copyRow('102', L('Ambulance in pregnancy and for babies', 'गर्भ और बच्चों के लिए एम्बुलेंस')) + copyRow('14416', L('Tele-MANAS, mental health, free', 'Tele-MANAS, मानसिक स्वास्थ्य, मुफ़्त')) + copyRow('181', L('Women Helpline', 'महिला हेल्पलाइन')) + '</div>' +
-      quraCard(t('access_partner')) + srcList(['cho', 'pmsma', 'jssk', 'osc']);
+      '<h2>' + esc(t('helplines')) + '</h2><div class="list">' + copyRow('108', L('Ambulance', 'एम्बुलेंस')) + copyRow('102', L('Ambulance in pregnancy and for babies', 'गर्भ और बच्चों के लिए एम्बुलेंस')) + '</div>' +   /* Version 39.70 */
+      quraCard(t('access_partner')) + srcList(['cho', 'pmsma', 'jssk']);
     S.wire(v); wireCopy(v);
   }
 
@@ -692,7 +685,7 @@
      6. Symptom guide (gated)
      ===================================================================== */
   const LV = {
-    now: { cls: 'urgent', label: L('Call 112 now', 'अभी 112 पर कॉल करें'), where: L('Call 112, or 108 or 102 for a free ambulance, and go to the nearest district hospital or the hospital where you are registered. Do not wait to see if it settles.', '112 पर कॉल करें, या मुफ़्त एम्बुलेंस के लिए 108 या 102, और नज़दीकी ज़िला अस्पताल या जहाँ पंजीकरण है वहाँ जाएँ। ठीक होने का इंतज़ार न करें।') },
+    now: { cls: 'urgent', label: L('Go to the nearest hospital now', 'अभी सबसे पास के अस्पताल जाएँ'), where: L('Go to the nearest hospital now, or the hospital where you are registered. Ambulance: 108, or 102 in pregnancy. Do not wait to see if it settles.', 'अभी सबसे पास के अस्पताल जाएँ, या जहाँ पंजीकरण है वहाँ। एम्बुलेंस: 108, गर्भ में 102। ठीक होने का इंतज़ार न करें।') },   /* Version 39.70 */
     today: { cls: 'today', label: L('See a doctor today', 'आज ही डॉक्टर को दिखाएँ'), where: L('Today: the emergency or OPD of your CHC or district hospital, free. In pregnancy, the hospital where you are registered; 102 is a free ambulance.', 'आज: अपने CHC या ज़िला अस्पताल की emergency या OPD, मुफ़्त। गर्भ में, जहाँ पंजीकरण है वह अस्पताल; 102 मुफ़्त एम्बुलेंस है।') },
     week: { cls: 'week', label: L('See a doctor this week', 'इसी हफ़्ते डॉक्टर को दिखाएँ'), where: L('This week: your Ayushman Arogya Mandir or PHC first, free. They refer you to the CHC or district hospital if needed. Sooner if it gets worse or a fever starts.', 'इसी हफ़्ते: पहले आयुष्मान आरोग्य मंदिर या PHC, मुफ़्त। ज़रूरत हो तो वे CHC या ज़िला अस्पताल भेजते हैं। बिगड़े या बुख़ार आए तो पहले।') },
     weeks2: { cls: 'week', label: L('See a doctor within 2 weeks', '2 हफ़्ते के अंदर डॉक्टर को दिखाएँ'), where: L('Within 2 weeks: your PHC or the gynaecology OPD at the district hospital, free. Take your diary.', '2 हफ़्ते के अंदर: अपना PHC या ज़िला अस्पताल की स्त्री रोग OPD, मुफ़्त। अपनी डायरी साथ ले जाएँ।') },
@@ -738,15 +731,12 @@
       { lv: 'week', s: L('Blood in your urine', 'पेशाब में खून'), often: L('Often an infection or a kidney stone, sometimes period blood mixing in. It still needs a urine test.', 'अक्सर इन्फ़ेक्शन या पथरी, कभी-कभी पीरियड का खून मिल जाता है। फिर भी पेशाब की जाँच ज़रूरी है।'), go: ['intimate-check'] },
       { lv: 'routine', s: L('Leaking urine when you cough, laugh or lift', 'खाँसने, हँसने या वज़न उठाने पर पेशाब निकल जाना'), often: L('Very common after childbirth and around menopause. Pelvic floor exercises help most women.', 'डिलीवरी के बाद और मेनोपॉज़ के आसपास बहुत आम। पेल्विक फ़्लोर व्यायाम से ज़्यादातर महिलाओं को फ़ायदा होता है।'), go: ['post-pelvic', 'intimate-prolapse'] }] },
     { k: 'vagina', name: L('Vagina and vulva', 'योनि और बाहरी हिस्सा'), items: [
-      { lv: 'today', s: L('After forced or unwanted sex', 'ज़बरदस्ती या बिना मर्ज़ी के संबंध के बाद'), often: L('It is not your fault. Go to a hospital or One Stop Centre as soon as you can, within 72 hours if possible, for the emergency pill, medicine to prevent HIV and care for injuries. Call 181 or 112.', 'यह आपकी ग़लती नहीं है। जितनी जल्दी हो सके, हो सके तो 72 घंटे के अंदर, अस्पताल या वन स्टॉप सेंटर जाएँ: इमरजेंसी गोली, HIV से बचाने की दवा और चोटों का इलाज। 181 या 112 पर कॉल करें।'), go: ['intimate-safety', 'contra-ec'] },
       { lv: 'week', s: K('s4c'), often: L('Often a yeast infection, bacterial vaginosis or an STI. All are treatable; your partner may need treatment too.', 'अक्सर yeast इन्फ़ेक्शन, bacterial vaginosis या कोई STI। सबका इलाज है; साथी को भी इलाज की ज़रूरत हो सकती है।'), go: ['intimate-check', 'intimate-sti'] },
       { lv: 'week', s: L('Sores, blisters, warts or an ulcer on the vulva', 'बाहरी हिस्से पर घाव, छाले, मस्से या ज़ख़्म'), often: L('Often herpes, warts or another STI. A Suraksha clinic tests and treats free and in private.', 'अक्सर herpes, मस्से या कोई और STI। सुरक्षा क्लिनिक मुफ़्त और गोपनीय जाँच और इलाज करता है।'), go: ['intimate-sti'] },
       { lv: 'weeks2', s: L('Smelly or blood-stained discharge', 'बदबूदार या खून मिला स्राव'), often: L('Often an infection or a forgotten cloth or tampon; sometimes a problem of the cervix. Needs a check.', 'अक्सर इन्फ़ेक्शन, या अंदर भूला कपड़ा या tampon; कभी-कभी बच्चेदानी के मुँह की परेशानी। जाँच ज़रूरी है।'), go: ['screen-cervix'] },
       { lv: 'routine', s: L('A bulge or heavy feeling in the vagina', 'योनि में उभार या भारीपन'), often: L('Often a prolapse, common after births and after menopause. Exercises, a ring pessary or surgery help.', 'अक्सर prolapse (बच्चेदानी का खिसकना), डिलीवरी और मेनोपॉज़ के बाद आम। व्यायाम, ring pessary या ऑपरेशन से मदद मिलती है।'), go: ['intimate-prolapse'] },
       { lv: 'routine', s: L('Dryness or pain with sex after menopause', 'मेनोपॉज़ के बाद सूखापन या संबंध में दर्द'), often: L('Very common as hormones fall. Lubricants, and treatments a gynaecologist prescribes, help.', 'हॉर्मोन घटने से बहुत आम। चिकनाई (lubricant) और स्त्री रोग विशेषज्ञ का लिखा इलाज मदद करता है।'), go: ['meno-intimate'] }] },
     { k: 'mood', name: L('Mood', 'मन'), items: [
-      { lv: 'now', s: K('s6b'), often: L('These thoughts can come with depression, after a birth or a loss, or in very hard times. Help works; you do not have to be alone with them.', 'ये विचार डिप्रेशन के साथ, डिलीवरी या किसी नुक़सान के बाद, या बहुत मुश्किल समय में आ सकते हैं। मदद काम करती है; आपको इनके साथ अकेले नहीं रहना है।'), go: ['post-mood'] },
-      { lv: 'today', s: L('Feeling unsafe at home, or someone hurts, threatens or controls you', 'घर में असुरक्षित महसूस करना, या कोई चोट पहुँचाए, धमकाए या रोक-टोक करे'), often: L('This is not your fault. 181 and One Stop Centres help free, any time, in private.', 'यह आपकी ग़लती नहीं है। 181 और वन स्टॉप सेंटर मुफ़्त, कभी भी, गोपनीय मदद करते हैं।'), go: ['intimate-safety'] },
       { lv: 'week', s: K('s6a'), often: L('Often depression or anxiety, also after a birth, with thyroid problems or around menopause. Treatable.', 'अक्सर डिप्रेशन या घबराहट, डिलीवरी के बाद, थायरॉइड में या मेनोपॉज़ के आसपास भी। इलाज होता है।'), go: ['post-mood', 'teen-mind'] },
       { lv: 'routine', s: L('Low mood, crying or worry in the first 2 weeks after a birth, that eases', 'डिलीवरी के बाद पहले 2 हफ़्तों में उदासी, रोना या चिंता, जो कम होती जाए'), often: L('Often the “baby blues”, which most new mothers feel. If it lasts beyond 2 weeks or gets worse, see a doctor.', 'अक्सर “baby blues”, जो ज़्यादातर नई माँओं को होता है। 2 हफ़्ते से ज़्यादा रहे या बढ़े तो डॉक्टर को दिखाएँ।'), go: ['post-mood'] },
       { lv: 'routine', s: L('Irritability, low mood or bloating in the week before your period', 'पीरियड से पहले के हफ़्ते में चिड़चिड़ापन, उदासी या पेट फूलना'), often: L('Often PMS. If it upsets work or family life every month, see a doctor.', 'अक्सर PMS। अगर हर महीने काम या घर पर असर डाले, तो डॉक्टर को दिखाएँ।'), go: ['periods-pms'] }] },
@@ -765,7 +755,7 @@
     const items = area.items.slice().sort((a, b) => LV_ORDER.indexOf(a.lv) - LV_ORDER.indexOf(b.lv));
     v.innerHTML = S.backRow(t('access_symptoms'), 'care', true) +
       P(L('Pick a part of the body, then the sign that fits. You will see how soon to get help, what it often turns out to be, and where to go first for free. Nothing you tap here is saved.', 'शरीर का हिस्सा चुनें, फिर जो लक्षण मेल खाए। आप देखेंगी कि मदद कितनी जल्दी लेनी है, यह अक्सर क्या निकलता है, और पहले मुफ़्त में कहाँ जाएँ। यहाँ जो टैप करती हैं, वह save नहीं होता।'), 'small') +
-      '<div class="flag urgent">' + E(L('Heavy bleeding with dizziness, one-sided pain with fainting, fits, or thoughts of harming yourself: call 112 now. Do not stop to use this guide.', 'चक्कर के साथ भारी ब्लीडिंग, एक तरफ़ दर्द के साथ बेहोशी, दौरे, या ख़ुद को नुक़सान के विचार: अभी 112 पर कॉल करें। पहले यह गाइड देखने में समय न लगाएँ।')) + '</div>' +
+      '<div class="flag urgent">' + E(L('Heavy bleeding with dizziness, one-sided pain with fainting, or fits: go to the nearest hospital now. Do not stop to use this guide.', 'चक्कर के साथ भारी ब्लीडिंग, एक तरफ़ दर्द के साथ बेहोशी, या दौरे: अभी सबसे पास के अस्पताल जाएँ। पहले यह गाइड देखने में समय न लगाएँ।')) + '</div>' +   /* Version 39.70 */
       '<div class="chips access-areas" role="group" aria-label="' + esc(t('access_area')) + '">' + AREAS.map((a) => '<button type="button" class="chip' + (a.k === area.k ? ' on' : '') + '" data-area="' + a.k + '">' + E(a.name) + '</button>').join('') + '</div>' +
       '<h2>' + E(area.name) + '</h2>' +
       '<div class="list">' + items.map((it) => {

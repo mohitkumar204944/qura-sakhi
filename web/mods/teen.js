@@ -22,7 +22,7 @@
     flag('ok', '<strong>' + T({ en: 'Fact', hi: 'सच' }) + ':</strong> ' + T(f)) + '</div>';
   const checklist = (items) => '<div class="checklist">' + items.map((x) => '<label><input type="checkbox" class="teen-check"> <span>' + T(x) + '</span></label>').join('') + '</div>' +
     '<p class="small">' + T({ en: 'Ticks stay only on this screen. Nothing is saved.', hi: 'टिक सिर्फ़ इसी स्क्रीन पर रहते हैं। कुछ भी save नहीं होता।' }) + '</p>';
-  const FOOT = { en: 'Nothing on this page is saved. Under 18? Childline 1098 is free, day and night. A parent, guardian or another adult you trust can come with you to any doctor or clinic.', hi: 'इस पन्ने पर कुछ भी save नहीं होता। 18 से कम उम्र? Childline 1098 मुफ़्त है, दिन-रात। माता-पिता, अभिभावक या कोई भरोसेमंद बड़ा किसी भी डॉक्टर या क्लिनिक में आपके साथ आ सकता है।' };
+  const FOOT = { en: 'Nothing on this page is saved. Under 18? A parent, guardian or another adult you trust can come with you to any doctor or clinic.', hi: 'इस पन्ने पर कुछ भी save नहीं होता। 18 से कम उम्र? माता-पिता, अभिभावक या कोई भरोसेमंद बड़ा किसी भी डॉक्टर या क्लिनिक में आपके साथ आ सकता है।' };
   const foot = () => '<p class="footnote">' + T(FOOT) + '</p>';
 
   /* Helplines, shown as text with a Copy button (no tel: links). */
@@ -34,7 +34,8 @@
     '181': { en: 'Women Helpline', hi: 'महिला हेल्पलाइन' },
     '104': { en: 'Health advice helpline', hi: 'स्वास्थ्य सलाह हेल्पलाइन' }
   };
-  const lines = (nums) => '<div class="list">' + nums.map((n) => '<div class="helpline"><div class="teen-hlw"><div class="n num">' + esc(n) + '</div><div class="what">' + T(HL[n]) + '</div></div><button type="button" class="btn sm" data-teen-copy="' + esc(n) + '">' + esc(t('copy')) + '</button></div>').join('') + '</div>';
+  const lines = (nums0) => { const nums = nums0.filter((n) => !S.emNums || S.emNums([n]).indexOf(n) >= 0); if (!nums.length) return '';   /* Version 39.70: no 112, Tele-MANAS, 181 or Childline */
+    return '<div class="list">' + nums.map((n) => '<div class="helpline"><div class="teen-hlw"><div class="n num">' + esc(n) + '</div><div class="what">' + T(HL[n]) + '</div></div><button type="button" class="btn sm" data-teen-copy="' + esc(n) + '">' + esc(t('copy')) + '</button></div>').join('') + '</div>'; };
 
   function wireAll(v) {
     S.wire(v);
@@ -112,7 +113,7 @@
         { en: 'A period lasts more than 7 days, or soaks a pad every 1–2 hours', hi: 'पीरियड 7 दिन से ज़्यादा चले, या हर 1–2 घंटे में pad भीग जाए' },
         { en: 'Period pain keeps you home from school', hi: 'पीरियड के दर्द की वजह से स्कूल छूट जाए' }
       ], true, '<p class="small">' + T({ en: 'The teen clinic (AFHC) at a government hospital is free.', hi: 'सरकारी अस्पताल का किशोर क्लिनिक (AFHC) मुफ़्त है।' }) + '</p><div class="row wrap">' + goBtn('teen-services', { en: 'Free help', hi: 'मुफ़्त मदद' }) + goBtn('help', { en: 'Safety guide', hi: 'सुरक्षा गाइड' }) + '</div>') +
-      '<h2>' + esc(t('helplines')) + '</h2>' + lines(['1098', '14416']) + foot();
+      foot();   /* Version 39.70: no helplines (Childline and Tele-MANAS are gone) */
     wireAll(v);
   }
 
@@ -219,7 +220,7 @@
           { en: 'Moving your body every day: play, walk, dance', hi: 'रोज़ शरीर को चलाएँ: खेलें, टहलें, नाचें' },
           { en: 'Talking to someone you trust', hi: 'किसी भरोसेमंद से बात करना' },
           { en: 'Writing down what you feel', hi: 'जो महसूस हो रहा है, उसे लिख लेना' }]) +
-        flag('', esc(t('s6a'))) + flag('urgent', esc(t('s6b')))) +
+        flag('', esc(t('s6a')))) +
       sec('m-body', { en: 'Your body, your looks', hi: 'आपका शरीर, आपका रूप' },
         ul([{ en: 'Bodies come in many shapes and colours. Gaining weight in puberty is growth, not a problem to fix.', hi: 'शरीर कई आकार और रंग के होते हैं। प्यूबर्टी में वज़न बढ़ना बढ़ने का हिस्सा है, कोई कमी नहीं जिसे ठीक करना हो।' },
           { en: 'Skipping meals or crash diets can make you weak, cause anaemia and even stop your periods.', hi: 'खाना छोड़ने या कड़ी diet से कमज़ोरी और ख़ून की कमी (anaemia) हो सकती है, और पीरियड भी रुक सकते हैं।' },
@@ -368,26 +369,14 @@
         { en: 'A period lasts more than 7 days, or soaks a pad every 1–2 hours', hi: 'पीरियड 7 दिन से ज़्यादा चले, या हर 1–2 घंटे में pad भीग जाए' },
         { en: 'Periods come more often than every 21 days, or less often than every 45 days', hi: 'पीरियड 21 दिन से पहले बार-बार आएँ, या 45 दिन से ज़्यादा के अंतर पर आएँ' },
         { en: 'Pain keeps her home from school', hi: 'दर्द की वजह से उसका स्कूल छूटे' },
-        { en: 'She seems low or withdrawn most days for two weeks or more. Tele-MANAS 14416 is free for both of you.', hi: 'दो हफ़्ते या ज़्यादा, लगभग रोज़ वह उदास या चुप-चुप लगे। Tele-MANAS 14416 आप दोनों के लिए मुफ़्त है।' }
+        { en: 'She seems low or withdrawn most days for two weeks or more.', hi: 'दो हफ़्ते या ज़्यादा, लगभग रोज़ वह उदास या चुप-चुप लगे।' }
       ], true, '<p class="small">' + T({ en: 'The teen clinic (AFHC) at a PHC, CHC or district hospital is free. You can ask for a woman doctor or ANM, and you can go in with her.', hi: 'PHC, CHC या ज़िला अस्पताल का किशोर क्लिनिक (AFHC) मुफ़्त है। आप महिला डॉक्टर या ANM के लिए कह सकती हैं, और उसके साथ अंदर जा सकती हैं।' }) + '</p>' + goBtn('teen-services', { en: 'Free services for girls', hi: 'लड़कियों के लिए मुफ़्त सेवाएँ' })) + '</div>' +
-      sec('p-safety', { en: 'Talking about safety and POCSO', hi: 'सुरक्षा और POCSO पर बात' },
-        ul([{ en: 'Teach her the correct names for private parts, and that no one may touch them, photograph them or ask to see them, except a doctor checking her with you present.', hi: 'उसे प्राइवेट पार्ट के सही नाम सिखाएँ, और यह कि कोई उन्हें न छू सकता है, न फ़ोटो ले सकता है, न देखने को कह सकता है, सिवाय डॉक्टर के जो आपके सामने जाँच करे।' },
-          { en: 'Teach the rule: say no, get away, tell. Abuse often comes from someone the child knows and trusts.', hi: 'यह नियम सिखाएँ: "ना" कहो, दूर जाओ, बताओ। शोषण अक्सर कोई जान-पहचान वाला या भरोसे का व्यक्ति करता है।' },
-          { en: 'If she tells you something, believe her. Stay calm, thank her for telling you, and never blame her.', hi: 'अगर वह कुछ बताए, तो उस पर भरोसा करें। शांत रहें, बताने के लिए उसे शाबाशी दें, और कभी उसे दोष न दें।' },
-          { en: `Don't confront the person in front of her. Call Childline 1098 or the police on 112.`, hi: 'उसके सामने उस व्यक्ति से उलझें नहीं। Childline 1098 या पुलिस को 112 पर कॉल करें।' },
-          { en: 'Online: keep phones in shared rooms at night, know her apps and online friends, and tell her she can come to you if anyone asks for photos. The cyber crime helpline is 1930.', hi: 'ऑनलाइन: रात में फ़ोन सबके कमरे में रखें, उसके apps और ऑनलाइन दोस्तों को जानें, और उससे कहें कि कोई फ़ोटो माँगे तो वह आपके पास आ सकती है। साइबर क्राइम हेल्पलाइन 1930 है।' }]) +
-        '<div class="card soft"><h3>' + T({ en: 'What the POCSO Act does', hi: 'POCSO क़ानून क्या करता है' }) + '</h3>' +
-        ul([{ en: 'It protects every child under 18, girls and boys, from sexual abuse, including online.', hi: 'यह 18 साल से कम उम्र के हर बच्चे, लड़की हो या लड़का, को यौन शोषण से बचाता है, ऑनलाइन भी।' },
-          { en: 'Anyone who knows of abuse, including a school, must report it to the police.', hi: 'जिसे भी शोषण की जानकारी हो, स्कूल समेत, उसे पुलिस को बताना होता है।' },
-          { en: `Her name must be kept secret. Police should record her statement at home or a place she chooses, by a woman officer where possible, with you or another trusted adult present.`, hi: 'उसका नाम गुप्त रखना ज़रूरी है। पुलिस को उसका बयान घर पर या उसकी चुनी जगह पर, जहाँ तक हो सके किसी महिला अधिकारी से, आपकी या किसी और भरोसेमंद बड़े की मौजूदगी में लेना चाहिए।' },
-          { en: 'Cases go to special courts that must not let her be questioned harshly.', hi: 'मामले विशेष अदालतों में जाते हैं, जहाँ उससे कठोरता से सवाल नहीं पूछे जा सकते।' }]) + '</div>' +
-        lines(['1098', '112', '1930'])) +
       sec('p-hpv', { en: 'HPV vaccine', hi: 'HPV टीका' },
         '<p class="teen-body">' + T({ en: 'The HPV vaccine works best between 9 and 14, before any sexual contact. It protects against the HPV types behind most cervical cancers. In India, girls aged 14 get one dose free at government health facilities. You give consent; you can walk in or register on U-WIN.', hi: 'HPV टीका 9 से 14 साल की उम्र में, किसी भी यौन संपर्क से पहले, सबसे अच्छा काम करता है। यह उन HPV वायरस से बचाता है जिनसे बच्चेदानी के मुँह (cervix) के ज़्यादातर कैंसर होते हैं। भारत में 14 साल की लड़कियों को सरकारी अस्पतालों में इसकी एक ख़ुराक मुफ़्त मिलती है। सहमति आप देते हैं; आप सीधे जा सकते हैं या U-WIN पर पंजीकरण कर सकते हैं।' }) + '</p>' +
         goBtn('screen-hpv', { en: 'About the HPV vaccine', hi: 'HPV टीके के बारे में' })) +
       '<div class="card dark"><h3>' + T({ en: `Questions about your daughter's health?`, hi: 'बेटी की सेहत को लेकर सवाल?' }) + '</h3><p class="small" style="color:var(--dark-text)">' + T({ en: 'As her parent, you can book a free call with a Qura doctor (BAMS) about her periods, weight, pimples or diet. Hormone medicines need an MBBS gynaecologist; Qura refers.', hi: 'माता-पिता के रूप में आप उसके पीरियड, वज़न, मुँहासे या खाने को लेकर Qura की डॉक्टर (BAMS) से मुफ़्त कॉल बुक कर सकते हैं। हॉर्मोन की दवाओं के लिए MBBS स्त्री रोग विशेषज्ञ चाहिए; Qura refer करता है।' }) + '</p>' +
       '<button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none;align-self:flex-start" data-ask="' + esc(tx({ en: 'My daughter: puberty and periods', hi: 'मेरी बेटी: प्यूबर्टी और पीरियड' })) + '">' + esc(t('ask_qura')) + '</button></div>' +
-      '<p class="footnote">' + T({ en: 'Nothing on this page is saved. Childline 1098 is free, day and night, for any child or a worried parent.', hi: 'इस पन्ने पर कुछ भी save नहीं होता। Childline 1098 मुफ़्त है, दिन-रात, किसी भी बच्चे या चिंतित माता-पिता के लिए।' }) + '</p>';
+      '<p class="footnote">' + T({ en: 'Nothing on this page is saved.', hi: 'इस पन्ने पर कुछ भी save नहीं होता।' }) + '</p>';
     wireAll(v);
   }
 

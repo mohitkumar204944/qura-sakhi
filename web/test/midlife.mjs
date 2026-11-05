@@ -8,7 +8,8 @@
 //   3 her parts in the order her goal needs: hot flushes (Cool and calm, Rest, Strong and steady), sleep (Rest first; the calm
 //     chapters without hot flushes in her diary), mood, bones; in her year, her first part's skill and a Learn article a month;
 //   4 the chapter page: its part and number, this week's skill, "Why this works", Done (the row goes, the skill stays); every
-//     chapter in English and Hindi; the calm chapter's Tele-MANAS and 112; the hot-flush routine from chapter 3;
+//     chapter in English and Hindi; the calm chapter's Tele-MANAS and 112 (Version 39.70: gone, the doctors' answer 2); the hot-flush
+//     routine from chapter 3;
 //   5 the weekly number in the check-in: from day 7, once a week, 0 to 10, saved; none on day 1, none twice a week, none on a
 //     shared phone; Rest asks how she slept for every goal;
 //   6 one card at a time: periods stopped before 45 (the reviewed line), week 4 (hormone therapy; her hormone medicine's signs
@@ -126,7 +127,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   const v = await view(a.page);
   check('1 "Your day" asks about weak bones and chest pain when she walks', /Your day/.test(v) && /said your bones are weak/.test(v) && /Chest pain, fainting, or getting very breathless/.test(v), v.slice(0, 600));
   await tap(a.page, '[data-pl-q="mheart:y"]');
-  check('1 chest pain when she walks: see a doctor first, an easy walk, 112 for chest pain now', /see your doctor before you do more/.test(await txt(a.page, '#pl-in-warn')) && /call 112/.test(await txt(a.page, '#pl-in-warn')), await txt(a.page, '#pl-in-warn'));
+  check('1 chest pain when she walks: see a doctor first, an easy walk, the nearest hospital for chest pain now (Version 39.70)', /see your doctor before you do more/.test(await txt(a.page, '#pl-in-warn')) && /go to the nearest hospital/.test(await txt(a.page, '#pl-in-warn')) && !/112/.test(await txt(a.page, '#pl-in-warn')), await txt(a.page, '#pl-in-warn'));
   await tap(a.page, '[data-pl-q="mheart:n"]'); await tap(a.page, '[data-pl-q="mbone:y"]');
   check('1 weak bones: every move bone-safe, ask about a bone scan', /bone-safe, with no jumps/.test(await txt(a.page, '#pl-in-warn')), await txt(a.page, '#pl-in-warn'));
   await done(a);
@@ -197,7 +198,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   for (const id of ids) { await a.page.evaluate((x) => { window.Saathi.mem.midLes = x; }, id); await go(a.page, 'mid-lesson'); const vv = await view(a.page); const tt = await a.page.evaluate((x) => window.Saathi.midlife.lesson.title(x), id); if (!vv.includes(tt) || !/This week’s skill/.test(vv)) bad.push(id); }
   check('4 all 16 chapters render, each with its skill', ids.length === 16 && !bad.length, { ids: ids, bad: bad });
   await a.page.evaluate(() => { window.Saathi.mem.midLes = 'q1'; }); await go(a.page, 'mid-lesson');
-  check('4 the calm chapter: Tele-MANAS 14416 and 112', await has(a.page, '#view .card.urgent a[href="tel:14416"]') && await has(a.page, '#view .card.urgent a[href="tel:112"]'), await view(a.page));
+  check('4 the calm chapter: no Tele-MANAS or harm card (Version 39.70, the doctors\' answer 2)', /Mood in midlife/.test(await view(a.page)) && !(await has(a.page, '#view a[href="tel:14416"]')) && !(await has(a.page, '#view a[href="tel:112"]')) && !/Tele-MANAS|14416/.test(await view(a.page)), await view(a.page));
   await a.page.evaluate(() => { window.Saathi.mem.midLes = 'h3'; }); await go(a.page, 'mid-lesson');
   check('4 chapter 3 opens the hot-flush routine', await has(a.page, '#view [data-go="relief-hot"]'), await view(a.page));
   await a.page.evaluate(() => { window.Saathi.mem.midLes = 'h4'; }); await go(a.page, 'mid-lesson');
@@ -235,7 +236,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   check('6 week 4: hormone therapy, from an MBBS gynaecologist, and Read more', /Hot flushes still getting in your way\?/.test(await slotText(a.page)) && /hormone therapy, prescribed by an MBBS gynaecologist/.test(await slotText(a.page)) && await has(a.page, '#view .pl-m2-w4 [data-mid-art]'), await slotText(a.page));
   await shot(a.page, 'week4-card'); await done(a);
   a = await open({ seed: m2('hot', B(22), null, { situation: { stopped: true, hormones: true } }) });
-  check('6 week 4 on hormone medicine: her doctor’s plan, and 112 for its warning signs', /keep to your doctor’s plan/.test(await slotText(a.page)) && /one calf is swollen/.test(await slotText(a.page)) && await has(a.page, '#view .pl-m2-w4 a[href="tel:112"]'), await slotText(a.page)); await done(a);
+  check('6 week 4 on hormone medicine: her doctor’s plan, and 112 for its warning signs', /keep to your doctor’s plan/.test(await slotText(a.page)) && /one calf is swollen/.test(await slotText(a.page)) && await has(a.page, '#view .pl-m2-w4 a[href="tel:108"]'), await slotText(a.page)); await done(a);   /* Version 39.70: her ambulance */
   a = await open({ seed: m2('aches', B(22)) });
   check('6 week 4 for aches and tiredness: ask about blood tests', /blood tests you need, often Hb and thyroid/.test(await slotText(a.page)), await slotText(a.page)); await done(a);
   a = await open({ seed: m2('hot', B(78)) });
@@ -265,7 +266,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   let s = await acts(a.page);
   check('8 chest pain when she walks: Gentle start instead of Strength at home', s.some((x) => x.id === 'str' && x.go === 'plan-r-gentle') && !s.some((x) => x.go === 'plan-r-strength'), s);
   await go(a.page, 'plan');
-  check('8 My plan: her walk stays easy, with 112, until her doctor says', await has(a.page, '#view .pl-m2-heart a[href="tel:112"]') && /My doctor says I can do more/.test(await txt(a.page, '#view .pl-m2-heart')), await view(a.page));
+  check('8 My plan: her walk stays easy, with Call 108 (Version 39.70), until her doctor says', await has(a.page, '#view .pl-m2-heart a[href="tel:108"]') && /My doctor says I can do more/.test(await txt(a.page, '#view .pl-m2-heart')), await view(a.page));
   await tap(a.page, '[data-m2="heart-ok"]'); await go(a.page, 'home'); s = await acts(a.page);
   check('8 her doctor said yes: Strength at home', s.some((x) => x.id === 'str' && x.go === 'plan-r-strength') && !(await st(a.page)).mods.plan.intake.mheart.startsWith('y'), s); await done(a);
   a = await open({ seed: m2('hot', B(3), { a: { mbone: 'y' } }), hash: '#plan' });

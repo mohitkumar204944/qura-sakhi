@@ -200,7 +200,7 @@ const card = (page, id) => page.evaluate((x) => { const f = (window.Saathi.expla
   await done(a);
   a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['mood'], kind: 'cycle' } } }, hash: '#explain' });
   c = await card(a.page, 'mood');
-  check('7 low mood: Tele-MANAS 14416 first, then "Ask a Qura doctor"', c && c[0].go === 'tel:14416' && c[0].p && /Ask a Qura doctor/.test((c[1] || {}).t || ''), c);
+  check('7 low mood: "Ask a Qura doctor" first (Version 39.70: Tele-MANAS is gone, the doctors\' answer 2)', c && /Ask a Qura doctor/.test(c[0].t) && c[0].p && !c.some((x) => /^tel:/.test(x.go || '')), c);
   await done(a);
   a = await open({ seed: { situation: { care: 'private', planning: true }, goals: ['ready'], joined: ago(2), tours: {}, settings: { toursAuto: true, notify: true } }, hash: '#care' });
   await settle(a.page, 1500);

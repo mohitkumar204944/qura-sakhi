@@ -558,9 +558,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - and what they left behind (MODULE_API 111, item 10): setup steps and reminders for the removed pages, the report's claims
       line, "or a free government doctor" in Help, the midlife first log in the Diary, and the fixed Hb line on her lab results.
 
-    This supersedes those parts of the entries above. Parts 2 to 4 (the emergency line, the wording, the behaviour) are still to
-    come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the doctors'
-    sign-off of 138 rows: section 19.68 of the review.
+    This supersedes those parts of the entries above. Part 2 is Version 39.70 (below); parts 3 and 4 (the wording, the behaviour)
+    are still to come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the
+    doctors' sign-off of 138 rows: section 19.68 of the review.
+  - `node test/emergency.mjs` (Version 39.70, the doctors' feature review, part 2, the emergency line; Mohit, 6 Nov: "commit
+    39.68 and go with part 2"; answers 1 to 3 of `docs/feature-review-2026-11-05.md`):
+    - "Go to the nearest hospital now" wherever "Call 112 now" was, with one ambulance number under it: 108, or 102 in pregnancy
+      (core `ambNo`, `ambBtn`, `emNums`; `S.amb()`, `S.ambBtn()`, `S.emNums()` for modules);
+    - Tele-MANAS, 181, Childline and every violence line gone, and nothing for thoughts of harm (no Help row, search card or
+      chip);
+    - the Learn library rewritten to match, in English and Hindi.
+    It sweeps every live screen and Learn article, for 5 women in both languages, for the removed numbers. This supersedes the
+    112, Tele-MANAS and 181 lines in the entries above. Contract: MODULE_API section 113; wording: section 19.70 of the review
+    (its patterns wait for the doctors' one read).
     `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
     `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/maths.mjs`

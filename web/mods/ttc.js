@@ -45,7 +45,7 @@
   }
 
   /* ---------- shared content ---------- */
-  const ECTOPIC = { en: 'Period late or a positive test, with pain on one side of the lower belly, shoulder-tip pain, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which is more likely after tube damage.', hi: 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसका ख़तरा ट्यूब ख़राब होने के बाद ज़्यादा होता है।' };
+  const ECTOPIC = { en: 'Period late or a positive test, with pain on one side of the lower belly, shoulder-tip pain, dizziness or fainting: go to the nearest hospital now. This can be a pregnancy outside the womb (ectopic), which is more likely after tube damage.', hi: 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी: अभी सबसे पास के अस्पताल जाएँ। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसका ख़तरा ट्यूब ख़राब होने के बाद ज़्यादा होता है।' };
   const BAMS = { en: "Qura's doctors are BAMS. They can order tests and help with cycles, weight, sleep and food. Ovulation tablets, IUI and IVF need an MBBS/MD gynaecologist; Qura refers you.", hi: 'Qura की डॉक्टर BAMS हैं। वे test लिख सकती हैं और चक्र, वज़न, नींद और खाने में मदद करती हैं। ओव्यूलेशन की गोलियाँ, IUI और IVF के लिए MBBS/MD स्त्री रोग विशेषज्ञ चाहिए; Qura आपको refer करता है।' };
 
   const FLAGS = [
@@ -228,15 +228,14 @@
     w8: { h: N2('Week 8 · The waiting week', 'हफ़्ता 8 · इंतज़ार का हफ़्ता'), cards: [
       { l: [N2('The days before your period can feel long: hope one day, worry the next. That’s normal.', 'पीरियड से पहले के दिन लंबे लग सकते हैं: एक दिन उम्मीद, अगले दिन चिंता। यह आम बात है।')] },
       { l: [N2('A kinder thought can help: “Whatever happens this month, I’m looking after my body.”', 'एक नरम सोच मदद कर सकती है: “इस महीने जो भी हो, मैं अपने शरीर का ख़्याल रख रही हूँ।”')] },
-      { l: [N2('You can switch on a calm few minutes for the week before your period. If worry stays heavy, Tele-MANAS 14416 is free, any time.', 'पीरियड से पहले वाले हफ़्ते के लिए कुछ शांत मिनट चालू कर सकती हैं। चिंता भारी बनी रहे, तो Tele-MANAS 14416 मुफ़्त है, किसी भी समय।')], calm: true }] },
+      { l: [N2('You can switch on a calm few minutes for the week before your period.', 'पीरियड से पहले वाले हफ़्ते के लिए कुछ शांत मिनट चालू कर सकती हैं।')], calm: true }] },
     w9: { h: N2('Week 9 · Steady first', 'हफ़्ता 9 · पहले सब क़ाबू में'), cards: [
       { b: prepOf('control'), l: [dl(prepOf('control'))] },
       { b: prepOf('meds'), l: [dl(prepOf('meds'))] },
       { b: N2('Fertility after the Antara injection', 'अंतरा इंजेक्शन के बाद गर्भ ठहरना'), l: [VF.antara] }] },
     w10: { h: N2('Week 10 · Sleep, and pressure from others', 'हफ़्ता 10 · नींद, और दूसरों का दबाव'), cards: [
       { l: [N2('A regular bedtime helps your body clock. Aim for 7 to 9 hours when you can.', 'रोज़ एक तय समय पर सोना शरीर की घड़ी के लिए अच्छा है। जब हो सके, 7 से 9 घंटे सोएँ।')] },
-      { l: [N2('“When is the good news?” A short answer helps: “When there is news, you’ll hear it.”', '“ख़ुशख़बरी कब सुना रही हो?” छोटा जवाब काम आता है: “जब ख़बर होगी, आपको पता चल जाएगा।”'), N2('Decide together, the two of you, who you tell and when.', 'आप दोनों मिलकर तय करें कि किसे और कब बताना है।')] },
-      { l: [N2('If anyone hurts, threatens or blames you, the Women Helpline 181 is free.', 'अगर कोई आपको चोट पहुँचाए, धमकाए या दोष दे, तो महिला हेल्पलाइन 181 मुफ़्त है।')] }] },
+      { l: [N2('“When is the good news?” A short answer helps: “When there is news, you’ll hear it.”', '“ख़ुशख़बरी कब सुना रही हो?” छोटा जवाब काम आता है: “जब ख़बर होगी, आपको पता चल जाएगा।”'), N2('Decide together, the two of you, who you tell and when.', 'आप दोनों मिलकर तय करें कि किसे और कब बताना है।')] }] },
     w11: { h: N2('Week 11 · What elders may say', 'हफ़्ता 11 · बड़े-बुज़ुर्ग क्या कह सकते हैं'), cards: [
       { l: [N2('“It’s always the woman.” It isn’t: doctors check both partners.', '“कमी हमेशा औरत में होती है।” ऐसा नहीं है: डॉक्टर दोनों की जाँच करते हैं।')] },
       { l: [N2('“Don’t lift anything, just rest.” Ordinary daily work is fine; rest when you’re tired.', '“कुछ मत उठाओ, बस आराम करो।” रोज़ का आम काम ठीक है; थकान हो तो आराम करें।')] },
@@ -255,7 +254,7 @@
   const lessonRead = (id) => !!((store().les || {})[id]);
   const lsLine = (x) => (typeof x === 'string' ? esc(t(x)) : T(x));
   const calmOn = () => !!store().calmOn;
-  const call112 = () => '<a class="btn danger sm" href="tel:112">' + esc(t('call_b')) + ' 112</a>';
+  const call112 = () => (S.ambBtn ? S.ambBtn('danger sm') : '');   /* Version 39.70: the ambulance, 102 in pregnancy */
   function lessonHtml(id) {
     const ls = LESSONS[id]; if (!ls) return '';
     return ls.cards.map((c) => {
@@ -731,7 +730,7 @@
       card({ en: 'Treatment depends on the cause', hi: 'इलाज वजह पर निर्भर है' }, P({ en: 'For example, low-dose aspirin with heparin injections for antiphospholipid syndrome, thyroid tablets, or surgery for a septum. Some women with bleeding in early pregnancy after a past miscarriage are given progesterone. A gynaecologist decides all of these; do not start them yourself. Often no cause is found, and caring early pregnancy support still helps.', hi: 'जैसे antiphospholipid syndrome में कम खुराक की aspirin के साथ heparin के इंजेक्शन, थायरॉइड की गोलियाँ, या septum की सर्जरी। पहले गर्भपात हो चुका हो और शुरुआती गर्भ में ब्लीडिंग हो, तो कुछ महिलाओं को progesterone दिया जाता है। यह सब स्त्री रोग विशेषज्ञ तय करती हैं; ख़ुद से शुरू न करें। अक्सर कोई वजह नहीं मिलती, और तब भी शुरुआती गर्भ में अच्छी देखभाल मदद करती है।' }, 'ttc-p')) +
       card({ en: 'Where to go', hi: 'कहाँ जाएँ' }, P({ en: 'The gynaecology OPD of a government medical college or teaching hospital can do most of these tests. Take the reports from every pregnancy: scans, blood reports, discharge papers and any tissue (histopathology) report.', hi: 'सरकारी medical college या teaching hospital की स्त्री रोग OPD इनमें से ज़्यादातर जाँचें कर सकती है। हर गर्भ की reports साथ ले जाएँ: scan, blood reports, discharge के काग़ज़ और टुकड़े की जाँच (histopathology) की report।' }, 'ttc-p') + P({ en: 'Next time, tell your doctor as soon as the test is positive. Early registration (MCP card) and an early scan help. Keep taking folic acid.', hi: 'अगली बार test positive आते ही डॉक्टर को बताएँ। जल्दी पंजीकरण (MCP card) और जल्दी scan मदद करते हैं। Folic acid लेती रहें।', doc: { en: 'Next time, tell your doctor as soon as the test is positive. Early check-ups and an early scan help. Keep taking folic acid.', hi: 'अगली बार test positive आते ही डॉक्टर को बताएँ। जल्दी जाँचें और जल्दी scan मदद करते हैं। Folic acid लेती रहें।' } })) +
       '<div class="list">' + item('loss', 'heart', { en: 'Pregnancy loss', hi: 'गर्भ का नुक़सान' }, { en: 'Types of loss, recovery, feelings', hi: 'नुक़सान के प्रकार, ठीक होना, मन' }) + item('loss-grief', 'users', { en: 'Grief and feelings', hi: 'दुख और मन की बातें' }, { en: 'For you and your partner', hi: 'आपके और आपके साथी के लिए' }) + item('loss-again', 'leaf', { en: 'Trying again after a loss', hi: 'नुक़सान के बाद फिर कोशिश' }, { en: 'When and how to start again', hi: 'कब और कैसे फिर शुरू करें' }) + '</div>' +
-      '<div class="card soft"><p class="small" style="color:var(--fg)">' + T({ en: 'Feeling low, anxious or numb after a loss is common, for both partners. Tele-MANAS 14416 is free, any time.', hi: 'गर्भ खोने के बाद उदासी, घबराहट या सुन्नपन आम है, दोनों साथियों के लिए। Tele-MANAS 14416 मुफ़्त है, कभी भी।' }) + '</p></div>' +
+      '<div class="card soft"><p class="small" style="color:var(--fg)">' + T({ en: 'Feeling low, anxious or numb after a loss is common, for both partners.', hi: 'गर्भ खोने के बाद उदासी, घबराहट या सुन्नपन आम है, दोनों साथियों के लिए।' }) + '</p></div>' +
       askBtn({ en: 'Two or more miscarriages', hi: 'दो या ज़्यादा बार गर्भ गिरना' });
     S.wire(v);
   }

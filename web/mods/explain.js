@@ -17,7 +17,7 @@
   const docR = () => !!(S.care && S.care.gov && !S.care.gov());
   const IRON = Object.assign(L('Long or heavy periods can cause anaemia. Free iron tablets come from your ASHA or health centre.', 'लंबे या भारी पीरियड से खून की कमी हो सकती है। मुफ़्त आयरन की गोलियाँ ASHA या स्वास्थ्य केंद्र से मिलती हैं।'),
     { doc: L('Long or heavy periods can cause anaemia. Ask your doctor if you need iron tablets. They are also free at government health centres.', 'लंबे या भारी पीरियड से खून की कमी हो सकती है। डॉक्टर से पूछें कि क्या आपको आयरन की गोलियाँ चाहिए। ये सरकारी स्वास्थ्य केंद्रों पर मुफ़्त भी मिलती हैं।') });
-  const MOOD_SEE = L('Talk to a doctor this month. Tele-MANAS on 14416 is free, at any hour. If you think about harming yourself, call 14416 or 112 now.', 'इसी महीने डॉक्टर से बात करें। Tele-MANAS 14416 मुफ़्त है, किसी भी समय। ख़ुद को नुक़सान पहुँचाने के विचार आएँ तो अभी 14416 या 112 पर कॉल करें।');
+  const MOOD_SEE = L('Talk to a doctor this month.', 'इसी महीने डॉक्टर से बात करें।');
   const X = {
     gap_usual: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), w: L('That is within the usual 21 to {b} days. Gaps can move by a few days from month to month, and that is normal too.', 'यह आम 21 से {b} दिन के दायरे में है। अंतर हर महीने कुछ दिन आगे-पीछे हो सकता है, और यह भी सामान्य है।'), go: 'diary' },
     gap_short: { t: L('Your last gap was {n} days', 'आपका पिछला अंतर {n} दिन का था'), tOld: L('One of your recent gaps was {n} days', 'आपका एक हाल का अंतर {n} दिन का था'), w: L('That is shorter than the usual 21 days. One short gap is often nothing, but it is worth watching.', 'यह आम 21 दिन से कम है। एक बार छोटा अंतर अक्सर कुछ नहीं होता, पर इस पर ध्यान रखना ठीक है।'),
@@ -40,23 +40,23 @@
       todo: [Object.assign(L('If you could be pregnant, take a home test. Free Nishchay kits come from your ASHA.', 'अगर गर्भ की संभावना है, तो घर पर test करें। मुफ़्त Nishchay किट ASHA से मिलती है।'),
         { doc: L('If you could be pregnant, take a home test. Any chemist sells one; your ASHA gives Nishchay kits free.', 'अगर गर्भ की संभावना है, तो घर पर test करें। यह किसी भी केमिस्ट पर मिलता है; ASHA Nishchay किट मुफ़्त देती हैं।') }), L('If it is negative and your period still has not come, test again in a week.', 'test negative हो और पीरियड फिर भी न आए, तो एक हफ़्ते बाद फिर test करें।'),
         /* Version 32: the pregnancy-test pages' warning, word for word (field-test audit 2.3) */
-        L('Period late or a positive test, with pain on one side of the lower belly, pain at the tip of the shoulder, bleeding, dizziness or fainting: call 112 now. This can be a pregnancy outside the womb (ectopic), which can bleed inside.', 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, ब्लीडिंग, चक्कर या बेहोशी: अभी 112 पर कॉल करें। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसमें अंदर ही अंदर ख़ून बह सकता है।')],
+        L('Period late or a positive test, with pain on one side of the lower belly, pain at the tip of the shoulder, bleeding, dizziness or fainting: go to the nearest hospital now. This can be a pregnancy outside the womb (ectopic), which can bleed inside.', 'पीरियड देर से या test positive, और साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, ब्लीडिंग, चक्कर या बेहोशी: अभी सबसे पास के अस्पताल जाएँ। यह बच्चेदानी के बाहर ठहरा गर्भ (ectopic) हो सकता है, जिसमें अंदर ही अंदर ख़ून बह सकता है।')],
       see: L('No period for 90 days, and not pregnant or breastfeeding: see a doctor.', '90 दिन तक पीरियड न आए, और आप गर्भवती या दूध पिलाने वाली नहीं हैं: डॉक्टर को दिखाएँ।'),
       see2: L('It has been {d} days. See a doctor this month. Long gaps can be treated, so the cause is worth finding.', '{d} दिन हो गए हैं। इसी महीने डॉक्टर को दिखाएँ। लंबे अंतर का इलाज होता है, इसलिए कारण जानना ज़रूरी है।'), go: 'pregtest-when', ask: L('My period is late', 'मेरा पीरियड देर से है') },
     period_long: { t: L('Your last period lasted {n} days', 'आपका पिछला पीरियड {n} दिन चला'), tOld: L('One of your recent periods lasted {n} days', 'आपका एक हाल का पीरियड {n} दिन चला'), w: L('Bleeding for more than 8 days is longer than usual.', '8 दिन से ज़्यादा ब्लीडिंग आम से लंबी है।'), why: BLEED_WHY,
       todo: [L('Note how many pads you need on your heaviest day.', 'सबसे भारी दिन कितने pad लगते हैं, यह लिख लें।'), IRON],
       see: L('See a doctor this week and ask for a haemoglobin (Hb) test. It is free at government hospitals.', 'इसी हफ़्ते डॉक्टर को दिखाएँ और हीमोग्लोबिन (Hb) की जाँच करवाएँ। यह सरकारी अस्पताल में मुफ़्त है।'), go: 'cond-anaemia', ask: L('Long periods', 'लंबे पीरियड') },
     flow_heavy: { t: L('Heavy flow in your last period', 'पिछले पीरियड में भारी ब्लीडिंग'), tOld: L('Heavy flow in one of your recent periods', 'हाल के एक पीरियड में भारी ब्लीडिंग'), w: L('Soaking a pad every 1 to 2 hours, clots the size of a ₹10 coin or bigger, or leaking through your clothes all mean heavy bleeding.', 'हर 1 से 2 घंटे में pad भीगना, ₹10 के सिक्के जितने या बड़े थक्के, या कपड़ों पर दाग़ लगना, ये सब भारी ब्लीडिंग है।'), why: BLEED_WHY,
-      todo: [IRON], see: L('See a doctor this week and ask for an Hb test. If you feel dizzy or faint, or soak a pad every hour: call 112 now.', 'इसी हफ़्ते डॉक्टर को दिखाएँ और Hb की जाँच करवाएँ। चक्कर या बेहोशी लगे, या हर घंटे pad भीगे: अभी 112 पर कॉल करें।'), go: 'cond-anaemia', ask: L('Heavy periods', 'भारी पीरियड') },
+      todo: [IRON], see: L('See a doctor this week and ask for an Hb test. If you feel dizzy or faint, or soak a pad every hour: go to the nearest hospital now.', 'इसी हफ़्ते डॉक्टर को दिखाएँ और Hb की जाँच करवाएँ। चक्कर या बेहोशी लगे, या हर घंटे pad भीगे: अभी सबसे पास के अस्पताल जाएँ।'), go: 'cond-anaemia', ask: L('Heavy periods', 'भारी पीरियड') },
     /* Version 39.6: her Hb below the range printed on her own lab report (cond.js labs), not a number Sakhi picks */
     hb_low: { t: L('Your Hb was below your report’s range', 'आपका Hb आपकी रिपोर्ट की सीमा से कम था'),
       w: L('Hb carries oxygen in your blood. When it is low (anaemia), you can feel tired or breathless. Heavy periods are a common cause.', 'Hb ख़ून में ऑक्सीजन ले जाता है। कम हो (ख़ून की कमी), तो थकान या साँस फूल सकती है। भारी पीरियड इसकी आम वजह हैं।'),
-      todo: [IRON], see: L('See a doctor this month. Low Hb is usually treated with iron tablets and a repeat test. If you feel dizzy or faint, or breathless at rest: call 112 now.', 'इसी महीने डॉक्टर को दिखाएँ। कम Hb का इलाज आम तौर पर आयरन की गोलियों और दोबारा जाँच से होता है। चक्कर या बेहोशी लगे, या आराम में भी साँस फूले: अभी 112 पर कॉल करें।'),
+      todo: [IRON], see: L('See a doctor this month. Low Hb is usually treated with iron tablets and a repeat test. If you feel dizzy or faint, or breathless at rest: go to the nearest hospital now.', 'इसी महीने डॉक्टर को दिखाएँ। कम Hb का इलाज आम तौर पर आयरन की गोलियों और दोबारा जाँच से होता है। चक्कर या बेहोशी लगे, या आराम में भी साँस फूले: अभी सबसे पास के अस्पताल जाएँ।'),
       go: 'cond-anaemia', ask: L('My Hb result', 'मेरा Hb') },
     pain_severe: { t: L('Period pain that stopped your day', 'पीरियड का दर्द जिसने आपका दिन रोक दिया'), w: L('Some cramping is common. But pain that keeps you in bed or away from work is not something to put up with.', 'थोड़ी ऐंठन आम है। पर ऐसा दर्द जो आपको बिस्तर पर रखे या काम से रोके, सहने की चीज़ नहीं है।'),
       why: [L('Endometriosis, where tissue like the womb lining grows outside the womb.', 'endometriosis, जिसमें बच्चेदानी की परत जैसा ऊतक बच्चेदानी के बाहर बढ़ता है।'), L('Fibroids or adenomyosis.', 'fibroid या adenomyosis।'), L('An infection in the pelvis.', 'पेट के निचले हिस्से में इन्फ़ेक्शन।')],
       todo: [L('Heat on your lower belly helps many women.', 'पेट के निचले हिस्से पर सेंक से कई महिलाओं को आराम मिलता है।'), L('Note which days hurt most, and whether it hurts during sex or when you pee.', 'किन दिनों ज़्यादा दर्द होता है, और क्या संबंध या पेशाब के समय दर्द होता है, यह लिख लें।')],
-      see: L('See a doctor this month. Sudden severe pain on one side with a late period, or with fainting: call 112 now.', 'इसी महीने डॉक्टर को दिखाएँ। देर से आए पीरियड के साथ एक तरफ़ अचानक तेज़ दर्द, या बेहोशी: अभी 112 पर कॉल करें।'), go: 'periods-pain', ask: L('Severe period pain', 'पीरियड में तेज़ दर्द') },
+      see: L('See a doctor this month. Sudden severe pain on one side with a late period, or with fainting: go to the nearest hospital now.', 'इसी महीने डॉक्टर को दिखाएँ। देर से आए पीरियड के साथ एक तरफ़ अचानक तेज़ दर्द, या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।'), go: 'periods-pain', ask: L('Severe period pain', 'पीरियड में तेज़ दर्द') },
     spot_between: { t: L('Spotting between periods', 'पीरियड के बीच spotting'), w: L('Spotting is light bleeding outside your period. You logged it on {k} days recently.', 'spotting यानी पीरियड के अलावा हल्की ब्लीडिंग। आपने हाल में इसे {k} दिन दर्ज किया।'),
       why: [L('Around egg release in the middle of the cycle, which is harmless.', 'चक्र के बीच में अंडा निकलने के समय, जो नुक़सानदेह नहीं है।'), L('The first months on the pill, the injection or a Copper-T.', 'गोली, इंजेक्शन या Copper-T के शुरुआती महीने।'), L('An infection, or a small polyp on the cervix.', 'इन्फ़ेक्शन, या बच्चेदानी के मुँह पर छोटा polyp।'), L('Early pregnancy.', 'शुरुआती गर्भ।')],
       todo: [L('If you could be pregnant, take a home test.', 'अगर गर्भ की संभावना है, तो घर पर test करें।')],
@@ -89,17 +89,17 @@
       see: L('Ask a doctor for a sugar test (fasting sugar or HbA1c) this month.', 'इसी महीने डॉक्टर से शुगर की जाँच (fasting sugar या HbA1c) करवाएँ।'), go: 'cond-labs', ask: L('Dark skin on my neck', 'गर्दन पर गहरी त्वचा') },
     mood: { t: L('Low mood or anxiety most days', 'ज़्यादातर दिन उदासी या घबराहट'), w: L('Feeling low or anxious most days is common, and it can be treated.', 'ज़्यादातर दिन उदास या घबराया हुआ महसूस करना आम है, और इसका इलाज होता है।'), see: MOOD_SEE, go: 'help', ask: L('Low mood', 'उदासी') },
     p_bleed: { t: L('Bleeding in pregnancy', 'गर्भ में ब्लीडिंग'), w: L('Some spotting can happen in early pregnancy, but any bleeding needs a check.', 'शुरुआती गर्भ में थोड़ी spotting हो सकती है, पर किसी भी ब्लीडिंग की जाँच ज़रूरी है।'),
-      see: L('See a doctor today. Heavy bleeding, or bleeding with pain or fainting: call 112 now.', 'आज ही डॉक्टर को दिखाएँ। भारी ब्लीडिंग, या दर्द या बेहोशी के साथ ब्लीडिंग: अभी 112 पर कॉल करें।'), seeNow: 's1c', go: 'help' },
+      see: L('See a doctor today. Heavy bleeding, or bleeding with pain or fainting: go to the nearest hospital now.', 'आज ही डॉक्टर को दिखाएँ। भारी ब्लीडिंग, या दर्द या बेहोशी के साथ ब्लीडिंग: अभी सबसे पास के अस्पताल जाएँ।'), seeNow: 's1c', go: 'help' },
     /* Version 39.0: baby moving less from 28 weeks (pregtools k_today's reviewed words; Help s1c's call-now level) */
     p_moves: { t: L('Baby moving less than usual', 'बच्चे की हलचल आम से कम'), w: L("Fewer or weaker movements than usual: call your hospital or doctor straight away and get checked today, even if it is the middle of the night. Don't wait until tomorrow, and don't go to sleep on it.", 'आम दिनों से कम या हल्की हलचल: तुरंत अस्पताल या डॉक्टर को फ़ोन करें और आज ही जाँच कराएँ, चाहे आधी रात हो। कल तक इंतज़ार न करें, और इसे टालकर सो न जाएँ।'),
       seeNow: 's1c', go: 'help' },
     p_headswell: { t: L('Headache with swelling', 'सिरदर्द के साथ सूजन'), w: L('Together these can be signs of high blood pressure in pregnancy, called pre-eclampsia.', 'ये दोनों साथ हों तो गर्भ में हाई BP (pre-eclampsia) के संकेत हो सकते हैं।'),
-      see: L('Get your BP checked today. A very bad headache, blurred vision or fits: call 112 now.', 'आज ही BP जँचवाएँ। बहुत तेज़ सिरदर्द, धुंधला दिखना या दौरे: अभी 112 पर कॉल करें।'), go: 'help' },
+      see: L('Get your BP checked today. A very bad headache, blurred vision or fits: go to the nearest hospital now.', 'आज ही BP जँचवाएँ। बहुत तेज़ सिरदर्द, धुंधला दिखना या दौरे: अभी सबसे पास के अस्पताल जाएँ।'), go: 'help' },
     p_nausea: { t: L('Nausea or vomiting', 'जी मिचलाना या उल्टी'), w: L('Common in the first months, and it usually eases by 16 to 20 weeks.', 'शुरुआती महीनों में आम है, और आमतौर पर 16 से 20 हफ़्ते तक कम हो जाता है।'),
       todo: [L('Small meals often, and a dry snack before you get up.', 'थोड़ा-थोड़ा, बार-बार खाएँ, और उठने से पहले कुछ सूखा खा लें।'), L('Sip water through the day.', 'दिन भर घूँट-घूँट पानी पिएँ।')],
       see: L('If you cannot keep food or water down for a day: see a doctor today.', 'एक दिन तक खाना या पानी बिल्कुल न रुके: आज ही डॉक्टर को दिखाएँ।'), go: 'preg-symptoms', ask: L('Nausea in pregnancy', 'गर्भ में जी मिचलाना') },
     pp_lochia: { t: L('Bleeding heavier than a period after the birth', 'डिलीवरी के बाद पीरियड से ज़्यादा ब्लीडिंग'), w: L('Bleeding after a birth should slowly get lighter.', 'डिलीवरी के बाद ब्लीडिंग धीरे-धीरे कम होनी चाहिए।'),
-      see: L('Soaking a pad within an hour or passing big clots: call 112 now. Fever or a bad smell: see a doctor today.', 'एक घंटे के अंदर pad भीगना या बड़े थक्के: अभी 112 पर कॉल करें। बुख़ार या बदबू: आज ही डॉक्टर को दिखाएँ।'), go: 'help' },
+      see: L('Soaking a pad within an hour or passing big clots: go to the nearest hospital now. Fever or a bad smell: see a doctor today.', 'एक घंटे के अंदर pad भीगना या बड़े थक्के: अभी सबसे पास के अस्पताल जाएँ। बुख़ार या बदबू: आज ही डॉक्टर को दिखाएँ।'), go: 'help' },
     pp_breast: { t: L('A painful red patch on the breast', 'स्तन पर दर्द वाला लाल हिस्सा'), w: L('Often mastitis, a swelling of the breast that is common while breastfeeding.', 'अक्सर mastitis, यानी स्तन की सूजन, जो दूध पिलाते समय आम है।'),
       todo: [L('Keep feeding from that side. It helps the milk flow.', 'उस तरफ़ से दूध पिलाती रहें। इससे दूध बहता रहता है।')], see: L('With fever or chills: see a doctor today.', 'बुख़ार या ठंड लगे: आज ही डॉक्टर को दिखाएँ।'), go: 'post-feed', ask: L('Breast pain while feeding', 'दूध पिलाते समय स्तन में दर्द') },
     pp_stitch: { t: L('Pain at your stitches or C-section wound', 'टाँकों या ऑपरेशन के घाव में दर्द'), w: L('Some soreness is normal for a few weeks.', 'कुछ हफ़्ते थोड़ा दर्द सामान्य है।'),
@@ -108,13 +108,13 @@
       todo: [L('Pelvic floor exercises on most days help: squeeze as if stopping your pee, hold for 5 seconds, then relax.', 'ज़्यादातर दिन pelvic floor exercise करें: ऐसे सिकोड़ें जैसे पेशाब रोक रही हों, 5 सेकंड रोकें, फिर ढीला छोड़ें।')],
       see: L('Still leaking 3 months after the birth: see a doctor.', 'डिलीवरी के 3 महीने बाद भी लीक हो: डॉक्टर को दिखाएँ।'), go: 'post-pelvic', ask: L('Leaking urine after birth', 'डिलीवरी के बाद पेशाब लीक') },
     pp_mood: { t: L('Low mood after the birth', 'डिलीवरी के बाद उदासी'), w: L('Weepy days in the first 2 weeks are common and pass. Low mood that lasts longer can be postnatal depression, which is common and treatable.', 'पहले 2 हफ़्तों में रोना आना आम है और ठीक हो जाता है। उससे लंबी उदासी postnatal depression हो सकती है, जो आम है और जिसका इलाज होता है।'),
-      see: L('Talk to a doctor. Tele-MANAS on 14416 is free, at any hour. Thoughts of harming yourself or your baby: call 14416 or 112 now.', 'डॉक्टर से बात करें। Tele-MANAS 14416 मुफ़्त है, किसी भी समय। ख़ुद को या बच्चे को नुक़सान पहुँचाने के विचार आएँ: अभी 14416 या 112 पर कॉल करें।'), go: 'post-mood', ask: L('Low mood after birth', 'डिलीवरी के बाद उदासी') },
+      see: L('Talk to a doctor.', 'डॉक्टर से बात करें।'), go: 'post-mood', ask: L('Low mood after birth', 'डिलीवरी के बाद उदासी') },
     m_hot: { t: L('Hot flushes waking you at night', 'रात को नींद तोड़ने वाले गर्मी के झोंके'), w: L('Common in the years around menopause, and treatable.', 'मेनोपॉज़ के आसपास के सालों में आम है, और इसका इलाज होता है।'),
       w2: L(' You noted hot flushes and poor sleep together on {k} of the last 14 days.', ' पिछले 14 दिनों में से {k} दिन आपने गर्मी के झोंके और ख़राब नींद, दोनों दर्ज कीं।'),   /* Version 39.49: from her diary */
       todo: [L('A cool room, light cotton clothes, and less tea, coffee and spicy food help some women.', 'ठंडा कमरा, हल्के सूती कपड़े, और कम चाय, कॉफ़ी और मसालेदार खाना कुछ महिलाओं की मदद करता है।')],
       see: L('See a doctor this month. They can talk you through treatments, including HRT.', 'इसी महीने डॉक्टर को दिखाएँ। वे HRT समेत इलाज के बारे में समझा सकते हैं।'), go: 'meno-hrt', ask: L('Hot flushes at night', 'रात को गर्मी के झोंके') },
     m_palp: { t: L('A racing heartbeat', 'दिल की धड़कन तेज़ होना'), w: L('Palpitations are common around menopause, but they need a check.', 'मेनोपॉज़ के आसपास धड़कन तेज़ होना आम है, पर इसकी जाँच ज़रूरी है।'),
-      see: L('See a doctor this month. With chest pain, breathlessness or fainting: call 112 now.', 'इसी महीने डॉक्टर को दिखाएँ। सीने में दर्द, साँस फूलना या बेहोशी हो: अभी 112 पर कॉल करें।'), go: 'meno', ask: L('Racing heartbeat', 'तेज़ धड़कन') }
+      see: L('See a doctor this month. With chest pain, breathlessness or fainting: go to the nearest hospital now.', 'इसी महीने डॉक्टर को दिखाएँ। सीने में दर्द, साँस फूलना या बेहोशी हो: अभी सबसे पास के अस्पताल जाएँ।'), go: 'meno', ask: L('Racing heartbeat', 'तेज़ धड़कन') }
   };
 
   /* ---------- reading her diary ---------- */
@@ -278,7 +278,7 @@
   const one = (str) => (S.state.lang === 'en' ? str.replace(/\b1 days\b/g, '1 day') : str);
   const xOf = (f) => X[f.id] || f.ext || {};
   const title = (f) => { const x = xOf(f); return one(tx(fill(f.mid && x.tMid ? x.tMid : (f.old && x.tOld ? x.tOld : x.t), f.vars))); };
-  /* Version 39.0: at "Call 112 now", Help's own call-now line leads (the stricter reviewed line) */
+  /* Version 39.0: at "Go to the nearest hospital now", Help's own call-now line leads (the stricter reviewed line) */
   const lc1 = (str) => (S.state.lang === 'en' ? str.charAt(0).toLowerCase() + str.slice(1) : str);
   const seeOf0 = (f) => { const x = xOf(f); if (f.lv === 'now' && x.seeNow) return t('call_now') + ' ' + lc1(t(x.seeNow)); return f.strong && x.see2 ? tx(fill(x.see2, f.vars2 || f.vars)) : (x.see ? tx(fill(x.see, f.vars)) : ''); };
   /* Version 39.37 (the three-plan walkthrough): trying for a baby, her late period starts with the home test, in Today's "Period late?" words */
@@ -312,7 +312,6 @@
      needs: a gynaecologist, or a doctor (MBBS). The map is the packet's (docs/doctor-ladder-packet-2026-11-03.md, section 2), for the
      doctor to confirm. Low mood leads with Tele-MANAS instead. */
   const DOC_NEXT = { bleed_after_stop: 'gyn', aftersex: 'gyn', spot_between: 'gyn', period_long: 'gyn', flow_heavy: 'gyn', pain_severe: 'gyn', sexpain: 'gyn', gap_long: 'gyn', gap_short: 'gyn', late_now: 'gyn', androgen: 'gyn', disch: 'gyn', m_hot: 'gyn', neck: 'doc', hb_low: 'doc', burn: 'doc', m_palp: 'doc' };
-  const MIND = ['mood', 'pp_mood'];
   /* her own doctor's number if she saved it; else, on the government route, the free government gynaecologist (or doctor); else care
      near her */
   const docNext = (k) => { const lbl = t(k === 'gyn' ? 'explain_gyn' : 'hs_doc'); const n = S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;
@@ -323,16 +322,15 @@
     const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
     const goOk = x.go && (S.routeOwner(x.go) || ['diary', 'help', 'care', 'learn'].indexOf(x.go) >= 0 || x.go.indexOf('topic-') === 0 || x.go.indexOf('a-') === 0);
     const main = [], more = [], tail = [];
-    if (f.lv === 'now') { if (x.call === '14416') main.push('<a class="btn sm xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>'); main.push('<a class="btn sm xp-call" href="tel:112">' + esc(t('call_b')) + ' 112</a>'); main.push(b('data-go="help"', t('explain_numbers'))); }
+    if (f.lv === 'now') { main.push('<a class="btn sm xp-call" href="tel:' + (S.amb ? S.amb() : '108') + '">' + esc(t('call_b')) + ' ' + (S.amb ? S.amb() : '108') + '</a>'); main.push(b('data-go="help"', t('explain_numbers'))); }   /* Version 39.70: the ambulance, 102 in pregnancy */
     else if (f.lv === 'today' || f.lv === 'week' || f.lv === 'month') {
       /* Version 32: "see a doctor today" points to free care near her, not to booking a call (field-test audit 3.4) */
       const md = f.lv === 'today' && S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;   /* Version 39.63: her own doctor first, when she saved the number */
       if (md) main.push('<a class="btn sm primary xp-mydoc" href="tel:' + esc(md) + '">' + esc(t('mydoc_call')) + '</a>');
       const freeGo = f.lv !== 'today' ? null : (S.routeOwner('access-free') ? 'access-free' : (S.routeOwner('access-care') ? 'access-care' : null));   /* Version 39.68: the Govt. services hub is gone; Care near me lists the doctors and hospitals near her */
       if (freeGo) main.push(b('data-go="' + freeGo + '"', t('explain_free'), md ? '' : 'primary'));
-      const mind = f.lv !== 'today' && MIND.indexOf(f.id) >= 0;   /* Version 39.64: low mood, Tele-MANAS first (Mohit, 3 Nov) */
-      if (mind) main.push('<a class="btn sm primary xp-call" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>');
-      if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), mind ? '' : 'primary'));
+      /* Version 39.70 (the doctors' review, part 2): Tele-MANAS is gone, so low mood leads with a Qura doctor too */
+      if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), 'primary'));
       if (f.lv !== 'today' && DOC_NEXT[f.id]) main.push(docNext(DOC_NEXT[f.id]));
       if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
     } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
@@ -420,7 +418,7 @@
   function home() {
     const f = homeF(); if (!f) return '';
     if ((f.lv === 'month' || f.lv === 'week') && pendPair()) return pairCard(f, pendPair());
-    if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(seeOf(f)) + '</p><div class="row wrap">' + (f.ext && f.ext.call === '14416' ? '<a class="btn sm xp-call" href="tel:14416" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 14416</a>' : '') + '<a class="btn sm xp-call" href="tel:112" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' 112</a><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div></div>';
+    if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(seeOf(f)) + '</p><div class="row wrap"><a class="btn sm xp-call" href="tel:' + (S.amb ? S.amb() : '108') + '" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' ' + (S.amb ? S.amb() : '108') + '</a><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div></div>';
     /* Version 39.57 (the all-plans walk): a doctor finding she can answer, and after 4 weeks on Today not "this month" again */
     const doc = f.lv === 'month' || f.lv === 'week'; const sh = D().shown = D().shown || {}; if (doc && !sh[f.key]) { sh[f.key] = S.toISO(S.today()); S.saveQuiet(); }
     const lvT = f.lv === 'month' && sh[f.key] && S.diffDays(S.fromISO(sh[f.key]), S.today()) >= 28 ? t('explain_lv_still') : t('explain_lv_' + f.lv);
@@ -448,7 +446,7 @@
         explain_p: 'Sakhi looks at what you logged and explains it in plain words. This is not a diagnosis. Only a doctor who examines you can say what is causing something.',
         explain_none: 'Nothing unusual in what you logged in the last few weeks.', explain_why: 'Common reasons', explain_do: 'What you can do', explain_see: 'When to see a doctor',
         explain_more: 'Read more', explain_got: 'Got it', explain_got_toast: 'Hidden from Today. It stays on this page.', explain_means: 'What this means', explain_numbers: 'Emergency numbers', explain_free: 'Free doctor or hospital',
-        explain_gyn: 'See a gynaecologist', explain_lv_now: 'Call 112 now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_still: 'Still to see a doctor?', explain_seen_doc: 'I’ve seen a doctor', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
+        explain_gyn: 'See a gynaecologist', explain_lv_now: 'Go to the nearest hospital now', explain_lv_today: 'See a doctor today', explain_lv_week: 'See a doctor this week', explain_lv_month: 'See a doctor this month', explain_lv_still: 'Still to see a doctor?', explain_seen_doc: 'I’ve seen a doctor', explain_lv_watch: 'Keep an eye on it', explain_lv_ok: 'Within the usual range',
         explain_how: 'How Sakhi works out your numbers', explain_h_day: 'Cycle day: day 1 is the day your period starts. Today is day {n}.', explain_h_gap: 'Gap: the days from one period start to the next.',
         explain_h_usual: 'Usual gap: 21 to 35 days, or 21 to 45 in the first few years of periods.', explain_h_likely: 'Likely next period: shown only when your last gaps differ by 21 days or less. It runs from your shortest gap minus 2 days to your longest gap plus 2 days.',
         explain_h_out: 'Left out of the maths: gaps touched by hormonal contraception, a pregnancy or the year after a birth, and a second start less than 10 days after the last one.',
@@ -464,7 +462,7 @@
         explain_p: 'Sakhi आपकी दर्ज की गई बातों को देखकर आसान भाषा में समझाती है। यह diagnosis नहीं है। कारण क्या है, यह सिर्फ़ जाँच करने वाली डॉक्टर बता सकती हैं।',
         explain_none: 'पिछले कुछ हफ़्तों में आपने जो दर्ज किया, उसमें कुछ असामान्य नहीं है।', explain_why: 'आम कारण', explain_do: 'आप क्या कर सकती हैं', explain_see: 'डॉक्टर को कब दिखाएँ',
         explain_more: 'और पढ़ें', explain_got: 'समझ गई', explain_got_toast: '“आज” से हटा दिया। यह इस पन्ने पर रहेगा।', explain_means: 'इसका मतलब क्या है', explain_numbers: 'आपातकालीन नंबर', explain_free: 'मुफ़्त डॉक्टर या अस्पताल',
-        explain_gyn: 'स्त्री रोग विशेषज्ञ को दिखाएँ', explain_lv_now: 'अभी 112 पर कॉल करें', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_still: 'अभी डॉक्टर को दिखाना बाक़ी है?', explain_seen_doc: 'मैं डॉक्टर को दिखा चुकी हूँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
+        explain_gyn: 'स्त्री रोग विशेषज्ञ को दिखाएँ', explain_lv_now: 'अभी सबसे पास के अस्पताल जाएँ', explain_lv_today: 'आज ही डॉक्टर को दिखाएँ', explain_lv_week: 'इसी हफ़्ते डॉक्टर को दिखाएँ', explain_lv_month: 'इसी महीने डॉक्टर को दिखाएँ', explain_lv_still: 'अभी डॉक्टर को दिखाना बाक़ी है?', explain_seen_doc: 'मैं डॉक्टर को दिखा चुकी हूँ', explain_lv_watch: 'ध्यान रखें', explain_lv_ok: 'सामान्य दायरे में',
         explain_how: 'Sakhi आपके नंबर कैसे निकालती है', explain_h_day: 'चक्र का दिन: पीरियड शुरू होने का दिन, दिन 1 है। आज दिन {n} है।', explain_h_gap: 'अंतर: एक पीरियड की शुरुआत से अगले पीरियड की शुरुआत तक के दिन।',
         explain_h_usual: 'आम अंतर: 21 से 35 दिन, या पीरियड के शुरुआती कुछ सालों में 21 से 45 दिन।', explain_h_likely: 'अगला संभावित पीरियड: तभी दिखता है जब आपके पिछले अंतर आपस में 21 दिन से ज़्यादा अलग न हों। यह आपके सबसे छोटे अंतर से 2 दिन पहले से, सबसे लंबे अंतर के 2 दिन बाद तक होता है।',
         explain_h_out: 'गिनती से बाहर: हॉर्मोन वाले गर्भनिरोध, गर्भ या डिलीवरी के बाद के पहले साल से जुड़े अंतर, और पिछली शुरुआत के 10 दिन के अंदर दर्ज की गई दूसरी शुरुआत।',
@@ -526,7 +524,7 @@
   const signOn = () => { if (!S.canSave() || S.state.settings.discreet) return false; const seen = D().seen;
     return open(findings()).some((x) => !seen[x.key] && !x.quiet && ['now', 'today', 'week', 'month'].indexOf(x.lv) >= 0 && !(x.lv !== 'now' && x.lv !== 'today' && S.plan && S.plan.docOwns && S.plan.docOwns(x.id))); };
   S.explain = { signOn: signOn, docNext: docNext, openIds: (ids) => { if (!S.canSave()) return false; const seen = D().seen; return open(findings()).some((f) => ids.indexOf(f.id) >= 0 && !seen[f.key] && !f.quiet); },   /* Version 39.57 */
-  findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (xOf(f).call || '112') : null }),
+  findings: findings, top: topOpen, diaryCards: diaryCards, wire: wireActs, seenIds: seenIds, pairsPending: pairsPending, label: (f) => ({ t: title(f), lv: t('explain_lv_' + f.lv), hue: LV_HUE[f.lv], call: f.lv === 'now' ? (S.amb ? S.amb() : '108') : null }),   /* Version 39.70 */
     /* the card's question for her report, in the language the report is drawn in (review ENGINE-06) */
     question: (q) => (!q ? null : (q.k ? t(q.k) : (() => { const f = findings().find((x) => x.key === q.f); return f ? title(f) : null; })())) };
 })(window.Saathi);

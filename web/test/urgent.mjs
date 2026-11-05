@@ -2,7 +2,8 @@
 // claude.ai/artifact/Y4Kom9DHfyiw4buDUQRi8B; MODULE_API section 73). Until now only a pregnant woman's search put the danger
 // guide first; for everyone else "bahut bleeding ho rahi hai aur chakkar aa raha hai" opened After an abortion. This file checks:
 //   1 Help's "Call 112 now" signs in her words (English, Hinglish, Hindi) put one card first: Help's heading and the sign she
-//     typed, Call 112 now and Help and safety; thoughts of harm: Tele-MANAS 14416 first, then 112;
+//     typed, Call 112 now and Help and safety. Version 39.70 (the doctors' review, part 2): the heading is "Go to the nearest
+//     hospital now if" and the button calls her ambulance (108, or 102 in pregnancy); words about harming herself show no card;
 //   2 words that are not a sign show no card: bleeding or dizziness alone, "khoon ki kami", a blood test, a faint test line;
 //   3 its buttons: tel: links and Help; Learn's search shows it too;
 //   4 every stage: after the birth, midlife, and pregnancy (the danger guide still the quick answer under it), discreet mode;
@@ -70,22 +71,21 @@ const search = async (page, q, id) => {
 /* ---------- 1 and 2: signs and near misses, at the cycle stage ---------- */
 {
   const a = await open({});
-  const S1B = await t(a.page, 's1b'), S1A = await t(a.page, 's1a'), CALL = await t(a.page, 'call_now'), HARM = await t(a.page, 'hs_harm'), HARM_S = await t(a.page, 'hs_harm_s');
+  const S1B = await t(a.page, 's1b'), S1A = await t(a.page, 's1a'), CALL = await t(a.page, 'call_now');
   for (const q of ['bahut bleeding ho rahi hai aur chakkar aa raha hai', 'very heavy bleeding and I feel faint', 'बहुत खून आ रहा है और चक्कर आ रहे हैं',
     'pad har ghante bhig raha hai, saans phool rahi hai', 'period bahut zyada aa raha hai aur aankhon ke aage andhera', 'bleeding with dizziness', 'spotting and I fainted']) {
     const r = await search(a.page, q);
-    check('1 "' + q + '": the card first, Help\'s heading and the bleeding sign, Call 112 now and Help', r.on && r.k === 's1b' && r.first && r.h === CALL && r.sign === S1B && r.tels.join() === 'tel:112' && r.help, r);
+    check('1 "' + q + '": the card first, Help\'s heading and the bleeding sign, Call 108 and Help', r.on && r.k === 's1b' && r.first && r.h === CALL && CALL === 'Go to the nearest hospital now if' && r.sign === S1B && r.tels.join() === 'tel:108' && r.help, r);
   }
   await a.page.screenshot({ path: path.join(SHOTS, '1-bleed-dizzy.png') });
   for (const q of ['period late hai aur ek taraf pet mein dard', 'test positive and shoulder pain', 'period miss ho gaya aur behosh ho gayi', 'late period, one-sided pain']) {
     const r = await search(a.page, q);
-    check('1 "' + q + '": the card with the late-period sign', r.on && r.k === 's1a' && r.first && r.sign === S1A && r.tels.join() === 'tel:112', r);
+    check('1 "' + q + '": the card with the late-period sign', r.on && r.k === 's1a' && r.first && r.sign === S1A && r.tels.join() === 'tel:108', r);
   }
   for (const q of ['I want to die', 'mujhe khudkushi ke khayal aate hain', 'मैं मर जाना चाहती हूँ', 'thoughts of harming myself']) {
     const r = await search(a.page, q);
-    check('1 "' + q + '": Tele-MANAS 14416 first, then 112, under Help\'s harm heading', r.on && r.k === 'harm' && r.first && r.h === HARM && r.sign === HARM_S && r.tels.join() === 'tel:14416,tel:112' && r.help, r);
+    check('1 "' + q + '": no card (Version 39.70, the doctors\' answer 2: nothing for thoughts of harm)', !r.on, r);
   }
-  await a.page.screenshot({ path: path.join(SHOTS, '1-harm.png') });
   for (const q of ['bleeding kitne din normal hai', 'khoon ki kami se chakkar aata hai', 'faint line on pregnancy test', 'blood test report', 'chakkar aate hain', 'heavy bleeding',
     'period late', 'period mein bahut dard ho raha hai aur chakkar', 'this pain is killing me', 'blood group', 'faint t line and late period', 'irregular periods']) {
     const r = await search(a.page, q);
@@ -108,9 +108,9 @@ const search = async (page, q, id) => {
   const r1 = await search(a.page, 'bleeding ho rahi hai');
   check('4 pregnancy: bleeding alone keeps today\'s quick answer (the danger guide) and no card', !r1.on && r1.qa === 'pregnancy.danger-signs-call-112', r1);
   const r2 = await search(a.page, 'bleeding aur chakkar aa raha hai');
-  check('4 pregnancy: bleeding and dizziness, the card first, and the danger guide still the quick answer under it', r2.on && r2.k === 's1b' && r2.first && r2.qa === 'pregnancy.danger-signs-call-112', r2);
+  check('4 pregnancy: bleeding and dizziness, the card first, Call 102, and the danger guide still the quick answer under it', r2.on && r2.k === 's1b' && r2.first && r2.tels.join() === 'tel:102' && r2.qa === 'pregnancy.danger-signs-call-112', r2);
   const r3 = await search(a.page, 'baby ko nuksan pahunchane ke khayal');
-  check('4 pregnancy: thoughts of harming her baby, Tele-MANAS first', r3.on && r3.k === 'harm' && r3.tels[0] === 'tel:14416', r3);
+  check('4 pregnancy: thoughts of harming her baby show no card (Version 39.70)', !r3.on, r3);
   await done(a);
 }
 {
@@ -136,11 +136,11 @@ const search = async (page, q, id) => {
 {
   const a = await open({ seed: { lang: 'hi' }, w: 360 });
   const r = await search(a.page, 'bahut khoon aa raha hai aur chakkar aa rahe hain');
-  check('5 Hindi: Help\'s Hindi heading and sign', r.on && r.h === await t(a.page, 'call_now') && /^अभी 112/.test(r.h) && r.sign === await t(a.page, 's1b') && /[ऀ-ॿ]/.test(r.sign), r);
+  check('5 Hindi: Help\'s Hindi heading and sign', r.on && r.h === await t(a.page, 'call_now') && /^अभी सबसे पास के अस्पताल जाएँ/.test(r.h) && r.sign === await t(a.page, 's1b') && /[ऀ-ॿ]/.test(r.sign), r);
   check('5 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
   await a.page.screenshot({ path: path.join(SHOTS, '5-hindi-360.png') });
   const h = await search(a.page, 'मैं मर जाना चाहती हूँ');
-  check('5 Hindi at 360 px: the harm card\'s 3 buttons fit', h.on && h.k === 'harm' && await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), h);
+  check('5 Hindi at 360 px: no card for words about harm, and no sideways scroll', !h.on && await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), h);
   await done(a);
 }
 

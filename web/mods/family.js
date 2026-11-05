@@ -21,8 +21,8 @@
         hi: 'डिलीवरी के बाद माँ के शरीर को ठीक होने में लगभग छह हफ़्ते लगते हैं। उसे आराम, अच्छा खाना जैसे दाल, दूध, अंडे या पनीर, हरी सब्ज़ियाँ और फल, और ख़ूब पानी चाहिए। घर का कुछ काम आप सँभाल लें, ताकि वह बच्चे को दूध पिला सके और जब बच्चा सोए तब सो सके। अगर एक घंटे में पैड भीग जाए, बुखार आए, बदबू आए, या पेट में तेज़ दर्द हो, तो उसी दिन डॉक्टर के पास ले जाएँ।' } },
     { id: 'mood', who: 'family_w_all', st: ['post'],
       h: { en: 'Her mood after the baby', hi: 'बच्चे के बाद उसका मन' },
-      p: { en: 'Many new mothers cry easily or feel low in the first two weeks. That\'s common, and it usually passes. If she\'s sad most of the day for more than two weeks, can\'t sleep even when the baby sleeps, or says she can\'t cope, she needs help. This is an illness, not weakness, and it can be treated. Tele-MANAS 14416 is free. If she talks about harming herself or the baby, call 112 now.',
-        hi: 'बहुत सी नई माँएँ पहले दो हफ़्तों में जल्दी रो पड़ती हैं या उदास रहती हैं। यह आम है और अक्सर अपने आप ठीक हो जाता है। अगर दो हफ़्ते से ज़्यादा वह दिन भर उदास रहे, बच्चे के सोने पर भी सो न पाए, या कहे कि उससे सँभल नहीं रहा, तो उसे मदद चाहिए। यह एक बीमारी है, कमज़ोरी नहीं, और इसका इलाज है। Tele-MANAS 14416 मुफ़्त है। अगर वह ख़ुद को या बच्चे को नुक़सान पहुँचाने की बात करे, तो अभी 112 पर कॉल करें।' } },
+      p: { en: 'Many new mothers cry easily or feel low in the first two weeks. That\'s common, and it usually passes. If she\'s sad most of the day for more than two weeks, can\'t sleep even when the baby sleeps, or says she can\'t cope, she needs help. This is an illness, not weakness, and it can be treated.',
+        hi: 'बहुत सी नई माँएँ पहले दो हफ़्तों में जल्दी रो पड़ती हैं या उदास रहती हैं। यह आम है और अक्सर अपने आप ठीक हो जाता है। अगर दो हफ़्ते से ज़्यादा वह दिन भर उदास रहे, बच्चे के सोने पर भी सो न पाए, या कहे कि उससे सँभल नहीं रहा, तो उसे मदद चाहिए। यह एक बीमारी है, कमज़ोरी नहीं, और इसका इलाज है। अगर वह ख़ुद को या बच्चे को नुक़सान पहुँचाने की बात करे, तो अभी सबसे पास के अस्पताल जाएँ।' } },
     { id: 'pmos', who: 'family_w_all', st: ['cycle', 'ttc'],
       h: { en: 'PMOS is nobody\'s fault', hi: 'PMOS किसी की ग़लती नहीं' },
       p: { en: 'PMOS (earlier called PCOS) is a common hormone condition. It can bring irregular periods, pimples, extra hair and weight gain, and getting pregnant can take longer. It isn\'t caused by anything she did, so please don\'t blame her. Regular meals, a daily walk and good sleep help a lot, and many women with PMOS have babies. Go with her to the doctor and share the work at home.',
@@ -66,7 +66,7 @@
   ];
   /* Version 39.7 (journey audit P3-15): the signs to go at once come from core's one list (Help and the husband's page read it) */
   function danger() {
-    return S.dangerLine ? L('Take her to hospital at once for any of these: ' + S.dangerLine('preg', 'en') + '. If you cannot get there, call 112, 108 or 102.', 'इनमें से कुछ भी हो तो उन्हें तुरंत अस्पताल ले जाएँ: ' + S.dangerLine('preg', 'hi') + '। ख़ुद न पहुँच पाएँ तो 112, 108 या 102 पर कॉल करें।')
+    return S.dangerLine ? L('Take her to hospital at once for any of these: ' + S.dangerLine('preg', 'en') + '. If you cannot get there, call 108 for an ambulance (102 in pregnancy).', 'इनमें से कुछ भी हो तो उन्हें तुरंत अस्पताल ले जाएँ: ' + S.dangerLine('preg', 'hi') + '। ख़ुद न पहुँच पाएँ तो एम्बुलेंस के लिए 108 पर कॉल करें (गर्भ में 102)।')
       : L('Take her to hospital at once for bleeding, a bad headache or blurred vision, a swollen face, fits, fever, or water leaking.', 'ब्लीडिंग, तेज़ सिरदर्द या धुंधला दिखना, चेहरे पर सूजन, दौरे, बुखार, या पानी जाना हो तो उन्हें तुरंत अस्पताल ले जाएँ।');
   }
   const pregWeek = () => { if (!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant())) return null; const pi = S.preg && S.preg.info ? S.preg.info() : null; return pi && pi.weeks != null ? pi.weeks : null; };

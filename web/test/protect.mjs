@@ -5,10 +5,12 @@
 //   3 For you: none on a shared phone (discreet mode); after a loss, the loss pages;
 //   4 signals her records already hold reach Today: bleeding a year after the last one at 45+, the 12-month question,
 //     pregnancy-log BP and Hb, the after-birth check's warning signs, headache and swelling in either order;
-//   5 the stricter reviewed line wins: bleeding in pregnancy and "baby moving less" are "Call 112 now";
+//   5 the stricter reviewed line wins: bleeding in pregnancy and "baby moving less" are "Call 112 now" (Version 39.70: "Go to the
+//     nearest hospital now");
 //   6 discreet mode shows that an urgent signal exists, in plain words, with call buttons or behind the PIN;
 //   7 when a pregnancy ends: check-up reminders stop, a loss asks once about tablet reminders, a plan rests 6 weeks;
-//   8 Help: a row for thoughts of harm; Tele-MANAS and 181 near the top of the numbers;
+//   8 Help: a row for thoughts of harm; Tele-MANAS and 181 near the top of the numbers (Version 39.70, the doctors' answers 2 and
+//     3: no row for harm, and the numbers are the ambulances, 104 and 1097);
 //   9 joining asks about the pill; Today never drops a tablet; a long plan folds into one row;
 //  10 reminders show plain words on the phone unless she turns the words on;
 //  11 small fixes: a claimed PMMVY ticks the plan, no kick-count step, no supplements card, "New this week" ends at 12
@@ -133,7 +135,7 @@ const errsAll = [];
   errsAll.push(...a.errs, ...b.errs); await b.ctx.close();
   const c = await open({ seed: Object.assign({}, PREG(32), { mods: { preg: { bp: [{ id: 'b1', d: ago(1), s: 164, di: 112 }], hb: [], sug: [], w: [] } } }) });
   const tc2 = await vtext(c.page);
-  check('4 pregnant, a BP of 164/112 yesterday: Today says to go to hospital now', /Your BP: 164\/112/.test(tc2) && /go to hospital now/.test(tc2), tc2.slice(0, 700));
+  check('4 pregnant, a BP of 164/112 yesterday: Today says to go to hospital now', /Your BP: 164\/112/.test(tc2) && /go to the nearest hospital now/.test(tc2), tc2.slice(0, 700));
   check('4 ... as an urgent card above the round buttons', await c.page.evaluate(() => { const u = document.querySelector('#view .xp-home-now'); const r = document.querySelector('#view .actions, #view .rbtns, #view [data-log]'); return !!u && (!r || u.getBoundingClientRect().top < r.getBoundingClientRect().top); }));
   await shot(c.page, 'preg-bp-today'); errsAll.push(...c.errs); await c.ctx.close();
   const d = await open({ seed: Object.assign({}, PREG(28), { mods: { preg: { bp: [], hb: [{ id: 'h1', d: ago(0), v: 6.4 }], sug: [], w: [] } } }) });
@@ -144,7 +146,7 @@ const errsAll = [];
   errsAll.push(...d.errs); await d.ctx.close();
   const e = await open({ seed: { situation: { deliveredOn: ago(9), breastfeeding: true }, events: [], mods: { post: { rec: { [ago(1)]: Object.assign({}, REC_OK, { danger: ['soak'] }) } } } } });
   const te = await vtext(e.page);
-  check('4 after a birth, yesterday\'s "soaking a pad" in the recovery check is an urgent card on Today, with a call button', /Heavy bleeding/.test(te) && /get to hospital now/.test(te) && (await has(e.page, '#view .xp-home-now a[href="tel:112"]')), te.slice(0, 600));
+  check('4 after a birth, yesterday\'s "soaking a pad" in the recovery check is an urgent card on Today, with a call button', /Heavy bleeding/.test(te) && /go to the nearest hospital now/i.test(te) && (await has(e.page, '#view .xp-home-now a[href="tel:108"]')), te.slice(0, 600));
   errsAll.push(...e.errs); await e.ctx.close();
   const f = await open({ seed: Object.assign({}, PREG(30), { daily: { [ago(2)]: ['d_headache'], [ago(1)]: ['d_swell'] } }) });
   check('4 pregnant, a headache one day and swelling the next: "Headache with swelling"', /Headache with swelling/.test(await vtext(f.page)));
@@ -155,7 +157,7 @@ const errsAll = [];
 {
   const a = await open({ seed: Object.assign({}, PREG(12), { daily: { [ago(0)]: ['d_pbleed'] } }) });
   const ta = await vtext(a.page);
-  check('5 bleeding in pregnancy is "Call 112 now", leading with Help\'s line', /Call 112 now if in pregnancy: bleeding/.test(ta), ta.slice(0, 600));
+  check('5 bleeding in pregnancy is "Go to the nearest hospital now", leading with Help\'s line', /Go to the nearest hospital now if in pregnancy: bleeding/.test(ta), ta.slice(0, 600));
   await a.ctx.close();
   const b = await open({ seed: PREG(31) });
   await b.page.evaluate(() => window.Saathi.openDay ? window.Saathi.openDay() : null); await settle(b.page, 300);
@@ -163,7 +165,7 @@ const errsAll = [];
   const chipAt31 = await b.page.evaluate(() => !!document.querySelector('[data-sym="d_moveless"]'));
   await b.page.evaluate(() => { const S = window.Saathi; const k = S.toISO(S.today()); S.state.daily[k] = (S.state.daily[k] || []).concat(['d_moveless']); S.save(); }); await go(b.page, 'home');
   const tb = await vtext(b.page);
-  check('5 at 31 weeks, "Baby moving less" is "Call 112 now"', /Baby moving less than usual/.test(tb) && /Call 112 now/.test(tb), tb.slice(0, 600));
+  check('5 at 31 weeks, "Baby moving less" is "Go to the nearest hospital now"', /Baby moving less than usual/.test(tb) && /Go to the nearest hospital now/.test(tb), tb.slice(0, 600));
   errsAll.push(...a.errs, ...b.errs); await b.ctx.close();
   const c = await open({ seed: PREG(31), hash: '#diary' });
   await c.page.evaluate(() => { const b0 = [...document.querySelectorAll('#view button')].find((x) => /symptom/i.test(x.textContent)); if (b0) b0.click(); }); await settle(c.page, 300);
@@ -181,7 +183,7 @@ const errsAll = [];
   const a = await open({ seed: Object.assign({}, PREG(12), { daily: { [ago(0)]: ['d_pbleed'] }, settings: { discreet: true, toursAuto: false, notify: true } }) });
   const ta = await vtext(a.page);
   check('6 discreet: bleeding in pregnancy shows "Something you noted needs help now"', /Something you noted needs help now/.test(ta), ta.slice(0, 500));
-  check('6 ... with call buttons for 112, 108 and 102', (await a.page.$$eval('#view .disc-urg a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')))).join() === 'tel:112,tel:108,tel:102');
+  check('6 ... with call buttons for the ambulances, 102 first in pregnancy (Version 39.70)', (await a.page.$$eval('#view .disc-urg a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')))).join() === 'tel:102,tel:108');
   check('6 ... and no health word on Today', !/bleed|pregnan|garbh/i.test(ta), ta.match(/.{0,40}(bleed|pregnan).{0,30}/i));
   await shot(a.page, 'discreet-now'); errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { events: [{ d: ago(40), t: 'start' }, { d: ago(35), t: 'end' }, { d: ago(5), t: 'start', pads: 'pads_4' }], settings: { discreet: true, toursAuto: false, notify: true, pinHash: null } } });
@@ -234,12 +236,11 @@ const errsAll = [];
   const a = await open({ seed: {} });
   await a.page.evaluate(() => { const b = document.querySelector('.topbar [data-help], #help-btn, [data-go="help-sheet"], .help-btn'); if (b) b.click(); else if (window.Saathi.openHelpSheet) window.Saathi.openHelpSheet(); }); await settle(a.page, 300);
   if (!(await has(a.page, '#hs-harm'))) { await a.page.evaluate(() => { const b = [...document.querySelectorAll('button')].find((x) => /^\s*Help\s*$/.test(x.textContent)); if (b) b.click(); }); await settle(a.page, 300); }
-  check('8 Help has a row for thoughts of harming myself or my baby', await has(a.page, '#hs-harm'));
-  if (await has(a.page, '#hs-harm')) { await tap(a.page, '#hs-harm'); const nums = await a.page.$$eval('.sos-row .sos-n', (x) => x.map((y) => y.textContent.trim())); check('8 ... it gives Tele-MANAS and 112, nothing else to do', nums.indexOf('14416') >= 0 && nums.indexOf('112') >= 0 && nums.length <= 3, nums); }
+  check('8 Help has no row for thoughts of harm (Version 39.70, the doctors\' answer 2), and leads with the nearest hospital', !(await has(a.page, '#hs-harm')) && await has(a.page, '#hs-112[href="tel:108"]'));
   await a.page.evaluate(() => { const c = document.querySelector('.sheet-x, [data-close], .sheet .x'); if (c) c.click(); }); await settle(a.page, 200);
   await go(a.page, 'help'); await tap(a.page, '#sos-btn');
   const order = await a.page.$$eval('.sos-row .sos-n', (x) => x.map((y) => y.textContent.trim()));
-  check('8 the emergency numbers put Tele-MANAS and 181 near the top', order[0] === '112' && order.indexOf('14416') <= 2 && order.indexOf('181') <= 4, order);
+  check('8 the emergency numbers are the ambulances, 104 and 1097 (Version 39.70)', order.join() === '108,102,104,1097', order);
   errsAll.push(...a.errs); await a.ctx.close();
 }
 
@@ -372,14 +373,14 @@ const pinIn = async (page, pin) => { for (const k of pin) await tap(page, '#pg-p
   const harm = Object.assign({}, REC_OK, { mood: 'harm' }); const faint = Object.assign({}, REC_OK, { danger: ['faint'] });
   const a = await open({ seed: { situation: { deliveredOn: ago(20), breastfeeding: true }, events: [], mods: { post: { rec: { [ago(0)]: harm } } } } });
   const hrefs = await a.page.$$eval('#view .xp-home-now a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')));
-  check('13 DP-5 thoughts of harm: Today\'s card calls 14416 first, then 112', hrefs.join() === 'tel:14416,tel:112', hrefs);
+  check('13 DP-5 an old harm answer: no urgent card on Today (Version 39.70, the doctors\' answer 2)', !hrefs.length, hrefs);
   await a.page.evaluate(() => { window.Saathi.state.settings.discreet = true; window.Saathi.save(); window.Saathi.render(); }); await settle(a.page, 400);
   const dh = await a.page.$$eval('#view .disc-urg a[href^="tel:"]', (x) => x.map((y) => y.getAttribute('href')));
-  check('13 DP-5 ... and on a shared phone too', dh.join() === 'tel:14416,tel:112', dh);
+  check('13 DP-5 ... and none on a shared phone either', !dh.length, dh);
   errsAll.push(...a.errs); await a.ctx.close();
   const b = await open({ seed: { situation: { deliveredOn: ago(10), breastfeeding: true }, events: [], mods: { post: { rec: { [ago(0)]: faint } } } } });
   const fl = await b.page.evaluate(() => window.Saathi.post.flags().map((x) => x.see.en));
-  check('13 XS-4 fainting after the birth leads with "Call 112 now, or go to the nearest hospital"', fl.some((x) => /^Call 112 now, or go to the nearest hospital\. Dizziness or fainting/.test(x)), fl);
+  check('13 XS-4 fainting after the birth leads with "Go to the nearest hospital now"', fl.some((x) => /^Go to the nearest hospital now\. Dizziness or fainting/.test(x)), fl);
   errsAll.push(...b.errs); await b.ctx.close();
   const c = await open({ seed: { situation: { deliveredOn: ago(10), breastfeeding: true }, events: [], mods: { post: { rec: { [ago(1)]: faint, [ago(0)]: REC_OK } } } } });
   check('13 XS-9 yesterday\'s warning goes once today\'s check says "None of these"', await c.page.evaluate(() => !window.Saathi.post.flags().length));
@@ -498,7 +499,7 @@ const pinIn = async (page, pin) => { for (const k of pin) await tap(page, '#pg-p
 {
   const a = await open({ seed: Object.assign({}, PREG(12), { lang: 'hi', daily: { [ago(0)]: ['d_pbleed'] } }), lang: 'hi', w: 360, h: 800 });
   const ta = await vtext(a.page);
-  check('12 Hindi: bleeding in pregnancy leads with "अभी 112 पर कॉल करें"', /अभी 112 पर कॉल करें अगर गर्भ में/.test(ta), ta.slice(0, 400));
+  check('12 Hindi: bleeding in pregnancy leads with "अभी सबसे पास के अस्पताल जाएँ"', /अभी सबसे पास के अस्पताल जाएँ अगर गर्भ में/.test(ta), ta.slice(0, 400));
   check('12 360 px: no sideways scroll', await noScroll(a.page));
   errsAll.push(...a.errs); await a.ctx.close();
 }

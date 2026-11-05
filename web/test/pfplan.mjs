@@ -247,9 +247,9 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   await done(a);
   a = await open({ seed: pel(5), hash: '#intimate-prolapse' });
   const g = await view(a.page);
-  check('5.9 the guide: Call 112 now for sudden loss of bladder or bowel control with numbness (a new line for the doctor), and her plan for this', /Call 112 now if/.test(g) && /Suddenly unable to control your bladder or bowel/.test(g) && await has(a.page, '.pl-for') && await has(a.page, 'a[href="tel:112"]'), g.slice(0, 500));
+  check('5.9 the guide: Go to the nearest hospital now (Version 39.70; Call 108) for sudden loss of bladder or bowel control with numbness (a new line for the doctor), and her plan for this', /Go to the nearest hospital now if/.test(g) && /Suddenly unable to control your bladder or bowel/.test(g) && await has(a.page, '.pl-for') && await has(a.page, 'a[href="tel:108"]') && !(await has(a.page, 'a[href="tel:112"]')), g.slice(0, 500));
   await go(a.page, 'help');
-  check('5.10 the same line in Help\'s "Call 112 now if"', /Suddenly unable to control your bladder or bowel/.test(await view(a.page)));
+  check('5.10 the same line in Help\'s "Go to the nearest hospital now if"', /Suddenly unable to control your bladder or bowel/.test(await view(a.page)));
   await done(a);
 }
 
@@ -325,7 +325,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   await done(a);
   a = await open({ seed: pel(B(90), { p: { endSeen: ago(3), log: { [ago(4)]: { lk: 'some', ci: 1 } } } }) });
   const e = await txt(a.page, '.pl-sl-pf');
-  check('8.4 after 12 weeks still leaking: "A doctor can treat this", the treatments after exercises, Tele-MANAS', /Still leaking or heavy\?/.test(e) && /ring pessary/.test(e) && /Tele-MANAS 14416/.test(e), e);
+  check('8.4 after 12 weeks still leaking: "A doctor can treat this", the treatments after exercises, and feeling low: talk to your doctor (Version 39.70: no Tele-MANAS)', /Still leaking or heavy\?/.test(e) && /ring pessary/.test(e) && /Feeling low or alone because of this\? Talk to your doctor\./.test(e) && !/Tele-MANAS|14416/.test(e), e);
   await done(a);
   a = await open({ seed: pel(B(90), { p: { endSeen: ago(3), log: { [ago(4)]: { lk: 'never', ci: 1 } } } }) });
   check('8.5 not when she no longer leaks', !(await has(a.page, '.pl-pf-end')));
@@ -340,13 +340,13 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   check('9.1 this week\'s chapter is one row under her steps', /This week’s chapter Find your pelvic floor/.test(await txt(a.page, '.pl-pf-les')));
   await tap(a.page, '.pl-pf-les');
   let v = await view(a.page);
-  check('9.2 chapter 1: the right squeeze, the full let-go, the mistakes, if it hurts, Tele-MANAS', /chapter 1 of 12/i.test(v) && /Then let go fully/.test(v) && /Holding your breath/.test(v) && /Tele-MANAS 14416/.test(v), v.slice(0, 600));
+  check('9.2 chapter 1: the right squeeze, the full let-go, the mistakes, if it hurts, talk to your doctor (Version 39.70)', /chapter 1 of 12/i.test(v) && /Then let go fully/.test(v) && /Holding your breath/.test(v) && /Talk to your doctor\./.test(v) && !/Tele-MANAS|14416/.test(v), v.slice(0, 600));
   await tap(a.page, '#pf-les-done');
   check('9.3 Done marks it read, and the row goes', !(await has(a.page, '.pl-pf-les')));
   const ids16 = await a.page.evaluate(() => window.Saathi.pfplan.lesson.ids());
   check('9.4 15 chapters: 12 for every track, 3 more after "a doctor said prolapse" (Version 39.68: the doctors removed one)', ids16.length === 15 && ids16.filter((x) => /^f\d+$/.test(x)).length === 12 && ids16.filter((x) => /^v\d$/.test(x)).length === 3 && ids16.indexOf('v2') < 0, ids16);
   await a.page.evaluate(() => { window.Saathi.mem.pfLes = 'f10'; location.hash = 'pf-lesson'; }); await settle(a.page, 400);
-  check('9.5 the warning-signs chapter has Call 112 now', /Call 112 now if you suddenly can’t control your bladder or bowel/.test(await view(a.page)) && await has(a.page, 'a[href="tel:112"]'));
+  check('9.5 the warning-signs chapter has Go to the nearest hospital now, with Call 108 (Version 39.70)', /Go to the nearest hospital now if you suddenly can’t control your bladder or bowel/.test(await view(a.page)) && await has(a.page, 'a[href="tel:108"]'));
   await go(a.page, 'pf-urge');
   check('9.6 When the urge comes: stop, squeeze, breathe, walk calmly', /Stop\. Stand still/.test(await view(a.page)) && /Walk calmly/.test(await view(a.page)));
   const hi = await a.page.evaluate(() => { const o = window.Saathi.pfplan.lesson; window.Saathi.state.lang = 'hi'; const r = o.ids().map((id) => o.title(id)); window.Saathi.state.lang = 'en'; return r; });
@@ -601,7 +601,7 @@ async function answerAll(page) {
 
 // ---------- 18 the phone test's fixes (3 Nov, Mohit's Flip5: "fix all 6") ----------
 const ink = (page) => page.evaluate(() => { const c = document.querySelector('#view .card.urgent'); if (!c) return null; const pr = document.createElement('div'); pr.style.background = 'var(--ink)'; document.body.appendChild(pr);
-  const want = getComputedStyle(pr).backgroundColor; pr.remove(); return { dark: c.classList.contains('dark'), bg: getComputedStyle(c).backgroundColor, want: want, tel: !!c.querySelector('a[href="tel:112"]') }; });
+  const want = getComputedStyle(pr).backgroundColor; pr.remove(); return { dark: c.classList.contains('dark'), bg: getComputedStyle(c).backgroundColor, want: want, tel: !!c.querySelector('a[href="tel:108"]') }; });   /* Version 39.70: her ambulance */
 const tabOn = (page) => page.$eval('#tabbar button.on', (b) => b.dataset.go).catch(() => null);
 {
   /* P1: her check-in said "Partly" after her first set; the two sets after it make the step done and her day complete */

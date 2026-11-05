@@ -175,7 +175,7 @@ for (const [nm, sd, ab] of STAGES) {
   else if (!(await has(p, '#help-btn'))) { check('4 ' + nm + ': the Help button on Today', false, { hash: await p.evaluate(() => location.hash), v: (await view(p)).slice(0, 160), top: await txt(p, '#topbar') }); await done(a); continue; }
   else {
     await tap(p, '#help-btn');
-    check('4 ' + nm + ': Help from Today: 112, and no Private help', /112/.test(await txt(p, '#sheet-root')) && !(await has(p, '#sheet-root .hs-priv')) && !/Private help/.test(await txt(p, '#sheet-root')));
+    check('4 ' + nm + ': Help from Today: the nearest hospital (Version 39.70), and no Private help', /Go to the nearest hospital now/.test(await txt(p, '#sheet-root')) && !(await has(p, '#sheet-root .hs-priv')) && !/Private help/.test(await txt(p, '#sheet-root')));
     await p.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await settle(p);
   }
   for (const r of ['intimate-safety', 'intimate-sti']) { await go(p, r); check('4 ' + nm + ': ' + r + ' lands on Explore', (await p.evaluate(() => location.hash)) === '#care'); }
@@ -231,7 +231,7 @@ check('5 tracking, 28: what a cycle is; never the girls\' guide', (await startHe
   const a = await open({ seed: Object.assign({}, W.kavita, { lang: 'hi' }), hash: '#care' }); const p = a.page;
   check('6 Hindi: Explore at 360 px, no sideways scroll, the library row in Hindi', await noScroll(p) && /सभी विषय और गाइड/.test(await view(p)));
   await go(p, 'library'); check('6 Hindi: the library at 360 px', await noScroll(p) && /और सवाल/.test(await view(p)));
-  await go(p, 'home'); await tap(p, '#help-btn'); check('6 Hindi: Help from Today at 360 px, with no Private help (Version 39.68)', /112/.test(await txt(p, '#sheet-root')) && !/निजी मदद/.test(await txt(p, '#sheet-root')) && await noScroll(p));
+  await go(p, 'home'); await tap(p, '#help-btn'); check('6 Hindi: Help from Today at 360 px, with no Private help (Version 39.68)', /अभी सबसे पास के अस्पताल जाएँ/.test(await txt(p, '#sheet-root')) && !/निजी मदद/.test(await txt(p, '#sheet-root')) && await noScroll(p));
   await done(a);
 }
 

@@ -74,7 +74,7 @@
     C('pad', true, ['cycle', 'teen'], 'periods', 'periods-products', 'Changing your pad every 4 to 6 hours helps prevent infection.', 'हर 4 से 6 घंटे में pad बदलने से इन्फ़ेक्शन से बचाव होता है।',
       'Change sooner if it feels full or wet. Wash your hands before and after, and wrap the used pad in paper before you throw it away.', 'भरा या गीला लगे तो पहले ही बदल लें। पहले और बाद में हाथ धोएँ, और इस्तेमाल किया pad काग़ज़ में लपेटकर फेंकें।'),
     C('heavy', false, ['cycle', 'meno'], 'periods', 'help', 'Soaking through a pad every 1 to 2 hours is normal on a heavy day.', 'भारी दिन में हर 1 से 2 घंटे में pad भीग जाना सामान्य है।',
-      'That much bleeding is a reason to see a doctor this week. If you also feel dizzy or faint, call 112 now.', 'इतनी ब्लीडिंग हो तो इसी हफ़्ते डॉक्टर को दिखाएँ। साथ में चक्कर या बेहोशी लगे तो अभी 112 पर कॉल करें।'),
+      'That much bleeding is a reason to see a doctor this week. If you also feel dizzy or faint, go to the nearest hospital now.', 'इतनी ब्लीडिंग हो तो इसी हफ़्ते डॉक्टर को दिखाएँ। साथ में चक्कर या बेहोशी लगे तो अभी सबसे पास के अस्पताल जाएँ।'),
     C('periodpreg', false, ['cycle'], 'contra', 'contra', 'You cannot get pregnant during your period.', 'पीरियड के दौरान गर्भ नहीं ठहर सकता।',
       'It is less likely, but it can happen, especially if your cycles are short. Sperm can live inside the body for up to 5 days.', 'संभावना कम है, पर हो सकता है, ख़ासकर अगर आपका चक्र छोटा है। शुक्राणु शरीर के अंदर 5 दिन तक ज़िंदा रह सकते हैं।'),
     C('pppreg', true, ['post'], 'contra', 'post-contra', 'After a birth, you can get pregnant again before your periods come back.', 'डिलीवरी के बाद पीरियड लौटने से पहले भी दोबारा गर्भ ठहर सकता है।',

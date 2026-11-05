@@ -9,7 +9,7 @@
 //     with no "Add a past period"; her last period before it stays a period;
 //   6 from 34 weeks For you has her hospital bag, birth plan and contraction timer, right after her goal's first tool (Version 39.62:
 //     her first 3 tools, so the contraction timer is on Today from 37 weeks);
-//   7 the week page's "Call 112 now if" card has a Call 112 button;
+//   7 the week page's "Call 112 now if" card has a Call 112 button (Version 39.70: "Go to the nearest hospital now if", Call 102);
 //   8 in a pregnancy Help's "See a doctor" and the screen it opens say her gynaecologist looks after the pregnancy;
 //   9 Hindi at 360 px; 10 no page errors.
 // Usage: node test/latepreg.mjs [dir]   (dir defaults to this app folder)
@@ -175,7 +175,7 @@ const fyRoutes = (a) => a.page.$$eval('.care-sec .list [data-go]', (xs) => xs.ma
 /* ---------- 7 the week page's Call 112 ---------- */
 {
   const a = await open({ seed: { situation: sit(38) }, hash: 'preg-week' });
-  check('7 the week page: "Call 112 now if" with a Call 112 button', /Call 112 now/.test(await view(a)) && (await tels(a, '#view .pg-call')) === '112', await tels(a, '#view'));
+  check('7 the week page: "Go to the nearest hospital now if" with a Call 102 button', /Go to the nearest hospital now if/.test(await view(a)) && (await tels(a, '#view .pg-call')) === '102', await tels(a, '#view'));
   await done(a);
 }
 
@@ -204,7 +204,7 @@ const fyRoutes = (a) => a.page.$$eval('.care-sec .list [data-go]', (xs) => xs.ma
   await tap(a, '[data-tab="tr"]');
   check('9 Hindi at 360 px: My cycles says ब्लीडिंग, no side scroll', /ब्लीडिंग · गिना नहीं गया: गर्भावस्था/.test(await txt(a, '.mc-card')) && (await noScroll(a)), (await txt(a, '.mc-card')).slice(0, 300));
   await go(a, 'preg-week');
-  check('9 Hindi at 360 px: the week page\'s call button', (await tels(a, '#view .pg-call')) === '112' && (await noScroll(a)));
+  check('9 Hindi at 360 px: the week page\'s call button', (await tels(a, '#view .pg-call')) === '102' && (await noScroll(a)));
   await shot(a, 'hi-week');
   await done(a);
 }

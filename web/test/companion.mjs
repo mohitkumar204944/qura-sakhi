@@ -303,12 +303,12 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   check('10 Help is in the header, not a tab; the language button moved to Me', (await has(page, '#topbar #help-btn')) && !(await has(page, '#topbar [data-langs]')));
   await tap(page, '#help-btn');
   const hs = await page.$eval('#sheet-root', (e) => e.innerText);
-  check('10 Help: call 112, ask a Qura doctor (Version 39.63: one label), when to see a doctor', /Call 112 now/.test(hs) && /Ask a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
+  check('10 Help: the nearest hospital (Version 39.70), ask a Qura doctor (Version 39.63: one label), when to see a doctor', /Go to the nearest hospital now/.test(hs) && /Ambulance: call 108/.test(hs) && /Ask a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
   await tap(page, '#hs-doc');
   check('10 "See a doctor" opens the doctor page', (await page.evaluate(() => location.hash)) === '#ask');
   check('10 the doctor page has no Help button (Version 39.68: Help on Today only)', !(await has(page, '#help-btn')));
   await go(page, 'home'); await tap(page, '#help-btn'); await tap(page, '#hs-guide');
-  check('10 "When to see a doctor" opens the safety guide, with a way back', (await page.evaluate(() => location.hash)) === '#help' && (await has(page, '#view .backrow [data-back]')) && /Call 112 now if/.test(await view(page)));
+  check('10 "When to see a doctor" opens the safety guide, with a way back', (await page.evaluate(() => location.hash)) === '#help' && (await has(page, '#view .backrow [data-back]')) && /Go to the nearest hospital now if/.test(await view(page)));
   await go(page, 'care');
   const cv = await view(page);
   check('10 Explore: its heading, search, and Help and safety at the end; no Plans row', /^Explore/.test(cv) && (await has(page, '#care-q')) && (await gos(page, '#view [data-go]')).includes('help') && !(await has(page, '#view .care-plans')));

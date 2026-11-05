@@ -3423,3 +3423,49 @@ The 138 kept rows:
 - **My period plan** (33): Her period questions; "Your period today" in the check-in (heavy); Get your kit ready, and Cycle care yoga; Her calm-week plan (PMS); Moving on 3 days, strength from week 5; An iron or calcium food between periods; Her Hb test (heavy periods); Week 4: "When to see a doctor", and her doctor cards; Her results by period; Pain · Why periods hurt; Pain · Your period-week kit; Pain · Is my pain the usual kind?; Pain · Moving on the days in between; Pain · A strong body; Pain · Medicines: ask, don’t guess; Pain · Pain days at college or work; Pain · What helped you?; Pain · Calm evenings before your period; Pain · What a doctor checks; Heavy periods · Is my bleeding heavy?; Heavy periods · Your Hb test; Heavy periods · Food helps, tablets treat; Heavy periods · What the doctor checks; Heavy periods · Iron tablets, if your doctor gives them; Heavy periods · Other reasons Hb gets low; Heavy periods · Heavy periods can be treated; Heavy periods · The repeat test; PMS · Is it PMS? Your month, mapped; PMS · Stress makes the hard days louder; PMS · Moving, gently; PMS · Sleep; PMS · One thing for me; PMS · My calm-week plan, for keeping.
 - **My pelvic floor plan** (24): My pelvic floor plan; "When do you leak?"; "Before you start": 7 signs that need a doctor first; Squeeze sets in 8 levels; Find the right muscles; One habit a fortnight; When the urge comes (urge track); Get checked once (heaviness track); Weekly leaks question, "sure" and "gets in the way"; Her sets join My period plan, My midlife plan and Getting ready; Find your pelvic floor; The knack; Longer holds, and quick squeezes; Water through the day; On the toilet; Less pushing down; Standing sets; Lifting the safe way; Sets in your day; If exercises aren’t enough; Keep strong; A rest at the end of the day; Sex and prolapse; Keep strong for life.
 - **Moves, Wind down and Feel better now** (12): Steady on your feet (midlife); Pregnancy yoga, to 13 weeks; Pregnancy yoga, 14 to 27 weeks; Pregnancy yoga, from 28 weeks; Yoga nidra; 3 sounds for sleep with a timer; Captions and pictures that move with her voice; Keeps playing after Back, with a bar above the tabs; For period cramps; For nausea in pregnancy; When you feel anxious or low; For hot flushes.
+
+### 19.70 Version 39.70: the doctors' feature review, part 2, the emergency line (MODULE_API section 113)
+
+**Status, 6 Nov 2026: built from the doctors' answers 1 to 3; the changed lines wait for their one read.** The answers are in
+`docs/feature-review-2026-11-05.md`:
+1. "Go to the nearest hospital now", then 108 (102 in pregnancy).
+2. Nothing for thoughts of self-harm or fear of hurting a child.
+3. No violence help in Sakhi.
+
+Part 2 writes no new advice. It puts their line where "Call 112" was, and takes out what they removed. The doctors read these
+patterns once, in English and Hindi, rather than every line.
+
+- **The line.** "Go to the nearest hospital now" (अभी सबसे पास के अस्पताल जाएँ), with "Ambulance: call 108"
+  (एम्बुलेंस: 108 पर कॉल करें), or 102 in pregnancy.
+  - Help's card heading is "Go to the nearest hospital now if" (अभी सबसे पास के अस्पताल जाएँ अगर).
+  - In a sentence it reads "...: go to the nearest hospital now (ambulance: 108)" (अभी सबसे पास के अस्पताल जाएँ
+    (एम्बुलेंस: 108)).
+  - "Call 112, 108 or 102 if you cannot get there yourself" became "Call 102 or 108 ...". "Save 112 and 102" became "Save 102
+    and 108".
+- **Pregnancy danger signs** (Learn): "For any of these: go to the nearest hospital now, one open 24 hours. For an ambulance,
+  call 102, the free ambulance for pregnant women, or 108 (both in most states)." The "112 works everywhere" sentence is gone.
+- **Low mood** (where Tele-MANAS was):
+  - "talk to a doctor" (डॉक्टर से बात करें), or the doctor the line already named: "tell the ASHA or PHC doctor", "tell your
+    doctor", "talk to your PHC doctor".
+  - Help's Mood line: "Low mood most days for two weeks or more: talk to a doctor".
+  - Lines that only added Tele-MANAS after a doctor (eating worries, lean PMOS, pain with a bad experience) just lose it.
+- **After a birth**: "any thought of harming yourself or the baby" is gone from the psychosis lines, which keep hearing or
+  seeing things, confusion, and feeling very high without sleep. They end "Go to the nearest hospital today" (Learn) and "take
+  her to the nearest hospital today" (the recovery check). "Tell the ASHA (your doctor) and one person at home" stays; "and call
+  Tele-MANAS" goes.
+- **Taken out whole**:
+  - every Tele-MANAS, 181, Childline and harm line;
+  - the "unsafe at home" lines;
+  - "If the sex was not what you wanted" and "If the sex was forced";
+  - the parents' guide's safety and POCSO section;
+  - their sources.
+- **Lines that changed beyond the pattern**:
+  - "Tell the doctor plainly if you are trying for a baby, had a miscarriage or an abortion, or if sex hurts" (no "if you are not
+    safe at home");
+  - "A Qura doctor can help with periods... for pregnancy, hormone medicines or scans you need an MBBS gynaecologist, and for any
+    emergency, the nearest hospital";
+  - the how Qura helps list without "thoughts of harming yourself (14416) or violence at home (181)";
+  - the burning guide's emergency line, "(ambulance: 108, or 102 in pregnancy)".
+
+The doctors' notes that add "or a doctor" to four lines (heavy periods week 7, the pelvic floor plan's 112 line and week 10,
+and the fibroids guide) are part 3.

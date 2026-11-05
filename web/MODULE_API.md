@@ -7259,3 +7259,96 @@ and Next. The player now fits each move after drawing it (`fitStage` in `mods/pl
 - moves whose words fit keep their full-size picture.
 
 `node test/showmove.mjs`, section 4.
+
+## 113. Version 39.70: the doctors' feature review, part 2 (the emergency line)
+
+The doctors' answers 1 to 3 (`docs/feature-review-2026-11-05.md`). Mohit's word on 6 Nov was "commit 39.68 and go with part 2".
+- Answer 1, emergencies: "Go to the nearest hospital now", then 108 (102 in pregnancy). The search card stays, with the new
+  line.
+- Answer 2, thoughts of self-harm or fear of hurting a child: nothing. No Tele-MANAS line and no hospital line.
+- Answer 3, violence: no violence help in Sakhi. The last 181 card goes.
+
+1. **One emergency line** (core):
+   - The words, in English and Hindi:
+     - `hs_112`: "Go to the nearest hospital now" (अभी सबसे पास के अस्पताल जाएँ);
+     - `hs_112_s`: "Ambulance: call {n}" (एम्बुलेंस: {n} पर कॉल करें);
+     - `call_now`: "Go to the nearest hospital now if" (अभी सबसे पास के अस्पताल जाएँ अगर).
+   - `ambNo()` is her ambulance: 102 while she is pregnant (`isPregnant()`), 108 otherwise.
+   - `ambBtn(cls)` draws "Call 108" (or "Call 102").
+   - `emNums(list)` turns a list of numbers into what is left. 112 becomes her ambulance. These drop out: Tele-MANAS (14416,
+     1800-891-4416), 181, Childline (1098), 1091, legal aid (15100), 14490, cyber (1930) and the police (100).
+   - On the api: `S.amb()`, `S.emNums(list)` and `S.ambBtn(cls)`. Modules use them for every Call button and every list of
+     numbers: post `callRow`, plan `telRow`, the period, midlife and pelvic floor plans' `tel`, and the helpline lists in
+     intimate, loss, pregtest and teen (`lines()` draws nothing for an empty list).
+   - Places that dial her ambulance now:
+     - Help's first row;
+     - the search card;
+     - "Go to the nearest hospital now if" on the week page and in Check-ups and tests;
+     - the bleeding-in-pregnancy line;
+     - the discreet card;
+     - What your diary shows at "Go to the nearest hospital now";
+     - the pregnancy tools' Call row;
+     - the prolapse and baby-plan urgent cards.
+   - The numbers sheet (`HELPLINES`): 108, 102, 104 and 1097.
+2. **Nothing for thoughts of harm** (answer 2):
+   - Help's "Thoughts of harming yourself" row and its sheet (`openHarm`) are gone.
+   - The search words for harm (`URG_HARM`) are gone, so those words show the usual results and no card.
+   - The recovery check after a birth and the plan's weekly mood question ask Okay, Low or Anxious, with no harm chip.
+   - An old harm answer reads as low mood: the low-mood line, and no line in the report's summary.
+   - The lines about thoughts of harm are gone from:
+     - Help's Mood section (`s6b`);
+     - the after-birth danger list (`u_4`);
+     - the cadence note;
+     - the midlife and period plans' danger lists;
+     - the pregnancy worry list;
+     - the Learn library.
+   - Psychosis after a birth stays: hearing or seeing things, confusion, very high and not sleeping. Its line is "take her to the
+     nearest hospital today".
+3. **No violence help** (answer 3). These are gone:
+   - 181, Childline, the One Stop Centre and the police and legal lines;
+   - "if someone at home hurts you", "If you did not want the sex" and "If the sex was forced" (the emergency pill page);
+   - the parents' guide's safety and POCSO section;
+   - the symptom guide's forced-sex and unsafe-at-home entries;
+   - the partner page's domestic violence item;
+   - "not feeling safe at home" on the intimate health hub, and "violence" in the teen clinic's topics.
+
+   Two lines stay, because they are facts about her care, not violence help:
+   - the abortion page's POCSO line for a pregnant girl under 18 (the doctor informs the police, and the Supreme Court's 2022
+     ruling), without Childline;
+   - the abortion law's line that forced sex by a husband counts as rape under it.
+4. **Low mood**:
+   - Help's `s6a` is "Low mood most days for two weeks or more: talk to a doctor".
+   - What your diary shows leads low mood with "Ask a Qura doctor".
+   - Each Learn line that gave Tele-MANAS now says "talk to a doctor", or keeps the doctor it already named ("tell the ASHA or
+     PHC doctor", "tell your doctor").
+5. **The Learn library** (`content.json`): 174 lines rewritten and 27 taken out, in English and Hindi together. Doctor-route
+   lines move up with their line.
+   - "Call 108 or 112" becomes "Go to the nearest hospital now (ambulance: 108)".
+   - In pregnancy articles, 102 comes first.
+   - The danger signs article says "go to the nearest hospital now, one open 24 hours", then "call 102, the free ambulance for
+     pregnant women, or 108". Its id stays `pregnancy.danger-signs-call-112`.
+   - The Tele-MANAS, 181, Childline and harm lines and their sources are gone.
+6. **Care near me**: its helplines lose 181 and its sources lose the One Stop Centre. The scheme finder card is gone with its
+   page; it was a part 1 leftover.
+7. **Left for parts 3 and 4**:
+   - the doctors' notes that add "or a doctor" to particular lines (`ch-per-h7`, `pf-112`, `ch-pfc-f10`, `tile-cond-fibroids`);
+   - the PMS chapter m11's new support lines.
+
+**Strings.**
+- New: `hs_112_s` takes `{n}`.
+- Changed: `hs_112`, `call_now`, `s6a`, `th2_p`, `sos_p`, `cadence`, `tell_urgent`, `loss_p`, `ci_flag_preg`, `ci_flag_post`,
+  `thp3_p`, `r_pain`, `doc_sees`, `r2`, `under18_p` and `ask_teen_p`, and each module's emergency lines.
+- Gone from core: `hs_harm`, `hs_harm_s`, `harm_h`, `s5b` and `s6b`.
+- Gone from the after-birth module: `lost_talk`, `u_4`, `u_4b`, `fl_harm*`, `harm_h`, `harm_p`, `tm_note`, `mo_harm*` and
+  `s_harm`.
+- Also gone: the pregnancy tools' `amb112`, and the emergency pill page's `contra_ec_forced*` and `contra_ec_safety`.
+
+**Tests.** `node test/emergency.mjs` (48 checks):
+- Help's first row and the numbers sheet, by stage and in Hindi;
+- the search card, and no card for words about harm;
+- every live screen for 5 women in English and Hindi, discreet mode, and every Learn article on both care routes: none of the
+  removed numbers, names or Call links, and no violence help;
+- the recovery check's mood, and an old harm answer;
+- `content.json` and `progs/*.js`.
+
+The older suites that checked 112, Tele-MANAS or 181 now check the hospital line and the ambulance.

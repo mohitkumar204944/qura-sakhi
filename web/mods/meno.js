@@ -36,7 +36,7 @@
     ? { en: 'This page saves nothing. On a shared phone, Discreet mode on the Me page hides your numbers and renames the diary to Notes.', hi: 'यह पन्ना कुछ भी save नहीं करता। साझा फ़ोन हो तो “मैं” पन्ने पर गुप्त mode आपके नंबर छिपाता है और डायरी का नाम “नोट्स” कर देता है।' }
     : { en: 'This page saves nothing.', hi: 'यह पन्ना कुछ भी save नहीं करता।' });
 
-  const PAD112 = { en: 'Soaking a pad every 1–2 hours and feeling dizzy or breathless: call 112 now.', hi: 'हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना: अभी 112 पर कॉल करें।' };
+  const PAD112 = { en: 'Soaking a pad every 1–2 hours and feeling dizzy or breathless: go to the nearest hospital now.', hi: 'हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना: अभी सबसे पास के अस्पताल जाएँ।' };
   const MED_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>';
 
   /* ---------- weekly diary data ---------- */
@@ -293,7 +293,7 @@
       if (items.length || lotHot >= 2 || any(['palp'])) {
         chart += card(H2({ en: 'Pages for what you logged', hi: 'आपने जो दर्ज किया, उसके पन्ने' }) +
           (lotHot >= 2 ? P({ en: 'You marked hot flushes or night sweats as “a lot” in ' + lotHot + ' of your last 4 weeks. You don’t have to live with this. Hormone therapy is the most effective treatment, and there are non-hormone options too. An MBBS gynaecologist prescribes them.', hi: 'पिछले 4 में से ' + lotHot + ' हफ़्तों में आपने गर्मी के झोंके या रात का पसीना “बहुत” चुना। इसे सहते रहना ज़रूरी नहीं। सबसे असरदार इलाज हॉर्मोन therapy है, और बिना हॉर्मोन वाले रास्ते भी हैं। ये MBBS gynaecologist लिखती हैं।' }) : '') +
-          (any(['palp']) ? flag({ en: 'You logged palpitations. Ask a doctor this month to check your BP, pulse, haemoglobin and thyroid. With chest pain, breathlessness or fainting: call 112 now.', hi: 'आपने तेज़ धड़कन दर्ज की। इसी महीने डॉक्टर से BP, नब्ज़, हीमोग्लोबिन और थायरॉइड जाँच करवाएँ। साथ में सीने में दर्द, साँस फूलना या बेहोशी: अभी 112 पर कॉल करें।' }) : '') +
+          (any(['palp']) ? flag({ en: 'You logged palpitations. Ask a doctor this month to check your BP, pulse, haemoglobin and thyroid. With chest pain, breathlessness or fainting: go to the nearest hospital now.', hi: 'आपने तेज़ धड़कन दर्ज की। इसी महीने डॉक्टर से BP, नब्ज़, हीमोग्लोबिन और थायरॉइड जाँच करवाएँ। साथ में सीने में दर्द, साँस फूलना या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।' }) : '') +
           (items.length ? '<div class="list">' + items.join('') + '</div>' : ''));
       }
     } else if (can) {
@@ -305,9 +305,9 @@
       (can ? '<div class="card" id="meno-form"></div>' : S.needDiary()) +
       chart +
       card(H3({ en: 'Get help', hi: 'मदद कब लें' }, 'color:var(--accent)') +
-        flag({ en: 'Palpitations with chest pain, breathlessness or fainting, or soaking a pad every 1–2 hours with dizziness: call 112 now.', hi: 'तेज़ धड़कन के साथ सीने में दर्द, साँस फूलना या बेहोशी, या हर 1–2 घंटे में pad भीगना और चक्कर: अभी 112 पर कॉल करें।' }, true) +
+        flag({ en: 'Palpitations with chest pain, breathlessness or fainting, or soaking a pad every 1–2 hours with dizziness: go to the nearest hospital now.', hi: 'तेज़ धड़कन के साथ सीने में दर्द, साँस फूलना या बेहोशी, या हर 1–2 घंटे में pad भीगना और चक्कर: अभी सबसे पास के अस्पताल जाएँ।' }, true) +
         flag({ en: 'Any bleeding after 12 months without a period: see a gynaecologist within 2 weeks.', hi: '12 महीने पीरियड न आने के बाद कोई भी ब्लीडिंग: 2 हफ़्ते के अंदर gynaecologist को दिखाएँ।' }) +
-        flag(t('s6a')) + flag(t('s6b'), true)) +
+        flag(t('s6a'))) +
       askCard({ en: 'My menopause symptom diary', hi: 'मेरी मेनोपॉज़ लक्षण डायरी' }, { en: 'Bring this diary to a free call. A Qura doctor goes through it with you, helps with sleep, food and movement, and refers you to an MBBS gynaecologist for hormone or other medicines.', hi: 'यह डायरी लेकर मुफ़्त कॉल पर आएँ। Qura की डॉक्टर इसे आपके साथ देखती हैं, नींद, खाने और कसरत में मदद करती हैं, और हॉर्मोन या दूसरी दवाओं के लिए MBBS gynaecologist के पास refer करती हैं।' }) +
       '<p class="footnote">' + esc(t('meno_noscore')) + '</p>';
     S.wire(v);
@@ -438,7 +438,7 @@
         '</tbody></table></div>' +
         P({ en: 'To measure your waist: halfway between your lowest rib and the top of your hip bone, after breathing out.', hi: 'कमर नापने का तरीक़ा: सबसे नीचे की पसली और कूल्हे की हड्डी के ऊपरी सिरे के बीच, साँस छोड़ने के बाद।' }, 'small') +
         P({ en: 'The government programme screens every adult from 30 for BP and sugar, and for mouth, breast and cervical cancer. Your ASHA can tell you when.', hi: 'सरकारी कार्यक्रम 30 साल से हर वयस्क की BP और sugar, और मुँह, स्तन और बच्चेदानी के मुँह (cervix) के कैंसर की जाँच करता है। कब, यह आपकी ASHA बताएँगी।', doc: { en: 'Your doctor can do these checks. The government programme also screens every adult from 30 for BP and sugar, and for mouth, breast and cervical cancer, free.', hi: 'आपकी डॉक्टर ये जाँचें कर सकती हैं। सरकारी कार्यक्रम भी 30 साल से हर वयस्क की BP और sugar, और मुँह, स्तन और बच्चेदानी के मुँह (cervix) के कैंसर की जाँच मुफ़्त करता है।' } }, 'small') +
-        flag({ en: 'Chest pain or pressure, pain spreading to the jaw, arm or back, sudden breathlessness, a cold sweat or feeling sick: call 112 now. Don’t wait to see if it passes.', hi: 'सीने में दर्द या दबाव, जबड़े, बाँह या पीठ तक फैलता दर्द, अचानक साँस फूलना, ठंडा पसीना या जी मिचलाना: अभी 112 पर कॉल करें। रुककर इंतज़ार न करें कि ठीक हो जाएगा।' }, true)) +
+        flag({ en: 'Chest pain or pressure, pain spreading to the jaw, arm or back, sudden breathlessness, a cold sweat or feeling sick: go to the nearest hospital now. Don’t wait to see if it passes.', hi: 'सीने में दर्द या दबाव, जबड़े, बाँह या पीठ तक फैलता दर्द, अचानक साँस फूलना, ठंडा पसीना या जी मिचलाना: अभी सबसे पास के अस्पताल जाएँ। रुककर इंतज़ार न करें कि ठीक हो जाएगा।' }, true)) +
       related([
         linkItem('screen-mine', 'check', { en: 'My screening plan', hi: 'मेरी जाँचों की योजना' }, { en: 'Which checks at your age, and where they are free', hi: 'आपकी उम्र में कौन सी जाँच, और कहाँ मुफ़्त' }),
         linkItem('meno-surgical', MED_SVG, t('meno_surgical'), t('meno_surgical_s'))
@@ -476,7 +476,6 @@
         { en: 'Talk to your partner. Sex can wait until it feels good again', hi: 'अपने साथी से बात करें। जब तक अच्छा न लगे, संबंध रुक सकता है' },
         { en: 'Infections spread at any age. Use condoms with a new partner. HIV and STI helpline: 1097', hi: 'Infection किसी भी उम्र में फैलते हैं। नए साथी के साथ condom इस्तेमाल करें। HIV और STI हेल्पलाइन: 1097' },
         { en: 'Until your periods have stopped for 1–2 years, you can still get pregnant', hi: 'पीरियड बंद हुए 1–2 साल न हों, तब तक गर्भ ठहर सकता है' },
-        { en: 'If anyone forces or hurts you: Women Helpline 181, or 112 in an emergency', hi: 'अगर कोई ज़बरदस्ती करे या चोट पहुँचाए: महिला हेल्पलाइन 181, या emergency में 112' }
       ]) + '<div class="row wrap">' + goBtn('contra', { en: 'Contraception', hi: 'गर्भनिरोध' }) + goBtn('intimate-safety', { en: 'Safety and support', hi: 'सुरक्षा और सहारा' }) + '</div>') +
       card(H2({ en: 'Bleeding after menopause always needs a check', hi: 'मेनोपॉज़ के बाद ब्लीडिंग की जाँच हमेशा ज़रूरी' }) +
         P({ en: 'Any bleeding or spotting once your periods have stopped for 12 months, even a small amount or only once: see a gynaecologist within 2 weeks.', hi: 'पीरियड 12 महीने बंद रहने के बाद कोई भी ब्लीडिंग या धब्बे, चाहे थोड़ा या एक बार: 2 हफ़्ते के अंदर gynaecologist को दिखाएँ।' }) +
@@ -508,7 +507,7 @@
       card(H2({ en: 'What to expect', hi: 'क्या हो सकता है' }) + ul([
         { en: 'Symptoms can start soon after the operation and feel stronger than a natural menopause: hot flushes, sweats, poor sleep, mood changes, dryness', hi: 'लक्षण ऑपरेशन के जल्दी बाद शुरू हो सकते हैं और प्राकृतिक मेनोपॉज़ से ज़्यादा तेज़ लग सकते हैं: गर्मी के झोंके, पसीना, ख़राब नींद, मन के बदलाव, सूखापन' },
         { en: 'Bones and heart lose the protection of oestrogen years early', hi: 'हड्डियों और दिल को एस्ट्रोजन की सुरक्षा सालों पहले मिलनी बंद हो जाती है' },
-        { en: 'Feelings of loss, or worry about your body or sex life, are common. They deserve care too. Tele-MANAS 14416 is free, any time', hi: 'कुछ खोने का एहसास, या शरीर या संबंध को लेकर चिंता, आम है। इनकी भी देखभाल ज़रूरी है। Tele-MANAS 14416 मुफ़्त है, कभी भी' }
+        { en: 'Feelings of loss, or worry about your body or sex life, are common. They deserve care too.', hi: 'कुछ खोने का एहसास, या शरीर या संबंध को लेकर चिंता, आम है। इनकी भी देखभाल ज़रूरी है।' }
       ])) +
       card(H2({ en: 'Hormone therapy is usually advised', hi: 'आम तौर पर हॉर्मोन therapy की सलाह दी जाती है' }) +
         P({ en: 'If it is safe for you, doctors usually advise hormone therapy until about the usual age of natural menopause, around 50. It protects bones and heart as well as easing symptoms.', hi: 'अगर आपके लिए सुरक्षित हो, तो डॉक्टर आम तौर पर प्राकृतिक मेनोपॉज़ की आम उम्र, लगभग 50, तक हॉर्मोन therapy की सलाह देते हैं। इससे लक्षणों में आराम के साथ हड्डियों और दिल की भी रक्षा होती है।' }) +
@@ -530,7 +529,7 @@
         { en: 'Calcium-rich food, sunlight and strength exercise matter even more', hi: 'Calcium वाला खाना, धूप और ताक़त की कसरत और भी ज़रूरी' }
       ]) + goBtn('meno-bones', { en: 'Bones and heart guide', hi: 'हड्डियाँ और दिल गाइड' })) +
       card(H3({ en: 'In the weeks after surgery', hi: 'ऑपरेशन के बाद के हफ़्तों में' }, 'color:var(--accent)') +
-        flag({ en: 'Chest pain, sudden breathlessness, or coughing up blood: call 112 now.', hi: 'सीने में दर्द, अचानक साँस फूलना, या खाँसी में ख़ून: अभी 112 पर कॉल करें।' }, true) +
+        flag({ en: 'Chest pain, sudden breathlessness, or coughing up blood: go to the nearest hospital now.', hi: 'सीने में दर्द, अचानक साँस फूलना, या खाँसी में ख़ून: अभी सबसे पास के अस्पताल जाएँ।' }, true) +
         flag({ en: 'Pain or swelling in one calf, fever, a wound that is red or leaking, or heavy bleeding from the vagina: see a doctor today.', hi: 'एक पिंडली में दर्द या सूजन, बुख़ार, टाँकों पर लाली या पानी निकलना, या योनि से भारी ब्लीडिंग: आज ही डॉक्टर को दिखाएँ।' })) +
       askCard({ en: 'Surgical menopause', hi: 'ऑपरेशन के बाद मेनोपॉज़' }, { en: 'A Qura doctor can go through your reports with you, help with sleep, food and recovery, and refer you to a gynaecologist about hormone therapy.', hi: 'Qura की डॉक्टर आपकी reports आपके साथ देख सकती हैं, नींद, खाने और recovery में मदद करती हैं, और हॉर्मोन therapy के लिए gynaecologist के पास refer करती हैं।' }) +
       sources(['NHS: Hysterectomy, considerations (removing the ovaries)', 'Indian Menopause Society. Clinical practice guidelines on menopause 2019–2020', 'Indian Menopause Society. Clinical practice guidelines on postmenopausal osteoporosis 2019–2020', 'NHS: Benefits and risks of HRT']) + notDx();
@@ -581,8 +580,8 @@
       (change ? '<p class="small">' + esc(change) + ' · ' + esc(t('meno_sc_lower')) + '</p>' : '') +
       '<p>' + esc(t('meno_sc_m' + b)) + '</p>' +
       '<h3>' + esc(t('meno_sc_parts')) + '</h3><div class="msc-subs">' + ['body', 'mind', 'uro'].map((k) => '<div class="msc-sub"><span class="body"><strong>' + esc(t('meno_sc_' + k)) + '</strong><span class="small">' + esc(t('meno_sc_' + k + '_d')) + '</span></span><span class="num msc-n">' + s[k] + '/' + MAXS[k] + '</span>' + bandPill(bandOf(k, s[k])) + '</div>').join('') + '</div></div>';
-    if (a[1] >= 3) h += flag({ en: 'You marked heart discomfort as severe. Ask a doctor this month to check your BP, pulse, haemoglobin and thyroid. With chest pain, breathlessness or fainting: call 112 now.', hi: 'आपने दिल की बेचैनी को ज़्यादा बताया। इसी महीने डॉक्टर से BP, नब्ज़, हीमोग्लोबिन और थायरॉइड जाँच करवाएँ। साथ में सीने में दर्द, साँस फूलना या बेहोशी: अभी 112 पर कॉल करें।' });
-    if (a[3] >= 3) h += flag(t('s6a')) + flag(t('s6b'), true);
+    if (a[1] >= 3) h += flag({ en: 'You marked heart discomfort as severe. Ask a doctor this month to check your BP, pulse, haemoglobin and thyroid. With chest pain, breathlessness or fainting: go to the nearest hospital now.', hi: 'आपने दिल की बेचैनी को ज़्यादा बताया। इसी महीने डॉक्टर से BP, नब्ज़, हीमोग्लोबिन और थायरॉइड जाँच करवाएँ। साथ में सीने में दर्द, साँस फूलना या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।' });
+    if (a[3] >= 3) h += flag(t('s6a'));
     const items = [];
     if (S.routeOwner('relief-hot') && (a[0] >= 1)) items.push(linkItem('relief-hot', 'leaf', t('meno_tl_hot'), ''));
     if (S.routeOwner('relief-sleep') && (a[2] >= 1)) items.push(linkItem('relief-sleep', 'moon', t('meno_tl_sleep'), ''));

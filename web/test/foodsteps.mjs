@@ -196,7 +196,7 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   const g = await open({ hash: '#periods-fasting' });
   const v = await allText(g.page);
   check('6 the fasting page: "If you are pregnant or breastfeeding", with sehri, iftar and the stop signs', /If you are pregnant or breastfeeding/.test(v) && /Sehri or sargi/.test(v) && /Iftar, or breaking the fast/.test(v) && /very little or dark urine/.test(v));
-  check('6 ... the baby moving less: go to hospital now', /if the baby moves less than usual: break the fast and go to hospital now/.test(v) && await g.page.$$eval('#view .flag.urgent', (xs) => xs.some((x) => /baby moves less/.test(x.textContent))));
+  check('6 ... the baby moving less: go to the nearest hospital now (Version 39.70)', /if the baby moves less than usual: break the fast and go to the nearest hospital now/.test(v) && await g.page.$$eval('#view .flag.urgent', (xs) => xs.some((x) => /baby moves less/.test(x.textContent))));
   check('6 ... vrat food starts with kuttu or singhara roti, and sabudana and aloo go easy with PMOS or sugar', /For a vrat: kuttu or singhara roti with curd/.test(v) && /go easy on sabudana and aloo/.test(v));
   check('6 ... its sections as chips at the top, the new one included', (await g.page.$$eval('#view .jump-row .chip', (xs) => xs.map((x) => x.textContent))).indexOf('If you are pregnant or breastfeeding') >= 0);
   errsAll.push(...g.errs); await g.ctx.close();

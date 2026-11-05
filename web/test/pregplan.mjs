@@ -79,7 +79,7 @@ const LABELS = ['My doctor told me to rest, or not to exercise', 'Marked as a hi
 const S1C = 'In pregnancy: bleeding, leaking water, fever, severe headache or blurred vision, fits, swelling of face or hands, or the baby moving less after 28 weeks';   /* core's s1c, from the reviewed danger list (app.js DANGER) */
 const K_TODAY = "Fewer or weaker movements than usual: call your hospital or doctor straight away and get checked today, even if it is the middle of the night. Don't wait until tomorrow, and don't go to sleep on it.";
 const K_NOW = 'No movement at all, or the movements have stopped: go to hospital now. Free ambulance 108 or 102.';
-const LV_NOW = 'Call 112, or 108 or 102 for a free ambulance, and go to the nearest district hospital or the hospital where you are registered. Do not wait to see if it settles.';
+const LV_NOW = 'Go to the nearest hospital now, or the hospital where you are registered. Ambulance: 108, or 102 in pregnancy. Do not wait to see if it settles.';   /* Version 39.70 */
 const SIDE = 'From 28 weeks, go to sleep on your side, left or right. A pillow under your belly and between your knees helps.';
 const PF_P = 'Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth.';
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -101,7 +101,7 @@ async function startFromSummary(a) {
   check('1 Before you start: its 2 questions, Help\'s own pregnancy line, her MCP card\'s marks and 2 lines of its own, "Not sure?"', new RegExp('^Before you start Two questions keep your plan safe for you\\. Your answers stay on this phone\\. Right now, do you have any of these\\? ' + esc(S1C) + ' None of these Yes, one of these Has your doctor told you any of these\\? ' + LABELS.map(esc).join(' ') + ' Not sure\\? Tick it\\. Sakhi keeps your walk easy until your doctor says\\. Your full plan ').test(v), v.slice(0, 900));
   check('1 an earlier C-section alone holds nothing, so it isn\'t asked; nothing ticked: green', !(await a.page.$$eval('[data-pl-ps]:checked', (xs) => xs.length)) && !/C-section/.test(v) && (await txt(a, '#pl-ps-tier')).indexOf('Your full plan A walk at a pace you can talk, growing over the weeks, with yoga for your stage of pregnancy on 2 days, the pelvic floor from week 13, and the step for your goal.') === 0);   /* Version 39.52: the yoga named */
   await tap(a, '[data-pl-pnow="y"]');
-  check('1 "Yes, one of these": Help\'s "Call 112 now" card, word for word, with 112, 108 and 102, and no walk until she checks again', (await txt(a, '#pl-ps-now')) === 'Call 112 now ' + LV_NOW + ' Call 112 Call 108 Call 102 No walk until you check your answers again; your other steps stay. Sakhi asks you tomorrow.' && (await tels(a, '#pl-ps-now')) === '112,108,102', await txt(a, '#pl-ps-now'));
+  check('1 "Yes, one of these": Help\'s "Go to the nearest hospital now" card, word for word, with 102 and 108 (Version 39.70), and no walk until she checks again', (await txt(a, '#pl-ps-now')) === 'Go to the nearest hospital now ' + LV_NOW + ' Call 102 Call 108 No walk until you check your answers again; your other steps stay. Sakhi asks you tomorrow.' && (await tels(a, '#pl-ps-now')) === '102,108', await txt(a, '#pl-ps-now'));
   await tap(a, '[data-pl-pnow="n"]');
   check('1 "None of these" takes the card away', (await txt(a, '#pl-ps-now')) === '');
   await a.page.$eval('[data-pl-ps="unsure"]', (c) => { c.checked = true; c.dispatchEvent(new Event('change')); }); await settle(a.page, 200);
@@ -216,9 +216,9 @@ async function startFromSummary(a) {
   const v = await view(a);
   check('5 at 30 weeks: her baby\'s movements today, her baby\'s own pattern, never a number', /Your baby’s movements today Your baby’s own pattern, not a number\. As usual Less than usual Not sure Not felt any movement today/i.test(v), v.slice(0, 900));
   await tap(a, '[data-ci-mv="less"]');
-  check('5 less than usual: the kick page\'s own line, with Call 108 and 112', (await txt(a, '#pl-ci-mvout')) === K_TODAY + ' Call 108 Call 112' && (await tels(a, '#pl-ci-mvout')) === '108,112', await txt(a, '#pl-ci-mvout'));
+  check('5 less than usual: the kick page\'s own line, with Call 108 and 102 (Version 39.70: 112 is her ambulance)', (await txt(a, '#pl-ci-mvout')) === K_TODAY + ' Call 108 Call 102' && (await tels(a, '#pl-ci-mvout')) === '108,102', await txt(a, '#pl-ci-mvout'));
   await tap(a, '[data-ci-mv="none"]');
-  check('5 no movement: Help\'s "Call 112 now" and the kick page\'s own line, with 112, 108 and 102', (await txt(a, '#pl-ci-mvout')) === 'Call 112 now ' + K_NOW + ' Call 112 Call 108 Call 102', await txt(a, '#pl-ci-mvout'));
+  check('5 no movement: Help\'s "Go to the nearest hospital now" and the kick page\'s own line, with 102 and 108', (await txt(a, '#pl-ci-mvout')) === 'Go to the nearest hospital now ' + K_NOW + ' Call 102 Call 108', await txt(a, '#pl-ci-mvout'));
   await shot(a, 'checkin-none');
   await tap(a, '[data-ci-mv="less"]');
   await answerAll(a); await settle(a.page, 300); await tap(a, '#pl-ci-save');

@@ -164,7 +164,7 @@ try {
   const iv = await view(p3);
   check('3 the intro: the stop card above Start', await p3.page.evaluate(() => { const c = document.querySelector('.pl-pystop'), b = document.getElementById('pl-pstart'); return !!(c && b && (c.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); }));
   const sc = await txt(p3, '.pl-pystop');
-  check('3 its words: the signs for today, the signs for now with Help\'s "Call 112 now" line, and Call 112', sc.indexOf(STOP) >= 0 && sc.indexOf('Call 112 now ' + NOW + ' In pregnancy:') >= 0 && (await tels(p3, '.pl-pystop')) === '112', sc);
+  check('3 its words: the signs for today, the signs for now with Help\'s "Go to the nearest hospital now" line, and Call 102 (Version 39.70)', sc.indexOf(STOP) >= 0 && sc.indexOf('Go to the nearest hospital now ' + NOW + ' In pregnancy:') >= 0 && (await tels(p3, '.pl-pystop')) === '102', sc);
   check('3 "Go gently in a cool room, with water nearby" first, and about 10 minutes on Start', /^Pregnancy yoga Go gently in a cool room, with water nearby, and skip any move that doesn’t feel right\./.test(iv) && /Start · About 10 min/.test(iv), iv.slice(0, 300));
   const srcs = (a, sel) => a.page.$$eval(sel, (xs) => xs.map((x) => x.getAttribute('src') || x.getAttribute('poster') || ''));
   const pics = await srcs(p3, '#view .pl-pitem img.pl-3d');
@@ -217,13 +217,13 @@ try {
   await tap(u3, '#pl-pstart'); await settle(u3.page, 3000);
   await tap(u3, '#pl-unwell');
   const uv = await view(u3);
-  check('3 Feeling unwell: stop now and rest, the signs for today, the signs for now, Call 112, 108 and 102', /Stop now and rest/.test(uv) && uv.indexOf(STOP) >= 0 && (await txt(u3, '.pl-pynow')).indexOf(NOW) >= 0 && (await tels(u3, '.pl-pynow')) === '112,108,102' && await has(u3, '#pl-uw-ok') && await has(u3, '#pl-uw-stop'), uv.slice(0, 500));
+  check('3 Feeling unwell: stop now and rest, the signs for today, the signs for now, Call 102 and 108 (Version 39.70)', /Stop now and rest/.test(uv) && uv.indexOf(STOP) >= 0 && (await txt(u3, '.pl-pynow')).indexOf(NOW) >= 0 && (await tels(u3, '.pl-pynow')) === '102,108' && await has(u3, '#pl-uw-ok') && await has(u3, '#pl-uw-stop'), uv.slice(0, 500));
   await shot(u3, '3-unwell');
   await tap(u3, '#pl-uw-ok');
   check('3 "I feel fine now": back to the move, paused', await has(u3, '#pl-step') && (await txt(u3, '#pl-pause')) === 'Go on');
   await tap(u3, '#pl-unwell'); await tap(u3, '#pl-uw-stop');
   const s3 = await st(u3);
-  check('3 "Stop for today": her walk and yoga wait until she checks her answers again', s3.mods.plan.intake.pnow === TODAY && /Rest now/.test(await view(u3)) && (await tels(u3, '.pl-pynow')) === '112,108,102', s3.mods.plan.intake);
+  check('3 "Stop for today": her walk and yoga wait until she checks her answers again', s3.mods.plan.intake.pnow === TODAY && /Rest now/.test(await view(u3)) && (await tels(u3, '.pl-pynow')) === '102,108', s3.mods.plan.intake);
   check('3 ... and no move on Today', !(await mv(u3)));
   await go(u3, 'plan-r-preg2');
   check('3 ... and the routine waits (Moves and calm instead)', !(await has(u3, '#pl-pstart')) && /No yoga until you check your answers again\./.test(await txt(u3, '.pl-pylock')) && await has(u3, '.pl-pylock [data-go="plan-psafe"]'));

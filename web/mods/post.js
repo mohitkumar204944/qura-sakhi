@@ -40,20 +40,16 @@
     lost_q_p: ['Sakhi will stop everything about your baby: feeding, the vaccine dates and your baby’s age. What is for you stays: your daily check to day 41, your own check at 6 weeks, and contraception when you want it.', 'Sakhi बच्चे से जुड़ी हर चीज़ बंद कर देगी: दूध पिलाना, टीकों की तारीख़ें और बच्चे की उम्र। आपके लिए जो है वह रहेगा: 41वें दिन तक रोज़ की जाँच, 6 हफ़्ते पर आपकी अपनी जाँच, और जब चाहें गर्भनिरोध।'],
     lost_q_yes: ['Stop them', 'बंद करें'],
     lost_done: ['Nothing about your baby will come up again.', 'बच्चे से जुड़ी कोई बात अब नहीं आएगी।'],
-    lost_talk: ['Talk to someone: Tele-MANAS 14416, free, any time.', 'किसी से बात करें: Tele-MANAS 14416, मुफ़्त, कभी भी।'],
     lost_sup: ['Support after a loss', 'खोने के बाद सहारा'],
     lost_undo: ['Marked this by mistake? Undo', 'ग़लती से चुना? वापस लें'],
     lost_feed: ['This page is about feeding a baby.', 'यह पेज बच्चे को दूध पिलाने के बारे में है।'],
     lost_back: ['Back to your recovery', 'अपनी रिकवरी पर लौटें'],
     t_checks_s0: ['Your own check, iron and calcium', 'आपकी अपनी जाँच, आयरन और कैल्शियम'],
-    u_4b: ['Thoughts of harming yourself: 14416 or 112', 'ख़ुद को नुक़सान पहुँचाने के ख़याल: 14416 या 112'],
     self_2b: ['Eat proper meals: dal, eggs or paneer, milk, green vegetables and fruit, and drink water through the day.', 'पूरा खाना खाएँ: दाल, अंडा या पनीर, दूध, हरी सब्ज़ियाँ और फल, और दिन भर पानी पिएँ।'],
     self_3b: ['Walk a little every day as you feel able. Avoid lifting anything heavy for the first weeks, especially after a C-section.', 'जितना हो सके, रोज़ थोड़ा चलें। पहले हफ़्तों में कुछ भारी न उठाएँ, ख़ासकर ऑपरेशन के बाद।'],
     p_b: ['The first weeks after a birth are for healing. Check yourself daily, and know the warning signs.', 'डिलीवरी के बाद के पहले हफ़्ते ठीक होने के लिए हैं। रोज़ ख़ुद को जाँचें, और ख़तरे के संकेत जानें।'],
-    mo_harm_b: ['Thoughts of harming myself', 'ख़ुद को नुक़सान पहुँचाने के विचार'],
-    fl_harm_b: ['Call Tele-MANAS 14416 (free, any time) or 112 now, and ask someone to stay with you. You do not have to go through this alone.', 'अभी Tele-MANAS 14416 (मुफ़्त, कभी भी) या 112 पर कॉल करें, और किसी से अपने पास रहने को कहें। आपको यह अकेले नहीं सहना है।'],
     d_ill: ['Fever and feeling very unwell', 'बुख़ार और बहुत बीमार महसूस होना'],
-    fl_ill: ['A fever with feeling very unwell after a birth can be a serious infection. Call 112 or go to hospital now.', 'डिलीवरी के बाद बुख़ार के साथ बहुत बीमार महसूस होना गंभीर संक्रमण हो सकता है। अभी 112 पर कॉल करें या अस्पताल जाएँ।'],
+    fl_ill: ['A fever with feeling very unwell after a birth can be a serious infection. Go to the nearest hospital now.', 'डिलीवरी के बाद बुख़ार के साथ बहुत बीमार महसूस होना गंभीर संक्रमण हो सकता है। अभी सबसे पास के अस्पताल जाएँ।'],
     s_ill: ['fever and feeling very unwell', 'बुख़ार और बहुत बीमार महसूस होना'],
 
     /* birth date */
@@ -91,11 +87,10 @@
     do_check: ["Do today's check", 'आज की जाँच करें'], upd_check: ["Update today's check", 'आज की जाँच बदलें'],
     running: ['Feed running: {side} side, since {t}', 'फ़ीड चल रही है: {side} तरफ़, {t} से'],
     open_feed: ['Open the feed log', 'फ़ीड लॉग खोलें'],
-    u_h: ['Call 112 now if', 'तुरंत 112 पर कॉल करें अगर'],
+    u_h: ['Go to the nearest hospital now if', 'अभी सबसे पास के अस्पताल जाएँ अगर'],
     u_1: ['You soak a pad in an hour, or pass clots egg-sized or bigger', 'एक घंटे में पैड भीग जाए, या अंडे जितने या बड़े थक्के निकलें'],
     u_2: ['Severe headache, blurred vision or flashing lights, or fits', 'तेज़ सिरदर्द, धुंधला दिखना या चमक दिखना, या दौरा'],
     u_3: ['Chest pain, breathlessness, or pain and swelling in one calf', 'सीने में दर्द, साँस फूलना, या एक पिंडली में दर्द और सूजन'],
-    u_4: ['Thoughts of harming yourself or your baby: 14416 or 112', 'ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल: 14416 या 112'],
     u_5: ['Free ambulance: 108 or 102', 'मुफ़्त एम्बुलेंस: 108 या 102'],
     tools_h: ['Guides and tools', 'गाइड और टूल'],
     schemes: ['Money and free services after birth', 'डिलीवरी के बाद पैसा और मुफ़्त सेवाएँ'],
@@ -141,25 +136,23 @@
     g_potty: ['Potty', 'पॉटी (शौच)'],
     po_fine: ['Fine', 'ठीक'], po_hard: ['Hard or painful', 'सख़्त या दर्द'], po_none: ['None for 3 days or more', '3 दिन या ज़्यादा से नहीं'],
     g_mood: ['Mood', 'मन'],
-    mo_ok: ['Okay', 'ठीक'], mo_low: ['Low or teary', 'उदास या रोना आता है'], mo_anx: ['Worried or panicky', 'बहुत चिंता या घबराहट'], mo_harm: ['Thoughts of harming myself or my baby', 'ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल'],
+    mo_ok: ['Okay', 'ठीक'], mo_low: ['Low or teary', 'उदास या रोना आता है'], mo_anx: ['Worried or panicky', 'बहुत चिंता या घबराहट'],
     g_sleep: ['Sleep', 'नींद'],
     sl_ok: ['Got some rest', 'थोड़ा आराम मिला'], sl_some: ['Broken but managing', 'टूटी-टूटी, पर चल रहा है'], sl_poor: ['Hardly slept', 'लगभग नहीं सोई'],
-    fl_112: ['Call 112 now, or go to the nearest hospital', 'अभी 112 पर कॉल करें, या सबसे पास के अस्पताल जाएँ'],
+    fl_112: ['Go to the nearest hospital now', 'अभी सबसे पास के अस्पताल जाएँ'],
     fl_today: ['See a doctor today', 'आज ही डॉक्टर को दिखाएँ'],
-    fl_harm_h: ['Get help now: call 14416 or 112', 'अभी मदद लें: 14416 या 112 पर कॉल करें'],
     fl_bleed: ['Soaking a pad in an hour or big clots can mean heavy bleeding after birth. Lie down, keep the baby at the breast if you can, and get to hospital now. Free ambulance: 108 or 102.', 'एक घंटे में पैड भीगना या बड़े थक्के डिलीवरी के बाद ज़्यादा ब्लीडिंग का संकेत हो सकते हैं। लेट जाएँ, हो सके तो बच्चे को दूध पिलाती रहें, और अभी अस्पताल जाएँ। मुफ़्त एम्बुलेंस: 108 या 102।'],
     fl_pe: ['Severe headache, blurred vision or fits can be pre-eclampsia (dangerous high BP), which can start in the days or weeks after birth. This is an emergency.', 'तेज़ सिरदर्द, धुंधला दिखना या दौरा pre-eclampsia (ख़तरनाक हाई BP) हो सकता है, जो डिलीवरी के कुछ दिन या हफ़्ते बाद भी शुरू हो सकता है। यह इमरजेंसी है।'],
     fl_clot: ['Pain or swelling in one calf, chest pain or breathlessness can mean a blood clot. The risk is higher in the weeks after birth. Do not wait.', 'एक पिंडली में दर्द या सूजन, सीने में दर्द या साँस फूलना ख़ून का थक्का (clot) हो सकता है। डिलीवरी के बाद के हफ़्तों में इसका ख़तरा ज़्यादा होता है। इंतज़ार न करें।'],
     fl_faint: ['Dizziness or fainting after birth can mean blood loss, even when you cannot see much bleeding.', 'डिलीवरी के बाद चक्कर या बेहोशी ख़ून बहने का संकेत हो सकता है, भले ही ज़्यादा ब्लीडिंग न दिखे।'],
-    fl_harm: ['Call Tele-MANAS 14416 (free, any time) or 112 now, and ask someone to stay with you and the baby. You are not a bad mother. This is an illness, and it gets better with help.', 'अभी Tele-MANAS 14416 (मुफ़्त, कभी भी) या 112 पर कॉल करें, और किसी से कहें कि आपके और बच्चे के पास रहे। आप बुरी माँ नहीं हैं। यह एक बीमारी है, और मदद से ठीक होती है।'],
     fl_fever: ['A fever of 38°C (100.4°F) or more after birth can mean an infection in the womb, stitches, breast or urine. Go to your PHC, CHC or hospital today. Under JSSK this care is free at government hospitals.', 'डिलीवरी के बाद 38°C (100.4°F) या ज़्यादा बुख़ार बच्चेदानी, टाँकों, स्तन या पेशाब में infection का संकेत हो सकता है। आज ही PHC, CHC या अस्पताल जाएँ। सरकारी अस्पताल में JSSK के तहत यह इलाज मुफ़्त है।'],
     fl_mast: ['A painful red patch on the breast with fever or body aches can be mastitis. See a doctor today. Keep feeding from that side: the milk is safe for your baby.', 'स्तन पर दर्द वाला लाल हिस्सा, बुख़ार या बदन दर्द के साथ, mastitis (स्तन में सूजन) हो सकता है। आज ही डॉक्टर को दिखाएँ। उसी तरफ़ से दूध पिलाती रहें: दूध बच्चे के लिए सुरक्षित है।'],
     fl_smell: ['Bad-smelling discharge can mean an infection of the womb. See a doctor today, even if you feel well.', 'बदबूदार डिस्चार्ज बच्चेदानी के infection का संकेत हो सकता है। आज ही डॉक्टर को दिखाएँ, भले ही आप ठीक महसूस करें।'],
     fl_wound: ['Pus, a wound opening up, or redness and swelling around it: see a doctor today. Keep it clean and dry until then.', 'मवाद, घाव खुलना, या उसके आसपास लाली और सूजन: आज ही डॉक्टर को दिखाएँ। तब तक घाव साफ़ और सूखा रखें।'],
-    fl_swell: ['Sudden swelling of the face or hands: get your BP checked today by your ANM or at the PHC. With a headache or blurred vision, call 112.', 'चेहरे या हाथों में अचानक सूजन: आज ही ANM से या PHC पर BP जँचवाएँ। साथ में सिरदर्द या धुंधला दिखे तो 112 पर कॉल करें।'], fl_swell_doc: ['Sudden swelling of the face or hands: get your BP checked today by your doctor, or the ANM or PHC. With a headache or blurred vision, call 112.', 'चेहरे या हाथों में अचानक सूजन: आज ही अपनी डॉक्टर से, या ANM या PHC पर BP जँचवाएँ। साथ में सिरदर्द या धुंधला दिखे तो 112 पर कॉल करें।'],
-    fl_belly: ['Severe belly pain that does not go away: see a doctor today. With fever, fainting or heavy bleeding, call 112.', 'पेट में तेज़ दर्द जो ठीक न हो: आज ही डॉक्टर को दिखाएँ। साथ में बुख़ार, बेहोशी या ज़्यादा ब्लीडिंग हो तो 112 पर कॉल करें।'],
+    fl_swell: ['Sudden swelling of the face or hands: get your BP checked today by your ANM or at the PHC. With a headache or blurred vision, go to the nearest hospital.', 'चेहरे या हाथों में अचानक सूजन: आज ही ANM से या PHC पर BP जँचवाएँ। साथ में सिरदर्द या धुंधला दिखे तो सबसे पास के अस्पताल जाएँ।'], fl_swell_doc: ['Sudden swelling of the face or hands: get your BP checked today by your doctor, or the ANM or PHC. With a headache or blurred vision, go to the nearest hospital.', 'चेहरे या हाथों में अचानक सूजन: आज ही अपनी डॉक्टर से, या ANM या PHC पर BP जँचवाएँ। साथ में सिरदर्द या धुंधला दिखे तो सबसे पास के अस्पताल जाएँ।'],
+    fl_belly: ['Severe belly pain that does not go away: see a doctor today. With fever, fainting or heavy bleeding, go to the nearest hospital.', 'पेट में तेज़ दर्द जो ठीक न हो: आज ही डॉक्टर को दिखाएँ। साथ में बुख़ार, बेहोशी या ज़्यादा ब्लीडिंग हो तो सबसे पास के अस्पताल जाएँ।'],
     fl_cantpee: ['Not able to pee, or only drops, with a full or painful lower belly: see a doctor today.', 'पेशाब नहीं हो रहा या बूँद-बूँद, और नीचे का पेट भरा या दर्द: आज ही डॉक्टर को दिखाएँ।'],
-    fl_heavy: ['Bleeding heavier than a heavy period, or getting heavier again after it had slowed: see a doctor today. Soaking a pad in an hour: call 112.', 'भारी पीरियड से भी ज़्यादा ब्लीडिंग, या कम होने के बाद फिर बढ़ना: आज ही डॉक्टर को दिखाएँ। एक घंटे में पैड भीगे तो 112 पर कॉल करें।'],
+    fl_heavy: ['Bleeding heavier than a heavy period, or getting heavier again after it had slowed: see a doctor today. Soaking a pad in an hour: go to the nearest hospital.', 'भारी पीरियड से भी ज़्यादा ब्लीडिंग, या कम होने के बाद फिर बढ़ना: आज ही डॉक्टर को दिखाएँ। एक घंटे में पैड भीगे तो सबसे पास के अस्पताल जाएँ।'],
     fl_redagain: ['Bright red bleeding again after it had turned brown: if it is heavy or keeps going, see a doctor today. Sometimes it is your period coming back.', 'भूरा होने के बाद फिर से चटक लाल ब्लीडिंग: ज़्यादा हो या रुके नहीं, तो आज ही डॉक्टर को दिखाएँ। कभी-कभी यह पीरियड लौटना होता है।'],
     fl_shiver: ['Feeling hot or shivery: check your temperature, or ask your ASHA or ANM to. Shivering with belly pain or bad-smelling discharge: see a doctor today.', 'गर्मी या कँपकँपी लग रही है: थर्मामीटर से बुख़ार नापें, या ASHA/ANM से नपवाएँ। कँपकँपी के साथ पेट दर्द या बदबूदार डिस्चार्ज हो तो आज ही डॉक्टर को दिखाएँ।'], fl_shiver_doc: ['Feeling hot or shivery: check your temperature. Shivering with belly pain or bad-smelling discharge: see a doctor today.', 'गर्मी या कँपकँपी लग रही है: थर्मामीटर से बुख़ार नापें। कँपकँपी के साथ पेट दर्द या बदबूदार डिस्चार्ज हो तो आज ही डॉक्टर को दिखाएँ।'],
     fl_redpatch: ['A painful red patch without fever: keep feeding often from that side, rest, and use a cool cloth after feeds. Not better in 12–24 hours, or a fever starts: see a doctor.', 'बिना बुख़ार के दर्द वाला लाल हिस्सा: उस तरफ़ से बार-बार दूध पिलाएँ, आराम करें, फ़ीड के बाद ठंडा कपड़ा रखें। 12–24 घंटे में ठीक न हो, या बुख़ार आए, तो डॉक्टर को दिखाएँ।'],
@@ -170,7 +163,7 @@
     tp_potty: ['Drink plenty of water, eat dal, vegetables, fruit and whole grains, and do not strain. No potty for 3 days, or a lot of pain: ask your ANM or doctor for something safe to soften it.', 'ख़ूब पानी पिएँ, दाल, सब्ज़ी, फल और साबुत अनाज खाएँ, और ज़ोर न लगाएँ। 3 दिन से पॉटी नहीं, या बहुत दर्द: ANM या डॉक्टर से पॉटी नरम करने की सुरक्षित दवा पूछें।'], tp_potty_doc: ['Drink plenty of water, eat dal, vegetables, fruit and whole grains, and do not strain. No potty for 3 days, or a lot of pain: ask your doctor for something safe to soften it.', 'ख़ूब पानी पिएँ, दाल, सब्ज़ी, फल और साबुत अनाज खाएँ, और ज़ोर न लगाएँ। 3 दिन से पॉटी नहीं, या बहुत दर्द: डॉक्टर से पॉटी नरम करने की सुरक्षित दवा पूछें।'],
     tp_mood: ['Feeling low, teary or worried in the first 2 weeks is common (baby blues). If it lasts longer than 2 weeks or is getting worse, talk to someone.', 'पहले 2 हफ़्ते उदासी, रोना या चिंता आम है (बेबी ब्लूज़)। 2 हफ़्ते से ज़्यादा रहे या बढ़ता जाए, तो किसी से बात करें।'],
     tp_sleep: ['Sleep when the baby sleeps, even for 20 minutes. Ask someone to settle the baby for one stretch so you can sleep 3–4 hours.', 'जब बच्चा सोए तब आप भी सोएँ, चाहे 20 मिनट ही। किसी से कहें कि एक बार बच्चे को संभाल ले ताकि आप 3–4 घंटे सो सकें।'],
-    s_bleed: ['heavy bleeding', 'ज़्यादा ब्लीडिंग'], s_pe: ['headache, vision or fits', 'सिरदर्द, नज़र या दौरा'], s_clot: ['possible blood clot', 'ख़ून के थक्के की आशंका'], s_faint: ['dizziness or fainting', 'चक्कर या बेहोशी'], s_harm: ['thoughts of harm', 'नुक़सान के ख़याल'],
+    s_bleed: ['heavy bleeding', 'ज़्यादा ब्लीडिंग'], s_pe: ['headache, vision or fits', 'सिरदर्द, नज़र या दौरा'], s_clot: ['possible blood clot', 'ख़ून के थक्के की आशंका'], s_faint: ['dizziness or fainting', 'चक्कर या बेहोशी'],
     s_fever: ['fever', 'बुख़ार'], s_mast: ['red breast with fever', 'बुख़ार के साथ लाल स्तन'], s_smell: ['bad-smelling discharge', 'बदबूदार डिस्चार्ज'], s_wound: ['stitches or wound', 'टाँके या घाव'], s_swell: ['swelling', 'सूजन'], s_belly: ['belly pain', 'पेट दर्द'], s_cantpee: ['not able to pee', 'पेशाब न होना'], s_heavy: ['heavy bleeding', 'ज़्यादा ब्लीडिंग'], s_redagain: ['red bleeding again', 'फिर से लाल ब्लीडिंग'],
     ok_none: ['Nothing you tapped needs a doctor today. Check again tomorrow, and use the warning signs at the top any time.', 'आपने जो टैप किया उसमें आज डॉक्टर की ज़रूरत वाली बात नहीं है। कल फिर जाँच करें, और ऊपर दिए ख़तरे के संकेत कभी भी देखें।'],
     r_tap: ['Tap your answers above. Warning signs will show here.', 'ऊपर अपने जवाब टैप करें। ख़तरे के संकेत यहाँ दिखेंगे।'],
@@ -198,18 +191,15 @@
     ppd_h: ['Depression after birth: common and treatable', 'डिलीवरी के बाद डिप्रेशन: आम, और इलाज होता है'],
     ppd_p: ['Can start any time in the first year. Low or empty most days for more than 2 weeks, no interest in things, feeling guilty or useless, not sleeping even when the baby sleeps, not eating, not able to enjoy the baby. Talking therapy and, when needed, medicines that are safe with breastfeeding help most women.', 'पहले साल में कभी भी शुरू हो सकता है। 2 हफ़्ते से ज़्यादा, ज़्यादातर दिन उदासी या ख़ालीपन, किसी चीज़ में मन न लगना, ख़ुद को दोषी या बेकार समझना, बच्चा सोए तब भी नींद न आना, भूख न लगना, बच्चे के साथ ख़ुशी महसूस न होना। बातचीत वाली थेरेपी और ज़रूरत हो तो स्तनपान में सुरक्षित दवाओं से ज़्यादातर महिलाएँ ठीक हो जाती हैं।'],
     psy_h: ['Postpartum psychosis: rare, and an emergency', 'पोस्टपार्टम साइकोसिस: बहुत कम, पर इमरजेंसी'],
-    psy_p: ['About 1 in 1,000 mothers. It usually starts suddenly in the first 2 weeks: hearing or seeing things that are not there, strange fixed beliefs, very high or very confused, not sleeping at all. She may not know she is ill, so family must act: call 112 or take her to hospital today. It is treatable.', 'लगभग 1,000 में से 1 माँ को। आमतौर पर पहले 2 हफ़्तों में अचानक शुरू होता है: ऐसी आवाज़ें सुनना या चीज़ें दिखना जो नहीं हैं, अजीब बातों पर पक्का यक़ीन, बहुत ज़्यादा जोश या बहुत उलझन, बिल्कुल नींद न आना। हो सकता है उन्हें ख़ुद पता न चले कि वे बीमार हैं, इसलिए परिवार को क़दम उठाना होगा: 112 पर कॉल करें या आज ही अस्पताल ले जाएँ। इसका इलाज होता है।'],
+    psy_p: ['About 1 in 1,000 mothers. It usually starts suddenly in the first 2 weeks: hearing or seeing things that are not there, strange fixed beliefs, very high or very confused, not sleeping at all. She may not know she is ill, so family must act: take her to the nearest hospital today. It is treatable.', 'लगभग 1,000 में से 1 माँ को। आमतौर पर पहले 2 हफ़्तों में अचानक शुरू होता है: ऐसी आवाज़ें सुनना या चीज़ें दिखना जो नहीं हैं, अजीब बातों पर पक्का यक़ीन, बहुत ज़्यादा जोश या बहुत उलझन, बिल्कुल नींद न आना। हो सकता है उन्हें ख़ुद पता न चले कि वे बीमार हैं, इसलिए परिवार को क़दम उठाना होगा: आज ही सबसे पास के अस्पताल ले जाएँ। इसका इलाज होता है।'],
     q_h: ['Two questions about the last month', 'पिछले एक महीने के बारे में दो सवाल'],
     q_p: ['Doctors use these two questions. They are not a test and give no score. Your answers are not saved.', 'डॉक्टर ये दो सवाल पूछते हैं। यह कोई test नहीं है और इसका कोई score नहीं है। आपके जवाब सेव नहीं होते।'],
     q1: ['During the last month, have you often felt down, depressed or hopeless?', 'पिछले एक महीने में, क्या आप अक्सर उदास, निराश या नाउम्मीद महसूस करती रहीं?'],
     q2: ['During the last month, have you often had little interest or pleasure in doing things?', 'पिछले एक महीने में, क्या अक्सर किसी काम में मन या ख़ुशी कम लगी?'],
     q_yes_h: ['Please talk to someone soon', 'कृपया जल्दी किसी से बात करें'],
-    q_yes_p: ['A yes to either question is a reason to talk to someone this week: your doctor, your ASHA or ANM, or Tele-MANAS 14416 (free, any time). It does not mean you are failing as a mother.', 'किसी भी सवाल का जवाब "हाँ" है, तो इसी हफ़्ते किसी से बात करें: अपनी डॉक्टर, ASHA या ANM, या Tele-MANAS 14416 (मुफ़्त, कभी भी)। इसका मतलब यह नहीं कि आप माँ के रूप में नाकाम हैं।'],
-    q_no_p: ['Thank you. If this changes, or you feel low for more than 2 weeks, come back here or call Tele-MANAS 14416.', 'धन्यवाद। अगर यह बदले, या 2 हफ़्ते से ज़्यादा उदासी रहे, तो यहाँ लौटें या Tele-MANAS 14416 पर कॉल करें।'],
+    q_yes_p: ['A yes to either question is a reason to talk to someone this week: your doctor, your ASHA or ANM. It does not mean you are failing as a mother.', 'किसी भी सवाल का जवाब "हाँ" है, तो इसी हफ़्ते किसी से बात करें: अपनी डॉक्टर, ASHA या ANM। इसका मतलब यह नहीं कि आप माँ के रूप में नाकाम हैं।'],
+    q_no_p: ['Thank you. If this changes, or you feel low for more than 2 weeks, come back here and talk to your doctor.', 'धन्यवाद। अगर यह बदले, या 2 हफ़्ते से ज़्यादा उदासी रहे, तो यहाँ लौटें और अपनी डॉक्टर से बात करें।'],
     q_wait: ['Answer both to see what to do next.', 'आगे क्या करें, यह देखने के लिए दोनों का जवाब दें।'],
-    harm_h: ['Thoughts of harming yourself or your baby', 'ख़ुद को या बच्चे को नुक़सान पहुँचाने के ख़याल'],
-    harm_p: ['Call Tele-MANAS 14416 or 112 now, and ask someone to stay with you. You can get better.', 'अभी Tele-MANAS 14416 या 112 पर कॉल करें, और किसी को अपने पास रहने को कहें। आप ठीक हो सकती हैं।'],
-    tm_note: ["Tele-MANAS is the government's free mental health helpline, open 24×7.", 'Tele-MANAS सरकार की मुफ़्त मानसिक स्वास्थ्य हेल्पलाइन है, 24×7 खुली।'],
     help_h: ['What helps you', 'आपको किससे मदद मिलती है'],
     fam_h: ['For your husband and family', 'पति और परिवार के लिए'],
     m_ask_h: ['Talk it through with a Qura doctor', 'Qura की डॉक्टर से बात करें'],
@@ -499,8 +489,8 @@
       L('Bring her food and a glass of water every time she sits down to feed.', 'जब भी वह दूध पिलाने बैठे, उसके लिए खाना और एक गिलास पानी लाएँ।'),
       L('Do the housework and handle visitors. She needs rest more than guests do.', 'घर का काम करें और मेहमानों को संभालें। उसे मेहमानों से ज़्यादा आराम की ज़रूरत है।'),
       L("Don't compare her with other mothers or criticise how she feeds. Praise what she is doing.", 'उसकी तुलना दूसरी माँओं से न करें, न उसके दूध पिलाने पर टोकें। जो वह कर रही है उसकी तारीफ़ करें।'),
-      L('Notice if she stops eating, sleeping or talking, or cries most days for 2 weeks. Go with her to the doctor, or call 14416 together.', 'ध्यान दें कि कहीं वह खाना, सोना या बात करना तो नहीं छोड़ रही, या 2 हफ़्ते से ज़्यादातर दिन रो रही है। उसके साथ डॉक्टर के पास जाएँ, या साथ मिलकर 14416 पर कॉल करें।'),
-      L('If she says strange things, hears voices, or talks of harming herself or the baby: do not leave her alone, and call 112.', 'अगर वह अजीब बातें करे, आवाज़ें सुने, या ख़ुद को या बच्चे को नुक़सान पहुँचाने की बात करे: उसे अकेला न छोड़ें, और 112 पर कॉल करें।')
+      L('Notice if she stops eating, sleeping or talking, or cries most days for 2 weeks. Go with her to the doctor.', 'ध्यान दें कि कहीं वह खाना, सोना या बात करना तो नहीं छोड़ रही, या 2 हफ़्ते से ज़्यादातर दिन रो रही है। उसके साथ डॉक्टर के पास जाएँ।'),
+      L('If she says strange things or hears voices: do not leave her alone, and take her to the nearest hospital now.', 'अगर वह अजीब बातें करे या आवाज़ें सुने: उसे अकेला न छोड़ें, और अभी सबसे पास के अस्पताल ले जाएँ।')
     ],
     six: [
       L('Blood pressure', 'BP (ब्लड प्रेशर)'),
@@ -559,8 +549,9 @@
   const ageText = (n) => { if (n === 1) return T('age_d1'); if (n < 14) return TF('age_d', { n: n }); if (n < 70) { const w = Math.floor(n / 7); return w === 1 ? T('age_w1') : TF('age_w', { w: w }); } return TF('age_m', { m: Math.floor(n / 30.4) }); };
   /* Version 39.27 (minimalism audit R07): a danger card's numbers are Call buttons that open the phone's dialer with the number
      filled in (she still presses call, so a mistaken tap is harmless); Copy stays, small, under them */
-  const callRow = (ns, cls) => '<div class="pst-row pst-calls">' + ns.map((n) => '<a class="btn sm pst-call ' + (cls || '') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>' +
-    '<div class="pst-row pst-copies">' + ns.map((n) => '<button type="button" class="linkbtn pst-copy" data-pst-copy="' + n + '">' + esc(t('copy')) + ' ' + n + '</button>').join('') + '</div>';
+  const callRow = (ns0, cls) => { const ns = S.emNums ? S.emNums(ns0) : ns0; if (!ns.length) return '';   /* Version 39.70: the numbers that are left, 112 the ambulance */
+    return '<div class="pst-row pst-calls">' + ns.map((n) => '<a class="btn sm pst-call ' + (cls || '') + '" href="tel:' + n + '">' + esc(t('call_b')) + ' ' + n + '</a>').join('') + '</div>' +
+    '<div class="pst-row pst-copies">' + ns.map((n) => '<button type="button" class="linkbtn pst-copy" data-pst-copy="' + n + '">' + esc(t('copy')) + ' ' + n + '</button>').join('') + '</div>'; };
   function wireCopy(v) {
     v.querySelectorAll('[data-pst-copy]').forEach((b) => { if (b._pst) return; b._pst = true; b.addEventListener('click', () => {
       const n = b.dataset.pstCopy; const done = () => S.toast(t('copied') + ' ' + n);
@@ -608,7 +599,7 @@
     { g: 'breast', label: 'g_breast', opts: ['fine', 'sore', 'red'], pre: 'br_' },
     { g: 'pee', label: 'g_pee', opts: ['fine', 'burn', 'leak', 'cant'], pre: 'pe_' },
     { g: 'potty', label: 'g_potty', opts: ['fine', 'hard', 'none'], pre: 'po_' },
-    { g: 'mood', label: 'g_mood', opts: ['ok', 'low', 'anx', 'harm'], pre: 'mo_' },
+    { g: 'mood', label: 'g_mood', opts: ['ok', 'low', 'anx'], pre: 'mo_' },   /* Version 39.70 (the doctors' answer 2): no harm chip */
     { g: 'sleep', label: 'g_sleep', opts: ['ok', 'some', 'poor'], pre: 'sl_' }
   ];
   /* Each flag: { g: group it belongs to, lvl: 'u' (112 now) | 'd' (doctor today) | 't' (tip), k: message key, s: short label key } */
@@ -630,14 +621,14 @@
     if (v.breast === 'red') { if (fev) add('breast', 'd', 'fl_mast', 's_mast'); else add('breast', 't', 'fl_redpatch'); } else if (v.breast === 'sore') add('breast', 't', 'tp_sore');
     if (v.pee === 'cant') add('pee', 'd', 'fl_cantpee', 's_cantpee'); else if (v.pee === 'burn') add('pee', 't', 'tp_burn'); else if (v.pee === 'leak') add('pee', 't', 'tp_leak');
     if (v.potty === 'hard' || v.potty === 'none') add('potty', 't', 'tp_potty');
-    if (v.mood === 'harm') add('mood', 'u', 'fl_harm', 's_harm'); else if (v.mood === 'low' || v.mood === 'anx') add('mood', 't', 'tp_mood');
+    if (v.mood === 'low' || v.mood === 'anx' || v.mood === 'harm') add('mood', 't', 'tp_mood');   /* Version 39.70: an old harm answer reads as low mood */
     if (v.sleep === 'poor') add('sleep', 't', 'tp_sleep');
     return out;
   }
   const TIP_LINK = { tp_sore: R.feed, fl_redpatch: R.feed, tp_leak: R.pelvic, tp_mood: R.mood };
   function inlineHtml(list) {
     return list.map((f) => {
-      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T(f.k === 'fl_harm' ? 'fl_harm_h' : 'fl_112')) + '</strong><span>' + esc(T(f.k === 'fl_harm' && died() ? 'fl_harm_b' : f.k)) + '</span>' + callRow(f.k === 'fl_harm' ? ['112', '14416'] : ['112', '108'], 'pst-onDark') + '</div>';
+      if (f.lvl === 'u') return '<div class="flag urgent pst-col"><strong>' + esc(T('fl_112')) + '</strong><span>' + esc(T(f.k)) + '</span>' + callRow(['112', '108'], 'pst-onDark') + '</div>';
       if (f.lvl === 'd') return '<div class="flag pst-col"><strong>' + esc(T('fl_today')) + '</strong><span>' + esc(T(f.k)) + '</span></div>';
       const go = TIP_LINK[f.k];
       return '<div class="pst-tip"><p>' + esc(T(f.k)) + '</p>' + (go ? '<button type="button" class="btn sm pst-self" data-go="' + go + '">' + esc(T(go === R.feed ? 't_feed' : (go === R.pelvic ? 't_pelvic' : 't_mood'))) + '</button>' : '') + '</div>';
@@ -647,7 +638,7 @@
   function summaryHtml(v, n) {
     const fl = flagsOf(v, n); const U = fl.filter((f) => f.lvl === 'u'), D = fl.filter((f) => f.lvl === 'd');
     let h = '';
-    if (U.length) h += '<div class="flag urgent pst-col"><strong>' + esc(T('fl_112')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(U.map((f) => T(f.s)).join(', ')) + '</span>' + callRow(['112', '108'].concat(U.some((f) => f.k === 'fl_harm') ? ['14416'] : []), 'pst-onDark') + '</div>';
+    if (U.length) h += '<div class="flag urgent pst-col"><strong>' + esc(T('fl_112')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(U.map((f) => T(f.s)).join(', ')) + '</span>' + callRow(['112', '108'], 'pst-onDark') + '</div>';
     if (D.length) h += '<div class="flag pst-col"><strong>' + esc(T('fl_today')) + '</strong><span>' + esc(T('for_label')) + ' ' + esc(D.map((f) => T(f.s)).join(', ')) + '</span></div>';
     if (!U.length && !D.length) h += answered(v) ? '<div class="flag ok">' + fi(S.I.check) + '<span class="pst-ft">' + esc(T('ok_none')) + '</span></div>' : '<p class="small">' + esc(T('r_tap')) + '</p>';
     return h;
@@ -720,18 +711,16 @@
     const yn = (q) => '<div class="grid2">' + [['yes', 'yes'], ['no', 'no']].map((x) => '<button type="button" class="btn sm' + (moodQ[q] === x[0] ? ' on' : '') + '" data-pst-q="' + q + '" data-pst-a="' + x[0] + '" aria-pressed="' + (moodQ[q] === x[0] ? 'true' : 'false') + '">' + esc(t(x[1])) + '</button>').join('') + '</div>';
     let res = '';
     const anyYes = moodQ.q1 === 'yes' || moodQ.q2 === 'yes';
-    if (anyYes) res = '<div class="flag pst-col"><strong>' + esc(T('q_yes_h')) + '</strong><span>' + esc(T('q_yes_p')) + '</span>' + callRow(['14416'], 'pst-onLight') + '</div>';
+    if (anyYes) res = '<div class="flag pst-col"><strong>' + esc(T('q_yes_h')) + '</strong><span>' + esc(T('q_yes_p')) + '</span></div>';
     else if (moodQ.q1 === 'no' && moodQ.q2 === 'no') res = '<div class="flag ok">' + fi(S.I.check) + '<span class="pst-ft">' + esc(T('q_no_p')) + '</span></div>';
     else res = '<p class="small">' + esc(T('q_wait')) + '</p>';
     v.innerHTML = S.backRow(T('m_h'), R.hub, true) + '<p class="small">' + esc(T('m_p')) + '</p>' +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('harm_h')) + '</strong><span>' + esc(T('harm_p')) + '</span>' + callRow(['14416', '112'], 'pst-onDark') + '</div>' +
       '<div class="card"><h3>' + esc(T('q_h')) + '</h3><p class="small">' + esc(T('q_p')) + '</p><p class="pst-q">' + esc(T('q1')) + '</p>' + yn('q1') + '<p class="pst-q">' + esc(T('q2')) + '</p>' + yn('q2') + '<div id="pst-qres">' + res + '</div></div>' +
       '<div class="card"><div class="row"><span class="pill ok">1</span><h3>' + esc(T('blues_h')) + '</h3></div><p class="small pst-txt">' + esc(T('blues_p')) + '</p></div>' +
       '<div class="card"><div class="row"><span class="pill">2</span><h3>' + esc(T('ppd_h')) + '</h3></div><p class="small pst-txt">' + esc(T('ppd_p')) + '</p></div>' +
       '<div class="card warn"><div class="row"><span class="pill accent">3</span><h3>' + esc(T('psy_h')) + '</h3></div><p class="small pst-txt">' + esc(T('psy_p')) + '</p></div>' +
       '<div class="card"><h3>' + esc(T('help_h')) + '</h3><ul class="pst-ul">' + li(G.help) + '</ul></div>' +
       '<div class="card"><h3>' + esc(T('fam_h')) + '</h3><ul class="pst-ul">' + li(G.fam) + '</ul></div>' +
-      '<p class="small">' + esc(T('tm_note')) + '</p>' +
       askCard('m_ask_h', 'm_ask_p', 'm_topic') + related(R.mood) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireCopy(v);
     v.querySelectorAll('[data-pst-q]').forEach((b) => b.addEventListener('click', () => { const q = b.dataset.pstQ; moodQ[q] = moodQ[q] === b.dataset.pstA ? null : b.dataset.pstA; const y = window.scrollY; S.render(); window.scrollTo(0, y); }));
@@ -1048,9 +1037,9 @@
     if (gone) for (let i = tools.length - 1; i >= 0; i--) if (tools[i][0] === R.feed) tools.splice(i, 1);
     /* Version 39.68: the words of a loss only for a mother who said so before this version (babyDied); leaving the stage (babyOff)
        stops the baby lines with no words */
-    const lostTop = gone && (S.state.situation || {}).babyDied ? '<div class="card pst-lost"><h3>' + esc(T('lost_h')) + '</h3><p class="small">' + esc(T('lost_talk')) + '</p><div class="pst-row"><a class="btn sm primary" href="tel:14416">' + esc(t('call_b')) + ' 14416</a>' + (has('loss-grief') ? '<button type="button" class="btn sm" data-go="loss-grief">' + esc(T('lost_sup')) + '</button>' : '') + '</div><button type="button" class="linkbtn" id="pst-lost-undo">' + esc(T('lost_undo')) + '</button></div>' : '';
+    const lostTop = gone && (S.state.situation || {}).babyDied ? '<div class="card pst-lost"><h3>' + esc(T('lost_h')) + '</h3>' + (has('loss-grief') ? '<div class="pst-row"><button type="button" class="btn sm" data-go="loss-grief">' + esc(T('lost_sup')) + '</button></div>' : '') + '<button type="button" class="linkbtn" id="pst-lost-undo">' + esc(T('lost_undo')) + '</button></div>' : '';
     v.innerHTML = S.backRow(T('h'), 'care', false) + lostTop + '<p class="small">' + esc(T(gone ? 'p_b' : 'p')) + '</p>' + hero +
-      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3', 'u_4'].map((x) => '<li>' + esc(T(x === 'u_4' && gone ? 'u_4b' : x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108', '14416'], 'pst-onDark') + '</div>' +
+      '<div class="flag urgent pst-col"><strong>' + esc(T('u_h')) + '</strong><ul class="pst-ul">' + ['u_1', 'u_2', 'u_3'].map((x) => '<li>' + esc(T(x)) + '</li>').join('') + '</ul><span>' + esc(T('u_5')) + '</span>' + callRow(['112', '108'], 'pst-onDark') + '</div>' +
       '<h2>' + esc(T('tools_h')) + '</h2><div class="list">' + tools.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm">' + x[3] + '</span><span class="body"><strong>' + esc(T(x[1])) + '</strong><span>' + esc(T(x[2])) + '</span></span>' + (x[4] && S.flags.proto ? '<span class="pill">' + esc(t('gated_short')) + '</span>' : '') + '</button>').join('') + '</div>' +
       askCard('hub_ask_h', 'hub_ask_p', 'ask_topic') + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v); wireCopy(v);
@@ -1105,11 +1094,11 @@
   S.post.flags = () => {
     if (!S.canSave()) return []; const b = (S.state.situation || {}).deliveredOn; if (!b || (S.cycle && S.cycle.isPregnant && S.cycle.isPregnant())) return [];
     const rec = store().rec || {}; const out = [];
-    const lead = (f) => (f.k === 'fl_harm' ? null : P[f.lvl === 'u' ? 'fl_112' : 'fl_today']);
+    const lead = (f) => P[f.lvl === 'u' ? 'fl_112' : 'fl_today'];
     (rec[todayISO()] ? [0] : [0, 1]).forEach((k) => { const iso = S.toISO(S.addDays(S.today(), -k)); const v = rec[iso]; if (!v) return; const n = S.diffDays(S.fromISO(b), S.fromISO(iso)); if (n < 0 || n > 84) return;
       flagsOf(v, n).filter((f) => (f.lvl === 'u' || f.lvl === 'd') && f.s).forEach((f) => { if (out.some((o) => o.id === 'pp_' + f.k)) return; const ld = lead(f);
-        const fk = f.k === 'fl_harm' && died() ? 'fl_harm_b' : f.k;   /* Version 39.46 */
-        out.push({ id: 'pp_' + f.k, lv: f.lvl === 'u' ? 'now' : 'today', at: iso, t: LP(f.s), see: { en: (ld ? ld[0] + '. ' : '') + P[fk][0], hi: (ld ? ld[1] + '। ' : '') + P[fk][1] }, go: R.rec, call: f.k === 'fl_harm' ? '14416' : '112' }); }); });
+        const fk = f.k;
+        out.push({ id: 'pp_' + f.k, lv: f.lvl === 'u' ? 'now' : 'today', at: iso, t: LP(f.s), see: { en: (ld ? ld[0] + '. ' : '') + P[fk][0], hi: (ld ? ld[1] + '। ' : '') + P[fk][1] }, go: R.rec, call: S.amb ? S.amb() : '108' });   /* Version 39.70 */ }); });
     return out;
   };
   function home() {
@@ -1126,7 +1115,7 @@
       L2.push(TF('sum_checks', { n: keys.length, d: dShort(S.fromISO(keys[keys.length - 1])) }));
       const cnt = {}; keys.forEach((k) => { const e = st.rec[k]; const labs = [];
         (e.danger || []).forEach((x) => { if (x !== 'none') labs.push(T('d_' + x)); });
-        if (e.fever === 'high') labs.push(T('s_fever')); if (e.wound === 'pus' || e.wound === 'red') labs.push(T('s_wound')); if (e.breast === 'red') labs.push(T('br_red')); if (e.pee === 'cant') labs.push(T('s_cantpee')); if (e.bleed === 'heavy') labs.push(T('s_heavy')); if (e.mood === 'harm') labs.push(T('s_harm'));
+        if (e.fever === 'high') labs.push(T('s_fever')); if (e.wound === 'pus' || e.wound === 'red') labs.push(T('s_wound')); if (e.breast === 'red') labs.push(T('br_red')); if (e.pee === 'cant') labs.push(T('s_cantpee')); if (e.bleed === 'heavy') labs.push(T('s_heavy'));   /* Version 39.70: no line for thoughts of harm (the doctors' answer 2) */
         labs.forEach((l) => { cnt[l] = (cnt[l] || 0) + 1; }); });
       const f = Object.keys(cnt); L2.push(f.length ? TF('sum_flags', { f: f.map((l) => l + ' (' + TF('sum_days', { n: cnt[l] }) + ')').join(', ') }) : T('sum_noflags'));
     }
@@ -1158,7 +1147,7 @@
     tiles: [
       { section: 'post', route: R.hub, title: 'post_t_hub', sub: 'post_t_hub_s', icon: 'baby', order: 1, gated: false, keywords: 'after birth postpartum postnatal delivery recovery day count baby newborn डिलीवरी के बाद प्रसव के बाद जच्चा' },
       { section: 'post', route: R.rec, title: 'post_t_rec', sub: 'post_t_rec_s', icon: 'check', order: 2, gated: true, keywords: 'bleeding lochia stitches c-section wound fever infection clots pre-eclampsia ब्लीडिंग टाँके बुख़ार' },
-      { section: 'post', route: R.mood, title: 'post_t_mood', sub: 'post_t_mood_s', icon: 'heart', order: 3, gated: true, keywords: 'baby blues postpartum depression postnatal psychosis anxiety tele-manas 14416 उदासी डिप्रेशन' },
+      { section: 'post', route: R.mood, title: 'post_t_mood', sub: 'post_t_mood_s', icon: 'heart', order: 3, gated: true, keywords: 'baby blues postpartum depression postnatal psychosis anxiety उदासी डिप्रेशन' },
       { section: 'post', route: R.feed, title: 'post_t_feed', sub: 'post_t_feed_s', icon: 'drop', order: 4, gated: false, hidden: () => died(), keywords: 'breastfeeding feed log latch nipples mastitis engorgement milk supply expressing storage maternity leave creche maa स्तनपान दूध' },
       { section: 'post', route: R.contra, title: 'post_t_contra', sub: 'post_t_contra_s', icon: 'pill', order: 5, gated: false, keywords: 'contraception after delivery ppiucd copper-t lam antara chhaya pop tubectomy nsv गर्भनिरोध नसबंदी' },
       { section: 'post', route: R.pelvic, title: 'post_t_pelvic', sub: 'post_t_pelvic_s', icon: 'flower', order: 6, gated: false, keywords: 'pelvic floor kegel leaking urine incontinence diastasis belly gap prolapse व्यायाम लीक' },

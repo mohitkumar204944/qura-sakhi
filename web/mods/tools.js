@@ -67,7 +67,7 @@
     meds_rule_h: ['Before you change anything', 'कुछ भी बदलने से पहले'],
     meds_rule1: ['Do not start, stop or change a prescribed medicine on your own, even if you feel better or have side effects. Ask the doctor who prescribed it.', 'डॉक्टर की लिखी दवा अपने आप शुरू, बंद या कम-ज़्यादा न करें, चाहे आप ठीक महसूस करें या कोई side effect हो। जिस डॉक्टर ने लिखी, उनसे पूछें।'],
     meds_rule2: ['Pregnant, breastfeeding or trying for a baby? Tell every doctor and chemist before you take anything new, including supplements and herbal products.', 'गर्भवती हैं, स्तनपान करा रही हैं या बच्चे की कोशिश कर रही हैं? कुछ भी नया लेने से पहले हर डॉक्टर और chemist को बताएँ, supplement और जड़ी-बूटी वाली चीज़ें भी।'],
-    meds_allergy: ['Swelling of the face or lips, trouble breathing, or a rash spreading fast after a medicine: call 112 or go to the nearest hospital now.', 'किसी दवा के बाद चेहरे या होंठों पर सूजन, साँस लेने में दिक़्क़त, या तेज़ी से फैलते दाने: अभी 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ।'],
+    meds_allergy: ['Swelling of the face or lips, trouble breathing, or a rash spreading fast after a medicine: go to the nearest hospital now.', 'किसी दवा के बाद चेहरे या होंठों पर सूजन, साँस लेने में दिक़्क़त, या तेज़ी से फैलते दाने: अभी सबसे पास के अस्पताल जाएँ।'],
     meds_cur: ['Taking now', 'अभी ले रही हैं'], meds_past: ['Past medicines ({n})', 'पहले ली गई दवाएँ ({n})'],
     meds_none: ['Nothing added yet. Add the medicines and supplements you take now, even vitamins and iron tablets.', 'अभी कुछ नहीं जोड़ा। जो दवाएँ और supplement अभी लेती हैं, सब जोड़ें, vitamin और iron की गोली भी।'],
     m_for: ['For', 'किसलिए'], m_dose: ['As written', 'पर्चे पर लिखा'], m_by: ['Prescribed by', 'किसने लिखी'], m_how: ['How often', 'कितनी बार'], m_dates: ['Dates', 'तारीख़ें'],
@@ -161,7 +161,7 @@
     share_yes: ['Yes, share', 'हाँ, साझा करें'],
     shared_on: ['You said yes to sharing on {d}. Sakhi cannot send it to your doctor yet, so show it to her on your call. To stop, withdraw it on the Me page.', 'आपने {d} को साझा करने के लिए हाँ कहा। Sakhi अभी इसे आपकी डॉक्टर को नहीं भेज सकती, इसलिए कॉल पर उन्हें दिखाएँ। रोकना हो तो “मैं” पन्ने पर सहमति वापस लें।'],
     shared_toast: ['Saved: you said yes to sharing.', 'सेव हुआ: आपने साझा करने के लिए हाँ कहा।'],
-    sum_urgent: ['Something urgent? Do not wait for a visit. Call 112.', 'कुछ ज़रूरी हो? मुलाक़ात का इंतज़ार न करें। 112 पर कॉल करें।']
+    sum_urgent: ['Something urgent? Do not wait for a visit. Go to the nearest hospital.', 'कुछ ज़रूरी हो? मुलाक़ात का इंतज़ार न करें। सबसे पास के अस्पताल जाएँ।']
   };
   const strings = { en: {}, hi: {} };
   Object.keys(P).forEach((k) => { strings.en['tools_' + k] = P[k][0]; strings.hi['tools_' + k] = P[k][1]; });
