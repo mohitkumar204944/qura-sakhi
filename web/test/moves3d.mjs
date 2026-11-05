@@ -250,6 +250,95 @@ for (const [lang, w, h, route, re] of [['en', 360, 800, 'plan-r-strength', /Wall
   await ctx.close();
 }
 
+/* ---------- 8. Version 39.67 (the 3D moves audit, docs/3d-moves-audit-2026-11-04.md; Mohit, 4 Nov: "Yes, fix both") ---------- */
+/* the cramps routine's child's pose and knees to chest in 3D; the 21 small steps' squats day opens Strength at home */
+const rl = async (page) => page.evaluate(() => { const v = document.querySelector('#rl-step video.rl-3d'), i = document.querySelector('#rl-step img.rl-3d');
+  return { video: v ? v.getAttribute('src') : null, poster: v ? v.getAttribute('poster') : null, img: i ? i.getAttribute('src') : null, h: (document.querySelector('#rl-step h2') || {}).innerText || '' }; });
+const rlTo = async (page, re) => { for (let i = 0; i < 6 && !re.test(await txt(page, '#rl-step h2')); i++) await tap(page, (await has(page, '#rl-next')) ? '#rl-next' : '#rl-start'); };
+{
+  const { ctx, page, errs, sent } = await open();
+  await go(page, 'relief-cramps'); await tap(page, '#rl-start');
+  check('8 cramps: Warmth has no figure (nothing to show)', !(await has(page, '#rl-step .rl-figbox')), await rl(page));
+  await rlTo(page, /Child/);
+  const c = await rl(page);
+  check('8 cramps: Child\'s pose shows its 3D still (a hold), the same as Cycle care\'s', /Child/.test(c.h) && c.img === 'fig/s/child.webp' && !c.video, c);
+  await shot(page, '8-cramps-child');
+  await rlTo(page, /Knees/);
+  const k = await rl(page);
+  check('8 cramps: Knees to chest plays its 3D loop, with its still as the poster', /Knees/.test(k.h) && k.video === 'fig/v/knees.webm' && k.poster === 'fig/s/knees.webp', k);
+  await sleep(900); const a = await page.$eval('video#rl-fig3d', (v) => v.currentTime).catch(() => -1); await sleep(500);
+  const b = await page.$eval('video#rl-fig3d', (v) => ({ t: v.currentTime, r: v.readyState, p: v.paused })).catch(() => null);
+  check('8 cramps: the loop really plays', !!(b && b.r >= 2 && !b.p && b.t > a), { a, b });
+  await shot(page, '8-cramps-knees');
+  await rlTo(page, /Slow/);
+  check('8 cramps: Slow breaths has no figure, and the breathing circle', !(await has(page, '#rl-step .rl-figbox')) && (await has(page, '#rl-breath')), await rl(page));
+  for (const id of ['sleep', 'calm']) {
+    await go(page, 'relief-' + id); await tap(page, '#rl-start');
+    check('8 the ' + id + ' routine shows no figure', !(await has(page, '.rl-figbox')));
+  }
+  check('8 no page errors, nothing sent', !errs.length && !sent.length, { errs, sent });
+  await ctx.close();
+}
+{
+  const { ctx, page, errs } = await open({ still: true });
+  await go(page, 'relief-cramps'); await tap(page, '#rl-start'); await rlTo(page, /Knees/);
+  const k = await rl(page);
+  check('8 "reduce motion": Knees to chest shows its still', k.img === 'fig/s/knees.webp' && !k.video, k);
+  check('8 "reduce motion": no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  const { ctx, page, errs } = await open({ cfg: { fig: false } });
+  await go(page, 'relief-cramps'); await tap(page, '#rl-start'); await rlTo(page, /Child/);
+  const c = await rl(page); await rlTo(page, /Knees/); const k = await rl(page);
+  check('8 SAKHI_CONFIG.fig === false: no figure, as before', !c.img && !c.video && !k.img && !k.video && /Child/.test(c.h) && /Knees/.test(k.h), { c, k });
+  check('8 fig false: no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  /* a video that can't play gives way to the still */
+  const { ctx, page, errs } = await open();
+  await ctx.route(/fig\/v\/knees\.webm$/, (r) => r.fulfill({ status: 404, body: '' }));
+  await go(page, 'relief-cramps'); await tap(page, '#rl-start'); await rlTo(page, /Knees/); await sleep(800); await settle(page, 200);
+  const k = await rl(page);
+  check('8 a loop that can\'t play gives way to its still', k.img === 'fig/s/knees.webp' && !k.video, k);
+  check('8 no page errors', !errs.length, errs);
+  await ctx.close();
+}
+for (const [lang, w, h] of [['en', 360, 800], ['hi', 360, 800], ['en', 360, 640]]) {
+  /* Pause and Next stay above the tab bar on the Flip5 and a small phone, with the figure */
+  const { ctx, page, errs } = await open({ lang, width: w, height: h });
+  await go(page, 'relief-cramps'); await tap(page, '#rl-start');
+  for (const re of [/Child|बालासन/, /Knees|घुटने/]) {
+    await rlTo(page, re);
+    const tag = '8 ' + lang + ' at ' + w + ' x ' + h + ', ' + (await txt(page, '#rl-step h2'));
+    const bt = { pause: await atCentre(page, '#rl-pause'), next: await atCentre(page, '#rl-next') };
+    check(tag + ': the figure shows', await has(page, '#rl-step .rl-3d'));
+    check(tag + ': Pause and Next sit above the tab bar, each the thing a tap there hits', ['pause', 'next'].every((x) => bt[x] && bt[x].mine && bt[x].bottom <= bt[x].bar && bt[x].top >= 0), bt);
+    if (lang === 'hi') check(tag + ': nothing runs off the screen', await page.evaluate(() => document.documentElement.scrollWidth <= 360));
+    await page.screenshot({ path: path.join(SHOTS, '8-cramps-' + lang + '-' + w + 'x' + h + '-' + (re.source.slice(0, 5).replace(/\W/g, '')) + '.png') });
+  }
+  check('8 ' + lang + ' at ' + w + ' x ' + h + ': no page errors', !errs.length, errs);
+  await ctx.close();
+}
+{
+  /* 21 small steps, PMOS day 16: "Do 10 squats or 10 push-ups against a wall" opens Strength at home, where both are in 3D */
+  const { ctx, page, errs } = await open({ seed: { mods: { journey: { active: 'pmos', start: ago(15), done: {}, finished: {} } } } });
+  await go(page, 'journey-pmos');
+  const day = await txt(page, '.jr-today');
+  check('8 journey: day 16 is the squats day', /Day 16/i.test(day) && /squats/.test(day), day);
+  check('8 journey: day 16 has an Open button to Strength at home', await has(page, '.jr-today [data-go="plan-r-strength"]'));
+  await tap(page, '.jr-today [data-go="plan-r-strength"]');
+  const v = await view(page);
+  check('8 journey: it opens Strength at home, with its squats and wall push-ups in 3D', /Chair squats/.test(v) && /Wall push-ups/.test(v) && (await has(page, '#pl-pstart')) &&
+    (await page.$$eval('.pl-pitem img.pl-3d', (e) => e.map((x) => x.getAttribute('src')))).filter((s) => s === 'fig/s/chair.webp' || s === 'fig/s/wall.webp').length === 2, v.slice(0, 300));
+  await page.evaluate(() => { location.hash = 'journey-pmos'; window.Saathi.state.situation.pregnant = true; });
+  await settle(page, 400); await page.evaluate(() => window.Saathi.render()); await settle(page, 300);
+  check('8 journey: in a pregnancy, no button to Strength at home', (await has(page, '.jr-today')) && !(await has(page, '.jr-today [data-go="plan-r-strength"]')), await txt(page, '.jr-today'));
+  check('8 journey: no page errors', !errs.length, errs);
+  await ctx.close();
+}
+
 await browser.close();
 const failed = results.filter((r) => !r.pass);
 console.log(results.length - failed.length + ' / ' + results.length + ' checks passed');

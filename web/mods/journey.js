@@ -25,7 +25,7 @@
       [L('Read one answer', 'एक जवाब पढ़ें'), L('Read one short answer about PMOS.', 'PMOS के बारे में एक छोटा जवाब पढ़ें।'), 'a-pmos.what-pmos-is'],
       [L('Roasted, not fried', 'तला नहीं, भुना'), L('Choose roasted or steamed over fried for one meal.', 'एक खाने में तले की जगह भुना या भाप में पका चुनें।')],
       [L('Less sugar in tea', 'चाय में कम चीनी'), L('Try one cup of tea with less sugar, or none.', 'एक कप चाय कम चीनी या बिना चीनी के पीकर देखें।')],
-      [L('Strength at home', 'घर पर ताक़त'), L('Do 10 squats or 10 push-ups against a wall. Go slowly.', '10 उठक-बैठक (squats) या दीवार से 10 पुश-अप करें। धीरे-धीरे।')],
+      [L('Strength at home', 'घर पर ताक़त'), L('Do 10 squats or 10 push-ups against a wall. Go slowly.', '10 उठक-बैठक (squats) या दीवार से 10 पुश-अप करें। धीरे-धीरे।'), 'plan-r-strength'],   /* Version 39.67 (the 3D moves audit): both moves in 3D in Strength at home */
       [L('Know the tests', 'जाँचें जानें'), L('Read which tests doctors do for PMOS, and why.', 'पढ़ें कि PMOS के लिए डॉक्टर कौन सी जाँचें करते हैं, और क्यों।'), 'cond-labs'],
       [L('A 25-minute walk', '25 मिनट की सैर'), L('Walk for 25 minutes today, or take two short walks.', 'आज 25 मिनट टहलें, या दो छोटी सैर करें।')],
       [L('Dal or chana at dinner', 'रात को दाल या चना'), L('Add a bowl of dal or chana to dinner.', 'रात के खाने में एक कटोरी दाल या चना जोड़ें।')],
@@ -68,7 +68,8 @@
   S.journey = { step: (id, n, o) => { const j = J[id]; if (!j) return null; const i = (((n - 1) % j.days.length) + j.days.length) % j.days.length; const A = ALT[id] && ALT[id][i + 1]; const ak = A && o ? (['preg', 'jain', 'nomilk'].find((k) => o[k] && A[k]) || (o.food && A[o.food] ? o.food : null)) : null; const alt = ak ? A[ak] : null;   /* review FOOD-01: pregnancy, Jain and no milk first */ const x = alt || j.days[i]; return { t: tx(x[0]), p: tx(x[1]), go: (alt ? null : x[2]) || null }; }, len: (id) => (J[id] ? J[id].days.length : 0) };
   const todayISO = () => S.toISO(S.today());
   const dayN = (d) => Math.min(N, S.diffDays(S.fromISO(d.start), S.today()) + 1);
-  const goOk = (r) => !!r && (['diary', 'checkin'].indexOf(r) >= 0 || r.indexOf('a-') === 0 || !!S.routeOwner(r));
+  const goOk = (r) => !!r && (['diary', 'checkin'].indexOf(r) >= 0 || r.indexOf('a-') === 0 || !!S.routeOwner(r))
+    && !(r.indexOf('plan-r-') === 0 && (!(S.planOn && S.planOn()) || (S.cycle && S.cycle.isPregnant && S.cycle.isPregnant())));   /* Version 39.67: a routine only where the player shows it; in pregnancy Moves offers her own yoga */
   const doneCount = (d) => Object.keys(d.done).length;
   const finished = (d) => d.active && (doneCount(d) >= N || S.diffDays(S.fromISO(d.start), S.today()) >= N);
   /* Today's step done: on the journey page and in Home's Today */

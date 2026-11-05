@@ -58,6 +58,30 @@
   if (S.onOwnerChange) S.onOwnerChange(() => { stopRun(); run = null; });
   const voiceDefault = () => { const d = S.state.mods && S.state.mods.relief; if (d && d.voice != null) return !!d.voice; return !(S.state.settings.discreet || S.state.settings.shared); };
   const RING = 339.3;   /* 2πr for r = 54 */
+  /* Version 39.67 (the 3D moves audit, docs/3d-moves-audit-2026-11-04.md; Mohit, 4 Nov: "Yes, fix both"): the cramps routine's
+     two yoga moves show the player's own 3D figure (web/fig), the same moves and words as Cycle care yoga: child's pose its still
+     (a hold), knees to chest its loop, with the still for "reduce motion" or a video that can't play. Without web/fig, or with
+     SAKHI_CONFIG.fig === false, no picture, as before. Cramps never run in pregnancy, so it is always her usual body. */
+  const FIG3 = { c2: 'child', c3: 'knees' };
+  const reduced = () => { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
+  function fig3(key) {
+    const f = window.SAKHI_FIG; const k = FIG3[key];
+    if (!k || !f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
+    const still = (f.stills || []).indexOf(k) >= 0 ? 'fig/s/' + k + '.webp' : ''; const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
+    const m = loop && !reduced() ? '<video class="rl-3d" id="rl-fig3d" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+      : (still ? '<img class="rl-3d" src="' + still + '" alt="">' : '');
+    return m ? '<div class="rl-figbox">' + m + '</div>' : '';
+  }
+  function wireFig3(v) {
+    const vd = v.querySelector('video#rl-fig3d'); if (!vd) return;
+    const toStill = () => {
+      const src = vd.getAttribute('data-still'); if (!vd.isConnected) return;
+      if (!src) { const b = vd.closest('.rl-figbox'); if (b) b.remove(); return; }
+      const im = document.createElement('img'); im.className = vd.className; im.src = src; im.alt = ''; vd.replaceWith(im);
+    };
+    vd.addEventListener('error', toStill);
+    try { vd.muted = true; const p = vd.play(); if (p && p.catch) p.catch((e) => { if (e && e.name === 'NotAllowedError') toStill(); }); } catch (e) { toStill(); }
+  }
   function renderPlayer(v, id) {
     if (!R[id] || !R[id].ok()) { renderList(v); return; }
     /* she comes back to where she was, unless she finished it or left it more than 10 minutes ago */
@@ -77,11 +101,11 @@
     } else if (run.i < n) {
       const s = r.steps[run.i];
       body = '<div class="rl-dots" aria-hidden="true">' + r.steps.map((x, k) => '<i class="' + (k < run.i ? 'done' : (k === run.i ? 'on' : '')) + '"></i>').join('') + '</div>' +
-        '<div class="card rl-stage" id="rl-step"><span class="eyebrow">' + esc(tf('relief_step_n', { i: run.i + 1, n: n })) + '</span><h2>' + esc(t('relief_' + s[0] + '_h')) + '</h2><p>' + esc(t('relief_' + s[0] + '_p')) + '</p></div>' +
+        '<div class="card rl-stage" id="rl-step">' + fig3(s[0]) + '<span class="eyebrow">' + esc(tf('relief_step_n', { i: run.i + 1, n: n })) + '</span><h2>' + esc(t('relief_' + s[0] + '_h')) + '</h2><p>' + esc(t('relief_' + s[0] + '_p')) + '</p></div>' +
         (s[2] ? '<div class="rl-breath-wrap" aria-hidden="true"><div class="rl-breath" id="rl-breath"></div><b id="rl-phase"></b></div>'
           : '<div class="rl-timer" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="rl-arc" cx="60" cy="60" r="54" stroke-dasharray="' + RING + '" stroke-dashoffset="0"/></svg><b id="rl-time"></b></div>') +
         '<p class="small rl-left" id="rl-left" aria-live="off"></p>' +
-        '<div class="grid2"><button type="button" class="btn" id="rl-pause">' + esc(t(run.paused ? 'relief_resume' : 'relief_pause')) + '</button><button type="button" class="btn primary" id="rl-next">' + esc(t(run.i === n - 1 ? 'relief_finish' : 'relief_next')) + '</button></div>';
+        '<div class="grid2 rl-ctl"><button type="button" class="btn" id="rl-pause">' + esc(t(run.paused ? 'relief_resume' : 'relief_pause')) + '</button><button type="button" class="btn primary" id="rl-next">' + esc(t(run.i === n - 1 ? 'relief_finish' : 'relief_next')) + '</button></div>';
     } else {
       body = '<div class="card rl-stage">' + art('cheer') + '<h2>' + esc(t('relief_done_h')) + '</h2><p class="small">' + esc(t('relief_done_p')) + '</p></div>' +
         (S.canSave() ? (run.rated ? '<div class="card ok"><p>' + esc(t(run.rated === 'no' ? 'relief_thanks_no' : 'relief_thanks')) + '</p></div>'
@@ -104,7 +128,7 @@
       run.rated = b.dataset.rlRate; const d = D(); d.log.push({ d: S.toISO(S.today()), id: run.id, r: run.rated }); if (d.log.length > 400) d.log.splice(0, d.log.length - 400);
       S.save(); draw(v);   /* a save right after her tap: the garden counts it as looking after herself */
     }));
-    if (run.i >= 0 && run.i < R[run.id].steps.length) { paint(v); tick(v); }
+    if (run.i >= 0 && run.i < R[run.id].steps.length) { wireFig3(v); paint(v); tick(v); }
   }
   function go(i) {
     const v = document.getElementById('view'); if (!v || !run) return; const n = R[run.id].steps.length;
@@ -229,6 +253,11 @@
     css: '.rl-player { display: flex; flex-direction: column; gap: 12px; }' +
       '.rl-stage { align-items: center; text-align: center; gap: 8px; }' +
       '.rl-stage .sakhi { width: 76px; height: 76px; } .rl-stage h2 { margin: 0; }' +
+      /* Version 39.67: the 3D figure on the renders' own light grey, as in the player */
+      '.rl-figbox { width: 100%; max-width: 240px; border-radius: 20px; overflow: hidden; background: #EBEBEB; } .rl-3d { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; }' +
+      '@media (max-height: 860px) { .rl-figbox { max-width: 200px; } } @media (max-height: 720px) { .rl-figbox { max-width: 120px; } .rl-player .rl-timer { width: 96px; height: 96px; } .rl-player .rl-timer b { font-size: 22px; } .rl-player { gap: 8px; } }' +
+      /* Version 39.67: Pause and Next stay above the tab bar, as the player's (Version 39.39, Mohit's Flip5: "fix the buttons") */
+      '.rl-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .rl-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }' +
       '.rl-dots { display: flex; justify-content: center; gap: 6px; } .rl-dots i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); } .rl-dots i.on { background: var(--accent); } .rl-dots i.done { background: var(--accent-2); }' +
       '.rl-timer { position: relative; width: 132px; height: 132px; align-self: center; } .rl-timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }' +
       '.rl-timer .trk { fill: none; stroke: var(--line); stroke-width: 8; } .rl-timer .arc { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear; }' +

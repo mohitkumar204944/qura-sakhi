@@ -7071,3 +7071,30 @@ day"'s own (`plan_s_lim`, `plan_lim_*` with `plan_lim_both`, `plan_s_food`, `pla
 - nothing in discreet mode, on a shared phone, or for a plan from before;
 - Hindi at 360 px.
 The suites that walked through "Your day" (`companion`, `firstday`, `food`, `pictures`) now check what waits, and Today's question.
+
+## 110. Version 39.67: the 3D figure where the audit found none
+
+The 3D moves audit (`docs/3d-moves-audit-2026-11-04.md`; Mohit, 4 Nov: "Yes, fix both") found two moves outside the player with no
+picture. Both now use files `web/fig` already has. No new renders and no new words.
+
+1. **Feel better now → Period cramps** (`mods/relief.js`, `FIG3`, `fig3`, `wireFig3`): step 2, Child's pose, shows the `child` still
+   (a hold). Step 3, Knees to chest, plays the `knees` loop with its still as the poster. These are the same moves, with the same
+   words, as Cycle care yoga's. "Reduce motion", or a loop that can't play, shows the still. A build without `web/fig`, or
+   `SAKHI_CONFIG.fig === false`, shows no picture, as before. Warmth, Slow breaths and the other relief routines have no figure.
+   Cramps never run in pregnancy, so the figure is always her usual body.
+2. **Pause and Next stay above the tab bar** (`.rl-ctl`), as in the player (section 82). On a short screen the figure and the timer
+   get smaller.
+3. **21 small steps, PMOS day 16** ("Do 10 squats or 10 push-ups against a wall", `mods/journey.js`) has an Open button to
+   Strength at home (`plan-r-strength`), where both moves are in 3D. `goOk` shows a `plan-r-` button only while the plan module is
+   on and she isn't pregnant (in a pregnancy, Moves offers only her own yoga).
+
+**Strings.** None new (the button is `journey_open`).
+
+**Tests.** `node test/moves3d.mjs` section 8 (36 checks):
+- the cramps routine's figure on steps 2 and 3 only, the loop playing;
+- "reduce motion", `fig: false`, and a loop that can't play;
+- no figure in the other relief routines;
+- Pause and Next above the tab bar at 360 × 800 (English and Hindi) and 360 × 640, and Hindi at 360 px;
+- day 16's button opening Strength at home with both moves in 3D, and no button in a pregnancy.
+
+`node test/fig-coverage.mjs` lists every routine step's 3D still and loop, and exits 1 if a step has none.

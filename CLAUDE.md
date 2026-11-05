@@ -285,6 +285,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     re-render, run `python3 web/tools/fig3d/install.py <work>/final web <work>/preg/final-b0: <work>/preg/final-b2:b2-
     <work>/preg/final-b3:b3-` (the last three are pregnancy yoga's bodies, from `render-preg.sh`). Contract: MODULE_API section 82;
     wording: section 19.39 (UI words only).
+    Version 39.67 (the 3D moves audit, `docs/3d-moves-audit-2026-11-04.md`; Mohit, 4 Nov: "Yes, fix both"), the test's section 8:
+    the cramps routine's child's pose and knees to chest in 3D, with Pause and Next above the tab bar, and the 21 small steps'
+    squats day opening Strength at home. `node test/fig-coverage.mjs` lists each routine step's 3D still and loop, and fails on a
+    step with none: run it after a re-render. Still open (section 1 of the audit): Steady on your feet's two balance moves and the
+    pelvic floor trainer's standing level show borrowed poses. Contract: MODULE_API section 110.
   - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
     - Call buttons on the labour timer;
     - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;
