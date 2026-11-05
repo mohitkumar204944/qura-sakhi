@@ -110,6 +110,12 @@ exercises model should be doing right moves". So nothing is a diagram, and no ex
 - `install.py` writes `sun0` into `fig.js`. The player (`mods/plan.js`), the cramps routine (`mods/relief.js`) and the trainer
   (`mods/post.js`) play `<pose>-in` once, then its loop.
 
+### 6.2a After the phone walkthrough (Version 39.69.1, 6 Nov)
+
+On Mohit's Flip5, every move reachable at his stage played as it should. Anulom vilom's breathing circle sat behind Previous, Pause and
+Next until she scrolled, because its words are long. The player now makes a move's picture smaller, never below 120 px, until its
+circle or timer clears the controls (MODULE_API section 112.1).
+
 ### 6.3 Still open
 
 - Steady's two balance moves are drafts for the physiotherapist (review 19.51). Their pictures now match their words, and go to

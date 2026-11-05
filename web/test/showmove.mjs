@@ -8,7 +8,10 @@
 //   (Anulom vilom's hand, Bhramari, Sit quietly, Shavasana); Steady on your feet's two balance moves at a wall; the sun
 //   salutation's first position breathing; the cramps routine's child pose; and no routine step anywhere holds still
 //   (test/fig-coverage.mjs);
-// - 3 the belly gap check after a birth.
+// - 3 the belly gap check after a birth;
+// - 4 Version 39.69.1 (the phone walkthrough, 6 Nov): a move's breathing circle, or its timer, in view above Previous, Pause and
+//   Next on the Flip5, in English and Hindi: Anulom vilom's long words make its picture smaller, never smaller than 120 px; a phone
+//   too short even for that scrolls, with Pause and Next tappable.
 // SHOTS=1 saves screens to test/shots/showmove/. Usage: node test/showmove.mjs [web dir]
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -213,6 +216,35 @@ const FIG = 'video#pl-fig3d, img#pl-fig3d';
   const f = await figOf(a.page, '.pst-gapfig video');
   check('3.1 the gap check: on her back, her head and shoulders lifting, her fingertips at her belly button (a loop)', f && f.src === 'fig/v/gapcheck.webm' && f.loop && f.poster === 'fig/s/gapup.webp', f);
   await done(a);
+}
+
+// ---------- 4 Version 39.69.1: the breathing circle (or the timer) in view above Previous, Pause and Next ----------
+{
+  /* with the page at its top: the circle's bottom against the top of the controls as they stick above the tab bar */
+  const fitOf = (page) => page.evaluate(() => {
+    const ring = document.querySelector('.pl-breath-wrap, .pl-timer'), ctl = document.querySelector('.pl-ctl'), box = document.querySelector('#pl-step .pl-figbox'), tab = document.querySelector('.tabbar');
+    if (!ring || !ctl || !box) return null;
+    const limit = (tab ? tab.getBoundingClientRect().top : innerHeight) - ctl.offsetHeight;
+    return { ring: Math.round(ring.getBoundingClientRect().bottom + scrollY), limit: Math.round(limit), fig: Math.round(box.getBoundingClientRect().width), breath: ring.classList.contains('pl-breath-wrap') };
+  });
+  for (const [lang, w, h] of [['en', 360, 800], ['hi', 360, 800], ['en', 360, 640]]) {
+    const a = await open({ seed: Object.assign(mover(), { lang }), hash: '#plan-r-calm', w, h });
+    await tap(a.page, '#pl-pstart'); await sleep(200);
+    const out = [];
+    for (let i = 0; i < 3; i++) { out.push(Object.assign({ step: await txt(a.page, '#pl-step h2') }, await fitOf(a.page))); if (i < 2) await tap(a.page, '#pl-next'); }
+    const nose = out[0];
+    if (h >= 800) {
+      check('4.1 ' + lang + ' at ' + w + ' × ' + h + ': each Calm breath step\'s breathing circle (Sit quietly\'s timer) sits above Previous, Pause and Next', out[0].breath && out[1].breath && !out[2].breath && out.every((x) => x.ring <= x.limit), out);
+      check('4.2 ' + lang + ' at ' + w + ' × ' + h + ': Anulom vilom\'s picture gives way for its long words, never below 120 px', nose.fig >= 120 && nose.fig <= 260, nose);
+    } else check('4.5 at ' + w + ' × ' + h + ' (too short for the words): the picture goes down to 120 px, the rest scrolls, and Pause and Next stay tappable', nose.fig === 120 && (await reach(a.page, '#pl-next')).ok, [nose, await reach(a.page, '#pl-next')]);
+    if (lang === 'en' && h === 800) check('4.3 Bhramari\'s shorter words keep a bigger picture than Anulom vilom\'s', out[1].fig > nose.fig, out);
+    await done(a);
+  }
+  const g = await open({ seed: mover(), hash: '#plan-r-gentle', w: 360, h: 800 });
+  await tap(g.page, '#pl-pstart'); await stepTo(g.page, /Vrikshasana/);
+  const tr = await fitOf(g.page);
+  check('4.4 a move with a timer: the timer above the controls too, the picture at its full size when it fits', tr && !tr.breath && tr.ring <= tr.limit && tr.fig === 260, tr);
+  await done(g);
 }
 
 await browser.close();

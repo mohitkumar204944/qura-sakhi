@@ -1221,8 +1221,25 @@
         if (s.sun && s.flow && prev && prev.pose !== s.pose) animate(fig, prev.pose, s.pose, 0.9, false, true);
         else if (!s.sun && ANIM[s.pose]) animate(fig, ANIM[s.pose][0], ANIM[s.pose][1], ANIM[s.pose][2], ANIM[s.pose][3], false);
       }
-      wireFig3d(v); paint(v); tick(v); if (!run.paused) awake(true);
+      wireFig3d(v); fitStage(v); paint(v); tick(v); if (!run.paused) awake(true);
     }
+  }
+  /* Version 39.69.1 (Mohit's Flip5, 6 Nov, the walkthrough): a move's breathing circle, or its timer, stays in view above Previous,
+     Pause and Next. When the move's words are long (Anulom vilom's seven lines), its picture gets smaller, down to 120 px wide, until
+     the circle clears them with the page at its top; again when the type lands or the screen turns. A phone too short even for
+     that (360 x 640) scrolls, as the player's timer always has there. */
+  function fitStage(v) {
+    const fit = () => {
+      const box = v.querySelector('#pl-step .pl-figbox'), ring = v.querySelector('.pl-breath-wrap, .pl-timer'), ctl = v.querySelector('.pl-ctl');
+      if (!box || !ring || !ctl || !box.isConnected) return;
+      const tab = document.querySelector('.tabbar'); const limit = (tab ? tab.getBoundingClientRect().top : window.innerHeight) - ctl.offsetHeight - 4;
+      box.style.maxWidth = '';
+      let w = box.getBoundingClientRect().width;
+      while (w > 120 && ring.getBoundingClientRect().bottom + window.scrollY > limit) { w = Math.max(120, w - 16); box.style.maxWidth = w + 'px'; }
+    };
+    fit();
+    try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); } catch (e) { /* fitted once */ }
+    if (!fitStage.on) { fitStage.on = true; window.addEventListener('resize', () => { const vv = document.getElementById('view'); if (vv && run && vv.querySelector('#pl-step')) fitStage(vv); }); }
   }
   function go(i) {
     const v = document.getElementById('view'); if (!v || !run) return; const n = run.steps.length;

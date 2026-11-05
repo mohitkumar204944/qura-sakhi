@@ -301,6 +301,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     After a re-render, `render-all.sh` and `moves.PREG` render the new loops (`moves.NEW_LOOPS`), then
     `FIG_SUN_ONLY0=1 ... render.py -- sun` for `sun-00` alone. Contract: MODULE_API section 112 (no new wording; Steady's moves still
     go to the physiotherapist).
+    Version 39.69.1 (the phone walkthrough, 6 Nov), the test's section 4: a move's breathing circle, or its timer, stays above Previous,
+    Pause and Next on the Flip5, with the picture smaller for long words (Anulom vilom), never below 120 px. MODULE_API section 112.1.
   - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
     - Call buttons on the labour timer;
     - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;

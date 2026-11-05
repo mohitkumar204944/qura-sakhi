@@ -7247,3 +7247,15 @@ and the rest's thumbnails. The 3D moves audit, `docs/3d-moves-audit-2026-11-04.m
   - 3, the gap check.
 - `node test/fig-coverage.mjs` now exits 1 on a step that holds still.
 - `node test/moves3d.mjs`: its still checks are now these clips.
+
+### 112.1 Version 39.69.1: the breathing circle in view
+
+On Mohit's Flip5 (the walkthrough, 6 Nov), Anulom vilom's seven lines of words pushed its breathing circle behind Previous, Pause
+and Next. The player now fits each move after drawing it (`fitStage` in `mods/plan.js`):
+- with the page at its top, the circle, or the timer, must end above the controls where they stick over the tab bar;
+- if it doesn't, the picture gets smaller, 16 px at a time, never below 120 px wide;
+- it fits again when the type lands (`document.fonts.ready`) and when the screen turns;
+- a phone too short even for that (360 × 640) scrolls, as the timer always has there;
+- moves whose words fit keep their full-size picture.
+
+`node test/showmove.mjs`, section 4.
