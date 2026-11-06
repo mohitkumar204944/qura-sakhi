@@ -65,6 +65,8 @@
         'रात का पसीना नींद में आने वाले गर्मी के झोंके हैं। गर्मी से नींद खुले तो कल की चिंता होने लगती है, और चिंता से नींद नहीं आती।')] },
       { l: [N2('Before bed: a cool room, light cotton clothes, water by your bed. If a flush wakes you, push back the covers, sip some water and tell yourself: “It will pass. I can rest.”',
         'सोने से पहले: ठंडा कमरा, हल्के सूती कपड़े, पलंग के पास पानी। झोंके से नींद खुले, तो चादर हटाएँ, पानी के घूँट लें और ख़ुद से कहें: “यह गुज़र जाएगा। मैं आराम कर सकती हूँ।”')] },
+      { l: [N2('Still awake? Play a sound for sleep, like the singing bowl and waves, or yoga nidra, a meditation for sleep.',   /* Version 39.71 (ch-mid-h4): under the second card */
+        'अब भी नींद नहीं आ रही? नींद की कोई आवाज़ चलाएँ, जैसे सिंगिंग बाउल और लहरें, या योग निद्रा, जो नींद के लिए ध्यान है।')], go: 'calm', gol: 'calm_h' },
       { b: SKILL, l: [N2('Set up your bedroom the cool way every night this week. Can’t get back to sleep after about 20 minutes? Get up and do something calm until you feel sleepy.',
         'इस हफ़्ते हर रात कमरे को ठंडा रखें। लगभग 20 मिनट में दोबारा नींद न आए, तो उठ जाएँ और नींद आने तक कुछ शांत काम करें।')] },
       { warn: true, b: N2('See a doctor this week', 'इस हफ़्ते डॉक्टर को दिखाएँ'), l: [N2('Night sweats with a fever, a cough for more than 2 weeks, or weight loss: see a doctor and ask about a TB test, which is free at government centres.',

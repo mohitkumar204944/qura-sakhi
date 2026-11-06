@@ -88,7 +88,7 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page);
   const rows = await a.page.$$eval('#view .pl-steps-card .pl-step', (rs) => rs.map((r) => ({ sub: (r.querySelector('.pl-step-sub') || {}).innerText || '', how: !!r.querySelector('.pl-step-how, .pl-step-why') })));
   check('1 one line under each of her 4 steps, no reasons or links on them', rows.length === 4 && rows.every((r) => r.sub && !r.how), rows);
-  check('1 ... yoga before a meal, her walk after dinner, her meal, tonight\'s session', rows[0].sub === 'Before a meal' && rows[1].sub === 'After dinner' && /meal/i.test(rows[2].sub) && /Tonight: slow breaths with Dr\. Megha/.test(rows[3].sub), rows);
+  check('1 ... yoga before a meal, her walk after dinner, her meal, tonight\'s session', rows[0].sub === 'Before a meal' && rows[1].sub === 'After dinner' && /meal/i.test(rows[2].sub) && /Tonight: slow breaths with your trainer/.test(rows[3].sub), rows);
   await tap(a.page, '#pl-whyall');
   const why = await sheet(a.page);
   check('1 one "Why these 4 steps?" opens every reason', /Why these 4 steps\?/.test(why) && (why.match(/Wind down|Walk|swap|yoga/gi) || []).length >= 4 && /body clock/.test(why), why.slice(0, 300));
@@ -107,14 +107,14 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   await done(a);
   const b = await open({ hash: '#plan', seed: { mods: { plan: planOf(3) } } });
   check('1 week 1 as it was: how her plan works open, each reason, "How to do it", the pink check-in, the same tick', await has(b.page, '#view .card.pl-rh') && (await b.page.$$('#view .pl-step-why')).length >= 3 && (await b.page.$$('#view .pl-step-how')).length >= 3 && await has(b.page, '#view .pl-ci-go.primary') && await has(b.page, '#view .pl-steps-same'));
-  check('1 ... its bedtime step winds down too, the gear by her title', /Wind down, in bed by 11:30 pm/.test(await bedRow(b.page)) && await has(b.page, '#view .pl-st-play') && await has(b.page, '#view .pl-gear'));
+  check('1 ... its bedtime step winds down too, the gear by her title', /Wind down with a meditation, in bed by 11:30 pm/.test(await bedRow(b.page)) && await has(b.page, '#view .pl-st-play') && await has(b.page, '#view .pl-gear'));
   await done(b);
 }
 
 /* ---------- 2 the bedtime step winds down first ---------- */
 {
   const a = await open({ hash: '#plan', hm: '21:30' });
-  check('2 My plan: "Wind down, in bed by 11 pm", tonight slow breaths, a 4-minute play button', /Wind down, in bed by 11 pm Tonight: slow breaths with Dr\. Megha 4 min/.test(await bedRow(a.page)), await bedRow(a.page));
+  check('2 My plan: "Wind down with a meditation, in bed by 11 pm", tonight slow breaths, a 4-minute play button', /Wind down with a meditation, in bed by 11 pm Tonight: slow breaths with your trainer 4 min/.test(await bedRow(a.page)), await bedRow(a.page));
   await tap(a.page, '#view .pl-st-play');
   check('2 ... which opens her session and plays it', (await a.page.evaluate(() => location.hash)) === '#calm-breaths' && (await audios(a.page)).some((s) => /sounds\/voice\/en\/breaths\.ogg$/.test(s)));
   await settle(a.page, 31000);
@@ -126,17 +126,17 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   await done(a);
   const t = await open({ hash: '#home', hm: '21:00' });
   const tw = await t.page.$eval('#view .today-plan-sleep', (r) => ({ t: r.innerText.replace(/\s+/g, ' '), b: !!r.querySelector('.today-start.night[data-today-nav]'), w: !!r.querySelector('.today-sub.wrap'), c: (() => { const tt = r.querySelector('.today-sub-t'); return !!tt && tt.scrollWidth > tt.clientWidth + 1; })() })).catch(() => null);
-  check('2 Today: tonight\'s session plays where the tick goes, its line whole (Version 39.43: a second line when it doesn\'t fit)', !!tw && tw.b && !tw.c && /In bed by 11 pm/.test(tw.t) && /Tonight: slow breaths/.test(tw.t) && !/Dr\. Megha/.test(tw.t) && /4 min/.test(tw.t), tw);
+  check('2 Today: tonight\'s session plays where the tick goes, its line whole (Version 39.43: a second line when it doesn\'t fit)', !!tw && tw.b && !tw.c && /In bed by 11 pm/.test(tw.t) && /Tonight: slow breaths/.test(tw.t) && !/your trainer|Dr\. Megha/.test(tw.t) && /4 min/.test(tw.t), tw);
   check('2 ... and yoga says before a meal in its line, its 8 min on its Start (Version 39.41)', (await txt(t.page, '#view .today-plan-yoga .today-sub-t')) === 'Before a meal' && (await txt(t.page, '#view .today-plan-yoga [data-today-nav]')) === '8 min');
   check('2 ... the pink button stays the next step\'s (or the check-in), never the session', !(await has(t.page, '#view .today-start.night.primary')));
   await tap(t.page, '#view .today-plan-sleep [data-today-nav]');
   check('2 ... a tap plays tonight\'s session', (await t.page.evaluate(() => location.hash)) === '#calm-breaths');
   await done(t);
   const n = await open({ hash: '#plan', seed: { daily: { [TODAY]: ['d_sleep'] } } });
-  check('2 Poor sleep in her diary today: tonight is yoga nidra, 9 minutes', /Tonight: yoga nidra with Dr\. Megha 9 min/.test(await bedRow(n.page)), await bedRow(n.page));
+  check('2 Poor sleep in her diary today: tonight is yoga nidra, 9 minutes', /Tonight: yoga nidra with your trainer 9 min/.test(await bedRow(n.page)), await bedRow(n.page));
   await done(n);
   const m = await open({ hash: '#plan', seed: { daily: { [TODAY]: ['d_mood'] } } });
-  check('2 a low day: tonight is Bhramari, 3 minutes', /Tonight: Bhramari with Dr\. Megha 3 min/.test(await bedRow(m.page)), await bedRow(m.page));
+  check('2 a low day: tonight is Bhramari, 3 minutes', /Tonight: Bhramari with your trainer 3 min/.test(await bedRow(m.page)), await bedRow(m.page));
   await done(m);
 }
 

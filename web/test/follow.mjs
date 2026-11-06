@@ -358,7 +358,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('12 her yoga adds its own minutes; her walk is still counted as walked', lg.rmin >= 5 && lg.min === 10 + lg.rmin && (await has(a.page, '#view .today-plan-yoga.today-ok')) && /2 of 4 done today/.test(await txt(a.page, '#view .today-card')), [lg, await txt(a.page, '#view .today-card')]);
   await tap(a.page, '#view .today-plan-plate [data-today-act]');
   const one = await txt(a.page, '#view .today-card');
-  check('12 one step left: "One more: Wind down, in bed by 11:30 pm", in bold', /3 of 4 done today/.test(one) && /One more: Wind down, in bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
+  check('12 one step left: "One more: Wind down with a meditation, in bed by 11:30 pm", in bold (Version 39.71)', /3 of 4 done today/.test(one) && /One more: Wind down with a meditation, in bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
   check('12 ... and the evening check-in still comes', !(await remDone(a.page)));
   await tap(a.page, '#view .today-plan-sleep [data-today-nav]'); await settle(a.page, 31000); await go(a.page, 'home');   /* Version 39.22: tonight's session, 30 seconds of it */
   const all = await txt(a.page, '#view .today-card');

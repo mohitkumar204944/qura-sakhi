@@ -3469,3 +3469,92 @@ patterns once, in English and Hindi, rather than every line.
 
 The doctors' notes that add "or a doctor" to four lines (heavy periods week 7, the pelvic floor plan's 112 line and week 10,
 and the fibroids guide) are part 3.
+
+### 19.71 Version 39.71: the doctors' feature review, part 3, the wording (MODULE_API section 114)
+
+**Status, 6 Nov 2026: built from the doctors' notes, the approved plan, and answers 6, 8 and 10. It waits for their one read,
+English and Hindi.** The record is `docs/feature-review-2026-11-05.md`. Each line below is the doctors' note written as Sakhi says
+things. The Hindi follows each one.
+
+**The renames**
+- Wind down, the yoga and breath work: "your trainer" (आपकी ट्रेनर); the captions name "Trainer" (ट्रेनर). The joining welcome
+  keeps Dr. Megha.
+- "Pelvic floor exercises (Kegels)" (पेल्विक फ़्लोर व्यायाम (कीगल)), then "Kegels" and "Kegel sets" (कीगल सेट). The counts read "10
+  times", and "Squeeze and lift" stays in the instructions.
+- "My postpartum recovery" (डिलीवरी के बाद मेरी रिकवरी).
+- "Menopause transition and menopause" (मेनोपॉज़ की ओर बदलाव और मेनोपॉज़).
+- "Period comfort" (पीरियड में आराम); "Get your period comfort ready" (पीरियड में आराम की तैयारी करें); "Comfort for your period week" (पीरियड वाले
+  हफ़्ते में आराम).
+- The period plan's Relax step: "Slow breaths or yoga nidra at bedtime, or a sound for sleep" (सोने से पहले धीमी साँसें या योग
+  निद्रा, या नींद की कोई आवाज़).
+
+**The medicine line (answer 6)**
+- On every page and article about a medicine or a procedure: "Take medicines only on your doctor’s advice. Don’t take them on your
+  own." (दवाएँ सिर्फ़ डॉक्टर की सलाह पर लें। अपने आप न लें।)
+- On the emergency pill: "Ask a doctor or chemist today." (आज ही डॉक्टर या केमिस्ट से पूछें।)
+- Before the tests for a couple and in week 4: "Do these tests with your doctor’s guidance: ask your doctor first." (ये जाँचें
+  डॉक्टर की सलाह से कराएँ: पहले डॉक्टर से पूछें।)
+- Bones and heart (answer 8): "Supplements, if your doctor advises. After consulting your doctor: vitamin D, calcium or a
+  multivitamin. Your doctor tells you which one, and how much." (Supplement, अगर डॉक्टर कहें। डॉक्टर से सलाह के बाद: vitamin D,
+  calcium या multivitamin। कौन सा और कितना, यह डॉक्टर बताएँगी।)
+
+**Cloth and the Rs 1 pad.** They come out of every screen and article where cloth was a period product. The after-birth line now
+reads "more than five pads a day" (दिन में पाँच से ज़्यादा पैड). The pads article is "Pads, cups and tampons: safe use" (पैड, कप और
+टैम्पॉन: सही इस्तेमाल), and the under-18 article says "A pad, changed every few hours, is fine." (पैड, जो कुछ घंटों में बदला जाए,
+ठीक है।)
+
+**The doctors' added lines**
+- **Night sweats, under the second card**: "Still awake? Play a sound for sleep, like the singing bowl and waves, or yoga nidra, a
+  meditation for sleep." (अब भी नींद नहीं आ रही? नींद की कोई आवाज़ चलाएँ, जैसे सिंगिंग बाउल और लहरें, या योग निद्रा, जो नींद के
+  लिए ध्यान है।)
+  - Sakhi has three sounds for sleep: a singing bowl with waves, and two soft music tracks.
+  - Rain, a river or birds would be new recordings, in a build of their own.
+- **For poor sleep**: "A cool room, a dim and warm light, and a cosy bed help you sleep." (ठंडा कमरा, हल्की और गर्म रोशनी, और
+  आरामदायक बिस्तर नींद में मदद करते हैं।) Its last button reads "Keep going: sounds for sleep, or yoga nidra, a sleep meditation".
+- **The bedtime step**: "Wind down with a meditation, in bed by {time}" (ध्यान के साथ सुकून के पल, फिर {time} तक बिस्तर पर).
+- **PMS, "Catch the thought"**: "Doing something you enjoy also turns your mind: gardening, writing in a journal, reading, meeting
+  friends, or any hobby you love." (जो आपको अच्छा लगे, वह करने से भी मन बदलता है: बाग़वानी, डायरी लिखना, किताब पढ़ना, सहेलियों से
+  मिलना, या कोई भी शौक़।)
+- **PMS, "People around you"**: "You can also talk to a doctor, or a friend." (आप डॉक्टर से, या किसी सहेली से भी बात कर सकती हैं।)
+- **PMS, "When anger flares"**: without its third card.
+- **PMS, "When to get more help"**: "Lean on the people close to you: family, friends or cousins. Talk to them, do what you love
+  most, keep busy, and take a walk outside." (अपने क़रीबी लोगों का साथ लें: परिवार, सहेलियाँ या रिश्ते की बहनें। उनसे बात करें, वह
+  करें जो सबसे अच्छा लगे, ख़ुद को व्यस्त रखें, और बाहर टहलने जाएँ।)
+- **His part, the page shown to him**: "A healthy pregnancy is a shared job. Your health matters as much as hers. Before you try: a
+  check-up and the tests your doctor advises, better food, and a healthier routine, for both of you." (स्वस्थ गर्भ दोनों की
+  ज़िम्मेदारी है। आपकी सेहत भी उतनी ही ज़रूरी है जितनी उनकी। कोशिश शुरू करने से पहले: जाँच और डॉक्टर के बताए टेस्ट, बेहतर खाना, और
+  सेहतमंद दिनचर्या, आप दोनों के लिए।)
+- **Week 5, "Ovulation tests, if you want them"** (steps 3 and 5 are the ovulation article's reviewed lines):
+  1. "Start a few days before your fertile days: if your cycles are regular, the Fertile days estimate shows them."
+  2. "Test once a day, at about the same time, as the leaflet in the kit says."
+  3. "A test line as dark as the control line is the LH rise: the egg usually comes out in the next 12 to 36 hours."
+  4. "Have sex that day and the next day."
+  5. "With PMOS, or lines on many days or never for 2 or 3 months: stop, and ask a doctor."
+
+  The Hindi is in `mods/ttc.js`, week 5.
+- **Week 10**: "Don’t take on stress for what others say." (दूसरे क्या कहते हैं, उसका तनाव न लें।) and "Before bed you can play a
+  meditation, like yoga nidra or slow breaths." (सोने से पहले आप कोई ध्यान चला सकती हैं, जैसे योग निद्रा या धीमी साँसें।)
+- **Check-ups after a birth**:
+  - her 6-week check and her tablets come first;
+  - then the baby's vaccines, kept short: the next two, and the rest under "All the baby’s vaccines" (बच्चे के सभी टीके).
+- **Breastfeeding**: the basics only: latch, "Is baby getting enough?", sore nipples, full breasts, mastitis and the supply myths.
+  - "Food while you breastfeed" stays, because her plan's food step opens it.
+  - If the doctors want it gone too, that step needs a new home first.
+- **The girls' guides on one page**: "For girls 10–17 and their families: the first period, and a guide for mothers and fathers."
+  (10–17 साल की लड़कियों और उनके परिवार के लिए: पहला पीरियड, और माँ-पापा के लिए एक गाइड।) The tile is "First periods: for girls and
+  parents".
+- **"Or a doctor"**:
+  - heavy periods, week 7: "If you feel dizzy, breathless or your heart races: see a doctor. Chest pain or fainting: go to the
+    nearest hospital now.";
+  - the pelvic floor plan: "Go to the nearest hospital or a doctor now if you suddenly can’t control your bladder or bowel…";
+  - week 10: "…tell someone at home, and go to a doctor or the nearest hospital today.";
+  - the fibroids guide: "…go to a doctor or the nearest hospital now (ambulance: 108)."
+
+**Qura's doctors (answer 10)**
+- Every button reads "Ask a doctor" (डॉक्टर से पूछें). The call form still says "Talk to a Qura doctor", and Explore's tile says
+  "Talk to a doctor".
+- The doctors' line goes on the call form and in How Qura helps: "Qura’s doctors (BAMS, trained in women’s health) look at any
+  concern and tell you when you need a gynaecologist." (Qura की डॉक्टर (BAMS, महिलाओं की सेहत में प्रशिक्षित) किसी भी परेशानी को
+  देखती हैं और बताती हैं कि कब आपको स्त्री रोग विशेषज्ञ की ज़रूरत है।)
+- The question page asked for the final words to be checked with the lawyer.
+- The MBBS gynaecologist is named once Mohit sends the name, degree and registration number.

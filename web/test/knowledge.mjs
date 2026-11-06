@@ -380,7 +380,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   {
     const { ctx, page, errs } = await open({ lang: 'hi', seed: { lang: 'hi' }, hash: '#periods-products' });
     const v = await allText(page);
-    check('14 Hindi pads line reads whole (FACTS-08)', v.indexOf('₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है; कुछ राज्य अब ये मुफ़्त देते हैं।') >= 0 && v.indexOf('मिल सकता ह कुछ') < 0);
+    check('14 Hindi pads section reads whole, without the cheap-pad lines (FACTS-08; Version 39.71: the doctors took them out)', /हर कुछ घंटे में बदलें, हल्के दिनों में भी/.test(v) && v.indexOf('₹6') < 0 && v.indexOf('Suvidha') < 0 && v.indexOf('मिल सकता ह कुछ') < 0);
     errsAll.push(...errs); await ctx.close();
   }
   /* KNOWLEDGE-02, 04, 07, 08: search */

@@ -98,7 +98,7 @@
     const art = (pose) => (S.art ? S.art.sakhi({ pose: pose, look: look }) : '');
     let body;
     if (run.i < 0) {
-      body = '<div class="card rl-stage">' + art('calm') + '<p class="lead">' + esc(tf('relief_mins', { n: mins(run.id) })) + '</p><p class="small">' + esc(t('relief_intro')) + '</p></div>' +
+      body = '<div class="card rl-stage">' + art('calm') + '<p class="lead">' + esc(tf('relief_mins', { n: mins(run.id) })) + '</p><p class="small">' + esc(t('relief_intro')) + '</p>' + (run.id === 'sleep' ? '<p class="small">' + esc(t('relief_sleep_room')) + '</p>' : '') + '</div>' +   /* Version 39.71 (rf-sleep) */
         '<ol class="steps">' + r.steps.map((s) => '<li>' + esc(t('relief_' + s[0] + '_h')) + '</li>').join('') + '</ol>' +
         (S.speakEl || clipFor('c1') ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('relief_voice')) + '</strong><span>' + esc(t('relief_voice_d')) + '</span></span><input type="checkbox" id="rl-voice" ' + (run.voice ? 'checked' : '') + '></label></div>' : '') +
         '<button type="button" class="btn primary block" id="rl-start">' + esc(t('relief_start')) + '</button>' + (run.id === 'sleep' ? calmRow() : '') + planFor(RL_TOPIC[run.id]) + doc(run.id);   /* Version 39.21: one tap from her plan's bedtime step */
@@ -179,9 +179,9 @@
       en: {
         relief_h: 'Feel better now', relief_p: 'Short routines you can do anywhere, in about 3 minutes. Many women find they help a little. They don’t replace a doctor.',
         relief_tile_s: '3-minute routines for cramps, nausea, sleep, worry and hot flushes', relief_mins: 'About {n} minutes', relief_foot: 'Self-care only, not treatment. The same steps for every woman.',
-        relief_cta_h: 'Feel better now', relief_all: 'All routines', relief_ask: 'Ask a Qura doctor about this',
+        relief_cta_h: 'Feel better now', relief_all: 'All routines', relief_ask: 'Ask a doctor about this',
         relief_cramps_t: 'For period cramps', relief_nausea_t: 'For nausea in pregnancy', relief_sleep_t: 'For poor sleep', relief_calm_t: 'When you feel anxious or low', relief_hot_t: 'For hot flushes',
-        relief_intro: 'Sit or lie somewhere comfortable. Each step has a timer, and you can move on any time.', relief_voice: 'Read the steps aloud', relief_voice_d: 'Off on a shared phone, unless you turn it on',
+        relief_intro: 'Sit or lie somewhere comfortable. Each step has a timer, and you can move on any time.', relief_sleep_room: 'A cool room, a dim and warm light, and a cosy bed help you sleep.', relief_voice: 'Read the steps aloud', relief_voice_d: 'Off on a shared phone, unless you turn it on',
         relief_start: 'Start', relief_pause: 'Pause', relief_resume: 'Go on', relief_next: 'Next', relief_finish: 'Finish', relief_step_n: 'Step {i} of {n}', relief_left: '{t} left in this step',
         relief_in: 'Breathe in', relief_hold: 'Hold', relief_out: 'Breathe out',
         relief_done_h: 'Well done', relief_done_p: 'You gave yourself a few quiet minutes.', relief_q: 'Did this help?', relief_r_yes: 'Yes', relief_r_some: 'A little', relief_r_no: 'Not really',
@@ -214,9 +214,9 @@
       hi: {
         relief_h: 'अभी थोड़ा आराम', relief_p: 'छोटे-छोटे तरीके, जो आप कहीं भी लगभग 3 मिनट में कर सकती हैं। बहुत सी महिलाओं को इनसे थोड़ा आराम मिलता है। ये डॉक्टर की जगह नहीं लेते।',
         relief_tile_s: 'ऐंठन, जी मिचलाना, नींद, घबराहट और हॉट फ़्लश के लिए 3 मिनट', relief_mins: 'लगभग {n} मिनट', relief_foot: 'सिर्फ़ अपनी देखभाल के लिए, इलाज नहीं। हर महिला के लिए एक जैसे क़दम।',
-        relief_cta_h: 'अभी थोड़ा आराम', relief_all: 'सारे तरीके', relief_ask: 'इस बारे में Qura की डॉक्टर से पूछें',
+        relief_cta_h: 'अभी थोड़ा आराम', relief_all: 'सारे तरीके', relief_ask: 'इस बारे में डॉक्टर से पूछें',
         relief_cramps_t: 'पीरियड की ऐंठन के लिए', relief_nausea_t: 'प्रेग्नेंसी में जी मिचलाने के लिए', relief_sleep_t: 'नींद न आए तो', relief_calm_t: 'घबराहट या उदासी हो तो', relief_hot_t: 'हॉट फ़्लश के लिए',
-        relief_intro: 'कहीं आराम से बैठ या लेट जाएँ। हर क़दम का टाइमर है, और आप कभी भी आगे बढ़ सकती हैं।', relief_voice: 'क़दम पढ़कर सुनाएँ', relief_voice_d: 'शेयर्ड फ़ोन पर बंद रहता है, जब तक आप चालू न करें',
+        relief_intro: 'कहीं आराम से बैठ या लेट जाएँ। हर क़दम का टाइमर है, और आप कभी भी आगे बढ़ सकती हैं।', relief_sleep_room: 'ठंडा कमरा, हल्की और गर्म रोशनी, और आरामदायक बिस्तर नींद में मदद करते हैं।', relief_voice: 'क़दम पढ़कर सुनाएँ', relief_voice_d: 'शेयर्ड फ़ोन पर बंद रहता है, जब तक आप चालू न करें',
         relief_start: 'शुरू करें', relief_pause: 'रोकें', relief_resume: 'जारी रखें', relief_next: 'आगे', relief_finish: 'ख़त्म करें', relief_step_n: '{n} में से {i} क़दम', relief_left: 'इस क़दम में {t} बाक़ी',
         relief_in: 'साँस अंदर', relief_hold: 'रोकें', relief_out: 'साँस बाहर',
         relief_done_h: 'बहुत अच्छा', relief_done_p: 'आपने अपने लिए कुछ शांत मिनट निकाले।', relief_q: 'क्या इससे आराम मिला?', relief_r_yes: 'हाँ', relief_r_some: 'थोड़ा', relief_r_no: 'नहीं',

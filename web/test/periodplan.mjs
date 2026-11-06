@@ -160,7 +160,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
 {
   let a = await open({ seed: per('pain', B(3), { also: ['heavy'], last: 0 }), hm: '21:00', hash: '#plan-checkin' });
   let v = await view(a.page);
-  check('3.1 a period day: "Pain today?" and "Your period today" (the same 3 taps for pads or cloth)', /Pain today\?/.test(v) && /Your period today/i.test(v) && /pads or cloth/.test(v), v.slice(0, 900));
+  check('3.1 a period day: "Pain today?" and "Your period today" (the same 3 taps for pads or cloth)', /Pain today\?/.test(v) && /Your period today/i.test(v) && /whatever you use/.test(v), v.slice(0, 900));
   await a.page.$$eval('#view .pl-ci .chips', (gs) => gs.forEach((g) => { const b = g.querySelector('[data-ci$=":d"]'); if (b) b.click(); })); await settle(a.page, 200);
   await tap(a.page, '#view [data-pl-pain="pain_2"]');
   await tap(a.page, '#view [data-ci-pt="soak:y"]'); await tap(a.page, '#view [data-ci-pt="clots:clots_2"]'); await tap(a.page, '#view [data-ci-ptw="night"]');
@@ -276,12 +276,12 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   a = await open({ seed: NOPLAN('pain') });
   let r = await revealCards(a.page, IK.pain);
   check('7.2 period pain, between periods: "Every day: Relax" and "3 days a week: Walk" (not "Every day")', /Every day: Relax, a few minutes/.test(r.steps) && /3 days a week: Walk or move \d+ minutes/.test(r.steps), r.steps);
-  check('7.2 ... "What happens when": her kit on period days and before, the chapter, week 4, strength, yoga, week 12', r.tl[0] === 'On your period days: your period kit, and just before, get it ready' && r.tl.indexOf('Every week: a short chapter, and a look back at your week') >= 0 &&
+  check('7.2 ... "What happens when": her kit on period days and before, the chapter, week 4, strength, yoga, week 12', r.tl[0] === 'On your period days: period comfort, and just before, get it ready' && r.tl.indexOf('Every week: a short chapter, and a look back at your week') >= 0 &&
     r.tl.indexOf('Week 4: a look at your first month, and when to see a doctor') >= 0 && r.tl.indexOf('From week 5: Strength at home on 2 of your walking days') >= 0 && r.tl.indexOf('From week 6, in the week before your period: Cycle care yoga') >= 0 && r.tl[r.tl.length - 1] === 'Week 12: your results, next to where you started', r.tl);
   await done(a);
   a = await open({ seed: NOPLAN('pain', { events: regular(0) }) });
   r = await revealCards(a.page, IK.pain);
-  check('7.2 period pain, on a period day: "On your period days: Your period kit", and the row after names only getting it ready', /On your period days: Your period kit/.test(r.steps) && !/Every day: Your period kit/.test(r.steps) && r.tl[0] === 'Just before your period: get your kit ready', [r.steps, r.tl]);
+  check('7.2 period pain, on a period day: "On your period days: Your period kit", and the row after names only getting it ready', /On your period days: Period comfort/.test(r.steps) && !/Every day: Period comfort/.test(r.steps) && r.tl[0] === 'Just before your period: get your period comfort ready', [r.steps, r.tl]);
   await done(a);
   a = await open({ seed: NOPLAN('pms', { events: regular(24) }) });
   r = await revealCards(a.page, IK.pms);
@@ -326,7 +326,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   /* 7.7 Hindi at 360 px: "Your plan is ready" with its new lines, fitting */
   a = await open({ seed: NOPLAN('pain', { lang: 'hi' }), w: 360, h: 800 });
   r = await revealCards(a.page, Object.assign({}, IK.pain));
-  check('7.7 Hindi at 360 px: the steps and "What happens when" in Hindi, fitting', /हफ़्ते में 3 दिन/.test(r.steps) && r.tl[0] === 'पीरियड के दिनों में: पीरियड की आपकी किट, और ठीक पहले उसे तैयार रखें' && await noScroll(a.page), [r.steps.slice(0, 200), r.tl]);
+  check('7.7 Hindi at 360 px: the steps and "What happens when" in Hindi, fitting', /हफ़्ते में 3 दिन/.test(r.steps) && r.tl[0] === 'पीरियड के दिनों में: पीरियड में आराम, और ठीक पहले उसकी तैयारी' && await noScroll(a.page), [r.steps.slice(0, 200), r.tl]);
   await done(a);
   /* 7.8 her evening answers lead somewhere: My progress counts the days it got in her way (they were saved and never read) */
   const lg = {}; lg[ago(20)] = { ci: 1, px: 'lot' }; lg[ago(19)] = { ci: 1, px: 'lot' }; lg[ago(18)] = { ci: 1, px: 'little' };
@@ -384,7 +384,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   check('8.1 ... and a daytime session is not the bedtime wind-down: no wind-down reminder', !((await st(a.page)).reminders || []).some((x) => x.id === 'plan-wind'), ((await st(a.page)).reminders || []).map((x) => x.id));
   await done(a);
   a = await open({ seed: per('pain', B(3), { last: 0 }) });
-  nv = await navOf(a.page, /Your period kit/);
+  nv = await navOf(a.page, /Period comfort/);
   check('8.1 a period day: her kit plays the cramps routine (3 min)', !!nv && nv.txt === '3 min' && !nv.night, nv);
   await go(a.page, 'plan');
   check('8.1 ... and My plan has its play button, in daylight', await has(a.page, '#view .pl-st-start[data-pl-play]'));
@@ -397,7 +397,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   const uneven = () => { const out = []; [80, 57, 23].forEach((x) => out.push({ d: ago(x), t: 'start' }, { d: ago(x - 4), t: 'end' })); return out; };
   a = await open({ seed: NOPLAN('pain', { events: uneven() }) });
   r = await revealCards(a.page, IK.pain);
-  check('8.2 gaps that vary: "On your period days: your period kit", no "just before", no yoga in the week before', r.tl[0] === 'On your period days: your period kit' && !r.tl.some((x) => /just before|week before your period/.test(x)), r.tl);
+  check('8.2 gaps that vary: "On your period days: your period kit", no "just before", no yoga in the week before', r.tl[0] === 'On your period days: period comfort' && !r.tl.some((x) => /just before|week before your period/.test(x)), r.tl);
   await done(a);
   /* 8.3 one "Tomorrow" line, and true: her period ends today, so tomorrow's steps are named */
   a = await open({ seed: per('pain', B(3), { also: ['heavy'], last: 4 }), hm: '21:00' });
@@ -422,7 +422,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   const mid = (goals) => Object.assign(per('pain', B(2)), { dob: '1981-04-01', situation: { midlife: false }, goals: goals, intake: { goal: goals[0] || 'track', stage: 'cycle' }, mods: { plan: planOf('meno', B(2), { goalKey: 'hot', intake: { goal: 'hot', stage: 'meno' } }) } });
   a = await open({ seed: mid(['pain', 'heavy']) });
   v = await view(a.page);
-  check('8.6 her period goals: "My period plan may fit now", "See My period plan" and "Keep My midlife plan"', /My period plan may fit now/.test(v) && await has(a.page, '#pl-fit-go') && /See My period plan/.test(await txt(a.page, '#pl-fit-go')) && /Keep My midlife plan/.test(await txt(a.page, '#pl-fit-keep')), v.slice(0, 400));
+  check('8.6 her period goals: "My period plan may fit now", "See My period plan" and "Keep My midlife plan"', /My period plan may fit now/.test(v) && await has(a.page, '#pl-fit-go') && /See My period plan/.test(await txt(a.page, '#pl-fit-go')) && /Keep Menopause transition and menopause/.test(await txt(a.page, '#pl-fit-keep')), v.slice(0, 400));
   await tap(a.page, '#pl-fit-go');
   check('8.6 ... "See My period plan" opens period pain\'s questions', /About your period pain/.test(await view(a.page)), (await view(a.page)).slice(0, 200));
   await done(a);

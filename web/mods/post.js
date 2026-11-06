@@ -19,13 +19,13 @@
     t_mood: ['Mood after birth', 'डिलीवरी के बाद मन'],
     t_mood_s: ['Baby blues, depression, and when it is an emergency', 'बेबी ब्लूज़, डिप्रेशन, और कब यह इमरजेंसी है'],
     t_feed: ['Breastfeeding', 'स्तनपान'],
-    t_feed_s: ['Feed log with timer, latch, sore nipples, milk supply, going back to work', 'टाइमर वाला फ़ीड लॉग, सही पकड़, निप्पल में दर्द, दूध की मात्रा, काम पर लौटना'],
+    t_feed_s: ['Feed log with timer, latch, sore nipples, milk supply', 'टाइमर वाला फ़ीड लॉग, सही पकड़, निप्पल में दर्द, दूध की मात्रा'],
     t_contra: ['Contraception after birth', 'डिलीवरी के बाद गर्भनिरोध'],
     t_contra_s: ['What you can start, and when, while breastfeeding', 'स्तनपान के दौरान क्या और कब शुरू कर सकती हैं'],
     t_pelvic: ['Pelvic floor trainer', 'पेल्विक फ़्लोर व्यायाम'],
-    t_pelvic_s: ['Guided squeeze-and-relax timer, step by step', 'गिनती के साथ कसना और ढीला छोड़ना, क़दम दर क़दम'],   /* Version 39.56: the belly gap check is for after a birth only */
+    t_pelvic_s: ['Pelvic floor exercises (Kegels), with a timer, step by step', 'गिनती के साथ कसना और ढीला छोड़ना, क़दम दर क़दम'],   /* Version 39.56: the belly gap check is for after a birth only */
     t_checks: ["Check-ups and baby's vaccines", 'जाँच और बच्चे के टीके'],
-    t_checks_s: ['ASHA visits, your 6-week check, iron and calcium, vaccine reminders', 'ASHA की विज़िट, आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, टीकों के रिमाइंडर'], t_checks_s_doc: ['Your 6-week check, iron and calcium, vaccine reminders', 'आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, टीकों के रिमाइंडर'],
+    t_checks_s: ['Your 6-week check, iron and calcium, ASHA visits, the baby’s vaccines', 'आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, ASHA की विज़िट, बच्चे के टीके'], t_checks_s_doc: ['Your 6-week check, iron and calcium, vaccine reminders', 'आपकी 6 हफ़्ते की जाँच, आयरन-कैल्शियम, टीकों के रिमाइंडर'],
 
     /* shared */
     remove: ['Remove', 'हटाएँ'], more: ['Related', 'इससे जुड़े'], min: ['min', 'मिनट'],
@@ -271,7 +271,7 @@
     pf_h: ['Pelvic floor trainer', 'पेल्विक फ़्लोर व्यायाम'],
     pf_p: ['These muscles hold up your bladder, womb and bowel. Pregnancy and birth stretch them. A few minutes a day helps stop leaks and heaviness. Start gently when it feels comfortable, even after stitches or a C-section.', 'ये मांसपेशियाँ मूत्राशय, बच्चेदानी और आँतों को सहारा देती हैं। गर्भ और डिलीवरी में ये खिंच जाती हैं। रोज़ कुछ मिनट का व्यायाम लीक होने और भारीपन से बचाता है। जब आराम लगे, धीरे-धीरे शुरू करें, टाँकों या ऑपरेशन के बाद भी।'],
     hold_l: ['Hold for', 'कितनी देर रोकें'], secs: ['{n} sec', '{n} सेकंड'],
-    pf_start: ['Start a set: 10 squeezes', 'एक सेट शुरू करें: 10 बार'],
+    pf_start: ['Start a set: 10 times', 'एक सेट शुरू करें: 10 बार'],
     ph_ready: ['Get ready', 'तैयार हो जाएँ'], ph_sq: ['Squeeze and lift', 'कसें और ऊपर खींचें'], ph_rel: ['Relax', 'ढीला छोड़ें'],
     rep: ['Squeeze {i} of {n}', '{n} में से {i}'],
     pf_pause: ['Pause', 'रोकें'], pf_resume: ['Resume', 'फिर शुरू करें'], pf_stop: ['Stop', 'बंद करें'],
@@ -282,7 +282,7 @@
     pf_p_preg: ['Doing these in pregnancy lowers the chance of leaking urine late in pregnancy and after the birth. A few minutes a day, sitting or lying down. Stop and tell your doctor if they hurt.', 'प्रेग्नेंसी में ये करने से आख़िरी महीनों में और डिलीवरी के बाद पेशाब लीक होने की संभावना कम होती है। रोज़ कुछ मिनट, बैठकर या लेटकर। दर्द हो तो रुकें और डॉक्टर को बताएँ।'],
     pf_course: ['Your 3 months: day {d} of 90 · done on {n} days so far', 'आपके 3 महीने: 90 में से दिन {d} · अब तक {n} दिन किया'],
     pf_course_done: ['Past 3 months: done on {n} days. Keep a set a day to stay strong.', '3 महीने से ज़्यादा: {n} दिन किया। मज़बूत बने रहने के लिए रोज़ एक सेट करती रहें।'],
-    pf_goal: ['Aim for 10 squeezes, 3 times a day. Over the weeks, build the hold up to 10 seconds. Add 10 quick squeezes after each set. Keep going every day for at least 3 months: that is how long the muscles take to get stronger.', 'लक्ष्य: 10 बार कसना, दिन में 3 बार। हफ़्तों में रोकने का समय 10 सेकंड तक बढ़ाएँ। हर सेट के बाद 10 बार जल्दी-जल्दी भी कसें।'],
+    pf_goal: ['Aim for a set of 10, 3 times a day. Over the weeks, build the hold up to 10 seconds. Add 10 quick ones after each set. Keep going every day for at least 3 months: that is how long the muscles take to get stronger.', 'लक्ष्य: 10 बार कसना, दिन में 3 बार। हफ़्तों में रोकने का समय 10 सेकंड तक बढ़ाएँ। हर सेट के बाद 10 बार जल्दी-जल्दी भी कसें।'],
     find_h: ['Find the right muscles', 'सही मांसपेशियाँ पहचानें'],
     gap_h: ['Belly gap check (diastasis)', 'पेट के बीच का गैप (diastasis)'],
     see_h: ['See a doctor if', 'डॉक्टर को दिखाएँ अगर'],
@@ -292,8 +292,8 @@
     pf_p_any: ['These muscles hold up your bladder, womb and bowel. A few minutes a day, done the right way, helps stop leaks and eases heaviness. They take about 3 months to get stronger.', 'ये मांसपेशियाँ मूत्राशय, बच्चेदानी और आँतों को सहारा देती हैं। रोज़ कुछ मिनट, सही तरीक़े से, लीक रोकने और भारीपन कम करने में मदद करते हैं। इन्हें मज़बूत होने में लगभग 3 महीने लगते हैं।'],
     pf_topic2: ['Leaking urine or heaviness', 'पेशाब का रिसाव या भारीपन'],
     pf_lv: ['Level {n} of 8 · {p}', '8 में से लेवल {n} · {p}'],
-    pf_lv_do: ['{r} squeezes: hold each {h} seconds, then let go as long', '{r} बार कसें: हर बार {h} सेकंड रोकें, फिर उतनी ही देर ढीला छोड़ें'],
-    pf_lv_q: ['Then {q} quick squeezes: squeeze, let go', 'फिर {q} बार जल्दी-जल्दी: कसें, छोड़ें'],
+    pf_lv_do: ['{r} times: hold each {h} seconds, then let go as long', '{r} बार कसें: हर बार {h} सेकंड रोकें, फिर उतनी ही देर ढीला छोड़ें'],
+    pf_lv_q: ['Then {q} quick ones: squeeze, let go', 'फिर {q} बार जल्दी-जल्दी: कसें, छोड़ें'],
     pf_pos_lie: ['lying on your back, knees bent', 'पीठ के बल लेटकर, घुटने मोड़कर'], pf_pos_sit: ['sitting on a chair, feet flat', 'कुर्सी पर बैठकर, पैर ज़मीन पर'],
     pf_pos_stand: ['standing, your back near a wall', 'खड़े होकर, पीठ दीवार के पास'], pf_pos_walk: ['standing, or walking slowly', 'खड़े होकर, या धीरे चलते हुए'],
     pf_next: ['Next level after {n} more days of sets', '{n} और दिन सेट करने के बाद अगला लेवल'], pf_next1: ['Next level after 1 more day of sets', '1 और दिन सेट करने के बाद अगला लेवल'],
@@ -303,13 +303,13 @@
     pf_go: ['Start a set', 'एक सेट शुरू करें'], ph_qs: ['Quick squeeze', 'जल्दी कसें'], ph_qr: ['Let go', 'छोड़ें'], qrep: ['Quick squeeze {i} of {n}', 'जल्दी: {n} में से {i}'],
     pf_hurt: ['It hurts', 'दर्द हो रहा है'],
     pf_hurt_t: ['Stopped. If it hurts again, your plan moves to breathing and letting go.', 'रोक दिया। फिर दर्द हुआ, तो आपका प्लान साँस लेने और ढीला छोड़ने पर चला जाएगा।'],
-    pf_hurt_t2: ['Your plan now has breathing and letting go instead of squeezes. See a doctor about the pain.', 'अब आपके प्लान में कसने की जगह साँस लेना और ढीला छोड़ना है। दर्द के लिए डॉक्टर को दिखाएँ।'],
+    pf_hurt_t2: ['Your plan now has breathing and letting go instead of Kegels. See a doctor about the pain.', 'अब आपके प्लान में कसने की जगह साँस लेना और ढीला छोड़ना है। दर्द के लिए डॉक्टर को दिखाएँ।'],
     pf_knack: ['Try the knack today: squeeze before you cough, sneeze, laugh or lift.', 'आज तरकीब आज़माएँ: खाँसने, छींकने, हँसने या उठाने से पहले कसें।'],
     pf_done_m: ['Set done: {n} of {m} today. Well done.', 'सेट पूरा: आज {m} में से {n}। बहुत अच्छा।'],
     pf_leave2: ['Leaving this screen stops the timer. A set counts only when it is finished.', 'यह स्क्रीन छोड़ने पर टाइमर रुक जाता है। सेट तभी गिना जाता है जब वह पूरा हो।'],
     pf_relax_h: ['Breathe and let go', 'साँस लें और ढीला छोड़ें'],
-    pf_relax_p: ['No squeezes for now. Breathe slowly into your belly and let the muscles down below soften. A doctor should check the pain.', 'अभी कसना नहीं है। पेट में धीरे साँस लें और नीचे की मांसपेशियों को ढीला होने दें। दर्द की जाँच डॉक्टर करें।'],
-    pf_relax_b: ['Slow breaths with Dr. Megha', 'डॉ. मेघा के साथ धीमी साँसें'],
+    pf_relax_p: ['No pelvic floor exercises for now. Breathe slowly into your belly and let the muscles down below soften. A doctor should check the pain.', 'अभी कसना नहीं है। पेट में धीरे साँस लें और नीचे की मांसपेशियों को ढीला होने दें। दर्द की जाँच डॉक्टर करें।'],
+    pf_relax_b: ['Slow breaths with your trainer', 'आपकी ट्रेनर के साथ धीमी साँसें'],
 
     /* check-ups */
     k_h: ["Check-ups and baby's vaccines", 'जाँच और बच्चे के टीके'],
@@ -353,6 +353,7 @@
     vax_missed: ['Missed a dose? Go to the next vaccination day; the ANM will tell you what to give.', 'कोई टीका छूट गया? अगले टीकाकरण दिवस पर जाएँ; ANM बताएँगी क्या लगाना है।'],
     vax_je: ['JE is given only in districts where it is common.', 'JE सिर्फ़ उन ज़िलों में लगता है जहाँ यह बीमारी ज़्यादा है।'],
     vax_later: ['Later: DPT booster at 5–6 years, and Td at 10 and 16 years.', 'बाद में: 5–6 साल पर DPT बूस्टर, और 10 व 16 साल पर Td।'],
+    vax_all: ['All the baby’s vaccines', 'बच्चे के सभी टीके'],
     all_rem: ['All reminders', 'सभी रिमाइंडर'],
 
     /* home + summary */
@@ -759,17 +760,13 @@
     const b = birth(); const six = b ? addMonths(b, 6) : null;
     v.innerHTML = S.backRow(T('f_h'), R.hub, false) + '<p class="small">' + esc(T('f_p')) + '</p>' + log + (S.canSave() ? '' : '<p class="small">' + esc(T('tmp_note')) + '</p>' + S.needDiary()) + listHtml +
       '<div class="flag urgent pst-col"><strong>' + esc(T('baby_h')) + '</strong><ul class="pst-ul">' + li(G.baby) + '</ul><span>' + esc(tx(G.babyNote)) + '</span>' + callRow(['108', '102', '112'], 'pst-onDark') + '</div>' +
-      acc(T('latch_h'), '<ol class="steps">' + li(G.latch) + '</ol>', true) +
+      acc(T('latch_h'), '<ol class="steps">' + li(G.latch) + '</ol>', true) +   /* Version 39.71 (tile-post-feed): latch, soreness and supply */
       acc(T('bf_food_h'), '<ul class="pst-ul">' + li(G.food) + '</ul>' + (S.routeOwner && S.routeOwner('periods-fasting') ? '<button type="button" class="btn sm" data-go="periods-fasting">' + esc(T('bf_fast')) + '</button>' : ''), true, 'bf-food') +   /* Version 39.9; the plan's food step opens here (V39.9 review FOOD-02) */
       acc(T('enough_h'), '<ul class="pst-ul">' + li(G.enough) + '</ul>') +
       acc(T('sore_h'), '<ul class="pst-ul">' + li(G.sore) + '</ul>') +
       acc(T('eng_h'), '<ul class="pst-ul">' + li(G.eng) + '</ul>') +
       acc(T('mast_h'), '<div class="flag">' + fi(S.I.help) + '<span class="pst-ft">' + esc(tx(G.mastFlag)) + '</span></div><ul class="pst-ul">' + li(G.mast) + '</ul>') +
       acc(T('myth_h'), myths) +
-      acc(T('excl_h'), '<ul class="pst-ul">' + li(G.excl) + '</ul>' + (six && S.today() < six ? '<p class="small"><strong>' + esc(TF('excl_until', { d: dLong(six) })) + '</strong></p>' : '')) +
-      acc(T('expr_h'), '<ol class="steps">' + li(G.expr) + '</ol><div class="pst-lbl">' + esc(T('store_l')) + '</div>' + store6 + '<p class="small">' + esc(tx(G.storeNote)) + '</p>') +
-      acc(T('work_h'), '<ul class="pst-ul">' + li(G.work) + '</ul><p class="small">' + esc(tx(G.workAsk)) + '</p>' + (has('access-schemes-post') ? '<button type="button" class="btn sm pst-self" data-go="access-schemes-post">' + esc(T('schemes')) + '</button>' : '')) +
-      acc(T('maa_h'), '<p>' + esc(tx(G.maa)) + '</p>') +
       askCard('f_ask_h', 'f_ask_p', 'f_topic') + related(R.feed) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireCopy(v);
     v.querySelectorAll('[data-pst-start]').forEach((x) => x.addEventListener('click', () => { const st2 = store(); st2.run = { segs: [{ side: x.dataset.pstStart, s: Date.now() }] }; persist(); S.render(); }));
@@ -994,15 +991,18 @@
       let when = ''; let cls = '';
       if (b) { const d = vaxDate(b, x); const dd = S.diffDays(S.today(), d); if (dd < 0) { when = T(dr ? 'vx_past_doc' : 'vx_past'); cls = 'past'; } else if (dd === 0) { when = T('vx_today'); cls = 'next'; } else if (dd <= 7) { when = TF('vx_soon', { d: dShort(d) }); cls = 'next'; } else { when = TF('vx_due', { d: dLong(d) }); if (nx && nx.x.id === x.id) cls = 'next'; } }
       return '<div class="pst-vx ' + cls + '"><div class="pst-va"><strong>' + esc(tx(x.age)) + '</strong>' + (when ? '<span>' + esc(when) + '</span>' : '') + '</div><div class="pst-vv">' + esc(tx(x.v)) + '</div></div>';
-    }).join('');
+    });
+    /* Version 39.71 (tile-post-checks): the next two doses; the whole list folds */
+    const up = rows.map((h, i) => (/pst-vx past/.test(h) ? -1 : i)).filter((i) => i >= 0); const show = (up.length ? up : rows.map((h, i) => i)).slice(0, 2);
+    const vaxList = '<div class="pst-vlist">' + show.map((i) => rows[i]).join('') + '</div>' + (rows.length > show.length ? '<details class="pst-vall"><summary>' + esc(T('vax_all')) + '</summary><div class="pst-vlist">' + rows.join('') + '</div></details>' : '');
     let vaxBtns = '';
     if (b && S.canSave()) {
       if (vaxOn()) vaxBtns = '<div class="flag ok">' + fi(S.I.bell) + '<span class="pst-ft">' + esc(T('vax_on')) + '</span></div><div class="row wrap">' + (has('tools-reminders') ? '<button type="button" class="btn sm" data-go="tools-reminders">' + esc(T('all_rem')) + '</button>' : '') + '<button type="button" class="btn sm" id="pst-vax-off">' + esc(T('vax_off')) + '</button></div>';
       else if (nx) vaxBtns = '<button type="button" class="btn primary block" id="pst-vax">' + esc(T('vax_add')) + '</button>';
     } else if (b && !S.canSave()) vaxBtns = S.needDiary();
-    const vax = '<div class="card"><h3>' + esc(T('vax_h')) + '</h3><p class="small pst-txt">' + esc(T((b ? 'vax_p' : 'vax_p0') + (dr ? '_doc' : ''))) + '</p><div class="pst-vlist">' + rows + '</div>' + vaxBtns + '<p class="small">' + esc(T('vax_je')) + ' ' + esc(T(dr ? 'vax_missed_doc' : 'vax_missed')) + '</p><p class="small">' + esc(T('vax_later')) + '</p>' + (dr ? '<p class="small">' + esc(T('vax_free_doc')) + '</p>' : '') + '</div>';
+    const vax = '<div class="card"><h3>' + esc(T('vax_h')) + '</h3><p class="small pst-txt">' + esc(T((b ? 'vax_p' : 'vax_p0') + (dr ? '_doc' : ''))) + '</p>' + vaxList + vaxBtns + '<p class="small">' + esc(T('vax_je')) + ' ' + esc(T(dr ? 'vax_missed_doc' : 'vax_missed')) + '</p><p class="small">' + esc(T('vax_later')) + '</p>' + (dr ? '<p class="small">' + esc(T('vax_free_doc')) + '</p>' : '') + '</div>';
     /* the doctor route: her own check before the ASHA's visit days, which fold behind one quiet line */
-    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T(dr ? 'k_p_doc' : 'k_p')) + '</p>' + birthCard() + (died() ? '' : vax) + (dr ? six + meds + asha : asha + six + meds) + related(R.checks) + '<p class="footnote">' + esc(T('nodx')) + '</p>';
+    v.innerHTML = S.backRow(T('k_h'), R.hub, false) + '<p class="small">' + esc(T(dr ? 'k_p_doc' : 'k_p')) + '</p>' + birthCard() + six + meds + asha + (died() ? '' : vax) + related(R.checks)   /* Version 39.71: her own checks first */ + '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wireBirth(v);
     const va = v.querySelector('#pst-vax'); if (va) va.addEventListener('click', () => { const bb = birth(); if (!bb) return; addVax(bb); S.toast(T('vax_added_t')); S.render(); });
     const vo = v.querySelector('#pst-vax-off'); if (vo) vo.addEventListener('click', () => { VAX_IDS.forEach((id) => S.reminders.remove(id)); S.render(); });

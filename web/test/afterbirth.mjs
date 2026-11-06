@@ -87,7 +87,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   const cards = []; for (let i = 0; i < 8; i++) { cards.push({ v: await view(a), tl: await a.page.$$eval('#view .pl-tl li', (xs) => xs.map((x) => x.textContent.trim())), rem: await txt(a, '#view .pl-st-rem') }); if (await has(a, '#pl-rv-go')) break; await tap(a, '#pl-rv-next'); }
   const s1 = cards[0].v, s2 = (cards.find((x) => /^Your \d steps/.test(x.v)) || {}).v || '', dd = cards.find((x) => x.tl.length) || { tl: [], v: '' }, last = cards[cards.length - 1];
   check('1 the reveal: to her baby\'s first birthday, not "12 weeks"', /To your baby’s first birthday · a few minutes a day/.test(s1) && !/12 weeks/.test(s1), s1.slice(0, 300));
-  check('1 her 3 steps: the squeezes, her goal\'s step, the daily recovery check', /^Your 3 steps/.test(s2) && /pelvic floor squeezes/.test(s2) && /Breastfeeding/.test(s2) && /recovery check/.test(s2), s2.slice(0, 400));
+  check('1 her 3 steps: the squeezes, her goal\'s step, the daily recovery check', /^Your 3 steps/.test(s2) && /pelvic floor exercises \(Kegels\)/.test(s2) && /Breastfeeding/.test(s2) && /recovery check/.test(s2), s2.slice(0, 400));
   check('1 her evening is the recovery check; what happens when: day 14, day 42, week 12, the first birthday', /At 8 pm, your recovery check: 1 minute, with the signs that can’t wait\./.test(dd.v) && dd.tl.join('|') === 'From day 14: a short walk, 3 days a week|Around day 42: your own check, then back to strong|From week 12: is your body ready for more?|To your baby’s first birthday', dd.tl);
   check('1 the Start card: each evening her recovery check, and the reminders she will hear (her recovery check, her 6-week check)', /Each evening, 1 minute: your recovery check, to day 41\./.test(last.v) && /your 8 pm recovery check and your 6-week check on 6 Dec/.test(last.rem), last.rem);
   await tap(a, '#pl-rv-go'); await settle(a.page, 800);
@@ -107,7 +107,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   const a = await open({ seed: pseed(3, 0), hm: '18:30' });
   const s = await steps(a);
   check('2 plan day 1 (day 3 after the birth): 3 steps, the recovery check last', s.map((x) => x.id).join() === 'pelvic,feed,rcheck', s);
-  check('2 the squeezes: "5 gentle squeezes", during a feed', s[0].title === '5 gentle squeezes' && s[0].sub === 'Your pelvic floor, during a feed', s[0]);
+  check('2 the squeezes: "5 gentle squeezes", during a feed', s[0].title === '5 gentle Kegels' && s[0].sub === 'Your pelvic floor, during a feed', s[0]);
   const v = await view(a);
   check('2 Today: "Recovery check at 8 pm", no "How did today go?" button', /Recovery check at 8 pm/.test(v) && !(await has(a, '#view .pl-t-ci')), v.slice(0, 800));
   const sl = await slot(a);
@@ -132,7 +132,7 @@ const plan = async (a) => (await st(a)).mods.plan;
 {
   const a = await open({ seed: pseed(21, 20) });
   const s = await steps(a);
-  check('3 day 21: "10 squeezes, and the knack"', s[0].title === '10 squeezes, and the knack' && s[0].sub === 'Squeeze before you cough, sneeze or lift', s[0]);
+  check('3 day 21: "10 squeezes, and the knack"', s[0].title === '10 Kegels, and the knack' && s[0].sub === 'Squeeze before you cough, sneeze or lift', s[0]);
   const walkDays = []; for (let i = 0; i < 7; i++) { const d = ago(-i); if ((await ids(a, d)).indexOf('move') >= 0) walkDays.push(i); }
   check('3 a walk 3 days a week from day 14', walkDays.length === 3, walkDays);
   const sl = await slot(a);
@@ -293,7 +293,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   const a = await open({ seed: pseed(30, 29, { pv: 1 }) });
   const s = await ids(a);
   check('10 version 1 keeps its steps', s.indexOf('rcheck') === 0 && s.indexOf('pelvic') >= 0, s);
-  check('10 ... and is offered version 2 once', /Your recovery plan has more now/.test(await slot(a)));
+  check('10 ... and is offered version 2 once', /Your postpartum recovery plan has more now/.test(await slot(a)));
   await tap(a, '[data-p2="pv2-yes"]');
   const p = await plan(a);
   check('10 "Switch to it": version 2, the same start and days', p.pv === 2 && p.start === ago(29));
@@ -331,7 +331,7 @@ const plan = async (a) => (await st(a)).mods.plan;
   await done(b);
   const c = await open({ seed: pseed(21, 20, {}, { settings: { discreet: true, notify: true } }) });
   const vc = await view(c);
-  check('12 discreet mode: no baby\'s danger card, no contraception card, private steps as "Today\'s step"', !(await has(c, '#view .pl-p2-nb')) && !(await has(c, '#view .pl-p2-contra')) && !/squeezes|Breastfeeding/.test(vc), vc.slice(0, 600));
+  check('12 discreet mode: no baby\'s danger card, no contraception card, private steps as "Today\'s step"', !(await has(c, '#view .pl-p2-nb')) && !(await has(c, '#view .pl-p2-contra')) && !/Kegels|Breastfeeding/.test(vc), vc.slice(0, 600));
   await done(c);
 }
 

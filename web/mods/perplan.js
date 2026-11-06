@@ -38,11 +38,11 @@
     p1: { h: N2('Why periods hurt', 'पीरियड में दर्द क्यों होता है'), cards: [
       { l: [N2('During your period, your womb squeezes to let its lining out. Natural chemicals in your body cause the squeezing, and the pain is real.', 'पीरियड में गर्भाशय अपनी परत बाहर निकालने के लिए सिकुड़ता है। यह सिकुड़न शरीर के अपने रसायनों से होती है, और दर्द सच्चा है।')] },
       { l: [N2('Warmth, slow breathing and gentle movement can calm pain signals. Many women find it takes a few periods to notice the difference.', 'गर्माहट, धीमी साँस और हल्की हरकत दर्द के संकेतों को शांत कर सकती हैं। कई महिलाओं को फ़र्क़ दिखने में कुछ पीरियड लगते हैं।')] },
-      { b: TRY, l: [N2('Relax for 5 minutes on most days with Dr. Megha’s slow breaths, not only on pain days.', 'ज़्यादातर दिन डॉ. मेघा की धीमी साँसों के साथ 5 मिनट आराम करें, सिर्फ़ दर्द वाले दिनों में नहीं।')], go: 'calm-breaths', gol: 'calm_breaths' }] },
-    p2: { h: N2('Your period-week kit', 'पीरियड वाले हफ़्ते की किट'), cards: [
+      { b: TRY, l: [N2('Relax for 5 minutes on most days with slow breaths, not only on pain days.', 'ज़्यादातर दिन धीमी साँसों के साथ 5 मिनट आराम करें, सिर्फ़ दर्द वाले दिनों में नहीं।')], go: 'calm-breaths', gol: 'calm_breaths' }] },
+    p2: { h: N2('Comfort for your period week', 'पीरियड वाले हफ़्ते में आराम'), cards: [
       { l: [N2('Warmth: a hot water bag or bottle with hot, not boiling, water. Check it doesn’t leak, wrap it in a cloth, check your skin every few minutes, and never sleep on it.', 'गर्माहट: गर्म पानी की थैली या बोतल, गर्म पर खौलता नहीं पानी। देख लें कि रिसती न हो, कपड़े में लपेटें, हर कुछ मिनट में त्वचा देखें, और उस पर कभी न सोएँ।')] },
       { l: [N2('A rest position: lying on your side with your knees bent, or on your back with your knees drawn to your chest.', 'आराम की मुद्रा: करवट लेकर घुटने मोड़कर लेटना, या पीठ के बल लेटकर घुटने छाती की ओर लाना।')] },
-      { b: TRY, l: [N2('Choose your kit for this month: warmth, the 3-minute cramps routine and a rest position. Keep them ready.', 'इस महीने की अपनी किट चुनें: गर्माहट, ऐंठन के लिए 3 मिनट की दिनचर्या और आराम की एक मुद्रा। इन्हें तैयार रखें।')], go: 'relief-cramps', gol: 'relief_cramps_t' }] },
+      { b: TRY, l: [N2('Choose your period comfort for this month: warmth, the 3-minute cramps routine and a rest position. Keep them ready.', 'इस महीने पीरियड में आराम के लिए चुनें: गर्माहट, ऐंठन के लिए 3 मिनट की दिनचर्या और आराम की एक मुद्रा। इन्हें तैयार रखें।')], go: 'relief-cramps', gol: 'relief_cramps_t' }] },
     p3: { h: N2('Is my pain the usual kind?', 'क्या मेरा दर्द आम दर्द है?'), cards: [
       { l: [N2('Usual period pain starts with your period or a day before, and eases within about 3 days.', 'आम पीरियड का दर्द पीरियड के साथ या एक दिन पहले शुरू होता है, और लगभग 3 दिन में कम हो जाता है।')] },
       { warn: true, b: N2('See a doctor if', 'डॉक्टर को दिखाएँ अगर'), l: [N2('The pain stops your day, keeps getting worse, started after years of easy periods, or comes with pain during sex, bleeding between periods, a fever or unusual discharge.', 'दर्द से आपके दिन का काम रुकता है, बढ़ता जा रहा है, बरसों के आसान पीरियड के बाद शुरू हुआ, या इसके साथ संबंध के समय दर्द, पीरियड के बीच ब्लीडिंग, बुख़ार या असामान्य स्राव है।')], ask: true },
@@ -63,7 +63,7 @@
     p7: { h: N2('Pain days at college or work', 'कॉलेज या काम पर दर्द वाले दिन'), cards: [
       { l: [N2('On a pain day, it’s fine to ask for a short rest or a quiet place.', 'दर्द वाले दिन थोड़ा आराम या कोई शांत जगह माँगना ठीक है।')] },
       { l: [N2('A breath you can do sitting: in for 4, out for 6, five times.', 'बैठे-बैठे की जाने वाली साँस: 4 तक अंदर, 6 तक बाहर, पाँच बार।')] },
-      { b: TRY, l: [N2('Keep a small kit in your bag: a spare pad or cloth, water, and your slow breath.', 'अपने बैग में एक छोटी किट रखें: एक अतिरिक्त पैड या कपड़ा, पानी, और अपनी धीमी साँस।')] }] },
+      { b: TRY, l: [N2('Keep a few things in your bag: a spare pad, water, and your slow breath.', 'अपने बैग में कुछ चीज़ें रखें: एक अतिरिक्त पैड, पानी, और अपनी धीमी साँस।')] }] },
     p8: { h: N2('Telling your family', 'परिवार को बताना'), cards: [
       { l: [N2('Period pain is common and real. Telling someone at home what helps you, rest, warmth or a hand with the work, can make the hard days lighter.', 'पीरियड का दर्द आम और सच्चा है। घर में किसी को बताना कि आपको क्या मदद करता है, आराम, गर्माहट या काम में हाथ बँटाना, मुश्किल दिनों को हल्का कर सकता है।')] },
       { b: TRY, l: [N2('Tell one person at home what helps you on a pain day.', 'घर में एक व्यक्ति को बताएँ कि दर्द वाले दिन आपको क्या मदद करता है।')] }] },
@@ -80,7 +80,7 @@
       { b: TRY, l: [N2('Take your pain record from Sakhi to your doctor.', 'Sakhi से अपना दर्द का रिकॉर्ड डॉक्टर के पास ले जाएँ।')] }] },
     h1: { h: N2('Is my bleeding heavy?', 'क्या मेरी ब्लीडिंग ज़्यादा है?'), cards: [
       { l: [N2('Heavy bleeding is judged by your life: changing at night, leaking through clothes, staying home, or feeling tired.', 'ज़्यादा ब्लीडिंग आपकी ज़िंदगी से पहचानी जाती है: रात में बदलना, कपड़ों तक निकल जाना, घर पर रुकना, या थकान।')] },
-      { u: N2('Soaking a pad or cloth every hour for 2 hours or more, or bleeding with dizziness or fainting: go to the nearest hospital now.', 'हर घंटे पैड या कपड़ा भीगना, 2 घंटे या ज़्यादा तक, या ब्लीडिंग के साथ चक्कर या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।'), tel: ['112'] },
+      { u: N2('Soaking a pad every hour for 2 hours or more, or bleeding with dizziness or fainting: go to the nearest hospital now.', 'हर घंटे पैड भीगना, 2 घंटे या ज़्यादा तक, या ब्लीडिंग के साथ चक्कर या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।'), tel: ['112'] },
       { b: TRY, l: [N2('On each period day, answer “Your period today” in your check-in: 3 taps.', 'पीरियड के हर दिन, अपनी शाम की जाँच में “आज आपका पीरियड” का जवाब दें: 3 टैप।')] }] },
     h2: { h: N2('Your Hb test', 'आपका Hb टेस्ट'), cards: [
       { l: [N2('Heavy periods can use up your iron and lower your haemoglobin (Hb). Low Hb makes you tired and breathless.', 'ज़्यादा ब्लीडिंग से शरीर का आयरन घट सकता है और हीमोग्लोबिन (Hb) कम हो सकता है। Hb कम हो, तो थकान और साँस फूलना होता है।')] },
@@ -101,12 +101,12 @@
       { l: [N2('An upset stomach is common at first. Taking the tablet at bedtime can help. Tell your doctor instead of stopping.', 'शुरुआत में पेट ख़राब होना आम है। सोते समय गोली लेने से मदद मिल सकती है। गोली बंद करने के बजाय डॉक्टर को बताएँ।')] },
       { b: TRY, l: [N2('Tick your tablet in Sakhi on the days you take it.', 'जिन दिनों गोली लें, Sakhi में टिक करें।')], go: 'iron', gol: '@tile' }] },
     h6: { h: N2('Managing a heavy day', 'ज़्यादा ब्लीडिंग वाला दिन संभालना'), cards: [
-      { l: [N2('On your heaviest days: a night pad or a thicker folded cloth, and an old sheet on your bed.', 'सबसे ज़्यादा ब्लीडिंग वाले दिनों में: रात वाला पैड या मोटा मोड़ा हुआ कपड़ा, और बिस्तर पर एक पुरानी चादर।')] },
-      { l: [N2('Carry a spare pad or cloth and a small bag when you go out.', 'बाहर जाएँ तो एक अतिरिक्त पैड या कपड़ा और एक छोटा थैला साथ रखें।')] },
+      { l: [N2('On your heaviest days: a night pad, and an old sheet on your bed.', 'सबसे ज़्यादा ब्लीडिंग वाले दिनों में: रात वाला पैड, और बिस्तर पर एक पुरानी चादर।')] },
+      { l: [N2('Carry a spare pad and a small bag when you go out.', 'बाहर जाएँ तो एक अतिरिक्त पैड और एक छोटा थैला साथ रखें।')] },
       { b: TRY, l: [N2('Get your heavy-day things ready before your period comes.', 'पीरियड आने से पहले ज़्यादा ब्लीडिंग वाले दिन की चीज़ें तैयार रखें।')] }] },
     h7: { h: N2('Energy and moving with low Hb', 'कम Hb में ताक़त और हरकत'), cards: [
       { l: [N2('Tiredness from low Hb is real. Move gently, and stand up slowly.', 'कम Hb की थकान सच्ची है। धीरे-धीरे हरकत करें, और धीरे से उठें।')] },
-      { warn: true, b: N2('Stop and rest', 'रुकें और आराम करें'), l: [N2('If you feel dizzy, breathless or your heart races. Chest pain or fainting: go to the nearest hospital now.', 'अगर चक्कर आए, साँस फूले या दिल तेज़ धड़के। सीने में दर्द या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।')] },
+      { warn: true, b: N2('Stop and rest', 'रुकें और आराम करें'), l: [N2('If you feel dizzy, breathless or your heart races: see a doctor. Chest pain or fainting: go to the nearest hospital now.', 'अगर चक्कर आए, साँस फूले या दिल तेज़ धड़के: डॉक्टर को दिखाएँ। सीने में दर्द या बेहोशी: अभी सबसे पास के अस्पताल जाएँ।')] },
       { b: TRY, l: [N2('Walk gently on your 3 days, and rest lying down on your heaviest days.', 'अपने 3 दिनों में धीरे टहलें, और सबसे ज़्यादा ब्लीडिंग वाले दिनों में लेटकर आराम करें।')] }] },
     h9: { h: N2('Other reasons Hb gets low', 'Hb कम होने के और कारण'), cards: [
       { l: [N2('Low Hb has other causes too: worms, too little vitamin B12 or folate, or a blood condition that runs in families. Iron can’t fix all of them.', 'Hb कम होने के और कारण भी हैं: पेट के कीड़े, विटामिन B12 या फ़ोलेट की कमी, या परिवार में चलने वाली ख़ून की कोई बीमारी। आयरन इन सबको ठीक नहीं कर सकता।')] },
@@ -134,14 +134,15 @@
     m5: { h: N2('Catch the thought', 'सोच को पकड़ें'), cards: [
       { l: [N2('Hard-day thoughts can be harsh: “Everyone is against me.” “I always ruin things.”', 'मुश्किल दिनों की सोच कठोर हो सकती है: “सब मेरे ख़िलाफ़ हैं।” “मैं हमेशा सब बिगाड़ देती हूँ।”')] },
       { l: [N2('Ask yourself: is this the hard days talking? What would I tell a friend who thought this?', 'ख़ुद से पूछें: क्या यह मुश्किल दिन बोल रहे हैं? अगर मेरी सहेली ऐसा सोचती, तो मैं उससे क्या कहती?')] },
+      { l: [N2('Doing something you enjoy also turns your mind: gardening, writing in a journal, reading, meeting friends, or any hobby you love.', 'जो आपको अच्छा लगे, वह करने से भी मन बदलता है: बाग़वानी, डायरी लिखना, किताब पढ़ना, सहेलियों से मिलना, या कोई भी शौक़।')] },   /* Version 39.71 (ch-per-m5) */
       { b: TRY, l: [N2('When a harsh thought comes, say or write a kinder one beside it.', 'जब कठोर सोच आए, तो उसके साथ एक नरम सोच बोलें या लिखें।')] }] },
     m6: { h: N2('People around you', 'आपके आसपास के लोग'), cards: [
       { l: [N2('Only if it feels safe: tell one person how the days before your period feel, and ask for one thing that helps.', 'सिर्फ़ अगर सुरक्षित लगे: एक व्यक्ति को बताएँ कि पीरियड से पहले के दिन कैसे लगते हैं, और एक ऐसी चीज़ माँगें जो मदद करे।')] },
+      { l: [N2('You can also talk to a doctor, or a friend.', 'आप डॉक्टर से, या किसी सहेली से भी बात कर सकती हैं।')] },   /* Version 39.71 (ch-per-m6) */
       { b: TRY, l: [N2('Choose one person, and one thing to ask for.', 'एक व्यक्ति चुनें, और माँगने के लिए एक चीज़।')] }] },
     m7: { h: N2('When anger flares', 'जब ग़ुस्सा भड़के'), cards: [
       { l: [N2('Notice your body’s signs first: a hot face, a tight jaw, clenched fists.', 'पहले शरीर के संकेत पहचानें: गर्म चेहरा, कसा जबड़ा, भिंची मुट्ठियाँ।')] },
-      { l: [N2('Step away for 5 minutes, breathe out slowly, and come back when you are calmer. Make up afterwards if you need to.', '5 मिनट के लिए हट जाएँ, धीरे साँस छोड़ें, और शांत होकर लौटें। ज़रूरत हो, तो बाद में बात सुलझा लें।')] },
-      { b: TRY, l: [N2('Plan where you can step away to at home.', 'तय करें कि घर में आप कहाँ हट सकती हैं।')] }] },
+      { l: [N2('Step away for 5 minutes, breathe out slowly, and come back when you are calmer. Make up afterwards if you need to.', '5 मिनट के लिए हट जाएँ, धीरे साँस छोड़ें, और शांत होकर लौटें। ज़रूरत हो, तो बाद में बात सुलझा लें।')] }] },   /* Version 39.71 (ch-per-m7): no third card */
     m9: { h: N2('Sleep', 'नींद'), cards: [
       { l: [N2('A steady get-up time and a calm last hour before bed help your mood.', 'रोज़ एक ही समय पर उठना और सोने से पहले का शांत घंटा मन को अच्छा रखते हैं।')] },
       { l: [N2('Awake for about 20 minutes? Sit up, keep the light low, and do something calm until you feel sleepy.', 'लगभग 20 मिनट से नींद नहीं आ रही? उठकर बैठ जाएँ, रोशनी कम रखें, और नींद आने तक कुछ शांत करें।')] },
@@ -151,6 +152,7 @@
       { b: TRY, l: [N2('In your calm week, plan one small thing for yourself each day.', 'अपने शांत हफ़्ते में हर दिन अपने लिए एक छोटा काम तय करें।')] }] },
     m11: { h: N2('When to get more help', 'और मदद कब लें'), cards: [
       { l: [N2('For some women, the days before a period bring anger, hopelessness or feeling out of control that hurts work or family. This can be treated.', 'कुछ महिलाओं के लिए पीरियड से पहले के दिन ऐसा ग़ुस्सा, निराशा या बेकाबू महसूस होना लाते हैं जो काम या परिवार पर असर डालता है। इसका इलाज हो सकता है।')] },
+      { l: [N2('Lean on the people close to you: family, friends or cousins. Talk to them, do what you love most, keep busy, and take a walk outside.', 'अपने क़रीबी लोगों का साथ लें: परिवार, सहेलियाँ या रिश्ते की बहनें। उनसे बात करें, वह करें जो सबसे अच्छा लगे, ख़ुद को व्यस्त रखें, और बाहर टहलने जाएँ।')] },   /* Version 39.71 (ch-per-m11) */
       { l: [N2('A doctor can help with talking therapy and medicines. Take your notes.', 'डॉक्टर बातचीत वाली therapy और दवाओं से मदद कर सकती हैं। अपने नोट साथ ले जाएँ।')], ask: true }] },
     m12: { h: N2('My calm-week plan, for keeping', 'मेरे शांत हफ़्ते की योजना, आगे के लिए'), cards: [
       { l: [N2('Your notes show your hard days, cycle by cycle. Cycles vary, so look at several.', 'आपके नोट आपके मुश्किल दिन, एक-एक चक्र करके, दिखाते हैं। चक्र अलग-अलग होते हैं, इसलिए कई चक्र देखें।')] },

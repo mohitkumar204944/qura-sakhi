@@ -408,7 +408,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   const pmosMid = (x) => Object.assign({ dob: '1982-03-01', situation: { midlife: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(5),
     mods: { plan: planOf('cycle', 'pmos', 1, { level: 1, limits: { knees: true, back: false } }) }, reminders: [planRem(1)] }, x || {});
   let a = await open({ seed: pmosMid() });
-  check('12.1 midlife now, her PMOS plan running: "My midlife plan may fit now"', /My midlife plan may fit now/.test(await txt(a.page, '#view .pl-fit')) && await has(a.page, '#pl-fit-go') && await has(a.page, '#pl-fit-keep'), await view(a.page));
+  check('12.1 midlife now, her PMOS plan running: "My midlife plan may fit now"', /Menopause transition and menopause may fit now/.test(await txt(a.page, '#view .pl-fit')) && await has(a.page, '#pl-fit-go') && await has(a.page, '#pl-fit-keep'), await view(a.page));
   await tap(a.page, '#pl-fit-go');
   const mi = await a.page.evaluate(() => window.Saathi.mem.planIntake || null);
   check('12.1 See it: her midlife goal’s plan questions', (await a.page.evaluate(() => location.hash)) === '#plan-goal' && mi && mi.stage === 'meno' && mi.goal === 'hot', mi);
@@ -451,7 +451,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   let a = await open({ seed: m2('hot', 0, { past: past }), hash: '#plan' });
   check('13.1 My plan shows no "Your last plan" card (Version 39.68: the doctors removed it)', !(await has(a.page, '#view .pl-past')));
   const rep = await a.page.evaluate(() => JSON.stringify(window.Saathi.summaries().filter((m) => m.mod === 'plan')));
-  check('13.1 the report for her doctor too', /Before this: My midlife plan, 29 Oct 2026 to 30 Oct 2026, followed on 1 day"/.test(rep) && !/My PMOS plan/.test(rep), rep.slice(0, 600));
+  check('13.1 the report for her doctor too', /Before this: Menopause transition and menopause, 29 Oct 2026 to 30 Oct 2026, followed on 1 day"/.test(rep) && !/My PMOS plan/.test(rep), rep.slice(0, 600));
   check('13.1 her list of plans stays as it was', ((await st(a.page)).mods.plan.past || []).length === 2); await done(a);
   a = await open({ seed: m2('hot', 0, { past: [{ pack: 'cycle', goalKey: 'pmos', pv: 1, start: ago(10), end: TODAY, days: 0, wk: 2, weeks: {} }] }), hash: '#plan' });
   check('13.1 a plan she had for 10 days and didn’t follow is kept, with no card', !(await has(a.page, '#view .pl-past')) && ((await st(a.page)).mods.plan.past || []).length === 1); await done(a);

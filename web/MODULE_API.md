@@ -7352,3 +7352,119 @@ The doctors' answers 1 to 3 (`docs/feature-review-2026-11-05.md`). Mohit's word 
 - `content.json` and `progs/*.js`.
 
 The older suites that checked 112, Tele-MANAS or 181 now check the hospital line and the ambulance.
+
+## 114. Version 39.71: the doctors' feature review, part 3 (the wording)
+
+These come from the approved plan's wording items and answers 6, 8 and 10 (`docs/feature-review-2026-11-05.md`). Mohit's word on
+6 Nov was "commit 39.70 and go with part 3".
+
+1. **Renames**:
+   - **"Dr. Megha" becomes "your trainer"** in Wind down, yoga and breathing:
+     - Wind down: `calm_p`, `calm_tile_s`, `calm_guided`, `calm_row_s`, `calm_start`, and `calm_who` ("Trainer", the captions);
+     - the plans: `plan_a_relax_s`, `plan_a_wind_s`, `plan_night_p` and `plan_calm_p`;
+     - the after-birth module's `pf_relax_b`, and the period plan's chapter line.
+
+     The recordings never say her name. The joining welcome (`listen`, `plan_rv_aud`) keeps it.
+   - **Squeezes.** The exercise is named "Pelvic floor exercises (Kegels)", then "Kegels" and "Kegel sets".
+     - Counts read "10 times", and the action word in the instructions ("Squeeze and lift") stays.
+     - Hindi already says कसाव and कसना. Only its names change: पेल्विक फ़्लोर व्यायाम (कीगल), कीगल सेट.
+   - **The after-birth plan**: "My recovery plan" becomes "My postpartum recovery" (डिलीवरी के बाद मेरी रिकवरी), and
+     `plan_p2_v2_*` match it.
+   - **The midlife plan**: "My midlife plan" becomes "Menopause transition and menopause" (मेनोपॉज़ की ओर बदलाव और मेनोपॉज़).
+   - **Period comfort**:
+     - "Your period kit" becomes "Period comfort" (पीरियड में आराम);
+     - "Get your kit ready" becomes "Get your period comfort ready" (it also reads "Just before your period: get your period comfort
+       ready");
+     - the chapter is "Comfort for your period week".
+
+     The girls' "first-period kit for your bag" is a different thing, and it stays.
+2. **The medicine line** (answer 6). It goes before every medicine, test and procedure.
+   - The words, in core: `med_line` "Take medicines only on your doctor’s advice. Don’t take them on your own.", `med_line_ec` "Ask
+     a doctor or chemist today." and `med_line_test` "Do these tests with your doctor’s guidance: ask your doctor first."
+   - The helpers: `medLine(kind)` and `S.medLine()`.
+   - `medRow(v, r)` runs after every render. It puts the line under the back row of each page in `MED_ROUTES`:
+     - contraception and each method;
+     - the abortion pages;
+     - folic acid, and trying for a baby;
+     - iron tablets;
+     - HRT, Bones and heart, and POI;
+     - fibroids, and PID;
+     - period pain, and fasting;
+     - contraception after a birth;
+     - My medicines.
+   - The emergency pill gets its own line, on `contra-ec` and `contra-m-ec`. The tests line goes on `ttc-tests`.
+   - The 18 `MED_ARTS` articles show the line under their summary, on the page and in the quick answer.
+   - My plan and the reveal show it under her steps when one of them is a tablet (folic acid; the plan data's icon `pill`). Today's
+     tablet step opens its page, and that page has the line.
+   - Answer 8: Bones and heart gets a card, "Supplements, if your doctor advises": vitamin D, calcium or a multivitamin, after
+     consulting the doctor. There is no Ashwagandha.
+3. **Cloth and the Rs 1 pad come out**, as a period product:
+   - the products guide: the Cloth section and chip, the Suvidha line, the 6-pads line and the low-cost button;
+   - the period plan: the kit lines, the heavy day, the soak line and the check-in note;
+   - the girls' guides and the family pages;
+   - the forgotten object in the symptom guide and the intimate check;
+   - Care near me's Jan Aushadhi line, and the heavy bleeding chart's note;
+   - the Learn library:
+     - "Pads, cups and tampons: safe use", without its cloth and cheap-pad lines and their sources;
+     - the cloth myth;
+     - the after-birth "or a thick cloth";
+     - the girls' and under-18 lines.
+
+   These stay: a warm cloth for heat, a cool cloth on the breast, the baby's cloths, and the official after-birth criterion in a
+   source.
+4. **The doctors' added lines**, cleaned up and in Hindi:
+   - **Night sweats**: under the second card, "Still awake? Play a sound for sleep, like the singing bowl and waves, or yoga nidra,
+     a meditation for sleep.", with Wind down.
+   - **For poor sleep**: the room line ("A cool room, a dim and warm light, and a cosy bed"), and "yoga nidra, a sleep meditation"
+     on its last button. Its spoken steps are unchanged (a changed step needs a new clip).
+   - **The bedtime step**: "Wind down with a meditation".
+   - **PMS chapters**:
+     - m5: a hobby that turns her mind;
+     - m6: "You can also talk to a doctor, or a friend.";
+     - m7: without its third card;
+     - m11: the people close to her.
+   - **His part**: "A healthy pregnancy is a shared job", on the page he is shown. The step keeps its reviewed reason.
+   - **Getting ready weeks**:
+     - week 4: the tests line first;
+     - week 5: "Ovulation tests, if you want them", in 5 steps (steps 3 and 5 are the ovulation article's reviewed lines);
+     - week 10: "Don’t take on stress for what others say", and a meditation before sleep.
+   - **Check-ups after a birth**:
+     - her own 6-week check, her tablets and the ASHA's visits come first;
+     - then the baby's vaccines, kept short: the next two, and the rest under "All the baby’s vaccines".
+   - **Breastfeeding**: the basics only. That is latch, "Is baby getting enough?", sore nipples, full breasts, mastitis and the
+     supply myths.
+     - Food while you breastfeed stays, because her plan's food step opens it (`at: 'bf-food'`).
+     - Only breast milk for 6 months, expressing and storing, going back to work and MAA go.
+   - **The girls' guides on one page**: the first period and the parents' guide. The intro, the parents' line and the tile name
+     follow, and the parents' guide has no Safety chip.
+   - **"Or a doctor"** on four urgent lines: heavy periods week 7 (dizzy or breathless: see a doctor), the pelvic floor plan's line
+     and week 10 ("tell someone at home"), and the fibroids guide.
+5. **Qura's doctors** (answer 10):
+   - Every button reads "Ask a doctor": `ask_qura`, `doc_b`, `hs_doc_q`, `pill_ask`, `relief_ask` and `plan_ask_b`.
+   - What she reaches still says Qura: the call form's "Talk to a Qura doctor", and Help's "A call with a Qura doctor".
+   - Explore's tile reads "Talk to a doctor" (`ask_tile`).
+   - The doctors' line, "Qura’s doctors (BAMS, trained in women’s health) look at any concern and tell you when you need a
+     gynaecologist.", goes on the call form (`ask_p`) and in How Qura helps.
+   - The MBBS gynaecologist on the team (10b) is named there once Mohit sends the name, degree and registration number.
+6. **Left for part 4**, the behaviour:
+   - one reveal screen, and the goal asked once;
+   - the pause notification;
+   - the start under 40;
+   - the contraception card and the folic acid reminder;
+   - Sun salutation as a morning session;
+   - the PMOS walk after meals;
+   - the screenshot block.
+
+**Strings.**
+- New: `med_line`, `med_line_ec`, `med_line_test`, `ask_tile`, `relief_sleep_room` and `vax_all`.
+- Gone: `periods_j_cloth`.
+
+**CSS.** `.med-line` uses the glass's second surface with an accent edge, and goes white in print.
+
+**Tests.** `node test/wording.mjs` (59 checks):
+- the renames;
+- the medicine line where it belongs and nowhere else, in Hindi too, and on My plan with her tablet;
+- cloth and the Rs 1 pad;
+- the added lines;
+- Qura's doctors;
+- every live screen for 5 women in English and 3 in Hindi: none of the old words.

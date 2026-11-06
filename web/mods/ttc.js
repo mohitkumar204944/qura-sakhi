@@ -212,12 +212,19 @@
       { l: [N2('Tea with food blocks iron. Keep tea an hour away from meals; you don’t have to stop it.', 'खाने के साथ चाय आयरन को रोकती है। चाय को खाने से एक घंटा दूर रखें; छोड़नी नहीं है।')] },
       { l: [N2('No food, herb, powder or ritual can promise a baby, or choose a boy or a girl. If someone sells you one, be careful.', 'कोई खाना, जड़ी-बूटी, चूर्ण या टोटका बच्चे का वादा नहीं कर सकता, न ही लड़का या लड़की चुन सकता है। कोई ऐसी चीज़ बेचे, तो सावधान रहें।')] }] },
     w4: { h: N2('Week 4 · Tests before pregnancy', 'हफ़्ता 4 · गर्भ से पहले की जाँचें'), cards: [
+      { l: [N2('Do these tests with your doctor’s guidance: ask your doctor first.', 'ये जाँचें डॉक्टर की सलाह से कराएँ: पहले डॉक्टर से पूछें।')] },   /* Version 39.71 (ch-ttcl-w4) */
       { l: [prepOf('hb'), prepOf('bg'), prepOf('sugar'), prepOf('tsh'), prepOf('infect'), prepOf('thal'), prepOf('rubella')], go: 'ttc-prep', gol: 'ttc_prep' },
       { l: [VF.checks] },
       { b: prepOf('bg'), l: [dl(prepOf('bg'))] },
       { b: prepOf('rubella'), l: [dl(prepOf('rubella'))] }] },
     w5: { h: N2('Week 5 · Fertile days, without the stress', 'हफ़्ता 5 · फ़र्टाइल दिन, बिना तनाव के'), priv: true, cards: [
-      { l: [VF.sex], go: 'fertile', gol: 'fertile' }] },
+      { l: [VF.sex], go: 'fertile', gol: 'fertile' },
+      { b: N2('Ovulation tests, if you want them', 'ओव्यूलेशन टेस्ट, अगर आप चाहें'), l: [   /* Version 39.71 (ch-ttcl-w5): 5 steps */
+        N2('1. Start a few days before your fertile days: if your cycles are regular, the Fertile days estimate shows them.', '1. फ़र्टाइल दिनों से कुछ दिन पहले शुरू करें: साइकिल नियमित हो, तो फ़र्टाइल दिनों का अंदाज़ा ये दिन दिखाता है।'),
+        N2('2. Test once a day, at about the same time, as the leaflet in the kit says.', '2. रोज़ एक बार, लगभग एक ही समय पर, किट के पर्चे के हिसाब से टेस्ट करें।'),
+        N2('3. A test line as dark as the control line is the LH rise: the egg usually comes out in the next 12 to 36 hours.', '3. टेस्ट लाइन कंट्रोल लाइन जितनी गहरी हो, तो यह LH का बढ़ना है: अंडा आम तौर पर अगले 12 से 36 घंटे में निकलता है।'),
+        N2('4. Have sex that day and the next day.', '4. उस दिन और अगले दिन संबंध बनाएँ।'),
+        N2('5. With PMOS, or lines on many days or never for 2 or 3 months: stop, and ask a doctor.', '5. PMOS हो, या 2-3 महीने तक कई दिन लाइनें दिखें या कभी न दिखें: टेस्ट रोकें, और डॉक्टर से पूछें।')] }] },
     w6: { h: N2('Week 6 · How long it usually takes', 'हफ़्ता 6 · आम तौर पर कितना समय लगता है'), cards: [
       { l: ['plan_rv_ttc'] },
       { b: VF.whenH, l: [VF.when1, VF.when2, VF.when3], go: 'ttc-trying', gol: 'ttc_trying' }] },
@@ -235,7 +242,9 @@
       { b: N2('Fertility after the Antara injection', 'अंतरा इंजेक्शन के बाद गर्भ ठहरना'), l: [VF.antara] }] },
     w10: { h: N2('Week 10 · Sleep, and pressure from others', 'हफ़्ता 10 · नींद, और दूसरों का दबाव'), cards: [
       { l: [N2('A regular bedtime helps your body clock. Aim for 7 to 9 hours when you can.', 'रोज़ एक तय समय पर सोना शरीर की घड़ी के लिए अच्छा है। जब हो सके, 7 से 9 घंटे सोएँ।')] },
-      { l: [N2('“When is the good news?” A short answer helps: “When there is news, you’ll hear it.”', '“ख़ुशख़बरी कब सुना रही हो?” छोटा जवाब काम आता है: “जब ख़बर होगी, आपको पता चल जाएगा।”'), N2('Decide together, the two of you, who you tell and when.', 'आप दोनों मिलकर तय करें कि किसे और कब बताना है।')] }] },
+      { l: [N2('“When is the good news?” A short answer helps: “When there is news, you’ll hear it.”', '“ख़ुशख़बरी कब सुना रही हो?” छोटा जवाब काम आता है: “जब ख़बर होगी, आपको पता चल जाएगा।”'), N2('Decide together, the two of you, who you tell and when.', 'आप दोनों मिलकर तय करें कि किसे और कब बताना है।'),
+        N2('Don’t take on stress for what others say.', 'दूसरे क्या कहते हैं, उसका तनाव न लें।')] },   /* Version 39.71 (ch-ttcl-w10) */
+      { l: [N2('Before bed you can play a meditation, like yoga nidra or slow breaths.', 'सोने से पहले आप कोई ध्यान चला सकती हैं, जैसे योग निद्रा या धीमी साँसें।')], go: 'calm', gol: 'calm_h' }] },
     w11: { h: N2('Week 11 · What elders may say', 'हफ़्ता 11 · बड़े-बुज़ुर्ग क्या कह सकते हैं'), cards: [
       { l: [N2('“It’s always the woman.” It isn’t: doctors check both partners.', '“कमी हमेशा औरत में होती है।” ऐसा नहीं है: डॉक्टर दोनों की जाँच करते हैं।')] },
       { l: [N2('“Don’t lift anything, just rest.” Ordinary daily work is fine; rest when you’re tired.', '“कुछ मत उठाओ, बस आराम करो।” रोज़ का आम काम ठीक है; थकान हो तो आराम करें।')] },
@@ -676,6 +685,7 @@
   function renderPartner(v) {
     v.innerHTML = S.backRow(t('ttc_partner'), 'ttc', false) +
       P({ en: 'Show him this page. It is written to him.', hi: 'यह पन्ना उन्हें दिखाएँ। यह उन्हीं के लिए लिखा है।' }) +
+      card({ en: 'A healthy pregnancy is a shared job', hi: 'स्वस्थ गर्भ दोनों की ज़िम्मेदारी है' }, P({ en: 'Your health matters as much as hers. Before you try: a check-up and the tests your doctor advises, better food, and a healthier routine, for both of you.', hi: 'आपकी सेहत भी उतनी ही ज़रूरी है जितनी उनकी। कोशिश शुरू करने से पहले: जाँच और डॉक्टर के बताए टेस्ट, बेहतर खाना, और सेहतमंद दिनचर्या, आप दोनों के लिए।' })) +   /* Version 39.71 (ttc-his) */
       '<div class="card ok"><h3 style="color:var(--ok)">' + T({ en: 'This is a question for both of you', hi: 'यह आप दोनों का सवाल है' }) + '</h3><p>' + T({ en: "When a couple cannot conceive, a male factor is part of the reason in about 4 to 5 out of 10 couples. That is why doctors check the man from the start. It is nobody's fault, and it is often treatable.", hi: 'जब किसी जोड़े को गर्भ नहीं ठहरता, तो लगभग 10 में से 4 से 5 जोड़ों में वजह का कुछ हिस्सा पुरुष की तरफ़ होता है। इसीलिए डॉक्टर शुरू से ही पुरुष की जाँच करते हैं। इसमें किसी की ग़लती नहीं, और अक्सर इलाज संभव है।' }) + '</p></div>' +
       card({ en: 'The semen test: simple and early', hi: 'Semen test: आसान, और जल्दी' }, steps([
         { en: 'Avoid ejaculation for 2–7 days before the test (WHO, 2021).', hi: 'Test से पहले 2–7 दिन तक वीर्य न निकले (WHO, 2021)।' },

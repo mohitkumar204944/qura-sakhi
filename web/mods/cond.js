@@ -266,7 +266,7 @@
   }
 
   /* ---------- fibroids, cysts, polyps ---------- */
-  const TORSION = { en: 'Sudden, severe pain on one side of the lower belly with vomiting: go to the nearest hospital now (ambulance: 108). A cyst can twist the ovary and cut off its blood; quick surgery can save the ovary.', hi: 'पेट के निचले हिस्से में एक तरफ़ अचानक तेज़ दर्द और साथ में उल्टी: अभी अस्पताल की emergency में जाएँ, या अभी सबसे पास के अस्पताल जाएँ (एम्बुलेंस: 108)। सिस्ट अंडाशय को मरोड़ सकती है और उसका ख़ून रोक सकती है; जल्दी ऑपरेशन से अंडाशय बच सकता है।' };
+  const TORSION = { en: 'Sudden, severe pain on one side of the lower belly with vomiting: go to a doctor or the nearest hospital now (ambulance: 108). A cyst can twist the ovary and cut off its blood; quick surgery can save the ovary.', hi: 'पेट के निचले हिस्से में एक तरफ़ अचानक तेज़ दर्द और साथ में उल्टी: अभी डॉक्टर या सबसे पास के अस्पताल जाएँ (एम्बुलेंस: 108)। सिस्ट अंडाशय को मरोड़ सकती है और उसका ख़ून रोक सकती है; जल्दी ऑपरेशन से अंडाशय बच सकता है।' };
   function renderFibroids(v) {
     const block = (title, what, signs, tests, treat, extra) => '<div class="card"><h2>' + h(title) + '</h2>' + P(what) +
       sub({ en: 'Signs', hi: 'संकेत' }) + ul(signs) + sub({ en: 'Tests', hi: 'जाँच' }) + P(tests) + sub({ en: 'Treatment', hi: 'इलाज' }) + (Array.isArray(treat) ? ul(treat) : P(treat)) + (extra || '') + '</div>';
@@ -800,7 +800,7 @@
         cond_pb_pts1: '1 point each', cond_pb_pts5: '5 points each', cond_pb_pts20: '20 points each', cond_pb_noted: 'Noted for your doctor', cond_less: 'One less', cond_more: 'One more',
         cond_pb_total: 'Total for this period', cond_pb_clots: 'Clots: {s} small, {l} large · Flooding: {f}',
         cond_pb_line: 'Doctors use a total of 100 or more as a sign of heavy periods. Take this chart to your doctor.',
-        cond_pb_only: 'The total counts pads only, as in the original chart (Higham, 1990). It was made for disposable pads; if you use cloth, a cup or tampons, tell your doctor.'
+        cond_pb_only: 'The total counts pads only, as in the original chart (Higham, 1990). It was made for disposable pads; if you use a cup or tampons, tell your doctor.'
       },
       hi: {
         cond_hub: 'PMOS के अलावा दूसरी बीमारियाँ', cond_all: 'दूसरी बीमारियाँ', cond_hub_s: 'एंडोमेट्रियोसिस, फाइब्रॉइड, सिस्ट, संक्रमण, टीबी, ख़ून की कमी, जल्दी मेनोपॉज़, बच्चेदानी का ऑपरेशन',
@@ -839,7 +839,7 @@
         cond_pb_pts1: 'हर एक का 1 अंक', cond_pb_pts5: 'हर एक के 5 अंक', cond_pb_pts20: 'हर एक के 20 अंक', cond_pb_noted: 'डॉक्टर के लिए लिखा गया', cond_less: 'एक कम', cond_more: 'एक ज़्यादा',
         cond_pb_total: 'इस पीरियड का कुल', cond_pb_clots: 'थक्के: {s} छोटे, {l} बड़े · तेज़ बहाव: {f}',
         cond_pb_line: 'डॉक्टर कुल 100 या ज़्यादा को भारी पीरियड का संकेत मानते हैं। यह चार्ट डॉक्टर को दिखाएँ।',
-        cond_pb_only: 'कुल में सिर्फ़ pad गिने जाते हैं, जैसा मूल चार्ट (Higham, 1990) में था। यह चार्ट disposable pad के लिए बना था; कपड़ा, cup या tampon इस्तेमाल करती हैं तो डॉक्टर को बताएँ।'
+        cond_pb_only: 'कुल में सिर्फ़ pad गिने जाते हैं, जैसा मूल चार्ट (Higham, 1990) में था। यह चार्ट disposable pad के लिए बना था; cup या tampon इस्तेमाल करती हैं तो डॉक्टर को बताएँ।'
       }
     },
     routes: {

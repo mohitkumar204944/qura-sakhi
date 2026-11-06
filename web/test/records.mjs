@@ -154,7 +154,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   const b = await a.page.$$eval('#view .xp-dcard.xp-month .xp-acts:not(.xp-more) .btn', (x) => x.map((y) => y.textContent.trim()));
   /* Version 39.25 (Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a Qura doctor first */
   /* Version 39.64 (phase E; Mohit, 3 Nov: "Qura first, gynaecologist second"): the doctor the sign needs comes second */
-  check('5 a "this month" card: a Qura doctor, then the gynaecologist, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a Qura doctor about this | See a gynaecologist | My report for the doctor', b);
+  check('5 a "this month" card: a Qura doctor, then the gynaecologist, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a doctor about this | See a gynaecologist | My report for the doctor', b);   /* Version 39.71: the label */
   check('5 ... a free plan beside it and "What this means", and no "Check the signs" (Version 39.68: no self-checks)', !/Check the signs/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
   await tap(a.page, '#view .xp-dcard.xp-month [data-xp-rp]');
   const q = await a.page.$$eval('#view ol.steps li', (x) => x.map((y) => y.textContent));
@@ -270,7 +270,7 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   await go(b.page, 'diary');
   check('12 Hindi: the tab is "चक्र" (Version 39.11: Cycles)', /चक्र/.test(await txt(b.page, '#view .tabs')) && !/क्या दिखता है/.test(await txt(b.page, '#view .tabs')), await txt(b.page, '#view .tabs'));
   await diaryShows(b.page);
-  check('12 Hindi: the buttons read "इस बारे में Qura की डॉक्टर से पूछें" and "डॉक्टर के लिए मेरी रिपोर्ट" (Version 39.25: no "मुफ़्त सरकारी डॉक्टर")', /इस बारे में Qura की डॉक्टर से पूछें/.test(await view(b.page)) && /डॉक्टर के लिए मेरी रिपोर्ट/.test(await view(b.page)) && !/मुफ़्त सरकारी डॉक्टर/.test(await view(b.page)));
+  check('12 Hindi: the buttons read "इस बारे में Qura की डॉक्टर से पूछें" and "डॉक्टर के लिए मेरी रिपोर्ट" (Version 39.25: no "मुफ़्त सरकारी डॉक्टर")', /इस बारे में डॉक्टर से पूछें/.test(await view(b.page)) && /डॉक्टर के लिए मेरी रिपोर्ट/.test(await view(b.page)) && !/मुफ़्त सरकारी डॉक्टर/.test(await view(b.page)));
   check('12 360 px: no sideways scroll on What it shows', await noScroll(b.page));
   await shot(b.page, '12-hindi-360'); errsAll.push(...b.errs); await b.ctx.close();
 }

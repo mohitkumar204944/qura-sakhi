@@ -95,14 +95,14 @@ const sheetTxt = (page) => txt(page, '#sheet-root');
   let a = await open({ seed: PRIYA });
   await stage(a.page, 'meno');
   const sh = await sheetTxt(a.page);
-  check('2 at 22, "My periods have stopped": the POI line, a Qura doctor first, the gynaecologist, a test first, and her cycle still counting', /not menopause/.test(sh) && /Ask a Qura doctor/.test(sh) && /See a gynaecologist/.test(sh) && /Take a test first/.test(sh) && /keeps counting your cycle/.test(sh) && (await a.page.$eval('#sheet-root .st-poi .btn', (e) => e.innerText.trim())) === 'Ask a Qura doctor', sh);
+  check('2 at 22, "My periods have stopped": the POI line, a Qura doctor first, the gynaecologist, a test first, and her cycle still counting', /not menopause/.test(sh) && /Ask a doctor\b/.test(sh) && /See a gynaecologist/.test(sh) && /Take a test first/.test(sh) && /keeps counting your cycle/.test(sh) && (await a.page.$eval('#sheet-root .st-poi .btn', (e) => e.innerText.trim())) === 'Ask a doctor', sh);   /* Version 39.71: the label */
   await tap(a.page, '#sheet-root #st-save'); const x = await sit(a.page);
   check('2 ... saved as said, not as stopped: her cycle keeps counting', x.stopAsk === TODAY && !x.stopped && !x.midlife, x);
   const v = await view(a.page);
   check('2 ... Today: her period buttons, no "CYCLE COUNTING IS OFF", her plan runs on', !/CYCLE COUNTING IS OFF/i.test(v) && /Period started|Period ended/.test(v) && /MY PERIOD PLAN/i.test(v), v.slice(0, 400));
   check('2 ... the POI card leads Sakhi says, and no midlife plan is offered', await has(a.page, '#view .pl-m2-poi') && !/My midlife plan may fit now/.test(v), v.slice(0, 600));
   const btn = await a.page.$$eval('#view .pl-m2-poi .btn', (b) => b.map((x) => x.innerText.trim()));
-  check('2 ... the card: Ask a Qura doctor, See a gynaecologist, then her doctor\'s answer', btn[0] === 'Ask a Qura doctor' && btn[1] === 'See a gynaecologist' && btn.indexOf('My doctor says my periods have stopped') >= 0, btn);
+  check('2 ... the card: Ask a Qura doctor, See a gynaecologist, then her doctor\'s answer', /^Ask a doctor\b/.test(btn[0]) && btn[1] === 'See a gynaecologist' && btn.indexOf('My doctor says my periods have stopped') >= 0, btn);
   await tap(a.page, '#view #pl-m2-poi-stop'); const x2 = await sit(a.page);
   check('2 "My doctor says my periods have stopped": now they count as stopped, from her last period', x2.stopped && x2.midlife && !x2.stopAsk && x2.stoppedOn >= ago(2) && x2.poiOk === TODAY, x2);
   await done(a);
@@ -194,7 +194,7 @@ const sheetTxt = (page) => txt(page, '#sheet-root');
   await stage(a.page, 'mid');
   check('7 Hindi: the question for her age, at 360 px', /40 और उससे ज़्यादा/.test(await sheetTxt(a.page)) && await noScroll(a.page));
   await tap(a.page, '#sheet-root [data-st-age="stop"]');
-  check('7 Hindi: the POI line and her doctors', /मेनोपॉज़ नहीं/.test(await sheetTxt(a.page)) && /Qura की डॉक्टर से पूछें/.test(await sheetTxt(a.page)) && await noScroll(a.page));
+  check('7 Hindi: the POI line and her doctors', /मेनोपॉज़ नहीं/.test(await sheetTxt(a.page)) && /डॉक्टर से पूछें/.test(await sheetTxt(a.page)) && await noScroll(a.page));
   await done(a);
 }
 

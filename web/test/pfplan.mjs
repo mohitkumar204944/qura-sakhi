@@ -150,7 +150,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   check('3.5 10 days of sets open level 3: sitting, 10 squeezes of 5 seconds, then 5 quick', lv.n === 3 && lv.pos === 'sit' && lv.reps === 10 && lv.hold === 5 && lv.quick === 5, lv);
   await go(a.page, 'post-pelvic');
   const tv = await view(a.page);
-  check('3.6 the trainer shows her level and what to do, with the next level\'s days', /Level 3 of 8 · sitting on a chair/i.test(tv) && /10 squeezes: hold each 5 seconds/.test(tv) && /Then 5 quick squeezes/.test(tv) && /Next level after 5 more days of sets/.test(tv), tv.slice(0, 700));
+  check('3.6 the trainer shows her level and what to do, with the next level\'s days', /Level 3 of 8 · sitting on a chair/i.test(tv) && /10 times: hold each 5 seconds/.test(tv) && /Then 5 quick ones/.test(tv) && /Next level after 5 more days of sets/.test(tv), tv.slice(0, 700));
   await tap(a.page, '#pst-pstart'); let qs = false;
   for (let i = 0; i < 400 && await has(a.page, '#pst-pph'); i++) { await a.page.clock.runFor(1000); await sleep(5); if (/Quick squeeze/.test(await txt(a.page, '#pst-pph'))) qs = true; }
   await settle(a.page, 300);
@@ -243,7 +243,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   check('5.7 twice, and her plan moves to breathing and letting go, with the pain card', await a.page.evaluate(() => window.Saathi.plan.pelvic.relax()) && /Breathe and let go/.test(await view(a.page)));
   await go(a.page, 'home');
   await tap(a.page, '[data-pf="pain-ok"]');
-  check('5.8 "A doctor checked it" brings the squeezes back', !(await a.page.evaluate(() => window.Saathi.plan.pelvic.relax())) && (await acts(a.page))[0].title === 'Your squeeze sets');
+  check('5.8 "A doctor checked it" brings the squeezes back', !(await a.page.evaluate(() => window.Saathi.plan.pelvic.relax())) && (await acts(a.page))[0].title === 'Your Kegel sets');
   await done(a);
   a = await open({ seed: pel(5), hash: '#intimate-prolapse' });
   const g = await view(a.page);
@@ -346,7 +346,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   const ids16 = await a.page.evaluate(() => window.Saathi.pfplan.lesson.ids());
   check('9.4 15 chapters: 12 for every track, 3 more after "a doctor said prolapse" (Version 39.68: the doctors removed one)', ids16.length === 15 && ids16.filter((x) => /^f\d+$/.test(x)).length === 12 && ids16.filter((x) => /^v\d$/.test(x)).length === 3 && ids16.indexOf('v2') < 0, ids16);
   await a.page.evaluate(() => { window.Saathi.mem.pfLes = 'f10'; location.hash = 'pf-lesson'; }); await settle(a.page, 400);
-  check('9.5 the warning-signs chapter has Go to the nearest hospital now, with Call 108 (Version 39.70)', /Go to the nearest hospital now if you suddenly can’t control your bladder or bowel/.test(await view(a.page)) && await has(a.page, 'a[href="tel:108"]'));
+  check('9.5 the warning-signs chapter has Go to the nearest hospital or a doctor now (Version 39.71), with Call 108 (Version 39.70)', /Go to the nearest hospital or a doctor now if you suddenly can’t control your bladder or bowel/.test(await view(a.page)) && await has(a.page, 'a[href="tel:108"]'));
   await go(a.page, 'pf-urge');
   check('9.6 When the urge comes: stop, squeeze, breathe, walk calmly', /Stop\. Stand still/.test(await view(a.page)) && /Walk calmly/.test(await view(a.page)));
   const hi = await a.page.evaluate(() => { const o = window.Saathi.pfplan.lesson; window.Saathi.state.lang = 'hi'; const r = o.ids().map((id) => o.title(id)); window.Saathi.state.lang = 'en'; return r; });
@@ -401,7 +401,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   let a = await open({ seed: Object.assign(pel(B(10)), { events: regular(10).concat([{ d: ago(5), t: 'preg' }]) }) });
   await a.page.evaluate(() => { const S = window.Saathi; S.state.situation = Object.assign({}, S.state.situation, { pregnant: true, pregnantSince: S.toISO(S.addDays(S.today(), -40)) }); S.save(); S.render(); }); await settle(a.page, 400);
   const pz = await a.page.evaluate(() => ({ on: window.Saathi.plan.pelvic.on(), preg: window.Saathi.stageNow ? window.Saathi.stageNow() : null }));
-  check('13.1 a pregnancy pauses the plan (My pregnancy has its own pelvic floor step)', !pz.on && !/Your squeeze sets/.test(await view(a.page)), [pz, (await view(a.page)).slice(0, 400)]);
+  check('13.1 a pregnancy pauses the plan (My pregnancy has its own pelvic floor step)', !pz.on && !/Your Kegel sets/.test(await view(a.page)), [pz, (await view(a.page)).slice(0, 400)]);
   await done(a);
   a = await open({ seed: Object.assign(pel(B(10)), { goals: ['pelvic'], intake: { goal: 'pelvic', stage: 'ttc' }, situation: { midlife: false, planning: true } }) });
   check('13.2 trying for a baby now: Sakhi offers the plan for now (Getting ready), and Keep keeps hers', /Trying for a baby now\?/.test(await view(a.page)) && await has(a.page, '#pl-fit-keep'), (await view(a.page)).slice(0, 500));
@@ -412,7 +412,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
 {
   const a = await open({ seed: Object.assign(pel(B(8), { a: { pft: 'both' } }), { lang: 'hi' }), w: 360, h: 800 });
   const v = await view(a.page);
-  check('14.1 Today in Hindi: मेरा पेल्विक फ़्लोर प्लान, her sets and the knack, no scroll', /मेरा पेल्विक फ़्लोर प्लान/.test(v) && /कसने के आपके सेट/.test(v) && /खाँसने, छींकने या उठाने से पहले कसें/.test(v) && await noScroll(a.page), v.slice(0, 500));
+  check('14.1 Today in Hindi: मेरा पेल्विक फ़्लोर प्लान, her sets and the knack, no scroll', /मेरा पेल्विक फ़्लोर प्लान/.test(v) && /आपके कीगल सेट/.test(v) && /खाँसने, छींकने या उठाने से पहले कसें/.test(v) && await noScroll(a.page), v.slice(0, 500));
   await go(a.page, 'post-pelvic');
   check('14.2 the trainer in Hindi, no scroll', /8 में से लेवल/.test(await view(a.page)) && await noScroll(a.page), (await view(a.page)).slice(0, 400));
   await go(a.page, 'plan-checkin');
@@ -429,7 +429,7 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   const { join } = await import('./join.mjs');
   let tiles = '';
   await join(a.page, { name: 'Meena', dec: 1980, y: 1980, tile: 'cycle', goals: ['pelvic'], stop: 'details', onScreen: async (n) => { if (n === 'goals') tiles = await view(a.page); } });
-  check('15.1 joining: "Leaking urine or heaviness" among the tracking stage\'s goals', /Leaking urine or heaviness/.test(tiles) && /Squeeze sets step by step/.test(tiles), tiles.slice(0, 600));
+  check('15.1 joining: "Leaking urine or heaviness" among the tracking stage\'s goals', /Leaking urine or heaviness/.test(tiles) && /Pelvic floor exercises \(Kegels\) step by step/.test(tiles), tiles.slice(0, 600));
   await done(a);
 }
 
@@ -482,7 +482,7 @@ async function startPelvic(page, pft, flags) {
   const urg = async (q) => { await a.page.evaluate((q) => { window.Saathi.mem.careQ = q; location.hash = 'care'; window.Saathi.render(); }, q); await settle(a.page, 400); return a.page.$eval('[data-urg]', (e) => e.dataset.urg).catch(() => null); };
   const u1 = await urg('can\'t control my bladder and my legs are numb'), u2 = await urg('पेशाब पर काबू नहीं और पैर सुन्न'), u3 = await urg('peshab rok nahi pa rahi aur kamar mein dard'), u4 = await urg('leaking urine when I cough'), u5 = await urg('can\'t hold urine');
   check('17.10 search: the new 112 sign in her words puts the urgent card first (English, Hindi, Hinglish); leaking on its own does not', u1 === 's1d' && u2 === 's1d' && u3 === 's1d' && !u4 && !u5, [u1, u2, u3, u4, u5]);
-  check('17.11 the trainer\'s tile says only what every woman gets', /Guided squeeze-and-relax timer, step by step/.test(await (async () => { await a.page.evaluate(() => { window.Saathi.mem.careQ = 'pelvic floor'; window.Saathi.render(); }); await settle(a.page, 400); return view(a.page); })()));
+  check('17.11 the trainer\'s tile says only what every woman gets', /Pelvic floor exercises \(Kegels\), with a timer, step by step/.test(await (async () => { await a.page.evaluate(() => { window.Saathi.mem.careQ = 'pelvic floor'; window.Saathi.render(); }); await settle(a.page, 400); return view(a.page); })()));
   await done(a);
   a = await open({ seed: pel(B(3)), hm: '20:30', hash: '#plan-checkin' });
   await tap(a.page, '[data-ci="sets:n"]'); await tap(a.page, '[data-ci="find:n"]');
@@ -534,12 +534,12 @@ async function answerAll(page) {
 {
   let a = await open({ seed: pel(10, { pf: days(1, 10) }) });
   const hw = (await a.page.evaluate(() => window.Saathi.plan.actions()[0].how)) || '';
-  check('17.20 My plan\'s "How to do it" for her sets is her level\'s squeezes', hw === '10 squeezes: hold each 5 seconds, then let go as long. Then 5 quick squeezes: squeeze, let go.', hw);
+  check('17.20 My plan\'s "How to do it" for her sets is her level\'s squeezes', hw === '10 times: hold each 5 seconds, then let go as long. Then 5 quick ones: squeeze, let go.', hw);
   await done(a);
   a = await open({ seed: seedOf({ goals: ['pain', 'pelvic'], intake: { goal: 'pain', stage: 'cycle' }, dob: '1994-01-01', events: regular(10) }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 500); await answerAll(a.page);
   let rv = ''; for (let i = 0; i < 6 && !(await has(a.page, '#pl-rv-go')); i++) { rv += ' ' + await view(a.page); if (await has(a.page, '#pl-rv-next')) await tap(a.page, '#pl-rv-next'); else break; }
-  check('17.21 a plan her sets join says so in "What happens when"', /Every day: your squeeze sets, 3 a day/.test(rv), rv.slice(0, 1200));
+  check('17.21 a plan her sets join says so in "What happens when"', /Every day: your Kegel sets, 3 a day/.test(rv), rv.slice(0, 1200));
   await done(a);
   a = await open({ seed: pel(B(10)) });
   await go(a.page, 'plan-settings');
@@ -631,7 +631,7 @@ const tabOn = (page) => page.$eval('#tabbar button.on', (b) => b.dataset.go).cat
   /* P2: a half-done sets row says her count */
   a = await open({ seed: pel(B(3), { pf: { 0: 1 } }) });
   const v2 = await view(a.page);
-  check('18.6 P2: a half-done sets row says her count, not "Partly done"', /Your squeeze sets 1 of 3 today · level 1, lying down/.test(v2) && !/Your squeeze sets Partly done/.test(v2), v2.slice(0, 700));
+  check('18.6 P2: a half-done sets row says her count, not "Partly done"', /Your Kegel sets 1 of 3 today · level 1, lying down/.test(v2) && !/Your Kegel sets Partly done/.test(v2), v2.slice(0, 700));
   await done(a);
   a = await open({ seed: pel(B(3), { pf: { 0: 1 }, x: { settings: { discreet: true, notify: true } } }) });
   const v3 = await view(a.page);

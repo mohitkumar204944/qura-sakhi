@@ -128,7 +128,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   const a = await open({ seed: cyc(ago(9), { log: l, weeks: SEEN1 }, { reminders: REM }), now: at(0, '20:30') });
   check('3 the evening: the check-in is the one pink button while a step is left', JSON.stringify(await pinks(a.page, '#view .today-card')) === JSON.stringify(['How did today go?']));
   await tap(a.page, '#view .today-plan-move [data-today-act]');
-  check('3 "One more: Wind down, in bed by 11:30 pm"', /One more: Wind down, in bed by 11:30 pm/.test(await txt(a.page, '#view .today-card')));
+  check('3 "One more: Wind down with a meditation, in bed by 11:30 pm" (Version 39.71)', /One more: Wind down with a meditation, in bed by 11:30 pm/.test(await txt(a.page, '#view .today-card')));
   await tap(a.page, '#view .today-plan-sleep [data-today-nav]'); await settle(a.page, 31000); await go(a.page, 'home');   /* Version 39.22: tonight's session, 30 seconds of it */
   const dc = await txt(a.page, '#view .today-card'); const lg = (await plan(a.page)).log[TODAY];
   check('3 the last step (tonight\'s wind-down) closes the day: "Day complete", "All 4 done today"', /Day complete\nAll 4 done today/.test(dc), dc);

@@ -102,11 +102,11 @@
   ];
   function renderHub(v) {
     v.innerHTML = S.backRow(t('teen_hub'), 'care', false) +
-      intro({ en: `For girls 10–17 and their families. Plain answers about growing up, your first period, feelings and staying safe. You don't need a diary, and nothing on these pages is saved.`, hi: `10–17 साल की लड़कियों और उनके परिवार के लिए। बड़े होने, पहले पीरियड, मन की बातों और सुरक्षा पर सीधे-सरल जवाब। इसके लिए डायरी की ज़रूरत नहीं, और इन पन्नों पर कुछ भी save नहीं होता।` }) +
+      intro({ en: `For girls 10–17 and their families: the first period, and a guide for mothers and fathers. You don't need a diary, and nothing on these pages is saved.`, hi: `10–17 साल की लड़कियों और उनके परिवार के लिए: पहला पीरियड, और माँ-पापा के लिए एक गाइड। इसके लिए डायरी की ज़रूरत नहीं, और इन पन्नों पर कुछ भी save नहीं होता।` }) +
       '<h2>' + T({ en: 'For girls', hi: 'लड़कियों के लिए' }) + '</h2>' +
-      '<div class="list">' + GIRL_SCREENS.map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]))).join('') + '</div>' +
+      '<div class="list">' + GIRL_SCREENS.filter((x) => !(S.retired && S.retired(x[0]))).map((x) => linkItem(x[0], x[1], t(x[2]), t(x[3]))).join('') + '</div>' +   /* Version 39.71 (tile-teen): the first period only */
       '<h2>' + T({ en: 'For mothers and fathers', hi: 'माँ और पापा के लिए' }) + '</h2>' +
-      '<button type="button" class="action" data-go="teen-mother"><span class="ico accent">' + S.I.users + '</span><span class="body"><strong>' + esc(t('teen_mother')) + '</strong><span class="small">' + T({ en: 'When and how to talk, words you can use in Hindi and English, what to keep ready, and keeping her safe', hi: 'कब और कैसे बात करें, हिंदी और English में कहने के शब्द, क्या तैयार रखें, और उसकी सुरक्षा' }) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' +
+      '<button type="button" class="action" data-go="teen-mother"><span class="ico accent">' + S.I.users + '</span><span class="body"><strong>' + esc(t('teen_mother')) + '</strong><span class="small">' + T({ en: 'When and how to talk, words you can use in Hindi and English, and what to keep ready', hi: 'कब और कैसे बात करें, हिंदी और English में कहने के शब्द, और क्या तैयार रखें' }) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' +
       doctorCard({ en: 'See a doctor with a parent if', hi: 'माता-पिता के साथ डॉक्टर को दिखाएँ अगर' }, [
         's5a',
         { en: 'Breasts, hair on the private parts or a period start before age 8', hi: '8 साल से पहले स्तन बढ़ने लगें, प्राइवेट पार्ट पर बाल आएँ या पीरियड शुरू हो जाए' },
@@ -160,7 +160,7 @@
           { en: 'Some girls get cramps, backache or sore breasts just before or during a period.', hi: 'कुछ लड़कियों को पीरियड से ठीक पहले या उसके दौरान पेट में ऐंठन, कमर दर्द या स्तनों में दर्द होता है।' }])) +
       sec('f-kit', { en: 'A first-period kit for your bag', hi: 'बैग के लिए पहले पीरियड की किट' },
         '<p class="small">' + T({ en: 'Pack it in a small pouch once your breasts start growing or you notice white discharge.', hi: 'जब स्तन बढ़ने लगें या सफ़ेद पानी दिखे, तब इसे एक छोटी पाउच में रख लें।' }) + '</p>' +
-        checklist([{ en: '2–3 pads, or clean folded cotton cloth pads', hi: '2–3 pad, या साफ़, तह किए सूती कपड़े के pad' },
+        checklist([{ en: '2–3 pads', hi: '2–3 pad' },
           { en: 'A spare pair of underwear', hi: 'एक जोड़ी extra अंडरवियर' },
           { en: 'A small paper bag or old newspaper, to wrap a used pad', hi: 'इस्तेमाल किया pad लपेटने के लिए छोटा काग़ज़ का लिफ़ाफ़ा या पुराना अख़बार' },
           { en: 'A small soap or a few tissues', hi: 'छोटा साबुन या कुछ tissue' },
@@ -171,7 +171,7 @@
         ul([{ en: 'Change it at least every 4–8 hours, or sooner if it feels full or wet. A longer pad helps at night.', hi: 'कम से कम हर 4–8 घंटे में बदलें, या भरा या गीला लगे तो पहले। रात में लंबा pad काम आता है।' },
           { en: 'Never flush a pad down the toilet. It blocks the drain.', hi: 'pad कभी toilet में flush न करें। इससे नाली बंद होती है।' },
           { en: 'Wash your hands after changing. Wash the outside of your private parts with plain water once or twice a day.', hi: 'बदलने के बाद हाथ धोएँ। दिन में एक-दो बार प्राइवेट पार्ट को बाहर से सादे पानी से धोएँ।' }]) +
-        goBtn('periods-products', { en: 'Cloth pads, cups and more', hi: 'कपड़े के pad, cup और बाकी' })) +
+        goBtn('periods-products', { en: 'Pads, cups and more', hi: 'Pad, cup और बाकी' })) +
       sec('f-school', { en: 'At school', hi: 'स्कूल में' },
         ul([{ en: 'Who to ask: your class teacher or any woman teacher, the school nurse, or a friend. You can say, "My period has started, I need a pad." Teachers hear this often.', hi: 'किससे कहें: क्लास टीचर या कोई भी मैडम, स्कूल की नर्स, या कोई सहेली। आप कह सकती हैं, "मेरा पीरियड शुरू हो गया है, मुझे pad चाहिए।" टीचर यह अक्सर सुनती हैं।' },
           { en: 'Many government schools have two teachers trained as Health and Wellness Ambassadors. You can take your questions to them.', hi: 'कई सरकारी स्कूलों में दो टीचर "हेल्थ एंड वेलनेस एम्बेसडर" के रूप में प्रशिक्षित होते हैं। आप अपने सवाल उनके पास ले जा सकती हैं।' },
@@ -336,7 +336,7 @@
   function renderMother(v) {
     v.innerHTML = S.backRow(t('teen_mother'), 'teen', false) +
       intro({ en: 'Your daughter will hear about periods somewhere: from friends, a phone, a cousin. It is better she hears it first from you, calmly, before it happens. You don\'t need perfect words. Short, honest talks work.', hi: 'आपकी बेटी पीरियड के बारे में कहीं न कहीं से सुनेगी: सहेलियों से, फ़ोन से, किसी cousin से। अच्छा है कि वह पहली बार आपसे, शांति से, और पीरियड आने से पहले सुने। एकदम सही शब्दों की ज़रूरत नहीं। छोटी, सच्ची बातें काम करती हैं।' }) +
-      jumps([['p-when', { en: 'When to talk', hi: 'कब बात करें' }], ['p-words', { en: 'Words to use', hi: 'क्या कहें' }], ['p-ready', { en: 'Keep ready', hi: 'क्या तैयार रखें' }], ['p-myths', { en: 'Myths', hi: 'मिथक' }], ['p-doctor', { en: 'Doctor', hi: 'डॉक्टर' }], ['p-safety', { en: 'Safety', hi: 'सुरक्षा' }], ['p-hpv', { en: 'HPV vaccine', hi: 'HPV टीका' }]]) +
+      jumps([['p-when', { en: 'When to talk', hi: 'कब बात करें' }], ['p-words', { en: 'Words to use', hi: 'क्या कहें' }], ['p-ready', { en: 'Keep ready', hi: 'क्या तैयार रखें' }], ['p-myths', { en: 'Myths', hi: 'मिथक' }], ['p-doctor', { en: 'Doctor', hi: 'डॉक्टर' }], ['p-hpv', { en: 'HPV vaccine', hi: 'HPV टीका' }]]) +
       sec('p-when', { en: 'When and how to start', hi: 'कब और कैसे शुरू करें' },
         ul([{ en: 'Start around 8–10, before her first period. Some girls get it at 8 or 9.', hi: 'लगभग 8–10 साल की उम्र में शुरू करें, पहले पीरियड से पहले। कुछ लड़कियों को 8 या 9 साल में ही आ जाता है।' },
           { en: 'Talk often and briefly, at easy moments: cooking together, on a walk, on the bus. One big talk is harder for both of you.', hi: 'बार-बार और थोड़ी-थोड़ी बात करें, आराम के पलों में: साथ खाना बनाते हुए, टहलते हुए, बस में। एक बड़ी बातचीत दोनों के लिए मुश्किल होती है।' },
@@ -349,13 +349,13 @@
       '<p class="small">' + T({ en: 'Say them in your own way. Each line is in Hindi and in English.', hi: 'अपने तरीक़े से कहें। हर बात हिंदी और English, दोनों में है।' }) + '</p>' +
       SAY.map(sayBlock).join('') +
       sec('p-ready', { en: 'What to keep ready', hi: 'क्या तैयार रखें' },
-        checklist([{ en: 'A pack of pads, with a few longer ones for night, or clean cotton cloth pads', hi: 'pad का एक पैकेट, रात के लिए कुछ लंबे pad के साथ, या साफ़ सूती कपड़े के pad' },
+        checklist([{ en: 'A pack of pads, with a few longer ones for night', hi: 'pad का एक पैकेट, रात के लिए कुछ लंबे pad के साथ' },
           { en: 'A small pouch for her school bag: 2–3 pads, spare underwear and a paper bag', hi: 'स्कूल बैग के लिए छोटी पाउच: 2–3 pad, extra अंडरवियर और काग़ज़ का लिफ़ाफ़ा' },
           { en: 'Old newspaper and a covered dustbin in the bathroom', hi: 'बाथरूम में पुराना अख़बार और ढक्कन वाला कूड़ेदान' },
           { en: 'A hot water bottle for cramps', hi: 'ऐंठन के लिए गर्म पानी की बोतल' },
           { en: 'A calendar to mark the first day of each period', hi: 'हर पीरियड का पहला दिन लिखने के लिए कैलेंडर' },
           { en: 'Your phone number written in her school diary', hi: 'उसकी स्कूल डायरी में आपका फ़ोन नंबर' }]) +
-        goBtn('periods-products', { en: 'Pads, cloth pads and cups', hi: 'Pad, कपड़े के pad और cup' })) +
+        goBtn('periods-products', { en: 'Pads and cups', hi: 'Pad और cup' })) +
       '<h2 class="teen-sec" id="p-myths">' + T({ en: 'Myths not to pass on', hi: 'ये मिथक आगे न बढ़ाएँ' }) + '</h2>' +
       myth({ en: 'She is "impure" and must keep out of the kitchen or the puja room.', hi: 'वह "अशुद्ध" है, रसोई या पूजा घर से दूर रहे।' }, { en: 'A period is the body working normally, not dirt. Rules like these teach her to be ashamed of her body. If she is tired, let her rest because she needs it.', hi: 'पीरियड शरीर का सामान्य काम है, गंदगी नहीं। ऐसे नियम उसे अपने शरीर पर शर्म करना सिखाते हैं। थकी हो तो आराम करने दें, क्योंकि उसे ज़रूरत है।' }) +
       myth({ en: 'No bath and no hair wash.', hi: 'नहाना और बाल धोना मना।' }, { en: 'Bathing keeps her clean and can ease cramps.', hi: 'नहाने से वह साफ़ रहती है और ऐंठन में आराम मिल सकता है।' }) +
@@ -385,7 +385,7 @@
     demoPersona: 'browse',
     strings: {
       en: {
-        teen_hub: 'Girls and families', teen_all: 'All guides for girls', teen_hub_s: 'For girls 10–17 and their families. Read only, nothing saved',
+        teen_hub: 'Girls and families', teen_all: 'First periods: for girls and parents', teen_hub_s: 'For girls 10–17 and their families. Read only, nothing saved',
         teen_puberty: 'Your changing body', teen_puberty_s: 'Breasts, hair, height, discharge, pimples, sweat',
         teen_first: 'Your first period', teen_first_s: 'What to expect, a kit for your bag, using a pad, school',
         teen_mind: 'Feelings, friends and safety', teen_mind_s: 'Body image, bullying, online safety, safe touch, who to tell',
@@ -394,7 +394,7 @@
         teen_u18: 'Guides for girls (read only)'
       },
       hi: {
-        teen_hub: 'बेटियाँ और परिवार', teen_all: 'लड़कियों के लिए सभी गाइड', teen_hub_s: '10–17 साल की लड़कियों और उनके परिवार के लिए। सिर्फ़ पढ़ने के लिए, कुछ save नहीं होता',
+        teen_hub: 'बेटियाँ और परिवार', teen_all: 'पहला पीरियड: लड़कियों और माता-पिता के लिए', teen_hub_s: '10–17 साल की लड़कियों और उनके परिवार के लिए। सिर्फ़ पढ़ने के लिए, कुछ save नहीं होता',
         teen_puberty: 'आपका बदलता शरीर', teen_puberty_s: 'स्तन, बाल, लंबाई, सफ़ेद पानी, मुँहासे, पसीना',
         teen_first: 'आपका पहला पीरियड', teen_first_s: 'क्या होगा, बैग के लिए किट, pad कैसे लगाएँ, स्कूल में',
         teen_mind: 'मन, दोस्ती और सुरक्षा', teen_mind_s: 'अपना रूप, तंग करना, ऑनलाइन सुरक्षा, सही-ग़लत छूना, किसे बताएँ',

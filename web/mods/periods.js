@@ -275,10 +275,10 @@
 
   /* ---------- pads, cups and more ---------- */
   function renderProducts(v) {
-    const jumps = [['pp-pads', 'periods_j_pads'], ['pp-cloth', 'periods_j_cloth'], ['pp-cup', 'periods_j_cup'], ['pp-tampon', 'periods_j_tampon'], ['pp-under', 'periods_j_under'], ['pp-bin', 'periods_j_bin']];
+    const jumps = [['pp-pads', 'periods_j_pads'], ['pp-cup', 'periods_j_cup'], ['pp-tampon', 'periods_j_tampon'], ['pp-under', 'periods_j_under'], ['pp-bin', 'periods_j_bin']];
     const sec = (id, title, inner, cls) => '<section class="card periods-sec' + (cls ? ' ' + cls : '') + '" id="' + id + '"><h2>' + h(title) + '</h2>' + inner + '</section>';
     const rows = [
-      [{ en: 'Pad or cloth pad', hi: 'Pad या कपड़े का pad' }, { en: 'Every few hours, even on light days; sooner when heavy', hi: 'हर कुछ घंटे में, हल्के दिनों में भी; ज़्यादा ब्लीडिंग में और जल्दी' }],
+      [{ en: 'Pad', hi: 'Pad' }, { en: 'Every few hours, even on light days; sooner when heavy', hi: 'हर कुछ घंटे में, हल्के दिनों में भी; ज़्यादा ब्लीडिंग में और जल्दी' }],
       [{ en: 'Cup', hi: 'Cup' }, { en: 'Empty every 8–12 hours, or sooner if the brand says so', hi: 'हर 8–12 घंटे में खाली करें, या brand कम समय बताए तो उतने में' }],
       [{ en: 'Tampon', hi: 'Tampon' }, { en: 'Every 4–8 hours; never more than 8', hi: 'हर 4–8 घंटे में; 8 से ज़्यादा कभी नहीं' }],
       [{ en: 'Period underwear', hi: 'पीरियड अंडरवियर' }, { en: 'As the brand says', hi: 'brand के बताए अनुसार' }]
@@ -289,15 +289,7 @@
       '<div class="card"><h2>' + h({ en: 'How often to change', hi: 'कितनी देर में बदलें' }) + '</h2><div class="table-wrap"><table><thead><tr><th>' + h({ en: 'What you use', hi: 'क्या इस्तेमाल करती हैं' }) + '</th><th>' + h({ en: 'Change or empty', hi: 'कब बदलें या खाली करें' }) + '</th></tr></thead><tbody>' +
       rows.map((r) => '<tr><td style="color:var(--fg);font-weight:600">' + h(r[0]) + '</td><td>' + h(r[1]) + '</td></tr>').join('') + '</tbody></table></div><p class="footnote" style="text-align:left">' + h({ en: 'Source: US FDA guidance on pads, cups and tampons.', hi: 'स्रोत: pad, cup और tampon पर US FDA की जानकारी।' }) + '</p></div>' +
       sec('pp-pads', { en: 'Pads', hi: 'Pad (सैनिटरी नैपकिन)' },
-        ul([{ en: 'Change every few hours, even on light days, and sooner when the flow is heavy. Do not wear one pad all day.', hi: 'हर कुछ घंटे में बदलें, हल्के दिनों में भी, और ज़्यादा ब्लीडिंग में और जल्दी। एक ही pad पूरे दिन न पहनें।' },
-          { en: 'Jan Aushadhi "Suvidha" pads cost ₹1 a pad at Jan Aushadhi Kendras. The Jan Aushadhi Sugam app shows the nearest Kendra.', hi: 'जन औषधि केंद्रों पर "Suvidha" pad ₹1 का एक मिलता है। Jan Aushadhi Sugam app से सबसे पास का केंद्र पता चलता है।' },
-          { en: 'Girls aged 10–19 in villages can get a pack of 6 pads for ₹6 from their ASHA under the Menstrual Hygiene Scheme, where the state runs it; some states now give them free.', hi: 'गाँव में 10–19 साल की लड़कियों को Menstrual Hygiene Scheme में आशा दीदी से 6 pad का पैकेट ₹6 में मिल सकता है, जहाँ राज्य यह योजना चलाता है; कुछ राज्य अब ये मुफ़्त देते हैं।' }]) +
-        '<button type="button" class="btn sm" style="align-self:flex-start" data-go="access-schemes-period">' + h({ en: 'Other free and low-cost options', hi: 'दूसरे मुफ़्त और सस्ते विकल्प' }) + '</button>') +
-      sec('pp-cloth', { en: 'Cloth pads', hi: 'कपड़े का pad' },
-        steps([{ en: 'Use clean cotton cloth. Change it when it feels wet, every few hours.', hi: 'साफ़ सूती कपड़ा इस्तेमाल करें। गीला लगे तो बदलें, हर कुछ घंटे में।' },
-          { en: 'Rinse in cold water first, then wash with soap and clean water until the water runs clear.', hi: 'पहले ठंडे पानी में खँगालें, फिर साबुन और साफ़ पानी से तब तक धोएँ जब तक पानी साफ़ न आने लगे।' },
-          { en: 'Dry it fully in direct sunlight. Sun helps kill germs. Do not hide it to dry in a damp, dark corner.', hi: 'पूरी तरह तेज़ धूप में सुखाएँ। धूप कीटाणु मारने में मदद करती है। गीले, अँधेरे कोने में छिपाकर न सुखाएँ।' },
-          { en: 'Store it folded in a clean, dry bag or box. Replace cloth that has gone thin or hard, or stays stained. Do not share cloth pads.', hi: 'तह करके साफ़, सूखी थैली या डिब्बे में रखें। पतला या सख़्त हो गया या दाग़ न जाने वाला कपड़ा बदल दें। कपड़े का pad किसी के साथ न बाँटें।' }])) +
+        ul([{ en: 'Change every few hours, even on light days, and sooner when the flow is heavy. Do not wear one pad all day.', hi: 'हर कुछ घंटे में बदलें, हल्के दिनों में भी, और ज़्यादा ब्लीडिंग में और जल्दी। एक ही pad पूरे दिन न पहनें।' }])) +
       sec('pp-cup', { en: 'Menstrual cup', hi: 'Menstrual cup (मासिक कप)' },
         '<p class="small">' + h({ en: 'A soft silicone cup that sits inside the vagina and collects blood. Cared for well, one cup lasts several years.', hi: 'मुलायम silicone का कप जो योनि के अंदर रहकर ख़ून इकट्ठा करता है। ठीक से रखें तो एक कप कई साल चलता है।' }) + '</p>' +
         '<h3>' + h({ en: 'Choosing a size', hi: 'साइज़ कैसे चुनें' }) + '</h3><p class="small">' + h({ en: 'Most brands make a small and a large. Many suggest the small if you are under about 30 and have not had a vaginal birth, and the large if you are over 30, have had a vaginal birth, or have heavy flow. Check the brand\'s own size chart.', hi: 'ज़्यादातर brand छोटा और बड़ा साइज़ बनाते हैं। कई brand कहते हैं: लगभग 30 से कम उम्र और नॉर्मल डिलीवरी न हुई हो तो छोटा; 30 से ज़्यादा उम्र, नॉर्मल डिलीवरी हुई हो या ब्लीडिंग ज़्यादा हो तो बड़ा। brand का अपना size chart ज़रूर देखें।' }) + '</p>' +
@@ -423,7 +415,7 @@
         periods_core_note: 'This also counts headache, bloating, low mood and poor sleep you ticked when logging a period.',
         periods_counts_h: 'Your counts', periods_days_logged: 'Days logged in these cycles', periods_pre_weeks: 'Weeks before a period with entries (last 3)', periods_pre_lot: 'Of these, weeks with a day that affected work or family a lot',
         periods_week_before: 'Most logged in the 7 days before a period', periods_none_yet: 'None yet', periods_noscore: 'Counts of your own entries. No score, no diagnosis.',
-        periods_j_pads: 'Pads', periods_j_cloth: 'Cloth', periods_j_cup: 'Cup', periods_j_tampon: 'Tampons', periods_j_under: 'Period underwear', periods_j_bin: 'Throwing away',
+        periods_j_pads: 'Pads', periods_j_cup: 'Cup', periods_j_tampon: 'Tampons', periods_j_under: 'Period underwear', periods_j_bin: 'Throwing away',
         periods_myth: 'Myth', periods_fact: 'Fact',
         periods_home_h: 'How are you feeling today?', periods_home_p: 'The days before a period are the ones worth logging. One minute helps you and your doctor see the pattern.', periods_home_go: 'Log',
         periods_sum_days: 'Days logged: {n} ({m} in the last 3 cycles)', periods_sum_top: 'Most logged in the 7 days before a period', periods_sum_lot: 'Weeks before a period with a day affecting work or family a lot (last 3)'
@@ -451,7 +443,7 @@
         periods_core_note: 'इसमें वह सिरदर्द, पेट फूलना, मन उदास और नींद ख़राब भी गिना गया है जो आपने पीरियड दर्ज करते समय टिक किया।',
         periods_counts_h: 'आपकी गिनती', periods_days_logged: 'इन चक्रों में दर्ज दिन', periods_pre_weeks: 'पीरियड से पहले के हफ़्ते जिनमें entry है (पिछले 3)', periods_pre_lot: 'इनमें से वे हफ़्ते जिनमें किसी दिन काम या परिवार पर बहुत असर पड़ा',
         periods_week_before: 'पीरियड से पहले के 7 दिनों में सबसे ज़्यादा दर्ज', periods_none_yet: 'अभी कुछ नहीं', periods_noscore: 'यह आपकी अपनी entries की गिनती है। कोई score नहीं, कोई diagnosis नहीं।',
-        periods_j_pads: 'Pad', periods_j_cloth: 'कपड़ा', periods_j_cup: 'Cup', periods_j_tampon: 'Tampon', periods_j_under: 'पीरियड अंडरवियर', periods_j_bin: 'फेंकना',
+        periods_j_pads: 'Pad', periods_j_cup: 'Cup', periods_j_tampon: 'Tampon', periods_j_under: 'पीरियड अंडरवियर', periods_j_bin: 'फेंकना',
         periods_myth: 'मिथक', periods_fact: 'सच',
         periods_home_h: 'आज आप कैसा महसूस कर रही हैं?', periods_home_p: 'पीरियड से पहले के दिन दर्ज करना सबसे काम का है। एक मिनट से आपको और डॉक्टर को पैटर्न दिखता है।', periods_home_go: 'दर्ज करें',
         periods_sum_days: 'दर्ज दिन: {n} (पिछले 3 चक्रों में {m})', periods_sum_top: 'पीरियड से पहले के 7 दिनों में सबसे ज़्यादा दर्ज', periods_sum_lot: 'पीरियड से पहले के हफ़्ते जिनमें किसी दिन काम या परिवार पर बहुत असर पड़ा (पिछले 3)'
@@ -472,7 +464,7 @@
       { section: 'periods', route: 'periods', title: 'periods_all', sub: 'periods_hub_s', icon: 'drop', order: 1, gated: false, keywords: 'period periods menstruation mc पीरियड माहवारी मासिक धर्म' },
       { section: 'periods', route: 'periods-pms', title: 'periods_pms', sub: 'periods_pms_s', icon: 'chart', order: 10, gated: true, keywords: 'pms pmdd mood irritable anxious low tearful cravings bloating breast sleep headache मूड चिड़चिड़ापन' },
       { section: 'periods', route: 'periods-pain', title: 'periods_pain', sub: 'periods_pain_s', icon: 'heart', order: 20, gated: false, keywords: 'pain cramps dysmenorrhoea painkiller heat endometriosis दर्द ऐंठन' },
-      { section: 'periods', route: 'periods-products', title: 'periods_products', sub: 'periods_products_s', icon: 'drop', order: 30, gated: false, keywords: 'pad pads sanitary napkin cloth cup menstrual cup tampon underwear suvidha jan aushadhi disposal पैड कपड़ा' },
+      { section: 'periods', route: 'periods-products', title: 'periods_products', sub: 'periods_products_s', icon: 'drop', order: 30, gated: false, keywords: 'pad pads sanitary napkin cup menstrual cup tampon underwear disposal पैड' },
       { section: 'periods', route: 'periods-myths', title: 'periods_myths', sub: 'periods_myths_s', icon: 'sparkle', order: 40, gated: false, keywords: 'myth myths fact temple kitchen pickle hair wash bath sport school मिथक अचार मंदिर' },
       { section: 'periods', route: 'periods-fasting', title: 'periods_fasting', sub: 'periods_fasting_s', icon: 'moon', order: 50, gated: false, keywords: 'fast fasting vrat roza navratri karva chauth ramzan ramadan ekadashi teej sargi sehri व्रत रोज़ा' },
       { section: 'periods', route: 'periods-postpone', title: 'periods_postpone', sub: 'periods_postpone_s', icon: 'clock', order: 60, gated: false, keywords: 'delay postpone period wedding exam pilgrimage norethisterone टालना शादी' }

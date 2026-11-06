@@ -84,10 +84,10 @@ const SB3 = 'Good. Keep going on your own: in for four, out for six.';
 {
   const a = await open({ hash: '#plan' });
   /* 8 week 1 says what her wind-down plays */
-  check('8 My plan, week 1: the bedtime step says "Tonight: slow breaths with Dr. Megha"', /Tonight: slow breaths with Dr\. Megha/.test(await txt(a.page, '#view .pl-steps-card')));
+  check('8 My plan, week 1: the bedtime step says "Tonight: slow breaths with your trainer" (Version 39.71)', /Tonight: slow breaths with your trainer/.test(await txt(a.page, '#view .pl-steps-card')));
   await tap(a.page, '#view .pl-st-play'); await fast(a.page, 3800);
   const o = await a.page.evaluate(() => ({ open: !document.querySelector('#cm-open').classList.contains('gone'), say: document.querySelector('.cm-say').textContent, soon: document.querySelector('#cm-soon').textContent, tip: (document.querySelector('.cm-open .cm-tip') || {}).textContent || '', cap: document.querySelector('#cm-cap-t').textContent, eb: (document.querySelector('.cm-eb') || {}).textContent || '' }));
-  check('1 the opening seconds: "Dr. Megha is starting. Settle in.", when the breathing starts, the tip', (await hashOf(a.page)) === '#calm-breaths' && o.open && o.say === 'Dr. Megha is starting. Settle in.' && /^Breathing starts in 1[6-9] s$/.test(o.soon) && /^Sitting or lying down\./.test(o.tip), o);
+  check('1 the opening seconds: "Your trainer is starting. Settle in." (Version 39.71), when the breathing starts, the tip', (await hashOf(a.page)) === '#calm-breaths' && o.open && o.say === 'Your trainer is starting. Settle in.' && /^Breathing starts in 1[6-9] s$/.test(o.soon) && /^Sitting or lying down\./.test(o.tip), o);
   check('1 ... tonight\'s session says so, and her first words show', o.eb === 'TonightYour wind-down · 4 min' && o.cap === SB1, o);
   await shot(a.page, '1-open');
   await fast(a.page, 21000);
@@ -119,7 +119,7 @@ const SB3 = 'Good. Keep going on your own: in for four, out for six.';
   await go(a.page, 'calm-breaths'); await fast(a.page, 228000);   /* her step is done (a tick now), so straight to the session */
   const e = await txt(a.page, '.cm-end');
   check('5 the end: "Sleep well, Riya" and her bedtime step done for tonight', /Sleep well, Riya/.test(e) && /Your bedtime step is done for tonight/.test(e), e);
-  check('5 ... then the sounds and yoga nidra, the timer and Done', /Keep going: sounds for sleep and yoga nidra/.test(e) && ['calm-bowl', 'calm-wandering', 'calm-dunes', 'calm-nidra'].every((x) => e && true) && await a.page.evaluate(() => ['calm-bowl', 'calm-wandering', 'calm-dunes', 'calm-nidra'].every((x) => !!document.querySelector('.cm-end [data-go="' + x + '"]'))) && /Stop after/.test(e) && await has(a.page, '#cm-done'), e);
+  check('5 ... then the sounds and yoga nidra, the timer and Done', /Keep going: sounds for sleep, or yoga nidra, a sleep meditation/.test(e) && ['calm-bowl', 'calm-wandering', 'calm-dunes', 'calm-nidra'].every((x) => e && true) && await a.page.evaluate(() => ['calm-bowl', 'calm-wandering', 'calm-dunes', 'calm-nidra'].every((x) => !!document.querySelector('.cm-end [data-go="' + x + '"]'))) && /Stop after/.test(e) && await has(a.page, '#cm-done'), e);
   await shot(a.page, '5-end');
   await tap(a.page, '.cm-end [data-go="calm-bowl"]');
   check('5 ... a sound plays from there', (await hashOf(a.page)) === '#calm-bowl' && (await calls(a.page)).slice(-1)[0] === 'play sounds/music/bowl.ogg', (await calls(a.page)).slice(-3));
@@ -180,7 +180,7 @@ const SB3 = 'Good. Keep going on your own: in for four, out for six.';
 {
   const a = await open({ hash: '#plan', w: 360, h: 800, seed: { lang: 'hi' } });
   await tap(a.page, '#view .pl-st-play'); await fast(a.page, 3000);
-  check('10 Hindi at 360 px: the opening and her words fit', await noScroll(a.page) && /डॉ\. मेघा शुरू कर रही हैं।/.test(await txt(a.page, '.cm-say')) && /^साँसें (1[7-9]|2[01]) सेकंड में शुरू होंगी$/.test(await txt(a.page, '#cm-soon')), [await txt(a.page, '#cm-soon')]);
+  check('10 Hindi at 360 px: the opening and her words fit', await noScroll(a.page) && /आपकी ट्रेनर शुरू कर रही हैं।/.test(await txt(a.page, '.cm-say')) && /^साँसें (1[7-9]|2[01]) सेकंड में शुरू होंगी$/.test(await txt(a.page, '#cm-soon')), [await txt(a.page, '#cm-soon')]);
   await shot(a.page, '10-hindi');
   await a.page.evaluate(() => history.back()); await settle(a.page, 800);
   check('10 ... the bar in Hindi', /चल रहा है · 3:50 में से 0:0\d/.test(await txt(a.page, '#cm-mini')), await txt(a.page, '#cm-mini'));

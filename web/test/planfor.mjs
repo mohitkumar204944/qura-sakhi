@@ -71,19 +71,19 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
 {
   const a = await open({ seed: m2('hot', 2) });
   let r = await row(a.page, 'a-midlife.hot-flushes-night-sweats');
-  check('1 hot flushes guide: "Your plan for this · My midlife plan · Weeks 1 to 4: Cool and calm"', /Your plan for this/i.test(r) && /My midlife plan/.test(r) && /Weeks 1 to 4: Cool and calm/.test(r), r);
+  check('1 hot flushes guide: "Your plan for this · My midlife plan · Weeks 1 to 4: Cool and calm"', /Your plan for this/i.test(r) && /Menopause transition and menopause/.test(r) && /Weeks 1 to 4: Cool and calm/.test(r), r);
   r = await row(a.page, 'a-mind_body.sleep-and-hormones');
   check('1 sleep guide: the Rest part', /Weeks 5 to 8: Rest/.test(r), r);
   r = await row(a.page, 'a-midlife.bones-heart-after-40');
   check('1 bones guide: Strong and steady', /Weeks 9 to 12: Strong and steady/.test(r), r);
   r = await row(a.page, 'relief-hot');
-  check('1 the hot-flush routine names her plan’s part', /My midlife plan/.test(r) && /Cool and calm/.test(r), r);
+  check('1 the hot-flush routine names her plan’s part', /Menopause transition and menopause/.test(r) && /Cool and calm/.test(r), r);
   r = await row(a.page, 'relief-sleep');
   check('1 the sleep routine: the Rest part', /Rest/.test(r), r);
   r = await row(a.page, 'meno-bones');
   check('1 Bones and heart: Strong and steady', /Strong and steady/.test(r), r);
   r = await row(a.page, 'meno');
-  check('1 the Menopause page names her plan', /My midlife plan/.test(r), r);
+  check('1 the Menopause page names her plan', /Menopause transition and menopause/.test(r), r);
   await go(a.page, 'a-midlife.hot-flushes-night-sweats'); await tap(a.page, '#view .pl-for [data-go="plan"]');
   await go(a.page, 'a-midlife.hot-flushes-night-sweats');
   const order = await a.page.evaluate(() => { const v = document.querySelector('#view'); const p = v.querySelector('.pl-for'), tl = v.querySelector('.art-tool'), q = v.querySelector('#art-ask'); return !!(p && tl && q) && !!(p.compareDocumentPosition(tl) & 4) && !!(tl.compareDocumentPosition(q) & 4); });
@@ -155,7 +155,7 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
   check('5 "Who treats what" is gone: it lands on Learn', (await hash(a.page)) === '#learn', await hash(a.page));
   check('5 the bleeding and burning guides lead with "Ask a Qura doctor about this"', ['midlife.bleeding-after-menopause', 'intimate.burning-when-peeing'].every((k) => lead[k].qura1 && !lead[k].govtFirst), lead);
   await go(a.page, 'iron');
-  check('5 the iron tablets page asks a Qura doctor', /Ask a Qura doctor/.test(await txt(a.page, '#view [data-ask]')), await txt(a.page, '#view [data-ask]')); await done(a);
+  check('5 the iron tablets page asks a Qura doctor', /Ask a doctor\b/.test(await txt(a.page, '#view [data-ask]')), await txt(a.page, '#view [data-ask]')); await done(a);
 }
 
 // ---------- 6 Hindi at 360 px ----------

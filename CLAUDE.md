@@ -544,6 +544,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
     install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
     `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then
+    `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
+    `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/retire.mjs` (Version 39.68, the doctors' feature review, part 1; Mohit, 5 Nov: "go"; the record and the answers:
     `docs/feature-review-2026-11-05.md`): what Dr. Megha and the gynaecologist removed is gone however she reaches it (core
     `RETIRED`, `RETIRED_TILES`, `S.retired`; links dropped by `dropTriageLinks`), and what they kept stays:
@@ -558,8 +560,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - and what they left behind (MODULE_API 111, item 10): setup steps and reminders for the removed pages, the report's claims
       line, "or a free government doctor" in Help, the midlife first log in the Diary, and the fixed Hb line on her lab results.
 
-    This supersedes those parts of the entries above. Part 2 is Version 39.70 (below); parts 3 and 4 (the wording, the behaviour)
-    are still to come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the
+    This supersedes those parts of the entries above. Parts 2 and 3 are Versions 39.70 and 39.71 (below); part 4 (the behaviour) is
+    still to come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the
     doctors' sign-off of 138 rows: section 19.68 of the review.
   - `node test/emergency.mjs` (Version 39.70, the doctors' feature review, part 2, the emergency line; Mohit, 6 Nov: "commit
     39.68 and go with part 2"; answers 1 to 3 of `docs/feature-review-2026-11-05.md`):
@@ -571,8 +573,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     It sweeps every live screen and Learn article, for 5 women in both languages, for the removed numbers. This supersedes the
     112, Tele-MANAS and 181 lines in the entries above. Contract: MODULE_API section 113; wording: section 19.70 of the review
     (its patterns wait for the doctors' one read).
-    `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
-    `docs/minimalism-audit-2026-10-27.md`, Appendix B.
+  - `node test/wording.mjs` (Version 39.71, the doctors' feature review, part 3, the wording; Mohit, 6 Nov: "commit 39.70 and go
+    with part 3"; the approved plan and answers 6, 8 and 10):
+    - the renames: "your trainer" in Wind down, yoga and breathing (the joining welcome keeps Dr. Megha), "Pelvic floor exercises
+      (Kegels)", "My postpartum recovery", "Menopause transition and menopause", "Period comfort";
+    - the medicine line (core `medRow`, `MED_ROUTES`, `MED_ARTS`, `S.medLine()`), the emergency pill's own line, and the tests line;
+    - cloth and the Rs 1 pad out;
+    - the doctors' added lines (sleep sounds, the PMS chapters, his part, the ovulation tests, weeks 4 and 10, her checks first,
+      breastfeeding's basics, the girls' guides on one page, the supplements card, "or a doctor");
+    - "Ask a doctor" on every button, with the doctors' line about Qura's doctors.
+    Contract: MODULE_API section 114; wording: section 19.71 of the review (waits for the doctors' one read).
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`

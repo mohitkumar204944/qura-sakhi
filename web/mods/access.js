@@ -91,7 +91,7 @@
       links: [['jssk', L('What JSSK makes free (NHM)', 'JSSK में क्या मुफ़्त है (NHM)')]] },
     { k: 'ja', icon: 'pill', pill: 'low',
       name: L('Jan Aushadhi Kendra', 'जन औषधि केंद्र'),
-      free: L('Not free, but low cost: generic medicines priced 50–80% below branded ones, and Suvidha sanitary pads at ₹1 a pad.', 'मुफ़्त नहीं, पर सस्ता: जेनेरिक दवाएँ ब्रांडेड से 50–80% कम दाम पर, और Suvidha सैनिटरी पैड ₹1 का एक।'),
+      free: L('Not free, but low cost: generic medicines priced 50–80% below branded ones.', 'मुफ़्त नहीं, पर सस्ता: जेनेरिक दवाएँ ब्रांडेड से 50–80% कम दाम पर।'),
       find: L('Search by state and district on the official site, or use the Jan Aushadhi Sugam app.', 'सरकारी साइट पर राज्य और ज़िला चुनकर खोजें, या Jan Aushadhi Sugam app इस्तेमाल करें।'),
       links: [['ja', L('Find a Jan Aushadhi Kendra (official)', 'जन औषधि केंद्र खोजें (सरकारी)')]] },
     { k: 'ictc', icon: 'lock', pill: 'free',
@@ -483,7 +483,7 @@
       need: L('A mobile number for the OTP. Timings depend on your state.', 'OTP के लिए एक मोबाइल नंबर। समय आपके राज्य पर निर्भर है।') },
     { k: 'ja', icon: 'pill', hue: 'green', url: 'https://janaushadhi.gov.in/locate-kendra',
       name: L('Jan Aushadhi: medicines for less', 'जन औषधि: कम दाम पर दवाएँ'),
-      what: L('Find a Jan Aushadhi store near you: generic medicines at 50 to 80 percent lower prices, and sanitary pads at ₹1 each.', 'अपने पास जन औषधि स्टोर खोजें: जेनेरिक दवाएँ 50 से 80 प्रतिशत कम दाम पर, और सैनिटरी पैड ₹1 में।'),
+      what: L('Find a Jan Aushadhi store near you: generic medicines at 50 to 80 percent lower prices.', 'अपने पास जन औषधि स्टोर खोजें: जेनेरिक दवाएँ 50 से 80 प्रतिशत कम दाम पर।'),
       need: L('Your state and district.', 'आपका राज्य और ज़िला।') }
   ];
   function renderOnline(v) {
@@ -733,7 +733,7 @@
     { k: 'vagina', name: L('Vagina and vulva', 'योनि और बाहरी हिस्सा'), items: [
       { lv: 'week', s: K('s4c'), often: L('Often a yeast infection, bacterial vaginosis or an STI. All are treatable; your partner may need treatment too.', 'अक्सर yeast इन्फ़ेक्शन, bacterial vaginosis या कोई STI। सबका इलाज है; साथी को भी इलाज की ज़रूरत हो सकती है।'), go: ['intimate-check', 'intimate-sti'] },
       { lv: 'week', s: L('Sores, blisters, warts or an ulcer on the vulva', 'बाहरी हिस्से पर घाव, छाले, मस्से या ज़ख़्म'), often: L('Often herpes, warts or another STI. A Suraksha clinic tests and treats free and in private.', 'अक्सर herpes, मस्से या कोई और STI। सुरक्षा क्लिनिक मुफ़्त और गोपनीय जाँच और इलाज करता है।'), go: ['intimate-sti'] },
-      { lv: 'weeks2', s: L('Smelly or blood-stained discharge', 'बदबूदार या खून मिला स्राव'), often: L('Often an infection or a forgotten cloth or tampon; sometimes a problem of the cervix. Needs a check.', 'अक्सर इन्फ़ेक्शन, या अंदर भूला कपड़ा या tampon; कभी-कभी बच्चेदानी के मुँह की परेशानी। जाँच ज़रूरी है।'), go: ['screen-cervix'] },
+      { lv: 'weeks2', s: L('Smelly or blood-stained discharge', 'बदबूदार या खून मिला स्राव'), often: L('Often an infection or a forgotten tampon; sometimes a problem of the cervix. Needs a check.', 'अक्सर इन्फ़ेक्शन, या अंदर भूला tampon; कभी-कभी बच्चेदानी के मुँह की परेशानी। जाँच ज़रूरी है।'), go: ['screen-cervix'] },
       { lv: 'routine', s: L('A bulge or heavy feeling in the vagina', 'योनि में उभार या भारीपन'), often: L('Often a prolapse, common after births and after menopause. Exercises, a ring pessary or surgery help.', 'अक्सर prolapse (बच्चेदानी का खिसकना), डिलीवरी और मेनोपॉज़ के बाद आम। व्यायाम, ring pessary या ऑपरेशन से मदद मिलती है।'), go: ['intimate-prolapse'] },
       { lv: 'routine', s: L('Dryness or pain with sex after menopause', 'मेनोपॉज़ के बाद सूखापन या संबंध में दर्द'), often: L('Very common as hormones fall. Lubricants, and treatments a gynaecologist prescribes, help.', 'हॉर्मोन घटने से बहुत आम। चिकनाई (lubricant) और स्त्री रोग विशेषज्ञ का लिखा इलाज मदद करता है।'), go: ['meno-intimate'] }] },
     { k: 'mood', name: L('Mood', 'मन'), items: [

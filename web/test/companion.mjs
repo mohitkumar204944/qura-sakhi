@@ -256,7 +256,7 @@ for (const [goal, ans, re, sel, now] of [['heavy', { pads: 'p12', clots: 'y', ti
 
 /* ---------- every goal and stage starts the right plan ---------- */
 for (const [stage, goal, pack, title, step] of [['cycle', 'pms', 'pms', 'My period plan', /Calm breath/], ['cycle', 'heavy', 'heavy', 'My period plan', /iron/i], ['pmos', 'weight', 'cycle', 'My healthy body plan', /Half the plate sabzi/], ['ttc', 'ready', 'ttc', 'Getting ready for a baby', /Every day: My folic acid tablet/],   /* Version 38: its own plan; Version 39.32: version 2 starts with her folic acid tablet */
-  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My recovery plan', /Your pelvic floor squeezes/], ['mid', 'hot', 'meno', 'My midlife plan', /Every day: Today’s skill/]]) {
+  ['preg', 'nausea', 'preg', 'My pregnancy plan', /For nausea in pregnancy/], ['post', 'pelvic', 'post', 'My postpartum recovery', /Your pelvic floor exercises \(Kegels\)/], ['mid', 'hot', 'meno', 'Menopause transition and menopause', /Every day: Today’s skill/]]   /* Version 39.71: the names */) {
   const { ctx, page, errs } = await open({ cfg: LOCAL, seed: null });
   await toOffer(page, stage, goal); await answer(page, { dx: 'n' });
   const v = await revealWords(page); await tap(page, '#pl-rv-go'); const s = await st(page);
@@ -303,7 +303,7 @@ for (const [stage, goal] of [['cycle', 'track']]) {
   check('10 Help is in the header, not a tab; the language button moved to Me', (await has(page, '#topbar #help-btn')) && !(await has(page, '#topbar [data-langs]')));
   await tap(page, '#help-btn');
   const hs = await page.$eval('#sheet-root', (e) => e.innerText);
-  check('10 Help: the nearest hospital (Version 39.70), ask a Qura doctor (Version 39.63: one label), when to see a doctor', /Go to the nearest hospital now/.test(hs) && /Ambulance: call 108/.test(hs) && /Ask a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
+  check('10 Help: the nearest hospital (Version 39.70), ask a doctor (Version 39.71: one label, a call with a Qura doctor), when to see a doctor', /Go to the nearest hospital now/.test(hs) && /Ambulance: call 108/.test(hs) && /Ask a doctor\b/.test(hs) && /A call with a Qura doctor/.test(hs) && /When to see a doctor/.test(hs), hs);
   await tap(page, '#hs-doc');
   check('10 "See a doctor" opens the doctor page', (await page.evaluate(() => location.hash)) === '#ask');
   check('10 the doctor page has no Help button (Version 39.68: Help on Today only)', !(await has(page, '#help-btn')));

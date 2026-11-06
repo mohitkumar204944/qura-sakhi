@@ -247,7 +247,7 @@ async function signUp(a) {
   const v = await view(a); const tc = await all(a, '#view');
   check('5 ... her own check: "see your gynaecologist for a check for yourself, even if you feel well."', /see your gynaecologist for a check for yourself, even if you feel well\. Many mothers skip it\. Please go\./.test(v) && !/at your PHC, Ayushman Arogya Mandir/.test(v), v.slice(0, 900));
   check('5 ... vaccines from her baby\'s doctor on the vaccination card, free at government centres as one line', /Your baby's doctor gives each vaccine and writes it on the vaccination card\./.test(v) && /Vaccines in the national schedule are free at government centres \(Universal Immunisation Programme\)\./.test(v) && !/Your ANM writes each dose/.test(v) && /Ask your baby's doctor what to give, and when\./.test(v));
-  check('5 ... the birth doses: "check the vaccination card", not the MCP card', /Should be done: check the vaccination card/.test(v) && !/check the MCP card/.test(v));
+  check('5 ... the birth doses: "check the vaccination card", not the MCP card (Version 39.71: under All the baby’s vaccines)', /Should be done: check the vaccination card/.test(tc) && !/check the MCP card/.test(tc));
   check('5 ... iron and calcium "your doctor prescribed", no JSSK note and no "Free from your ASHA"', /Keep taking the iron and calcium your doctor prescribed, for as long as they said\./.test(v) && /Ask your doctor for a haemoglobin \(Hb\) test\./.test(v) && !/JSSK:/.test(tc) && !/Free from your ASHA, Anganwadi or PHC/.test(tc));
   check('5 ... the ASHA\'s visit days folded behind "Does an ASHA visit you? See her visit days", after her own check', await has(a, 'details.pst-asha-q:not([open])') && /Does an ASHA visit you\? See her visit days/.test(await txt(a, '.pst-asha-q summary')) && !/visits on days 3, 7, 14, 21, 28 and 42/.test(v) &&
     await a.page.evaluate(() => { const h = [...document.querySelectorAll('#view .card h3')].map((x) => x.textContent); return h.indexOf('Your own check at 6 weeks') >= 0 && document.querySelector('#view .pst-asha-q').compareDocumentPosition(document.querySelector('#pst-six, #pst-six-off')) & Node.DOCUMENT_POSITION_PRECEDING; }));
@@ -270,7 +270,7 @@ async function signUp(a) {
   let a = await open({});
   await tap(a, '#help-btn');
   /* Version 39.63 (phase E): one label, "Ask a Qura doctor" */
-  check('6 unanswered: "Ask a Qura doctor · A call with a Qura doctor" (Version 39.68: no free government doctor page)', /Ask a Qura doctor\s*A call with a Qura doctor/.test(await txt(a, '#hs-doc')) && !/government/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
+  check('6 unanswered: "Ask a Qura doctor · A call with a Qura doctor" (Version 39.68: no free government doctor page)', /Ask a doctor\s*A call with a Qura doctor/.test(await txt(a, '#hs-doc')) && !/government/.test(await txt(a, '#hs-doc')), await txt(a, '#hs-doc'));
   check('6 ... no "My ASHA" row, and 112 still first', !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
   await done(a);
   a = await open({ seed: { mods: { asha: { phone: '9876543210' } } } });

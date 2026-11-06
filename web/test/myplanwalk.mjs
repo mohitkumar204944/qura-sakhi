@@ -111,7 +111,7 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
   const steps = c.find((x) => /^Your \d steps?/.test(x.v)) || { v: '' };
   check('2 PMOS reveal: "Your 3 steps", the 3 she does on day 1 (no bedtime among them)', /^Your 3 steps/.test(steps.v) && !/bedtime|in bed by/i.test(steps.v), steps.v.slice(0, 400));
   const days = c.find((x) => x.tl.length) || { tl: [] };
-  check('2 PMOS reveal: "What happens when" starts "From day 4: wind down, in bed by 11 pm"', days.tl[0] === 'From day 4: wind down, in bed by 11 pm' && days.tl.length === 4, days.tl);
+  check('2 PMOS reveal: "What happens when" starts "From day 4: wind down with a meditation, in bed by 11 pm" (Version 39.71)', days.tl[0] === 'From day 4: wind down with a meditation, in bed by 11 pm' && days.tl.length === 4, days.tl);
   const last = c[c.length - 1];
   check('2 PMOS Start card: the reminders say "your 10:30 pm wind-down from day 4", after her check-in', /your 8 pm check-in and your 10:30 pm wind-down from day 4\./.test(last.rem), last.rem);
   await done(a);
@@ -123,7 +123,7 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
   await done(b);
   for (const n of [0, 2]) {
     const d = await open({ seed: pm(n), hash: 'plan' });
-    check('2 My plan, plan day ' + (n + 1) + ': under her 3 steps, "From day 4: wind down, in bed by 11 pm"', (await txt(d, '#view .pl-steps-card .pl-later')) === 'From day 4: wind down, in bed by 11 pm' && (await ids(d)).length === 3, await txt(d, '#view .pl-steps-card'));
+    check('2 My plan, plan day ' + (n + 1) + ': under her 3 steps, "From day 4: wind down with a meditation, in bed by 11 pm"', (await txt(d, '#view .pl-steps-card .pl-later')) === 'From day 4: wind down with a meditation, in bed by 11 pm' && (await ids(d)).length === 3, await txt(d, '#view .pl-steps-card'));
     await done(d);
   }
   const e = await open({ seed: pm(3), hash: 'plan' });

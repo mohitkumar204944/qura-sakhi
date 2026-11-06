@@ -1347,3 +1347,6 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 .hs-priv-h { margin: 2px 4px -6px; }
 /* Version 39.63 (phase E): the call form's topic choices above its box */
 .ac-tops { margin: 6px 0 8px; }
+/* Version 39.71 (the doctors' answer 6): the medicine line, before every medicine, test and procedure */
+.med-line { margin: 0; padding: 10px 12px; border-radius: 12px; font-size: 14px; line-height: 1.45; color: var(--fg); background: var(--glass-2); box-shadow: inset 0 0 0 1px var(--glass-edge), inset 3px 0 0 var(--accent); }
+@media print { .med-line { background: #FFFFFF; box-shadow: inset 3px 0 0 var(--accent); } }

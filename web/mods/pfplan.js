@@ -22,7 +22,7 @@
 
   const TRY = N2('Try this week', 'इस हफ़्ते आज़माएँ');
   const LOW = N2('Feeling low or alone because of this? Talk to your doctor.', 'इसकी वजह से उदास या अकेली महसूस करती हैं? अपनी डॉक्टर से बात करें।');
-  const WHY = N2('Pelvic floor exercises, done the right way every day for at least 3 months, are the first treatment doctors advise for leaking urine and for mild heaviness. They work best with a little help: a doctor or physiotherapist can check your squeeze.',
+  const WHY = N2('Pelvic floor exercises (Kegels), done the right way every day for at least 3 months, are the first treatment doctors advise for leaking urine and for mild heaviness. They work best with a little help: a doctor or physiotherapist can check your squeeze.',
     'रोज़ सही तरीक़े से, कम से कम 3 महीने pelvic floor के व्यायाम, पेशाब लीक होने और हल्के भारीपन का पहला इलाज है जो डॉक्टर बताती हैं। थोड़ी मदद से ये सबसे अच्छा काम करते हैं: डॉक्टर या फ़िज़ियोथेरेपिस्ट आपके कसने के तरीक़े की जाँच कर सकती हैं।');
   /* a chapter: h (its title) and cards: { b: heading, l: lines, go/gol: a button, ask: a Qura doctor, warn, u: urgent with tel } */
   const L = {
@@ -42,9 +42,9 @@
       { b: N2('How to practise', 'कैसे अभ्यास करें'), l: [N2('Sit or stand. Squeeze and lift, then give a small pretend cough while you hold. Let go after the cough.', 'बैठें या खड़ी हों। कसें और ऊपर खींचें, फिर रोके रखते हुए एक छोटी-सी नक़ली खाँसी करें। खाँसी के बाद ढीला छोड़ें।'),
         N2('Do the same before you lift a bucket, a child or a pot of water.', 'बाल्टी, बच्चे या पानी का घड़ा उठाने से पहले भी ऐसा ही करें।')] },
       { b: TRY, l: [N2('Use the knack every time you cough, sneeze or lift this week. It becomes a habit in a few weeks.', 'इस हफ़्ते हर बार खाँसने, छींकने या उठाने पर तरकीब इस्तेमाल करें। कुछ हफ़्तों में यह आदत बन जाती है।')] }] },
-    f3: { h: N2('Longer holds, and quick squeezes', 'ज़्यादा देर रोकना, और जल्दी-जल्दी कसना'), cards: [
-      { l: [N2('Your muscles need two kinds of strength. Long holds help them hold you up all day. Quick squeezes help them close fast when you cough or rush.', 'आपकी मांसपेशियों को दो तरह की ताक़त चाहिए। देर तक रोकने से ये पूरे दिन सहारा देती हैं। जल्दी-जल्दी कसने से ये खाँसी या जल्दबाज़ी में तुरंत बंद होती हैं।'),
-        N2('Your sets grow with your levels: longer holds first, then quick squeezes after them. A level opens after 5 days of sets, never by the date.', 'आपके सेट लेवल के साथ बढ़ते हैं: पहले ज़्यादा देर रोकना, फिर उसके बाद जल्दी-जल्दी कसना। लेवल 5 दिन के सेट के बाद खुलता है, तारीख़ से नहीं।')] },
+    f3: { h: N2('Longer holds, and quick Kegels', 'ज़्यादा देर रोकना, और जल्दी-जल्दी कसना'), cards: [
+      { l: [N2('Your muscles need two kinds of strength. Long holds help them hold you up all day. Quick Kegels help them close fast when you cough or rush.', 'आपकी मांसपेशियों को दो तरह की ताक़त चाहिए। देर तक रोकने से ये पूरे दिन सहारा देती हैं। जल्दी-जल्दी कसने से ये खाँसी या जल्दबाज़ी में तुरंत बंद होती हैं।'),
+        N2('Your sets grow with your levels: longer holds first, then quick Kegels after them. A level opens after 5 days of sets, never by the date.', 'आपके सेट लेवल के साथ बढ़ते हैं: पहले ज़्यादा देर रोकना, फिर उसके बाद जल्दी-जल्दी कसना। लेवल 5 दिन के सेट के बाद खुलता है, तारीख़ से नहीं।')] },
       { b: N2('Breathe while you hold', 'रोकते समय साँस लें'), l: [N2('Count out loud during a hold. If you can count, you are breathing.', 'रोकते समय ज़ोर से गिनें। अगर गिन पा रही हैं, तो आप साँस ले रही हैं।')] },
       { b: TRY, l: [N2('If a hold is too long, stop when the squeeze fades, rest, and start again. A good short hold is better than a weak long one.', 'अगर रोकना बहुत लंबा लगे, तो कसाव ढीला पड़ते ही रुकें, आराम करें, और फिर शुरू करें। कमज़ोर लंबे की जगह अच्छा छोटा रोकना बेहतर है।')], go: 'post-pelvic', gol: '@tile' }] },
     f4: { h: N2('Water through the day', 'दिन भर पानी'), cards: [
@@ -79,8 +79,8 @@
         N2('One set while the tea boils, one while you wait for water at the tap, one after you brush your teeth at night.', 'एक सेट जब चाय उबले, एक जब नल पर पानी का इंतज़ार हो, एक रात को दाँत साफ़ करने के बाद।')] },
       { b: TRY, l: [N2('Pick one task for one set each day this week, and do it standing.', 'इस हफ़्ते रोज़ एक सेट के लिए एक काम चुनें, और उसे खड़े होकर करें।')] }] },
     f10: { h: N2('When to see a doctor', 'डॉक्टर को कब दिखाएँ'), cards: [
-      { u: N2('Go to the nearest hospital now if you suddenly can’t control your bladder or bowel, with numbness between your legs, weak legs or bad back pain.', 'अभी सबसे पास के अस्पताल जाएँ अगर अचानक पेशाब या शौच पर क़ाबू न रहे, साथ में जाँघों के बीच सुन्नपन, पैरों में कमज़ोरी या कमर में तेज़ दर्द हो।'), tel: ['112'] },
-      { warn: true, b: N2('See a doctor today', 'आज ही डॉक्टर को दिखाएँ'), l: [N2('You can’t pass urine at all, or a bulge is stuck outside, very painful or bleeding.', 'पेशाब बिल्कुल न हो पाए, या उभार बाहर अटक जाए, बहुत दर्द हो या ख़ून आए।')] },
+      { u: N2('Go to the nearest hospital or a doctor now if you suddenly can’t control your bladder or bowel, with numbness between your legs, weak legs or bad back pain.', 'अभी सबसे पास के अस्पताल या डॉक्टर के पास जाएँ अगर अचानक पेशाब या शौच पर क़ाबू न रहे, साथ में जाँघों के बीच सुन्नपन, पैरों में कमज़ोरी या कमर में तेज़ दर्द हो।'), tel: ['112'] },
+      { warn: true, b: N2('See a doctor today', 'आज ही डॉक्टर को दिखाएँ'), l: [N2('You can’t pass urine at all, or a bulge is stuck outside, very painful or bleeding: tell someone at home, and go to a doctor or the nearest hospital today.', 'पेशाब बिल्कुल न हो पाए, या उभार बाहर अटक जाए, बहुत दर्द हो या ख़ून आए: घर में किसी को बताएँ, और आज ही डॉक्टर या सबसे पास के अस्पताल जाएँ।')] },
       { b: N2('See a doctor soon', 'जल्दी डॉक्टर को दिखाएँ'), l: [N2('Burning, fever or blood in your urine: usually an infection, not a weak pelvic floor.', 'पेशाब में जलन, बुख़ार या ख़ून: आम तौर पर इन्फ़ेक्शन, कमज़ोर pelvic floor नहीं।'),
         N2('Leaking all the time, day and night: it can be repaired, and it shouldn’t wait.', 'दिन-रात हर समय लीक: इसकी मरम्मत हो सकती है, और इसे रुकना नहीं चाहिए।'),
         N2('Any bleeding 12 months or more after your last period: within about 2 weeks.', 'आख़िरी पीरियड के 12 महीने या ज़्यादा बाद कोई भी ब्लीडिंग: लगभग 2 हफ़्ते में।'),
@@ -139,7 +139,7 @@
     const dn = v.querySelector('#pf-les-done'); if (dn) dn.addEventListener('click', () => { mark(id); S.mem.pfLes = null; S.setHash('home'); });
   }
   /* "When the urge comes": stop, squeeze, breathe, walk calmly; from week 3, a few minutes more before she goes */
-  const URGE = [N2('Stop. Stand still, or sit down if you can.', 'रुकें। स्थिर खड़ी हों, या हो सके तो बैठ जाएँ।'), N2('Squeeze. A few quick, strong squeezes.', 'कसें। कुछ बार जल्दी और ज़ोर से कसें।'),
+  const URGE = [N2('Stop. Stand still, or sit down if you can.', 'रुकें। स्थिर खड़ी हों, या हो सके तो बैठ जाएँ।'), N2('Squeeze. A few quick, strong Kegels.', 'कसें। कुछ बार जल्दी और ज़ोर से कसें।'),
     N2('Breathe. Breathe out slowly and count to 5. Think of something else.', 'साँस लें। धीरे साँस छोड़ें और 5 तक गिनें। किसी और चीज़ के बारे में सोचें।'), N2('Walk calmly. When the urge eases, walk to the toilet. Don’t rush.', 'आराम से चलें। हाजत कम हो, तो शौचालय तक चलें। भागें नहीं।')];
   function renderUrge(v) {
     const P = S.plan && S.plan.pelvic; const wk = P && P.week ? P.week() : 0;

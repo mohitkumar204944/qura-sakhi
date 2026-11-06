@@ -405,6 +405,8 @@
           { en: 'Your doctor may test your vitamin D and prescribe a supplement', hi: 'डॉक्टर vitamin D की जाँच करके supplement लिख सकती हैं' },
           { en: 'Don’t take high-dose vitamin D sachets or injections on your own. Too much raises the calcium in your blood and can harm you', hi: 'ज़्यादा dose वाले vitamin D के sachet या injection ख़ुद से न लें। ज़्यादा लेने से ख़ून में calcium बढ़ता है और नुक़सान हो सकता है' }
         ])) +
+      card(H2({ en: 'Supplements, if your doctor advises', hi: 'Supplement, अगर डॉक्टर कहें' }) +   /* Version 39.71 (meno-ca; answer 8: no Ashwagandha) */
+        P({ en: 'After consulting your doctor: vitamin D, calcium or a multivitamin. Your doctor tells you which one, and how much.', hi: 'डॉक्टर से सलाह के बाद: vitamin D, calcium या multivitamin। कौन सा और कितना, यह डॉक्टर बताएँगी।' })) +
       card(H2({ en: 'Move for your bones', hi: 'हड्डियों के लिए चलें-फिरें' }) + ul([
         { en: 'Brisk walking for 30 minutes on most days. Good for heart and mood, but on its own not enough for bones', hi: 'ज़्यादातर दिन 30 मिनट तेज़ चाल। दिल और मन के लिए अच्छी, पर सिर्फ़ इससे हड्डियों को काफ़ी फ़ायदा नहीं' },
         { en: 'Weight-bearing and strength exercise at least twice a week: climbing stairs, standing up from a chair and sitting down 10 times, carrying shopping bags, dancing, yoga poses where you hold your own weight', hi: 'हफ़्ते में कम से कम दो बार वज़न उठाने वाली और ताक़त की कसरत: सीढ़ियाँ चढ़ना, कुर्सी से 10 बार उठना-बैठना, सामान के थैले उठाना, नाचना, योग के वे आसन जिनमें शरीर का वज़न ख़ुद उठाती हैं' },
