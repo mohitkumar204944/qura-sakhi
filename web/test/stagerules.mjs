@@ -102,7 +102,8 @@ const sheetTxt = (page) => txt(page, '#sheet-root');
   check('2 ... Today: her period buttons, no "CYCLE COUNTING IS OFF", her plan runs on', !/CYCLE COUNTING IS OFF/i.test(v) && /Period started|Period ended/.test(v) && /MY PERIOD PLAN/i.test(v), v.slice(0, 400));
   check('2 ... the POI card leads Sakhi says, and no midlife plan is offered', await has(a.page, '#view .pl-m2-poi') && !/My midlife plan may fit now/.test(v), v.slice(0, 600));
   const btn = await a.page.$$eval('#view .pl-m2-poi .btn', (b) => b.map((x) => x.innerText.trim()));
-  check('2 ... the card: Ask a Qura doctor, See a gynaecologist, then her doctor\'s answer', /^Ask a doctor\b/.test(btn[0]) && btn[1] === 'See a gynaecologist' && btn.indexOf('My doctor says my periods have stopped') >= 0, btn);
+  /* Version 39.77 (Mohit's choice C15): the card leads to a Qura doctor; no "See a gynaecologist" button (its heading still says it) */
+  check('2 ... the card: Ask a Qura doctor, then her doctor\'s answer; no "See a gynaecologist" button', /^Ask a doctor\b/.test(btn[0]) && btn.indexOf('See a gynaecologist') < 0 && btn.indexOf('My doctor says my periods have stopped') >= 0, btn);
   await tap(a.page, '#view #pl-m2-poi-stop'); const x2 = await sit(a.page);
   check('2 "My doctor says my periods have stopped": now they count as stopped, from her last period', x2.stopped && x2.midlife && !x2.stopAsk && x2.stoppedOn >= ago(2) && x2.poiOk === TODAY, x2);
   await done(a);

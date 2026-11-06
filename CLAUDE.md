@@ -538,19 +538,6 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       their message; never recordings, heatmaps, surveys, flags or identify(), whatever PostHog's own settings say;
     - private screens, the lock, discreet mode, a shared phone and a sample woman send nothing; off forgets the anonymous id.
     The test's fake PostHog switches everything on from its side. Contract: MODULE_API section 103 (UI words only).
-  - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
-    a plan re-records it with `npm run golden:record` and says so.
-  - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
-    routes, drafts, `d.pv`, and each live plan's hash in `web/progs/baseline.json`, re-recorded with `npm run progs:record`
-    when a plan or a line it shows changes). Contract: MODULE_API section 47.
-  - Walks, not pass/fail (screens to `web/test/shots/`, gitignored): `node test/firstday-walk.mjs`,
-    `node test/weeks-walk.mjs` (12 weeks, fast-forwarded), `node test/stages-walk.mjs` (every goal and stage) and
-    `node test/threeplans-walk.mjs` (PMOS, Getting ready and My pregnancy lived from day 1 to day 85; Version 39.37). Run them
-    before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
-    install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
-    `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then
-    `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
-    `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/retire.mjs` (Version 39.68, the doctors' feature review, part 1; Mohit, 5 Nov: "go"; the record and the answers:
     `docs/feature-review-2026-11-05.md`): what Dr. Megha and the gynaecologist removed is gone however she reaches it (core
     `RETIRED`, `RETIRED_TILES`, `S.retired`; links dropped by `dropTriageLinks`), and what they kept stays:
@@ -580,7 +567,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     (its patterns wait for the doctors' one read).
   - `node test/wording.mjs` (Version 39.71, the doctors' feature review, part 3, the wording; Mohit, 6 Nov: "commit 39.70 and go
     with part 3"; the approved plan and answers 6, 8 and 10):
-    - the renames: "your trainer" in Wind down, yoga and breathing (the joining welcome keeps Dr. Megha), "Pelvic floor exercises
+    - the renames: "your trainer" in Wind down, yoga and breathing (Version 39.77: no doctor is named anywhere), "Pelvic floor exercises
       (Kegels)", "My postpartum recovery", "Menopause transition and menopause", "Period comfort";
     - the medicine line (core `medRow`, `MED_ROUTES`, `MED_ARTS`, `S.medLine()`), the emergency pill's own line, and the tests line;
     - cloth and the Rs 1 pad out;
@@ -602,6 +589,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       to 45 minutes when her day allows, as one step;
     - the Fertile days estimate tile only while she tries; no screenshot block in the Android app.
     Contract: MODULE_API section 115; wording: section 19.72 of the review (the new lines wait for the doctors' one read).
+  - `node test/kegel.mjs` (Version 39.73, the Kegel trainer; Mohit, 6 Nov, after his phone walk: "Proceed"): her first sets begin
+    from Get into position (her level and the reviewed "Find the right muscles" lines, Start under it); in a set the lift beside
+    her rises on the squeeze and settles on the let-go, with "Keep breathing normally" (her body stays still, as the lines teach);
+    lying framed on her; "Start set 2" under "Set done"; and a set counts in her diary as it is when it ends. Contract:
+    MODULE_API section 116; wording: section 19.73 of the review (UI words only).
   - `node test/phonewalk.mjs` (Version 39.74, the phone walk's fixes; Mohit, 6 Nov: "can you do needful and test everything thoroughly
     live walkthrough on phone"; his Flip5 on vc 125, walked over adb):
     - My PMOS plan's walk question: "When is a walk easiest for you?", and what Sakhi does with it (her nudge);
@@ -613,6 +605,49 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       reviewed line instead of the POI card;
     - the after-meal walk nudge quiet once her walk is done, "Before: …" in the month summary, the end card alone on day 85.
     Contract: MODULE_API section 117; wording: section 19.74 of the review (UI words only).
+  - `node test/uxfix.mjs` (Version 39.75, the UI and UX gaps; Mohit, 6 Nov: "fix all", after the phone walk's list):
+    - her steps first on Today, a "this week" finding after them (a sign for now or today stays on top);
+    - the PIN she skipped (she asked for a lock while joining) asked once more, on her first private page;
+    - under 40, "My periods have stopped" never called menopause while she joins, on Your Sakhi or on Today;
+    - her week's count only on Today and My plan; "Still to see a doctor?" a week on; one way to her plan on Your Sakhi;
+    - "Fasting?" in the check-in only once she has marked a fast (`fastAt`, 90 days);
+    - the call form's topics by her stage, the Kegel trainer's figure hidden from screen readers, a named search clear button.
+    Contract: MODULE_API section 118; wording: section 19.75 of the review (one UI label).
+  - `node test/playfix.mjs` (Version 39.76, the Play walk's UI and UX gaps; Mohit, 6 Nov: "fix all", after the walk before Play):
+    - names Android keeps: icon toggles as plain buttons whose name says the state, switches with `aria-label`, text boxes with
+      their label as a description (core `axNames`); "Previous month" and "Next month";
+    - a sheet or the + menu leaves the page behind inert, and the sheet's handle is a Close button;
+    - taps of 48 px ("Why?", "How to do it", icon buttons; the top bar as it was); the + away while she scrolls down;
+    - joining's "Pain that stops my day" carried into her plan; sign-up's picture steps aside while she types;
+    - About's "Privacy policy" link (`SAKHI_PRIVACY`), no coordinator tool in a Play build; fertile days on Your Sakhi only
+      while she tries.
+    Android's tree is the judge: check names on the phone with a uiautomator dump (desktop Chromium keeps names Android drops).
+    Contract: MODULE_API section 119; wording: section 19.76 of the review (UI words only).
+  - `node test/doctorchoice.mjs` (Version 39.77, Qura doctor or government doctor, place by place; Mohit, 6 Nov: his 96 choices on
+    claude.ai/artifact/JbnFnzN9W5NC9tq7xQQRzL, the audit `docs/doctor-choice-audit-2026-11-06.md`):
+    - Qura collects the leads for PCOD/PCOS, conceiving naturally, menopause, after pregnancy and cycle concerns; everything else goes to
+      her gynaecologist or a free government doctor (eSanjeevani, Care near me), on core's "See a doctor" page (`doc-free`);
+    - one rule in core (`DOC_WHO`, `S.docWho`, `S.docCard`, `S.govCard`): Q, G, B, or H by her answer; Help's row is H, pregnancy is G;
+    - Qura's doctors in his words everywhere: "Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic
+      treatments." No line says they only help with food, sleep or routine, can't treat, or refer to a gynaecologist;
+    - diary signs and the before-40 card lose "See a gynaecologist"; "how soon" and danger lines stay;
+    - "How Qura helps" rewritten in his words, and no doctor named anywhere in the app (Mohit: "Dont give doctor names anywhere").
+    The walks behind it: `node test/doctor-walk.mjs` (every screen, 7 women, 5 answers) and `node test/doctor-shots.mjs` then
+    `node test/doctor-page.mjs` (the choice page's screenshots). Contract: MODULE_API section 120; wording: section 19.77 of the review
+    (waits for the doctors' read).
+  - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
+    a plan re-records it with `npm run golden:record` and says so.
+  - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
+    routes, drafts, `d.pv`, and each live plan's hash in `web/progs/baseline.json`, re-recorded with `npm run progs:record`
+    when a plan or a line it shows changes). Contract: MODULE_API section 47.
+  - Walks, not pass/fail (screens to `web/test/shots/`, gitignored): `node test/firstday-walk.mjs`,
+    `node test/weeks-walk.mjs` (12 weeks, fast-forwarded), `node test/stages-walk.mjs` (every goal and stage) and
+    `node test/threeplans-walk.mjs` (PMOS, Getting ready and My pregnancy lived from day 1 to day 85; Version 39.37). Run them
+    before and after a change to compare. `node test/journey-video.mjs [stage ...]` films one woman per joining stage from
+    install to 3 months (MP4s with captions to `web/test/shots/journeys/`, about 12 minutes for all 7; needs ffmpeg).
+    `web/test/taps/` counts taps for joining and the everyday jobs (run `join-run.mjs <cycle|ttc|nopl> [tour|skip]`, then
+    `days-run.mjs`, then `jobs-run.mjs`; output to `web/test/shots/taps/`): the baseline for
+    `docs/minimalism-audit-2026-10-27.md`, Appendix B.
   - `node test/play.mjs` (Google Play, 29 Oct: target SDK 36, edge to edge, Back on Android 13+, the bundle and its upload
     key; reads the last Play bundle when there is one). The reviewer's sign-in is in `npm run test:server`.
   - `node test/maths.mjs`
@@ -635,6 +670,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - Add `SAKHI_HELP_WA=91XXXXXXXXXX` (Qura's staffed WhatsApp number) for "Speak to a doctor" and "Tell a person". Without
     it the doctor screen offers Qura's booking page and "Tell a person" is hidden.
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
+  - Add `SAKHI_PRIVACY=https://www.quranutrition.com/sakhi/privacy` once that page is live: the "Privacy policy" link in About and
+    privacy (Version 39.76; Play wants it in the app). https only; without it there is no link. `PLAY=1` builds hide the coordinator tool.
   - Add `SAKHI_PH=phc_...` (PostHog's EU project key) for "Share how I use Sakhi" (Version 39.60). Without it the APK has no
     PostHog code and the CSP is as before. Its PostHog project: EU region, "Discard client IP data" on.
   - It installs and opens the app on the phone if one is on adb. To build without installing, run it with adb off the path:

@@ -48,7 +48,7 @@
       try { navigator.clipboard.writeText(n).then(done, () => S.toast(n)); } catch (e) { S.toast(n); }
     }));
   }
-  const quraCard = (topic) => '<div class="card dark"><h3>' + esc(t('qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(topic) + '">' + esc(t('ask_qura')) + '</button></div>';
+  const quraCard = (topic) => S.docCard ? S.docCard(null, topic) : '<div class="card dark"><h3>' + esc(t('qura_h'))   /* Version 39.77 */ + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(topic) + '">' + esc(t('ask_qura')) + '</button></div>';
   const GUIDE = {
     'periods': L('Periods guide', 'पीरियड गाइड'), 'periods-pain': L('Period pain', 'पीरियड का दर्द'), 'periods-pms': L('PMS and mood', 'PMS और मन'),
     'pregtest-when': L('When to test', 'test कब करें'), 'loss-types': L('Pregnancy loss', 'गर्भ का नुक़सान'),

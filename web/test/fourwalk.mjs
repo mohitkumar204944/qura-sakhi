@@ -247,7 +247,7 @@ const pseed = (born, startAgo, o, x) => Object.assign({ situation: Object.assign
   await a.page.waitForSelector('#su-done, #ys-tour, .card.hero', { timeout: 10000 }); if (await has(a, '#su-done')) { await a.page.fill('#su-pin', '302001'); await tap(a, '#su-done'); }
   await settle(a.page, 900);
   const rows = await a.page.$$eval('#view .ys-rows .item strong', (xs) => xs.map((x) => x.textContent.trim()));
-  check('14 "Your Sakhi" with her plan\'s Start above: "Your plan: start it above, or later on Today"', (await has(a, '#view [data-xp-plan]')) && rows.indexOf('Your plan: start it above, or later on Today') >= 0 && rows.indexOf('Your plan, after your first log') < 0 && rows.length === 3, rows);
+  check('14 "Your Sakhi" says where her plan starts: "Make my plan", also when her dates show a sign (Version 39.75: one way to her plan, none in the card)', !(await has(a, '#view [data-xp-plan]')) && (await has(a, '#view #ys-plan')) && rows.indexOf('Your plan, from your answers') >= 0 && rows.indexOf('Your plan, after your first log') < 0 && rows.length === 3, rows);
   await done(a);
 }
 

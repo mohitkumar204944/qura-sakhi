@@ -379,7 +379,7 @@
         '<div class="card warn"><h3>' + esc(T('meds_rule_h')) + '</h3><ul class="tl-ul"><li>' + esc(T('meds_rule1')) + '</li><li>' + esc(T('meds_rule2')) + '</li></ul><div class="flag urgent">' + esc(T('meds_allergy')) + '</div></div>' +
         body +
         '<div class="card soft"><h3>' + esc(T('ja_h')) + '</h3><p class="small">' + esc(T('ja_p')) + '</p><p class="small">' + esc(T('ja_find')) + '</p><p class="small">' + esc(T('ja_switch')) + '</p><p class="small">' + esc(T('ja_free')) + '</p><a class="btn sm tl-link" href="' + JA_URL + '" target="_blank" rel="noopener">' + esc(T('ja_link')) + '</a></div>' +
-        '<div class="card dark"><h3>' + esc(T('meds_qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('meds_qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('meds_topic')) + '">' + esc(t('ask_qura')) + '</button></div>';
+        (S.quraOk && !S.quraOk() ? (S.govCard ? S.govCard() : '') : '<div class="card dark"><h3>' + esc(T('meds_qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('meds_qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('meds_topic')) + '">' + esc(t('ask_qura')) + '</button></div>');   /* Version 39.77 (D51) */
       S.wire(v);
       const add = v.querySelector('#tl-madd'); if (add) add.addEventListener('click', () => { ui.medForm = blankMed(); draw(); const n = v.querySelector('#tl-mf-name'); if (n) { n.scrollIntoView({ block: 'center' }); n.focus(); } });
       v.querySelectorAll('[data-medit]').forEach((b) => b.addEventListener('click', () => {

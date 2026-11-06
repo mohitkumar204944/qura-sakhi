@@ -177,7 +177,7 @@
     }
     /* the doctor route: the free tablet as one quiet line, to the schemes for her stage */
     const alt = doc() && S.care.altRow && S.routeOwner('access-schemes-preg') ? S.care.altRow('access-schemes-' + (S.cycle.isPregnant() ? 'preg' : (S.cycle.afterBirth() ? 'post' : 'period')), t('iron_free_doc')) : '';
-    v.innerHTML = head + body + alt + srcList() + '<button type="button" class="btn ghost block" data-ask="' + esc(t('iron_h')) + '">' + esc(t('ask_qura')) + '</button>' + '<p class="footnote">' + esc(t(doc() ? 'iron_foot_doc' : 'iron_foot')) + '</p>';
+    v.innerHTML = head + body + alt + srcList() + (S.quraOk && !S.quraOk() ? (S.govCard ? S.govCard() : '') : '<button type="button" class="btn ghost block" data-ask="' + esc(t('iron_h')) + '">' + esc(t('ask_qura')) + '</button>')   /* Version 39.77 (D17): her doctor or a free government doctor */ + '<p class="footnote">' + esc(t(doc() ? 'iron_foot_doc' : 'iron_foot')) + '</p>';
     S.wire(v); wire(v);
   }
   function wire(v) {

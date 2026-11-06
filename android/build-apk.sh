@@ -30,6 +30,9 @@ SAKHI_HELP_WA="${SAKHI_HELP_WA:-}"
 # The Grievance Officer's name and contact for the privacy notice, e.g. SAKHI_GRIEVANCE="Name, Trinaya Wellness LLP, address,
 # email". Left empty, the notice leaves the line out (never a placeholder).
 SAKHI_GRIEVANCE="${SAKHI_GRIEVANCE:-}"
+# Version 39.76: the full privacy policy's web address, for the link in Me, About and privacy (Play wants it in the app as well
+# as in the listing), e.g. SAKHI_PRIVACY="https://www.quranutrition.com/sakhi/privacy". https only; without it the link is left out.
+SAKHI_PRIVACY="${SAKHI_PRIVACY:-}"
 # Version 39.60: PostHog's project key (Project API key, phc_..., EU region) for "Share how I use Sakhi" (MODULE_API section 103).
 # Left empty, the build has no PostHog code, no switch, and the CSP lets the page reach only the accounts server.
 SAKHI_PH="${SAKHI_PH:-}"
@@ -119,14 +122,16 @@ if ls "$WEB"/audio/megha-welcome-*.mp3 >/dev/null 2>&1; then
   AUDIO="$(cd "$WEB/audio" && ls megha-welcome-*.mp3 | sed 's/\.mp3$//' | paste -sd, -)"
   echo "Dr. Megha's welcome bundled: $AUDIO"
 fi
-python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "$SAKHI_PH" <<'PY'
+python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "$SAKHI_PH" "${PLAY:-}" "$SAKHI_PRIVACY" <<'PY'
 import sys, os, json, re, hashlib, base64
 from urllib.parse import urlsplit
 web, out, api, ver, wa, care, grv, audio, ph = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9]
+play, priv = sys.argv[10], sys.argv[11]   # Version 39.76: a Play build (no coordinator tools), the privacy policy's address
+if priv and not priv.startswith('https://'): sys.exit('SAKHI_PRIVACY must be an https address: ' + priv)
 PH_HOSTS = ['https://eu.i.posthog.com']   # Version 39.60: events only; the app never asks PostHog for settings (advanced_disable_flags)
 c = json.load(open(os.path.join(web, 'content.json'), encoding='utf-8'))
 open(os.path.join(out, 'content.js'), 'w', encoding='utf-8').write('window.SAKHI_CONTENT = ' + json.dumps(c, ensure_ascii=False, separators=(',', ':')) + ';\n')
-open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'ph': ph, 'phHost': PH_HOSTS[0]} if ph else {})), ensure_ascii=False) + ';\n')
+open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'ph': ph, 'phHost': PH_HOSTS[0]} if ph else {}), **({'store': 'play'} if play == '1' else {}), **({'privacy': priv} if priv else {})), ensure_ascii=False) + ';\n')
 html = open(os.path.join(web, 'index.html'), encoding='utf-8').read()
 html = html.replace('<script src="app.js"', '<script src="android-shim.js"></script>\n<script src="config.js"></script>\n<script src="content.js" charset="utf-8"></script>\n<script src="app.js"', 1)
 # Content-Security-Policy (audit fix 28): only the app's own files run, and the only server the page can reach is the

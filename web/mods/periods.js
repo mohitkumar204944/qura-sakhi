@@ -21,7 +21,8 @@
   const steps = (arr) => '<ol class="steps">' + arr.map((o) => '<li>' + h(o) + '</li>').join('') + '</ol>';
   const linkItem = (route, icon, title, sub, pill) => '<button type="button" class="item" data-go="' + esc(route) + '"><span class="ico-sm">' + S.icon(icon) + '</span><span class="body"><strong>' + esc(title) + '</strong>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</span>' + (pill ? '<span class="pill" style="flex-shrink:0">' + esc(pill) + '</span>' : '') + '</button>';
   const planFor = (k) => (k && S.plan && S.plan.forRow ? S.plan.forRow(k) : '');   /* Version 39.53: her plan for this page's subject, when one fits */
-  const askCard = (topic, body) => '<div class="card dark"><h3>' + esc(t('qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + h(body) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none;align-self:flex-start" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button></div>';
+  /* Version 39.77: the page's doctor by Mohit's choices (core S.docCard): a Qura doctor in his words, or her gynaecologist or a free government doctor */
+  const askCard = (topic, body) => S.docCard ? S.docCard(null, tx(topic)) : '<div class="card dark"><h3>' + esc(t('qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + h(body) + '</p><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none;align-self:flex-start" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button></div>';
   const intro = (o) => '<p class="small">' + h(o) + '</p>';
 
   /* ---------- cycle-day maths for the log ---------- */

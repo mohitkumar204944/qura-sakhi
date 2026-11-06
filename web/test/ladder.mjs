@@ -124,7 +124,8 @@ const sent = (page) => page.evaluate(() => (window.Saathi.state.calls || []).map
   await tap(a, '#help-btn');
   check('2 pregnant: Help says "See a doctor"', /See a doctor/.test(await txt(a.page, '#sheet-root #hs-doc')) && !/Ask a doctor\b/.test(await txt(a.page, '#sheet-root #hs-doc')));   /* Version 39.71: the label is "Ask a doctor" */
   await tap(a, '#sheet-root #hs-doc');
-  check('2 ... and opens the doctor screen (her own doctor first), not the form', (await hashOf(a.page)) === '#ask');
+  /* Version 39.77 (Mohit's choice A2): in a pregnancy Help's row opens "See a doctor", her gynaecologist or a free government doctor */
+  check('2 ... and opens "See a doctor" (her gynaecologist or a free government doctor), not the Qura form', (await hashOf(a.page)) === '#doc-free');
   await done(a);
   a = await open({ seed: { situation: { care: 'govt' } }, hash: '#a-cycle.painful-periods' });
   await tap(a, '#art-ask');
@@ -183,20 +184,21 @@ const card = (page, id) => page.evaluate((x) => { const f = (window.Saathi.expla
 {
   let a = await open({ seed: { events: heavy(12) }, hash: '#explain' });
   let c = await card(a.page, 'flow_heavy');
-  check('7 heavy flow: "Ask a Qura doctor" first, then "See a gynaecologist" (care near her)', c && /Ask a doctor\b/.test(c[0].t) && c[0].p && c[1].t === 'See a gynaecologist' && !c[1].p && /^access-(care|free)$/.test(c[1].go), c);
+  /* Version 39.77 (Mohit's choice B1): every sign leads to a Qura doctor; no "See a gynaecologist" or "See a doctor" button */
+  check('7 heavy flow: "Ask a Qura doctor" first, and no "See a gynaecologist" (Version 39.77)', c && /Ask a doctor\b/.test(c[0].t) && c[0].p && !c.some((x) => /^See a (gynaecologist|doctor)$/.test(x.t)), c);
   check('7 ... and no line that sends her away from the Qura doctor', !/needs a gynaecologist/i.test(await view(a.page)));
   await done(a);
   a = await open({ seed: { events: heavy(12), mydoc: { tel: '9876500000' } }, hash: '#explain' });
   c = await card(a.page, 'flow_heavy');
-  check('7 ... her doctor saved: "See a gynaecologist" calls her number', c && c[1] && c[1].go === 'tel:9876500000', c);
+  check('7 ... her doctor saved: still a Qura doctor, no call from the sign (Version 39.77)', c && /Ask a doctor\b/.test(c[0].t) && !c.some((x) => x.go === 'tel:9876500000'), c);
   await done(a);
   a = await open({ seed: { events: heavy(12), situation: { care: 'govt' } }, hash: '#explain' });
   c = await card(a.page, 'flow_heavy');
-  check('7 ... the government route: "See a gynaecologist" opens Care near me (Version 39.68: the government-hospital guide is gone)', c && c[1] && c[1].t === 'See a gynaecologist' && c[1].go === 'access-care', c);
+  check('7 ... the government route: a Qura doctor too (Version 39.77)', c && /Ask a doctor\b/.test(c[0].t) && !c.some((x) => /^See a (gynaecologist|doctor)$/.test(x.t)), c);
   await done(a);
   a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['burn'], kind: 'cycle' } } }, hash: '#explain' });
   c = await card(a.page, 'burn');
-  check('7 burning when she pees: "Ask a Qura doctor", then "See a doctor"', c && /Ask a doctor\b/.test(c[0].t) && c[1] && c[1].t === 'See a doctor', c);
+  check('7 burning when she pees: "Ask a Qura doctor", no "See a doctor" (Version 39.77)', c && /Ask a doctor\b/.test(c[0].t) && !c.some((x) => x.t === 'See a doctor'), c);
   await done(a);
   a = await open({ seed: { checkins: { '2026-11': { at: ago(2), chips: ['mood'], kind: 'cycle' } } }, hash: '#explain' });
   c = await card(a.page, 'mood');

@@ -30,8 +30,8 @@
     m: N2('Noting your days for 2 cycles, and skills from CBT (a way of working with thoughts and habits), are what UK gynaecologists (RCOG) recommend first for the days before a period, with regular exercise.',
       '2 चक्र तक अपने दिन नोट करना, और CBT (सोच और आदतों पर काम करने का एक तरीक़ा) के अभ्यास, वही हैं जो ब्रिटेन के स्त्री रोग विशेषज्ञ (RCOG) पीरियड से पहले के दिनों के लिए सबसे पहले सुझाते हैं, नियमित व्यायाम के साथ।')
   };
-  const QURA = N2('On a free call, a Qura doctor goes through your periods and your diary with you, can order tests, and refers you to a gynaecologist when you need medicines.',
-    'मुफ़्त कॉल पर Qura डॉक्टर आपके साथ आपके पीरियड और डायरी देखती हैं, जाँच लिखवा सकती हैं, और दवाओं की ज़रूरत हो तो स्त्री रोग विशेषज्ञ के पास भेजती हैं।');
+  const QURA = N2('Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments. The first 20-minute call is free.',
+    'Qura की डॉक्टर आयुर्वेद डॉक्टर (BAMS) हैं। वे प्राकृतिक और आयुर्वेदिक इलाज से आपकी मदद करती हैं। पहली 20 मिनट की कॉल मुफ़्त है।');   /* Version 39.77: Mohit's words */
   /* a chapter: h its title, cards: l lines, b a heading, go a page it opens (gol its label: a string key, '@tile' or words), ask a
      Qura doctor button, u an urgent line with its Call numbers (tel), warn a "see a doctor" card */
   const L = {

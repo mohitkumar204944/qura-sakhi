@@ -184,9 +184,10 @@ const fyRoutes = (a) => a.page.$$eval('.care-sec .list [data-go]', (xs) => xs.ma
   const a = await open({ seed: { situation: sit(38) } });
   await a.page.evaluate(() => window.Saathi.openHelp ? window.Saathi.openHelp() : document.querySelector('[data-help], #help-btn, .help-btn').click()); await settle(a.page, 500);
   const hd = await txt(a, '#hs-doc');
-  check('8 Help: "See a doctor" says her gynaecologist looks after the pregnancy', /Your gynaecologist for the pregnancy; a Qura doctor for food, weight and sleep/.test(hd), hd);
+  /* Version 39.77 (Mohit's choice A2): in a pregnancy, Help's row is her gynaecologist or a free government doctor */
+  check('8 Help: "See a doctor" says her gynaecologist looks after the pregnancy', /Your gynaecologist for the pregnancy, or a free government doctor/.test(hd) && !/Qura/.test(hd), hd);
   await tap(a, '#hs-doc'); await settle(a.page, 400);
-  check('8 ... and the screen it opens says it first', /^Talk to a Qura doctor A free call with a Qura doctor \(BAMS\) can help with food, weight and sleep\. Your gynaecologist looks after the pregnancy itself, medicines and scans\./.test(await view(a)), (await view(a)).slice(0, 300));
+  check('8 ... and the screen it opens is "See a doctor": her gynaecologist or a free government doctor (Version 39.77)', /^See a doctor See a gynaecologist or a free government doctor/.test(await view(a)) && !/Qura/.test(await view(a)), (await view(a)).slice(0, 300));
   await done(a);
   const g = await open({ seed: { situation: sit(38, { care: 'govt' }) } });
   await g.page.evaluate(() => window.Saathi.openHelp ? window.Saathi.openHelp() : document.querySelector('[data-help], #help-btn, .help-btn').click()); await settle(g.page, 500);

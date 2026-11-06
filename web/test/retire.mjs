@@ -217,7 +217,8 @@ const sample = (page, who, care) => page.evaluate(({ who, care, today }) => { co
   check('6.1 the old journey and PMMVY reminders ring no more, and no journey row on Today', r6.indexOf('journey') < 0 && r6.indexOf('access-pmmvy2') < 0 && !(await a.page.$('#view .today-journey')), r6);
   await a.page.$eval('#help-btn', (b) => b.click()); await settle(a.page, 300);
   const hd = await a.page.$eval('#sheet-root #hs-doc', (e) => e.textContent).catch(() => '');
-  check('6.2 Help\'s doctor row on the government route: "A call with a Qura doctor", and no free government doctor', /A call with a Qura doctor/.test(hd) && !/government/i.test(hd), hd);
+  /* Version 39.77 (Mohit's choice A1): the free government doctor is back on the government route, as eSanjeevani and Care near me */
+  check('6.2 Help\'s doctor row on the government route: her gynaecologist or a free government doctor (Version 39.77)', /Your gynaecologist, or a free government doctor/.test(hd) && !/Qura/.test(hd), hd);
   await a.page.evaluate(() => window.Saathi.closeSheet && window.Saathi.closeSheet()); await settle(a.page, 200);
   await go(a.page, 'me'); const su = await a.page.$eval('#view .setup-card', (e) => e.textContent).catch(() => '');
   check('6.3 the setup card has no step for a removed page (free care, the schemes, her ASHA)', !/free care|scheme|ASHA/i.test(su), su);

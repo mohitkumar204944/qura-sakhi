@@ -154,7 +154,8 @@ const diaryShows = async (page) => { await go(page, 'diary'); await page.evaluat
   const b = await a.page.$$eval('#view .xp-dcard.xp-month .xp-acts:not(.xp-more) .btn', (x) => x.map((y) => y.textContent.trim()));
   /* Version 39.25 (Mohit, 27 Oct: "dont offer free government doctor let it be in explore section"): a Qura doctor first */
   /* Version 39.64 (phase E; Mohit, 3 Nov: "Qura first, gynaecologist second"): the doctor the sign needs comes second */
-  check('5 a "this month" card: a Qura doctor, then the gynaecologist, then her report; no "Free government doctor"', b.join(' | ') === 'Ask a doctor about this | See a gynaecologist | My report for the doctor', b);   /* Version 39.71: the label */
+  /* Version 39.77 (Mohit's choice B1): a sign leads to a Qura doctor; no "See a gynaecologist" */
+  check('5 a "this month" card: a Qura doctor, then her report; no "See a gynaecologist", no "Free government doctor"', b.join(' | ') === 'Ask a doctor about this | My report for the doctor', b);   /* Version 39.71: the label */
   check('5 ... a free plan beside it and "What this means", and no "Check the signs" (Version 39.68: no self-checks)', !/Check the signs/.test(await txt(a.page, '#view .xp-dcard.xp-month')) && /And meanwhile, a free plan/i.test(await txt(a.page, '#view .xp-dcard.xp-month')) && await has(a.page, '#view .xp-dcard.xp-month .xp-plan [data-xp-plan]') && /What this means/.test(await txt(a.page, '#view .xp-dcard.xp-month')), await txt(a.page, '#view .xp-dcard.xp-month'));
   await tap(a.page, '#view .xp-dcard.xp-month [data-xp-rp]');
   const q = await a.page.$$eval('#view ol.steps li', (x) => x.map((y) => y.textContent));

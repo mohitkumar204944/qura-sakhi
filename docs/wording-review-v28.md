@@ -3589,6 +3589,20 @@ then "Any time of day" (दिन में कभी भी).
 **The pause notification (the note on Pause for a week).** It reads "Take a week off? You can pause your plan for a week. It carries
 on after that, from where you are." (the card's reviewed words). It comes at 9 am on the morning after 2 days with nothing done, at
 most once a week. On a shared phone it says only "Reminder".
+
+### 19.73 Version 39.73: the Kegel trainer (MODULE_API section 116)
+
+UI words only; no new health line.
+
+- **In a set, under "Squeeze and lift" or "Relax":** "Keep breathing normally" (साँस आम तरह से लेती रहें). These are the
+  first words of the reviewed "Find the right muscles" line 3, repeated during the set.
+- **After a set:** "Start set 2" (सेट 2 शुरू करें), and "Start set 3", while sets are left that day.
+- **Get into position:** the existing level words and the four reviewed "Find the right muscles" lines, in one card before
+  her first sets.
+
+The lift beside her figure is a picture of the squeeze and the let-go, not of her body. Her tummy, bottom and thighs stay still,
+as line 3 says.
+
 ### 19.74 Version 39.74: the phone walk's fixes (MODULE_API section 117)
 
 UI words only; no new health line.
@@ -3608,3 +3622,102 @@ UI words only; no new health line.
 For the doctors (from the phone walk, nothing changed): (1) at 45 in "Periods changing after 40", two gaps over 35 days show "See a
 doctor this month ... Blood tests for thyroid and hormones help find the cause": soften it in the menopause transition? (2) a woman
 who joins at 38 with "My periods have stopped" is called "Menopause" while Today's card says it is not menopause before 40.
+
+### 19.75 Version 39.75: the UI and UX gaps (MODULE_API section 118)
+
+One UI label; every other line is one already reviewed, shown in a new place or at a new time.
+
+- **Search:** the clear button reads "Clear search" (खोज साफ़ करें) to a screen reader; on screen it is ×.
+- **Joining under 40, "My periods have stopped":** the details screen opens with the reviewed line "Periods that stop before 40 are
+  not menopause. See a gynaecologist: it can be premature ovarian insufficiency (POI), which needs treatment, not waiting." (as the
+  stage sheet since Version 39.65). Your Sakhi calls her stage "My periods have stopped", not "Menopause", and Today offers no
+  "Menopause care" until her doctor has seen her. This answers part (2) of 19.74's note. Still for the doctors: joining stops her
+  cycle count here, while the stage sheet keeps it counting under 40.
+- **A doctor finding a week on:** "See a doctor this week" becomes "Still to see a doctor?" (अभी डॉक्टर को दिखाना बाक़ी है?) after 7 days,
+  as "See a doctor this month" does after 4 weeks. For the doctors to glance: is a week the right time for the heavy-flow and
+  long-period findings?
+- **Gone:** the check-in's "{w} of 7 days this week" (Today's dots and My plan's rings count her week). The check-in's "Fasting?"
+  card now waits until she has marked a fast in the last 90 days. On Your Sakhi, the sign cards' "And meanwhile, a free plan" (for
+  example "Stronger blood" beside heavy flow): her plan is the one "Make my plan" button, for the goal she chose.
+
+### 19.76 Version 39.76: the Play walk's UI and UX gaps (MODULE_API section 119)
+
+UI words only; no health line is new or changed.
+
+- **Screen readers:** "Stop reading" (पढ़ना रोकें) on a card's speaker while it reads (as the top bar's speaker already said);
+  "Previous month" (पिछला महीना) and "Next month" (अगला महीना) on the calendars' arrows, which said "prev" and "next"; a sheet's
+  handle reads "Close" (बंद करें, the + menu's word).
+- **About and privacy:** "Privacy policy" (गोपनीयता नीति), a link to the full policy once its page is live.
+- **Your Sakhi:** the "Fertile days and ovulation (estimate)" line now shows only to a woman trying for a baby; Cycles keeps it.
+- **Her plan's questions:** "How bad is it, usually?" isn't asked again when she ticked "Pain that stops my day" while joining; her
+  plan takes "It stops my day".
+
+### 19.77 Version 39.77: Qura doctor or government doctor, place by place (MODULE_API section 120)
+
+Mohit, 6 Nov: his 96 choices on the choice page (claude.ai/artifact/JbnFnzN9W5NC9tq7xQQRzL; `docs/doctor-choice-audit-2026-11-06.md`), with
+"Qura has to collect leads for PCOD/PCOS, fertility (help to conceive naturally), menopause, post pregnancy, and any help with cycle
+concerns; rest everything suggest to see a gynaecologist / Govt. doctor free portal", and "Qura doctors are Ayurveda doctors (BAMS) help
+you with natural and ayurvedic treatments. We dont have to mention that qura doctors can not give any treatment and only gynaecologist
+can". **New and changed lines wait for the doctors' read.** Danger lines and "how soon" lines are unchanged.
+
+- **Who Qura's doctors are (new, one line for every Qura card, the doctor screen, the period and baby plans, trying for a baby, and
+  "How Qura can help" in Learn):** "Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments. The
+  first 20-minute call is free." (Qura की डॉक्टर आयुर्वेद डॉक्टर (BAMS) हैं। वे प्राकृतिक और आयुर्वेदिक इलाज से आपकी मदद करती हैं।
+  पहली 20 मिनट की कॉल मुफ़्त है।) It replaces about 90 lines that said a Qura doctor helps with food, weight, sleep or routine, "refers
+  you to a gynaecologist", "does not prescribe", or that a medicine "needs an MBBS gynaecologist; Qura refers".
+- **The gynaecologist or a free government doctor (new card and page, "See a doctor"):** "See a gynaecologist or a free government
+  doctor" (स्त्री रोग विशेषज्ञ या मुफ़्त सरकारी डॉक्टर को दिखाएँ); "Your own gynaecologist, or a free video consult with a government
+  doctor on eSanjeevani (hours vary by state). Care near me lists the government centres near you." Buttons: Call my doctor (her saved
+  number), "Free online doctor (eSanjeevani)" (https://esanjeevani.mohfw.gov.in/), Care near me. Help's row on a government answer:
+  "See a doctor: Your gynaecologist, or a free government doctor"; in a pregnancy: "Your (ANM or) gynaecologist for the pregnancy, or a
+  free government doctor" (was "…; a Qura doctor for food, weight and sleep").
+- **Lines changed to leave Qura out (gynaecologist or government places):** contraception's method pages lose "Qura's (BAMS) doctors
+  can explain it and refer you"; after the birth, "Pills, the injection, Copper-T and sterilisation come from your ANM, a government
+  facility or an MBBS gynaecologist" (was "Qura's doctors are BAMS doctors. They can talk through your options, but …. Qura refers
+  you."); feeding help, "Your ASHA, ANM or the nurse at a government hospital can watch a feed for free" without "A Qura doctor can
+  also talk it through"; the abortion page, "Abortion pills are prescribed by an MBBS doctor trained in MTP, or a gynaecologist" (was
+  "Qura's doctors are BAMS and cannot prescribe abortion pills. …"); her pregnancy numbers, "Your doctor sees this at your next visit"
+  (was "Your Qura doctor").
+- **Government lines removed on Qura places:** her plan's doctor check, "A doctor's check is part of your plan." and "Bleeding this
+  heavy needs a doctor's check and an Hb test." (without "It is (also) free at a government health centre"); the baby plan's card
+  without "Free: the PHC or Ayushman Arogya Mandir, or eSanjeevani"; the "where to go" lines on fibroids, early menopause, menopause,
+  fertility tests ("Government options"), two losses and the intimate health hub's Suraksha clinic; Learn's "Free help" lines in the
+  cycle, PMOS, getting pregnant, midlife, mind and body and Qura articles. Kept as information: where a test, tablet or kit is free
+  (Hb test, IFA tablets, Nishchay kits, the HIV test, screening).
+- **New on a Qura page:** trying a year, "Start with a Qura doctor. Qura doctors are Ayurveda doctors (BAMS) and help with natural and
+  Ayurvedic treatments." (was "Start at the gynaecology OPD of your district hospital…").
+- **Kept, for the doctors to confirm:** medical facts that name a gynaecologist without naming Qura (for example "Hormone therapy …
+  prescribed by an MBBS gynaecologist" in midlife; "Periods stopped before 40? See a gynaecologist" as a heading), and every "how soon"
+  line ("See a doctor within 2 weeks"). Mohit's choices take the "See a gynaecologist" button off diary signs and the before-40 card,
+  so bleeding after sex, bleeding after menopause and periods stopping before 40 now lead only to a Qura doctor; their "how soon" lines
+  stay.
+- **The call form's line about Qura's doctors:** "Qura’s doctors (BAMS, trained in women’s health) look at any concern and tell you when
+  you need a gynaecologist" was the doctors' own choice (answer 10 of the feature review, which also asked for the lawyer to check how
+  Sakhi describes Qura's doctors). Mohit's line replaces it: the doctors' and the lawyer's read is owed.
+- **Pregnancy and after-birth articles:** their "How Qura can help" box goes, and its sentences that aren't about Qura move to "When to
+  see a doctor", word for word: "A baby's movements can only be checked at a hospital.", "Bleeding, fever, mood illness and anything
+  about the baby are for the PHC, hospital or an MBBS doctor." (without "not Qura"), "Your ANM (doctor) decides these doses; this list
+  only helps you ask.", "Never stop a medicine another doctor prescribed on your own; tell that doctor you are pregnant." One new
+  English line: "Tell your doctor if you are breastfeeding; that changes what is safe to take." (was "Tell her…"; the Hindi had no
+  pronoun). Two lines stay beside the government card: "If you have sugar in pregnancy, follow the diet your doctor or dietitian gives
+  you." (pregnancy food) and "How you give birth is decided with your obstetrician at the hospital." (birth plan).
+- **"How Qura helps" (rewritten; Mohit, 6 Nov: "Rewrite it"):** was "How Qura helps, and where it stops". Now (Hindi in the Learn
+  library): "Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments. They are registered with
+  their state Ayurveda council." They help with: your periods (irregular, painful or heavy periods, and the days before your period);
+  PMOS (PCOS or PCOD); getting pregnant, naturally; menopause, and the years before it; your body after a baby. "On the call, she
+  listens, goes through your period diary with you if you share it, orders blood tests through a partner lab when you need them, reads
+  the reports with you, and plans natural and Ayurvedic treatment with you." The free 20-minute first call, booked only when she taps,
+  stays word for word. "For anything else, such as a pregnancy, contraception or an infection, see your own gynaecologist, or a free
+  government doctor: eSanjeevani, or Care near me in this app." Gone: what Qura's doctors cannot do (an emergency, a pregnancy, a scan,
+  an internal examination, the pill, HRT, fertility tablets) and "She will send you on for…". Its "When to see a doctor": the nearest
+  hospital now (108) for heavy bleeding with dizziness or one-sided pain with fainting; "Any bleeding after your periods have stopped:
+  see a doctor straight away."; a pregnancy, her gynaecologist or ANM or eSanjeevani; under 18, a government hospital with a parent.
+  For the lawyer too: the sources still cite NCISM 2023 (what BAMS doctors may do; the registration number) and the Telemedicine
+  Practice Guidelines.
+- **No doctor named anywhere (Mohit, 6 Nov: "Dont give doctor names anywhere"):** the joining welcome's button "Listen to a short
+  welcome · 30 sec" (छोटा-सा स्वागत संदेश सुनें · 30 सेकंड; was "Listen in Dr. Megha's voice"), the plan page's "Hear a short welcome (30
+  seconds)" (was "Hear Dr. Megha"), "How Qura helps" without "Our doctors: …" and the registration number (it keeps "You can ask any
+  doctor, including ours, for her registration number and council"), and one PMOS food source, "Qura’s Ayurveda doctors (BAMS): curd is
+  low glycaemic…". The welcome recording isn't made yet: it should not say her name. Wind down's voice is unnamed already ("your
+  trainer", Version 39.71); her name stays only in the team's notes and in the recordings' credits file.
+

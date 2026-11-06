@@ -279,7 +279,8 @@ async function signUp(a) {
   await done(a);
   a = await open({ seed: { situation: { care: 'govt' } } });
   await tap(a, '#help-btn');
-  check('6 a government centre: "A call with a Qura doctor", no "My ASHA", 112 first (Version 39.68)', /A call with a Qura doctor/.test(await txt(a, '#hs-doc')) && !/government/.test(await txt(a, '#hs-doc')) && !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
+  /* Version 39.77 (Mohit's choice A1, by her answer): a government centre's Help row is her gynaecologist or a free government doctor */
+  check('6 a government centre: "See a doctor", her gynaecologist or a free government doctor; no "My ASHA", the hospital first (Versions 39.68, 39.77)', /Your gynaecologist, or a free government doctor/.test(await txt(a, '#hs-doc')) && !/Qura/.test(await txt(a, '#hs-doc')) && !(await has(a, '#hs-asha')) && await a.page.$eval('.sheet .list > *', (e) => e.id) === 'hs-112');
   await done(a);
   a = await open({ hash: 'ask' });
   let ids = await a.page.$$eval('#view .card', (cs) => cs.map((c) => c.id || ''));
@@ -295,7 +296,8 @@ async function signUp(a) {
   let tm = await team(null);
   check('6 My plan\'s care team, unanswered: her own doctor (Version 39.41), then a Qura doctor; no free government doctor (Version 39.68)', tm[0] === 'mydoc' && tm[1] === 'ask' && tm.indexOf('access-doctor') < 0, tm);
   tm = await team('govt');
-  check('6 ... a government centre: a Qura doctor first, no free government doctor page (Version 39.68)', tm[0] === 'ask' && tm.indexOf('access-doctor') < 0, tm);
+  /* Version 39.77 (Mohit's choice C2): her own doctor on every answer, then a Qura doctor */
+  check('6 ... a government centre: her own doctor, then a Qura doctor; no free government doctor page (Versions 39.68, 39.77)', tm[0] === 'mydoc' && tm[1] === 'ask' && tm.indexOf('access-doctor') < 0, tm);
 }
 
 /* ---------- 7: What your diary shows ---------- */

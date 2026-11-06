@@ -178,7 +178,10 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   check('6 ... "Not fasting today" brings her food step back', (await acts(a.page)).some((x) => x.id === 'food'));
   /* the evening check-in: today and tomorrow */
   await a.page.clock.setSystemTime(at(0, '20:30')); await go(a.page, 'plan-checkin');
-  check('6 the check-in asks "Fasting?": today or tomorrow', (await has(a.page, '#view #pl-ci-fast-today')) && (await has(a.page, '#view #pl-ci-fast-tom')));
+  check('6 the check-in asks "Fasting?" only once she has fasted: a fast she undid is none (Version 39.75)', !(await has(a.page, '#view .pl-ci-fast')));
+  await a.page.evaluate((k) => { const S = window.Saathi; S.data('plan').fastAt = k; S.save(); }, iso(TODAY, -5));   /* she kept a fast 5 days ago */
+  await go(a.page, 'home'); await go(a.page, 'plan-checkin');
+  check('6 ... after a fast 5 days ago it asks "Fasting?": today or tomorrow', (await has(a.page, '#view #pl-ci-fast-today')) && (await has(a.page, '#view #pl-ci-fast-tom')));
   await tap(a.page, '#view #pl-ci-fast-tom');
   check('6 ... "Fasting tomorrow" is kept for tomorrow only', JSON.stringify((await st(a.page)).mods.plan.fast) === JSON.stringify({ [iso(TODAY, 1)]: 1 }), (await st(a.page)).mods.plan.fast);
   await dayTo(a.page, 1); await go(a.page, 'home');
@@ -337,7 +340,7 @@ const fastLabel = async (page) => { await go(page, 'home'); if (!(await has(page
   const pa = await acts(pb.page);
   check('8 FOOD-01 3 weeks after a birth, breastfeeding, fasting: the recovery check stays and the fasting step takes the pelvic step\'s place', pa.length === 3 && pa[0].id === 'rcheck' && pa.some((x) => x.id === 'fast') && !pa.some((x) => x.id === 'pelvic'), pa);
   errsAll.push(...pb.errs); await pb.ctx.close();
-  const mb = await open({ seed: Object.assign({}, MENO, { intake: { goal: 'bones' }, mods: { plan: planOf('meno', 'bones', ago(1)) } }), now: at(0, '20:30') });
+  const mb = await open({ seed: Object.assign({}, MENO, { intake: { goal: 'bones' }, mods: { plan: planOf('meno', 'bones', ago(1), { fastAt: ago(5) }) } }), now: at(0, '20:30') });   /* she keeps fasts (Version 39.75: the card waits for her first) */
   await go(mb.page, 'plan-checkin');
   check('8 FOOD-01 a day with no food step: the check-in offers only "Fasting tomorrow" (its calcium day)', !(await has(mb.page, '#view #pl-ci-fast-today')) && (await has(mb.page, '#view #pl-ci-fast-tom')));
   errsAll.push(...mb.errs); await mb.ctx.close();

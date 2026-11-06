@@ -157,7 +157,8 @@ const reqs = [];
   await done(a);
   const g = await open({ seed: withPlan(30, {}, { situation: sit(35, { care: 'govt' }), mydoc: { tel: DOC } }) });
   const dg = await g.page.evaluate(() => window.Saathi.preg.plan.due().map((x) => x.id));
-  check('3 the government route: My ASHA stays off Today, no doctor\'s row, as before', new RegExp('and ' + (dg.filter((x) => x !== 'asha').length - 1) + ' more').test(await pd(g)) && (await go(g, 'plan'), !(await has(g, '#view .pl-mydoc'))), { dg, pd: await pd(g) });
+  /* Version 39.77 (Mohit's choice C2): My pregnancy's care team is her own doctor and the free government doctor, on every answer, and no Qura row */
+  check('3 the government route: My ASHA stays off Today; My plan has her doctor\'s row and the free government doctor, no Qura doctor', new RegExp('and ' + (dg.filter((x) => x !== 'asha').length - 1) + ' more').test(await pd(g)) && (await go(g, 'plan'), await g.page.evaluate(() => document.querySelectorAll('#view details').forEach((d) => { d.open = true; })), (await has(g, '#view .pl-mydoc')) && (await has(g, '#view .pl-care [data-go="doc-free"]')) && !(await has(g, '#view .pl-care [data-ask]'))), { dg, pd: await pd(g) });
   await go(g, 'ask'); check('3 ... and none on the doctor screen', !(await has(g, '#ask-mydoc')) && !(await has(g, '#ask-mydoc-add')));
   await done(g);
   const c = await open({ seed: { situation: { care: 'private' }, mydoc: { tel: DOC }, events: [{ d: ago(20), t: 'start' }] }, hash: 'ask' });

@@ -96,7 +96,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '[data-ob-lang="en"]');
   let v = await view(page);
   check('1 the welcome names the plan made for her', /Your period diary, and a plan made for you/.test(v) && /12-week plan/.test(v), v.slice(0, 300));
-  check('1 the welcome names the daily steps and the evening check-in', /Small steps each day, and a 1-minute check-in each evening/.test(v), v.slice(0, 300));
+  check('1 the welcome names the daily steps and the evening check-in', /Small steps each day, and a 1[-\u2011]minute check-in each evening/.test(v), v.slice(0, 300));
   check('1 the start button says how long joining takes', /Start · about 3 minutes/.test(await txt(page, '#w-start')), await txt(page, '#w-start'));
   check('1 Version 39.10: one way in, no "I just want to read"', !(await has(page, '#w-browse')));
   await tap(page, '#w-start');
@@ -165,7 +165,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('4 one screen (Version 39.72, the doctors\' review): no cards for how each day works or what happens when (they are My plan\'s How it works); the check-in time on its Start', !/How each day works|What happens when/.test(words) && /8 pm/.test(words) && !(await has(page, '#pl-rv-next')), words.slice(0, 1600));
   check('4 a doctor check card for skipped months, alongside her plan', /Alongside your plan: one doctor check/.test(words) && /You can start your steps today/.test(words));
   check('4 no percentage anywhere on her plan', !/%/.test(words));
-  check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
+  check('15 no welcome button without the recording', !/Hear a short welcome/.test(words));
   v = await view(page);
   check('6 the Start screen: today, tomorrow or Monday, and an evening check-in time', /When do you want to start\?/.test(v) && /Today/.test(v) && /Tomorrow/.test(v) && /Monday, 2 Nov/.test(v) && /6 pm/.test(v) && /9 pm/.test(v) && !/8 am|1 pm/.test(v), v.slice(0, 600));
   check('6 the Start screen names what will ring, and asks nothing (Version 39.27: reminders on by default; 39.43: her wind-down comes with her bedtime step, from day 4; 39.45: named with its day; 39.66: named on day 4, when her bedtime is asked)', /Reminders are on: your 6 pm time to move and your 8 pm check-in\. Nothing shows on the lock screen\./.test(v) && !(await has(page, '#pl-st-allow')), v.slice(0, 900));
@@ -395,7 +395,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
 {
   const { ctx, page, errs } = await open({ seed: { intake: IK }, cfg: Object.assign({}, LOCAL, { audio: ['megha-welcome-en'] }) });
   await pend(page, Object.assign({}, IK, { stage: 'cycle' })); await go(page, 'plan-reveal');
-  check('15 her plan\'s one screen offers Dr. Megha when the build carries her recording (Version 39.72)', /Hear Dr. Megha \(30 seconds\)/.test(await view(page)) && (await page.$eval('#pl-rv-aud', (b) => b.dataset.src).catch(() => '')) === 'audio/megha-welcome-en.mp3');
+  check('15 her plan\'s one screen offers the welcome when the build carries the recording (Version 39.72; no doctor\'s name, Version 39.77)', /Hear a short welcome \(30 seconds\)/.test(await view(page)) && !/Megha/.test(await view(page)) && (await page.$eval('#pl-rv-aud', (b) => b.dataset.src).catch(() => '')) === 'audio/megha-welcome-en.mp3');
   check('16 no page errors (audio)', errs.length === 0, errs);
   await ctx.close();
 }

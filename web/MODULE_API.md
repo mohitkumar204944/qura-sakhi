@@ -7504,6 +7504,7 @@ These come from the approved plan's wording items and answers 6, 8 and 10 (`docs
 - the added lines;
 - Qura's doctors;
 - every live screen for 5 women in English and 3 in Hindi: none of the old words.
+
 ## 115. Version 39.72: the doctors' feature review, part 4 (the behaviour)
 
 These come from the approved plan's behaviour items, two Amend rows the plan didn't name (`plan-feedback`, `tile-fertile`), and
@@ -7609,6 +7610,33 @@ answers 5, 7 and 12 (`docs/feature-review-2026-11-05.md`). Mohit's word on 6 Nov
 - Hindi at 360 px, and no page errors.
 
 28 older suites follow the new behaviour. The golden plans and the plan hashes are re-recorded for the walk's words and minutes.
+
+## 116. Version 39.73: the Kegel trainer
+
+Mohit, 6 Nov, after walking "Your Kegel sets" on his Flip5 ("i tapped to start kegel exercise and model is still at a static
+image", then "Proceed"). A correct squeeze happens inside: the trainer's own reviewed line says "Keep breathing normally. Don't
+pull in your tummy, squeeze your bottom or press your thighs together." So her figure stays in its position, breathing, and the
+screen shows the squeeze instead. All in `mods/post.js` (the pelvic floor trainer); `test/kegel.mjs`.
+
+1. **Get into position.** While she has done fewer than 3 sets ever (`PF_INTRO`, `pfTotal`), or in her plan's first week before
+   her first set of the day, the trainer opens on one card (`.pst-intro`): her level's figure, level and how many, then the
+   reviewed "Find the right muscles" lines (`.pst-in`), with Start under it. Today's and My plan's play buttons (`pf-go`) open
+   it instead of a running set; from her 3rd set ever they start the set at once, as before. Its lines live only in this card
+   while it shows (one home).
+2. **The lift.** In a set, a column beside her figure (`.pst-stage`, `#pst-plift`, its fill `#pst-pbar`) rises over each squeeze
+   and settles over each let-go, lighter; quick squeezes do the same; it holds still while paused. It replaces the thin bar.
+3. **Keep breathing.** "Keep breathing normally" (`pf_breathe`, the start of the reviewed line 3) sits under the phase word for
+   the whole set.
+4. **Framing.** Lying is framed 2 : 1 on her and the mat (`.pst-fig-lie`); sitting and standing keep 6 : 5.
+5. **After a set.** "Set done", then "Start set {n}" (`pf_go_n`) straight under it while sets are left today; after the last,
+   Start stays below her level, as before.
+6. **The count.** A finished set counts in her diary as it is when the set ends (`store()`), never in the copy taken when the set
+   began. On his phone two finished sets counted as one; the test replaces her trainer data mid-set to prove the set still
+   counts and is saved. The cause on his phone wasn't reproduced: a phone check of two sets follows the build.
+
+`test/kegel.mjs` (25 checks): Get into position (1), the set (2), after a set (3), the count (4), in English and Hindi at 360 px.
+`test/pfplan.mjs` 3.1 follows Get into position for a first set; `test/pfplan-walk.mjs` photographs it.
+
 ## 117. Version 39.74: the phone walk's fixes
 
 Mohit, 6 Nov: "can you do needful and test everything thoroughly live walkthrough on phone dont worry about loosing any progress".
@@ -7677,3 +7705,153 @@ follow the cycle plan's question, `test/daily.mjs` 5 and `test/midlife.mjs` 16.2
 only) and for the colons in the doctor summary's "Before: … · Since you started: …" (96 snapshots, `sum` only). `test/follow.mjs` 12
 now expects the after-dinner nudge quiet once her walk is done (it expected Version 39.13's "the nudge still comes, for her yoga";
 yoga is before a meal since Version 39.22).
+
+## 118. Version 39.75: the UI and UX gaps
+
+Mohit, 6 Nov: "did you also notice any gaps with UI and UX", then "fix all". The gaps came from the phone walk (section 117): things
+that work as built but make her day harder. No new health wording: every line shown is one already reviewed, plus one UI label.
+
+1. **Her steps on the first screen.** While her plan's steps show on Today, they come before a "See a doctor this week" finding,
+   which follows them (`data-xp-lv="week"`). A sign for now or for today stays on top, and without a plan the finding stays first.
+   On the Flip5's 360 × 800 her first step is on the first screen (Version 39.59's promise; the heavy-flow card had pushed it below).
+2. **The PIN she skipped.** When she asks for a lock while joining (a shared phone's kit, `kit.lock`), the PIN is asked on her
+   first Home (Version 34.1). If she closes it, Sakhi asks once more, on her first private page after that (`PIN_ROUTES`;
+   `state.prompts.pinWant`). Cancel there is her no: Sakhi doesn't ask again, and App lock stays in Me. Setting a PIN from either
+   ask clears both. A phone that never asked for a lock is not asked. The second ask is one more `else if` in the first Home's
+   chain, so on the render that asks for her PIN nothing else is set off ("What's new", Android's "Allow").
+3. **Under 40, never "menopause".** Joining's "My periods have stopped" under 40 now speaks as the stage sheet does (Version
+   39.65): the details screen opens with the reviewed line "Periods that stop before 40 are not menopause. See a gynaecologist…"
+   (`meno_tl_poi0`); Your Sakhi's stage reads "My periods have stopped" (`stage_meno`), not "Menopause"; Today's card offers no
+   "Menopause care" until her doctor has seen her (`poiOk`). From 40 nothing changes. Left for the doctors: joining still stops
+   her cycle count here, where the stage sheet keeps counting under 40.
+4. **One home for her week's count.** The check-in's "3 of 7 days this week" is gone (`plan_ci_week` removed): it counted days
+   with any step, while Today's dots and My plan's rings count full days. After the check-in she sees today's count and
+   tomorrow's steps only (Version 39.72).
+5. **A finding a week on.** On Today, a "See a doctor this week" finding she has seen for 7 days or more asks "Still to see a
+   doctor?" (`explain_lv_still`), as "See a doctor this month" does after 4 weeks (Version 39.57). The day she first saw it now
+   counts from either of Today's cards, alone or beside her plan's offer (`lvToday`; before, only the card alone kept it, so
+   after weeks beside the offer it started again at "this week").
+6. **Not changed:** "Bleeding · 27 Oct – now" in My cycles was the text dump running two things together. On the screen each
+   cycle's dates have their own row, and her bleeding days are pink pills.
+7. **One way to her plan on Your Sakhi.** "Make my plan" (her goal's plan, Version 39.61) is the one way, also when her dates
+   show a sign. The sign cards of "What your dates show" keep "Ask a doctor" and "See a gynaecologist" but no longer offer a plan
+   of their own (Version 39.26 offered "Stronger blood" beside heavy flow, "My cycle plan" beside long gaps: two more ways, and
+   not always the goal she chose). `diaryCards({ noPair: true })`; on What your diary shows the plan row stays (Version 39.25),
+   and Today's card still pairs a finding with her plan's offer (Version 39.27).
+8. **"Fasting?" once she fasts.** The check-in's "Fasting?" card (today, tomorrow) shows only while she has marked a fast in the
+   last 90 days. She marks her first one where it always was, in her food step's "Why?" ("Fasting today?"). `d.fast` keeps 7
+   days, so the plan keeps `d.fastAt`, the latest day she marked; undoing a mark takes it back.
+9. **Small ones.** The call form's topics are her stage's goals (and its neighbour's: cycle and PMOS, both midlife tiles), never
+   those of a stage she has left. The Kegel trainer's moving figure is `aria-hidden` (screen readers heard "Unable to play media.";
+   its words say the same). A search box has its own clear button, "Clear search" (`search_clear`), in place of the browser's
+   unnamed ×, hidden while the box is empty.
+
+`test/uxfix.mjs` (36 checks): sections 1 to 5 and 7 to 9 as above, and Hindi at 360 px with no page errors (10).
+The suites that held the old lines follow: `test/companion.mjs` 4, `test/follow.mjs` 6 and `test/notices.mjs` 2, 7 and 8 (the day's
+count only), `test/foodsteps.mjs` 6 and 8 (a fast first), and `test/joindates.mjs` 2, `test/planfirst.mjs` 4 and `test/fourwalk.mjs` 14
+("Make my plan" on Your Sakhi when her dates show a sign).
+
+## 119. Version 39.76: the Play walk's UI and UX gaps
+
+Mohit, 6 Nov: "can you again test live walkthrough on phone what are other UI UX gaps which needs correction before we upload on
+playstore", then "fix all". His Flip5 (vc 131) and a test copy of the app (first run in English and Hindi) were walked with a scan of
+Android's accessibility tree on every screen: what TalkBack and Play's pre-launch report read.
+
+1. **Names Android keeps.** On his phone the WebView drops a name given only by `aria-label` to a toggle (`aria-pressed`), a
+   switch's `<label>`, and every name of a text box (its label, `aria-label`, title, placeholder): TalkBack said "toggle button" or
+   "edit box" and nothing more. Tried on the phone, what does arrive is a plain button's `aria-label`, a switch's `aria-label`, and a
+   text box's description, as its hint. So:
+   - the step ticks (Today, My plan) and the pregnancy tablet grid are plain buttons whose name says the state ("Mark done: …" /
+     "Done: …. Tap to undo"); the read-aloud speakers say "Listen to this" or "Read this screen aloud", and "Stop reading" while they
+     read (`say_stop`); none carries `aria-pressed` now (a chip with visible words keeps it: its words arrive);
+   - core `axNames(root)`, on every page, sheet and joining screen: a switch takes its row's words as `aria-label`; a text box takes
+     its label (or `aria-label`, or placeholder) as a description, from a hidden span right after it (`aria-describedby`);
+   - the calendars' arrows say "Previous month" and "Next month" (`cal_prev`, `cal_next`; they said "prev" and "next").
+2. **A sheet holds the screen reader.** While a sheet is open the page behind it (`#app`) and the + button are `inert` and
+   `aria-hidden` (an observer on `#sheet-root`; `aria-modal` alone didn't hide them on Android), and so is the page while the + menu
+   is open (`behindSync`). Every sheet's handle is a "Close" button (`fab_close`).
+3. **Taps of 48 px** where she taps most, the look unchanged: "Why?" and "How to do it" (they were 18 px tall), "Add a past period"
+   in Sakhi's reason box (36), "I've seen a doctor" (40), the plan's header line on Today, and every icon button (Back, Plan
+   settings, the calendar's arrows): 48 px boxes with negative margins, so each takes the room it took before (44 px, or 40 under
+   375 px) and nothing moves (a title such as "Perimenopause score" still fits at 200% text, and Calm breath's circle stays above
+   the player's buttons). The top bar keeps its 44 and 40. Her first step stays on the first screen at 360 × 800.
+4. **The + button out of the way.** Scrolling down into a page puts it away; scrolling up, the top or the end of the page brings it
+   back, and a redraw of the same page keeps it as it was (it sat on the Cramps chip and on a step's tick).
+5. **Her pain, asked once.** Joining's "Pain that stops my day" is the plan's "It stops my day": "Make my plan" carries it as known,
+   so "How bad is it, usually?" isn't asked again (before, `intake.pain === true` matched no option, and a quick tap made the plan
+   page say "Mild" while Your Sakhi said "Period pain that stopped your day").
+6. **"You agree" above the keyboard.** On a touch screen, while a sign-up box has focus, the picture at the top steps aside, so the
+   number, Send code and "By continuing, you agree to this: How Sakhi keeps your data" all stay above the keyboard.
+7. **About and privacy.** A "Privacy policy" link to the full policy (Play wants it in the app as well as in the listing): a build
+   sets its https address with `SAKHI_PRIVACY` (`CFG.privacy`); without one there is no link. A Play build (`PLAY=1`, `CFG.store =
+   'play'`) shows no coordinator tool ("Picture check").
+8. **Your Sakhi:** "Fertile days and ovulation (estimate)" only while she tries (Version 39.72's rule for Explore's tile); Cycles'
+   "What Sakhi can tell you" keeps it for every woman.
+9. **Lines that don't break:** the welcome's "1‑minute" (a non-breaking hyphen) and the plan's "1 day" (a non-breaking space).
+
+Not changed: chips stay 44 px (the check-in's answers, the feelings): 48 would add a row's height across the app; the calendar's
+days stay 41 px (seven to a row at 360). Left for Mohit: Android's own font size (Sakhi follows it; his phone is at 1.0, and Claude
+may not change his settings), and `SAKHI_PRIVACY` once the page is live.
+
+`test/playfix.mjs` (37 checks): sections 1 to 9 as above (2.5: a redraw with the + menu open never leaves the page inert; 2.6: on a
+tall sheet the handle keeps its 48 px, so the first row stays inside the sheet), with Hindi and no page errors. `test/firstday.mjs` 1
+takes either hyphen; `test/pictures.mjs` 16 reads "Stop reading" where it read `aria-pressed`; `test/knowledge.mjs`'s search closes an
+open answer sheet first, as she does (it typed into the page behind the sheet, which is inert now); `test/joindates.mjs` 3 expects
+no fertile-days line on Your Sakhi for a woman tracking her periods.
+On the phone, the test copy's scan of 23 screens (joining, sign-up, Your Sakhi, the plan's questions and page, Today, the check-in,
+the day page, the calendar, search, Plan settings, Reminders) found no unnamed control, and the page behind the day page gone.
+
+## 120. Version 39.77: Qura doctor or government doctor, place by place
+
+Mohit, 6 Nov: "on every place i dont want to show qura doctor some places it should be only government doctor and some places only qura
+doctor"; his 96 choices on the choice page (claude.ai/artifact/JbnFnzN9W5NC9tq7xQQRzL, saved in its db at `choices/mohit`), the rule "Qura
+has to collect leads for PCOD/PCOS, fertility (help to conceive naturally), menopause, post pregnancy, and any help with cycle concerns;
+rest everything suggest to see a gynaecologist / Govt. doctor free portal", and "Qura doctors are Ayurveda doctors (BAMS) help you with
+natural and ayurvedic treatments". The audit: `docs/doctor-choice-audit-2026-11-06.md`; the screens: `test/doctor-walk.mjs`,
+`test/doctor-shots.mjs` (with `test/doctor-rows.mjs` and `test/doctor-page.mjs`, which make the choice page).
+
+1. **One rule in core, `DOC_WHO`.** Each place has one kind of doctor: `Q` a Qura doctor, `G` her gynaecologist or a free government
+   doctor, `B` both, `H` by her answer to "Where do you usually go?" (`G` for a government hospital or her ASHA, `Q` for everyone
+   else). `S.docWho(place)` answers `Q`, `G` or `B`; a place is a route or a key (`help`, `help-preg`, `help-page`, `search`, `sign`,
+   `poi`, `plan`, `plan-preg`, `learn-<group>` …); a route not named takes its prefix (`contra-m-pill` takes `contra`), a topic page its
+   hub (`TOPIC_HUB`), anything else `B`. With no place, the current route. `S.quraOk(place)` and `S.govOk(place)` are the two halves.
+2. **The cards.** `S.quraAsk(topic)`: "Talk to a Qura doctor", the line `qura_std` and "Ask a doctor about this". `S.govCard()`: "See a
+   gynaecologist or a free government doctor" (`gov_h`, `gov_p`) with Call my doctor (her saved number, never on a shared phone),
+   "Free online doctor (eSanjeevani)" (`https://esanjeevani.mohfw.gov.in/`) and Care near me (`access-care`). `S.docCard(place,
+   topic)` draws the one, the other, or both. Core's route `doc-free` ("See a doctor") is the government card on a page of its own: Help
+   opens it on a `G` answer, a sign's `docNext` and search with no match link to it, and the "Govt. services" topic holds its tile
+   ("Free government doctor"; the topic no longer lists the services articles).
+3. **Where it reads.** Help's doctor row (`help` H, `help-preg` G), the Help and safety page (`B`), search with no match (`B`), the doctor
+   screen (`Q`: `ask_p` in Mohit's words, in a pregnancy too), diary signs (`sign` Q: no "See a gynaecologist" button), the before-40
+   card (`poi` Q), her plans (`plan` Q; My pregnancy `plan-preg` G: My plan's care team, the reveal's doctor page, the end card, the day-3
+   card, the quiet weeks card, the doctor check and the 4-week check send her to `doc-free`), My plan's own-doctor row on every answer,
+   and every module page through its old card helper (cond, periods, meno, contra, intimate, loss, post, preg, pregtest, pregtools,
+   screen, teen, tools, access, iron, ttc, perplan). Learn (`renderArticle`): a `Q` group shows "How Qura can help" with `qura_std` and
+   drops its "Free…" line; a `G` group (pregnancy) shows the government card and no "Ask a doctor"; `B` (intimate) shows both; the two
+   under-18 articles keep their own lines.
+4. **What goes on a `Q` place:** government doctor buttons and "where to go" lines (`S.govOk()`), never the lines that say where a
+   test, tablet or kit is free, a "how soon" line or a danger line. **On a `G` place:** the Qura card, every Qura sentence and "Ask a
+   doctor"; the government card comes in.
+5. **New strings** (core, English and Hindi): `qura_std`, `gov_h`, `gov_p`, `gov_esanj`, `gov_near`, `gov_page`, `gov_tile`,
+   `gov_tile_s`, `hs_doc_s_gov`; post `f_ask_p2` (and `_doc`), `hub_warn`. Changed: `ask_p`, `ask_p_preg`, `hs_doc_s_preg`, `doc_sees`,
+   `ml_hrt`, `plan_doc_d`, `plan_rv_doc_heavy`, `plan_bdoc_qura`, `plan_ask_p`, post `rx_c`, contra's method lines, pregtest's abortion
+   line, ttc's `BAMS`, perplan's `QURA`. Wording: section 19.77 of the review (waits for the doctors' read).
+
+6. **Safety lines stay.** A pregnancy or after-birth article whose Qura box goes keeps that box's sentences that aren't about Qura in "When
+   to see a doctor" (core `careSentences`: ", not Qura" and "Tell her" handled); pregnancy food and the birth plan keep their one non-Qura
+   line beside the government card.
+7. **"How Qura helps" rewritten** (Mohit, 6 Nov: "Rewrite it"): who Qura's doctors are in his words, the five Qura areas, the call,
+   everything else to her gynaecologist or a free government doctor; no line on what they cannot do. Its own "How Qura can help" box
+   doesn't show (the body says it). **No doctor named anywhere** ("Dont give doctor names anywhere"): `listen`, `plan_rv_aud`, the
+   article's "Our doctors" line and one source; the four retired languages' `listen` is gone (they fall back).
+
+`test/doctorchoice.mjs` (53 checks; 6.4 the rewritten article, 8.6 no doctor's name in the strings, the Learn library or the
+modules' words): the rule by answer; Help, the Help page and search; the "See a doctor" page (her doctor first, none on
+a shared phone); Mohit's words on the doctor screen and no line on any live screen (5 women, both answers) saying Qura's doctors only help
+with food, sleep or routine, can't treat or refer on; 18 `G` pages and 14 `Q` pages on both answers; the removed "where to go" lines;
+both on the loss pages; diary signs without "See a gynaecologist"; every Learn article on both answers, and the pregnancy articles' safety
+lines (6.3); the "Govt. services" topic; her plans' cards (seeded); Hindi; no page errors. Updated for Mohit's choices: `test/records.mjs` 5,
+`care.mjs` 6 and 9 (the three `_doc` strings now equal to their base are gone), `baby.mjs` 3 and 11, `latepreg.mjs` 8, `termwalk.mjs` 3,
+`planwalk.mjs` 8, `planfor.mjs` 5, `stagerules.mjs` 2, `ladder.mjs` 2 and 7, `retire.mjs` 6.2, `wording.mjs` 1.2 and 5.2, `firstday.mjs` 15. `npm run golden:record`: the 7
+pregnancy plans' care team (the free government doctor for a Qura doctor); `npm run progs:record`: heavy@1 and heavy@2 ("Bleeding this
+heavy needs a doctor's check and an Hb test.").

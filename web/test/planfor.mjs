@@ -6,7 +6,8 @@
 //     guides (full page and quick answer), the routines and the topic pages;
 //   3 another plan running: nothing (hers stays hers); her own plan's guides still name it;
 //   4 none on a shared phone, in a pregnancy, before 40 with her periods stopped, or where no plan fits her stage;
-//   5 the three medical guides lead with "Ask a Qura doctor about this"; the iron tablets page asks a Qura doctor too;
+//   5 the three medical guides lead with "Ask a Qura doctor about this"; the iron tablets page sends her to a gynaecologist or a free
+//     government doctor (Version 39.77);
 //   6 Hindi at 360 px; no page errors.
 // Usage: node test/planfor.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
@@ -155,7 +156,8 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
   check('5 "Who treats what" is gone: it lands on Learn', (await hash(a.page)) === '#learn', await hash(a.page));
   check('5 the bleeding and burning guides lead with "Ask a Qura doctor about this"', ['midlife.bleeding-after-menopause', 'intimate.burning-when-peeing'].every((k) => lead[k].qura1 && !lead[k].govtFirst), lead);
   await go(a.page, 'iron');
-  check('5 the iron tablets page asks a Qura doctor', /Ask a doctor\b/.test(await txt(a.page, '#view [data-ask]')), await txt(a.page, '#view [data-ask]')); await done(a);
+  /* Version 39.77 (Mohit's choice D17): iron tablets go to her doctor or a free government doctor */
+  check('5 the iron tablets page: her gynaecologist or a free government doctor, no Qura button', !(await has(a.page, '#view [data-ask]')) && /See a gynaecologist or a free government doctor/.test(await txt(a.page, '#view')), await txt(a.page, '#view .doc-gov')); await done(a);
 }
 
 // ---------- 6 Hindi at 360 px ----------

@@ -238,6 +238,8 @@
     maa_h: ['Free help: the MAA programme', 'मुफ़्त मदद: MAA कार्यक्रम'],
     baby_h: ['Take your baby to hospital now if', 'बच्चे को अभी अस्पताल ले जाएँ अगर'],
     f_ask_h: ['Feeding not going well?', 'दूध पिलाने में दिक़्क़त?'],
+    f_ask_p2: ['Your ASHA, ANM or the nurse at a government hospital can watch a feed for free.', 'आपकी ASHA, ANM या सरकारी अस्पताल की नर्स मुफ़्त में एक फ़ीड देखकर मदद कर सकती हैं।'], f_ask_p2_doc: ['A nurse at your hospital, your doctor, or your ASHA or ANM can watch a feed and help.', 'अस्पताल की नर्स, आपकी डॉक्टर, या ASHA या ANM एक फ़ीड देखकर मदद कर सकती हैं।'],   /* Version 39.77 */
+    hub_warn: ['For warning signs, go to a hospital first.', 'ख़तरे के संकेत हों तो पहले अस्पताल जाएँ।'],
     f_ask_p: ['Your ASHA, ANM or the nurse at a government hospital can watch a feed for free. A Qura doctor can also talk it through on a free call.', 'आपकी ASHA, ANM या सरकारी अस्पताल की नर्स मुफ़्त में एक फ़ीड देखकर मदद कर सकती हैं। Qura की डॉक्टर भी मुफ़्त कॉल पर बात कर सकती हैं।'], f_ask_p_doc: ['A nurse at your hospital, your doctor, or your ASHA or ANM can watch a feed and help. A Qura doctor can also talk it through on a free call.', 'अस्पताल की नर्स, आपकी डॉक्टर, या ASHA या ANM एक फ़ीड देखकर मदद कर सकती हैं। Qura की डॉक्टर भी मुफ़्त कॉल पर बात कर सकती हैं।'],
     f_topic: ['Breastfeeding', 'स्तनपान'],
 
@@ -260,7 +262,7 @@
     s_bf6: ['If breastfeeding: not before {d}', 'स्तनपान में: {d} से पहले नहीं'], s_ask: ['Ask your ANM when', 'ANM से पूछें कब'], s_ask_doc: ['Ask your doctor when', 'डॉक्टर से पूछें कब'],
     s_7d: ['Within 7 days of birth, or from {d}', 'जन्म के 7 दिन के अंदर, या {d} से'],
     free_c: ['All of these are free at government facilities. Your ASHA can bring condoms and pills home. Copper-T and Antara are given by a trained ANM, nurse or doctor; sterilisation by a doctor at a CHC or hospital.', 'ये सब सरकारी जगहों पर मुफ़्त हैं। ASHA कंडोम और गोलियाँ घर ला सकती हैं। Copper-T और अंतरा प्रशिक्षित ANM, नर्स या डॉक्टर लगाती हैं; नसबंदी CHC या अस्पताल में डॉक्टर करते हैं।'], free_c_doc: ['Your gynaecologist can give any of these. All are also free at government facilities, and your ASHA can bring condoms and pills home.', 'आपकी गायनेकोलॉजिस्ट इनमें से कोई भी तरीक़ा दे सकती हैं। ये सब सरकारी जगहों पर मुफ़्त भी हैं, और ASHA कंडोम और गोलियाँ घर ला सकती हैं।'],
-    rx_c: ["Qura's doctors are BAMS doctors. They can talk through your options, but pills, the injection, Copper-T and sterilisation come from your ANM, a government facility or an MBBS gynaecologist. Qura refers you.", 'Qura की डॉक्टर BAMS हैं। वे आपके विकल्पों पर बात कर सकती हैं, पर गोलियाँ, इंजेक्शन, Copper-T और नसबंदी आपकी ANM, सरकारी अस्पताल या MBBS स्त्री-रोग विशेषज्ञ से मिलती हैं। Qura आपको वहाँ भेजती है।'], rx_c_doc: ['Qura\'s doctors are BAMS doctors. They can talk through your options, but pills, the injection, Copper-T and sterilisation come from an MBBS gynaecologist, your ANM or a government facility. Qura refers you.', 'Qura की डॉक्टर BAMS हैं। वे आपके विकल्पों पर बात कर सकती हैं, पर गोलियाँ, इंजेक्शन, Copper-T और नसबंदी MBBS स्त्री-रोग विशेषज्ञ, आपकी ANM या सरकारी अस्पताल से मिलती हैं। Qura आपको वहाँ भेजती है।'],
+    rx_c: ['Pills, the injection, Copper-T and sterilisation come from your ANM, a government facility or an MBBS gynaecologist.', 'गोलियाँ, इंजेक्शन, Copper-T और नसबंदी आपकी ANM, सरकारी अस्पताल या MBBS स्त्री-रोग विशेषज्ञ से मिलती हैं।'], rx_c_doc: ['Pills, the injection, Copper-T and sterilisation come from an MBBS gynaecologist, your ANM or a government facility.', 'गोलियाँ, इंजेक्शन, Copper-T और नसबंदी MBBS स्त्री-रोग विशेषज्ञ, आपकी ANM या सरकारी अस्पताल से मिलती हैं।'],   /* Version 39.77: no line about Qura here */
     compare: ['Compare all methods', 'सभी तरीक़ों की तुलना करें'],
     c_topic: ['Contraception after birth', 'डिलीवरी के बाद गर्भनिरोध'],
     c_intro: ['What is safe while breastfeeding, and when each method can start.', 'स्तनपान के दौरान क्या सुरक्षित है, और हर तरीक़ा कब शुरू हो सकता है।'],
@@ -300,7 +302,11 @@
     pf_top: ['The top level. Keep going: this keeps you strong.', 'सबसे ऊँचा लेवल। करती रहें: इससे आप मज़बूत बनी रहेंगी।'],
     pf_capped: ['Your sets stay lying down until a doctor says more is fine.', 'जब तक डॉक्टर आगे बढ़ने को न कहें, आपके सेट लेटकर ही रहेंगे।'],
     pf_back: ['Welcome back. One level back, to build up again.', 'फिर से स्वागत है। एक लेवल पीछे, ताकि ताक़त फिर से बने।'],
-    pf_go: ['Start a set', 'एक सेट शुरू करें'], ph_qs: ['Quick squeeze', 'जल्दी कसें'], ph_qr: ['Let go', 'छोड़ें'], qrep: ['Quick squeeze {i} of {n}', 'जल्दी: {n} में से {i}'],
+    pf_go: ['Start a set', 'एक सेट शुरू करें'],
+    /* Version 39.73 (Mohit's phone walk, 6 Nov): during a set, the start of the reviewed "Find the right muscles" line 3; after
+       a set, the next one by its number */
+    pf_breathe: ['Keep breathing normally', 'साँस आम तरह से लेती रहें'], pf_go_n: ['Start set {n}', 'सेट {n} शुरू करें'],
+    ph_qs: ['Quick squeeze', 'जल्दी कसें'], ph_qr: ['Let go', 'छोड़ें'], qrep: ['Quick squeeze {i} of {n}', 'जल्दी: {n} में से {i}'],
     pf_hurt: ['It hurts', 'दर्द हो रहा है'],
     pf_hurt_t: ['Stopped. If it hurts again, your plan moves to breathing and letting go.', 'रोक दिया। फिर दर्द हुआ, तो आपका प्लान साँस लेने और ढीला छोड़ने पर चला जाएगा।'],
     pf_hurt_t2: ['Your plan now has breathing and letting go instead of Kegels. See a doctor about the pain.', 'अब आपके प्लान में कसने की जगह साँस लेना और ढीला छोड़ना है। दर्द के लिए डॉक्टर को दिखाएँ।'],
@@ -559,8 +565,12 @@
       try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(n).then(done, () => S.toast(n)); else S.toast(n); } catch (e) { S.toast(n); }
     }); });
   }
+  /* Version 39.77 (Mohit's choices D37 to D42): after a birth is a Qura area (recovery, mood, pelvic floor); feeding help and contraception go to
+     her own care or a free government doctor. The Qura card says who Qura's doctors are, in his words. */
   function askCard(hKey, pKey, topicKey) {
-    return '<div class="card soft"><h3>' + esc(T(hKey)) + '</h3><p class="small">' + esc(T(pKey)) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T(topicKey)) + '">' + esc(t('ask_qura')) + '</button></div>';
+    if (S.quraOk && !S.quraOk()) return (pKey === 'f_ask_p' ? '<div class="card soft"><h3>' + esc(T(hKey)) + '</h3><p class="small">' + esc(T('f_ask_p2')) + '</p></div>' : '') + (S.govCard ? S.govCard() : '');
+    const p = S.quraOk ? t('qura_std') + (pKey === 'hub_ask_p' ? ' ' + T('hub_warn') : '') : T(pKey);
+    return '<div class="card soft"><h3>' + esc(T(hKey)) + '</h3><p class="small">' + esc(p) + '</p><button type="button" class="btn sm secondary pst-self" data-ask="' + esc(T(topicKey)) + '">' + esc(t('ask_qura')) + '</button></div>';
   }
   function acc(title, inner, open, at) { return '<details class="pst-acc"' + (open ? ' open' : '') + (at ? ' data-at="' + at + '"' : '') + '><summary>' + esc(title) + '</summary><div class="pst-body">' + inner + '</div></details>'; }
   function related(cur) {
@@ -821,6 +831,10 @@
   /* A new owner (Delete everything, a sample, a restore) starts with no answers, drafts or running timers. */
   if (S.onOwnerChange) S.onOwnerChange(() => { stopAll(); editBirth = false; draft = null; moodQ = { q1: null, q2: null }; PF = null; pfDone = null; });
   const pfSets = (st, iso) => Number(st.pf[iso] || 0);
+  /* Version 39.73: her first sets begin from "Get into position" (her position, what to squeeze and to keep breathing, then
+     Start); from her 3rd set ever, Today's play button starts the set at once, as before */
+  const PF_INTRO = 3;
+  const pfTotal = (st) => Object.keys(st.pf).reduce((n, x) => n + (/^\d{4}-\d{2}-\d{2}$/.test(x) ? pfSets(st, x) : 0), 0);
   function pfDaysDone(st, k) { let c = 0; for (let i = 0; i < k; i++) if (pfSets(st, S.toISO(S.addDays(S.today(), -i))) > 0) c++; return c; }
   function pfPhaseLabel() { return PF.phase === 'ready' ? T('ph_ready') : (PF.phase === 'sq' ? T('ph_sq') : (PF.phase === 'qs' ? T('ph_qs') : (PF.phase === 'qr' ? T('ph_qr') : T('ph_rel')))); }
   function pfPaint() {
@@ -830,7 +844,9 @@
     const q = PF.phase === 'qs' || PF.phase === 'qr';   /* Version 39.56: the quick squeezes after the holds */
     ph.textContent = PF.paused ? T('pf_paused') + ' · ' + pfPhaseLabel() : pfPhaseLabel(); ph.dataset.phase = PF.phase === 'qs' ? 'sq' : PF.phase;
     sec.textContent = String(Math.ceil(left / 1000)); rep.textContent = q ? TF('qrep', { i: PF.qi, n: PF.quick }) : TF('rep', { i: PF.i, n: PF.reps });
-    bar.style.width = (PF.phase === 'sq' || PF.phase === 'qs' ? Math.round((1 - left / tot) * 100) : (PF.phase === 'rel' || PF.phase === 'qr' ? Math.round((left / tot) * 100) : 0)) + '%';
+    /* Version 39.73: the lift beside her rises over the squeeze and settles as she lets go (the squeeze itself can't be seen) */
+    bar.style.height = (PF.phase === 'sq' || PF.phase === 'qs' ? Math.round((1 - left / tot) * 100) : (PF.phase === 'rel' || PF.phase === 'qr' ? Math.round((left / tot) * 100) : 0)) + '%';
+    const lift = document.getElementById('pst-plift'); if (lift) { lift.dataset.phase = PF.phase === 'qs' ? 'sq' : (PF.phase === 'qr' ? 'rel' : PF.phase); lift.classList.toggle('paused', !!PF.paused); }
     pfFigPause();
     return true;
   }
@@ -843,16 +859,16 @@
   function pfMove(pos) {
     const f = window.SAKHI_FIG; if (!f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
     const k = PF_POSE[pos] || PF_POSE.lie; const still = pfStill(k); const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
-    const m = loop && !pfReduced() ? '<video class="pst-fig-m" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+    const m = loop && !pfReduced() ? '<video class="pst-fig-m" aria-hidden="true" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
       : (still ? '<img class="pst-fig-m" src="' + still + '" alt="">' : '');
-    return m ? '<div class="pst-fig" id="pst-fig">' + m + '</div>' : '';
+    return m ? '<div class="pst-fig' + (k === PF_POSE.lie ? ' pst-fig-lie' : '') + '" id="pst-fig">' + m + '</div>' : '';   /* Version 39.73: lying, framed without the empty floor */
   }
   /* the belly gap check after a birth, on the figure: on her back, knees bent, her fingertips at her belly button; her head and
      shoulders lift a little as she looks down at her tummy and feels, then she lies back */
   function gapFig() {
     const f = window.SAKHI_FIG; if (!f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
     const still = pfStill('gapup'); const loop = (f.loops || []).indexOf('gapcheck') >= 0 ? 'fig/v/gapcheck.webm' : '';
-    const m = loop && !pfReduced() ? '<video class="pst-fig-m" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
+    const m = loop && !pfReduced() ? '<video class="pst-fig-m" aria-hidden="true" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
       : (still ? '<img class="pst-fig-m" src="' + still + '" alt="">' : '');
     return m ? '<div class="pst-fig pst-gapfig">' + m + '</div>' : '';
   }
@@ -886,7 +902,9 @@
     else if ((PF.phase === 'rel' || PF.phase === 'qr') && (PF.qi || 0) < (PF.quick || 0)) { PF.qi = (PF.qi || 0) + 1; PF.phase = 'qs'; PF.end = Date.now() + 1000; buzz(25); pfCue(true, true); }
     else if (PF.phase === 'qs') { PF.phase = 'qr'; PF.end = Date.now() + 2000; pfCue(false, true); }
     else {
-      const st = PF.store; const k = pfDay(); st.pf[k] = pfSets(st, k) + 1; persist(); pfDone = { store: st, n: st.pf[k] }; PF = null; stopPfTick();
+      /* Version 39.73 (Mohit's phone walk: two finished sets, one counted): the set counts in her diary as it is now, never in a
+         copy kept from when the set began */
+      const st = store(); const k = pfDay(); st.pf[k] = pfSets(st, k) + 1; persist(); pfDone = { store: st, n: st.pf[k] }; PF = null; stopPfTick();
       try { if (S.plan && S.plan.pelvic && S.plan.pelvic.sync) S.plan.pelvic.sync(); } catch (e) { /* her plan's rings follow */ }
       S.render(); return;
     }
@@ -903,13 +921,15 @@
     const st = store(); if (PF && PF.store !== st) PF = null; if (pfDone && pfDone.store !== st) pfDone = null;
     const plan = pfPlan(); const P0 = plan ? S.plan.pelvic : null; const lv = plan ? P0.level() : null; const rl = !!(plan && P0.relax()); const m = plan ? P0.target() : 3;
     const js = !!(plan && P0.joinSafe && P0.joinSafe());   /* her joined sets: the signs that need a doctor first, once */
-    if (plan && !rl && lv && !js && S.mem.pfAuto && !PF) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos }; }   /* Today's play button */
+    if (plan && !rl && lv && !js && S.mem.pfAuto && !PF && pfTotal(st) >= PF_INTRO) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos }; }   /* Today's play button */
     S.mem.pfAuto = false;
     const hold = [3, 5, 10].indexOf(Number(st.pfHold)) >= 0 ? Number(st.pfHold) : 5;
     const k = pfDay(); const sets = pfSets(st, k);
+    const intro = !!(plan && lv && !PF && !rl && !js && !sets && (P0.week() <= 1 || pfTotal(st) < PF_INTRO));   /* Version 39.73: Get into position */
     let trainer = '';
     if (PF) {
-      trainer = '<div class="card pst-center pst-trainer">' + pfMove(PF.pos) + '<div class="pst-phase" id="pst-pph" data-phase="' + PF.phase + '"></div><div class="bigtimer" id="pst-psec">' + PF.hold + '</div><div class="pst-bar pst-full"><i id="pst-pbar" style="width:0%"></i></div><p class="small" id="pst-prep"></p>' +
+      trainer = '<div class="card pst-center pst-trainer"><div class="pst-stage">' + pfMove(PF.pos) + '<div class="pst-lift" id="pst-plift" data-phase="' + PF.phase + '" aria-hidden="true"><i id="pst-pbar" style="height:0%"></i></div></div>' +
+        '<div class="pst-phase" id="pst-pph" data-phase="' + PF.phase + '"></div><p class="small pst-breathe">' + esc(T('pf_breathe')) + '</p><div class="bigtimer" id="pst-psec">' + PF.hold + '</div><p class="small" id="pst-prep"></p>' +
         '<div class="grid2 pst-full pst-ctl"><button type="button" class="btn secondary" id="pst-ppause">' + esc(PF.paused ? T('pf_resume') : T('pf_pause')) + '</button><button type="button" class="btn" id="pst-pstop">' + esc(T('pf_stop')) + '</button></div>' +
         (PF.plan ? '<button type="button" class="linkbtn pst-hurt" id="pst-phurt">' + esc(T('pf_hurt')) + '</button>' : '') + '<p class="small">' + esc(T(PF.plan ? 'pf_leave2' : 'pf_leave')) + '</p></div>';
     } else if (js) {
@@ -919,10 +939,15 @@
       trainer = '<div class="card pst-relax"><h3>' + esc(T('pf_relax_h')) + '</h3><p class="small">' + esc(T('pf_relax_p')) + '</p>' + (has('calm-breaths') ? '<button type="button" class="btn primary block" data-go="calm-breaths">' + esc(T('pf_relax_b')) + '</button>' : '') + '<button type="button" class="btn sm secondary" data-ask="' + esc(T('pf_topic2')) + '">' + esc(t('ask_qura')) + '</button><button type="button" class="btn sm" id="pst-painok">' + esc(t('plan_pf_pain_ok')) + '</button></div>';   /* the test pass: a way back when her sets join another plan */
     } else if (plan && lv) {
       const note = lv.back ? T('pf_back') : (lv.capped ? T('pf_capped') : (lv.top ? T('pf_top') : (lv.left === 1 ? T('pf_next1') : TF('pf_next', { n: lv.left }))));
-      trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done_m', { n: pfDone.n, m: m })) + '</strong></p>' + (P0.knack() ? '<p class="small pst-knack">' + esc(T('pf_knack')) + '</p>' : '') + '</div>' : '') +
-        '<div class="card pst-lv">' + pfMove(lv.pos) + '<div class="pst-lv-b"><span class="eyebrow">' + esc(TF('pf_lv', { n: lv.n, p: T('pf_pos_' + lv.pos) })) + '</span><p><strong>' + esc(TF('pf_lv_do', { r: lv.reps, h: lv.hold })) + '</strong></p>' +
-        (lv.quick ? '<p class="small">' + esc(TF('pf_lv_q', { q: lv.quick })) + '</p>' : '') + '<p class="small pst-lv-n">' + esc(note) + '</p></div></div>' +
-        (P0.period() ? '<p class="small pst-pd">' + esc(t('plan_pf_pd')) + '</p>' : '') + '<button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_go')) + '</button>';
+      /* Version 39.73: before her first sets, one card to get into position (the level's figure and words, then the reviewed
+         "Find the right muscles" lines) with Start under it; after a set, the next set's Start straight under "Set done" */
+      const next = pfDone && pfDone.n < m;
+      const startB = '<button type="button" class="btn primary block" id="pst-pstart">' + esc(next ? TF('pf_go_n', { n: pfDone.n + 1 }) : T('pf_go')) + '</button>';
+      trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done_m', { n: pfDone.n, m: m })) + '</strong></p>' + (P0.knack() ? '<p class="small pst-knack">' + esc(T('pf_knack')) + '</p>' : '') + '</div>' : '') + (next ? startB : '') +
+        '<div class="card pst-lv' + (intro ? ' pst-intro' : '') + '">' + pfMove(lv.pos) + '<div class="pst-lv-b"><span class="eyebrow">' + esc(TF('pf_lv', { n: lv.n, p: T('pf_pos_' + lv.pos) })) + '</span><p><strong>' + esc(TF('pf_lv_do', { r: lv.reps, h: lv.hold })) + '</strong></p>' +
+        (lv.quick ? '<p class="small">' + esc(TF('pf_lv_q', { q: lv.quick })) + '</p>' : '') + (intro ? '' : '<p class="small pst-lv-n">' + esc(note) + '</p>') + '</div>' +
+        (intro ? '<div class="pst-find pst-in"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>' : '') + '</div>' +
+        (P0.period() ? '<p class="small pst-pd">' + esc(t('plan_pf_pd')) + '</p>' : '') + (next ? '' : startB);
     } else {
       trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done', { n: pfDone.n })) + '</strong></p></div>' : '') +
         '<div class="card pst-free">' + pfMove('lie') + '<div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
@@ -935,9 +960,9 @@
     const course = pfDays.length ? '<p class="small pst-course">' + esc(day1 > 90 ? TF('pf_course_done', { n: pfDays.length }) : TF('pf_course', { d: day1, n: pfDays.length })) + '</p>' : '';
     const pg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant()); const born = !!sitBirth();   /* after a birth, as it was */
     const find = '<div class="card pst-find"><h3>' + esc(T('find_h')) + '</h3><ol class="steps">' + li(G.find) + '</ol></div>'; const early = plan && !PF && !rl && !sets && P0.week() <= 1;   /* her first week: finding the muscles first, until her first set of the day (Mohit's phone test: then her set's result and Start come first) */
-    v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early ? find : '') + trainer +   /* the test pass: her plan for this */
+    v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early && !intro ? find : '') + trainer +   /* the test pass: her plan for this; Version 39.73: in Get into position the lines are in its card */
       '<div class="card">' + (rl ? '' : '<div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div>') + '<div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
-      (S.canSave() ? '' : S.needDiary()) + (early || rl ? '' : find) +   /* Mohit's phone test: breathing and letting go teaches no squeezes */
+      (S.canSave() ? '' : S.needDiary()) + (early || intro || rl ? '' : find) +   /* Mohit's phone test: breathing and letting go teaches no squeezes */
       (born || pg ? acc(T('gap_h'), gapFig() + '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
         '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
         askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic)
@@ -1229,6 +1254,14 @@
       '.pst-phase[data-phase="sq"] { color: var(--accent); }',
       '.pst-lv { display: grid; gap: 12px; }',
       '.pst-fig { width: 100%; max-width: 280px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #EBEBEB; }', '.pst-fig-m { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; }',
+      /* Version 39.73: lying, framed on her and the mat; in a set, the lift beside her (rises on the squeeze, settles as she lets go) */
+      '.pst-fig-lie .pst-fig-m { aspect-ratio: 2 / 1; object-position: 50% 55%; }',
+      '.pst-stage { display: flex; align-items: stretch; gap: 10px; width: 100%; max-width: 340px; margin: 0 auto; }', '.pst-stage .pst-fig { flex: 1 1 auto; max-width: none; margin: 0; }',
+      '.pst-lift { position: relative; flex: 0 0 40px; min-height: 120px; border-radius: 20px; background: var(--accent-soft); overflow: hidden; margin: 0 auto; }',
+      '.pst-lift i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 20px; background: var(--accent); transition: height 0.2s linear, opacity 0.3s; }',
+      '.pst-lift[data-phase="rel"] i { opacity: 0.45; }', '.pst-lift[data-phase="ready"] i { opacity: 0; }', '.pst-lift.paused i { transition: none; }',
+      '.pst-breathe { margin: 2px 0 0; color: var(--muted); }',
+      '.pst-in { margin-top: 12px; text-align: left; }', '.pst-in h3 { font-size: 16px; margin: 0 0 6px; }',
       '.pst-free { display: grid; gap: 10px; }', '.pst-gapfig { margin-bottom: 10px; }', '@media (max-height: 720px) { .pst-fig { max-width: 160px; } }',
       /* Version 39.69: with the picture above, Pause and Stop stay above the tab bar on a short phone, as the player's do */
       '.pst-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); }',

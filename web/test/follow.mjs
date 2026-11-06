@@ -127,7 +127,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   await tap(a.page, '[data-ci="move:n"]'); await tap(a.page, '[data-ci="sleep:p"]'); await tap(a.page, '[data-ci-b="tired"]'); await tap(a.page, '#pl-ci-save');
   const x = (await plan(a.page)).log[TODAY]; const fb = await view(a.page);
   check('5 saving keeps what counted as it was counted (8 minutes stay 8), and last night\'s bedtime on today', x.min === 8 && x.ck.sleep === 'p' && x.ck.move === 'n' && x.ci === 1 && !x.ck.yoga, x);
-  check('6 the feedback: her count first, and not her goal line again (Version 39.72, the doctors\' review)', !/YOUR GOAL|A step towards more regular periods/.test(fb) && /today · \d of 7 days this week/.test(fb), fb);
+  check('6 the feedback: her count first (the day\'s; her week\'s is on Today and My plan, Version 39.75), and not her goal line again (Version 39.72, the doctors\' review)', !/YOUR GOAL|A step towards more regular periods/.test(fb) && /(done|partly) today(\n|$)/.test(fb) && !/of 7 days this week/.test(fb), fb);
   check('6 ... her strength days and tomorrow\'s routine', /Strength: 0 of 2 this week · next: Thursday/.test(fb) && /Tomorrow: Gentle start · \d+ min/.test(fb), fb);
   check('12 ... and the step she missed, for tomorrow: "Tomorrow, add: Walk 10 minutes after lunch and after dinner."', /2 done, 1 partly today/.test(fb) && /Tomorrow, add: Walk 10 minutes after lunch and after dinner\./.test(fb), fb);
   await shot(a.page, '6-feedback');

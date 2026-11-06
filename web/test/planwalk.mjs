@@ -205,7 +205,7 @@ const ttcAt = (startAgo, x) => trying(Object.assign({ mods: { plan: Object.assig
   check('8 not pregnant, no number: the doctor screen as before', !(await has(c, '#ask-mydoc')) && !(await has(c, '#ask-mydoc-add')));
   await done(c);
   const g = await open({ seed: cycSeed({ situation: { care: 'govt' }, mods: { plan: PMOS(10) }, intake: PMOS(10).intake }), hash: 'plan' });
-  check('8 the government route: no doctor\'s row', !(await has(g, '#view .pl-mydoc')));
+  check('8 the government route: her own doctor\'s row too (Version 39.77, Mohit\'s choice C2)', await has(g, '#view .pl-mydoc'));
   await done(g);
 }
 

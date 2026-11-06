@@ -316,7 +316,7 @@
      near her */
   const docNext = (k) => { const lbl = t(k === 'gyn' ? 'explain_gyn' : 'hs_doc'); const n = S.mydoc && !S.state.settings.discreet ? S.mydoc.get() : null;
     if (n) return '<a class="btn sm xp-doc" href="tel:' + esc(n) + '">' + esc(lbl) + '</a>';
-    const go = S.routeOwner('access-care') ? 'access-care' : null; if (!go) return '';   /* Version 39.68 (the doctors' review): the government doctor pages are gone; Care near me lists the places near her */
+    const go = 'doc-free';   /* Version 39.77: her gynaecologist or a free government doctor (eSanjeevani, Care near me) */
     return '<button type="button" class="btn sm xp-doc" data-go="' + go + '">' + esc(lbl) + '</button>'; };
   function actsHtml(f, compact, noPair) {
     const x = xOf(f); const b = (attrs, label, cls) => '<button type="button" class="btn sm' + (cls ? ' ' + cls : '') + '" ' + attrs + '>' + esc(label) + '</button>';
@@ -331,7 +331,7 @@
       if (freeGo) main.push(b('data-go="' + freeGo + '"', t('explain_free'), md ? '' : 'primary'));
       /* Version 39.70 (the doctors' review, part 2): Tele-MANAS is gone, so low mood leads with a Qura doctor too */
       if (f.lv !== 'today') main.push(b('data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '"', t('ask_qura'), 'primary'));
-      if (f.lv !== 'today' && DOC_NEXT[f.id]) main.push(docNext(DOC_NEXT[f.id]));
+      if (f.lv !== 'today' && DOC_NEXT[f.id] && (!S.docWho || S.docWho('sign') !== 'Q')) main.push(docNext(DOC_NEXT[f.id]));   /* Version 39.77 (Mohit's choice B1): a sign leads to a Qura doctor */
       if (S.canSave()) main.push(b('data-xp-rp="' + esc(f.key) + '"', t('explain_report')));
     } else if (f.lv === 'watch' && x.ask) more.push(b('data-ask="' + esc(tx(x.ask)) + '"', t('ask_qura')));
     const ck = CHECK[f.id];
@@ -357,12 +357,12 @@
       (x.todo && x.todo.length ? '<div class="xp-sec"><b>' + esc(t('explain_do')) + '</b>' + list(x.todo) + '</div>' : '') + actsHtml(f, false) + '</div>';
   }
   /* Version 39.1: Diary's What it shows draws the same cards, short: how soon, what, when to see a doctor, the buttons */
-  function diaryCard(f) {
+  function diaryCard(f, o) {
     const see = seeOf(f);
     return '<div class="card xp-card xp-dcard xp-' + f.lv + '" data-key="' + esc(f.key) + '"><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(t('explain_lv_' + f.lv)) + '</span><span class="small">' + esc(S.fmtD(S.fromISO(f.at))) + '</span></div>' +
-      '<h3>' + esc(title(f)) + '</h3>' + (see ? '<p class="small xp-dsee">' + esc(one(see)) + '</p>' : '') + actsHtml(f, true) + '</div>';
+      '<h3>' + esc(title(f)) + '</h3>' + (see ? '<p class="small xp-dsee">' + esc(one(see)) + '</p>' : '') + actsHtml(f, true, !!(o && o.noPair)) + '</div>';
   }
-  const diaryCards = () => { if (!S.canSave() || S.state.settings.discreet) return ''; const list = open(findings()); return list.length ? '<section class="xp-diary" aria-label="' + esc(t('explain_h')) + '">' + list.map(diaryCard).join('') + '</section>' : ''; };
+  const diaryCards = (o) => { if (!S.canSave() || S.state.settings.discreet) return ''; const list = open(findings()); return list.length ? '<section class="xp-diary" aria-label="' + esc(t('explain_h')) + '">' + list.map((f) => diaryCard(f, o)).join('') + '</section>' : ''; };   /* Version 39.75: { noPair } for Your Sakhi */
   /* the buttons only explain draws: her report (with this card's question first), the plan offer, and "Got it" */
   function wireActs(v) {
     v.querySelectorAll('[data-xp-rp]').forEach((b) => b.addEventListener('click', () => { const f = findings().find((x) => x.key === b.dataset.xpRp); S.mem.rpFirst = f ? (RPQ[f.id] ? { k: RPQ[f.id] } : { f: f.key }) : null; S.setHash('report'); }));
@@ -408,9 +408,16 @@
      her plan never sits folded under it. Not in discreet mode, where the finding doesn't show. */
   const pendPair = () => (S.plan && S.plan.offerPair && !S.state.settings.discreet ? S.plan.offerPair() : null);
   const pairsPending = () => { const f = homeF(); return !!(f && (f.lv === 'month' || f.lv === 'week') && pendPair()); };
+  /* Version 39.57: Today remembers the day a doctor finding first showed there; 4 weeks on, "this month" asks "Still to see a doctor?".
+     Version 39.75: "this week" asks it a week on, and the day counts from either of Today's cards (with her plan's offer, or alone) */
+  function lvToday(f) {
+    const sh = D().shown = D().shown || {}; if ((f.lv === 'month' || f.lv === 'week') && !sh[f.key]) { sh[f.key] = S.toISO(S.today()); S.saveQuiet(); }
+    const n = sh[f.key] ? S.diffDays(S.fromISO(sh[f.key]), S.today()) : 0;
+    return (f.lv === 'month' && n >= 28) || (f.lv === 'week' && n >= 7) ? t('explain_lv_still') : t('explain_lv_' + f.lv);
+  }
   function pairCard(f, pp) {
     const see = seeOf(f); const x = xOf(f);   /* as the mockup: how soon, what to do and "What this means", a Qura doctor and her report, then her plan */
-    return '<div class="card xp-card xp-dcard xp-home xp-pair xp-' + f.lv + '" data-key="' + esc(f.key) + '" data-xp-lv="' + f.lv + '"' + (f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(t('explain_lv_' + f.lv)) + '</span></div>' +
+    return '<div class="card xp-card xp-dcard xp-home xp-pair xp-' + f.lv + '" data-key="' + esc(f.key) + '" data-xp-lv="' + f.lv + '"' + (f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><div class="xp-top"><span class="xp-pill hue-' + LV_HUE[f.lv] + '">' + esc(lvToday(f)) + '</span></div>' +
       '<h3>' + esc(title(f)) + '</h3>' + (see ? '<p class="small xp-dsee">' + esc(one(see)) + '</p>' : '') + '<button type="button" class="linkbtn xp-means" data-go="explain">' + esc(t('explain_means')) + '</button>' +
       '<div class="row wrap xp-acts"><button type="button" class="btn sm primary" data-ask="' + esc(x.ask ? tx(x.ask) : title(f)) + '">' + esc(t('ask_qura')) + '</button><button type="button" class="btn sm" data-xp-rp="' + esc(f.key) + '">' + esc(t('explain_report')) + '</button></div>' +
       '<p class="xp-or">' + esc(t('explain_pair_h')) + '</p><div class="xp-plan">' + (pp.ico || '') + '<span class="body"><strong>' + esc(pp.title) + '</strong><span>' + esc(tf('explain_pair_s', { g: t('plan_gv_' + pp.g) })) + '</span></span><button type="button" class="btn sm xp-start" ' + (pp.go === 'reveal' ? 'data-go="plan-reveal"' : 'data-xp-off="1"') + '>' + esc(t('explain_pair_see')) + '</button></div></div>';
@@ -420,8 +427,7 @@
     if ((f.lv === 'month' || f.lv === 'week') && pendPair()) return pairCard(f, pendPair());
     if (f.lv === 'now') return '<div class="card dark xp-home-now" data-xp-urgent="1"><h3>' + esc(title(f)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(seeOf(f)) + '</p><div class="row wrap"><a class="btn sm xp-call" href="tel:' + (S.amb ? S.amb() : '108') + '" style="background:var(--bg);color:var(--fg);border:none">' + esc(t('call_b')) + ' ' + (S.amb ? S.amb() : '108') + '</a><button type="button" class="btn sm" style="background:var(--bg);color:var(--fg);border:none" data-go="explain">' + esc(t('explain_means')) + '</button></div></div>';
     /* Version 39.57 (the all-plans walk): a doctor finding she can answer, and after 4 weeks on Today not "this month" again */
-    const doc = f.lv === 'month' || f.lv === 'week'; const sh = D().shown = D().shown || {}; if (doc && !sh[f.key]) { sh[f.key] = S.toISO(S.today()); S.saveQuiet(); }
-    const lvT = f.lv === 'month' && sh[f.key] && S.diffDays(S.fromISO(sh[f.key]), S.today()) >= 28 ? t('explain_lv_still') : t('explain_lv_' + f.lv);
+    const doc = f.lv === 'month' || f.lv === 'week'; const lvT = lvToday(f);
     const row = '<button type="button" class="action xp-home" data-go="explain" data-xp-lv="' + f.lv + '"' + (f.lv === 'today' || f.lv === 'week' ? ' data-xp-urgent="1"' : '') + '><span class="ico hue hue-' + LV_HUE[f.lv] + '">' + S.I.help + '</span><span class="body"><strong>' + esc(title(f)) + '</strong><span class="small">' + esc(lvT) + ' · ' + esc(t('explain_means')) + '</span></span><span class="go">' + S.I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
     return doc ? '<div class="xp-home-wrap">' + row + '<button type="button" class="linkbtn xp-seen" data-xp-seen="' + esc(f.key) + '">' + esc(t('explain_seen_doc')) + '</button></div>' : row;
   }
@@ -494,7 +500,7 @@
       '.xp-plan .ico-sm { flex-shrink: 0; } .xp-plan .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; } .xp-plan .body strong { color: var(--fg); font-size: 15px; overflow-wrap: anywhere; } .xp-plan .body span { font-size: 13px; color: var(--text); overflow-wrap: anywhere; }',
       '.xp-plan .xp-start { flex-shrink: 0; background: var(--h-green); color: var(--card); border: none; font-weight: 700; }',
       '.xp-pair .xp-means { align-self: flex-start; padding: 0; min-height: 36px; }',   /* Version 39.27 (R06) */
-      '.xp-home-wrap { display: grid; gap: 0; } .xp-home-wrap .xp-seen { justify-self: end; min-height: 40px; padding: 0 8px; }',   /* Version 39.57 */
+      '.xp-home-wrap { display: grid; gap: 0; } .xp-home-wrap .xp-seen { justify-self: end; min-height: 48px; margin: -4px 0; padding: 0 8px; }',   /* Version 39.57 */
       '.xp-card.xp-now, .diary-paper .xp-card.xp-now { background: var(--ink); } .xp-now h3, .xp-now .xp-top .small, .xp-now .xp-dsee, .xp-now .xp-see p, .xp-now .xp-see b, .xp-now .xp-what { color: var(--ink-text) !important; }'
     ].join('\n'),
     home: home,

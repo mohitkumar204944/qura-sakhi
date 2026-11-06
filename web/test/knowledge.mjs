@@ -67,7 +67,7 @@ const route = (page) => page.evaluate(() => location.hash.slice(1));
 const st = (page) => page.evaluate(() => JSON.parse(JSON.stringify(window.Saathi.state)));
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: true });
 const noScroll = (page) => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-const search = async (page, q) => { await go(page, 'care'); await page.fill('#care-q', q); await settle(page, 300); return page; };
+const search = async (page, q) => { await page.evaluate(() => window.Saathi.closeSheet()); await go(page, 'care'); await page.fill('#care-q', q); await settle(page, 300); return page; };   /* Version 39.76: she closes an open sheet first (the page behind it is inert) */
 const firstTool = (page) => page.$eval('#view .care-sec .list [data-go]', (e) => e.dataset.go).catch(() => '');
 const quick = (page) => page.$eval('#view .ans-first [data-qa]', (e) => e.dataset.qa).catch(() => '');
 const errsAll = [];

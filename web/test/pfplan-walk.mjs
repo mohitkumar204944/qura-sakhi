@@ -277,6 +277,7 @@ const doSet = (who, tag) => async (a, rec) => {
   if (!ok) { flag(who, tag, 'set', 'no play button on her squeeze sets'); return; }
   await tap(a, '[data-pf-play]');
   if (await has(a, '#pst-jsafe-ok')) { rec.jsafe = await look(a, who, tag, '1c0-safety'); await tap(a, '#pst-jsafe-ok'); await tap(a, '#pst-pstart'); }   /* her joined sets' safety signs, once */
+  if (await has(a, '.pst-intro')) { rec.intro = await look(a, who, tag, '1c1-get-into-position'); await tap(a, '#pst-pstart'); }   /* Version 39.73: her first sets begin from Get into position */
   rec.set = await look(a, who, tag, '1c-set-running');
   for (let i = 0; i < 400 && await has(a, '#pst-pph'); i++) { await a.page.clock.runFor(1000); await sleep(5); }
   await settle(a.page, 400); rec.setDone = await look(a, who, tag, '1d-set-done'); await go(a, 'home'); };

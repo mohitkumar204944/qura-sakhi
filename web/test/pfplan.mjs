@@ -135,7 +135,9 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
 {
   let a = await open({ seed: pel(0) });
   await tap(a.page, '[data-today-nav]');
-  check('3.1 Today\'s play button opens the trainer with a set started', /#post-pelvic$/.test(a.page.url()) && await has(a.page, '#pst-pph'), a.page.url());
+  /* Version 39.73: her first sets begin from Get into position (test/kegel.mjs); from her 3rd set ever the set starts at once */
+  check('3.1 Today\'s play button opens the trainer; her first set starts from Get into position', /#post-pelvic$/.test(a.page.url()) && await has(a.page, '.pst-intro') && !(await has(a.page, '#pst-pph')), a.page.url());
+  await tap(a.page, '#pst-pstart');
   const rep = await txt(a.page, '#pst-prep');
   check('3.2 level 1: 8 squeezes, with "It hurts"', /of 8/.test(rep) && await has(a.page, '#pst-phurt'), rep);
   await runSet(a.page);

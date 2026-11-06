@@ -1,6 +1,6 @@
 // Version 39.71, the doctors' feature review, part 3: the wording (Mohit, 6 Nov: "commit 39.70 and go with part 3";
 // docs/feature-review-2026-11-05.md, answers 6, 8 and 10 and the approved plan; MODULE_API section 114). This file checks:
-// - 1 the renames: "your trainer" in Wind down and the plans (the joining welcome keeps Dr. Megha), "Pelvic floor exercises
+// - 1 the renames: "your trainer" in Wind down and the plans (Version 39.77: no doctor named anywhere), "Pelvic floor exercises
 //   (Kegels)", "My postpartum recovery", "Menopause transition and menopause", "Period comfort";
 // - 2 the medicine line at the top of the pages and Learn articles that tell her about a medicine, the emergency pill's own line,
 //   the tests line, under her steps when one is her folic acid tablet, and nowhere else; in Hindi too;
@@ -28,7 +28,7 @@ const check = (name, cond, extra) => { results.push({ name, pass: !!cond }); if 
 const MED = { en: 'Take medicines only on your doctor’s advice. Don’t take them on your own.', hi: 'दवाएँ सिर्फ़ डॉक्टर की सलाह पर लें। अपने आप न लें।' };
 const EC = 'Ask a doctor or chemist today.';
 const TEST = 'Do these tests with your doctor’s guidance: ask your doctor first.';
-const QLINE = 'Qura’s doctors (BAMS, trained in women’s health) look at any concern and tell you when you need a gynaecologist.';
+const QLINE = 'Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments.';   /* Version 39.77: Mohit's words (replace the doctors' answer-10 line; for their read) */
 /* the old words, as they showed (a warm cloth for heat, "clothes", "your womb squeezes", the girls' "first-period kit" and the
    joining welcome are not among them) */
 const OLD_EN = /Dr\.? ?Megha|(?<!womb )\bsqueezes\b|Squeeze sets|My recovery plan|My midlife plan|(?<!first-)period kit|Ask a Qura doctor|cloth pads?|pad or cloth|or clean cloth|clean (cotton )?cloth|thick cloth|Cloth is|Suvidha|₹ ?1 (a|each|per) pad|Rs 1 (each|per pad)|pads? at (₹|Rs) ?1\b/i;
@@ -58,7 +58,7 @@ const T = (k) => page.evaluate((k) => window.Saathi.t(k), k);
 // 1. The renames
 await load({ p: 'priya' }); where = 'renames';
 await show('calm'); { const v = await view(); check('1.1 Wind down: "Guided by your trainer", the trainer’s voice, no Dr. Megha', /Guided by your trainer/.test(v) && /Your trainer’s voice/.test(v) && !/Megha/.test(v), v.slice(0, 300)); }
-check('1.2 the captions name the trainer, and the joining welcome keeps Dr. Megha', (await T('calm_who')) === 'Trainer' && /Dr\. Megha/.test(await T('listen')) && /Dr\. Megha/.test(await T('plan_rv_aud')));
+check('1.2 the captions name the trainer, and the welcome buttons name no doctor (Version 39.77, Mohit: "Dont give doctor names anywhere")', (await T('calm_who')) === 'Trainer' && !/Megha/.test(await T('listen')) && !/Megha/.test(await T('plan_rv_aud')) && /short welcome/.test(await T('plan_rv_aud')));
 check('1.3 the plans: Relax, the bedtime step and Calm say "your trainer"', /^Slow breaths or yoga nidra at bedtime, or a sound for sleep$/.test(await T('plan_a_relax_s')) && /your trainer/.test(await T('plan_a_wind_s')) && /^Your trainer guides you/.test(await T('plan_calm_p')));
 check('1.4 the plan names: My postpartum recovery, Menopause transition and menopause, Period comfort', (await T('plan_pk_post')) === 'My postpartum recovery' && (await T('plan_pk_meno')) === 'Menopause transition and menopause' && (await T('plan_a_kit')) === 'Period comfort');
 check('1.5 Kegels: the step, the sets and the tile', (await T('plan_a_pf')) === 'Your pelvic floor exercises (Kegels)' && (await T('plan_pf_sets')) === 'Your Kegel sets' && (await T('plan_pf_tile')) === 'Kegel sets');

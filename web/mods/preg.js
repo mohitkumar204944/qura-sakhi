@@ -675,7 +675,8 @@
       item('preg-diet', T('t_diet'), T('t_diet_s'), S.I.leaf, false) + item('post-pelvic', T('t_pelvic'), T('t_pelvic_s'), S.I.heart, false) + item('preg-mcp', T('t_mcp'), T('t_mcp_s'), CARD_SVG, false) + item('pregnancy', T('hub_visits'), T('hub_visits_s'), S.I.check, true) + tools + item('pregtest-options', S.t('pregtest_opts'), S.t('pregtest_opts_s'), S.icon('users'), false) + '</div>' +   /* review PLACES-05 */
       '<details class="pg-acc"><summary>' + esc(T('hub_all')) + '</summary><div class="pg-body"><p class="small">' + esc(T('hub_all_p')) + '</p>' + weekGrid(wi ? clampW(wi.w) : -1) + '</div></details>' +
       free + urgentAction() +
-      '<div class="card dark"><h3>' + esc(T('hub_ask_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('hub_ask_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic')) + '">' + esc(t('ask_qura')) + '</button></div>' +
+      (S.quraOk && !S.quraOk() ? (S.govCard ? S.govCard() : '') : '<div class="card dark"><h3>' + esc(T('hub_ask_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('hub_ask_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic')) + '">' + esc(t('ask_qura')) + '</button></div>')   /* Version 39.77 (D29): her gynaecologist or a free government doctor */
+      +
       (linkOk('loss') ? '<div class="list">' + item('loss', T('hub_loss'), T('hub_loss_s'), S.I.heart, false).replace('class="item"', 'class="item quiet"') + '</div>' : '');
     S.wire(v); wireSetCard(v);
   }
@@ -772,7 +773,7 @@
     }
     /* tablets */
     const days = []; for (let i = 6; i >= 0; i--) days.push(S.addDays(S.today(), -i));
-    const row = (key, lbl) => '<span class="pg-rl">' + esc(lbl) + '</span>' + days.map((d) => { const k = S.toISO(d); const on = tabOn(st, key, k); return '<button type="button" class="pg-tick' + (on ? ' on' : '') + '" data-pg-tick="' + key + '|' + k + '" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + esc(lbl + ' ' + S.fmtD(d, { weekday: 'long', day: 'numeric', month: 'short' })) + '">' + (on ? TICK_SVG : '') + '</button>'; }).join('');
+    const row = (key, lbl) => '<span class="pg-rl">' + esc(lbl) + '</span>' + days.map((d) => { const k = S.toISO(d); const on = tabOn(st, key, k); return '<button type="button" class="pg-tick' + (on ? ' on' : '') + '" data-pg-tick="' + key + '|' + k + '" aria-label="' + esc(tf(on ? 'today_untick' : 'today_tick', { x: lbl + ' ' + S.fmtD(d, { weekday: 'long', day: 'numeric', month: 'short' }) })) + '">' + (on ? TICK_SVG : '') + '</button>'; }).join('');
     const ironOn = !!(S.iron && S.iron.active()); const remOn = !!(S.reminders.get(ironOn ? 'preg-ca' : 'preg-ifa'));
     return '<div class="card"><h3>' + esc(T('tb_week')) + '</h3><p class="small">' + esc(T('tb_tap')) + '</p><div class="pg-ticks"><span></span>' + days.map((d) => '<span class="pg-dh">' + esc(S.fmtD(d, { weekday: 'narrow' })) + '<br><span class="num">' + d.getDate() + '</span></span>').join('') + row('ifa', T('tb_ifa_s')) + row('ca', T('tb_ca')) + '</div>' +
       '<p class="small" style="color:var(--fg)">' + esc(TF('tb_count', { k: T('tb_ifa_s'), n: tabDays(st, 'ifa', 7) })) + ' · ' + esc(TF('tb_count', { k: T('tb_ca'), n: tabDays(st, 'ca', 7) })) + '</p><p class="small">' + esc(TF('tb_total', { a: tabTotal(st, 'ifa'), b: tabTotal(st, 'ca') })) + '</p></div>' +
@@ -851,7 +852,8 @@
       '<div class="card ok"><h3 style="color:var(--ok)">' + esc(tx(DIET.free_h)) + '</h3><p class="pg-p" style="color:var(--ok)">' + esc(tx(DIET.free)) + '</p></div>' +
       '<h2>' + esc(T('dt_myths')) + '</h2>' +
       DIET.myths.map((m, i) => '<details class="pg-acc" id="pg-myth-' + i + '"><summary>' + esc(tx(m.q)) + '</summary><div class="pg-body"><p>' + esc(tx(m.a)) + '</p></div></details>').join('') +
-      '<div class="card dark"><h3>' + esc(tx(DIET.ask_h)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(tx(DIET.ask_p)) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic_diet')) + '">' + esc(t('ask_qura')) + '</button></div>' +
+      (S.quraOk && !S.quraOk() ? '<p class="small">' + esc(tx({ en: 'If you have sugar in pregnancy, follow the diet your doctor or dietitian gives you.', hi: 'गर्भावस्था में sugar हो, तो डॉक्टर या dietitian का बताया खाना ही लें।' })) + '</p>' + (S.govCard ? S.govCard() : '') : '<div class="card dark"><h3>' + esc(tx(DIET.ask_h)) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(tx(DIET.ask_p)) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('ask_topic_diet')) + '">' + esc(t('ask_qura')) + '</button></div>')   /* Version 39.77 (D32): her gynaecologist or a free government doctor */
+      +
       (S.routeOwner && S.routeOwner('periods-fasting') ? '<button type="button" class="btn sm" data-go="periods-fasting">' + esc(T('dt_fast')) + '</button>' : '') +   /* Version 39.9 */
       '<p class="footnote">' + esc(T('dt_src')) + ' <a href="' + DGI_URL + '" target="_blank" rel="noopener">' + esc(T('dt_link')) + '</a></p>';
     S.wire(v);

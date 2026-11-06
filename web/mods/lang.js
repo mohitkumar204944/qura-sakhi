@@ -41,7 +41,7 @@
       consent_1: 'तुमची डायरी आणि सुरक्षा नोंदी Qura ची केअर टीम वाचू शकते: Qura च्या डॉक्टर, आणि तुम्ही “एखाद्या व्यक्तीला सांगा” दाबल्यावर Qura चे कोऑर्डिनेटर.',
       consent_2: 'कोणताही कॉम्प्युटर प्रोग्राम तुमच्या आरोग्याचा निर्णय करत नाही. स्कोअर नाही, निदान नाही.',
       consent_3: 'एका टॅपमध्ये तुम्ही सगळं डिलीट करू शकता. जाहिरात कंपन्यांना काहीही जात नाही.',
-      consent_yes: 'हो, माझी डायरी सुरू करा', consent_no: 'आत्ता नाही', listen: 'Dr. Megha यांच्या आवाजात ऐका · 30 सेकंद', notice: 'सूचना: कोण काय ठेवतं, किती काळ',
+      consent_yes: 'हो, माझी डायरी सुरू करा', consent_no: 'आत्ता नाही', notice: 'सूचना: कोण काय ठेवतं, किती काळ',
       cycle_day: 'चक्राचा दिवस', period_day: 'पाळी · दिवस', next_likely: 'पुढची पाळी साधारण', last_gaps: 'तुमची मागची अंतरं:', days: 'दिवस',
       usual_gap: 'साधारण अंतर 21–35 दिवस असतं.', usual_gap_teen: 'पहिल्या काही वर्षांत साधारण अंतर 21–45 दिवस असतं.',
       no_contra: 'हा अंदाज गर्भ टाळण्याचा उपाय नाही आणि यात कोणतेही “safe days” दाखवले जात नाहीत.',
@@ -116,7 +116,7 @@
       consent_1: 'আপনার ডায়েরি আর নিরাপত্তা-সংক্রান্ত এন্ট্রি Qura-র কেয়ার টিম পড়তে পারে: একজন Qura ডাক্তার, আর আপনি “কাউকে জানান” চাপলে একজন Qura কোঅর্ডিনেটর।',
       consent_2: 'কোনো কম্পিউটার প্রোগ্রাম আপনার স্বাস্থ্যের বিচার করে না। কোনো স্কোর নেই, কোনো রোগনির্ণয় নেই।',
       consent_3: 'এক ট্যাপে আপনি সব মুছে ফেলতে পারেন। বিজ্ঞাপন কোম্পানির কাছে কিছুই যায় না।',
-      consent_yes: 'হ্যাঁ, আমার ডায়েরি শুরু করুন', consent_no: 'এখন নয়', listen: 'Dr. Megha-র গলায় শুনুন · 30 সেকেন্ড', notice: 'বিজ্ঞপ্তি: কে কী রাখে, কতদিন',
+      consent_yes: 'হ্যাঁ, আমার ডায়েরি শুরু করুন', consent_no: 'এখন নয়', notice: 'বিজ্ঞপ্তি: কে কী রাখে, কতদিন',
       cycle_day: 'চক্রের দিন', period_day: 'মাসিক · দিন', next_likely: 'পরের মাসিক সম্ভবত', last_gaps: 'আপনার শেষ কয়েকটি ব্যবধান:', days: 'দিন',
       usual_gap: 'সাধারণ ব্যবধান 21–35 দিন।', usual_gap_teen: 'প্রথম কয়েক বছরে সাধারণ ব্যবধান 21–45 দিন।',
       no_contra: 'এই সময়সীমা গর্ভ আটকানোর উপায় নয়, আর এতে কোনো “safe days” দেখানো হয় না।',
@@ -191,7 +191,7 @@
       consent_1: 'உங்கள் டைரியையும் பாதுகாப்புப் பதிவுகளையும் Qura பராமரிப்புக் குழு படிக்கலாம்: ஒரு Qura டாக்டர், நீங்கள் “ஒருவரிடம் சொல்லுங்கள்” என்பதைத் தட்டினால் ஒரு Qura ஒருங்கிணைப்பாளர்.',
       consent_2: 'எந்தக் கணினி நிரலும் உங்கள் உடல்நலத்தை மதிப்பிடுவதில்லை. ஸ்கோர் இல்லை, நோயறிதல் இல்லை.',
       consent_3: 'ஒரே தட்டலில் அனைத்தையும் நீக்கலாம். விளம்பர நிறுவனங்களுக்கு எதுவும் செல்லாது.',
-      consent_yes: 'ஆம், என் டைரியைத் தொடங்குங்கள்', consent_no: 'இப்போது வேண்டாம்', listen: 'Dr. Megha குரலில் கேளுங்கள் · 30 விநாடி', notice: 'அறிவிப்பு: யார் எதை, எவ்வளவு காலம் வைத்திருக்கிறார்கள்',
+      consent_yes: 'ஆம், என் டைரியைத் தொடங்குங்கள்', consent_no: 'இப்போது வேண்டாம்', notice: 'அறிவிப்பு: யார் எதை, எவ்வளவு காலம் வைத்திருக்கிறார்கள்',
       cycle_day: 'சுழற்சியின் நாள்', period_day: 'மாதவிடாய் · நாள்', next_likely: 'அடுத்த மாதவிடாய் பெரும்பாலும்', last_gaps: 'உங்கள் கடைசி இடைவெளிகள்:', days: 'நாட்கள்',
       usual_gap: 'வழக்கமான இடைவெளி 21–35 நாட்கள்.', usual_gap_teen: 'முதல் சில ஆண்டுகளில் வழக்கமான இடைவெளி 21–45 நாட்கள்.',
       no_contra: 'இந்த வரம்பு கர்ப்பத்தைத் தவிர்க்கும் வழி அல்ல; இதில் “safe days” எதுவும் காட்டப்படுவதில்லை.',
@@ -267,7 +267,7 @@
       consent_1: 'మీ డైరీని, భద్రతా ఎంట్రీలను Qura కేర్ టీమ్ చదవగలదు: ఒక Qura డాక్టర్, మీరు “ఎవరికైనా చెప్పండి” నొక్కినప్పుడు ఒక Qura కోఆర్డినేటర్.',
       consent_2: 'ఏ కంప్యూటర్ ప్రోగ్రామ్ మీ ఆరోగ్యాన్ని అంచనా వేయదు. స్కోర్ లేదు, రోగ నిర్ధారణ లేదు.',
       consent_3: 'ఒక్క ట్యాప్‌తో అంతా డిలీట్ చేయవచ్చు. ప్రకటనల కంపెనీలకు ఏదీ వెళ్లదు.',
-      consent_yes: 'అవును, నా డైరీ ప్రారంభించండి', consent_no: 'ఇప్పుడు కాదు', listen: 'Dr. Megha గొంతులో వినండి · 30 సెకన్లు', notice: 'సూచన: ఎవరు ఏం ఉంచుతారు, ఎంత కాలం',
+      consent_yes: 'అవును, నా డైరీ ప్రారంభించండి', consent_no: 'ఇప్పుడు కాదు', notice: 'సూచన: ఎవరు ఏం ఉంచుతారు, ఎంత కాలం',
       cycle_day: 'చక్రంలో రోజు', period_day: 'నెలసరి · రోజు', next_likely: 'తదుపరి నెలసరి బహుశా', last_gaps: 'మీ చివరి వ్యవధులు:', days: 'రోజులు',
       usual_gap: 'సాధారణ వ్యవధి 21–35 రోజులు.', usual_gap_teen: 'మొదటి కొన్నేళ్లలో సాధారణ వ్యవధి 21–45 రోజులు.',
       no_contra: 'ఈ అంచనా గర్భం రాకుండా ఆపే మార్గం కాదు, ఇందులో “safe days” చూపించరు.',
@@ -625,11 +625,11 @@
   function paint() {
     if (typeof document === 'undefined') return;
     document.querySelectorAll('[data-lang-read]').forEach((b) => {
-      b.classList.toggle('on', sp.on); b.setAttribute('aria-pressed', String(sp.on));
+      b.classList.toggle('on', sp.on);   /* Version 39.76: its name says the state ("Stop reading"); aria-pressed lost it on Android */
       b.setAttribute('aria-label', t(sp.on ? 'lang_stop' : 'lang_read_btn')); b.innerHTML = sp.on ? STOP_SVG : S.I.speaker;
     });
     document.querySelectorAll('[data-lang-test]').forEach((b) => { b.innerHTML = testInner(); b.setAttribute('aria-pressed', String(sp.on)); });
-    if (!sp.on) document.querySelectorAll('.say-b.on').forEach((b) => { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); b.innerHTML = S.I.speaker.replace('<svg', '<svg style="width:18px;height:18px"'); });
+    if (!sp.on) document.querySelectorAll('.say-b.on').forEach((b) => { b.classList.remove('on'); b.setAttribute('aria-label', t('say_b')); b.innerHTML = S.I.speaker.replace('<svg', '<svg style="width:18px;height:18px"'); });
   }
   const testInner = () => '<span class="lang-ico" aria-hidden="true">' + (sp.on ? STOP_SVG : S.I.speaker) + '</span><span>' + esc(t(sp.on ? 'lang_stop' : 'lang_test')) + '</span>';
 
@@ -761,7 +761,7 @@
       '.lang-ico { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; } .lang-ico svg { width: 20px; height: 20px; }',
       '.lang-add summary { font-size: 14px; color: var(--fg); } .lang-add .steps { margin-top: 10px; } .lang-add li { overflow-wrap: anywhere; font-size: 13px; }'
     ].join('\n'),
-    topbar: () => '<button type="button" class="iconbtn lang-say' + (sp.on ? ' on' : '') + '" data-lang-read="1" aria-pressed="' + sp.on + '" aria-label="' + esc(t(sp.on ? 'lang_stop' : 'lang_read_btn')) + '">' + (sp.on ? STOP_SVG : S.I.speaker) + '</button>',
+    topbar: () => '<button type="button" class="iconbtn lang-say' + (sp.on ? ' on' : '') + '" data-lang-read="1" aria-label="' + esc(t(sp.on ? 'lang_stop' : 'lang_read_btn')) + '">' + (sp.on ? STOP_SVG : S.I.speaker) + '</button>',
     afterTopbar: (tb) => { const b = tb.querySelector('[data-lang-read]'); if (b) b.addEventListener('click', readScreen); },
     afterRender: (v, route) => {
       /* Any new render means new content or a new screen: stop reading. */

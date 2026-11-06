@@ -25,7 +25,8 @@
   const ul = (arr) => '<ul>' + arr.map((x) => '<li>' + T(x) + '</li>').join('') + '</ul>';
   const steps = (arr) => '<ol class="steps">' + arr.map((x) => '<li>' + T(x) + '</li>').join('') + '</ol>';
   const goBtn = (route, label, cls) => '<button type="button" class="btn ' + (cls || 'sm') + '" data-go="' + route + '">' + T(label) + '</button>';
-  const askBtn = (topic) => '<button type="button" class="btn secondary block" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button>';
+  /* Version 39.77 (Mohit's choices D14 to D16): the hub and the check lead to a Qura doctor; pain with sex and prolapse to her gynaecologist or a free government doctor */
+  const askBtn = (topic) => (S.quraOk && !S.quraOk() ? (S.govCard ? S.govCard() : '') : '<button type="button" class="btn secondary block" data-ask="' + esc(tx(topic)) + '">' + esc(t('ask_qura')) + '</button>');
   const ext = (href, label) => '<a href="' + href + '" target="_blank" rel="noopener">' + T(label) + '</a>';
   const flag = (cls, o) => '<div class="flag ' + cls + '"><span class="intimate-fi">' + S.I.help + '</span><span class="intimate-ft">' + T(o) + '</span></div>';
   const entry = (title, body) => '<div class="intimate-entry"><strong>' + T(title) + '</strong><span>' + T(body) + '</span></div>';
@@ -176,7 +177,7 @@
       '<p class="small">' + T({ en: 'Discharge, itching, pain with sex, leaking urine or a worry about an infection. These are common, and you can ask about them without shame. Nothing on these pages is saved unless you choose.', hi: 'सफ़ेद पानी, खुजली, संबंध में दर्द, पेशाब लीक होना या किसी इन्फ़ेक्शन की चिंता। ये सब आम बातें हैं, और इनके बारे में बिना शर्म के पूछ सकती हैं। इन पन्नों पर कुछ भी save नहीं होता, जब तक आप ख़ुद न चुनें।' }) + '</p>' +
       '<div class="list">' + item('intimate-check', 'drop', 'intimate_check', 'intimate_check_s', true) + item('intimate-sti', 'check', 'intimate_sti', 'intimate_sti_s') + item('intimate-firsttime', 'heart', 'intimate_first', 'intimate_first_s') + item('intimate-prolapse', 'flower', 'intimate_prolapse', 'intimate_prolapse_s') + item('intimate-safety', 'lock', 'intimate_safety', 'intimate_safety_s') + '</div>' +
       '<div class="card"><h3>' + T({ en: 'Free and private, near you', hi: 'आपके पास, मुफ़्त और गोपनीय' }) + '</h3>' +
-      entry({ en: 'Suraksha clinic', hi: 'सुरक्षा क्लिनिक' }, { en: 'The STI/RTI clinic at the government district hospital or medical college. A private talk, a check-up, and medicines for infections from the national programme, given free.', hi: 'सरकारी ज़िला अस्पताल या मेडिकल कॉलेज का STI/RTI क्लिनिक। अकेले में बात, जाँच, और इन्फ़ेक्शन की दवाएँ, जो राष्ट्रीय कार्यक्रम से मुफ़्त मिलती हैं।' }) +
+      (S.govOk && !S.govOk() ? '' : entry({ en: 'Suraksha clinic', hi: 'सुरक्षा क्लिनिक' }, { en: 'The STI/RTI clinic at the government district hospital or medical college. A private talk, a check-up, and medicines for infections from the national programme, given free.', hi: 'सरकारी ज़िला अस्पताल या मेडिकल कॉलेज का STI/RTI क्लिनिक। अकेले में बात, जाँच, और इन्फ़ेक्शन की दवाएँ, जो राष्ट्रीय कार्यक्रम से मुफ़्त मिलती हैं।' })) +
       entry({ en: 'ICTC', hi: 'ICTC' }, { en: 'Free, confidential HIV test with counselling, in government hospitals.', hi: 'सरकारी अस्पतालों में मुफ़्त और गोपनीय HIV test, सलाह के साथ।' }) +
       lines(['1097', '181']) + '</div>' +
       '<div class="action intimate-static"><span class="ico accent">' + S.I.lock + '</span><span class="body"><strong>' + T({ en: 'Private by design', hi: 'यहाँ सब निजी है' }) + '</strong><span class="small">' + T({ en: 'The safety page has a Quick exit button that hides the app behind a recipe. On a shared phone, Discreet mode on the Me page hides your numbers.', hi: 'सुरक्षा वाले पन्ने पर “तुरंत छुपाएँ” बटन है, जो ऐप को एक रेसिपी के पीछे छुपा देता है। साझा फ़ोन हो तो “मैं” पन्ने पर गुप्त mode आपके नंबर छिपा देता है।' }) + '</span></span></div>' +
@@ -214,7 +215,7 @@
   }
   function quraHtml(a) {
     if (!a.any || a.lvl === 0) return '';
-    return '<div class="card soft"><p class="small">' + T({ en: "Qura's doctors (BAMS) can talk this through and help you decide where to go. Infections are treated at the clinic or by a gynaecologist; Qura refers.", hi: 'Qura की डॉक्टर (BAMS) इस पर बात करके तय करने में मदद कर सकती हैं कि कहाँ जाएँ। इन्फ़ेक्शन का इलाज क्लिनिक या स्त्री रोग विशेषज्ञ करती हैं; Qura refer करता है।' }) + '</p>' + askBtn({ en: 'Discharge, itching or pain down there', hi: 'सफ़ेद पानी, खुजली या नीचे दर्द' }) + '</div>';
+    return '<div class="card soft"><p class="small">' + esc(t('qura_std')) + '</p></div>';   /* Version 39.77 */
   }
   const sig = (m) => JSON.stringify([m.danger.slice().sort(), m.dis, m.smell, m.sym.slice().sort(), m.preg, m.partner]);
   function saveHtml(a) {

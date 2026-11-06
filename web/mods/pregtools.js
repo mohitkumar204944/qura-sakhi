@@ -463,7 +463,8 @@
       goNow() +
       B.sections.map((s) => '<details class="ptl-acc" id="ptl-sec-' + s.id + '"><summary>' + esc(tx(s.h)) + '</summary><div class="ptl-body">' + para(s.p) + '</div></details>').join('') +
       '<div class="card"><h3>' + esc(tx(B.after_h)) + '</h3><ol class="steps">' + B.after.map((p) => '<li>' + esc(tx(p)) + '</li>').join('') + '</ol>' + after + '</div>' +
-      '<div class="card dark"><h3>' + esc(T('r_ask_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('r_ask_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('r_ask_topic')) + '">' + esc(t('ask_qura')) + '</button></div>' +
+      (S.quraOk && !S.quraOk() ? '<p class="small">' + esc(S.tx({ en: 'How you give birth is decided with your obstetrician at the hospital.', hi: 'डिलीवरी कैसे होगी, यह अस्पताल में आपकी स्त्री रोग विशेषज्ञ के साथ तय होता है।' })) + '</p>' + (S.govCard ? S.govCard() : '') : '<div class="card dark"><h3>' + esc(T('r_ask_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(T('r_ask_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(T('r_ask_topic')) + '">' + esc(t('ask_qura')) + '</button></div>')   /* Version 39.77 (D35): her gynaecologist or a free government doctor */
+      +
       related(R.birth) + '<p class="footnote">' + esc(T('r_src')) + '</p>';
     S.wire(v);
   }

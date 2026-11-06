@@ -422,7 +422,8 @@
   const srcList = (keys) => '<details><summary>' + esc(t('contra_sources')) + '</summary><p class="sources">' + keys.map((k) => { const s = SRC[k]; return s.url ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + E(s) + '</a>' : E(s); }).join(' · ') + '</p></details>';
   const resRow = (k) => { const b = badge(k); return '<button type="button" class="contra-res" data-go="contra-m-' + k + '"><span class="ico-sm">' + S.icon(M[k].icon) + '</span><span class="rb"><span class="rt">' + E(M[k].name) + '</span><span class="rs">' + E(M[k].short) + '</span></span><span class="rn"><b class="num">' + esc(b.big) + '</b>' + esc(b.small) + '</span></button>'; };
   const actionRow = (go, ico, title, sub, cls) => '<button type="button" class="action" data-go="' + go + '"><span class="ico' + (cls ? ' ' + cls : '') + '">' + I[ico] + '</span><span class="body"><strong>' + esc(title) + '</strong><span class="small">' + esc(sub) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>';
-  const quraCard = (topic) => '<div class="card dark"><h3>' + esc(t('contra_qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('contra_qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(topic) + '">' + esc(t('qura_b')) + '</button></div>';
+  /* Version 39.77 (Mohit's choices D9 to D13): contraception goes to her gynaecologist or a free government doctor */
+  const quraCard = (topic) => S.docCard ? S.docCard(null, topic) : '<div class="card dark"><h3>' + esc(t('contra_qura_h')) + '</h3><p class="small" style="color:var(--dark-text)">' + esc(t('contra_qura_p')) + '</p><button type="button" class="btn" style="background:var(--bg);color:var(--fg);border:none" data-ask="' + esc(topic) + '">' + esc(t('qura_b')) + '</button></div>';
 
   /* ---------- my method: data, schedules, reminders ---------- */
   const DAILY = ['pill', 'pop'];
@@ -541,10 +542,10 @@
 
   /* ---------- method pages ---------- */
   const RX = {
-    horm: L("A hormonal method, started after a health check by the government health team (doctor, nurse or ANM) or by an MBBS doctor or gynaecologist. Qura's doctors are BAMS doctors: they can talk it through with you and refer you, but they do not prescribe hormonal methods.", 'यह हॉर्मोन वाला तरीक़ा है, जो सरकारी स्वास्थ्य टीम (डॉक्टर, नर्स या ANM) या MBBS डॉक्टर या स्त्री रोग विशेषज्ञ जाँच के बाद शुरू करते हैं। Qura की डॉक्टर BAMS हैं: वे आपसे बात कर के refer कर सकती हैं, पर हॉर्मोन वाले तरीक़े नहीं लिखतीं।'),
-    fit: L("Fitted by a trained doctor, nurse or ANM after a check-up. Qura's BAMS doctors can explain it and refer you.", 'जाँच के बाद प्रशिक्षित डॉक्टर, नर्स या ANM लगाती हैं। Qura की BAMS डॉक्टर इसे समझा कर refer कर सकती हैं।'),
-    surg: L("An operation by a trained surgeon, with your written consent. Qura's doctors can talk it through and refer you.", 'प्रशिक्षित सर्जन का ऑपरेशन, आपकी लिखित सहमति से। Qura की डॉक्टर बात कर के refer कर सकती हैं।'),
-    screen: L("The first dose is given after a check-up by a trained provider at a health centre. Qura's BAMS doctors can explain it and refer you.", 'पहली ख़ुराक स्वास्थ्य केंद्र पर प्रशिक्षित स्वास्थ्यकर्मी जाँच के बाद देती हैं। Qura की BAMS डॉक्टर इसे समझा कर refer कर सकती हैं।')
+    horm: L("A hormonal method, started after a health check by the government health team (doctor, nurse or ANM) or by an MBBS doctor or gynaecologist.", 'यह हॉर्मोन वाला तरीक़ा है, जो सरकारी स्वास्थ्य टीम (डॉक्टर, नर्स या ANM) या MBBS डॉक्टर या स्त्री रोग विशेषज्ञ जाँच के बाद शुरू करते हैं।'),   /* Version 39.77: no line about Qura here */
+    fit: L("Fitted by a trained doctor, nurse or ANM after a check-up.", 'जाँच के बाद प्रशिक्षित डॉक्टर, नर्स या ANM लगाती हैं।'),
+    surg: L("An operation by a trained surgeon, with your written consent.", 'प्रशिक्षित सर्जन का ऑपरेशन, आपकी लिखित सहमति से।'),
+    screen: L("The first dose is given after a check-up by a trained provider at a health centre.", 'पहली ख़ुराक स्वास्थ्य केंद्र पर प्रशिक्षित स्वास्थ्यकर्मी जाँच के बाद देती हैं।')
   };
   const LAM_Q = [L('My periods have not come back since the birth.', 'जन्म के बाद से मेरे पीरियड नहीं लौटे।'), L('My baby gets only or almost only breast milk, day and night.', 'बच्चे को दिन और रात सिर्फ़ या लगभग सिर्फ़ माँ का दूध मिलता है।'), L('My baby is under 6 months old.', 'मेरा बच्चा 6 महीने से छोटा है।')];
   function methodExtra(k) {
@@ -581,7 +582,7 @@
       '<div class="card soft"><h3>' + esc(t('contra_fert')) + '</h3><p>' + E(m.fert) + '</p></div>' +
       (m.rx ? '<div class="card soft"><h3>' + esc(t('contra_rx_h')) + '</h3><p class="small" style="color:var(--fg)">' + E(RX[m.rx]) + '</p></div>' : '') +
       (related.length ? (related[0].indexOf('block') >= 0 ? related[0] : '<div class="grid2">' + related[0] + '</div>') : '') +
-      (k === 'ec' ? '' : '<button type="button" class="btn block" data-ask="' + esc(tx(m.name)) + '">' + esc(t('ask_qura')) + '</button>') +
+      (k === 'ec' || (S.quraOk && !S.quraOk()) ? '' : '<button type="button" class="btn block" data-ask="' + esc(tx(m.name)) + '">' + esc(t('ask_qura')) + '</button>') + (k !== 'ec' && S.quraOk && !S.quraOk() && S.govCard ? S.govCard() : '') +
       srcList(m.src) + '<p class="footnote">' + esc(t('contra_not_rx')) + '</p>';
     S.wire(v);
     if (k === 'lam') {

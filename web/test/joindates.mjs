@@ -115,14 +115,14 @@ const LONG = [ago(80), ago(39), ago(1)];   /* gaps of 41 and 38 days; her latest
   check('2 "What your dates show": her next period, from the same engine as Today', /What your dates show/i.test(ys) && /39 days until your next period/.test(await txt(a.page, '.ys-read')), await txt(a.page, '.ys-read'));
   check('2 her signs as What your diary shows draws them: heavy flow this week, long gaps this month', await has(a.page, '#view .xp-dcard.xp-week') && await has(a.page, '#view .xp-dcard.xp-month') && /Your last gap was 38 days/.test(ys), ys.slice(0, 600));
   check('2 a Qura doctor first on each, and no "Free government doctor"', await a.page.$$eval('#view .xp-dcard', (x) => x.every((c) => { const b = c.querySelector('.xp-acts .btn'); return !!b && b.hasAttribute('data-ask'); })) && !/Free government doctor/.test(ys));
-  check('2 a free plan beside the doctor: Stronger blood, and My cycle plan', /Stronger blood/.test(ys) && /My cycle plan/.test(ys) && /And meanwhile, a free plan/i.test(ys), ys.slice(0, 900));
+  check('2 her signs lead to a doctor, and her plan is one button, "Make my plan" (Version 39.75: no plan in the dates card)', !/And meanwhile, a free plan/i.test(ys) && !(await has(a.page, '#view [data-xp-plan]')) && (await has(a.page, '#ys-plan')), ys.slice(0, 900));
   check('2 "An early read from the dates you gave. Not a diagnosis."', /An early read from the dates you gave\. Not a diagnosis\./.test(ys));
   check('2 how Sakhi helps her stays (3 rows), with the tour', (await a.page.$$('#view .ys-rows .item')).length === 3 && await has(a.page, '#ys-tour'));
   check('2 no sideways scroll', await noScroll(a.page));
   await shot(a.page, 'ys-long-en');
-  await tap(a.page, '#view [data-xp-plan="heavy"]');
+  await tap(a.page, '#ys-plan');
   const pi = await a.page.evaluate(() => window.Saathi.mem.planIntake || null);
-  check('2 Start opens that plan’s questions', (await hashOf(a.page)) === 'plan-goal' && pi && pi.goal === 'heavy', { h: await hashOf(a.page), pi });
+  check('2 "Make my plan" opens her plan’s questions, for the goal she chose', (await hashOf(a.page)) === 'plan-goal' && pi && pi.goal === (s.intake || {}).goal, { h: await hashOf(a.page), pi, goal: (s.intake || {}).goal });
   await done(a);
 }
 
@@ -134,7 +134,7 @@ const LONG = [ago(80), ago(39), ago(1)];   /* gaps of 41 and 38 days; her latest
   const r = await txt(a.page, '.ys-read');
   check('3 her next period from day one', /27 days until your next period/.test(r), r);
   check('3 "Your gaps are in the usual range"', /Your gaps are in the usual range/.test(r) && /21 to 35 days apart, and steady/.test(r), r);
-  check('3 fertile days after 6 regular gaps', /Fertile days and ovulation \(estimate\)/.test(r) && /you have 2/.test(r), r);
+  check('3 tracking her periods: no fertile-days line on Your Sakhi (Version 39.76: only while she tries; Cycles keeps it)', !/Fertile days and ovulation/.test(r), r);
   check('3 no doctor card for dates in the usual range', !(await has(a.page, '#view .xp-dcard')));
   await shot(a.page, 'ys-regular-en');
   await done(a);

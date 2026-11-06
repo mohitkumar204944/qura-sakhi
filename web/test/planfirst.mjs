@@ -96,13 +96,13 @@ const onePage = (page) => page.evaluate(() => { const r = document.querySelector
   await done(a);
 }
 
-/* ---------- 4: Sana, period pain: her dates show it, so "What your dates show" offers the free plan ---------- */
+/* ---------- 4: Sana, period pain: her dates show it, and her plan is still one button (Version 39.75: none in the dates card) ---------- */
 {
   const a = await open(); const p = a.page;
   await joinTo(p, { tile: 'cycle', goals: ['pain'], dec: 1990, y: 1997, dates: ['2026-08-16', '2026-09-13', '2026-10-11'], dlen: 5, pain: true });
-  const xp = await has(p, '#view [data-xp-plan]');
-  check('4.1 her dates\' free plan is on Your Sakhi, and there is no second "Make my plan"', xp && !(await has(p, '#ys-plan')));
-  if (xp) { await tap(p, '#view [data-xp-plan]'); await answer(p); }
+  const xp = await has(p, '#view [data-xp-plan]'), sign = await has(p, '#view .xp-dcard');
+  check('4.1 her dates show her pain with a doctor first, and her plan is one button: "Make my plan" (Version 39.75)', sign && !xp && (await has(p, '#ys-plan')), { sign, xp });
+  if (await has(p, '#ys-plan')) { await tap(p, '#ys-plan'); await answer(p); }
   const rv = await onePage(p);
   check('4.2 it takes the same short path: one page, then Start', rv && rv.one && rv.go && !rv.next, rv);
   await done(a);

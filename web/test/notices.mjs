@@ -103,7 +103,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':p"]');
   await tap(page, '[data-ci-b="time"]'); await tap(page, '#pl-ci-save');
   let v = await view(page);
-  check('2 the check-in counts Partly as partly', /0 done, 4 partly today · 1 of 7 days this week/.test(v), v.slice(0, 400));
+  check('2 the check-in counts Partly as partly (the day\'s count only, Version 39.75)', /0 done, 4 partly today\n/.test(v) && !/of 7 days this week/.test(v), v.slice(0, 400));
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
   check('2 Today says the same count, and that she checked in', /0 done, 4 partly today/.test(td) && /Checked in today/.test(td), td);
@@ -253,7 +253,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   check('7 discreet: the check-in names no health goal, and has no "Pain" chip', !HEALTH.test(v) && !(await has(page, '[data-ci-b="pain"]')), v.slice(0, 500));
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':d"]');
   await tap(page, '#pl-ci-save');
-  check('7 discreet: the check-in\'s after screen is plain: her count, no reason line (Version 39.72)', /today · \d of 7 days this week/.test(await view(page)) && !HEALTH.test(await view(page)), (await view(page)).slice(0, 300));
+  check('7 discreet: the check-in\'s after screen is plain: her count, no reason line (Version 39.72)', / today\n/.test(await view(page)) && !/of 7 days this week/.test(await view(page)) && !HEALTH.test(await view(page)), (await view(page)).slice(0, 300));
   await ctx.close();
   const b = await open({ seed: { intake: IK, settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('heavy', 'heavy', ago(8), { log: log }) } } });
   await go(b.page, 'home');
@@ -282,7 +282,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   await go(b.page, 'plan-checkin');
   for (const g of await b.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(b.page, '[data-ci="' + g + ':p"]');
   await tap(b.page, '[data-ci-b="time"]'); await tap(b.page, '#pl-ci-save');
-  check('8 Hindi: one count', /आज 0 हो गए, 4 थोड़े · इस हफ़्ते 7 में से 1 दिन/.test(await view(b.page)), (await view(b.page)).slice(0, 300));
+  check('8 Hindi: one count (the day\'s, Version 39.75)', /आज 0 हो गए, 4 थोड़े\n/.test(await view(b.page)) && !/इस हफ़्ते 7 में से/.test(await view(b.page)), (await view(b.page)).slice(0, 300));
   check('8 360 px: the check-in doesn\'t scroll sideways', await noScroll(b.page));
   check('8 no page errors (Hindi)', errs.length === 0 && b.errs.length === 0, errs.concat(b.errs));
   await b.ctx.close();

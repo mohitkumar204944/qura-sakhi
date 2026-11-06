@@ -128,8 +128,9 @@
         term('hCG', { en: 'The pregnancy hormone that tests measure', hi: 'गर्भ का hormone, जिसे test नापते हैं' }) +
         term('Rh negative', { en: 'A blood group type; it may need an anti-D injection', hi: 'Blood group का एक प्रकार; इसमें anti-D इंजेक्शन की ज़रूरत पड़ सकती है' }) +
       '</div></div>' +
-      '<div class="card soft">' + P({ en: "Qura's doctors (BAMS) can go through your reports with you and help you plan. Treatment for an ectopic, a molar pregnancy or a stillbirth is by a gynaecologist; Qura refers.", hi: 'Qura की डॉक्टर (BAMS) आपकी रिपोर्ट आपके साथ समझ सकती हैं और आगे की योजना में मदद करती हैं। Ectopic, मोलर प्रेग्नेंसी या stillbirth का इलाज स्त्री रोग विशेषज्ञ करती हैं; Qura refer करता है।' }, 'small') +
+      '<div class="card soft">' + '<p class="small">' + esc(t('qura_std')) + '</p>' +   /* Version 39.77: who Qura's doctors are, in Mohit's words */
       '<div class="row wrap">' + goBtn('loss-recovery', { en: 'Your body after a loss', hi: 'नुक़सान के बाद आपका शरीर' }) + askQuiet({ en: 'Understanding my pregnancy loss', hi: 'मेरे गर्भ के नुक़सान को समझना' }) + '</div></div>' +
+      (S.govOk && S.govOk() && S.govCard ? S.govCard() : '') +   /* Version 39.77 (D44): both */
       sources(['ACOG, Early pregnancy loss (2024)', 'RCOG, Early miscarriage (patient information)', 'HSE Ireland, Miscarriage: reducing your risk (2024)', 'NHS, Miscarriage (2026), Ectopic pregnancy, Molar pregnancy, Stillbirth', 'NICE NG126', 'State Registration of Births and Deaths Rules (still-birth from 28 weeks)']);
     S.wire(v);
   }
@@ -314,9 +315,10 @@
       acc({ en: 'You have had 2 or more losses', hi: 'आपके 2 या ज़्यादा नुक़सान हुए हैं' },
         P({ en: 'Ask for tests. Many doctors now look for a cause after 2 losses. Even when no cause is found, about 65 in 100 women have a successful next pregnancy.', hi: 'जाँच माँगें। अब कई डॉक्टर 2 नुक़सान के बाद ही कारण खोजती हैं। कोई कारण न मिले, तब भी लगभग 100 में से 65 महिलाओं का अगला गर्भ सफल होता है।' }) +
         '<div class="row">' + goBtn('ttc-loss2', { en: 'After two or more losses', hi: 'दो या ज़्यादा नुक़सान के बाद' }) + '</div>') +
-      '<div class="card soft">' + P({ en: "Qura's doctors (BAMS) can help with food, weight and sleep before you try again, order tests like sugar and thyroid, and refer you. Hormone medicines, blood thinners and fertility drugs need an MBBS gynaecologist; Qura refers.", hi: 'Qura की डॉक्टर (BAMS) दोबारा कोशिश से पहले खाने, वज़न और नींद में मदद कर सकती हैं, sugar और थायरॉइड जैसी जाँचें लिख सकती हैं, और refer करती हैं। हॉर्मोन की दवाएँ, खून पतला करने की दवाएँ और fertility की दवाएँ MBBS स्त्री रोग विशेषज्ञ लिखती हैं; Qura refer करता है।' }, 'small') +
+      '<div class="card soft">' + '<p class="small">' + esc(t('qura_std')) + '</p>' +   /* Version 39.77: who Qura's doctors are, in Mohit's words */
       (S.canSave() ? P({ en: 'When you are ready, you can switch on \"Planning a baby\" on the Me page.', hi: 'जब आप तैयार हों, “मैं” पन्ने पर “बच्चे की योजना” चालू कर सकती हैं।' }, 'small') : '') +
       '<div class="row">' + askQuiet({ en: 'Trying again after a pregnancy loss', hi: 'गर्भ के नुक़सान के बाद फिर से कोशिश' }) + '</div></div>' +
+      (S.govOk && S.govOk() && S.govCard ? S.govCard() : '') +   /* Version 39.77 (D44): both */
       sources(['RCOG, Early miscarriage', 'NHS, Miscarriage (2026); Ectopic pregnancy', 'ACOG, Early pregnancy loss; Repeated miscarriages; Stillbirth', 'NHSRC, Family Planning Guidance Booklet for CHO (healthy timing and spacing)', 'HDFT NHS Trust, Molar pregnancy']);
     S.wire(v);
   }
