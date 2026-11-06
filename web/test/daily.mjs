@@ -192,7 +192,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   check('5 Version 39.22: how her plan works is a link by her week, what consistency brings in her 12 weeks, her care team folded', (await a.page.$$('#view .pl-fold details:not([open])')).length === 1 && await has(a.page, '#pl-howlink') && await has(a.page, '#view .pl-weeks'));
   await tap(a.page, '#pl-howlink');
   const rh = await sheetTxt(a.page); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150);
-  check('5 how her plan works: every day, every week, every 4 weeks, after 12 weeks', /Every day\n4 steps, check-in 10 pm\nEvery week\nLook back, plan the week\nEvery 4 weeks\nA 1-minute check\nAfter 12 weeks\nYour results/.test(rh), rh);
+  check('5 how her plan works: every day, every week ("A look back": Plan your week is gone, Version 39.74), every 4 weeks, after 12 weeks', /Every day\n4 steps, check-in 10 pm\nEvery week\nA look back\nEvery 4 weeks\nA 1-minute check\nAfter 12 weeks\nYour results/.test(rh), rh);
   await tap(a.page, '#pl-whyall'); const wa = await sheetTxt(a.page); await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page, 150);
   check('5 her 4 daily steps, each with its reviewed reason (behind "Why these 4 steps?" after week 1)', /Your 4 daily steps/.test(v) && /Moving most days lifts your energy and mood\./.test(wa) && /Moving most days helps your body use insulin better/.test(wa) && /Small food changes add up/.test(wa) && /A regular bedtime helps your body clock/.test(wa), wa.slice(0, 400));
   check('5 the check-in only when it is due: in the morning its time, no pink button', /Check-in at 8 pm/.test(await txt(a.page, '#view .pl-steps-card')) && !(await has(a.page, '#view .pl-steps-card .btn.primary')));

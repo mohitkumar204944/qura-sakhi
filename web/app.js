@@ -147,7 +147,7 @@
       undo: 'Undo', add_details: 'Add details', logged_start: 'Period start saved for today', logged_end: 'Period end saved for today', logged_spot: 'Spotting saved for today', undone: 'Removed',
       d_start: 'Start', d_end: 'Stop', d_spot: 'Mark', d_day: 'Day', d_weeks: 'weeks', d_hidden: 'Hidden for privacy. Tap the number to show.', d_first: 'Add your first entry to begin.', d_reminder: 'Reminder', today_h: 'Today',
       more: 'More', less: 'Less', show_more: 'Show more', show_less: 'Show less',
-      weeks_preg: 'weeks pregnant', due_on: 'Due around {d}', this_week: 'This week', pw_visits: 'Check-up visits', preg_set_date: 'Add the due date from your scan report, or the first day of your last period, to see your week.', preg_date_b: 'Add the date', preg_yes_b: 'I am pregnant',
+      weeks_preg: 'weeks pregnant', weeks_preg1: 'week pregnant', due_on: 'Due around {d}', this_week: 'This week', pw_visits: 'Check-up visits', preg_set_date: 'Add the due date from your scan report, or the first day of your last period, to see your week.', preg_date_b: 'Add the date', preg_yes_b: 'I am pregnant',
       lib_h: 'All topics and guides', lib_s: 'Your topics, every guide and article', qa_more: 'More questions', hs_priv: 'Private help',   /* Version 39.62 */
       for_you: 'For you', care_topics: 'All topics', topic_count: '{n} guides and tools', res_tools: 'Guides and tools', res_articles: 'Articles to read', search_all: 'Search: period, safed pani, PCOD, pregnancy…',
       yob_h: 'What year were you born?', yob_p: 'Sakhi is for women 18 and over. We keep only the year, on this phone.', yob_ph: 'For example 1996', yob_month: 'Which month were you born?', yob_bad: 'Please type a year like 1996',
@@ -417,7 +417,7 @@
       undo: 'वापस लें', add_details: 'विवरण जोड़ें', logged_start: 'आज पीरियड की शुरुआत दर्ज हुई', logged_end: 'आज पीरियड ख़त्म होना दर्ज हुआ', logged_spot: 'आज स्पॉटिंग दर्ज हुई', undone: 'हटा दिया',
       d_start: 'शुरू', d_end: 'बंद', d_spot: 'निशान', d_day: 'दिन', d_weeks: 'हफ़्ते', d_hidden: 'गोपनीयता के लिए छिपा है। देखने के लिए नंबर पर टैप करें।', d_first: 'शुरू करने के लिए पहली entry डालें।', d_reminder: 'रिमाइंडर', today_h: 'आज',
       more: 'और पढ़ें', less: 'कम', show_more: 'और दिखाएँ', show_less: 'कम दिखाएँ',
-      weeks_preg: 'हफ़्ते की गर्भवती', due_on: 'डिलीवरी लगभग {d}', this_week: 'इस हफ़्ते', pw_visits: 'जाँच की मुलाक़ातें', preg_set_date: 'अपना हफ़्ता देखने के लिए स्कैन रिपोर्ट पर लिखी डिलीवरी की तारीख़ या पिछले पीरियड का पहला दिन डालें।', preg_date_b: 'तारीख़ डालें', preg_yes_b: 'मैं गर्भवती हूँ',
+      weeks_preg: 'हफ़्ते की गर्भवती', weeks_preg1: 'हफ़्ते की गर्भवती', due_on: 'डिलीवरी लगभग {d}', this_week: 'इस हफ़्ते', pw_visits: 'जाँच की मुलाक़ातें', preg_set_date: 'अपना हफ़्ता देखने के लिए स्कैन रिपोर्ट पर लिखी डिलीवरी की तारीख़ या पिछले पीरियड का पहला दिन डालें।', preg_date_b: 'तारीख़ डालें', preg_yes_b: 'मैं गर्भवती हूँ',
       lib_h: 'सभी विषय और गाइड', lib_s: 'आपके विषय, हर गाइड और लेख', qa_more: 'और सवाल', hs_priv: 'निजी मदद',
       for_you: 'आपके लिए', care_topics: 'सभी विषय', topic_count: '{n} गाइड और टूल', res_tools: 'गाइड और टूल', res_articles: 'पढ़ने के लिए लेख', search_all: 'खोजें: पीरियड, सफ़ेद पानी, PCOD, गर्भ…',
       yob_h: 'आप किस साल पैदा हुईं?', yob_p: 'Sakhi 18 साल और उससे ऊपर की महिलाओं के लिए है। हम सिर्फ़ साल रखते हैं, इसी फ़ोन पर।', yob_ph: 'जैसे 1996', yob_month: 'आप किस महीने में पैदा हुईं?', yob_bad: 'कृपया 1996 जैसा साल लिखें',
@@ -986,6 +986,7 @@
   const DRAWERS = ['plans', 'records', 'support', 'fun'];
   const STAGE_TOPICS = { cycle: ['periods', 'contra', 'pregtest', 'ttc', 'intimate', 'cond', 'screen'], ttc: ['ttc', 'periods', 'pregtest', 'cond', 'intimate', 'screen'],
     preg: ['preg', 'post', 'contra', 'intimate', 'screen'], post: ['post', 'contra', 'periods', 'intimate', 'screen', 'pregtest'], meno: ['meno', 'periods', 'cond', 'screen', 'intimate', 'pregtest'], browse: ['periods', 'contra', 'pregtest', 'teen', 'intimate', 'screen'] };   /* review PLACES-05: abortion, STI and violence pages within 2 taps at every stage */
+  const STAGE_SECS = Object.keys(STAGE_TOPICS).reduce((a, k) => a.concat(STAGE_TOPICS[k].filter((x) => a.indexOf(x) < 0)), ['loss']);   /* Version 39.74: the topics that belong to a stage */
   /* each topic's own guide (its hub), drawn as the topic page */
   const TOPIC_HUB = { periods: 'periods', contra: 'contra', pregtest: 'pregtest', ttc: 'ttc', preg: 'preg', post: 'post', loss: 'loss', intimate: 'intimate', screen: 'screen', meno: 'meno', teen: 'teen' };   /* not cond: its hub is "other than PMOS", and PMOS leads that topic */
   const topicsFor = () => { const k = stageNow(); let l = (STAGE_TOPICS[k] || STAGE_TOPICS.cycle).slice(); const age = ageYears();
@@ -1524,7 +1525,7 @@
   const NOT_LOSS = ['weight loss', 'lose weight', 'losing weight', 'weightloss', 'hair loss', 'fat loss', 'vajan kam', 'wajan kam', 'वजन कम', 'वज़न कम'];
   const lossAsked = (qq) => { let q2 = ' ' + qq + ' '; NOT_LOSS.forEach((ph) => { q2 = q2.split(norm(ph)).join(' '); }); const ws = q2.split(/[\s,.?!।|/]+/).filter(Boolean);
     return LOSS_WORDS.some((w) => { const nw = norm(w); return /[\u0900-\u097f]/.test(nw) ? ws.some((x) => x.indexOf(nw) === 0) : ws.some((x) => x === nw || x === nw + 's' || x === nw + 'es'); }); };
-  const lossTile = (x) => x.section === 'loss' || /(^|-)loss/.test(x.route) || x.route === 'pregtest-abortion';
+  const lossTile = (x) => x.section === 'loss' || /(^|-)loss/.test(x.route) || x.route === 'pregtest-abortion' || x.route === 'pregtest-after';   /* Version 39.74: care after an abortion too ("bleeding" led with it) */
   const synStage = (k) => !k || (k === 'preg' ? isPregnant() : (k === 'post' ? afterBirthNow() : !isPregnant() && !afterBirthNow()));
   const toolBoost = (q) => {
     const qq = norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ').trim(); const words = qWords(qq).concat(qq.split(/\s+/)); const b = {};   /* review FIXES-03: "9 tarikh?" still matches */
@@ -1555,7 +1556,17 @@
     let hitT = rankTiles(q, terms, all);
     let hitA = dangerFirst(q, rank(allArticles(), (a) => norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' '))));
     /* Version 39.7 (journey audit P3-17): girls' pages after the rest for a woman of 20 or more (never dropped) */
-    if ((ageYears() || 0) >= 20) { const last = (arr, f) => arr.filter((x) => !f(x)).concat(arr.filter(f)); hitT = last(hitT, (x) => x.section === 'teen' && x.route !== 'family');   /* review KNOWLEDGE-07 */ hitA = last(hitA, (a) => TEEN_ARTS.indexOf(a.group + '.' + a.id) >= 0); }
+    const last = (arr, f) => arr.filter((x) => !f(x)).concat(arr.filter(f));
+    /* Version 39.74 (Mohit's phone walk: "heavy bleeding and dizzy" led with the abortion and after-birth pages): her stage's guides first, other
+       stages' guides after them, and a loss page she didn't ask about after those (never dropped) */
+    if (state.stage === 'app') {
+      const tops = topicsFor(); const qq0 = norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ').trim(); const ws = qWords(qq0); const bo = toolBoost(q);
+      /* a page she names keeps its place: her words name the tool, or its title holds every word she typed ("pregnancy plan") */
+      const named = (x) => (bo[x.route] || 0) > 0 || (ws.length > 0 && ws.every((w) => hitAt(norm(bothLang(x, 'title')), w) > 0));
+      hitT = last(hitT, (x) => STAGE_SECS.indexOf(x.section) >= 0 && tops.indexOf(x.section) < 0 && !named(x));
+      if (!lossAsked(qq0) && !lossWeeks()) hitT = last(hitT, (x) => lossTile(x) && !named(x));
+    }
+    if ((ageYears() || 0) >= 20) { hitT = last(hitT, (x) => x.section === 'teen' && x.route !== 'family');   /* review KNOWLEDGE-07 */ hitA = last(hitA, (a) => TEEN_ARTS.indexOf(a.group + '.' + a.id) >= 0); }
     const af = ansFirst(q); const afA = af ? findArticle(af) : null;
     const afHtml = afA ? '<div class="card soft ans-first"><span class="eyebrow">' + esc(t('ans_first')) + '</span><button type="button" class="item quiet" data-qa="' + esc(af) + '"><span class="ico-sm hue hue-' + hueOf(afA.group) + '">' + icon(GROUP_ICONS[afA.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(afA, 'title')) + '</strong><span>' + esc(L(afA, 'summary')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '';
     if (afA) hitA = hitA.filter((a) => a.group + '.' + a.id !== af);
@@ -2643,7 +2654,7 @@
       const sz = w != null && api.pregSize ? safe(() => api.pregSize(w), null) : null; const pct = w != null ? clamp((w / 40) * 100, 1, 99) : 0;
       main = (!disc && pregBleedNow() ? '<div class="flag urgent pg-bleed" data-xp-urgent="1"><span>' + esc(t('ci_flag_preg')) + '</span></div><div class="row wrap pg-bleed-call">' + ambBtn('sm primary') + '</div>' : '') +   /* Version 39.35; Version 39.70: the ambulance */
         twoCol('<div class="hero-main"><div class="eyebrow">' + esc(disc ? t('today_h') : t('pregnant')) + '</div>' +
-        (w != null ? '<div class="big num' + blur + '" id="bignum">' + w + '</div><p class="lead">' + esc(disc ? t('d_weeks') : t('weeks_preg')) + '</p>' + (pi && !hide ? '<p class="small">' + esc(tf('due_on', { d: fmtD(fromISO(pi.edd), { day: 'numeric', month: 'short', year: 'numeric' }) })) + '</p>' : '') : '<p class="lead">' + esc(t('preg_set_date')) + '</p>' + (disc ? '' : '<button type="button" class="btn sm" id="preg-date">' + esc(t('preg_date_b')) + '</button>')) + '</div>',
+        (w != null ? '<div class="big num' + blur + '" id="bignum">' + w + '</div><p class="lead">' + esc(disc ? t('d_weeks') : t(w === 1 ? 'weeks_preg1' : 'weeks_preg')) + '</p>' + (pi && !hide ? '<p class="small">' + esc(tf('due_on', { d: fmtD(fromISO(pi.edd), { day: 'numeric', month: 'short', year: 'numeric' }) })) + '</p>' : '') : '<p class="lead">' + esc(t('preg_set_date')) + '</p>' + (disc ? '' : '<button type="button" class="btn sm" id="preg-date">' + esc(t('preg_date_b')) + '</button>')) + '</div>',
         !disc && w != null && A ? '<div class="hero-art">' + A.produce(w, sz ? sz.c : '') + '</div>' : '') +
         (!disc && sz ? '<p class="hero-cap">' + esc(sz.line || (sz.s + ' · ' + sz.c)) + '</p>' : '') +
         (!disc && w != null ? '<div class="timeline" aria-hidden="true"><div class="seg" style="left:0;width:35%;background:var(--accent-2);opacity:0.6;border-radius:7px 0 0 7px"></div><div class="seg" style="left:35%;width:35%;background:var(--accent-2)"></div><div class="seg" style="left:70%;width:30%;background:var(--accent-strong);border-radius:0 7px 7px 0"></div><div class="mark" style="left:' + pct.toFixed(0) + '%"></div></div><div class="tl-labels" style="grid-template-columns:repeat(3,minmax(0,1fr))">' + ['pw_t1', 'pw_t2', 'pw_t3'].map((k, i) => '<span class="' + (i === (w < 14 ? 0 : (w < 28 ? 1 : 2)) ? 'on' : '') + '">' + esc(t(k)) + '</span>').join('') + '</div>' : '') +
@@ -3401,18 +3412,22 @@
     const age = ageYears(); const young = age != null && age < 40; let ageAns = ''; let lastAns = '';
     const lsI = lastStart(); const recent = !!lsI && diffDays(lsI, today()) <= 42;
     const was0 = stageNow(); const was = was0 === 'meno' ? (s0.stopped ? 'meno' : 'mid') : was0; const plain = (k) => ['cycle', 'ttc', 'mid', 'meno'].indexOf(k) >= 0;
+    /* Version 39.74 (Mohit's phone walk, 6 Nov): after a birth, periods stay away for months, so "My periods have stopped" or "Periods changing
+       after 40" is no POI and no menopause: her after-birth stage stays, with every baby line, and the reviewed line says why */
+    const pp = was === 'post' && !!s0.deliveredOn; const ppSkip = () => pp && (pick === 'meno' || pick === 'mid');
     const w0 = state.stageWas; const undoOk = !!(w0 && w0.sit && isISO(w0.at) && diffDays(fromISO(w0.at), today()) <= 30 && plain(w0.st) && plain(was) && w0.st !== was);
     const opts = [['cycle', 'stage_cycle', 'periods'], ['ttc', 'stage_ttc', 'ttc'], ['preg', 'stage_preg', 'preg'], ['post', 'stage_post', 'post'], ['mid', 'stage_mid', 'meno'], ['meno', 'stage_meno', 'meno']];
     const inRange = (val, a, b) => !!val && fromISO(val) >= addDays(today(), a) && fromISO(val) <= addDays(today(), b);
     /* Version 39.35: her diary's last period, and her week and due date from what she enters (the scan's date wins, as pregInfo) */
     const lmpGuess = () => { const ls = lastStart(); return ls && inRange(toISO(ls), -310, 0) ? toISO(ls) : ''; };
     const pregIs0 = (lmp, edd) => { const okE = inRange(edd, -28, 280), okL = inRange(lmp, -310, 0); if (!okE && !okL) return ''; const l = okE ? addDays(fromISO(edd), -280) : fromISO(lmp);
-      return Math.max(0, Math.floor(diffDays(l, today()) / 7)) + ' ' + t('weeks_preg') + ' · ' + tf('due_on', { d: fmtD(addDays(l, 280), { day: 'numeric', month: 'short', year: 'numeric' }) }); };
+      const wk = Math.max(0, Math.floor(diffDays(l, today()) / 7)); return wk + ' ' + t(wk === 1 ? 'weeks_preg1' : 'weeks_preg') + ' · ' + tf('due_on', { d: fmtD(addDays(l, 280), { day: 'numeric', month: 'short', year: 'numeric' }) }); };
     const pregIsLine = (lmp, edd) => { const s = pregIs0(lmp, edd); const g = s && inRange(edd, -28, 280) && inRange(lmp, -310, 0) ? pregGapW(lmp, edd) : 0; return s + (g ? ' ' + tf('stage_preg_gap', { n: g }) : ''); };   /* Version 39.40 */
     const show = () => sheet('<h2>' + esc(t('stage_h')) + '</h2>' + (undoOk ? '<button type="button" class="linkbtn st-undo" id="st-undo">' + esc(tf('st_mistake', { s: t('stage_' + w0.st) })) + '</button>' : '') + '<div class="list">' + opts.map((o) => '<button type="button" class="item stage-opt' + (pick === o[0] ? ' on' : '') + '" data-stage="' + o[0] + '" aria-pressed="' + (pick === o[0]) + '"><span class="ico-sm hue hue-' + hueOf(o[2]) + '">' + icon(SECTION_ICONS[o[2]]) + '</span><span class="body"><strong>' + esc(t(o[1])) + '</strong></span>' + (pick === o[0] ? '<span class="pill ok">✓</span>' : '') + '</button>').join('') + '</div>' +
-      (young && pick === 'mid' ? '<div class="card st-age"><p>' + esc(t('st_age_q')) + '</p><div class="list">' + [['irr', 'st_age_irr'], ['stop', 'stage_meno'], ['oops', 'st_age_oops']].map((o) => '<button type="button" class="item" data-st-age="' + o[0] + '"><span class="body"><strong>' + esc(t(o[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></div>' : '') +
-      (young && pick === 'meno' && !s0.stopped ? '<div class="card warn st-poi"><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="st-poi-ask">' + esc(t('hs_doc_q')) + '</button>' + (api.explain && api.explain.docNext ? api.explain.docNext('gyn') : '') + '</div><button type="button" class="linkbtn" id="st-poi-test">' + esc(t('st_poi_test')) + '</button><p class="small">' + esc(t('st_poi_count')) + '</p></div>' : '') +
-      (!young && pick === 'meno' && recent && !s0.stopped ? '<div class="card st-last"><p>' + esc(tf('st_last_q', { d: fmtD(lsI, { day: 'numeric', month: 'short' }) })) + '</p><div class="grid2">' + [['y', 'st_last_y'], ['n', 'st_last_n']].map((o) => '<button type="button" class="btn sm' + (lastAns === o[0] ? ' on' : '') + '" data-st-last="' + o[0] + '" aria-pressed="' + (lastAns === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
+      (ppSkip() ? '<div class="card st-pp"><p class="small">' + esc(t('tpp1_pl')) + '</p></div>' : '') +
+      (young && pick === 'mid' && !pp ? '<div class="card st-age"><p>' + esc(t('st_age_q')) + '</p><div class="list">' + [['irr', 'st_age_irr'], ['stop', 'stage_meno'], ['oops', 'st_age_oops']].map((o) => '<button type="button" class="item" data-st-age="' + o[0] + '"><span class="body"><strong>' + esc(t(o[1])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></div>' : '') +
+      (young && pick === 'meno' && !s0.stopped && !pp ? '<div class="card warn st-poi"><p class="small">' + esc(t('meno_tl_poi0')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="st-poi-ask">' + esc(t('hs_doc_q')) + '</button>' + (api.explain && api.explain.docNext ? api.explain.docNext('gyn') : '') + '</div><button type="button" class="linkbtn" id="st-poi-test">' + esc(t('st_poi_test')) + '</button><p class="small">' + esc(t('st_poi_count')) + '</p></div>' : '') +
+      (!young && pick === 'meno' && recent && !s0.stopped && !pp ? '<div class="card st-last"><p>' + esc(tf('st_last_q', { d: fmtD(lsI, { day: 'numeric', month: 'short' }) })) + '</p><div class="grid2">' + [['y', 'st_last_y'], ['n', 'st_last_n']].map((o) => '<button type="button" class="btn sm' + (lastAns === o[0] ? ' on' : '') + '" data-st-last="' + o[0] + '" aria-pressed="' + (lastAns === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
       (pick === 'preg' ? (function () { const lmp0 = s0.pregnant ? (s0.pregnantSince || '') : lmpGuess(); const edd0 = s0.pregnant ? (s0.scanEdd || '') : '';   /* Version 39.35 (Mohit's walkthrough, 29 Oct) */
         return '<div class="card"><p class="small">' + esc(t('stage_preg_note2')) + '</p><label for="st-lmp">' + esc(t('lmp')) + '</label><input type="date" id="st-lmp" max="' + toISO(today()) + '" value="' + esc(lmp0) + '"><label for="st-edd">' + esc(t('scan_edd')) + '</label><input type="date" id="st-edd" value="' + esc(edd0) + '"><p class="small st-preg-is" id="st-preg-is" aria-live="polite">' + esc(pregIsLine(lmp0, edd0)) + '</p></div>'; })() : '') +
       (s0.pregnant && pick !== 'preg' && pick !== 'post' ? '<div class="card st-end"><p>' + esc(t('stage_end_q')) + '</p><div class="grid2">' + [['ended', 'stage_end_y'], ['mistake', 'stage_end_n']].map((o) => '<button type="button" class="btn sm' + (endWhy === o[0] ? ' on' : '') + '" data-st-end="' + o[0] + '" aria-pressed="' + (endWhy === o[0]) + '">' + esc(t(o[1])) + '</button>').join('') + '</div></div>' : '') +
@@ -3441,6 +3456,7 @@
         } else if (pick === 'post') {
           const b = val('st-birth'); if (!inRange(b, -730, 0)) { toast(t('date_bad')); return; }
           clearPreg(null, true); delete s0.pregEndedOn; delete s0.babyOff; setBirth(b); s0.breastfeeding = !!($('#st-bf', sh) || {}).checked; s0.planning = false; s0.stopped = false; delete s0.stoppedOn;
+        } else if (ppSkip()) { closeSheet(); return;   /* Version 39.74: nothing changes after a birth (the line above says why) */
         } else {
           const wasStopped = !!s0.stopped;
           if (s0.pregnant && !endWhy) { toast(t('stage_end_q')); return; }

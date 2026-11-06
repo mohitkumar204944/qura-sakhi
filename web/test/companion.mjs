@@ -127,7 +127,7 @@ async function revealWords(page) { let w = ''; for (let i = 0; i < 8; i++) { w +
   await tap(page, '#pl-in-next');
   /* Version 39.66: her day (activity, food, milk, knees or back, sleep and work) waits for Today, each on the day a step uses it */
   check('1 then no "Your day": her day\'s questions wait for Today (Version 39.66)', !/Your day/.test(await view(page)) && !(await has(page, '[data-pl-q^="act:"]')) && !(await has(page, '[data-pl-q^="remind:"]')));
-  check('1 "When can you move for 10 minutes?"', /When can you move for 10 minutes\?/.test(await view(page)));
+  check('1 "When is a walk easiest for you?" (Version 39.74: the cycle plan\'s walk is after lunch and after dinner)', /When is a walk easiest for you\?/.test(await view(page)));
   await tap(page, '[data-pl-when="dinner"]');
   /* Version 39.3 (diet audit F2): her height and weight are asked only when her goal is her weight */
   check('1 no body question when her goal isn\'t her weight', !/Your body \(optional\)/.test(await view(page)) && !(await has(page, '#pl-in-skip')));

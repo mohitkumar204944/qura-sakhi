@@ -208,9 +208,11 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   const r = await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge'));
   const sc = await a.page.evaluate(() => (window.__sched || []).filter((x) => /plan-nudge/.test(x.id)).map((x) => [x.id, x.body, x.go]));
   check('8 on: a daily reminder at her time, which opens today\'s routine', r && r.time === '21:15' && r.every === 1 && r.mod === 'plan' && sc.length && sc[0][0] === 'r-plan-nudge-' + TODAY && sc[0][1] === 'Time for your walk, right after the meal. Tap to start.' && sc[0][2] === 'plan-now', [r, sc.slice(0, 2)]);   /* Version 39.22: a walk right after her meal */
-  /* her walk (a +10) alone: the nudge still comes, for her yoga (Version 39.13) */
+  /* her walk alone: the after-dinner nudge ("Time for your walk, right after the meal") is about her walk, so it is quiet for the day;
+     her yoga is before a meal (Version 39.22) and the check-in still asks about it (Version 39.74, the phone walk; was Version 39.13's
+     "the nudge still comes, for her yoga") */
   await go(a.page, 'home'); await tap(a.page, '#view .today-plan-move [data-today-act]'); await settle(a.page, 1200);   /* Version 39.68: no +10 on Moves; her walk from Today */
-  check('12 after her walk alone, the nudge still comes: her yoga is left', !(await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)));
+  check('12 after her walk alone, the after-dinner walk nudge is quiet today (Version 39.74)', (await a.page.evaluate(() => window.Saathi.reminders.get('plan-nudge').doneOn)) === TODAY);
   await go(a.page, 'plan-now');
   check('8 the nudge opens today\'s routine', (await a.page.evaluate(() => location.hash)) === '#plan-r-cycle');
   /* she does her yoga too: none today */

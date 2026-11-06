@@ -142,7 +142,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await tap(page, '[data-pl-q="skips:y"]'); await tap(page, '[data-pl-m="signs:acne"]'); await tap(page, '#pl-in-next');
   v = await view(page);
   check('3 no "Your day" (Version 39.66: her day\'s questions wait for Today), and no reminder question', !/So your steps fit your day/.test(v) && !/When should Sakhi remind you/.test(v), v.slice(0, 500));
-  check('3 her walk time says what Sakhi does with it', /Sakhi puts your walk at this time each day/.test(await view(page)));
+  check('3 her walk time says what Sakhi does with it', /Sakhi nudges you to walk at this time each day/.test(await view(page)));   /* Version 39.74: the cycle plan */
   await tap(page, '[data-pl-when="evening"]'); await settle(page, 600);   /* Version 39.3: no body screen unless her goal is her weight */
   v = await view(page);
   check('3 her last answer makes her plan, from what she told Sakhi (Version 39.68: no answers summary)', !/Here’s what you told Sakhi/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 700));

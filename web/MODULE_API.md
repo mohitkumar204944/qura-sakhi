@@ -7609,3 +7609,71 @@ answers 5, 7 and 12 (`docs/feature-review-2026-11-05.md`). Mohit's word on 6 Nov
 - Hindi at 360 px, and no page errors.
 
 28 older suites follow the new behaviour. The golden plans and the plan hashes are re-recorded for the walk's words and minutes.
+## 117. Version 39.74: the phone walk's fixes
+
+Mohit, 6 Nov: "can you do needful and test everything thoroughly live walkthrough on phone dont worry about loosing any progress".
+His Flip5 on vc 125 (0.39.73-pilot) was walked over adb: Today, the Kegel trainer, the check-in, My plan and its settings, the PMOS,
+Getting ready, pregnancy, after-birth and period plans from their questions to Start, the 3D player and its rest, the Diary, Cycles,
+Explore and search, Help and the helplines, Me, Reminders and a test notification, Hindi at 360 dp, Wind down with Back and Stop, every
+stage change, the booked alarms (`dumpsys alarm`), Back from Today, and Sakhi's own log (no console, CSP or crash line). "Do needful"
+also answers the two questions left after Version 39.72: the PMOS walk question, and the leftovers in the shared tree.
+
+1. **The PMOS walk question.** The cycle plan's walk is 10 minutes after lunch and after dinner (Version 39.72), so its "when"
+   answer only times her walk reminder (and her check-in after it). For that plan the question asks "When is a walk easiest for you?" and says
+   what Sakhi does with the answer: "Sakhi nudges you to walk at this time each day." (`plan_in_when_h2`, `plan_in_when_p2`). It is
+   never a question about reminders (Version 39.27). The other plans, whose walk is at her time, keep "When can you move for 10
+   minutes?".
+2. **Plan settings.** The check-in's times sit right under "Remind me every day"; "Change what I work on" follows in a list of its
+   own (since Version 39.27 the times sat under it).
+3. **"Every week" on My plan.** Plan your week is gone (Version 39.68), so no plan says "Look back, plan the week": the plans
+   without a weekly lesson or chapter (the cycle plan, and version 1 of the midlife plan among them) say "A look back"
+   (`plan_rh_wk_s` removed); Getting ready, My midlife plan's version 2, My period plan and My pelvic floor plan keep theirs.
+4. **Her Kegel sets once on the reveal.** When her pelvic floor goal adds her sets to a plan, the reveal names them once: as a
+   step when they are one of today's (Getting ready), or as the later line "Every day: your Kegel sets, 3 a day" when they come
+   later (My period plan with her Hb test). `stepsList` keeps each step's `id`.
+5. **The Start card names her tablet.** When her folic acid tablet's reminder rings from day 1 (she has her tablets, and its
+   switch is on), the Start card names it at its own time: "your 9 pm folic acid tablet", "your 9 pm tablet" in discreet mode
+   (`plan_st_r_folic`, `plan_st_r_tab`; `S.ttc.folic.rings()` and `.at()`).
+6. **"1 week pregnant".** The pregnancy hero and the stage sheet say "week" for week 1 (`weeks_preg1`).
+7. **Search by her stage.** Her stage's guides come first; the guides of other stages (after a birth, menopause, a loss), and a
+   loss or abortion page she didn't ask about (`lossTile` now includes `pregtest-after`, care after an abortion), come after them.
+   Nothing is dropped; after a loss, or when she asks, those pages lead as before (`STAGE_SECS`, `topicsFor`). A page she names
+   keeps its place: her words name the tool (`toolBoost`), or its title holds every word she typed ("pregnancy plan" still finds
+   the pregnancy plan first).
+8. **The language page.** "Why some pages are still in Hindi or English" shows only while a language other than English and Hindi
+   is offered (none since Version 39.68).
+9. **Typing on a phone.** On a touch screen, while a text box has focus, the tab bar, the + button and Wind down's playing bar step
+   aside (`app.css`, `:has()`), so the urgent card's "Help and safety" and the results above the keyboard aren't covered.
+10. **After a birth, periods stopped or changing.** While she is in "I had a baby", "My periods have stopped" and "Periods changing
+    after 40" show the reviewed line "Sakhi counts the days since your baby's birth. Periods can come back any time, so log bleeding
+    when it starts." (`tpp1_pl`) instead of the POI card, the age question or the last-period question; Save changes nothing. Before
+    this, under 40 her stage stayed "I had a baby" while every baby line (the baby's danger signs included) quietly stopped
+    (`babyOff`), and from 40 she moved to menopause. Leaving for Tracking or Trying still stops the baby lines (Version 39.68).
+
+Then (Mohit, 6 Nov: "feel free to delete any account and do anything which is blocker for end to end testing and test everything live
+on phone") a test copy of the app on the same phone ("Sakhi E2E": another package, no server address so the stand-in server, the test
+fixtures' number and code, its clock moved through Playwright, never in the repo) joined from a fresh install as nine women (tracking,
+45 and midlife, 38 with periods stopped, trying, 20 weeks pregnant, under 18, Hindi at 360 dp, a family-shared phone with a PIN) and
+walked the call request, backup and restore, Care near me, the report, week 5 and day 85. Three more fixes:
+
+11. **The after-meal nudge.** "Time for your walk, right after the meal" waits only for her walk: once her walk is done (or her
+    check-in), it doesn't ring that day. A morning or evening nudge ("Yoga before you eat, then your walk") still waits for both.
+12. **"Before: …".** The month summary's line reads "Days between periods: Before: 40, 35 · Since you started: …"; it read
+    "Before 40, 35", like an age (`resultText`).
+13. **The end card alone.** The day her 12 weeks end, Sakhi says shows no pause, quiet-weeks or restart card beside "Your 12 weeks
+    are done" (Version 39.37's rule, now for those cards too; `endDay` in `cardKind`).
+
+For Mohit and the doctors: joining at 38 with "My periods have stopped" says "Menopause" and stops the cycle count, while the stage
+sheet keeps it counting under 40 (Version 39.65), and Today then says "Periods that stop before 40 are not menopause"; at 45 in
+"Periods changing after 40", two gaps over 35 days say "See a doctor this month", where longer cycles are usual in the menopause
+transition.
+
+Left as they were: the two week counts (the check-in's "3 of 7 days this week" counts days with any step, Today's "This week: 1
+full day" counts full days; a decision for Mohit), the trainer's video read as "Unable to play media." by the phone's accessibility
+tree (the Kegel session's `mods/post.js`), and the call form's topics from earlier stages.
+
+`test/phonewalk.mjs` (41 checks): sections 1 to 10 and 12 as above, and Hindi at 360 px (11). `test/companion.mjs` and `test/firstday.mjs`
+follow the cycle plan's question, `test/daily.mjs` 5 and `test/midlife.mjs` 16.2 "A look back", `test/pfplan.mjs` 17.21 her sets named once; the golden plans are re-recorded for "A look back" (60 week-1 snapshots of the cycle plans, that line
+only) and for the colons in the doctor summary's "Before: … · Since you started: …" (96 snapshots, `sum` only). `test/follow.mjs` 12
+now expects the after-dinner nudge quiet once her walk is done (it expected Version 39.13's "the nudge still comes, for her yoga";
+yoga is before a meal since Version 39.22).

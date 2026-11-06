@@ -720,7 +720,7 @@
     v.innerHTML = S.backRow(t('lang_tile'), S.canSave() ? 'me' : 'care', false) +
       '<p class="small">' + esc(t('lang_intro')) + '</p>' +
       '<h2>' + esc(t('lang_choose_h')) + '</h2><div class="list">' + rows + '</div>' +
-      '<div class="card soft"><h3>' + esc(t('lang_review_h')) + '</h3><p class="small">' + esc(t('lang_review_p')) + '</p><p class="small">' + esc(t('lang_review_p2')) + '</p></div>' +
+      (S.langs.some((l) => l.code !== 'en' && l.code !== 'hi') ? '<div class="card soft"><h3>' + esc(t('lang_review_h')) + '</h3><p class="small">' + esc(t('lang_review_p')) + '</p><p class="small">' + esc(t('lang_review_p2')) + '</p></div>' : '') +   /* Version 39.74: only while a language waits for its doctor's check (English and Hindi are whole since Version 39.68) */
       '<h2>' + esc(t('lang_read_h')) + '</h2>' +
       '<div class="card"><p class="small" style="color:var(--fg)">' + esc(t('lang_read_p')) + '</p>' +
         '<div class="stack" style="gap:6px"><span class="eyebrow" id="lang-speed-l">' + esc(t('lang_speed')) + '</span><div class="chips" role="group" aria-labelledby="lang-speed-l">' +

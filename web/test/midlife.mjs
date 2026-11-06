@@ -573,7 +573,7 @@ const startPlan = async (page, intake, pick) => {
   a = await open({ seed: m2('hot', B(2)), hash: '#plan' });
   check('16.2 "How your plan works": every week, a short chapter and a look back', /Every week A short chapter and a look back/.test(await txt(a.page, '#view .pl-rh')), await txt(a.page, '#view .pl-rh')); await done(a);
   a = await open({ seed: m2('hot', B(2), { pv: 1 }), hash: '#plan' });
-  check('16.2 version 1 keeps "Look back, plan the week"', /Every week Look back, plan the week/.test(await txt(a.page, '#view .pl-rh')), await txt(a.page, '#view .pl-rh')); await done(a);
+  check('16.2 version 1 says "A look back" (Plan your week is gone: Version 39.74)', /Every week A look back/.test(await txt(a.page, '#view .pl-rh')), await txt(a.page, '#view .pl-rh')); await done(a);
   /* 4 her plan's chapter lights My plan */
   a = await open({ seed: m2('hot', B(1)), hash: '#mid-lesson' });
   check('16.3 her chapter lights My plan, not Explore', /My plan/.test(await txt(a.page, '#tabbar .on')) && /notice it, name it|What a hot flush is/.test(await view(a.page)), await txt(a.page, '#tabbar .on')); await done(a);

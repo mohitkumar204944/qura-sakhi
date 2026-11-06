@@ -3589,3 +3589,22 @@ then "Any time of day" (दिन में कभी भी).
 **The pause notification (the note on Pause for a week).** It reads "Take a week off? You can pause your plan for a week. It carries
 on after that, from where you are." (the card's reviewed words). It comes at 9 am on the morning after 2 days with nothing done, at
 most once a week. On a shared phone it says only "Reminder".
+### 19.74 Version 39.74: the phone walk's fixes (MODULE_API section 117)
+
+UI words only; no new health line.
+
+- **My PMOS plan's walk question:** "When is a walk easiest for you?" (आपके लिए सैर का सबसे आसान समय कब है?) and "Sakhi nudges you
+  to walk at this time each day." (Sakhi हर दिन इसी समय आपको सैर की याद दिलाएगी।). It was "When can you move for 10 minutes? Sakhi puts your walk
+  at this time each day.", which stays for the plans whose walk is at her time.
+- **The Start card:** "your 9 pm folic acid tablet" ({t} की folic acid की गोली), "your 9 pm tablet" in discreet mode ({t} की गोली).
+- **Pregnancy:** "1 week pregnant" (singular; the Hindi is unchanged).
+- **Month summaries:** "Days between periods: Before: 40, 35 · Since you started: …" (a colon after "Before" and "Since you started";
+  without it "Before 40" read like an age).
+- **My plan:** "Look back, plan the week" is gone; every plan says "A look back" (एक नज़र पीछे), as before for the others.
+- **The stage sheet after a birth:** the reviewed line "Sakhi counts the days since your baby's birth. Periods can come back any
+  time, so log bleeding when it starts." now also answers "My periods have stopped" and "Periods changing after 40" while she is in
+  "I had a baby", in place of the POI card. For the doctors to glance: after a birth, the stage stays, and so does every baby line.
+
+For the doctors (from the phone walk, nothing changed): (1) at 45 in "Periods changing after 40", two gaps over 35 days show "See a
+doctor this month ... Blood tests for thyroid and hormones help find the cause": soften it in the menopause transition? (2) a woman
+who joins at 38 with "My periods have stopped" is called "Menopause" while Today's card says it is not menopause before 40.

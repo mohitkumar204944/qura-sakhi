@@ -537,7 +537,8 @@ async function answerAll(page) {
   a = await open({ seed: seedOf({ goals: ['pain', 'pelvic'], intake: { goal: 'pain', stage: 'cycle' }, dob: '1994-01-01', events: regular(10) }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 500); await answerAll(a.page);
   const rv = await view(a.page);   /* Version 39.72: one screen */
-  check('17.21 a plan her sets join says so under her steps', /Every day: your Kegel sets, 3 a day/.test(rv), rv.slice(0, 1200));
+  /* Version 39.74 (Mohit's phone walk): named once: here her sets are one of today's steps, so no later line repeats them */
+  check('17.21 a plan her sets join names them once: today a step, so no later line', (rv.match(/Kegel sets/g) || []).length === 1 && /Every day: Your Kegel sets/.test(rv) && !/your Kegel sets, 3 a day/.test(rv), rv.slice(0, 1200));
   await done(a);
   a = await open({ seed: pel(B(10)) });
   await go(a.page, 'plan-settings');

@@ -602,6 +602,17 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       to 45 minutes when her day allows, as one step;
     - the Fertile days estimate tile only while she tries; no screenshot block in the Android app.
     Contract: MODULE_API section 115; wording: section 19.72 of the review (the new lines wait for the doctors' one read).
+  - `node test/phonewalk.mjs` (Version 39.74, the phone walk's fixes; Mohit, 6 Nov: "can you do needful and test everything thoroughly
+    live walkthrough on phone"; his Flip5 on vc 125, walked over adb):
+    - My PMOS plan's walk question: "When is a walk easiest for you?", and what Sakhi does with it (her nudge);
+    - Plan settings' times under their reminder; "A look back" for every plan (no "plan the week");
+    - her Kegel sets named once on the reveal; the Start card names her 9 pm folic acid tablet; "1 week pregnant";
+    - search: her stage's guides first, other stages' and a loss or abortion page she didn't ask about after them (never dropped);
+    - no "Why some pages are still in Hindi or English"; on a touch screen the tab bar steps aside while she types;
+    - after a birth, "My periods have stopped" or "Periods changing after 40" keeps her stage and every baby line, with the
+      reviewed line instead of the POI card;
+    - the after-meal walk nudge quiet once her walk is done, "Before: …" in the month summary, the end card alone on day 85.
+    Contract: MODULE_API section 117; wording: section 19.74 of the review (UI words only).
   - `node test/play.mjs` (Google Play, 29 Oct: target SDK 36, edge to edge, Back on Android 13+, the bundle and its upload
     key; reads the last Play bundle when there is one). The reviewer's sign-in is in `npm run test:server`.
   - `node test/maths.mjs`
