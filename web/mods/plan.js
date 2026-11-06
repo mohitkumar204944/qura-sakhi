@@ -558,7 +558,7 @@
     pauseSync(); S.mem.planFrom = 'plan-pmos'; const hd = head('plan_h', 'plan');
     const why = pauseWhy();
     if (!S.canSave() || !raw() || !raw().start || why) {
-      const art = '<div class="pl-intro-art">' + plateSvg() + figSvg('armsup', { cls: 'pl-fig-sm' }) + '</div>';
+      const art = '<div class="pl-intro-art">' + plateSvg() + introFig() + '</div>';
       const rows = [['plate', 'plan_i_eat'], ['move', 'plan_i_move'], ['chart', 'plan_i_see']].map((x) => '<div class="item quiet"><span class="ico-sm hue hue-' + (x[0] === 'plate' ? 'green' : (x[0] === 'move' ? 'purple' : 'sky')) + '">' + (ICO[x[0]] || S.icon(x[0])) + '</span><span class="body"><strong>' + esc(t(x[1])) + '</strong><span>' + esc(t(x[1] + '_s')) + '</span></span></div>').join('');
       let act;
       if (why) act = '<div class="card warn"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : (why === 'loss' ? 'plan_paused_loss_d' : 'plan_paused_post'))) + '</p>' + (why !== 'loss' && S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>';
@@ -1024,7 +1024,7 @@
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
     const tRs = !tp ? [] : (packOf(d) === 'cycle' ? [tp.routine] : actionsFor(fullD(d)).filter((a) => a.kind === 'routine' && a.r).map((a) => a.r));   /* Version 39.51 (Mohit's phone): Today is her plan's own routine, not the cycle plan's */
     v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill((R[id].fb || '') + (R[id].ffig || R[id].first)) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, fig: R[id].ffig, fb: R[id].fb, bump: R[id].bump }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill((R[id].fb || '') + (R[id].ffig || R[id].first)) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, fig: R[id].ffig, fb: R[id].fb, bump: R[id].bump, sun: id === 'sun' }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
       '<div class="card pl-walkcard"><span class="pl-mfig' + (figStill('walk') ? ' pl-mf3d' : '') + '" id="pl-walkfig">' + walkFig() + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       /* Version 39.68 (the doctors' review): no +10 to +30 walking minutes here; her walk step already counts her walking */
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
@@ -1078,14 +1078,34 @@
      figure), and fall back to the drawings, with her bump, where that body's file isn't there */
   const figName = (s, n) => (s.fb || '') + n;   /* a routine's card picture takes its ffig, the 3D position of the step its drawing (first) shows */
   const figLoop = (s) => { const f = FIG(); const k = figKey(s) && figName(s, figKey(s)); return f && k && (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : ''; };
-  const figThumb = (s, mirror) => { const src = figStill(figName(s, s.fig || s.pose)); return src ? '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + src + '" alt="" loading="lazy">' : figSvg(s.pose, { mirror: mirror, bump: s.bump }); };
+  /* Version 39.69.2 (Mohit, 6 Nov: "Yes, all of them", after "are there anymore still pictures"): the small pictures move too, the
+     rest's Up next, a routine's moves before Start and the routines on Moves and calm, each its move's moving picture (fig/t, made by
+     web/tools/fig3d/thumbs.py: animated WebPs, so a page of them needs no video players). The sun salutation's list shows each
+     position as its flow comes into it, and its card the whole salutation. The still for "reduce motion" or a picture that can't
+     load; the drawings without web/fig */
+  const figThumb = (s, mirror) => {
+    const f = FIG(); const sun = !!(s.sun && f && f.sun);
+    const n = sun ? (s.si != null ? 'sun-' + S.pad2(s.si) : 'sun') : figName(s, s.fig || s.pose);
+    const src = sun && s.si != null ? 'fig/s/' + n + '.webp' : figStill(sun ? s.pose : n);
+    if (!src) return figSvg(s.pose, { mirror: mirror, bump: s.bump });
+    const mv = !reduced() && (f.thumbs || []).indexOf(n) >= 0 ? 'fig/t/' + n + '.webp' : '';
+    return '<img class="pl-3d' + (mirror ? ' pl-mirror' : '') + '" src="' + (mv || src) + '"' + (mv ? ' data-still="' + src + '"' : '') + ' alt="" loading="lazy">';
+  };
+  /* a moving picture that can't load gives way to its still (an image's error doesn't bubble, so this listens on the way down) */
+  document.addEventListener('error', (e) => { const im = e.target; const st = im && im.tagName === 'IMG' && im.getAttribute('data-still');
+    if (st && im.getAttribute('src') !== st) { im.removeAttribute('data-still'); im.src = st; } }, true);
+  /* My PMOS plan's page before she starts: the 3D figure raising her arms, moving (the drawing without web/fig) */
+  const introFig = () => (FIG() && figStill('armsup') ? '<span class="pl-intro-3d">' + figThumb({ pose: 'armsup' }) + '</span>' : figSvg('armsup', { cls: 'pl-fig-sm' }));
   function fig3d(s, prev) {
     const f = FIG(); if (!f) return '';
-    const mir = s.sideK === 'l' ? ' pl-mirror' : ''; let still, clip = '', loop = true;
+    const mir = s.sideK === 'l' ? ' pl-mirror' : ''; let still, clip = '', loop = true, after = '';
     if (s.sun && s.si != null && f.sun) {
       still = 'fig/s/sun-' + S.pad2(s.si) + '.webp';
-      if (s.flow && prev && prev.pose !== s.pose && s.si >= 1 && s.si <= f.sun) { clip = 'fig/v/sun-' + S.pad2(s.si) + '.webm'; loop = false; }
-      else if (s.si === 0 && f.sun0) clip = 'fig/v/sun-00.webm';   /* Version 39.69: her first position breathing, palms together */
+      if (s.flow && prev && prev.pose !== s.pose && s.si >= 1 && s.si <= f.sun) {
+        clip = 'fig/v/sun-' + S.pad2(s.si) + '.webm'; loop = false;
+        /* Version 39.69.2: then she breathes in the position until the next flow (its hold, sunh-<pose>), instead of holding still */
+        if ((f.loops || []).indexOf('sunh-' + s.pose) >= 0) after = 'fig/v/sunh-' + s.pose + '.webm';
+      } else if (s.si === 0 && f.sun0) clip = 'fig/v/sun-00.webm';   /* Version 39.69: her first position breathing, palms together */
     } else { still = figStill(figName(s, s.fig || s.pose)); clip = figLoop(s); }
     if (!still && !clip) return '';
     if (!clip || reduced()) return still ? '<img class="pl-3d' + mir + '" id="pl-fig3d" src="' + still + '" alt="">' : '';
@@ -1093,6 +1113,7 @@
        comes in first, once (its -in clip, from standing or kneeling into the pose), then holds, breathing, on its loop */
     const kin = !s.sun && figKey(s) ? figName(s, figKey(s)) + '-in' : ''; const inClip = kin && (f.loops || []).indexOf(kin) >= 0 ? 'fig/v/' + kin + '.webm' : '';
     if (inClip) return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + inClip + '" data-next="' + clip + '"' + (still ? ' data-still="' + still + '"' : '') + ' muted playsinline autoplay preload="auto"></video>';
+    if (after) return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + clip + '" data-next="' + after + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay preload="auto"></video>';
     return '<video class="pl-3d' + mir + '" id="pl-fig3d" src="' + clip + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') +
       ' muted playsinline autoplay preload="auto"' + (loop ? ' loop' : '') + '></video>';
   }
@@ -1144,7 +1165,7 @@
     if (run.i < 0) {
       const uniq = []; st.forEach((s) => { if (!s.sun && !uniq.some((u) => u.n === s.n)) uniq.push(s); });
       body = '<p class="small">' + esc(t('plan_p_intro')) + '</p>' + (run.id === 'sun' ? '<div class="card warn"><p class="small">' + esc(t('plan_sun_care')) + '</p></div>' : '') +
-        '<div class="list">' + (run.id === 'sun' ? [uniq[0]].concat(SUN.slice(0, 8).map((x) => ({ pose: x[0], n: x[1] }))) : uniq).map((s) => '<div class="item quiet pl-pitem"><span class="pl-thumb">' + figThumb(s) + '</span><span class="body"><strong>' + esc(tx(s.n)) + '</strong>' + (s.s ? '<span>' + esc(s.reps > 1 ? s.reps + ' × ' + fmt(s.s) : fmt(s.s)) + (s.side ? ' · ' + esc(t('plan_p_both')) : '') + '</span>' : '') + '</span></div>').join('') + '</div>' +
+        '<div class="list">' + (run.id === 'sun' ? [uniq[0]].concat(SUN.slice(0, 8).map((x, i) => ({ pose: x[0], n: x[1], sun: true, si: i }))) : uniq).map((s) => '<div class="item quiet pl-pitem"><span class="pl-thumb">' + figThumb(s) + '</span><span class="body"><strong>' + esc(tx(s.n)) + '</strong>' + (s.s ? '<span>' + esc(s.reps > 1 ? s.reps + ' × ' + fmt(s.s) : fmt(s.s)) + (s.side ? ' · ' + esc(t('plan_p_both')) : '') + '</span>' : '') + '</span></div>').join('') + '</div>' +
         (run.id === 'sun' ? '<p class="small">' + esc(tf('plan_p_rounds', { n: st.filter((s) => s.sun).length / SUN.length })) + '</p>' : '') +
         (S.speakEl ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('plan_p_voice')) + '</strong><span>' + esc(t('plan_p_voice_d')) + '</span></span><input type="checkbox" id="pl-voice"' + (run.voice ? ' checked' : '') + '></label></div>' : '') +
         (PY.indexOf(run.id) >= 0 ? pyStopCard() : '') +   /* Version 39.52: in pregnancy, the stop signs before Start */
@@ -5189,6 +5210,7 @@
       '.pl-fig .pl-mat { stroke: var(--line); stroke-width: 2; stroke-linecap: round; } .pl-fig .pl-prop path { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }',
       '.pl-intro { align-items: center; text-align: center; gap: 8px; } .pl-intro .sakhi { width: 72px; height: 72px; } .pl-intro .lead { margin: 0; }',
       '.pl-intro-art { display: grid; grid-template-columns: 1.6fr 1fr; gap: 8px; align-items: center; width: 100%; } .pl-fig-sm { max-width: 120px; margin: 0 auto; }',
+      '.pl-intro-3d { display: block; width: 100%; max-width: 132px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #EBEBEB; }',   /* Version 39.69.2 */
       '.pl-plate { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto; } .pl-plate .pl-pv { fill: var(--h-green-soft); } .pl-plate .pl-pg { fill: var(--h-gold-soft); } .pl-plate .pl-pp { fill: var(--h-plum-soft); } .pl-plate .pl-pb { fill: var(--h-sky-soft); }',
       '.pl-plate .pl-rim { fill: none; stroke: var(--line); stroke-width: 2; } .pl-plate .pl-cut { stroke: var(--card); stroke-width: 3; } .pl-plate .pl-lab { fill: var(--fg); font-size: 11px; font-weight: 600; } .pl-plate .pl-big { font-size: 13px; fill: var(--muted); } .pl-tap { max-width: 260px; margin: 4px auto 8px; } .pl-tap .pl-pv { fill: var(--h-green); fill-opacity: 0.55; } .pl-tap .pl-pg { fill: var(--h-gold); fill-opacity: 0.55; } .pl-tap .pl-pp { fill: var(--h-plum); fill-opacity: 0.55; } .pl-tap .pl-pb { fill: var(--h-sky); fill-opacity: 0.55; } .pl-plate.pl-tap .off { fill: var(--card); fill-opacity: 1; stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 4 3; } .pl-th-tip { margin-top: 8px; }',
       '.pl-plist { margin: 0; padding-left: 20px; display: grid; gap: 4px; color: var(--fg); }',

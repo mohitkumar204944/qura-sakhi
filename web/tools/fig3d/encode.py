@@ -3,12 +3,15 @@
 #                      the size of the .mp4)
 #   video/<loop>.mp4   the same as H.264, for sharing
 #   video/sun-NN.mp4   each sun salutation flow; video/sun.mp4 all of them with a short hold on each position
+#   video/sunh-<pose>  each sun salutation position breathing after its flow (Version 39.69.2)
+# FIG_ONLY=a,b encodes only the loops and holds named (sunh-reach, say), and no flows
 #   webp/*.webp        the same as small looping WebPs, for previews
 #   stills-sheet.png   all 43 positions on one page
 import glob, os, subprocess, sys
 from PIL import Image, ImageDraw
 
 D = sys.argv[1]; FPS = 24; PREVIEW = (400, 333)
+ONLY = [n for n in os.environ.get('FIG_ONLY', '').split(',') if n]
 os.makedirs(os.path.join(D, 'video'), exist_ok=True); os.makedirs(os.path.join(D, 'webp'), exist_ok=True)
 
 
@@ -49,12 +52,17 @@ def webp(frames, out):
 
 for d in sorted(glob.glob(os.path.join(D, 'loops', '*'))):
     m = os.path.basename(d); fr = sorted(glob.glob(os.path.join(d, m + '-*.png')))
-    if fr:
+    if fr and (not ONLY or m in ONLY):
         mp4(fr, os.path.join(D, 'video', m + '.mp4')); webm(fr, os.path.join(D, 'video', m + '.webm'))
         webp(fr, os.path.join(D, 'webp', m + '.webp')); print('loop', m, len(fr))
 
+for p in sorted(glob.glob(os.path.join(D, 'sun', 'sunh-*-0001.png'))):   # Version 39.69.2: each position breathing after its flow
+    m = os.path.basename(p)[:-len('-0001.png')]; fr = sorted(glob.glob(os.path.join(D, 'sun', m + '-*.png')))
+    if not ONLY or m in ONLY:
+        mp4(fr, os.path.join(D, 'video', m + '.mp4')); webm(fr, os.path.join(D, 'video', m + '.webm')); print('hold', m, len(fr))
+
 allsun = []
-for i in range(0, 12):   # 0: her first position breathing (Version 39.69), a loop before the flows
+for i in range(0, 12 if not ONLY else 0):   # 0: her first position breathing (Version 39.69), a loop before the flows
     fr = sorted(glob.glob(os.path.join(D, 'sun', 'sun%02d-*.png' % i)))
     if fr:
         mp4(fr, os.path.join(D, 'video', 'sun-%02d.mp4' % i)); webm(fr, os.path.join(D, 'video', 'sun-%02d.webm' % i))
@@ -64,7 +72,7 @@ if allsun:
     mp4(allsun, os.path.join(D, 'video', 'sun.mp4')); webp(allsun, os.path.join(D, 'webp', 'sun.webp')); print('sun', len(allsun))
 
 st = sorted(glob.glob(os.path.join(D, 'stills', '*.png')))
-if st:
+if st and not ONLY:
     cols, tw, th = 6, 240, 200; rows = (len(st) + cols - 1) // cols
     sh = Image.new('RGB', (cols * tw, rows * (th + 16)), 'white'); dr = ImageDraw.Draw(sh)
     for i, p in enumerate(st):

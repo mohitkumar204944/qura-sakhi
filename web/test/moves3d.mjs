@@ -76,10 +76,11 @@ async function playing(page) {
   const b = await page.$eval('video#pl-fig3d', (v) => ({ t: v.currentTime, r: v.readyState, p: v.paused })).catch(() => null);
   return !!(a && b && b.r >= 2 && !b.p && b.t > a.t);
 }
-/* a flow that plays once: it got going, or it has already ended on its last frame */
+/* a flow that plays once: it got going, or it has already ended on its last frame, or (Version 39.69.2) it has handed over to the
+   position's hold, breathing */
 async function played(page) {
   await sleep(1200);
-  return page.$eval('video#pl-fig3d', (v) => v.ended || v.currentTime > 0.4).catch(() => false);
+  return page.$eval('video#pl-fig3d', (v) => v.ended || v.currentTime > 0.4 || (/^fig\/v\/sunh-/.test(v.getAttribute('src') || '') && !v.paused)).catch(() => false);
 }
 const secs = (s) => { const m = /(\d+):(\d\d)/.exec(s || ''); return m ? +m[1] * 60 + +m[2] : -1; };
 /* runs the clock a quarter second at a time until the rest begins, so its first second can be read */
@@ -90,7 +91,7 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   const { ctx, page, errs, sent } = await open();
   await go(page, 'plan-r-strength');
   const thumbs = await page.$$eval('.pl-pitem .pl-thumb img.pl-3d', (x) => x.map((i) => i.getAttribute('src')));
-  check('1 the routine\'s list shows each move\'s 3D still', thumbs.length >= 6 && thumbs.every((s) => /^fig\/s\/[a-z0-9]+\.webp$/.test(s)) && thumbs.indexOf('fig/s/chair.webp') >= 0, thumbs);
+  check('1 the routine\'s list shows each move\'s 3D figure moving (Version 39.69.2: its small moving picture)', thumbs.length >= 6 && thumbs.every((s) => /^fig\/t\/[a-z0-9]+\.webp$/.test(s)) && thumbs.indexOf('fig/t/chair.webp') >= 0, thumbs);
   check('1 ... and no drawings', !(await has(page, '.pl-pitem svg.pl-fig')));
   await tap(page, '#pl-pstart');
   const v1 = await page.$eval('video#pl-fig3d', (v) => ({ src: v.getAttribute('src'), muted: v.muted, loop: v.loop, inline: v.hasAttribute('playsinline'), poster: v.getAttribute('poster') })).catch(() => null);
@@ -108,7 +109,7 @@ async function toRest(page, most) { for (let i = 0; i < (most || 400) && !(await
   check('1 when a move\'s time ends she rests', await has(page, '#pl-rest'), (await view(page)).slice(0, 200));
   const r1 = await view(page);
   check('1 the rest says which move is done, "Rest", and 15 seconds in Strength at home', /Move 1 of 12 done/i.test(r1) && /\bRest\b/.test(r1) && secs(await txt(page, '#pl-rtime')) >= 14, [r1.slice(0, 200), await txt(page, '#pl-rtime')]);
-  check('1 the rest shows the next move: its picture, name and words', (await attr(page, '#pl-nextcard img.pl-3d', 'src')) === 'fig/s/march.webp' && /next/i.test(await txt(page, '#pl-nextcard')) && /March on the spot/.test(await txt(page, '#pl-nextcard')) && /Lift your knees/.test(await txt(page, '#pl-nextcard')), [await attr(page, '#pl-nextcard img', 'src'), await txt(page, '#pl-nextcard')]);
+  check('1 the rest shows the next move: its picture, name and words', (await attr(page, '#pl-nextcard img.pl-3d', 'src')) === 'fig/t/march.webp' && /next/i.test(await txt(page, '#pl-nextcard')) && /March on the spot/.test(await txt(page, '#pl-nextcard')) && /Lift your knees/.test(await txt(page, '#pl-nextcard')), [await attr(page, '#pl-nextcard img', 'src'), await txt(page, '#pl-nextcard')]);
   check('1 the voice says "Rest. Next: March on the spot."', (await page.evaluate(() => window.__said.join(' | '))).indexOf('Rest. Next: March on the spot.') >= 0, await page.evaluate(() => window.__said));
   check('1 the screen stays on while she rests', (await page.evaluate(() => window.__awake)) === true);
   const before = secs(await txt(page, '#pl-rtime')); await tap(page, '#pl-more'); const after = secs(await txt(page, '#pl-rtime'));
@@ -330,7 +331,7 @@ for (const [lang, w, h] of [['en', 360, 800], ['hi', 360, 800], ['en', 360, 640]
   await go(page, 'plan-r-strength');
   const v = await view(page);
   check('8 Strength at home: its squats and wall push-ups in 3D', /Chair squats/.test(v) && /Wall push-ups/.test(v) && (await has(page, '#pl-pstart')) &&
-    (await page.$$eval('.pl-pitem img.pl-3d', (e) => e.map((x) => x.getAttribute('src')))).filter((s) => s === 'fig/s/chair.webp' || s === 'fig/s/wall.webp').length === 2, v.slice(0, 300));
+    (await page.$$eval('.pl-pitem img.pl-3d', (e) => e.map((x) => x.getAttribute('src')))).filter((s) => s === 'fig/t/chair.webp' || s === 'fig/t/wall.webp').length === 2, v.slice(0, 300));
   check('8 journey: no page errors', !errs.length, errs);
   await ctx.close();
 }

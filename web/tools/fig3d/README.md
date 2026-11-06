@@ -126,3 +126,24 @@ toe and the gap check render every frame. `FIG_KEEP=1` carries on a stopped rend
 time on an 8 GB Mac: four at once rendered about a third as fast in total.
 
 `node ../../test/fig-coverage.mjs` fails on any routine step that holds still.
+
+## No still pictures left (Version 39.69.2)
+
+Mohit, 6 Nov, "Yes, all of them", after "are there anymore still pictures".
+
+**The sun salutation's holds.** Each position breathes after its flow until the next one (`moves.SUN_BREATH`, `SUN_HOLD`,
+`SUN_HOLD_S`):
+- render them with `FIG_SUN_HOLDS=1 FIG_STEP=2 $B -b work/sakhi.blend --python render.py -- sun work/final/sun`, or name them, for
+  example `FIG_SUN_HOLDS=reach,cobra`. That takes about 25 minutes for all 9 on an M2;
+- they come out as `sunh-<pose>-*`, under the camera each flow ends on;
+- `FIG_ONLY=sunh-reach,... python3 encode.py work/final` encodes only those.
+
+**The lists' small moving pictures.** `thumbs.py` makes `fig/t/<name>.webp` from the clips in `web/fig/v`:
+- they are animated WebPs at 216 × 180;
+- breaths run at 8 frames a second, moves at 12;
+- a held pose comes in, holds a moment and goes back out;
+- the sun salutation gets each flow and its hold, and the whole salutation for its card.
+
+`install.py` runs `thumbs.py` after it copies the clips. After adding clips by hand, run `python3 thumbs.py <web dir>`. It remakes only
+the pictures whose clips are newer and lists them all in `fig.js`. `FIG_THUMBS_ALL=1` remakes every one, which takes about 10
+minutes.

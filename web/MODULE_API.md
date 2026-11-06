@@ -7260,6 +7260,42 @@ and Next. The player now fits each move after drawing it (`fitStage` in `mods/pl
 
 `node test/showmove.mjs`, section 4.
 
+### 112.2 Version 39.69.2: no still pictures left
+
+Mohit, 6 Nov, asked "are there anymore still pictures". Four were left: the sun salutation held still after each flow, and three
+places showed a still (the rest's Up next, the lists, and My PMOS plan's page before she starts). He answered "Yes, all of them".
+- **The sun salutation breathes in each position.** Each flow takes 1.2 seconds of the position's 6, so she used to hold still for
+  the other 4.75, nearly three quarters of the routine.
+  - After each flow (`sun-NN`, played once) the player hands over to that position's hold, `fig/v/sunh-<pose>.webm`: a breathing
+    loop under the camera the flow ends on (`data-next`, as a held pose's coming-in clip does).
+  - A hold lasts 4.75 seconds, about 2 seconds in and 3 out, so she is back in the position as the next flow starts.
+  - How each position breathes:
+    - standing, on the lunges and in the cobra, her chest lifts;
+    - folded forward, in the plank, on her knees and chest and in the mountain, her back rises, as in child pose;
+    - measured on her, her planted hands move under 1 mm, her fingertips about 5 mm on the lunges;
+    - there is no shrug in the mountain or on the lunges.
+  - The positions are named as the app names them, so `sunh-cobra` is the sun salutation's cobra. The round's last palms together
+    has its own hold (`sunh-prays`), which ends where the next round's first position (`sun-00`) begins.
+- **The small pictures move** (`figThumb` in `mods/plan.js`). Each is its move's moving picture, `fig/t/<name>.webp`, listed in
+  `SAKHI_FIG.thumbs`. They are animated WebPs made by `web/tools/fig3d/thumbs.py` from the app's own clips, so a page of them needs
+  no video players: 64 pictures, about 3 MB. They show:
+  - a move: its loop;
+  - a held pose: coming in, a moment of the hold, and back out the way she came, so it loops without a jump;
+  - the sun salutation's list: each position as its flow comes into it (`sun-00` to `sun-07`), with the sun salutation's own
+    stills (`fig/s/sun-NN.webp`);
+  - its card on Moves and calm: the whole salutation (`sun`).
+
+  They appear on a routine's page before Start, on the routines' cards on Moves and calm, and in the rest's Up next.
+- **My PMOS plan's page before she starts** shows the 3D figure raising her arms, moving, in place of the line drawing beside the
+  plate (`introFig`). Without `web/fig` it keeps the drawing.
+- **Stills only where they belong:** "reduce motion" on her phone, and a picture that can't load. Each `img` carries its still in
+  `data-still`, and one listener swaps it in when the moving picture fails.
+- `node test/fig-coverage.mjs` fails on a flow with no hold, a step with no moving picture for the lists, or a sun salutation card
+  without one.
+
+There is no new wording, and no new move: the holds breathe in the positions the sun salutation already had. `node test/showmove.mjs`
+covers this in sections 5 and 6. `moves3d.mjs`, `pregyoga.mjs` and `myplanwalk.mjs` now expect the moving pictures in the lists.
+
 ## 113. Version 39.70: the doctors' feature review, part 2 (the emergency line)
 
 The doctors' answers 1 to 3 (`docs/feature-review-2026-11-05.md`). Mohit's word on 6 Nov was "commit 39.68 and go with part 2".

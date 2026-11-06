@@ -174,7 +174,7 @@ const PLAY_BTN = () => { const b = document.querySelector('#view [data-pl-start]
 {
   const a = await open({ w: 360, h: 800, seed: pm(5), hash: 'plan-moves', wait: 1200 });
   const r = await a.page.$$eval('#view .pl-ritem .pl-rfig', (xs) => xs.map((x) => { const im = x.querySelector('img.pl-3d'); return { im: im ? im.getAttribute('src') : null, ok: !!(im && im.complete && im.naturalWidth > 0), svg: !!x.querySelector('svg') }; }));
-  check('4 each routine shows its first position as the 3D figure\'s still (loaded), not the drawing', r.length >= 3 && r.every((x) => /^fig\/s\/[a-z]+\.webp$/.test(x.im || '') && x.ok && !x.svg), r);
+  check('4 each routine shows the 3D figure moving (loaded; Version 39.69.2: its small moving picture), not the drawing', r.length >= 3 && r.every((x) => /^fig\/t\/[a-z]+\.webp$/.test(x.im || '') && x.ok && !x.svg), r);
   const w = await a.page.$eval('#pl-walkfig', (x) => { const v = x.querySelector('video'); return { v: v ? v.getAttribute('src') : null, poster: v ? v.getAttribute('poster') : null, loop: v ? v.loop && v.muted : false, svg: !!x.querySelector('svg') }; });
   check('4 the walk card plays the 3D walk loop (muted, looping), its still as the poster', w.v === 'fig/v/walk.webm' && w.poster === 'fig/s/walk.webp' && w.loop && !w.svg, w);
   check('4 no side scroll at 360 px', await noScroll(a));

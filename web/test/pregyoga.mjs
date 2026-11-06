@@ -168,7 +168,7 @@ try {
   check('3 "Go gently in a cool room, with water nearby" first, and about 10 minutes on Start', /^Pregnancy yoga Go gently in a cool room, with water nearby, and skip any move that doesn’t feel right\./.test(iv) && /Start · About 10 min/.test(iv), iv.slice(0, 300));
   const srcs = (a, sel) => a.page.$$eval(sel, (xs) => xs.map((x) => x.getAttribute('src') || x.getAttribute('poster') || ''));
   const pics = await srcs(p3, '#view .pl-pitem img.pl-3d');
-  check('3 the moves in 3D, on her with the middle three months\' bump (b2-), no drawings', pics.length > 5 && pics.every((x) => /^fig\/s\/b2-/.test(x)) && !(await has(p3, '#view .pl-pitem svg.pl-fig')), pics);
+  check('3 the moves in 3D, on her with the middle three months\' bump (b2-), no drawings', pics.length > 5 && pics.every((x) => /^fig\/t\/b2-/.test(x)) && !(await has(p3, '#view .pl-pitem svg.pl-fig')), pics);
   await shot(p3, '3-intro');
   await tap(p3, '#pl-pstart');
   check('3 the first move: her 3D figure with the bump (Loosen up\'s b2- loop), and "Feeling unwell?" on its picture', await has(p3, '.pl-figbox.pl-fb3d #pl-fig3d') && /^fig\/v\/b2-warmup\.webm$/.test(await p3.page.$eval('#pl-fig3d', (e) => e.getAttribute('src') || '')) && await has(p3, '.pl-figbox #pl-unwell') && !(await has(p3, '#pl-fig')));
@@ -233,13 +233,13 @@ try {
   await done(n3);
   const t1 = await open({ seed: withPlan(10, 2), hash: 'plan-r-preg1' });
   const t1p = await srcs(t1, '#view .pl-pitem img.pl-3d');
-  check('3 the first three months: her usual 3D figure (no bump yet), ends lying on her back (fine to 13 weeks)', t1p.length > 5 && t1p.every((x) => /^fig\/s\/[a-z]/.test(x) && !/^fig\/s\/b[23]-/.test(x)) && !(await has(t1, '#view ellipse.pl-bump')) && /Shavasana/.test(await view(t1)), t1p);
+  check('3 the first three months: her usual 3D figure (no bump yet), ends lying on her back (fine to 13 weeks)', t1p.length > 5 && t1p.every((x) => /^fig\/t\/[a-z]/.test(x) && !/^fig\/t\/b[23]-/.test(x)) && !(await has(t1, '#view ellipse.pl-bump')) && /Shavasana/.test(await view(t1)), t1p);
   await done(t1);
   const h3 = await open({ seed: withPlan(32, 2), hash: 'plan-r-preg3' });
   const hv = await view(h3);
   check('3 the last three months: sitting first, long breaths out, rest on her side', /Loosen up, sitting/.test(hv) && /Long breaths out/.test(hv) && /Rest on your side/.test(hv) && !/Shavasana/.test(hv));
   const h3p = await srcs(h3, '#view .pl-pitem img.pl-3d');
-  check('3 ... on her with the full bump (b3-)', h3p.length > 5 && h3p.every((x) => /^fig\/s\/b3-/.test(x)), h3p);
+  check('3 ... on her with the full bump (b3-)', h3p.length > 5 && h3p.every((x) => /^fig\/t\/b3-/.test(x)), h3p);
   await done(h3);
   /* without the 3D figure, or a web/fig from before the pregnancy sets: the drawings, with her bump */
   for (const [tag, o] of [['SAKHI_CONFIG.fig false', { cfg: { fig: false } }], ['a web/fig without the pregnancy sets', { pre: () => { const F = window.SAKHI_FIG; ['loops', 'stills'].forEach((k) => { F[k] = F[k].filter((n) => !/^b[23]-/.test(n)); }); } }]]) {
@@ -254,7 +254,7 @@ try {
   const m4 = await open({ seed: withPlan(20, 2), hash: 'plan-moves' });
   const items = await m4.page.$$eval('#view .pl-ritem', (xs) => xs.map((x) => x.dataset.go));
   check('4 in a pregnancy: only her three months\' yoga', items.join() === 'plan-r-preg2', items);
-  check('4 its picture: her 3D still with the middle three months\' bump', await has(m4, '.pl-ritem .pl-rfig.pl-rf3d img[src="fig/s/b2-cat.webp"]'));
+  check('4 its picture: her 3D figure with the middle three months\' bump, moving (Version 39.69.2)', await has(m4, '.pl-ritem .pl-rfig.pl-rf3d img[src="fig/t/b2-cat.webp"]'));
   check('4 the pregnancy stop card, not the cycle one', await has(m4, '.pl-pystop') && !/During your period/.test(await view(m4)));
   for (const r of ['gentle', 'cycle', 'sun', 'strength', 'steady', 'preg1', 'preg3']) {
     await go(m4, 'plan-r-' + r);

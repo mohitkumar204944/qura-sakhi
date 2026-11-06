@@ -120,4 +120,15 @@ circle or timer clears the controls (MODULE_API section 112.1).
 
 - Steady's two balance moves are drafts for the physiotherapist (review 19.51). Their pictures now match their words, and go to
   the physiotherapist with them.
-- The sun salutation holds each position for the rest of its step after its flow, as before. Only its first position had no clip.
+
+### 6.4 No still pictures left (Version 39.69.2, 6 Nov)
+
+Mohit asked "are there anymore still pictures", then answered "Yes, all of them" to making the last four move:
+- **The sun salutation** froze after each 1.2-second flow, for the other 4.75 seconds of the position: nearly three quarters of the
+  routine. Each position now breathes until the next flow (`sunh-<pose>`).
+- **The rest's Up next** showed the next move as a still for 10 to 15 seconds. It now shows the move's small moving picture.
+- **The lists**, a routine's moves before Start and the routines on Moves and calm, show the same moving pictures. The sun
+  salutation's card shows the whole salutation.
+- **My PMOS plan's page before she starts** had a line drawing of a woman with her arms up. It now shows the 3D figure doing it.
+
+Stills stay only for "reduce motion" and a picture that can't load. MODULE_API section 112.2.

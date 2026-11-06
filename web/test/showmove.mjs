@@ -12,6 +12,11 @@
 // - 4 Version 39.69.1 (the phone walkthrough, 6 Nov): a move's breathing circle, or its timer, in view above Previous, Pause and
 //   Next on the Flip5, in English and Hindi: Anulom vilom's long words make its picture smaller, never smaller than 120 px; a phone
 //   too short even for that scrolls, with Pause and Next tappable.
+// - 5 Version 39.69.2 (Mohit, 6 Nov: "Yes, all of them", after "are there anymore still pictures"): the sun salutation breathes in
+//   each position after its flow (sunh-<pose>), until the next flow, instead of holding still;
+// - 6 the small pictures move: a routine's moves before Start, the sun salutation's positions, the routines on Moves and calm (the
+//   sun salutation's card the whole salutation), the rest's Up next and My PMOS plan's page before she starts, each an animated
+//   WebP (fig/t, web/tools/fig3d/thumbs.py); their stills for "reduce motion" and a picture that can't load.
 // SHOTS=1 saves screens to test/shots/showmove/. Usage: node test/showmove.mjs [web dir]
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -97,6 +102,8 @@ const shot = (page, name) => (SHOT ? page.screenshot({ path: path.join(SHOT, nam
 /* the player: Next (or Skip rest) until the step's name matches */
 const stepTo = async (page, re) => { for (let i = 0; i < 30 && !re.test(await txt(page, '#pl-step h2')); i++) await tap(page, (await has(page, '#pl-skip')) ? '#pl-skip' : '#pl-next'); return re.test(await txt(page, '#pl-step h2')); };
 const FIG = 'video#pl-fig3d, img#pl-fig3d';
+/* the player: a move's timer runs out, a second at a time, until its rest begins (Version 39.69.2) */
+const toRest = async (page) => { for (let i = 0; i < 120 && !(await has(page, '#pl-rest')); i++) await page.clock.runFor(1000); await settle(page, 200); };
 
 // ---------- 1 the pelvic floor trainer: her position, moving ----------
 {
@@ -186,7 +193,7 @@ const FIG = 'video#pl-fig3d, img#pl-fig3d';
   check('2.9 the sun salutation\'s first position: palms together, breathing (sun-00, a loop)', MAN.sun0 === 1 && f && f.src === 'fig/v/sun-00.webm' && f.loop && await moving(a.page, FIG), f);
   await done(a);
   a = await open({ seed: mover({ midlife: true }), hash: '#plan-r-steady' });
-  check('2.10 Steady on your feet\'s list: the one-leg stand at the wall, and heel to toe, as themselves', await a.page.$$eval('.pl-pitem img.pl-3d', (xs) => xs.map((x) => x.getAttribute('src'))).then((xs) => xs.includes('fig/s/legwall.webp') && xs.includes('fig/s/tandem.webp')).catch(() => false));
+  check('2.10 Steady on your feet\'s list: the one-leg stand at the wall, and heel to toe, as themselves (moving, Version 39.69.2)', await a.page.$$eval('.pl-pitem img.pl-3d', (xs) => xs.map((x) => x.getAttribute('src'))).then((xs) => xs.includes('fig/t/legwall.webp') && xs.includes('fig/t/tandem.webp')).catch(() => false));
   await tap(a.page, '#pl-pstart');
   f = await figOf(a.page, FIG);
   check('2.11 One leg at the wall: her hand on the wall, she lifts a foot (legwall-in), then holds, breathing', /One leg at the wall/.test(await txt(a.page, '#pl-step h2')) && f && f.src === 'fig/v/legwall-in.webm' && f.next === 'fig/v/legwall.webm', f);
@@ -245,6 +252,84 @@ const FIG = 'video#pl-fig3d, img#pl-fig3d';
   const tr = await fitOf(g.page);
   check('4.4 a move with a timer: the timer above the controls too, the picture at its full size when it fits', tr && !tr.breath && tr.ring <= tr.limit && tr.fig === 260, tr);
   await done(g);
+}
+
+// ---------- 5 Version 39.69.2: the sun salutation breathes in each position after its flow ----------
+{
+  const HOLDS = ['prays', 'reach', 'fwdbend', 'lunge', 'plank', 'ashtanga', 'cobra', 'downdog', 'lunge2'].map((x) => 'sunh-' + x);
+  const lens = HOLDS.map((h) => { try { return +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(root, 'fig', 'v', h + '.webm')], { encoding: 'utf8' }).trim(); } catch (e) { return 0; } });
+  check('5.1 every position has its hold, breathing, about 4.75 seconds (a step is 6, its flow 1.2), so she is back in the position as the next flow starts', HOLDS.every((h) => MAN.loops.includes(h)) && lens.every((x) => x > 4.5 && x < 5), HOLDS.map((h, i) => h + ' ' + lens[i]));
+  let cov = '';
+  try { cov = execFileSync(process.execPath, [path.join(here, 'fig-coverage.mjs')], { encoding: 'utf8' }); } catch (e) { cov = String(e.stdout || e.message); }
+  check('5.2 fig-coverage: all 11 flows then breathing in the position, no step holding still', / 11 sun salutation flows then breathing in the position/.test(cov) && / 0 holding still/.test(cov), cov.split('\n').slice(-2));
+  let a = await open({ seed: mover(), hash: '#plan-r-sun' });
+  await tap(a.page, '#pl-pstart');
+  check('5.3 Hasta uttanasana: found', await stepTo(a.page, /Hasta uttanasana/));
+  let f = await figOf(a.page, FIG);
+  check('5.4 ... the flow up from palms together plays once (sun-01), her hold next (sunh-reach), the position\'s still the poster', f && f.src === 'fig/v/sun-01.webm' && !f.loop && f.next === 'fig/v/sunh-reach.webm' && f.still === 'fig/s/sun-01.webp' && f.poster === 'fig/s/sun-01.webp', f);
+  await sleep(1800); f = await figOf(a.page, FIG);
+  check('5.5 ... then she breathes in the position, on a loop, instead of holding still', f && f.src === 'fig/v/sunh-reach.webm' && f.loop && !f.next && await moving(a.page, FIG), f);
+  await shot(a.page, 'sun-hold-reach');
+  check('5.6 Bhujangasana: the flow, then the cobra\'s own hold', await stepTo(a.page, /Bhujangasana/) && ((await figOf(a.page, FIG)) || {}).next === 'fig/v/sunh-cobra.webm', await figOf(a.page, FIG));
+  check('5.7 the round\'s last Pranamasana: back to palms together, then breathing (sunh-prays)', await stepTo(a.page, /Pranamasana/) && ((await figOf(a.page, FIG)) || {}).src === 'fig/v/sun-11.webm' && ((await figOf(a.page, FIG)) || {}).next === 'fig/v/sunh-prays.webm', await figOf(a.page, FIG));
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-r-sun', reduce: true });
+  await tap(a.page, '#pl-pstart'); await stepTo(a.page, /Hasta uttanasana/);
+  check('5.8 "reduce motion": the position\'s still', ((await figOf(a.page, FIG)) || {}).img === 'fig/s/sun-01.webp');
+  await done(a);
+}
+
+// ---------- 6 Version 39.69.2: the small pictures move ----------
+{
+  const T = MAN.thumbs || [];
+  const anim = T.map((n) => { const p = path.join(root, 'fig', 't', n + '.webp'); if (!fs.existsSync(p)) return { n, ok: false }; const b = fs.readFileSync(p); let fr = 0, i = -1; while ((i = b.indexOf('ANMF', i + 1)) >= 0) fr++; return { n, ok: b.indexOf('ANIM') >= 0 && fr > 1, kb: Math.round(b.length / 1024) }; });
+  const mb = anim.reduce((x, y) => x + (y.kb || 0), 0) / 1024;
+  check('6.1 every moving picture is an animated WebP of more than one frame, all of them under 5 MB', T.length > 50 && anim.every((x) => x.ok) && mb < 5, { n: T.length, mb: mb.toFixed(2), bad: anim.filter((x) => !x.ok).map((x) => x.n) });
+  const pics = (page, sel) => page.$$eval(sel, (xs) => xs.map((x) => ({ src: x.getAttribute('src'), still: x.getAttribute('data-still'), ok: x.complete && x.naturalWidth > 0 })));
+  let a = await open({ seed: mover(), hash: '#plan-r-gentle' });
+  await settle(a.page, 600);
+  let p = await pics(a.page, '.pl-pitem img.pl-3d');
+  check('6.2 Gentle start\'s moves before Start: each moving, loaded, its still kept for "reduce motion"', p.length >= 6 && p.every((x) => /^fig\/t\/[a-z0-9-]+\.webp$/.test(x.src) && /^fig\/s\//.test(x.still) && x.ok) && p.some((x) => x.src === 'fig/t/tree.webp'), p);
+  check('6.3 ... no side scroll at 360 px', await noScroll(a.page));
+  await shot(a.page, 'list-gentle');
+  await tap(a.page, '#pl-pstart'); await toRest(a.page);   /* Next would skip the rest: its timer runs out instead */
+  p = await pics(a.page, '#pl-nextcard img.pl-3d');
+  check('6.4 the rest\'s Up next: the next move moving', (await has(a.page, '#pl-rest')) && p.length === 1 && /^fig\/t\//.test(p[0].src) && p[0].ok, p);
+  await shot(a.page, 'rest-upnext');
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-r-sun' });
+  p = await pics(a.page, '.pl-pitem img.pl-3d');
+  check('6.5 the sun salutation\'s list: each position as its flow comes into it (sun-00 to sun-07)', p.length === 9 && p.slice(1).map((x) => x.src).join() === [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'fig/t/sun-0' + i + '.webp').join() && p.slice(1).every((x, i) => x.still === 'fig/s/sun-0' + i + '.webp'), p.map((x) => x.src));
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-moves' });
+  p = await pics(a.page, '.pl-ritem .pl-rfig img.pl-3d');
+  const sunCard = await a.page.$eval('.pl-ritem[data-go="plan-r-sun"] img.pl-3d', (x) => x.getAttribute('src')).catch(() => null);
+  check('6.6 Moves and calm: every routine\'s picture moving, the sun salutation\'s the whole salutation', p.length >= 4 && p.every((x) => /^fig\/t\//.test(x.src) && x.ok) && sunCard === 'fig/t/sun.webp', { p, sunCard });
+  await shot(a.page, 'moves-and-calm');
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-moves', reduce: true });
+  const still1 = await pics(a.page, '.pl-ritem .pl-rfig img.pl-3d');
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-r-strength', reduce: true });
+  const still2 = await pics(a.page, '.pl-pitem img.pl-3d');
+  await tap(a.page, '#pl-pstart'); await toRest(a.page);
+  const still3 = await pics(a.page, '#pl-nextcard img.pl-3d');
+  check('6.7 "reduce motion": the stills, on Moves and calm, the list and Up next', still1.length >= 4 && still2.length >= 6 && still3.length === 1 && [...still1, ...still2, ...still3].every((x) => /^fig\/s\//.test(x.src) && !x.still), [still1, still2, still3].map((x) => x.map((y) => y.src).slice(0, 3)));
+  await done(a);
+  a = await open({ seed: mover(), hash: '#plan-r-gentle', block: /fig\/t\/tree\.webp$/ });
+  await settle(a.page, 600); await sleep(300); await settle(a.page, 200);
+  p = await pics(a.page, '.pl-pitem img.pl-3d');
+  check('6.8 a moving picture that can\'t load gives way to its still', p.some((x) => x.src === 'fig/s/tree.webp') && !p.some((x) => x.src === 'fig/t/tree.webp'), p.map((x) => x.src));
+  await done(a);
+  const pmos = { situation: { pcos: true }, goals: ['pcos'], intake: { goal: 'pcos' }, mods: {} };
+  a = await open({ seed: pmos, hash: '#plan-pmos' });
+  const intro = await a.page.$eval('.pl-intro-art', (x) => { const im = x.querySelector('img.pl-3d'); return { im: im ? im.getAttribute('src') : null, ok: !!(im && im.complete && im.naturalWidth > 0), svg: !!x.querySelector('svg.pl-fig') }; }).catch(() => null);
+  check('6.9 My PMOS plan\'s page before she starts: the 3D figure raising her arms, moving, not the drawing', intro && intro.im === 'fig/t/armsup.webp' && intro.ok && !intro.svg, intro);
+  await shot(a.page, 'pmos-intro');
+  await done(a);
+  a = await open({ seed: pmos, hash: '#plan-pmos', cfg: { fig: false } });
+  check('6.10 ... without the 3D figure: the drawing, as before', await has(a.page, '.pl-intro-art svg.pl-fig-sm') && !(await has(a.page, '.pl-intro-art img')));
+  await done(a);
 }
 
 await browser.close();

@@ -303,6 +303,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     go to the physiotherapist).
     Version 39.69.1 (the phone walkthrough, 6 Nov), the test's section 4: a move's breathing circle, or its timer, stays above Previous,
     Pause and Next on the Flip5, with the picture smaller for long words (Anulom vilom), never below 120 px. MODULE_API section 112.1.
+    Version 39.69.2 (6 Nov, "Yes, all of them", after "are there anymore still pictures"), sections 5 and 6:
+    - the sun salutation breathes in each position after its flow (`sunh-<pose>`, made with `FIG_SUN_HOLDS=1` in render.py);
+    - the small pictures move: the lists, Moves and calm, Up next and My PMOS plan's page. They live in `fig/t`, made by
+      `web/tools/fig3d/thumbs.py`, which install.py runs.
+    MODULE_API section 112.2.
   - `node test/termwalk.mjs` (Version 39.40, the 39-week walk's gaps; Mohit, 30 Oct: "fix all 8"):
     - Call buttons on the labour timer;
     - one pregnancy start (the scan's), so every start inside it is "Bleeding", and her two dates far apart said;

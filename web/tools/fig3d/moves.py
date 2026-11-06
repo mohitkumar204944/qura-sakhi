@@ -1070,7 +1070,7 @@ def butterflywall2(k):
 # part by actually showing hows its working"). Her breath in and out for the breathing and resting steps; coming into the held
 # poses (a clip that plays once and holds, ONCE in mods/plan.js); Steady on your feet's two balance moves at a wall; the belly gap
 # check after a birth; standing with her back near a wall for the pelvic floor trainer. ----------
-def _inhale(k, a=1.0, lying=False):
+def _inhale(k, a=1.0, lying=False, shrug=1.0):
     """A breath in, set before her arms so her hands stay where they rest: sitting or on her side, her chest lifts and opens and
     her shoulders rise a little; lying on her back, her chest rises from the mat while her head stays down."""
     if lying:
@@ -1078,7 +1078,7 @@ def _inhale(k, a=1.0, lying=False):
     else:
         k.spine(bend=-3.2 * a, weights=[0, 0, 0.4, 1, 1]); k.neck(bend=2.2 * a)
     for s in LR:
-        k.shrug(s, 4.0 * a)
+        k.shrug(s, 4.0 * a * shrug)   # Version 39.69.2: none in the mountain, where a shrug would push her planted hands into the mat
 
 
 def sitin(k):
@@ -1289,9 +1289,9 @@ POSES = {n: f for n, f in globals().items() if callable(f) and not n.startswith(
 POSES['sun_cobra'] = sun_cobra
 
 
-def _breathed(base, lying):
+def _breathed(base, lying, a=1.0, shrug=1.0):
     def f(k):
-        base(k); _inhale(k, 1.0, lying)
+        base(k); _inhale(k, a, lying, shrug)
     return f
 
 
@@ -1428,6 +1428,21 @@ SUN_VIEWS = [['prays', 'reach', 'fwdbend'], ['lunge', 'plank', 'ashtanga', 'sun_
 # a flow's middle, where it is a position of its own
 SUN_MID = {('reach', 'fwdbend'): 'dive', ('fwdbend', 'reach'): 'dive',
            ('sun_cobra', 'downdog'): 'plank'}   # her hips rise through a plank line before her head drops between her arms
+# Version 39.69.2 (Mohit, 6 Nov: "Yes, all of them"): after each flow she breathes in the position until the next flow, instead of
+# holding still. Standing, on the lunges and in the cobra her chest lifts as she breathes in; folded forward, in the plank, on her
+# knees and chest and in the mountain her back rises, as in child pose. The breath is smaller where both hands are planted, so they
+# stay on the mat, and her shoulders don't shrug in the mountain or on the lunges.
+# (lying, how deep, shrug): measured on her, her hands move under 1 mm, and her fingertips about 5 mm on the lunges, where her arms
+# are already long
+SUN_BREATH = {'reach': (False, 1.0, 1), 'fwdbend': (True, 0.8, 1), 'lunge': (False, 0.8, 0), 'plank': (True, 0.6, 1),
+              'ashtanga': (True, 0.6, 1), 'sun_cobra': (False, 0.8, 1), 'downdog': (True, 0.8, 0), 'lunge2': (False, 0.8, 0)}
+for _n, (_lying, _a, _sh) in SUN_BREATH.items():
+    POSES[_n + 'in'] = _breathed(POSES[_n], _lying, _a, _sh)
+# each position's hold, fig/v/sunh-<name>.webm, by the app's name for it (sun_cobra is its cobra). A step is one slow breath of 6
+# seconds (mods/plan.js) and its flow takes 1.2, so the hold breathes in for about 2 seconds and out for 3, and she is back in the
+# position as the next flow starts.
+SUN_HOLD = {n: ('cobra' if n == 'sun_cobra' else n) for n in dict.fromkeys(SUN)}
+SUN_HOLD_S = 4.75
 # a looser frame where the camera would otherwise crop her
 FRAME_MARGIN = {'fwdbend': 1.4}
 # the drawing names, so every one of the app's 43 positions has its own still

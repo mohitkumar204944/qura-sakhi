@@ -3,6 +3,7 @@
 #   stills [a,b,..] the same at full size, for the app's still drawings and the rest screen's "Next"
 #   loop <name>     one of the app's loops (moves.LOOPS), frame by frame, with the drawing's timing
 #   sun             the sun salutation: each flow from one position to the next, under the standing or the mat camera
+#                   (FIG_SUN_HOLDS=1, or names: each position breathing after its flow instead, sunh-<name>; Version 39.69.2)
 import math, os, sys
 import bpy
 sys.dont_write_bytecode = True   # no __pycache__ beside the scripts
@@ -300,6 +301,18 @@ elif MODE == 'sun':
         if f:
             cam.keyframe_insert('location', frame=f); cam.keyframe_insert('rotation_euler', frame=f)
     T = round(1.2 * FPS)
+    holds = os.environ.get('FIG_SUN_HOLDS')
+    if holds:   # Version 39.69.2: each position breathing after its flow (sunh-<name>), looping, under the camera its flow ends on
+        N = round(moves.SUN_HOLD_S * FPS) // 2 * 2   # even, so a loop rendered every second frame closes as the others do
+        for n in dict.fromkeys(moves.SUN):
+            if holds != '1' and moves.SUN_HOLD[n] not in holds.split(','):
+                continue
+            pose(n + 'in'); sin = snapshot()
+            clear_anim(); cam.animation_data_clear(); key_seq([(1, snaps[n]), (1 + round(0.4 * N), sin), (1 + N, snaps[n])], cyclic=True)
+            sc.frame_start, sc.frame_end = 1, N; aim(n)
+            sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = os.path.join(OUT, 'sunh-' + moves.SUN_HOLD[n] + '-')
+            bpy.ops.render.render(animation=True); print('SUNH', n, N, flush=True)
+        sys.exit(0)
     if 'praysin' in moves.POSES:   # Version 39.69: sun-00, the first position breathing (in for 4 seconds, out for 6), looping
         pose('praysin'); sin = snapshot(); T0 = 10 * FPS
         clear_anim(); cam.animation_data_clear(); key_seq([(1, snaps['prays']), (1 + round(0.4 * T0), sin), (1 + T0, snaps['prays'])], cyclic=True)
