@@ -88,7 +88,7 @@ const bedRow = (page) => page.$$eval('#view .pl-steps-card .pl-step', (rs) => { 
   await a.page.evaluate(() => window.Saathi.closeSheet()); await settle(a.page);
   const rows = await a.page.$$eval('#view .pl-steps-card .pl-step', (rs) => rs.map((r) => ({ sub: (r.querySelector('.pl-step-sub') || {}).innerText || '', how: !!r.querySelector('.pl-step-how, .pl-step-why') })));
   check('1 one line under each of her 4 steps, no reasons or links on them', rows.length === 4 && rows.every((r) => r.sub && !r.how), rows);
-  check('1 ... yoga before a meal, her walk after dinner, her meal, tonight\'s session', rows[0].sub === 'Before a meal' && rows[1].sub === 'After dinner' && /meal/i.test(rows[2].sub) && /Tonight: slow breaths with your trainer/.test(rows[3].sub), rows);
+  check('1 ... yoga before a meal, her walks (and the brisk one, Version 39.72), her meal, tonight\'s session', rows[0].sub === 'Before a meal' && rows[1].sub === 'And a brisk walk of 30 to 45 minutes when your day allows' && /meal/i.test(rows[2].sub) && /Tonight: slow breaths with your trainer/.test(rows[3].sub), rows);
   await tap(a.page, '#pl-whyall');
   const why = await sheet(a.page);
   check('1 one "Why these 4 steps?" opens every reason', /Why these 4 steps\?/.test(why) && (why.match(/Wind down|Walk|swap|yoga/gi) || []).length >= 4 && /body clock/.test(why), why.slice(0, 300));

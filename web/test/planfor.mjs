@@ -137,7 +137,7 @@ const row = (page, route) => go(page, route).then(() => txt(page, '#view .pl-for
   a = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(60) }, intake: { goal: 'track', stage: 'preg' }, goals: ['preg'] } });
   check('4 in a pregnancy: none', !(await row(a.page, 'a-cycle.painful-periods'))); await done(a);
   a = await open({ seed: { dob: '1989-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(200) } });
-  check('4 before 40 with her periods stopped: no plan offered (the gynaecologist first)', !(await row(a.page, 'a-midlife.hot-flushes-night-sweats'))); await done(a);
+  check('4 before 40 with her periods stopped: her plan is offered here too (Version 39.72: the gynaecologist card is advice, not a hold)', /Menopause transition and menopause/.test(await row(a.page, 'a-midlife.hot-flushes-night-sweats'))); await done(a);
   a = await open({});
   check('4 a subject no plan at her stage covers (sleep, tracking her periods): none', !(await row(a.page, 'a-mind_body.sleep-and-hormones'))); await done(a);
 }

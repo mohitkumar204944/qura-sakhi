@@ -421,7 +421,7 @@
     intake: { screens: [{ id: 'cyc', if: ['!goal:weight'] }], day: ['act', 'food', 'milk', 'lim', 'bed', 'work'], when: true },
     slots: { max: 4 }, hero: 'ring', rest: 2,
     tiles: [{ go: 'plan-plate', text: '@plan_tiles_plate', icon: 'ico:plate', hue: 'green' }, { go: 'plan-moves', text: '@plan_tiles_moves', icon: 'ico:move', hue: 'purple' }, { go: 'plan-body', text: '@plan_tiles_body', icon: 'ico:body', hue: 'gold' }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: once a week an earlier habit comes back; the review\'s fix: each one in turn' }, { ver: 1, r: 'R5', at: '2026-10-26', what: 'Version 39.13: yoga and the walk as two steps (yoga.cycle, walk.cycle), 4 steps a day' }],
+    changelog: [{ ver: 1, r: 'R2', at: '2026-10-24', what: 'Version 39.5: a hero, 4 tiles and 2 rest days a week; the hold rule on light walks; steps that count from their tools' }, { ver: 1, r: 'R3', at: '2026-10-25', what: 'Version 39.6: a doctor path from her answers or her own dates in every plan that needs one; Keep it light to month 12' }, { ver: 1, r: 'R4', at: '2026-10-25', what: 'Version 39.9: once a week an earlier habit comes back; the review\'s fix: each one in turn' }, { ver: 1, r: 'R5', at: '2026-10-26', what: 'Version 39.13: yoga and the walk as two steps (yoga.cycle, walk.cycle), 4 steps a day' }, { ver: 1, r: 'R6', at: '2026-11-06', what: 'Version 39.72 (the doctors\' review): the walk is 10 minutes after lunch and after dinner, and a brisk 30 to 45 minutes when her day allows (walk.cycle, one step)' }],
     steps: [
       { id: 'yoga', kind: 'adapter', use: 'yoga.cycle' },
       { id: 'move', kind: 'adapter', use: 'walk.cycle' },
@@ -430,7 +430,7 @@
     ],
     list: [
       { use: 'item', icon: 'ico:yoga', hue: 'plum', text: '@plan_pi_yoga', why: 'plan_fb_move_g' },
-      { use: 'walk', mins: 'suggest', why: 'plan_fb_move' },
+      { use: 'item', icon: 'ico:move', hue: 'purple', text: '@plan_pi_meals', why: 'plan_fb_move' },   /* Version 39.72: after meals */
       { use: 'plate', why: 'plan_fb_food' },
       { use: 'bed' }
     ],

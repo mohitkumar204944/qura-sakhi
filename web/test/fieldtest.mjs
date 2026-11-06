@@ -376,7 +376,10 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   check('19 pilot: the held-back tools are back (the discharge check)', !/Not in this version/.test(await view(page)) && (await page.evaluate(() => location.hash)) === '#intimate-check');
   await go(page, '#topic-ttc');
   const ttc = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
-  check('19 pilot: Care\'s trying-for-a-baby page links to the fertile tool again', ttc.indexOf('fertile') >= 0, ttc);
+  check('19 pilot: not trying, so Care\'s trying-for-a-baby page has no fertile tool (Version 39.72, the doctors\' review)', ttc.indexOf('fertile') < 0, ttc);
+  await page.evaluate(() => { const S = window.Saathi; S.state.situation.planning = true; S.save(); }); await go(page, '#learn'); await go(page, '#topic-ttc');
+  const ttc2 = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
+  check('19 pilot: trying for a baby, the page links to the fertile tool again', ttc2.indexOf('fertile') >= 0, ttc2);
   await go(page, '#me-about');
   for (let i = 0; i < 5; i++) await page.$eval('#me-version', (b) => b.click());
   await settle(page);
@@ -413,11 +416,14 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const { page } = T;
   const res = await careSearch(page, 'गर्भ');
   check('16 "गर्भ": her pregnancy tools before loss and abortion', ['preg-plan', 'preg-week', 'pregnancy'].indexOf(res[0]) >= 0 && res.slice(0, 3).every((r) => !/^loss/.test(r) && r !== 'pregtest-abortion'), res.slice(0, 8));
-  const fz = await careSearch(page, 'ओव्यूलेशन');
-  check('16 "ओव्यूलेशन" finds the fertile tool', fz.indexOf('fertile') >= 0, fz);
-  const fz2 = await careSearch(page, 'फर्टाइल');
-  check('16 "फर्टाइल" without the nukta finds it too', fz2.indexOf('fertile') >= 0, fz2);
+  check('16 pregnant: "ओव्यूलेशन" doesn\'t bring the fertile tool (Version 39.72: only while she tries)', (await careSearch(page, 'ओव्यूलेशन')).indexOf('fertile') < 0);
   await cleanup(Object.assign(T, { name: '16' }));
+  const T2 = await open({ seed: { lang: 'hi', situation: { planning: true } }, hash: '#care' });
+  const fz = await careSearch(T2.page, 'ओव्यूलेशन');
+  check('16 trying for a baby: "ओव्यूलेशन" finds the fertile tool', fz.indexOf('fertile') >= 0, fz);
+  const fz2 = await careSearch(T2.page, 'फर्टाइल');
+  check('16 "फर्टाइल" without the nukta finds it too', fz2.indexOf('fertile') >= 0, fz2);
+  await cleanup(Object.assign(T2, { name: '16 trying' }));
 }
 
 /* ---------- 17. Android: Back steps through the first run; the day sheet has no speaker over its arrows (audit 2.9, 3.6) ---------- */

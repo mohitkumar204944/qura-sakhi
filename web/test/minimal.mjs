@@ -233,7 +233,7 @@ const PAIN_IK = { stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act:
   check('3 day 85: her plan carries on by itself', p.keep === true && p.carried === TODAY && !p.endSeen, [p.keep, p.carried, p.endSeen]);
   let v = await view(a.page);
   check('3 Today: "Your 12 weeks are done. Your steps carry on." with her results and Stop', /Your 12 weeks are done Your steps carry on\./.test(await txt(a.page, '#view .pl-carry')) && await has(a.page, '#view .pl-carry [data-go="plan-end"]') && await has(a.page, '#view .pl-carry #pl-carry-stop'), await txt(a.page, '#view .pl-carry'));
-  check('3 ... her steps are still there, at the same pace', /PLAN DAY 85/.test(v) && /Walk \d+ minutes|Move \d+ minutes/.test(v), v.slice(0, 900));
+  check('3 ... her steps are still there, at the same pace', /PLAN DAY 85/.test(v) && /Walk \d+ minutes|Move \d+ minutes|Walk after lunch and dinner/.test(v), v.slice(0, 900));   /* Version 39.72: her walks after meals */
   check('3 ... and no second "12 weeks are done" card in Sakhi says', !(await has(a.page, '#view .pl-sl-end')));
   check('3 her check-in reminder rings on: 4 weeks past today', (await rem(a.page, 'plan') || {}).until === iso(TODAY, 28), await rem(a.page, 'plan'));
   await shot(a.page, '3-day85');

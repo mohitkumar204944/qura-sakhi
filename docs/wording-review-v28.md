@@ -3558,3 +3558,34 @@ reads "more than five pads a day" (दिन में पाँच से ज�
   देखती हैं और बताती हैं कि कब आपको स्त्री रोग विशेषज्ञ की ज़रूरत है।)
 - The question page asked for the final words to be checked with the lawyer.
 - The MBBS gynaecologist is named once Mohit sends the name, degree and registration number.
+
+### 19.72 Version 39.72: the doctors' feature review, part 4, the behaviour (MODULE_API section 115)
+
+**Status, 6 Nov 2026: built from the doctors' notes, the approved plan, and answers 5, 7 and 12. The new lines below wait for their
+one read, English and Hindi.** The record is `docs/feature-review-2026-11-05.md`. Most of part 4 changes what a screen does, not
+what it says. Two notices reuse lines already on Sakhi's screens: the pause notification uses the "Take a week off?" card's own
+words, and the contraception card uses the method pages' words.
+
+**The PMOS walk (the doctors' note on My PMOS plan).** This is one step:
+- "Walk 10 minutes after lunch and after dinner" (दोपहर और रात के खाने के बाद 10 मिनट सैर करें);
+- under it, "And a brisk walk of 30 to 45 minutes when your day allows" (और जब दिन में समय हो, 30 से 45 मिनट तेज़ सैर);
+- in her steps list: "A 10-minute walk after lunch and after dinner, and a brisk 30 to 45 minutes when your day allows" (दोपहर और रात के
+  खाने के बाद 10 मिनट की सैर, और जब दिन में समय हो, 30 से 45 मिनट तेज़ सैर).
+
+On Today it is said in short, so the next step's button stays above the tab bar on a 360 px phone: "Walk after lunch and dinner"
+(दोपहर और रात के खाने के बाद सैर), and under it "10 minutes each" (हर बार 10 मिनट). The brisk walk is in its Why?.
+
+The step counts 20 minutes, and "Partly" means one of the two walks. Its reason is the reviewed one ("Moving most days helps your
+body use insulin better…").
+
+**Before 40 with her periods stopped (the note on meno-poi).** Her plan starts, and the gynaecologist card stays as advice, over the
+reviewed POI line. Its heading:
+- was "Before a plan: see a gynaecologist";
+- is now "Periods stopped before 40? See a gynaecologist" (40 से पहले पीरियड बंद? स्त्री रोग विशेषज्ञ को दिखाएँ).
+
+**Moves and calm (the note on sun salutation).** Two headings: "Morning session" (सुबह का सत्र) over sun salutation and Calm breath,
+then "Any time of day" (दिन में कभी भी).
+
+**The pause notification (the note on Pause for a week).** It reads "Take a week off? You can pause your plan for a week. It carries
+on after that, from where you are." (the card's reviewed words). It comes at 9 am on the morning after 2 days with nothing done, at
+most once a week. On a shared phone it says only "Reminder".

@@ -1141,10 +1141,8 @@
   /* When the diary changes hands (Delete everything, a sample woman, a restored backup) every screen forgets what the last
      person typed: the core's own memory, and each module that registered with onOwnerChange. */
   const ownerFns = []; let ownerSeen = null;
-  /* With app lock, shared-phone or discreet mode on, the screen can't be captured: no screenshot, no screen recording, no
-     picture in the recent-apps list (FLAG_SECURE, audit fix 2). Otherwise she can still screenshot her own report. */
-  let secureNow = null;
-  const secureSync = () => { const B = window.SakhiAndroid; if (!B || !B.setSecure) return; const on = false; if (on !== secureNow) { secureNow = on; safe(() => B.setSecure(on)); } };   /* Version 39.68 (the doctors' answer 5): no screenshot block; Shared phone, discreet mode and the PIN stay */
+  /* Version 39.72 (the doctors' answer 5): no screenshot block. The Android app has no FLAG_SECURE path any more (Version 39.68 stopped
+     asking for it); Shared phone, discreet mode and the PIN stay, and Android 13+ never shows her diary in the recent-apps list. */
   /* the day the screen was drawn for: coming back to Sakhi, or Home left open past midnight, draws today (Version 32, field-test
      audit 3.2) */
   let shownDay = null;
@@ -1153,7 +1151,7 @@
     const lm = langMeta(state.lang); const script = lm.script || 'latn';
     document.body.classList.toggle('hi', script !== 'latn'); document.body.dataset.script = script; document.documentElement.lang = state.lang;
     document.body.classList.toggle('discreet', !!state.settings.discreet);
-    applyTheme(); secureSync();
+    applyTheme();
     /* A link ending in #demo opens the sample women (for investor demos), wherever she is. */
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
@@ -1275,7 +1273,7 @@
     out.push('cycle'); return out;
   }
   /* Doctor's view is an internal demo; the core pregnancy screen is reached from Home when the pregnancy module is there. */
-  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false)) && !triageHidden(x.route) && !retired(x.route) && RETIRED_TILES.indexOf(x.route) < 0 && !(x.route === 'fertile' && !fullTools() && !FERT_RELEASE)).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']) && (x.route !== 'report' || canSave())).map((x) => (x.section === 'tools' ? Object.assign({}, x, { section: sectionOf(x) }) : x));
+  const visibleTiles = () => CORE_TILES.concat(TILES).filter((x) => !(x.hidden && safe(() => x.hidden(api), false)) && !triageHidden(x.route) && !retired(x.route) && RETIRED_TILES.indexOf(x.route) < 0 && !(x.route === 'fertile' && ((!fullTools() && !FERT_RELEASE) || stageNow() !== 'ttc'))).filter((x) => (x.route !== 'docportal' || state.settings.proto) && !(x.route === 'pregnancy' && ROUTES['preg-week']) && (x.route !== 'report' || canSave())).map((x) => (x.section === 'tools' ? Object.assign({}, x, { section: sectionOf(x) }) : x));
   /* Version 39.0: for 6 weeks after a pregnancy ends any other way than a birth */
   const lossWeeks = () => { const e = state.situation.pregEndedOn; return !isPregnant() && isISO(e) && diffDays(fromISO(e), today()) >= 0 && diffDays(fromISO(e), today()) < 42; };
   function forYouTiles(all) {
@@ -2146,7 +2144,6 @@
     const pe = (state.situation || {}).pregEndedOn; if (isISO(pe) && diffDays(fromISO(pe), today()) < 42) return '';   /* Version 39.48 (Mohit's switch walk): after a loss it waits 6 weeks; My plan's "Pick a goal when you're ready" stays */
     /* Version 39.32 (found on Mohit's phone): a plan she started or made at this stage already holds her stage and goal */
     if (api.plan && safe(() => (api.plan.running && api.plan.running() && (state.intake || {}).stage === stageNow()) || (api.plan.pending && api.plan.pending()) || (api.plan.changing && api.plan.changing()), false)) return '';   /* Version 39.35: nor while "Your plan has changed" asks */
-    if (api.plan && safe(() => !!(api.plan.poi && api.plan.poi()), false)) return '';   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, the gynaecologist card comes first; no goal leads to a plan until her doctor has seen her */
     return '<div class="card soft ex-card" data-nofold="1"><h3>' + esc(t('fx_h')) + '</h3><p class="small">' + esc(t('fx_p')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" id="ex-go">' + esc(t('fx_b')) + '</button><button type="button" class="btn sm" id="ex-not">' + esc(t('tour_later')) + '</button></div></div>';
   }
   function wireExCard(v) {
@@ -3453,6 +3450,7 @@
           if (s0.pregnant && endWhy === 'mistake') unmarkPregnant(); else clearPreg();
           const held = young && pick === 'meno' && !wasStopped;   /* Version 39.65: under 40 her cycle keeps counting until a doctor has seen her */
           s0.planning = pick === 'ttc'; s0.stopped = pick === 'meno' && !held; s0.midlife = (pick === 'mid' || pick === 'meno') && !held;
+          if (was === 'ttc' && pick === 'cycle') s0.ttcStop = toISO(today()); else if (pick === 'ttc') delete s0.ttcStop;   /* Version 39.72 (the doctors' answer 12): the day she stopped trying; Home asks about a method */
           if (held) s0.stopAsk = toISO(today()); else if (pick !== 'meno') delete s0.stopAsk;
           if (ageAns === 'irr') state.goals = ['irregular'].concat((state.goals || []).filter((k) => k !== 'irregular'));   /* "irregular": her goal on Tracking */
           /* Version 32 (field-test audit 3.2): tracking or trying again means breastfeeding no longer pauses her count, and
@@ -5235,6 +5233,10 @@
        moves the range, so it never comes. */
     const rl = safe(() => rangeInfo(), null);
     if (rl) { const d = addDays(rl.to, 3); const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 10, 0).getTime(); if (at > now) out.push(item('late-' + toISO(rl.to), at, t('notif_late'), 'period', 'home')); }
+    /* Version 39.72 (the doctors' review, plan-pause): the pause offer, the morning after 2 days with nothing done in her plan, at most
+       once a week; a tap opens Today with its card first (plan-pause; the plan module works out the day, and the words are its card's) */
+    const pr = safe(() => (api.plan && api.plan.pauseRing ? api.plan.pauseRing() : null), null);
+    if (pr && isISO(pr.d)) { const d = fromISO(pr.d); const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0).getTime(); if (at > now) out.push(item('pause-' + pr.d, at, pr.body, 'plan', 'plan-pause')); }
     out.sort((a, b) => a.at - b.at);
     if (out.length <= 60) return out;
     const list = out.slice(0, 59);
@@ -5292,7 +5294,9 @@
     });
   }
   /* A tapped notification opens its screen: Android calls this with the reminder's route (only letters, digits and dashes). */
-  window.__sakhiOpen = (r) => { if (typeof r !== 'string' || !/^[a-z0-9-]{1,40}$/.test(r) || state.stage !== 'app') return; if (route() !== r) setHash(r); else render(); };
+  window.__sakhiOpen = (r) => { if (typeof r !== 'string' || !/^[a-z0-9-]{1,40}$/.test(r) || state.stage !== 'app') return;
+    if (r === 'plan-pause') { safe(() => api.plan && api.plan.pauseLead && api.plan.pauseLead()); r = 'home'; }   /* Version 39.72: the pause offer's notification opens Today with its card first */
+    if (route() !== r) setHash(r); else render(); };
   function syncNotifications() {
     const B = window.SakhiAndroid; if (!B || !B.schedule) return;
     clearTimeout(notifTm);

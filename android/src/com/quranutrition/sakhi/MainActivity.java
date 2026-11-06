@@ -75,8 +75,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        // The recent-apps list shows Sakhi's icon, never a picture of her diary (Android 13+; older phones get FLAG_SECURE
-        // from the page while lock, shared-phone or discreet mode is on).
+        // The recent-apps list shows Sakhi's icon, never a picture of her diary (Android 13+). Screenshots stay hers to take: no
+        // FLAG_SECURE (the doctors' review, answer 5, Version 39.72).
         if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
         tts = new TextToSpeech(this, this);
         pendingGo = goOf(getIntent());
@@ -278,17 +278,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         public void haptic() {
             runOnUiThread(new Runnable() {
                 @Override public void run() { web.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY); }
-            });
-        }
-
-        /** No screenshots, screen recording or recent-apps picture while lock, shared-phone or discreet mode is on. */
-        @JavascriptInterface
-        public void setSecure(final boolean on) {
-            runOnUiThread(new Runnable() {
-                @Override public void run() {
-                    if (on) getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                    else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                }
             });
         }
 

@@ -148,7 +148,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('3 her last answer makes her plan, from what she told Sakhi (Version 39.68: no answers summary)', !/Here’s what you told Sakhi/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v), v.slice(0, 700));
   check('4 "Make my plan" opens her plan', (await page.evaluate(() => location.hash)) === '#plan-reveal' && /Your plan is ready, Riya/.test(await view(page)), [await page.evaluate(() => location.hash), (await view(page)).slice(0, 300)]);
   v = await view(page);
-  check('4 card 1: her goal, what it is made from, and how long it takes', /Your goal: more regular periods/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /12 weeks · from about 20 minutes a day/.test(v), v.slice(0, 500));
+  check('4 card 1: her goal, what it is made from, and how long it takes', /Your goal: more regular periods/.test(v) && /Made from what you told Sakhi: 36 to 45 days apart · some months skipped · acne that keeps coming back/.test(v) && /12 weeks · from about \d+ minutes a day/.test(v), v.slice(0, 500));
   await shot(page, '02-card1');
   /* 5. before Start: nothing runs */
   s = await st(page);
@@ -161,9 +161,8 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   check('5 no check-in before Start (her plan shows instead)', !(await has(page, '#pl-ci-save')) && (await has(page, '.pl-rv')));
   await page.evaluate(() => { window.Saathi.mem.rvCard = 0; }); await go(page, 'plan-reveal');
   const words = await cardsToStart(page);
-  check('4 card 2: her steps, each with what it does for her (Version 39.45: her first day\'s 3; her bedtime "From day 4"; 39.66: asked on day 4, so named without a time)', /Your 3 steps/.test(words) && /From day 4: a regular bedtime/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /Walking that grows from 10 minutes a day/.test(words) && /helps your body use insulin better/.test(words) && /This week: 50 minutes, about 10 a day/.test(words), words.slice(0, 900));
-  check('4 card 3: how each day works, the check-in time, a missed day', /How each day works/.test(words) && /Tap Done when you do one/.test(words) && /At 8 pm, Sakhi asks “How did today go\?” It takes 1 minute/.test(words) && /Missed a day\? Nothing to catch up/.test(words), words.slice(0, 1600));
-  check('4 card 4: what happens at weeks 1, 4 and 12', /Every week: a short look back/.test(words) && /Week 4: a look at your first month/.test(words) && /Week 12: your results, next to where you started/.test(words) && /It is different for every woman/.test(words));
+  check('4 card 2: her steps, each with what it does for her (Version 39.45: her first day\'s 3; her bedtime "From day 4"; 39.66: asked on day 4, so named without a time)', /Your 3 steps/.test(words) && /From day 4: a regular bedtime/.test(words) && /Yoga at home every day, with moving pictures/.test(words) && /A 10-minute walk after lunch and after dinner, and a brisk 30 to 45 minutes when your day allows/.test(words) && /helps your body use insulin better/.test(words) && !/It grows a little each week/.test(words), words.slice(0, 900));   /* Version 39.72: her walk is 10 minutes after lunch and after dinner */
+  check('4 one screen (Version 39.72, the doctors\' review): no cards for how each day works or what happens when (they are My plan\'s How it works); the check-in time on its Start', !/How each day works|What happens when/.test(words) && /8 pm/.test(words) && !(await has(page, '#pl-rv-next')), words.slice(0, 1600));
   check('4 a doctor check card for skipped months, alongside her plan', /Alongside your plan: one doctor check/.test(words) && /You can start your steps today/.test(words));
   check('4 no percentage anywhere on her plan', !/%/.test(words));
   check('15 no Dr. Megha button without her recording', !/Hear Dr. Megha/.test(words));
@@ -395,8 +394,8 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
 /* ---------- 15. Dr. Megha's welcome ---------- */
 {
   const { ctx, page, errs } = await open({ seed: { intake: IK }, cfg: Object.assign({}, LOCAL, { audio: ['megha-welcome-en'] }) });
-  await pend(page, Object.assign({}, IK, { stage: 'cycle' })); await page.evaluate(() => { window.Saathi.mem.rvCard = 2; }); await go(page, 'plan-reveal');
-  check('15 card 3 offers Dr. Megha when the build carries her recording', /Hear Dr. Megha \(30 seconds\)/.test(await view(page)) && (await page.$eval('#pl-rv-aud', (b) => b.dataset.src).catch(() => '')) === 'audio/megha-welcome-en.mp3');
+  await pend(page, Object.assign({}, IK, { stage: 'cycle' })); await go(page, 'plan-reveal');
+  check('15 her plan\'s one screen offers Dr. Megha when the build carries her recording (Version 39.72)', /Hear Dr. Megha \(30 seconds\)/.test(await view(page)) && (await page.$eval('#pl-rv-aud', (b) => b.dataset.src).catch(() => '')) === 'audio/megha-welcome-en.mp3');
   check('16 no page errors (audio)', errs.length === 0, errs);
   await ctx.close();
 }
@@ -425,7 +424,7 @@ const pend = (page, a) => page.evaluate((x) => { const S = window.Saathi; S.plan
   await go(page, 'plan-reveal');
   let ok360 = true; let words = '';
   for (let i = 0; i < 8; i++) { words += '\n' + (await view(page)); if (!(await noScroll(page))) ok360 = false; if (await has(page, '#pl-rv-go')) break; await tap(page, '#pl-rv-next'); }
-  check('16 Hindi: the cards in Hindi', /आपका प्लान तैयार है/.test(words) && /हर दिन कैसे चलेगा/.test(words) && /कब क्या होगा/.test(words) && /आप कब से शुरू करना चाहती हैं\?/.test(words) && /आगे/.test(words), words.slice(0, 600));
+  check('16 Hindi: her plan on one screen in Hindi (Version 39.72)', /आपका प्लान तैयार है/.test(words) && /आप कब से शुरू करना चाहती हैं\?/.test(words) && !/हर दिन कैसे चलेगा|कब क्या होगा/.test(words), words.slice(0, 600));
   check('16 Hindi: no English left on the cards', !/\b(Next|Today|Tomorrow|Start my plan|How each day works|Your plan is ready)\b/.test(words), words.match(/.{0,30}\b(Next|Today|Tomorrow|Start my plan|How each day works|Your plan is ready)\b.{0,30}/));
   check('16 360 px: no card scrolls sideways', ok360);
   await shot(page, '06-hindi-start-360');

@@ -117,7 +117,7 @@ const subs = (a) => a.page.$$eval('#view .today-chk', (rs) => rs.map((r) => { co
   await done(a);
   const b = await open({ w: 390, h: 844, seed: pm(5) });
   const s9 = await subs(b);
-  check('1 390 px: no line cut; the ones that fit (her yoga, walk and food) stay one short line', !s9.some((x) => x.cut) && ['plan-yoga', 'plan-move', 'plan-plate'].every((k) => s9.some((x) => x.id === k && !x.wrap)), s9);
+  check('1 390 px: no line cut; the ones that fit (her yoga and food) stay one short line (Version 39.72: her walk\'s brisk line wraps)', !s9.some((x) => x.cut) && ['plan-yoga', 'plan-plate'].every((k) => s9.some((x) => x.id === k && !x.wrap)), s9);
   await done(b);
 }
 

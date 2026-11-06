@@ -74,8 +74,8 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   /* day 10 of her PMOS plan (plan day index 2): cycle care yoga today; strength on Thursday (index 4) */
   const a = await open({ seed: cyc(ago(9), { log: logged(9, 5) }) });
   const td = await txt(a.page, '#view .today-card'); const cm = await rmins(a.page, 'cycle');
-  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name; 39.22: before a meal first; 39.41: its minutes on its Start)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\nBefore a meal') && (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === cm + ' min' && /Walk 10 minutes\nAfter dinner/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);
-  check('1 ... yoga has Start (Version 39.41: its minutes on it, "8 min"), the walk a tick (Version 39.14)', /^\d+ min$/.test(await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await a.page.$eval('#view .today-plan-move [data-today-act]', (b) => b.getAttribute('aria-label')).catch(() => '')) === 'Mark done: Walk 10 minutes');
+  check('1 Today names the day\'s yoga, and the walk is a step of its own (Version 39.13; 39.14: its minutes under its name; 39.22: before a meal first; 39.41: its minutes on its Start)', (await txt(a.page, '#view .today-plan-yoga')).startsWith('Cycle care yoga\nBefore a meal') && (await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) === cm + ' min' && /Walk after lunch and dinner\n10 minutes each/.test(await txt(a.page, '#view .today-plan-move')) && !/Move 10 minutes today|Or walk/.test(td), td);   /* Version 39.72: the walk after meals, in short on Today */
+  check('1 ... yoga has Start (Version 39.41: its minutes on it, "8 min"), the walk a tick (Version 39.14)', /^\d+ min$/.test(await txt(a.page, '#view .today-plan-yoga [data-today-nav]')) && !(await has(a.page, '#view .today-plan-yoga [data-today-act]')) && (await a.page.$eval('#view .today-plan-move [data-today-act]', (b) => b.getAttribute('aria-label')).catch(() => '')) === 'Mark done: Walk after lunch and dinner');
   await tap(a.page, '#view .today-plan-move [data-today-why]'); const wsh = await a.page.$eval('#sheet-root', (e) => e.innerText).catch(() => '');
   check('1 ... the walk\'s "Why?" opens its reason, how to do it and Yoga and moves (Version 39.14)', /WHY IT HELPS\n\nMoving most days helps your body use insulin better/.test(wsh) && /Brisk: you can talk, but not sing/.test(wsh) && (await has(a.page, '#sheet-root [data-go="plan-moves"]')), wsh);
   await tap(a.page, '#pl-why-ok');
@@ -127,9 +127,9 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   await tap(a.page, '[data-ci="move:n"]'); await tap(a.page, '[data-ci="sleep:p"]'); await tap(a.page, '[data-ci-b="tired"]'); await tap(a.page, '#pl-ci-save');
   const x = (await plan(a.page)).log[TODAY]; const fb = await view(a.page);
   check('5 saving keeps what counted as it was counted (8 minutes stay 8), and last night\'s bedtime on today', x.min === 8 && x.ck.sleep === 'p' && x.ck.move === 'n' && x.ci === 1 && !x.ck.yoga, x);
-  check('6 the feedback names her goal', /YOUR GOAL\n\nA step towards more regular periods\./.test(fb), fb);
+  check('6 the feedback: her count first, and not her goal line again (Version 39.72, the doctors\' review)', !/YOUR GOAL|A step towards more regular periods/.test(fb) && /today · \d of 7 days this week/.test(fb), fb);
   check('6 ... her strength days and tomorrow\'s routine', /Strength: 0 of 2 this week · next: Thursday/.test(fb) && /Tomorrow: Gentle start · \d+ min/.test(fb), fb);
-  check('12 ... and the step she missed, for tomorrow: "Tomorrow, add: Walk 10 minutes."', /2 done, 1 partly today/.test(fb) && /Tomorrow, add: Walk 10 minutes\./.test(fb), fb);
+  check('12 ... and the step she missed, for tomorrow: "Tomorrow, add: Walk 10 minutes after lunch and after dinner."', /2 done, 1 partly today/.test(fb) && /Tomorrow, add: Walk 10 minutes after lunch and after dinner\./.test(fb), fb);
   await shot(a.page, '6-feedback');
   await done(a);
   /* nothing done: no goal line */
@@ -352,10 +352,10 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   check('12 four steps on Today, in order: yoga, walk, food, bedtime', JSON.stringify(rows) === JSON.stringify(['today-plan-yoga', 'today-plan-move', 'today-plan-plate', 'today-plan-sleep']) && /0 of 4 done today/.test(await txt(a.page, '#view .today-card')), rows);
   await tap(a.page, '#view .today-plan-move [data-today-act]');
   let lg = (await plan(a.page)).log[TODAY];
-  check('12 the walk\'s tick counts walking minutes, and yoga stays to do', lg.min === 10 && lg.ck.move === 'd' && (await has(a.page, '#view .today-plan-move.today-ok')) && (await has(a.page, '#view .today-plan-yoga:not(.today-ok)')), lg);
+  check('12 the walk\'s tick counts walking minutes (both 10-minute walks), and yoga stays to do', lg.min === 20 && lg.ck.move === 'd' && (await has(a.page, '#view .today-plan-move.today-ok')) && (await has(a.page, '#view .today-plan-yoga:not(.today-ok)')), lg);
   await tap(a.page, '#view .today-plan-yoga [data-today-nav]'); await tap(a.page, '#pl-pstart'); await a.page.clock.runFor(12 * 60 * 1000); await settle(a.page, 500);   /* the whole routine, on its timers */
   await go(a.page, 'home'); lg = (await plan(a.page)).log[TODAY];
-  check('12 her yoga adds its own minutes; her walk is still counted as walked', lg.rmin >= 5 && lg.min === 10 + lg.rmin && (await has(a.page, '#view .today-plan-yoga.today-ok')) && /2 of 4 done today/.test(await txt(a.page, '#view .today-card')), [lg, await txt(a.page, '#view .today-card')]);
+  check('12 her yoga adds its own minutes; her walk is still counted as walked', lg.rmin >= 5 && lg.min === 20 + lg.rmin && (await has(a.page, '#view .today-plan-yoga.today-ok')) && /2 of 4 done today/.test(await txt(a.page, '#view .today-card')), [lg, await txt(a.page, '#view .today-card')]);
   await tap(a.page, '#view .today-plan-plate [data-today-act]');
   const one = await txt(a.page, '#view .today-card');
   check('12 one step left: "One more: Wind down with a meditation, in bed by 11:30 pm", in bold (Version 39.71)', /3 of 4 done today/.test(one) && /One more: Wind down with a meditation, in bed by 11:30 pm/.test(one) && (await has(a.page, '#view .pl-th-y.pl-th-str')), one);
@@ -373,7 +373,7 @@ const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
   await done(y);
   /* the look-back counts the days with every step done (only when there were some) */
   const w1 = {}; for (let i = 7; i >= 1; i--) { const di = 7 - i; w1[ago(i)] = { min: 15, ci: 1, ck: { move: 'd' } }; }
-  [7, 4, 2].forEach((i) => { const di = 7 - i; w1[ago(i)] = { min: 18, rmin: 8, r: [di === 3 ? 'strength' : 'cycle'], str: di === 3 ? true : undefined, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }; });
+  [7, 4, 2].forEach((i) => { const di = 7 - i; w1[ago(i)] = { min: 28, rmin: 8, r: [di === 3 ? 'strength' : 'cycle'], str: di === 3 ? true : undefined, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }; });
   const lb = await open({ seed: cyc(ago(7), { log: w1 }), now: at(0, '10:00') });
   check('12 no look-back on Today (Version 39.68: it lives on My plan)', !(await has(lb.page, '#view .pl-sl-rev, #view #pl-rev-open')), await txt(lb.page, '#view .today-card'));
   await go(lb.page, 'plan');

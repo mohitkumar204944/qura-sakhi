@@ -265,7 +265,7 @@ const seedApp = (extra) => Object.assign({ lang: 'en', langChosen: true, stage: 
   check('9 Explore\'s last step is "Listen to any page" (Version 39.68: Help is on Today only)', lastOf('#care').h === 'Listen to any page', lastOf('#care'));
   const after = await st(page);
   check('9 it ends on Me with a word on replaying it, and the full tour is done', /whole tour/.test(await toast(page)) && (await page.evaluate(() => location.hash)) === '#me' && after.full && after.full.st === 'done', after.full);
-  check('9 the pilot build has its full tools: the fertile tool on the trying-for-a-baby page', await page.evaluate(() => { location.hash = '#topic-ttc'; return new Promise((ok) => setTimeout(() => ok([...document.querySelectorAll('[data-go]')].some((x) => x.dataset.go === 'fertile')), 800)); }));
+  check('9 the pilot build has its full tools: the fertile tool on the trying-for-a-baby page, while she tries (Version 39.72)', await page.evaluate(() => { const S = window.Saathi; S.state.situation.planning = true; S.save(); location.hash = '#topic-ttc'; return new Promise((ok) => setTimeout(() => ok([...document.querySelectorAll('[data-go]')].some((x) => x.dataset.go === 'fertile')), 800)); }));
   check('9 no page errors', !errs.length, errs);
   await ctx.close();
 }

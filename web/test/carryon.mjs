@@ -164,7 +164,7 @@ const errsAll = [];
   errsAll.push(...c.errs); await c.ctx.close();
   const d = await open({ seed: { intake: { goal: 'irregular' }, mods: { plan: planOf('cycle', 'irregular', ago(28)) } } });
   const cyc = await d.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions(); const w = (a.find((x) => x.id === 'move') || {}).mins; const y = a.find((x) => x.id === 'yoga'); return { w: w, y: y ? S.plan.routineMins(y.r, S.state.mods.plan) : 0 }; });
-  check('5 the cycle plan keeps its approved ladder (week 5: 20 minutes even after quiet weeks; Version 39.13: her yoga, then her walk for the rest)', cyc.w === Math.max(10, Math.ceil((20 - cyc.y) / 5) * 5) && cyc.w + cyc.y >= 20, cyc);
+  check('5 the cycle plan\'s walk is 10 minutes after lunch and after dinner, whatever her weeks (Version 39.72, the doctors\' review), beside her yoga', cyc.w === 20 && cyc.y > 0, cyc);
   errsAll.push(...d.errs); await d.ctx.close();
 }
 
@@ -214,7 +214,7 @@ const errsAll = [];
   check('8 the same goal again starts at her last 4 weeks\' minutes, with the habits she kept', d.base >= 200 && d.hab0 === 2 && (d.past || [])[0].pack === 'cycle', { base: d.base, hab0: d.hab0 });
   await go(a.page, 'home');
   const mins = await a.page.evaluate(() => { const S = window.Saathi; const a = S.plan.actions(); const y = a.find((x) => x.id === 'yoga'); return ((a.find((x) => x.id === 'move') || {}).mins || 0) + (y ? S.plan.routineMins(y.r, S.state.mods.plan) : 0); });
-  check('8 ... so day 1 is her level (30 minutes, the most the plan asks, as her yoga and her walk), not back to 10', mins >= 30 && mins < 40, mins);
+  check('8 ... and day 1 is her yoga and the two 10-minute walks (Version 39.72: her level sets her weekly minutes, not the walk)', mins >= 25 && mins < 40, mins);
   errsAll.push(...a.errs); await a.ctx.close();
 }
 
@@ -373,7 +373,7 @@ const errsAll = [];
   check('13 a pain plan\'s end page: "Pick a goal for your next plan."', /Pick a goal for your next plan\./.test(await view(n.page)) && !/starts from where you are now/.test(await view(n.page)));
   errsAll.push(...n.errs); await n.ctx.close();
   /* ENGINE-08, PAGES-10: after the pause offer, the restart card comes once a week (Mondays) */
-  const lp = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(33), { pauseAsk: ago(1) }) } } });   /* not a look-back day either day */
+  const lp = await open({ seed: { intake: { goal: 'pain' }, mods: { plan: planOf('pain', 'pain', ago(33), { pauseAsk: ago(1), pauseOff: TODAY }) } } });   /* not a look-back day either day; Version 39.72: she answered the weekly pause offer today */
   check('13 still quiet after "Not now": no restart card on a Tuesday', !(await has(lp.page, '#view .pl-sl-lapse')));
   await lp.page.clock.setFixedTime(at(6, '10:00')); await go(lp.page, 'home');
   check('13 ... and one on Monday', await has(lp.page, '#view .pl-sl-lapse'), await txt(lp.page, '#view .slot'));

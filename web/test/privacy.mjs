@@ -94,15 +94,15 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
   await ctx.close();
 }
 
-/* ---------- 2. Screen capture (Version 39.68, the doctors' answer 5: no screenshot block, whatever she turns on); the lock takes Sakhi's PIN ---------- */
+/* ---------- 2. Screen capture (Version 39.68, the doctors' answer 5: no screenshot block, whatever she turns on; Version 39.72: the page never asks for it); the lock takes Sakhi's PIN ---------- */
 {
   const { ctx, page, errs } = await open({ hash: '#me-privacy', bio: true });
-  check('5 nothing on: screen capture allowed', JSON.stringify(await calls(page, 'setSecure')) === JSON.stringify([['setSecure', false]]), await calls(page, 'setSecure'));
+  check('5 nothing on: screen capture allowed (no call to the screenshot block)', (await calls(page, 'setSecure')).length === 0, await calls(page, 'setSecure'));
   await page.$eval('[data-set="discreet"]', (el) => el.click()); await sleep(200);
-  check('5 discreet mode on: capture still allowed', (await calls(page, 'setSecure')).every((c) => c[1] === false));
+  check('5 discreet mode on: capture still allowed', (await calls(page, 'setSecure')).length === 0);
   check('5 no fingerprint switch without app lock', !(await page.$('[data-set="bio"]')));
   await page.evaluate(() => { const s = window.Saathi.state; s.settings.discreet = false; s.settings.pinHash = 'x'; window.Saathi.saveQuiet(); window.Saathi.render(); }); await sleep(200);
-  check('5 app lock on: capture still allowed', (await calls(page, 'setSecure')).every((c) => c[1] === false));
+  check('5 app lock on: capture still allowed', (await calls(page, 'setSecure')).length === 0);
   check('5 the fingerprint switch is there, off by default', (await page.$eval('[data-set="bio"]', (el) => el.checked)) === false && /The phone’s own PIN never does/.test(await view(page)));
   await page.evaluate(() => { window.Saathi.mem.locked = true; window.Saathi.render(); }); await sleep(500);
   check('5 locked, fingerprint not turned on: no fingerprint button, no prompt', !(await page.$('#lock-bio')) && (await calls(page, 'biometric')).length === 0);
@@ -114,7 +114,7 @@ const FALSE_PROMISE = /Received|Request saved|1 working day|replies within|reads
   await go(page, 'me-privacy');
   check('5 shared phone: Me says why fingerprint is off', !(await page.$('[data-set="bio"]')) && /Off while the phone is shared/.test(await view(page)));
   await page.evaluate(() => { const s = window.Saathi.state; s.settings.shared = false; s.settings.pinHash = null; window.Saathi.saveQuiet(); window.Saathi.render(); }); await sleep(200);
-  check('5 all off again: capture allowed', (await calls(page, 'setSecure')).slice(-1)[0][1] === false);
+  check('5 all off again: capture allowed', (await calls(page, 'setSecure')).length === 0);
   check('5 no page errors', errs.length === 0, errs);
   await ctx.close();
 }

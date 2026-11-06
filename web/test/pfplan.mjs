@@ -122,9 +122,8 @@ const runSet = async (page) => { for (let i = 0; i < 400 && await has(page, '#ps
   if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
   const nx = await a.page.evaluate(() => (window.Saathi.state.mods.plan || {}).next || null);
   check('2.7 her answers are kept for the plan', nx && nx.pack === 'pelvic' && nx.intake.pft === 'both' && nx.intake.pfflags.join() === 'const' && nx.intake.pfway == null, nx && nx.intake);
-  for (let i = 0; i < 4 && !(await has(a.page, '.pl-tl')); i++) { const b = await a.page.$('#pl-rv-next'); if (!b) break; await b.click(); await settle(a.page, 300); }
   const rv = await view(a.page);
-  check('2.8 "What happens when": find it, levels, the urge from day 4, a habit from week 2, a chapter, weeks 1, 4 and 12, then keep strong', /Days 1 to 3: find the right muscles/.test(rv) && /After every 5 days of sets, a new level/.test(rv) && /From day 4: when the urge comes/.test(rv) && /From week 2: one small habit/.test(rv) && /keep strong with one set a day/.test(rv), rv.slice(0, 900));
+  check('2.8 one screen (Version 39.72): her first days\' step, and under her steps her levels and the urge from day 4', /Days 1 to 3: Find the right muscles/i.test(rv) && /After every 5 days of sets, a new level/.test(rv) && /From day 4: when the urge comes/.test(rv) && !(await has(a.page, '#pl-rv-next')), rv.slice(0, 900));
   await done(a);
   a = await open({ seed: seedOf({ stage: 'app', goals: ['recovery'], intake: { goal: 'recovery', stage: 'post' }, situation: { deliveredOn: ago(60) }, events: [], dob: '1995-01-01' }) });
   await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'post', iq: 0 }; location.hash = 'plan-goal'; }); await settle(a.page, 600);
@@ -509,8 +508,7 @@ async function startPelvic(page, pft, flags) {
   a = await open({ seed: seedOf({ goals: ['pelvic'], intake: { goal: 'pelvic', stage: 'cycle' }, dob: '1985-01-01', mods: {} }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pelvic')); await settle(a.page, 500);
   await tap(a.page, '[data-pl-q="pft:stress"]'); await tap(a.page, '#pl-in-next'); await tap(a.page, '#pl-in-next'); if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
-  let rv = '';
-  for (let i = 0; i < 6 && !(await has(a.page, '#pl-rv-go')); i++) { rv += ' ' + await view(a.page); if (await has(a.page, '#pl-rv-next')) await tap(a.page, '#pl-rv-next'); else break; }
+  const rv = await view(a.page);   /* Version 39.72: one screen */
   check('17.17 "Your plan is ready" says when each step comes: Days 1 to 3, Find the right muscles', /Days 1 to 3: Find the right muscles/.test(rv) && !/Every day: Find the right muscles/.test(rv), rv.slice(0, 900));
   check('17.18 the Start card names her 8 am first set among what will ring', /Reminders are on: your 8 am first set, your 8 pm check-in/.test(await view(a.page)), await view(a.page));
   await tap(a.page, '[data-rv-when="tomorrow"]'); await tap(a.page, '#pl-rv-go');
@@ -538,8 +536,8 @@ async function answerAll(page) {
   await done(a);
   a = await open({ seed: seedOf({ goals: ['pain', 'pelvic'], intake: { goal: 'pain', stage: 'cycle' }, dob: '1994-01-01', events: regular(10) }) });
   await a.page.evaluate(() => window.Saathi.plan.offer('pain')); await settle(a.page, 500); await answerAll(a.page);
-  let rv = ''; for (let i = 0; i < 6 && !(await has(a.page, '#pl-rv-go')); i++) { rv += ' ' + await view(a.page); if (await has(a.page, '#pl-rv-next')) await tap(a.page, '#pl-rv-next'); else break; }
-  check('17.21 a plan her sets join says so in "What happens when"', /Every day: your Kegel sets, 3 a day/.test(rv), rv.slice(0, 1200));
+  const rv = await view(a.page);   /* Version 39.72: one screen */
+  check('17.21 a plan her sets join says so under her steps', /Every day: your Kegel sets, 3 a day/.test(rv), rv.slice(0, 1200));
   await done(a);
   a = await open({ seed: pel(B(10)) });
   await go(a.page, 'plan-settings');

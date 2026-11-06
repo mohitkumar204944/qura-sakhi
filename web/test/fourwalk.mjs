@@ -184,8 +184,8 @@ const pseed = (born, startAgo, o, x) => Object.assign({ situation: Object.assign
   const ans = { stage: 'cycle', goal: 'pmos', gap: 'g45', skips: 'n', signs: ['none'], act: '0', food: 'veg', milk: 'y', lim: [], work: 'day', when: 'dinner' };
   const a = await open({ seed: pm });
   await a.page.evaluate((x) => window.Saathi.plan.startFromIntake(x), Object.assign({ bed: 'b24' }, ans)); await settle(a.page, 300);
-  const cards = await reveal(a, false); const days = (cards.find((c) => /How each day works/.test(c.v)) || {}).v || ''; const last = cards[cards.length - 1];
-  check('6 the reveal says the check-in time the Start card gives her (10 pm, after her 9:15 pm walk)', /At 10 pm, Sakhi asks/.test(days) && /your 9:15 pm walk, your 10 pm check-in/.test(last.rem), [days.slice(0, 300), last.rem]);
+  const cards = await reveal(a, false); const last = cards[cards.length - 1];
+  check('6 the reveal\'s Start says the check-in time it books (10 pm, after her 9:15 pm walk; Version 39.72: one screen)', /your 9:15 pm walk, your 10 pm check-in/.test(last.rem) && /10 pm/.test(last.v), [last.v.slice(0, 300), last.rem]);
   await done(a);
   const b = await open({ seed: pm });
   await b.page.evaluate((x) => window.Saathi.plan.startFromIntake(x), Object.assign({ bed: 'b22' }, ans)); await settle(b.page, 300);
@@ -219,7 +219,7 @@ const pseed = (born, startAgo, o, x) => Object.assign({ situation: Object.assign
   const a = await open({ seed: { situation: { care: 'private', deliveredOn: ago(4), breastfeeding: true }, goals: ['recovery'], intake: { goal: 'recovery', stage: 'post' }, settings: { notify: true } } });
   await a.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'post', goal: 'recovery', food: 'veg', milk: 'y', lim: [] })); await settle(a.page, 300);
   const cards = await reveal(a, false); const all = cards.map((c) => c.v).join(' || ');
-  check('10 the reveal and the Start card: "your recovery check: 1 minute", "Each evening, 1 minute", never "2 minutes"', /your recovery check: 1 minute/.test(all) && /Each evening, 1 minute: your recovery check/.test(all) && !/2 minutes/.test(all), all.slice(0, 600));
+  check('10 the reveal\'s Start: "Each evening, 1 minute: your recovery check", never "2 minutes" (Version 39.72: one screen)', /Each evening, 1 minute: your recovery check/.test(all) && !/2 minutes/.test(all), all.slice(0, 600));
   await done(a);
   const b = await open({ seed: pseed(3, 0) });
   await tap(b, '#view .today-plan-pwalk [data-today-why]'); await settle(b.page, 300);
@@ -231,8 +231,8 @@ const pseed = (born, startAgo, o, x) => Object.assign({ situation: Object.assign
 {
   for (const [born, want] of [[0, 'Your baby was born today.'], [1, 'Your baby was born yesterday.']]) {
     const a = await open({ seed: { situation: { care: 'private', deliveredOn: ago(born), breastfeeding: true }, goals: ['recovery'], intake: { goal: 'recovery', stage: 'post' } } });
-    await go(a, 'plan');
-    check('12 born ' + born + ' days ago: "' + want + '", never "0 days ago"', (await view(a)).indexOf(want) >= 0 && !/born 0 days ago/.test(await view(a)), (await view(a)).slice(0, 700));
+    await go(a, 'plan'); const why = (await a.page.evaluate(() => window.Saathi.plan.recs().map((x) => x.why || ''))).join(' | ');   /* Version 39.72: her suggestions' reasons, from the engine (My plan lists her goals once) */
+    check('12 born ' + born + ' days ago: "' + want + '", never "0 days ago"', why.indexOf(want) >= 0 && !/born 0 days ago/.test(why + (await view(a))), why.slice(0, 700));
     await done(a);
   }
 }

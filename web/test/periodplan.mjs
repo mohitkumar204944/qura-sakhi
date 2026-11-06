@@ -246,7 +246,7 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
 
 // ---------- 7 the test pass's fixes (2 Nov: "test properly for any bugs or gaps") ----------
 const revealCards = async (page, ik) => { await page.evaluate((x) => { window.Saathi.plan.startFromIntake(x); window.Saathi.save(); }, ik); await go(page, 'plan-reveal');
-  const out = []; for (let i = 0; i < 8; i++) { out.push({ v: await view(page), st: await has(page, '#view .pl-rv-steps'), tl: await page.$$eval('#view .pl-tl li', (x) => x.map((y) => y.innerText.replace(/\s+/g, ' ').trim())) });
+  const out = []; for (let i = 0; i < 8; i++) { out.push({ v: await view(page), st: await has(page, '#view .pl-rv-steps'), tl: await page.$$eval('#view .pl-rv-later', (x) => x.map((y) => y.innerText.replace(/\s+/g, ' ').trim())) });   /* Version 39.72: one screen; her cycle's steps that aren't today's are named under her steps */
     if (await has(page, '#pl-rv-go') || !(await has(page, '#pl-rv-next'))) break; await tap(page, '#pl-rv-next'); }
   return { steps: (out.find((x) => x.st) || { v: '' }).v, tl: (out.find((x) => x.tl.length) || { tl: [] }).tl }; };
 const IK = { pain: { stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', endo: 'n', act: 0, food: 'veg', milk: 'y', lim: [], when: 'evening' },
@@ -276,8 +276,7 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   a = await open({ seed: NOPLAN('pain') });
   let r = await revealCards(a.page, IK.pain);
   check('7.2 period pain, between periods: "Every day: Relax" and "3 days a week: Walk" (not "Every day")', /Every day: Relax, a few minutes/.test(r.steps) && /3 days a week: Walk or move \d+ minutes/.test(r.steps), r.steps);
-  check('7.2 ... "What happens when": her kit on period days and before, the chapter, week 4, strength, yoga, week 12', r.tl[0] === 'On your period days: period comfort, and just before, get it ready' && r.tl.indexOf('Every week: a short chapter, and a look back at your week') >= 0 &&
-    r.tl.indexOf('Week 4: a look at your first month, and when to see a doctor') >= 0 && r.tl.indexOf('From week 5: Strength at home on 2 of your walking days') >= 0 && r.tl.indexOf('From week 6, in the week before your period: Cycle care yoga') >= 0 && r.tl[r.tl.length - 1] === 'Week 12: your results, next to where you started', r.tl);
+  check('7.2 ... under her steps, the step of her cycle: period comfort on period days and just before (Version 39.72: one screen; her weeks are on My plan)', r.tl[0] === 'On your period days: period comfort, and just before, get it ready' && r.tl.length === 1, r.tl);
   await done(a);
   a = await open({ seed: NOPLAN('pain', { events: regular(0) }) });
   r = await revealCards(a.page, IK.pain);
@@ -293,12 +292,12 @@ const NOPLAN = (g, x) => Object.assign({ goals: [g], intake: { goal: g, stage: '
   await done(a);
   a = await open({ seed: NOPLAN('heavy') });
   r = await revealCards(a.page, IK.heavy);
-  check('7.2 heavy periods (often tired): the iron food as it is, the Hb test once, a rest on period days, strength from week 7', /One iron-rich food step every day/.test(r.steps) && !/Your iron tablet/.test(r.steps) && /Once, in your first 3 weeks: Get your Hb tested/.test(r.steps) &&
-    r.tl[0] === 'On your period days: a rest lying down (yoga nidra)' && r.tl.indexOf('From week 7: Strength at home on 2 of your walking days') >= 0, [r.steps, r.tl]);
+  check('7.2 heavy periods (often tired): the iron food as it is, the Hb test once, a rest on period days', /One iron-rich food step every day/.test(r.steps) && !/Your iron tablet/.test(r.steps) && /Once, in your first 3 weeks: Get your Hb tested/.test(r.steps) &&
+    r.tl[0] === 'On your period days: a rest lying down (yoga nidra)', [r.steps, r.tl]);
   await done(a);
   a = await open({ seed: NOPLAN('pain', { settings: { discreet: true, toursAuto: false, notify: true } }) });
   r = await revealCards(a.page, IK.pain);
-  check('7.2 a shared phone: the usual 3 rows, no period words', r.tl.length === 3 && !r.tl.some((x) => /period/i.test(x)), r.tl);
+  check('7.2 a shared phone: no rows of her cycle, no period words (Version 39.72)', r.tl.length === 0, r.tl);
   await done(a);
   /* 7.5 one home for each fact: her "Get your kit ready" step holds the heads-up card's advice; 3 days before, the card still comes */
   a = await open({ seed: per('pain', B(4), { last: 24 }) });

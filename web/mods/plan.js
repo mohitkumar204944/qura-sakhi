@@ -650,7 +650,8 @@
   function rhythmGrid(d, acts) {
     const tw = planWeeks(d) === N && !(d.keep && weekNo(d) > N); const mc = tw && !careTime(d) && !pregnant() && !disc() && !babyD(d) && !pfLead(d); const at = timeOf(ciAt(d));
     const nS = acts.filter((a) => !a.soft).length; const rc = recCi(d);
-    const cols = postV2(d) ? [['plan_rh_day', tf(rc && !disc() ? 'plan_rh_day_rc' : (nS === 1 ? 'plan_rh_day_s1' : 'plan_rh_day_s'), { n: nS, t: at })], ['plan_rh_p42', t('plan_rh_p42_s')], ['plan_rh_p84', t('plan_rh_p84_s')]] :   /* Version 39.46 */
+    const bd = postV2(d) ? (bDays(todayISO()) || 0) : 0;   /* Version 39.72: what is still ahead after the birth (the reveal's timeline is gone) */
+    const cols = postV2(d) ? [['plan_rh_day', tf(rc && !disc() ? 'plan_rh_day_rc' : (nS === 1 ? 'plan_rh_day_s1' : 'plan_rh_day_s'), { n: nS, t: at })]].concat(bd < 42 ? [['plan_rh_p42', t('plan_rh_p42_s')]] : [], bd < 84 ? [['plan_rh_p84', t('plan_rh_p84_s')]] : []) :   /* Version 39.46 */
       [['plan_rh_day', nS === 1 ? tf('plan_rh_day_s1', { t: at }) : tf('plan_rh_day_s', { n: nS, t: at })], ['plan_rh_wk', t(babyD(d) ? 'plan_rh_wk_b' : (menoV2(d) || perV2(d) || pfLead(d) ? 'plan_rh_wk_m2' : (movesOn(d) ? 'plan_rh_wk_s' : 'plan_rh_wk_s2')))]].concat(mc ? [['plan_rh_m', t('plan_rh_m_s')]] : [], tw ? [['plan_rh_end', t('plan_rh_end_s')]] : []);
     return '<div class="pl-rh-g" style="grid-template-columns:repeat(' + cols.length + ',minmax(0,1fr))">' + cols.map((c, i) => '<div class="pl-rh-c"><i class="' + (i === 0 ? 'on' : '') + '"></i><strong>' + esc(t(c[0])) + '</strong><span class="small">' + esc(c[1]) + '</span></div>').join('') + '</div>';
   }
@@ -1023,8 +1024,13 @@
     if (!on()) { offScreen(v); return; }
     const d = S.canSave() && raw() ? D() : null; const tp = d && d.start && !finished(d) && !pauseWhy() ? todayPlan(d) : null;
     const tRs = !tp ? [] : (packOf(d) === 'cycle' ? [tp.routine] : actionsFor(fullD(d)).filter((a) => a.kind === 'routine' && a.r).map((a) => a.r));   /* Version 39.51 (Mohit's phone): Today is her plan's own routine, not the cycle plan's */
+    const rids = RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn()));
+    const rRow = (id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill((R[id].fb || '') + (R[id].ffig || R[id].first)) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, fig: R[id].ffig, fb: R[id].fb, bump: R[id].bump, sun: id === 'sun' }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>';
+    /* Version 39.72 (the doctors' review, mv-sun): sun salutation, and Calm breath when it is here, as her morning session first */
+    const mo = rids.indexOf('sun') >= 0 ? rids.filter((id) => id === 'sun' || id === 'calm') : []; const rest = rids.filter((id) => mo.indexOf(id) < 0);
     v.innerHTML = head('plan_moves_h') + movesTabs(false) + '<p class="small">' + esc(t('plan_moves_p')) + '</p>' +
-      '<div class="list">' + RIDS.filter((id) => routineOk(id, d) && !(id === 'calm' && calmOn())).map((id) => '<button type="button" class="item pl-ritem" data-go="plan-r-' + id + '"><span class="pl-rfig hue-' + R[id].hue + (figStill((R[id].fb || '') + (R[id].ffig || R[id].first)) ? ' pl-rf3d' : '') + '">' + figThumb({ pose: R[id].first, fig: R[id].ffig, fb: R[id].fb, bump: R[id].bump, sun: id === 'sun' }) + '</span><span class="body"><strong>' + esc(rName(id)) + '</strong><span>' + esc(rSub(id)) + ' · ' + esc(tf('plan_mins', { n: routineMins(id, d) })) + '</span></span>' + (tRs.indexOf(id) >= 0 ? '<span class="pill accent">' + esc(t('plan_today_pill')) + '</span>' : '<span class="chev">' + S.I.chev + '</span>') + '</button>').join('') + '</div>' +
+      (mo.length ? '<span class="eyebrow pl-mgrp">' + esc(t('plan_mv_morning')) + '</span><div class="list pl-mv-morning">' + mo.map(rRow).join('') + '</div><span class="eyebrow pl-mgrp">' + esc(t('plan_mv_any')) + '</span>' : '') +
+      '<div class="list">' + rest.map(rRow).join('') + '</div>' +
       '<div class="card pl-walkcard"><span class="pl-mfig' + (figStill('walk') ? ' pl-mf3d' : '') + '" id="pl-walkfig">' + walkFig() + '</span><div class="pl-mtext"><h3>' + esc(t('plan_walk_h')) + '</h3><p class="small">' + esc(t('plan_walk_p')) + '</p></div></div>' +
       /* Version 39.68 (the doctors' review): no +10 to +30 walking minutes here; her walk step already counts her walking */
       (d && (d.limits || {}).knees ? '<p class="small">' + esc(t('plan_knee_note')) + '</p>' : '') +
@@ -1392,7 +1398,7 @@
       /* Version 39.41 (Mohit's three-plan walk): with Start, its minutes go on the button (\u25b6 8 min, as the wind-down step's), so the line keeps when and "Why?" */
       const rtMin = rt ? tf('plan_min_n', { n: routineMins(a.r, dd) }) : ''; const rtBtn = rt && sb && !ok;
       const nm = disc() && (a.priv || a.kind === 'minutes') ? discNm(a, acts) : (rt ? rName(a.r) : (a.kind === 'minutes' && !a.r && !a.walk ? tf('plan_today_move', { n: a.mins }) : (a.titleT || a.title)));   /* Version 39.22: Today keeps the short bedtime name; tonight's session is its line */
-      const sub0 = disc() && a.priv ? '' : (rt ? (YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') + (rtBtn ? '' : ' · ') : '') + (rtBtn ? '' : rtMin) :   /* Version 39.22: when first, so a cut line keeps it */ (a.id === 'fast' && !fastCare() ? '' : (a.subT || a.sub)));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
+      const sub0 = disc() && a.priv ? '' : (rt ? (YOGA_R.indexOf(a.r) >= 0 ? t('plan_yoga_when') + (rtBtn ? '' : ' · ') : '') + (rtBtn ? '' : rtMin) :   /* Version 39.22: when first, so a cut line keeps it */ (a.id === 'fast' && !fastCare() ? '' : (a.subT != null ? a.subT : a.sub)));   /* V39.9 review SAFETY-03: on Today the fasting step keeps only its doctor line */
       return { id: ids[a.id] || 'plan-' + a.id, order: 25 + i, plan: true, icon: a.icon, hue: a.hue, title: nm,
         sub: ok ? (disc() ? t('plan_t_done') : ciNote(a, lg)) : (a.state === 'p' ? (sub0 && a.subP ? a.subP : t('plan_t_part')) : (a === nx && !ciNow && !sb && !a.play ? (sub0 ? tf('plan_t_next_s', { s: lowFirst(sub0) }) : t('plan_t_next')) : sub0)),
         go: tick ? null : a.go, at: a.at || null, tick: tick, ok: ok, next: a === nx, fold: full,
@@ -1489,7 +1495,6 @@
     const g = (k) => s.goals.indexOf(k) >= 0; const pt = (c, n, why) => (c ? [n, why] : null); const gl = (k, n) => pt(g(k), n, tf('plan_why_g', { k: obName(k) }));
     const jd = (S.state.mods || {}).journey || {}; const jOn = (id) => !!(S.canSave() && jd.active === id && jd.start && S.diffDays(S.fromISO(jd.start), pToday()) < 21);
     const pd = S.canSave() ? raw() : null; const pOn = !!(pd && pd.start && (packOf(pd) || upcoming(pd)));
-    const poiNo = poiHold() && !(pOn && !(pd && pausedFor(pd)));   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, no plan row beside the gynaecologist card (it said "After your 6-week check") */
     const gaps = tf('plan_why_gaps', { n: s.long, m: s.gaps, b: s.band }); const hv = tf('plan_why_heavy', { n: s.heavy, m: s.periods }); const pn = tf('plan_why_pain', { n: s.pain, m: s.periods });
     const low = tf('plan_why_low', { n: s.low }); const mid = t('plan_why_midlife');
     const out = [];
@@ -1501,7 +1506,7 @@
       if (o.paused || o.active) o.score = 0;
       delete o.pts; delete o.tile; delete o.fit; out.push(o);
     };
-    add({ id: 'plan-pmos', go: 'plan-pmos', t: disc() ? t('plan_h_d') : t('plan_h'), s: t('plan_tile_s'), dur: t('plan_d_12w'), icon: ICO.move, hue: 'purple', fit: !preg && st !== 'ttc' && (st !== 'meno' || s.pcos) && !poiNo,   /* Version 39.32: while she tries for a baby, Getting ready is her plan, with the PMOS food and moves */ active: pOn && !(pd && pausedFor(pd)), paused: (early && !pOn) || !!(pd && pausedFor(pd)),
+    add({ id: 'plan-pmos', go: 'plan-pmos', t: disc() ? t('plan_h_d') : t('plan_h'), s: t('plan_tile_s'), dur: t('plan_d_12w'), icon: ICO.move, hue: 'purple', fit: !preg && st !== 'ttc' && (st !== 'meno' || s.pcos),   /* Version 39.32: while she tries for a baby, Getting ready is her plan, with the PMOS food and moves */ active: pOn && !(pd && pausedFor(pd)), paused: (early && !pOn) || !!(pd && pausedFor(pd)),
       pts: [pt(s.pcos, 5, t('plan_why_pcos')), pt(s.sc === 'match', 4, t('plan_why_sc')), pt(s.sc === 'risk', 2, t('plan_why_sc_risk')), pt(!s.pcos && !s.sc && s.long >= 2 && s.ciSigns >= 1, 2, gaps), gl('weight', s.pcos ? 1 : 2), gl('skin', 1), gl('irregular', 1)] });
     /* Version 39.1 (journey audit): "Could it be PMOS?" is a check, not a plan, so it is no longer suggested as one; the long-gap
        and PMOS-signs cards in What your diary shows offer it as "Check the signs" */
@@ -1627,8 +1632,8 @@
   document.addEventListener('click', (e) => { const b = e.target && e.target.closest ? e.target.closest('[data-pl-for]') : null; if (!b) return; e.preventDefault(); if (S.closeSheet) S.closeSheet(); S.plan.offer(b.dataset.plFor); });
   function offerCard() {
     const p = S.state.prompts || {}; if (!on() || !S.canSave() || lossNow()) return '';   /* Version 39.58: a shared phone too; its title is "My plan", and its pages ask her PIN */
-    const d = raw(); if ((packOf(d) && pausedFor(d) !== 'poi') || pendingOk(d) || upcoming(d)) return '';   /* Version 39.51: a plan held for her doctor shows the card */
-    if ((poiHold() && stageNowKey() === 'meno') || poiAsk()) return disc() ? '' : p.poiNot && S.diffDays(S.fromISO(p.poiNot), pToday()) < 14 ? '' : poiHtml(!!(packOf(d) && pausedFor(d) === 'poi'));   /* Version 39.51 (the midlife walk): whatever joining set, as no plan is offered to her; Version 39.53 (Mohit's phone test): while it holds her plan, Today shows it where her plan's steps were */
+    const d = raw(); if (packOf(d) || pendingOk(d) || upcoming(d)) return '';
+    if (poiDue()) return poiHtml(false);   /* Version 39.72 (the doctors' review): before 40, the gynaecologist as advice first; then her plan's offer (My plan's goals start one any time) */
     if (!p.planOffer) return '';   /* Version 39.61 (phase C): her plan comes first; her first log no longer holds it */
     if (p.planOfferNot && S.diffDays(S.fromISO(p.planOfferNot), pToday()) < 3) return '';
     const ik = S.state.intake || {}; const pk = ik.goal && goalsFor({ stage: stageNowKey() }).indexOf(ik.goal) >= 0 ? packFor(ik.goal, stageNowKey()) : null; if (!pk) return '';   /* Version 39.32: only a goal of her stage now */
@@ -1647,7 +1652,7 @@
       '<div class="row spread"><button type="button" class="linkbtn" id="pl-rec-not">' + esc(t('plan_rec_not')) + '</button><button type="button" class="linkbtn" data-go="plan">' + esc(t('plan_rec_all')) + '</button></div></div>';
   }
   /* Version 39.10: what she said while joining isn't asked again */
-  const offerGo = () => { const ik = S.state.intake || {}; S.mem.planIntake = { stage: stageNowKey(), goal: ik.goal, iq: 1, gap: ik.gap || null, dx: ik.dx || null, known: ['gap', 'dx'].filter((k) => ik[k]) }; S.setHash('plan-goal'); };
+  const offerGo = () => { const ik = S.state.intake || {}; S.mem.planIntake = { stage: stageNowKey(), goal: ik.goal, iq: 1, gap: ik.gap || null, dx: ik.dx || null, known: ['gap', 'dx'].filter((k) => ik[k]), back: S.route() }; S.setHash('plan-goal'); };
   function afterHome(v) {
     const og = v.querySelector('#pl-off-go'); if (og) og.addEventListener('click', offerGo);
     wirePoi(v);   /* Version 39.51 */
@@ -1904,8 +1909,10 @@
        least), done by walking minutes, not the yoga's, so the week's minutes still grow as the plan intends. */
     'yoga.cycle': (d, c, x, st) => { const tp = c.tp; const R0 = c.lg.r || []; const did = tp.str ? (R0.indexOf('strength') >= 0 || !!c.lg.str) : R0.some((r) => r !== 'calm');
       return [{ id: 'yoga', icon: ICO.yoga, hue: 'plum', kind: 'routine', r: tp.routine, title: tf('plan_a_r', { r: rName(tp.routine), n: routineMins(tp.routine, d) }), name: t('plan_r_d'), sub: '', go: 'plan-r-' + tp.routine, state: st('yoga', did), why: tp.str ? 'plan_fb_str' : 'plan_fb_move_g' }]; },
-    'walk.cycle': (d, c, x, st) => { const tp = c.tp; const n = tp.light ? tp.walk : Math.max(10, Math.ceil((tp.walk - routineMins(tp.routine, d)) / 5) * 5); const mv = walkStep(d, c, n, 'plan_fb_move', st);
-      mv.walk = true; mv.title = tf('plan_a_walk', { n: n }); mv.state = st('move', (c.lg.min || 0) - (c.lg.rmin || 0) >= n); return [mv]; },
+    /* Version 39.72 (the doctors' review, pmos-plan): 10 minutes after lunch and after dinner, and a brisk 30 to 45 minutes when her day
+       allows, as one step (both short walks count 20 minutes; Partly is one of them); a lighter week keeps one 10-minute walk */
+    'walk.cycle': (d, c, x, st) => { const tp = c.tp; const n = tp.light ? tp.walk : 20; const mv = walkStep(d, c, n, 'plan_fb_move', st);
+      mv.walk = true; mv.title = tp.light ? tf('plan_a_walk', { n: n }) : t('plan_a_meals'); if (!tp.light) { mv.sub = t('plan_a_meals_s'); mv.titleT = t('plan_a_meals_t'); mv.subT = t('plan_a_meals_ts'); mv.how = t('plan_a_meals_s') + '. ' + t('plan_walk_s') + '.'; }   /* Today: a short name and "10 minutes each" (the brisk walk is in Why?, and on My plan), so her next step stays above the tab bar at 360 px */ mv.state = st('move', (c.lg.min || 0) - (c.lg.rmin || 0) >= n); return [mv]; },
     plate: (d, c, x, st) => { const hb = habitsOf(d, c.tp.wk); let h = hb[hb.length - 1]; let back = false;
       const pd = planDayAt(d, c.day); const nw = h; if (hb.length >= 2 && (pd - 1) % 7 === 4) { h = stillPick(d, Math.floor((pd - 1) / 7) + 1) || h; back = true; }   /* Version 39.9 */
       const th = !!h && h.id === 'half' && c.day === todayISO() && !!d.thali && d.thali.d === c.day && (d.thali.on || []).indexOf('veg') >= 0;   /* Version 39.12 (gap 3): her plate counts */
@@ -2012,7 +2019,7 @@
     return list;
   }
   /* her plan for a goal: the first plan whose goals match her stage and goal (web/progs/v1.js's order) */
-  const packFor = (goal, st) => { if (!goal || goal === 'track') return null; const p = progs().find((x) => (x.goals || []).some((g) => (!g.stage || g.stage === st) && (!g.goal || g.goal === goal))); return p && !(p.id === 'meno' && poiHold()) ? p.id : null; };   /* Version 39.51: periods stopped before 40 see a gynaecologist first */
+  const packFor = (goal, st) => { if (!goal || goal === 'track') return null; const p = progs().find((x) => (x.goals || []).some((g) => (!g.stage || g.stage === st) && (!g.goal || g.goal === goal))); return p ? p.id : null; };   /* Version 39.72 (the doctors' review): before 40 too; the gynaecologist is advice beside her plan */
   /* her active plan. The V35 plan has no pack: it is the cycle plan. A pregnancy plan ends with the pregnancy, and an after-birth
      plan a year after the birth. */
   function packOf(d) {
@@ -2033,7 +2040,7 @@
     if (ck === 'birthWeek') { const b = (S.state.situation || {}).deliveredOn; return b ? tf('plan_wk_post', { n: Math.floor(S.diffDays(S.fromISO(b), pToday()) / 7) + 1 }) : ''; } return ''; };
   /* the cycle and light plans pause in pregnancy and for the first 6 weeks after a birth (the pregnancy and after-birth plans don't) */
   /* review life-1: a plan started on or after the day her pregnancy ended isn't paused by it (it used to fall through to 'loss') */
-  const pausedFor = (d) => { const pk = packOf(d); if (!pk) return null; if (pk === 'meno' && poiHold()) return 'poi';   /* Version 39.51 (Mohit's phone test): under 40 with her periods stopped, her doctor first */
+  const pausedFor = (d) => { const pk = packOf(d); if (!pk) return null;   /* Version 39.72 (the doctors' review): no hold before 40 (Version 39.51's); the gynaecologist card is advice */
     const w = pauseWhy(); if (!w || (((specD(d) || {}).life || {}).pause || []).indexOf(w) < 0) return null;
     if (w === 'loss') return d && d.start && d.started && d.started >= ((S.state.situation || {}).pregEndedOn || '') ? null : 'loss'; return w; };
   function packTitle(d) {
@@ -2180,7 +2187,7 @@
     if (id === 'day' && a.food == null && S.food && S.food.diet) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; }
     if (id === 'day') dayPre(a);
     const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
-    const prev = () => { if (a.iq <= 0 || (a.fromJoin && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi */
+    const prev = () => { if (a.iq <= 0 || ((a.fromJoin || a.given) && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi; Version 39.72 (the doctors' review): the same for a goal she picked anywhere, so it is asked once */
     const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
       const mk = (o, h) => (k === 'food' && S.food && S.food.mark ? h.replace(/>([^<]*)<\/button>$/, '>' + S.food.mark(o[0]) + '$1</button>') : h);   /* Version 39.8: the veg and non-veg marks */
       return '<h2 class="ob-h2">' + esc(t(q[0])) + '</h2><div class="chips" role="group" aria-label="' + esc(t(q[0])) + '">' + q[1].map((o) => mk(o, ctx.chip(multi ? 'data-pl-m' : 'data-pl-q', k + ':' + o[0], t(o[1]), multi ? (cur || []).indexOf(o[0]) >= 0 : String(cur) === o[0]))).join('') + '</div>'; };
@@ -2408,7 +2415,7 @@
     d.pv = (specOf(d.pack || 'cycle') || {}).ver || 1;   /* Version 39.4: the version of her plan she started */
     if (d.goalKey) S.state.goals = [d.goalKey].concat((Array.isArray(S.state.goals) ? S.state.goals : []).filter((x) => x !== d.goalKey));   /* Version 39.48 (Mohit's switch walk): the plan she starts leads her goals, so For you and the rest follow it, also while it rests */
     if (postV2(d) && S.post && S.post.sixRemind) { const n0 = bDays(todayISO()); if (n0 != null && n0 < 42) S.post.sixRemind(); }   /* Version 39.46: her own 6-week check rings on its day */
-    delete d.pauseUntil; delete d.remPaused; delete d.chg; delete d.docAt; delete d.docSaid; delete d.m4Seen; delete d.dueSeen; delete d.yearSeen; delete d.carried;   /* review RESULTS-03: the last plan's doctor answer stays with it */
+    delete d.pauseUntil; delete d.pauseEnd; delete d.pauseOff; delete d.remPaused; delete d.chg; delete d.docAt; delete d.docSaid; delete d.m4Seen; delete d.dueSeen; delete d.yearSeen; delete d.carried;   /* review RESULTS-03: the last plan's doctor answer stays with it */
     const fr = fairOf(Array.isArray(d.past) ? d.past[0] : null, d);   /* review FIXES-04: after Stop, past[0] is the plan she stopped */
     if (fr) { d.base = fr.base; d.hab0 = fr.hab0; } else { delete d.base; delete d.hab0; }
     delete d.pauseAsk;   /* review ENGINE-08: each plan gets its own pause offer */
@@ -2593,7 +2600,7 @@
   function pauseWeek(d) { d.pauseUntil = S.toISO(S.addDays(pToday(), 7)); const r = S.reminders.get('plan'); if (r && r.on !== false) { S.reminders.upsert({ id: 'plan', start: d.pauseUntil }, { quiet: true }); d.remPaused = 'start'; } nudgeSync(d); }
   /* review FIXES-03: a V39.7 pause only moved the start, so ending it moves the start back and keeps her own on/off choice;
      a pause begun before V39.7 switched the reminder off, so that one comes back on */
-  function unpause(d) { delete d.pauseUntil; if (d.remPaused) { delete d.remPaused; const r = S.reminders.get('plan'); if (r) { const st = r.start && r.start > todayISO() ? todayISO() : (r.start || todayISO()); S.reminders.upsert({ id: 'plan', start: st }, { quiet: true }); } } nudgeSync(d); }   /* review FIXES-03, V39.9 review FIXES-04: her on/off choice stays hers */
+  function unpause(d) { if (d.pauseUntil) d.pauseEnd = d.pauseUntil < todayISO() ? d.pauseUntil : todayISO(); delete d.pauseUntil;   /* Version 39.72: the pause offer counts her quiet days from its end */ if (d.remPaused) { delete d.remPaused; const r = S.reminders.get('plan'); if (r) { const st = r.start && r.start > todayISO() ? todayISO() : (r.start || todayISO()); S.reminders.upsert({ id: 'plan', start: st }, { quiet: true }); } } nudgeSync(d); }   /* review FIXES-03, V39.9 review FIXES-04: her on/off choice stays hers */
   /* Version 39.5 (journey audit P2-10): a plan she replaces or stops is kept, with what she did */
   /* review ENGINE-05, SAFETY-07: the day her plan stopped applying: the last day of a finished plan, the day her stage ended a
      pregnancy plan or paused another, else today */
@@ -2627,7 +2634,7 @@
   }
   function archive(d) { const e = pastEntry(d); if (e) d.past = [e].concat(Array.isArray(d.past) ? d.past : []).slice(0, 5); }
   /* the plan ends and is kept as "Your last plan": Stop, or (V39.9 review FIXES-07) her after-birth plan at the baby's first birthday */
-  function closePlan(dd, drop) { if (!drop) archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); S.reminders.remove('plan-pf'); ['nudge', 'nudgeHeld', 'nudgeMade', 'pfRing', 'pfHeld', 'pfMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.56: her morning set too */   /* Version 39.12 */
+  function closePlan(dd, drop) { if (!drop) archive(dd); delete dd.prevPlan; dd.start = null; dd.keep = false; dd.pack = null; dd.endSeen = null; ['doc', 'docAt', 'docSaid', 'm4Seen', 'dueSeen', 'yearSeen', 'carried'].forEach((k) => { delete dd[k]; }); delete dd.remGone; delete dd.pauseUntil; delete dd.pauseEnd; delete dd.pauseOff; delete dd.remPaused; S.reminders.remove('plan'); S.reminders.remove('plan-nudge'); S.reminders.remove('plan-pf'); ['nudge', 'nudgeHeld', 'nudgeMade', 'pfRing', 'pfHeld', 'pfMade', 'wplan', 'light', 'quietAt', 'mcheck', 'mcNot'].forEach((k) => { delete dd[k]; }); }   /* Version 39.56: her morning set too */   /* Version 39.12 */
   const pastBirthday = (d) => { const b = (S.state.situation || {}).deliveredOn; return !!(d && d.start && (d.pack || 'cycle') === 'post' && d.go !== false && d.start <= todayISO() && typeof b === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(b) && !pregnant() && S.diffDays(S.fromISO(b), pToday()) > 365); };
   /* Version 39.5 (P2-04): the same goal again, within a month of her last plan's end, starts where she is. Review ENGINE-06:
      the plan screen shows it too, before she starts */
@@ -2699,6 +2706,26 @@
   const pastCard = () => '';
   /* days since she last followed her plan (0: today) */
   const sinceLast = (d) => { for (let i = 0; i < 60; i++) { const iso = S.toISO(S.addDays(pToday(), -i)); if (iso < d.start) return i; if (dayDone(d, iso)) return i; } return 60; };
+  /* Version 39.72 (the doctors' review, plan-pause: "on a day skipped we send a notification asking the same, users by themselves
+     might not discover this"): the pause offer. Her quiet days count from the last day her plan counted, or the last day of a pause.
+     After 2 of them, Today's "Take a week off?" card comes (pauseDue; after her plan's doctor check and what follows it), and a
+     phone notification brings it, at 9 am on the morning after the second (pauseRing; its tap opens plan-pause, the card first).
+     Both come at most once a week: an answer (Pause, Not now) waits 7 days, and the rings fall a week apart while she stays quiet.
+     The ring is worked out from her days each time the alarms are booked, so nothing is stored, and only the next one is booked: a
+     plan she has left rings once. Never in her plan's first 3 days, in pregnancy or the first 6 weeks after a birth (careTime), in
+     discreet mode, while her plan rests, or (the ring) once she has turned her plan's reminder off. */
+  const quietFrom = (d) => { let l = S.addDays(pToday(), -sinceLast(d)); const e = d.pauseUntil && d.pauseUntil <= todayISO() ? d.pauseUntil : d.pauseEnd; if (typeof e === 'string' && e <= todayISO()) { const pe = S.addDays(S.fromISO(e), -1); if (pe > l) l = pe; } return l; };
+  const pauseOk = (d) => !!(d && d.start && packOf(d) && !pausedFor(d) && !selfPaused(d) && !upcoming(d) && !finished(fullD(d)) && !careTime(d) && !disc());
+  const pauseDue = (d) => pauseOk(d) && planDay(d) >= 4 && S.diffDays(quietFrom(d), pToday()) >= 3 && !(d.pauseOff && S.diffDays(S.fromISO(d.pauseOff), pToday()) < 7);   /* never in her plan's first 3 days (Version 37.1) */
+  function pauseRing() {
+    const d = raw(); if (!on() || !S.canSave() || !pauseOk(d)) return null;
+    const r = S.reminders.get('plan'); if (!r || r.on === false) return null;   /* her plan's reminder off: this stays quiet too */
+    let x = S.addDays(quietFrom(d), 3); const d4 = S.addDays(S.fromISO(d.start), 3); if (x < d4) x = d4;   /* day 4 at the earliest */
+    const gate = d.pauseOff ? S.addDays(S.fromISO(d.pauseOff), 7) : null; const now = Date.now();
+    const gone = (dt) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 9, 0).getTime() <= now;
+    for (let k = 0; k < 60 && ((gate && x < gate) || gone(x)); k++) x = S.addDays(x, 7);
+    return { d: S.toISO(x), body: t('plan_sl_pause_h') + ' ' + t('plan_sl_pause_p') };
+  }
 
   /* ---------- the plan reveal (decisive moment 1: "Sakhi understood me") ---------- */
   const ikOf = (d) => (d && d.intake) || S.state.intake || {};
@@ -2818,13 +2845,14 @@
   const laterLine = (l) => tf('plan_rv_from', { n: l.n, x: !l.a ? t('plan_rv_bed0') : (S.state.lang === 'en' ? l.a.title.charAt(0).toLowerCase() + l.a.title.slice(1) : l.a.title) });
   /* about how many minutes a day her first steps take */
   const dayMins = (d) => actionsFor(d).reduce((n, a) => n + (a.kind === 'minutes' ? a.mins : (a.r ? routineMins(a.r, d) : (/^relief-/.test(a.go) ? 3 : 0))), 0);
-  /* Version 37.1: her plan as cards, one idea each (docs/first-days-audit-2026-10-24.md, 5.3 and 5.5): it's ready; your steps;
-     how each day works; what happens when; a doctor check alongside it when her answers need one; when to start. Only "Start
-     my plan" on the last card starts it. The card she is on stays (S.mem.rvCard), so a doctor page opened from it comes back. */
+  /* Version 37.1: her plan, made from her answers (docs/first-days-audit-2026-10-24.md, 5.3 and 5.5): it's ready; your steps; a
+     doctor check alongside it when her answers need one; when to start. Only "Start my plan" starts it. Version 39.72 (the
+     doctors' review): all of it on one screen, for every plan. */
   const EVE = ['18:00', '19:00', '20:00', '21:00', '21:30', '22:00'];   /* Version 39.27 (R02): 9:30 and 10 pm too */
   let meghaAud = null;
   const stopAudio = () => { try { if (meghaAud) meghaAud.pause(); } catch (e) { /* nothing playing */ } meghaAud = null; };
-  /* Dr. Megha's 30-second welcome, when the build carries her recording (android/build-apk.sh lists web/audio/ in SAKHI_CONFIG.audio) */
+  /* Dr. Megha's 30-second welcome, when the build carries her recording (android/build-apk.sh lists web/audio/ in SAKHI_CONFIG.audio);
+     Version 39.72: on the one screen, under her plan's name */
   const meghaSrc = () => { const l = (window.SAKHI_CONFIG || {}).audio || []; const k = [S.state.lang, 'en'].map((x) => 'megha-welcome-' + x).find((x) => l.indexOf(x) >= 0); return k ? 'audio/' + k + '.mp3' : null; };
   function renderReveal(v) {
     const d = raw(); if (!on() || !S.canSave() || !pendingOk(d)) { renderMyPlan(v); return; }   /* no plan waiting: My plan, drawn in place */
@@ -2832,15 +2860,10 @@
     /* Version 39.32 (the minimalist baseline, one home for each fact): Getting ready's routine card (standard version) shows on
        Today from day 1, so the reveal keeps its doctor card for the versions that need a check first */
     const dkR = dk && !(babyD(dd) && (ikOf(dd).bdoc || 'std') === 'std') ? dk : '';
-    const cards = ['ready', 'steps', 'days'].concat(dkR ? ['doc'] : [], ['start']);   /* Version 39.3: one card for her days and weeks */
-    const i = S.mem.rvCard = S.clamp(S.mem.rvCard || 0, 0, cards.length - 1); const id = cards[i];
     const st = S.mem.rvStart = S.mem.rvStart || { when: nowHM() >= '21:00' ? 'tomorrow' : 'today', at: null };   /* at: null is Sakhi's time (Version 39.27); a chip she taps is hers */
-    const rvAt = () => ciAt(Object.assign({}, dd, { remAt: st.at || n.remAt || '20:00', remPick: !!st.at || !!dd.remPick }));   /* Version 39.47: "How each day works" says the Start card's time */
     const chip = (attr, val, label, on1) => '<button type="button" class="chip' + (on1 ? ' on' : '') + '" ' + attr + '="' + esc(val) + '" aria-pressed="' + !!on1 + '">' + esc(label) + '</button>';
     const nextB = '<button type="button" class="btn primary block" id="pl-rv-next">' + esc(t('plan_rv_next')) + '</button>';
     const editB = '<button type="button" class="linkbtn" id="pl-rv-edit">' + esc(t('plan_rv_edit')) + '</button>';
-    const top = '<div class="ob-top pl-rv-top">' + (i > 0 ? '<button type="button" class="iconbtn" id="pl-rv-back" aria-label="' + esc(t('back')) + '">' + S.I.back + '</button>' : '<span class="pl-rv-sp"></span>') +
-      '<div class="progress" role="img" aria-label="' + esc(t('step') + ' ' + (i + 1) + ' ' + t('of') + ' ' + cards.length) + '">' + cards.map((x, k) => '<i class="' + (k <= i ? 'on' : '') + '"></i>').join('') + '</div></div>';
     const bodyOf = (id) => { let body = '';
     if (id === 'ready') {
       const nm = String((S.account && S.account.info && (S.account.info() || {}).name) || '').trim().split(/\s+/)[0]; const now = nowLine(dd); const m = round5(dayMins(dd));
@@ -2849,23 +2872,15 @@
         '<span class="pill accent pl-rv-goal">' + esc(tf('plan_rv_goal', { g: disc() ? t('plan_h_d') : t('plan_gv_' + dd.goalKey) })) + '</span>' +
         (now && !disc() ? '<p>' + esc(tf('plan_rv_made', { x: now })) + '</p>' : '') +
         '<div class="card pl-rv-len"><strong>' + esc(pk === 'preg' ? t(disc() ? 'plan_rv_len_d' : 'plan_rv_len_preg') : postV2(dd) ? t(disc() ? 'plan_rv_len_d' : (died() ? 'plan_rv_len_pb' : 'plan_rv_len_p')) : (m >= 5 ? tf('plan_rv_len', { n: m }) : t('plan_rv_len_few'))) + '</strong><span class="small">' + esc(packTitle(dd)) + '</span></div>' +
-        (run ? '<p class="small">' + esc(t('plan_rv_repl')) + '</p>' : '') + nextB + editB;
+        (run ? '<p class="small">' + esc(t('plan_rv_repl')) + '</p>' : '') + (meghaSrc() && !disc() ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(meghaSrc()) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') + nextB + editB;
     } else if (id === 'steps') {
       const sl = stepsList(dd);
       body = '<h1>' + esc(sl.length === 1 ? t('plan_rv_step1_h') : tf('plan_rv_steps_h', { n: sl.length })) + '</h1><div class="list pl-rv-steps">' +
         /* Version 39.8 (diet audit VD-07): one picture per step, its reason behind "Why?" */
         sl.map((x) => '<div class="item quiet pl-pillar pl-pic-row"><span class="pl-pic hue hue-' + x.hue + '">' + (S.art && S.art.food && /^plan_fb_food/.test(x.why || '') ? S.art.food('thali') : x.ico) + '</span><span class="body"><strong>' + esc(disc() && x.priv ? t('plan_today_d') : x.txt) + '</strong>' + (x.why && !disc() ? '<details class="pl-why-d"><summary>' + esc(t('plan_why_q')) + '</summary><span>' + esc(t(x.why)) + '</span>' + whyBtn(x.why, 'pl-why', pk) + '</details>' : '') + '</span></div>').join('') + '</div>' +
         (disc() ? '<p class="small">' + esc(t('plan_fb_any')) + '</p>' : '') + (sl.some((x) => x.med) && S.medLine ? S.medLine() : '') +   /* Version 39.71: the medicine line */
-        (pk === 'cycle' ? '<p class="small">' + esc(tf('plan_rv_week', { m: target(dd, 1), n: daySuggest(dd, 1) })) + '</p><p class="small">' + esc(t('plan_rv_also')) + '</p>' : '') + nextB;
-    } else if (id === 'days') {
-      const src = meghaSrc(); const rows = pk === 'preg' ? ['plan_rv_w1'].concat(pregV2(dd) && !disc() ? pregRvRows() : []) : (postV2(dd) ? [[14, 'plan_rv_p14'], [42, 'plan_rv_p42'], [84, 'plan_rv_p84']].filter((x) => (bDays(todayISO()) || 0) < x[0]).map((x) => x[1]).concat([died() ? 'plan_rv_p365b' : 'plan_rv_p365']) : (menoV2(dd) ? m2RvRows(dd) : (perV2(dd) ? perRvRows(dd) : (pfLead(dd) ? pfRvRows(dd) : ['plan_rv_w1', 'plan_rv_w4', 'plan_rv_w12']))));   /* Version 39.55 */   /* Version 39.36: what comes later in her pregnancy; Version 39.46: her year after the birth */
-      if (pfJoined(dd)) rows.push({ x: t('plan_pf_rv_join') });   /* Version 39.56: her sets join this plan */
-      body = '<h1>' + esc(t('plan_rv_days_h')) + '</h1><h2 class="ob-h2">' + esc(t('plan_rv_day_h')) + '</h2><ol class="pl-rv-how pl-rv-strip">' + ['plan_rv_d1', postV2(dd) && earlyAt(todayISO()) && !disc() ? 'plan_rv_d2p' : 'plan_rv_d2', 'plan_rv_d3'].map((k, j) => '<li><span class="pl-rv-ic hue hue-' + ['green', 'purple', 'rose'][j] + '" aria-hidden="true">' + S.icon(['check', 'bell', 'sparkle'][j]) + '</span><span>' + esc(j === 1 ? tf(k, { t: timeOf(rvAt()) }) : t(k)) + '</span></li>').join('') + '</ol>' +   /* Version 39.8: the day as a 3-picture strip (Done, the evening check-in, Sakhi answers) */
-        '<div class="card soft"><p>' + esc(t('plan_rv_miss')) + '</p></div>' +
-        (src ? '<button type="button" class="btn sm pl-rv-aud" id="pl-rv-aud" data-src="' + esc(src) + '">' + esc(t('plan_rv_aud')) + '</button>' : '') +
-        '<h2 class="ob-h2">' + esc(t('plan_rv_when_h')) + '</h2><ol class="pl-tl">' + (pk !== 'preg' && laterStep(dd) ? '<li><strong>' + esc(laterLine(laterStep(dd))) + '</strong></li>' : '') + rows.map((k) => '<li><strong>' + esc(typeof k === 'string' ? t(k) : k.x) + '</strong></li>').join('') + '</ol>' +
-        (['cycle', 'pain', 'heavy', 'pms'].indexOf(pk) >= 0 && !disc() ? '<p>' + esc(t('plan_rv_cyc')) + '</p>' : '') + (pk === 'ttc' && !disc() ? '<p>' + esc(t('plan_rv_ttc')) + '</p>' : '') +
-        '<p class="small">' + esc(t(pk === 'preg' && !disc() ? 'plan_rv_exp_preg' : 'plan_rv_diff')) + '</p>' + nextB;
+        rvLater(dd).map((x) => '<p class="small pl-rv-later">' + esc(x) + '</p>').join('') +   /* Version 39.72: her steps that aren't today's, named under them (Version 39.45, 39.55) */
+        (pk === 'cycle' ? '<p class="small">' + esc(t('plan_rv_also')) + '</p>' : '') + nextB;   /* Version 39.72: no "It grows a little each week" (her walk is 10 minutes after lunch and after dinner) */
     } else if (id === 'doc' && babyD(dd) && !disc()) {   /* Version 39.32: her version's own card */
       const bd = babyDoc(dd);
       body = '<h1>' + esc(bd.h) + '</h1><div class="card warn pl-doc pl-bdoc">' + bd.lines.map((x) => '<p>' + esc(x) + '</p>').join('') + '</div><p class="small">' + esc(bd.free) + '</p>' + (bd.go ? '<p class="small">' + esc(bd.go) + '</p>' : '') + '<p class="small">' + esc(bd.qura) + '</p>' +
@@ -2884,26 +2899,35 @@
         '<button type="button" class="btn primary block" id="pl-rv-go">' + esc(t('plan_start')) + '</button>' + editB;
     }
     return body; };
-    /* Version 39.61 (phase C): from joining, one page (her days and weeks are in My plan's How it works) */
-    const one = !!S.mem.rvOne; const ids = one ? ['ready', 'steps'].concat(dkR ? ['doc'] : [], ['start']) : [id];
-    const body = ids.map((x, k) => { let b = bodyOf(x); if (!one) return b; b = b.split(nextB).join('').split(editB).join(''); return k ? b.replace(/<h1>/g, '<h2 class="pl-rv-h">').replace(/<\/h1>/g, '</h2>') : b; }).join(one ? '<hr class="pl-rv-sep">' : '') + (one ? editB : '');
-    v.innerHTML = '<div class="pl-rv' + (one ? ' pl-rv-one' : '') + '">' + (one ? '' : top) + body + (id === 'start' || one ? '<p class="footnote">' + esc(footT(dd)) + '</p>' : '') + '</div>';   /* Version 39.8 (VD-07): the disclaimer once, on the Start card */
+    /* Version 39.72 (the doctors' review, plan-reveal: "one screen with her steps and Start is enough"): one page for every plan,
+       as Version 39.61 made it from joining. Her days and weeks are in My plan's How it works. */
+    const ids = ['ready', 'steps'].concat(dkR ? ['doc'] : [], ['start']);
+    const body = ids.map((x, k) => { const b = bodyOf(x).split(nextB).join('').split(editB).join(''); return k ? b.replace(/<h1>/g, '<h2 class="pl-rv-h">').replace(/<\/h1>/g, '</h2>') : b; }).join('<hr class="pl-rv-sep">') + editB;
+    v.innerHTML = '<div class="pl-rv pl-rv-one">' + body + '<p class="footnote">' + esc(footT(dd)) + '</p></div>';   /* Version 39.8 (VD-07): the disclaimer once */
     S.wire(v); wireWhy(v);
-    const to = (k) => { stopAudio(); S.mem.rvCard = k; S.render(); window.scrollTo(0, 0); };
-    const nx = v.querySelector('#pl-rv-next'); if (nx) nx.addEventListener('click', () => to(i + 1));
-    const bk = v.querySelector('#pl-rv-back'); if (bk) bk.addEventListener('click', () => to(i - 1));
+    const au = v.querySelector('#pl-rv-aud'); if (au) au.addEventListener('click', () => { if (meghaAud && !meghaAud.paused) { stopAudio(); return; } try { meghaAud = new Audio(au.dataset.src); const pl = meghaAud.play(); if (pl && pl.catch) pl.catch(() => {}); } catch (e) { meghaAud = null; } });
     const ed = v.querySelector('#pl-rv-edit'); if (ed) ed.addEventListener('click', () => {
       const ik = n.intake || S.state.intake || {}; const b = n.body || {};
       S.mem.planIntake = Object.assign({}, ik, { stage: ik.stage || stageNowKey(), iq: 0, h: b.h || null, w: b.w || null, waist: b.waist || null }, Array.isArray(ik.signs) && !ik.signs.length && ik.gap ? { signs: ['none'] } : {}); stopAudio(); S.setHash('plan-goal');
     });
-    const au = v.querySelector('#pl-rv-aud'); if (au) au.addEventListener('click', () => { if (meghaAud && !meghaAud.paused) { stopAudio(); return; } try { meghaAud = new Audio(au.dataset.src); const pl = meghaAud.play(); if (pl && pl.catch) pl.catch(() => {}); } catch (e) { meghaAud = null; } });
     v.querySelectorAll('[data-rv-when]').forEach((b) => b.addEventListener('click', () => { st.when = b.dataset.rvWhen; S.render(); }));
     v.querySelectorAll('[data-rv-at]').forEach((b) => b.addEventListener('click', () => { st.at = b.dataset.rvAt; S.render(); }));
     const go = v.querySelector('#pl-rv-go'); if (go) go.addEventListener('click', () => {
-      commitStart(st.when, st.at); S.mem.rvCard = 0; S.mem.rvStart = null; S.mem.rvOne = false; stopAudio(); S.save();
+      commitStart(st.when, st.at); S.mem.rvStart = null; stopAudio(); S.save();
       if (S.alerts && S.alerts.auto) S.alerts.auto(true);   /* Version 39.27 (R01): reminders are on; Android's own "Allow" now if it still needs one */
       S.setHash('home');
     });
+  }
+  /* Version 39.72 (one screen): her steps that aren't today's, under today's: a step that joins later (her bedtime from day 4, the
+     urge from day 4), My pregnancy's later steps (the pelvic floor, the quick checks, her baby's movements), My period plan's steps of her cycle (period comfort, a rest on period days, the calm-week plan), how her Kegel
+     sets grow, and sets that join another plan; the rest of the old "What happens when" stays on My plan */
+  function rvLater(dd) {
+    const out = []; const l = packOf(dd) !== 'preg' ? laterStep(dd) : null; if (l) out.push(laterLine(l));
+    if (pregV2(dd) && !disc()) pregRvRows().forEach((k) => out.push(typeof k === 'string' ? t(k) : k.x));   /* My pregnancy: her pelvic floor from week 13, the quick checks, her baby's movements from 28 weeks */
+    if (perV2(dd) && !disc()) { const ch = t('plan_m2_rv_ch'); for (const r of perRvRows(dd)) { const x = typeof r === 'string' ? t(r) : r.x; if (x === ch) break; out.push(x); } }
+    if (pfLead(dd) && !disc()) { const hb = t('plan_pf_rv_h'); const rows = pfRvRows(dd); for (let i = 1; i < rows.length; i++) { const x = typeof rows[i] === 'string' ? t(rows[i]) : rows[i].x; if (x === hb) break; out.push(x); } }   /* My pelvic floor plan: her levels and the urge from day 4 (day 1's step is in the list) */
+    if (pfJoined(dd) && !disc()) out.push(t('plan_pf_rv_join'));   /* Version 39.56: her sets join this plan */
+    return out;
   }
   const stageNowKey = () => { if (pauseWhy() === 'post') return 'post'; const k = S.stageNow ? S.stageNow() : 'cycle'; return GOALS[k] ? k : 'cycle'; };
 
@@ -2971,9 +2995,11 @@
       S.wire(v); return;
     }
     if (m.saved) {
-      const s = m.saved; if (disc()) s.line = t('plan_fb_any');
-      const goal = s.goal && !disc() ? '<span class="eyebrow">' + esc(t('plan_ci_goal_h')) + '</span><p class="lead pl-ci-goal">' + esc(s.goal) + '</p>' : '';   /* her goal */
-      v.innerHTML = hd + '<div class="card ok pl-fb" id="pl-ci-fb">' + goal + '<p class="' + (goal ? 'pl-ci-why' : 'lead') + '">' + esc(s.line) + '</p>' + (disc() ? '' : whyBtn(s.why, 'pl-why', packOf(d))) + '<p class="small">' + esc(countLine(s.dn, s.pn, s.n) + ' · ' + tf('plan_ci_week', { w: s.w })) + '</p>' + (s.add ? '<p class="small pl-ci-add">' + esc(s.add) + '</p>' : '') +
+      const s = m.saved;
+      /* Version 39.72 (the doctors' review, plan-feedback: "Keep today's count and tomorrow's steps; drop the lines she has already
+         read"): her count leads; no goal line or step's reason again (they are on Today and My plan) */
+      const cnt = esc(countLine(s.dn, s.pn, s.n) + ' · ' + tf('plan_ci_week', { w: s.w }));
+      v.innerHTML = hd + '<div class="card ok pl-fb" id="pl-ci-fb">' + (s.a ? '<p class="lead pl-ci-cnt">' + cnt + '</p>' : '<p class="lead">' + esc(s.line) + '</p><p class="small pl-ci-cnt">' + cnt + '</p>') + (s.add ? '<p class="small pl-ci-add">' + esc(s.add) + '</p>' : '') +
         (s.str ? '<p class="small pl-ci-str">' + esc(s.str) + '</p>' : '') + (s.tom ? '<p class="small pl-ci-tomr">' + esc(s.tom) + '</p>' : '') +
         (s.tip ? '<p class="small">' + esc(s.tip) + '</p>' : '') + '<p class="small pl-ci-next">' + esc(tf(s.first && !s.tom ? 'plan_ci_tom' : 'plan_ci_see', { t: timeOf(ciAt(d)) })) + '</p>' + (s.petal ? '<p class="small pl-petal">' + S.icon('flower') + ' ' + esc(t('plan_ci_petal')) + '</p>' : '') + '</div>' + (s.mv && s.mv !== 'usual' ? mvOut(s.mv) : (s.side ? sideCard() : '') + nightHtml(s)) +
         '<div class="grid2"><button type="button" class="btn primary" data-go="home">' + esc(t('plan_ci_home')) + '</button><button type="button" class="btn" data-go="plan">' + esc(t('plan_ci_plan')) + '</button></div>';
@@ -3264,10 +3290,10 @@
     /* paused (a pregnancy, or the first 6 weeks after a birth): why, and the plans for now; a new one replaces the paused one */
     /* Version 39.5: when her stage stopped her plan, one card that offers the plan for her new stage; and her last plan */
     const chg = S.canSave() ? changedWhy(d) : null;
-    const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' && why !== 'poi' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
+    const paused = (chg ? changedCard(d, chg) : (why && why !== 'loss' ? '<div class="card warn pl-paused"><p>' + esc(t(why === 'preg' ? 'plan_paused_preg' : 'plan_paused_post')) + '</p>' + (S.routeOwner(why === 'preg' ? 'preg-plan' : 'post-pelvic') ? '<button type="button" class="btn sm" data-go="' + (why === 'preg' ? 'preg-plan' : 'post-pelvic') + '">' + esc(t(why === 'preg' ? 'plan_go_preg' : 'plan_go_post')) + '</button>' : '') + '</div>' : '')) + (S.canSave() ? pastCard(d) : '');
     const pick = S.canSave() ? paused + '<div class="card pl-pick"><h2>' + esc(t('plan_my_pick_h')) + '</h2><p class="small">' + esc(t(ik.goal === 'track' ? 'plan_my_track' : 'plan_my_pick_p')) + '</p><div class="list">' + goalsFor({ stage: st }).filter((k) => k !== 'track').map((k) => '<button type="button" class="item" data-pl-pick="' + k + '"><span class="body"><strong>' + esc(goalName(k)) + '</strong></span>' + (k === suggestedGoal(st) ? '<span class="pill ok pl-sugg">' + esc(t('plan_suggested')) + '</span>' : '') + '<span class="chev">' + S.I.chev + '</span></button>').join('') + '</div></div>' : '';
-    const pick2 = poiHold() && st === 'meno' && S.canSave() ? poiHtml() : pick;   /* Version 39.51 (the midlife walk): before 40, the gynaecologist first, not goals that lead nowhere; Version 39.53 (Mohit's phone test): the card alone, as "Your last plan" above it read as if her resting plan had ended */
-    renderPlans(v, { h: 'plan_my_h', top: pick2, bare: !!chg, skip: S.canSave() && goalsFor({ stage: st }).indexOf('pmos') >= 0 ? ['plan-pmos'] : [] }); wireChange(v); wirePoi(v);   /* Version 39.42: "I have PMOS" is its row */
+    const pick2 = (poiHold() && st === 'meno' && S.canSave() && poiDue() ? poiHtml() : '') + pick;   /* Version 39.72 (the doctors' review): the card as advice above her goals */
+    renderPlans(v, { h: 'plan_my_h', top: pick2, bare: S.canSave() }); wireChange(v); wirePoi(v);   /* Version 39.72 (the doctors' review, plan-picker): her stage's plans once; the tools that repeated them ("Suggested for you", "More plans") stay in Explore (a woman only reading, with no picker, keeps the list) */
     v.querySelectorAll('[data-pl-pick]').forEach((b) => b.addEventListener('click', () => { S.mem.planIntake = { stage: st, goal: b.dataset.plPick, iq: 1 }; S.setHash('plan-goal'); }));
   }
   /* Version 39.1 (roadmap 39.1): what her records point to, as one row under My plan's heading. The plan never works it out
@@ -3310,12 +3336,13 @@
   function renderGoalFlow(v) {
     if (!on() || !S.canSave()) { renderMyPlan(v); return; }
     const a = S.mem.planIntake = S.mem.planIntake || { stage: stageNowKey(), iq: 0 }; a.stage = a.stage || stageNowKey();
+    if (a.given == null) a.given = !!a.goal && (a.iq || 0) >= 1;   /* Version 39.72: she picked her goal before these questions (the picker, an offer, joining) */
     const total = a.goal ? screensOf(a).length : 5;
     const chip = (attr, val, label, on1) => '<button type="button" class="chip ob-c' + (on1 ? ' on' : '') + '" ' + attr + '="' + esc(String(val)) + '" aria-pressed="' + !!on1 + '">' + esc(label) + '</button>';
     const headF = (title, p) => '<div class="ob-top"><button type="button" class="iconbtn" id="pl-in-back" aria-label="' + esc(t('back')) + '">' + S.I.back + '</button><div class="progress" aria-hidden="true">' + Array.from({ length: total }, (x, i) => '<i class="' + (i <= (a.iq || 0) ? 'on' : '') + '"></i>').join('') + '</div></div><h1>' + esc(title) + '</h1>' + (p ? '<p>' + esc(p) + '</p>' : '');
     renderIntake(v, a, { head: headF, chip: chip, back: (fn) => { const b = v.querySelector('#pl-in-back'); if (b) b.addEventListener('click', fn); },
-      done: () => { const ans = Object.assign({}, a); const one = !!ans.fromJoin; delete ans.known; delete ans.edit; delete ans.fromJoin; S.mem.planIntake = null; const dd = startFromIntake(ans); S.mem.rvOne = one && !!dd; S.mem.rvCard = 0; S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
-      prev: () => { const back = a.fromJoin ? 'your-sakhi' : 'plan'; S.mem.planIntake = null; S.setHash(back); }, redraw: () => S.render() });
+      done: () => { const ans = Object.assign({}, a); delete ans.known; delete ans.edit; delete ans.fromJoin; delete ans.given; delete ans.back; S.mem.planIntake = null; const dd = startFromIntake(ans); S.save(); S.setHash(dd ? 'plan-reveal' : 'plan'); },
+      prev: () => { const back = a.fromJoin ? 'your-sakhi' : (a.back || 'plan'); S.mem.planIntake = null; S.setHash(back); }, redraw: () => S.render() });   /* Version 39.72: back to the page that offered it */
   }
 
   /* ---------- Today: her plan's line in the Today card, and its cards in the "Sakhi says" slot ---------- */
@@ -3378,7 +3405,7 @@
         '<button type="button" class="btn sm primary" data-go="plan-reveal">' + esc(t('plan_sl_go_b')) + '</button>' + (run ? '<button type="button" class="btn sm" id="pl-next-drop">' + esc(t('plan_sl_keep')) + '</button>' : ''), true);
     }
     const chg = changedWhy(d); if (chg) return changedCard(d, chg, true);   /* Version 39.5 */
-    if (poiDue() && !(packOf(d) && pausedFor(d) === 'poi')) return poiHtml(false);   /* Version 39.65: before 40, her doctor first while her plan runs on (a plan held for her doctor shows the card in its own place, Version 39.53) */
+    if (poiDue()) return poiHtml(false);   /* Version 39.65: before 40, her doctor first while her plan runs on; Version 39.72: as advice, beside her steps */
     const fit = fitWhy(d); if (fit) return fitCard(d, fit);   /* Version 39.48: her stage moved between tracking and trying */
     const pk = packOf(d); if (!pk || pausedFor(d) || selfPaused(d)) return '';
     const k = cardKind(d); const dd = fullD(d); const acts = actionsFor(dd); const first = acts[0]; const day = planDay(dd); const easy = acts.find((a) => a.id === 'move') || first;   /* Version 39.13: a restart starts with her walk */
@@ -3822,6 +3849,7 @@
     if (pfLead(dd) && pfDue(dd)) return 'pf';   /* Version 39.56: one pelvic-floor card at a time */   /* Version 39.55: version 1 is offered version 2, once */
     if (babyD(dd) && !disc() && posDue(dd)) return 'pos';   /* Version 39.32 (packet J3): a positive test she saved, once */
     if (pregV2(dd) && psafeDue(dd) && (psafeDue(dd) === 'now' || !aside('pl-sl-psafe'))) return 'psafe';   /* Version 39.47: a sign that doesn't wait always leads */   /* Version 39.34: her safety answers again (the day after a sign that doesn't wait; at 14 and 28 weeks) */
+    if (pauseDue(dd) && S.mem.pauseLead === todayISO()) return quietDue(dd) ? 'quiet' : 'pause';   /* Version 39.72: her pause notification opens on it (core's plan-pause) */
     if (day === 1 && actionsFor(dd).length && !ciDone(dd)) return babyD(dd) && !disc() && docCase(dd) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) ? 'doc' : 'd1';   /* Version 39.32: her doctor card from day 1 (the mockup's Today) */
     const wk = weekNo(dd); const inWeek = (day - 1) % 7 < 3;
     if (!disc() && (wk === 5 || wk === 9) && !(dd.weeks[(wk === 5 ? 1 : 2) * 4] || {}).seenM && inWeek) return 'month';
@@ -3831,11 +3859,11 @@
     if (docCase(dd) && day >= 2 && (day <= 21 || docOpen(dd)) && dd.doc !== 'done' && !(dd.doc && dd.doc > todayISO()) && !aside('pl-sl-doc') && !(S.explain && S.explain.signOn && S.explain.signOn())) return 'doc';   /* Version 39.63: a sign from her diary leads; this waits */   /* Version 39.6: every plan's own check */
     if (!disc() && dd.doc === 'done' && !dd.docSaid && SAID[pk] && docCase(dd) && dd.docAt && S.diffDays(S.fromISO(dd.docAt), pToday()) <= 30) return 'said';
     if (!disc() && dueEntry(dd) && dd.dueSeen !== todayISO().slice(0, 7)) return 'due';
+    if (pauseDue(dd)) return quietDue(dd) ? 'quiet' : 'pause';   /* Version 39.72 (the doctors' review): the weekly pause offer, after her plan's own doctor check and what follows it (two quiet weeks bring their fuller card, which offers it too) */
     if (disc()) return '';
     if (day >= 3 && day <= 5 && !pr.planCall && !postV2(dd)) return 'call';   /* Version 39.46: not in her first weeks after a birth */
     if (quietDue(dd)) return 'quiet';   /* Version 39.12 (plan audit gap 7): two quiet weeks */
-    if (day > 14 && sinceLast(dd) >= 14 && !dd.pauseAsk && !careTime(dd)) return 'pause';   /* Version 39.5 (P2-17): once, instead of the daily restart card */
-    if (day > 3 && sinceLast(dd) >= 3 && dd.lapse !== todayISO() && !(sinceLast(dd) >= 14 && dd.pauseAsk && (dd.pauseAsk === todayISO() || pToday().getDay() !== 1))) return 'lapse';   /* review ENGINE-08: after the pause offer, a quiet plan's restart card comes once a week (Mondays) */
+    if (day > 3 && sinceLast(dd) >= 3 && dd.lapse !== todayISO() && dd.pauseOff !== todayISO() && !(sinceLast(dd) >= 14 && dd.pauseOff && pToday().getDay() !== 1)) return 'lapse';   /* review ENGINE-08: after the pause offer, a quiet plan's restart card comes once a week (Mondays); Version 39.72: not the day she answered it */
     return '';
   }
   function afterHomePlan(v) {
@@ -3875,9 +3903,9 @@
   }
   /* Version 39.5: pause for a week, start again, and the one-time offer */
   function wirePause(v) {
-    const go = () => { const dd = D(); pauseWeek(dd); dd.pauseAsk = todayISO(); S.mem.planStop = false; S.save(); S.render(); };
+    const go = () => { const dd = D(); pauseWeek(dd); dd.pauseAsk = todayISO(); dd.pauseOff = todayISO(); S.mem.planStop = false; S.save(); S.render(); };
     ['#pl-pause', '#pl-pause-go', '#pl-pause-alt'].forEach((id) => { const b = v.querySelector(id); if (b) b.addEventListener('click', go); });
-    const pn = v.querySelector('#pl-pause-not'); if (pn) pn.addEventListener('click', () => { D().pauseAsk = todayISO(); S.saveQuiet(); S.render(); });
+    const pn = v.querySelector('#pl-pause-not'); if (pn) pn.addEventListener('click', () => { D().pauseOff = todayISO(); S.saveQuiet(); S.render(); });   /* Version 39.72: the weekly offer waits 7 days (the two-quiet-weeks card keeps its own 28) */
     v.querySelectorAll('#pl-unpause').forEach((b) => b.addEventListener('click', () => { const dd = D(); unpause(dd); S.save(); S.render(); }));
   }
 
@@ -4172,7 +4200,7 @@
       '</div><div class="row spread"><button type="button" class="linkbtn" id="pl-q-pause">' + esc(t('plan_pause')) + '</button><button type="button" class="linkbtn" id="pl-q-not">' + esc(t('plan_rec_not')) + '</button></div></div>';
   }
   function wireQuiet(v) {
-    const done = (fn) => { const dd = D(); dd.quietAt = todayISO(); if (!dd.pauseAsk) dd.pauseAsk = todayISO(); if (fn) fn(dd); S.mem.planFam = null; S.mem.planFamEdit = false; S.save(); };
+    const done = (fn) => { const dd = D(); dd.quietAt = todayISO(); if (!dd.pauseAsk) dd.pauseAsk = todayISO(); dd.pauseOff = todayISO(); if (fn) fn(dd);   /* Version 39.72: her answer here answers the weekly pause offer too */ S.mem.planFam = null; S.mem.planFamEdit = false; S.save(); };
     const lt = v.querySelector('#pl-q-light'); if (lt) lt.addEventListener('click', () => { done((dd) => { dd.light = { from: todayISO(), until: S.toISO(S.addDays(pToday(), 7)) }; }); S.toast(t('plan_q_light_ok')); S.render(); });
     const ed = v.querySelector('#pl-q-edit'); if (ed) ed.addEventListener('click', () => { S.mem.planFam = famMsg(raw()); S.mem.planFamEdit = true; S.render(); const ta = document.getElementById('pl-q-ta'); if (ta) ta.focus(); });
     const ta = v.querySelector('#pl-q-ta'); if (ta) ta.addEventListener('input', () => { S.mem.planFam = ta.value; });
@@ -4323,6 +4351,8 @@
       hurt: () => { const d = D(); d.pfHurt = (d.pfHurt || 0) + 1; if (d.pfHurt >= 2 && !pfRelax(d)) { d.pfRelax = todayISO(); d.pfPainOk = null; d.pfPainSeen = null; } S.save(); return d.pfHurt; },
       sync: () => { const d = raw(); if (d && d.start) { pfSync(d); remSync(d); } } },
     poi: () => poiHold(),
+    pauseRing: () => pauseRing(),   /* Version 39.72: core books it with the phone's alarms */
+    pauseLead: () => { S.mem.pauseLead = todayISO(); },   /* Version 39.72: its tap (core's plan-pause) opens Today with the card first */
     period: { kitToday: () => { const d = raw(); return !!(planOn() && d && perV2(d) && packOf(d) && !pausedFor(d) && actionsFor(fullD(d)).some((a) => a.id === 'kitready')); },   /* the test pass: core's heads-up card steps aside */
       lesson: () => { const d = raw(); return d && perV2(d) && packOf(d) ? perLessonId(fullD(d)) : null; }, on: () => { const d = raw(); return !!(planOn() && d && perV2(d) && packOf(d) && !pausedFor(d)); } },   /* Version 39.55: for mods/perplan.js */   /* Version 39.53 (Mohit's phone test): before 40 with her periods stopped, her doctor first (core's goals card waits) */
     /* Version 39.32: the Getting ready plan, for ttc.js (her lesson, her tablet's reminder, her ready check's folic answer) */
@@ -4355,7 +4385,7 @@
     /* Version 39.1: a signal (a long gap) or a PMOS result offers the plan for her periods; it opens the goal's questions */
     offerOk: (g) => on() && S.canSave() && !disc() && !pregnant() && goalsFor({ stage: stageNowKey() }).indexOf(g) >= 0 && !(packOf(raw()) && !pausedFor(raw())) && !pendingOk(raw()) && !upcoming(raw()),   /* review FLOWS-02 */
     offering: () => !!offerCard(),   /* Version 39.10: Today's "Ready for you" card is up (other tips wait) */
-    offer: (g) => { S.mem.planIntake = { stage: stageNowKey(), goal: g, iq: 1 }; S.setHash('plan-goal'); },
+    offer: (g) => { S.mem.planIntake = { stage: stageNowKey(), goal: g, iq: 1, back: S.route() }; S.setHash('plan-goal'); },
     pending: () => planOn() && pendingOk(raw()), running: () => !!runningD() && !selfPaused(raw()),   /* review PAGES-01: during her week's pause, her stage's own cards come back */
     docSeen: () => { const d = raw(); if (!planOn() || !d) return; const dd = fullD(d); if (!docCase(dd) || dd.doc === 'done') return; const x = D(); x.doc = 'done'; x.docAt = todayISO(); S.saveQuiet(); },   /* Version 39.57: "I've seen a doctor" on Today's finding */
     docOwns: (fid) => { const d = raw(); if (!planOn() || !d || pendingOk(d) || !runningD() || fid === 'late_now') return false; const dd = fullD(d); return !!(docCase(dd) && dd.doc !== 'done' && (SEEN_IDS[packOf(dd)] || []).indexOf(fid) >= 0); },   /* Version 39.57: Today's finding steps aside for her plan's doctor check */
@@ -4470,7 +4500,7 @@
         plan_hist: 'What you noted', plan_body_del: 'Delete my body notes', plan_body_del_q: 'Delete all your height, weight and waist notes?', plan_body_del_yes: 'Yes, delete them',
         plan_body_show: 'Show my numbers', plan_body_hidden: 'Hidden because others use this phone.',
         plan_body_foot: 'BMI is a rough guide: build, muscle and age matter too. The limits for Indian women come from the 2009 national consensus: BMI 23 and waist 80 cm.',
-        plan_moves_h: 'Moves and calm', plan_moves_p: 'Do what you can. Every minute counts towards your week.',
+        plan_moves_h: 'Moves and calm', plan_moves_p: 'Do what you can. Every minute counts towards your week.', plan_mv_morning: 'Morning session', plan_mv_any: 'Any time of day',
         plan_m2_skill: 'Today’s skill: {s}', plan_m2_skill_n: 'Today’s skill', plan_m2_skill_s: '2 minutes · from this week’s chapter', plan_m2_rule_s: 'This week’s sleep rule', plan_m2_les_h: 'This week’s chapter', plan_m2_month: 'This month’s read',
         plan_fb_m2h: 'A skill you practise every day makes hot flushes easier to handle, even when they still come.', plan_fb_m2q: 'Noticing your thoughts, and doing one thing that lifts you, helps your mood day by day.', plan_fb_m2r: 'A steady body clock lets sleep come more easily.', plan_fb_m2s: 'A few minutes of balance a day helps keep you steady on your feet.',
         plan_r_steady: 'Steady on your feet', plan_r_steady_s: 'Balance at a wall, 3 minutes',
@@ -4499,7 +4529,7 @@
         plan_m2_w12_h: 'Your checks after 40', plan_m2_w12_p: 'After 40, BP, sugar and your bones need checking more often. See which checks, and how often.', plan_m2_w12_go: 'See the checks',
         plan_m2_v2_h: 'Your plan has a new version', plan_m2_v2_p: 'A short chapter a week for hot flushes, sleep and strength, and a few minutes of balance, in a fresh 12 weeks from today. What you logged stays.', plan_m2_v2_yes: 'Try it', plan_m2_v2_done: 'Your new 12 weeks start today.',
         plan_m2_sum_bone: 'Weak bones', plan_m2_sum_heart: 'Chest pain or very breathless when you walk', plan_m2_keep_s: 'Every day · from {p}', plan_stop_l_m: 'Pain, dizziness, chest pain, breathlessness that doesn’t settle, or bleeding.',
-        plan_m2_poi_h: 'Before a plan: see a gynaecologist', plan_m2_poi_ok: 'My doctor has seen me', plan_m2_poi_stop: 'My doctor says my periods have stopped', plan_m2_poi_read: 'Read about POI',
+        plan_m2_poi_h: 'Periods stopped before 40? See a gynaecologist', plan_m2_poi_ok: 'My doctor has seen me', plan_m2_poi_stop: 'My doctor says my periods have stopped', plan_m2_poi_read: 'Read about POI',
         plan_m2_year: 'Your year', plan_m2_year_s: 'The skills that work for you, and a read a month, to month 12', plan_m2_wks: 'Weeks {a} to {b}',
         plan_m2_p_h: 'A short course for hot flushes, a chapter a week', plan_m2_p_q: 'A short course for worry and low mood, a chapter a week', plan_m2_p_r: 'One sleep rule a week', plan_m2_p_s: 'Strength, balance and food for your bones',
         plan_m2_str_all: '{r} runs twice a week from week 1, in every part.',
@@ -4733,7 +4763,7 @@
         plan_wk_h: 'This week', plan_wk_days: 'Plan days {a} to {b}', plan_wk_legend: 'Each ring has {n} parts: {x}.', plan_wk_legend0: 'Each ring is a day: full when every step is done.', plan_pt_yoga: 'yoga', plan_pt_move: 'walk', plan_pt_food: 'food', plan_pt_sleep: 'sleep',
         plan_wk_min: 'Active minutes', plan_min_of2: '{a} of {t}', plan_cons_h: 'What consistency brings', plan_signs_h: 'Your own signs', plan_sg_e: 'Your energy', plan_sg_e_v: 'Week {n}: {e}', plan_sg_mc: 'Your 4-week check', plan_sg_mc_n: 'In {n} days', plan_sg_mc_1: 'Tomorrow', plan_sg_mc_now: 'Due now', plan_sg_mc_done: 'Done',
         plan_sg_gap: 'Days between periods', plan_sg_gap_b: '{n} before your plan', plan_sg_gap_s: '{n} since', plan_sg_gap_sa: 'about {n} since', plan_set_row_s: 'Reminder, nudge, pause, change or stop',
-        plan_a_walk: 'Walk {n} minutes', plan_pi_yoga: 'Yoga at home every day, with moving pictures', plan_cnt_all: 'All {n} done today', plan_th_one: 'One more: {a}', plan_ci_add: 'Tomorrow, add: {x}.', plan_rev_full: 'All your steps on {n} of 7 days.',
+        plan_a_walk: 'Walk {n} minutes', plan_a_meals: 'Walk 10 minutes after lunch and after dinner', plan_a_meals_t: 'Walk after lunch and dinner', plan_a_meals_ts: '10 minutes each', plan_a_meals_s: 'And a brisk walk of 30 to 45 minutes when your day allows', plan_pi_meals: 'A 10-minute walk after lunch and after dinner, and a brisk 30 to 45 minutes when your day allows', plan_pi_yoga: 'Yoga at home every day, with moving pictures', plan_cnt_all: 'All {n} done today', plan_th_one: 'One more: {a}', plan_ci_add: 'Tomorrow, add: {x}.', plan_rev_full: 'All your steps on {n} of 7 days.',
         plan_meal_half: 'At lunch or dinner', plan_meal_protein: 'Dal or besan cheela, for example', plan_meal_millet: 'At one meal today', plan_meal_drinks: 'When you want something to drink', plan_meal_snack: 'At snack time', plan_meal_oil: 'When you cook',
         plan_th_str: '{d}: strength day · {a} of {t} this week', plan_th_str_tom: 'Tomorrow: strength day · {a} of {t} this week', plan_th_light: 'A lighter week: 10 minutes a day until {d}.',
         plan_ci_last: 'Last night: in bed by {t}?', plan_ci_last_d: 'Last night: in bed by {t}', plan_ci_yes: 'Yes', plan_ci_close: 'Close', plan_ci_no: 'No',
@@ -4881,7 +4911,7 @@
         plan_hist: 'आपने क्या दर्ज किया', plan_body_del: 'मेरे शरीर के आँकड़े मिटाएँ', plan_body_del_q: 'लंबाई, वज़न और कमर के सभी आँकड़े मिटाएँ?', plan_body_del_yes: 'हाँ, मिटाएँ',
         plan_body_show: 'मेरे आँकड़े दिखाएँ', plan_body_hidden: 'छिपे हैं, क्योंकि यह फ़ोन और लोग भी इस्तेमाल करते हैं।',
         plan_body_foot: 'BMI एक मोटा अंदाज़ा है: बनावट, मांसपेशियाँ और उम्र भी मायने रखती हैं। भारतीय महिलाओं के लिए सीमाएँ 2009 की राष्ट्रीय सहमति से हैं: BMI 23 और कमर 80 सेमी।',
-        plan_moves_h: 'योग, व्यायाम और सुकून', plan_moves_p: 'जितना हो सके, करें। हर मिनट आपके हफ़्ते में जुड़ता है।',
+        plan_moves_h: 'योग, व्यायाम और सुकून', plan_moves_p: 'जितना हो सके, करें। हर मिनट आपके हफ़्ते में जुड़ता है।', plan_mv_morning: 'सुबह का सत्र', plan_mv_any: 'दिन में कभी भी',
         plan_m2_skill: 'आज का अभ्यास: {s}', plan_m2_skill_n: 'आज का अभ्यास', plan_m2_skill_s: '2 मिनट · इस हफ़्ते के अध्याय से', plan_m2_rule_s: 'इस हफ़्ते का नींद का नियम', plan_m2_les_h: 'इस हफ़्ते का अध्याय', plan_m2_month: 'इस महीने पढ़ें',
         plan_fb_m2h: 'रोज़ का अभ्यास गर्मी के झोंकों को झेलना आसान बनाता है, भले ही वे आते रहें।', plan_fb_m2q: 'अपनी सोच पहचानना, और मन हल्का करने वाला एक काम करना, दिन-ब-दिन मन को सँभालता है।', plan_fb_m2r: 'शरीर की घड़ी ठीक रहे, तो नींद आसानी से आती है।', plan_fb_m2s: 'रोज़ कुछ मिनट संतुलन का अभ्यास पैरों पर टिके रहने में मदद करता है।',
         plan_r_steady: 'पैरों पर संतुलन', plan_r_steady_s: 'दीवार के पास संतुलन, 3 मिनट',
@@ -4910,7 +4940,7 @@
         plan_m2_w12_h: '40 के बाद आपकी जाँचें', plan_m2_w12_p: '40 के बाद BP, शुगर और हड्डियों की जाँच ज़्यादा बार ज़रूरी है। देखें कौन-सी जाँचें, और कितनी बार।', plan_m2_w12_go: 'जाँचें देखें',
         plan_m2_v2_h: 'आपके प्लान का नया रूप', plan_m2_v2_p: 'गर्मी के झोंकों, नींद और ताक़त पर हर हफ़्ते एक छोटा अध्याय, और कुछ मिनट संतुलन, आज से नए 12 हफ़्तों में। आपने जो दर्ज किया, वह रहेगा।', plan_m2_v2_yes: 'आज़माएँ', plan_m2_v2_done: 'आपके नए 12 हफ़्ते आज से शुरू।',
         plan_m2_sum_bone: 'कमज़ोर हड्डियाँ', plan_m2_sum_heart: 'चलते समय छाती में दर्द या साँस बहुत फूलना', plan_m2_keep_s: 'हर दिन · {p} से', plan_stop_l_m: 'दर्द, चक्कर, छाती में दर्द, ऐसा साँस फूलना जो ठीक न हो, या ख़ून आना।',
-        plan_m2_poi_h: 'प्लान से पहले: स्त्री रोग विशेषज्ञ को दिखाएँ', plan_m2_poi_ok: 'डॉक्टर ने मुझे देख लिया है', plan_m2_poi_stop: 'मेरी डॉक्टर ने कहा, पीरियड बंद हो गए हैं', plan_m2_poi_read: 'POI के बारे में पढ़ें',
+        plan_m2_poi_h: '40 से पहले पीरियड बंद? स्त्री रोग विशेषज्ञ को दिखाएँ', plan_m2_poi_ok: 'डॉक्टर ने मुझे देख लिया है', plan_m2_poi_stop: 'मेरी डॉक्टर ने कहा, पीरियड बंद हो गए हैं', plan_m2_poi_read: 'POI के बारे में पढ़ें',
         plan_m2_year: 'आपका साल', plan_m2_year_s: 'जो अभ्यास आपके काम आए, और हर महीने कुछ पढ़ने को, 12वें महीने तक', plan_m2_wks: 'हफ़्ते {a} से {b}',
         plan_m2_p_h: 'गर्मी के झोंकों के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_q: 'चिंता और उदासी के लिए छोटा कोर्स, हर हफ़्ते एक अध्याय', plan_m2_p_r: 'हर हफ़्ते नींद का एक नियम', plan_m2_p_s: 'ताक़त, संतुलन और हड्डियों के लिए खाना',
         plan_m2_str_all: '{r} पहले हफ़्ते से, हर हिस्से में, हफ़्ते में दो बार चलती है।',
@@ -5135,7 +5165,7 @@
         plan_wk_h: 'इस हफ़्ते', plan_wk_days: 'प्लान के दिन {a} से {b}', plan_wk_legend: 'हर गोले में {n} हिस्से: {x}।', plan_wk_legend0: 'हर गोला एक दिन है: सारे क़दम होने पर पूरा।', plan_pt_yoga: 'योग', plan_pt_move: 'सैर', plan_pt_food: 'खाना', plan_pt_sleep: 'नींद',
         plan_wk_min: 'सक्रिय मिनट', plan_min_of2: '{t} में से {a}', plan_cons_h: 'लगातार करने से क्या मिलता है', plan_signs_h: 'आपके अपने संकेत', plan_sg_e: 'आपकी ऊर्जा', plan_sg_e_v: 'हफ़्ता {n}: {e}', plan_sg_mc: 'आपका 4 हफ़्ते का चेक-इन', plan_sg_mc_n: '{n} दिन में', plan_sg_mc_1: 'कल', plan_sg_mc_now: 'अभी करें', plan_sg_mc_done: 'हो गया',
         plan_sg_gap: 'पीरियड के बीच के दिन', plan_sg_gap_b: 'प्लान से पहले {n}', plan_sg_gap_s: 'प्लान के बाद {n}', plan_sg_gap_sa: 'प्लान के बाद लगभग {n}', plan_set_row_s: 'रिमाइंडर, याद दिलाना, रोकना, बदलना या बंद करना',
-        plan_a_walk: '{n} मिनट सैर करें', plan_pi_yoga: 'रोज़ घर पर योग, चलती तस्वीरों के साथ', plan_cnt_all: 'आज के सभी {n} क़दम हो गए', plan_th_one: 'बस एक और: {a}', plan_ci_add: 'कल यह भी करें: {x}।', plan_rev_full: 'हफ़्ते के 7 में से {n} दिन सारे क़दम पूरे हुए।',
+        plan_a_walk: '{n} मिनट सैर करें', plan_a_meals: 'दोपहर और रात के खाने के बाद 10 मिनट सैर करें', plan_a_meals_t: 'दोपहर और रात के खाने के बाद सैर', plan_a_meals_ts: 'हर बार 10 मिनट', plan_a_meals_s: 'और जब दिन में समय हो, 30 से 45 मिनट तेज़ सैर', plan_pi_meals: 'दोपहर और रात के खाने के बाद 10 मिनट की सैर, और जब दिन में समय हो, 30 से 45 मिनट तेज़ सैर', plan_pi_yoga: 'रोज़ घर पर योग, चलती तस्वीरों के साथ', plan_cnt_all: 'आज के सभी {n} क़दम हो गए', plan_th_one: 'बस एक और: {a}', plan_ci_add: 'कल यह भी करें: {x}।', plan_rev_full: 'हफ़्ते के 7 में से {n} दिन सारे क़दम पूरे हुए।',
         plan_meal_half: 'दोपहर या रात के खाने में', plan_meal_protein: 'जैसे दाल या बेसन चीला', plan_meal_millet: 'आज किसी एक खाने में', plan_meal_drinks: 'जब कुछ पीने का मन हो', plan_meal_snack: 'बीच के नाश्ते में', plan_meal_oil: 'खाना बनाते समय',
         plan_th_str: '{d}: ताक़त का दिन · इस हफ़्ते {t} में से {a}', plan_th_str_tom: 'कल: ताक़त का दिन · इस हफ़्ते {t} में से {a}', plan_th_light: '{d} तक हल्का हफ़्ता: रोज़ 10 मिनट।',
         plan_ci_last: 'कल: {t} तक बिस्तर पर गईं?', plan_ci_last_d: 'कल: {t} तक बिस्तर पर गईं', plan_ci_yes: 'हाँ', plan_ci_close: 'लगभग', plan_ci_no: 'नहीं',
@@ -5196,7 +5226,7 @@
     summary: summary,
     sample: sample,
     beforeRender: () => { if (planOn()) carrySync(); },
-    home: () => (S.explain && S.explain.pairsPending && S.explain.pairsPending() ? '' : planCard() || offerCard() || homeRec()),   /* Version 39.27 (R06): her plan's offer is inside the doctor finding's card */
+    home: () => (S.explain && S.explain.pairsPending && S.explain.pairsPending() ? (S.canSave() && !packOf(raw()) && poiDue() ? poiHtml(false) : '') : planCard() || offerCard() || homeRec()),   /* Version 39.27 (R06): her plan's offer is inside the doctor finding's card; Version 39.72: before 40, the gynaecologist card still shows, as advice */
     afterHome: (v) => { afterHome(v); afterHomePlan(v); },
     todayHead: todayHead,
     todayFoot: todayFoot,   /* Version 39.14 */

@@ -194,10 +194,10 @@ const errsAll = [];
     const ids = await a.page.$$eval('#view [data-ci$=":d"]', (x) => x.map((y) => y.dataset.ci));
     for (const k of ids) await tap(a.page, '#view [data-ci="' + k + '"]');
     await tap(a.page, '#view #pl-ci-save');
-    lines.push((await txt(a.page, '#view #pl-ci-fb .pl-ci-why')) || (await txt(a.page, '#view #pl-ci-fb .lead')));   /* Version 39.12: her goal leads; the reason follows */
+    lines.push({ lead: await txt(a.page, '#view #pl-ci-fb .lead'), why: await txt(a.page, '#view #pl-ci-fb .pl-ci-why') });   /* Version 39.72 (the doctors' review): her count leads, no reason line */
     errsAll.push(...a.errs); await a.ctx.close();
   }
-  check('8 two evenings, the same steps done: two different lines', lines[0] && lines[1] && lines[0] !== lines[1], lines);
+  check('8 two evenings, the same steps done: her count each time, and no step\'s reason again (Version 39.72)', lines.every((x) => /done today/.test(x.lead) && !x.why), lines);
   const l = {}; for (let i = 13; i >= 7; i--) l[ago(i)] = { ck: { calm: 'd' } };
   const b = await open({ seed: { events: regular(10), intake: { goal: 'pms' }, mods: { plan: planOf('pms', 'pms', ago(13), { log: l, weeks: { 1: { e: 'low' } } }) } }, hash: '#plan' });
   const rv = await txt(b.page, '#view .pl-review');

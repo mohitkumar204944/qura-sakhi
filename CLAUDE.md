@@ -565,9 +565,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - and what they left behind (MODULE_API 111, item 10): setup steps and reminders for the removed pages, the report's claims
       line, "or a free government doctor" in Help, the midlife first log in the Diary, and the fixed Hb line on her lab results.
 
-    This supersedes those parts of the entries above. Parts 2 and 3 are Versions 39.70 and 39.71 (below); part 4 (the behaviour) is
-    still to come. Girls under 18 stay out for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the
-    doctors' sign-off of 138 rows: section 19.68 of the review.
+    This supersedes those parts of the entries above. Parts 2 to 4 are Versions 39.70 to 39.72 (below). Girls under 18 stay out
+    for now (Mohit, 5 Nov: "keep 18 for now"). Contract: MODULE_API section 111; the doctors' sign-off of 138 rows: section 19.68 of
+    the review.
   - `node test/emergency.mjs` (Version 39.70, the doctors' feature review, part 2, the emergency line; Mohit, 6 Nov: "commit
     39.68 and go with part 2"; answers 1 to 3 of `docs/feature-review-2026-11-05.md`):
     - "Go to the nearest hospital now" wherever "Call 112 now" was, with one ambulance number under it: 108, or 102 in pregnancy
@@ -588,6 +588,20 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       breastfeeding's basics, the girls' guides on one page, the supplements card, "or a doctor");
     - "Ask a doctor" on every button, with the doctors' line about Qura's doctors.
     Contract: MODULE_API section 114; wording: section 19.71 of the review (waits for the doctors' one read).
+  - `node test/behave.mjs` (Version 39.72, the doctors' feature review, part 4, the behaviour; Mohit, 6 Nov: "commit 39.71 and go
+    with part 4"; the approved plan, two more Amend rows, and answers 5, 7 and 12):
+    - one reveal screen for every plan, and the goal asked once (My plan lists her stage's plans once; Back from her first question
+      returns to where she picked it);
+    - after the check-in, her count and tomorrow's steps only;
+    - the pause offer: Today's card after 2 days with nothing done, and its 9 am notification the morning after, at most once a week
+      (`S.plan.pauseRing()`, booked by core);
+    - before 40 with her periods stopped, her plan starts, with the gynaecologist card as advice;
+    - contraception: Home asks only after a birth and for 30 days after she stops trying (`situation.ttcStop`); the folic acid
+      reminder as it was (trying, and to 12 weeks);
+    - sun salutation as Moves and calm's "Morning session"; the PMOS walk, 10 minutes after lunch and after dinner and a brisk 30
+      to 45 minutes when her day allows, as one step;
+    - the Fertile days estimate tile only while she tries; no screenshot block in the Android app.
+    Contract: MODULE_API section 115; wording: section 19.72 of the review (the new lines wait for the doctors' one read).
   - `node test/play.mjs` (Google Play, 29 Oct: target SDK 36, edge to edge, Back on Android 13+, the bundle and its upload
     key; reads the last Play bundle when there is one). The reviewer's sign-in is in `npm run test:server`.
   - `node test/maths.mjs`

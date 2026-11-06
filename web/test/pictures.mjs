@@ -154,18 +154,13 @@ async function page2tiles(page) {
 {
   const IK = { at: ago(1), stage: 'cycle', goal: 'pain', pain: 'pk', painDays: '23', act: 0, food: 'veg', bed: 'b24', work: 'day', when: 'dinner' };
   const a = await open({ seed: { intake: null } });
-  await a.page.evaluate((x) => { const S = window.Saathi; S.plan.startFromIntake(x); S.save(); S.mem.rvCard = 1; }, IK); await go(a.page, 'plan-reveal');
+  await a.page.evaluate((x) => { const S = window.Saathi; S.plan.startFromIntake(x); S.save(); }, IK); await go(a.page, 'plan-reveal');   /* Version 39.72: one screen */
   const c2 = await a.page.evaluate(() => { const rows = Array.from(document.querySelectorAll('#view .pl-pic-row')); return { n: rows.length, pics: rows.filter((r) => r.querySelector('svg')).length, why: rows.filter((r) => r.querySelector('details.pl-why-d > summary')).length, words: rows.map((r) => (r.querySelector('strong') || r).textContent.trim().split(/\s+/).length) }; });
   check('4 "Your 3 steps": one picture per step', c2.n >= 2 && c2.pics === c2.n, c2);
   check('4 ... each step\'s reason behind "Why?", and its name short (10 words or fewer)', c2.why === c2.n && c2.words.every((w) => w <= 10), c2);
-  const fn1 = await count(a.page, '#view .footnote');
-  await tap(a.page, '#pl-rv-next');
-  const c3 = await a.page.evaluate(() => { const s = document.querySelector('#view .pl-rv-strip'); return s ? s.querySelectorAll('svg').length : 0; });
-  check('4 "How each day works": the day as a strip of 3 pictures (Done, the check-in, Sakhi answers)', c3 === 3, c3);
-  const fn2 = await count(a.page, '#view .footnote');
-  let fnLast = 0; for (let i = 0; i < 6 && !(await has(a.page, '#pl-rv-go')); i++) await tap(a.page, '#pl-rv-next');
-  fnLast = await count(a.page, '#view .footnote');
-  check('4 ... the "not a diagnosis" footnote once, on the Start screen only', fn1 === 0 && fn2 === 0 && fnLast === 1, { fn1, fn2, fnLast });
+  check('4 one screen (Version 39.72): no card for her day (it is My plan\'s How it works)', !(await has(a.page, '#view .pl-rv-strip')) && !(await has(a.page, '#pl-rv-next')));
+  const fnLast = await count(a.page, '#view .footnote');
+  check('4 ... the "not a diagnosis" footnote once, with Start', fnLast === 1 && await has(a.page, '#pl-rv-go'), { fnLast });
   await shot(a.page, '04-reveal-start');
   errsAll.push(...a.errs); await a.ctx.close();
 }

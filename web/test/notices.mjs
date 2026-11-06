@@ -107,7 +107,7 @@ for (const [stage, goal, extra] of [['cycle', 'irregular', {}], ['cycle', 'pain'
   await go(page, 'home');
   const td = await txt(page, '#view .today-card');
   check('2 Today says the same count, and that she checked in', /0 done, 4 partly today/.test(td) && /Checked in today/.test(td), td);
-  check('2 her steps stay once she checked in, each marked partly (Version 39.14), with no "All done for today"', (await has(page, '#view .today-plan-move')) && /Walk 10 minutes\nPartly done/.test(td) && !/All done for today/.test(td), td);
+  check('2 her steps stay once she checked in, each marked partly (Version 39.14), with no "All done for today"', (await has(page, '#view .today-plan-move')) && /Walk after lunch and dinner\nPartly done/.test(td) && !/All done for today/.test(td), td);
   await shot(page, '2-today-after-partly');
   check('2 no page errors', errs.length === 0, errs);
   await ctx.close();
@@ -205,7 +205,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   let v = await view(page);
   /* Version 39.27 (minimalism audit R03): from day 85 her steps carry on; Today says her 12 weeks are done, with her results
      and Stop; no second card in "Sakhi says" */
-  check('6 after week 12, Today says it is done, her steps carry on, her results one tap away', /Your 12 weeks are done\s+Your steps carry on\./.test(await txt(page, '#view .pl-carry')) && (await has(page, '#view .pl-carry [data-go="plan-end"].primary')) && (await has(page, '#view .pl-carry #pl-carry-stop')) && /Walk \d+ minutes/.test(await txt(page, '#view .today-card')), await txt(page, '#view .today-card'));
+  check('6 after week 12, Today says it is done, her steps carry on, her results one tap away', /Your 12 weeks are done\s+Your steps carry on\./.test(await txt(page, '#view .pl-carry')) && (await has(page, '#view .pl-carry [data-go="plan-end"].primary')) && (await has(page, '#view .pl-carry #pl-carry-stop')) && /Walk after lunch and dinner/.test(await txt(page, '#view .today-card')), await txt(page, '#view .today-card'));   /* Version 39.72: her walk after meals */
   check('6 ... and no second "12 weeks are done" card in "Sakhi says"', (await slotFirst(page)) !== 'Your 12 weeks are done' && !(await has(page, '#view .pl-sl-end')), await slotFirst(page));
   await go(page, 'plan-end');
   v = await view(page);
@@ -216,7 +216,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   check('6 what next: her steps carry on, a new 12 weeks, or Stop (no gate)', /What next\?/.test(v) && /Your steps carry on/.test(v) && !(await has(page, '#pl-keep')) && (await has(page, '#pl-again')) && (await has(page, '#pl-end-stop')));
   await shot(page, '6-end');
   await go(page, 'home');
-  check('6 once seen, Today\'s row goes; her steps stay', !(await has(page, '#view .pl-carry')) && /Walk \d+ minutes/.test(await txt(page, '#view .today-card')));
+  check('6 once seen, Today\'s row goes; her steps stay', !(await has(page, '#view .pl-carry')) && /Walk after lunch and dinner/.test(await txt(page, '#view .today-card')));   /* Version 39.72 */
   const s = await st(page); const r = s.reminders.find((x) => x.id === 'plan');
   check('6 her plan carries on ("Keep it light"), and so does the evening check-in: 4 weeks past her last visit (Version 39.27)', s.mods.plan.keep === true && s.mods.plan.carried === TODAY && r && r.on && r.until === iso(TODAY, 28) && /KEEP IT LIGHT/.test(await view(page)), [s.mods.plan.keep, r]);
   check('6 no page errors', errs.length === 0, errs);
@@ -253,7 +253,7 @@ for (const [pack, goal, extraLine] of [['cycle', 'irregular', null], ['pain', 'p
   check('7 discreet: the check-in names no health goal, and has no "Pain" chip', !HEALTH.test(v) && !(await has(page, '[data-ci-b="pain"]')), v.slice(0, 500));
   for (const g of await page.$$eval('[data-ci]', (b) => [...new Set(b.map((x) => x.dataset.ci.split(':')[0]))])) await tap(page, '[data-ci="' + g + ':d"]');
   await tap(page, '#pl-ci-save');
-  check('7 discreet: the check-in\'s reason line is plain', /Every small step counts/.test(await view(page)) && !HEALTH.test(await view(page)), (await view(page)).slice(0, 300));
+  check('7 discreet: the check-in\'s after screen is plain: her count, no reason line (Version 39.72)', /today · \d of 7 days this week/.test(await view(page)) && !HEALTH.test(await view(page)), (await view(page)).slice(0, 300));
   await ctx.close();
   const b = await open({ seed: { intake: IK, settings: { discreet: true, toursAuto: false, notify: true }, mods: { plan: planOf('heavy', 'heavy', ago(8), { log: log }) } } });
   await go(b.page, 'home');

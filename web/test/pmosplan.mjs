@@ -156,7 +156,7 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
      the minutes and My plate the food habits */
   check('3 week 1: 0 of 50 minutes in her week, and her steps with their reasons (Version 39.15)', /Week 1 of 12/i.test(hub) && /Active minutes\n0 of 50/.test(hub) && (await has(page, '#view .pl-steps-card')) && (await has(page, '#view .pl-wkc')) && !(await has(page, '#view [data-pl-add]')), hub.slice(0, 900));
   await go(page, 'home');
-  check('3 ... and Today has her yoga and her 10-minute walk (Versions 39.12 and 39.13; 39.41: its minutes on its Start)', /Cycle care yoga\nBefore a meal[\s\S]*?\n\d+ min\nWalk 10 minutes/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
+  check('3 ... and Today has her yoga and her walks after lunch and dinner (Versions 39.12 and 39.13; 39.41: its minutes on its Start; 39.72)', /Cycle care yoga\nBefore a meal[\s\S]*?\n\d+ min\nWalk after lunch and dinner/.test(await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '')));
   await go(page, 'plan-plate');
   check('3 the first food habit is there to tick (My plate)', await has(page, '[data-pl-hab="half"]'));
   await go(page, 'plan-moves');
@@ -170,9 +170,9 @@ for (const cfg of [{ api: 'https://api.test.invalid', app: 'test-0.35-pilot', pl
   await setPlan(page, started({ start: ago(15), level: 1 }));
   await go(page, 'home');
   const tv = await page.$eval('#view .today-card', (e) => e.innerText).catch(() => '');
-  check('3 Home\'s Today: today\'s strength, her walk for the rest of the day\'s minutes, and the newest food habit', /Strength at home\nWhy\?\n\d+ min\nWalk 10 minutes/.test(tv) && /Protein at breakfast/.test(tv), tv);
+  check('3 Home\'s Today: today\'s strength, her walk for the rest of the day\'s minutes, and the newest food habit', /Strength at home\nWhy\?\n\d+ min\nWalk after lunch and dinner/.test(tv) && /Protein at breakfast/.test(tv), tv);
   await tap(page, '.today-plan-move [data-today-act]');
-  check('3 one tap logs today\'s walk, and the step stays, ticked (Version 39.14)', (await plan(page)).log[TODAY].min === 10 && (await has(page, '.today-plan-move.today-ok')));
+  check('3 one tap logs today\'s walk (both 10-minute walks, Version 39.72), and the step stays, ticked (Version 39.14)', (await plan(page)).log[TODAY].min === 20 && (await has(page, '.today-plan-move.today-ok')));
   await tap(page, '.today-plan-yoga [data-today-nav]');
   check('3 Start opens today\'s routine (Version 39.12)', (await page.evaluate(() => location.hash)) === '#plan-r-strength');
   await go(page, 'home');
@@ -454,8 +454,11 @@ for (const [days, paused] of [[21, true], [50, false]]) {
 }
 
 /* ---------- 14. Version 36: the Plans tab, and what her diary suggests ---------- */
-const recIds = (page) => gos(page, '#view .pl-sec .pl-rec');
-const recWhy = (page) => page.$$eval('#view .pl-sec .pl-rec', (b) => b.map((x) => (x.querySelector('.pl-why') || {}).innerText || ''));
+/* Version 39.72 (the doctors' review): My plan lists her stage's plans once, so what her diary suggests is read from the engine
+   (Today's "A plan for you" card shows its first) */
+const recIds = (page) => page.evaluate(() => window.Saathi.plan.recs().map((x) => x.id));
+const recWhy = (page) => page.evaluate(() => window.Saathi.plan.recs().map((x) => x.why || ''));
+const catIds = (page) => page.evaluate(() => window.Saathi.plan.catalogue().map((x) => x.id));
 /* regular 28-day cycles, heavy flow in two of the last three periods */
 const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', pads: i ? 'pads_4' : 'pads_2', clots: 'clots_0', pain: 'pain_1' })).concat([70, 42, 14].map((x) => ({ d: ago(x - 5), t: 'end' })));
 {
@@ -464,10 +467,10 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   let v = await view(page);
   check('14 My plan with no plan going: its heading, "What do you want to work on?" first, no back button, the tab lit', /^My plan/.test(v) && (await has(page, '#view [data-pl-pick]')) && !(await has(page, '#view .backrow, #view [data-back]')) && (await has(page, '#tabbar [data-go="plan"].on')), v.slice(0, 200));
   let ids = await recIds(page); let why = await recWhy(page);
-  check('14 PMOS: her plan is the picker\'s Suggested row, not again under Suggested for you (Version 39.42)', (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')) && ids.indexOf('plan-pmos') < 0, [ids, why]);
+  check('14 PMOS: her plan is the picker\'s Suggested row, and no list under the picker repeats it (Version 39.42; 39.72)', (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')) && !(await has(page, '#view .pl-sec')), [ids, why]);
   check('14 one period that needed a painkiller suggests the cramps routine, with the reason', ids.includes('relief-cramps') && why.some((w) => /You needed a painkiller in 1 of your last 3 periods/.test(w)), [ids, why]);
   /* Version 39.2: the 21-day journeys stop being programmes; More plans holds the routines and tools */
-  check('14 more plans are listed under More plans, and no 21-day journey', (await gos(page, '#view .pl-sec .list [data-go]')).length > 0 && !(await gos(page, '#view [data-go]')).some((r) => /^journey-/.test(r)));
+  check('14 the routines and tools are in the catalogue (Explore lists them), and no 21-day journey', (await catIds(page)).length > 0 && !(await catIds(page)).some((r) => /^journey-/.test(r)) && !(await gos(page, '#view [data-go]')).some((r) => /^journey-/.test(r)));
   await shot(page, 'plans-en');
   await setPlan(page, started({ start: ago(10) })); await go(page, 'plan');
   v = await view(page);
@@ -533,9 +536,9 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
 {
   /* Version 39.2: "My PMOS plan" is listed for a woman with PMOS (for others it is her PMOS goal) */
   const { ctx, page, errs } = await open({ seed: { situation: { deliveredOn: ago(21), breastfeeding: true, pcos: true }, events: [] }, hash: '#plan' });
-  const ids = await recIds(page); const v = await view(page);
-  check('14 three weeks after a birth: recovery, then iron and the pelvic floor', ids[0] === 'post-recovery' && ids.includes('post-pelvic') && /Your baby was born 21 days ago/.test(v), [ids, v.slice(0, 500)]);
-  check('14 ... and the PMOS plan waits in More plans until her 6-week check', /After your 6-week check/.test(await page.$eval('#view .pl-sec .list', (e) => e.innerText).catch(() => '')) && !ids.includes('plan-pmos'));
+  const ids = await recIds(page); const why = await recWhy(page); const v = await view(page);
+  check('14 three weeks after a birth: recovery, then iron and the pelvic floor', ids[0] === 'post-recovery' && ids.includes('post-pelvic') && why.some((w) => /Your baby was born 21 days ago/.test(w)), [ids, why, v.slice(0, 300)]);
+  check('14 ... and the PMOS plan waits until her 6-week check', await page.evaluate(() => !!(window.Saathi.plan.catalogue().find((x) => x.id === 'plan-pmos') || {}).paused) && /After your 6-week check/.test(await page.evaluate(() => window.Saathi.t('plan_paused_pill'))) && !ids.includes('plan-pmos'));
   check('14 no page errors (after birth)', !errs.length, errs);
   await ctx.close();
 }
@@ -573,7 +576,7 @@ const heavyEvents = () => [70, 42, 14].map((x, i) => ({ d: ago(x), t: 'start', p
   const { ctx, page, errs } = await open({ hash: '#care' });
   check('14 Explore has no Plans row (My plan is a tab)', !(await has(page, '#view .care-plans')));
   await go(page, 'plan');
-  check('14 My plan lists her suggestion under the goal picker, which holds her PMOS plan (Version 39.42)', (await recIds(page)).length === 1 && (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')), await recIds(page));
+  check('14 My plan: the goal picker holds her PMOS plan, with nothing under it that repeats it (Version 39.42; 39.72)', (await recIds(page)).length >= 1 && (await has(page, '#view [data-pl-pick="pmos"] .pl-sugg')) && !(await has(page, '#view .pl-sec')), await recIds(page));
   check('14 no page errors (Care)', !errs.length, errs);
   await ctx.close();
 }

@@ -152,8 +152,8 @@ for (const [name, goals, want, not] of [['her goal is PMOS', ['pmos'], /PMOS/, /
   check('3 ... and no "Nothing to suggest yet"', !/Nothing to suggest yet/.test(await view(a)));
   await done(a);
   const b = await open({ seed: track({ daily: { [ago(36)]: ['cramps'], [ago(78)]: ['cramps'], [ago(120)]: ['cramps'] }, events: cyc3([120, 78, 36]).map((e) => (e.t === 'start' ? Object.assign({ pain: 'pain_3' }, e) : e)) }), hash: 'plan' });
-  const recs = await b.page.$$eval('#view .pl-rec', (xs) => xs.map((x) => x.dataset.go));
-  check('3 her other suggestions stay (a short tool is not a 12-week plan)', recs.length >= 1 && recs.indexOf('plan-pmos') < 0, recs);
+  const recs = await b.page.evaluate(() => window.Saathi.plan.recs().map((x) => x.go));   /* Version 39.72: My plan lists her goals once; her suggestions stay in the engine (Today's "A plan for you") */
+  check('3 her other suggestions stay (a short tool is not a 12-week plan), and My plan lists none under her goals', recs.length >= 1 && !(await has(b, '#view .pl-rec')), recs);
   await done(b);
 }
 

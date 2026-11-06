@@ -7504,3 +7504,108 @@ These come from the approved plan's wording items and answers 6, 8 and 10 (`docs
 - the added lines;
 - Qura's doctors;
 - every live screen for 5 women in English and 3 in Hindi: none of the old words.
+## 115. Version 39.72: the doctors' feature review, part 4 (the behaviour)
+
+These come from the approved plan's behaviour items, two Amend rows the plan didn't name (`plan-feedback`, `tile-fertile`), and
+answers 5, 7 and 12 (`docs/feature-review-2026-11-05.md`). Mohit's word on 6 Nov was "commit 39.71 and go with part 4".
+
+1. **One reveal screen** (`plan-reveal`: "one screen with her steps and Start is enough"):
+   - Every plan opens on one page: her plan is ready, her steps, her doctor check when her answers need one, then when to start
+     and Start. This is the page Version 39.61 made for joining, now for every plan.
+   - There are no cards, Next or dots, and no "How each day works" or "What happens when" card: her days and weeks are in My plan's
+     How it works.
+   - Under her steps, her steps that aren't today's (`rvLater`):
+     - a step that joins later: her bedtime from day 4 (Version 39.45), the urge from day 4;
+     - My pregnancy's later steps: the pelvic floor from week 13, the quick checks at 14 and 28 weeks, her baby's movements from 28
+       weeks (Version 39.34, 39.36);
+     - My period plan's steps of her cycle: period comfort, a rest on period days, the calm-week plan (Version 39.55);
+     - how her Kegel sets grow, and sets that join another plan.
+   - "Change my answers" stays, and so does Dr. Megha's 30-second welcome, under her plan's name, when a build carries the recording.
+   - After a birth, My plan's How your plan works lists only what is still ahead (day 42, week 12).
+2. **The goal asked once** (`plan-picker`):
+   - My plan without a plan lists her stage's plans once, under "What do you want to work on?" (`renderPlans(..., { bare: true })`).
+     "Suggested for you" and "More plans" are gone from it; those tools and routines stay in Explore, and Today's "A plan for you"
+     still shows the first suggestion. A woman only reading, with no picker, keeps the list.
+   - A goal she picked (the picker, Today's offer, a guide's "Your plan for this", joining) is never asked again. `renderGoalFlow`
+     marks it `given`, and Back from her first question returns to the page she came from (`back`, else My plan; Your Sakhi from
+     joining).
+   - Her own edit ("Change my answers" on her plan, Change goal in settings, a new plan after the end) still opens on her goal, ticked.
+3. **After the check-in** (`plan-feedback`: "Keep today's count and tomorrow's steps; drop the lines she has already read"). Her
+   count leads (`.pl-ci-cnt`), then tomorrow's lines and "See you". The goal line and a step's reason are gone from it; they stay on
+   Today and My plan. A day with nothing done keeps its one reviewed line ("Some days are like that...").
+4. **The pause offer** (`plan-pause`: "on a day skipped we send a notification asking the same"):
+   - Her quiet days count from the last day her plan counted, or the last day of a pause (`quietFrom`; `unpause` keeps `pauseEnd`).
+   - After 2 of them, Today's "Take a week off?" card comes (`pauseDue`). It replaces the old once-only card after 14 days. It comes
+     after the safety cards, her plan's doctor check and what follows it; two quiet weeks bring their fuller card, which offers the
+     pause too.
+   - Its phone notification rings at 9 am on the morning after the second quiet day (`S.plan.pauseRing()`, booked by core's
+     `buildNotifs` with the card's own words). Its route is `plan-pause`: core's `__sakhiOpen` reads it as Today, with the card first
+     (`S.plan.pauseLead()`).
+   - At most once a week: an answer (Pause for a week, Not now, or the two-quiet-weeks card: `pauseOff`) waits 7 days, and the rings
+     fall a week apart while she stays quiet. The ring is worked out from her days each time the alarms are booked, so nothing is
+     stored, and only the next one is booked: a plan she has left rings once.
+   - Never in her plan's first 3 days (Version 37.1), in a pregnancy or the first 6 weeks after a birth (`careTime`), in discreet
+     mode, while her plan rests or is waiting, or once she has turned her plan's reminder off (the card still shows on Today then). A
+     shared phone's ring says only "Reminder".
+   - The restart card ("Shall we start again, small?") doesn't follow the pause card on the day she answers it.
+5. **Before 40 with her periods stopped** (`meno-poi`: "keep see doctor as an advise but let her start a plan as healthy habits"):
+   - No hold. `packFor`, `pausedFor`, the catalogue, Today's offer and core's stage card no longer stop her plan, and her plan's
+     reminder stays on.
+   - The gynaecologist card is advice. It shows in Sakhi says while her plan runs, first on Today before her plan's offer (and beside
+     a diary finding that offers the plan), and above her goals on My plan.
+   - Its heading is "Periods stopped before 40? See a gynaecologist", over the reviewed POI line. "My doctor has seen me" or Later
+     (14 days) puts it away.
+6. **Contraception** (answer 12):
+   - Her method's reminders are on for any woman who sets one up, as before.
+   - Home's setup card asks only after a birth ("Choose a method for after the birth"). There is no step for "avoiding pregnancy" at
+     joining, nor "Turn on your method's reminder".
+   - When she stops trying, the stage sheet notes the day (`situation.ttcStop`; trying again clears it, and Undo restores the
+     earlier stage without it). For 30 days the contraception module's Home card asks about her method, until she adds one or taps
+     Not now (`stopNot`). The card uses words already on the method pages: "Add the method you use", "My method and reminders",
+     "Find a method that fits". It is not shown in discreet mode.
+7. **The folic acid reminder** (answer 7). It rings only while she is trying (Getting ready, with her tablets) and to 12 weeks of a
+   pregnancy that follows it, as before. No other woman has it or sees it on her Reminders page. The test proves it; no code changed.
+8. **Sun salutation as a morning session** (`mv-sun`). Moves and calm opens with "Morning session": sun salutation, and Calm breath
+   when it is listed there. The other routines follow under "Any time of day". With no sun salutation for her (knees, back, the 2
+   weeks before her period while trying, her heart or bone answers), the list is as before.
+9. **The PMOS walk** (`pmos-plan`). The cycle plan's walk (`walk.cycle`) is one step:
+   - "Walk 10 minutes after lunch and after dinner", with "And a brisk walk of 30 to 45 minutes when your day allows";
+   - on Today, in short, so her next step stays above the tab bar at 360 px: "Walk after lunch and dinner", "10 minutes each"
+     (`titleT`, `subT`; Today now reads an empty `subT` as none), with the brisk walk in its Why?;
+   - it counts 20 minutes, and Partly is one of the two walks;
+   - a lighter week she chose keeps one 10-minute walk;
+   - the plan's steps list says it in full (`plan_pi_meals`), and its changelog has R6;
+   - the reveal no longer says her minutes "grow a little each week" (her weekly ring on My plan still counts them);
+   - her time to move still sets her nudge and her check-in, as before.
+10. **The Fertile days estimate** (`tile-fertile`). Its tile in Explore and search, and its link on the Trying for a baby page, show
+    only while she is trying. Her calendar and Today keep her fertile window and ovulation as they are (answer 9), and there is never
+    a "safe day".
+11. **The screenshot block** (answer 5):
+    - The Android app has no `setSecure` and never sets FLAG_SECURE. Version 39.68 had already stopped the page asking for it, and
+      core's `secureSync` is gone too.
+    - Shared phone, discreet mode and the PIN stay.
+    - The recent-apps list still shows Sakhi's icon, not her diary (Android 13+, `setRecentsScreenshotEnabled(false)`). That never
+      stops a screenshot.
+
+**Strings.**
+- New: `plan_mv_morning`, `plan_mv_any`, `plan_a_meals`, `plan_a_meals_s`, `plan_a_meals_t`, `plan_a_meals_ts` and
+  `plan_pi_meals`.
+- Changed: `plan_m2_poi_h`.
+- Unused now: `plan_rv_next`, `plan_rv_week` and the old days card's `plan_rv_*` lines (kept, in case a later page wants them).
+
+**Tests.** `node test/behave.mjs` (72 checks):
+- the reveal for 4 plans;
+- the picker and Back, Today's offer, and her own edit;
+- the check-in's after screen;
+- the pause card and its ring (the day it rings, Not now, a step done, after a pause, the notification's tap, and where it never
+  rings);
+- before 40;
+- contraception at joining, after a birth, after trying, and with a method;
+- the folic acid reminder;
+- Moves and calm;
+- the PMOS walk, Today's short words, Partly and a lighter week;
+- the fertile tile;
+- the screenshot block;
+- Hindi at 360 px, and no page errors.
+
+28 older suites follow the new behaviour. The golden plans and the plan hashes are re-recorded for the walk's words and minutes.

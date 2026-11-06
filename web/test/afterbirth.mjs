@@ -85,13 +85,15 @@ const plan = async (a) => (await st(a)).mods.plan;
   const a = await open({ seed: { situation: { care: 'private', deliveredOn: ago(4), breastfeeding: true }, goals: ['feed'], intake: { goal: 'feed', stage: 'post' }, events: [], mods: {}, settings: { notify: true } } });
   await a.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'post', goal: 'feed', food: 'veg', milk: 'y', lim: [] })); await settle(a.page, 300); await go(a, 'plan-reveal');
   const cards = []; for (let i = 0; i < 8; i++) { cards.push({ v: await view(a), tl: await a.page.$$eval('#view .pl-tl li', (xs) => xs.map((x) => x.textContent.trim())), rem: await txt(a, '#view .pl-st-rem') }); if (await has(a, '#pl-rv-go')) break; await tap(a, '#pl-rv-next'); }
-  const s1 = cards[0].v, s2 = (cards.find((x) => /^Your \d steps/.test(x.v)) || {}).v || '', dd = cards.find((x) => x.tl.length) || { tl: [], v: '' }, last = cards[cards.length - 1];
+  const s1 = cards[0].v, s2 = cards[0].v, last = cards[cards.length - 1];   /* Version 39.72: one screen */
   check('1 the reveal: to her baby\'s first birthday, not "12 weeks"', /To your baby’s first birthday · a few minutes a day/.test(s1) && !/12 weeks/.test(s1), s1.slice(0, 300));
-  check('1 her 3 steps: the squeezes, her goal\'s step, the daily recovery check', /^Your 3 steps/.test(s2) && /pelvic floor exercises \(Kegels\)/.test(s2) && /Breastfeeding/.test(s2) && /recovery check/.test(s2), s2.slice(0, 400));
-  check('1 her evening is the recovery check; what happens when: day 14, day 42, week 12, the first birthday', /At 8 pm, your recovery check: 1 minute, with the signs that can’t wait\./.test(dd.v) && dd.tl.join('|') === 'From day 14: a short walk, 3 days a week|Around day 42: your own check, then back to strong|From week 12: is your body ready for more?|To your baby’s first birthday', dd.tl);
+  check('1 her 3 steps: the squeezes, her goal\'s step, the daily recovery check', /Your 3 steps/.test(s2) && /pelvic floor exercises \(Kegels\)/.test(s2) && /Breastfeeding/.test(s2) && /recovery check/.test(s2), s2.slice(0, 400));
   check('1 the Start card: each evening her recovery check, and the reminders she will hear (her recovery check, her 6-week check)', /Each evening, 1 minute: your recovery check, to day 41\./.test(last.v) && /your 8 pm recovery check and your 6-week check on 6 Dec/.test(last.rem), last.rem);
   await tap(a, '#pl-rv-go'); await settle(a.page, 800);
   const p = await plan(a);
+  await go(a, 'plan'); const rh = await txt(a, '#view .pl-rh');
+  check('1 her evening is the recovery check; My plan\'s How your plan works: day 42 and week 12 (Version 39.72: the reveal is one screen)', /recovery check/.test(rh) && /Around day 42/.test(rh) && /From week 12/.test(rh), rh);
+  await go(a, 'home');
   check('1 started as version 2, its check-in and her own 6-week check ringing (no question)', p.pv === 2 && (await remIds(a)).split(',').indexOf('post-6wk') >= 0 && (await remIds(a)).split(',').indexOf('plan') >= 0, { pv: p.pv, rem: await remIds(a) });
   await done(a);
   /* from My pregnancy: high BP and sugar in her pregnancy carry over, nothing asked again */
@@ -388,8 +390,8 @@ const plan = async (a) => (await st(a)).mods.plan;
   /* d: a late joiner hears only what is still ahead */
   const e = await open({ seed: { situation: { care: 'private', deliveredOn: ago(60), breastfeeding: true }, goals: ['feed'], intake: { goal: 'feed', stage: 'post' }, events: [], mods: {}, settings: { notify: true } } });
   await e.page.evaluate(() => window.Saathi.plan.startFromIntake({ stage: 'post', goal: 'feed', food: 'veg', milk: 'y', lim: [] })); await settle(e.page, 300); await go(e, 'plan-reveal');
-  let tl = []; for (let i = 0; i < 8; i++) { tl = await e.page.$$eval('#view .pl-tl li', (xs) => xs.map((x) => x.textContent.trim())); if (tl.length || (await has(e, '#pl-rv-go'))) break; await tap(e, '#pl-rv-next'); }
-  check('15d joining on day 60: what happens when lists only week 12 and the first birthday', tl.join('|') === 'From week 12: is your body ready for more?|To your baby’s first birthday', tl);
+  await tap(e, '#pl-rv-go'); await go(e, 'plan'); const rh = await txt(e, '#view .pl-rh');
+  check('15d joining on day 60: How your plan works lists only what is ahead, week 12 (Version 39.72)', /From week 12/.test(rh) && !/Around day 42/.test(rh), rh);
   await done(e);
   /* e: discreet mode keeps the plain check-in words */
   const f = await open({ seed: pseed(10, 9, {}, { settings: { discreet: true, notify: true } }) });

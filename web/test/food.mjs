@@ -220,15 +220,13 @@ async function foodQ(page) {
   errsAll.push(...d.errs); await d.ctx.close();
 }
 
-/* ---------- 7. The reveal is one card shorter (journey audit P2-23, MIN-20) ---------- */
+/* ---------- 7. The reveal (journey audit P2-23, MIN-20; Version 39.72, the doctors' review: one screen for every plan) ---------- */
 {
   const a = await open({ seed: { events: regular(10) } });
   await goalFlow(a.page, 'pain', null); if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make');
-  const n = await a.page.$$eval('#view .pl-rv-top .progress i', (x) => x.length);
-  await a.page.evaluate(() => { window.Saathi.mem.rvCard = 2; window.Saathi.render(); }); await settle(a.page, 300);
   const v = await vtext(a.page);
-  check('7 the plan screen: 4 cards for painful periods (ready, steps, days and weeks, start)', n === 4, n);
-  check('7 "Your days and weeks" holds how each day works and what happens when', /Your days and weeks/.test(v) && /How each day works/.test(v) && /What happens when/.test(v), v.slice(0, 300));
+  check('7 the plan screen for painful periods: one screen, her steps and Start, no cards', await has(a.page, '#view .pl-rv-one') && await has(a.page, '#view .pl-rv-steps') && await has(a.page, '#pl-rv-go') && !(await has(a.page, '#view .pl-rv-top')), v.slice(0, 300));
+  check('7 ... and no "Your days and weeks" card (her days and weeks are on My plan)', !/Your days and weeks|How each day works/.test(v), v.slice(0, 300));
   errsAll.push(...a.errs); await a.ctx.close();
 }
 

@@ -830,8 +830,13 @@
   }
 
   /* ---------- hooks ---------- */
+  /* Version 39.72 (the doctors' answer 12): for 30 days after she stops trying for a baby, one card for her method and its reminder,
+     until she adds one or says Not now (not in discreet mode) */
+  const stopAsk = (d) => { const s0 = S.state.situation || {}; const at = s0.ttcStop; return S.stageNow() === 'cycle' && !S.flags.discreet && !M[d.method] && typeof at === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(at) && S.diffDays(S.fromISO(at), S.today()) <= 30 && d.stopNot !== at; };
   function home() {
-    if (!S.canSave()) return ''; const d = D(); if (!M[d.method]) return ''; const td = S.today();
+    if (!S.canSave()) return ''; const d = D();
+    if (stopAsk(d)) return '<div class="card soft ct-stop" data-nofold="1"><h3>' + esc(t('contra_setup_add')) + '</h3><p class="small">' + esc(t('contra_mine_s')) + '</p><div class="row wrap"><button type="button" class="btn sm primary" data-go="contra-mine">' + esc(t('contra_mine')) + '</button><button type="button" class="btn sm" data-go="contra-chooser">' + esc(t('contra_find')) + '</button><button type="button" class="btn sm" id="ct-stop-not">' + esc(t('nq_later')) + '</button></div></div>';
+    if (!M[d.method]) return ''; const td = S.today();
     /* Review fix: a method that may no longer protect her is urgent (core lifts data-xp-urgent cards first, so a plan card can't push it out) */
     const card = (body, urgent) => '<div class="card" style="gap:8px"' + (urgent ? ' data-xp-urgent="1"' : '') + '><div class="row spread"><h3>' + esc(nm(d.method)) + '</h3><button type="button" class="btn sm" data-go="contra-mine">' + esc(t('contra_my')) + '</button></div>' + body + '</div>';
     if (expiredOn(d, td)) return card(expiredFlag(d, td), true);
@@ -845,14 +850,15 @@
     return { id: 'contra', order: 12, icon: 'pill', hue: 'teal', title: t('contra_today_q'), sub: nm(d.method) + ' · ' + ptime(d), go: 'contra-mine', rem: PILL_IDS,
       actLabel: t('contra_took_short'), act: () => { markToday(D(), 't'); S.save(); }, done: t('contra_marked') };
   }
-  /* Home's setup card: her method and its reminder (on a method, or avoiding pregnancy), or a method for after a birth. */
+  /* Home's setup card: a method for after a birth. Version 39.72 (the doctors' answer 12): not at joining for "avoiding pregnancy",
+     nor her method's reminder (it is on when she sets her method up); when she stops trying, home() asks */
   const HAS_REM = ['pill', 'pop', 'chhaya', 'antara', 'cut', 'implant', 'ius', 'nsv', 'lam'];
   function setup() {
     if (!S.canSave()) return null; const k = S.stageNow(); const d = D(); const on = !!M[d.method];
     if (k === 'post') return { id: 'contra', order: 35, title: t('contra_setup_post'), sub: S.routeOwner('post-contra') ? t('post_t_contra_s') : t('contra_hub_s'), go: S.routeOwner('post-contra') ? 'post-contra' : 'contra', done: on };
-    if (k !== 'cycle' || (!on && (S.state.goals || []).indexOf('avoid') < 0)) return null;
-    return { id: 'contra', order: 20, title: t(on ? 'contra_setup_rem' : 'contra_setup_add'), sub: t('contra_mine_s'), go: 'contra-mine', done: on && (HAS_REM.indexOf(d.method) < 0 || d.remOn !== false) };
+    return null;
   }
+  function afterHome(v) { const b = v.querySelector('#ct-stop-not'); if (b) b.addEventListener('click', () => { D().stopNot = (S.state.situation || {}).ttcStop; S.save(); S.render(); }); }
   function summary() {
     const d = D(); if (!M[d.method]) return [];
     const lines = [nm(d.method) + (okDate(d.since) ? ' · ' + t('contra_since') + ' ' + fmt(S.fromISO(d.since)) : '')];
@@ -1066,6 +1072,7 @@
     ],
     css: css,
     home: home,
+    afterHome: afterHome,
     today: today,
     setup: setup,
     summary: summary,

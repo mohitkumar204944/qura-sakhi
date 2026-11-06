@@ -253,10 +253,10 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
 {
   const seed = { dob: '1991-05-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], prompts: { setup: 'off', planCall: ago(3), firstLog: ago(2), planOffer: ago(2) }, events: regular(200) };
   const a = await open({ seed: seed });
-  check('7 before 40: see a gynaecologist first, in the reviewed words', /Before a plan: see a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')) && /Periods that stop before 40 are not menopause/.test(await txt(a.page, '#view .pl-m2-poi')), await view(a.page));
-  check('7 before 40: no plan offered', !(await has(a.page, '#pl-off-go')) && (await a.page.evaluate(() => window.Saathi.plan.packOf())) == null);
+  check('7 before 40: the gynaecologist card first, in the reviewed words, as advice (Version 39.72, the doctors\' review)', /Periods stopped before 40\? See a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')) && /Periods that stop before 40 are not menopause/.test(await txt(a.page, '#view .pl-m2-poi')), await view(a.page));
+  check('7 before 40: her goal has its plan (no hold), offered after the card', (await a.page.evaluate(() => window.Saathi.plan.packFor('hot', 'meno'))) === 'meno');
   await tap(a.page, '#pl-m2-poi-ok');
-  check('7 "My doctor has seen me": the plan is offered', !!(await st(a.page)).situation.poiOk && await has(a.page, '#pl-off-go'), await view(a.page));
+  check('7 "My doctor has seen me": the card goes, and the plan is offered', !!(await st(a.page)).situation.poiOk && await has(a.page, '#pl-off-go') && !(await has(a.page, '#view .pl-m2-poi')), await view(a.page));
   await done(a);
 }
 
@@ -333,9 +333,9 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   /* 1 before 40: joining set no plan offer */
   const poi = { dob: '1989-05-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], prompts: { firstLog: ago(2) }, events: regular(200) };
   let a = await open({ seed: poi });
-  check('11.1 before 40, with no plan offer from joining: the gynaecologist first on Today', /Before a plan: see a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')), await view(a.page));
+  check('11.1 before 40, with no plan offer from joining: the gynaecologist card first on Today', /Periods stopped before 40\? See a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')), await view(a.page));
   await go(a.page, 'plan');
-  check('11.1 My plan: the same card, and no goals that lead nowhere', await has(a.page, '#view .pl-m2-poi') && !(await has(a.page, '#view [data-pl-pick]')), await view(a.page));
+  check('11.1 My plan: the same card, above her goals, which start a plan (Version 39.72: no hold)', await has(a.page, '#view .pl-m2-poi') && await has(a.page, '#view [data-pl-pick]'), await view(a.page));
   await tap(a.page, '#pl-m2-poi-ok'); await go(a.page, 'home');
   check('11.1 "My doctor has seen me": her plan is offered', await has(a.page, '#pl-off-go') && !!(await st(a.page)).prompts.planOffer, await view(a.page)); await done(a);
   /* 2 aches and tiredness */
@@ -423,9 +423,9 @@ const B = (d) => d - 1;   /* plan day d starts d - 1 days ago */
   a = await open({ seed: { dob: '1975-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['meno', 'hot'], events: regular(400) } });
   await a.page.evaluate(() => { window.Saathi.mem.planIntake = { stage: 'meno', goal: 'hot', iq: 1, act: '0', lim: ['none'], food: 'veg', milk: 'y', mbone: 'n', mheart: 'n', when: 'evening' }; }); await go(a.page, 'plan-goal');
   for (let i = 0; i < 6 && (await a.page.evaluate(() => location.hash)) !== '#plan-reveal'; i++) { if (await has(a.page, '#pl-in-make')) await tap(a.page, '#pl-in-make'); else if (await has(a.page, '[data-pl-when]')) await tap(a.page, '[data-pl-when="evening"]'); else if (await has(a.page, '#pl-in-next')) await tap(a.page, '#pl-in-next'); else break; }
-  let rv = '';
-  for (let i = 0; i < 4; i++) { rv += ' ' + (await view(a.page)); if (/What happens when/.test(rv) || !(await has(a.page, '#pl-rv-next'))) break; await tap(a.page, '#pl-rv-next'); }
-  check('12.3 the reveal names her parts, her chapter and her strength days', /Weeks 1 to 4: Cool and calm/.test(rv) && /Weeks 5 to 8: Rest/.test(rv) && /Weeks 9 to 12: Strong and steady/.test(rv) && /Every week: a short chapter/.test(rv) && /Twice a week, from day 2: Strength at home/.test(rv), rv.slice(-900)); await done(a);
+  const rv = await view(a.page); const one = await has(a.page, '#view .pl-rv-one');
+  if (await has(a.page, '#pl-rv-go')) await tap(a.page, '#pl-rv-go'); await go(a.page, 'plan'); const mp = await view(a.page);
+  check('12.3 the reveal is one screen (Version 39.72); My plan\'s weeks name her part, Cool and calm', one && /Your \d steps/.test(rv) && /Cool and calm/.test(mp), [rv.slice(0, 300), mp.slice(0, 600)]); await done(a);
   /* 4 "Why this works" has its arrow */
   a = await open({ seed: m2('hot', B(1)), hash: '#mid-lesson' });
   const arrow = await a.page.$eval('#view details.mid-why summary', (sm) => { const c = getComputedStyle(sm, '::after'); return c.content !== 'none' && parseFloat(c.borderRightWidth) > 0; }).catch(() => false);
@@ -680,25 +680,25 @@ const startPlan = async (page, intake, pick) => {
   check('20.3 a shared phone: "Your daily steps", no parts', /This week Your daily steps/.test(w.txt) && !/Cool and calm|Rest ·|Strong and steady/.test(w.all.join(' ')), w.txt.slice(0, 300)); await done(a);
 }
 
-// ---------- 21 POI while her plan runs ----------
+// ---------- 21 POI while her plan runs (Version 39.72: her plan runs on, the card is advice) ----------
 {
   /* Mohit's phone: her midlife plan running, then her periods stopped, and she is 37 */
   const poi = (x) => m2('hot', B(3), null, Object.assign({ dob: '1989-03-01' }, x || {}));
   const rem = (page) => page.evaluate(() => ((window.Saathi.state.reminders || []).find((r) => r.id === 'plan') || null));
   let a = await open({ seed: poi() });
-  check('21.1 under 40 with her periods stopped: the gynaecologist card on Today, where her plan was', /Before a plan: see a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')) && /not menopause/.test(await txt(a.page, '#view .pl-m2-poi')) && !(await has(a.page, '#view .today-plan-skill')), (await view(a.page)).slice(0, 600));
-  check('21.1 her plan rests: no check-in reminder', !(await rem(a.page)), await rem(a.page));
+  check('21.1 under 40 with her periods stopped: her plan runs on Today, with the gynaecologist card as advice (Version 39.72, the doctors\' review)', /Periods stopped before 40\? See a gynaecologist/.test(await txt(a.page, '#view .pl-m2-poi')) && /not menopause/.test(await txt(a.page, '#view .pl-m2-poi')) && (await has(a.page, '#view .today-plan-skill')), (await view(a.page)).slice(0, 600));
+  check('21.1 her plan\'s check-in reminder stays', !!(await rem(a.page)), await rem(a.page));
   await go(a.page, 'plan');
-  check('21.1 My plan: the card alone (no steps, no other pause line)', await has(a.page, '#view .pl-m2-poi') && !(await has(a.page, '#view .pl-steps-card')) && !(await has(a.page, '#view .pl-paused')), (await view(a.page)).slice(0, 500));
-  await tap(a.page, '#pl-m2-poi-ok'); await go(a.page, 'home');
-  check('21.2 "My doctor has seen me": her plan and its reminder come back', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')) && !!(await rem(a.page)), { rem: await rem(a.page), v: (await view(a.page)).slice(0, 300) }); await done(a);
+  check('21.1 My plan: her plan, with no pause line', await has(a.page, '#view .pl-steps-card') && !(await has(a.page, '#view .pl-paused')), (await view(a.page)).slice(0, 500));
+  await go(a.page, 'home'); await tap(a.page, '#view .pl-m2-poi #pl-m2-poi-ok');
+  check('21.2 "My doctor has seen me": the card goes, her plan and its reminder stay', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')) && !!(await rem(a.page)), { rem: await rem(a.page), v: (await view(a.page)).slice(0, 300) }); await done(a);
   a = await open({ seed: m2('hot', B(3)) });
   check('21.3 at 51 with her periods stopped: her plan runs, no card', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
   a = await open({ seed: poi({ situation: { midlife: true } }) });
   check('21.3 at 37 with periods still coming: her plan runs (no POI card)', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);
 }
 
-// ---------- 22 the hold's phone test (Mohit, 1 Nov: "fix all 4") ----------
+// ---------- 22 the hold's phone test (Mohit, 1 Nov: "fix all 4"; Version 39.72: no hold, the card as advice) ----------
 {
   /* Mohit's Flip5: her midlife plan held for her doctor (37, periods stopped), just after she set her stage, an earlier run of the
      plan in her past, and PMOS in her answers */
@@ -710,18 +710,18 @@ const startPlan = async (page, intake, pick) => {
       leads: !!(lead && lead.classList.contains('pl-m2-poi')), keep: !!(c && c.hasAttribute('data-slot-keep')) }; });
   let a = await open({ seed: held() });
   let w = await where(a.page);
-  check('22.1 Today: the card stands where her plan was (after the round buttons, before "How do you feel today?", not in Sakhi says)', w.card && !w.inSlot && w.beforeFeel && w.afterRound, w);
-  check('22.2 Today: no "Tell Sakhi your stage and goals" just after she set her stage, while the card holds her plan', !(await has(a.page, '#view .ex-card')), (await view(a.page)).slice(0, 400));
+  check('22.1 Today: the card in Sakhi says, as advice, and her plan\'s steps run (Version 39.72: no hold)', w.card && w.inSlot && (await has(a.page, '#view .today-plan-skill')), w);
+  check('22.2 Today: no "Tell Sakhi your stage and goals" just after she set her stage (her plan holds them)', !(await has(a.page, '#view .ex-card')), (await view(a.page)).slice(0, 400));
   await go(a.page, 'plan');
   const mp = await a.page.evaluate(() => { const v = document.getElementById('view'); const f = v.querySelector('h1 ~ .card'); return { first: f ? f.className : '', past: !!v.querySelector('.pl-past'), txt: v.innerText }; });
-  check('22.3 My plan: the card first and alone, no "Your last plan" above it', /pl-m2-poi/.test(mp.first) && !mp.past, mp.first);
-  check('22.4 My plan: no "After your 6-week check", and no PMOS plan row beside the card', !/After your 6-week check/.test(mp.txt) && !(await has(a.page, '#view [data-go="plan-pmos"]')), mp.txt.slice(0, 600));
+  check('22.3 My plan: her plan, no "Your last plan" (Version 39.72: no hold)', !/pl-m2-poi/.test(mp.first) && !mp.past && (await has(a.page, '#view .pl-steps-card')), mp.first);
+  check('22.4 My plan: no "After your 6-week check", and no PMOS plan row', !/After your 6-week check/.test(mp.txt) && !(await has(a.page, '#view [data-go="plan-pmos"]')), mp.txt.slice(0, 600));
   await go(a.page, 'home'); await tap(a.page, '#view .pl-m2-poi #pl-m2-poi-ok');
-  check('22.5 "My doctor has seen me" from its place on Today: her plan comes back', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')), (await view(a.page)).slice(0, 300)); await done(a);
+  check('22.5 "My doctor has seen me" from its place on Today: the card goes, her plan carries on', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi')), (await view(a.page)).slice(0, 300)); await done(a);
   /* no plan yet (she joined at 37 with her periods stopped): the card is her plan's offer in Sakhi says, and it always leads */
   a = await open({ seed: { dob: '1989-03-01', situation: { stopped: true }, intake: { goal: 'hot', stage: 'meno' }, goals: ['hot'], events: regular(400), prompts: P0 } });
   w = await where(a.page);
-  check('22.6 no plan yet: the card leads Sakhi says and stays first (a card that keeps her safe), with no goals ask', w.inSlot && w.leads && w.keep && !(await has(a.page, '#view .ex-card')), w); await done(a);
+  check('22.6 no plan yet: the card leads Sakhi says and stays first (a card that keeps her safe; Version 39.72: her goals lead to plans again, so their ask may follow it)', w.inSlot && w.leads && w.keep, w); await done(a);
   /* at 51 with her periods stopped, nothing changes: her plan runs and Today asks nothing new */
   a = await open({ seed: m2('hot', B(3), null, { prompts: P0 }) });
   check('22.7 at 51: her plan runs, no card, no PMOS change', await has(a.page, '#view .today-plan-skill') && !(await has(a.page, '#view .pl-m2-poi'))); await done(a);

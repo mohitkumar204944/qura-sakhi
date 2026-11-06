@@ -40,7 +40,7 @@ const seedOf = (x) => Object.assign({ lang: 'en', langChosen: true, stage: 'app'
   tours: TOURS_DONE, fullTour: { st: 'done', d: ago(3) }, whatsNew: '0.37', prompts: { setup: 'off', notifyIntro: ago(3), planCall: ago(3), firstLog: ago(30) }, mods: {} }, x || {}, { settings: Object.assign({ toursAuto: false, notify: true }, (x || {}).settings || {}) });
 const planOf = (pack, goal, start, extra) => Object.assign({ pack: pack, goalKey: goal, start: start, go: true, pv: 1, level: 0, limits: { knees: false, back: false }, food: 'veg', focus: 'habits', goal: 'cycles', remAt: '20:00', when: 'dinner', bed: 'b24', work: 'day', log: {}, weeks: {}, body: [], doc: 'done' }, extra || {});
 /* her plan's log: on `days` of every week so far, every step done */
-const logged = (startAgo, days) => { const l = {}; for (let i = startAgo; i >= 1; i--) if ((startAgo - i) % 7 < days) l[ago(i)] = { min: 15, ci: 1, ck: { move: 'd', food: 'd', sleep: 'd' }, plate: { half: true } }; return l; };
+const logged = (startAgo, days) => { const l = {}; for (let i = startAgo; i >= 1; i--) if ((startAgo - i) % 7 < days) l[ago(i)] = { min: 20, ci: 1, ck: { move: 'd', food: 'd', sleep: 'd' }, plate: { half: true } }; return l; };   /* Version 39.72: the walk after lunch and after dinner counts 20 minutes */
 const cyc = (start, extra, seed) => Object.assign({ intake: { goal: 'pmos' }, situation: { pcos: true }, mods: { plan: planOf('cycle', 'pmos', start, extra) } }, seed || {});
 
 const browser = await chromium.launch();
@@ -73,7 +73,7 @@ const errsAll = [];
 const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
 
 
-const full4 = (o) => Object.assign({ r: ['cycle', 'strength'], str: true, rmin: 8, min: 18, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }, o || {});
+const full4 = (o) => Object.assign({ r: ['cycle', 'strength'], str: true, rmin: 8, min: 28, ci: 1, plate: { half: true }, ck: { sleep: 'd' } }, o || {});   /* Version 39.72: her 8-minute routine and the two 10-minute walks */
 const REM = [{ id: 'plan', mod: 'plan', title: { en: 'How did today go? 1 minute', hi: 'आज का दिन कैसा रहा? 1 मिनट' }, time: '20:00', every: 1, start: ago(9), on: true }];
 const remDone = (page) => page.evaluate(() => (window.Saathi.reminders.get('plan') || {}).doneOn || null);
 const rowTap = async (page, sel) => { await page.$eval(sel + ' .body strong', (e) => e.click()); await settle(page, 300); };
@@ -98,7 +98,7 @@ const SEEN1 = { 1: { e: 'good', seen: true } };
   /* a tap on the row ticks the walk; it stays, ticked; the check-in is due now (she did a step) */
   await rowTap(a.page, '#view .today-plan-move');
   let lg = (await plan(a.page)).log[TODAY]; const td2 = await txt(a.page, '#view .today-card');
-  check('1 a tap on the row ticks the walk; it stays on Today, ticked, with where it counted', lg.ck.move === 'd' && lg.min === 10 && lg.tkm.move === 10 && (await has(a.page, '#view .today-plan-move.today-ok')) && /Walk 10 minutes\nTicked on Today/.test(td2) && /1 of 4 done today/.test(td2), [lg, td2]);
+  check('1 a tap on the row ticks the walk; it stays on Today, ticked, with where it counted', lg.ck.move === 'd' && lg.min === 20 && lg.tkm.move === 20 && (await has(a.page, '#view .today-plan-move.today-ok')) && /Walk after lunch and dinner\nTicked on Today/.test(td2) && /1 of 4 done today/.test(td2), [lg, td2]);
   check('1 ... then the check-in is the one pink button', JSON.stringify(await pinks(a.page, '#view .today-card')) === JSON.stringify(['How did today go?']), await pinks(a.page, '#view .today-card'));
   /* a tap on its tick undoes it, and only the minutes the tick added go */
   await tap(a.page, '#view .today-plan-move [data-today-undo]');

@@ -255,7 +255,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
 {
   const { ctx, page, errs } = await open({});
   await page.evaluate(() => { const S = window.Saathi; S.plan.startFromIntake({ stage: 'cycle', goal: 'irregular', gap: 'g45', act: 0, bed: 'b23', work: 'day', when: 'evening', food: 'veg', lim: ['none'] }); S.save(); });
-  await go(page, 'plan'); await tap(page, '#pl-rv-next');
+  await go(page, 'plan');   /* Version 39.72: one screen, her steps on it */
   const ws = await page.$$eval('#view .pl-rv-steps [data-why-art]', (xs) => xs.map((x) => x.dataset.whyArt));
   check('10 the plan\'s steps card: "Why it helps" under each step, to its Learn guide', ws.length >= 2 && ws.indexOf('mind_body.movement-busy-day') >= 0, ws);
   await tap(page, '#view .pl-rv-steps [data-why-art]');
@@ -265,7 +265,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   await go(c.page, 'plan-checkin');
   for (const g of await c.page.$$eval('[data-ci]', (x) => [...new Set(x.map((y) => y.dataset.ci.split(':')[0]))])) await tap(c.page, '[data-ci="' + g + ':d"]');
   await tap(c.page, '#pl-ci-save');
-  check('10 the check-in: the line about what she did links its guide', await has(c.page, '#pl-ci-fb [data-why-art]'), await c.page.$eval('#pl-ci-fb', (e) => e.innerHTML.slice(0, 300)).catch(() => ''));
+  check('10 the check-in\'s after screen: her count, no step\'s reason or its guide again (Version 39.72, the doctors\' review; the guides stay behind her steps\' Why?)', !(await has(c.page, '#pl-ci-fb [data-why-art]')) && await has(c.page, '#pl-ci-fb .pl-ci-cnt'), await c.page.$eval('#pl-ci-fb', (e) => e.innerHTML.slice(0, 300)).catch(() => ''));
   errsAll.push(...c.errs); await c.ctx.close();
   const dz = await open({ seed: { settings: { discreet: true }, mods: { plan: planOf('cycle', 'irregular', ago(5)) } }, now: at(0, '20:30') });
   await go(dz.page, 'plan-checkin');

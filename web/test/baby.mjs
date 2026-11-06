@@ -114,7 +114,7 @@ const versionOf = (a, ans) => a.page.evaluate((x) => { const S = window.Saathi; 
   check('1 with a date on Months of trying, how long isn\'t asked', !/How long have you been trying/.test(await view(b)) && /A few things first/.test(await view(b)));
   await tap(b, '#pl-in-next'); await tap(b, '[data-pl-when="evening"]');
   await settle(b.page, 600);
-  check('1 the standard version: no doctor card in the reveal (Today shows her routine card from day 1)', (await b.page.$$eval('.pl-rv .progress i', (x) => x.length)) === 4);
+  check('1 the standard version: no doctor card in the reveal (Today shows her routine card from day 1; Version 39.72: one screen)', (await has(b, '#view .pl-rv-one')) && !(await has(b, '#view .pl-bdoc, #view .pl-rv-one .pl-doc')));
   await done(b);
 }
 
