@@ -634,7 +634,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - `progs/*.js` (the plans as data, Version 39.4) go up with every publish, beside `mods/*.js`.
   - `sounds/` (Version 39.21, about 17 MB: `timelines.js`, `captions.js`, `voice/`, `music/`) goes up too, or Wind down and the relief
     voice stay silent there.
-  - `fig/` (Version 39.39, about 1.6 MB: `fig.js`, `v/`, `s/`) goes up too, or the player shows the drawings there.
+  - `fig/` (Version 39.39, about 6.7 MB: `fig.js`, `v/`, `s/`, and Version 39.69.2's `t/`) goes up too, or the player shows the drawings there.
   - The `care/*.js` data goes up too, at most 255 files a publish. Read every data file before publishing it, for example
     with a script that checks each record.
 - Playwright: comes from this repo's node_modules after `npm install` here. Until then the tests borrow Qura's copy

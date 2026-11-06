@@ -330,6 +330,8 @@ const toRest = async (page) => { for (let i = 0; i < 120 && !(await has(page, '#
   a = await open({ seed: pmos, hash: '#plan-pmos', cfg: { fig: false } });
   check('6.10 ... without the 3D figure: the drawing, as before', await has(a.page, '.pl-intro-art svg.pl-fig-sm') && !(await has(a.page, '.pl-intro-art img')));
   await done(a);
+  const apk = fs.readFileSync(path.join(here, '..', '..', 'android', 'build-apk.sh'), 'utf8');
+  check('6.11 the APK takes the moving pictures too (build-apk.sh copies fig/t)', /cp -R "\$WEB"\/fig\/t build\/assets\/www\/fig\//.test(apk));
 }
 
 await browser.close();

@@ -94,6 +94,8 @@ mkdir -p build/assets/www/sounds && cp -R "$WEB"/sounds/voice "$WEB"/sounds/musi
 # and its still, made by web/tools/fig3d; without web/fig the player shows the drawings.
 if [ -f "$WEB/fig/fig.js" ]; then
   mkdir -p build/assets/www/fig && cp -R "$WEB"/fig/v "$WEB"/fig/s "$WEB"/fig/fig.js "$WEB"/fig/CREDITS.md build/assets/www/fig/
+  # Version 39.69.2: and the lists' small moving pictures (fig/t, animated WebPs made by web/tools/fig3d/thumbs.py)
+  if [ -d "$WEB/fig/t" ]; then cp -R "$WEB"/fig/t build/assets/www/fig/; fi
 fi
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
