@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Insets;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.hardware.biometrics.BiometricManager;
@@ -32,8 +33,13 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
 import android.view.HapticFeedbackConstants;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import android.webkit.JavascriptInterface;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebBackForwardList;
@@ -58,6 +64,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     private static final int REQ_NOTIFY = 42;
     private static final int REQ_SPEECH = 43;
     private WebView web;
+    /** Holds the WebView, kept clear of the system bars and the keyboard (fitBars). */
+    private FrameLayout root;
     /** A tapped notification's screen (Version 34), opened once the page has loaded. */
     private String pendingGo;
     private ValueCallback<Uri[]> fileCallback;
@@ -72,6 +80,16 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
         tts = new TextToSpeech(this, this);
         pendingGo = goOf(getIntent());
+        root = new FrameLayout(this);
+        setContentView(root);
+        fitBars();
+        // Android 13+ (Play's target SDK 36 leaves no other way): Back reaches the page through this callback, which the
+        // manifest's enableOnBackInvokedCallback switches on for every Android 13+ phone. onBackPressed covers Android 10 to 12.
+        if (Build.VERSION.SDK_INT >= 33) {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, new OnBackInvokedCallback() {
+                @Override public void onBackInvoked() { back(); }
+            });
+        }
         makeWeb();
         WebBackForwardList restored = state != null ? web.restoreState(state) : null;
         if (restored == null || restored.getSize() == 0) web.loadUrl(START);   // nothing to restore, or the restore failed
@@ -79,10 +97,26 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
     private static final String START = "file:///android_asset/www/index.html";
 
+    /** Android 15+ draws an app targeting SDK 35 or later edge to edge, under the status bar, the camera cut-out and the
+     *  navigation bar, and stops resizing it for the keyboard (target 36 has no opt-out). The page keeps clear of all four,
+     *  and the window's own colour shows behind the bars, as it did on target 34. Older phones still do this themselves. */
+    private void fitBars() {
+        if (Build.VERSION.SDK_INT < 35) return;
+        getWindow().setNavigationBarContrastEnforced(false);   // a plain bar behind 3-button navigation, no grey scrim
+        root.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            @Override public WindowInsets onApplyWindowInsets(View v, WindowInsets in) {
+                Insets bars = in.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                Insets keys = in.getInsets(WindowInsets.Type.ime());
+                v.setPadding(bars.left, bars.top, bars.right, Math.max(bars.bottom, keys.bottom));
+                return WindowInsets.CONSUMED;
+            }
+        });
+    }
+
     /** One WebView for the bundled app. Called again if Android kills the page's renderer. */
     private void makeWeb() {
         web = new WebView(this);
-        setContentView(web);
+        root.addView(web, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
@@ -547,8 +581,12 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         super.onActivityResult(req, res, data);
     }
 
+    /** Android 10 to 12. From Android 13 Back comes through the callback registered in onCreate, and Android 16 never calls
+     *  this for an app targeting SDK 36. */
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() { back(); }
+
+    private void back() {
         // An open sheet closes first; otherwise each screen is a #route, so WebView history is the app's own back stack.
         // Version 39.2: Back on Today closes the app ("exit"); Back from another tab's first screen goes to Today (the page does it).
         web.evaluateJavascript("(function(){var r=window.__sakhiBack&&window.__sakhiBack();return r==='exit'?2:(r?1:0);})()", new ValueCallback<String>() {

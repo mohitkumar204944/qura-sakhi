@@ -1,0 +1,3 @@
+{
+  "compression": { "uncompressedGlob": ["assets/**.ogg"] }
+}

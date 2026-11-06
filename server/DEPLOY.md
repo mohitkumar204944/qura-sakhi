@@ -105,6 +105,27 @@ same day.
    - Turning it off again: `supabase secrets unset SAKHI_QURA_HANDOFF_URL`. Requests already waiting fail after 24 hours, and
      the app offers the booking link.
 
+5. **Google Play's reviewer (29 Oct 2026), before the first upload for review.** Play's reviewers can't get a code by
+   WhatsApp or SMS, so one number signs in with a fixed code and nothing is sent (`SERVER_SPEC.md`, section 5.1a). Deploy the
+   function first (section 4), then set the two secrets.
+   1. Pick the number: one Trinaya owns and keeps (a staff SIM, say), never a number a woman could have.
+   2. Set both. The code is made on the spot and goes on the clipboard, for Play Console:
+
+      ```bash
+      cd ~/Desktop/QuraSakhi/sakhi/server && CODE="$(node -e "const c=require('crypto');let s;do s=String(c.randomInt(1e6)).padStart(6,'0');while(/^(\d)\1{5}$|^(\d\d\d)\2$|^(\d\d)\3\3$/.test(s)||'01234567890'.includes(s)||'09876543210'.includes(s));console.log(s)")" && supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_REVIEW_PHONE=+91XXXXXXXXXX SAKHI_REVIEW_CODE="$CODE" && printf %s "$CODE" | pbcopy && unset CODE
+      ```
+
+   3. In Play Console, App content → App access: "All or some functionality is restricted", then give the number (the 10
+      digits after +91) and paste the code. Say: "Follow the joining steps. On 'Your mobile number', enter this number, choose
+      1990 as the year you were born, and tap Send code. No message arrives: enter this code and tap Verify."
+   4. Copy something else, so the code leaves the clipboard.
+
+   Notes:
+   - Turning it off: `supabase secrets unset SAKHI_REVIEW_CODE`. The number then gets real codes like any other.
+   - A wrong number or an easy code leaves it off and logs `review_off`; the reviewer would then wait for a code that never
+     comes. Check with section 5's third command using the reviewer's number: it should answer `"channel":"sms"`, and no SMS
+     should arrive.
+
 ## 4. Deploy the function
 
 ```bash
@@ -151,7 +172,8 @@ cd ~/Desktop/QuraSakhi/sakhi/android && SAKHI_API=https://jovplellzaxebcdekpax.s
 3. If something fails, the function's logs are in the dashboard under Edge Functions → sakhi-api → Logs. They never contain
    codes, tokens or request bodies.
 
-The app built this way is still signed with the prototype key. A public release needs the real signing key first.
+The app built this way is still signed with the prototype key. Google Play gets a bundle signed with the upload key instead
+(`PLAY=1`, see "Google Play" in `android/README.txt`), and Play signs what phones install.
 
 ## 7. Optional: district and state from PIN codes
 
@@ -171,6 +193,27 @@ The export holds phone numbers. Keep it in an encrypted folder, never in git.
 ```bash
 cd ~/Desktop/QuraSakhi/sakhi/server && supabase db dump --data-only --schema sakhi -f ~/<encrypted-folder>/sakhi-$(date +%F).sql
 ```
+
+Keep only the last 4 exports and delete older ones. Sakhi's privacy policy (quranutrition.com/sakhi/privacy) promises that a
+deleted account is gone from the backups within 30 days.
+
+## When someone asks by email to delete her account
+
+Sakhi's deletion page (quranutrition.com/sakhi/delete-account) lets a woman ask by email when she can't use the app.
+
+1. Call the number she gave, from Qura's number, to check it's hers. Don't use WhatsApp: that would tell Meta she uses Sakhi.
+2. In the Supabase dashboard, open the SQL editor and run this with her number (+91 and 10 digits). Her logins, consents and
+   call requests go with the account:
+
+   ```sql
+   delete from sakhi.accounts where phone = '+91XXXXXXXXXX' returning id;
+   delete from sakhi.otp_challenges where phone = '+91XXXXXXXXXX';
+   delete from sakhi.rate_hits where key like 'otp:phone:+91XXXXXXXXXX:%';
+   ```
+
+   No row from the first line means she had no account. Say so in the reply.
+3. If she also asked for her Qura call requests to go, delete her `sakhi` leads in Qura's admin as well.
+4. Reply within 7 days to say it's done. The weekly exports drop her within 30 days (above).
 
 ## Good to know
 

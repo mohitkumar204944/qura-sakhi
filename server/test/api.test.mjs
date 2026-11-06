@@ -132,6 +132,35 @@ for (const kind of ['memory', 'pglite']) {
     check('20 sends an hour per IP; another IP is unaffected', ipOk === 20 && otherIp.status === 200, { ipOk, other: otherIp.json });
   }
 
+  /* ---------- 5.1a Google Play's reviewer (29 Oct 2026): one number, a fixed code, nothing sent ---------- */
+  {
+    const REVIEW = { SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '480913' };
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, REVIEW) });
+    const s = await sendCode(ctx, REVIEW.SAKHI_REVIEW_PHONE);
+    check('the reviewer number gets a challenge and nothing is sent', s.status === 200 && s.json.channel === 'sms' && ctx.send.outbox.length === 0, s.json);
+    check('no send is counted for the reviewer', !(await stats(ctx)).sms_sent && !(await stats(ctx)).wa_sent, await stats(ctx));
+    check('the log notes the reviewer code, never the code itself', ctx.logs.some((l) => l.event === 'review_code') && !JSON.stringify(ctx.logs).includes('480913'));
+    const wrong = await call(ctx.api, 'POST', 'otp/verify', { challenge: s.json.challenge, code: '123456', birth_year: 1990, notice: '2026-10-20' });
+    check('a wrong code is still wrong for the reviewer', wrong.status === 400 && wrong.json.error === 'code_wrong', wrong.json);
+    const v = await call(ctx.api, 'POST', 'otp/verify', { challenge: s.json.challenge, code: '480913', birth_year: 1990, notice: '2026-10-20', lang: 'en', app: 'test', platform: 'android' });
+    check('the fixed code signs the reviewer up', v.status === 200 && v.json.is_new === true && B64URL_TOKEN.test(v.json.token) && v.json.account.phone === REVIEW.SAKHI_REVIEW_PHONE, v.json);
+    check('the reviewer is not counted as a signup', !(await stats(ctx)).signups, await stats(ctx));
+    check('the reviewer number keeps the 30-second limit', (await sendCode(ctx, REVIEW.SAKHI_REVIEW_PHONE)).status === 429);
+    ctx.clock.add(31);
+    const s2 = await sendCode(ctx, REVIEW.SAKHI_REVIEW_PHONE);
+    const back = await call(ctx.api, 'POST', 'otp/verify', { challenge: s2.json.challenge, code: '480913' });
+    check('the fixed code signs the reviewer in again', back.status === 200 && back.json.is_new === false, back.json);
+    const other = await sendCode(ctx, '+919876543210');
+    check('every other number still gets its own code by WhatsApp', other.status === 200 && other.json.channel === 'whatsapp' && ctx.send.outbox.length === 1 && ctx.send.outbox[0].phone === '+919876543210', other.json);
+  }
+  for (const [env, why] of [[{ SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '123456' }, 'an easy code (123456)'],
+    [{ SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '777777' }, 'an easy code (777777)'], [{ SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '121212' }, 'an easy code (121212)'],
+    [{ SAKHI_REVIEW_PHONE: '9000000001', SAKHI_REVIEW_CODE: '480913' }, 'a number without +91'], [{ SAKHI_REVIEW_PHONE: '+919000000001' }, 'no code']]) {
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, env) });
+    const s = await sendCode(ctx, '+919000000001');
+    check('with ' + why + ' the reviewer route is off and a real code is sent', s.status === 200 && ctx.send.outbox.length === 1 && ctx.logs.some((l) => l.event === 'review_off'), s.json);
+  }
+
   /* ---------- 5.2 checking the code, signing up and signing in ---------- */
   {
     const ctx = await newCtx(kind);

@@ -216,6 +216,22 @@ are in a schema called `sakhi`, with RLS on and no policies:
 
    The answer is the same whether or not the number already has an account.
 
+#### 5.1a Google Play's reviewer (29 Oct 2026)
+
+Play's reviewers must be able to sign in, but they can't receive a WhatsApp message or an SMS on an Indian number. So one
+number that Trinaya owns can sign in with a fixed code, set as two secrets (`server/DEPLOY.md`, section 3, step 5):
+
+- `SAKHI_REVIEW_PHONE`, like `+919XXXXXXXXX`: a number Trinaya owns, never one a woman could have.
+- `SAKHI_REVIEW_CODE`: 6 random digits, given to Google only in Play Console's "App access" section.
+
+For that number, step 3 uses the fixed code and step 4 sends nothing and counts nothing. The answer says `"channel":"sms"`,
+so the app shows its usual screen. The log notes `review_code`, never the code. Every other rule stays: the rate limits,
+5 tries and 10 minutes. The reviewer's signup isn't added to `daily_stats.signups`.
+
+The route is off unless both secrets are set, the number matches step 1, and the code is 6 digits and not an easy guess (one
+digit six times, a run like `123456` or `654321`, or a repeat like `121212` or `123123`). A wrong setting logs `review_off`
+at start-up and every number, the reviewer's too, gets a real code. Removing either secret turns it off.
+
 ### 5.2 `POST /v1/otp/verify`
 
 ```json

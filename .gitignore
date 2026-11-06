@@ -2,6 +2,9 @@ node_modules/
 .DS_Store
 # Android build output and signing keys: never commit a keystore
 android/build/
+# the Play bundles and the last one's check APK (PLAY=1 ./build-apk.sh)
+android/build-play/
+*.aab
 *.apk
 *.idsig
 *.keystore

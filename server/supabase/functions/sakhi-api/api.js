@@ -99,6 +99,15 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
   const ipSeed = env.SAKHI_IP_SALT_SEED;
   if (!pepper || pepper.length < 32 || !ipSeed || ipSeed.length < 32) throw new Error('SAKHI_OTP_PEPPER and SAKHI_IP_SALT_SEED must each be at least 32 characters');
 
+  /* 5.1a Google Play's reviewers (29 Oct 2026): they can't get a WhatsApp or an SMS on an Indian number, so one number that
+     Trinaya owns signs in with a fixed code and nothing is sent. Off unless both secrets are set, the number is a valid one and
+     the code isn't an easy guess. Every other rule (the rate limits, 5 tries, 10 minutes) still applies. */
+  const reviewPhone = env.SAKHI_REVIEW_PHONE || '';
+  const reviewCode = env.SAKHI_REVIEW_CODE || '';
+  const easyCode = (c) => /^(\d)\1{5}$/.test(c) || '01234567890'.includes(c) || '09876543210'.includes(c) || /^(\d\d\d)\1$/.test(c) || /^(\d\d)\1\1$/.test(c);
+  const reviewOn = PHONE_RE.test(reviewPhone) && /^\d{6}$/.test(reviewCode) && !easyCode(reviewCode);
+  if ((reviewPhone || reviewCode) && !reviewOn) log('review_off', { reason: 'SAKHI_REVIEW_PHONE must be +91 and a mobile number; SAKHI_REVIEW_CODE 6 digits, not an easy one' });
+
   const limit = async (key, windowS, max, t) => {
     const r = await store.hit(key, windowS, max, t);
     if (!r.ok) fail(429, 'too_many', { retry_after: r.retryAfter });
@@ -146,12 +155,14 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     const ik = await ipKey(req, t, 'otp');
     if (ik) await limit(ik, 3600, 20, t);
     const id = crypto.randomUUID();
-    const code = sixDigits();
-    let used = null;
-    if (channel === 'auto') { try { await send.whatsapp(b.phone, code); used = 'whatsapp'; } catch (e) { log('whatsapp_failed', { message: short(e) }); } }
+    const review = reviewOn && b.phone === reviewPhone;
+    const code = review ? reviewCode : sixDigits();
+    let used = review ? 'sms' : null;   /* the reviewer's code was never sent: the app shows the usual SMS screen */
+    if (review) log('review_code', {});
+    if (!used && channel === 'auto') { try { await send.whatsapp(b.phone, code); used = 'whatsapp'; } catch (e) { log('whatsapp_failed', { message: short(e) }); } }
     if (!used) { try { await send.sms(b.phone, code); used = 'sms'; } catch (e) { log('sms_failed', { message: short(e) }); fail(502, 'send_failed'); } }
     await store.createChallenge({ id, phone: b.phone, channel: used, codeHash: await hmacHex(pepper, id + ':' + code), expiresAt: new Date(t + CODE_TTL_S * 1000).toISOString() });
-    await store.bumpStat(indiaDay(t), used === 'whatsapp' ? 'wa_sent' : 'sms_sent');
+    if (!review) await store.bumpStat(indiaDay(t), used === 'whatsapp' ? 'wa_sent' : 'sms_sent');
     await store.housekeepIfDue(t);
     return reply(200, { challenge: id, channel: used, resend_after: RESEND_S, expires_in: CODE_TTL_S });
   }
@@ -187,7 +198,7 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     if (!acct) {
       acct = await store.createAccount({ phone: c.phone, birth_year: b.birth_year, lang: b.lang || null, platform: b.platform || null, app_version: b.app || null });
       await store.addConsent(acct.id, 'terms', true, b.notice);
-      await store.bumpStat(day, 'signups');
+      if (!(reviewOn && c.phone === reviewPhone)) await store.bumpStat(day, 'signups');   /* Play's reviewer isn't a woman signing up */
       isNew = true;
     } else if (b.notice !== undefined) {
       const last = await store.latestConsent(acct.id, 'terms');

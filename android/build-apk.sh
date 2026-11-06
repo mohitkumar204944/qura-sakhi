@@ -1,16 +1,20 @@
 #!/bin/sh
 # Builds QuraSakhi-prototype.apk from "../web" with the plain Android SDK tools (no Gradle, no Android Studio).
-# Needs: Android SDK platform android-34 + build-tools 35.0.0, and a JDK (Java 17+).
+# With PLAY=1 it builds the Android App Bundle for Google Play instead (see "Google Play" in README.txt).
+# Needs: Android SDK platform android-36 + build-tools 36.0.0, and a JDK (Java 17+); PLAY=1 also needs bundletool.
 set -e
 cd "$(dirname "$0")"
 SDK="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}"
-[ -d "$SDK/platforms/android-34" ] || SDK="$HOME/Library/Android/sdk"
-# build-tools 35: the d8 in 34.0.0 crashes on classes compiled by Java 21.
-BT="$SDK/build-tools/35.0.0"; JAR="$SDK/platforms/android-34/android.jar"
-[ -f "$JAR" ] || { echo "Android SDK not found (looked in $SDK). See README.txt."; exit 1; }
+[ -d "$SDK/platforms/android-36" ] || SDK="$HOME/Library/Android/sdk"
+# Target SDK 36 (Android 16): Google Play's floor for new apps and updates since 31 Aug 2026. MainActivity keeps the page
+# clear of the bars (edge to edge) and takes Back through OnBackInvokedCallback, as Android 16 asks.
+BT="$SDK/build-tools/36.0.0"; JAR="$SDK/platforms/android-36/android.jar"
+[ -f "$JAR" ] && [ -x "$BT/aapt2" ] || { echo "Android SDK platform 36 and build-tools 36.0.0 not found (looked in $SDK). See README.txt."; exit 1; }
 export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home}"
 export PATH="$JAVA_HOME/bin:$PATH"
-WEB="../web"
+# SAKHI_WEB: build from another copy of the web app, e.g. the last commit's while web/ has work in progress:
+#   git archive HEAD web | tar -x -C /tmp/head && cp -R web/care /tmp/head/web/ && SAKHI_WEB=/tmp/head/web ./build-apk.sh
+WEB="${SAKHI_WEB:-../web}"
 VERSION_NAME="${VERSION_NAME:-0.1-prototype}"
 # Version 32 (field-test audit 3.6): testers' phones only take an update with the same signing key and a versionCode at least
 # as high as theirs; otherwise the only way is to uninstall, which deletes the diary. So VERSION_CODE must be given, it may
@@ -53,15 +57,28 @@ esac
 MAX_APK_MB="${MAX_APK_MB:-30}"
 case "$MAX_APK_MB" in ''|*[!0-9]*) echo "MAX_APK_MB must be a whole number of MB (it is \"$MAX_APK_MB\")."; exit 1 ;; esac
 
-if [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
+# Google Play (PLAY=1): an .aab signed with the upload key, never the prototype key. Play signs what phones install with its
+# own key, so a Play build is a new app to the testers' phones: they move their diary with "Move to a new phone".
+UPLOAD_KS="${SAKHI_UPLOAD_KEYSTORE:-sakhi-upload.keystore}"
+BUNDLETOOL="${BUNDLETOOL:-$SDK/bundletool/bundletool-all-1.18.3.jar}"
+if [ "$PLAY" = "1" ]; then
+  case "$VERSION_NAME" in *demo*) echo "A Play build is for real women: VERSION_NAME may not contain \"demo\"."; exit 1 ;; esac
+  [ -f "$BUNDLETOOL" ] || { echo "bundletool not found at $BUNDLETOOL (README.txt, Google Play)."; exit 1; }
+  [ -f "$UPLOAD_KS" ] || { echo "The upload key $UPLOAD_KS is missing: restore it from your backup, or make it once with ./make-upload-key.sh."; exit 1; }
+  # Its password: SAKHI_UPLOAD_PASS, or the Mac's keychain, where make-upload-key.sh put it. Never on the command line.
+  [ -n "$SAKHI_UPLOAD_PASS" ] || SAKHI_UPLOAD_PASS="$(security find-generic-password -s "Qura Sakhi upload key" -a sakhi -w 2>/dev/null || true)"
+  [ -n "$SAKHI_UPLOAD_PASS" ] || { echo "No password for the upload key: set SAKHI_UPLOAD_PASS, or unlock the keychain item \"Qura Sakhi upload key\"."; exit 1; }
+  export SAKHI_UPLOAD_PASS
+elif [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
   echo "sakhi-prototype.keystore is missing. Every update for testers must be signed with the same key: restore it from your"
   echo "backup. Only for a first build that no phone has yet, run again with NEW_KEYSTORE=1."; exit 1
 fi
-BT0="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}/build-tools/35.0.0"; [ -x "$BT0/aapt2" ] || BT0="$HOME/Library/Android/sdk/build-tools/35.0.0"
-if [ -f QuraSakhi-prototype.apk ] && [ -x "$BT0/aapt2" ]; then
-  LAST=$("$BT0/aapt2" dump badging QuraSakhi-prototype.apk 2>/dev/null | sed -n "s/.*versionCode='\([0-9]*\)'.*/\1/p" | head -1)
-  if [ -n "$LAST" ] && [ "$VERSION_CODE" -lt "$LAST" ]; then echo "VERSION_CODE $VERSION_CODE is below the last build ($LAST): phones with $LAST won't take it."; exit 1; fi
-fi
+# One count for both: the last APK built here, and the last bundle for Play (Play refuses a version code it already has).
+for LASTF in QuraSakhi-prototype.apk build-play/last.apk; do
+  [ -f "$LASTF" ] || continue
+  LAST=$("$BT/aapt2" dump badging "$LASTF" 2>/dev/null | sed -n "s/.*versionCode='\([0-9]*\)'.*/\1/p" | head -1)
+  if [ -n "$LAST" ] && [ "$VERSION_CODE" -lt "$LAST" ]; then echo "VERSION_CODE $VERSION_CODE is below the last build ($LAST, $LASTF): phones with $LAST won't take it."; exit 1; fi
+done
 
 rm -rf build && mkdir -p build/assets/www/mods build/classes build/dex build/gen
 
@@ -127,12 +144,46 @@ PY
 # 2. Resources and manifest.
 "$BT/aapt2" compile --dir res -o build/res.zip
 "$BT/aapt2" link -o build/base.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets --java build/gen -0 ogg \
-  --min-sdk-version 29 --target-sdk-version 34 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
+  --min-sdk-version 29 --target-sdk-version 36 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
 
 # 3. Java -> dex.
 javac -nowarn -Xlint:-options -source 8 -target 8 -bootclasspath "$JAR" -d build/classes \
   build/gen/com/quranutrition/sakhi/R.java $(find src -name "*.java")
 "$BT/d8" --min-api 29 --lib "$JAR" --output build/dex $(find build/classes -name '*.class')
+
+# 4 for Play (PLAY=1): the same app as an Android App Bundle. The resources are linked again in bundletool's protobuf format,
+# laid out as the "base" module, bundled (bundle-config.json keeps the sounds uncompressed, as -0 ogg does for the APK, so
+# Android plays them straight from the app), signed with the upload key, then checked: bundletool's own validation, and
+# the APK a phone would get, for its target SDK, its stored sounds and the size ceiling.
+if [ "$PLAY" = "1" ]; then
+  "$BT/aapt2" link --proto-format -o build/proto.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets -0 ogg \
+    --min-sdk-version 29 --target-sdk-version 36 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
+  mkdir -p build/bundle/base/manifest build/bundle/base/dex
+  (cd build/bundle/base && unzip -q ../../proto.apk)
+  mv build/bundle/base/AndroidManifest.xml build/bundle/base/manifest/
+  cp build/dex/classes.dex build/bundle/base/dex/
+  (cd build/bundle/base && zip -q -r -D ../base.zip .)
+  java -jar "$BUNDLETOOL" build-bundle --modules=build/bundle/base.zip --config=bundle-config.json --output=build/unsigned.aab
+  jarsigner -keystore "$UPLOAD_KS" -storepass:env SAKHI_UPLOAD_PASS -sigalg SHA256withRSA -digestalg SHA-256 \
+    -signedjar build/signed.aab build/unsigned.aab upload >/dev/null
+  jarsigner -verify build/signed.aab | grep -q "jar verified" || { echo "The bundle's upload signature didn't verify."; exit 1; }
+  java -jar "$BUNDLETOOL" validate --bundle=build/signed.aab >/dev/null
+  java -jar "$BUNDLETOOL" build-apks --bundle=build/signed.aab --output=build/check.apks --mode=universal   # only looked at, never installed
+  (cd build && unzip -q -o check.apks universal.apk)
+  "$BT/aapt2" dump badging build/universal.apk | grep -q "targetSdkVersion:'36'" || { echo "The bundle doesn't target SDK 36."; exit 1; }
+  if unzip -v build/universal.apk 'assets/www/sounds/*' | awk '$NF ~ /\.ogg$/ && $2 != "Stored"' | grep -q .; then
+    echo "Some sounds are compressed in the bundle: Android can't play those from the app (bundle-config.json)."; exit 1
+  fi
+  APK_BYTES=$(wc -c < build/universal.apk | tr -d ' ')
+  if [ "$APK_BYTES" -gt $((MAX_APK_MB * 1024 * 1024)) ]; then
+    echo "The app is $((APK_BYTES / 1024 / 1024)) MB, over the ${MAX_APK_MB} MB ceiling: shrink it, or raise MAX_APK_MB on purpose." >&2; exit 1
+  fi
+  mkdir -p build-play
+  AAB="build-play/QuraSakhi-$VERSION_NAME-$VERSION_CODE.aab"
+  mv -f build/signed.aab "$AAB" && mv -f build/universal.apk build-play/last.apk
+  echo "Built for Play: $(pwd)/$AAB ($(du -h "$AAB" | cut -f1)). Upload it in Play Console; nothing was installed."
+  exit 0
+fi
 
 # 4. Package, align, sign (prototype debug key, made once and kept next to this script).
 cp build/base.apk build/unaligned.apk

@@ -588,6 +588,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       breastfeeding's basics, the girls' guides on one page, the supplements card, "or a doctor");
     - "Ask a doctor" on every button, with the doctors' line about Qura's doctors.
     Contract: MODULE_API section 114; wording: section 19.71 of the review (waits for the doctors' one read).
+  - `node test/play.mjs` (Google Play, 29 Oct: target SDK 36, edge to edge, Back on Android 13+, the bundle and its upload
+    key; reads the last Play bundle when there is one). The reviewer's sign-in is in `npm run test:server`.
   - `node test/maths.mjs`
   - `node test/smoke.mjs .`
   - `node test/check.mjs all --quick`
@@ -613,6 +615,14 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - It installs and opens the app on the phone if one is on adb. To build without installing, run it with adb off the path:
     `PATH=/usr/bin:/bin:/usr/sbin:/sbin` before the command.
   - Copy the result to `../QuraSakhi-prototype.apk`.
+  - It targets SDK 36 (Play's floor since 31 Aug 2026) with platform 36 and build-tools 36.0.0.
+  - `SAKHI_WEB=<dir>` builds from another copy of the web app, e.g. the last commit's while `web/` holds unfinished work
+    (`android/build-apk.sh` says how). Check `git status web/` before a build: a build copies whatever is there.
+- Google Play: `PLAY=1` with the same variables builds `android/build-play/QuraSakhi-<name>-<code>.aab` (not in git) and
+  installs nothing. Steps, the upload key and what's still needed outside the code: "Google Play" in `android/README.txt`.
+  - The upload key is `android/sakhi-upload.keystore` (not in git); its password is only in the Mac's keychain ("Qura
+    Sakhi upload key"). Never print it or put it on a command line.
+  - Play's reviewers sign in with one number and a fixed code: `server/SERVER_SPEC.md` 5.1a, `server/DEPLOY.md` section 3.5.
 - Care near me data: `node web/tools/care-data.mjs` writes `web/care/` (not in git) from data.gov.in. To rebuild without
   downloading again: `node web/tools/care-data.mjs --from web/tools/care-src` (the 22 Oct lists, also not in git). It needs Mohit's own
   key or his hand-downloaded files: `docs/care-near-me-data-2026-10-22.md`. `build-apk.sh` bundles it when present.
