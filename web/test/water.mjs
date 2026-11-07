@@ -16,7 +16,8 @@
 //     removes them; Coming up leaves them out; the phone gets "Water: a glass now", opening Today;
 //   7 W7: the drinks habit's amount (and before lunch and dinner for the weight goal), the two water myths, the period chapter's
 //     line, the pelvic floor habit's doctor's limit; the Water page by her stage;
-//   8 Hindi at 360 px; 9 no page errors.
+//   8 Hindi at 360 px; 9 no page errors; 10 the phone test's two fixes: water named before day 2 (the reveal, My plan), and the
+//     Water page's tick note only on a day with the water step itself.
 // Usage: node test/water.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -327,6 +328,31 @@ const postSeed = (born, startAgo, bf, x) => Object.assign({ situation: { care: '
   check('8.4 the hot card in Hindi, fitting 360 px', /गर्मी के दिन आ गए हैं/.test(hs) && /दोपहर 12 से 3 बजे/.test(hs) && (await overflow(a)).length === 0, hs.slice(0, 300));
   await done(a);
   TODAY = '2026-11-07';
+}
+
+/* ---------- 10 the phone test (7 Nov, two new accounts on the Flip5): water named before day 2; the tick note only with the step ---------- */
+{
+  let a = await open({ seed: pregSeed(20, 0), hash: 'plan' });
+  check('10.1 My plan on day 1: "From day 2: water, over 2 litres a day"', /From day 2: water, over 2 litres a day/.test(await view(a)), (await view(a)).slice(0, 500));
+  await done(a);
+  a = await open({ seed: pregSeed(20, 1), hash: 'plan' });
+  check('10.2 day 2: no longer named (it is one of her steps)', !/From day 2: water/.test(await view(a)));
+  await done(a);
+  a = await open({ seed: postSeed(30, 0, true), hash: 'plan' });
+  check('10.3 breastfeeding, day 1: "From day 2: water, a glass at every feed"', /From day 2: water, a glass at every feed/.test(await view(a)), (await view(a)).slice(0, 500));
+  await done(a);
+  a = await open({ seed: postSeed(30, 0, false), hash: 'plan' });
+  check('10.4 not breastfeeding: no water line', !/From day 2: water/.test(await view(a)));
+  await done(a);
+  a = await open({ seed: Object.assign(pregSeed(20, 0), { mods: { plan: { next: { pack: 'preg', goalKey: 'food', intake: IK({ psafeW: 20 }) } } } }), hash: 'plan-reveal' });   /* her plan made, waiting for Start */
+  const rv = await view(a);
+  check('10.5 the reveal before Start names it under her steps', /Your plan is ready/.test(rv) && /From day 2: water, over 2 litres a day/.test(rv) && rv.indexOf('From day 2: water') < rv.indexOf('From day 4'), rv.slice(0, 900));
+  await done(a);
+  /* 18 weeks, day 5: no slot for the water step (its line is under her food step), so no tick to quiet the rings */
+  a = await open({ seed: pregSeed(18, 4, {}, { reminders: [0, 1, 2].map((i) => ({ id: 'water-' + (i + 1), mod: 'water', kind: 'water', title: { en: 'Water: a glass now', hi: 'पानी: अभी एक गिलास' }, start: ago(3), every: 1, time: ['11:00', '14:00', '17:00'][i], on: true })) }), hash: 'water' });
+  const wv = await view(a);
+  check('10.6 a day with water only under her food step: the Water page doesn\'t promise a tick', /Up to 3 a day, at the times you pick\./.test(wv) && !/Once you tick water on Today/.test(wv), wv.slice(-400));
+  await done(a);
 }
 
 check('9 no page errors', errsAll.length === 0, errsAll.slice(0, 6));

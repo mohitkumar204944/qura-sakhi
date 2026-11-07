@@ -8003,7 +8003,7 @@ replaces `test/posthog.mjs`; `test/play.mjs` section 6 (the Gradle build); `sign
 Mohit, 7 Nov: "we dont have water intake in plans and reminder and its an important part can you check and advise", then "Build W1
 to W7" on `docs/water-advice-2026-11-07.md` (with its section 2a, the amount by her stage; the advice's defaults for the open choices:
 the reminder only when she turns it on, the hot months April to June everywhere, the new lines to the doctors' next read).
-`test/water.mjs` checks it (63 checks). The amounts: ICMR-NIN's "about 8 glasses (2 litre) of water per day" (2011, Guideline 13), 8 to
+`test/water.mjs` checks it (69 checks). The amounts: ICMR-NIN's "about 8 glasses (2 litre) of water per day" (2011, Guideline 13), 8 to
 12 glasses in pregnancy (Guideline 2), EFSA and IOM for breastfeeding, NHS bladder leaflets for the pelvic floor, ESPEN from 60.
 
 1. **The water step (W1, W2; `mods/plan.js` adapter `water`, `web/progs/v1.js`).** Last in `preg` version 2 (`if: ['pday:2-']`) and in
@@ -8052,6 +8052,13 @@ the reminder only when she turns it on, the hot months April to June everywhere,
    (myth; also on the periods myths page) and "Drinking less water stops swelling in pregnancy" (myth, with the danger sign); My period
    plan's comfort chapter adds "Keep drinking water through your period: about 8 glasses a day. Don’t drink less to change pads less
    often."
+
+8. **The phone test (7 Nov; Mohit: "test on a new account"; two new accounts on the Flip5 in a test copy on the stand-in server).**
+   The water step, the fallback under her food step, "Why?", the Water page and its rings all worked; it found two gaps, fixed here:
+   - the water step joins on day 2, so it is named before it comes (Version 39.45's rule): "From day 2: water, over 2 litres a
+     day" (or "water, a glass at every feed") under her steps on the reveal and on My plan's first day (`waterLater`);
+   - the Water page says a tick on Today quiets the rest of the day only on a day her plan shows the water step itself
+     (`S.plan.waterStep()`), not when water is a line under her food step (`S.plan.waterToday()` stays for the check-in cards).
 
 Plans: `preg@2` and `post@2` re-recorded in `web/progs/baseline.json` (their water step); the golden replay is unchanged. Wording:
 `docs/wording-review-v28.md`, section 19.80 (the new lines wait for the doctors' read).

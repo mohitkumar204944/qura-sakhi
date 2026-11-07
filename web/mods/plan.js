@@ -688,6 +688,7 @@
     const ciB = recCi(d) && !ci ? '<p class="small pl-t-at">' + esc(tf(disc() ? 'plan_th_ci_at' : 'plan_th_rc_at', { t: timeOf(ciAt(d)) })) + '</p>' : due ? '<button type="button" class="btn ' + (fold ? 'sm' : 'primary block') + ' pl-ci-go" data-go="plan-checkin">' + esc(ciLabel()) + '</button>' : '<p class="small pl-t-at' + (ci || all ? ' pl-t-ok' : '') + '">' + esc(ci ? '✓ ' + t(rest ? 'plan_rest_pill' : 'plan_ci_done') : (all ? '✓ ' + t('plan_dc_h') : tf('plan_th_ci_at', { t: timeOf(d.remAt || '20:00') }))) + '</p>';   /* Version 39.22: Today keeps the pink button */
     return '<div class="card pl-steps-card"><div class="row spread pl-steps-h"><h3>' + esc(req.length === 1 ? t('plan_steps_h1') : tf('plan_steps_h', { n: req.length })) + '</h3><span class="small pl-t4-n">' + esc(rest ? t('plan_rest_pill') : countLine(done, part, req.length)) + '</span></div>' + nightBar() +
       '<div class="pl-t4-bar" aria-hidden="true">' + held(acts).map((a) => '<i class="' + (a.state === 'd' ? 'on' : (a.state === 'p' ? 'half' : '')) + '"></i>').join('') + '</div><div class="list">' + acts.map(row).join('') + '</div>' + (acts.some((a) => a.id === 'folic') && S.medLine ? S.medLine() : '') +   /* Version 39.71: her tablet, on her doctor's advice */
+      (waterLater(d) ? '<p class="small pl-later pl-later-w">' + esc(waterLater(d)) + '</p>' : '') +   /* Version 39.80: water, until day 2 */
       (laterStep(d) ? '<p class="small pl-later">' + esc(laterLine(laterStep(d))) + '</p>' : '') +   /* Version 39.45: until it joins */
       (fold ? '' : '<p class="small pl-steps-same">' + esc(t('plan_steps_same')) + '</p>') +
       (!disc() && !ci && !rest && foodDay(d, todayISO()) && !acts.some((a) => FOOD_IDS.indexOf(a.id) >= 0 || a.id === 'fast') ? '<button type="button" class="linkbtn pl-fast-tog" id="pl-fast-tog">' + esc(t('plan_fast_q')) + '</button>' : '') +   /* no food step to ask in (V39.9 review FOOD-01) */
@@ -2864,6 +2865,10 @@
     if (!a && dayWait(d).indexOf('bed') >= 0) return { n: n, a: null };   /* Version 39.66: her bedtime is asked on its day, so it is named without a time */
     return a ? { n: n, a: a } : null;
   }
+  /* Version 39.80 (the phone test): the water step joins on day 2, so it is named before it comes, on the reveal and on My plan's
+     first day (Version 39.45's rule) */
+  const waterLater = (d) => { if (!d || !(pregV2(d) || (postV2(d) && !!(S.state.situation || {}).breastfeeding && !died()))) return null;
+    if (d.start && d.start <= todayISO() && planDay(d) >= 2) return null; return tf('plan_rv_from', { n: 2, x: t(pregnant() ? 'plan_rv_water_p' : 'plan_rv_water_b') }); };
   const laterLine = (l) => tf('plan_rv_from', { n: l.n, x: !l.a ? t('plan_rv_bed0') : (S.state.lang === 'en' ? l.a.title.charAt(0).toLowerCase() + l.a.title.slice(1) : l.a.title) });
   /* about how many minutes a day her first steps take */
   const dayMins = (d) => actionsFor(d).reduce((n, a) => n + (a.kind === 'minutes' ? a.mins : (a.r ? routineMins(a.r, d) : (/^relief-/.test(a.go) ? 3 : 0))), 0);
@@ -2944,7 +2949,8 @@
      urge from day 4), My pregnancy's later steps (the pelvic floor, the quick checks, her baby's movements), My period plan's steps of her cycle (period comfort, a rest on period days, the calm-week plan), how her Kegel
      sets grow, and sets that join another plan; the rest of the old "What happens when" stays on My plan */
   function rvLater(dd) {
-    const out = []; const l = packOf(dd) !== 'preg' ? laterStep(dd) : null; if (l) out.push(laterLine(l));
+    const out = []; const w = waterLater(dd); if (w) out.push(w);   /* Version 39.80: day 2 comes first */
+    const l = packOf(dd) !== 'preg' ? laterStep(dd) : null; if (l) out.push(laterLine(l));
     if (pregV2(dd) && !disc()) pregRvRows().forEach((k) => out.push(typeof k === 'string' ? t(k) : k.x));   /* My pregnancy: her pelvic floor from week 13, the quick checks, her baby's movements from 28 weeks */
     if (perV2(dd) && !disc()) { const ch = t('plan_m2_rv_ch'); for (const r of perRvRows(dd)) { const x = typeof r === 'string' ? t(r) : r.x; if (x === ch) break; out.push(x); } }
     if (pfLead(dd) && !disc()) { const hb = t('plan_pf_rv_h'); const rows = pfRvRows(dd); for (let i = 1; i < rows.length; i++) { const x = typeof rows[i] === 'string' ? t(rows[i]) : rows[i].x; if (x === hb) break; out.push(x); } }   /* My pelvic floor plan: her levels and the urge from day 4 (day 1's step is in the list) */
@@ -4361,6 +4367,7 @@
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
   S.plan = { waterDone: () => { const d = raw(); return !!d && ((dayLog(d, todayISO()).ck || {}).water === 'd'); },   /* Version 39.80 */
+    waterStep: () => { const d = raw(); if (!d || !planOn() || !packOf(d) || pausedFor(d) || selfPaused(d)) return false; return actionsFor(fullD(d)).some((a) => a.id === 'water'); },   /* Version 39.80 */
     waterToday: () => { const d = raw(); if (!d || !planOn() || !packOf(d) || pausedFor(d) || selfPaused(d)) return false; return actionsFor(fullD(d)).some((a) => a.id === 'water' || a.water); },   /* Version 39.80 */
     tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
     titleNow: () => { const d = runningD(); return d ? packTitle(d) : ''; },   /* Version 39.63: a topic for the call form */
@@ -4727,6 +4734,7 @@
         plan_fb_water_p: 'Water helps with constipation and piles, urine infections and hot days. Needing to pee often is normal in pregnancy: keep drinking water; do not cut down.',
         plan_fb_water_b: 'Breastfeeding makes you thirsty: keep water near you and drink a glass at every feed. Drink to your thirst: drinking more than that doesn’t make more milk.',
         plan_a_bfood_w: 'Food and water while you breastfeed', plan_a_bfood_ws: 'Keep water near you, and drink a glass at every feed.',
+        plan_rv_water_p: 'water, over 2 litres a day', plan_rv_water_b: 'water, a glass at every feed',
         plan_pf_h2b: 'Still drinking water through the day?', plan_a_drinks_n: 'About 8 glasses (2 litres) a day, more on hot days.', plan_a_drinks_w: 'Before lunch and dinner, drink a glass or two of water first.',
         plan_fb_pfl: 'Squeezing your pelvic floor every day, the right way, makes the muscles stronger. It takes about 3 months.', plan_fb_pf_find: 'Finding the right muscles first makes every set count.',
         plan_fb_pf_chk: 'Heaviness can have more than one cause. A doctor’s check tells you which, and which exercises are safe.', plan_fb_pf_urge: 'Calming the urge and stretching the time between toilet visits trains the bladder. It takes a few weeks.',
@@ -5144,6 +5152,7 @@
         plan_fb_water_p: 'पानी क़ब्ज़ और बवासीर, पेशाब के इन्फ़ेक्शन और गर्मी के दिनों में मदद करता है। गर्भ में बार-बार पेशाब आना सामान्य है: पानी पीती रहें; कम न करें।',
         plan_fb_water_b: 'स्तनपान से प्यास ज़्यादा लगती है: पास में पानी रखें और हर फ़ीड पर एक गिलास पिएँ। प्यास के हिसाब से पिएँ: उससे ज़्यादा पीने से दूध ज़्यादा नहीं बनता।',
         plan_a_bfood_w: 'स्तनपान के दिनों का खाना और पानी', plan_a_bfood_ws: 'पास में पानी रखें, और हर बार दूध पिलाते समय एक गिलास पानी पिएँ।',
+        plan_rv_water_p: 'पानी, रोज़ 2 लीटर से ज़्यादा', plan_rv_water_b: 'पानी, हर फ़ीड पर एक गिलास',
         plan_pf_h2b: 'क्या अब भी दिन भर पानी पी रही हैं?', plan_a_drinks_n: 'दिन में लगभग 8 गिलास (2 लीटर), गर्मी में और ज़्यादा।', plan_a_drinks_w: 'दोपहर और रात के खाने से पहले एक-दो गिलास पानी पिएँ।',
         plan_fb_pfl: 'रोज़ सही तरीक़े से pelvic floor कसने से मांसपेशियाँ मज़बूत होती हैं। इसमें लगभग 3 महीने लगते हैं।', plan_fb_pf_find: 'पहले सही मांसपेशियाँ पहचानने से हर सेट काम आता है।',
         plan_fb_pf_chk: 'भारीपन के एक से ज़्यादा कारण हो सकते हैं। डॉक्टर की जाँच बताती है कौन सा, और कौन से व्यायाम सुरक्षित हैं।', plan_fb_pf_urge: 'हाजत को शांत करना और शौचालय जाने के बीच का समय बढ़ाना मूत्राशय को सिखाता है। इसमें कुछ हफ़्ते लगते हैं।',

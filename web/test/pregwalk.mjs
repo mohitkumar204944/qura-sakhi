@@ -255,8 +255,8 @@ const BLEED = "Bleeding in pregnancy, or a bad headache with swelling or blurred
     await go(a, 'plan-reveal');   /* Version 39.72: one screen; her later steps are named under her steps */
     const r = await a.page.$$eval('#view .pl-rv-later', (xs) => xs.map((x) => x.textContent.trim())); await done(a); return r; };
   const r10 = await rvRows(10), r30 = await rvRows(30);
-  check('g9 the reveal at 10 weeks, under her steps: the pelvic floor from week 13, the checks at 14 and 28 weeks, the movements from 28', r10.join(' | ') === 'From week 13: your pelvic floor, 1 set a day | At 14 and 28 weeks: a quick check of your 2 safety answers | From 28 weeks: your baby’s movements, in “How did today go?”', r10);
-  check('g9 ... and at 30 weeks: the pelvic floor from day 4, no checks left, the movements each evening', r30.join(' | ') === 'From day 4: your pelvic floor, 1 set a day | Each evening: your baby’s movements, in “How did today go?”', r30);
+  check('g9 the reveal at 10 weeks, under her steps: water from day 2 (Version 39.80), the pelvic floor from week 13, the checks at 14 and 28 weeks, the movements from 28', r10.join(' | ') === 'From day 2: water, over 2 litres a day | From week 13: your pelvic floor, 1 set a day | At 14 and 28 weeks: a quick check of your 2 safety answers | From 28 weeks: your baby’s movements, in “How did today go?”', r10);
+  check('g9 ... and at 30 weeks: water from day 2, the pelvic floor from day 4, no checks left, the movements each evening', r30.join(' | ') === 'From day 2: water, over 2 litres a day | From day 4: your pelvic floor, 1 set a day | Each evening: your baby’s movements, in “How did today go?”', r30);
   const fk = await open({ seed: { situation: sit(10), mods: { food: { type: 'egg', milk: true } } } });
   const n3 = await fk.page.evaluate(() => window.Saathi.plan.intake.count({ stage: 'preg', goal: 'food' }));
   await fk.page.evaluate(() => window.Saathi.plan.offer('food')); await settle(fk.page, 600); await tap(fk, '#pl-in-next');

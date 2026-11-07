@@ -3798,6 +3798,8 @@ New lines (English, then Hindi):
   यानी स्टील का एक भरा गिलास। हल्का पीला पेशाब बताता है कि आप काफ़ी पी रही हैं। अगर डॉक्टर ने कम पीने को कहा है (दिल या गुर्दे की वजह
   से), तो डॉक्टर की बात मानें।) The doctor's limit is also the pelvic floor water habit's How and a line on the Water page.
 - **No slot left after a birth:** "Food and water while you breastfeed" (स्तनपान के दिनों का खाना और पानी).
+- **Named before day 2 (the phone test):** "From day 2: water, over 2 litres a day" (2वें दिन से: पानी, रोज़ 2 लीटर से ज़्यादा);
+  "From day 2: water, a glass at every feed" (2वें दिन से: पानी, हर फ़ीड पर एक गिलास). UI words: the reveal's and My plan's "From day {n}" pattern.
 - **The pelvic floor habit back once a week:** "Still drinking water through the day?" (क्या अब भी दिन भर पानी पी रही हैं?)
 - **The Water page:** "How much for you"; "About 8 glasses (2 litres) a day."; "8 to 12 glasses (2 to 3 litres) a day in your
   pregnancy: at least 2 litres."; "About 10 to 12 glasses (2.5 to 3 litres) a day while you breastfeed, to your thirst. A glass at every

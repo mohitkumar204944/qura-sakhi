@@ -32,6 +32,7 @@
   const pfLeads = () => !!(S.plan && S.plan.pelvic && S.plan.pelvic.on && S.plan.pelvic.on() && S.plan.pelvic.track && S.plan.pelvic.track());
   const old = () => { const a = S.cycle.ageYears ? S.cycle.ageYears() : null; return a != null && a >= 60; };
   const planWater = () => !!(S.plan && S.plan.waterToday && S.plan.waterToday());
+  const waterStep = () => !!(S.plan && S.plan.waterStep && S.plan.waterStep());   /* her water step itself today, so a tick can quiet the rings (the phone test) */
   /* how much for her (the advice's section 2a): a shared phone or discreet mode gets the plain amount, never her stage */
   const amount = () => { if (disc() || shared()) return 'gen'; if (S.cycle.isPregnant()) return 'preg'; if (feeding()) return 'bf'; if (pfLeads()) return 'pf'; if (old()) return 'old'; return 'gen'; };
   const remsOn = () => IDS.some((id) => { const r = S.reminders.get(id); return !!r && r.on !== false; });
@@ -47,7 +48,7 @@
     const times = on ? '<div class="wt-times">' + [0, 1, 2].map((i) => '<label class="small" for="wt-t' + i + '">' + esc(tf('water_rem_n', { n: i + 1 })) + '</label><select id="wt-t' + i + '" data-wt-t="' + i + '">' + TIMES.map((x) => '<option value="' + x + '"' + (D().times[i] === x ? ' selected' : '') + '>' + esc(clock(x)) + '</option>').join('') + '</select>').join('') + '</div>' : '';
     v.innerHTML = S.backRow(t('water_h'), 'home', false) +
       '<div class="card wt-amt"><span class="eyebrow">' + esc(t('water_amt_h')) + '</span><p class="wt-big">' + esc(t('water_amt_' + k)) + '</p><ul class="wt-ul">' + lines.map(li).join('') + '</ul></div>' +
-      (can ? '<div class="card wt-rem"><label class="item wt-rem-row"><span class="body"><strong>' + esc(t('water_rem_h')) + '</strong><span>' + esc(t('water_rem_s') + (planWater() ? ' ' + t('water_rem_q') : '')) + '</span></span><input type="checkbox" id="wt-rem" aria-label="' + esc(t('water_rem_h')) + '"' + (on ? ' checked' : '') + '></label>' + times + '</div>' : S.needDiary());
+      (can ? '<div class="card wt-rem"><label class="item wt-rem-row"><span class="body"><strong>' + esc(t('water_rem_h')) + '</strong><span>' + esc(t('water_rem_s') + (waterStep() ? ' ' + t('water_rem_q') : '')) + '</span></span><input type="checkbox" id="wt-rem" aria-label="' + esc(t('water_rem_h')) + '"' + (on ? ' checked' : '') + '></label>' + times + '</div>' : S.needDiary());
     S.wire(v);
     const sw = v.querySelector('#wt-rem');
     if (sw) sw.addEventListener('change', () => {
