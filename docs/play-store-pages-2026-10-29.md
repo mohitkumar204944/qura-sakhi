@@ -16,7 +16,33 @@ Every fact here comes from Sakhi's code and spec on 29 Oct 2026:
 
 The pages and the Data safety answers say the same things, so the two won't contradict each other.
 
+**Updated 7 Nov 2026** (Mohit: "Fix the notes"), to match the app as of Version 39.77 (`d3112de`):
+- the emergency line: "Go to the nearest hospital now", with the ambulance (108, or 102 in pregnancy), not "call 112" (Version 39.70);
+- Tele-MANAS, the self-checks and the Govt. services pages are gone from the app (Versions 39.68 and 39.70);
+- "Share how I use Sakhi" (PostHog, events only, on until she turns it off; Version 39.60) is now in the privacy page, the
+  deletion page and the Data safety answers, as `docs/play-upload-audit-2026-11-04.md` (B1) set out;
+- the "See a doctor" page opens eSanjeevani, the government's free online doctor (Version 39.77);
+- no doctor is named on the pages (Mohit, 6 Nov: "Dont give doctor names anywhere").
+
+**Updated again 7 Nov 2026** (Mohit: "i want to move to firebase"; Version 39.79, MODULE_API section 122): "Share how I use Sakhi"
+now goes to Google Firebase Analytics, through the app's own code, instead of PostHog. The same switch and rules; Google also sees
+the phone's type and the rough area from the connection; it keeps the data 14 months (set in Google Analytics, 7 Nov). Every
+PostHog line below is now a Firebase line, and the Data safety rows say "through Firebase Analytics".
+
+Still for Mohit and counsel: whether usage sharing on by default meets the DPDP Act's consent (the audit's B3), and the page's own
+promise "If we ever want to collect something new, Sakhi asks you in the app first", since it started on by default for women who
+joined before it (PostHog from Version 39.60, Firebase from Version 39.79).
+
 ## Before you send the prompt: fill in or decide
+
+**Decided 7 Nov 2026:** the Grievance Officer is Mohit Kumar, at Trinaya Wellness LLP's registered address (E-1-121, Chitrakoot
+Yojna, Chitrakoot Marg, Vaishali Nagar, Jaipur, Rajasthan 302021), email hello@quranutrition.com. The pages went live on 7 Nov at
+https://quranutrition.com/sakhi/privacy and https://quranutrition.com/sakhi/delete-account (www redirects there); use these in
+Play Console. The first deploy dropped the Grievance Officer section and left /sakhi itself loading Meta Pixel, Google Analytics and
+Google Ads remarketing; the follow-up deploy fixed both (checked 7 Nov: the Grievance Officer section and the Hindi line are on the
+privacy page, and /sakhi, /hi/sakhi and both pages make no request outside quranutrition.com). The app's builds carry the same
+details from vc 140 (`SAKHI_GRIEVANCE`, `SAKHI_PRIVACY`), and from vc 142 the app drops Play's install referrer, so Analytics never
+learns which ad or link she installed Sakhi from.
 
 1. **Grievance Officer:** name, Trinaya Wellness LLP's registered address, and email. These are the same details the APK's
    `SAKHI_GRIEVANCE` waits for. Put them in the prompt's "Values" block.
@@ -46,9 +72,9 @@ separate repo you don't need. Every fact you need is below. Don't add, drop or s
 what you find in Qura's code or in Qura's own privacy policy, stop and tell Mohit.
 
 VALUES (Mohit fills these in; if any is still in square brackets, stop and ask him; never publish a bracket)
-- Grievance Officer: [NAME]
-- Trinaya Wellness LLP's registered address: [ADDRESS]
-- Email for privacy questions and deletion requests: [EMAIL]
+- Grievance Officer: Mohit Kumar
+- Trinaya Wellness LLP's registered address: E-1-121, Chitrakoot Yojna, Chitrakoot Marg, Vaishali Nagar, Jaipur, Rajasthan 302021
+- Email for privacy questions and deletion requests: hello@quranutrition.com
 
 WHAT TO BUILD
 1. Find the existing Sakhi page (quranutrition.com/sakhi, built in a Qura session on 25 Oct from Mohit's handoff folder). Use
@@ -81,7 +107,8 @@ RULES FOR BOTH PAGES
   - apply the humanizer skill (.claude/skills/humanizer/SKILL.md) in Dr. Megha's voice to the two page titles and to
     "The short version" only;
   - leave every other line as written;
-  - never change a fact, number, time limit, name or promise.
+  - never change a fact, number, time limit, name or promise;
+  - name no doctor anywhere on the pages (Mohit, 6 Nov).
 - Qura's own privacy policy:
   - Find it on the site and link to it wherever the text says {Qura's privacy policy}.
   - Where the text says {Qura lead retention}: if Qura's policy says how long Qura keeps leads or booking requests, put
@@ -113,7 +140,8 @@ Qura Sakhi ("Sakhi") is a free app for women's reproductive health, made by Qura
 - To run your account, we keep your mobile number and a few details on a server in Mumbai, until you delete your account.
 - Your sign-in code goes by WhatsApp (Meta) or by SMS (AuthKey). The message holds only the code.
 - If you ask Qura to call you, only what you choose to share goes to Qura's care team.
-- No ads. We don't sell your data, and the app has no advertising or tracking tools.
+- No ads. We don't sell your data, and the app has no advertising tools. To learn which parts of Sakhi help, it tells Google
+  Firebase Analytics which screens you open and where you tap, with no name or number and never your diary. You can turn this off.
 - You can delete your account in the app at any time, or ask us by email.
 
 ## What stays only on your phone
@@ -177,12 +205,19 @@ Your Sakhi account is kept on a server in Mumbai, run for us by Supabase.
 - Deleting your Sakhi account doesn't remove these calls from Qura's records. To have them deleted too, ask us (see
   "Deleting your account").
 
-## Usage counts ("what helps"), only if you turn them on
+## How you use Sakhi (Google Firebase Analytics), until you turn it off
 
-- They're off unless you turn them on.
-- Once a month, Sakhi sends which of its tools you used and on about how many days (1, 2 to 5, or 6 or more), with no account
-  and no number. We keep only monthly totals across all phones.
-- Tool names can show your stage, for example the pregnancy plan. Turning the counts off deletes them on your phone.
+- To learn which parts of Sakhi help, the app sends Google Firebase Analytics which screens you open, how long you stay, where
+  you tap, and when something on a screen fails to work (without what it said). Google does this for us, on its own servers,
+  which can be outside India.
+- With it, Google also sees your phone's type, its Android and app versions and language, and your rough area from the internet
+  connection. Never your exact place.
+- It never gets the words on a screen, your diary, your name, your number or your account. Sakhi never uses an advertising ID,
+  and ad personalisation is off.
+- Each phone has a random ID for this that isn't linked to your account. Turning it off deletes that ID on your phone.
+- Screen names can show your stage, for example the pregnancy plan.
+- Nothing is sent from private screens, while Sakhi is locked, in discreet mode, or on a phone marked as shared.
+- Turn it off any time on the Me page, in Privacy.
 
 ## Keeping it safe
 
@@ -195,14 +230,15 @@ Your Sakhi account is kept on a server in Mumbai, run for us by Supabase.
 ## What we never do
 
 - We never receive your diary.
-- No ads, no advertising tools and no trackers in the app. We don't sell or rent your data.
+- No ads and no advertising tools in the app. Google Firebase Analytics (above) is the only service that learns how Sakhi is
+  used, and you can turn it off. We don't sell or rent your data.
 - We don't send your account details to Meta or any ad platform. Meta is involved only when your sign-in code goes by
   WhatsApp, and when Qura confirms a booked consult on WhatsApp.
 
 ## Links that leave Sakhi
 
-Websites, phone calls, WhatsApp and your phone's share screen open outside Sakhi and follow their own policies. Qura's booking
-page follows {Qura's privacy policy}.
+Websites, phone calls, WhatsApp and your phone's share screen open outside Sakhi and follow their own policies. One of the
+websites is eSanjeevani, the government's free online doctor. Qura's booking page follows {Qura's privacy policy}.
 
 ## Under 18
 
@@ -216,8 +252,8 @@ safety guide and the Learn pages, which need no account, and nothing they type i
 - Sign-in codes: deleted within a day.
 - What you write and tick when you ask Qura to call you: on Sakhi's server only until Qura has it, 24 hours at most.
 - Weekly backups: a deleted account leaves them within 30 days.
-- Totals with no name or number: kept. These are the daily counts of signups and active users, and the monthly "what helps"
-  totals.
+- How you use Sakhi, at Google Firebase Analytics: 14 months. It has no name or number, so it can't be tied to your account.
+- Totals with no name or number: kept. These are the daily counts of signups and active users.
 
 ## Your rights
 
@@ -256,7 +292,10 @@ WhatsApp (Meta) को, या SMS के लिए AuthKey को जाता 
 पहला नाम और नंबर, आपकी लिखी बात और डायरी के सिर्फ़ वही हिस्से जो आप टिक करें, Sakhi के सर्वर से होकर Qura की care टीम को
 जाते हैं; Qura को मिलते ही सर्वर उन्हें मिटा देता है।
 
-- कोई विज्ञापन नहीं। हम आपका डेटा नहीं बेचते, और ऐप में विज्ञापन या ट्रैकिंग का कोई टूल नहीं है।
+- कोई विज्ञापन नहीं। हम आपका डेटा नहीं बेचते, और ऐप में विज्ञापन का कोई टूल नहीं है।
+- आप Sakhi कैसे इस्तेमाल करती हैं: आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं, यह Google Firebase
+  Analytics के पास जाता है, आपके फ़ोन के प्रकार और मोटे-मोटे इलाके के साथ, बिना नाम या नंबर के; पन्नों पर लिखे शब्द या आपकी डायरी
+  कभी नहीं। इसे कभी भी “मैं” पन्ने पर, निजता में बंद कर सकती हैं।
 - अकाउंट मिटाने के लिए: Sakhi में “मैं” → सबसे ऊपर अपना नाम → “मेरा अकाउंट मिटाएँ” → “हाँ, मिटाएँ”। या [EMAIL] पर ईमेल
   करें।
 - आपकी डायरी हमारे सर्वर पर कभी नहीं आती। उसे हटाने के लिए “मैं” पन्ने पर “इस फ़ोन से सब कुछ delete करें” दबाएँ, या Sakhi
@@ -303,8 +342,9 @@ If you also want the calls you asked Qura for deleted, say so in the same email.
 - **Calls you asked Qura for:** Qura's care team keeps them under {Qura's privacy policy}, unless you ask us to delete them
   (above).
 - **Backups:** our encrypted weekly backups still hold your account for up to 30 days. Then it's gone from them too.
-- **Totals with no name or number:** the daily counts of signups and active users, and the monthly "what helps" totals. They
-  don't identify you, and they stay.
+- **How you used Sakhi, at Google Firebase Analytics:** it has no name or number, so it can't be tied to your account; Google
+  keeps it for 14 months. Turn "Share how I use Sakhi" off on the Me page to stop it and delete the phone's random ID.
+- **Totals with no name or number:** the daily counts of signups and active users. They don't identify you, and they stay.
 
 ---
 
@@ -331,6 +371,9 @@ Qura Sakhi को Qura (Trinaya Wellness LLP) बनाता है। आप �
 - **आपकी डायरी** हमारे सर्वर पर कभी नहीं थी। वह आपके फ़ोन पर रहती है, जब तक आप “मैं” पन्ने पर “इस फ़ोन से सब कुछ delete
   करें” न दबाएँ या Sakhi को फ़ोन से न हटा दें।
 - **बैकअप:** हमारे हफ़्ते के बैकअप में आपका अकाउंट ज़्यादा से ज़्यादा 30 दिन रहता है, फिर वहाँ से भी मिट जाता है।
+- **आप Sakhi कैसे इस्तेमाल करती थीं (Google Firebase Analytics):** इसमें नाम या नंबर नहीं होता, इसलिए यह आपके अकाउंट से नहीं
+  जुड़ता; Google इसे 14 महीने रखता है। “मैं” पन्ने पर “मैं Sakhi कैसे इस्तेमाल करती हूँ, यह साझा करें” बंद करें, तो यह रुक जाता है
+  और फ़ोन की गुमनाम पहचान मिट जाती है।
 - **बिना नाम या नंबर वाली गिनती** (कितनी महिलाओं ने साइन-अप किया या ऐप खोला) बनी रहती है; उससे आपकी पहचान नहीं होती।
 ````
 
@@ -342,34 +385,36 @@ Qura Sakhi को Qura (Trinaya Wellness LLP) बनाता है। आप �
 - Does your app collect or share any of the required user data types? **Yes.**
 - Is all of the user data collected by your app encrypted in transit? **Yes** (HTTPS only).
 - Account creation: **Yes**. Pick the option for a phone number with a one-time code and no password.
-- Delete account URL: **https://www.quranutrition.com/sakhi/delete-account**
+- Delete account URL: **https://quranutrition.com/sakhi/delete-account**
 - A way to delete some data without deleting the account? **No.** The diary is never collected, so its "Delete everything"
   doesn't count here.
 
 **Data types: everything below is "Collected", never "Shared", and none is processed only ephemerally.**
 - Nothing is "Shared":
-  - Supabase (the server), Meta (the WhatsApp code) and AuthKey (the SMS) are service providers acting for Trinaya. Play
-    doesn't count service providers as sharing.
+  - Supabase (the server), Meta (the WhatsApp code), AuthKey (the SMS) and Google Firebase Analytics (how she uses Sakhi) are
+    service providers acting for Trinaya. Play doesn't count service providers as sharing.
   - Qura is Trinaya itself.
 
 | Category → type | What it is in Sakhi | Required or optional | Purposes |
 |---|---|---|---|
-| Location → Approximate location | Her PIN code, and the district and state from it | Required | Account management, Analytics |
+| Location → Approximate location | Her PIN code, and the district and state from it; and, through Firebase Analytics, the rough area from the connection | Required | Account management, Analytics |
 | Personal info → Name | Her first name | Required | Account management, App functionality |
 | Personal info → Email address | Her email, if she gives it | Optional | Account management |
 | Personal info → User IDs | Sakhi's account ID | Required | Account management |
 | Personal info → Phone number | Her mobile number | Required | Account management, App functionality, Developer communications (updates, only if she says yes) |
 | Personal info → Other info | Her year of birth (the 18+ check); how she heard of Sakhi (optional) | Required | Account management, Analytics |
-| Health and fitness → Health info | Only the diary parts she ticks when she asks Qura to call her | Optional | App functionality |
+| Health and fitness → Health info | Only the diary parts she ticks when she asks Qura to call her; and, through Firebase Analytics, screen names that can show her stage (the safer reading) | Optional | App functionality, Analytics |
 | Messages → Other in-app messages | What she writes to Qura's care team (up to 120 characters) | Optional | App functionality |
-| App activity → App interactions | The last day she opened Sakhi; with her switch on, the monthly tool counts | Required | Analytics |
+| App activity → App interactions | The last day she opened Sakhi (required); through Firebase Analytics, the screens she opens, how long she stays and where she taps (she can turn this off) | Required | Analytics |
+| App info and performance → Diagnostics | Through Firebase Analytics, when something on a screen fails, without its message | Optional | Analytics |
+| Device or other IDs → Device or other IDs | Through Firebase Analytics, a random ID for the app on the phone (the app instance ID), not linked to her account; off deletes it | Optional | Analytics |
 
 **Not collected:** leave all of these unticked.
 - Precise location; financial info.
 - Photos, videos, audio, files and documents: the reports vault and voice typing stay on the phone.
 - Calendar, contacts, SMS, emails, web browsing, installed apps, search history.
-- Crash logs and diagnostics: Sakhi has no crash reporting.
-- Device IDs.
+- Crash logs: Sakhi has no crash reporting (a screen's errors are Diagnostics, above).
+- The advertising ID: Sakhi doesn't read it, and Firebase is set never to collect it (the AD_ID permission is removed from the app).
 
 ### The health apps declaration (App content → Health apps)
 
@@ -385,12 +430,12 @@ Qura Sakhi को Qura (Trinaya Wellness LLP) बनाता है। आप �
 | Medical | Reproductive and Sexual Health | Trying for a baby, pregnancy, after the birth, contraception, sexual health learning |
 | Medical | Diseases and Conditions Management | The PMOS plan, anaemia and iron, midlife and menopause |
 | Medical | Medication and Treatment Management | Iron and folic acid tablet reminders, medicine reminders |
-| Medical | Healthcare Services and Management | "Ask Qura to call me", the report for her doctor, Care near me, reports kept on the phone |
-| Medical | Medical Reference and Education | The Learn library and quick answers, plus the self-checks: Google counts symptom checkers here |
-| Medical | Emergency and First Aid | Danger signs, "Call 112 now", Help and safety |
-| Medical | Mental and Behavioral Health | The mood check after a birth, Tele-MANAS 14416 for thoughts of harm |
+| Medical | Healthcare Services and Management | "Ask Qura to call me", the report for her doctor, the "See a doctor" page (her own doctor's number, eSanjeevani), Care near me, reports kept on the phone |
+| Medical | Medical Reference and Education | The Learn library and quick answers, plus the symptom guides: Google counts symptom checkers here |
+| Medical | Emergency and First Aid | Danger signs, "Go to the nearest hospital now" with the ambulance (108, or 102 in pregnancy), Help and safety |
+| Medical | Mental and Behavioral Health | The mood check after a birth, and low mood as a sign in her diary |
 | Medical | Physical Therapy and Rehabilitation | Pelvic floor exercises in pregnancy and after the birth |
-| Medical | Disease Prevention and Public Health | Government schemes, free check-ups, public facilities in Care near me |
+| Medical | Disease Prevention and Public Health | Free check-ups and pregnancy schemes for a woman who uses government care, screening after 30, the HPV vaccine, Care near me and eSanjeevani |
 
 Ticking a borderline category is safer than leaving out something the reviewer finds.
 
@@ -401,11 +446,11 @@ Ticking a borderline category is safer than leaving out something the reviewer f
 
 ### On the same visit
 
-- **Privacy policy** (App content): https://www.quranutrition.com/sakhi/privacy
+- **Privacy policy** (App content): https://quranutrition.com/sakhi/privacy
 - **App access:** the reviewer's number and code, from `server/DEPLOY.md`, section 3, step 5.
 - **Ads:** No.
 - **Target audience:** 18 and over. The diary refuses anyone younger, who sees only the safety guide and Learn.
 - **The store description:** Play's health apps policy wants a clear disclaimer. Use this line:
 
   > Qura Sakhi gives general health information and self-care support. It is not a medical device and doesn't diagnose. For
-  > a health problem, see a doctor. In an emergency, call 112.
+  > a health problem, see a doctor. In an emergency, go to the nearest hospital now (ambulance: 108).
