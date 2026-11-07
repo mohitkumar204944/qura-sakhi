@@ -325,7 +325,7 @@ body.discreet .topbar .brand .bname { font-family: var(--font-body); font-size: 
 
 /* Forms keep their main button in reach. */
 .sheet-foot { position: sticky; bottom: calc(-20px - env(safe-area-inset-bottom, 0px)); background: var(--bg); padding: 10px 0 calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 2; }
-.sticky-cta { position: sticky; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 3; }
+.sticky-cta { position: sticky; bottom: calc(var(--tb-gap, 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 3; }
 
 /* Progressive disclosure */
 .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -675,13 +675,13 @@ body.hi .hand { font-family: 'Kalam', var(--font-hi); }
 .symcat.note textarea:focus-visible { outline: 2px solid var(--hue); outline-offset: 1px; }
 
 /* The + button and its menu */
-.fab { position: fixed; z-index: 19; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); right: 16px; right: calc(50% - min(215px, 50%) + 16px); width: 58px; height: 58px; border-radius: 29px; border: none; background: var(--accent-strong); color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(196, 47, 92, 0.32); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s; -webkit-tap-highlight-color: transparent; }
+.fab { position: fixed; z-index: 19; bottom: calc(var(--tb-gap, 74px) + 10px + env(safe-area-inset-bottom, 0px)); right: 16px; right: calc(50% - min(215px, 50%) + 16px); width: 58px; height: 58px; border-radius: 29px; border: none; background: var(--accent-strong); color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(196, 47, 92, 0.32); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s; -webkit-tap-highlight-color: transparent; }
 .fab svg { width: 28px; height: 28px; transition: transform 0.2s ease; }
 .fab.open svg { transform: rotate(45deg); }
 .fab.away { opacity: 0; transform: translateY(14px) scale(0.85); visibility: hidden; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s; }
 .fab:active { transform: scale(0.94); }
 .fab-bg { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 18; background: rgba(247, 244, 248, 0.78); background: color-mix(in srgb, var(--bg) 78%, transparent); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-.fab-menu { position: fixed; z-index: 19; right: 16px; right: calc(50% - min(215px, 50%) + 21px); bottom: calc(154px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.fab-menu { position: fixed; z-index: 19; right: 16px; right: calc(50% - min(215px, 50%) + 21px); bottom: calc(var(--tb-gap, 74px) + 80px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .fab-date { background: var(--ink); color: var(--ink-text); padding: 6px 14px; border-radius: 16px; font-weight: 600; font-size: 14px; animation: fab-in 0.18s ease both; }
 .fab-it { display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; color: var(--fg); font-weight: 600; font-size: 15px; animation: fab-in 0.18s ease both; animation-delay: calc(var(--i, 0) * 30ms); -webkit-tap-highlight-color: transparent; }
 .fab-it .fl { background: var(--card); padding: 8px 14px; border-radius: 14px; box-shadow: var(--shadow); }
@@ -692,7 +692,7 @@ body.hi .hand { font-family: 'Kalam', var(--font-hi); }
 @keyframes fab-in { from { opacity: 0; transform: translateY(10px); } }
 body.has-fab main, body.fab-page main { padding-bottom: 168px; }
 body.has-fab .toast { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
-@media (min-width: 600px) { .fab { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); } .fab-menu { bottom: calc(170px + env(safe-area-inset-bottom, 0px)); } }
+@media (min-width: 600px) { .fab { bottom: calc(var(--tb-gap, 74px) + 10px + env(safe-area-inset-bottom, 0px)); } .fab-menu { bottom: calc(var(--tb-gap, 74px) + 80px + env(safe-area-inset-bottom, 0px)); } }
 
 /* Offline (no web fonts) the fallback serif is wider: the brand shrinks a little and is clipped, never drawn under the buttons. */
 .topbar .brand { overflow: hidden; }
@@ -1371,4 +1371,10 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 .sheet .handle { display: block; position: relative; flex: none; width: 96px; height: 48px; min-height: 48px; margin: -22px auto -22px; padding: 0; border: none; border-radius: 24px; background: none; box-shadow: none; }
 .sheet .handle::before { content: ''; position: absolute; left: 28px; right: 28px; top: 22px; height: 4px; border-radius: 2px; background: var(--line); }
 .fab.hid { opacity: 0; transform: translateY(14px) scale(0.85); visibility: hidden; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s; }
-@media (pointer: coarse) { .su:has(input:focus, select:focus) .ob-av { display: none; } }
+@media (pointer: coarse) { .su.su-typing .ob-av { display: none; } }   /* Version 39.78: set on her first tap in a box (core suTyping), never undone on blur */
+
+/* Version 39.78 (launch QA B4): what sits above the tab bar (the players' controls, the check-in's Save, the + button, Wind down's bar)
+   takes its real height, --tb-h from core (a ResizeObserver), not a fixed 74 px: large text grows the bar to 106 px and hid Pause, Next
+   and Stop under it. 65 px is the bar at 100% text, so nothing moves there; on a wide screen the bar floats 16 px up. */
+:root { --tb-gap: calc(var(--tb-h, 65px) + 9px); }
+@media (min-width: 600px) { :root { --tb-gap: calc(var(--tb-h, 65px) + 25px); } }

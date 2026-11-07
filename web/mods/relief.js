@@ -260,8 +260,11 @@
       /* Version 39.67: the 3D figure on the renders' own light grey, as in the player */
       '.rl-figbox { width: 100%; max-width: 240px; border-radius: 20px; overflow: hidden; background: #EBEBEB; } .rl-3d { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; }' +
       '@media (max-height: 860px) { .rl-figbox { max-width: 200px; } } @media (max-height: 720px) { .rl-figbox { max-width: 120px; } .rl-player .rl-timer { width: 96px; height: 96px; } .rl-player .rl-timer b { font-size: 22px; } .rl-player { gap: 8px; } }' +
+      /* Version 39.78 (the phone check): with Wind down's bar up the controls sit about 70 px higher, so the picture gives that room back and the
+         timer stays above Pause and Next (it was half under them) */
+      'body.cm-mini-on .rl-figbox { max-width: 120px; }' +
       /* Version 39.67: Pause and Next stay above the tab bar, as the player's (Version 39.39, Mohit's Flip5: "fix the buttons") */
-      '.rl-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .rl-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }' +
+      '.rl-ctl { position: sticky; bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .rl-ctl { bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); } }' +
       '.rl-dots { display: flex; justify-content: center; gap: 6px; } .rl-dots i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); } .rl-dots i.on { background: var(--accent); } .rl-dots i.done { background: var(--accent-2); }' +
       '.rl-timer { position: relative; width: 132px; height: 132px; align-self: center; } .rl-timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }' +
       '.rl-timer .trk { fill: none; stroke: var(--line); stroke-width: 8; } .rl-timer .arc { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear; }' +

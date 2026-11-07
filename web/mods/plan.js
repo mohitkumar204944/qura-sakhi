@@ -1263,7 +1263,10 @@
     const fit = () => {
       const box = v.querySelector('#pl-step .pl-figbox'), ring = v.querySelector('.pl-breath-wrap, .pl-timer'), ctl = v.querySelector('.pl-ctl');
       if (!box || !ring || !ctl || !box.isConnected) return;
-      const tab = document.querySelector('.tabbar'); const limit = (tab ? tab.getBoundingClientRect().top : window.innerHeight) - ctl.offsetHeight - 4;
+      /* Version 39.78 (the review): where the controls really stick, from their own sticky bottom (the tab bar's height, and Wind down's bar
+         when it shows); the tab bar's top alone hid the circle under the lifted controls */
+      const tab = document.querySelector('.tabbar'); const cb = parseFloat(getComputedStyle(ctl).bottom);
+      const limit = (isFinite(cb) && cb > 0 ? window.innerHeight - cb + 9 : (tab ? tab.getBoundingClientRect().top : window.innerHeight)) - ctl.offsetHeight - 4;   /* + 9: --tb-gap's own 9 px, so with no bar up nothing moves */
       box.style.maxWidth = '';
       let w = box.getBoundingClientRect().width;
       while (w > 120 && ring.getBoundingClientRect().bottom + window.scrollY > limit) { w = Math.max(120, w - 16); box.style.maxWidth = w + 'px'; }
@@ -2191,8 +2194,8 @@
     if (dg && a.gap == null && !a.dgSeen) { a.gap = dg.gap; a.skips = a.skips || dg.skips; a.dgSeen = true; }
     if (id === 'day' && a.food == null && S.food && S.food.diet) { const dd = S.food.diet(); a.food = dd.type; if (a.milk == null) a.milk = dd.milk ? 'y' : 'n'; }
     if (id === 'day') dayPre(a);
-    const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); } };
-    const prev = () => { if (a.iq <= 0 || ((a.fromJoin || a.given) && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi; Version 39.72 (the doctors' review): the same for a goal she picked anywhere, so it is asked once */
+    const next = () => { const l2 = screensOf(a); if (a.iq + 1 >= l2.length) ctx.done(); else { a.iq++; ctx.redraw(); window.scrollTo(0, 0); } };   /* Version 39.78 (the review): the next question at its top, as joining's */
+    const prev = () => { if (a.iq <= 0 || ((a.fromJoin || a.given) && a.goal && a.iq <= 1)) ctx.prev(); else { a.iq--; ctx.redraw(); window.scrollTo(0, 0); } };   /* Version 39.61: from joining, her goal is known, so Back returns to Your Sakhi; Version 39.72 (the doctors' review): the same for a goal she picked anywhere, so it is asked once */
     const ask = (k) => { const q = Q[k]; const cur = k === 'mheart' && a[k] === 'ok' ? 'n' : a[k]; const multi = q[2] === 'multi';   /* Version 39.51: after her doctor's OK, No shows */
       const mk = (o, h) => (k === 'food' && S.food && S.food.mark ? h.replace(/>([^<]*)<\/button>$/, '>' + S.food.mark(o[0]) + '$1</button>') : h);   /* Version 39.8: the veg and non-veg marks */
       return '<h2 class="ob-h2">' + esc(t(q[0])) + '</h2><div class="chips" role="group" aria-label="' + esc(t(q[0])) + '">' + q[1].map((o) => mk(o, ctx.chip(multi ? 'data-pl-m' : 'data-pl-q', k + ':' + o[0], t(o[1]), multi ? (cur || []).indexOf(o[0]) >= 0 : String(cur) === o[0]))).join('') + '</div>'; };
@@ -2420,7 +2423,7 @@
     d.start = startDay(when); d.go = true; d.keep = false; d.weeks = {}; d.doc = null; d.lapse = null; d.per = null; d.endSeen = null; d.started = todayISO(); delete d.remGone;
     d.pv = (specOf(d.pack || 'cycle') || {}).ver || 1;   /* Version 39.4: the version of her plan she started */
     if (d.goalKey) S.state.goals = [d.goalKey].concat((Array.isArray(S.state.goals) ? S.state.goals : []).filter((x) => x !== d.goalKey));   /* Version 39.48 (Mohit's switch walk): the plan she starts leads her goals, so For you and the rest follow it, also while it rests */
-    if (postV2(d) && S.post && S.post.sixRemind) { const n0 = bDays(todayISO()); if (n0 != null && n0 < 42) S.post.sixRemind(); }   /* Version 39.46: her own 6-week check rings on its day */
+    if (postV2(d) && S.post && S.post.sixRemind) { const n0 = bDays(todayISO()); if (n0 != null && n0 < 42) S.post.sixRemind({ quiet: true }); }   /* Version 39.46: her own 6-week check rings on its day; Version 39.78: booked quietly (Start asks Android once) */
     delete d.pauseUntil; delete d.pauseEnd; delete d.pauseOff; delete d.remPaused; delete d.chg; delete d.docAt; delete d.docSaid; delete d.m4Seen; delete d.dueSeen; delete d.yearSeen; delete d.carried;   /* review RESULTS-03: the last plan's doctor answer stays with it */
     const fr = fairOf(Array.isArray(d.past) ? d.past[0] : null, d);   /* review FIXES-04: after Stop, past[0] is the plan she stopped */
     if (fr) { d.base = fr.base; d.hab0 = fr.hab0; } else { delete d.base; delete d.hab0; }
@@ -2920,7 +2923,7 @@
     v.querySelectorAll('[data-rv-at]').forEach((b) => b.addEventListener('click', () => { st.at = b.dataset.rvAt; S.render(); }));
     const go = v.querySelector('#pl-rv-go'); if (go) go.addEventListener('click', () => {
       commitStart(st.when, st.at); S.mem.rvStart = null; stopAudio(); S.save();
-      if (S.alerts && S.alerts.auto) S.alerts.auto(true);   /* Version 39.27 (R01): reminders are on; Android's own "Allow" now if it still needs one */
+      if (S.alerts && S.alerts.auto) S.alerts.auto(true, true);   /* Version 39.27 (R01): reminders are on; Android's own "Allow" now if it still needs one. Version 39.78 (launch QA B5): then "Ring on time?" once, if Android would ring them late */
       S.setHash('home');
     });
   }
@@ -5289,7 +5292,7 @@
       '.pl-breath-wrap b { position: relative; font-size: 17px; color: var(--fg); } .pl-left { text-align: center; } .pl-player { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; } .pl-player .item .body { min-width: 0; overflow-wrap: anywhere; }',
       /* Version 39.39 (Mohit's Flip5, 30 Oct: "fix the buttons"): Previous, Pause and Next stay above the tab bar however long the move's
          words; a short screen gets a smaller timer and the time left only once (the ring), still read out from #pl-left */
-      '.pl-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .pl-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }',
+      '.pl-ctl { position: sticky; bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); } @media (min-width: 600px) { .pl-ctl { bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); } }',
       '@media (max-height: 860px) { .pl-player { gap: 8px; } .pl-timer, .pl-timer svg { width: 100px; height: 100px; } .pl-breath-wrap { width: 120px; height: 120px; } .pl-left { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } } @media (max-height: 720px) { .pl-figbox { max-width: 220px; } }',
       '.pl-chart { width: 100%; height: auto; display: block; } .pl-chart .gd { stroke: var(--line); stroke-width: 1; } .pl-chart .bar { fill: var(--accent); opacity: 0.4; } .pl-chart .bar.met { fill: var(--accent-strong); opacity: 1; } .pl-chart .tg { stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; } .pl-chart text { fill: var(--muted); font-size: 11px; }',
       '.pl-legend { display: inline-flex; align-items: center; gap: 6px; } .pl-legend i.tg { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--gold); }',

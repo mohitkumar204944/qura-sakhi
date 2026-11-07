@@ -68,6 +68,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     private FrameLayout root;
     /** A tapped notification's screen (Version 34), opened once the page has loaded. */
     private String pendingGo;
+    private volatile boolean restoredPage;   // Version 39.78: the last page came back from a saved state (see restored())
+    private boolean pageReady;   // Version 39.78 (the review): the page has loaded, so a tapped reminder can open its screen now
     private ValueCallback<Uri[]> fileCallback;
     private TextToSpeech tts;
     private volatile boolean ttsReady = false;
@@ -79,7 +81,10 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         // FLAG_SECURE (the doctors' review, answer 5, Version 39.72).
         if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
         tts = new TextToSpeech(this, this);
-        pendingGo = goOf(getIntent());
+        // Version 39.78 (launch QA B3): a notification's screen only on a real new launch. When Android recreates Sakhi (killed in the
+        // background, or the font size or language changed) getIntent() is still the old notification's, and reopening its screen
+        // could start a Wind down sound with no tap; a launch from the recent-apps list carries the old intent too.
+        pendingGo = state == null && !fromHistory(getIntent()) ? goOf(getIntent()) : null;
         root = new FrameLayout(this);
         setContentView(root);
         fitBars();
@@ -93,6 +98,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         makeWeb();
         WebBackForwardList restored = state != null ? web.restoreState(state) : null;
         if (restored == null || restored.getSize() == 0) web.loadUrl(START);   // nothing to restore, or the restore failed
+        else restoredPage = true;   // Version 39.78: the page asks once (restored()), and waits for her tap before any sound
     }
 
     private static final String START = "file:///android_asset/www/index.html";
@@ -142,6 +148,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             /** A notification opened the app: go to its screen once the page is ready (the PIN lock, if on, comes first). */
             @Override
             public void onPageFinished(WebView view, String url) {
+                if (view == web) pageReady = true;
                 if (pendingGo != null && view == web) { openRoute(pendingGo); pendingGo = null; }
             }
 
@@ -153,6 +160,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 if (web.getParent() instanceof ViewGroup) ((ViewGroup) web.getParent()).removeView(web);
                 web.destroy();
                 makeWeb();
+                restoredPage = false;   // a fresh Home, not a restored page
+                pageReady = false;
                 web.loadUrl(START);
                 return true;
             }
@@ -370,6 +379,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
         @JavascriptInterface
         public int schedule(String json) { return Reminders.replaceAll(MainActivity.this, json); }
+
+        /** Version 39.78 (launch QA B3): true once, when Android brought back the last page after recreating Sakhi; the page then
+         *  starts no sound until she taps (core's autoplayOk). */
+        @JavascriptInterface
+        public boolean restored() { boolean r = restoredPage; restoredPage = false; return r; }
 
         /** Can reminders ring on the minute? (Android 12+ needs "Alarms and reminders" allowed for the app.) */
         @JavascriptInterface
@@ -598,8 +612,12 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        String go = goOf(intent);
-        if (go != null) openRoute(go);
+        String go = fromHistory(intent) ? null : goOf(intent);   // Version 39.78: never a stale intent from the recent-apps list
+        if (go != null) { if (pageReady) openRoute(go); else pendingGo = go; }   // a page still loading (Android restoring it) opens it once ready
+    }
+
+    private static boolean fromHistory(Intent i) {
+        return i != null && (i.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0;
     }
 
     private static String goOf(Intent i) {

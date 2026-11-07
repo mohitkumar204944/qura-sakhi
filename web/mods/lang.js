@@ -337,7 +337,7 @@
   /* ---------- this module's own words, in all six languages ---------- */
   const OWN = {
     en: {
-      lang_tile: 'Language and read-aloud', lang_tile_s: 'Marathi, Bengali, Tamil, Telugu, and hearing any screen read out',
+      lang_tile: 'Language and read-aloud', lang_tile_s: 'Hindi or English, and hearing any screen read out',   /* Version 39.78 (launch QA B8): the four languages went in Version 39.68 */
       lang_intro: 'Choose the language you read most easily. Tap the speaker at the top of any screen to hear it read out.',
       lang_choose_h: 'Language', lang_cur: 'In use', lang_st_full: 'Every screen',
       lang_st_part_hi: 'Main screens and the safety guide. The rest in Hindi for now.', lang_st_part_en: 'Main screens and the safety guide. The rest in English for now.',
@@ -362,7 +362,7 @@
       lang_to: 'to', lang_247: '24 hours, every day', lang_me_s: '{lang} · speed: {speed}'
     },
     hi: {
-      lang_tile: 'भाषा और पढ़कर सुनाना', lang_tile_s: 'मराठी, बांग्ला, तमिल, तेलुगु, और हर पन्ना सुनने की सुविधा',
+      lang_tile: 'भाषा और पढ़कर सुनाना', lang_tile_s: 'हिंदी या English, और हर पन्ना सुनने की सुविधा',
       lang_intro: 'वह भाषा चुनें जिसमें आप सबसे आसानी से पढ़ती हैं। किसी भी पन्ने पर ऊपर स्पीकर दबाएँ, वह पन्ना पढ़कर सुनाया जाएगा।',
       lang_choose_h: 'भाषा', lang_cur: 'चालू', lang_st_full: 'हर पन्ना',
       lang_st_part_hi: 'मुख्य पन्ने और सुरक्षा गाइड। बाक़ी अभी हिंदी में।', lang_st_part_en: 'मुख्य पन्ने और सुरक्षा गाइड। बाक़ी अभी English में।',

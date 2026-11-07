@@ -858,7 +858,7 @@
   const pfReduced = () => { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
   function pfMove(pos) {
     const f = window.SAKHI_FIG; if (!f || f.v !== 1 || (window.SAKHI_CONFIG || {}).fig === false) return '';
-    const k = PF_POSE[pos] || PF_POSE.lie; const still = pfStill(k); const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
+    let k = PF_POSE[pos] || PF_POSE.lie; if (pos === 'psit' && (f.loops || []).indexOf(k) < 0 && !pfStill(k)) k = PF_POSE.sit; const still = pfStill(k); const loop = (f.loops || []).indexOf(k) >= 0 ? 'fig/v/' + k + '.webm' : '';
     const m = loop && !pfReduced() ? '<video class="pst-fig-m" aria-hidden="true" src="' + loop + '"' + (still ? ' poster="' + still + '" data-still="' + still + '"' : '') + ' muted playsinline autoplay loop preload="auto"></video>'
       : (still ? '<img class="pst-fig-m" src="' + still + '" alt="">' : '');
     return m ? '<div class="pst-fig' + (k === PF_POSE.lie ? ' pst-fig-lie' : '') + '" id="pst-fig">' + m + '</div>' : '';   /* Version 39.73: lying, framed without the empty floor */
@@ -914,11 +914,14 @@
   const pfDay = () => S.toISO(S.planToday ? S.planToday() : S.today());   /* Version 39.56: a set after midnight is the evening before's, as her check-in */
   /* Version 39.56 (My pelvic floor plan): her plan runs it, or joins her sets to another plan; never in pregnancy */
   const pfPlan = () => !!(S.plan && S.plan.pelvic && S.plan.pelvic.on && S.plan.pelvic.on()) && !(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
-  const PF_POSE = { lie: 'bridgedown', sit: 'chairsit', stand: 'pfstand', walk: 'walk' };   /* Version 39.69: standing, her back near a wall (no longer the wall push-up) */
+  const PF_POSE = { lie: 'bridgedown', sit: 'chairsit', stand: 'pfstand', walk: 'walk', psit: 'b3-chairsit' };   /* Version 39.78: psit, seated with her bump (pregnancy: not on her back) */   /* Version 39.69: standing, her back near a wall (no longer the wall push-up) */
   const pfStill = (pos) => { const f = window.SAKHI_FIG; return f && f.v === 1 && (window.SAKHI_CONFIG || {}).fig !== false && (f.stills || []).indexOf(pos) >= 0 ? 'fig/s/' + pos + '.webp' : ''; };
   function renderPelvic(v) {
     stopAll();
     const st = store(); if (PF && PF.store !== st) PF = null; if (pfDone && pfDone.store !== st) pfDone = null;
+    /* Version 39.78 (the review): in a pregnancy the free trainer sits her up (the seated figure with a bump), never flat on her back
+       (the pregnancy rule: nothing on the back after 13 weeks); her plan's daily set sends her here from week 13 */
+    const fpos = S.cycle && S.cycle.isPregnant && S.cycle.isPregnant() ? 'psit' : 'lie';
     const plan = pfPlan(); const P0 = plan ? S.plan.pelvic : null; const lv = plan ? P0.level() : null; const rl = !!(plan && P0.relax()); const m = plan ? P0.target() : 3;
     const js = !!(plan && P0.joinSafe && P0.joinSafe());   /* her joined sets: the signs that need a doctor first, once */
     if (plan && !rl && lv && !js && S.mem.pfAuto && !PF && pfTotal(st) >= PF_INTRO) { pfDone = null; PF = { store: st, hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos }; }   /* Today's play button */
@@ -950,7 +953,7 @@
         (P0.period() ? '<p class="small pst-pd">' + esc(t('plan_pf_pd')) + '</p>' : '') + (next ? '' : startB);
     } else {
       trainer = (pfDone ? '<div class="card ok"><p><strong>' + esc(TF('pf_done', { n: pfDone.n })) + '</strong></p></div>' : '') +
-        '<div class="card pst-free">' + pfMove('lie') + '<div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
+        '<div class="card pst-free">' + pfMove(fpos) + '<div class="pst-lbl">' + esc(T('hold_l')) + '</div><div class="chips">' + [3, 5, 10].map((s) => '<button type="button" class="chip' + (s === hold ? ' on' : '') + '" data-pst-hold="' + s + '" aria-pressed="' + (s === hold ? 'true' : 'false') + '">' + esc(TF('secs', { n: s })) + '</button>').join('') + '</div><button type="button" class="btn primary block" id="pst-pstart">' + esc(T('pf_start')) + '</button><p class="small">' + esc(T('pf_goal')) + '</p></div>';
     }
     const ticks = '<div class="pst-ticks">' + Array.from({ length: m }, (x, i) => i + 1).map((i) => '<span class="pst-tick' + (sets >= i ? ' on' : '') + '">' + (sets >= i ? '✓' : i) + '</span>').join('') + (sets > m ? '<span class="pill ok">+' + (sets - m) + '</span>' : '') + '</div>';
     const strip = '<div class="pst-strip">' + Array.from({ length: 14 }, (x, i) => S.addDays(S.today(), i - 13)).map((d) => { const n = pfSets(st, S.toISO(d)); return '<span class="pst-sd' + (n ? ' on' : '') + (i13(d) ? ' today' : '') + '" title="' + esc(dShort(d)) + '"><b class="num">' + d.getDate() + '</b><i>' + (n ? n : '·') + '</i></span>'; }).join('') + '</div>';
@@ -963,7 +966,10 @@
     v.innerHTML = S.backRow(T('pf_h'), pg ? 'preg' : (born && !plan ? R.hub : 'home'), false) + '<p class="small">' + esc(T(pg ? 'pf_p_preg' : (born ? 'pf_p' : 'pf_p_any'))) + '</p>' + (!plan && S.plan && S.plan.forRow ? S.plan.forRow('pelvic') || '' : '') + (early && !intro ? find : '') + trainer +   /* the test pass: her plan for this; Version 39.73: in Get into position the lines are in its card */
       '<div class="card">' + (rl ? '' : '<div class="row spread"><h3>' + esc(T('pf_today')) + '</h3>' + ticks + '</div>') + '<div class="row spread"><span class="small">' + esc(T('pf_14')) + '</span><span class="small"><strong>' + esc(TF('pf_days', { n: pfDaysDone(st, 14) })) + '</strong></span></div>' + strip + course + '</div>' +
       (S.canSave() ? '' : S.needDiary()) + (early || intro || rl ? '' : find) +   /* Mohit's phone test: breathing and letting go teaches no squeezes */
-      (born || pg ? acc(T('gap_h'), gapFig() + '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
+      /* Version 39.78 (launch QA B2): after a birth only. In a pregnancy (her plan's daily set from week 13) the belly gap check had her lie
+         on her back and lift her head, against the pregnancy rule (nothing on the back after 13 weeks), with "3 months after the birth"
+         lines; a pregnancy takes the general branch, which has no new health line. */
+      (born && !pg ? acc(T('gap_h'), gapFig() + '<ol class="steps">' + li(G.gap) + '</ol><p class="small">' + esc(tx(G.gapNote)) + '</p>') +
         '<div class="flag pst-col"><strong>' + esc(T('see_h')) + '</strong><ul class="pst-ul">' + li(G.see) + '</ul>' + (has('intimate-prolapse') ? '<button type="button" class="btn sm pst-self pst-onLight" data-go="intimate-prolapse">' + esc(T('prolapse')) + '</button>' : '') + '</div>' +
         askCard('hub_ask_h', 'hub_ask_p', 'pf_topic') + related(R.pelvic)
         /* Version 39.56 (the walk): without a recent birth, no after-birth lines; the guide, and a Qura doctor to check the squeeze */
@@ -972,7 +978,7 @@
       '<p class="footnote">' + esc(T('nodx')) + '</p>';
     S.wire(v); wirePfMove(v);
     v.querySelectorAll('[data-pst-hold]').forEach((b) => b.addEventListener('click', () => { const st2 = store(); st2.pfHold = Number(b.dataset.pstHold); persist(); S.render(); }));
-    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { if (plan) pfWake(); pfDone = null; PF = plan && lv ? { store: store(), hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos } : { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, pos: 'lie' }; S.render(); });
+    const sb = v.querySelector('#pst-pstart'); if (sb) sb.addEventListener('click', () => { if (plan) pfWake(); pfDone = null; PF = plan && lv ? { store: store(), hold: lv.hold, reps: lv.reps, quick: lv.quick, qi: 0, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, plan: true, pos: lv.pos } : { store: store(), hold: hold, reps: 10, i: 1, phase: 'ready', end: Date.now() + 3000, paused: false, left: 0, pos: fpos }; S.render(); });
     const pb = v.querySelector('#pst-ppause'); if (pb) pb.addEventListener('click', () => { if (!PF) return; if (PF.paused) { PF.paused = false; PF.end = Date.now() + PF.left; } else { PF.paused = true; PF.left = Math.max(0, PF.end - Date.now()); } pb.textContent = PF.paused ? T('pf_resume') : T('pf_pause'); pfPaint(); });
     const xb = v.querySelector('#pst-pstop'); if (xb) xb.addEventListener('click', () => { PF = null; stopPfTick(); S.render(); });
     v.querySelectorAll('#pst-jsafe-ok, #pst-jsafe-seen').forEach((b) => b.addEventListener('click', () => { try { S.plan.pelvic.joinSafeOk(); } catch (e) { /* her plan */ } S.render(); }));
@@ -1094,7 +1100,8 @@
   const sixSync = () => { const r = S.reminders.get('post-6wk'); if (!r) return; const bb = birth(); const preg = !!(S.cycle && S.cycle.isPregnant && S.cycle.isPregnant());
     const want = bb ? S.toISO(S.addDays(bb, 42)) : null; if (!want || preg || S.toISO(S.today()) > want) { S.reminders.remove('post-6wk'); return; }
     if ((r.dates || [])[0] !== want) S.reminders.upsert({ id: 'post-6wk', dates: [want] }, { quiet: true }); };   /* Version 39.46 */
-  const sixRemind = () => { const bb = birth(); if (!bb) return; S.reminders.upsert({ id: 'post-6wk', mod: 'post', title: { en: 'My 6-week check after birth', hi: 'डिलीवरी के बाद मेरी 6 हफ़्ते की जाँच' }, kind: 'checkup', dates: [S.toISO(S.addDays(bb, 42))], time: '09:00', on: true }); };
+  /* o.quiet (Version 39.78, the review): booked by her plan's Start, not her tap, so Android's "Allow" isn't asked a second time over Start's */
+  const sixRemind = (o) => { const bb = birth(); if (!bb) return; S.reminders.upsert({ id: 'post-6wk', mod: 'post', title: { en: 'My 6-week check after birth', hi: 'डिलीवरी के बाद मेरी 6 हफ़्ते की जाँच' }, kind: 'checkup', dates: [S.toISO(S.addDays(bb, 42))], time: '09:00', on: true }, o && o.quiet ? { quiet: true } : undefined); };
 
   /* ---------- hooks ---------- */
   function stopAll() { stopFeedTick(); stopPfTick(); }
@@ -1264,8 +1271,8 @@
       '.pst-in { margin-top: 12px; text-align: left; }', '.pst-in h3 { font-size: 16px; margin: 0 0 6px; }',
       '.pst-free { display: grid; gap: 10px; }', '.pst-gapfig { margin-bottom: 10px; }', '@media (max-height: 720px) { .pst-fig { max-width: 160px; } }',
       /* Version 39.69: with the picture above, Pause and Stop stay above the tab bar on a short phone, as the player's do */
-      '.pst-ctl { position: sticky; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); }',
-      '@media (min-width: 600px) { .pst-ctl { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); } }',
+      '.pst-ctl { position: sticky; bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); z-index: 2; padding: 6px 0; margin: -6px 0; background: var(--bg); box-shadow: 0 -10px 10px -8px var(--bg); }',
+      '@media (min-width: 600px) { .pst-ctl { bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); } }',
       '.pst-lv-b { min-width: 0; display: grid; gap: 4px; }', '.pst-lv-b p { margin: 0; overflow-wrap: anywhere; }', '.pst-hurt { align-self: center; min-height: 44px; }', '.pst-relax { display: grid; gap: 8px; }',
       '.pst-bar { height: 12px; border-radius: 6px; background: var(--bg); overflow: hidden; }',
       '.pst-bar i { display: block; height: 100%; border-radius: 6px; background: var(--accent-strong); transition: width 0.2s linear; }',

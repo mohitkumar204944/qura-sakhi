@@ -3721,3 +3721,25 @@ can". **New and changed lines wait for the doctors' read.** Danger lines and "ho
   low glycaemic…". The welcome recording isn't made yet: it should not say her name. Wind down's voice is unnamed already ("your
   trainer", Version 39.71); her name stays only in the team's notes and in the recordings' credits file.
 
+### 19.78 Version 39.78: the launch QA's fixes (MODULE_API section 121)
+
+UI and privacy words only; no health line is new or changed.
+
+- **"Ring on time?" for a tablet reminder (new line):** "Android can ring reminders up to an hour late unless you allow “Alarms and
+  reminders” for Sakhi. Allow it, and your tablet reminders come on time." (जब तक आप Sakhi के लिए “Alarms and reminders” की अनुमति न दें,
+  Android रिमाइंडर एक घंटे तक देर से बजा सकता है। अनुमति दें, तो आपकी गोली के रिमाइंडर समय पर आएँगे।) It shows once when a medicine
+  reminder is booked (her folic acid, IFA, calcium, iron, the pill, My medicines), on a phone that would ring late. The heading and button
+  are as before ("Ring on time?", "Allow"); the old line ("… It matters most for the pill.") stays for a daily reminder she sets herself.
+- **The language tile:** "Hindi or English, and hearing any screen read out" (हिंदी या English, और हर पन्ना सुनने की सुविधा); it named
+  Marathi, Bengali, Tamil and Telugu.
+- **Learn, "Your data in this app, in plain words":** its paragraphs are now the joining notice's own lines (already reviewed), in the
+  notice's order, after its first line, with the Grievance Officer's line where the build has one. Its summary reads "What Sakhi keeps,
+  where it is kept, what never leaves your phone, and how to delete it." (Sakhi क्या रखती है, कहाँ रखती है, क्या आपके फ़ोन से कभी बाहर
+  नहीं जाता, और इसे कैसे मिटाएँ।). Its box: "If you think someone has read your diary without permission, delete it from the Me page and
+  change your phone lock." (अगर लगे कि किसी ने बिना पूछे आपकी डायरी पढ़ी है, तो उसे “मैं” पेज से मिटा दें और फ़ोन का लॉक बदलें।); it said
+  "delete it from Settings … and tell our Grievance Officer". Its Qura line (used only for search): "Your Qura doctor sees only what you
+  choose to share before a call; Sakhi asks each time and shows what would be shared." (the notice's own words). Gone: Tell a person,
+  "servers run by the companies that host this app", a sharing switch, WhatsApp update messages, auto-deletion.
+- **Pregnancy's pelvic floor trainer:** the belly gap check, its note and the after-birth "See a doctor if" list are no longer shown in a
+  pregnancy (they stay after a birth); nothing replaces them. Its figure sits up with her bump instead of lying on her back (a picture,
+  for the physiotherapist's glance).

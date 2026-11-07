@@ -184,6 +184,7 @@
   }
   function start(it) {
     const hide = !!(S.state.settings.discreet || S.state.settings.shared);   /* like her reminders: off the lock screen, a plain title */
+    if (cur && cur.it === it) cur.started = true;   /* Version 39.78: a session that really plays (a restored page waits for her Play) */
     S.sound.play(srcOf(it), { loop: !it.guided, mins: it.guided ? 0 : mins(), title: hide ? t('calm_h') : t('calm_' + it.id), text: t('calm_notif'), stop: t('calm_stop'), secret: hide });
     if (it.guided) awake(true);
     clearTimeout(doneT); doneT = setTimeout(() => { if (!cur || cur.it !== it) return; const st = S.sound.state(); if (st.playing || Math.max(st.played || 0, st.pos || 0) >= 25) markDone(it.id); }, 30000);
@@ -191,7 +192,13 @@
   function renderPlayer(v, id) {
     const it = item(id); if (!it) { renderList(v); return; }
     const fresh = !cur || cur.id !== id; if (cur) cancelAnimationFrame(cur.raf);
-    if (fresh) { stopAll(); cur = { id: id, it: it, st: null, at: 0, ended: false }; start(it); }   /* a render of the same page keeps her session playing */
+    if (fresh) {   /* a render of the same page keeps her session playing */
+      /* Version 39.78: on a page Android restored, Play waits for her tap; but a session Android kept playing through the restore (the font
+         size or language changed) carries on, not stopped (the review) */
+      const wait = !!(S.autoplayOk && !S.autoplayOk()); const keep = wait && !!(S.sound && S.sound.state().playing);
+      if (!keep) stopAll(); cur = { id: id, it: it, st: null, at: 0, ended: false, started: keep };
+      if (keep) { if (it.guided) awake(true); } else if (!wait) start(it);
+    }
     const tl = it.guided ? TL()[it.id + '-' + vlang()] : null; const cues = tl ? tl.cues : [];
     /* Version 39.24: her voice switches here too (the session starts again in it) */
     const seg = it.guided && !cur.ended ? '<div class="cm-seg" role="group" aria-label="' + esc(t('calm_voice')) + '">' + [['en', 'English'], ['hi', 'हिंदी']].map((l) => '<button type="button" class="' + (vlang() === l[0] ? 'on' : '') + '" data-pvl="' + l[0] + '" aria-pressed="' + (vlang() === l[0]) + '">' + l[1] + '</button>').join('') + '</div>' : '';
@@ -238,7 +245,7 @@
       const len = it.guided ? (st.dur || ((TL()[it.id + '-' + vlang()] || {}).len) || 0) : mins() * 60;
       v.querySelector('#cm-prog').style.width = len ? Math.min(100, (x / len) * 100).toFixed(1) + '%' : '0';
       v.querySelector('#cm-time').textContent = fmt(x); v.querySelector('#cm-len').textContent = fmt(len);
-      if (opEl) { const open = x < fm - 0.2; opEl.classList.toggle('gone', !open); if (open && soonEl) soonEl.textContent = S.tf('calm_soon', { n: Math.max(1, Math.ceil(fm - x)) }); }
+      if (opEl) { const open = x < fm - 0.2; opEl.classList.toggle('gone', !open); opEl.classList.toggle('idle', !cur.started); if (open && soonEl) soonEl.textContent = S.tf('calm_soon', { n: Math.max(1, Math.ceil(fm - x)) }); }
       if (capEl) { const c = capAt(cues, x); if (capEl.textContent !== c) capEl.textContent = c; }
       if (!cur.ended && !st.playing && it.guided && st.dur && st.pos >= st.dur - 0.6) { cur.ended = true; awake(false); S.render(); return; }   /* Version 39.24: the end card */
       const on = !!st.playing; if (pb.dataset.on !== String(on)) { pb.dataset.on = String(on); pb.innerHTML = on ? PAUSE_I : PLAY_I; pb.setAttribute('aria-label', t(on ? 'calm_pause' : 'calm_play')); }
@@ -251,6 +258,7 @@
   let barT = 0;
   function barSync(route) {
     if (cur && cur.ended && !/^calm-/.test(route || '')) stopAll();   /* an ended session starts afresh next time */
+    if (cur && !cur.started && !/^calm-/.test(route || '')) stopAll();   /* Version 39.78 (the review): a restored player she left unplayed: no "Paused" bar whose Play did nothing */
     const on = !!cur && !cur.ended && !/^calm-/.test(route || '');
     let b = document.getElementById('cm-mini');
     if (!on) { if (b) b.remove(); document.body.classList.remove('cm-mini-on'); clearInterval(barT); barT = 0; return; }
@@ -258,7 +266,8 @@
     const it = cur.it; b.setAttribute('role', 'region'); b.setAttribute('aria-label', t('calm_playing_h'));
     b.innerHTML = '<button type="button" class="cm-mi-open" id="cm-mi-open"><span class="cm-mi-orb" aria-hidden="true"></span><span class="cm-mi-t"><strong>' + esc(t('calm_' + it.id)) + '</strong><span id="cm-mi-s"></span></span></button>' +
       '<button type="button" class="cm-mi-b cm-mi-pp" id="cm-mi-pp" aria-label="' + esc(t('calm_pause')) + '">' + PAUSE_I + '</button><button type="button" class="cm-mi-b cm-mi-x" id="cm-mi-x" aria-label="' + esc(t('calm_stop')) + '">' + X_I + '</button><span class="cm-mi-prog" aria-hidden="true"><i id="cm-mi-p"></i></span>';
-    document.body.classList.add('cm-mini-on');
+    document.body.classList.add('cm-mini-on'); document.documentElement.style.setProperty('--mini-h', b.offsetHeight + 'px');   /* Version 39.78: what sits above the bar */
+    if (!b._ro && 'ResizeObserver' in window) { b._ro = new ResizeObserver(() => { if (b.offsetHeight) document.documentElement.style.setProperty('--mini-h', b.offsetHeight + 'px'); }); b._ro.observe(b); }   /* its subtitle fills in later and wraps at large text (the review: 62 px measured, 116 px real) */
     b.querySelector('#cm-mi-open').addEventListener('click', () => { location.hash = 'calm-' + it.id; });   /* her session, still playing */
     b.querySelector('#cm-mi-pp').addEventListener('click', () => { const st = S.sound.state(); if (st.playing) S.sound.pause(); else S.sound.resume(); setTimeout(tick, 60); });
     b.querySelector('#cm-mi-x').addEventListener('click', () => { stopAll(); barSync(''); });
@@ -356,13 +365,17 @@
       '.cm-night .cm-it { background: rgba(255,255,255,0.06); border: 1px solid #3A2E52; box-shadow: none; color: #F4ECF6; } .cm-night .cm-it strong { color: #F4ECF6; } .cm-night .cm-it .body span { color: #C9BAD6; } .cm-night .cm-pb { background: #F2A7CB; color: #2A1430; }' +
       '.cm-done { width: 100%; max-width: 520px; margin-top: 4px; background: none; border: 1.5px solid #6E5A93; color: #F4ECF6; } .cm-end .cm-timer { width: 100%; max-width: 520px; }' +
       /* the bar: her session playing on any other screen */
-      '.cm-mini { position: fixed; z-index: 15; left: 50%; transform: translateX(-50%); width: calc(min(430px, 100%) - 20px); bottom: calc(74px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; display: flex; align-items: center; gap: 8px; background: #2F2240; color: #F4ECF6; border-radius: 18px; padding: 8px 8px 10px 10px; box-shadow: 0 8px 24px rgba(47,34,64,0.35); }' +
+      '.cm-open.idle .cm-say, .cm-open.idle .cm-soon { display: none; }' +   /* Version 39.78: before her Play on a restored page, only the tip */
+      '.cm-mini { position: fixed; z-index: 15; left: 50%; transform: translateX(-50%); width: calc(min(430px, 100%) - 20px); bottom: calc(var(--tb-gap, 74px) + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; display: flex; align-items: center; gap: 8px; background: #2F2240; color: #F4ECF6; border-radius: 18px; padding: 8px 8px 10px 10px; box-shadow: 0 8px 24px rgba(47,34,64,0.35); }' +
       '.cm-mi-open { flex: 1; min-width: 0; min-height: 44px; display: flex; align-items: center; gap: 10px; background: none; border: none; color: inherit; font: inherit; text-align: left; padding: 0; cursor: pointer; }' +
       '.cm-mi-orb { width: 30px; height: 30px; border-radius: 15px; flex-shrink: 0; background: radial-gradient(circle, #F7D4E6 0 40%, rgba(156,106,222,0.45) 42% 100%); }' +
       '.cm-mi-t { display: grid; min-width: 0; line-height: 1.25; } .cm-mi-t strong { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .cm-mi-t span { font-size: 12px; color: #C9BAD6; font-variant-numeric: tabular-nums; }' +
       '.cm-mi-b { width: 44px; height: 44px; border-radius: 22px; border: none; display: inline-flex; align-items: center; justify-content: center; padding: 0; flex-shrink: 0; cursor: pointer; } .cm-mi-b svg { width: 18px; height: 18px; } .cm-mi-pp { background: #F2A7CB; color: #2A1430; } .cm-mi-x { background: rgba(255,255,255,0.08); color: #F4ECF6; }' +
       '.cm-mi-prog { position: absolute; left: 14px; right: 14px; bottom: 4px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.12); overflow: hidden; } .cm-mi-prog i { display: block; height: 100%; width: 0; background: #F2A7CB; }' +
-      'body.cm-mini-on .fab { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); } body.cm-mini-on #view::after { content: ""; display: block; height: 64px; }' +
+      /* Version 39.78 (launch QA B4): with the bar up, the players' Pause, Next and Stop, the check-in's Save and the + menu sit above it
+         (they were under it: a tap paused or stopped her sound instead); the bar's own height is --mini-h, set when it draws */
+      'body.cm-mini-on .fab { bottom: calc(var(--tb-gap, 74px) + var(--mini-h, 62px) + 14px + env(safe-area-inset-bottom, 0px)); } body.cm-mini-on #view::after { content: ""; display: block; height: calc(var(--mini-h, 62px) + 2px); }' +
+      'body.cm-mini-on .pl-ctl, body.cm-mini-on .rl-ctl, body.cm-mini-on .pst-ctl { bottom: calc(var(--tb-gap, 74px) + var(--mini-h, 62px) + 8px + env(safe-area-inset-bottom, 0px)); } body.cm-mini-on .sticky-cta { bottom: calc(var(--tb-gap, 74px) + var(--mini-h, 62px) + 10px + env(safe-area-inset-bottom, 0px)); } body.cm-mini-on .fab-menu { bottom: calc(var(--tb-gap, 74px) + var(--mini-h, 62px) + 84px + env(safe-area-inset-bottom, 0px)); }' +
       /* yoga nidra, softer */
       '.cm-glow > * { fill: #9C82D6; } .cm-glow { opacity: 0.5; }' +
       '.cm-vl, .cm-timer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; } .cm-vl .small, .cm-timer .small { margin-right: 2px; }' +

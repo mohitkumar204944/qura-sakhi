@@ -4570,7 +4570,7 @@ Sakhi's words, and R02 keeps only the order fix: no spacing rule and no cap.
   heads-up card's "Remind me", or a reminder she sets, which clears it with a "Phone reminders are on" toast).
 - **Gone:** the "Turn on phone reminders?" sheet (`askNotifyNow`), the "Get a heads-up before your period?" sheet
   (`askNotifyIntro`), the setup card's reminder row, and the Start card's "Allow reminders" and "Ring on time?" cards.
-  "Ring on time?" now comes only when she sets a daily reminder herself (the pill, a medicine), as before.
+  "Ring on time?" now comes only when she sets a daily reminder herself (Version 39.78, section 121.5: and when a medicine reminder is booked, by her tap or her plan) (the pill, a medicine), as before.
 - **The Start card** names what will ring, in her evening's order (`remLine`): "Reminders are on: your 9:15 pm walk, your 10
   pm check-in, your 10:30 pm wind-down and a note the day before your period. Nothing shows on the lock screen. Change them any
   time in Me > Reminders." Discreet mode leaves the period note out. When she switched them off, or the phone said no
@@ -7855,3 +7855,70 @@ lines (6.3); the "Govt. services" topic; her plans' cards (seeded); Hindi; no pa
 `planwalk.mjs` 8, `planfor.mjs` 5, `stagerules.mjs` 2, `ladder.mjs` 2 and 7, `retire.mjs` 6.2, `wording.mjs` 1.2 and 5.2, `firstday.mjs` 15. `npm run golden:record`: the 7
 pregnancy plans' care team (the free government doctor for a Qura doctor); `npm run progs:record`: heavy@1 and heavy@2 ("Bleeding this
 heavy needs a doctor's check and an Hb test.").
+
+## 121. Version 39.78: the launch QA's fixes
+
+Mohit, 7 Nov: "Yes, fix all 8", after the launch QA (`docs/launch-qa-2026-11-07.md`): a live walk on his Flip5 (vc 134), a test copy with
+the Play settings (fresh installs in English and Hindi, text at 130, 150 and 200%), and four desktop sweeps, each finding checked by a
+second agent. Then four reviewers tried to break the fixes (each finding checked again); what they found is fixed here too.
+`test/launchfix.mjs` checks each fix (47 checks; on d3112de 30 of 37 fail, the rest guard what must not move). Seen on the Flip5 too (vc 135
+ and a test copy): one tap on Send code (3 of 3), the details step at its top, the controls above Wind down's bar, a real restore with no
+ sound, "Ring on time?" with the tablet line opening Android's own setting, and the seated figure at 20 weeks.
+
+1. **Send code in one tap (B1).** On a touch screen sign-up's picture steps aside the first time a box has focus and stays aside on that
+   screen: core `suTyping(v)` adds `.su-typing` on `focusin`, or at once when Sakhi has focused a box for her (after an error), and
+   `app.css` hides `.su.su-typing .ob-av` (pointer: coarse). Version 39.76 hid it only while a box had focus (`:has(input:focus)`), so the
+   tap on Send code first took the focus away, the picture came back, the button jumped 312 px down and the tap missed (3 of 3 on the
+   Flip5). With a mouse the picture never moves.
+2. **Pregnancy's pelvic floor trainer (B2).** `post-pelvic` shows the belly gap check (lying on her back, head and shoulders up), the
+   after-birth "See a doctor if" list and the after-birth links only after a birth (`born && !pg`); a pregnancy (her plan's daily set
+   from week 13, and the pregnancy hub) takes the general branch. In a pregnancy the free trainer's figure, before and during a set, sits
+   up with her bump (`psit`, fig `b3-chairsit`, else `chairsit`), never `bridgedown` on her back. No new words (the page already says
+   "sitting or lying down"); the physiotherapist's glance is owed, as for the other figures.
+3. **No sound with no tap (B3).** `MainActivity` reads a notification's `go` only on a real new launch (`state == null`, and not
+   `FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY`), in `onCreate` and `onNewIntent`; a reminder tapped while the page is still loading waits for
+   it (`pageReady`, then `onPageFinished`). When Android restores the last page (`web.restoreState`) the bridge's `restored()` answers
+   true once; core then sets `mem.noAutoplay` until her first tap (`pointerdown`, `click` or `keydown`) outside the lock screen (her PIN
+   taps don't count), and a notification she taps (`__sakhiOpen`) clears it. `S.autoplayOk()` is false meanwhile, and `mods/calm.js`:
+   - opens the player paused (Play starts it), with only the session's tip (no "Your trainer is starting" and a countdown that can't
+     move: `.cm-open.idle`);
+   - keeps a session Android still plays through the restore (the font size or language changed: `S.sound.state().playing`), not stopped;
+   - drops a session that never started when she leaves (`cur.started`), so no "Paused" bar whose Play did nothing, and its row or
+     reminder starts it next time.
+
+   A page opened inside the app plays as before. A crashed renderer's fresh Home is never "restored".
+4. **Above the bars (B4).** What sits above the tab bar takes the bar's real height: core measures `#tabbar` with a ResizeObserver into
+   `--tb-h` (without the safe-area padding; a bar hidden while she types keeps its last height, or the check-in's Save dropped under it
+   and the tap that closed the keyboard missed), and `app.css` sets `--tb-gap: calc(var(--tb-h, 65px) + 9px)` (+ 25px from 600 px wide,
+   where the bar floats). `.pl-ctl`, `.rl-ctl`, `.pst-ctl`, `.sticky-cta`, `.fab`, `.fab-menu` and Wind down's `.cm-mini` use
+   `var(--tb-gap, 74px)`. While Wind down's bar shows (`body.cm-mini-on`), the players' controls, the check-in's Save, the + button and
+   its menu sit above it too (`--mini-h`, the bar's real height, kept by a ResizeObserver: its subtitle wraps at large text). The
+   routines' fit (`fitStage`) measures from the controls' own sticky bottom, so the timer and breathing circle stay above them with the
+   bar up; a relief routine's picture gives the bar's room back (`body.cm-mini-on .rl-figbox`, 120 px), so its timer does too (seen half
+   covered on the Flip5). At 100% text with no bar nothing moves (74 px, as before); at 200% text the tab bar grew to 106 px and hid Pause, Next and
+   Stop under it, and Wind down's bar sat on them at any size. (From 600 px wide `#app` scrolls itself, so the controls don't stick
+   there; as before.)
+5. **"Ring on time?" for a medicine (B5).** The baseline says "a medicine rings at its own time"; Android 14+ turns "Alarms and reminders"
+   off for a new install, so a tablet reminder (`kind: 'med'`: her folic acid, IFA, calcium, iron, the pill, My medicines) could ring up
+   to an hour late (seen with `dumpsys alarm`: window +1h), and one her plan books quietly never asked. Now core's `askExactSoon()` shows
+   the existing sheet with `ex_p_med` once (at most once a week, `prompts.exactAsk`) when a medicine reminder is booked or switched back
+   on, by her tap or by her plan (`reminders.upsert`), and after "Start my plan" (`S.alerts.auto(true, true)`) only if a medicine already
+   rings, on Today. It waits while a sheet, a tour or the lock is up, and leaves `prompts.exactDue` for her next Today after a minute.
+   **Never for her other reminders: Version 39.27's "no question in Sakhi's words" (section 70) stands for them**; a daily reminder she
+   sets herself asks as before. Android's "Allow" is asked one at a time (`mem.notifyAsk`): a second request cancelled the first (a false
+   "off" toast); the after-birth plan's 6-week check is booked quietly at Start (`S.post.sixRemind({ quiet: true })`).
+6. **At the top (B6).** Joining's next step opens at its top (core `obStepNew()`, also on the `join-update` route, and step 1 again after
+   Hello); a tap on the same step keeps her place. The under-18 page opens at its top. Her plan's questions (`plan-goal`) open each next
+   one at its top. The sign-up gate marks the route it covered (`mem.gateR`), so that page opens at its top once she has signed up (Your
+   Sakhi kept sign-up's 326 px).
+7. **The Learn article on her data (B7).** `services.your-data-privacy` is drawn from the joining notice's own lines (`privacyBody`:
+   `ob_notice_1, 2, 5`, `notice_text`, `ob_notice_3, 4`, and `ob_notice_6` only where PostHog is in the build), after its first line,
+   with the Grievance Officer's line where the build has one (`grievanceHtml`); `content.json` holds the same sentences for search, and its
+   box says "delete it from the Me page" (there is no Settings page). It had named Tell a person, a diary on servers, a sharing switch,
+   WhatsApp updates and auto-deletion.
+8. **The language tile (B8).** `lang_tile_s`: "Hindi or English, and hearing any screen read out" (it still named Marathi, Bengali,
+   Tamil and Telugu).
+
+Left as they were (the review): from 600 px wide the controls don't stick (as on d3112de); after-birth lines on the trainer for a mother
+whose baby is years old, or who left "I had a baby" (as on d3112de); the download page under `marketing/` (another session's) still names
+the four languages. The launch QA's polish items (its section C) and decisions (section D) are not part of this version.

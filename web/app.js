@@ -239,7 +239,7 @@
       ac_list_h: 'Calls you asked for', ac_ref: 'Ref. {ref}', ac_st_sent: 'Sent to Qura', ac_st_queued: 'Waiting to send', ac_st_failed: 'Didn’t reach Qura',
       ac_err_off: 'Qura isn’t taking call requests in the app right now. Book a time on Qura’s website instead.', ac_err_wait: 'You asked a few minutes ago. Try again in {n} min.', ac_err_day: 'You have asked three times today. Try again tomorrow, or book on Qura’s website.', ac_err_offline: 'You’re offline, so nothing was sent. Try again when you’re online.', ac_err_down: 'Qura’s server isn’t answering, so nothing was sent. Try again in a few minutes.', ac_err_bad: 'This couldn’t be sent. Make what you wrote shorter and try again.',
       dr_last: 'Last period started {d} and lasted {n} days', dr_last_open: 'Last period started {d}', dr_gaps: 'Days between periods: {list} (average {a})', dr_heavy: 'Heavy flow, clots or leaks in {n} of the last {m} periods', dr_months: '{n} of {m} months',
-      ch_meds: 'Medicines', ch_care: 'Pregnancy, baby and check-ups', ch_period: 'Period', ch_plan: 'Your plan', ch_other: 'Other reminders', ch_neutral: 'Reminders', notif_late: 'Open Sakhi: your dates need a look.', ex_h: 'Ring on time?', ex_p: 'Android can ring reminders up to an hour late unless you allow “Alarms and reminders” for Sakhi. It matters most for the pill.', ex_b: 'Allow', ci_rem: 'Remind me every month', ci_rem_s: 'A reminder for this check-in, once a month', bk_rem: 'Remind me every month', bk_rem_s: 'Your diary is only on this phone. A fresh code keeps it safe.', remind_on: 'Reminder on', remind_off: 'Reminder off',
+      ch_meds: 'Medicines', ch_care: 'Pregnancy, baby and check-ups', ch_period: 'Period', ch_plan: 'Your plan', ch_other: 'Other reminders', ch_neutral: 'Reminders', notif_late: 'Open Sakhi: your dates need a look.', ex_h: 'Ring on time?', ex_p: 'Android can ring reminders up to an hour late unless you allow “Alarms and reminders” for Sakhi. It matters most for the pill.', ex_b: 'Allow', ex_p_med: 'Android can ring reminders up to an hour late unless you allow “Alarms and reminders” for Sakhi. Allow it, and your tablet reminders come on time.', ci_rem: 'Remind me every month', ci_rem_s: 'A reminder for this check-in, once a month', bk_rem: 'Remind me every month', bk_rem_s: 'Your diary is only on this phone. A fresh code keeps it safe.', remind_on: 'Reminder on', remind_off: 'Reminder off',
       tw2_pl: 'Whenever you want to, note your day here in one tap. Until then, just ask and read.', td2_pp: 'What you noted most, over the weeks and months.', td3_pp: 'Tap + for today’s symptoms, mood or a note. Try it now.', tm3_h: 'Reminders', tm3_p: 'Turn on phone reminders for your period, medicines and check-ups. Nothing shows on the lock screen.', tm3_pd: 'Turn on phone reminders. Nothing shows on the lock screen.', tm4_h: 'Your data and backup', tm4_p: 'Your diary stays only on this phone. Make a backup code here to move it to a new phone.', tm4_pd: 'Your notes stay only on this phone. Make a backup code here to move them to a new phone.', tour_resume: 'Finish the tour? It shows where everything is.', tht3_h: 'Your trying-for-a-baby tools', tht3_p: 'In Explore, Trying for a baby has your tools: the before-pregnancy checklist, the signs log and more.', tour_resume_b: 'Continue the tour',
       /* Version 39.77 (Mohit, 6 Nov): who Qura's doctors are, in his words, and the gynaecologist or free government doctor */
       qura_std: 'Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments. The first 20-minute call is free.',
@@ -510,7 +510,7 @@
       ac_list_h: 'आपकी माँगी हुई कॉल', ac_ref: 'रेफ़. {ref}', ac_st_sent: 'Qura को भेजा गया', ac_st_queued: 'भेजना बाकी है', ac_st_failed: 'Qura तक नहीं पहुँचा',
       ac_err_off: 'अभी ऐप से Qura की कॉल नहीं माँगी जा सकती। इसकी जगह Qura की वेबसाइट पर समय बुक करें।', ac_err_wait: 'आपने कुछ मिनट पहले माँगा था। {n} मिनट बाद फिर कोशिश करें।', ac_err_day: 'आज आप तीन बार माँग चुकी हैं। कल फिर कोशिश करें, या Qura की वेबसाइट पर बुक करें।', ac_err_offline: 'आप ऑफ़लाइन हैं, इसलिए कुछ नहीं भेजा गया। इंटरनेट मिलने पर फिर कोशिश करें।', ac_err_down: 'Qura का सर्वर जवाब नहीं दे रहा, इसलिए कुछ नहीं भेजा गया। कुछ मिनट बाद फिर कोशिश करें।', ac_err_bad: 'यह भेजा नहीं जा सका। जो लिखा है उसे छोटा करके फिर कोशिश करें।',
       dr_last: 'पिछला पीरियड {d} को शुरू हुआ और {n} दिन चला', dr_last_open: 'पिछला पीरियड {d} को शुरू हुआ', dr_gaps: 'पीरियड के बीच के दिन: {list} (औसत {a})', dr_heavy: 'पिछले {m} में से {n} पीरियड में भारी ब्लीडिंग, थक्के या लीक', dr_months: '{m} में से {n} महीने',
-      ch_meds: 'दवाएँ', ch_care: 'गर्भ, शिशु और जाँच', ch_period: 'पीरियड', ch_plan: 'आपका प्लान', ch_other: 'दूसरे रिमाइंडर', ch_neutral: 'रिमाइंडर', notif_late: 'Sakhi खोलें: आपकी तारीख़ें एक बार देख लें।', ex_h: 'समय पर बजे?', ex_p: 'जब तक आप Sakhi के लिए “Alarms and reminders” की अनुमति न दें, Android रिमाइंडर एक घंटे तक देर से बजा सकता है। गोली के लिए यह सबसे ज़रूरी है।', ex_b: 'अनुमति दें', ci_rem: 'हर महीने याद दिलाएँ', ci_rem_s: 'इस चेक-इन के लिए महीने में एक रिमाइंडर', bk_rem: 'हर महीने याद दिलाएँ', bk_rem_s: 'आपकी डायरी सिर्फ़ इसी फ़ोन पर है। नया कोड उसे सुरक्षित रखता है।', remind_on: 'रिमाइंडर चालू', remind_off: 'रिमाइंडर बंद',
+      ch_meds: 'दवाएँ', ch_care: 'गर्भ, शिशु और जाँच', ch_period: 'पीरियड', ch_plan: 'आपका प्लान', ch_other: 'दूसरे रिमाइंडर', ch_neutral: 'रिमाइंडर', notif_late: 'Sakhi खोलें: आपकी तारीख़ें एक बार देख लें।', ex_h: 'समय पर बजे?', ex_p: 'जब तक आप Sakhi के लिए “Alarms and reminders” की अनुमति न दें, Android रिमाइंडर एक घंटे तक देर से बजा सकता है। गोली के लिए यह सबसे ज़रूरी है।', ex_b: 'अनुमति दें', ex_p_med: 'जब तक आप Sakhi के लिए “Alarms and reminders” की अनुमति न दें, Android रिमाइंडर एक घंटे तक देर से बजा सकता है। अनुमति दें, तो आपकी गोली के रिमाइंडर समय पर आएँगे।', ci_rem: 'हर महीने याद दिलाएँ', ci_rem_s: 'इस चेक-इन के लिए महीने में एक रिमाइंडर', bk_rem: 'हर महीने याद दिलाएँ', bk_rem_s: 'आपकी डायरी सिर्फ़ इसी फ़ोन पर है। नया कोड उसे सुरक्षित रखता है।', remind_on: 'रिमाइंडर चालू', remind_off: 'रिमाइंडर बंद',
       tw2_pl: 'जब चाहें, यहाँ एक टैप में अपना दिन नोट करें। तब तक बस पूछें और पढ़ें।', td2_pp: 'आपने सबसे ज़्यादा क्या नोट किया, हफ़्तों और महीनों के साथ।', td3_pp: 'आज के लक्षण, मन या नोट जोड़ने के लिए + दबाएँ। अभी आज़माएँ।', tm3_h: 'रिमाइंडर', tm3_p: 'पीरियड, दवाओं और जाँच के लिए फ़ोन रिमाइंडर चालू करें। लॉक स्क्रीन पर कुछ नहीं दिखता।', tm3_pd: 'फ़ोन रिमाइंडर चालू करें। लॉक स्क्रीन पर कुछ नहीं दिखता।', tm4_h: 'आपका डेटा और बैकअप', tm4_p: 'आपकी डायरी सिर्फ़ इसी फ़ोन पर रहती है। नए फ़ोन पर ले जाने के लिए यहाँ बैकअप कोड बनाएँ।', tm4_pd: 'आपके नोट सिर्फ़ इसी फ़ोन पर रहते हैं। नए फ़ोन पर ले जाने के लिए यहाँ बैकअप कोड बनाएँ।', tour_resume: 'टूर पूरा करें? इसमें दिखता है कि क्या कहाँ है।', tht3_h: 'बच्चे की कोशिश के आपके टूल', tht3_p: '“खोजें” में “बच्चे की कोशिश” पर आपके टूल हैं: गर्भ से पहले की चेकलिस्ट, संकेत रिकॉर्ड और भी।', tour_resume_b: 'टूर जारी रखें',
       qura_std: 'Qura की डॉक्टर आयुर्वेद डॉक्टर (BAMS) हैं। वे प्राकृतिक और आयुर्वेदिक इलाज से आपकी मदद करती हैं। पहली 20 मिनट की कॉल मुफ़्त है।',
       gov_h: 'स्त्री रोग विशेषज्ञ या मुफ़्त सरकारी डॉक्टर को दिखाएँ', gov_p: 'आपकी अपनी स्त्री रोग विशेषज्ञ, या eSanjeevani पर सरकारी डॉक्टर से मुफ़्त वीडियो सलाह (समय राज्य के हिसाब से अलग)। "मेरे पास इलाज" में आपके पास के सरकारी केंद्र हैं।', gov_esanj: 'मुफ़्त ऑनलाइन डॉक्टर (eSanjeevani)', gov_near: 'मेरे पास इलाज', gov_page: 'डॉक्टर को दिखाएँ', gov_tile: 'मुफ़्त सरकारी डॉक्टर', gov_tile_s: 'eSanjeevani, और आपके पास के सरकारी केंद्र', hs_doc_s_gov: 'आपकी स्त्री रोग विशेषज्ञ, या मुफ़्त सरकारी डॉक्टर',
@@ -1046,9 +1046,11 @@
     list: () => state.reminders || (state.reminders = []),
     get: (id) => reminders.list().find((r) => r.id === id) || null,
     /* o.quiet: Sakhi set it, not her tap (her plan's reminders) */
-    upsert: (r, o) => { const L2 = reminders.list(); const i = L2.findIndex((x) => x.id === r.id); const rec = Object.assign({ on: true, kind: 'custom', time: '09:00' }, i >= 0 ? L2[i] : {}, r); if (i >= 0) L2[i] = rec; else L2.push(rec); if (o && o.quiet) { save(); return rec; }
+    upsert: (r, o) => { const L2 = reminders.list(); const i = L2.findIndex((x) => x.id === r.id); const was = i >= 0 ? L2[i] : null; const rec = Object.assign({ on: true, kind: 'custom', time: '09:00' }, was || {}, r); if (i >= 0) L2[i] = rec; else L2.push(rec);
+      const med = rec.kind === 'med' && rec.on !== false && (!was || was.on === false);   /* Version 39.78: a tablet reminder, new or switched back on */
+      if (o && o.quiet) { save(); if (med) askExactSoon(); return rec; }
       /* Version 39.27 (R01): a reminder she sets turns phone reminders on (Android asks once if it must); a daily one may ask to ring on time */
-      if (rec.on !== false && Date.now() - lastTap < 3000) { const daily = rec.every === 1 || (rec.weekdays && rec.weekdays.length); setTimeout(() => { if (!state.settings.notify) { const was = !!state.settings.notifyOff; delete state.settings.notifyOff; autoNotify(true, true); if (state.settings.notify && was) toast(t('notif_on')); } else if (daily) askExactNow(false); }, 600); }
+      if (rec.on !== false && Date.now() - lastTap < 3000) { const daily = rec.every === 1 || (rec.weekdays && rec.weekdays.length); setTimeout(() => { if (!state.settings.notify) { const off = !!state.settings.notifyOff; delete state.settings.notifyOff; autoNotify(true, true, med); if (state.settings.notify && off) toast(t('notif_on')); } else if (daily || med) askExactNow(false, med); }, 600); }
       save(); return rec; },
     remove: (id) => { state.reminders = reminders.list().filter((r) => r.id !== id); save(); },
     next: remNext, text: remText,
@@ -1209,15 +1211,15 @@
     const v = view(); v.innerHTML = '';
     if (mem.locked && state.settings.pinHash) { renderLock(v); safe(() => axNames(v)); curRoute = null; window.scrollTo(0, 0); return; }
     if (mem.locked && state.stage === 'app') { renderRest(v); safe(() => axNames(v)); curRoute = null; window.scrollTo(0, 0); return; }
-    if (signupGate(r)) { renderSignup(v); safe(() => axNames(v)); curRoute = r; window.scrollTo(0, 0); return; }   /* Version 39.76: sign-up's boxes named too */
+    if (signupGate(r)) { renderSignup(v); suTyping(v); safe(() => axNames(v)); curRoute = r; mem.gateR = r; window.scrollTo(0, 0); return; }   /* Version 39.76: sign-up's boxes named too; Version 39.78: the route she signed up on opens at its top (launch QA B6) */
     if (pinGated(r)) { renderPinGate(v, r); safe(() => axNames(v)); curRoute = r; window.scrollTo(0, 0); return; }
     if (r === 'pin') { setHash(mem.pinNext || 'home'); return; }
     let dir = 'fwd';
     if (state.stage === 'app' || state.stage === 'browse') dir = trackNav(r);
     if (runHook('beforeRender', [v, r, api]).some((x) => x === true)) return;
-    if (mem.under18) { renderUnder18(v); safe(() => axNames(v)); return; }
-    if (state.stage === 'welcome') { renderWelcome(v); safe(() => axNames(v)); return; }   /* Version 39.76: names Android keeps, joining too */
-    if (state.stage === 'onboard') { renderOnboard(v); safe(() => axNames(v)); return; }
+    if (mem.under18) { renderUnder18(v); safe(() => axNames(v)); mem.obTop = null; window.scrollTo(0, 0); return; }   /* Version 39.78 (the review): at its top */
+    if (state.stage === 'welcome') { renderWelcome(v); safe(() => axNames(v)); mem.obTop = null; return; }   /* Version 39.78: joining again starts step 1 at its top */   /* Version 39.76: names Android keeps, joining too */
+    if (state.stage === 'onboard') { renderOnboard(v); safe(() => axNames(v)); if (obStepNew()) window.scrollTo(0, 0); return; }   /* Version 39.78 (launch QA B6): a new step starts at its top */
     const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) { if (artGone(r)) safe(() => location.replace('#learn')); else renderArticle(v, r.slice(2)); }   /* Version 39.68: an article the doctors removed opens Learn */
     else if (MOVED[r]) safe(() => location.replace('#' + MOVED[r]));
@@ -1235,9 +1237,11 @@
     safe(() => tidyView(v, r));
     if (r === 'home' && (state.prompts || {}).pinDue && !sheetUp() && !mem.locked) { delete state.prompts.pinDue; save(); setTimeout(() => pinSheet('set'), 400); }   /* review fix: before any other prompt */
     else if (state.stage === 'app' && !state.settings.pinHash && (state.prompts || {}).pinWant && !state.prompts.pinDue && PIN_ROUTES.indexOf(r) >= 0 && !sheetUp() && !mem.locked) { delete state.prompts.pinWant; save(); setTimeout(() => { if (!sheetUp() && !state.settings.pinHash) pinSheet('set'); }, 400); }   /* Version 39.75: she asked for a lock and closed the first ask: once more, on her first private page (Cancel there is her no; App lock stays in Me) */
+    else if (r === 'home' && (state.prompts || {}).exactDue && !sheetUp() && !mem.locked) askExactSoon({ home: true });   /* Version 39.78: "Ring on time?" she didn't see */
     else if (r === 'home' && whatsNewDue()) setTimeout(openWhatsNew, 900);   /* Version 37.1: a diary from before Version 37 hears what changed, once */
     else if (r === 'home' && state.fullTour && state.fullTour.st !== 'on') setTimeout(() => { if (!offerTourResume() && route() === 'home') autoNotify(true); }, 1500);   /* Version 39.27: Android's "Allow", once, after the first-run tour, never during it */
-    const y = r === curRoute ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0);
+    const fromGate = mem.gateR === r; mem.gateR = null;   /* Version 39.78 (launch QA B6): not sign-up's scroll on the page she signed up for */
+    const y = (r === 'join-update' && obStepNew()) ? 0 : (r === curRoute && !fromGate ? prevY : (dir === 'back' ? (scrollMem[r] || 0) : 0));
     if (r !== 'diary') mem.calEdit = null;   /* Version 39.23: editing period dates ends when she leaves */
     curRoute = r; window.scrollTo(0, y); shownDay = dayKey();
     if (mem.goAt) { const at = mem.goAt; mem.goAt = null; const el = v.querySelector('[data-at="' + at + '"]'); if (el) { if (el.tagName === 'DETAILS') el.open = true; try { el.scrollIntoView({ block: 'start' }); } catch (e) { el.scrollIntoView(); } } }
@@ -2212,6 +2216,17 @@
     const n = $('#ex-not', v); if (n) n.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.exAsked = toISO(today()); save(); render(); });
   }
   function renderJoinUpdate(v) { if (!mem.ob || !mem.ob.update) { setHash('home'); return; } renderOnboard(v); }
+  /* Version 39.78 (launch QA B6): joining's next step opened where the last one was scrolled to, so after Continue at the foot of the
+     goals list "Your last 3 periods" and the pill question sat above the screen. True once for each new step. */
+  function obStepNew() { const k = mem.ob ? mem.ob.step : null; if (k === mem.obTop) return false; mem.obTop = k; return true; }
+  /* Version 39.78 (launch QA B1): on a touch screen sign-up's picture steps aside the first time she taps a box, and stays aside on that
+     screen. Version 39.76 brought it back when the box lost focus, which a tap on Send code does first: the button jumped 312 px down
+     under her finger and the tap missed (3 of 3 on Mohit's Flip5). */
+  function suTyping(v) {
+    const su = v.querySelector('.su'); if (!su) return; const box = (e) => !!e && su.contains(e) && e.matches('input, select, textarea');
+    su.addEventListener('focusin', (e) => { if (box(e.target)) su.classList.add('su-typing'); });
+    if (box(document.activeElement)) su.classList.add('su-typing');   /* a box Sakhi focused for her (after an error) */
+  }
   function renderBrowseHome(v) { v.innerHTML = acctCard() + '<div class="card"><h2>' + esc(t('browse_h')) + '</h2><p>' + esc(t('browse_p')) + '</p><button type="button" class="btn primary block" id="b-start">' + esc(t('start')) + '</button><button type="button" class="btn block" data-go="care">' + esc(t('all_tools')) + '</button></div>' + acctItem(); wire(v); $('#b-start', v).addEventListener('click', () => { state.stage = 'onboard'; mem.ob = { step: 1 }; render(); }); }
 
   /* ---------- account: every woman signs up with her mobile number; her diary never leaves the phone ----------
@@ -4656,6 +4671,11 @@
   const careSentences = (s) => String(s || '').replace(/,\s*not Qura\./g, '.').replace(/,\s*Qura के लिए नहीं।/g, '।').replace(/\bTell her if you are breastfeeding/g, 'Tell your doctor if you are breastfeeding')
     .split(/(?<=[.!?।])\s+/).map((x) => x.trim()).filter((x) => x && !/Qura/.test(x));
   function findArticle(key) { const i = key.indexOf('.'); const g = (CONTENT.groups || []).find((x) => x.group === key.slice(0, i)); const a = g && (g.articles || []).find((x) => x.id === key.slice(i + 1)); return a ? Object.assign({ group: g.group }, a) : null; }
+  /* Version 39.78 (launch QA B7): the Learn article on her data says what the joining notice says, from the same lines, so the two can't
+     drift apart again (it still named Tell a person, servers holding her diary, a sharing switch and WhatsApp updates). The PostHog line
+     only in a build that has PostHog, as in the notice. content.json holds the same sentences, for search. */
+  const PRIVACY_ART = 'services.your-data-privacy';
+  const privacyBody = (a) => [(L(a, 'body') || [])[0]].filter(Boolean).concat([1, 2, 5].map((i) => t('ob_notice_' + i)), [t('notice_text')], [3, 4].map((i) => t('ob_notice_' + i)), phAvail() ? [t('ob_notice_6')] : []);
   function renderArticle(v, key) {
     const a = findArticle(key); if (!a) { v.innerHTML = '<div class="card"><p>' + esc(t('loading')) + '</p><button type="button" class="btn sm" data-go="learn">' + esc(t('learn')) + '</button></div>'; wire(v); return; }
     /* Version 39.77: by the article's group (Mohit's choices): Qura's areas get "How Qura can help" in his words and no free government
@@ -4663,12 +4683,12 @@
        The two under-18 articles keep their own lines (Qura doesn't see girls). "How soon" lines stay for everyone. */
     const dw = docWho('learn-' + a.group); const u18 = key === 'cycle.first-periods-for-teens' || key === 'services.under-18-daughter-sister';
     const keep = dw === 'G' && !u18 ? careSentences(L(a, 'qura_line')) : [];   /* its box goes, its safety lines stay */
-    const body = L(a, 'body') || []; const sd = (L(a, 'see_doctor') || []).filter((x) => u18 || dw !== 'Q' || !/^(Free|मुफ़्त)/.test(x)).concat(keep); const ql = dw === 'G' || key === 'services.how-qura-helps' ? '' : (u18 ? L(a, 'qura_line') : (L(a, 'qura_line') ? t('qura_std') : ''));   /* How Qura helps says it in its own words */ const at = artTools(key);
+    const body = key === PRIVACY_ART ? privacyBody(a) : (L(a, 'body') || []); const sd = (L(a, 'see_doctor') || []).filter((x) => u18 || dw !== 'Q' || !/^(Free|मुफ़्त)/.test(x)).concat(keep); const ql = dw === 'G' || key === 'services.how-qura-helps' ? '' : (u18 ? L(a, 'qura_line') : (L(a, 'qura_line') ? t('qura_std') : ''));   /* How Qura helps says it in its own words */ const at = artTools(key);
     v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1><p class="lead">' + esc(L(a, 'summary')) + '</p>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p) => (p.startsWith('- ') ? '<p class="bullet">' + esc(p.slice(2)) + '</p>' : '<p>' + esc(p) + '</p>')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
       (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
-      relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
+      (key === PRIVACY_ART ? grievanceHtml() : '') + relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
     wire(v); const aa = $('#art-ask', v); if (aa) aa.addEventListener('click', () => ask(L(a, 'title')));
     const al = $('#art-listen', v); if (al) al.addEventListener('click', () => api.readAloud($('.article', v)));
     v.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
@@ -5350,13 +5370,16 @@
      from the day she joins, with no question in Sakhi's own words. Android 13 and newer still shows its own "Allow" once: after
      her first tour, on "Start my plan", or when she sets a reminder herself (ask). Off stays off: the switch on Me > Reminders
      sets notifyOff, and only she turns them on again. */
-  function autoNotify(ask, again) {
+  function autoNotify(ask, again, exact) {
     const B = window.SakhiAndroid; if (!hasReminders() || !B.canNotify || state.stage !== 'app' || state.sample || state.settings.notifyOff) return;
-    if (safe(() => B.canNotify(), false)) { if (!state.settings.notify) { state.settings.notify = true; save(); } return; }
+    if (safe(() => B.canNotify(), false)) { if (!state.settings.notify) { state.settings.notify = true; save(); } if (exact) askExactSoon({ home: true }); return; }
     if (!ask) return; const p = state.prompts || (state.prompts = {});
     if ((p.notifyAuto && !again) || mem.locked || sheetUp() || tour) return;
-    p.notifyAuto = toISO(today()); save();
-    window.__sakhiNotify = (ok) => { if (ok) { state.settings.notify = true; save(); toast(t('notif_on')); render(); } else if (again) toast(t('notif_denied')); };
+    /* Version 39.78 (the review): one Android "Allow" at a time. A second request while one is up cancels the first (a false "off"
+       toast, and the first call's follow-up lost): a plan reminder booked in the same seconds (the 6-week check) did that. */
+    if (mem.notifyAsk && Date.now() - mem.notifyAsk.at < 60000) { if (exact) mem.notifyAsk.exact = true; return; }
+    p.notifyAuto = toISO(today()); save(); mem.notifyAsk = { at: Date.now(), exact: !!exact };
+    window.__sakhiNotify = (ok) => { const ex = !!(mem.notifyAsk && mem.notifyAsk.exact); mem.notifyAsk = null; if (ok) { state.settings.notify = true; save(); toast(t('notif_on')); render(); if (ex) askExactSoon({ home: true }); } else if (again) toast(t('notif_denied')); };
     safe(() => B.askNotify());
   }
   /* Phone reminders on, from a button she tapped (Me > Reminders, the heads-up card): Android's own prompt if it needs one */
@@ -5368,18 +5391,35 @@
   /* Version 34 (audit P1): without "Alarms and reminders" (off by default from Android 14) a reminder can ring up to an hour
      late, which matters for the pill. Asked right after reminders are turned on, and when she sets a daily reminder; at most
      once a week. Coming back from the setting re-sends the alarms, and Android re-arms them when the permission changes. */
-  function askExactNow(force) {
+  function askExactNow(force, med) {
     const B = window.SakhiAndroid; if (!B || !B.canExactAlarms || !B.askExactAlarms || !state.settings.notify || safe(() => B.canExactAlarms(), true)) return;
     const p = state.prompts || (state.prompts = {}); if (!force && isISO(p.exactAsk) && diffDays(fromISO(p.exactAsk), today()) < 7) return;
-    if (mem.locked || sheetUp()) return;
+    if (mem.locked || sheetUp() || tour) return;
     p.exactAsk = toISO(today()); save();
-    sheet('<h2>' + esc(t('ex_h')) + '</h2><p>' + esc(t('ex_p')) + '</p><div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="ex-no">' + esc(t('nq_later')) + '</button><button type="button" class="btn primary" id="ex-yes">' + esc(t('ex_b')) + '</button></div></div>', (sh) => {
+    sheet('<h2>' + esc(t('ex_h')) + '</h2><p>' + esc(t(med ? 'ex_p_med' : 'ex_p')) + '</p><div class="sheet-foot"><div class="grid2"><button type="button" class="btn" id="ex-no">' + esc(t('nq_later')) + '</button><button type="button" class="btn primary" id="ex-yes">' + esc(t('ex_b')) + '</button></div></div>', (sh) => {
       $('#ex-no', sh).addEventListener('click', () => closeSheet(true));
       $('#ex-yes', sh).addEventListener('click', () => { closeSheet(true); safe(() => B.askExactAlarms()); });
     });
   }
+  /* Version 39.78 (launch QA B5, then the review): "A medicine rings at its own time" (the baseline). Android 14+ turns "Alarms and
+     reminders" off for a new app, so a tablet reminder (kind 'med': her folic acid, IFA, calcium, iron, the pill, My medicines) could ring
+     up to an hour late, and a reminder her plan books (quietly) never asked. Now "Ring on time?" comes once (at most once a week) when a
+     medicine reminder is booked, by her tap or her plan, and after Start my plan if her plan already rings a medicine. Never for her
+     other reminders: Version 39.27's "no question in Sakhi's words" stands for them. o.home: only on Today (after Start). It waits while
+     a sheet, a tour or the lock is up; after a minute it leaves exactDue for her next Today. */
+  const medRings = () => reminders.list().some((r) => r && r.kind === 'med' && r.on !== false);
+  function askExactSoon(o, n) {
+    o = o || {}; n = n || 0; clearTimeout(mem.exactT);   /* one chain at a time: Today's redraws don't start more */
+    mem.exactT = setTimeout(() => {
+      const p = state.prompts || (state.prompts = {}); const B = window.SakhiAndroid; const clear = () => { if (p.exactDue) { delete p.exactDue; save(); } };
+      const recent = isISO(p.exactAsk) && diffDays(fromISO(p.exactAsk), today()) < 7;
+      if (!state.settings.notify || state.stage !== 'app' || !medRings() || recent || !B || !B.canExactAlarms || !B.askExactAlarms || safe(() => B.canExactAlarms(), true)) { clear(); return; }
+      if (mem.locked || sheetUp() || tour || (o.home && route() !== 'home')) { if (n < 40) askExactSoon(o, n + 1); else { p.exactDue = 1; save(); } return; }
+      clear(); askExactNow(false, true);
+    }, 1500);
+  }
   /* A tapped notification opens its screen: Android calls this with the reminder's route (only letters, digits and dashes). */
-  window.__sakhiOpen = (r) => { if (typeof r !== 'string' || !/^[a-z0-9-]{1,40}$/.test(r) || state.stage !== 'app') return;
+  window.__sakhiOpen = (r) => { if (typeof r !== 'string' || !/^[a-z0-9-]{1,40}$/.test(r) || state.stage !== 'app') return; mem.noAutoplay = false;
     if (r === 'plan-pause') { safe(() => api.plan && api.plan.pauseLead && api.plan.pauseLead()); r = 'home'; }   /* Version 39.72: the pause offer's notification opens Today with its card first */
     if (route() !== r) setHash(r); else render(); };
   function syncNotifications() {
@@ -5562,7 +5602,8 @@
     loadSample: loadSample, sampleIds: () => Object.keys(samples), strings: STR,
     onOwnerChange: (fn) => { if (typeof fn === 'function') ownerFns.push(fn); },
     flags: { get proto() { return !!state.settings.proto; }, get discreet() { return !!state.settings.discreet; } },
-    alerts: { can: () => hasReminders(), on: () => !!state.settings.notify, ask: (then) => turnOnNotify(then), auto: (ask) => autoNotify(ask), off: () => !!state.settings.notifyOff, blocked: () => { const B = window.SakhiAndroid; return !!(B && B.canNotify && !state.settings.notify && !state.settings.notifyOff && (state.prompts || {}).notifyAuto && !safe(() => B.canNotify(), false)); },   /* the phone said no to Android's "Allow" */ period: () => !!headsRange() && !isPregnant() && !countsOff() && stageNow() !== 'ttc',   /* Version 39.27: the note the day before her period will ring */
+    autoplayOk: () => !mem.noAutoplay,   /* Version 39.78: false on a page Android restored, until her first tap */
+    alerts: { can: () => hasReminders(), on: () => !!state.settings.notify, ask: (then) => turnOnNotify(then), auto: (ask, exact) => autoNotify(ask, false, exact), off: () => !!state.settings.notifyOff, blocked: () => { const B = window.SakhiAndroid; return !!(B && B.canNotify && !state.settings.notify && !state.settings.notifyOff && (state.prompts || {}).notifyAuto && !safe(() => B.canNotify(), false)); },   /* the phone said no to Android's "Allow" */ period: () => !!headsRange() && !isPregnant() && !countsOff() && stageNow() !== 'ttc',   /* Version 39.27: the note the day before her period will ring */
       exact: () => { const B = window.SakhiAndroid; return !(B && B.canExactAlarms) || safe(() => !!B.canExactAlarms(), true); }, askExact: () => askExactNow(true) },
     planOn: () => demoBuild() || PLAN_RELEASE,   /* Version 35: the PMOS plan, until its wording is reviewed (PLAN_RELEASE) */
     setupShows: (id) => setupShown.indexOf(id) >= 0,
@@ -5618,6 +5659,14 @@
     if (CSS.length) { const st = document.createElement('style'); st.id = 'mod-css'; st.textContent = CSS.join('\n'); document.head.appendChild(st); }
     load(); loadAcct();
     if (state.settings.pinHash) mem.locked = true;
+    /* Version 39.78 (launch QA B3): when Android brings back her last page after recreating Sakhi (killed in the background, or the
+       font size or language changed), that page starts no sound until her first tap; a Wind down session or a sleep sound played
+       with no tap, out loud on a shared phone. A notification she taps counts as her tap (__sakhiOpen). */
+    mem.noAutoplay = !!(window.SakhiAndroid && window.SakhiAndroid.restored && safe(() => window.SakhiAndroid.restored(), false));
+    if (mem.noAutoplay) {   /* taps on the lock screen don't count: after her PIN, the restored page still waits for a tap of its own */
+      const EVS = ['pointerdown', 'click', 'keydown']; const off = () => { if (mem.locked) return; mem.noAutoplay = false; EVS.forEach((e) => document.removeEventListener(e, off, true)); };
+      EVS.forEach((e) => document.addEventListener(e, off, true));
+    }
     /* Lock again when she comes back after more than 30 seconds away; on a shared phone the diary closes the same way, PIN or not
        (Android may pause the 10-minute timer while the app is in the background). The page's own visibility events and the
        Android app's pause/resume calls both land here; the second arrival finds nothing to do, so she is never locked twice.
@@ -5639,6 +5688,8 @@
     window.addEventListener('hashchange', () => { if (toast.at && Date.now() - toast.at > 700) { clearTimeout(toast.tm); const r = $('#toast-root'); if (r) r.innerHTML = ''; } });   /* Version 39.37: a toast stays with the screen it was for */
     window.addEventListener('hashchange', render);
     window.addEventListener('scroll', fabScroll, { passive: true });   /* Version 39.76 */
+    /* Version 39.78 (launch QA B4): the tab bar's real height, without the safe-area padding (the sticky rules add that themselves) */
+    if ('ResizeObserver' in window && $('#tabbar')) { const tb = $('#tabbar'); new ResizeObserver(() => { if (!tb.offsetHeight) return; const pb = parseFloat(getComputedStyle(tb).paddingBottom) || 10; document.documentElement.style.setProperty('--tb-h', Math.max(0, tb.offsetHeight - Math.max(0, pb - 10)) + 'px'); }).observe(tb); }   /* a bar hidden while she types keeps its height: at 0 the check-in's Save dropped under it, and the tap that closed the keyboard missed it (the review) */
     if ('MutationObserver' in window && $('#sheet-root')) new MutationObserver(behindSync).observe($('#sheet-root'), { childList: true });   /* Version 39.76 */
     ['click', 'change'].forEach((e) => document.addEventListener(e, () => { lastTap = Date.now(); }, true));
     if (state.settings.shared && state.stage === 'app') mem.locked = true;

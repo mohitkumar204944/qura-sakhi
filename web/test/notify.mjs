@@ -1,7 +1,8 @@
 // Version 34: phone notifications (docs/notifications-audit-2026-10-23.md). What the page hands Android: repeat rules so
 // daily reminders renew themselves, channels by kind in her language, neutral words on a shared phone, the late-period
 // nudge, the route a tap opens, and reminders on by default (Version 39.27: Android's own "Allow" once, no question in
-// Sakhi's words; "Ring on time?" only for a daily reminder she sets). A fixed clock (Asia/Kolkata); a stand-in for
+// Sakhi's words; "Ring on time?" only for a daily reminder she sets, and since Version 39.78 for a medicine reminder,
+// test/launchfix.mjs section 5). A fixed clock (Asia/Kolkata); a stand-in for
 // the Android bridge records every call; nothing leaves the machine. The Android side's repeat maths is in
 // android/test/ReminderMathTest.java.
 // Usage: node test/notify.mjs [dir]   (dir defaults to this app folder)

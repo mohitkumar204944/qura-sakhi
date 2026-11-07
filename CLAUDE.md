@@ -635,6 +635,19 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     The walks behind it: `node test/doctor-walk.mjs` (every screen, 7 women, 5 answers) and `node test/doctor-shots.mjs` then
     `node test/doctor-page.mjs` (the choice page's screenshots). Contract: MODULE_API section 120; wording: section 19.77 of the review
     (waits for the doctors' read).
+  - `node test/launchfix.mjs` (Version 39.78, the launch QA's fixes; Mohit, 7 Nov: "Yes, fix all 8"; the QA: `docs/launch-qa-2026-11-07.md`):
+    - Send code in one tap with the keyboard up (sign-up's picture stays aside once she has tapped a box);
+    - no belly gap check or after-birth lines on a pregnant woman's pelvic floor trainer, and her figure sits up (never on her back);
+    - no sound with no tap: MainActivity opens a notification's screen only on a real new launch, and a page Android restored waits for
+      her tap (the bridge's `restored()`, core `S.autoplayOk()`);
+    - the players' controls, the check-in's Save and the + menu above Wind down's bar and above the tab bar's real height (`--tb-h`,
+      `--tb-gap`, `--mini-h`; 74 px at 100% text, as before);
+    - "Ring on time?" when a medicine reminder is booked (her tap or her plan), on a phone that would ring late: the one exception to
+      Version 39.27's "no question in Sakhi's words", for "a medicine rings at its own time"; never for her other reminders;
+    - joining's next step, her plan's next question and the page she signed up on open at their top;
+    - the Learn article on her data drawn from the joining notice; the language tile names Hindi and English only.
+    On the phone the walk tools are `web/test/adb-ui.mjs` (the screen as text, taps by label) and `web/test/adb-cdp.mjs` (a debug copy's
+    WebView). Contract: MODULE_API section 121; wording: section 19.78 of the review (UI and privacy words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,
