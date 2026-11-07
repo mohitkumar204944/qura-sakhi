@@ -538,7 +538,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - screen views with neutral names (Firebase adds the time on each), taps as their place in the page, rage and dead taps, errors
       without their message;
     - private screens, the lock, discreet mode, a shared phone and a sample woman switch Firebase off altogether; off forgets the id;
-    - no ad ID, Android ID, ad consents or automatic screens (the manifest), and the ad permissions removed.
+    - no ad ID, Android ID, ad consents or automatic screens (the manifest), and the ad permissions and Play's install referrer
+      removed (no campaign or install source).
     The test's fake bridge keeps every call. Contract: MODULE_API section 122 (privacy words only).
   - `node test/retire.mjs` (Version 39.68, the doctors' feature review, part 1; Mohit, 5 Nov: "go"; the record and the answers:
     `docs/feature-review-2026-11-05.md`): what Dr. Megha and the gynaecologist removed is gone however she reaches it (core
@@ -687,14 +688,17 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - Testers get a build without "demo" (for example `0.32-test`): no sample women, no fertile days, and the triage tools held
     back (MODULE_API section 34).
   - A pilot build (`0.33-pilot`) has every tool on, fertile days and the triage tools included, and still no sample women
-    (MODULE_API section 35; Mohit's legal advice, 23 Oct). Add `SAKHI_GRIEVANCE="Name, Trinaya Wellness LLP, address, email"` once Mohit gives it.
+    (MODULE_API section 35; Mohit's legal advice, 23 Oct). Every pilot and Play build adds
+    `SAKHI_GRIEVANCE="Mohit Kumar, Trinaya Wellness LLP, E-1-121, Chitrakoot Yojna, Chitrakoot Marg, Vaishali Nagar, Jaipur, Rajasthan 302021, hello@quranutrition.com"`
+    (Mohit, 7 Nov: he is the Grievance Officer; the LLP's registered address; the email on the website's privacy page).
   - For the live server, add `SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api`. Every signup on
     such a build sends a real code.
   - Add `SAKHI_HELP_WA=91XXXXXXXXXX` (Qura's staffed WhatsApp number) for "Speak to a doctor" and "Tell a person". Without
     it the doctor screen offers Qura's booking page and "Tell a person" is hidden.
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
-  - Add `SAKHI_PRIVACY=https://www.quranutrition.com/sakhi/privacy` once that page is live: the "Privacy policy" link in About and
-    privacy (Version 39.76; Play wants it in the app). https only; without it there is no link. `PLAY=1` builds hide the coordinator tool.
+  - Add `SAKHI_PRIVACY=https://quranutrition.com/sakhi/privacy` (live since 7 Nov; www redirects to it): the "Privacy policy" link in
+    About and privacy (Version 39.76; Play wants it in the app). https only; without it there is no link. `PLAY=1` builds hide the
+    coordinator tool.
   - "Share how I use Sakhi" (Version 39.79) is in the build when `android/google-services.json` is there (Firebase project
     `qura-sakhi`, Mohit's account; the file is not in git). Without it the APK has no Firebase code and no switch. `SAKHI_PH`
     (PostHog, Version 39.60) is gone.

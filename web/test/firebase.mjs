@@ -13,9 +13,9 @@
 //   7. discreet mode and a shared phone switch it off at once; off in Me switches it off and forgets the anonymous id; on again
 //      starts afresh;
 //   8. Hindi at 360 px;
-//   9. the app's side: the manifest keeps ad IDs, Android ID, ad consents and automatic screens off and drops AD_ID, Firebase is
-//      off until the page says, the Java checks the same five events and values, and a build without google-services.json has
-//      no Firebase at all.
+//   9. the app's side: the manifest keeps ad IDs, Android ID, ad consents and automatic screens off and drops AD_ID and the install
+//      referrer, Firebase is off until the page says, the Java checks the same five events and values, and a build without
+//      google-services.json has no Firebase at all.
 // Usage: node test/firebase.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -213,7 +213,7 @@ await browser.close();
     meta('firebase_analytics_collection_enabled', 'false') && meta('google_analytics_adid_collection_enabled', 'false') && meta('google_analytics_ssaid_collection_enabled', 'false') &&
     meta('google_analytics_default_allow_ad_storage', 'false') && meta('google_analytics_default_allow_ad_user_data', 'false') && meta('google_analytics_default_allow_ad_personalization_signals', 'false') &&
     meta('google_analytics_automatic_screen_reporting_enabled', 'false'));
-  check('9 the manifest takes out the ad permissions Firebase brings (the advertising ID, the Privacy Sandbox\'s ad ID and ad attribution)', ['com.google.android.gms.permission.AD_ID', 'android.permission.ACCESS_ADSERVICES_AD_ID', 'android.permission.ACCESS_ADSERVICES_ATTRIBUTION'].every((p) => mf.indexOf('<uses-permission android:name="' + p + '" tools:node="remove" />') >= 0) && /xmlns:tools="http:\/\/schemas\.android\.com\/tools"/.test(mf));
+  check('9 the manifest takes out the ad permissions Firebase brings (the advertising ID, the Privacy Sandbox\'s ad ID and ad attribution, Play\'s install referrer)', ['com.google.android.gms.permission.AD_ID', 'android.permission.ACCESS_ADSERVICES_AD_ID', 'android.permission.ACCESS_ADSERVICES_ATTRIBUTION', 'com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE'].every((p) => mf.indexOf('<uses-permission android:name="' + p + '" tools:node="remove" />') >= 0) && /xmlns:tools="http:\/\/schemas\.android\.com\/tools"/.test(mf));
   check('9 Firebase is switched off as the app opens, before the page loads', /Usage\.on\(getApplicationContext\(\), false\);[\s\S]*tts = new TextToSpeech/.test(main));
   check('9 the bridge has the four usage calls and nothing else of Firebase', ['usageOk', 'usage', 'usageEvent', 'usageForget'].every((m) => new RegExp('public \\w+ ' + m + '\\(').test(main)) && !/FirebaseAnalytics/.test(main));
   const jsNames = Object.keys({ screen_view: 1, tap: 1, rage_tap: 1, dead_tap: 1, app_error: 1 }).join('|');

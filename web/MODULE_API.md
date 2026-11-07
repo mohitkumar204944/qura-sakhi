@@ -7979,13 +7979,16 @@ her exact place. The notice version she agrees to is `NOTICE_V + '.fb'` (it was 
 **The app's side.** `MainActivity` switches Firebase off in `onCreate`, before the page loads. The manifest keeps it off until the page
 says (`firebase_analytics_collection_enabled=false`), never collects the advertising ID or Android ID, denies ad storage, ad user data
 and ad personalisation by default and in every `setConsent` (`Usage.on`: analytics storage granted only while on), sends no automatic
-screen names, and removes the permissions Firebase brings for ads (`AD_ID`, `ACCESS_ADSERVICES_AD_ID`, `ACCESS_ADSERVICES_ATTRIBUTION`).
+screen names, and removes the permissions Firebase brings for ads (`AD_ID`, `ACCESS_ADSERVICES_AD_ID`, `ACCESS_ADSERVICES_ATTRIBUTION`)
+and Google Play's install referrer (`BIND_GET_INSTALL_REFERRER_SERVICE`; Mohit, 7 Nov, from vc 142): which ad, campaign or link she
+installed Sakhi from never reaches Analytics.
 Firebase's own components are all unexported. R8 shrinks the libraries (37 MB unshrunk; 30.8 MB with Firebase, under the 30 MiB
 ceiling) and renames nothing (`proguard-rules.pro`: `-dontobfuscate`, every `@JavascriptInterface` method kept).
 
 **What Google gets, besides Sakhi's events:** Firebase's automatic events while it is on (`first_open`, `session_start`,
 `user_engagement`, `app_update`, `os_update`), an app instance id that "off" forgets, the phone's model, Android and app versions and
-language, and the area from the connection's address. Never her name, number, account, diary or the words on a screen.
+language, and the area from the connection's address. Never her name, number, account, diary, the words on a screen or where she
+installed Sakhi from.
 
 **Its console.** Firebase project `qura-sakhi` (Spark, no cost), Android app `com.quranutrition.sakhi`, linked to Google Analytics
 property `qura-sakhi` (563097729) in the account "Default Account for Firebase". Event and user data are kept 14 months (Mohit, 7 Nov).
