@@ -462,3 +462,70 @@ Ticking a borderline category is safer than leaving out something the reviewer f
   > sources, such as data.gov.in and eSanjeevani.
 
   In the listing, never use the national emblem or the word "official" about Sakhi itself.
+
+### The store listing (Main store listing → App details), drafted 7 Nov 2026
+
+Mohit, 7 Nov: "draft the store descriptions". In the house voice (the humanizer's Dr. Megha profile): one reader, a belief she holds,
+plain words, no dashes. It names only what every build has: nothing a plain release build holds back (lab results, the kick
+counter, the labour timer, the symptom guide, fertile days), so it stays true when the public build replaces the pilot one.
+Qura's doctors in Mohit's own words (6 Nov). The last two paragraphs are the disclaimers above.
+
+- **App name** (30 characters at most): Qura Sakhi
+- **Short description** (80 at most; 70 here; no "free", which Play discourages in short text):
+
+  > Track your periods and follow a small daily plan, in Hindi or English.
+
+- **Full description** (4000 at most; 3405 here). Paste it as plain text:
+
+```text
+Your periods tell you a lot about your health, right? But a calendar on its own can't tell you what to do next.
+
+Qura Sakhi is a women's health companion in Hindi and English, free to use. It keeps your period diary on your phone and gives you a few small steps each day: what to eat, how to move, and how to wind down at night. When something in your diary needs a doctor, it tells you in plain words.
+
+For every stage of your life
+Pick what's happening for you now, and Sakhi fits itself to it: regular periods, PCOS or PCOD, trying for a baby, pregnancy, after the birth, periods changing after 40, or menopause. You can change it any time.
+
+Track your periods
+• Log your period, spotting, cramps, mood and notes in a tap or two.
+• See your cycle on a calendar, and your next period once your gaps are steady enough to show it.
+• "Period late?" tells you what to do next.
+• Make a report for your doctor, in Hindi or English.
+
+A 12-week plan, made for you
+Choose what you want to work on, answer a few questions, and start. There are plans for PCOS, painful or heavy periods, getting ready for a baby, your pregnancy, recovery after the birth, menopause, and pelvic floor exercises (Kegels). Each day has 3 or 4 small steps and a 1-minute check-in in the evening. Missed a day? Your plan carries on.
+
+Food from your part of India
+Your plate is built from what your region already eats: bajra or makki roti in the North, ragi in the South, and the foods of the East, West, Central and North-east too. Veg, egg, non-veg or Jain, with or without milk. No food is banned. Sakhi shows you what to eat more often and what to eat less.
+
+Yoga and strength in 3D
+A moving 3D model shows every pose, with a timer and a short rest between moves: Surya namaskar (sun salutation), gentle yoga, cycle care yoga, strength at home, and pregnancy yoga for each trimester.
+
+Wind down at night
+Slow breathing, Bhramari (the humming breath) and yoga nidra, guided by your trainer in Hindi or English, with the words on screen. Sleep sounds play with a 15, 30 or 45 minute timer, even with the screen off.
+
+Your pregnancy, week by week
+Your baby's size each week, the check-ups that are due, a reminder for your iron tablets, the danger signs that need a doctor, and a hospital bag list near the end.
+
+Talk to a doctor
+Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic treatments. Ask for a free 20-minute call from the app. For some concerns, Sakhi points you to your gynaecologist or to eSanjeevani, the government's free online doctor.
+
+Help when it matters
+The danger signs in pictures, and one tap to call an ambulance: 108, or 102 in pregnancy.
+
+Private by design
+• Your diary stays on your phone. Qura keeps only your account details.
+• Lock Sakhi with a PIN, and keep reminders discreet on a shared phone.
+• No ads. Your data is never sold.
+
+Sakhi is for women 18 and over. You sign up with your mobile number.
+
+Qura Sakhi gives general health information and self-care support. It is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. For a health problem, see a doctor. In an emergency, go to the nearest hospital now (ambulance: 108).
+
+Qura Sakhi is not affiliated with any government. Its information on government health services comes from the official sources, such as data.gov.in and eSanjeevani.
+
+Made by Qura (Trinaya Wellness LLP).
+```
+
+- **Category:** Health & Fitness. **Tags:** women's health, period tracker, pregnancy. **Contact email:** hello@quranutrition.com.
+- **Graphics:** the icon `android/icon-512.png`, the feature graphic and the 8 screenshots in `marketing/play-store/`
+  (`screenshots/en-01-diary.png` to `en-08-tools.png`, in that order).
