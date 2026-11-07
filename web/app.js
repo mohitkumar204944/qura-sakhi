@@ -34,7 +34,7 @@
       start: 'Start my diary', try_sample: 'Explore with sample data', sample_priya: 'Priya, 27 · irregular cycles', sample_asha: 'Asha, 31 · regular cycles', browse_only: 'Just read the help pages',
       step: 'Step', of: 'of', dob_h: 'When were you born?', dob_p: 'The diary is for women 18 and over. We ask this first and keep it only on your profile.', day: 'DD', month: 'MM', year: 'YYYY',
       dob_note: 'Under 18? Nothing is saved. You will see our free safety guide instead.', continue: 'Continue', back: 'Back',
-      under18_h: 'This diary is for women 18 and over', under18_p: 'Nothing you typed was saved. The safety guide and the Learn pages are free for everyone.', ask_teen_h: 'Talking to a doctor', ask_teen_p: 'Sakhi books calls for women 18 and over. If you are under 18, go to a doctor with a parent, a guardian or an adult you trust.',
+      under18_h: 'This diary is for women 18 and over', under18_p: 'Nothing you typed was saved. The safety guide and the Learn pages are free for everyone.', under18_p_play: 'Nothing you typed was saved. The safety guide is free for everyone.', ask_teen_h: 'Talking to a doctor', ask_teen_p: 'Sakhi books calls for women 18 and over. If you are under 18, go to a doctor with a parent, a guardian or an adult you trust.',
       lp_h: 'When did your last period start?', today_b: 'Today', yesterday: 'Yesterday', pick: 'Pick a date', dont_remember: "Don't remember",
       sit_h: 'Right now, are you…', sit_p: 'These change what the diary counts. You can update them any time on the Me page.', pregnant: 'Pregnant', bf: 'Breastfeeding', hormones: 'On hormone medicine', none: 'None of these',
       consent_h: 'Before we start, three things', consent_1: 'Your diary and safety entries can be read by Qura\'s care team: a Qura doctor, and a Qura coordinator when you tap "Tell a person".',
@@ -307,7 +307,7 @@
       start: 'डायरी शुरू करें', try_sample: 'नमूना डेटा के साथ देखें', sample_priya: 'प्रिया, 27 · अनियमित चक्र', sample_asha: 'आशा, 31 · नियमित चक्र', browse_only: 'सिर्फ़ मदद के पन्ने पढ़ें',
       step: 'चरण', of: 'में से', dob_h: 'आपका जन्म कब हुआ?', dob_p: 'यह डायरी 18 साल और उससे ऊपर की महिलाओं के लिए है। यह हम सबसे पहले पूछते हैं और सिर्फ़ आपकी प्रोफ़ाइल में रखते हैं।', day: 'दिन', month: 'महीना', year: 'साल',
       dob_note: '18 से कम? कुछ भी save नहीं होता। आपको हमारी मुफ़्त सुरक्षा गाइड दिखेगी।', continue: 'आगे', back: 'पीछे',
-      under18_h: 'यह डायरी 18 साल और ऊपर की महिलाओं के लिए है', under18_p: 'आपने जो लिखा, वह save नहीं हुआ। सुरक्षा गाइड और “जानें” के पन्ने सबके लिए मुफ़्त हैं।', ask_teen_h: 'डॉक्टर से बात', ask_teen_p: 'Sakhi 18 साल और उससे बड़ी महिलाओं के लिए कॉल बुक करती है। अगर आप 18 से कम हैं, तो माता-पिता, अभिभावक या किसी भरोसेमंद बड़े के साथ डॉक्टर के पास जाएँ।',
+      under18_h: 'यह डायरी 18 साल और ऊपर की महिलाओं के लिए है', under18_p: 'आपने जो लिखा, वह save नहीं हुआ। सुरक्षा गाइड और “जानें” के पन्ने सबके लिए मुफ़्त हैं।', under18_p_play: 'आपने जो लिखा, वह save नहीं हुआ। सुरक्षा गाइड सबके लिए मुफ़्त है।', ask_teen_h: 'डॉक्टर से बात', ask_teen_p: 'Sakhi 18 साल और उससे बड़ी महिलाओं के लिए कॉल बुक करती है। अगर आप 18 से कम हैं, तो माता-पिता, अभिभावक या किसी भरोसेमंद बड़े के साथ डॉक्टर के पास जाएँ।',
       lp_h: 'आपका पिछला पीरियड कब शुरू हुआ?', today_b: 'आज', yesterday: 'कल', pick: 'तारीख़ चुनें', dont_remember: 'याद नहीं',
       sit_h: 'अभी आप…', sit_p: 'इससे तय होता है कि डायरी क्या गिने। “मैं” पन्ने पर कभी भी बदल सकती हैं।', pregnant: 'गर्भवती', bf: 'स्तनपान करा रही', hormones: 'हॉर्मोन की दवा पर', none: 'इनमें से कुछ नहीं',
       consent_h: 'शुरू करने से पहले, तीन बातें', consent_1: 'आपकी डायरी और safety entries Qura की care team पढ़ सकती है: एक Qura डॉक्टर, और जब आप “किसी को बताएँ” दबाएँ, एक coordinator।',
@@ -1152,7 +1152,7 @@
     return r;
   }
   function renderTabbar() {
-    const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !signupGate(route()) && ['your-sakhi', 'join-update'].indexOf(route()) < 0; navEl.hidden = !inApp; if (!inApp) return;
+    const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !teenPlay() && !signupGate(route()) && ['your-sakhi', 'join-update'].indexOf(route()) < 0; navEl.hidden = !inApp; if (!inApp) return;
     const cur = tabOf(route());
     const tabs = state.stage === 'app'
       ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])
@@ -1219,6 +1219,7 @@
     if (state.stage === 'app' || state.stage === 'browse') dir = trackNav(r);
     if (runHook('beforeRender', [v, r, api]).some((x) => x === true)) return;
     if (mem.under18) { renderUnder18(v); safe(() => axNames(v)); mem.obTop = null; window.scrollTo(0, 0); return; }   /* Version 39.78 (the review): at its top */
+    if (teenPlay() && TEEN_PLAY.indexOf(r) < 0) { safe(() => location.replace('#help')); return; }   /* Version 39.81: under 18 in a Play build, Help only */
     if (state.stage === 'welcome') { renderWelcome(v); safe(() => axNames(v)); mem.obTop = null; return; }   /* Version 39.78: joining again starts step 1 at its top */   /* Version 39.76: names Android keeps, joining too */
     if (state.stage === 'onboard') { renderOnboard(v); safe(() => axNames(v)); if (obStepNew()) window.scrollTo(0, 0); return; }   /* Version 39.78 (launch QA B6): a new step starts at its top */
     const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
@@ -1755,7 +1756,10 @@
     });
   }
   function renderUnder18(v) {
-    v.innerHTML = '<div class="welcome">' + (api.art ? '<div class="mark sakhi-mark">' + api.art.sakhi({ pose: 'calm', look: state.settings.look }) + '</div>' : '<div class="mark">' + I.help + '</div>') + '<h1>' + esc(t('under18_h')) + '</h1><p>' + esc(t('under18_p')) + '</p><button type="button" class="btn primary block" data-go="help">' + esc(t('safety')) + '</button><button type="button" class="btn block" data-go="learn">' + esc(t('learn')) + '</button>' + runHook('under18', [api], true) + '<button type="button" class="btn ghost block" id="u18-back">' + esc(t('back')) + '</button>' + '<p class="footnote">' + esc(t('teen_learn')) + '</p></div>';
+    v.innerHTML = '<div class="welcome">' + (api.art ? '<div class="mark sakhi-mark">' + api.art.sakhi({ pose: 'calm', look: state.settings.look }) + '</div>' : '<div class="mark">' + I.help + '</div>') + '<h1>' + esc(t('under18_h')) + '</h1><p>' + esc(t(playStore() ? 'under18_p_play' : 'under18_p')) + '</p><button type="button" class="btn primary block" data-go="help">' + esc(t('safety')) + '</button>' +
+      (playStore() ? '' : '<button type="button" class="btn block" data-go="learn">' + esc(t('learn')) + '</button>' + runHook('under18', [api], true)) + '<button type="button" class="btn ghost block" id="u18-back">' + esc(t('back')) + '</button>' + (playStore() ? '' : '<p class="footnote">' + esc(t('teen_learn')) + '</p>') + '</div>';
+    /* Version 39.81 (Play's target audience, 18 and over): in a Play build a girl under 18 gets the safety guide only, no Learn pages,
+       no guides for girls and no tab bar; Back on Help brings her back here. Pilot APKs keep the reading path. */
     /* Under 18 (MODULE_API rule 10): she reads, nothing is saved (save() stops while mem.teen is on), and Doctor shows Childline
        1098 and a trusted adult instead of a booking form. Reopening the app asks her age again. */
     v.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => { mem.teen = true; state.stage = 'browse'; mem.under18 = false; setHash(b.dataset.go); }));
@@ -2245,6 +2249,10 @@
      never a placeholder (field-test audit 3.4) */
   const grievanceHtml = () => (CFG.grievance ? '<p class="small">' + esc(tf('grievance', { g: String(CFG.grievance) })) + '</p>' : '');
   const CFG = Object.assign({ api: '', app: '0.20', platform: window.SakhiAndroid ? 'android' : 'web' }, window.SAKHI_CONFIG || {});
+  /* Version 39.81: a Play build, and a girl under 18 in one (Help, the doctor page's trusted-adult words and Care near me only) */
+  const playStore = () => CFG.store === 'play';
+  const teenPlay = () => mem.teen && playStore();
+  const TEEN_PLAY = ['help', 'ask', 'access-care'];
   const DEMO_CODE = '123456';
   const HEARD = ['doc', 'fam', 'wa', 'social', 'qura', 'other'];
   const SEND = {
@@ -3570,7 +3578,7 @@
   /* Version 32 (field-test audit 3.6): first-run and signup steps live in memory, not in the page history, so Back steps through
      them with their own back arrow instead of closing Sakhi and losing her answers */
   window.__sakhiBack = () => { if (tour) { if (tour.i > 0) { tour.i -= 1; showTourStep(true); } else endTour('later'); return true; } if (fabOpen) { closeFab(); return true; } const r = $('#sheet-root'); if (r && r.innerHTML) { closeSheet(); return true; }
-    const own = $('#ob-back') || $('#su-back'); if (own && !own.disabled) { own.click(); return true; }
+    const own = $('#ob-back') || $('#su-back') || $('#help-u18-back'); if (own && !own.disabled) { own.click(); return true; }   /* Version 39.81: Help's Back for a girl under 18 in a Play build */
     /* Version 39.2: Back from a tab's first screen goes to Today; Back on Today closes the app */
     if (state.stage === 'app' && !mem.locked) { const rt = route(); if (rt === 'home') return 'exit'; if (['diary', 'care', 'plan', 'help', 'me'].indexOf(rt) >= 0) { nav.stack = ['home']; safe(() => location.replace('#home')); return true; } }
     return false; };
@@ -4740,13 +4748,14 @@
   const HELPLINES = [['108', 'Ambulance', 'एम्बुलेंस'], ['102', 'Ambulance for pregnant women and children', 'गर्भवती महिलाओं और बच्चों के लिए एम्बुलेंस'], ['104', 'Health advice helpline', 'स्वास्थ्य सलाह हेल्पलाइन'], ['1097', 'HIV and STI helpline', 'HIV और STI हेल्पलाइन']];
   function renderHelp(v) {
     const sec = (title, items, cls) => '<div class="card ' + (cls || '') + '" data-say="1"><h3' + (String(cls || '').indexOf('dark') === 0 ? '' : ' style="color:var(--accent)"') + '>' + esc(title) + '</h3><ul>' + items.map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul></div>';
-    v.innerHTML = (state.stage === 'app' ? backRow(t('help_h'), 'home', false) : '<h1>' + esc(t('help_h')) + '</h1>') + '<p class="small">' + esc(t('same_for_all')) + '</p>' + (state.stage === 'app' || state.stage === 'browse' ? helpTabs('help') : '') +
-      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] && !retired('access-free') ? '<button type="button" class="linkbtn" data-go="access-free">' + esc(t('access_free')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' + (docWho('help-page') !== 'Q' ? govCard() : '') +
+    const tp = teenPlay();
+    v.innerHTML = (state.stage === 'app' ? backRow(t('help_h'), 'home', false) : tp ? '<div class="row"><button type="button" class="iconbtn" id="help-u18-back" aria-label="' + esc(t('back')) + '">' + I.back + '</button><h1>' + esc(t('help_h')) + '</h1></div>' : '<h1>' + esc(t('help_h')) + '</h1>') + '<p class="small">' + esc(t('same_for_all')) + '</p>' + ((state.stage === 'app' || state.stage === 'browse') && !tp ? helpTabs('help') : '') +
+      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] && !retired('access-free') && !tp ? '<button type="button" class="linkbtn" data-go="access-free">' + esc(t('access_free')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' + (docWho('help-page') !== 'Q' ? govCard() : '') +
       sec(t('call_now'), ['s1a', 's1b', 's1d'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a']) + sec(t('mood'), ['s6a']) +
       /* Version 39.7: the symptom guide by body area is a tab at the top now (Version 39.1 had it as a row here) */
       (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
       (state.stage === 'app' && waNum() && !mem.teen ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + (state.stage === 'app' ? '' : tourMenuHtml());
-    wire(v); wireTourMenu(v); wireHelpTabs(v); const so = $('#sos-btn', v); if (so) so.addEventListener('click', openSOS); v.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => { const n = b.dataset.copy; const done = () => toast(t('copied') + ' ' + n); try { navigator.clipboard.writeText(n).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.parentElement.querySelector('.n')); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }); } catch (e) { toast(n); } }));
+    wire(v); wireTourMenu(v); wireHelpTabs(v); const hb = $('#help-u18-back', v); if (hb) hb.addEventListener('click', () => { mem.teen = false; state.stage = 'welcome'; mem.under18 = true; render(); }); const so = $('#sos-btn', v); if (so) so.addEventListener('click', openSOS); v.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => { const n = b.dataset.copy; const done = () => toast(t('copied') + ' ' + n); try { navigator.clipboard.writeText(n).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.parentElement.querySelector('.n')); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }); } catch (e) { toast(n); } }));
   }
   /* Help that reaches a person (audit fix 1a; Mohit, 22 Oct: "WhatsApp only"). Until the doctor hand-off (SERVER_SPEC 10.1)
      Sakhi sends nothing for her: these screens open WhatsApp to Qura's team (CFG.helpWa, set when the APK is built) with a

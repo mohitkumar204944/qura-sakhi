@@ -86,7 +86,13 @@ const indiaDay = (ms) => new Date(ms + IST_MS).toISOString().slice(0, 10);
 const indiaYear = (ms) => new Date(ms + IST_MS).getUTCFullYear();
 const addDays = (day, n) => new Date(Date.parse(day + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
 const prevMonth = (mk) => { const y = +mk.slice(0, 4), m = +mk.slice(5, 7); return m === 1 ? (y - 1) + '-12' : y + '-' + String(m - 1).padStart(2, '0'); };
-const clientIp = (req) => (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || req.headers.get('x-real-ip') || '';
+/* Which header holds her address (S1 of the 4 Nov security audit): Supabase may pass on an x-forwarded-for that the sender wrote.
+   SAKHI_IP_HEADER names the one the platform writes, once the audit's section 5 check (or the ip_headers log line) has shown which:
+   "cf-connecting-ip", "x-real-ip", or "x-forwarded-for:last" for the entry the last proxy added. Without it, or when that header is
+   missing: the first x-forwarded-for entry, then x-real-ip, as before. */
+const IP_HEADERS = ['x-forwarded-for', 'x-forwarded-for:last', 'x-real-ip', 'cf-connecting-ip'];
+const xffParts = (req) => (req.headers.get('x-forwarded-for') || '').split(',').map((x) => x.trim()).filter(Boolean);
+const defaultIp = (req) => xffParts(req)[0] || (req.headers.get('x-real-ip') || '').trim() || '';
 const short = (e) => String((e && e.message) || e).slice(0, 160);
 const str = (v, re) => typeof v === 'string' && re.test(v);
 
@@ -108,12 +114,38 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
   const reviewOn = PHONE_RE.test(reviewPhone) && /^\d{6}$/.test(reviewCode) && !easyCode(reviewCode);
   if ((reviewPhone || reviewCode) && !reviewOn) log('review_off', { reason: 'SAKHI_REVIEW_PHONE must be +91 and a mobile number; SAKHI_REVIEW_CODE 6 digits, not an easy one' });
 
-  const limit = async (key, windowS, max, t) => {
+  const limit = async (key, windowS, max, t, onFull) => {
     const r = await store.hit(key, windowS, max, t);
-    if (!r.ok) fail(429, 'too_many', { retry_after: r.retryAfter });
+    if (!r.ok) { if (onFull) onFull(); fail(429, 'too_many', { retry_after: r.retryAfter }); }
+  };
+  /* S1: a ceiling on codes sent across all numbers, so no one can make Sakhi send codes to unlimited numbers (each one goes from
+     Qura's WhatsApp number, or costs an SMS). Well above the busiest hour and day so far; SAKHI_OTP_HOUR_MAX and SAKHI_OTP_DAY_MAX
+     change it without a redeploy. The reviewer's sign-in sends nothing and doesn't count. */
+  const posInt = (v, d) => (/^[1-9]\d{0,6}$/.test(String(v || '')) ? +v : d);
+  const otpHourMax = posInt(env.SAKHI_OTP_HOUR_MAX, 300), otpDayMax = posInt(env.SAKHI_OTP_DAY_MAX, 3000);
+  const ipHeader = env.SAKHI_IP_HEADER || '';
+  if (ipHeader && !IP_HEADERS.includes(ipHeader)) log('ip_header_bad', { allowed: IP_HEADERS });
+  const clientIp = (req) => {
+    const parts = xffParts(req);
+    const chosen = ipHeader === 'x-forwarded-for:last' ? parts[parts.length - 1] : ipHeader === 'x-real-ip' ? (req.headers.get('x-real-ip') || '').trim()
+      : ipHeader === 'cf-connecting-ip' ? (req.headers.get('cf-connecting-ip') || '').trim() : '';
+    return chosen || defaultIp(req);
+  };
+  /* The address headers' shape, never an address: once per instance, and whenever x-forwarded-for has more than one entry (a proxy
+     chain, or a sender writing their own). Each candidate shows as 6 characters of a daily-salted HMAC, so a check from two networks
+     shows which one follows the sender (DEPLOY.md section 3, step 6) and which one a sender can write. */
+  let ipShapeLogged = false;
+  const ipShape = async (req, t) => {
+    const parts = xffParts(req);
+    if (ipShapeLogged && parts.length < 2) return;
+    ipShapeLogged = true;
+    const fp = async (v) => (v ? (await hmacHex(ipSeed, 'shape|' + indiaDay(t) + '|' + v)).slice(0, 6) : '');
+    log('ip_headers', { xff_parts: parts.length, first: await fp(parts[0]), last: await fp(parts[parts.length - 1]),
+      real: await fp((req.headers.get('x-real-ip') || '').trim()), cf: await fp((req.headers.get('cf-connecting-ip') || '').trim()),
+      using: IP_HEADERS.includes(ipHeader) ? ipHeader : 'default' });
   };
   /* The IP only ever appears as a daily HMAC. With no IP header the IP limits are skipped rather than shared by everyone. */
-  const ipKey = async (req, t, kind) => { const ip = clientIp(req); return ip ? kind + ':ip:' + await hmacHex(ipSeed, indiaDay(t) + '|' + ip) : null; };
+  const ipKey = async (req, t, kind) => { await ipShape(req, t); const ip = clientIp(req); return ip ? kind + ':ip:' + await hmacHex(ipSeed, indiaDay(t) + '|' + ip) : null; };
 
   async function readBody(req, allow, path) {
     if (req.method === 'GET' || req.method === 'DELETE') return {};
@@ -156,6 +188,10 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     if (ik) await limit(ik, 3600, 20, t);
     const id = crypto.randomUUID();
     const review = reviewOn && b.phone === reviewPhone;
+    if (!review) {
+      await limit('otp:all:h', 3600, otpHourMax, t, () => log('otp_ceiling', { window: 'hour', max: otpHourMax }));
+      await limit('otp:all:d', 86400, otpDayMax, t, () => log('otp_ceiling', { window: 'day', max: otpDayMax }));
+    }
     const code = review ? reviewCode : sixDigits();
     let used = review ? 'sms' : null;   /* the reviewer's code was never sent: the app shows the usual SMS screen */
     if (review) log('review_code', {});

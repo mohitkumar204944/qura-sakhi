@@ -3826,3 +3826,14 @@ New lines (English, then Hindi):
 
 For the doctor to confirm: the amounts against ICMR-NIN's 2024 edition (only the 2011 text was read; a 2025 review summarises 2024 as 8
 to 12 glasses by climate and activity), the 12 noon to 3 pm hours, and the swelling myth's danger-sign wording.
+
+### 19.81 Version 39.81: under 18 in a Play build (MODULE_API section 124)
+
+Play Console's target audience is 18 and over, so a Play build gives a girl under 18 the safety guide only (Mohit, 7 Nov: "Do all",
+after the launch checklist; launch QA A4, option (a)). Pilot APKs keep the reading path. **UI words only; no health line changes.**
+
+New line (English, then Hindi), on the under-18 page of a Play build in place of the line about the Learn pages:
+- "Nothing you typed was saved. The safety guide is free for everyone." (आपने जो लिखा, वह save नहीं हुआ। सुरक्षा गाइड सबके लिए मुफ़्त
+  है।)
+
+Gone from that page in a Play build: the Learn button, the guides for girls and "Learn pages for teens are education only."

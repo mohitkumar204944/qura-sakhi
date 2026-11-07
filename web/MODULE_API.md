@@ -8065,3 +8065,20 @@ the reminder only when she turns it on, the hot months April to June everywhere,
 
 Plans: `preg@2` and `post@2` re-recorded in `web/progs/baseline.json` (their water step); the golden replay is unchanged. Wording:
 `docs/wording-review-v28.md`, section 19.80 (the new lines wait for the doctors' read).
+
+## 124. Version 39.81: under 18 in a Play build
+
+Mohit, 7 Nov: "Do all", after the launch checklist (launch QA `docs/launch-qa-2026-11-07.md`, A4 and decision 1, option (a)). Play
+Console's target audience is 18 and over, and the under-18 page opened the whole Learn library (sex, contraception and abortion pages
+among it), so in a Play build (`SAKHI_CONFIG.store === 'play'`, set by `PLAY=1`) a girl under 18 gets the safety guide only.
+
+- Core: `playStore()`, `teenPlay()` (`mem.teen` in a Play build) and `TEEN_PLAY` (`help`, `ask` with its trusted-adult words, and
+  `access-care`). Any other route opens Help, however she reaches it; the tab bar stays hidden.
+- The under-18 page (`renderUnder18`): the safety guide and Back; no Learn button, no `under18` hook (the guides for girls), no
+  `teen_learn` footnote; its line is `under18_p_play`.
+- Help (`renderHelp`): a Back button (`#help-u18-back`, and Android's Back through `__sakhiBack`) to the under-18 page; no symptom-guide
+  tabs and no free-services link.
+- Nothing is saved, as before (`save()` stops while `mem.teen` is on).
+- Pilot and demo APKs are unchanged: the safety guide, the Learn pages and the guides for girls.
+
+Test: `web/test/playteen.mjs` (25 checks). Wording: `docs/wording-review-v28.md`, section 19.81 (UI words only).

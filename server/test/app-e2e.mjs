@@ -110,7 +110,7 @@ check('log out revoked the session in the database', (await row('select count(*)
 clock.add(31);
 await page.fill('#su-num', '9876543210'); await tap('#su-send');
 await page.waitForSelector('#su-by-sms'); await tap('#su-by-sms');
-await page.waitForFunction(() => /by SMS/.test(document.getElementById('view').innerText));
+await page.waitForFunction(() => /6-digit code by SMS/.test(document.getElementById('view').innerText));   /* the code screen, once the server has answered (the button itself says "by SMS") */
 check('"Not on WhatsApp? Send by SMS" makes the server send an SMS', send.outbox[send.outbox.length - 1].channel === 'sms');
 await page.fill('#su-code', send.lastCode());
 await page.waitForSelector('#acc-list');

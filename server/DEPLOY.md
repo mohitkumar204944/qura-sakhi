@@ -126,6 +126,32 @@ same day.
      comes. Check with section 5's third command using the reviewer's number: it should answer `"channel":"sms"`, and no SMS
      should arrive.
 
+6. **The code ceiling and the address header (7 Nov 2026, the security audit's S1), after the deploy.**
+   - The ceiling needs no secret: at most 300 codes an hour and 3000 a day go out across all numbers. A woman who signs up past it
+     sees "Too many tries…" until the hour or day turns, and the function logs `otp_ceiling`. For a big campaign, raise it first:
+     `supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_OTP_HOUR_MAX=600 SAKHI_OTP_DAY_MAX=6000`.
+   - Which header holds her address: send a wrong-code check with a made-up address, once on the office wifi and once on a phone's
+     hotspot. No message goes out; each answers `{"error":"challenge_bad"}`.
+
+     ```bash
+     curl -s -X POST https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api/v1/otp/verify -H 'content-type: application/json' -H 'x-forwarded-for: 192.0.2.10' -d '{}'
+     ```
+
+     Then Supabase → Edge Functions → sakhi-api → Logs, the two newest `ip_headers` lines. Each field is a 6-character fingerprint:
+     - `xff_parts` is 1: Supabase replaced the made-up value. Nothing to set.
+     - `xff_parts` is 2 or more: the made-up value got through (`first` is the same on both lines). Pick the field that is
+       **different** on the two lines, `cf` first, then `real`, then `last`, and set it:
+       `supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_IP_HEADER=cf-connecting-ip` (or `x-real-ip`, or
+       `x-forwarded-for:last`).
+     - A field that is the same on both lines is a proxy shared by everyone: never pick it, or every woman would share one
+       20-an-hour limit.
+   - Run the check again after setting it: the new lines say `"using":"<the header>"`.
+   - **Result, 7 Nov 2026 (version 10):** nothing to set. Four wrong-code checks from one network, with made-up addresses
+     (one, two, or none), all logged `xff_parts` 3 with the same `first`, equal to `cf`: Supabase rebuilds `x-forwarded-for`, its
+     first entry is the sender's real address, and a made-up one never gets through. `last` changed on every request (an
+     internal proxy), so `x-forwarded-for:last` would be wrong. `SAKHI_IP_HEADER` stays unset; repeat the check if Supabase
+     changes its gateway.
+
 ## 4. Deploy the function
 
 ```bash

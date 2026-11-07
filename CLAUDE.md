@@ -659,6 +659,10 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       she turns on (3 a day, 8 am to 7 pm, quiet once she ticks water);
     - the hot months' card (April to June) and her monthly check-in's line in Sakhi says; the drinks habit's amount, two water myths.
     Contract: MODULE_API section 123; wording: section 19.80 of the review (new lines wait for the doctors' read).
+  - `node test/playteen.mjs` (Version 39.81, under 18 in a Play build; Mohit, 7 Nov: "Do all", after the launch checklist): Play's target
+    audience is 18 and over, so in a `PLAY=1` build a girl under 18 gets the safety guide only (Help, the doctor page's trusted-adult
+    words, Care near me), with Back, no tab bar and no Learn pages; pilot APKs keep the reading path. Contract: MODULE_API section 124;
+    wording: section 19.81 of the review (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

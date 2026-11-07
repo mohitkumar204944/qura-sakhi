@@ -203,6 +203,11 @@ are in a schema called `sakhi`, with RLS on and no policies:
    | `otp:phone:<phone>:<channel>` | 1 per 30 seconds (so switching to SMS works straight after a WhatsApp send) |
    | `otp:phone:<phone>` | 5 per hour, 10 per day |
    | `otp:ip:<ip>` | 20 per hour |
+   | `otp:all` | 300 per hour and 3000 per day across all numbers (7 Nov 2026, the security audit's S1; `SAKHI_OTP_HOUR_MAX` and `SAKHI_OTP_DAY_MAX` change them). The reviewer's number (5.1a) doesn't count. Reaching one logs `otp_ceiling`. |
+
+   `<ip>` is the first `x-forwarded-for` entry, unless `SAKHI_IP_HEADER` names the header the platform writes
+   (`cf-connecting-ip`, `x-real-ip`, or `x-forwarded-for:last`); a missing header falls back to the first entry. The `ip_headers`
+   log line shows each candidate as 6 characters of a daily-salted HMAC, never an address (`DEPLOY.md`, section 3, step 6).
 
 3. Make a 6-digit code from a secure random source. Store it as an HMAC, never as the plain SHA-256 that Qura's helper
    returns: a plain hash of a 6-digit number is reversed in moments.

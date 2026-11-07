@@ -72,7 +72,7 @@ export function makeApi(store, opts = {}) {
 
 /* One HTTP call to the API, the way the app makes it. */
 export async function call(api, method, p, body, opts = {}) {
-  const headers = { 'x-forwarded-for': opts.ip || '203.0.113.7' };
+  const headers = Object.assign({ 'x-forwarded-for': opts.ip || '203.0.113.7' }, opts.headers || {});
   if (body !== undefined) headers['content-type'] = 'application/json';
   if (opts.token) headers.authorization = 'Bearer ' + opts.token;
   const req = new Request('https://sakhi.test/functions/v1/sakhi-api/v1/' + p, {

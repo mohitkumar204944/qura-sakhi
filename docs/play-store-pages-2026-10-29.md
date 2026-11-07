@@ -449,8 +449,16 @@ Ticking a borderline category is safer than leaving out something the reviewer f
 - **Privacy policy** (App content): https://quranutrition.com/sakhi/privacy
 - **App access:** the reviewer's number and code, from `server/DEPLOY.md`, section 3, step 5.
 - **Ads:** No.
-- **Target audience:** 18 and over. The diary refuses anyone younger, who sees only the safety guide and Learn.
-- **The store description:** Play's health apps policy wants a clear disclaimer. Use this line:
+- **Target audience:** 18 and over. The diary refuses anyone younger. In a Play build she sees only the safety guide, with no Learn
+  pages and no tab bar (Version 39.81, from the bundle after vc 142).
+- **The store description:** Play's health apps policy wants its own disclaimer wording, and apps that mention government services
+  must say they aren't affiliated with a government (launch QA A3, 7 Nov). Put both paragraphs at the end of the full description:
 
-  > Qura Sakhi gives general health information and self-care support. It is not a medical device and doesn't diagnose. For
-  > a health problem, see a doctor. In an emergency, go to the nearest hospital now (ambulance: 108).
+  > Qura Sakhi gives general health information and self-care support. It is not a medical device and does not diagnose, treat,
+  > cure, or prevent any medical condition. For a health problem, see a doctor. In an emergency, go to the nearest hospital now
+  > (ambulance: 108).
+  >
+  > Qura Sakhi is not affiliated with any government. Its information on government health services comes from the official
+  > sources, such as data.gov.in and eSanjeevani.
+
+  In the listing, never use the national emblem or the word "official" about Sakhi itself.

@@ -132,6 +132,54 @@ for (const kind of ['memory', 'pglite']) {
     check('20 sends an hour per IP; another IP is unaffected', ipOk === 20 && otherIp.status === 200, { ipOk, other: otherIp.json });
   }
 
+  /* ---------- S1 (security audit, 4 Nov): a ceiling on codes across all numbers, and the header that holds her address ---------- */
+  {
+    const CAP = { SAKHI_OTP_HOUR_MAX: '3', SAKHI_OTP_DAY_MAX: '5', SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '480913' };
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, CAP) });
+    let ok = 0;
+    for (let i = 0; i < 3; i++) if ((await call(ctx.api, 'POST', 'otp/start', { phone: '+91984' + String(1000000 + i) }, { ip: '192.0.2.' + (60 + i) })).status === 200) ok++;
+    const fourth = await call(ctx.api, 'POST', 'otp/start', { phone: '+919845555555' }, { ip: '198.51.100.60' });
+    check('S1: codes stop at the hourly ceiling across all numbers and connections (429 too_many, with retry_after)', ok === 3 && fourth.status === 429 && fourth.json.error === 'too_many' && fourth.json.retry_after > 0, { ok, fourth: fourth.json });
+    check('S1: nothing is sent past the ceiling', ctx.send.outbox.length === 3, ctx.send.outbox.length);
+    check('S1: the ceiling is logged, without a number', ctx.logs.some((l) => l.event === 'otp_ceiling' && l.data.window === 'hour' && l.data.max === 3) && !JSON.stringify(ctx.logs).includes('9845555555'));
+    const rev = await call(ctx.api, 'POST', 'otp/start', { phone: CAP.SAKHI_REVIEW_PHONE }, { ip: '198.51.100.61' });
+    check('S1: Google\'s reviewer still signs in at the ceiling (nothing is sent, so it doesn\'t count)', rev.status === 200 && ctx.send.outbox.length === 3, rev.json);
+    ctx.clock.add(3600);
+    let ok2 = 0;
+    for (let i = 0; i < 3; i++) if ((await call(ctx.api, 'POST', 'otp/start', { phone: '+91985' + String(1000000 + i) }, { ip: '192.0.2.' + (70 + i) })).status === 200) ok2++;
+    check('S1: the next hour sends again, up to the daily ceiling (5 in all)', ok2 === 2 && ctx.logs.some((l) => l.event === 'otp_ceiling' && l.data.window === 'day' && l.data.max === 5), { ok2 });
+    const dflt = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_OTP_HOUR_MAX: 'lots', SAKHI_OTP_DAY_MAX: '0' }) });
+    let okD = 0;
+    for (let i = 0; i < 25; i++) if ((await call(dflt.api, 'POST', 'otp/start', { phone: '+91986' + String(1000000 + i) }, { ip: '192.0.2.' + (100 + i) })).status === 200) okD++;
+    check('S1: a ceiling secret that isn\'t a positive number falls back to the defaults (300 an hour, 3000 a day)', okD === 25, { okD });
+
+    /* the address header: by default the first x-forwarded-for entry, as before */
+    const d = await newCtx(kind);
+    let spoof = 0;
+    for (let i = 0; i < 21; i++) if ((await call(d.api, 'POST', 'otp/start', { phone: '+91987' + String(1000000 + i) }, { ip: '192.0.2.' + (150 + i) + ', 203.0.113.99' })).status === 200) spoof++;
+    check('S1: without SAKHI_IP_HEADER the first x-forwarded-for entry is the key, as before (so a sender who writes their own gets past the IP limit)', spoof === 21, { spoof });
+    const shape = d.logs.filter((l) => l.event === 'ip_headers');
+    check('S1: the ip_headers log line shows the headers\' shape and never an address', shape.length >= 1 && shape[0].data.xff_parts === 2 && shape[0].data.using === 'default' && /^[0-9a-f]{6}$/.test(shape[0].data.first) && /^[0-9a-f]{6}$/.test(shape[0].data.last) && shape[0].data.cf === '' && !/\d+\.\d+\.\d+\.\d+/.test(JSON.stringify(d.logs)), shape[0]);
+    check('S1: in the log, the entry a sender writes changes while the one the platform adds stays (so the check can tell them apart)', new Set(shape.map((l) => l.data.first)).size > 1 && new Set(shape.map((l) => l.data.last)).size === 1, shape.slice(0, 2).map((l) => l.data));
+    const quiet = await newCtx(kind);
+    for (let i = 0; i < 3; i++) await call(quiet.api, 'POST', 'otp/start', { phone: '+91987' + String(2000000 + i) }, { ip: '192.0.2.' + (180 + i) });
+    check('S1: with one x-forwarded-for entry the shape is logged once per instance, not on every request', quiet.logs.filter((l) => l.event === 'ip_headers').length === 1);
+    for (const [hdr, mk] of [['x-forwarded-for:last', (i) => ({ ip: '192.0.2.' + (150 + i) + ', 203.0.113.99' })], ['cf-connecting-ip', (i) => ({ ip: '192.0.2.' + (150 + i), headers: { 'cf-connecting-ip': '203.0.113.98' } })], ['x-real-ip', (i) => ({ ip: '192.0.2.' + (150 + i), headers: { 'x-real-ip': '203.0.113.97' } })]]) {
+      const c = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_IP_HEADER: hdr }) });
+      let n = 0;
+      for (let i = 0; i < 21; i++) if ((await call(c.api, 'POST', 'otp/start', { phone: '+91988' + String(1000000 + i) }, mk(i))).status === 200) n++;
+      const other = await call(c.api, 'POST', 'otp/start', { phone: '+919889999999' }, hdr === 'x-forwarded-for:last' ? { ip: '192.0.2.200, 198.51.100.77' } : { ip: '192.0.2.200', headers: { [hdr]: '198.51.100.77' } });
+      check('S1: SAKHI_IP_HEADER=' + hdr + ' keys the 20-an-hour limit on that header, whatever the sender writes first', n === 20 && other.status === 200, { n, other: other.json });
+    }
+    const miss = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_IP_HEADER: 'cf-connecting-ip' }) });
+    let m = 0;
+    for (let i = 0; i < 21; i++) if ((await call(miss.api, 'POST', 'otp/start', { phone: '+91989' + String(1000000 + i) }, { ip: '192.0.2.40' })).status === 200) m++;
+    check('S1: when the named header is missing, the limit falls back to x-forwarded-for rather than switching off', m === 20, { m });
+    const bad = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_IP_HEADER: 'x-anything' }) });
+    await call(bad.api, 'POST', 'otp/start', { phone: '+919890000001' });
+    check('S1: an unknown SAKHI_IP_HEADER is logged and ignored', bad.logs.some((l) => l.event === 'ip_header_bad'));
+  }
+
   /* ---------- 5.1a Google Play's reviewer (29 Oct 2026): one number, a fixed code, nothing sent ---------- */
   {
     const REVIEW = { SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '480913' };
