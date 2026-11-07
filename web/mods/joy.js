@@ -146,11 +146,16 @@
     C('antara', false, ['cycle', 'post'], 'contra', 'contra-m-antara', "The Antara injection makes a woman unable to have children.", "अंतरा इंजेक्शन से औरत को बच्चा नहीं हो पाता।",
       "Antara does not cause infertility. Fertility comes back more slowly than with other methods: on average about 7–10 months after the last injection. It does come back.", "अंतरा से बाँझपन नहीं होता। गर्भ ठहरने की क्षमता दूसरे तरीक़ों से धीरे लौटती है: औसतन आख़िरी इंजेक्शन के लगभग 7–10 महीने बाद। लौटती ज़रूर है।"),
     C('nsv', false, ['cycle', 'post'], 'contra', 'contra-m-nsv', "NSV, the operation for men, makes a man weak.", "NSV, पुरुषों का ऑपरेशन, आदमी को कमज़ोर बना देता है।",
-      "NSV does not affect strength, manliness or sex. Semen still comes out, but without sperm.", "NSV से ताक़त, मर्दानगी या संबंध पर कोई असर नहीं पड़ता। वीर्य निकलता रहता है, पर उसमें शुक्राणु नहीं होते।")
+      "NSV does not affect strength, manliness or sex. Semen still comes out, but without sperm.", "NSV से ताक़त, मर्दानगी या संबंध पर कोई असर नहीं पड़ता। वीर्य निकलता रहता है, पर उसमें शुक्राणु नहीं होते।"),
+    /* Version 39.80 (water, W7): two water myths; new lines wait for the doctors' read */
+    C('coldwater', false, ['cycle', 'teen'], 'periods', 'periods-myths', 'Cold water during your period causes cramps or clots.', 'पीरियड में ठंडा पानी पीने से ऐंठन या थक्के होते हैं।',
+      'Cold or warm, drinking water does not cause cramps or clots. Keep drinking through your period: about 8 glasses a day.', 'ठंडा हो या गुनगुना, पानी पीने से ऐंठन या थक्के नहीं होते। पीरियड में भी पानी पीती रहें: दिन में लगभग 8 गिलास।'),
+    C('swelling', false, ['preg'], 'preg', 'preg-symptoms', 'Drinking less water stops swelling in pregnancy.', 'गर्भ में पानी कम पीने से सूजन रुकती है।',
+      'Drinking less does not stop swelling: keep drinking water. Swollen feet late in the day are common. Sudden swelling of the face or hands, or swelling with a bad headache or blurred vision, is a danger sign: go to the nearest hospital now.', 'पानी कम पीने से सूजन नहीं रुकती: पानी पीती रहें। दिन ढलते पैरों में सूजन आम है। चेहरे या हाथों पर अचानक सूजन, या तेज़ सिरदर्द या धुंधला दिखने के साथ सूजन, ख़तरे का लक्षण है: अभी सबसे पास के अस्पताल जाएँ।')
   ];
   /* Version 39.7 (journey audit P3-15, P3-16): one myths deck. Sach ya Myth, the periods myths page and the contraception
      hub's "Worries and facts" read the same cards (S.joy.deck), so a doctor's correction is made once. */
-  const TOPIC = { period: ['kitchen', 'temple', 'pickle', 'bath', 'exercise', 'plant', 'sour', 'impure', 'sexperiod', 'school', 'pain', 'heavy', 'pad', 'gap', 'teenirreg'], contra: ['periodpreg', 'cut', 'cutmove', 'pillweight', 'pillinfert', 'antara', 'nsv', 'ec', 'condom', 'pppreg'] };
+  const TOPIC = { period: ['kitchen', 'temple', 'pickle', 'bath', 'exercise', 'plant', 'sour', 'coldwater', 'impure', 'sexperiod', 'school', 'pain', 'heavy', 'pad', 'gap', 'teenirreg'], contra: ['periodpreg', 'cut', 'cutmove', 'pillweight', 'pillinfert', 'antara', 'nsv', 'ec', 'condom', 'pppreg'] };
   const deck = (topic) => (TOPIC[topic] || []).map((id) => CARDS.find((c) => c.id === id)).filter(Boolean).map((c) => ({ id: c.id, a: c.a, s: c.s, w: c.w, go: c.go }));
   function stageTags() {
     const st = S.state; const sit = st.situation || {}; const age = S.cycle.ageYears(); const out = [];

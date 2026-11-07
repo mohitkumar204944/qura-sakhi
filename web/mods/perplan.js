@@ -42,6 +42,7 @@
     p2: { h: N2('Comfort for your period week', 'पीरियड वाले हफ़्ते में आराम'), cards: [
       { l: [N2('Warmth: a hot water bag or bottle with hot, not boiling, water. Check it doesn’t leak, wrap it in a cloth, check your skin every few minutes, and never sleep on it.', 'गर्माहट: गर्म पानी की थैली या बोतल, गर्म पर खौलता नहीं पानी। देख लें कि रिसती न हो, कपड़े में लपेटें, हर कुछ मिनट में त्वचा देखें, और उस पर कभी न सोएँ।')] },
       { l: [N2('A rest position: lying on your side with your knees bent, or on your back with your knees drawn to your chest.', 'आराम की मुद्रा: करवट लेकर घुटने मोड़कर लेटना, या पीठ के बल लेटकर घुटने छाती की ओर लाना।')] },
+      { l: [N2('Keep drinking water through your period: about 8 glasses a day. Don’t drink less to change pads less often.', 'पीरियड में भी पानी पीती रहें: दिन में लगभग 8 गिलास। पैड कम बदलना पड़े, इसलिए पानी कम न पिएँ।')] },   /* Version 39.80 (water, W7) */
       { b: TRY, l: [N2('Choose your period comfort for this month: warmth, the 3-minute cramps routine and a rest position. Keep them ready.', 'इस महीने पीरियड में आराम के लिए चुनें: गर्माहट, ऐंठन के लिए 3 मिनट की दिनचर्या और आराम की एक मुद्रा। इन्हें तैयार रखें।')], go: 'relief-cramps', gol: 'relief_cramps_t' }] },
     p3: { h: N2('Is my pain the usual kind?', 'क्या मेरा दर्द आम दर्द है?'), cards: [
       { l: [N2('Usual period pain starts with your period or a day before, and eases within about 3 days.', 'आम पीरियड का दर्द पीरियड के साथ या एक दिन पहले शुरू होता है, और लगभग 3 दिन में कम हो जाता है।')] },

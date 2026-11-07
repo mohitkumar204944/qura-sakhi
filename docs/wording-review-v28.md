@@ -3762,3 +3762,65 @@ what Google also sees.
   नाम या नंबर के; …) The rest of the line is as before.
 - **The switch's note (`ph_note`)** is unchanged: private pages, discreet mode and a shared phone send nothing; on unless she turns it
   off; off stops it at once and forgets the anonymous ID.
+
+### 19.80 Version 39.80: water (MODULE_API section 123)
+
+Water joins her plan, a Water page, a reminder she can turn on, and two "Sakhi says" cards (Mohit, 7 Nov: "Build W1 to W7" on
+`docs/water-advice-2026-11-07.md`). The amounts follow its section 2a: ICMR-NIN (about 8 glasses, 2 litres; 8 to 12 in pregnancy), EFSA
+and IOM (breastfeeding), NHS bladder leaflets (pelvic floor), ESPEN (from 60). **The new lines wait for the doctors' read.**
+
+Lines already in the app, now shown in more places (no change):
+- Pregnancy food page: "Drink plenty: over 2 litres a day, counting water, buttermilk and nimbu pani." (under her food step when no
+  slot is left for water); constipation: "Drink over 2 litres a day. Eat fibre: whole grains, dal, vegetables and fruit. Walk every
+  day." (the check-in card); nausea: "Sip water, nimbu pani or coconut water through the day instead of drinking a lot at once."
+- Feeding page: "Keep water near you, and drink a glass at every feed."
+- Pelvic floor plan: "Many women drink less to leak less. But too little water makes urine strong, and strong urine makes the bladder
+  more urgent." and "Drink about 6 to 8 glasses a day, a little at a time, more in the heat. Pale yellow urine means you are drinking
+  enough." (the leaking card); "Drink less in the last 2 hours before bed if you wake at night to pass urine." (the Water page).
+- Fasting page: "Keep ORS at home, and mix one packet exactly as written on it." (the hot card).
+- Learn: "Breast milk gives a baby all the water it needs for the first 6 months, even in summer. Feed more often when it is hot."
+
+New lines (English, then Hindi):
+- **The water step (pregnancy):** "Water: over 2 litres today" (पानी: आज 2 लीटर से ज़्यादा); "8 to 12 glasses: one with each meal and
+  each tablet, more on hot days." (8 से 12 गिलास: हर खाने और हर गोली के साथ एक, गर्मी में और ज़्यादा।); in April to June "Hot days:
+  drink more. 8 to 12 glasses or more, one with each meal and each tablet." (गर्मी के दिन: ज़्यादा पिएँ। 8 से 12 गिलास या उससे ज़्यादा, हर
+  खाने और हर गोली के साथ एक।); with the nausea goal "Water: small sips all day" (पानी: दिन भर घूँट-घूँट).
+- **Its Why? (pregnancy):** "Water helps with constipation and piles, urine infections and hot days. Needing to pee often is normal in
+  pregnancy: keep drinking water; do not cut down." (पानी क़ब्ज़ और बवासीर, पेशाब के इन्फ़ेक्शन और गर्मी के दिनों में मदद करता है। गर्भ
+  में बार-बार पेशाब आना सामान्य है: पानी पीती रहें; कम न करें।)
+- **The water step (breastfeeding):** "Water: a glass at every feed" (पानी: हर फ़ीड पर एक गिलास); "About 10 to 12 glasses a day, to your
+  thirst." (दिन में लगभग 10 से 12 गिलास, प्यास के हिसाब से।); hot months "Hot days: drink more. About 10 to 12 glasses or more, to your
+  thirst." Its Why?: "Breastfeeding makes you thirsty: keep water near you and drink a glass at every feed. Drink to your thirst:
+  drinking more than that doesn’t make more milk." (स्तनपान से प्यास ज़्यादा लगती है: पास में पानी रखें और हर फ़ीड पर एक गिलास पिएँ।
+  प्यास के हिसाब से पिएँ: उससे ज़्यादा पीने से दूध ज़्यादा नहीं बनता।)
+- **Its How (both), and the doctor's limit:** "A glass is about 250 ml, a full steel glass. Pale yellow urine means you are drinking
+  enough. If your doctor has told you to drink less (for your heart or kidneys), follow your doctor." (एक गिलास लगभग 250 ml का होता है,
+  यानी स्टील का एक भरा गिलास। हल्का पीला पेशाब बताता है कि आप काफ़ी पी रही हैं। अगर डॉक्टर ने कम पीने को कहा है (दिल या गुर्दे की वजह
+  से), तो डॉक्टर की बात मानें।) The doctor's limit is also the pelvic floor water habit's How and a line on the Water page.
+- **No slot left after a birth:** "Food and water while you breastfeed" (स्तनपान के दिनों का खाना और पानी).
+- **The pelvic floor habit back once a week:** "Still drinking water through the day?" (क्या अब भी दिन भर पानी पी रही हैं?)
+- **The Water page:** "How much for you"; "About 8 glasses (2 litres) a day."; "8 to 12 glasses (2 to 3 litres) a day in your
+  pregnancy: at least 2 litres."; "About 10 to 12 glasses (2.5 to 3 litres) a day while you breastfeed, to your thirst. A glass at every
+  feed covers most of it."; "6 to 8 glasses (1.5 to 2 litres) a day, a little at a time."; "About 8 glasses a day. From 60, thirst
+  comes later, so drink at your times: at least 6 to 7 glasses, even when you are not thirsty."; "A glass is about 250 ml, a full steel
+  glass."; "Milk, chaas, nimbu pani, coconut water and tea count. Cold drinks and packaged juice don’t replace water."; "More on hot
+  days, and before you feel thirsty."; "Don’t drink less to go to the toilet less. It makes urine infections more likely."; the
+  reminder: "Remind me to drink water", "Up to 3 a day, at the times you pick.", "Once you tick water on Today, the rest of the day
+  stays quiet.", and on the phone "Water: a glass now" (पानी: अभी एक गिलास). The Hindi is in `web/mods/water.js`.
+- **The hot months' card (from NCDC's heat advisory):** "Hot days are here"; "Drink water often, even before you feel thirsty."; "In
+  your pregnancy: 8 to 12 glasses, and more on the hottest days."; "While you breastfeed: a glass at every feed, and more when it is
+  hot."; "From 60, thirst comes later: drink at your times, not only when you are thirsty."; "Stay out of the sun from 12 noon to 3 pm
+  if you can, and rest in the shade."; "Very hot skin, confusion, fainting, or no sweat in the heat: go to the nearest hospital now."
+  (with the ambulance button, 102 in a pregnancy, 108 otherwise).
+- **The check-in cards' headings:** "For constipation" (क़ब्ज़ के लिए); "Leaking urine: keep drinking" (पेशाब लीक होना: पानी पीती रहें).
+- **The drinks habit (PMOS plan, Getting ready's PMOS set):** its How adds "About 8 glasses (2 litres) a day, more on hot days." and, for
+  the weight goal, "Before lunch and dinner, drink a glass or two of water first." (Parretti 2015: water before main meals).
+- **Sach ya Myth?:** "Cold water during your period causes cramps or clots." Myth: "Cold or warm, drinking water does not cause cramps
+  or clots. Keep drinking through your period: about 8 glasses a day." "Drinking less water stops swelling in pregnancy." Myth:
+  "Drinking less does not stop swelling: keep drinking water. Swollen feet late in the day are common. Sudden swelling of the face or
+  hands, or swelling with a bad headache or blurred vision, is a danger sign: go to the nearest hospital now."
+- **My period plan, "Comfort for your period week":** "Keep drinking water through your period: about 8 glasses a day. Don’t drink less
+  to change pads less often." (पीरियड में भी पानी पीती रहें: दिन में लगभग 8 गिलास। पैड कम बदलना पड़े, इसलिए पानी कम न पिएँ।)
+
+For the doctor to confirm: the amounts against ICMR-NIN's 2024 edition (only the 2011 text was read; a 2025 review summarises 2024 as 8
+to 12 glasses by climate and activity), the 12 noon to 3 pm hours, and the swelling myth's danger-sign wording.

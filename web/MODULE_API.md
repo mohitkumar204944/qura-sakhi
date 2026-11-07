@@ -7997,3 +7997,61 @@ Checked on the Flip5 (vc 138, 7 Nov): off with every consent denied at launch, o
 Tests: `node test/firebase.mjs` (57 checks, with a fake bridge that keeps every call; it fails when private screens are let through)
 replaces `test/posthog.mjs`; `test/play.mjs` section 6 (the Gradle build); `signup.mjs` (one script loader left), `launchfix.mjs` 7.4,
 `calm.mjs` 9 and `pictures.mjs` 14 read `build.gradle.kts` for what moved there.
+
+## 123. Version 39.80: water
+
+Mohit, 7 Nov: "we dont have water intake in plans and reminder and its an important part can you check and advise", then "Build W1
+to W7" on `docs/water-advice-2026-11-07.md` (with its section 2a, the amount by her stage; the advice's defaults for the open choices:
+the reminder only when she turns it on, the hot months April to June everywhere, the new lines to the doctors' next read).
+`test/water.mjs` checks it (63 checks). The amounts: ICMR-NIN's "about 8 glasses (2 litre) of water per day" (2011, Guideline 13), 8 to
+12 glasses in pregnancy (Guideline 2), EFSA and IOM for breastfeeding, NHS bladder leaflets for the pelvic floor, ESPEN from 60.
+
+1. **The water step (W1, W2; `mods/plan.js` adapter `water`, `web/progs/v1.js`).** Last in `preg` version 2 (`if: ['pday:2-']`) and in
+   `post` version 2 (`if: ['sit:breastfeeding', '!died', 'pday:2-']`), so it only fills a free slot and never comes on day 1:
+   - in a pregnancy "Water: over 2 litres today", "8 to 12 glasses: one with each meal and each tablet, more on hot days."; with the
+     nausea goal "Water: small sips all day" and the pregnancy page's own sip line;
+   - while she breastfeeds "Water: a glass at every feed", "About 10 to 12 glasses a day, to your thirst.";
+   - from April to June its line leads with "Hot days: drink more." (`S.water.hot`);
+   - its Why? gives the reasons (pregnancy: constipation and piles, urine infections, hot days, "do not cut down"; breastfeeding: drink
+     to your thirst, more doesn't make more milk), and its How what a glass is (about 250 ml, a full steel glass), pale yellow urine and
+     the doctor's limit; its tool is the Water page;
+   - a tick, not private (`priv: false`), so discreet mode and a shared phone show it in its own plain words; none on a fasting day (the
+     fasting step holds water); the check-in asks it like any step (no new ring).
+2. **No slot left (W1, W5; `stepsFor`).** When her 4 slots are full the water step drops, and its line goes under her food step: the
+   pregnancy food page's "Drink plenty: over 2 litres a day, counting water, buttermilk and nimbu pani." (so the salt-and-water week
+   shows both of its sentences), or "Food while you breastfeed" becomes "Food and water while you breastfeed" with the feeding page's
+   "Keep water near you, and drink a glass at every feed." (`a.water` marks the step). With its own step the food step keeps its one
+   line (one home). `S.plan.waterToday()` says whether today's plan holds water either way; `S.plan.waterDone()` whether she ticked it.
+3. **The pelvic floor plan's water habit comes back (W5).** After week 4, on the 5th day of her plan week (as Version 39.9's food habits),
+   her habit step is "Still drinking water through the day?" with the habit's line and the doctor's limit as its How.
+4. **The Water page (`mods/water.js`, route `water`; Me > Reminders lists it, search finds its tile, filed under My plan's tools).** How
+   much for her, by `S.water.amount()`: about 8 glasses (2 litres); in a pregnancy 8 to 12 (2 to 3 litres), at least 2; while she
+   breastfeeds about 10 to 12 (2.5 to 3 litres), to her thirst; on the pelvic floor plan 6 to 8 (1.5 to 2 litres); from 60 at least 6 to
+   7 even when not thirsty. Discreet mode and a shared phone get the plain amount. Then what a glass is, what counts (milk, chaas,
+   nimbu pani, coconut water, tea; not cold drinks or packaged juice), pale yellow urine, more on hot days, not drinking less to use the
+   toilet less, less in the 2 hours before bed (pelvic floor plan), breast milk only for a baby under 6 months, and the doctor's limit.
+5. **Her water reminder (W6).** Off until she turns it on on the Water page; then 3 reminders (`water-1` to `water-3`, `mod`/`kind`
+   `water`, "Water: a glass now", every day) at 11 am, 2 pm and 5 pm, each movable from 8 am to 7 pm only (never the hours before bed).
+   Turning it off removes them (her times stay in `S.data('water').times`). A tick on her water step (Today or the check-in,
+   `markAction`) sets `doneOn` to today on all three, so the rest of the day stays quiet; an undo (`unmark`) clears it. Core: a water
+   reminder never asks "Ring on time?" (`upsert`'s daily rule leaves out `kind: 'water'`), its lock-screen words are its own plain title
+   (`notifWords`; discreet mode stays neutral), a tap opens Today (`notifGo`), and Coming up leaves it out (3 a day; My reminders lists
+   them). Version 39.27's "every new ring needs a reason": no ring is on by default; these ring only because she asked.
+6. **One "Sakhi says" card at a time (W3, W4; `homeTop`, so a plan's first 3 days keep them back; Version 39.47's rotation gives each
+   its turn).**
+   - The hot months (April to June), once a season until "Got it" (`S.data('water').heat`): drink often, before thirst; her stage's
+     line (pregnancy, breastfeeding, from 60); ORS at home (the fasting page's line); out of the sun from 12 noon to 3 pm; very hot skin,
+     confusion, fainting or no sweat: the nearest hospital now, with core's ambulance button (102 in a pregnancy); breast milk only for
+     a baby under 6 months. Discreet mode and a shared phone: plain words and 108.
+   - Her monthly check-in, for 7 days after it, until "Got it" (`con`, `leak`): constipation in a pregnancy whose plan holds no water
+     today (the pregnancy page's water, fibre and walk line); leaking urine after a birth or in midlife without the pelvic floor plan
+     (that plan teaches it), in the pelvic floor plan's words. Never in discreet mode or on a shared phone. The Diary's daily signs hold
+     no constipation or leaking sign, and hot flushes already have cool water on their own page, so those aren't read.
+7. **Wording (W7).** The drinks habit's How adds "About 8 glasses (2 litres) a day, more on hot days." and, for the weight goal, "Before
+   lunch and dinner, drink a glass or two of water first."; Sach ya Myth? gains "Cold water during your period causes cramps or clots"
+   (myth; also on the periods myths page) and "Drinking less water stops swelling in pregnancy" (myth, with the danger sign); My period
+   plan's comfort chapter adds "Keep drinking water through your period: about 8 glasses a day. Don’t drink less to change pads less
+   often."
+
+Plans: `preg@2` and `post@2` re-recorded in `web/progs/baseline.json` (their water step); the golden replay is unchanged. Wording:
+`docs/wording-review-v28.md`, section 19.80 (the new lines wait for the doctors' read).

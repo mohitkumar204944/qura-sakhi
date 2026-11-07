@@ -220,7 +220,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
 {
   const { ctx, page, errs } = await open({ hash: '#periods-myths' });
   const cards = await page.$$eval('#view .periods-myth', (xs) => xs.map((x) => x.innerText));
-  check('8 the periods myths page is the deck: 15 cards, the kitchen first, facts marked as facts', cards.length === 15 && /kitchen/.test(cards[0]) && cards.some((c) => /^Fact\s*\n?\s*Changing your pad every 4 to 6 hours/.test(c)), cards.slice(0, 2).concat([cards.length]));
+  check('8 the periods myths page is the deck: 16 cards (Version 39.80: the cold water myth), the kitchen first, facts marked as facts', cards.length === 16 && /kitchen/.test(cards[0]) && cards.some((c) => /^Fact\s*\n?\s*Changing your pad every 4 to 6 hours/.test(c)), cards.slice(0, 2).concat([cards.length]));
   check('8 the stopped-period line stays (period blood is not "bad blood stuck inside")', cards.some((c) => /bad blood stuck inside/.test(c)));
   await go(page, 'contra');
   const wf = await page.$$eval('#view .contra-wf-c summary', (xs) => xs.map((x) => x.innerText));

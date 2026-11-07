@@ -42,7 +42,7 @@
     intake: { screens: [{ id: 'psafe' }], day: ['food', 'milk'] },
     slots: { max: 4 }, hero: 'timeline', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'preg-plan', text: '@preg_plan_h', icon: 'check', hue: 'orange', priv: true }, { go: 'preg-week', text: '@preg_t_week', icon: 'baby', hue: 'plum', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: her folic acid tablet from Getting ready carries on to 12 weeks, with its 9 pm reminder' }, { ver: 2, r: 'R3', at: '2026-11-01', what: 'Version 39.52: yoga for her three months of pregnancy on 2 days a week, in place of the walk, on the green tier with no sign that doesn\u2019t wait' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-29', what: 'Version 39.34: My pregnancy, safety first: the safety screen and its 3 tiers, a walk by her tier, the pelvic floor from week 13, her answers again at 14 and 28 weeks, and from 28 weeks the movements of her baby and sleeping on her side in the check-in' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: her folic acid tablet from Getting ready carries on to 12 weeks, with its 9 pm reminder' }, { ver: 2, r: 'R3', at: '2026-11-01', what: 'Version 39.52: yoga for her three months of pregnancy on 2 days a week, in place of the walk, on the green tier with no sign that doesn\u2019t wait' }, { ver: 2, r: 'R4', at: '2026-11-07', what: 'Version 39.80: water, a daily step from day 2 when a slot is free (over 2 litres, 8 to 12 glasses; small sips with the nausea goal), its line under her food step when the slots are full' }],
     steps: [
       { id: 'folic', kind: 'adapter', use: 'ttc.folic', if: ['folic'] },
       { id: 'pdue', kind: 'adapter', use: 'preg.due', from: 'preg-plan', check: true },
@@ -60,7 +60,8 @@
         iron: [{ id: 'iron', kind: 'adapter', use: 'journey.iron' }],
         '*': [{ id: 'food', kind: 'adapter', use: 'preg.food' }]
       } },
-      { id: 'pf', kind: 'tick', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', play: true, if: ['gw:13-', 'pday:4-', 'route'] }
+      { id: 'pf', kind: 'tick', go: 'post-pelvic', title: '@plan_pf_t', icon: 'flower', hue: 'plum', why: 'plan_fb_pf', priv: true, from: 'post-pelvic', play: true, if: ['gw:13-', 'pday:4-', 'route'] },
+      { id: 'water', kind: 'adapter', use: 'water', if: ['pday:2-'] }   /* Version 39.80: last, so it only fills a free slot */
     ],
     list: [{ use: 'today' }, { use: 'pyoga' }],
     doctor: []
@@ -107,7 +108,7 @@
     intake: { day: ['food', 'milk', 'lim'], when: ['goal:weight'] },
     slots: { max: 4 }, hero: 'timeline', rest: 2,
     tiles: [{ go: 'food', text: '@food_h', icon: 'ico:plate', hue: 'green' }, { go: 'post-pelvic', text: '@post_t_pelvic', icon: 'flower', hue: 'plum', priv: true }, { go: 'post-checks', text: '@post_t_checks', icon: 'check', hue: 'rose', priv: true }, { go: 'plan-progress', text: '@plan_tiles_prog', icon: 'chart', hue: 'sky' }],
-    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.46: to the first birthday; the recovery check as her evening form to day 41; the squeezes by her days; a walk from day 14; back to strong after her 6-week check; strength after Is my body ready?; nothing about the baby after My baby has died' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: the gentle walk of the first 2 weeks opens no page (its Why? opened the recovery check)' }],
+    changelog: [{ ver: 2, r: 'R1', at: '2026-10-30', what: 'Version 39.46: to the first birthday; the recovery check as her evening form to day 41; the squeezes by her days; a walk from day 14; back to strong after her 6-week check; strength after Is my body ready?; nothing about the baby after My baby has died' }, { ver: 2, r: 'R2', at: '2026-10-30', what: 'Version 39.47: the gentle walk of the first 2 weeks opens no page (its Why? opened the recovery check)' }, { ver: 2, r: 'R3', at: '2026-11-07', what: 'Version 39.80: while she breastfeeds, water (a glass at every feed, about 10 to 12 a day) from day 2 when a slot is free; on a day it has no slot, Food and water while you breastfeed' }],
     steps: [
       { id: 'rcheck', kind: 'adapter', use: 'post.rcheck', if: ['early', 'route:post-recovery'] },
       { id: 'pelvic', kind: 'adapter', use: 'post.pf', if: ['route:post-pelvic'] },
@@ -122,7 +123,8 @@
       { id: 'move', kind: 'minutes', use: 'walk', mins: 'post', grow: 'hold', cap: 30, why: 'plan_fb_move_g', if: ['unlock'] },
       { id: 'gentle', kind: 'routine', go: 'plan-r-gentle', title: '@plan_r_gentle', icon: 'ico:move', hue: 'green', why: 'plan_fb_move_g', if: ['unlock', '!pready'], when: 'days:2,5' },
       { id: 'str', kind: 'routine', go: 'plan-r-strength', title: '@plan_r_strength', icon: 'ico:move', hue: 'gold', why: 'plan_fb_move_g', if: ['pready'], when: 'days:2,5' },
-      { id: 'bfood', kind: 'tick', go: 'post-feed', at: 'bf-food', title: '@plan_a_bfood', icon: 'ico:plate', hue: 'green', why: 'plan_fb_any', priv: true, if: ['sit:breastfeeding', 'route', '!died'], when: 'days:2' }
+      { id: 'bfood', kind: 'tick', go: 'post-feed', at: 'bf-food', title: '@plan_a_bfood', icon: 'ico:plate', hue: 'green', why: 'plan_fb_any', priv: true, if: ['sit:breastfeeding', 'route', '!died'], when: 'days:2' },
+      { id: 'water', kind: 'adapter', use: 'water', if: ['sit:breastfeeding', '!died', 'pday:2-'] }   /* Version 39.80 */
     ],
     list: [{ use: 'today' }],
     doctor: []

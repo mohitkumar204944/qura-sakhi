@@ -982,7 +982,7 @@
   const SECTIONS = ['periods', 'contra', 'pregtest', 'ttc', 'preg', 'post', 'loss', 'intimate', 'cond', 'screen', 'meno', 'teen', 'free', 'plans', 'records', 'support', 'fun'];
   /* Modules still file their tools under 'tools'; the Care hub shows them in five named groups (Version 30). */
   const TOOLS_SPLIT = { 'access-free': 'free', 'access-doctor': 'free', 'access-care': 'free', 'access-schemes': 'free', 'access-online': 'free', asha: 'free', ask: 'support',
-    'tools-reminders': 'plans', 'tools-meds': 'plans', iron: 'plans', journey: 'plans', report: 'records', 'tools-reports': 'records', 'tools-summary': 'records',
+    'tools-reminders': 'plans', 'tools-meds': 'plans', iron: 'plans', journey: 'plans', water: 'plans', report: 'records', 'tools-reports': 'records', 'tools-summary': 'records',
     relief: 'periods', calm: 'periods', family: 'teen', 'access-partner': 'contra',   /* review PLACES-06: a home in a topic */ 'access-videos': 'support', 'access-feed': 'support', 'access-symptoms': 'support', lang: 'support',
     joy: 'fun', 'joy-quiz': 'fun', docportal: 'fun' };
   const sectionOf = (x) => (x.section === 'tools' ? TOOLS_SPLIT[x.route] || 'support' : x.section);
@@ -1050,7 +1050,7 @@
       const med = rec.kind === 'med' && rec.on !== false && (!was || was.on === false);   /* Version 39.78: a tablet reminder, new or switched back on */
       if (o && o.quiet) { save(); if (med) askExactSoon(); return rec; }
       /* Version 39.27 (R01): a reminder she sets turns phone reminders on (Android asks once if it must); a daily one may ask to ring on time */
-      if (rec.on !== false && Date.now() - lastTap < 3000) { const daily = rec.every === 1 || (rec.weekdays && rec.weekdays.length); setTimeout(() => { if (!state.settings.notify) { const off = !!state.settings.notifyOff; delete state.settings.notifyOff; autoNotify(true, true, med); if (state.settings.notify && off) toast(t('notif_on')); } else if (daily || med) askExactNow(false, med); }, 600); }
+      if (rec.on !== false && Date.now() - lastTap < 3000) { const daily = (rec.every === 1 || (rec.weekdays && rec.weekdays.length)) && rec.kind !== 'water';   /* Version 39.80: a glass of water needn't ring on time */ setTimeout(() => { if (!state.settings.notify) { const off = !!state.settings.notifyOff; delete state.settings.notifyOff; autoNotify(true, true, med); if (state.settings.notify && off) toast(t('notif_on')); } else if (daily || med) askExactNow(false, med); }, 600); }
       save(); return rec; },
     remove: (id) => { state.reminders = reminders.list().filter((r) => r.id !== id); save(); },
     next: remNext, text: remText,
@@ -3060,7 +3060,7 @@
     const vn = $('#visit-not', v); if (vn) vn.addEventListener('click', () => { state.prompts = state.prompts || {}; state.prompts.visit = toISO(today()); save(); render(); });
   }
   function comingUp(disc, skip) {
-    const tdS = toISO(today()); const up = reminders.upcoming(3).filter((x) => !(skip && skip.indexOf(x.r.id) >= 0 && toISO(x.date) === tdS)).slice(0, 2);
+    const tdS = toISO(today()); const up = reminders.upcoming(3).filter((x) => x.r.mod !== 'water' && !(skip && skip.indexOf(x.r.id) >= 0 && toISO(x.date) === tdS)).slice(0, 2);   /* Version 39.80: not the water rings */
     if (!up.length) return '';
     const go = ROUTES['tools-reminders'] ? 'tools-reminders' : 'care';
     return '<div class="card"><div class="row spread"><h3>' + esc(t('coming_up')) + '</h3><a href="#' + go + '" data-go="' + go + '" class="small">' + esc(t('see_all')) + '</a></div><div class="list">' + up.map((x) => '<div class="item quiet"><span class="ico-sm">' + I.bell + '</span><span class="body"><strong>' + esc(disc ? t('d_reminder') : reminders.text(x.r)) + '</strong><span>' + esc(fmtD(x.date, { weekday: 'short', day: 'numeric', month: 'short' })) + (x.r.time ? ' · ' + esc(x.r.time) : '') + '</span></span></div>').join('') + '</div></div>';
@@ -5124,7 +5124,7 @@
   }
 
   /* Version 39.2: her reminder lists (her own, medicines, iron tablets) at the top of the one Reminders page */
-  const remLists = () => { const rows = [['tools-reminders', I.clock, 'tools_t_rem'], ['tools-meds', icon('pill'), 'tools_t_meds'], ['iron', icon('drop'), 'iron_h']].filter((x) => ROUTES[x[0]]);
+  const remLists = () => { const rows = [['tools-reminders', I.clock, 'tools_t_rem'], ['tools-meds', icon('pill'), 'tools_t_meds'], ['iron', icon('drop'), 'iron_h'], ['water', icon('drop'), 'water_h']].filter((x) => ROUTES[x[0]]);   /* Version 39.80: Water */
     return canSave() && rows.length ? '<h2>' + esc(t('rem_lists_h')) + '</h2><div class="list">' + rows.map((x) => '<button type="button" class="item" data-go="' + x[0] + '"><span class="ico-sm hue hue-green">' + x[1] + '</span><span class="body"><strong>' + esc(t(x[2])) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div><h2>' + esc(t('notif_sec')) + '</h2>' : ''; };
   function renderMeReminders(v) {
     const B = window.SakhiAndroid;
@@ -5316,13 +5316,13 @@
      - go: the screen a tap opens (the pill, the plan, the check-in), not Home.
      Android keeps 60 at most, soonest first. Only if some were left out, a last alarm asks her to open Sakhi. */
   const NOTIF_GO = { ttc: 'home', contra: 'contra-mine', iron: 'iron', post: 'post', screen: 'screen-mine', journey: 'journey', plan: 'plan-checkin', access: 'access-schemes-preg', checkin: 'checkin', backup: 'backup' };   /* plan: Version 37.2, its evening check-in (Version 36 opened the PMOS page, Version 35 the reminders list) */
-  const notifGo = (r) => (r.id === 'plan-nudge' ? 'plan-now' : r.id === 'plan-pf' ? 'pf-go' : r.id === 'plan-wind' ? 'plan-wind' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
+  const notifGo = (r) => (r.mod === 'water' ? 'home' : r.id === 'plan-nudge' ? 'plan-now' : r.id === 'plan-pf' ? 'pf-go' : r.id === 'plan-wind' ? 'plan-wind' : r.mod === 'preg' ? (/^preg-(ifa|ca)$/.test(r.id) ? 'preg-logs' : 'preg-plan') : r.mod === 'tools' ? (r.kind === 'med' ? 'tools-meds' : 'tools-reminders') : NOTIF_GO[r.mod] || 'tools-reminders');
   const notifCh = (r) => (r.kind === 'med' || ['contra', 'iron'].indexOf(r.mod) >= 0 || /^preg-(ifa|ca)$/.test(r.id) ? 'meds' : ['preg', 'post', 'screen', 'access'].indexOf(r.mod) >= 0 ? 'care' : r.mod === 'plan' ? 'plan' : 'other');
   const notifQuiet = () => !!(state.settings.discreet || state.settings.shared);
   /* Version 39.0 (plans review): the words on the lock screen are plain unless she turns them on. Her own reminders keep her
      own words; the plan's check-in ("How did today go?") is plain already. */
   const isTablet = (r) => r.kind === 'med' || /^preg-(ifa|ca)$/.test(r.id) || r.id === 'iron';   /* review DP-1: a tablet, not an injection, a visit or a test */
-  const notifWords = (r) => { if (state.settings.notifWords) return remText(r); if (isTablet(r)) return t('notif_n_med'); if (['tools', 'plan', 'backup', 'checkin'].indexOf(r.mod) >= 0) return remText(r); return t('notif_n_care'); };   /* her own words, the check-in and the backup nudge say nothing private */
+  const notifWords = (r) => { if (state.settings.notifWords) return remText(r); if (isTablet(r)) return t('notif_n_med'); if (['tools', 'plan', 'backup', 'checkin', 'water'].indexOf(r.mod) >= 0) return remText(r); return t('notif_n_care'); };   /* her own words, the check-in and the backup nudge say nothing private */
   /* the channel's id, its name in her language, and whether it may pop up over the screen */
   const chanOf = (k) => (notifQuiet() ? { ch: 'sakhi_reminders', chname: t('ch_neutral'), imp: 'default' } : { ch: 'sakhi_' + k, chname: t('ch_' + k), imp: k === 'meds' ? 'high' : 'default' });
   function buildNotifs() {

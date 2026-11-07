@@ -650,6 +650,14 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the Learn article on her data drawn from the joining notice; the language tile names Hindi and English only.
     On the phone the walk tools are `web/test/adb-ui.mjs` (the screen as text, taps by label) and `web/test/adb-cdp.mjs` (a debug copy's
     WebView). Contract: MODULE_API section 121; wording: section 19.78 of the review (UI and privacy words only).
+  - `node test/water.mjs` (Version 39.80, water; Mohit, 7 Nov: "Build W1 to W7" on `docs/water-advice-2026-11-07.md`, its section 2a the
+    amount by her stage):
+    - a water step last in My pregnancy ("over 2 litres today", 8 to 12 glasses) and while she breastfeeds ("a glass at every feed"),
+      from day 2 when a slot is free; with no slot its line goes under her food step ("Food and water while you breastfeed");
+    - the pelvic floor water habit back once a week after week 4; the Water page (`mods/water.js`, Me > Reminders), with a reminder
+      she turns on (3 a day, 8 am to 7 pm, quiet once she ticks water);
+    - the hot months' card (April to June) and her monthly check-in's line in Sakhi says; the drinks habit's amount, two water myths.
+    Contract: MODULE_API section 123; wording: section 19.80 of the review (new lines wait for the doctors' read).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

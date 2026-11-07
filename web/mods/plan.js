@@ -1898,7 +1898,8 @@
       return [{ id: 'find', icon: S.icon('sparkle'), hue: 'plum', kind: 'tick', title: t('plan_pf_find'), name: t('plan_pf_find'), sub: lv ? tf('plan_pf_find_n', { p: t('plan_pf_pos_' + lv.pos) }) : t('plan_pf_find_s'), go: 'post-pelvic', state: st('find'), why: 'plan_fb_pf_find', priv: true, win: lv ? undefined : 'pfd13' }]; },
     'pelvic.checked': (d, c, x, st) => (d.pfDoc ? [] : [{ id: 'checked', icon: S.icon('steth'), hue: 'rose', kind: 'tick', title: t('plan_pf_chk'), name: t('plan_pf_chk'), sub: t('plan_pf_chk_s'), go: S.routeOwner('intimate-prolapse') ? 'intimate-prolapse' : 'plan', state: st('checked'), why: 'plan_fb_pf_chk', priv: true, once: true }]),
     'pelvic.urge': (d, c, x, st) => [{ id: 'urge', icon: S.icon('sparkle'), hue: 'sky', kind: 'tick', title: t('plan_pf_urge'), name: t('plan_pf_urge'), sub: t(weekAt(d, c.day) >= 3 ? 'plan_pf_urge_s2' : 'plan_pf_urge_s1'), go: 'pf-urge', state: st('urge'), why: 'plan_fb_pf_urge', priv: true }],
-    'pelvic.habit': (d, c, x, st) => { const k = pfHabit(d, c.day); return k ? [{ id: 'habit', icon: S.icon('leaf'), hue: 'green', kind: 'tick', title: t('plan_pf_' + k), name: t('plan_pf_' + k), sub: t('plan_pf_' + k + '_s'), go: 'pf-habit', state: st('habit'), why: 'plan_fb_pf_habit', priv: true }] : []; },   /* the test pass: the chapter that teaches it */
+    'pelvic.habit': (d, c, x, st) => { let k = pfHabit(d, c.day); const back = weekAt(d, c.day) >= 5 && (planDayAt(d, c.day) - 1) % 7 === 4; if (back) k = 'h2';   /* Version 39.80 (W5): water once a week after week 4 */
+      return k ? [{ id: 'habit', icon: S.icon('leaf'), hue: 'green', kind: 'tick', title: t(back ? 'plan_pf_h2b' : 'plan_pf_' + k), name: t('plan_pf_' + k), sub: t('plan_pf_' + k + '_s'), go: 'pf-habit', state: st('habit'), why: 'plan_fb_pf_habit', how: k === 'h2' ? t('plan_pf_h2_s') + ' ' + t('plan_a_water_lim') : undefined, priv: true }] : []; },   /* the test pass: the chapter that teaches it */
 
     /* Version 39.55 (My period plan): Relax with Dr. Megha (Wind down's slow breaths; any session she plays that day counts), a rest
        lying down on a heavy day (yoga nidra), her Hb test to day 21 until it is done (a result she saves counts), and her calm-week
@@ -1960,6 +1961,13 @@
       const w = pi && pi.days != null ? Math.floor((pi.days + S.diffDays(pToday(), S.fromISO(c.day))) / 7) : (pi ? pi.weeks : null);   /* V39.9 review FOOD-06: that day's week */
       const tip = w != null && S.preg.foodTip ? S.preg.foodTip(w) : null;
       return [{ id: 'food', icon: ICO.plate, hue: 'green', kind: 'tick', title: tip ? tf('plan_a_pfood', { x: tip.t }) : tileTitle('preg-diet'), name: tileTitle('preg-diet'), sub: tip ? tip.p : '', go: 'preg-diet', state: st('food'), why: 'plan_fb_any', priv: true }]; },
+    /* Version 39.80 (water, docs/water-advice-2026-11-07.md W1 and W2): in a pregnancy "over 2 litres today" (8 to 12 glasses; small
+       sips with the nausea goal), while she breastfeeds "a glass at every feed" (about 10 to 12 a day). Its place is last, so it only
+       fills a free slot (stepsFor puts its line under her food step when the slots are full); never on a fasting day (the fasting
+       step holds water); plain words, so it shows on a shared phone too. In the hot months its line leads with the heat. */
+    water: (d, c, x, st) => { if (fastOn(d, c.day)) return []; const pg = pregnant(); const nau = pg && d.goalKey === 'nausea'; const hot = !!(S.water && S.water.hot && S.water.hot(c.day));
+      const ttl = t(pg ? (nau ? 'plan_a_water_pn' : 'plan_a_water_p') : 'plan_a_water_b'); const sub = t(nau ? 'plan_a_water_n' : (pg ? (hot ? 'plan_a_water_ph' : 'plan_a_water_ps') : (hot ? 'plan_a_water_bh' : 'plan_a_water_bs')));
+      return [{ id: 'water', icon: ICO.drink, hue: 'sky', kind: 'tick', title: ttl, name: ttl, sub: sub, go: S.routeOwner('water') ? 'water' : (pg ? 'preg-diet' : 'post-feed'), state: st('water'), why: pg ? 'plan_fb_water_p' : 'plan_fb_water_b', how: t('plan_a_water_how'), priv: false }]; },
     /* Version 39.32 (packet D1 to D16): the Getting ready plan's own steps, kept by ttc.js. Her tablet every day (where to get it
        until she has it, done on its page, so the check-in doesn't ask; "My tablet" in discreet mode); her Hb test from day 2 to day 14 until she ticks it on her checklist; the
        1-minute ready check when it is due; the calm few minutes in the week before her period, from week 8, if she switched it on. */
@@ -2023,6 +2031,10 @@
       else if (out.length && fastCare()) { list = out.slice(0, max); if (list.length < max) list.push(fastStep(st)); else { let k = -1; for (let j = list.length - 1; j >= 0; j--) if (SAFE.indexOf(list[j].id) < 0) { k = j; break; } if (k >= 0) list[k] = fastStep(st); } } }   /* V39.9 review FOOD-01: never in place of a safety step */
     if (lightOn(d, day)) { const pref = (a) => (['move', 'food'].indexOf(a.id) >= 0 ? 0 : 1); const pick = list.filter((a) => SAFE.indexOf(a.id) < 0).sort((a, b) => pref(a) - pref(b)).slice(0, Math.max(0, 2 - list.filter((a) => SAFE.indexOf(a.id) >= 0).length)); list = list.filter((a) => SAFE.indexOf(a.id) >= 0 || pick.indexOf(a) >= 0); }   /* Version 39.12; 39.13: her walk and food habit */
     list = list.slice(0, max);
+    /* Version 39.80 (W1, W5): no slot left for water: its line goes under her food step (the pregnancy food page's own line), and
+       "Food while you breastfeed" becomes "Food and water while you breastfeed" with the feeding page's line */
+    const wa = out.find((a) => a.id === 'water'); if (wa && list.indexOf(wa) < 0) { const fi = list.findIndex((a) => a.id === 'food' || a.id === 'bfood');
+      if (fi >= 0) { const f = Object.assign({}, list[fi], { water: true }); if (f.id === 'bfood') { f.title = t('plan_a_bfood_w'); f.name = f.title; f.sub = t('plan_a_bfood_ws'); } else f.sub = (f.sub ? f.sub + ' ' : '') + t('plan_a_water_pf'); list[fi] = f; } }
     if (postV2(d)) { const rc = list.filter((a) => a.id === 'rcheck'); if (rc.length) list = list.filter((a) => a.id !== 'rcheck').concat(rc); }   /* Version 39.46: her evening check last, as she lives her evening */
     return list;
   }
@@ -2484,6 +2496,7 @@
   function markAction(d, a, val) {
     if (a.kind === 'check' && !a.ciAsk) return;
     const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); x.ck[a.id] = val;
+    if (a.id === 'water' && S.water && S.water.done) S.water.done(todayISO(), val === 'd');   /* Version 39.80 (W6): the rest of the day's water rings stay quiet */
     if (a.id === 'folic' && val === 'd' && S.ttc && S.ttc.folic && S.ttc.folic.have && !S.ttc.folic.has()) S.ttc.folic.have();   /* Version 39.57: she took it, so she has her tablets */
     if (a.mode) { x.ckm = Object.assign({}, x.ckm || {}); x.ckm[a.id] = a.mode; }   /* Version 39.56 (Mohit's phone test): the mode her step was in (her sets: squeezes, or breathing and letting go) */
     if (a.kind === 'minutes') { const want = val === 'd' ? a.mins : (val === 'p' ? Math.round(a.mins / 2) : 0); const rm = x.rmin || 0; const m0 = x.min || 0; if (m0 - rm < want) { x.min = rm + want; x.tkm = Object.assign({}, x.tkm || {}); x.tkm[a.id] = (x.tkm[a.id] || 0) + (x.min - m0); } }   /* Version 39.13: walking minutes, apart from the yoga's; 39.14: what a tick added, so its undo takes only that */
@@ -4243,6 +4256,7 @@
   /* a tap on a ticked step's tick: not done after all (the minutes her tick added go too, never the ones she walked) */
   function unmark(d, a) {
     const x = d.log[todayISO()] = d.log[todayISO()] || {}; x.ck = Object.assign({}, x.ck || {}); delete x.ck[a.id];   /* Version 39.51 (Mohit's phone test): unanswered, as before her tick */
+    if (a.id === 'water' && S.water && S.water.done) S.water.done(todayISO(), false);   /* Version 39.80 */
     if (x.ckm && x.ckm[a.id]) { x.ckm = Object.assign({}, x.ckm); delete x.ckm[a.id]; }   /* Version 39.56 */
     const tk = x.tkm && x.tkm[a.id]; if (a.kind === 'minutes' && tk) { x.min = Math.max(x.rmin || 0, (x.min || 0) - tk); x.tkm = Object.assign({}, x.tkm); delete x.tkm[a.id]; }
     const tr = a.kind === 'routine' && a.r && x.tkr ? x.tkr[a.r] : 0; if (tr) { x.min = Math.max(0, (x.min || 0) - tr); x.rmin = Math.max(0, (x.rmin || 0) - tr); x.tkr = Object.assign({}, x.tkr); delete x.tkr[a.r]; }   /* Version 39.41 */
@@ -4293,7 +4307,7 @@
   /* R3: how to do a step: a food habit's own line, the walk's pace, a routine's moves, the bedtime tip, else its line */
   function howOf(a, d) {
     if (a.how != null) return a.how;   /* Version 39.22: the wind-down's own */   /* Version 39.51 (Mohit's phone test): '' is no How, not her subtitle again */
-    if (a.kind === 'habit') { const h = habOf(a.habit); return h && h.p ? tx(h.p) : ''; }
+    if (a.kind === 'habit') { const h = habOf(a.habit); return h && h.p ? tx(h.p) + (h.id === 'drinks' ? ' ' + t('plan_a_drinks_n') + (d && d.goalKey === 'weight' ? ' ' + t('plan_a_drinks_w') : '') : '') : ''; }   /* Version 39.80 (W7) */
     if (a.kind === 'minutes' && !a.r) return t('plan_walk_s');
     if (a.r && (a.r === 'sun' || R[a.r])) { const seen = {}; const ns = []; stepsOf(a.r, d).forEach((s) => { const nm = s.n ? tx(s.n) : ''; if (nm && !seen[nm]) { seen[nm] = 1; ns.push(nm); } });
       return tf('plan_how_r', { n: routineMins(a.r, d), x: ns.slice(0, 6).join(', ') + (ns.length > 6 ? ' …' : '') }); }
@@ -4346,7 +4360,9 @@
   const calmRow = () => { const d = S.canSave() && raw() ? D() : null; return routineOk('calm', d) ? { go: 'plan-r-calm', title: rName('calm'), sub: rSub('calm') + ' · ' + tf('plan_mins', { n: routineMins('calm', d) }) } : null; };
   /* Version 39.32: a positive test she saved since her plan started, not yet answered */
   const posDue = (dd) => { const lp = S.pregtest && S.pregtest.lastPos ? S.pregtest.lastPos() : null; return !!lp && lp >= dd.start && !pregnant() && dd.posSeen !== lp; };
-  S.plan = { tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
+  S.plan = { waterDone: () => { const d = raw(); return !!d && ((dayLog(d, todayISO()).ck || {}).water === 'd'); },   /* Version 39.80 */
+    waterToday: () => { const d = raw(); if (!d || !planOn() || !packOf(d) || pausedFor(d) || selfPaused(d)) return false; return actionsFor(fullD(d)).some((a) => a.id === 'water' || a.water); },   /* Version 39.80 */
+    tonight: planTonight, calmRow: calmRow, forRow: forRow,   /* Version 39.53 */
     titleNow: () => { const d = runningD(); return d ? packTitle(d) : ''; },   /* Version 39.63: a topic for the call form */
     /* Version 39.59 (the lives audit, C3: one home): the pages her running plan's 4 tiles open, so Explore's For you leaves them out */
     tileGo: () => { const d = runningD(); if (!d) return []; const sp = specOf(packOf(d), d.pv); return ((sp && sp.tiles) || []).map((x) => x.go).filter(Boolean); },
@@ -4701,6 +4717,17 @@
         plan_pf_h1: 'Squeeze before you cough, sneeze or lift', plan_pf_h1_s: 'The knack. It can stop a leak as it starts.', plan_pf_h2: 'Water through the day', plan_pf_h2_s: 'A little at a time, about 6 to 8 glasses. Too little makes the bladder more urgent.',
         plan_pf_h3: 'On the toilet: knees up, breathe out', plan_pf_h3_s: 'Feet on a low stool, lean forward, and don’t push hard', plan_pf_h3u: 'Less tea, coffee and cola, for 2 weeks', plan_pf_h3u_s: 'Then see if the urge is calmer. Keep drinking water.',
         plan_pf_h4: 'Lift the safe way', plan_pf_h4_s: 'Squeeze first, breathe out as you lift, and keep it close to you', plan_pf_h5: 'One set standing, at a task', plan_pf_h5_s: 'While you cook, wash or wait: squeeze and hold, the way you learned',
+        /* Version 39.80 (water, docs/water-advice-2026-11-07.md): the water step, its line under the food step, the pelvic floor habit back */
+        plan_a_water_p: 'Water: over 2 litres today', plan_a_water_ps: '8 to 12 glasses: one with each meal and each tablet, more on hot days.', plan_a_water_ph: 'Hot days: drink more. 8 to 12 glasses or more, one with each meal and each tablet.',
+        plan_a_water_pn: 'Water: small sips all day', plan_a_water_n: 'Sip water, nimbu pani or coconut water through the day instead of drinking a lot at once.',
+        plan_a_water_b: 'Water: a glass at every feed', plan_a_water_bs: 'About 10 to 12 glasses a day, to your thirst.', plan_a_water_bh: 'Hot days: drink more. About 10 to 12 glasses or more, to your thirst.',
+        plan_a_water_how: 'A glass is about 250 ml, a full steel glass. Pale yellow urine means you are drinking enough. If your doctor has told you to drink less (for your heart or kidneys), follow your doctor.',
+        plan_a_water_lim: 'If your doctor has told you to drink less (for your heart or kidneys), follow your doctor.',
+        plan_a_water_pf: 'Drink plenty: over 2 litres a day, counting water, buttermilk and nimbu pani.',
+        plan_fb_water_p: 'Water helps with constipation and piles, urine infections and hot days. Needing to pee often is normal in pregnancy: keep drinking water; do not cut down.',
+        plan_fb_water_b: 'Breastfeeding makes you thirsty: keep water near you and drink a glass at every feed. Drink to your thirst: drinking more than that doesn’t make more milk.',
+        plan_a_bfood_w: 'Food and water while you breastfeed', plan_a_bfood_ws: 'Keep water near you, and drink a glass at every feed.',
+        plan_pf_h2b: 'Still drinking water through the day?', plan_a_drinks_n: 'About 8 glasses (2 litres) a day, more on hot days.', plan_a_drinks_w: 'Before lunch and dinner, drink a glass or two of water first.',
         plan_fb_pfl: 'Squeezing your pelvic floor every day, the right way, makes the muscles stronger. It takes about 3 months.', plan_fb_pf_find: 'Finding the right muscles first makes every set count.',
         plan_fb_pf_chk: 'Heaviness can have more than one cause. A doctor’s check tells you which, and which exercises are safe.', plan_fb_pf_urge: 'Calming the urge and stretching the time between toilet visits trains the bladder. It takes a few weeks.',
         plan_fb_pf_habit: 'Small changes in your day take strain off your pelvic floor.', plan_fb_pf_relax: 'Pain when you squeeze can mean the muscles are too tight. Breathing and letting go comes first.',
@@ -5108,6 +5135,16 @@
         plan_pf_h1: 'खाँसने, छींकने या उठाने से पहले कसें', plan_pf_h1_s: 'यह तरकीब लीक को शुरू होते ही रोक सकती है।', plan_pf_h2: 'दिन भर पानी', plan_pf_h2_s: 'थोड़ा-थोड़ा, लगभग 6 से 8 गिलास। बहुत कम पानी से मूत्राशय में और जल्दी हाजत होती है।',
         plan_pf_h3: 'शौच के समय: घुटने ऊपर, साँस बाहर', plan_pf_h3_s: 'पैर छोटे पीढ़े पर, आगे झुकें, और ज़ोर न लगाएँ', plan_pf_h3u: '2 हफ़्ते के लिए चाय, कॉफ़ी और कोला कम', plan_pf_h3u_s: 'फिर देखें कि हाजत शांत हुई या नहीं। पानी पीती रहें।',
         plan_pf_h4: 'सही तरीक़े से उठाएँ', plan_pf_h4_s: 'पहले कसें, उठाते समय साँस छोड़ें, और बोझ शरीर के पास रखें', plan_pf_h5: 'किसी काम के समय खड़े होकर एक सेट', plan_pf_h5_s: 'खाना बनाते, धोते या इंतज़ार करते हुए: कसें और रोकें, जैसा आपने सीखा',
+        plan_a_water_p: 'पानी: आज 2 लीटर से ज़्यादा', plan_a_water_ps: '8 से 12 गिलास: हर खाने और हर गोली के साथ एक, गर्मी में और ज़्यादा।', plan_a_water_ph: 'गर्मी के दिन: ज़्यादा पिएँ। 8 से 12 गिलास या उससे ज़्यादा, हर खाने और हर गोली के साथ एक।',
+        plan_a_water_pn: 'पानी: दिन भर घूँट-घूँट', plan_a_water_n: 'एक साथ ज़्यादा पीने की बजाय दिन भर घूँट-घूँट पानी, नींबू पानी या नारियल पानी पिएँ।',
+        plan_a_water_b: 'पानी: हर फ़ीड पर एक गिलास', plan_a_water_bs: 'दिन में लगभग 10 से 12 गिलास, प्यास के हिसाब से।', plan_a_water_bh: 'गर्मी के दिन: ज़्यादा पिएँ। लगभग 10 से 12 गिलास या उससे ज़्यादा, प्यास के हिसाब से।',
+        plan_a_water_how: 'एक गिलास लगभग 250 ml का होता है, यानी स्टील का एक भरा गिलास। हल्का पीला पेशाब बताता है कि आप काफ़ी पी रही हैं। अगर डॉक्टर ने कम पीने को कहा है (दिल या गुर्दे की वजह से), तो डॉक्टर की बात मानें।',
+        plan_a_water_lim: 'अगर डॉक्टर ने कम पीने को कहा है (दिल या गुर्दे की वजह से), तो डॉक्टर की बात मानें।',
+        plan_a_water_pf: 'भरपूर पिएँ: रोज़ 2 लीटर से ज़्यादा, जिसमें पानी, छाछ और नींबू पानी गिना जाए।',
+        plan_fb_water_p: 'पानी क़ब्ज़ और बवासीर, पेशाब के इन्फ़ेक्शन और गर्मी के दिनों में मदद करता है। गर्भ में बार-बार पेशाब आना सामान्य है: पानी पीती रहें; कम न करें।',
+        plan_fb_water_b: 'स्तनपान से प्यास ज़्यादा लगती है: पास में पानी रखें और हर फ़ीड पर एक गिलास पिएँ। प्यास के हिसाब से पिएँ: उससे ज़्यादा पीने से दूध ज़्यादा नहीं बनता।',
+        plan_a_bfood_w: 'स्तनपान के दिनों का खाना और पानी', plan_a_bfood_ws: 'पास में पानी रखें, और हर बार दूध पिलाते समय एक गिलास पानी पिएँ।',
+        plan_pf_h2b: 'क्या अब भी दिन भर पानी पी रही हैं?', plan_a_drinks_n: 'दिन में लगभग 8 गिलास (2 लीटर), गर्मी में और ज़्यादा।', plan_a_drinks_w: 'दोपहर और रात के खाने से पहले एक-दो गिलास पानी पिएँ।',
         plan_fb_pfl: 'रोज़ सही तरीक़े से pelvic floor कसने से मांसपेशियाँ मज़बूत होती हैं। इसमें लगभग 3 महीने लगते हैं।', plan_fb_pf_find: 'पहले सही मांसपेशियाँ पहचानने से हर सेट काम आता है।',
         plan_fb_pf_chk: 'भारीपन के एक से ज़्यादा कारण हो सकते हैं। डॉक्टर की जाँच बताती है कौन सा, और कौन से व्यायाम सुरक्षित हैं।', plan_fb_pf_urge: 'हाजत को शांत करना और शौचालय जाने के बीच का समय बढ़ाना मूत्राशय को सिखाता है। इसमें कुछ हफ़्ते लगते हैं।',
         plan_fb_pf_habit: 'दिन की छोटी आदतें pelvic floor पर ज़ोर कम करती हैं।', plan_fb_pf_relax: 'कसते समय दर्द का मतलब हो सकता है कि मांसपेशियाँ बहुत कसी हुई हैं। पहले साँस लेना और ढीला छोड़ना।',
