@@ -126,9 +126,9 @@
       fe_possible: 'Possible fertile days', fe_high: 'Highest chance of pregnancy', fe_launch: 'Fertile days are switched off in this version of Sakhi until doctors and the regulator approve them.',
       usage_sec: 'Help improve Sakhi', usage_h: 'Send what helps, once a month', usage_d: 'How many days you used each tool, as 1, 2–5 or 6+. It goes without your name or number, and never with your diary.',
       usage_note: 'Tool names can show your stage, for example the pregnancy plan. Off by default. Turning it off deletes the counts.', usage_see: 'See what would be sent', usage_none: 'Nothing counted yet this month.',
-      ph_h: 'Share how I use Sakhi', ph_d: 'Which screens you open, how long you stay and where you tap, never the words on them. It goes to PostHog in Europe with no name, number or account, and never your diary.',
+      ph_h: 'Share how I use Sakhi', ph_d: 'Which screens you open, how long you stay and where you tap, never the words on them. It goes to Google Firebase Analytics with no name, number or account, and never your diary. Google also sees your phone\'s type and your rough area from the internet connection, never your exact place.',
       ph_note: 'Screen names can show your stage, for example pregnancy. Private pages, discreet mode and a shared phone send nothing. It is on unless you turn it off here; turning it off stops it at once and forgets your anonymous ID.',
-      ob_notice_6: 'How you use Sakhi: which screens you open, how long you stay and where you tap goes to PostHog in Europe, with no name or number, never the words on screens or your diary. Turn it off any time on the Me page, in Privacy on a shared phone.',
+      ob_notice_6: 'How you use Sakhi: which screens you open, how long you stay and where you tap goes to Google Firebase Analytics, with your phone\'s type and rough area, no name or number, never the words on screens or your diary. Turn it off any time on the Me page, in Privacy on a shared phone.',
       usage_days: 'Days used: {n} · sent as {b}', usage_l_search: 'Search', usage_l_diary: 'Diary and logging', usage_l_checkin: 'Monthly check-in',
       today_done: 'Done',
       visit_h: 'Going for a check-up today?', visit_p: 'Show your report: what you noted, and your questions, on one screen.', visit_b: 'Open my report', visit_not: 'Not today',
@@ -399,9 +399,9 @@
       fe_possible: 'इन दिनों में भी गर्भ ठहर सकता है', fe_high: 'गर्भ ठहरने की सबसे ज़्यादा संभावना', fe_launch: 'Sakhi के इस संस्करण में फ़र्टाइल दिन बंद हैं, जब तक डॉक्टर और नियामक मंज़ूरी न दें।',
       usage_sec: 'Sakhi को बेहतर बनाने में मदद करें', usage_h: 'महीने में एक बार भेजें कि क्या काम आया', usage_d: 'आपने हर टूल कितने दिन इस्तेमाल किया, 1, 2–5 या 6+ के रूप में। यह आपके नाम या नंबर के बिना जाता है, और आपकी डायरी कभी नहीं।',
       usage_note: 'टूल के नाम से आपका पड़ाव पता चल सकता है, जैसे गर्भावस्था की योजना। पहले से बंद है। बंद करने पर गिनती मिट जाती है।', usage_see: 'देखें क्या भेजा जाएगा', usage_none: 'इस महीने अभी कुछ नहीं गिना गया।',
-      ph_h: 'मैं Sakhi कैसे इस्तेमाल करती हूँ, यह साझा करें', ph_d: 'आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं, उन पर लिखे शब्द कभी नहीं। यह यूरोप में PostHog के पास जाता है, बिना नाम, नंबर या अकाउंट के, और आपकी डायरी कभी नहीं।',
+      ph_h: 'मैं Sakhi कैसे इस्तेमाल करती हूँ, यह साझा करें', ph_d: 'आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं, उन पर लिखे शब्द कभी नहीं। यह Google Firebase Analytics के पास जाता है, बिना नाम, नंबर या अकाउंट के, और आपकी डायरी कभी नहीं। Google को आपके फ़ोन का प्रकार और इंटरनेट कनेक्शन से आपका मोटा-मोटा इलाका भी दिखता है, आपकी सही जगह कभी नहीं।',
       ph_note: 'पन्नों के नाम से आपका पड़ाव पता चल सकता है, जैसे गर्भावस्था। निजी पन्ने, गुप्त mode और साझा फ़ोन कुछ नहीं भेजते। यह चालू रहता है, जब तक आप इसे यहाँ बंद न करें; बंद करते ही यह रुक जाता है और आपकी गुमनाम पहचान मिट जाती है।',
-      ob_notice_6: 'आप Sakhi कैसे इस्तेमाल करती हैं: आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं, यह यूरोप में PostHog के पास जाता है, बिना नाम या नंबर के; पन्नों पर लिखे शब्द या आपकी डायरी कभी नहीं। इसे कभी भी “मैं” पन्ने पर, शेयर्ड फ़ोन पर निजता में बंद कर सकती हैं।',
+      ob_notice_6: 'आप Sakhi कैसे इस्तेमाल करती हैं: आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं, यह Google Firebase Analytics के पास जाता है, आपके फ़ोन के प्रकार और मोटे-मोटे इलाके के साथ, बिना नाम या नंबर के; पन्नों पर लिखे शब्द या आपकी डायरी कभी नहीं। इसे कभी भी “मैं” पन्ने पर, शेयर्ड फ़ोन पर निजता में बंद कर सकती हैं।',
       usage_days: 'इस्तेमाल के दिन: {n} · {b} के रूप में जाएगा', usage_l_search: 'खोज', usage_l_diary: 'डायरी और दर्ज करना', usage_l_checkin: 'महीने का चेक-इन',
       today_done: 'हो गया',
       visit_h: 'आज जाँच के लिए जा रही हैं?', visit_p: 'अपनी रिपोर्ट दिखाएँ: आपकी लिखी बातें और आपके सवाल, एक स्क्रीन पर।', visit_b: 'मेरी रिपोर्ट खोलें', visit_not: 'आज नहीं',
@@ -1012,7 +1012,7 @@
     Object.keys(HOOKS).forEach((h) => { if (typeof m[h] === 'function') HOOKS[h].push({ fn: m[h], mod: m.id }); });
     if (m.css) CSS.push('/* ' + m.id + ' */\n' + m.css);
   }
-  const safe = (fn, fallback) => { try { return fn(); } catch (e) { if (window.console) console.error('[saathi]', e); try { phCatch(e); } catch (x) { /* before PostHog's block has run */ } return fallback; } };
+  const safe = (fn, fallback) => { try { return fn(); } catch (e) { if (window.console) console.error('[saathi]', e); try { fbCatch(e); } catch (x) { /* before the Firebase block has run */ } return fallback; } };
   const runHook = (name, args, join) => { const out = HOOKS[name].map((h) => safe(() => h.fn.apply(null, args), '')); return join ? out.filter(Boolean).join('') : out; };
   /* Events for the petal garden (mods/joy.js): what kind of thing she did, never what she wrote. Only her own taps fire them.
      quiet: true on screens about loss, abortion, violence or emergencies, where nothing should celebrate. */
@@ -1204,6 +1204,7 @@
     /* A link ending in #demo opens the sample women (for investor demos), wherever she is. */
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
+    fbSync(r);   /* Version 39.79: Firebase on or off for this screen, and its name once it changes */
     if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; }   /* a sheet never follows her to another screen */
     if (r.indexOf('report') !== 0) mem.rpFirst = null;   /* Version 39.1: a card's question leads only the report it opened */
     const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced, chain: tour.chain } : null; renderFab(null); clearTour();
@@ -1230,7 +1231,7 @@
     else if (map[r]) map[r](v);
     else if (r.startsWith('topic-') && SECTIONS.indexOf(r.slice(6)) >= 0) renderTopic(v, r.slice(6));
     else { const mr = modRoute(r); if (mr) { const ok = safe(() => { mr.fn(v); return true; }, false); if (!ok) v.innerHTML = '<div class="card warn" role="alert" data-crash="1"><h3>' + esc(t('err_screen_h')) + '</h3><p>' + esc(t('err_screen_p')) + '</p><div class="grid2"><button type="button" class="btn sm primary" data-go="home">' + esc(t('home')) + '</button><button type="button" class="btn sm" data-go="care">' + esc(t('care')) + '</button></div></div>'; wire(v); } else renderHome(v); }
-    if (r !== curRoute) { usageMark(usageKey(r)); phView(r); }
+    if (r !== curRoute) usageMark(usageKey(r));
     runHook('afterRender', [v, r, api]);
     safe(() => axNames(v)); safe(() => medRow(v, r)); safe(() => guideRow(v, r)); safe(() => helpTabsOn(v, r)); safe(() => sayButtons(v)); safe(() => jumpRow(v));
     safe(() => dropTriageLinks(v));
@@ -2235,9 +2236,10 @@
      server's side is server/SERVER_SPEC.md. With no server address (window.SAKHI_CONFIG.api) a stand-in server runs on the phone
      and sends nothing: its code is always 123456, and the code screen says so. */
   const ACC_KEY = 'qura-sakhi-account-v1';
-  /* Version 39.60: a build with PostHog adds its line to the notice, and the version she agrees to says so ('.ph') */
-  const noticeItems = () => [1, 2, 5, 3, 4].concat(phAvail() ? [6] : []);
-  const noticeV = () => NOTICE_V + (phAvail() ? '.ph' : '');
+  /* Version 39.60: a build that can share how she uses Sakhi adds its line to the notice, and the version she agrees to says so:
+     '.fb' for Firebase Analytics since Version 39.79 (it was '.ph' for PostHog) */
+  const noticeItems = () => [1, 2, 5, 3, 4].concat(fbAvail() ? [6] : []);
+  const noticeV = () => NOTICE_V + (fbAvail() ? '.fb' : '');
   const NOTICE_V = '2026-10-23.2';   /* .2: the account also holds an email, and the first name and PIN code are needed; 23 Oct: where the account is kept, for how long, and who sends the code (Version 32); 23 Oct .2: what goes to Qura when she asks Qura to call her (Version 33) */
   /* The Grievance Officer's name and contact come with the build (SAKHI_GRIEVANCE); until Qura gives them the line is left out,
      never a placeholder (field-test audit 3.4) */
@@ -2366,83 +2368,91 @@
     const u = state.usage && state.usage.m === monthKey(today()) ? state.usage.n || {} : {}; const ks = USAGE_KEYS.filter((k) => u[k] > 0);
     return '<details class="usage-see"><summary>' + esc(t('usage_see')) + '</summary>' + (ks.length ? '<dl class="kv">' + ks.map((k) => '<dt>' + esc(usageName(k)) + '</dt><dd>' + esc(tf('usage_days', { n: u[k], b: usageBucket(u[k]) })) + '</dd>').join('') + '</dl>' : '<p class="small">' + esc(t('usage_none')) + '</p>') + '</details>';
   }
-  /* ---------- Version 39.60: how she uses Sakhi, through PostHog (events only, opt-in; MODULE_API section 103;
-     docs/activity-tracking-advice-2026-11-02.md, sections 15 to 17) ----------
-     Only in a build with a PostHog key (CFG.ph, from SAKHI_PH) and only after she turns "Share how I use Sakhi" on (Me >
-     Privacy). posthog-js loads from the app's own files (vendor/posthog.js, the bundle that never fetches code) and sends:
-     a neutral screen name and the time on the screen before, taps as their place in the page (never their words), rage and
-     dead taps, and errors without their message. Never recordings, heatmaps, surveys or identify(), so PostHog has no name,
-     number, account or diary. Private screens, the lock, discreet mode, a shared phone and a sample woman send nothing, and
-     every event passes phKeep's allowlist. The Flip5 test (3 Nov) showed why: recordings carried her answers in attributes. */
-  const PH_PRIVATE = /^(loss|ttc-loss|pregtest-(options|abortion|after)|intimate|meno-intimate|contra-(ec|missed)|post-mood|teen|tell|backup|account|me-data|me-health|pic-check)/;
-  const PH_EXACT = ['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'library', 'report', 'report-show',
+  /* ---------- Version 39.79: how she uses Sakhi, through Firebase Analytics (events only; MODULE_API section 122) ----------
+     Mohit, 7 Nov: "i want to move to firebase". It replaces Version 39.60's PostHog, with the same rules. Only in the Android app
+     built with google-services.json (the bridge's usageOk()): the page never talks to Google itself; it hands each event to the
+     app's Java (android/usage/firebase/.../Usage.java), which checks it again. On by default (Mohit, 3 Nov); off in Me stays off.
+     Firebase is switched on only while something may leave: never on a private screen, under the lock, in discreet mode, on a
+     shared phone, for a girl under 18 or a sample woman (then not even Firebase's own session events go). What goes: a neutral
+     screen name (Firebase counts the time on it), a tap as its place in the page and the neutral screen it opens, rage and dead
+     taps, and an error as its type and place. Never words, a plan's or condition's name, a number, a route or her diary. */
+  const FB_PRIVATE = /^(loss|ttc-loss|pregtest-(options|abortion|after)|intimate|meno-intimate|contra-(ec|missed)|post-mood|teen|tell|backup|account|me-data|me-health|pic-check)/;
+  /* a screen that names a condition or a plan keeps only its kind; a screen nobody listed is "other", never its route */
+  const FB_EXACT = ['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'library', 'report', 'report-show',
     'calm', 'plan', 'plan-start', 'plan-goal', 'plan-reveal', 'plan-checkin', 'plan-end', 'plan-progress', 'plan-plate', 'plan-body', 'plan-moves', 'plan-calm', 'plan-wind',
     'food', 'explain', 'docportal', 'lang', 'joy', 'joy-quiz', 'asha', 'asha-show', 'iron', 'journey', 'relief'];
-  /* a screen that names a condition or a plan keeps only its kind; a screen nobody listed is "other", never its route */
-  const PH_FAMILY = [[/-lesson$/, 'lesson'], [/^relief-/, 'relief'], [/^calm-/, 'calm'], [/^plan-/, 'plan'], [/^a-/, 'article'], [/^(topic|learn)-/, 'learn'],
+  const FB_FAMILY = [[/-lesson$/, 'lesson'], [/^relief-/, 'relief'], [/^calm-/, 'calm'], [/^plan-/, 'plan'], [/^a-/, 'article'], [/^(topic|learn)-/, 'learn'],
     [/^cond/, 'condition'], [/^pregtest/, 'pregnancy-test'], [/^(preg|pregnancy)/, 'pregnancy'], [/^post/, 'after-birth'], [/^(meno|midlife|mid-)/, 'midlife'],
     [/^ttc/, 'trying'], [/^periods/, 'periods'], [/^contra/, 'contraception'], [/^screen/, 'screening'], [/^selfcheck/, 'selfcheck'], [/^access-/, 'care-access'],
     [/^tools-/, 'tools'], [/^me-/, 'me'], [/^asha/, 'asha'], [/^journey/, 'journey'], [/^(joy|family|lang|docportal|explain|food|iron|fertile|pattern)/, null]];
-  const phScreen = (r) => { r = String(r || 'home'); if (PH_PRIVATE.test(r)) return null; if (PH_EXACT.indexOf(r) >= 0) return r; const f = PH_FAMILY.find((x) => x[0].test(r)); return f ? (f[1] || r.split('-')[0]) : 'other'; };
-  const PH_EVENTS = ['$pageview', '$pageleave', '$autocapture', '$rageclick', '$dead_click', '$exception'];
-  const PH_PROPS = ['token', 'distinct_id', '$device_id', '$session_id', '$window_id', '$pageview_id', '$insert_id', '$time', '$lib', '$lib_version', '$os', '$os_version',
-    '$browser', '$browser_version', '$device_type', '$device_model', '$screen_height', '$screen_width', '$viewport_height', '$viewport_width', '$event_type', '$ce_version',
-    '$elements_chain', '$process_person_profile', '$is_identified', '$exception_list', '$exception_types', '$exception_level'];
-  const PH_SITE = 'app.sakhi.invalid';
-  const phAvail = () => typeof CFG.ph === 'string' && /^phc_[A-Za-z0-9]{20,}$/.test(CFG.ph);
-  const phHost = () => (typeof CFG.phHost === 'string' && /^https:\/\/[a-z0-9.-]+$/i.test(CFG.phHost) ? CFG.phHost : 'https://eu.i.posthog.com');
-  const phIsOn = () => state.settings.ph !== false;   /* on by default (Mohit, 3 Nov); off only when she turns it off */
-  const phOn = () => phAvail() && phIsOn() && canSave() && !state.sample && !mem.teen && !state.settings.discreet && !state.settings.shared;
-  const phQuiet = () => !phOn() || !!mem.locked || !phScreen(route());   /* right now nothing may leave */
-  let phLoaded = 0; let phLast = ''; let phPrev = '';   /* 0 not loaded, 1 loading, 2 ready */
-  /* a tap's place in the page: tag and position only, even if a future posthog-js put words or attributes in the chain */
-  const phChain = (c) => String(c || '').split(';').map((x) => ((x.match(/^[a-z][a-z0-9-]*/) || [''])[0] + ((x.match(/nth-child="\d+"nth-of-type="\d+"/) || [''])[0] ? ':' + x.match(/nth-child="\d+"nth-of-type="\d+"/)[0] : ''))).join(';');
-  /* an error: its type and where in Sakhi's files, never its message (which can carry her words) */
-  const phErrors = (list) => (Array.isArray(list) ? list : []).map((x) => ({ type: String((x && x.type) || 'Error').slice(0, 60), mechanism: x && x.mechanism,
-    stacktrace: x && x.stacktrace ? { type: x.stacktrace.type, frames: (x.stacktrace.frames || []).slice(0, 30).map((f) => ({ filename: String(f.filename || '').split('/').pop().split('#')[0].split('?')[0], function: f.function, lineno: f.lineno, colno: f.colno, in_app: f.in_app, platform: f.platform })) } : undefined }));
-  function phKeep(e) {
-    if (!e || phQuiet() || PH_EVENTS.indexOf(e.event) < 0) return null;
-    const s = phScreen(route()); const p = e.properties || {}; const out = {};
-    Object.keys(p).forEach((k) => { if (PH_PROPS.indexOf(k) >= 0 || /^\$(prev_pageview|dead_click)_/.test(k)) out[k] = p[k]; });
-    if ('$elements_chain' in out) out.$elements_chain = phChain(out.$elements_chain);
-    if ('$exception_list' in out) out.$exception_list = phErrors(out.$exception_list);
-    if ('$prev_pageview_pathname' in out) out.$prev_pageview_pathname = '/' + (phPrev || s);
-    /* $geoip_disable: PostHog's server would otherwise look up her city, postal code and coordinates from the IP before dropping it
-       (seen on the Flip5, 3 Nov) */
-    Object.assign(out, { $current_url: 'https://' + PH_SITE + '/' + s, $pathname: '/' + s, $host: PH_SITE, $geoip_disable: true, screen: s, lang: state.lang, app: String(CFG.app || '') });
-    e.properties = out; delete e.$set; delete e.$set_once;
-    return e;
+  const fbScreen = (r) => { r = String(r || 'home'); if (FB_PRIVATE.test(r)) return null; if (FB_EXACT.indexOf(r) >= 0) return r; const f = FB_FAMILY.find((x) => x[0].test(r)); return f ? (f[1] || r.split('-')[0]) : 'other'; };
+  /* every screen name that can leave, so a value that isn't one never does */
+  const FB_NAMES = FB_EXACT.concat(FB_FAMILY.map((f) => f[1]).filter(Boolean), ['joy', 'family', 'lang', 'docportal', 'explain', 'food', 'iron', 'fertile', 'pattern', 'other']);
+  const FB_PARAMS = { screen_view: ['screen_name', 'screen_class'], tap: ['screen', 'place', 'to'], rage_tap: ['screen', 'place'], dead_tap: ['screen', 'place'], app_error: ['screen', 'type', 'file', 'line'] };
+  const FB_SCREENS = ['screen_name', 'screen_class', 'screen', 'to'];
+  const FB_VALUE = /^[A-Za-z0-9:<_.-]{1,100}$/;   /* no spaces, so never words (Usage.java checks the same) */
+  const fbBridge = () => { const B = window.SakhiAndroid; return B && B.usageOk && B.usage && B.usageEvent && B.usageForget ? B : null; };
+  /* no safe() in here: safe() reports its errors through fbCatch, which asks this */
+  const fbAvail = () => { const B = fbBridge(); try { return !!B && B.usageOk() === true; } catch (e) { return false; } };
+  const fbIsOn = () => state.settings.ph !== false;   /* her switch, under its Version 39.60 name so her choice carries over; on by default */
+  const fbOn = () => fbAvail() && fbIsOn() && canSave() && !state.sample && !mem.teen && !state.settings.discreet && !state.settings.shared;
+  /* the screen she sees: the address changes a moment before the new screen is drawn, and a tap still lands on the old one */
+  const fbHere = () => curRoute || route();
+  const fbQuiet = (r) => !fbOn() || !!mem.locked || !fbScreen(r === undefined ? fbHere() : r);   /* right now nothing may leave */
+  /* the allowlist: Sakhi's five events, their own parameters, screen names from the list, short values with no spaces */
+  function fbKeep(name, p) {
+    const keys = FB_PARAMS[name]; if (!keys || !p || typeof p !== 'object') return null; const out = {};
+    for (const k of Object.keys(p)) {
+      const v = p[k]; if (keys.indexOf(k) < 0) return null;
+      if (k === 'line') { if (!Number.isInteger(v) || v < 0 || v > 999999) return null; }
+      else if (typeof v !== 'string' || !FB_VALUE.test(v) || (FB_SCREENS.indexOf(k) >= 0 && FB_NAMES.indexOf(v) < 0)) return null;
+      out[k] = v;
+    }
+    return out[name === 'screen_view' ? 'screen_name' : 'screen'] ? out : null;
   }
-  function phView(r) {
-    const s = phScreen(r); if (phLoaded !== 2 || !s || phQuiet() || s === phLast) return;
-    phPrev = phLast; phLast = s; safe(() => window.posthog.capture('$pageview'));
+  let fbSent = null; let fbLast = ''; let fbTaps = [];
+  function fbSend(name, p, r) {
+    const B = fbBridge(); const k = fbQuiet(r) ? null : fbKeep(name, p); if (!B || !k) return;
+    try { B.usageEvent(name, JSON.stringify(k)); } catch (e) { /* the app's side failed: nothing more to do */ }
   }
-  /* Sakhi's own safe() catches a screen that fails; that error goes too (type and place only) */
-  function phCatch(err) { if (phLoaded === 2 && !phQuiet() && window.posthog && window.posthog.captureException) window.posthog.captureException(err); }
-  /* her anonymous id and session (PostHog's own on/off flag stays: it holds no id) */
-  const phForget = () => safe(() => Object.keys(localStorage).filter((k) => /^ph_/.test(k)).forEach((k) => localStorage.removeItem(k)));
-  function phStop() {
-    const P = window.posthog; phLast = ''; phPrev = '';
-    if (phLoaded === 2 && P) safe(() => { P.opt_out_capturing(); P.reset(); });
-    if (!phIsOn()) phForget();   /* off in Me: the anonymous id goes too, so turning it on again starts a new one */
+  /* on every render: Firebase on only while something may leave, and the screen she is on once it changes */
+  function fbSync(r) {
+    const on = !fbQuiet(r); const B = fbBridge();
+    if (B && on !== fbSent && fbAvail()) { fbSent = on; try { B.usage(on); } catch (e) { /* stays as it was */ } }
+    if (!on) { fbLast = ''; return; }
+    const s = fbScreen(r); if (s !== fbLast) { fbLast = s; fbSend('screen_view', { screen_name: s, screen_class: s }, r); }
   }
-  function phStart() {
-    if (!phOn()) { phStop(); return; }
-    const P = window.posthog;
-    if (phLoaded === 2 && P) { if (P.has_opted_out_capturing()) safe(() => P.opt_in_capturing({ captureEventName: false })); phView(route()); return; }
-    if (phLoaded) return; phLoaded = 1;
-    const sc = document.createElement('script'); sc.src = 'vendor/posthog.js';
-    sc.onload = () => { const ok = safe(() => { window.posthog.init(CFG.ph, {
-      api_host: phHost(), persistence: 'localStorage', opt_out_persistence_by_default: true, person_profiles: 'identified_only', ip: false, save_referrer: false, save_campaign_params: false,
-      mask_personal_data_properties: true, get_current_url: () => 'https://' + PH_SITE + '/' + (phScreen(route()) || 'private'),
-      capture_pageview: false, capture_pageleave: true, autocapture: true, rageclick: true, capture_dead_clicks: true, mask_all_text: true, mask_all_element_attributes: true,
-      capture_exceptions: true, capture_performance: false, enable_heatmaps: false, capture_heatmaps: false, disable_session_recording: true, disable_surveys: true,
-      disable_product_tours: true, disable_conversations: true, disable_web_experiments: true, disable_external_dependency_loading: true, advanced_disable_flags: true,
-      before_send: phKeep }); return true; }, false);
-      phLoaded = ok ? 2 : 0; if (ok) { if (window.posthog.has_opted_out_capturing()) safe(() => window.posthog.opt_in_capturing({ captureEventName: false })); phView(route()); } };
-    sc.onerror = () => { phLoaded = 0; sc.remove(); };
-    document.head.appendChild(sc);
+  /* off in Me, or all her data deleted: Firebase forgets the anonymous ID, so turning it on again starts a new one */
+  function fbForget() { const B = fbBridge(); fbLast = ''; if (B && fbAvail()) { try { B.usageForget(); } catch (e) { /* nothing kept to forget */ } } }
+  /* a tap's place: from the control she tapped up, each element's tag and its place among its siblings, never words or attributes */
+  const FB_TAP = 'button, a, input, select, textarea, label, summary, [role="button"], [data-go], [tabindex]';
+  const fbPlace = (el) => { const out = []; for (let x = el, i = 0; x && x.nodeType === 1 && x !== document.body && i < 5; x = x.parentElement, i++) out.push(x.tagName.toLowerCase().replace(/[^a-z0-9-]/g, '') + ':' + (x.parentElement ? Array.prototype.indexOf.call(x.parentElement.children, x) + 1 : 1)); return out.join('<').slice(0, 100); };
+  function fbTap(e) {
+    if (fbQuiet()) return; const t0 = e.target && (e.target.nodeType === 1 ? e.target : e.target.parentElement); if (!t0 || !t0.closest) return;
+    const el = t0.closest(FB_TAP) || t0; const here = fbHere(); const screen = fbScreen(here); const place = fbPlace(el);
+    const to = el.getAttribute('data-go') ? fbScreen(el.getAttribute('data-go')) : null;
+    fbSend('tap', Object.assign({ screen: screen, place: place }, to ? { to: to } : {}), here);
+    /* three taps in a second on one spot: a rage tap */
+    const now = Date.now(); fbTaps = fbTaps.filter((x) => now - x.t < 1000).concat([{ t: now, x: e.clientX, y: e.clientY }]);
+    if (fbTaps.length >= 3 && fbTaps.every((x) => Math.abs(x.x - e.clientX) < 30 && Math.abs(x.y - e.clientY) < 30)) { fbTaps = []; fbSend('rage_tap', { screen: screen, place: place }, here); }
+    /* a button or link after which nothing changed for 1.5 seconds: a dead tap */
+    if (!el.matches('button, a, [role="button"], [data-go]') || !window.MutationObserver) return;
+    let moved = false; const mark = () => { moved = true; }; const mo = new MutationObserver(mark);
+    mo.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true }); window.addEventListener('scroll', mark, { passive: true });
+    setTimeout(() => { mo.disconnect(); window.removeEventListener('scroll', mark); if (!moved && fbHere() === here) fbSend('dead_tap', { screen: screen, place: place }, here); }, 1500);
   }
+  /* Sakhi's own safe() catches a screen that fails; that error goes too: its type and the file and line, never its message */
+  function fbCatch(err) {
+    if (fbQuiet()) return; const m = String((err && err.stack) || '').match(/([A-Za-z0-9_.-]+\.js)(?:\?[^:\s)]*)?:(\d+):\d+/);
+    fbSend('app_error', Object.assign({ screen: fbScreen(fbHere()), type: String((err && err.name) || 'Error').replace(/[^A-Za-z]/g, '').slice(0, 40) || 'Error' }, m ? { file: m[1], line: +m[2] } : {}));
+  }
+  /* taps, and errors outside safe() too (as posthog-js caught them) */
+  const fbWire = () => {
+    if (!fbAvail()) return;
+    document.addEventListener('click', fbTap, { capture: true, passive: true });
+    window.addEventListener('error', (e) => fbCatch(e.error || { name: 'Error', stack: (e.filename || '') + ':' + (e.lineno || 0) + ':' + (e.colno || 0) }));
+    window.addEventListener('unhandledrejection', (e) => fbCatch(e.reason instanceof Error ? e.reason : { name: 'Rejection' }));
+  };
   /* While this save is on its way, acctSync leaves her pending details alone: sending them twice at once made the server
      record each update choice twice (seen on the live server, 20 Oct). */
   let saving = false;
@@ -4672,10 +4682,10 @@
     .split(/(?<=[.!?।])\s+/).map((x) => x.trim()).filter((x) => x && !/Qura/.test(x));
   function findArticle(key) { const i = key.indexOf('.'); const g = (CONTENT.groups || []).find((x) => x.group === key.slice(0, i)); const a = g && (g.articles || []).find((x) => x.id === key.slice(i + 1)); return a ? Object.assign({ group: g.group }, a) : null; }
   /* Version 39.78 (launch QA B7): the Learn article on her data says what the joining notice says, from the same lines, so the two can't
-     drift apart again (it still named Tell a person, servers holding her diary, a sharing switch and WhatsApp updates). The PostHog line
-     only in a build that has PostHog, as in the notice. content.json holds the same sentences, for search. */
+     drift apart again (it still named Tell a person, servers holding her diary, a sharing switch and WhatsApp updates). The usage line
+     (Firebase Analytics since Version 39.79) only in a build that has it, as in the notice. content.json holds the same sentences, for search. */
   const PRIVACY_ART = 'services.your-data-privacy';
-  const privacyBody = (a) => [(L(a, 'body') || [])[0]].filter(Boolean).concat([1, 2, 5].map((i) => t('ob_notice_' + i)), [t('notice_text')], [3, 4].map((i) => t('ob_notice_' + i)), phAvail() ? [t('ob_notice_6')] : []);
+  const privacyBody = (a) => [(L(a, 'body') || [])[0]].filter(Boolean).concat([1, 2, 5].map((i) => t('ob_notice_' + i)), [t('notice_text')], [3, 4].map((i) => t('ob_notice_' + i)), fbAvail() ? [t('ob_notice_6')] : []);
   function renderArticle(v, key) {
     const a = findArticle(key); if (!a) { v.innerHTML = '<div class="card"><p>' + esc(t('loading')) + '</p><button type="button" class="btn sm" data-go="learn">' + esc(t('learn')) + '</button></div>'; wire(v); return; }
     /* Version 39.77: by the article's group (Mohit's choices): Qura's areas get "How Qura can help" in his words and no free government
@@ -4964,7 +4974,7 @@
     state.settings[c.dataset.set] = c.checked;
     if (c.dataset.set === 'usage') { delete state.usage; delete state.usagePrev; if (c.checked) usageRoll(); }   /* off deletes the counts; on starts this month afresh */
     save(); render(); if (c.dataset.set === 'shared') sharedPoke();
-    phStart();   /* Version 39.60: her switch, discreet mode or a shared phone starts or stops PostHog at once */
+    if (c.dataset.set === 'ph' && !c.checked) fbForget();   /* Version 39.79: render() switched Firebase off; off in Me forgets its ID too */
   }));
   const disguised = () => { const B = window.SakhiAndroid; return !!(B && B.setDisguise && safe(() => B.isDisguised(), false)); };
   const hasReminders = () => { const B = window.SakhiAndroid; return !!(B && B.schedule); };
@@ -5048,8 +5058,8 @@
       (state.settings.pinHash && canBio() ? (state.settings.shared ? '<div class="item quiet" id="me-bio-off"><span class="body"><strong>' + esc(t('bio_sw')) + '</strong><span>' + esc(t('bio_sw_shared')) + '</span></span></div>' : meSw('bio', 'bio_sw', 'bio_sw_d')) : '') +
       (canDisguise ? '<label class="item"><span class="body"><strong>' + esc(t('disguise')) + '</strong><span>' + esc(t('disguise_d')) + '</span></span><input type="checkbox" id="me-disguise" ' + (disguised() ? 'checked' : '') + '></label>' : '') +
       '</div><p class="small">' + esc(t('pin_note')) + '</p>' +
-      (canSave() && !state.sample && !mem.teen && (usageAvail() || phAvail()) ? '<h2>' + esc(t('usage_sec')) + '</h2>' +
-        (phAvail() ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('ph_h')) + '</strong><span>' + esc(t('ph_d')) + '</span></span><input type="checkbox" data-set="ph" ' + (phIsOn() ? 'checked' : '') + '></label></div><p class="small">' + esc(t('ph_note')) + '</p>' : '') +
+      (canSave() && !state.sample && !mem.teen && (usageAvail() || fbAvail()) ? '<h2>' + esc(t('usage_sec')) + '</h2>' +
+        (fbAvail() ? '<div class="list"><label class="item"><span class="body"><strong>' + esc(t('ph_h')) + '</strong><span>' + esc(t('ph_d')) + '</span></span><input type="checkbox" data-set="ph" ' + (fbIsOn() ? 'checked' : '') + '></label></div><p class="small">' + esc(t('ph_note')) + '</p>' : '') +
         (usageAvail() ? '<div class="list">' + meSw('usage', 'usage_h', 'usage_d') + '</div>' + (state.settings.usage ? usageSeeHtml() : '') + '<p class="small">' + esc(t('usage_note')) + '</p>' : '') : '');
     wire(v); wireSettings(v);
     $('#me-lock', v).addEventListener('change', (e) => { e.target.checked = !!state.settings.pinHash; pinSheet(state.settings.pinHash ? 'off' : 'set'); });
@@ -5435,7 +5445,7 @@
     const lang = state.lang; try { localStorage.removeItem(KEY); } catch (e) { }
     const B = window.SakhiAndroid; if (B && B.schedule) safe(() => B.schedule('[]')); if (B && B.saveState) safe(() => B.saveState(''));
     if (acct.token) net('POST', 'session/logout', {}).catch(() => { }); acct = {}; saveAcct(); try { localStorage.removeItem(SU_KEY); } catch (e) { }
-    state = defaults(); state.lang = lang; mem = freshMem(); closeSheet(); toast(t('deleted')); location.hash = ''; render(); phStop(); phForget();   /* Version 39.60: her anonymous PostHog id goes too */
+    state = defaults(); state.lang = lang; mem = freshMem(); closeSheet(); toast(t('deleted')); location.hash = ''; render(); fbForget();   /* Version 39.79: Firebase's anonymous ID goes too (PostHog's did, Version 39.60) */
   }
   /* A 4-digit PIN for a shared phone. Stored as a short hash: enough to stop casual opening, not encryption. */
   const pinH = (pin) => { let h = 2166136261; const str = 'sakhi:' + pin; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16); };
@@ -5615,8 +5625,8 @@
   };
   window.Saathi = api;
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
-  /* Version 39.60: for the tests, what PostHog would be told (MODULE_API section 103) */
-  api.ph = { on: () => phOn(), ready: () => phLoaded === 2, screen: (r) => phScreen(r), keep: (e) => phKeep(e) };
+  /* Version 39.79: for the tests, what Firebase would be told (MODULE_API section 122) */
+  api.fb = { on: () => fbOn(), quiet: () => fbQuiet(), screen: (r) => fbScreen(r), keep: (n, p) => fbKeep(n, p), place: (el) => fbPlace(el), safe: (fn) => safe(fn) };
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),
     _testSignIn: (o) => { acct = Object.assign({ token: 'test', id: 'test', phone: '+919800000000', name: 'Test', pincode: '560001', activeOn: toISO(today()) }, o || {}); saveAcct(); },
@@ -5696,6 +5706,6 @@
     armShared();
     setInterval(() => { if (!document.hidden && shownDay && shownDay !== dayKey() && !sheetUp() && !mem.locked && ['home', 'diary', 'plan'].indexOf(route()) >= 0 && !mem.calEdit) render(); }, 60000);   /* Version 39.23: and at 4 am, her plan day */
     render();
-    acctSync(); window.addEventListener('online', acctSync); usageLater(); phStart();
+    acctSync(); window.addEventListener('online', acctSync); usageLater(); fbWire();
   };
 })();

@@ -6711,6 +6711,8 @@ plan), `daily.mjs` 6 (the feelings line in the card with her body today).
 
 ## 103. Version 39.60: "Share how I use Sakhi" through PostHog, events only
 
+**Superseded by section 122 (Version 39.79): the same switch and rules, through Firebase Analytics in the app's Java; PostHog is gone.**
+
 Mohit, 2 and 3 Nov: "my goal is to find what users like and spend time more on and then this will define our future roadmap", then
 "find me a ready to use free solution that fits my needs" and, after the Flip5 test, "yes proceed". The research, the test and the
 choices: `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17.
@@ -7922,3 +7924,76 @@ second agent. Then four reviewers tried to break the fixes (each finding checked
 Left as they were (the review): from 600 px wide the controls don't stick (as on d3112de); after-birth lines on the trainer for a mother
 whose baby is years old, or who left "I had a baby" (as on d3112de); the download page under `marketing/` (another session's) still names
 the four languages. The launch QA's polish items (its section C) and decisions (section D) are not part of this version.
+
+## 122. Version 39.79: the Gradle build, and "Share how I use Sakhi" through Firebase Analytics
+
+Mohit, 7 Nov: "instead of posthog i want to use firebase", then "i want to move to firebase", and "yes" to the downloads and the
+Firebase console. It supersedes section 103's PostHog: the same switch, the same rules, a different place the events go.
+
+**1. The build moves to Gradle.** `android/build-apk.sh` keeps its interface (the same variables, outputs, version floor, size ceiling
+and Play checks) and its first half (the web app into `build/assets`, the CSP). The second half runs `./gradlew` (Gradle 9.9.0, its
+download's sha256 pinned in `gradle/wrapper`; the Android Gradle plugin 9.5.1) on `build.gradle.kts`, which reads the manifest the
+script writes to `build/AndroidManifest.xml` (the same file without its `package` line: the namespace takes it) and writes to
+`build-gradle/`. Side by side with the old aapt2 build of the same commit: the same manifest content and permissions, the same key, all
+732 assets byte-identical and stored the same way. What had to be set for that: `android.builtInKotlin=false` (the plugin otherwise adds
+Kotlin's 2 MB library), `android.builder.sdkDownload=false` (it installed platform-tools on its own once), v2, v3 and v4 signing (as
+apksigner did, `.idsig` included), `ogg` and `woff2` uncompressed, and `layout.buildDirectory` set before `android { }`. A Play build
+signs with the upload key from the environment, with `--no-daemon` and `org.gradle.configuration-cache=false`, so the password stays in
+no running Gradle and no cache. `bundle-config.json` is gone; Gradle's bundle stores Google's list of already-compressed media unpacked
+(the moves' loops and pictures: 266 KB more once installed).
+
+**2. The one other way out is now Firebase, in the app's Java.** Section 24's rule stands: only core `net()` talks to Sakhi's server,
+and modules never touch the network. The one other way out (section 103) is now core's Firebase block, and the page itself never talks
+to Google: it hands each event to the Android app through the bridge (`usageOk()`, `usage(on)`, `usageEvent(name, json)`,
+`usageForget()`), and `android/usage/firebase/.../Usage.java` passes it to the Firebase Analytics SDK after checking it again. A build
+without `android/google-services.json` (from the Firebase console, not in git) compiles `android/usage/none` instead: no Firebase code,
+plugin or library, `usageOk()` false, so no switch, no notice line and nothing sent. `web/vendor/` (posthog-js), `SAKHI_PH` and
+PostHog's address in the CSP are gone; the page's `connect-src` is the accounts server alone.
+
+**What she sees.** The same "Share how I use Sakhi" switch in Me > Privacy (`ph_h`, `ph_note` as before; `ph_d` new), on by default, off
+in Me stays off: her choice keeps its key, `state.settings.ph`. The notice line `ob_notice_6` (and the Learn article on her data, and
+`content.json`) now names Google Firebase Analytics and says Google also sees her phone's type and rough area from the connection, never
+her exact place. The notice version she agrees to is `NOTICE_V + '.fb'` (it was `'.ph'`).
+
+**How it works (core, where section 103's block was).**
+- `fbAvail()`: the bridge says the build has Firebase (no `safe()` inside: `safe()` reports through `fbCatch`). `fbIsOn()`, `fbOn()`:
+  as `phIsOn()` and `phOn()` were (a saved diary, no sample woman, not teen browsing, not discreet, not a shared phone). `fbHere()`: the
+  screen she sees (`curRoute`): the address changes a moment before the new screen is drawn, and a tap still lands on the old one.
+  `fbQuiet(r)`: not on, the lock is up, or the screen is private.
+- `fbSync(r)`, first thing in every `render()`: `usage(true)` only while something may leave, `usage(false)` otherwise. **Off means
+  Firebase's own events stop too** (its session and engagement events), so a private screen, the lock, discreet mode or a shared phone
+  sends nothing at all. Then a `screen_view` when the neutral screen changes; Firebase adds the time spent on the screen before.
+- `fbScreen(r)`: section 103's `phScreen`, unchanged (`FB_PRIVATE`, `FB_EXACT`, `FB_FAMILY`; anything unlisted is `other`).
+- `fbKeep(name, p)`: only `screen_view` (`screen_name`, `screen_class`), `tap` (`screen`, `place`, `to`), `rage_tap` and `dead_tap`
+  (`screen`, `place`), `app_error` (`screen`, `type`, `file`, `line`); a parameter off the list drops the whole event; screen values must
+  be names from the lists (`FB_NAMES`); every value matches `FB_VALUE` (letters, digits and `:<_.-`, at most 100: no spaces, so no
+  words). `Usage.java` checks the same five names and values again and takes at most 25 parameters.
+- `fbTap` (one capture listener from `fbWire()` at start): a tap's place is each element's tag and its place among its siblings, from the
+  control up (`fbPlace`, at most 5 levels), and `to` is the neutral screen its `data-go` opens; three taps within a second on one spot
+  are a `rage_tap`; a button or link after which nothing changed for 1.5 seconds is a `dead_tap`.
+- `fbCatch(err)`: from `safe()`, and for errors and rejections thrown anywhere: the error's type, and the file and line of its first
+  `.js` frame, never its message.
+- `fbForget()`: off in Me, or all her data deleted: `usageForget()` (Firebase's `resetAnalyticsData`), so on again starts a new id.
+- `S.fb` for the tests: `on()`, `quiet()`, `screen(r)`, `keep(n, p)`, `place(el)`, `safe(fn)`.
+
+**The app's side.** `MainActivity` switches Firebase off in `onCreate`, before the page loads. The manifest keeps it off until the page
+says (`firebase_analytics_collection_enabled=false`), never collects the advertising ID or Android ID, denies ad storage, ad user data
+and ad personalisation by default and in every `setConsent` (`Usage.on`: analytics storage granted only while on), sends no automatic
+screen names, and removes the permissions Firebase brings for ads (`AD_ID`, `ACCESS_ADSERVICES_AD_ID`, `ACCESS_ADSERVICES_ATTRIBUTION`).
+Firebase's own components are all unexported. R8 shrinks the libraries (37 MB unshrunk; 30.8 MB with Firebase, under the 30 MiB
+ceiling) and renames nothing (`proguard-rules.pro`: `-dontobfuscate`, every `@JavascriptInterface` method kept).
+
+**What Google gets, besides Sakhi's events:** Firebase's automatic events while it is on (`first_open`, `session_start`,
+`user_engagement`, `app_update`, `os_update`), an app instance id that "off" forgets, the phone's model, Android and app versions and
+language, and the area from the connection's address. Never her name, number, account, diary or the words on a screen.
+
+**Its console.** Firebase project `qura-sakhi` (Spark, no cost), Android app `com.quranutrition.sakhi`, linked to Google Analytics
+property `qura-sakhi` (563097729) in the account "Default Account for Firebase". Event and user data are kept 14 months (Mohit, 7 Nov).
+The account's data-sharing settings and the property's granular location and device data were left as they are (Mohit, 7 Nov).
+
+Checked on the Flip5 (vc 138, 7 Nov): off with every consent denied at launch, on once the page allowed it (ad consents still denied),
+`first_open`, `session_start`, `screen_view` and `tap` uploaded (code 204) and shown in DebugView, with `non_personalized_ads` set.
+
+Tests: `node test/firebase.mjs` (57 checks, with a fake bridge that keeps every call; it fails when private screens are let through)
+replaces `test/posthog.mjs`; `test/play.mjs` section 6 (the Gradle build); `signup.mjs` (one script loader left), `launchfix.mjs` 7.4,
+`calm.mjs` 9 and `pictures.mjs` 14 read `build.gradle.kts` for what moved there.

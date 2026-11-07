@@ -5,7 +5,9 @@
 //   3 Back through OnBackInvokedCallback on Android 13+, onBackPressed on 10 to 12, one back() for both;
 //   4 the bundle: PLAY=1, never a demo name, signed with the upload key whose password never reaches a command line, sounds
 //     uncompressed, the size ceiling, one version count, and no bundle or key in git;
-//   5 the last bundle's APK (skipped when none was built): target 36, the back flag, stored sounds, the upload key.
+//   5 the last bundle's APK (skipped when none was built): target 36, the back flag, stored sounds, the upload key;
+//   6 the Gradle build (Version 39.79): pinned versions, no Kotlin library, no SDK downloads mid-build, the manifest, the
+//     prototype key's signatures, and R8 shrinking that renames nothing and keeps the page's bridge.
 // The reviewer's sign-in is checked with the server: server/test/api.test.mjs, 5.1a.
 // Usage: node test/play.mjs
 import fs from 'node:fs';
@@ -20,14 +22,16 @@ const results = [];
 const check = (name, cond, extra) => { results.push({ name, pass: !!cond }); if (!cond) console.log('FAIL', name, extra === undefined ? '' : JSON.stringify(extra).slice(0, 300)); };
 
 const sh = read('build-apk.sh'), mf = read('AndroidManifest.xml'), main = read('src/com/quranutrition/sakhi/MainActivity.java');
-const key = read('make-upload-key.sh'), cfg = JSON.parse(read('bundle-config.json'));
+const key = read('make-upload-key.sh');
+// Version 39.79: Gradle builds the app; build-apk.sh prepares the web app and runs it
+const gk = read('build.gradle.kts'), gp = read('gradle.properties'), gw = read('gradle/wrapper/gradle-wrapper.properties');
 const gi = fs.readFileSync(path.resolve(android, '../.gitignore'), 'utf8');
 
 /* ---------- 1. target SDK 36 ---------- */
-check('1 compiled against platform 36 with build-tools 36', /platforms\/android-36\/android\.jar/.test(sh) && /build-tools\/36\.0\.0/.test(sh) && !/android-34|35\.0\.0/.test(sh));
-const targets = sh.match(/--target-sdk-version \d+/g) || [];
-check('1 every link targets SDK 36 (the APK and the bundle)', targets.length === 2 && targets.every((x) => x === '--target-sdk-version 36'), targets);
-check('1 still Android 10 and up', (sh.match(/--min-sdk-version 29 /g) || []).length === 2 && /d8" --min-api 29 /.test(sh));
+check('1 compiled against platform 36 with build-tools 36', /platforms\/android-36\/android\.jar/.test(sh) && /build-tools\/36\.0\.0/.test(sh) && !/android-34|35\.0\.0/.test(sh) &&
+  /compileSdk = 36\b/.test(gk) && /buildToolsVersion = "36\.0\.0"/.test(gk));
+check('1 the app targets SDK 36 (one setting for the APK and the bundle)', /targetSdk = 36\b/.test(gk) && (gk.match(/targetSdk = \d+/g) || []).length === 1 && !/--target-sdk-version/.test(sh));
+check('1 still Android 10 and up', /minSdk = 29\b/.test(gk) && (gk.match(/minSdk = \d+/g) || []).length === 1);
 
 /* ---------- 2. edge to edge ---------- */
 const fit = (main.match(/private void fitBars\(\) \{[\s\S]*?\n    \}\n/) || [''])[0];
@@ -47,19 +51,25 @@ const back = (main.match(/private void back\(\) \{[\s\S]*?\n    \}\n/) || [''])[
 check('3 back() still asks the page first, then WebView history, then closes', /__sakhiBack/.test(back) && /r==='exit'\?2/.test(back) && /web\.canGoBack\(\)\) web\.goBack\(\); else finish\(\);/.test(back));
 
 /* ---------- 4. the bundle ---------- */
-const play = (sh.match(/if \[ "\$PLAY" = "1" \]; then\n  "\$BT\/aapt2" link --proto-format[\s\S]*?\n  exit 0\nfi\n/) || [''])[0];
-check('4 PLAY=1 builds a bundle and stops before the APK is signed or installed', play && sh.indexOf(play) < sh.indexOf('# 4. Package, align, sign') && /exit 0/.test(play) && !/adb/.test(play));
+const play = (sh.match(/if \[ "\$PLAY" = "1" \]; then\n  rm -rf "\$OUT\/bundle"[\s\S]*?\n  exit 0\nfi\n/) || [''])[0];
+check('4 PLAY=1 builds a bundle and stops before the APK is signed or installed', play && sh.indexOf(play) < sh.indexOf('# 4. The APK') && /exit 0/.test(play) && !/adb|assembleRelease/.test(play));
 check('4 never a demo build on Play', /if \[ "\$PLAY" = "1" \]; then\n  case "\$VERSION_NAME" in \*demo\*\) echo "A Play build is for real women/.test(sh));
-check('4 the base module: protobuf resources, the manifest and the dex where bundletool wants them', /mv build\/bundle\/base\/AndroidManifest\.xml build\/bundle\/base\/manifest\//.test(play) && /cp build\/dex\/classes\.dex build\/bundle\/base\/dex\//.test(play) &&
-  /build-bundle --modules=build\/bundle\/base\.zip --config=bundle-config\.json/.test(play));
-check('4 signed with the upload key, alias upload, never the prototype key', /jarsigner -keystore "\$UPLOAD_KS" -storepass:env SAKHI_UPLOAD_PASS/.test(play) && / upload >\/dev\/null/.test(play) && !/sakhi-prototype/.test(play) && /jar verified/.test(play));
-check('4 the upload password never on a command line (env or the keychain only)', !/pass:"?\$SAKHI_UPLOAD_PASS|storepass "\$SAKHI_UPLOAD_PASS|-w "\$SAKHI_UPLOAD_PASS" *$/m.test(sh) &&
-  /security find-generic-password -s "Qura Sakhi upload key" -a sakhi -w/.test(sh) && /-storepass:env SAKHI_UPLOAD_PASS -keypass:env SAKHI_UPLOAD_PASS/.test(key));
+check('4 Gradle makes the bundle (bundleRelease), with the version code and name from the script', /\n  gw --no-daemon -Psakhi\.signing=upload bundleRelease/.test(play) &&
+  /-Psakhi\.versionCode="\$VERSION_CODE" -Psakhi\.versionName="\$VERSION_NAME"/.test(sh) && /versionCode = prop\("sakhi\.versionCode"/.test(gk) && /versionName = prop\("sakhi\.versionName"/.test(gk));
+const upl = (gk.match(/create\("upload"\) \{[\s\S]*?\n        \}/) || [''])[0];
+check('4 signed with the upload key, alias upload, never the prototype key', /keyAlias = "upload"/.test(upl) && /"sakhi-upload\.keystore"/.test(upl) && !/prototype/.test(upl) &&
+  /signingConfigs\.getByName\(if \(findProperty\("sakhi\.signing"\) == "upload"\) "upload" else "proto"\)/.test(gk) && !/sakhi-prototype/.test(play) && /jar verified/.test(play));
+check('4 the upload password never on a command line or on disk (env or the keychain only)', !/pass:"?\$SAKHI_UPLOAD_PASS|storepass "\$SAKHI_UPLOAD_PASS|-w "\$SAKHI_UPLOAD_PASS" *$|injected\.signing/m.test(sh) &&
+  /security find-generic-password -s "Qura Sakhi upload key" -a sakhi -w/.test(sh) && /-storepass:env SAKHI_UPLOAD_PASS -keypass:env SAKHI_UPLOAD_PASS/.test(key) &&
+  /storePassword = System\.getenv\("SAKHI_UPLOAD_PASS"\)/.test(upl) && /keyPassword = System\.getenv\("SAKHI_UPLOAD_PASS"\)/.test(upl) &&
+  /^org\.gradle\.configuration-cache=false$/m.test(gp) && /--no-daemon/.test(play));
 check('4 the key script never makes a second key over the first, and keeps the password before the key', /\[ ! -f "\$KS" \] \|\|/.test(key) && key.indexOf('add-generic-password') < key.indexOf('keytool -genkeypair') && /delete-generic-password/.test(key));
-check('4 sounds stay uncompressed in the bundle, and the build checks it', JSON.stringify(cfg.compression.uncompressedGlob) === '["assets/**.ogg"]' && /\$2 != "Stored"/.test(play));
+check('4 sounds stay uncompressed in the bundle and the APK, and the build checks both', /noCompress \+= listOf\("ogg"/.test(gk) && /\$2 != "Stored"/.test(play) &&
+  (sh.match(/\$2 != "Stored"/g) || []).length === 2 && !fs.existsSync(path.join(android, 'bundle-config.json')));
 check('4 bundletool validates it, and the size ceiling applies', /bundletool" validate --bundle=build\/signed\.aab/.test(play.replace(/\$BUNDLETOOL/g, 'bundletool')) && /-gt \$\(\(MAX_APK_MB \* 1024 \* 1024\)\)/.test(play));
 check('4 one version count: the floor reads the last APK and the last bundle', /for LASTF in QuraSakhi-prototype\.apk build-play\/last\.apk; do/.test(sh));
-check('4 no bundle, key or Play output in git', /^android\/build-play\/$/m.test(gi) && /^\*\.aab$/m.test(gi) && /^\*\.keystore$/m.test(gi));
+check('4 no bundle, key, Play or Gradle output in git', /^android\/build-play\/$/m.test(gi) && /^\*\.aab$/m.test(gi) && /^\*\.keystore$/m.test(gi) &&
+  /^android\/build-gradle\/$/m.test(gi) && /^android\/\.gradle\/$/m.test(gi));
 
 /* ---------- 4b. the icon: Sakhi's logo (Mohit, 6 Nov), made by android/make-icons.py ---------- */
 const adaptive = read('res/mipmap-anydpi-v26/ic_launcher.xml');
@@ -86,6 +96,21 @@ else {
   const cert = aab && fs.existsSync(java) ? execFileSync(java, ['-printcert', '-jarfile', path.join(android, 'build-play', aab)], { encoding: 'utf8' }) : '';
   check('5 the newest bundle is signed by the upload key, not the prototype key', /Owner: CN=Qura Sakhi, O=Trinaya Wellness LLP, C=IN/.test(cert) && !/prototype/.test(cert), aab);
 }
+
+/* ---------- 6. the Gradle build (Version 39.79) ---------- */
+check('6 Gradle and its Android plugin at pinned versions, the download checked against its checksum', /gradle-9\.9\.0-bin\.zip/.test(gw) && /^distributionSha256Sum=[0-9a-f]{64}$/m.test(gw) &&
+  /id\("com\.android\.application"\) version "\d+\.\d+\.\d+"/.test(gk) && fs.existsSync(path.join(android, 'gradle/wrapper/gradle-wrapper.jar')));
+check("6 no Kotlin library in a Java app, and no SDK downloads in the middle of a build", /^android\.builtInKotlin=false$/m.test(gp) && /^android\.builder\.sdkDownload=false$/m.test(gp));
+check('6 the app is still com.quranutrition.sakhi: Gradle reads the manifest without its package line', /package="com\.quranutrition\.sakhi"/.test(mf) &&
+  /sed 's\/ package="com\\\.quranutrition\\\.sakhi"\/\/' AndroidManifest\.xml > build\/AndroidManifest\.xml/.test(sh) &&
+  /namespace = "com\.quranutrition\.sakhi"/.test(gk) && /applicationId = "com\.quranutrition\.sakhi"/.test(gk) && /manifest\.srcFile\("build\/AndroidManifest\.xml"\)/.test(gk) && /assets\.setSrcDirs\(listOf\("build\/assets"\)\)/.test(gk));
+const proto = (gk.match(/create\("proto"\) \{[\s\S]*?\n        \}/) || [''])[0];
+check("6 testers' APKs keep the prototype key, signed as before (v2, v3 and v4)", /file\("sakhi-prototype\.keystore"\)/.test(proto) && /keyAlias = "sakhi"/.test(proto) &&
+  /enableV2Signing = true; enableV3Signing = true; enableV4Signing = true/.test(proto) && /\ngw -Psakhi\.signing=proto assembleRelease\n/.test(sh));
+const pro = read('proguard-rules.pro');
+check("6 R8 shrinks the libraries but renames nothing, and keeps every method the page calls", /isMinifyEnabled = true/.test(gk) && /proguardFiles\(getDefaultProguardFile\("proguard-android-optimize\.txt"\), "proguard-rules\.pro"\)/.test(gk) &&
+  /^-dontobfuscate$/m.test(pro) && /-keepclassmembers class \* \{\s*@android\.webkit\.JavascriptInterface <methods>;\s*\}/.test(pro) && /^-keepattributes JavascriptInterface/m.test(pro) && !/isShrinkResources = true/.test(gk));
+check('6 the build folder is set before anything uses it (R8 found its rules in build/, which build-apk.sh empties)', gk.indexOf('layout.buildDirectory.set(file("build-gradle"))') > 0 && gk.indexOf('layout.buildDirectory.set') < gk.indexOf('android {'));
 
 const failed = results.filter((r) => !r.pass);
 console.log(results.length - failed.length + '/' + results.length + ' Play checks passed');

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quranutrition.sakhi">
 
     <!-- Only for the accounts server (signup); the app itself runs offline from bundled files, fonts included. -->
@@ -16,6 +17,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Version 39.79: Firebase Analytics' libraries ask for the advertising ID; Sakhi never uses it, so the permission comes out. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <!-- ... and the Privacy Sandbox's ad permissions too: no ad attribution, no ad ID -->
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
 
     <queries>
         <intent>
@@ -35,6 +41,17 @@
         android:allowBackup="false"
         android:enableOnBackInvokedCallback="true"
         android:supportsRtl="false">
+        <!-- Version 39.79, "Share how I use Sakhi" through Firebase Analytics (only in a build with google-services.json): off
+             until the page turns it on; never the advertising ID or Android ID, no ad storage, ad data or ad personalisation, and
+             no automatic screen names (the page sends its own neutral ones). -->
+        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_ssaid_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_ad_storage" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_ad_user_data" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_ad_personalization_signals" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_analytics_storage" android:value="false" />
+        <meta-data android:name="google_analytics_automatic_screen_reporting_enabled" android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false"

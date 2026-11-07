@@ -4,6 +4,11 @@ node_modules/
 android/build/
 # the Play bundles and the last one's check APK (PLAY=1 ./build-apk.sh)
 android/build-play/
+# Gradle's own folders (Version 39.79): its build output and its cache for this project
+android/build-gradle/
+android/.gradle/
+# Firebase's settings for the app (Version 39.79): from the Firebase console, kept out of git like the keys
+android/google-services.json
 *.aab
 *.apk
 *.idsig

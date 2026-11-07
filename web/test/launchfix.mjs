@@ -9,7 +9,8 @@
 // - 5 "Ring on time?" when a medicine reminder is booked (her tap or her plan) or her plan starts with one, on a phone that would ring
 //   late (Android 14+ new installs); never for her other reminders (Version 39.27); one Android "Allow" at a time;
 // - 6 joining's next step, and the page she signed up on, open at their top;
-// - 7 the Learn article on her data says what the joining notice says (no Tell a person, no diary on servers), PostHog only with PostHog;
+// - 7 the Learn article on her data says what the joining notice says (no Tell a person, no diary on servers), the usage line only in a
+//   build that has it (Firebase Analytics since Version 39.79);
 // - 8 the language tile names only Hindi and English;
 // - 9 no page errors.
 // Usage: node test/launchfix.mjs [web dir]
@@ -320,14 +321,14 @@ try {
   const a = await open({ hash: '#a-services.your-data-privacy' });
   const v = await view(a.page); const S = (k) => a.page.evaluate((x) => window.Saathi.t(x), k);
   check('7.1 the article says what the joining notice says, word for word', [await S('ob_notice_1'), await S('ob_notice_2'), await S('ob_notice_5'), await S('notice_text'), await S('ob_notice_3'), await S('ob_notice_4')].every((x) => v.indexOf(x) >= 0), v.slice(0, 700));
-  check('7.2 ... and none of the old claims: Tell a person, her diary on servers, a sharing switch, WhatsApp updates, auto-deletion, a Settings page, an officer with no contact; no PostHog line in a build without it', !/Tell a person|servers run by|switch sharing|update is ready|not opened for a long time|Settings|Grievance Officer|PostHog/.test(v), v);
+  check('7.2 ... and none of the old claims: Tell a person, her diary on servers, a sharing switch, WhatsApp updates, auto-deletion, a Settings page, an officer with no contact; no usage line in a build without it', !/Tell a person|servers run by|switch sharing|update is ready|not opened for a long time|Settings|Grievance Officer|PostHog|Firebase/.test(v), v);
   await done(a);
   const h = await open({ hash: '#a-services.your-data-privacy', seed: { lang: 'hi' } });
   const vh = await view(h.page);
   check('7.3 in Hindi too', vh.indexOf(await h.page.evaluate(() => window.Saathi.t('ob_notice_1'))) >= 0 && !/किसी को बताएँ|सर्वर पर जो यह ऐप/.test(vh), vh.slice(0, 400));
   await done(h);
-  const p = await open({ hash: '#a-services.your-data-privacy', config: { ph: 'phc_TestKeyForSakhiOnly0123456789', phHost: 'https://eu.i.posthog.com' } });
-  check('7.4 with PostHog in the build, its line too, as in the notice', (await view(p.page)).indexOf(await p.page.evaluate(() => window.Saathi.t('ob_notice_6'))) >= 0);
+  const p = await open({ hash: '#a-services.your-data-privacy', init: 'Object.assign(window.SakhiAndroid, { usageOk(){ return true; }, usage(){}, usageEvent(){}, usageForget(){} });' });
+  check('7.4 with Firebase Analytics in the build (Version 39.79), its line too, as in the notice', (await view(p.page)).indexOf(await p.page.evaluate(() => window.Saathi.t('ob_notice_6'))) >= 0);
   await p.ctx.close();
   const gv = await open({ hash: '#a-services.your-data-privacy', config: { grievance: 'Asha Rao, Trinaya Wellness LLP, Jaipur, help@example.com' } });
   check('7.6 with a Grievance Officer in the build, the article names them, as the notice does', /Asha Rao, Trinaya Wellness LLP, Jaipur, help@example\.com/.test(await view(gv.page)));

@@ -351,7 +351,8 @@ const careSearch = (page, q) => page.evaluate(async (q) => { const i = document.
   const size = (d) => fs.readdirSync(d, { withFileTypes: true }).reduce((n, e) => n + (e.isDirectory() ? size(path.join(d, e.name)) : fs.statSync(path.join(d, e.name)).size), 0);
   check('9 all the sounds together under 20 MB (the APK stays under its 30 MB ceiling)', size(SND) < 20 * 1024 * 1024, size(SND));
   const sh = fs.readFileSync(path.join(root, '..', 'android', 'build-apk.sh'), 'utf8'), mf = fs.readFileSync(path.join(root, '..', 'android', 'AndroidManifest.xml'), 'utf8');
-  check('9 the APK bundles them, uncompressed, and plays them in a media service', /sounds\/voice/.test(sh) && /sounds\/timelines\.js/.test(sh) && / -0 ogg /.test(sh) &&
+  const gk = fs.readFileSync(path.join(root, '..', 'android', 'build.gradle.kts'), 'utf8');   // Version 39.79: Gradle packs the app
+  check('9 the APK bundles them, uncompressed, and plays them in a media service', /sounds\/voice/.test(sh) && /sounds\/timelines\.js/.test(sh) && /noCompress \+= listOf\("ogg"/.test(gk) &&
     /SoundService" android:exported="false" android:foregroundServiceType="mediaPlayback"/.test(mf) && /FOREGROUND_SERVICE_MEDIA_PLAYBACK/.test(mf));
   check('9 the page loads the timelines before the modules', /<script src="sounds\/timelines\.js"[^>]*><\/script>[\s\S]*<script src="mods\/calm\.js"/.test(fs.readFileSync(path.join(root, 'index.html'), 'utf8')));
 }

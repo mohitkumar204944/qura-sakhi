@@ -12,7 +12,11 @@ Install on a phone
 Rebuild after changing the prototype
   ./build-apk.sh      (takes the files from "../web", builds, signs, installs if a phone is plugged in)
   Needs the Android SDK in /opt/homebrew/share/android-commandlinetools: platform android-36 and build-tools 36.0.0
-  (added 29 Oct 2026 for Google Play's target SDK 36), and Java 21 (/opt/homebrew/opt/openjdk@21).
+  (added 29 Oct 2026 for Google Play's target SDK 36), platform-tools, and Java 21 (/opt/homebrew/opt/openjdk@21).
+  Since Version 39.79 (7 Nov 2026) Gradle builds the app: build-apk.sh checks the settings, puts the web app in build/assets
+  and the manifest Gradle reads in build/, then runs ./gradlew. The first build downloads Gradle 9.9.0 (its checksum is pinned
+  in gradle/wrapper) and the Android Gradle plugin into ~/.gradle; later builds use that copy. Gradle never downloads SDK
+  parts mid-build (gradle.properties): install them with sdkmanager, which asks for the licences.
   VERSION_CODE is required and may not go below the last APK built; testers' phones refuse a lower one, and uninstalling
   deletes the diary. Testers get a build without "demo" in its name (it needs SAKHI_API, the server's https address):
     SAKHI_API=https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-api VERSION_CODE=34 VERSION_NAME=0.32-test ./build-apk.sh
@@ -25,6 +29,9 @@ Rebuild after changing the prototype
 What is in here
   AndroidManifest.xml     App id com.quranutrition.sakhi, name "Qura Sakhi"; internet (signup), notifications, restart,
                           exact alarms and vibrate permissions.
+  build.gradle.kts        The Gradle build: SDK 36, Android 10 and up, the signing keys, sounds and fonts stored uncompressed,
+                          nothing renamed (the page calls Java by name). settings.gradle.kts, gradle.properties, gradlew and
+                          gradle/ go with it. Its output is in build-gradle/ (not in git).
   src/.../MainActivity.java  Full-screen WebView; phone back button; links open in Chrome; photo picker for
                           the reports vault; read-aloud through Android text-to-speech; copy to clipboard.
   web/android-shim.js     Connects the web app's read-aloud and copy buttons to the Android side.
@@ -34,6 +41,15 @@ What is in here
   sakhi-prototype.keystore  Prototype signing key (password: android), not in git. Back it up off this Mac: every update for
                           testers must be signed with it, and the build stops if it is missing (NEW_KEYSTORE=1 only for a
                           first build that no phone has).
+
+"Share how I use Sakhi": Firebase Analytics (Version 39.79, 7 Nov 2026)
+  The build has it when google-services.json is in this folder (not in git). Get it from the Firebase console: project "Qura Sakhi"
+  (qura-sakhi, in Mohit's Google account), Project settings, the Android app com.quranutrition.sakhi, "google-services.json".
+  Without the file the app has no Firebase code (usage/none) and no switch; with it, usage/firebase/.../Usage.java takes the page's
+  events. Analytics: property qura-sakhi (563097729) in "Default Account for Firebase"; data kept 14 months.
+  To watch events from a phone on adb: adb shell setprop debug.firebase.analytics.app com.quranutrition.sakhi, then the console's
+  DebugView; switch it off again with adb shell setprop debug.firebase.analytics.app .none.
+  Firebase made the APK 37 MB, so R8 shrinks the libraries (proguard-rules.pro: nothing renamed, the page's bridge kept): 30.8 MB.
 
 Google Play (29 Oct 2026)
   The app targets SDK 36 (Android 16), Play's floor for new apps and updates since 31 Aug 2026. On Android 15 and later the
@@ -48,11 +64,13 @@ Google Play (29 Oct 2026)
   - It refuses a demo name. The name decides the tools, as for an APK: "-pilot" has every tool on, while a plain release name
     (e.g. 0.40) holds back the triage tools and fertile days until clinical sign-off (MODULE_API sections 34 and 35).
   - It checks the bundle with bundletool and the APK a phone would get from it: target SDK 36, the sounds stored
-    uncompressed (bundle-config.json; Android plays them straight from the app), and the 30 MB ceiling.
+    uncompressed (noCompress in build.gradle.kts; Android plays them straight from the app), and the 30 MB ceiling. Gradle
+    also stores Google's list of already-compressed media (the moves' loops and pictures) unpacked in the bundle.
   - Version codes are one count for APKs and bundles: the floor check reads both QuraSakhi-prototype.apk and build-play/last.apk.
 
   The upload key: sakhi-upload.keystore (made 29 Oct 2026 by make-upload-key.sh, alias "upload", not in git). Its password is
-  only in this Mac's keychain, as "Qura Sakhi upload key"; the build reads it from there (or from SAKHI_UPLOAD_PASS).
+  only in this Mac's keychain, as "Qura Sakhi upload key"; the build reads it from there (or from SAKHI_UPLOAD_PASS) and hands
+  it to Gradle in the environment, with no Gradle left running afterwards and nothing kept in Gradle's cache.
   - Back up the file and the password off this Mac (a password manager).
   - Play App Signing keeps the key that signs what phones install. The upload key only proves an upload is ours: if it is
     lost, Play Console can reset it (it takes a few days).

@@ -80,6 +80,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         // The recent-apps list shows Sakhi's icon, never a picture of her diary (Android 13+). Screenshots stay hers to take: no
         // FLAG_SECURE (the doctors' review, answer 5, Version 39.72).
         if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(false);
+        // Version 39.79: Firebase Analytics stays off until the page says something may leave (Usage.java; app.js, fbSync)
+        Usage.on(getApplicationContext(), false);
         tts = new TextToSpeech(this, this);
         // Version 39.78 (launch QA B3): a notification's screen only on a real new launch. When Android recreates Sakhi (killed in the
         // background, or the font size or language changed) getIntent() is still the old notification's, and reopening its screen
@@ -503,6 +505,16 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         }
         @JavascriptInterface
         public void clipStop() { runOnUiThread(new Runnable() { @Override public void run() { stopClip(); } }); }
+
+        /* Version 39.79: "Share how I use Sakhi" through Firebase Analytics, only in a build with google-services.json (Usage.java) */
+        @JavascriptInterface
+        public boolean usageOk() { return Usage.AVAILABLE; }
+        @JavascriptInterface
+        public void usage(boolean on) { Usage.on(getApplicationContext(), on); }
+        @JavascriptInterface
+        public void usageEvent(String name, String json) { Usage.event(getApplicationContext(), name, json); }
+        @JavascriptInterface
+        public void usageForget() { Usage.forget(getApplicationContext()); }
 
         @JavascriptInterface
         public boolean copy(String text) {

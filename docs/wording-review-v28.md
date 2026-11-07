@@ -3743,3 +3743,22 @@ UI and privacy words only; no health line is new or changed.
 - **Pregnancy's pelvic floor trainer:** the belly gap check, its note and the after-birth "See a doctor if" list are no longer shown in a
   pregnancy (they stay after a birth); nothing replaces them. Its figure sits up with her bump instead of lying on her back (a picture,
   for the physiotherapist's glance).
+
+### 19.79 Version 39.79: "Share how I use Sakhi" through Firebase Analytics (MODULE_API section 122)
+
+Privacy words only; no health line is new or changed. PostHog in Europe is replaced by Google Firebase Analytics, and the lines now say
+what Google also sees.
+
+- **The switch's description (`ph_d`):** "Which screens you open, how long you stay and where you tap, never the words on them. It goes
+  to Google Firebase Analytics with no name, number or account, and never your diary. Google also sees your phone's type and your rough
+  area from the internet connection, never your exact place." (आप कौन-से पन्ने खोलती हैं, कितनी देर रुकती हैं और कहाँ टैप करती हैं,
+  उन पर लिखे शब्द कभी नहीं। यह Google Firebase Analytics के पास जाता है, बिना नाम, नंबर या अकाउंट के, और आपकी डायरी कभी नहीं। Google
+  को आपके फ़ोन का प्रकार और इंटरनेट कनेक्शन से आपका मोटा-मोटा इलाका भी दिखता है, आपकी सही जगह कभी नहीं।) It said "It goes to PostHog
+  in Europe".
+- **The data notice's line (`ob_notice_6`), also in Learn's "Your data in this app" and its search text:** "How you use Sakhi: which
+  screens you open, how long you stay and where you tap goes to Google Firebase Analytics, with your phone's type and rough area, no
+  name or number, never the words on screens or your diary. Turn it off any time on the Me page, in Privacy on a shared phone." (आप
+  Sakhi कैसे इस्तेमाल करती हैं: … यह Google Firebase Analytics के पास जाता है, आपके फ़ोन के प्रकार और मोटे-मोटे इलाके के साथ, बिना
+  नाम या नंबर के; …) The rest of the line is as before.
+- **The switch's note (`ph_note`)** is unchanged: private pages, discreet mode and a shared phone send nothing; on unless she turns it
+  off; off stops it at once and forgets the anonymous ID.

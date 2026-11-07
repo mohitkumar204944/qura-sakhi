@@ -529,15 +529,17 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - a default is never taken as her answer, and a new plan carries her answers (the summary shows them, with Change);
     - "From day 4: a regular bedtime" until she answers on day 4.
     Contract: MODULE_API section 109; wording: section 19.66 (one UI line; one default for the doctor).
-  - `node test/posthog.mjs` (Version 39.60, "Share how I use Sakhi" through PostHog, events only; Mohit, 3 Nov: "my goal is to find
-    what users like and spend time more on", then "yes proceed"; research, the Flip5 test and the choices:
-    `docs/activity-tracking-advice-2026-11-02.md`, sections 15 to 17):
-    - only in a build with `SAKHI_PH`, on by default (Mohit, 3 Nov), off in Me > Privacy stays off, and a line in the data notice;
-      posthog-js from `web/vendor/` (never fetched);
-    - screen views with neutral names and the time on each, taps as their place in the page, rage and dead taps, errors without
-      their message; never recordings, heatmaps, surveys, flags or identify(), whatever PostHog's own settings say;
-    - private screens, the lock, discreet mode, a shared phone and a sample woman send nothing; off forgets the anonymous id.
-    The test's fake PostHog switches everything on from its side. Contract: MODULE_API section 103 (UI words only).
+  - `node test/firebase.mjs` (Version 39.79, "Share how I use Sakhi" through Firebase Analytics, events only; Mohit, 7 Nov: "i want
+    to move to firebase"; it replaces Version 39.60's PostHog and `test/posthog.mjs`, with the same rules; the goal stays Mohit's 3 Nov
+    "find what users like and spend time more on", `docs/activity-tracking-advice-2026-11-02.md`):
+    - only in an APK built with `android/google-services.json`; the page never talks to Google: the bridge (`usage`, `usageEvent`,
+      `usageForget`) hands events to `android/usage/firebase/.../Usage.java`, which checks them again;
+    - on by default, off in Me > Privacy stays off (`state.settings.ph`), and a line in the data notice (notice version `.fb`);
+    - screen views with neutral names (Firebase adds the time on each), taps as their place in the page, rage and dead taps, errors
+      without their message;
+    - private screens, the lock, discreet mode, a shared phone and a sample woman switch Firebase off altogether; off forgets the id;
+    - no ad ID, Android ID, ad consents or automatic screens (the manifest), and the ad permissions removed.
+    The test's fake bridge keeps every call. Contract: MODULE_API section 122 (privacy words only).
   - `node test/retire.mjs` (Version 39.68, the doctors' feature review, part 1; Mohit, 5 Nov: "go"; the record and the answers:
     `docs/feature-review-2026-11-05.md`): what Dr. Megha and the gynaecologist removed is gone however she reaches it (core
     `RETIRED`, `RETIRED_TILES`, `S.retired`; links dropped by `dropTriageLinks`), and what they kept stays:
@@ -685,12 +687,15 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - A version name without "demo" refuses to build unless `SAKHI_API` is https.
   - Add `SAKHI_PRIVACY=https://www.quranutrition.com/sakhi/privacy` once that page is live: the "Privacy policy" link in About and
     privacy (Version 39.76; Play wants it in the app). https only; without it there is no link. `PLAY=1` builds hide the coordinator tool.
-  - Add `SAKHI_PH=phc_...` (PostHog's EU project key) for "Share how I use Sakhi" (Version 39.60). Without it the APK has no
-    PostHog code and the CSP is as before. Its PostHog project: EU region, "Discard client IP data" on.
+  - "Share how I use Sakhi" (Version 39.79) is in the build when `android/google-services.json` is there (Firebase project
+    `qura-sakhi`, Mohit's account; the file is not in git). Without it the APK has no Firebase code and no switch. `SAKHI_PH`
+    (PostHog, Version 39.60) is gone.
   - It installs and opens the app on the phone if one is on adb. To build without installing, run it with adb off the path:
     `PATH=/usr/bin:/bin:/usr/sbin:/sbin` before the command.
   - Copy the result to `../QuraSakhi-prototype.apk`.
   - It targets SDK 36 (Play's floor since 31 Aug 2026) with platform 36 and build-tools 36.0.0.
+  - Since Version 39.79 it builds with Gradle (`./gradlew`, Gradle 9.9.0 and the Android plugin 9.5.1, downloaded once into
+    `~/.gradle`; `build.gradle.kts`, output in `android/build-gradle/`). R8 shrinks the libraries and renames nothing.
   - `SAKHI_WEB=<dir>` builds from another copy of the web app, e.g. the last commit's while `web/` holds unfinished work
     (`android/build-apk.sh` says how). Check `git status web/` before a build: a build copies whatever is there.
 - Google Play: `PLAY=1` with the same variables builds `android/build-play/QuraSakhi-<name>-<code>.aab` (not in git) and
@@ -722,7 +727,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   size. When a wanted feature passes the 30 MB guard, raise `MAX_APK_MB` on purpose and say so in the build summary.
 - The diary never leaves the phone.
   - Only core `net()` talks to a server, and only with allowlisted fields (MODULE_API section 24). The one other way out
-    (Mohit, 3 Nov) is core's PostHog block: events only, anonymous, on by default with her off switch, through its allowlist (MODULE_API section 103).
+    (Mohit, 3 Nov; Firebase since 7 Nov) is core's usage block, through the app's Java to Firebase Analytics: events only, anonymous,
+    on by default with her off switch, through its allowlist, off altogether on private screens (MODULE_API section 122).
     Never recordings.
   - Modules never touch the network.
   - Never send health data to Meta.

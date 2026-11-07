@@ -1,7 +1,9 @@
 #!/bin/sh
-# Builds QuraSakhi-prototype.apk from "../web" with the plain Android SDK tools (no Gradle, no Android Studio).
+# Builds QuraSakhi-prototype.apk from "../web": this script puts the web app in build/assets, then Gradle (./gradlew, the
+# version pinned in gradle/wrapper; build.gradle.kts) makes and signs the app in build-gradle/ (Version 39.79).
 # With PLAY=1 it builds the Android App Bundle for Google Play instead (see "Google Play" in README.txt).
-# Needs: Android SDK platform android-36 + build-tools 36.0.0, and a JDK (Java 17+); PLAY=1 also needs bundletool.
+# Needs: Android SDK platform android-36 + build-tools 36.0.0, and a JDK (Java 17+); PLAY=1 also needs bundletool, for its checks.
+# Gradle and its Android plugin are downloaded once, on the first build, into ~/.gradle.
 set -e
 cd "$(dirname "$0")"
 SDK="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}"
@@ -33,13 +35,12 @@ SAKHI_GRIEVANCE="${SAKHI_GRIEVANCE:-}"
 # Version 39.76: the full privacy policy's web address, for the link in Me, About and privacy (Play wants it in the app as well
 # as in the listing), e.g. SAKHI_PRIVACY="https://www.quranutrition.com/sakhi/privacy". https only; without it the link is left out.
 SAKHI_PRIVACY="${SAKHI_PRIVACY:-}"
-# Version 39.60: PostHog's project key (Project API key, phc_..., EU region) for "Share how I use Sakhi" (MODULE_API section 103).
-# Left empty, the build has no PostHog code, no switch, and the CSP lets the page reach only the accounts server.
-SAKHI_PH="${SAKHI_PH:-}"
-case "$SAKHI_PH" in
-  ""|phc_[A-Za-z0-9]*) ;;
-  *) echo "SAKHI_PH must be PostHog's project key, starting phc_."; exit 1 ;;
-esac
+# Version 39.79: "Share how I use Sakhi" goes through Firebase Analytics, in the app's Java (MODULE_API section 122), when
+# google-services.json from the Firebase console is in this folder. Without it the app has no Firebase code and no switch. The page
+# itself reaches only the accounts server either way. PostHog (Version 39.60, SAKHI_PH) is gone.
+if [ -n "$SAKHI_PH" ]; then echo "Note: SAKHI_PH is no longer used: usage goes through Firebase (google-services.json, README.txt)."; fi
+if [ -f google-services.json ]; then echo "Firebase Analytics: in this build (google-services.json)."
+else echo "Note: no google-services.json, so this build has no Firebase and no \"Share how I use Sakhi\" switch (README.txt)."; fi
 case "$SAKHI_HELP_WA" in
   ""|91[6-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
   *) echo "SAKHI_HELP_WA must be 91 followed by a 10-digit mobile number, e.g. 919876543210."; exit 1 ;;
@@ -83,7 +84,7 @@ for LASTF in QuraSakhi-prototype.apk build-play/last.apk; do
   if [ -n "$LAST" ] && [ "$VERSION_CODE" -lt "$LAST" ]; then echo "VERSION_CODE $VERSION_CODE is below the last build ($LAST, $LASTF): phones with $LAST won't take it."; exit 1; fi
 done
 
-rm -rf build && mkdir -p build/assets/www/mods build/classes build/dex build/gen
+rm -rf build && mkdir -p build/assets/www/mods
 
 # 1. The web app, plus the Android bridge, the server address and the Learn library as scripts (WebView cannot fetch file:// URLs).
 cp "$WEB/app.js" "$WEB/art.js" "$WEB/app.css" build/assets/www/
@@ -103,8 +104,6 @@ fi
 # the bundled fonts and their licences: the app never fetches fonts from Google
 mkdir -p build/assets/www/fonts && cp "$WEB"/fonts/*.woff2 "$WEB"/fonts/fonts.css "$WEB"/fonts/OFL-*.txt build/assets/www/fonts/
 cp web/android-shim.js build/assets/www/
-# Version 39.60: posthog-js (the bundle that never loads code) only in a build with a PostHog key
-if [ -n "$SAKHI_PH" ]; then mkdir -p build/assets/www/vendor && cp "$WEB"/vendor/posthog.js "$WEB"/vendor/POSTHOG-LICENSE build/assets/www/vendor/; fi
 # Care near me: the PIN codes and health facilities made by web/tools/care-data.mjs from data.gov.in (not in git; see
 # docs/care-near-me-data-2026-10-22.md). Without them the app explains what the live list will show.
 CARE=""
@@ -122,16 +121,15 @@ if ls "$WEB"/audio/megha-welcome-*.mp3 >/dev/null 2>&1; then
   AUDIO="$(cd "$WEB/audio" && ls megha-welcome-*.mp3 | sed 's/\.mp3$//' | paste -sd, -)"
   echo "Dr. Megha's welcome bundled: $AUDIO"
 fi
-python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "$SAKHI_PH" "${PLAY:-}" "$SAKHI_PRIVACY" <<'PY'
+python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "${PLAY:-}" "$SAKHI_PRIVACY" <<'PY'
 import sys, os, json, re, hashlib, base64
 from urllib.parse import urlsplit
-web, out, api, ver, wa, care, grv, audio, ph = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9]
-play, priv = sys.argv[10], sys.argv[11]   # Version 39.76: a Play build (no coordinator tools), the privacy policy's address
+web, out, api, ver, wa, care, grv, audio = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]
+play, priv = sys.argv[9], sys.argv[10]   # Version 39.76: a Play build (no coordinator tools), the privacy policy's address
 if priv and not priv.startswith('https://'): sys.exit('SAKHI_PRIVACY must be an https address: ' + priv)
-PH_HOSTS = ['https://eu.i.posthog.com']   # Version 39.60: events only; the app never asks PostHog for settings (advanced_disable_flags)
 c = json.load(open(os.path.join(web, 'content.json'), encoding='utf-8'))
 open(os.path.join(out, 'content.js'), 'w', encoding='utf-8').write('window.SAKHI_CONTENT = ' + json.dumps(c, ensure_ascii=False, separators=(',', ':')) + ';\n')
-open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'ph': ph, 'phHost': PH_HOSTS[0]} if ph else {}), **({'store': 'play'} if play == '1' else {}), **({'privacy': priv} if priv else {})), ensure_ascii=False) + ';\n')
+open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'store': 'play'} if play == '1' else {}), **({'privacy': priv} if priv else {})), ensure_ascii=False) + ';\n')
 html = open(os.path.join(web, 'index.html'), encoding='utf-8').read()
 html = html.replace('<script src="app.js"', '<script src="android-shim.js"></script>\n<script src="config.js"></script>\n<script src="content.js" charset="utf-8"></script>\n<script src="app.js"', 1)
 # Content-Security-Policy (audit fix 28): only the app's own files run, and the only server the page can reach is the
@@ -140,7 +138,6 @@ inline = re.findall(r'<script(?: id="[^"]*")?>(.*?)</script>', html, re.S)
 assert len(inline) == 2, 'index.html should have exactly two inline scripts; update the CSP step in build-apk.sh'
 hashes = ' '.join("'sha256-" + base64.b64encode(hashlib.sha256(x.encode('utf-8')).digest()).decode() + "'" for x in inline)
 origin = (lambda u: u.scheme + '://' + u.netloc)(urlsplit(api)) if api else "'none'"
-if ph: origin = ' '.join(([origin] if api else []) + PH_HOSTS)   # Version 39.60: PostHog's EU addresses, only with a key
 csp = ("default-src 'none'; script-src 'self' file: " + hashes + "; style-src 'self' file: 'unsafe-inline'; font-src 'self' file:; "
        "img-src 'self' file: data: blob:; media-src 'self' file: data: blob:; connect-src " + origin + "; base-uri 'none'; form-action 'none'; object-src 'none'")
 html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="' + csp + '">', 1)
@@ -148,38 +145,32 @@ assert 'Content-Security-Policy' in html
 open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(html)
 PY
 
-# 2. Resources and manifest.
-"$BT/aapt2" compile --dir res -o build/res.zip
-"$BT/aapt2" link -o build/base.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets --java build/gen -0 ogg \
-  --min-sdk-version 29 --target-sdk-version 36 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
+# 2. The manifest Gradle reads: AndroidManifest.xml without its package line (Gradle takes the app's name from the namespace
+# in build.gradle.kts, the same com.quranutrition.sakhi).
+sed 's/ package="com\.quranutrition\.sakhi"//' AndroidManifest.xml > build/AndroidManifest.xml
+if grep -q 'package="' build/AndroidManifest.xml; then echo "AndroidManifest.xml's package line didn't come out (build-apk.sh, step 2)."; exit 1; fi
 
-# 3. Java -> dex.
-javac -nowarn -Xlint:-options -source 8 -target 8 -bootclasspath "$JAR" -d build/classes \
-  build/gen/com/quranutrition/sakhi/R.java $(find src -name "*.java")
-"$BT/d8" --min-api 29 --lib "$JAR" --output build/dex $(find build/classes -name '*.class')
+# 3. Gradle: resources, Java, dex, then the signed APK, or the signed bundle for Play, in build-gradle/outputs. The version
+# code and name come from here; the sounds stay uncompressed (noCompress in build.gradle.kts), so Android plays them straight
+# from the app.
+export ANDROID_HOME="$SDK"
+OUT=build-gradle/outputs
+gw() { ./gradlew --console=plain --quiet --warning-mode=summary -Psakhi.versionCode="$VERSION_CODE" -Psakhi.versionName="$VERSION_NAME" "$@"; }
 
-# 4 for Play (PLAY=1): the same app as an Android App Bundle. The resources are linked again in bundletool's protobuf format,
-# laid out as the "base" module, bundled (bundle-config.json keeps the sounds uncompressed, as -0 ogg does for the APK, so
-# Android plays them straight from the app), signed with the upload key, then checked: bundletool's own validation, and
-# the APK a phone would get, for its target SDK, its stored sounds and the size ceiling.
+# 4 for Play (PLAY=1): the bundle, signed with the upload key (its password from the environment, never the command line),
+# then checked: its signature, bundletool's own validation, and the APK a phone would get, for its target SDK, its stored
+# sounds and the size ceiling.
 if [ "$PLAY" = "1" ]; then
-  "$BT/aapt2" link --proto-format -o build/proto.apk -I "$JAR" --manifest AndroidManifest.xml -A build/assets -0 ogg \
-    --min-sdk-version 29 --target-sdk-version 36 --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" build/res.zip
-  mkdir -p build/bundle/base/manifest build/bundle/base/dex
-  (cd build/bundle/base && unzip -q ../../proto.apk)
-  mv build/bundle/base/AndroidManifest.xml build/bundle/base/manifest/
-  cp build/dex/classes.dex build/bundle/base/dex/
-  (cd build/bundle/base && zip -q -r -D ../base.zip .)
-  java -jar "$BUNDLETOOL" build-bundle --modules=build/bundle/base.zip --config=bundle-config.json --output=build/unsigned.aab
-  jarsigner -keystore "$UPLOAD_KS" -storepass:env SAKHI_UPLOAD_PASS -sigalg SHA256withRSA -digestalg SHA-256 \
-    -signedjar build/signed.aab build/unsigned.aab upload >/dev/null
+  rm -rf "$OUT/bundle"
+  gw --no-daemon -Psakhi.signing=upload bundleRelease   # no Gradle left running afterwards with the password in its memory
+  cp "$OUT/bundle/release/QuraSakhi-release.aab" build/signed.aab
   jarsigner -verify build/signed.aab | grep -q "jar verified" || { echo "The bundle's upload signature didn't verify."; exit 1; }
   java -jar "$BUNDLETOOL" validate --bundle=build/signed.aab >/dev/null
   java -jar "$BUNDLETOOL" build-apks --bundle=build/signed.aab --output=build/check.apks --mode=universal   # only looked at, never installed
   (cd build && unzip -q -o check.apks universal.apk)
   "$BT/aapt2" dump badging build/universal.apk | grep -q "targetSdkVersion:'36'" || { echo "The bundle doesn't target SDK 36."; exit 1; }
   if unzip -v build/universal.apk 'assets/www/sounds/*' | awk '$NF ~ /\.ogg$/ && $2 != "Stored"' | grep -q .; then
-    echo "Some sounds are compressed in the bundle: Android can't play those from the app (bundle-config.json)."; exit 1
+    echo "Some sounds are compressed in the bundle: Android can't play those from the app (noCompress, build.gradle.kts)."; exit 1
   fi
   APK_BYTES=$(wc -c < build/universal.apk | tr -d ' ')
   if [ "$APK_BYTES" -gt $((MAX_APK_MB * 1024 * 1024)) ]; then
@@ -192,17 +183,19 @@ if [ "$PLAY" = "1" ]; then
   exit 0
 fi
 
-# 4. Package, align, sign (prototype debug key, made once and kept next to this script).
-cp build/base.apk build/unaligned.apk
-(cd build/dex && zip -q ../unaligned.apk classes.dex)
-"$BT/zipalign" -p -f 4 build/unaligned.apk build/aligned.apk
+# 4. The APK, signed with the prototype key (made once and kept next to this script), then checked.
 if [ ! -f sakhi-prototype.keystore ]; then   # only with NEW_KEYSTORE=1 (checked above)
   keytool -genkeypair -keystore sakhi-prototype.keystore -storepass android -keypass android -alias sakhi \
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Qura Sakhi prototype, O=Trinaya Wellness LLP, C=IN" >/dev/null 2>&1
 fi
-"$BT/apksigner" sign --ks sakhi-prototype.keystore --ks-pass pass:android --key-pass pass:android --ks-key-alias sakhi \
-  --out build/signed.apk build/aligned.apk
+rm -rf "$OUT/apk"
+gw -Psakhi.signing=proto assembleRelease
+cp "$OUT/apk/release/QuraSakhi-release.apk" build/signed.apk
+[ -f "$OUT/apk/release/QuraSakhi-release.apk.idsig" ] && cp "$OUT/apk/release/QuraSakhi-release.apk.idsig" build/signed.apk.idsig   # for adb's fast install
 "$BT/apksigner" verify build/signed.apk
+if unzip -v build/signed.apk 'assets/www/sounds/*' | awk '$NF ~ /\.ogg$/ && $2 != "Stored"' | grep -q .; then
+  echo "Some sounds are compressed in the APK: Android can't play those from the app (noCompress, build.gradle.kts)."; exit 1
+fi
 # The ceiling is checked before the new APK replaces the last good one, so that one (and its version code, which the floor
 # check above reads) survives a build that is too big.
 APK_BYTES=$(wc -c < build/signed.apk | tr -d ' ')
