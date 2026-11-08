@@ -380,5 +380,43 @@
     return wrap('0 0 100 100', s, 'sakhi ' + pose, o.label);
   }
 
-  S.art = { food: food, hasFood: hasFood, sign: sign, produce: produce, produceKey: (w) => (WEEK[Math.round(w)] || ['sprout'])[0], flower: flower, flowers: FLOWERS, flowerName: flowerName, spot: spot, hueOf: hueOf, badge: badge, sakhi: sakhi, looks: LOOKS.length };
+  /* ---------- Version 39.84 (L6, docs/teach-and-show-advice-2026-11-08.md; MODULE_API section 127): the cycle in pictures ----------
+     Flat teaching drawings of the womb, its tubes and the ovaries, seen from the front (never a body seen through), in the art
+     tokens, so they follow light and dark. The caller gives the label in her language: the Learn library's own sentence.
+       build   the lining builds up after a period         egg     an egg leaves an ovary
+       after   the lining full, the egg gone              period  the lining comes away as a period
+       pmos    many small follicles that started and paused  long    a long cycle: follicles still growing, no egg yet */
+  const BODY_KEYS = ['build', 'egg', 'after', 'period', 'pmos', 'long'];
+  const UT = 'M88 44C88 30 102 24 120 24S152 30 152 44C152 64 144 82 133 96L130 112C129 118 125 122 120 122S111 118 110 112L107 96C96 82 88 64 88 44Z';
+  const CAV = 'M101 46C109 51 131 51 139 46C135 62 128 76 123 87L120 96L117 87C112 76 105 62 101 46Z';
+  const drop = (x, y, r) => '<path d="M' + x + ' ' + (y - r * 1.7) + 'C' + (x + r * 0.5) + ' ' + (y - r * 0.7) + ' ' + (x + r) + ' ' + (y - r * 0.2) + ' ' + (x + r) + ' ' + (y + r * 0.35) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x - r) + ' ' + (y + r * 0.35) + 'C' + (x - r) + ' ' + (y - r * 0.2) + ' ' + (x - r * 0.5) + ' ' + (y - r * 0.7) + ' ' + x + ' ' + (y - r * 1.7) + 'Z"' + fill('red') + '/>';
+  const fingers = (x, y, dir) => [[-6, -5], [-8, 1], [-6, 6]].map((p) => '<path d="M' + x + ' ' + y + 'l' + (p[0] * dir) + ' ' + p[1] + '"' + line('pink-2', 2.4) + '/>').join('');
+  const foll = (x, y, r) => '<circle cx="' + x + '" cy="' + y + '" r="' + r + '"' + fill('cream') + '/><circle cx="' + x + '" cy="' + y + '" r="' + r + '"' + line('tan-2', 1.2) + '/>';
+  function bodyPic(key, label) {
+    const k = BODY_KEYS.indexOf(key) >= 0 ? key : 'build';
+    const big = k === 'pmos'; const rx = big ? 19 : 16, ry = big ? 13 : 11;
+    const lin = { build: 4, egg: 6, after: 9, period: 5, pmos: 5, long: 5 }[k];
+    let s = '';
+    /* the tubes, their fingers and the ovaries */
+    s += '<path d="M90 44C76 36 62 30 52 36"' + line('pink-2', 4) + '/><path d="M150 44C164 36 178 30 188 36"' + line('pink-2', 4) + '/>';
+    s += fingers(50, 37, 1) + fingers(190, 37, -1);
+    [46, 194].forEach((cx) => { s += '<ellipse cx="' + cx + '" cy="58" rx="' + rx + '" ry="' + ry + '"' + fill('tan') + '/><ellipse cx="' + cx + '" cy="58" rx="' + rx + '" ry="' + ry + '"' + line('tan-2', 1.5) + '/>'; });
+    if (k === 'pmos') [46, 194].forEach((cx) => { for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2; s += foll((cx + Math.cos(a) * (rx - 5.5)).toFixed(1), (58 + Math.sin(a) * (ry - 4.6)).toFixed(1), 2.6); } });
+    else if (k === 'long') s += foll(40, 56, 3) + foll(50, 61, 4) + foll(188, 55, 4.5) + foll(199, 61, 3.2) + foll(193, 52, 2.6);
+    else if (k === 'build') s += foll(41, 57, 2.6) + foll(51, 60, 3.2) + foll(191, 57, 5.4);
+    else if (k === 'egg') s += foll(41, 57, 2.6) + '<circle cx="196" cy="54" r="5"' + line('tan-2', 1.4) + '/><path d="M193 50C189 45 185 42 180 41"' + line('yellow-2', 1.6, 'stroke-dasharray:2 3') + '/>' +
+      '<circle cx="176" cy="40" r="9"' + fill('yellow', 'opacity:.35') + '/><circle cx="176" cy="40" r="4.6"' + fill('yellow') + '/><circle cx="176" cy="40" r="4.6"' + line('yellow-2', 1.2) + '/>';
+    else if (k === 'after') s += foll(41, 57, 2.6) + '<circle cx="195" cy="57" r="5.4"' + fill('yellow-2') + '/><circle cx="160" cy="40" r="2.6"' + fill('yellow', 'opacity:.55') + '/>';
+    else s += foll(42, 58, 2.6) + foll(196, 58, 2.6);
+    /* the womb: its wall, the lining (thick before a period), the cavity, and the way out */
+    s += '<path d="' + UT + '"' + fill('pink', 'opacity:.55') + '/><path d="' + UT + '"' + line('pink-2', 2) + '/>';
+    s += '<path d="' + CAV + '"' + fill('plum', k === 'period' ? 'opacity:.55' : 'opacity:.85') + '/>';
+    const f = (1 - lin / 26).toFixed(3);
+    s += '<path d="' + CAV + '" transform="translate(120 60) scale(' + f + ') translate(-120 -60)"' + fill('cream') + '/>';
+    s += '<path d="M120 122V137"' + line('pink-2', 5) + '/>';
+    if (k === 'period') s += '<ellipse cx="117" cy="80" rx="3" ry="2"' + fill('red') + '/><ellipse cx="124" cy="72" rx="2.4" ry="1.6"' + fill('red') + '/>' + drop(114, 143, 3.4) + drop(126, 146, 2.6);
+    return wrap('0 0 240 152', s, 'body ' + k, label);
+  }
+
+  S.art = { body: bodyPic, bodyKeys: BODY_KEYS, food: food, hasFood: hasFood, sign: sign, produce: produce, produceKey: (w) => (WEEK[Math.round(w)] || ['sprout'])[0], flower: flower, flowers: FLOWERS, flowerName: flowerName, spot: spot, hueOf: hueOf, badge: badge, sakhi: sakhi, looks: LOOKS.length };
 })(window.Saathi);

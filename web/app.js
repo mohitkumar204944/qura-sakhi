@@ -251,7 +251,7 @@
       prev_day: 'Previous day', next_day: 'Next day',
       qa_h: 'Your questions', qa_ph: 'Ask anything: late period, safed pani…', qa_ph_d: 'Search', also_asked: 'Also asked', full_guide: 'Read the full guide', listen_b: 'Listen',
       voice_b: 'Speak your question', voice_prompt: 'Say your question', voice_none: 'Voice typing is not available on this phone. Please type instead.',
-      day_h: 'How are you today?', noted_today: 'Noted for today', noted_pat: '{s} noted · {w}', noted_day: 'Noted', what_helps: 'What helps', all_articles: 'All articles', all_articles_d: '{n} short reads in Hindi and English',
+      day_h: 'How are you today?', noted_today: 'Noted for today', noted_pat: '{s} noted · {w}', bn_h: 'Your body now', bn_go: 'What’s happening in your body?', bn_usual: 'What’s usual', bn_yours: 'From your diary', bn_last: 'Last cycle around this day you noted: {l}', bn_steps: 'How a cycle works', bn_more: 'As your diary grows, Sakhi can show where you are in your cycle.', in_short: 'In short', rv_line: 'Checked by doctors · {m}', noted_day: 'Noted', what_helps: 'What helps', all_articles: 'All articles', all_articles_d: '{n} short reads in Hindi and English',
       d_nausea: 'Nausea', d_back: 'Back pain', d_heartburn: 'Heartburn', d_swell: 'Swelling', d_breast: 'Breast pain', d_hotflush: 'Hot flushes', d_joint: 'Joint pain',
       qa_late: 'Period late?', qa_pain: 'Period pain', qa_disch: 'White discharge', qa_heavy: 'Heavy bleeding', qa_pmos: 'PCOD / PMOS', qa_irreg: 'Irregular periods',
       qa_ptest: 'Pregnancy test', qa_ready: 'Getting ready', qa_fertile: 'Fertile days', qa_pmosbaby: 'PMOS and a baby', qa_ttcdoc: 'When to see a doctor', qa_partner: 'His test',
@@ -521,7 +521,7 @@
       prev_day: 'पिछला दिन', next_day: 'अगला दिन',
       qa_h: 'आपके सवाल', qa_ph: 'कुछ भी पूछें: पीरियड देर से, सफ़ेद पानी…', qa_ph_d: 'खोजें', also_asked: 'ये भी पूछा गया', full_guide: 'पूरी गाइड पढ़ें', listen_b: 'सुनें',
       voice_b: 'बोलकर पूछें', voice_prompt: 'अपना सवाल बोलें', voice_none: 'इस फ़ोन पर बोलकर लिखना उपलब्ध नहीं है। कृपया टाइप करें।',
-      day_h: 'आज कैसा लग रहा है?', noted_today: 'आज के लिए दर्ज', noted_pat: '{s} दर्ज · {w}', noted_day: 'दर्ज हो गया', what_helps: 'क्या मदद करेगा', all_articles: 'सभी लेख', all_articles_d: '{n} छोटे लेख, हिंदी और अंग्रेज़ी में',
+      day_h: 'आज कैसा लग रहा है?', noted_today: 'आज के लिए दर्ज', noted_pat: '{s} दर्ज · {w}', bn_h: 'आपका शरीर अभी', bn_go: 'आपके शरीर में अभी क्या हो रहा है?', bn_usual: 'आम तौर पर क्या होता है', bn_yours: 'आपकी डायरी से', bn_last: 'पिछले चक्र में इसी दिन के आसपास आपने नोट किया: {l}', bn_steps: 'चक्र कैसे चलता है', bn_more: 'जैसे-जैसे आपकी डायरी बढ़ेगी, Sakhi दिखा पाएगी कि आप अपने चक्र में कहाँ हैं।', in_short: 'संक्षेप में', rv_line: 'डॉक्टरों ने जाँचा · {m}', noted_day: 'दर्ज हो गया', what_helps: 'क्या मदद करेगा', all_articles: 'सभी लेख', all_articles_d: '{n} छोटे लेख, हिंदी और अंग्रेज़ी में',
       d_nausea: 'जी मिचलाना', d_back: 'कमर दर्द', d_heartburn: 'सीने में जलन', d_swell: 'सूजन', d_breast: 'स्तन में दर्द', d_hotflush: 'गर्मी के झोंके', d_joint: 'जोड़ों में दर्द',
       qa_late: 'पीरियड देर से?', qa_pain: 'पीरियड का दर्द', qa_disch: 'सफ़ेद पानी', qa_heavy: 'ज़्यादा ब्लीडिंग', qa_pmos: 'PCOD / PMOS', qa_irreg: 'अनियमित पीरियड',
       qa_ptest: 'प्रेग्नेंसी टेस्ट', qa_ready: 'तैयारी कैसे करें', qa_fertile: 'fertile दिन', qa_pmosbaby: 'PMOS और बच्चा', qa_ttcdoc: 'डॉक्टर कब दिखाएँ', qa_partner: 'पति की जाँच',
@@ -974,6 +974,9 @@
   const toastAct = (msg, actions) => { toast.at = Date.now(); const r = $('#toast-root'); r.innerHTML = '<div class="toast act" role="status"><span>' + esc(msg) + '</span>' + actions.map((a, i) => '<button type="button" data-ta="' + i + '">' + esc(a.label) + '</button>').join('') + '</div>'; r.querySelectorAll('[data-ta]').forEach((b) => b.addEventListener('click', () => { clearTimeout(toast.tm); r.innerHTML = ''; actions[+b.dataset.ta].fn(); })); clearTimeout(toast.tm); toast.tm = setTimeout(() => { r.innerHTML = ''; }, 6000); };
   const fmtD = (d, opts) => { try { return new Intl.DateTimeFormat(langMeta(state.lang).locale || 'en-IN', opts || { day: 'numeric', month: 'short' }).format(d); } catch (e) { return toISO(d); } };
   const fmtRange = (a, b) => (a.getMonth() === b.getMonth() ? fmtD(a, { day: 'numeric' }) + '–' + fmtD(b) : fmtD(a) + ' – ' + fmtD(b));
+  /* Version 39.86 (the presentation audit, P2): the same range as HTML, each date kept on one line ("26 Nov – 2 Dec" never breaks
+     inside "2 Dec"); the words are fmtRange's */
+  const rangeHtml = (a, b) => fmtRange(a, b).split(/( – |–)/).map((x, i) => (i % 2 ? esc(x) : '<span class="nw">' + esc(x) + '</span>')).join('');
 
   /* ---------- module registry ---------- */
   /* Each care area is a module in mods/<id>.js that calls Saathi.register({...}). See MODULE_API.md. */
@@ -998,7 +1001,7 @@
     if (mem.teen || (age != null && age < 18)) l = ['teen'].concat(l.filter((x) => x !== 'teen'));   /* review PLACES-09: teen mode too */
     if (state.stage === 'app' && lossWeeks()) l = ['loss'].concat(l.filter((x) => ['contra', 'ttc', 'pregtest'].indexOf(x) < 0));   /* after a loss: its own topic, nothing about trying or preventing */
     return l; };
-  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'library', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check'];
+  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'library', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check', 'body-now'];   /* body-now: Version 39.84 */
   function register(m) {
     if (!m || !m.id) return;
     MODS.push(m);
@@ -1222,7 +1225,7 @@
     if (teenPlay() && TEEN_PLAY.indexOf(r) < 0) { safe(() => location.replace('#help')); return; }   /* Version 39.81: under 18 in a Play build, Help only */
     if (state.stage === 'welcome') { renderWelcome(v); safe(() => axNames(v)); mem.obTop = null; return; }   /* Version 39.78: joining again starts step 1 at its top */   /* Version 39.76: names Android keeps, joining too */
     if (state.stage === 'onboard') { renderOnboard(v); safe(() => axNames(v)); if (obStepNew()) window.scrollTo(0, 0); return; }   /* Version 39.78 (launch QA B6): a new step starts at its top */
-    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'body-now': renderBodyNow,'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) { if (artGone(r)) safe(() => location.replace('#learn')); else renderArticle(v, r.slice(2)); }   /* Version 39.68: an article the doctors removed opens Learn */
     else if (MOVED[r]) safe(() => location.replace('#' + MOVED[r]));
     else if (retired(r)) safe(() => location.replace('#care'));   /* Version 39.68: a retired page, however she reached it */
@@ -2793,8 +2796,8 @@
           /* Version 31: the days to her predicted start, with the likely range under it; today's phase and chance when fertile
              days show (never in discreet mode) */
           const pr = predictInfo(); const dt = pr ? pr.daysTo : null;
-          side += '<p class="lead cd-lead">' + (dt == null ? esc(t('next_likely')) + ' <span class="hl">' + esc(fmtRange(ri.from, ri.to)) + '</span>' : (dt > 1 ? '<b class="num cd-n">' + dt + '</b> ' + esc(t('cdn_days')) : esc(t(dt === 1 ? 'cdn_tomorrow' : (dt === 0 ? 'cdn_today' : 'cdn_any'))))) + '</p>' +
-            (pr ? '<p class="small cd-from">' + esc(tf('cdn_from', { r: fmtRange(ri.from, ri.to), n: pr.n })) + '</p>' : '');
+          side += '<p class="lead cd-lead">' + (dt == null ? esc(t('next_likely')) + ' <span class="hl">' + rangeHtml(ri.from, ri.to) + '</span>' : (dt > 1 ? '<b class="num cd-n">' + dt + '</b> ' + esc(t('cdn_days')) : esc(t(dt === 1 ? 'cdn_tomorrow' : (dt === 0 ? 'cdn_today' : 'cdn_any'))))) + '</p>' +
+            (pr ? '<p class="small cd-from">' + esc(tf('cdn_from', { r: '\u0001', n: pr.n })).replace('\u0001', rangeHtml(ri.from, ri.to)) + '</p>' : '');
           /* Version 32: only for a woman trying for a baby (fertWhy), never once the predicted day has passed, and only medium or
              high: on other days the phase alone (field-test audit 2.1, 2.3) */
           const fz = pr && pr.fert && !disc && !pr.late ? pr.fert : null; const ch = fz ? chanceShown(fz, today()) : null; const per = inPeriod || openPeriod();
@@ -2803,13 +2806,14 @@
         else if (last6.length) { side += '<p class="lead">' + esc(t('last_gaps')) + ' <span class="hl num">' + last6.slice(-3).join(', ') + ' ' + esc(t('days')) + '</span></p>';
           /* Version 39.33 (walkthrough, 28 Oct): her latest finished cycle isn't in them (the pill, a pregnancy, a birth): Days' line says why */
           const lc = disc || state.settings.shared ? null : cycleList(2).find((c) => c.next); if (lc && lc.why && lc.why !== 'now') side += '<p class="small cd-x">' + esc(tf('dy_grp_x', { d: fmtD(lc.start) }) + ' · ' + t('mc_x_' + lc.why)) + '</p>'; }
+        const mini = !disc && api.plan && api.plan.running && safe(() => api.plan.running(), false);   /* her plan runs: the one-row cycle card (Version 39.23, below) */
+        if (bodyOn() && !mini) side += '<button type="button" class="linkbtn bn-go" data-go="body-now">' + esc(t('bn_go')) + '</button>';   /* Version 39.84 (L5): one tap to Your body now; while her plan runs it waits on today's day page, so her steps stay on the first screen */
         side += '<div class="ring-key">' + keyDot('var(--bleed)', t('ring_period')) + keyDot('var(--peach)', tf('ring_usual', { a: 21, b: hiB })) + (ri ? keyDot('var(--accent-2)', t('ring_likely')) : '') + '<button type="button" class="tour-q" data-tour-q="ring" aria-label="' + esc(t('tour_q')) + '">?</button></div>';
         const rb = ringBox(ringSvg(M, parts, daysSince + 0.5), num, inPeriod ? t('period_day') : t('cycle_day'), tf('ring_aria', { n: num, a: 21, b: hiB }));
         /* Version 39.23 (Mohit, 27 Oct; mockup claude.ai/artifact/RTA92ajojk5uXeLtgVC5jm): while her plan runs, her cycle is
            Today's headline again (Version 39.8's one line hid it): the ring, the days to her next period or how late it is, the
            likely dates, her logs in the same card, then her plan. A shared phone sees her cycle day only. It keeps today's chance
            when fertile days show and "Change stage" (V39.8 review SAFETY-03). */
-        const mini = !disc && api.plan && api.plan.running && safe(() => api.plan.running(), false);
         const late0 = ri && today() > ri.to; const lateN = late0 ? diffDays(ri.to, today()) : 0; const shp = !!state.settings.shared;
         const chance0 = (side.match(/<p class="small chance[^"]*">[\s\S]*?<\/p>/) || [''])[0];
         /* Version 39.25 (insights audit G5): "Period late?" under her cycle with or without a plan (not on a shared phone) */
@@ -3227,7 +3231,7 @@
       const noteSec = '<div class="symcat note hue-' + KINDS.note.hue + '" data-cat="note"><label for="day-note"><b>' + esc(t('note_h')) + '</b></label><textarea id="day-note" maxlength="600" rows="3" placeholder="' + esc(t('note_ph')) + '">' + esc(note) + '</textarea><span class="small">' + esc(t('note_p')) + '</span></div>';
       /* Version 39.11: a week at a time, with the week strip under the date (which opens the month) and the day's facts */
       sheet('<div class="day-top" data-nosay="1"><button type="button" class="iconbtn" data-dweek="-7" aria-label="' + esc(t('prev_week')) + '"' + (addDays(dt, -1) < addDays(today(), -90) ? ' disabled' : '') + '>' + I.back + '</button><div class="day-tt"><button type="button" class="day-mo" id="day-month" aria-label="' + esc(t('day_month')) + '"><h2 class="hand">' + esc(isToday ? t('today_short') : (isYday ? t('yesterday_l') : fmtD(dt, { weekday: 'short', day: 'numeric', month: 'short' }))) + '</h2>' + CHEV_D + '</button>' + (cd && state.settings.discreet ? '<span class="small">' + esc(t('cycle_day')) + ' ' + cd + '</span>' : '') + '</div><button type="button" class="iconbtn" data-dweek="7" aria-label="' + esc(t('next_week')) + '"' + (isToday ? ' disabled' : '') + ' style="transform:scaleX(-1)">' + I.back + '</button></div>' +
-        dayStrip(d) + (state.settings.discreet ? '' : dayFactsHtml(d).replace('<div class="day-facts">', '<div class="day-facts" data-say="1">')) + feelSec + periodSec + sexHtml(d) + (quick ? '' : cats) + noteSec + '<div class="sheet-foot"><button type="button" class="btn primary block" id="day-done">' + esc(t('sym_done')) + '</button></div>', (sh) => {
+        dayStrip(d) + (state.settings.discreet ? '' : dayFactsHtml(d).replace('<div class="day-facts">', '<div class="day-facts" data-say="1">')) + (isToday && bodyOn() ? '<button type="button" class="linkbtn bn-go" id="day-bn">' + esc(t('bn_go')) + '</button>' : '') + feelSec + periodSec + sexHtml(d) + (quick ? '' : cats) + noteSec + '<div class="sheet-foot"><button type="button" class="btn primary block" id="day-done">' + esc(t('sym_done')) + '</button></div>', (sh) => {
         sh.classList.add('paper');
         const dr = $('#day-relief', sh); if (dr) dr.addEventListener('click', () => { closeSheet(); setHash('relief-' + rel.id); });
         sh.querySelectorAll('[data-dweek]').forEach((b) => b.addEventListener('click', () => { let nd = addDays(fromISO(d), +b.dataset.dweek); if (nd > today()) nd = today(); if (nd < addDays(today(), -90)) nd = addDays(today(), -90); if (toISO(nd) === d) return; d = toISO(nd); moreOpen = false; draw(); }));
@@ -3255,6 +3259,7 @@
         ta.addEventListener('change', () => { if (!had && (state.notes || {})[d]) emit('log', { type: 'note' }); });
         const fl = $('#day-flow', sh); if (fl) fl.addEventListener('click', () => { const ev = state.events.find((e) => e.d === d && e.t === 'start'); if (ev) { openLog('start', d, ev); return; } const en = state.events.find((e) => e.d === d && e.t === 'end'); if (en) { openLog('end', d, en); return; } openLog('start_detail', d, state.events.find((e) => e.d === d && e.t === 'start_detail') || null); });
         $('#day-done', sh).addEventListener('click', () => { closeSheet(); render(); });
+        const dbn = $('#day-bn', sh); if (dbn) dbn.addEventListener('click', () => { closeSheet(); setHash('body-now'); });   /* Version 39.84 (L5) */
         $('#sheet-bg').addEventListener('click', (e) => { if (e.target.id === 'sheet-bg') render(); });
         sh.scrollTop = keepTop;
         safe(() => sayButtons(sh));   /* Version 39.17 (R10): the day's facts and how she felt, each with its own speaker */
@@ -4151,7 +4156,7 @@
       const df = { day: 'numeric', month: 'short' }; const ls = lastStart(); const nowC = {};
       if (ls) for (let d1 = ls; d1 <= today(); d1 = addDays(d1, 1)) (state.daily[toISO(d1)] || []).forEach((x) => { if (TM_SKIP.indexOf(x) < 0) nowC[x] = (nowC[x] || 0) + 1; });
       const nowL = Object.keys(nowC).sort((a, b) => nowC[b] - nowC[a]).slice(0, 4).map((x) => symName(x) + ' ' + (nowC[x] === 1 ? t('k_day1') : tf('k_days', { n: nowC[x] })));
-      parts.push({ k: 'symptoms', h: tf('rp_tm_h', { n: tm.n }), grid: tm.rows.map((x) => ({ name: symName(x.k), c: x.c })), lines: [],
+      parts.push({ k: 'symptoms', h: tf('rp_tm_h', { n: tm.n }), grid: tm.rows.map((x) => ({ k: x.k, name: symName(x.k), c: x.c })), lines: [],
         tlines: tm.rows.map((x) => tf('rp_tm_line', { s: symName(x.k), b: x.c[0] === 1 ? t('k_day1') : tf('k_days', { n: x.c[0] }), p: x.c[1], o: x.c[2] })),
         note: [tf('rp_tm_range', { a: fmtD(fromISO(tm.from), df), b: fmtD(fromISO(tm.to), df), k: TM_BEFORE })].concat(nowL.length ? [tf('rp_tm_now', { d: fmtD(ls, df), l: nowL.join(', ') })] : []) });
     } else if (top.length) parts.push({ k: 'symptoms', h: t('rp_sym'), lines: top.map((k) => symName(k) + ': ' + tf('rp_days', { n: counts[k] })) });
@@ -4222,7 +4227,7 @@
     const r = { any: true, parts: [
       { k: 'about', h: t('rp_about'), lines: [tf('rp_age', { n: 27 })] },
       { k: 'periods', h: t('rp_periods'), rows: [{ d: d(113), bleed: 5, gap: 38 }, { d: d(75), bleed: 6, gap: 34, heavy: true }, { d: d(41), bleed: 5, gap: 35 }, { d: d(6), bleed: 5, gap: null }], lines: [tf('rp_gaps', { a: 36, s: 34, l: 38 })] },
-      { k: 'symptoms', h: tf('rp_tm_h', { n: 3 }), grid: [['d_mood', [9, 2, 1]], ['d_cramps', [1, 8, 0]], ['d_irritable', [7, 1, 0]], ['d_headache', [2, 1, 5]]].map((x) => ({ name: t(x[0]), c: x[1] })), lines: [],
+      { k: 'symptoms', h: tf('rp_tm_h', { n: 3 }), grid: [['d_mood', [9, 2, 1]], ['d_cramps', [1, 8, 0]], ['d_irritable', [7, 1, 0]], ['d_headache', [2, 1, 5]]].map((x) => ({ k: x[0], name: t(x[0]), c: x[1] })), lines: [],
         note: [tf('rp_tm_range', { a: fmtD(fromISO(d(113)), df), b: fmtD(fromISO(d(7)), df), k: TM_BEFORE })] },
       { k: 'questions', h: t('rp_q'), lines: [t('rp_q_pain'), t('rp_q_any')], q: true }] };
     sheet('<h2 class="hand">' + esc(t('rp_h')) + '</h2><p class="small rpx-note"><span class="ex-tag">' + esc(t('ex_tag')) + '</span> ' + esc(t('rp_ex_p')) + '</p><div class="rp-ex stack">' + reportHtml(r, false) + '</div>' +
@@ -4355,7 +4360,7 @@
   }
   /* the report's table: a row per sign, the column where it comes most in bold (only when one column leads) */
   const tmGrid = (g) => '<div class="table-wrap"><table class="rp-table rp-tm"><thead><tr><th>' + esc(t('rp_tm_c0')) + '</th>' + ['rp_tm_c1', 'rp_tm_c2', 'rp_tm_c3'].map((k) => '<th>' + esc(t(k)) + '</th>').join('') + '</tr></thead><tbody>' +
-    g.map((r) => { const mx = Math.max.apply(null, r.c); const one = r.c.filter((x) => x === mx).length === 1; return '<tr><td>' + esc(r.name) + '</td>' + r.c.map((x) => '<td class="num">' + (mx > 0 && one && x === mx ? '<b>' + x + '</b>' : x) + '</td>').join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+    g.map((r) => { const mx = Math.max.apply(null, r.c); const one = r.c.filter((x) => x === mx).length === 1; return '<tr><td>' + (r.k ? '<span class="tm-n"><span class="tm-k hue hue-' + symMeta(r.k).hue + '" aria-hidden="true">' + sIco(symMeta(r.k).ico) + '</span><span>' + esc(r.name) + '</span></span>' : esc(r.name)) + '</td>' + r.c.map((x) => '<td class="num">' + (mx > 0 && one && x === mx ? '<b>' + x + '</b>' : x) + '</td>').join('') + '</tr>'; }).join('') + '</tbody></table></div>';
   const symMeta = (key) => { for (let i = 0; i < SYM.length; i++) { const x = SYM[i][2].find((y) => y[0] === key); if (x) return { hue: SYM[i][1], ico: x[1] }; } return { hue: 'rose', ico: 'drop' }; };
   function patternsCard(quiet) {
     const p = patterns(); if (!p) return '';
@@ -4363,6 +4368,80 @@
     /* Version 39.83 (L3): while it waits for 3 periods with notes, an example of what it will show */
     if (!p.list.length) return '<div class="card soft pat-card"><h2 class="hand">' + esc(t('pat_h')) + '</h2><p class="small">' + esc(p.n >= 3 ? t('pat_none') : t('pat_wait')) + '</p>' + (p.n < 3 ? patExLine() : '') + '</div>';
     return '<div class="card pat-card"><h2 class="hand">' + esc(t('pat_h')) + '</h2><div class="list">' + p.list.map((x) => { const m = symMeta(x.key); return '<div class="item quiet"><span class="ico-sm hue hue-' + m.hue + '">' + sIco(m.ico) + '</span><span class="body"><strong>' + esc(t(x.key)) + '</strong><span>' + esc(patWhen(x.r)) + ' · ' + esc(tf('pat_count', { a: x.n, b: x.of })) + '</span></span></div>'; }).join('') + '</div><p class="small">' + esc(tf('pat_p', { n: p.n })) + '</p></div>';
+  }
+  /* ---------- Version 39.84 (L5, docs/teach-and-show-advice-2026-11-08.md; MODULE_API section 127): Your body now ----------
+     One page behind "What's happening in your body?" on Today's cycle card and on today's day page. It says what is happening in
+     her body today only as far as Sakhi can honestly know it:
+       period   her bleeding days;
+       build, egg, after   her phase, only where Sakhi already places one (the fertile estimate: 6 regular gaps, fertWhy);
+       late     her period is late (the missed-period guide);
+       pmos, long   gaps too far apart to place her (PMOS's picture when PMOS is hers);
+       steps    otherwise, how a cycle works, without placing her.
+     The health words are the Learn library's own reviewed sentences, quoted (artSent, artSum); her own lines come from her diary
+     (What repeats for you, and what she noted around this day last cycle). Never in a pregnancy, after a birth, on hormones, with
+     periods stopped, in midlife, in discreet mode or on a shared phone. */
+  const bodyOn = () => { const sit = state.situation || {}; return ['cycle', 'ttc'].indexOf(stageNow()) >= 0 && !countsOff() && !sit.stopped && !sit.hysterectomy && !sit.hormones && !isMidlife() && !state.settings.discreet && !state.settings.shared && canSave() && !!lastStart(); };
+  /* a sentence of a Learn article in her language (a paragraph's sentences line up in English and Hindi), its summary, its title */
+  const artSent = (key, para, idx) => { const a = findArticle(key); const p = a ? (L(a, 'body') || [])[para] || '' : ''; const s = p.split(/(?<=[.?!।])\s+/)[idx] || ''; return s.replace(/^(Yes, |हाँ, )/, '').replace(/^[a-z]/, (c) => c.toUpperCase()); };
+  const artSum = (key) => { const a = findArticle(key); return a ? L(a, 'summary') || '' : ''; };
+  const artTitle = (key) => { const a = findArticle(key); return a ? L(a, 'title') || '' : ''; };
+  function bodyState() {
+    if (!bodyOn()) return null;
+    const ls = lastStart(); const tS = toISO(today()); const bd = bleedingDays(); const day = diffDays(ls, today()) + 1;
+    if (bd[tS] === 'start' || bd[tS] === 'bleed' || openPeriod()) return { k: 'period', day: day };
+    const ri = rangeInfo(); if (ri && today() > ri.to) return { k: 'late', day: day, n: diffDays(ri.to, today()) };
+    const pr = predictInfo(); const why = fertWhy();
+    if (pr && pr.fert && !pr.late && !why) { const ph = phaseOn(pr.fert, today()); return { k: ph === 'before' ? 'build' : (ph === 'after' ? 'after' : 'egg'), ph: ph, day: day, pr: pr }; }
+    if (why === 'irregular') return { k: state.situation.pcos ? 'pmos' : 'long', day: day, w: whyNot() };
+    return { k: 'steps', day: day };
+  }
+  /* what she noted around this day of her cycle last time: the same day of her previous cycle, a day either side */
+  function lastCycleNotes(day) {
+    const st = starts(); if (st.length < 2) return [];
+    const prev = fromISO(st[st.length - 2]); const ls = lastStart(); const at = addDays(prev, day - 1); const seen = {};
+    for (let k = -1; k <= 1; k++) { const d1 = addDays(at, k); if (d1 < prev || d1 >= ls) continue; (state.daily[toISO(d1)] || []).forEach((x) => { if (TM_SKIP.indexOf(x) < 0) seen[x] = 1; }); }
+    return Object.keys(seen).slice(0, 4).map((x) => t(x));
+  }
+  function renderBodyNow(v) {
+    const b = bodyState(); if (!b) { safe(() => location.replace('#home')); return; }
+    const pic = (k, label) => (api.art && api.art.body ? api.art.body(k, label) : '');
+    const CYC = 'cycle.what-is-a-menstrual-cycle'; const PM = 'pmos.what-pmos-is'; const IRR = 'cycle.why-cycles-become-irregular';
+    const sBuild = artSent(CYC, 1, 1), sEgg = artSent(CYC, 1, 2), sShed = artSent(CYC, 1, 3);
+    const dayLine = tf(b.k === 'period' ? 'dy_pday' : 'dy_cday', { n: b.day });
+    let head = dayLine, now = '', usual = [], reads = [CYC], tool = '';
+    if (b.k === 'period') {
+      now = pic('period', sShed) + '<p>' + esc(sShed) + '</p>';
+      usual = [artSent(CYC, 3, 0), artSum('cycle.painful-periods'), artSum('cycle.heavy-bleeding-how-to-tell')];
+      reads = ['cycle.painful-periods', 'cycle.heavy-bleeding-how-to-tell'];
+      const rid = api.relief && api.relief.forSym ? safe(() => api.relief.forSym('d_cramps'), null) : null;   /* the cramps routine, as the day page reaches it */
+      if (rid && !retired('relief-' + rid)) tool = '<button type="button" class="action" data-go="relief-' + esc(rid) + '"><span class="ico-sm hue hue-rose">' + I.leaf + '</span><span class="body"><strong>' + esc(routeTitle('relief-' + rid)) + '</strong></span><span class="chev">' + I.chev + '</span></button>';
+    } else if (b.k === 'late') {
+      head = b.n === 1 ? t('late_n1') : tf('late_n', { n: b.n });
+      now = '<p>' + esc(artSum('cycle.missed-period-what-to-do-first')) + '</p>'; reads = ['cycle.missed-period-what-to-do-first'];
+    } else if (b.k === 'build' || b.k === 'egg' || b.k === 'after') {
+      head = dayLine + ' · ' + t('phs_' + b.ph); const s = b.k === 'build' ? sBuild : (b.k === 'egg' ? sEgg : sShed);
+      now = pic(b.k, s) + '<p>' + esc(s) + '</p><p class="small">' + esc(t('no_contra')) + '</p>';
+      if (b.k === 'after' && b.pr && b.pr.daysTo > 0) usual = [tf('dy_next', { n: b.pr.daysTo })];
+    } else if (b.k === 'pmos') {
+      const s = [artSent(PM, 1, 0), artSent(PM, 1, 1), artSent(PM, 1, 2)].join(' ');
+      now = pic('pmos', artSent(PM, 1, 0)) + '<p>' + esc(s) + '</p>'; usual = [b.w ? whyText(b.w) : '', artSum(IRR)]; reads = [PM, IRR];
+    } else if (b.k === 'long') {
+      now = pic('long', artSum(IRR)) + '<p>' + esc(artSum(IRR)) + '</p>'; usual = [b.w ? whyText(b.w) : '']; reads = [IRR, CYC];
+    } else {
+      now = '<h3>' + esc(t('bn_steps')) + '</h3><div class="bn-steps">' + [['build', sBuild], ['egg', sEgg], ['period', sShed]].map((x) => '<div>' + pic(x[0], x[1]) + '<p class="small">' + esc(x[1]) + '</p></div>').join('') + '</div><p class="small">' + esc(t('bn_more')) + '</p>';
+    }
+    const mine = []; const p = patterns(); if (p && p.list.length) p.list.forEach((x) => mine.push(t(x.key) + ' · ' + patWhen(x.r)));
+    const ln = b.k === 'late' ? [] : lastCycleNotes(b.day); if (ln.length) mine.push(tf('bn_last', { l: ln.join(', ') }));
+    const lis = (xs) => '<ul class="rp-lines">' + xs.filter(Boolean).map((l) => '<li>' + esc(l) + '</li>').join('') + '</ul>';
+    const rd = reads.filter((k) => findArticle(k) && !artGone('a-' + k));
+    v.innerHTML = backRow(t('bn_h'), 'home') + '<div class="bn-page stack">' +
+      '<div class="card bn-hero" data-nofold="1" data-say="1"><p class="eyebrow">' + esc(head) + '</p>' + now + '</div>' +
+      (usual.filter(Boolean).length ? '<div class="card" data-say="1"><h3>' + esc(t('bn_usual')) + '</h3>' + lis(usual) + '</div>' : '') +
+      (mine.length ? '<div class="card" data-say="1"><h3>' + esc(t('bn_yours')) + '</h3>' + lis(mine) + '</div>' : '') + tool +
+      (rd.length ? '<div class="list bn-read">' + rd.map((k) => '<button type="button" class="item" data-go="a-' + esc(k) + '"><span class="ico-sm hue hue-' + hueOf(k.split('.')[0]) + '">' + icon(GROUP_ICONS[k.split('.')[0]] || 'learn') + '</span><span class="body"><strong>' + esc(artTitle(k)) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '') +
+      (api.readAloud ? '<button type="button" class="btn sm" id="bn-listen" style="align-self:flex-start">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>';
+    wire(v);
+    const bl = $('#bn-listen', v); if (bl) bl.addEventListener('click', () => api.readAloud($('.bn-page', v)));
   }
   /* ---------- Version 31: Trends' verdict, the period-length chart, her cycles, and the Days list (MODULE_API section 33) ----------
      The verdict reads her own numbers against the usual ranges already in the Learn library: gaps of 21 to 35 days (45 in the
@@ -4431,11 +4510,22 @@
   /* Version 39.1: what her records point to, inline at the top (What your diary shows draws its own reviewed cards; nothing
      on a shared phone, where Today carries one plain line) */
   const signalCards = () => (canSave() && !state.settings.discreet && api.explain && api.explain.diaryCards ? safe(() => api.explain.diaryCards(), '') : '');
+  /* ---------- Version 39.86 (L10, docs/teach-and-show-advice-2026-11-08.md; MODULE_API section 129): one chart language ----------
+     Every bar chart of her data says its numbers on the chart: her value on top of each bar; the usual band or line labelled
+     beside the bars, not only in the note under them; her bars in her colours (the accent, the bleed colour, hatched when not
+     counted); every number at 13 px or more. My progress (plan.js) keeps the same rules in its own drawing.
+     o: { vals, mx, h, aria, cls(x, i), shown(x, i), band: [from, to, label], line: [at, label], extra } */
+  function vBars(o) {
+    const room = 20; const sc = (x) => (Math.max(0, Math.min(x, o.mx)) / o.mx) * (o.h - room); const lab = (c, x) => '<span class="' + c + ' num">' + esc(String(x)) + '</span>';
+    return '<div class="bars vb' + (o.extra ? ' ' + o.extra : '') + '" role="img" aria-label="' + esc(o.aria) + '" style="height:' + o.h + 'px">' +
+      (o.band ? '<div class="band" style="bottom:' + sc(o.band[0]).toFixed(0) + 'px;height:' + Math.max(4, sc(o.band[1]) - sc(o.band[0])).toFixed(0) + 'px">' + lab('ch-l', o.band[2]) + '</div>' : '') +
+      (o.line ? '<div class="pline" style="bottom:' + sc(o.line[0]).toFixed(0) + 'px">' + lab('ch-l', o.line[1]) + '</div>' : '') +
+      '<div class="cols">' + o.vals.map((x, i) => '<div class="col ' + (o.cls ? o.cls(x, i) : '') + '" style="height:' + sc(x).toFixed(0) + 'px">' + lab('v', o.shown ? o.shown(x, i) : x) + '</div>').join('') + '</div></div>';
+  }
   function periodChart() {
     const L = starts().slice(-PRED_N).map(periodLen).filter((n) => n != null); if (L.length < 2) return '';
-    const mx = Math.max(10, maxOf(L)); const h = 80;
-    return '<div class="card"><h2 class="hand">' + esc(t('per12')) + '</h2><div class="bars pbars" role="img" aria-label="' + esc(tf('per_aria', { list: L.join(', ') })) + '" style="height:' + h + 'px"><div class="pline" style="bottom:' + ((8 / mx) * h).toFixed(0) + 'px"></div><div class="cols">' +
-      L.map((n) => '<div class="col pcol' + (n > 8 ? ' long' : '') + '" style="height:' + ((n / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + L.map((n) => '<span class="num">' + n + '</span>').join('') + '</div><p class="small">' + esc(t('per_line')) + '</p></div>';
+    const mx = Math.max(10, maxOf(L));
+    return '<div class="card"><h2 class="hand">' + esc(t('per12')) + '</h2>' + vBars({ vals: L, mx: mx, h: 100, extra: 'pbars', aria: tf('per_aria', { list: L.join(', ') }), cls: (n) => 'pcol' + (n > 8 ? ' long' : ''), line: [8, 8] }) + '<p class="small">' + esc(t('per_line')) + '</p></div>';
   }
   /* Each cycle as one row of days: period days, and the estimated fertile window and ovulation when fertile days show */
   function cyclesCard(noAdd) {
@@ -4644,7 +4734,7 @@
     if (!ga.length) { const mc = cyclesCard(knAdd); v.innerHTML = signalCards() + kn + patternsCard(knRep) + mc + (isPregnant() ? '' : exampleCard(!mc && !knAdd)) + rp + tail;   /* Version 39.37 */ wire(v); wireMc(); wireAdd(); return; }
     const mx = Math.max(60, Math.max.apply(null, ga.map((x) => Math.min(x.days, 130)))); const h = 120; const hiB = bandHi();
     const vdc = verdictCard(); const nums = vdc || !usable().length ? '' : '<div class="card vd-nums-card">' + numbersHtml().replace('<details class="vd-nums">', '<details class="vd-nums" open>') + '</div>';   /* review ENGINE-08 */
-    v.innerHTML = signalCards() + kn + patternsCard(knRep) + cyclesCard(knAdd) + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2><div class="bars" role="img" aria-label="' + esc(tf('bars_aria', { list: ga.map((x) => x.days).join(', ') })) + '" style="height:' + h + 'px"><div class="band" style="top:' + (h - (hiB / mx) * h).toFixed(0) + 'px;height:' + (((hiB - 21) / mx) * h).toFixed(0) + 'px"></div><div class="cols">' + ga.map((x, i) => '<div class="col ' + (x.usable ? (i === ga.length - 1 ? 'last' : '') : 'x') + '" style="height:' + ((Math.min(x.days, 130) / mx) * h).toFixed(0) + 'px"></div>').join('') + '</div></div><div class="barlabels">' + ga.map((x) => '<span class="num">' + x.days + '</span>').join('') + '</div><p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
+    v.innerHTML = signalCards() + kn + patternsCard(knRep) + cyclesCard(knAdd) + vdc + nums + rp + chartsRow('<div class="card"><h2 class="hand">' + esc(t('gaps12')) + '</h2>' + vBars({ vals: ga.map((x) => Math.min(x.days, 130)), shown: (x, i) => ga[i].days, mx: mx, h: h, aria: tf('bars_aria', { list: ga.map((x) => x.days).join(', ') }), cls: (x, i) => (ga[i].usable ? (i === ga.length - 1 ? 'last' : '') : 'x'), band: [21, hiB, '21–' + hiB] }) + '<p class="small">' + esc(t('band_label')) + '</p></div>' + periodChart()) + tail;
     wire(v); wireAdd(); wireMc();
     const chd = $('.charts-d', v); if (chd) chd.addEventListener('toggle', () => { mem.chartsOpen = chd.open; });
   }
@@ -4760,6 +4850,21 @@
      (Firebase Analytics since Version 39.79) only in a build that has it, as in the notice. content.json holds the same sentences, for search. */
   const PRIVACY_ART = 'services.your-data-privacy';
   const privacyBody = (a) => [(L(a, 'body') || [])[0]].filter(Boolean).concat([1, 2, 5].map((i) => t('ob_notice_' + i)), [t('notice_text')], [3, 4].map((i) => t('ob_notice_' + i)), fbAvail() ? [t('ob_notice_6')] : []);
+  /* ---------- Version 39.85 (L7, docs/teach-and-show-advice-2026-11-08.md; MODULE_API section 128): articles in a better format ----------
+     The summary at the top as "In short"; the cycle in pictures under the paragraphs they show; and "Checked by doctors · {month}"
+     under the title, like a byline (so the medicine line stays right under the summary), only while an article's words are the
+     words the doctors checked. Its record (content.json, `reviewed: { at, h }`) carries a
+     fingerprint of every field she can read; a changed word changes the fingerprint and the line goes until the doctors check
+     again (web/tools/stamp-reviewed.mjs records it). The fingerprint here and in the tool is the same FNV-1a. */
+  const RV_FIELDS = ['title_en', 'title_hi', 'summary_en', 'summary_hi', 'body_en', 'body_hi', 'see_doctor_en', 'see_doctor_hi', 'qura_line_en', 'qura_line_hi', 'doc'];
+  const artHash = (a) => { const s = JSON.stringify(RV_FIELDS.map((f) => (a[f] === undefined ? null : a[f]))); let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16); };
+  const reviewedLine = (a) => { const r = a && a.reviewed; if (!r || !/^\d{4}-(0[1-9]|1[0-2])$/.test(r.at || '') || r.h !== artHash(a)) return ''; const p = r.at.split('-');
+    return '<p class="small rv-line"><span class="rv-i" aria-hidden="true">' + I.steth + '</span>' + esc(tf('rv_line', { m: fmtD(new Date(+p[0], +p[1] - 1, 1), { month: 'short', year: 'numeric' }) })) + '</p>'; };
+  /* the drawing sits under the paragraph it shows, labelled with that paragraph's own sentence: [picture, after paragraph, sentence] */
+  const ART_PIC = { 'cycle.what-is-a-menstrual-cycle': ['steps', 1], 'pmos.what-pmos-is': ['pmos', 1, 0], 'cycle.why-cycles-become-irregular': ['long', 9, 2], 'cycle.painful-periods': ['period', 1, 1] };
+  const artPic = (key) => { const x = ART_PIC[key]; if (!x || !api.art || !api.art.body) return ''; const C0 = 'cycle.what-is-a-menstrual-cycle';
+    if (x[0] === 'steps') return '<div class="bn-steps art-pic" data-noread="1">' + [['build', 1], ['egg', 2], ['period', 3]].map((y) => '<div>' + api.art.body(y[0], artSent(C0, 1, y[1])) + '</div>').join('') + '</div>';
+    return '<div class="art-pic" data-noread="1">' + api.art.body(x[0], artSent(key, x[1], x[2])) + '</div>'; };
   function renderArticle(v, key) {
     const a = findArticle(key); if (!a) { v.innerHTML = '<div class="card"><p>' + esc(t('loading')) + '</p><button type="button" class="btn sm" data-go="learn">' + esc(t('learn')) + '</button></div>'; wire(v); return; }
     /* Version 39.77: by the article's group (Mohit's choices): Qura's areas get "How Qura can help" in his words and no free government
@@ -4768,7 +4873,7 @@
     const dw = docWho('learn-' + a.group); const u18 = key === 'cycle.first-periods-for-teens' || key === 'services.under-18-daughter-sister';
     const keep = dw === 'G' && !u18 ? careSentences(L(a, 'qura_line')) : [];   /* its box goes, its safety lines stay */
     const body = key === PRIVACY_ART ? privacyBody(a) : (L(a, 'body') || []); const sd = (L(a, 'see_doctor') || []).filter((x) => u18 || dw !== 'Q' || !/^(Free|मुफ़्त)/.test(x)).concat(keep); const ql = dw === 'G' || key === 'services.how-qura-helps' ? '' : (u18 ? L(a, 'qura_line') : (L(a, 'qura_line') ? t('qura_std') : ''));   /* How Qura helps says it in its own words */ const at = artTools(key);
-    v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1><p class="lead">' + esc(L(a, 'summary')) + '</p>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p) => (p.startsWith('- ') ? '<p class="bullet">' + esc(p.slice(2)) + '</p>' : '<p>' + esc(p) + '</p>')).join('') + '</div>' +
+    v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1>' + reviewedLine(a) + '<div class="in-short"><span class="eyebrow">' + esc(t('in_short')) + '</span><p class="lead">' + esc(L(a, 'summary')) + '</p></div>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p, i) => (p.startsWith('- ') ? '<p class="bullet">' + esc(p.slice(2)) + '</p>' : '<p>' + esc(p) + '</p>') + (ART_PIC[key] && ART_PIC[key][1] === i ? artPic(key) : '')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
       (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
@@ -4816,8 +4921,11 @@
     const sec = (title, items, cls) => '<div class="card ' + (cls || '') + '" data-say="1"><h3' + (String(cls || '').indexOf('dark') === 0 ? '' : ' style="color:var(--accent)"') + '>' + esc(title) + '</h3><ul>' + items.map((k) => '<li>' + esc(t(k)) + '</li>').join('') + '</ul></div>';
     const tp = teenPlay();
     v.innerHTML = (state.stage === 'app' ? backRow(t('help_h'), 'home', false) : tp ? '<div class="row"><button type="button" class="iconbtn" id="help-u18-back" aria-label="' + esc(t('back')) + '">' + I.back + '</button><h1>' + esc(t('help_h')) + '</h1></div>' : '<h1>' + esc(t('help_h')) + '</h1>') + '<p class="small">' + esc(t('same_for_all')) + '</p>' + ((state.stage === 'app' || state.stage === 'browse') && !tp ? helpTabs('help') : '') +
-      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] && !retired('access-free') && !tp ? '<button type="button" class="linkbtn" data-go="access-free">' + esc(t('access_free')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' + (docWho('help-page') !== 'Q' ? govCard() : '') +
-      sec(t('call_now'), ['s1a', 's1b', 's1d'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a']) + sec(t('mood'), ['s6a']) +
+      '<div class="card doc-card"><h2>' + esc(t('doc_h')) + '</h2><p class="small">' + esc(t('doc_p')) + '</p><button type="button" class="btn primary block" data-ask="">' + I.steth + ' ' + esc(t('doc_b')) + '</button>' + (ROUTES['access-free'] && !retired('access-free') && !tp ? '<button type="button" class="linkbtn" data-go="access-free">' + esc(t('access_free')) + '</button>' : '') + (canSave() ? '<button type="button" class="linkbtn" data-go="report">' + esc(t('rp_show')) + '</button>' : '') + '</div>' +
+      sec(t('call_now'), ['s1a', 's1b', 's1d'].concat(api.art && api.art.sign ? [] : ['s1c']), 'dark urgent').replace(/<\/div>$/, dangerGrid('preg') + '<button type="button" class="btn sos-open" id="sos-btn">' + esc(t('em_numbers')) + '</button></div>') +
+      /* Version 39.86 (the presentation audit, P1): "Go to the nearest hospital now if" right under "Not an emergency?" again, as Version 15
+         set it, so it is on the first screen at 360 x 800; the gynaecologist or free government card (Version 39.77) comes after it */
+      (docWho('help-page') !== 'Q' ? govCard() : '') + sec(t('today_if'), ['s2a', 's2b', 's2c']) + sec(t('weeks2'), ['s3a', 's3b', 's3c', 's3d']) + sec(t('week_if'), ['s4a', 's4b', 's4c']) + sec(t('under18'), ['s5a']) + sec(t('mood'), ['s6a']) +
       /* Version 39.7: the symptom guide by body area is a tab at the top now (Version 39.1 had it as a row here) */
       (modRoute('asha') ? '<button type="button" class="action" data-go="asha"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('asha_h')) + '</strong><span class="small">' + esc(t('asha_help_s')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') +
       (state.stage === 'app' && waNum() && !mem.teen ? '<button type="button" class="action" data-go="tell"><span class="ico accent">' + I.person + '</span><span class="body"><strong>' + esc(t('tell')) + '</strong><span class="small">' + esc(t('tell_sub')) + '</span></span><span class="go">' + I.chev.replace('<svg', '<svg style="width:18px;height:18px"') + '</span></button>' : '') + (state.stage === 'app' ? '' : tourMenuHtml());

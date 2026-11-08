@@ -671,6 +671,33 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - examples while she waits: the empty report's "See an example", and one example line for What repeats for you;
     - the toast after a log says when that sign usually comes for her, on a day that fits (`patFit`).
     Contract: MODULE_API section 126; wording: section 19.83 of the review (UI words only).
+  - `node test/bodynow.mjs` (Version 39.84, Your body now and the cycle in pictures; Mohit, 8 Nov: "you proceed as per your
+    recommendations"; the advice's part 2, L5 and L6):
+    - "What’s happening in your body?" in Today's cycle card (not while her plan runs: her steps stay on the first screen) and on
+      today's day page opens `body-now`: her period days, her phase only where Sakhi already places one (6 regular gaps), a late
+      period, gaps too far apart (PMOS's picture when PMOS is hers), or how a cycle works without placing her; never in a
+      pregnancy, after a birth, on hormones, stopped, midlife, discreet mode or a shared phone;
+    - the Learn library's reviewed sentences quoted (`artSent`, `artSum`), her own lines from her diary (What repeats for you,
+      last cycle around this day);
+    - six flat drawings of the womb, tubes and ovaries in `art.js` (`S.art.body`), never a body seen through.
+    Contract: MODULE_API section 127; wording: section 19.84 of the review (labels only; the drawings and quotes for the doctors).
+  - `node test/learnpage.mjs` (Version 39.85, articles in a better format; the advice's part 3, L7):
+    - every article opens with "In short" (its summary, moved into a box under the title);
+    - "Checked by doctors · {month}" only while an article's words are the ones the doctors checked: `reviewed: { at, h }` in
+      `content.json`, a fingerprint of every field she reads (core `artHash`). Record a check with
+      `node web/tools/stamp-reviewed.mjs <YYYY-MM> <group.id ...|--all>` (`--list` shows each article's state); stamp only what
+      the doctors checked, in the month they checked it. Now: the 10 articles unchanged since the 20 Oct check;
+    - Version 39.84's drawings under the paragraphs they show (the cycle, PMOS, irregular cycles, painful periods).
+    Contract: MODULE_API section 128; wording: section 19.85 of the review (two labels; which articles carry the line, for the doctors).
+  - `node test/chartlang.mjs` (Version 39.86, the presentation audit's fixes and one chart language; the advice's part 4, L9 and L10;
+    the audit: `docs/presentation-audit-2026-11-08.md`):
+    - Help and safety: "Go to the nearest hospital now if" right under "Not an emergency?" again, on the first screen at 360 x 800;
+    - a date never breaks inside itself (core `rangeHtml`); the tab bar's labels and the weekday letters at 13 px;
+    - every chart of her data with its numbers on it (core `vBars`: her value on top of each bar, the usual band and the 8-day line
+      labelled beside the bars; My progress's minutes on its bars and "target: {n}");
+    - the report's "When it comes" with each sign's picture in its kind's colour, kept in print.
+    The walk behind it (not pass/fail): `node test/present-walk.mjs [dir] [name]` (72 first screens and their measures to
+    `test/shots/present-walk/<name>/`). Contract: MODULE_API section 129; wording: section 19.86 of the review (one UI label).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

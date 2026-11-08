@@ -3863,3 +3863,64 @@ New lines (English, then Hindi):
   - "When your phone is open, your next reminder ({w}) shows as:" (फ़ोन खुला होने पर आपका अगला रिमाइंडर ({w}) ऐसा दिखता है:)
   - "When your phone is open, a reminder shows as:" (फ़ोन खुला होने पर रिमाइंडर ऐसा दिखता है:)
 - The toast after a log: "{s} noted · {w}" ({s} दर्ज · {w}), e.g. "Cramps noted · usually from the first day of your period".
+
+### 19.84 Version 39.84: Your body now and the cycle in pictures (MODULE_API section 127)
+
+Part 2 of `docs/teach-and-show-advice-2026-11-08.md` (Mohit, 8 Nov: "you proceed as per your recommendations"). **No new health
+sentence.** The page quotes the Learn library's reviewed sentences, so what the doctors should look at is where they now appear,
+and the drawings. Screens: `web/test/shots/bodynow/` (made by `node test/bodynow.mjs`).
+
+Quoted, unchanged (English and Hindi), with where they now appear:
+- "What a menstrual cycle is", paragraph 2: "After a period ends, the lining of the womb (bachhedani) slowly builds up again." (days
+  before ovulation); "Somewhere in the middle, one ovary releases an egg." (the fertile window and ovulation day); "If no pregnancy
+  happens, the lining is not needed, so it breaks down and comes out as a period." (after ovulation, and on her period days);
+  paragraph 4: "Bleeding itself usually lasts 2 to 7 days, heaviest in the first two." (her period days).
+- The summaries of "Painful periods" and "Heavy bleeding: how to tell" (her period days), "Missed period: what to do first" (a late
+  period) and "Why cycles become irregular" (gaps too far apart).
+- "PMOS (PCOS): what it really is", paragraph 2, its first three sentences, the first without "Yes," ("On an ultrasound the
+  ovaries can look full of small bubbles. But those are not cysts that burst or need removing. They are eggs that started growing
+  and paused.") for a woman with PMOS whose gaps are too far apart.
+- Sakhi's own lines, unchanged: the phase names, "These dates are estimates from your diary. They are not a way to avoid
+  pregnancy.", "{n} days until your next period (estimate)", the why-no-date lines and What repeats for you.
+
+New lines (English, then Hindi):
+- "Your body now" (आपका शरीर अभी); "What’s happening in your body?" (आपके शरीर में अभी क्या हो रहा है?)
+- "What’s usual" (आम तौर पर क्या होता है); "From your diary" (आपकी डायरी से); "How a cycle works" (चक्र कैसे चलता है)
+- "Last cycle around this day you noted: {l}" (पिछले चक्र में इसी दिन के आसपास आपने नोट किया: {l})
+- "As your diary grows, Sakhi can show where you are in your cycle." (जैसे-जैसे आपकी डायरी बढ़ेगी, Sakhi दिखा पाएगी कि आप अपने चक्र में
+  कहाँ हैं।)
+
+For the doctors' look: the six drawings (the womb, tubes and ovaries from the front; the lining thin, building, full, coming away;
+an egg leaving an ovary and the yellow body after it; PMOS's ring of paused follicles; a long cycle's follicles still growing), and
+whether a phase should show only with 6 regular gaps, as it does now.
+
+### 19.85 Version 39.85: articles in a better format (MODULE_API section 128)
+
+Part 3 of `docs/teach-and-show-advice-2026-11-08.md`, L7 (Mohit, 8 Nov: "you proceed as per your recommendations"). **No new health
+sentence.** Screens: `web/test/shots/learnpage/` (made by `node test/learnpage.mjs`).
+
+New lines (English, then Hindi):
+- "In short" (संक्षेप में), above each article's summary, which moved into a box under the title.
+- "Checked by doctors · {month}" (डॉक्टरों ने जाँचा · {month}), only on an article whose words are exactly the words the doctors
+  checked. Now on the 10 articles unchanged since the 20 Oct check, as "Oct 2026": what a menstrual cycle is, the usual gap between
+  periods, why cycles become irregular, how to keep a period diary, what PMOS is, PMOS signs to notice, PMOS tests and why,
+  perimenopause at the Indian age, early menopause (POI), and weight and waist.
+
+For the doctors' look:
+- Version 39.84's drawings in four articles, each under the paragraph it shows, with that paragraph's sentence as its label: the
+  cycle's three steps ("What a menstrual cycle is", paragraph 2), PMOS's paused follicles ("PMOS (PCOS): what it really is",
+  paragraph 2), the egg that doesn't release ("Why cycles become irregular", paragraph 10) and the lining coming away ("Painful
+  periods", paragraph 2).
+- Which articles the line should carry. If the doctors' read of 8 Nov ("doctor review is also green") covered the whole library as
+  it stands, `node web/tools/stamp-reviewed.mjs 2026-11 --all` stamps all 60 as "Nov 2026". A later change to any article takes its
+  line away until it is checked again.
+
+### 19.86 Version 39.86: the presentation audit's fixes, and one chart language (MODULE_API section 129)
+
+Part 4 of `docs/teach-and-show-advice-2026-11-08.md` (L9 and L10). **No new health sentence.** The audit:
+`docs/presentation-audit-2026-11-08.md`.
+
+New line (English, then Hindi): "target: {n}" (लक्ष्य: {n}), the legend of My progress's active minutes.
+
+For the doctors' look: Help and safety's order. "Go to the nearest hospital now if" is right under "Not an emergency?" again
+(Version 15's order, so it is on the first screen), and "See a gynaecologist or a free government doctor" follows it.

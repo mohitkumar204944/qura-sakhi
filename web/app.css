@@ -1104,6 +1104,19 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .np-ico { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .np-ico svg { width: 16px; height: 16px; }
 .np-txt { display: flex; flex-direction: column; min-width: 0; font-size: 14px; } .np-txt b { color: var(--fg); } .np-txt span { color: var(--text); }
+/* Version 39.84 (MODULE_API section 127): Your body now and the cycle in pictures */
+.art.body { width: 100%; max-width: 300px; height: auto; display: block; margin: 4px auto; }
+.bn-go { align-self: flex-start; text-align: left; }
+.bn-hero { gap: 8px; } .bn-hero p { margin: 0; } .bn-hero h3 { margin: 4px 0 0; }
+.bn-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.bn-steps .art.body { max-width: 120px; margin: 0 auto; }
+.bn-steps p { margin: 4px 0 0; }
+/* Version 39.85 (MODULE_API section 128): articles in a better format */
+.in-short { display: flex; flex-direction: column; gap: 4px; background: var(--accent-soft); border-radius: 14px; padding: 12px 14px; }
+.in-short .eyebrow { color: var(--accent); font-weight: 700; } .in-short .lead { margin: 0; color: var(--fg); }
+.rv-line { display: flex; align-items: center; gap: 6px; margin: 2px 0 0; color: var(--muted); }
+.rv-i { display: inline-flex; color: var(--ok); } .rv-i svg { width: 16px; height: 16px; }
+.art-pic { margin: 4px 0; }
 /* the quick-log circles at 44 px inside the cycle headline (Version 39.23) */
 .ract-row.compact { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }   /* V39.9 review: one line per label */ .ract-row.compact .ract { gap: 4px; font-size: 12px; } .ract-row.compact .ract .rico { width: 44px; height: 44px; border-radius: 22px; } .ract-row.compact .ract .rico svg { width: 22px; height: 22px; }
 .pl-pic-row { align-items: flex-start; }
@@ -1391,3 +1404,21 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
    and Stop under it. 65 px is the bar at 100% text, so nothing moves there; on a wide screen the bar floats 16 px up. */
 :root { --tb-gap: calc(var(--tb-h, 65px) + 9px); }
 @media (min-width: 600px) { :root { --tb-gap: calc(var(--tb-h, 65px) + 25px); } }
+/* Version 39.86 (MODULE_API section 129): the presentation audit's fixes and one chart language
+   P2: a date never breaks inside itself ("2 Dec" stays together). P3: what carries meaning is 13 px or more: the tab bar's labels,
+   the calendar's and the day page's weekday letters, the numbers on a chart (the QURA above the Sakhi wordmark is the logo). */
+.nw { white-space: nowrap; }
+.tabbar button { font-size: 13px; }
+.cal .dow { font-size: 13px; }
+.wkstrip .wdn { font-size: 13px; }
+.barlabels { font-size: 13px; }
+/* L10: her value on top of each bar, the usual band or line labelled beside the bars (a gutter on the right) */
+.bars.vb .cols, .bars.vb .band, .bars.vb .pline { right: 46px; }
+.bars.vb .col { position: relative; }
+.bars.vb .col .v { position: absolute; bottom: 100%; left: -6px; right: -6px; margin-bottom: 2px; text-align: center; font-size: 13px; font-weight: 600; line-height: 1.2; color: var(--fg); }
+.bars.vb .col.x .v { color: var(--muted); font-weight: 500; }
+.bars.vb .ch-l { position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%); font-size: 13px; line-height: 1.2; color: var(--muted); white-space: nowrap; }
+/* the report's "When it comes": each sign's own picture in its kind's colour, as What repeats for you and What you noted */
+.rp-tm .tm-n { display: flex; align-items: center; gap: 8px; }
+.rp-tm .tm-k { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px; background: var(--hue-soft); color: var(--hue); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.rp-tm .tm-k svg { width: 15px; height: 15px; }

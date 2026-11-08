@@ -8134,3 +8134,122 @@ rings); no tour, tip or celebration; one home kept for each fact (the table repl
 card; the preview isn't repeated on the Start card).
 
 Test: `web/test/showgets.mjs` (62 checks). Wording: `docs/wording-review-v28.md`, section 19.83 (UI words only).
+
+## 127. Version 39.84: Your body now, and the cycle in pictures
+
+Mohit, 8 Nov: "you proceed as per your recommendations", after part 1 (Version 39.83). Part 2 of
+`docs/teach-and-show-advice-2026-11-08.md` (L5 and L6). The health words are the Learn library's own reviewed sentences, quoted;
+the only new words are labels and one line about the app.
+
+**L6. The cycle in pictures (`art.js`: `S.art.body(key, label)`, `S.art.bodyKeys`).**
+- Six flat teaching drawings of the womb, its tubes and the ovaries, seen from the front, never a body seen through: `build` (the
+  lining building), `egg` (an egg leaving an ovary), `after` (the lining full, the egg gone), `period` (the lining coming away),
+  `pmos` (many small follicles that paused), `long` (follicles still growing, no egg yet).
+- In the art tokens, so they follow light and dark; `role="img"` with the caller's label (the quoted sentence).
+
+**L5. Your body now (core route `body-now`, `renderBodyNow`, `bodyState`, `bodyOn`).**
+- The way in: "What's happening in your body?" (`bn_go`), one link inside Today's cycle card (no card of its own) and on today's
+  day page (`#day-bn`). Never another day's page. While her plan runs, Today's one-row cycle card has no link, so her first steps
+  stay on the first screen at 360 x 800 (the full run's pictures 3 and foodsteps 8 caught it); the link waits on today's day page.
+- `bodyOn()`: the cycle and trying stages, with a logged start, and never `countsOff()`, periods stopped, a hysterectomy,
+  hormones, midlife (`isMidlife()`), discreet mode, a shared phone or a guest. The route sends her home otherwise.
+- `bodyState()` says only what Sakhi can know:
+  - `period` on her bleeding days (`bleedingDays()`, `openPeriod()`): the period drawing, the cycle article's sentence on the
+    lining coming away, then "What's usual" (bleeding 2 to 7 days, the painful-periods and heavy-bleeding summaries), the cramps
+    routine (`api.relief.forSym`) and the two guides;
+  - `late` when today is past her likely range (`rangeInfo().to`, as Today): the missed-period summary and its guide;
+  - `build`, `egg`, `after` only where Sakhi already places her phase (`predictInfo().fert`, `fertWhy()` null: 6 regular gaps),
+    with `phs_*` beside her day, the drawing, the cycle article's sentence for that phase and `no_contra`; after ovulation, "{n}
+    days until your next period (estimate)";
+  - `pmos` (PMOS hers) or `long` when `fertWhy()` is `irregular`: the drawing, the PMOS article's three sentences ("Yes," dropped
+    from the first) or the irregular-cycles summary, and `whyText(whyNot())`;
+  - `steps` otherwise (too few gaps, a method, an age, a launch build): "How a cycle works", three drawings with the cycle
+    article's three sentences, and "As your diary grows, Sakhi can show where you are in your cycle." Her day, never a phase.
+- "From your diary" (`bn_yours`): What repeats for you's lines (`patterns()`, `patWhen`), and "Last cycle around this day you
+  noted: {l}" (`lastCycleNotes`: her previous cycle's same day, a day either side, calm, happy and okay left out).
+- Quoting (`artSent`, `artSum`, `artTitle`): one home for the words. A sentence changed in the library changes here too.
+- Listen reads the page (`api.readAloud`). Firebase names it "other" (it is in no list). `body-now` is in core's `CORE_ROUTES`
+  (no module can take the name) and in `test/check.mjs`'s list of core routes.
+
+**Minimal baseline.** No card, step, question, ring, tour or celebration on Today: one link in the card she already reads. No new
+screen before her first step. One home: the words stay the library's; her patterns stay What repeats for you's.
+
+Test: `web/test/bodynow.mjs` (60 checks; its light and dark drawings set the app's own theme, as Me does). Wording: `docs/wording-review-v28.md`, section 19.84 (labels, one app line, the drawings
+and the quoted sentences in their new places, for the doctors' look).
+
+## 128. Version 39.85: articles in a better format
+
+Mohit, 8 Nov: "you proceed as per your recommendations". Part 3 of `docs/teach-and-show-advice-2026-11-08.md`, L7. No new health
+words: two labels, the record of a check the doctors already made, and Version 39.84's drawings beside the sentences they show.
+
+**"In short" (`in_short`).** The article's summary, as `L(a, 'summary')` reads it (her route's summary), in a box under the title
+and the doctors' line (`.in-short`, solid, 4.5:1 in light and dark), with the medicine line right under it. It is the old lead,
+moved: the summary is still said once.
+
+**"Checked by doctors · {month}" (`rv_line`; core `reviewedLine`, `artHash`, `RV_FIELDS`).**
+- Under the title, like a byline (so the medicine line stays right under the summary box), only when the article in `content.json` carries `reviewed: { at: 'YYYY-MM', h }` and `h` equals the fingerprint
+  of the words she reads now: FNV-1a over `RV_FIELDS` as JSON (title, summary, body, "When to see a doctor" and the Qura line, in
+  English and Hindi, and the doctor-route `doc` paragraphs; not `sources`). A changed word takes the line away until the doctors
+  check the article again and it is stamped again. A month that doesn't exist shows nothing.
+- `web/tools/stamp-reviewed.mjs` keeps the record: `<YYYY-MM> <group.id ...|--all>` stamps, `--list` shows each article's state,
+  `--same-as <content.json>` lists the articles whose words match an older library word for word. It refuses a month after this
+  month, an unknown article (stamping nothing) and a `content.json` not in its one-line form. Stamp only what the doctors checked,
+  with the month they checked it.
+- Stamped now, as "Oct 2026": the 10 articles whose words are the 20 Oct check's, word for word (`--same-as` against the first
+  commit's library, fc1f91c): what a menstrual cycle is, the usual gap between periods, why cycles become irregular, how to keep a
+  period diary, what PMOS is, PMOS signs to notice, PMOS tests and why, perimenopause at the Indian age, early menopause (POI), and
+  weight and waist. The other 50 changed after 20 Oct (or are new) and show no line until a check is on record.
+- The month in the phone's short form (`fmtD`, `{ month: 'short', year: 'numeric' }`): "Oct 2026", "अक्टू॰ 2026". No doctor is named
+  (Mohit, 6 Nov). The stethoscope icon (`I.steth`) is hidden from screen readers.
+
+**The cycle in pictures, in the articles (`ART_PIC`, `artPic`).** Each drawing sits under the paragraph it shows, labelled with that
+paragraph's own sentence (`artSent`), `data-noread` so Listen reads the words once:
+- "What a menstrual cycle is": the three steps (`build`, `egg`, `period`) under its 2nd paragraph;
+- "PMOS (PCOS): what it really is": `pmos` under its 2nd paragraph ("On an ultrasound the ovaries can look full of small bubbles.");
+- "Why cycles become irregular": `long` under its 10th paragraph ("Stress, hunger and illness tell the body 'not now', and the egg
+  does not release that month.");
+- "Painful periods": `period` under its 2nd paragraph ("The womb is a muscle, and it squeezes to push the lining out.").
+None where a drawing would show nothing the words say (heavy bleeding's signs, for one).
+
+**Minimal baseline.** Nothing on Today; no new screen, card, step, question, tour or celebration. One home: the summary moved into
+the box, the drawings quote the paragraph above them.
+
+Test: `web/test/learnpage.mjs` (41 checks: every article that opens, the line on exactly the stamped ones, six changes to the
+fingerprint, the drawings in English and Hindi, light and dark, Hindi at 360 px). Wording: `docs/wording-review-v28.md`, section
+19.85.
+
+## 129. Version 39.86: the presentation audit's fixes, and one chart language
+
+Mohit, 8 Nov: "you proceed as per your recommendations". Part 4 of `docs/teach-and-show-advice-2026-11-08.md`: L9's audit
+(`docs/presentation-audit-2026-11-08.md`, made with `web/test/present-walk.mjs`) and L10. UI only: one new label, no health words.
+
+**P1. Help and safety.** "Go to the nearest hospital now if" (the urgent card) is right under "Not an emergency?" again, as Version
+15 set it, so it starts on the first screen at 360 x 800 (507 px; 522 px in Hindi). Version 39.77's gynaecologist or free
+government card (`govCard()`, the page's `B`) comes after it. No words changed; Help's sheet (its first row) is untouched.
+
+**P2. A date never breaks inside itself.** Core `rangeHtml(a, b)`: `fmtRange`'s words with each date in `.nw` (no wrap), for Today's
+likely range (`next_likely`, `cdn_from`). The text is unchanged, so every test that reads it still matches.
+
+**P3. 13 px for meaning.** The tab bar's labels (12 px before; the bar stays 65 px at 100% text), the calendar's weekday letters
+(`.cal .dow`, 11 px), the day page's (`.wkstrip .wdn`, 12 px) and the numbers on every chart. The QURA above the wordmark is the
+logo and stays.
+
+**L10. One chart language (core `vBars`).**
+- Every bar chart of her data says its numbers on the chart: her value on top of each bar (`.v`); the usual band and the 8-day line
+  labelled in a gutter beside the bars (`.ch-l`: "21–{bandHi}", "8"); her bars in her colours (the accent, the bleed colour, the
+  lighter latest gap, hatched when not counted); 13 px or more.
+- `vBars({ vals, mx, h, aria, cls, shown, band: [from, to, label], line: [at, label], extra })` draws the gap chart and the period
+  chart (Cycles' Charts). The bar keeps her real number when the drawing is capped (`shown`: a 160-day gap drawn at 130).
+- My progress (`mods/plan.js`, `minutesChart`) keeps its own SVG with the same rules: her minutes on top of each week's bar, above its
+  target line; the week under it; drawn 280 units wide, as it is shown on a 360 px phone, so 13.4 units read as 13 px or more; the
+  target's number in the legend (`plan_prog_target_n`, "target: {n}"), kept on one line; its row wraps (`.pl-mh`), so nothing
+  scrolls sideways at the phone's 200% text (smoke).
+- The report's "When it comes" (`tmGrid`): each sign's own picture in its kind's colour (`symMeta`, `sIco`), the same as What repeats
+  for you and What you noted, hidden from a screen reader (the name is read), kept in print (`print-color-adjust: exact`); the
+  example has them too.
+
+**Minimal baseline.** Nothing new to tap, read or answer: no screen, card, step, question, ring, tour or celebration. The taps are
+unchanged. One home: the charts' numbers moved onto the charts (the gap and period charts' rows of numbers under the bars are gone).
+
+Test: `web/test/chartlang.mjs` (44 checks, English and Hindi at 360 px). Wording: `docs/wording-review-v28.md`, section 19.86 (one UI
+label).

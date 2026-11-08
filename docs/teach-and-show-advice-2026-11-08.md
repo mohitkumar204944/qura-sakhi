@@ -3,8 +3,11 @@
 Mohit, 8 Nov, after the Clue walks: "Clue is better at teaching and presentation and sakhi needs to level up ... sakhi needs
 to be the best in all aspects". Clue's notes stay at principle level (the competitor-report rule); this document is about Sakhi.
 
-**Status:** part 1 (L1 to L4) BUILT as Version 39.83 (Mohit, 8 Nov: "Yes, build part 1"; report Option A; MODULE_API section
-126, `web/test/showgets.mjs`). Parts 2 to 4 wait for his go.
+**Status:** part 1 (L1 to L4) is Version 39.83 (committed 590363e; MODULE_API section 126). Mohit, 8 Nov: "you proceed as per
+your recommendations": part 2 (L5, L6) is Version 39.84 (MODULE_API section 127, `web/test/bodynow.mjs`), built without a
+separate mockup (its screens are the real app's). Part 3's L7 is Version 39.85 (MODULE_API section 128, `web/test/learnpage.mjs`);
+L8, the recorded voice, waits for Mohit's OK (it runs on his paid voice account). Part 4 (L9's audit, `docs/presentation-audit-2026-11-08.md`,
+and L10) is Version 39.86 (MODULE_API section 129, `web/test/chartlang.mjs`); the audit's decisions D1 to D5 wait for Mohit.
 
 ## 0. In one paragraph
 
