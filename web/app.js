@@ -2810,6 +2810,9 @@
         if (bodyOn() && !mini) side += '<button type="button" class="linkbtn bn-go" data-go="body-now">' + esc(t('bn_go')) + '</button>';   /* Version 39.84 (L5): one tap to Your body now; while her plan runs it waits on today's day page, so her steps stay on the first screen */
         side += '<div class="ring-key">' + keyDot('var(--bleed)', t('ring_period')) + keyDot('var(--peach)', tf('ring_usual', { a: 21, b: hiB })) + (ri ? keyDot('var(--accent-2)', t('ring_likely')) : '') + '<button type="button" class="tour-q" data-tour-q="ring" aria-label="' + esc(t('tour_q')) + '">?</button></div>';
         const rb = ringBox(ringSvg(M, parts, daysSince + 0.5), num, inPeriod ? t('period_day') : t('cycle_day'), tf('ring_aria', { n: num, a: 21, b: hiB }));
+        /* Version 39.88.1 (the phone walk, 9 Nov): the small ring's label goes on two short lines inside the ring (app.css), so "Period · day"
+           loses its dot there ("Period" over "day"), as "Cycle day" wraps */
+        const rbS = rb.replace('<span>' + esc(t('period_day')) + '</span>', '<span>' + esc(t('period_day').replace(' · ', ' ')) + '</span>');
         /* Version 39.23 (Mohit, 27 Oct; mockup claude.ai/artifact/RTA92ajojk5uXeLtgVC5jm): while her plan runs, her cycle is
            Today's headline again (Version 39.8's one line hid it): the ring, the days to her next period or how late it is, the
            likely dates, her logs in the same card, then her plan. A shared phone sees her cycle day only. It keeps today's chance
@@ -2826,7 +2829,7 @@
             : (late0 ? '<p class="hl-late">' + esc(lateN === 1 ? t('late_n1') : tf('late_n', { n: lateN })) + '</p><p class="small">' + esc(tf('ring_usual', { a: 21, b: hiB })) + '</p>'
               : (side.replace(/<div class="ring-key">[\s\S]*$/, '').replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') || dayL));
           /* the row opens her cycle: the chevron for a screen reader (See my cycle), the whole row for a finger */
-          main = '<div class="hl-row">' + rb + '<div class="hl-say">' + (chance0 ? say.replace(chance0, '') : say) + '</div><button type="button" class="hl-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '">' + I.chev + '</button></div>' + (chance0 ? '<div class="hl-x">' + chance0 + '</div>' : '') +   /* today's chance spans the card (V39.9 review FIXES-06) */
+          main = '<div class="hl-row">' + rbS + '<div class="hl-say">' + (chance0 ? say.replace(chance0, '') : say) + '</div><button type="button" class="hl-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '">' + I.chev + '</button></div>' + (chance0 ? '<div class="hl-x">' + chance0 + '</div>' : '') +   /* today's chance spans the card (V39.9 review FIXES-06) */
             lateRow;
         }
         else {
@@ -2834,7 +2837,7 @@
              her period are the card's one big number, as on the plan's card (Version 39.23), and her cycle day sits in the smaller
              ring; with no countdown (no estimate yet, a late period, discreet mode) the ring's cycle day stays the big number */
           const cdFirst = !disc && side.indexOf('<b class="num cd-n">') >= 0;
-          main = (cdFirst ? twoCol(rb, '<div class="hero-main">' + side.replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') + '</div>').replace('<div class="hero-row">', '<div class="hero-row cd-first">')
+          main = (cdFirst ? twoCol(rbS, '<div class="hero-main">' + side.replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') + '</div>').replace('<div class="hero-row">', '<div class="hero-row cd-first">')
             : twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>')) + lateRow;
         }
         const soon0 = ri && ri.from <= addDays(today(), 3) && ri.to >= today();   /* a shared phone's headline shows no dates; the week strip may */

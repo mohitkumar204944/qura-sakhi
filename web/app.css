@@ -1433,3 +1433,8 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 /* Version 39.88 (MODULE_API section 131): the articles' own lead-ins as subheads, their short labels in bold */
 .article .bodytext .art-h { font-size: 18px; line-height: 1.35; font-weight: 700; color: var(--fg); margin: 10px 0 -2px; }
 .article .bodytext strong { color: var(--fg); font-weight: 650; }
+/* Version 39.88.1 (the phone walk, 9 Nov; MODULE_API section 131.1): in the small ring (the plan's card, and Today's card while her
+   countdown shows) the label sits on two short lines inside the ring, clear of the track and the day dot, at 13 px. */
+.hl-row .ringc, .hero-row.cd-first .ringc { gap: 1px; }
+.hl-row .ringc b, .hero-row.cd-first .ringc b { font-size: 22px; }
+.hl-row .ringc span, .hero-row.cd-first .ringc span { font-size: 13px; max-width: 46px; line-height: 1.1; }

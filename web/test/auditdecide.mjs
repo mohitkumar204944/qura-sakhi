@@ -7,7 +7,8 @@
 //   2 D3, Me: one colour per kind of row: rose for her own, teal for her care, purple for how Sakhi works on her phone;
 //   3 D5, the Diary's Calendar: the + waits while her "How do you feel today?" tiles are on screen, then comes when they scroll away;
 //     the Cycles tab and Today keep theirs;
-//   4 no page errors.
+//   4 Version 39.88.1 (the phone walk, 9 Nov): the small ring's label on two lines inside the ring, clear of the track and the day dot;
+//   5 no page errors.
 // Usage: node test/auditdecide.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -73,7 +74,7 @@ for (const lang of ['en', 'hi']) {
   const a = await open({ name: '1 Today ' + lang, seed: { lang: lang, events: REG } });
   const h = await hero(a.page);
   check('1 ' + lang + ': with her countdown, the days to her period are the card\'s one big number (50 px, the biggest text on the first screen)', h && h.first && h.cd && h.cd.s === '18' && h.cd.fs === 50 && h.big.fs === 50 && h.big.s === '18', h);
-  check('1 ' + lang + ': ... her cycle day in the ring at the plan card\'s size (88 px, 30 px)', h && h.ring === 88 && h.day === 30, h);
+  check('1 ' + lang + ': ... her cycle day in the ring at the plan card\'s size (88 px; its number 22 px since Version 39.88.1)', h && h.ring === 88 && h.day === 22, h);
   check('1 ' + lang + ': ... so "How do you feel today?" starts on the first screen at 360 x 800, with no sideways scroll', h && h.feelTop < h.nav - 30 && h.noScroll, h);
   await shot(a.page, '1-today-' + lang);
   await done(a);
@@ -121,6 +122,24 @@ for (const [name, seed, want] of [['a late period', { events: LATE }, 'ring'], [
   const f3 = await b.page.evaluate(() => { const f = document.querySelector('#fab'); return f ? f.classList.contains('away') : null; });
   check('3 Today keeps its rule: the + waits while her log row is on screen', f3 === true, f3);
   await done(b);
+}
+
+/* ---------- 4. Version 39.88.1 (the phone walk, 9 Nov): the small ring's label stays inside the ring, clear of the day dot ----------
+   The ring is drawn on 140 units: the track at radius 58 (13 wide), the day dot (radius 8, a 3-unit edge) on it, so nothing inside may
+   reach past radius 48.5. On his Flip5 "Cycle day" ran under the dot on cycle day 13. */
+const ringGeo = (page) => page.evaluate(() => { const w = document.querySelector('#view .card.hero .ringwrap'); if (!w) return null; const svg = w.querySelector('svg.ring'); const b = svg.getBoundingClientRect(); const k = b.width / 140;
+  const cx = b.left + b.width / 2, cy = b.top + b.height / 2; const sp = w.querySelector('.ringc span'); const rg = document.createRange(); rg.selectNodeContents(sp); const lines = Array.from(rg.getClientRects());
+  let far = 0; lines.forEach((q) => [[q.left, q.top], [q.right, q.top], [q.left, q.bottom], [q.right, q.bottom]].forEach(([x, y]) => { far = Math.max(far, Math.hypot(x - cx, y - cy)); }));
+  const dot = svg.querySelector('circle.now'); const d = dot ? dot.getBoundingClientRect() : null;
+  const hit = !!d && lines.some((q) => !(q.right < d.left || q.left > d.right || q.bottom < d.top || q.top > d.bottom));
+  return { label: sp.textContent, lines: lines.length, fs: parseFloat(getComputedStyle(sp).fontSize), far: Math.round(far * 10) / 10, limit: Math.round(48.5 * k * 10) / 10, hit: hit, w: Math.round(b.width) }; });
+const ONE = (n) => evs([n - 1]);   /* one period logged, today her cycle day n (as his test diary) */
+const PDAY = evs([0, 28, 56, 84, 112, 140, 168, 196]);   /* today her period's first day */
+for (const lang of ['en', 'hi']) for (const [name, seed] of [['Today\'s card, her countdown', { events: REG }], ['the plan\'s card', PLAN], ['Today\'s card, a period day', { events: PDAY }], ['the plan\'s card, a period day', Object.assign({}, PLAN, { events: PDAY })], ['the plan\'s card, cycle day 13 (the walk)', Object.assign({}, PLAN, { events: ONE(13) })]]) {
+  const a = await open({ name: '4 ' + lang + ' ' + name, seed: Object.assign({ lang: lang }, seed) });
+  const g = await ringGeo(a.page);
+  check('4 ' + lang + ', ' + name + ': the small ring\'s label on 2 lines at 13 px, inside the ring (clear of the track) and off the day dot', g && g.w === 88 && g.lines === 2 && g.fs === 13 && g.far <= g.limit - 0.5 && !g.hit && !/·/.test(g.label), g);
+  await done(a);
 }
 
 await browser.close();

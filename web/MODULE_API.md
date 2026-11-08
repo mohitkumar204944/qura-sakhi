@@ -8303,3 +8303,18 @@ articles' structure, shown.
 so review section 19.88 proposes "Your ASHA", "Your body" and "Your mood" from it.
 
 Test: `web/test/subheads.mjs` (25 checks: every article, English and Hindi, word for word).
+
+### 131.1 Version 39.88.1: the small ring's label (the phone walk, 9 Nov)
+
+Mohit, 9 Nov: "Yes, fix it", after the walk on his Flip5 (vc 145): in the small cycle ring (88 px: the plan's one-row card since
+Version 39.23, and Today's card while her countdown shows since Version 39.87) the day dot sat on "Cycle day", and the label touched
+the ring. The ring is drawn on 140 units (the track at radius 58, 13 wide; the day dot, radius 8 with a 3-unit edge, on it), so nothing
+inside may reach past radius 48.5 (30.5 px at 88 px).
+- The label sits on two short lines inside the ring (`max-width: 46px`, `line-height: 1.1`, 13 px), its number at 22 px.
+- There, "Period · day" loses its dot (`rbS`: "Period" over "day"), as "Cycle day" wraps; the big ring keeps it.
+- Measured on every case (English and Hindi, cycle day and period day, both cards): the label reaches 29.0 px (English) and 28.1 px
+  (Hindi) from the centre. No words change.
+
+Test: `web/test/auditdecide.mjs` section 4 (the label's lines inside the ring and off the day dot, including cycle day 13 as on his
+phone); fieldtest 1 accepts "Period day".
+

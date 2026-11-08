@@ -71,7 +71,7 @@ const cleanup = async (x) => { check(x.name + ': no page errors', !x.errs.length
   await go(page, '#diary'); await page.$eval('[data-tab="days"]', (b) => b.click()); await settle(page);
   check('1 Days: the pregnancy is not counted as a cycle', !/Day \d+ of your cycle/.test(await view(page)) || /not counted|paused/.test(await view(page)));
   await go(page, '#home'); await tap(page, '#log-last'); await tap(page, '#log-save');
-  check('1 her next period starts the count again', /Period · day|Cycle day/.test(await view(page)) && !/Sakhi counts your cycle again/.test(await view(page)));
+  check('1 her next period starts the count again', /Period · day|Period day|Cycle day/.test(await view(page)) && !/Sakhi counts your cycle again/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '1' }));
 }
 

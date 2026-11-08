@@ -704,7 +704,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       plan card's smaller ring;
     - Me: one colour per kind of row (rose her own, teal her care, purple how Sakhi works on her phone);
     - the Diary's Calendar: the + waits while her "How do you feel today?" tiles are on screen, as on Today.
-    Contract: MODULE_API section 130 (no new wording).
+    Version 39.88.1 (the phone walk, 9 Nov), the test's section 4: the small ring's label on two lines inside the ring, clear of the
+    track and the day dot ("Period day" without its dot there). Contract: MODULE_API sections 130 and 131.1 (no new wording).
   - `node test/subheads.mjs` (Version 39.88, the articles' subheads in their own words; Mohit, 8 Nov: "Proceed with your recommendation"):
     a lead-in line before a list ("What helps at home:") shows as a heading and a short opening label ("Why it matters:", "Myth:") in
     bold, with every word unchanged, so the doctors' stamps hold; a "## " line is a subhead the doctors approved, added with
