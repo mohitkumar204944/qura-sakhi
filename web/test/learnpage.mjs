@@ -70,7 +70,7 @@ const pageOf = (page) => page.evaluate(() => {
   const stamped = arts.filter(([, a]) => TOOL.stateOf(a) === 'ok').map(([k]) => k);
   const stale = arts.filter(([, a]) => TOOL.stateOf(a) === 'changed').map(([k]) => k);
   if (stale.length) console.log('NOTE: ' + stale.length + ' stamped article(s) changed since the doctors checked them, so they show no line until checked and stamped again: ' + stale.join(', '));
-  check('2 content.json: the doctors\' check is on record for some articles (the 10 unchanged since the 20 Oct check, or more)', stamped.length >= 10, stamped.length);
+  check('2 content.json: the doctors\' check is on record (all 60 since their read of 8 Nov; an article changed since loses its line until it is checked again)', stamped.length >= 10, stamped.length);
   const a = await open({ name: '1 all articles' });
   const bad = { box: [], once: [], rv: [], noRv: [] }; let shown = 0;
   for (const [k, art] of arts) {
@@ -87,7 +87,8 @@ const pageOf = (page) => page.evaluate(() => {
   check('2 "Checked by doctors · {month}" under the title, above "In short", on each article with a check on record', !bad.rv.length, bad.rv);
   check('2 ... and on no other article', !bad.noRv.length, bad.noRv);
   await go(a.page, 'a-cycle.what-is-a-menstrual-cycle');
-  check('2 the 20 Oct check reads "Checked by doctors · Oct 2026"', (await pageOf(a.page)).rv === 'Checked by doctors · Oct 2026', (await pageOf(a.page)).rv);
+  const at0 = (artOf('cycle.what-is-a-menstrual-cycle').reviewed || {}).at || ''; const mon = at0 ? new Intl.DateTimeFormat('en-IN', { month: 'short', year: 'numeric' }).format(new Date(+at0.slice(0, 4), +at0.slice(5) - 1, 1)) : '?';
+  check('2 the line names the month of the check on record ("' + mon + '")', (await pageOf(a.page)).rv === 'Checked by doctors · ' + mon, (await pageOf(a.page)).rv);
   await shot(a.page, '1-cycle-en');
   await done(a);
 }

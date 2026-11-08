@@ -3902,18 +3902,16 @@ sentence.** Screens: `web/test/shots/learnpage/` (made by `node test/learnpage.m
 New lines (English, then Hindi):
 - "In short" (संक्षेप में), above each article's summary, which moved into a box under the title.
 - "Checked by doctors · {month}" (डॉक्टरों ने जाँचा · {month}), only on an article whose words are exactly the words the doctors
-  checked. Now on the 10 articles unchanged since the 20 Oct check, as "Oct 2026": what a menstrual cycle is, the usual gap between
-  periods, why cycles become irregular, how to keep a period diary, what PMOS is, PMOS signs to notice, PMOS tests and why,
-  perimenopause at the Indian age, early menopause (POI), and weight and waist.
+  checked. All 60 articles, as "Nov 2026" (Mohit, 8 Nov: the doctors' read of 8 Nov covered the whole library). An article
+  changed after that loses the line until the doctors check it again.
 
 For the doctors' look:
 - Version 39.84's drawings in four articles, each under the paragraph it shows, with that paragraph's sentence as its label: the
   cycle's three steps ("What a menstrual cycle is", paragraph 2), PMOS's paused follicles ("PMOS (PCOS): what it really is",
   paragraph 2), the egg that doesn't release ("Why cycles become irregular", paragraph 10) and the lining coming away ("Painful
   periods", paragraph 2).
-- Which articles the line should carry. If the doctors' read of 8 Nov ("doctor review is also green") covered the whole library as
-  it stands, `node web/tools/stamp-reviewed.mjs 2026-11 --all` stamps all 60 as "Nov 2026". A later change to any article takes its
-  line away until it is checked again.
+- Answered (Mohit, 8 Nov): their read of 8 Nov covered the whole library, so all 60 are stamped "Nov 2026"
+  (`node web/tools/stamp-reviewed.mjs 2026-11 --all`).
 
 ### 19.86 Version 39.86: the presentation audit's fixes, and one chart language (MODULE_API section 129)
 

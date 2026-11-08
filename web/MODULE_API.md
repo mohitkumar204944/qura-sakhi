@@ -8195,10 +8195,10 @@ moved: the summary is still said once.
   `--same-as <content.json>` lists the articles whose words match an older library word for word. It refuses a month after this
   month, an unknown article (stamping nothing) and a `content.json` not in its one-line form. Stamp only what the doctors checked,
   with the month they checked it.
-- Stamped now, as "Oct 2026": the 10 articles whose words are the 20 Oct check's, word for word (`--same-as` against the first
-  commit's library, fc1f91c): what a menstrual cycle is, the usual gap between periods, why cycles become irregular, how to keep a
-  period diary, what PMOS is, PMOS signs to notice, PMOS tests and why, perimenopause at the Indian age, early menopause (POI), and
-  weight and waist. The other 50 changed after 20 Oct (or are new) and show no line until a check is on record.
+- Stamped first as "Oct 2026": the 10 articles whose words are the 20 Oct check's, word for word (`--same-as` against the first
+  commit's library, fc1f91c). Then Mohit, 8 Nov: the doctors' read of 8 Nov covered all 60 ("Yes, stamp all 60"), so
+  `stamp-reviewed.mjs 2026-11 --all`: every article shows "Checked by doctors · Nov 2026". The library's words last changed on
+  7 Nov (Version 39.79), before that read.
 - The month in the phone's short form (`fmtD`, `{ month: 'short', year: 'numeric' }`): "Oct 2026", "अक्टू॰ 2026". No doctor is named
   (Mohit, 6 Nov). The stethoscope icon (`I.steth`) is hidden from screen readers.
 

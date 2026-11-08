@@ -686,7 +686,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - "Checked by doctors · {month}" only while an article's words are the ones the doctors checked: `reviewed: { at, h }` in
       `content.json`, a fingerprint of every field she reads (core `artHash`). Record a check with
       `node web/tools/stamp-reviewed.mjs <YYYY-MM> <group.id ...|--all>` (`--list` shows each article's state); stamp only what
-      the doctors checked, in the month they checked it. Now: the 10 articles unchanged since the 20 Oct check;
+      the doctors checked, in the month they checked it. Now all 60, as Nov 2026 (Mohit, 8 Nov: their 8 Nov read covered the library);
     - Version 39.84's drawings under the paragraphs they show (the cycle, PMOS, irregular cycles, painful periods).
     Contract: MODULE_API section 128; wording: section 19.85 of the review (two labels; which articles carry the line, for the doctors).
   - `node test/chartlang.mjs` (Version 39.86, the presentation audit's fixes and one chart language; the advice's part 4, L9 and L10;
