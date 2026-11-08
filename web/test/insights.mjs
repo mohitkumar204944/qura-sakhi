@@ -173,11 +173,11 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
 }
 {
   const { ctx, page, errs } = await open({ android: true, app: 'test-0.31' });
-  check('5 a release APK: no chance of pregnancy on Home', !(await page.$('#view .chance')) && /days until your next period/.test(await card(page, '#view .card.hero')));
+  check('5 a release APK (Version 39.82): the chance of pregnancy shows on Home, as in every build', !!(await page.$('#view .chance')) && /days until your next period/.test(await card(page, '#view .card.hero')));
   const cells = await calCells(page, isoAgo(0));
-  check('5 a release APK: no fertile marks on the calendar', !cells.some((c) => /\b(fw|ov)\b/.test(c.cls)));
+  check('5 a release APK (Version 39.82): the fertile marks show on the calendar', cells.some((c) => /\b(fw|ov)\b/.test(c.cls)));
   await go(page, 'fertile');
-  check('5 a release APK: fertile days are switched off until they are approved', /switched off in this version of Sakhi until doctors and the regulator approve them/.test(await view(page)));
+  check('5 a release APK (Version 39.82): the fertile-days screen is on, never "switched off in this version"', !/switched off in this version of Sakhi/.test(await view(page)));
   check('5 no page errors', !errs.length, errs);
   await ctx.close();
 }

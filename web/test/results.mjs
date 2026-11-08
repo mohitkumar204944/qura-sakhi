@@ -281,9 +281,9 @@ const errsAll = [];
   const tr = await open({ seed: { situation: { planning: false }, mods: { ttc: { since: ago(400) } } } });
   check('11 tryingNow is null once she has stopped trying', (await tr.page.evaluate(() => window.Saathi.ttc.tryingNow())) === null);
   errsAll.push(...tr.errs); await tr.ctx.close();
-  /* DOCTOR-10, SAFETY-07: a tester build stores "My Hb was low" and stays */
+  /* DOCTOR-10, SAFETY-07: a tester build stores "My Hb was low"; since Version 39.82 My lab results is in every build, so it opens there */
   const k = await open({ config: { app: 'test-0.39' }, seed: { intake: { goal: 'heavy', pads: 'p12' }, mods: { plan: planOf('heavy', 'heavy', ago(10), { doc: 'done', docAt: ago(1), intake: { stage: 'cycle', goal: 'heavy', pads: 'p12' } }) } } });
-  if (await has(k.page, '#view [data-said="hb"]')) { await tap(k.page, '#view [data-said="hb"]'); check('11 tester build: "My Hb was low" is stored and the page stays (no "Not in this version")', (await k.page.evaluate(() => location.hash)) !== '#cond-labs' && ((await st(k.page)).mods.plan.docSaid || {}).k === 'hb'); }
+  if (await has(k.page, '#view [data-said="hb"]')) { await tap(k.page, '#view [data-said="hb"]'); check('11 tester build: "My Hb was low" is stored and opens My lab results (Version 39.82)', (await k.page.evaluate(() => location.hash)) === '#cond-labs' && ((await st(k.page)).mods.plan.docSaid || {}).k === 'hb'); }
   else check('11 tester build: the "What did the doctor say?" card shows', false, await txt(k.page, '#view .slot'));
   errsAll.push(...k.errs); await k.ctx.close();
   /* DOCTOR-08: after day 21 the month card can still record the check */

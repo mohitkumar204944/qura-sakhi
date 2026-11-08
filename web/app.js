@@ -777,7 +777,7 @@
      corrects 12 to 16 and 5: field-test audit 2.1). The fertile window: the 6 days ending on that day (Wilcox 1995, also in the
      library). Possible fertile days, for the uncertainty: from 7 days before the earliest possible ovulation (16 days before her
      shortest gap) to the day after the latest (10 days before her longest), from her last 6 gaps like her likely range. */
-  const FERT_RELEASE = false;   /* a release APK hides fertile days until CDSCO's risk class and the doctors' review */
+  const FERT_RELEASE = true;   /* Version 39.82 (Mohit, 8 Nov: "CDSCO is green and doctor review is also green"): every build shows fertile days; false hides them outside demo and pilot builds */
   /* Version 35: the 12-week PMOS plan (mods/plan.js) and its food, exercise and BMI wording (docs/wording-review-v28.md,
      section 12). Mohit, 23 Oct: "plan approved build apk", so every build shows it. false hides it outside demo builds. */
   const PLAN_RELEASE = true;
@@ -1260,7 +1260,7 @@
      or stage), judge her eligibility (the abortion weeks counter), or set go-to-hospital thresholds of their own (the kick
      counter, the labour timer, the symptom guides). Tools that point her to care stay: What your diary shows, the red flags,
      the pregnancy visits and the recovery and mood checks after a birth. Demo builds and the web prototype keep them all. */
-  const TRIAGE_RELEASE = false;
+  const TRIAGE_RELEASE = true;   /* Version 39.82 (Mohit, 8 Nov: CDSCO and the doctors' review green): every build has these tools; false holds them back outside demo and pilot builds */
   const TRIAGE = ['selfcheck', 'intimate-check', 'cond-labs', 'meno-score', 'midlife', 'pregtest-abortion', 'access-symptoms', 'preg-symptoms', 'pregtools-kicks', 'pregtools-contractions'];
   const triageHidden = (r) => TRIAGE.indexOf(r) >= 0 && !TRIAGE_RELEASE && !fullTools();
   /* Version 39.68 (the doctors' feature review, 4 and 5 Nov 2026: Dr. Megha and the gynaecologist marked every feature Keep,
@@ -5201,7 +5201,8 @@
      and the chance of pregnancy, and the self-checks held back for clinical and regulatory sign-off (TRIAGE). It has no sample
      women and no prototype settings, like a release build. Mohit, 23 Oct: "CDSCO approval i discussed with my legal can be
      skipped for pilot can you remove this restriction and roll out full working version" (MODULE_API section 35). A release
-     build (no "demo" or "pilot") still holds them back until FERT_RELEASE and TRIAGE_RELEASE are switched on. */
+     build (no "demo" or "pilot") held them back until FERT_RELEASE and TRIAGE_RELEASE; both are on since Version 39.82 (Mohit,
+     8 Nov: CDSCO and the doctors' review green), so the name now decides only the sample women (demo) and the coordinator tool. */
   const pilotBuild = () => CFG.platform === 'android' && /pilot/i.test(String(CFG.app || ''));
   const fullTools = () => demoBuild() || pilotBuild();
   const demoHtml = () => '<h2>' + esc(t('demo_h')) + '</h2><p class="small">' + esc(t('demo_p')) + '</p><div class="grid2">' + ['priya', 'asha', 'meera', 'sunita', 'kamla'].map((id) => '<button type="button" class="btn sm" data-demo="' + id + '">' + esc(t('sample_' + id)) + '</button>').join('') + (ROUTES['docportal'] ? '<button type="button" class="btn sm" data-go="docportal">' + esc(t('demo_doc')) + '</button>' : '') + '</div><button type="button" class="btn ghost block" id="demo-welcome">' + esc(t('demo_welcome')) + '</button>';

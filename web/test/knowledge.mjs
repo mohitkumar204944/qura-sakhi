@@ -92,9 +92,9 @@ const POST = { situation: { deliveredOn: ago(20), breastfeeding: true }, events:
   check('1 the answer sheet leads with the tool too (What your diary shows), then Ask a Qura doctor', sheetBtns.indexOf('explain') >= 0 && sheetBtns.indexOf('explain') < sheetBtns.indexOf('ask'), sheetBtns);
   errsAll.push(...errs); await ctx.close();
   const tb = await open({ cfg: { app: 'test-0.39' }, hash: '#a-intimate.discharge-itching-odour' });
-  check('1 a tester build: the held-back check never shows as a tool (the guide still does)', !(await has(tb.page, '#view [data-go="intimate-check"]')) && (await has(tb.page, '#view .article [data-go="intimate"]')), await gos(tb.page, '#view .article [data-go]'));
+  check('1 a tester build (Version 39.82: nothing held back): the check shows as a tool, beside the guide', (await has(tb.page, '#view [data-go="intimate-check"]')) && (await has(tb.page, '#view .article [data-go="intimate"]')), await gos(tb.page, '#view .article [data-go]'));
   await go(tb.page, 'a-conceive.ovulation-strips-temperature-progesterone');   /* Version 39.68: the fertile-day article is gone */
-  check('1 a tester build: no fertile-days tool (fertile days are held back there)', !(await has(tb.page, '#view .article [data-go="fertile"]')));
+  check('1 a tester build: the retired fertile-day article shows no fertile-days tool (Version 39.68)', !(await has(tb.page, '#view .article [data-go="fertile"]')));
   errsAll.push(...tb.errs); await tb.ctx.close();
 }
 
@@ -212,7 +212,7 @@ for (const [name, seed, key] of [['cycle', {}, 'cycle.period-dos-and-donts'], ['
   errsAll.push(...errs); await ctx.close();
   const tb = await open({ cfg: { app: 'test-0.39' }, hash: '#help' });
   const tt = await tb.page.$$eval('#view .help-tabs [data-htab]', (xs) => xs.map((x) => x.dataset.htab));
-  check('7 a tester build keeps the symptom guide held back: only By urgency and Screening signs', JSON.stringify(tt) === JSON.stringify(['help', 'screen-signs']), tt);
+  check('7 a tester build (Version 39.82): By urgency, the symptom guide and Screening signs, as everywhere', JSON.stringify(tt) === JSON.stringify(['help', 'access-symptoms', 'screen-signs']), tt);
   errsAll.push(...tb.errs); await tb.ctx.close();
 }
 

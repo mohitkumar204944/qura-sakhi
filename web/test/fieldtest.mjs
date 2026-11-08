@@ -338,17 +338,19 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   await cleanup(Object.assign(T2, { name: '12b' }));
 }
 
-/* ---------- 13. A tester's APK holds back fertile days and the triage tools (decisions 1 and 3) ---------- */
+/* ---------- 13. A tester's APK held back fertile days and the triage tools (decisions 1 and 3); since Version 39.82 (CDSCO and the
+   doctors' review green, 8 Nov) every build has them ---------- */
 {
   const T = await open({ app: 'test-0.32', seed: { events: regular(10, 8), situation: { planning: true } } });
   const { page } = T;
-  check('13 no chance of pregnancy in a tester\'s APK', !/chance of pregnancy/i.test(await view(page)));
+  check('13 Version 39.82: a tester\'s APK shows the chance of pregnancy too', /chance of pregnancy/i.test(await view(page)));
   const tiles = await page.evaluate(() => window.Saathi.tiles ? null : null);
   await go(page, '#intimate-check');   /* Version 39.68: the self-checks are gone; the discharge check is the held-back tool */
-  check('13 a held-back tool says it is not in this version', /Not in this version/.test(await view(page)));
+  check('13 Version 39.82: the discharge check opens in a tester\'s APK (no "Not in this version")', !/Not in this version/.test(await view(page)));
   await go(page, '#care');
   const care = await page.$$eval('[data-go]', (xs) => xs.map((x) => x.dataset.go));
-  check('13 no links to held-back tools anywhere on Care', !care.some((r) => ['pattern', 'selfcheck', 'intimate-check', 'cond-labs', 'meno-score', 'midlife', 'pregtest-abortion', 'access-symptoms', 'preg-symptoms', 'pregtools-kicks', 'pregtools-contractions', 'fertile'].indexOf(r) >= 0), care);
+  await go(page, '#fertile');
+  check('13 Version 39.82: her fertile-days page is on in a tester\'s APK (never "switched off in this version")', !/switched off in this version/.test(await view(page)) && /fertile/i.test(await view(page)), (await view(page)).slice(0, 200));
   await go(page, '#explain');
   check('13 What your diary shows stays', !/Not in this version/.test(await view(page)));
   await cleanup(Object.assign(T, { name: '13' }));

@@ -663,6 +663,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     audience is 18 and over, so in a `PLAY=1` build a girl under 18 gets the safety guide only (Help, the doctor page's trusted-adult
     words, Care near me), with Back, no tab bar and no Learn pages; pilot APKs keep the reading path. Contract: MODULE_API section 124;
     wording: section 19.81 of the review (UI words only).
+  - Version 39.82 (Mohit, 8 Nov: "CDSCO is green and doctor review is also green"; production as "1.0 with everything on"): core's
+    `FERT_RELEASE` and `TRIAGE_RELEASE` are on, so release and tester builds have fertile days and every triage tool. The tests that
+    checked them held back now check they are there (knowledge, insights, fieldtest, results). MODULE_API section 125.
   - `node test/showgets.mjs` (Version 39.83, show what she gets; Mohit, 8 Nov: "Yes, build part 1", after the Clue walks; advice
     `docs/teach-and-show-advice-2026-11-08.md`, L1 to L4; mockup claude.ai/artifact/QQ7BurjQ7QVACoTbQkEG4y, Option A):
     - the report's "When it comes": her last 3 complete cycles, the 7 days before each period, the days she bled and the rest, on
@@ -737,8 +740,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - VERSION_CODE is required and may not go below the last APK built (testers' phones refuse it, and uninstalling deletes
     the diary). A missing `sakhi-prototype.keystore` stops the build: restore it from Mohit's backup; `NEW_KEYSTORE=1` only for
     a first build that no phone has.
-  - Testers get a build without "demo" (for example `0.32-test`): no sample women, no fertile days, and the triage tools held
-    back (MODULE_API section 34).
+  - Testers get a build without "demo" (for example `0.32-test`): no sample women. Since Version 39.82 (Mohit, 8 Nov: CDSCO and the
+    doctors' review green; MODULE_API section 125) every build has fertile days and the triage tools; before it, release and tester
+    builds held them back (MODULE_API section 34).
   - A pilot build (`0.33-pilot`) has every tool on, fertile days and the triage tools included, and still no sample women
     (MODULE_API section 35; Mohit's legal advice, 23 Oct). Every pilot and Play build adds
     `SAKHI_GRIEVANCE="Mohit Kumar, Trinaya Wellness LLP, E-1-121, Chitrakoot Yojna, Chitrakoot Marg, Vaishali Nagar, Jaipur, Rajasthan 302021, hello@quranutrition.com"`

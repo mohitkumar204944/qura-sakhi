@@ -8083,6 +8083,18 @@ among it), so in a Play build (`SAKHI_CONFIG.store === 'play'`, set by `PLAY=1`)
 
 Test: `web/test/playteen.mjs` (25 checks). Wording: `docs/wording-review-v28.md`, section 19.81 (UI words only).
 
+## 125. Version 39.82: every build has every tool
+
+Mohit, 8 Nov: "CDSCO is green and doctor review is also green", then "1.0 with everything on" for production. The two release
+switches in core are on: `FERT_RELEASE` (fertile days and the chance of pregnancy) and `TRIAGE_RELEASE` (the self-checks, the discharge
+check, lab results, the midlife score, the abortion weeks counter, the symptom guides, the kick counter and the labour timer). A release
+or tester build (no "demo" or "pilot" in its version name) now has everything a pilot build has. The version name decides only the sample
+women and prototype settings (demo) and the field-test coordinator's picture check (pilot, never in a Play build). Setting either switch
+back to `false` holds its tools back outside demo and pilot builds, as before.
+
+Tests that checked the held-back tools in a tester or release build now check they are there: `test/knowledge.mjs` (1, 7),
+`test/insights.mjs` (5), `test/fieldtest.mjs` (13), `test/results.mjs` (11). No new wording.
+
 ## 126. Version 39.83: show what she gets
 
 Mohit, 8 Nov, after walking a competitor's app (Clue) twice: "Clue is better at teaching and presentation and sakhi needs to level up",
