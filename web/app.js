@@ -2829,7 +2829,14 @@
           main = '<div class="hl-row">' + rb + '<div class="hl-say">' + (chance0 ? say.replace(chance0, '') : say) + '</div><button type="button" class="hl-go" data-go="diary" aria-label="' + esc(t('mini_cycle')) + '">' + I.chev + '</button></div>' + (chance0 ? '<div class="hl-x">' + chance0 + '</div>' : '') +   /* today's chance spans the card (V39.9 review FIXES-06) */
             lateRow;
         }
-        else main = twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>') + lateRow;
+        else {
+          /* Version 39.87 (the presentation audit's D1, docs/presentation-audit-2026-11-08.md): while her countdown shows, the days to
+             her period are the card's one big number, as on the plan's card (Version 39.23), and her cycle day sits in the smaller
+             ring; with no countdown (no estimate yet, a late period, discreet mode) the ring's cycle day stays the big number */
+          const cdFirst = !disc && side.indexOf('<b class="num cd-n">') >= 0;
+          main = (cdFirst ? twoCol(rb, '<div class="hero-main">' + side.replace('<p class="lead cd-lead"><b', '<p class="lead cd-lead cd-big"><b') + '</div>').replace('<div class="hero-row">', '<div class="hero-row cd-first">')
+            : twoCol(disc ? rb.replace('<div class="ringwrap"', '<div class="ringwrap" id="bignum"') : rb, '<div class="hero-main">' + side + '</div>')) + lateRow;
+        }
         const soon0 = ri && ri.from <= addDays(today(), 3) && ri.to >= today();   /* a shared phone's headline shows no dates; the week strip may */
         /* Version 39.25 (G1): why no date shows and the tap that fixes it, in place of the general note (not on a shared phone) */
         const wn = disc || shp ? null : whyNot(); if (wn) main += reasonHtml(wn);
@@ -3616,9 +3623,11 @@
     document.body.classList.toggle('has-fab', on && r === 'diary'); document.body.classList.toggle('fab-page', on);   /* Version 39.27 (R04): room under the last card wherever the + button can show */
     if (!on) { root.innerHTML = ''; return; }
     if (r !== fabR) { fabR = r; fabHid = false; }   /* Version 39.76: a new page starts with it showing */
-    root.innerHTML = '<button type="button" class="fab' + (r === 'home' ? ' away' : '') + (fabHid ? ' hid' : '') + '" id="fab" aria-expanded="false" aria-label="' + esc(t('fab_add')) + '">' + PLUS + '</button>';
+    /* Version 39.87 (the presentation audit's D5): on the Diary's Calendar too, the + waits while her own log tiles ("How do you feel
+       today?") are on screen, as on Today, so at rest it never sits on a day of the calendar under them */
+    const row = r === 'home' ? $('#view .ract-row') : (r === 'diary' ? $('#view .cal-today') : null); const waits = r === 'home' || (!!row && 'IntersectionObserver' in window);
+    root.innerHTML = '<button type="button" class="fab' + (waits ? ' away' : '') + (fabHid ? ' hid' : '') + '" id="fab" aria-expanded="false" aria-label="' + esc(t('fab_add')) + '">' + PLUS + '</button>';
     $('#fab', root).addEventListener('click', openFab);
-    const row = r === 'home' ? $('#view .ract-row') : null;
     if (row && 'IntersectionObserver' in window) {
       const tbH = Math.round(($('#topbar') || { getBoundingClientRect: () => ({ height: 0 }) }).getBoundingClientRect().height || 0);
       fabIO = new IntersectionObserver((es) => { const off = !es[0].isIntersecting && es[0].boundingClientRect.top < tbH; const f = $('#fab', root); if (f && !fabOpen) f.classList.toggle('away', !off); document.body.classList.toggle('has-fab', off); }, { rootMargin: '-' + tbH + 'px 0px 0px 0px' });
@@ -5191,7 +5200,10 @@
 
   function renderMe(v) {
     const disc = !!state.settings.discreet; const more = meRows('more');
-    const head = mem.teen || state.sample ? '' : '<div class="list">' + meRow('account', I.person, 'teal', signedIn() && acct.name ? acct.name : t('acc_h'), signedIn() ? maskPhone(acct.phone) : t('acc_card_h')) + '</div>';
+    /* Version 39.87 (the presentation audit's D3): one colour per kind of row, so the colour means something: rose for her own
+       (her account, her health details, her data), teal for her care (where she gets care, her reminders), purple for how Sakhi
+       works on her phone (privacy, language, look, how to use, about) */
+    const head = mem.teen || state.sample ? '' : '<div class="list">' + meRow('account', I.person, 'rose', signedIn() && acct.name ? acct.name : t('acc_h'), signedIn() ? maskPhone(acct.phone) : t('acc_card_h')) + '</div>';
     const su = setupCard(disc, true);   /* Version 39.2: the setup steps, here while unfinished */
     v.innerHTML = backRow(t('me_h'), 'home', false) + head + su +
       '<div class="list">' + meRow('me-privacy', I.lock, 'purple', t('discretion'), privacySummary(), 'me-privacy') +
@@ -5199,12 +5211,12 @@
         /* Version 39.28: where she gets care, in one sheet */
         (canSave() && !mem.teen ? '<button type="button" class="item" id="me-care"><span class="ico-sm hue hue-teal">' + I.steth + '</span><span class="body"><strong>' + esc(t('me_care')) + '</strong><span>' + esc(careRoute() ? t('care_' + careRoute()) : t('me_care_none')) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '') +
         /* Version 39.2 (diet audit F11): one Reminders row; her lists and the phone's alerts are inside it */
-        (canSave() && (ROUTES['tools-reminders'] || hasReminders()) ? meRow('me-reminders', I.bell, 'green', t('me_rem_one'), remOnCount() ? tf('me_rem_on', { n: remOnCount() }) : t('me_rem_one_s'), 'me-rem-list') : '') +
+        (canSave() && (ROUTES['tools-reminders'] || hasReminders()) ? meRow('me-reminders', I.bell, 'teal', t('me_rem_one'), remOnCount() ? tf('me_rem_on', { n: remOnCount() }) : t('me_rem_one_s'), 'me-rem-list') : '') +
         meRows('main') + '</div>' +
-      '<div class="list">' + meRow('me-data', I.file, 'sky', t('me_data_h'), t('me_data_s')) +
-        meRow('me-look', I.sparkle, 'orange', t('appearance'), t('theme_' + (state.settings.theme || 'light')) + ' · ' + tf('look_n', { n: (state.settings.look | 0) + 1 })) +
-        meRow('me-help', I.help, 'teal', t('howto_h'), tf('me_help_s', { n: TOURS.filter((d) => d.menu !== false && tourFits(d)).length })) +
-        meRow('me-about', I.learn, 'plum', t('me_about_h'), tf('me_version', { v: CFG.app })) + '</div>' +
+      '<div class="list">' + meRow('me-data', I.file, 'rose', t('me_data_h'), t('me_data_s')) +
+        meRow('me-look', I.sparkle, 'purple', t('appearance'), t('theme_' + (state.settings.theme || 'light')) + ' · ' + tf('look_n', { n: (state.settings.look | 0) + 1 })) +
+        meRow('me-help', I.help, 'purple', t('howto_h'), tf('me_help_s', { n: TOURS.filter((d) => d.menu !== false && tourFits(d)).length })) +
+        meRow('me-about', I.learn, 'purple', t('me_about_h'), tf('me_version', { v: CFG.app })) + '</div>' +
       (more ? '<h2>' + esc(t('me_more')) + '</h2>' + more : '') +
       (state.sample && demoBuild() ? demoHtml() : '') +
       '<div class="list me-danger"><button type="button" class="item" id="me-del"><span class="body"><strong>' + esc(t('delete_all')) + '</strong><span>' + esc(t('tm2_p')) + '</span></span></button></div><div id="me-out"></div>';

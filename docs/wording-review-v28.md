@@ -3922,3 +3922,8 @@ New line (English, then Hindi): "target: {n}" (लक्ष्य: {n}), the leg
 
 For the doctors' look: Help and safety's order. "Go to the nearest hospital now if" is right under "Not an emergency?" again
 (Version 15's order, so it is on the first screen), and "See a gynaecologist or a free government doctor" follows it.
+
+### 19.87 Version 39.87: the presentation audit's three decisions (MODULE_API section 130)
+
+No new wording. Today's card without a plan shows the days to her period as its big number, the Me page's rows take one colour per
+kind, and the + on the Diary's Calendar waits while her "How do you feel today?" tiles are on screen.

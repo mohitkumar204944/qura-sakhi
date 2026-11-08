@@ -2,8 +2,9 @@
 
 L9 of `docs/teach-and-show-advice-2026-11-08.md` (Mohit, 8 Nov: "you proceed as per your recommendations").
 
-**Status:** Version 39.86 (MODULE_API section 129, `web/test/chartlang.mjs`) builds the fixes marked "built" below, together with
-L10 (one chart language). The decisions in section 4 are Mohit's and are not built.
+**Status:** Version 39.86 (MODULE_API section 129, `web/test/chartlang.mjs`) builds the fixes in section 3, together with L10 (one
+chart language). Version 39.87 (MODULE_API section 130, `web/test/auditdecide.mjs`) builds decisions D1, D3 and D5 (Mohit, 8 Nov:
+"also do The audit's three decisions as per your recommendations").
 
 ## 1. How it was done
 
@@ -74,20 +75,23 @@ Measured and fine everywhere: no animation loops on any first screen. The empty 
     colours stay in print.
 - **Taps:** unchanged. Nothing was added that she has to tap: no screen, step or button.
 
-## 4. Decisions for Mohit (not built)
+## 4. Decisions for Mohit (D1, D3 and D5 built in Version 39.87)
 
 - **D1. Today with no plan: one big number.** The ring's cycle day is 42 px and the days to her period 34 px. Once a plan runs, the
   days to her period is the biggest (50 px) and the cycle day sits in the small ring. Recommend the same for the no-plan card: the
   days to her period biggest, the cycle day in the ring at the plan card's size. That gives one focal point, the number most women
-  open a period app for. Not built, because Version 39.23's card came from an approved mockup.
+  open a period app for. **Built in Version 39.87:** while her countdown shows; otherwise the ring's cycle day stays big. The card got
+  shorter too, so "How do you feel today?" now starts on the first screen.
 - **D2. Three type voices.** The serif titles, the handwritten section heads (What repeats for you, My cycles, the month) and the
   sans text. Recommend keeping them as they are and adding no fourth. Observation only.
 - **D3. Rows that each take their own colour (Me).** That is colour without meaning. Recommend one colour per kind of row (her
-  data, care, settings) or the page's one accent. Not built: it changes how the palette is used (Mohit, 30 Oct: the colour scheme
-  stays).
+  data, care, settings) or the page's one accent. **Built in Version 39.87:** rose for her own, teal for her care, purple for how Sakhi
+  works on her phone. The colours are the same palette.
 - **D4. My plan's two play-button styles.** The dark one means night (Wind down). Keep.
-- **D5. The + over a calendar day while she isn't scrolling.** It steps aside when she scrolls (Version 39.76). A little room under
-  the calendar would clear it. Small; not built.
+- **D5. The + over a calendar day while she isn't scrolling.** It steps aside when she scrolls (Version 39.76). The first wording here
+  ("a little room under the calendar") was wrong: the pages with the + already keep 168 px under their last card. **Built in Version
+  39.87:** on the Diary's Calendar the + waits while her "How do you feel today?" tiles are on screen, as Today's + waits for its log
+  row, so at rest it sits on no day.
 
 ## 5. Measure again
 

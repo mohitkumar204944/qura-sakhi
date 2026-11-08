@@ -161,6 +161,7 @@ const around = (starts, keys) => { const o = {}; starts.forEach((s) => { o[ago(s
   const lk = await a.page.$$eval('#sheet-root [data-daily]', (b) => b.map((x) => x.dataset.daily));
   await a.page.evaluate(() => { document.getElementById('sheet-root').innerHTML = ''; });
   check('3 the Diary\'s strip and the period sheet ask the same 5 as Home', sk.join() === FIVE.join() && lk.join() === FIVE.join(), { sk, lk });
+  await tab(a.page, 'tr');   /* Version 39.87 (the audit's D5): on the Diary's Calendar the + waits while her log tiles show, so the + menu opens from the Cycles tab */
   await tap(a.page, '#fab');
   const fab = await a.page.$$eval('.fab-it .fl', (b) => b.map((x) => x.innerText.trim()));
   check('3 the + menu: one "How I feel" for Symptoms and Mood (4 doors)', fab.length === 4 && fab.indexOf('How I feel') >= 0 && fab.indexOf('Symptoms') < 0 && fab.indexOf('Mood') < 0, fab);

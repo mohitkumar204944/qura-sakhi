@@ -243,7 +243,8 @@ try {
   await tap(a.page, '#pst-pstop'); await go(a.page, 'checkin'); await settle(a.page, 300);
   const r3 = await hits(a.page, ['#ci-save']);
   check('4.3 ... and the check-in\'s Save', allOk(r3), r3);
-  await go(a.page, 'diary'); await tap(a.page, '#fab'); await settle(a.page, 300);
+  await go(a.page, 'diary'); await a.page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(a.page, 300);   /* Version 39.87 (the audit's D5): on the Diary's Calendar the + waits while her log tiles show, so the + menu opens from the Cycles tab */
+  await tap(a.page, '#fab'); await settle(a.page, 300);
   const r4 = await a.page.evaluate(() => [...document.querySelectorAll('.fab-it')].map((b) => { const r = b.getBoundingClientRect(); const e = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return { t: b.innerText.trim(), ok: !!e && (e === b || b.contains(e)) }; }));
   check('4.4 ... and every row of the open + menu (its Close sat on "Period started")', allOk(r4), r4);
   await done(a);

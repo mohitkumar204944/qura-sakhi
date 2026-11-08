@@ -8253,3 +8253,30 @@ unchanged. One home: the charts' numbers moved onto the charts (the gap and peri
 
 Test: `web/test/chartlang.mjs` (44 checks, English and Hindi at 360 px). Wording: `docs/wording-review-v28.md`, section 19.86 (one UI
 label).
+
+## 130. Version 39.87: the presentation audit's three decisions
+
+Mohit, 8 Nov: "also do The audit's three decisions as per your recommendations" (`docs/presentation-audit-2026-11-08.md`, section
+4). No new words.
+
+**D1. Today without a plan: one big number.** While her countdown shows (`cd-n`, not in discreet mode), the card's row is
+`.hero-row.cd-first`: the days to her period at 50 px in the display face (`.cd-big`, as the plan's card, Version 39.23) and her cycle
+day in the ring at the plan card's size (88 px, 30 px, a 13 px label). With no countdown (no estimate yet, a late period, discreet
+mode's `#bignum`) the ring's cycle day stays the big number; the plan's one-row card is unchanged. The narrower ring gives the words
+more room, so the card is shorter and "How do you feel today?" starts on the first screen at 360 x 800.
+
+**D3. Me: one colour per kind of row.** Rose for her own (her account, her health details, her data), teal for her care (where she
+gets care, her reminders), purple for how Sakhi works on her phone (privacy, language and read-aloud, look, how to use Sakhi, about;
+the lang module's row takes `hue-purple`). The colour now says what kind of row it is.
+
+**D5. The Diary's Calendar: the + waits while her log tiles show.** The audit's first wording ("a little room under the calendar")
+was wrong: pages with the + already keep 168 px under their last card (Version 39.27). What sat on a day was the + at rest on the
+first screen. Now `renderFab` treats the Diary's `.cal-today` card (her "How do you feel today?" tiles) as Today treats its log row:
+the + starts `away` and comes once the card has scrolled above the top bar (an IntersectionObserver; without one it shows as before).
+The Cycles and Days tabs, which have no such card, keep it showing; Version 39.76's away-while-scrolling-down still applies.
+
+**Minimal baseline.** Nothing new to tap, read or answer; the taps are unchanged (her log tiles are on the Diary's first screen, so
+the + isn't needed there).
+
+Test: `web/test/auditdecide.mjs` (25 checks, English and Hindi at 360 x 800). Updated: daynote 3, playfix 2.4 and 4, and launchfix 4.4
+open the + from the Diary's Cycles tab, where it shows at once. Wording: none (review section 19.87 notes it).

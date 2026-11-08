@@ -698,6 +698,13 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - the report's "When it comes" with each sign's picture in its kind's colour, kept in print.
     The walk behind it (not pass/fail): `node test/present-walk.mjs [dir] [name]` (72 first screens and their measures to
     `test/shots/present-walk/<name>/`). Contract: MODULE_API section 129; wording: section 19.86 of the review (one UI label).
+  - `node test/auditdecide.mjs` (Version 39.87, the audit's three decisions; Mohit, 8 Nov: "also do The audit's three decisions as per
+    your recommendations"):
+    - Today without a plan: while her countdown shows, the days to her period are the one big number and her cycle day sits in the
+      plan card's smaller ring;
+    - Me: one colour per kind of row (rose her own, teal her care, purple how Sakhi works on her phone);
+    - the Diary's Calendar: the + waits while her "How do you feel today?" tiles are on screen, as on Today.
+    Contract: MODULE_API section 130 (no new wording).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

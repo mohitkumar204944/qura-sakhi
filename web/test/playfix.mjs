@@ -131,6 +131,7 @@ async function signUp(page) {
   await a.page.$eval('#sheet-root .handle', (b) => b.click()); await settle(a.page, 300);
   const down = await a.page.evaluate(() => ({ sheet: !!document.querySelector('#sheet-root .sheet'), inert: document.getElementById('app').inert, hid: document.getElementById('app').getAttribute('aria-hidden') }));
   check('2.3 Close shuts it, and the page is back', !down.sheet && down.inert === false && down.hid === null, down);
+  await a.page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(a.page, 300);   /* Version 39.87 (the audit's D5): on the Diary's Calendar the + waits while her log tiles show, so the + menu opens from the Cycles tab */
   await tap(a.page, '#fab');
   const fm = await a.page.evaluate(() => ({ menu: !!document.querySelector('.fab-menu'), inert: document.getElementById('app').inert, fab: document.getElementById('fab-root').inert }));
   await tap(a.page, '#fab');
@@ -175,7 +176,8 @@ async function signUp(page) {
 /* ---------- 4. The + button out of the way while she scrolls down ---------- */
 {
   const a = await open({ seed: pmos(3, did(1)), hash: '#diary', w: 360, h: 640 });
-  const vis0 = await a.page.$eval('#fab', (f) => !f.classList.contains('hid'));
+  await a.page.evaluate(() => { window.Saathi.mem.diaryTab = 'tr'; window.Saathi.render(); }); await settle(a.page, 300);   /* Version 39.87 (the audit's D5): on the Diary's Calendar the + waits while her log tiles show, so this runs on the Cycles tab, where it shows */
+  const vis0 = await a.page.$eval('#fab', (f) => !f.classList.contains('hid') && !f.classList.contains('away'));
   await a.page.evaluate(() => window.scrollTo(0, 120)); await settle(a.page, 200); await a.page.evaluate(() => window.scrollTo(0, 420)); await settle(a.page, 300);
   const hid = await a.page.$eval('#fab', (f) => f.classList.contains('hid'));
   await a.page.evaluate(() => window.scrollTo(0, 240)); await settle(a.page, 300);

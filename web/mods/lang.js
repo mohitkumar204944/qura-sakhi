@@ -778,7 +778,7 @@
       }
     },
     /* Version 39.2 (diet audit F15): an अ/A mark, and the row's name in English and Hindi, so the wrong language can't hide it */
-    me: () => '<div class="list"><button type="button" class="item" data-go="lang"><span class="ico-sm lang-aa" aria-hidden="true">अ/A</span><span class="body"><strong>' + esc(t('lang_tile')) + (S.state.lang === 'en' ? ' · भाषा' : ' · Language') + '</strong><span>' +
+    me: () => '<div class="list"><button type="button" class="item" data-go="lang"><span class="ico-sm hue hue-purple lang-aa" aria-hidden="true">अ/A</span><span class="body"><strong>' + esc(t('lang_tile')) + (S.state.lang === 'en' ? ' · भाषा' : ' · Language') + '</strong><span>' +
       esc(tf('lang_me_s', { lang: S.langMeta(S.state.lang).name || S.state.lang, speed: t('lang_' + rateKey()) })) + '</span></span><span class="chev">' + S.I.chev + '</span></button></div>'
   });
 })(window.Saathi);
