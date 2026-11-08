@@ -51,7 +51,9 @@ const card = (page, sel) => page.$eval(sel, (e) => e.innerText).catch(() => '');
 const tab = async (page, k) => { await go(page, 'diary'); await page.$eval('[data-tab="' + k + '"]', (b) => b.click()); await sleep(250); };
 const P = (page) => page.evaluate(() => { const S = window.Saathi; const p = S.cycle.predict(); const iso = (d) => (d ? S.toISO(d) : null); return p && { next: iso(p.next), daysTo: p.daysTo, plen: p.plen, ov: p.fert && iso(p.fert.ov), fw: p.fert && [iso(p.fert.fwFrom), iso(p.fert.fwTo)] }; });
 /* the calendar month holding a date, with its cells' classes */
+/* the calendar for isoD's month; it waits until that month is drawn (one page shows one month, so read months one at a time) */
 const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = window.Saathi; S.mem.calMonth = d.slice(0, 8) + '01'; S.mem.diaryTab = 'cal'; location.hash = 'diary'; S.render(); }, isoD); await sleep(250);
+  await page.waitForFunction((m) => !!document.querySelector('.cal .day[data-day^="' + m + '"]'), isoD.slice(0, 7), { timeout: 3000 }).catch(() => {});
   return page.$$eval('.cal .day[data-day]', (cs) => cs.map((c) => ({ d: c.dataset.day, cls: c.className, aria: c.getAttribute('aria-label') }))); };
 
 /* ---------- 1. Home: the countdown, the likely range, today's phase and chance ---------- */
@@ -79,7 +81,9 @@ const calCells = async (page, isoD) => { await page.evaluate((d) => { const S = 
   const ovCell = ovMonth.find((c) => c.d === p.ov);
   check('2 the ovulation day is marked, and named for a screen reader as an estimate', !!ovCell && /\bov\b/.test(ovCell.cls) && /ovulation, an estimate/.test(ovCell.aria), ovCell);
   const fwDays = []; for (let d = new Date(p.fw[0] + 'T12:00:00'); d <= new Date(p.fw[1] + 'T12:00:00'); d.setDate(d.getDate() + 1)) fwDays.push(d.toISOString().slice(0, 10));
-  const fwMarked = (await Promise.all([...new Set(fwDays.map((d) => d.slice(0, 7)))].map((m) => calCells(page, m + '-01')))).flat().filter((c) => /\bfw\b/.test(c.cls) || /\bov\b/.test(c.cls)).map((c) => c.d).filter((d) => fwDays.indexOf(d) >= 0);
+  /* one month after the other: read at the same time, both reads saw the last month drawn (it failed whenever the window crossed a month) */
+  const fwCells = []; for (const m of [...new Set(fwDays.map((d) => d.slice(0, 7)))]) fwCells.push(...(await calCells(page, m + '-01')));
+  const fwMarked = fwCells.filter((c) => /\bfw\b/.test(c.cls) || /\bov\b/.test(c.cls)).map((c) => c.d).filter((d) => fwDays.indexOf(d) >= 0);
   check('2 the 6-day fertile window is marked (5 days, then ovulation)', fwMarked.length === 6, { fwDays, fwMarked });
   const nextMonth = await calCells(page, p.next);
   const pred = nextMonth.filter((c) => /\bpred\b/.test(c.cls)).map((c) => c.d);
