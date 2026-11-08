@@ -8280,3 +8280,26 @@ the + isn't needed there).
 
 Test: `web/test/auditdecide.mjs` (25 checks, English and Hindi at 360 x 800). Updated: daynote 3, playfix 2.4 and 4, and launchfix 4.4
 open the + from the Diary's Cycles tab, where it shows at once. Wording: none (review section 19.87 notes it).
+
+## 131. Version 39.88: the articles' subheads, in their own words
+
+Mohit, 8 Nov: "Proceed with your recommendation" (the last part of L7, `docs/teach-and-show-advice-2026-11-08.md`). No new words: the
+articles' structure, shown.
+
+**Core `artPara(p, next)` and `artLab(s)`, in `renderArticle`'s body.**
+- A line of its own that leads into a list (it ends with ":", is one sentence of at most 90 characters, and the next line is a "- "
+  bullet) shows as a heading (`h2.art-h`), without its colon: "What helps at home", "Common reasons", "Do", "Avoid", "Worth knowing",
+  "घर पर क्या मदद करता है". 15 headings across the library.
+- A short label (up to 6 words) that opens a paragraph, a bullet or a sentence shows in bold: "Why it matters:", "What to do this
+  week:", "Myth:" and "Truth:", "Heat:", "Weeks 1 to 12:", "सच:". 104 in English, 101 in Hindi. A longer opening phrase before a colon
+  stays plain.
+- A line that starts with "## " is a subhead the doctors approved (as "- " is a bullet). None yet. `web/tools/add-subhead.mjs
+  <group.id> <paragraph> "<English>" "<Hindi>"` adds one in both languages and moves the article's doctor-route paragraphs (keyed by
+  position, `doc.body_en`, `doc.body_hi`) with their text; then the doctors' check is stamped again (it changes the words she reads).
+- The words on the page are the content, word for word (only a heading's colon goes), so every "Checked by doctors" stamp holds.
+  Listen reads the headings as text.
+
+**Left for the doctors:** one long article has no lead-ins of its own, "The first six weeks after birth"; its title names its parts,
+so review section 19.88 proposes "Your ASHA", "Your body" and "Your mood" from it.
+
+Test: `web/test/subheads.mjs` (25 checks: every article, English and Hindi, word for word).

@@ -4874,6 +4874,18 @@
   const artPic = (key) => { const x = ART_PIC[key]; if (!x || !api.art || !api.art.body) return ''; const C0 = 'cycle.what-is-a-menstrual-cycle';
     if (x[0] === 'steps') return '<div class="bn-steps art-pic" data-noread="1">' + [['build', 1], ['egg', 2], ['period', 3]].map((y) => '<div>' + api.art.body(y[0], artSent(C0, 1, y[1])) + '</div>').join('') + '</div>';
     return '<div class="art-pic" data-noread="1">' + api.art.body(x[0], artSent(key, x[1], x[2])) + '</div>'; };
+  /* Version 39.88 (L7's subheads, in the articles' own words; MODULE_API section 131): a line of its own that leads into a list
+     ("What helps at home:", "Do:", "घर पर क्या मदद करता है:") shows as a heading; a short label of up to 6 words that opens a
+     paragraph or a sentence ("Why it matters:", "Myth:", "Truth:", "सच:") shows in bold; a line that starts with "## " is a
+     subhead the doctors have approved (as "- " is a bullet). Nothing else changes, so the doctors' stamp still holds. */
+  const artLab = (s) => esc(s).replace(/(^|[.?!।]\s+)([^\s.:?!।'‘’"(][^.:?!।]{0,38}?):(?=\s)/g, (m, pre, l) => (l.trim().split(/\s+/).length <= 6 ? pre + '<strong>' + l + ':</strong>' : m));
+  const artPara = (p, next) => {
+    if (p.startsWith('## ')) return '<h2 class="art-h">' + esc(p.slice(3)) + '</h2>';
+    if (p.startsWith('- ')) return '<p class="bullet">' + artLab(p.slice(2)) + '</p>';
+    const q = p.trim();
+    if (/:$/.test(q) && q.length <= 90 && !/[.?!।]\s/.test(q) && next && next.startsWith('- ')) return '<h2 class="art-h">' + esc(q.slice(0, -1)) + '</h2>';
+    return '<p>' + artLab(p) + '</p>';
+  };
   function renderArticle(v, key) {
     const a = findArticle(key); if (!a) { v.innerHTML = '<div class="card"><p>' + esc(t('loading')) + '</p><button type="button" class="btn sm" data-go="learn">' + esc(t('learn')) + '</button></div>'; wire(v); return; }
     /* Version 39.77: by the article's group (Mohit's choices): Qura's areas get "How Qura can help" in his words and no free government
@@ -4882,7 +4894,7 @@
     const dw = docWho('learn-' + a.group); const u18 = key === 'cycle.first-periods-for-teens' || key === 'services.under-18-daughter-sister';
     const keep = dw === 'G' && !u18 ? careSentences(L(a, 'qura_line')) : [];   /* its box goes, its safety lines stay */
     const body = key === PRIVACY_ART ? privacyBody(a) : (L(a, 'body') || []); const sd = (L(a, 'see_doctor') || []).filter((x) => u18 || dw !== 'Q' || !/^(Free|मुफ़्त)/.test(x)).concat(keep); const ql = dw === 'G' || key === 'services.how-qura-helps' ? '' : (u18 ? L(a, 'qura_line') : (L(a, 'qura_line') ? t('qura_std') : ''));   /* How Qura helps says it in its own words */ const at = artTools(key);
-    v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1>' + reviewedLine(a) + '<div class="in-short"><span class="eyebrow">' + esc(t('in_short')) + '</span><p class="lead">' + esc(L(a, 'summary')) + '</p></div>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p, i) => (p.startsWith('- ') ? '<p class="bullet">' + esc(p.slice(2)) + '</p>' : '<p>' + esc(p) + '</p>') + (ART_PIC[key] && ART_PIC[key][1] === i ? artPic(key) : '')).join('') + '</div>' +
+    v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1>' + reviewedLine(a) + '<div class="in-short"><span class="eyebrow">' + esc(t('in_short')) + '</span><p class="lead">' + esc(L(a, 'summary')) + '</p></div>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p, i) => artPara(p, body[i + 1]) + (ART_PIC[key] && ART_PIC[key][1] === i ? artPic(key) : '')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
       (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +

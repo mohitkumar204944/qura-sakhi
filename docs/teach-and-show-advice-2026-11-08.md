@@ -8,7 +8,8 @@ your recommendations": part 2 (L5, L6) is Version 39.84 (MODULE_API section 127,
 separate mockup (its screens are the real app's). Part 3's L7 is Version 39.85 (MODULE_API section 128, `web/test/learnpage.mjs`);
 L8, the recorded voice, waits for Mohit's OK (it runs on his paid voice account). Part 4 (L9's audit, `docs/presentation-audit-2026-11-08.md`,
 and L10) is Version 39.86 (MODULE_API section 129, `web/test/chartlang.mjs`); the audit's decisions D1, D3 and D5 are Version 39.87
-(MODULE_API section 130, `web/test/auditdecide.mjs`); D2 and D4 stay as they are.
+(MODULE_API section 130, `web/test/auditdecide.mjs`); D2 and D4 stay as they are. L7's subheads are Version 39.88 (MODULE_API
+section 131): the articles' own lead-ins and labels; three proposed subheads for one article wait for the doctors (review 19.88).
 
 ## 0. In one paragraph
 

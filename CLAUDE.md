@@ -705,6 +705,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     - Me: one colour per kind of row (rose her own, teal her care, purple how Sakhi works on her phone);
     - the Diary's Calendar: the + waits while her "How do you feel today?" tiles are on screen, as on Today.
     Contract: MODULE_API section 130 (no new wording).
+  - `node test/subheads.mjs` (Version 39.88, the articles' subheads in their own words; Mohit, 8 Nov: "Proceed with your recommendation"):
+    a lead-in line before a list ("What helps at home:") shows as a heading and a short opening label ("Why it matters:", "Myth:") in
+    bold, with every word unchanged, so the doctors' stamps hold; a "## " line is a subhead the doctors approved, added with
+    `node web/tools/add-subhead.mjs` (it moves the doctor-route paragraphs too), then stamped again. Contract: MODULE_API section 131;
+    review section 19.88 (no new wording; three proposed subheads for the doctors).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

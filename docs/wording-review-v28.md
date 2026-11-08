@@ -3927,3 +3927,16 @@ For the doctors' look: Help and safety's order. "Go to the nearest hospital now 
 
 No new wording. Today's card without a plan shows the days to her period as its big number, the Me page's rows take one colour per
 kind, and the + on the Diary's Calendar waits while her "How do you feel today?" tiles are on screen.
+
+### 19.88 Version 39.88: the articles' subheads, in their own words (MODULE_API section 131)
+
+No new wording. The articles' own lead-in lines (for example "What helps at home:") now show as headings, and their short opening
+labels (for example "Why it matters:", "Myth:", "Truth:") in bold. The words are unchanged, so the "Checked by doctors" stamps hold.
+
+For the doctors (proposed, not shown until approved): "The first six weeks after birth: your body, your mood, your ASHA" is the one
+long article with no lead-ins. Subheads from its own title, placed in its own order:
+- "Your ASHA" (आपकी ASHA), before "The ASHA comes on days 3, 7, 14, 21, 28 and 42…";
+- "Your body" (आपका शरीर), before "Bleeding for up to about 6 weeks is normal…";
+- "Your mood" (आपका मन), before "Tears and feeling flat in the first two weeks is common…".
+Once approved: `node web/tools/add-subhead.mjs pregnancy.after-birth-first-six-weeks 5 "Your mood" "आपका मन"`, then 3 "Your body",
+then 2 "Your ASHA" (the last paragraph first, so the numbers hold), and stamp the article again with the month of the check.
