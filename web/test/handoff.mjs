@@ -236,7 +236,8 @@ const server = (o) => (m, p, b) => {
   await W.page.$$eval('[data-ac-sec]', (xs) => xs.forEach((c) => { c.checked = true; c.dispatchEvent(new Event('change')); })); await settle(W.page, 500);
   const all = await W.page.$$eval('#ac-preview li', (xs) => xs.map((x) => x.innerText));
   check('10 the app\'s own "see a doctor" flags, checklists, reminders and the catch-all question stay on her phone', all.length > 10 && !all.some((l) => /What your diary shows|checklist|Next: |keep an eye on|Days logged|No score, no diagnosis/.test(l)), all);
-  check('10 her symptoms come as one line, her top five', all.filter((l) => /^Cramps: 5 days · Acne: 3 days/.test(l)).length === 1);
+  /* Version 39.83: with 2 complete cycles with notes, her symptoms are her report's "When it comes", a line a sign */
+  check('10 her symptoms come a line a sign, her top five, as her report\'s "When it comes"', all.filter((l) => /^(Cramps|Bloating|Acne|Low mood|Tired): (1 day|\d+ days) before my period, \d+ during, \d+ other$/.test(l)).length === 5 && all.includes('Cramps: 0 days before my period, 4 during, 0 other') && all.includes('Bloating: 1 day before my period, 1 during, 0 other'), all);
   check('10 each check-in sign once, with in how many months', all.includes('Coarse dark hair on lip, chin, chest, belly or back: 3 of 3 months') && !all.some((l) => /^July 2026/.test(l)));
   check('10 the clinical tools go whole, one fact a line: results, medicines, trying since, the cycle pattern', all.includes('My lab results: TSH: 3.1 mIU/L (10 Sept 2026; Report range 0.27–4.2)') && all.some((l) => /^Current medicines: Metformin/.test(l)) && all.some((l) => /^Trying for a baby: Trying since/.test(l)) && all.some((l) => /^Mood and body through your cycle: Most logged in the 7 days before a period/.test(l)) && !all.some((l) => /…$/.test(l)));
   await go(W.page, '#report');

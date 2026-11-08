@@ -663,6 +663,14 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     audience is 18 and over, so in a `PLAY=1` build a girl under 18 gets the safety guide only (Help, the doctor page's trusted-adult
     words, Care near me), with Back, no tab bar and no Learn pages; pilot APKs keep the reading path. Contract: MODULE_API section 124;
     wording: section 19.81 of the review (UI words only).
+  - `node test/showgets.mjs` (Version 39.83, show what she gets; Mohit, 8 Nov: "Yes, build part 1", after the Clue walks; advice
+    `docs/teach-and-show-advice-2026-11-08.md`, L1 to L4; mockup claude.ai/artifact/QQ7BurjQ7QVACoTbQkEG4y, Option A):
+    - the report's "When it comes": her last 3 complete cycles, the 7 days before each period, the days she bled and the rest, on
+      What repeats for you's gate (`patOn`, `timing()`; 7 days, the clinical week, as the PMS log's summary), in place of the 90-day counts (key `symptoms` kept for the share);
+    - Me > Reminders shows what her phone shows: nothing on the lock screen, then her next reminder as booked (`notifPreview`);
+    - examples while she waits: the empty report's "See an example", and one example line for What repeats for you;
+    - the toast after a log says when that sign usually comes for her, on a day that fits (`patFit`).
+    Contract: MODULE_API section 126; wording: section 19.83 of the review (UI words only).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

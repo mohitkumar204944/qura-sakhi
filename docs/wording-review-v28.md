@@ -3837,3 +3837,29 @@ New line (English, then Hindi), on the under-18 page of a Play build in place of
   है।)
 
 Gone from that page in a Play build: the Learn button, the guides for girls and "Learn pages for teens are education only."
+
+### 19.83 Version 39.83: show what she gets (MODULE_API section 126)
+
+Part 1 of `docs/teach-and-show-advice-2026-11-08.md` (Mohit, 8 Nov: "Yes, build part 1", after the Clue walks). **UI words only; no
+health line changes.** The pattern words in the toast and the example are What repeats for you's own (`pat_*`); the example report's
+questions are the report's own.
+
+New lines (English, then Hindi):
+- The report's table:
+  - "When it comes (my last {n} cycles)" (यह कब होता है (मेरे पिछले {n} चक्र))
+  - its columns: "Days noted" (नोट किए दिन), "Before my period" (पीरियड से पहले), "During my period" (पीरियड के दिनों में), "Other days"
+    (बाकी दिन)
+  - "{a} to {b}: the {k} days before each period, the days I bled, and the rest." ({k} is 7) ({a} से {b}: हर पीरियड से पहले के {k} दिन, ब्लीडिंग के
+    दिन, और बाकी दिन।)
+  - "This cycle so far (from {d}): {l}" (यह चक्र अब तक ({d} से): {l})
+  - for Share and Copy: "{s}: {b} before my period, {p} during, {o} other", {b} being "1 day" or "{n} days" ({s}: पीरियड से पहले {b},
+    पीरियड में {p}, बाकी {o})
+- The example:
+  - "See an example" (उदाहरण देखें)
+  - "Made-up entries, to show what your report will look like." (बनाई हुई एंट्री, यह दिखाने के लिए कि आपकी रिपोर्ट कैसी दिखेगी।)
+- What her phone shows (Me > Reminders):
+  - "What your phone shows" (आपके फ़ोन पर क्या दिखता है)
+  - "On your lock screen: nothing" (लॉक स्क्रीन पर: कुछ नहीं)
+  - "When your phone is open, your next reminder ({w}) shows as:" (फ़ोन खुला होने पर आपका अगला रिमाइंडर ({w}) ऐसा दिखता है:)
+  - "When your phone is open, a reminder shows as:" (फ़ोन खुला होने पर रिमाइंडर ऐसा दिखता है:)
+- The toast after a log: "{s} noted · {w}" ({s} दर्ज · {w}), e.g. "Cramps noted · usually from the first day of your period".

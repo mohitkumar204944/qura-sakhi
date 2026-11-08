@@ -1091,6 +1091,19 @@ button.joy-mo { border: 0; font: inherit; color: inherit; cursor: pointer; width
 .ex-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; opacity: 0.45; }
 .ex-tiles > div { display: flex; flex-direction: column; background: var(--card-2); border-radius: 14px; padding: 10px 12px; }
 .ex-tiles b { font-size: 24px; font-weight: 600; color: var(--fg); line-height: 1.2; } .ex-tiles span { font-size: 13px; color: var(--muted); }
+/* Version 39.83 (MODULE_API section 126): the report's "When it comes" table, the examples, and what her phone shows */
+.rp-tm th { vertical-align: bottom; }
+.rp-tm th:not(:first-child), .rp-tm td:not(:first-child) { text-align: right; padding-left: 8px; }
+.rp-tm td b { font-weight: 700; }
+.pat-ex-l { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.rp-ex { gap: 12px; }
+.np-card { gap: 8px; } .np-card h3 { margin: 0; }
+.np-lock { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--fg); font-weight: 600; }
+.np-lk { display: inline-flex; color: var(--accent); } .np-lk svg { width: 18px; height: 18px; }
+.np-note { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; box-shadow: var(--shadow); }
+.np-ico { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.np-ico svg { width: 16px; height: 16px; }
+.np-txt { display: flex; flex-direction: column; min-width: 0; font-size: 14px; } .np-txt b { color: var(--fg); } .np-txt span { color: var(--text); }
 /* the quick-log circles at 44 px inside the cycle headline (Version 39.23) */
 .ract-row.compact { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }   /* V39.9 review: one line per label */ .ract-row.compact .ract { gap: 4px; font-size: 12px; } .ract-row.compact .ract .rico { width: 44px; height: 44px; border-radius: 22px; } .ract-row.compact .ract .rico svg { width: 22px; height: 22px; }
 .pl-pic-row { align-items: flex-start; }

@@ -8082,3 +8082,55 @@ among it), so in a Play build (`SAKHI_CONFIG.store === 'play'`, set by `PLAY=1`)
 - Pilot and demo APKs are unchanged: the safety guide, the Learn pages and the guides for girls.
 
 Test: `web/test/playteen.mjs` (25 checks). Wording: `docs/wording-review-v28.md`, section 19.81 (UI words only).
+
+## 126. Version 39.83: show what she gets
+
+Mohit, 8 Nov, after walking a competitor's app (Clue) twice: "Clue is better at teaching and presentation and sakhi needs to level up",
+then "Yes, build part 1" of `docs/teach-and-show-advice-2026-11-08.md` (L1 to L4; the report option A of the mockup at
+claude.ai/artifact/QQ7BurjQ7QVACoTbQkEG4y). UI words only; nothing waits for the doctors. (Version 39.82 is the Play session's: fertile
+days and the triage tools in every build.)
+
+**L1. The report's "When it comes" (core `timing()`, `tmGrid`, `reportParts`).**
+- One gate with What repeats for you: `patOn()` (her stage is cycle, trying or midlife; `countsOff()`, periods stopped and a
+  hysterectomy say no), now shared by `patterns()`.
+- Her last `TM_N` (3) complete cycles: gaps `gapsAll()` counts (`usable`: two starts she logged, none guessed, none inside a pregnancy,
+  the year after a birth or hormones). Each cycle's days go to one column: her bleeding days (`bleedingDays()`, start or bleed), the
+  `TM_BEFORE` (7) days before the next start, or the rest. Seven, not What repeats for you's 8: the report is for a doctor, and the
+  clinical week before a period (DSM-5's "final week" for PMDD) is also the window of the PMS log's summary in the same report. Calm, happy and okay never count
+  (`TM_SKIP`), as in the report's counts.
+- With 2 or more such cycles and a sign noted in them, the part keeps its key `symptoms` (the doctor-call share and Qura's side are
+  unchanged) and carries `grid` (a row per sign, up to 8, by total), `tlines` (a line per sign for Share, Copy and the call share; `k_day1`/`k_days` for the days before),
+  and `note` (the dates line, and "This cycle so far (from {d})" with up to 4 signs since her last start). Otherwise it is the
+  90-day counts as before. One home: never both.
+- The table: four columns (`rp_tm_c0` to `rp_tm_c3`), numbers right-aligned, the leading column in bold only when one column leads
+  (no colour). Big letters and the PDF use the same table (`.rp-table`).
+- `doctorLines`: a `symptoms` part with a grid sends its first 5 `tlines`, a line each, then its `note` lines (the dates, and this
+  cycle so far, so her recent signs still reach the doctor as the 90-day counts did).
+
+**L2. What her phone shows (core `notifPreview()` on Me > Reminders).**
+- Only with phone reminders on and a bridge that books them (`hasReminders()`).
+- "On your lock screen: nothing" (Android books every reminder as `VISIBILITY_SECRET`, `ReminderReceiver.post`), then her next
+  reminder as `buildNotifs()` builds it for the phone: its title (`notifBrand()`) and words (`notifWords`, discreet mode's
+  `d_reminder`), with its day and time (`hmWords`). With nothing booked, the plain example words.
+- "Show what each reminder is about" now re-renders, so the preview follows it. The Start card keeps its own line ("Nothing shows on
+  the lock screen"); the preview lives only here.
+
+**L3. Examples while she waits.**
+- The report with nothing to show: "See an example" (`#rp-ex`, not in big letters) opens `openReportExample()`, a sheet with made-up
+  entries marked `ex_tag` and `rp_ex_p`, built from data in the function: her diary is never read or written.
+- What repeats for you while it waits (fewer than 3 periods with notes): `patExLine()`, "Example · Cramps · usually from the first day
+  of your period", on Cycles' "What Sakhi can tell you" row (`knowCard`, `row(..., extra)`), or on the waiting card itself where that
+  card isn't shown (midlife). Gone once it is ready.
+
+**L4. The toast speaks from her pattern (core `patFit()` in `notedToast`).**
+- When the sign she just added is in `patterns().list` and the day fits it within a day: for a sign that comes on her period, counted
+  from the start she logged before it; for one before her period, counted back from the next start, logged, or Sakhi's own date
+  (`predictInfo()`, not late, never on hormones or in midlife). Never a guessed start.
+- The toast says `noted_pat` ("{sign} noted · {when}", the `pat_*` words) and keeps What helps. The count stays on the card (one home).
+- Never in discreet mode or on a shared phone, and not when she can't save.
+
+**Minimal baseline.** Nothing new on Today; no new screen before her first step; no question; no ring (L2 only shows what already
+rings); no tour, tip or celebration; one home kept for each fact (the table replaces the counts; the toast leaves the count to the
+card; the preview isn't repeated on the Start card).
+
+Test: `web/test/showgets.mjs` (62 checks). Wording: `docs/wording-review-v28.md`, section 19.83 (UI words only).
