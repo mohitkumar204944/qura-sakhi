@@ -9,7 +9,8 @@
 //     (or SAKHI_SDK_DIR for another folder; an SDK in the repo's node_modules is used first)
 //   - the prototype's key, never on a command line or in a file in this repo: ANTHROPIC_API_KEY in the environment, or a file
 //     outside the repo (default ~/.config/sakhi/anthropic-key, or SAKHI_ANTHROPIC_KEY_FILE). It is never printed or logged.
-// Usage: node server/scripts/chat-eval.mjs --go [--out <file.md>] [--only 1,8,30]
+// Usage: node server/scripts/chat-eval.mjs --go [--out <file.md>] [--only 1,8,30] [--thinking off]
+//   (--thinking off runs it as SAKHI_CHAT_THINKING=off would on the server: no private thinking, to compare speed and quality)
 //   (without --go it lists the questions and what they would cost, and calls nothing)
 import fs from 'node:fs';
 import os from 'node:os';
@@ -80,22 +81,34 @@ const client = new Anthropic({ apiKey: key, timeout: 30_000, maxRetries: 1 });
 /* the server's code, with a stand-in database: one signed-in account, no limits hit, nothing kept */
 const store = { sessionAccount: async () => ({ id: 'eval', birth_year: 1990 }), hit: async () => 1, dayCount: async () => 0, bump: async () => {} };
 const logs = [];
-const chat = createChat({ store, claude: (p) => client.messages.create(p), env: { SAKHI_CHAT_ACCT_DAY_MAX: '1000', SAKHI_CHAT_DAY_MAX: '1000' }, log: (e, d) => logs.push({ e, d }) });
+/* the same call as index.ts: streamed when the server streams, so the first words are timed as the phone would see them */
+const claude = async (p, onText) => { if (!onText) return client.messages.create(p); const st = client.messages.stream(p); st.on('text', (d) => onText(d)); return await st.finalMessage(); };
+const chat = createChat({ store, claude, env: { SAKHI_CHAT_ACCT_DAY_MAX: '1000', SAKHI_CHAT_DAY_MAX: '1000', SAKHI_CHAT_THINKING: arg('--thinking', '') }, log: (e, d) => logs.push({ e, d }) });
 
 const rows = [];
 for (const q of QS) {
   const p = phone[q.n];
   const t0 = Date.now();
-  const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: [{ role: 'user', text: p.sent }], lang: q.lang === 'Hindi' ? 'hi' : 'en' }) }));
-  const secs = (Date.now() - t0) / 1000; const j = await res.json();
+  /* Version 40.2: as the phone asks: its own guide picks as hints, and the answer streamed (first words timed apart from the end) */
+  const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'text/event-stream', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: [{ role: 'user', text: p.sent }], lang: q.lang === 'Hindi' ? 'hi' : 'en', hints: p.guides }) }));
+  let j = {}; let first = null; let buf = '';
+  if (/event-stream/.test(res.headers.get('content-type') || '')) {
+    const rd = res.body.getReader(); const dec = new TextDecoder();
+    for (;;) { const r = await rd.read(); if (r.value) { buf += dec.decode(r.value, { stream: true }); let k; while ((k = buf.indexOf('\n\n')) >= 0) { const line = buf.slice(0, k); buf = buf.slice(k + 2); if (!line.startsWith('data: ')) continue; const e = JSON.parse(line.slice(6)); if (e.type === 'delta' && first === null) first = (Date.now() - t0) / 1000; if (e.type === 'done') { j = e; delete j.type; } } } if (r.done) break; }
+  } else j = await res.json();
+  const secs = (Date.now() - t0) / 1000;
   const u = j.usage || { in: 0, write: 0, cached: 0, out: 0, calls: 0 };
-  rows.push({ q, p, j, secs, u, usd: cost(u) });
-  console.log(q.n + '. ' + (j.ok ? j.source + (j.danger ? ' DANGER' : '') : 'FAILED ' + (j.reason || j.error)) + ' · ' + secs.toFixed(1) + ' s · US$' + cost(u).toFixed(4));
+  rows.push({ q, p, j, secs, first, u, usd: cost(u) });
+  console.log(q.n + '. ' + (j.ok ? j.source + (j.danger ? ' DANGER' : '') : 'FAILED ' + (j.reason || j.error)) + ' · first words ' + (first === null ? '-' : first.toFixed(1) + ' s') + ' · all ' + secs.toFixed(1) + ' s · ' + u.calls + ' call(s) · US$' + cost(u).toFixed(4));
 }
 
 const ok = rows.filter((r) => r.j.ok);
 const secsAll = rows.map((r) => r.secs).sort((a, b) => a - b);
 const median = secsAll[Math.floor(secsAll.length / 2)] || 0;
+const firsts = rows.map((r) => r.first).filter((x) => x !== null).sort((a, b) => a - b);
+const medFirst = firsts[Math.floor(firsts.length / 2)] || 0;
+const words = ok.map((r) => r.j.answer.split(/\s+/).filter(Boolean).length).sort((a, b) => a - b);
+const oneCall = rows.filter((r) => r.u.calls === 1).length;
 const total = rows.reduce((n, r) => n + r.usd, 0);
 const md = [
   '# Ask Sakhi: 30-question eval for the doctors',
@@ -106,13 +119,16 @@ const md = [
   '',
   '- Answered: ' + ok.length + ' of ' + rows.length + '. From the guides: ' + ok.filter((r) => r.j.source === 'guides').length + '. General information (said so in the app): ' + ok.filter((r) => r.j.source === 'general').length + '. Could not answer: ' + ok.filter((r) => r.j.source === 'none').length + '.',
   '- Danger flagged by the answer: ' + ok.filter((r) => r.j.danger).length + '. Help\'s card shown by the phone\'s own check: ' + rows.filter((r) => r.p.card).length + '.',
-  '- Cost: US$' + total.toFixed(4) + ' for all ' + rows.length + ' (US$' + (total / Math.max(1, rows.length)).toFixed(4) + ' a question, about ₹' + (total / Math.max(1, rows.length) * 88).toFixed(2) + '). Time: median ' + median.toFixed(1) + ' s, slowest ' + (secsAll[secsAll.length - 1] || 0).toFixed(1) + ' s.',
+  '- Cost: US$' + total.toFixed(4) + ' for all ' + rows.length + ' (US$' + (total / Math.max(1, rows.length)).toFixed(4) + ' a question, about ₹' + (total / Math.max(1, rows.length) * 88).toFixed(2) + '). Time: median ' + median.toFixed(1) + ' s, slowest ' + (secsAll[secsAll.length - 1] || 0).toFixed(1) + ' s; first words after a median ' + (firsts.length ? medFirst.toFixed(1) + ' s (streamed)' : '- (not streamed)') + '. One model call: ' + oneCall + ' of ' + rows.length + '. Thinking: ' + (arg('--thinking', '') === 'off' ? 'off' : 'adaptive, low effort') + '.',
+  '- Length: a median of ' + (words[Math.floor(words.length / 2)] || 0) + ' words, longest ' + (words[words.length - 1] || 0) + '. Follow-up questions offered on ' + ok.filter((r) => (r.j.follow_ups || []).length).length + ' answers; actions offered on ' + ok.filter((r) => (r.j.actions || []).length).length + '.',
   '',
-  '| # | Language | Kind | Question | Help\'s card on the phone | Guides Sakhi read | Answer | Source | Danger flag | Tokens in / cache write / cache read / out | Cost (US$) | Seconds | Doctor\'s verdict |',
-  '|---|---|---|---|---|---|---|---|---|---|---|---|---|',
+  '| # | Language | Kind | Question | Help\'s card on the phone | Guides Sakhi read | Answer | Source | Danger flag | Follow-ups and actions offered | Tokens in / cache write / cache read / out | Cost (US$) | Seconds (first words / all) | Doctor\'s verdict |',
+  '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|',
   ...rows.map((r) => '| ' + [r.q.n, r.q.lang, r.q.kind, cell(r.q.q), phoneCard(r.p.card), cell((r.j.read || []).join(', ') || '(none)'),
     cell(r.j.ok ? r.j.answer : 'Not answered (' + (r.j.reason || r.j.error) + '). The phone shows: "Sakhi couldn\'t answer this" and the guides ' + (r.p.guides.join(', ') || '(none)')),
-    r.j.ok ? r.j.source + (r.j.off_topic ? ' (off topic)' : '') : '-', r.j.ok ? (r.j.danger ? 'Yes' : 'No') : '-', r.u.in + ' / ' + r.u.write + ' / ' + r.u.cached + ' / ' + r.u.out, r.usd.toFixed(4), r.secs.toFixed(1), ' '].join(' | ') + ' |'),
+    r.j.ok ? r.j.source + (r.j.off_topic ? ' (off topic)' : '') : '-', r.j.ok ? (r.j.danger ? 'Yes' : 'No') : '-',
+    cell([].concat((r.j.follow_ups || []).map((x) => 'Ask: ' + x), (r.j.actions || []).map((a) => a.type === 'log_sign' ? 'Log: ' + a.sign : a.type === 'log_period' ? 'Log: period started' : 'Doctor question: ' + a.text)).join('\n') || '-'),
+    r.u.in + ' / ' + r.u.write + ' / ' + r.u.cached + ' / ' + r.u.out, r.usd.toFixed(4), (r.first === null ? '-' : r.first.toFixed(1)) + ' / ' + r.secs.toFixed(1), ' '].join(' | ') + ' |'),
   ''
 ].join('\n');
 fs.mkdirSync(path.dirname(OUT), { recursive: true });

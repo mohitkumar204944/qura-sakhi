@@ -8384,3 +8384,36 @@ or "Stop talking" ends it. Read-aloud is the phone's own voice: keep it muted in
 
 Test: `web/test/chat.mjs` (73 checks, a stand-in server); the server's `server/test/chat.test.mjs` (96). The eval for the doctors:
 `node server/scripts/chat-eval.mjs` (it lists the 30 questions free; `--go` asks Claude and costs well under US$0.50).
+
+### 132.2 Version 40.2 (prototype): phase 1, a faster and more useful chat
+
+Mohit, 9 Nov: "Yes, start phase 1", after `docs/ask-sakhi-companion-advice-2026-11-09.md` (section 9). Nothing new leaves her phone
+except guide ids and counts.
+
+- **The answer as it is written.** `net(method, path, body, anon, onDelta)`: for Ask Sakhi with `onDelta`, the request asks for
+  `text/event-stream` and `readStream` hands each piece of the answer to the chat, which shows it in a live bubble (`#chat-live`, at most
+  one paint a frame); `null` (the server's "reset") starts it again; "done" carries everything the JSON answer has. A server that answers
+  in plain JSON still works. An answer held back at the end ("done" with `ok: false`) never stays on screen.
+- **One model call by default.** The request carries `hints`: the ids of up to 3 guides Explore's own search picks for her words
+  (`chatLocalGuides`), and `about` when she came from a guide. The server reads their text from its own copy. `CHAT_SEND` is now one list
+  a call: `'POST chat': ['messages', 'lang', 'hints', 'about']`, `'POST count': ['kind']`.
+- **Short answers, questions to ask next.** The AI writes one short sentence first, then up to 3 points, about 40 to 90 words. Under the
+  latest answer, up to 3 follow-up questions (`m.fu`); a tap asks it. None after a danger sign or off topic.
+- **Actions she confirms** (`m.ac`, at most 2, under the latest answer, never with a danger sign):
+  - "Log for today: Cramps" (`log_sign`, only signs in `CHAT_SIGNS`, never a danger sign) uses the diary's own `feelToggle`, with Undo;
+  - "Log: my period started today" (`log_period`, never in a pregnancy, after a birth or once periods stopped) uses `quickLog('start')`;
+  - "Add to my questions for the doctor" (`doctor_question`) joins `state.askTopics`, which her report for the doctor already lists first
+    (one home).
+  - Nothing happens until she taps. The server hears only that an action was done (`POST count {kind: 'action'}`), never which.
+- **Helpful / Not helpful** under the latest answer: one tap, a count (`kind: 'up' | 'down'`), then thanks.
+- **Ask Sakhi about this** on every guide page and on the quick-answer sheet (`data-chat-about`, wired in core's `wire`): it opens the
+  chat with "About: {guide}" above the box (× takes it off; Clear chat too), and her questions carry that guide's id.
+- **"Your doctor".** The AI says "your doctor", and names ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about
+  free or government care; the free government doctor stays a button.
+- **A dose check on the server:** a number with a unit (mg, mcg, ml, IU, units) must be one a guide it read gives, or the answer is held back.
+
+Tests: `web/test/chat.mjs` (107 checks), `server/test/chat.test.mjs` (149). The eval streams and sends the phone's picks, and records the
+first words' time, the length, and the follow-ups and actions offered.
+- **Speed** (server only, SERVER_SPEC 12.3): the first try answers without the model's private thinking, a held-back answer gets one
+  careful try, and the instructions are cached. In the 9 Nov eval the first words came after 1.1 s and the whole answer after 3.3 s
+  (medians), at US$0.0006 a question.

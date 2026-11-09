@@ -303,7 +303,11 @@
       chat_hearing: 'Listening…', chat_thinking: 'Sakhi is writing…', chat_say: 'Listen to this answer', chat_src_guides: 'From Sakhi’s doctor-checked guides', chat_src_general: 'General information, not from Sakhi’s checked guides',
       chat_guides_h: 'Read more', chat_err: 'Sakhi couldn’t answer this. Open the guides below, or see a doctor.', chat_resting: 'Ask Sakhi is resting for today. Open the guides below, or see a doctor.',
       chat_offline: 'No internet. Your question is saved here: try again when you’re online.', chat_retry: 'Try again', chat_clear: 'Clear chat', chat_cleared: 'Chat cleared', chat_try_h: 'You could ask',
-      chat_count: '{n} of 500', chat_you: 'You asked', chat_sakhi: 'Sakhi answered', chat_more: 'Didn’t find it? Ask Sakhi', chat_tab: 'Ask', chat_tab_d: 'Ask'
+      chat_count: '{n} of 500', chat_you: 'You asked', chat_sakhi: 'Sakhi answered', chat_more: 'Didn’t find it? Ask Sakhi', chat_tab: 'Ask', chat_tab_d: 'Ask',
+      /* Version 40.2 (phase 1) */
+      chat_about_b: 'Ask Sakhi about this', chat_about: 'About: {t}', chat_about_x: 'Remove this guide from your question', chat_up: 'Helpful', chat_down: 'Not helpful',
+      chat_thanks: 'Thank you. This helps Sakhi get better.', chat_fu_h: 'Ask next', chat_act_sign: 'Log for today: {s}', chat_act_period: 'Log: my period started today',
+      chat_act_q: 'Add to my questions for the doctor', chat_act_done: 'Done', chat_act_logged: 'Saved in your diary for today', chat_act_q_done: 'Added to the questions in your report for the doctor'
     },
     hi: {
       tagline: 'मुफ़्त · हिंदी · English', home: 'आज', diary: 'डायरी', notes: 'नोट्स', learn: 'जानें', help: 'मदद', me: 'मैं', plans_tab: 'मेरा प्लान', cal_plan: 'आपका प्लान', slot_h: 'Sakhi कहती है', slot_more: 'Sakhi की और बातें ({n})', hs_112: 'अभी सबसे पास के अस्पताल जाएँ', hs_112_s: 'एम्बुलेंस: {n} पर कॉल करें', hs_other: 'दूसरी हेल्पलाइन', hs_other_s: 'सभी इमरजेंसी नंबर, एक टैप में', disc_urg_now: 'आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए', disc_urg_check: 'आपने जो दर्ज किया, उसकी जाँच ज़रूरी है', disc_urg_open: 'खोलें', today_plan_n: 'आपका प्लान: {n} क़दम', tab_keep_h: 'गोली का रिमाइंडर रखना है?', tab_keep_p: 'आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें।', tab_keep_y: 'रखें', tab_keep_n: 'बंद करें', npv_h: 'आपके फ़ोन पर क्या दिखता है', npv_lock: 'लॉक स्क्रीन पर: कुछ नहीं', npv_open: 'फ़ोन खुला होने पर आपका अगला रिमाइंडर ({w}) ऐसा दिखता है:', npv_open0: 'फ़ोन खुला होने पर रिमाइंडर ऐसा दिखता है:', notif_words: 'हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है', notif_words_d: 'बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं।', notif_n_med: 'आपकी गोली का समय', notif_n_care: 'Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ।', hs_doc: 'डॉक्टर को दिखाएँ', hs_guide: 'डॉक्टर को कब दिखाएँ', hs_guide_s: 'सुरक्षा गाइड, सबके लिए एक जैसी', today_hi_0: 'नमस्ते', today_hi_m: 'सुप्रभात', today_hi_a: 'नमस्ते', today_hi_e: 'शुभ संध्या', today_hi_n: '{g}, {name}', today_all: 'आज का सब हो गया।', feel_eb: 'आज · 10 सेकंड', feel_h: 'आज आप कैसा महसूस कर रही हैं?', feel_more: 'और', feel_why: 'रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है।', feel_ok: 'आज का नोट हो गया। बदलने के लिए फिर टैप करें।', meter_n: '{d} में से {n} दिन नोट किए', meter_fw: 'अगला: {n} और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_fw1: 'अगला: 1 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_pat: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_pat1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_rep: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', meter_rep1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', legend_dots: 'बिंदु: आपने जो नोट किया', legend_key: 'निशानों का मतलब', today_why: 'क्यों?', today_tick: 'हो गया पर टिक करें: {x}', today_untick: 'हो गया: {x}। हटाने के लिए टैप करें', today_fold: 'आपके {n} क़दम', today_fold1: 'आपका क़दम', feel_h_d: 'उस दिन कैसा लगा?', day_more: 'और लक्षण', day_less: 'कम लक्षण', fab_feel: 'मैं कैसी हूँ', noted_n: 'दर्ज · इस महीने {d} में से {n} दिन', pat_ready: 'आपके साथ क्या दोहराता है, अब तैयार है', pat_see: 'देखें', dy_d: 'दिन {n}', dy_grp: '{d} से पीरियड · {n} दिन का चक्र', dy_grp_now: '{d} से पीरियड · यह चक्र', dy_grp_x: '{d} से पीरियड', dy_grp_d: '{d} से', dy_grp_preg: 'आपकी गर्भावस्था में', dy_grp_old: 'पहले के दिन', wis_ci_pmos: 'त्वचा और बालों के लक्षण, महीने में एक बार', wis_ci_pmos_s: 'लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं।', wis_ci_mid: '40 के बाद के लक्षण, महीने में एक बार', wis_ci_mid_s: 'लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं।', wis_ci_preg: 'गर्भावस्था के लक्षण, महीने में एक बार', wis_ci_post: 'डिलीवरी के बाद के लक्षण, महीने में एक बार', wis_ci_ps: 'लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं।', cal_pw: 'गर्भावस्था का {n}वाँ हफ़्ता', pp_bleed: 'डिलीवरी के बाद ब्लीडिंग', pp_bleed_s: 'आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ',
@@ -581,7 +585,11 @@
       chat_hearing: 'सुन रही है…', chat_thinking: 'Sakhi लिख रही है…', chat_say: 'यह जवाब सुनें', chat_src_guides: 'Sakhi की डॉक्टरों से जाँची गाइड से', chat_src_general: 'आम जानकारी, Sakhi की जाँची गई गाइड से नहीं',
       chat_guides_h: 'और पढ़ें', chat_err: 'Sakhi इसका जवाब नहीं दे पाई। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।', chat_resting: 'आज के लिए Sakhi आराम कर रही है। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।',
       chat_offline: 'इंटरनेट नहीं है। आपका सवाल यहीं सेव है: ऑनलाइन होने पर फिर कोशिश करें।', chat_retry: 'फिर कोशिश करें', chat_clear: 'चैट मिटाएँ', chat_cleared: 'चैट मिट गई', chat_try_h: 'आप पूछ सकती हैं',
-      chat_count: '500 में से {n}', chat_you: 'आपने पूछा', chat_sakhi: 'Sakhi का जवाब', chat_more: 'नहीं मिला? Sakhi से पूछें', chat_tab: 'पूछें', chat_tab_d: 'पूछें'
+      chat_count: '500 में से {n}', chat_you: 'आपने पूछा', chat_sakhi: 'Sakhi का जवाब', chat_more: 'नहीं मिला? Sakhi से पूछें', chat_tab: 'पूछें', chat_tab_d: 'पूछें',
+      /* Version 40.2 (phase 1) */
+      chat_about_b: 'इस बारे में Sakhi से पूछें', chat_about: 'विषय: {t}', chat_about_x: 'इस गाइड को सवाल से हटाएँ', chat_up: 'काम का', chat_down: 'काम का नहीं',
+      chat_thanks: 'धन्यवाद। इससे Sakhi बेहतर होती है।', chat_fu_h: 'आगे पूछें', chat_act_sign: 'आज के लिए दर्ज करें: {s}', chat_act_period: 'दर्ज करें: मेरा पीरियड आज शुरू हुआ',
+      chat_act_q: 'डॉक्टर से पूछने वाले सवालों में जोड़ें', chat_act_done: 'हो गया', chat_act_logged: 'आज की डायरी में सेव हो गया', chat_act_q_done: 'डॉक्टर के लिए आपकी रिपोर्ट के सवालों में जुड़ गया'
     }
   };
   /* Languages. Modules can add more; each names a fallback (Marathi falls back to Hindi, the rest to English). */
@@ -1207,6 +1215,7 @@
     root.querySelectorAll('[data-start-diary]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { closeSheet(); state.stage = 'onboard'; mem.ob = { step: 1 }; save(); render(); }); });
     root.querySelectorAll('[data-ask]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => ask(b.dataset.ask)); });
     root.querySelectorAll('[data-mydoc]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => openMyDoc()); });   /* Version 39.40: her doctor's number */
+    root.querySelectorAll('[data-chat-about]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { mem.chatAbout = b.dataset.chatAbout; closeSheet(true); if (route() === 'ask-sakhi') render(); else setHash('ask-sakhi'); }); });   /* Version 40.2 */
     root.querySelectorAll('[data-chat-q]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { mem.chatDraft = String(b.dataset.chatQ || '').slice(0, 500); setHash('ask-sakhi'); }); });   /* Version 40: what she searched, into Ask Sakhi */
   }
   const scrollMem = {}; let curRoute = null;
@@ -1677,6 +1686,54 @@
   const CHAT_EX = ['Is a 40-day gap between periods normal?', 'PCOD mein kya khana chahiye?', 'पीरियड में पेट दर्द कम कैसे करें?'];
   /* the screens an answer may offer, by the server's names (SCREENS in chat.js); a doctor has its own buttons under the answer */
   const CHAT_SCREENS = { help: 'help', doctor: '', plan: 'plan', diary: 'diary', calm: 'calm', food: 'food', report: 'report', care: 'access-care' };
+  /* Version 40.2: the signs an answer may offer to log for today; it mirrors SIGNS in the server's chat.js. Never a danger sign. */
+  const CHAT_SIGNS = ['d_cramps', 'd_headache', 'd_back', 'd_breast', 'd_joint', 'd_bloat', 'd_tired', 'd_sleep', 'd_acne', 'd_nausea', 'd_heartburn', 'd_hotflush', 'd_mood', 'd_anxious', 'd_irritable', 'd_disch_bad', 'd_itch'];
+  const THUMB_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.7 10H18a2 2 0 012 2.3l-1.2 6A2 2 0 0116.8 20H7"/></svg>';
+  const THUMB_DOWN = THUMB_UP.replace('<svg ', '<svg style="transform:rotate(180deg)" ');
+  /* an answer's actions as she may do them: a known type, a sign Sakhi can log, a short question; never with a danger sign */
+  const chatActionsOf = (j) => { if (!j || j.danger === true) return []; const out = [];
+    (Array.isArray(j.actions) ? j.actions : []).forEach((a) => { if (!a || out.length >= 2) return;
+      if (a.type === 'log_sign' && CHAT_SIGNS.indexOf(a.sign) >= 0) out.push({ type: 'log_sign', sign: a.sign });
+      else if (a.type === 'log_period') out.push({ type: 'log_period' });
+      else if (a.type === 'doctor_question' && typeof a.text === 'string' && a.text.trim().length >= 3) out.push({ type: 'doctor_question', text: a.text.trim().slice(0, 160) }); });
+    return out; };
+  const chatFollowUps = (j) => (!j || j.danger === true ? [] : (Array.isArray(j.follow_ups) ? j.follow_ups : []).filter((x) => typeof x === 'string' && x.trim().length > 1).map((x) => x.trim().slice(0, 80)).slice(0, 3));
+  const chatActKey = (a) => a.type + ':' + (a.sign || a.text || '');
+  /* "my period started today" only where the diary's own button says the same (not in a pregnancy, after a birth, or once they stopped) */
+  const chatActOk = (a) => a.type !== 'log_period' || (!isPregnant() && !afterBirthNow() && !stoppedNow());
+  const chatActLabel = (a) => (a.type === 'log_sign' ? tf('chat_act_sign', { s: t(a.sign) }) : a.type === 'log_period' ? t('chat_act_period') : t('chat_act_q'));
+  function chatActsHtml(m, i) {
+    const rows = (m.ac || []).map((a, j) => {
+      if (!chatActOk(a)) return ''; const done = !!(m.ad || {})[chatActKey(a)];
+      return '<button type="button" class="item chat-act' + (done ? ' done' : '') + '" data-chat-act="' + i + ':' + j + '"' + (done ? ' disabled' : '') + '><span class="ico-sm hue hue-plum">' + (done ? I.check : (a.type === 'doctor_question' ? I.steth : I.diary)) + '</span><span class="body"><strong>' + esc((done ? t('chat_act_done') + ' · ' : '') + chatActLabel(a)) + '</strong>' + (a.type === 'doctor_question' ? '<span>“' + esc(a.text) + '”</span>' : '') + '</span></button>';
+    }).join('');
+    return rows ? '<div class="list chat-acts-list">' + rows + '</div>' : '';
+  }
+  /* an action happens only on her tap, with Undo; the server hears only that one was done (a count) */
+  function chatDoAct(i, j) {
+    const c = chatData(); const m = c.msgs[i]; const a = m && (m.ac || [])[j]; if (!a || !chatActOk(a)) return;
+    const key = chatActKey(a); if ((m.ad || {})[key]) return;
+    const mark = () => { m.ad = Object.assign({}, m.ad || {}, { [key]: 1 }); save(); net('POST', 'count', { kind: 'action' }).catch(() => {}); };
+    const unmark = () => { if (m.ad) delete m.ad[key]; save(); render(); };
+    if (a.type === 'log_sign') {
+      const d = toISO(today()); const had = (state.daily[d] || []).indexOf(a.sign) >= 0;
+      if (!had) feelToggle(d, a.sign);
+      mark(); render();
+      toastAct(t('chat_act_logged'), [{ label: t('undo'), fn: () => { if (!had && (state.daily[d] || []).indexOf(a.sign) >= 0) feelToggle(d, a.sign); unmark(); } }]);
+    } else if (a.type === 'doctor_question') {
+      const before = (state.askTopics || []).slice();   /* her own questions for the doctor: the report shows them first (one home) */
+      state.askTopics = before.filter((x) => x !== a.text).concat([a.text]).slice(-8); mark(); render();
+      toastAct(t('chat_act_q_done'), [{ label: t('undo'), fn: () => { state.askTopics = before; unmark(); } }]);
+    } else if (a.type === 'log_period') { mark(); quickLog('start'); }
+  }
+  /* the answer as it is written: the live bubble's text, at most once a frame */
+  let chatLiveTm = 0;
+  function chatPaintLive() {
+    if (route() !== 'ask-sakhi' || chatLiveTm) return;
+    const paint = () => { chatLiveTm = 0; if (route() !== 'ask-sakhi') return; const el = $('#chat-live'); if (!el) { if (mem.chatLive) render(); return; }
+      el.innerHTML = chatText(mem.chatLive || ''); if (!$('#view .chat-urg')) window.scrollTo(0, document.documentElement.scrollHeight); };
+    chatLiveTm = typeof requestAnimationFrame === 'function' ? requestAnimationFrame(paint) : setTimeout(paint, 16);
+  }
   const chatData = () => { if (!state.chat || typeof state.chat !== 'object') state.chat = { msgs: [] }; if (!Array.isArray(state.chat.msgs)) state.chat.msgs = []; return state.chat; };
   /* the same rule as the server's: ten digits or more is a phone number (a date stays), and anything shaped like an email */
   const scrubPii = (s) => String(s).replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]').replace(/\+?\d[\d\s().-]{8,}\d/g, (m) => (m.replace(/\D/g, '').length >= 10 ? '[number]' : m));
@@ -1707,9 +1764,12 @@
     const guides = gs.length ? '<div class="list chat-guides">' + gs.map((a) => '<button type="button" class="item quiet" data-ans="' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '';
     const scr = (m.s || []).map(chatScreenRoute).filter((r, j, arr) => r && arr.indexOf(r) === j);
     const screens = scr.length ? '<div class="row wrap chat-screens">' + scr.map((r) => '<button type="button" class="btn sm" data-go="' + esc(r) + '">' + esc(chatScreenName(r)) + '</button>').join('') + '</div>' : '';
-    const act = fail ? (fail !== 'resting' ? '<button type="button" class="btn sm primary" data-chat-retry="' + i + '">' + esc(t('chat_retry')) + '</button>' : '')
-      : (api.speakEl ? '<button type="button" class="btn sm chat-say" data-chat-say="' + i + '" aria-label="' + esc(t('chat_say')) + '">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '');
-    return '<div class="chat-msg sakhi' + (fail ? ' fail' : '') + '" data-i="' + i + '" role="group" aria-label="' + esc(t('chat_sakhi')) + '">' + body + guides + screens + (act ? '<div class="row wrap chat-acts">' + act + '</div>' : '') + (i === lastA ? chatDocBtns(q) : '') + '</div>';
+    const latest = i === lastA && !fail;
+    const thumbs = latest ? (m.fb ? '<span class="small chat-thanks">' + esc(t('chat_thanks')) + '</span>' : '<button type="button" class="iconbtn chat-fb-b" data-chat-fb="up" aria-label="' + esc(t('chat_up')) + '">' + THUMB_UP + '</button><button type="button" class="iconbtn chat-fb-b" data-chat-fb="down" aria-label="' + esc(t('chat_down')) + '">' + THUMB_DOWN + '</button>') : '';
+    const act = (fail ? (fail !== 'resting' ? '<button type="button" class="btn sm primary" data-chat-retry="' + i + '">' + esc(t('chat_retry')) + '</button>' : '')
+      : (api.speakEl ? '<button type="button" class="btn sm chat-say" data-chat-say="' + i + '" aria-label="' + esc(t('chat_say')) + '">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '')) + thumbs;
+    const fus = latest && (m.fu || []).length ? '<div class="chat-fu"><span class="eyebrow">' + esc(t('chat_fu_h')) + '</span>' + m.fu.map((x) => '<button type="button" class="btn sm chat-fu-b" data-chat-ex="' + esc(x) + '">' + esc(x) + '</button>').join('') + '</div>' : '';
+    return '<div class="chat-msg sakhi' + (fail ? ' fail' : '') + '" data-i="' + i + '" role="group" aria-label="' + esc(t('chat_sakhi')) + '">' + body + guides + (latest ? chatActsHtml(m, i) : '') + screens + (act ? '<div class="row wrap chat-acts">' + act + '</div>' : '') + fus + (i === lastA ? chatDocBtns(q) : '') + '</div>';
   }
   function renderChat(v) {
     if (!chatOn()) { safe(() => location.replace('#care')); return; }
@@ -1725,9 +1785,10 @@
       (c.ok ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>') +
       '<div class="chat-list" id="chat-list" aria-live="polite">' + msgs.map((m, i) => chatMsgHtml(m, i, lastA, qOf(i))).join('') +
       (mem.chatHearing ? '<div class="chat-msg me busy" role="status"><p>' + esc(t('chat_hearing')) + '</p></div>' : '') +
-      (mem.chatBusy ? '<div class="chat-msg sakhi busy" role="status"><p>' + esc(t('chat_thinking')) + '</p></div>' : '') + '</div>' +
+      (mem.chatBusy ? (mem.chatLive ? '<div class="chat-msg sakhi live" aria-busy="true"><div class="chat-txt" id="chat-live">' + chatText(mem.chatLive) + '</div></div>' : '<div class="chat-msg sakhi busy" role="status"><p>' + esc(t('chat_thinking')) + '</p></div>') : '') + '</div>' +
       (c.ok && !msgs.length && !disc ? '<section class="care-sec chat-ex"><h2>' + esc(t('chat_try_h')) + '</h2><div class="list">' + CHAT_EX.map((x) => '<button type="button" class="item quiet" data-chat-ex="' + esc(x) + '"><span class="body"><strong>' + esc(x) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></section>' : '') +
       (c.ok && canListen() ? '<button type="button" class="btn block chat-talk' + (mem.chatTalk ? ' on' : '') + '" id="chat-talk">' + MIC + '<span>' + esc(t(mem.chatTalk ? 'chat_talk_on' : 'chat_talk')) + '</span></button>' + (mem.chatTalk || msgs.length ? '' : '<p class="small chat-talk-d">' + esc(t('chat_talk_d')) + '</p>') : '') +
+      ((ab) => (c.ok && ab ? '<div class="chat-about"><span>' + esc(tf('chat_about', { t: L(ab, 'title') })) + '</span><button type="button" class="iconbtn chat-about-x" id="chat-about-x" aria-label="' + esc(t('chat_about_x')) + '">×</button></div>' : ''))(mem.chatAbout ? findArticle(mem.chatAbout) : null) +
       (c.ok ? '<div class="chat-compose"><textarea id="chat-q" rows="1" maxlength="' + CHAT_MAX + '" enterkeyhint="send" placeholder="' + esc(t('chat_ph')) + '" aria-label="' + esc(t('chat_ph')) + '">' + esc(mem.chatDraft || '') + '</textarea>' +
         (canListen() ? '<button type="button" class="iconbtn chat-mic" id="chat-mic" aria-label="' + esc(t('chat_mic')) + '">' + MIC + '</button>' : '') +
         '<button type="button" class="iconbtn chat-send" id="chat-send" aria-label="' + esc(t('chat_send')) + '"' + (mem.chatBusy ? ' disabled' : '') + '>' + CHAT_SEND_ICO + '</button></div>' +
@@ -1748,7 +1809,10 @@
     const sb = $('#chat-send', v); if (sb) sb.addEventListener('click', () => chatSend(qi ? qi.value : ''));
     const mb = $('#chat-mic', v); if (mb) mb.addEventListener('click', () => chatListen());
     const tb = $('#chat-talk', v); if (tb) tb.addEventListener('click', () => { mem.chatTalk = !mem.chatTalk; if (mem.chatTalk) chatListen(); else { clearInterval(mem.chatPoll); if (api.stopSpeech) safe(() => api.stopSpeech()); render(); } });
-    const cb = $('#chat-clear', v); if (cb) cb.addEventListener('click', () => { const keep = chatData().msgs; chatData().msgs = []; save(); render(); toastAct(t('chat_cleared'), [{ label: t('undo'), fn: () => { chatData().msgs = keep; save(); render(); } }]); });
+    v.querySelectorAll('[data-chat-act]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.chatAct.split(':'); chatDoAct(+p[0], +p[1]); }));
+    v.querySelectorAll('[data-chat-fb]').forEach((b) => b.addEventListener('click', () => { const m = msgs[lastA]; if (!m || m.fb) return; m.fb = b.dataset.chatFb === 'up' ? 'up' : 'down'; save(); net('POST', 'count', { kind: m.fb }).catch(() => {}); render(); }));
+    const ax = $('#chat-about-x', v); if (ax) ax.addEventListener('click', () => { mem.chatAbout = null; render(); });
+    const cb = $('#chat-clear', v); if (cb) cb.addEventListener('click', () => { const keep = chatData().msgs; chatData().msgs = []; mem.chatAbout = null; save(); render(); toastAct(t('chat_cleared'), [{ label: t('undo'), fn: () => { chatData().msgs = keep; save(); render(); } }]); });
     /* the newest message in view, or Help's card when her latest question or its answer has a danger sign */
     if (msgs.length || mem.chatBusy) setTimeout(() => { if (route() !== 'ask-sakhi') return; const u = dk ? $('#view .chat-urg') : null; if (u) window.scrollTo(0, 0); else window.scrollTo(0, document.documentElement.scrollHeight); }, 0);
   }
@@ -1765,12 +1829,17 @@
     const hist = c.msgs.filter((m) => m.r === 'u' || (m.r === 'a' && !m.fail && m.x)).slice(-12).map((m) => ({ role: m.r === 'u' ? 'user' : 'assistant', text: m.r === 'u' ? scrubPii(m.x) : String(m.x).slice(0, 2000) }));
     while (hist.length && hist[0].role !== 'user') hist.shift();
     const lastQ = (c.msgs.filter((m) => m.r === 'u').pop() || {}).x || '';
-    const done = (m) => { mem.chatBusy = false; const cc = chatData(); cc.msgs.push(m); if (cc.msgs.length > CHAT_KEEP) cc.msgs = cc.msgs.slice(-CHAT_KEEP); save(); if (route() === 'ask-sakhi') { render(); chatAfter(m); } };
-    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en' }).then((j) => {
+    const done = (m) => { mem.chatBusy = false; mem.chatLive = null; const cc = chatData(); cc.msgs.push(m); if (cc.msgs.length > CHAT_KEEP) cc.msgs = cc.msgs.slice(-CHAT_KEEP); save(); if (route() === 'ask-sakhi') { render(); chatAfter(m); } };
+    /* Version 40.2: the guides her phone's own search picks for her words (ids only), so most answers need one call; the guide she came from */
+    const about = mem.chatAbout && findArticle(mem.chatAbout) ? mem.chatAbout : undefined;
+    mem.chatLive = '';
+    const onDelta = (piece) => { if (!mem.chatBusy) return; mem.chatLive = piece === null ? '' : (mem.chatLive || '') + piece; chatPaintLive(); };
+    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatLocalGuides(lastQ), about: about }, false, onDelta).then((j) => {
       if (j && j.ok === true && typeof j.answer === 'string' && j.answer.trim()) {
         done(Object.assign({ r: 'a', x: j.answer.trim().slice(0, 2000), at: Date.now(), src: j.source === 'guides' || j.source === 'general' ? j.source : '',
           g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && !!findArticle(k)).slice(0, 4),
-          s: (Array.isArray(j.screens) ? j.screens : []).filter((k) => typeof k === 'string' && CHAT_SCREENS[k] !== undefined).slice(0, 3) }, j.danger === true ? { d: 's' } : {}));
+          s: (Array.isArray(j.screens) ? j.screens : []).filter((k) => typeof k === 'string' && CHAT_SCREENS[k] !== undefined).slice(0, 3),
+          fu: chatFollowUps(j), ac: chatActionsOf(j) }, j.danger === true ? { d: 's' } : {}));
       } else done({ r: 'a', fail: 'error', at: Date.now(), g: chatLocalGuides(lastQ) });
     }, (e) => done({ r: 'a', fail: (e && e.code) === 'resting' ? 'resting' : ((e && e.code) === 'offline' ? 'offline' : 'error'), at: Date.now(), g: chatLocalGuides(lastQ) }));
   }
@@ -2454,7 +2523,7 @@
   /* Version 40 (prototype): Ask Sakhi's one call goes to its own function (CFG.chat, set only in an ask-proto build) with only her
      messages' text and the app's language. It mirrors ALLOW in server/supabase/functions/sakhi-chat/chat.js (server/test/chat.test.mjs
      checks the two agree). */
-  const CHAT_SEND = ['messages', 'lang'];
+  const CHAT_SEND = { 'POST chat': ['messages', 'lang', 'hints', 'about'], 'POST count': ['kind'] };   /* Version 40.2: guide ids, and counts */
   /* Version 33, "Ask Qura to call me" (SERVER_SPEC 10.1): the report sections she may tick, by key. It mirrors SHARE_KEYS in
      the server's api.js (server/test/api.test.mjs checks the two agree). */
   const SHARE_KEYS = ['about', 'periods', 'symptoms', 'checkins', 'tools', 'questions', 'notes'];   /* sent without her account token: the server cannot tie it to her (SERVER_SPEC 5.9) */
@@ -2478,22 +2547,40 @@
   const normPhone = (s) => { let d = String(s || '').replace(/\D/g, ''); if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); else if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1); return /^[6-9]\d{9}$/.test(d) ? '+91' + d : null; };
   const netErr = (code, extra) => Object.assign(new Error(code), extra || {}, { code: code });
   /* anon: send this call without her account token (Version 33: whether "Ask Qura to call me" is on) */
-  function net(method, path, body, anon) {
-    const chat = method + ' ' + path === 'POST chat';   /* Version 40: Ask Sakhi */
-    const allow = chat ? CHAT_SEND : SEND[method + ' ' + path]; if (!allow) return Promise.reject(netErr('not_allowed'));
+  /* onDelta (Version 40.2, Ask Sakhi only): the answer's text as it is written; null means start again */
+  function net(method, path, body, anon, onDelta) {
+    const chat = !!CHAT_SEND[method + ' ' + path];   /* Version 40: Ask Sakhi */
+    const allow = chat ? CHAT_SEND[method + ' ' + path] : SEND[method + ' ' + path]; if (!allow) return Promise.reject(netErr('not_allowed'));
     const clean = {}; allow.forEach((k) => { if (body && body[k] !== undefined && body[k] !== null) clean[k] = body[k]; });
     if (chat && !chatAddr()) return Promise.reject(netErr('offline'));
     if (!chat && !CFG.api) return demoServer(method + ' ' + path, clean);
     const withTok = !!acct.token && !ANON[method + ' ' + path] && !anon;
     const headers = { 'Content-Type': 'application/json' }; if (withTok) headers.Authorization = 'Bearer ' + acct.token;
+    if (chat && onDelta) headers.Accept = 'text/event-stream';
     const ctl = typeof AbortController === 'function' ? new AbortController() : null; const tm = ctl ? setTimeout(() => ctl.abort(), chat ? 60000 : 15000) : 0;   /* an answer takes a few model calls */
     return fetch(String(chat ? chatAddr() : CFG.api).replace(/\/+$/, '') + '/v1/' + path, { method: method, headers: headers, body: method === 'DELETE' || method === 'GET' ? undefined : JSON.stringify(clean), cache: 'no-store', credentials: 'omit', signal: ctl ? ctl.signal : undefined })
-      .then((res) => res.text().catch(() => '').then((tx) => {
+      .then((res) => (chat && onDelta && res.ok && /text\/event-stream/.test(res.headers.get('content-type') || '') && res.body && res.body.getReader
+        ? readStream(res, onDelta).then((j) => { clearTimeout(tm); return j; }, (e) => { clearTimeout(tm); throw (e && e.code) ? e : netErr('offline'); })
+        : res.text().catch(() => '').then((tx) => {
         clearTimeout(tm); let j = {}; try { j = tx ? JSON.parse(tx) : {}; } catch (e) { j = {}; }
         if (res.status === 401 && withTok && !chat) { acct = {}; saveAcct(); }   /* Version 40: the chat's own function never signs her out */   /* signed out on the server (expired or deleted): she signs in again */
         if (!res.ok) throw netErr(j.error || 'http_' + res.status, Object.assign({}, j, { status: res.status }));
         return j;
-      }), () => { clearTimeout(tm); throw netErr('offline'); });
+      })), () => { clearTimeout(tm); throw netErr('offline'); });
+  }
+  /* Version 40.2: Ask Sakhi's event stream: "data: {json}" lines; deltas as they come, then "done" with the whole answer */
+  function readStream(res, onDelta) {
+    const rd = res.body.getReader(); const dec = new TextDecoder(); let buf = ''; let fin = null;
+    const line = (s) => { if (s.indexOf('data: ') !== 0) return; let e; try { e = JSON.parse(s.slice(6)); } catch (x) { return; }
+      if (e && e.type === 'delta' && typeof e.t === 'string') safe(() => onDelta(e.t)); else if (e && e.type === 'reset') safe(() => onDelta(null)); else if (e && e.type === 'done') fin = e; };
+    const pump = () => rd.read().then((r) => {
+      if (r.value) { buf += dec.decode(r.value, { stream: true }); let i; while ((i = buf.indexOf('\n\n')) >= 0) { line(buf.slice(0, i)); buf = buf.slice(i + 2); } }
+      if (!r.done) return pump();
+      if (buf.trim()) line(buf.trim());
+      if (!fin) throw netErr('offline');
+      const out = Object.assign({}, fin); delete out.type; return out;
+    });
+    return pump();
   }
   /* The stand-in server: the same answers as server/SERVER_SPEC.md, and nothing leaves the phone. */
   const demo = { phone: null, tries: 0, calls: [] };
@@ -3636,7 +3723,7 @@
       '<p class="lead">' + esc(L(a, 'summary')) + '</p>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') +
       '<div class="row wrap">' + (api.readAloud ? '<button type="button" class="btn sm" id="ans-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_b')) + '</button>' : '') + '<button type="button" class="btn sm" data-go="a-' + esc(key) + '">' + esc(t('full_guide')) + '</button></div>' +
       (sd.length ? '<div class="ans-doc"><b>' + esc(t('see_doctor')) + '</b><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
-      (urgent ? '' : artPlan(key)) + (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
+      (urgent ? '' : artPlan(key)) + (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + (chatOn() ? '<button type="button" class="btn block chat-about-b" data-chat-about="' + esc(key) + '">' + CHAT_ICO + esc(t('chat_about_b')) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
       relatedHtml(a) + '</div>', (sh) => {
       const ls = $('#ans-listen', sh); if (ls) ls.addEventListener('click', () => api.readAloud($('#ans', sh)));
       sh.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
@@ -5075,7 +5162,7 @@
     v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1>' + reviewedLine(a) + '<div class="in-short"><span class="eyebrow">' + esc(t('in_short')) + '</span><p class="lead">' + esc(L(a, 'summary')) + '</p></div>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p, i) => artPara(p, body[i + 1]) + (ART_PIC[key] && ART_PIC[key][1] === i ? artPic(key) : '')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
-      (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
+      (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (chatOn() ? '<button type="button" class="btn block chat-about-b" data-chat-about="' + esc(key) + '">' + CHAT_ICO + esc(t('chat_about_b')) + '</button>' : '') + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
       (key === PRIVACY_ART ? grievanceHtml() : '') + relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
     wire(v); const aa = $('#art-ask', v); if (aa) aa.addEventListener('click', () => ask(L(a, 'title')));
     const al = $('#art-listen', v); if (al) al.addEventListener('click', () => api.readAloud($('.article', v)));

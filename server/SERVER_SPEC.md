@@ -671,3 +671,36 @@ must have checked sample answers (`ask-sakhi-eval.md`).
 
 Tests: `server/test/chat.test.mjs` (96 checks, PGlite and a stand-in for Claude); the app's side `web/test/chat.mjs`; the paid eval
 `node server/scripts/chat-eval.mjs --go`.
+
+### 12.3 Version 40.2 (phase 1, 9 Nov): streaming, picked guides, follow-ups, actions, counts
+
+- **`POST /v1/chat`** also takes `hints` (up to 5 strings; the first 3 known guide ids are read) and `about` (one guide id). Unknown ids
+  are dropped; any other shape is `400 hints_bad` or `about_bad`. The guide she came from and the picked guides are read from `guides.js`
+  before the first call and go at the start of her turn (never the system prompt, which stays cached). Most answers now take one call.
+- **Streaming.** With `Accept: text/event-stream`, the answer comes back as `data: {json}` events:
+  - `{"type": "delta", "t": "…"}` for each piece of the answer (read out of the JSON as it is written, `answerTap`);
+  - `{"type": "reset"}` when text came before a tool call;
+  - last, `{"type": "done", …}` with the same fields as the JSON answer, or `{"type": "done", "ok": false, "reason": …}`.
+  - A refusal before the answer starts (token, limits, the body) stays a plain status code. Without the header, the JSON answer as before.
+  - A slip into "safe days" stops the stream before those words, and "done" says `refusal`.
+- **The answer's new fields:** `follow_ups` (up to 3 strings of 80 characters at most) and `actions` (up to 2):
+  - `{type: 'log_sign', sign}`, where `sign` is one of `SIGNS` (never a danger sign);
+  - `{type: 'log_period'}`;
+  - `{type: 'doctor_question', text}`, up to 160 characters.
+  - Both are empty after a danger sign or off topic.
+- **The dose check.** Every number with a unit (mg, mcg, ml, IU, units) in an answer must appear in a guide it read; otherwise the answer
+  is held back, as a refusal.
+- **`POST /v1/count`**:
+  - its body is `{"kind": "up" | "down" | "action"}` and nothing else; signed-in women only, at most 60 a day each; `204`;
+  - it adds to `chat_daily`'s `thumbs_up`, `thumbs_down` or `actions_done` (migration `20261110120000_sakhi_chat_counts.sql`, which
+    also adds `about_used`, the questions asked from a guide).
+  - It holds no text and no account.
+- **Speed and cost (9 Nov eval, 30 questions):**
+  - The instructions carry the cache mark (`system: [{…, cache_control}]`), so they are read at a tenth of the price while the cache is
+    warm; the mark on her changing turn wrote a new entry each time and never read one.
+  - The first try answers without the model's private thinking. When a safety net holds an answer back, one careful try follows,
+    with thinking on and a system note saying why ("safe days", or a dose no guide gives). If that is held back too, she gets the
+    guides.
+  - `SAKHI_CHAT_THINKING=on` keeps thinking on from the first try.
+  - Result: all 30 answered, first words after a median 1.1 s, the whole answer 3.3 s, US$0.0006 a question. Thinking on: 5.0 s,
+    6.5 s, US$0.0011. Before phase 1: no streaming, 5.8 s, US$0.0018.

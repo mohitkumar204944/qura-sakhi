@@ -46,7 +46,9 @@ const regular = (last) => { const out = []; [last + 56, last + 28, last].forEach
 const seedOf = (x) => Object.assign({ lang: 'en', langChosen: true, stage: 'app', dob: '1996-05-01', consent: { c1: ago(300), c2: null, c4: null }, situation: {}, events: regular(10), daily: { [ago(2)]: { cramps: 2 } }, notes: { [ago(2)]: 'my private note ' + DIARY_MARK }, checkins: {},
   tours: TOURS_DONE, fullTour: { st: 'done', d: ago(3) }, whatsNew: '0.37', prompts: { setup: 'off', notifyIntro: ago(3), planCall: ago(3), firstLog: ago(30) }, mods: {}, goals: ['pcos'] }, x || {}, { settings: Object.assign({ toursAuto: false, notify: true }, (x || {}).settings || {}) });
 /* a stand-in answer from the chat server */
-const ANSWER = (o) => Object.assign({ ok: true, answer: 'Gaps of 21 to 35 days are usual.\n\n- Keep logging your periods\n- See a doctor if gaps stay over 35 days <b>bold</b>', source: 'guides', guides: ['cycle.usual-gap-between-periods', 'made.up'], screens: ['diary', 'help', 'web'], danger: false, off_topic: false, read: ['cycle.usual-gap-between-periods'], usage: { in: 1, cached: 1, out: 1, calls: 2 } }, o || {});
+const ANSWER = (o) => Object.assign({ ok: true, answer: 'Gaps of 21 to 35 days are usual.\n\n- Keep logging your periods\n- See a doctor if gaps stay over 35 days <b>bold</b>', source: 'guides', guides: ['cycle.usual-gap-between-periods', 'made.up'], screens: ['diary', 'help', 'web'], follow_ups: [], actions: [], danger: false, off_topic: false, read: ['cycle.usual-gap-between-periods'], usage: { in: 1, cached: 1, out: 1, calls: 2 } }, o || {});
+/* Version 40.2: as the server streams it (Accept: text/event-stream): the answer in pieces, then "done" with everything */
+const SSE = (j) => { let s = ''; if (j.ok && typeof j.answer === 'string') for (let i = 0; i < j.answer.length; i += 9) s += 'data: ' + JSON.stringify({ type: 'delta', t: j.answer.slice(i, i + 9) }) + '\n\n'; return s + 'data: ' + JSON.stringify(Object.assign({ type: 'done' }, j)) + '\n\n'; };
 
 const browser = await chromium.launch();
 const errsAll = [];
@@ -61,13 +63,17 @@ async function open(o = {}) {
   const acct = o.acct === null ? null : Object.assign({}, ACCT, o.acct || {});
   await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + '); ' + (acct ? 'localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(acct)) + ');' : '') + ' }');
   const sent = [];
+  const counts = [];
   await ctx.route(/^https?:/, async (r) => {
     const req = r.request();
+    if (req.url() === CHAT + '/v1/count') { counts.push(JSON.parse(req.postData() || '{}')); return r.fulfill({ status: 204, body: '' }); }
     if (req.url().indexOf(CHAT) === 0) {
       const body = req.postData(); sent.push({ url: req.url(), method: req.method(), headers: req.headers(), body });
       if (o.hold) await o.hold;
       const out = o.reply ? o.reply(JSON.parse(body || '{}'), sent.length) : { status: 200, json: ANSWER() };
       if (out === 'abort') return r.abort('internetdisconnected');
+      if (out.raw) return r.fulfill({ status: 200, contentType: 'text/event-stream', body: out.raw });
+      if (out.status === 200 && /text\/event-stream/.test(req.headers().accept || '') && !o.json) return r.fulfill({ status: 200, contentType: 'text/event-stream; charset=utf-8', body: SSE(out.json) });
       return r.fulfill({ status: out.status, contentType: 'application/json', body: JSON.stringify(out.json) });
     }
     return r.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
@@ -77,7 +83,7 @@ async function open(o = {}) {
   await page.clock.install({ time: at('10:30') });
   await page.goto(PAGE + '#' + (o.at || 'care'), { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => !!window.Saathi); await settle(page);
-  return { ctx, page, errs, sent };
+  return { ctx, page, errs, sent, counts };
 }
 async function settle(page, ms) { for (let i = 0; i < Math.ceil((ms || 400) / 100); i++) { await page.clock.runFor(100); await sleep(10); } }
 const done = async (a) => { errsAll.push(...a.errs); await a.ctx.close(); };
@@ -167,7 +173,8 @@ const view = (page) => page.evaluate(() => {
   const s = a.sent[0]; const body = JSON.parse(s.body);
   check('3 one call, to the chat function\'s address, POST', a.sent.length === 1 && s.url === CHAT + '/v1/chat' && s.method === 'POST');
   check('3 with her sign-in token', s.headers.authorization === 'Bearer ' + TOKEN);
-  check('3 the body holds the messages and the language only', JSON.stringify(Object.keys(body)) === JSON.stringify(['messages', 'lang']) && body.lang === 'en');
+  check('3 the body holds the messages, the language and guide ids only (Version 40.2: her phone\'s own picks)', JSON.stringify(Object.keys(body)) === JSON.stringify(['messages', 'lang', 'hints']) && body.lang === 'en' && Array.isArray(body.hints) && body.hints.length >= 1 && body.hints.length <= 3 && body.hints.every((h) => /^[a-z_]+\.[a-z0-9-]+$/.test(h)), body);
+  check('3 it asks for the answer as it is written (Accept: text/event-stream)', /text\/event-stream/.test(s.headers.accept || ''));
   check('3 each message is a role and its text', body.messages.length === 1 && JSON.stringify(Object.keys(body.messages[0])) === JSON.stringify(['role', 'text']) && body.messages[0].role === 'user');
   check('3 phone numbers and emails are removed before it goes', body.messages[0].text === 'Is a 40 day gap normal? Call me on [number] or [email]', body.messages[0].text);
   check('3 nothing from her diary, stage, birth date, name, PIN code or phone', !s.body.includes(DIARY_MARK) && !/pcos|1996|Riya|302001|9876543210|cramps|"stage"|"goals"/.test(s.body), s.body);
@@ -340,6 +347,107 @@ const view = (page) => page.evaluate(() => {
   check('10 Hindi at 360 px: every tab\'s label fits on one line in its place, "पूछें" for Ask Sakhi', tb.length >= 4 && tb.every((x) => x.fits && x.h <= 60) && (tb.find((x) => x.go === 'ask-sakhi') || {}).text === 'पूछें', tb);
   await a.page.screenshot({ path: path.join(SHOTS, '10-hindi-360.png') });
   await done(a);
+}
+
+/* ---------- 11 Version 40.2: the answer as it is written ---------- */
+{
+  const ans = 'Heat on your tummy helps.\n- Rest\n- Drink water';
+  const reset = 'data: ' + JSON.stringify({ type: 'delta', t: 'Let me check the guides' }) + '\n\n' + 'data: ' + JSON.stringify({ type: 'reset' }) + '\n\n';
+  const a = await open({ at: 'ask-sakhi', reply: (b, n) => (n === 1 ? { raw: reset + SSE(ANSWER({ answer: ans })) } : n === 2 ? { raw: SSE(ANSWER({ answer: 'Safe text first', ok: true })).replace(/data: \{"type":"done".*\n\n$/, 'data: ' + JSON.stringify({ type: 'done', ok: false, reason: 'refusal' }) + '\n\n') } : { status: 200, json: ANSWER() }) });
+  await accept(a.page); await ask(a, 'What helps period pain?');
+  let v = await view(a.page);
+  check('11 pieces of the answer join into it; text before Sakhi read a guide (a reset) is not kept', v.last && v.last.text.replace(/\s+/g, ' ').trim() === 'Heat on your tummy helps. Rest Drink water' && !v.last.text.includes('Let me check'), v.last);
+  await ask(a, 'And for back pain?');
+  v = await view(a.page);
+  check('11 an answer held back at the end ("done" not ok) never stays on screen', v.last && v.last.fail === await t(a.page, 'chat_err') && !(await a.page.evaluate(() => document.querySelector('#view').innerText.includes('Safe text first'))), v.last);
+  check('11 no live bubble is left once the answer is in', !(await a.page.$('#chat-live')) && !(await a.page.$('.chat-msg.live')));
+  await done(a);
+  const j = await open({ at: 'ask-sakhi', json: true });
+  await accept(j.page); await ask(j, 'Is a 40 day gap normal?');
+  check('11 a server that answers in plain JSON (no stream) still works', (await view(j.page)).last.text.startsWith('Gaps of 21'));
+  await done(j);
+}
+
+/* ---------- 12 Version 40.2: questions to ask next ---------- */
+{
+  const a = await open({ at: 'ask-sakhi', reply: (b, n) => ({ status: 200, json: ANSWER(n === 1 ? { follow_ups: ['What if it is 45 days?', 'Do I need a test?', 'Is PCOS the cause?', 'Fourth?'] } : {}) }) });
+  await accept(a.page); await ask(a, 'Is a 40 day gap normal?');
+  const fu = await a.page.evaluate(() => [...document.querySelectorAll('.chat-msg.sakhi .chat-fu-b')].map((b) => b.innerText));
+  check('12 up to 3 questions to ask next, under the latest answer', JSON.stringify(fu) === JSON.stringify(['What if it is 45 days?', 'Do I need a test?', 'Is PCOS the cause?']), fu);
+  await a.page.click('.chat-fu-b'); for (let i = 0; i < 10; i++) await settle(a.page, 200);
+  const b2 = JSON.parse(a.sent[1].body);
+  check('12 tapping one asks it', b2.messages[b2.messages.length - 1].text === 'What if it is 45 days?' && (await view(a.page)).msgs === 4);
+  check('12 they show only under the latest answer', (await a.page.$$('.chat-fu')).length === 0);
+  await done(a);
+  const d = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ answer: 'Go to the nearest hospital now.', danger: true, follow_ups: ['What next?'], actions: [{ type: 'log_sign', sign: 'd_cramps', text: '' }] }) }) });
+  await accept(d.page); await ask(d, 'my stomach hurts a lot and I feel cold');
+  check('12 a danger sign: no questions to tap and no actions past the hospital line', !(await d.page.$('.chat-fu')) && !(await d.page.$('.chat-act')));
+  await done(d);
+}
+
+/* ---------- 13 Version 40.2: actions she confirms ---------- */
+{
+  const TODAY_ISO = TODAY;
+  const a = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ actions: [{ type: 'log_sign', sign: 'd_cramps' }, { type: 'doctor_question', text: 'Is a 40 day gap normal for me?' }, { type: 'log_sign', sign: 'd_pbleed' }] }) }) });
+  await accept(a.page); await ask(a, 'I have cramps today and my gap is 40 days');
+  let acts = await a.page.evaluate(() => [...document.querySelectorAll('.chat-act')].map((b) => b.innerText.replace(/\s+/g, ' ').trim()));
+  check('13 two actions, worded for her; a danger sign is never offered', acts.length === 2 && acts[0] === 'Log for today: Cramps' && acts[1].startsWith('Add to my questions for the doctor') && acts[1].includes('Is a 40 day gap normal for me?'), acts);
+  check('13 nothing happens until she taps', !((await a.page.evaluate(() => window.Saathi.state.daily))[TODAY_ISO] || []).includes('d_cramps'));
+  await a.page.click('.chat-act >> nth=0'); await settle(a.page, 300);
+  check('13 tap: cramps saved in today\'s diary, the row says Done, and the server hears one action (no words)', ((await a.page.evaluate(() => window.Saathi.state.daily))[TODAY_ISO] || []).includes('d_cramps') && (await a.page.$eval('.chat-act >> nth=0', (b) => b.disabled && b.innerText.includes('Done'))) && a.counts.length === 1 && JSON.stringify(a.counts[0]) === JSON.stringify({ kind: 'action' }), a.counts);
+  await a.page.click('.toast [data-ta="0"]'); await settle(a.page, 300);
+  check('13 Undo takes it out of the diary again', !((await a.page.evaluate(() => window.Saathi.state.daily))[TODAY_ISO] || []).includes('d_cramps') && !(await a.page.$eval('.chat-act >> nth=0', (b) => b.disabled)));
+  await a.page.click('.chat-act >> nth=1'); await settle(a.page, 300);
+  check('13 tap: the question joins her own questions for the doctor', (await a.page.evaluate(() => window.Saathi.state.askTopics)).includes('Is a 40 day gap normal for me?'));
+  await go(a.page, 'report');
+  check('13 her report for the doctor lists it among the questions', await a.page.evaluate(() => document.querySelector('#view').innerText.includes('Is a 40 day gap normal for me?')));
+  await done(a);
+  const p = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ actions: [{ type: 'log_period' }] }) }) });
+  await accept(p.page); await ask(p, 'my period started today');
+  check('13 "my period started today" is offered', (await p.page.$$('.chat-act')).length === 1);
+  await p.page.click('.chat-act'); await settle(p.page, 300);
+  check('13 tap: today\'s period start saved, as the diary\'s own button does', (await p.page.evaluate(() => window.Saathi.state.events)).some((e) => e.d === TODAY_ISO && e.t === 'start'));
+  await done(p);
+  const pg = await open({ at: 'ask-sakhi', seed: { situation: { pregnant: true, dueDate: iso(TODAY, 100) }, events: regular(180) }, reply: () => ({ status: 200, json: ANSWER({ actions: [{ type: 'log_period' }] }) }) });
+  await accept(pg.page); await ask(pg, 'bleeding today');
+  check('13 in a pregnancy, "period started" is never offered', (await pg.page.$$('.chat-act')).length === 0);
+  await done(pg);
+}
+
+/* ---------- 14 Version 40.2: Helpful / Not helpful ---------- */
+{
+  const a = await open({ at: 'ask-sakhi' });
+  await accept(a.page); await ask(a, 'Is a 40 day gap normal?');
+  check('14 Helpful and Not helpful under the latest answer, named for screen readers', (await a.page.$$('[data-chat-fb]')).length === 2 && await a.page.$eval('[data-chat-fb="up"]', (b) => b.getAttribute('aria-label') === 'Helpful'));
+  await a.page.click('[data-chat-fb="down"]'); await settle(a.page, 300);
+  check('14 one tap: a count, then thanks instead of the buttons', JSON.stringify(a.counts) === JSON.stringify([{ kind: 'down' }]) && !(await a.page.$('[data-chat-fb]')) && !!(await a.page.$('.chat-thanks')));
+  await done(a);
+}
+
+/* ---------- 15 Version 40.2: Ask Sakhi about this ---------- */
+{
+  const a = await open({ at: 'a-cycle.painful-periods' });
+  const b = await a.page.$('#view [data-chat-about="cycle.painful-periods"]');
+  check('15 a guide has "Ask Sakhi about this"', !!b && (await b.innerText()).includes('Ask Sakhi about this'));
+  await b.click(); await settle(a.page, 400);
+  check('15 it opens the chat', (await hash(a.page)) === '#ask-sakhi');
+  await accept(a.page);
+  check('15 the guide shows above the box', await a.page.$eval('.chat-about', (x) => x.innerText.includes('About: Painful periods')));
+  await ask(a, 'Is it normal to need tablets every month?');
+  const b1 = JSON.parse(a.sent[0].body);
+  check('15 the question goes with that guide\'s id (no text of hers beyond the question)', b1.about === 'cycle.painful-periods' && JSON.stringify(Object.keys(b1)) === JSON.stringify(['messages', 'lang', 'hints', 'about']), b1);
+  await a.page.click('#chat-about-x'); await settle(a.page, 200);
+  await ask(a, 'And heat?');
+  check('15 × takes the guide off the next question', !('about' in JSON.parse(a.sent[1].body)) && !(await a.page.$('.chat-about')));
+  await a.page.click('.chat-msg.sakhi [data-ans="cycle.usual-gap-between-periods"]'); await settle(a.page, 400);
+  const sb = await a.page.$('#sheet-root [data-chat-about="cycle.usual-gap-between-periods"]');
+  check('15 the quick-answer sheet has it too', !!sb);
+  await sb.click(); await settle(a.page, 400);
+  check('15 from the sheet: the sheet closes and the guide shows above the box', !(await a.page.$('#sheet-root .ans')) && await a.page.$eval('.chat-about', (x) => x.innerText.includes('usual gap')));
+  await done(a);
+  const n = await open({ at: 'a-cycle.painful-periods', cfg: { chat: '' } });
+  check('15 without Ask Sakhi (every other build), guides don\'t offer it', !(await n.page.$('[data-chat-about]')));
+  await done(n);
 }
 
 check('no page errors', errsAll.length === 0, errsAll);

@@ -9,13 +9,20 @@ import { chatStore } from './store-pg.js';
 const env = Deno.env.toObject();
 /* SUPABASE_DB_URL is provided to every Edge Function. prepare: false suits the pooled connection. */
 const sql = postgres(env.SUPABASE_DB_URL, { prepare: false, max: 3, idle_timeout: 20 });
-/* 30 seconds a call and one retry: an answer takes 1 to 4 calls, and the app waits up to 60 seconds */
+/* 30 seconds a call and one retry: an answer takes 1 to 4 calls (usually 1 since Version 40.2), and the app waits up to 60 seconds */
 const client = env.ANTHROPIC_API_KEY ? new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, timeout: 30_000, maxRetries: 1 }) : null;
 
 const chat = createChat({
   store: chatStore((text: string, params: unknown[]) => sql.unsafe(text, params as never[])),
+  /* Version 40.2: with onText, the call streams and each piece of text goes to the phone as it comes; finalMessage() gives the whole
+     message, its stop reason checked by chat.js as before */
   // deno-lint-ignore no-explicit-any
-  claude: client ? (params: any) => client.messages.create(params) : null,
+  claude: client ? async (params: any, onText?: (delta: string) => void) => {
+    if (!onText) return client.messages.create(params);
+    const stream = client.messages.stream(params);
+    stream.on('text', (delta: string) => onText(delta));
+    return await stream.finalMessage();
+  } : null,
   env,
   log: (event: string, data: Record<string, unknown>) => console.log(JSON.stringify({ event, ...data })),
 });

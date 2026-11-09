@@ -3981,3 +3981,29 @@ checked one by one in advance: the doctors check the rules below and a sample.
   each in `web/app.js`, keys `chat_*`).
 - Three example questions, shown as they are in both languages: "Is a 40-day gap between periods normal?", "PCOD mein kya khana
   chahiye?", "पीरियड में पेट दर्द कम कैसे करें?".
+
+### 19.90 Version 40.2 (prototype): Ask Sakhi, phase 1 (MODULE_API section 132.2)
+
+**For the doctors, the AI's new rules** (`systemPrompt()` in `server/supabase/functions/sakhi-chat/chat.js`):
+1. One short sentence that answers her first, then up to 3 short points, about 40 to 90 words, never more than 120.
+2. "Your doctor" (or "a gynaecologist"). ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or
+   government care; the app's own button offers the free government doctor.
+3. Two or three follow-up questions she might ask next, in her words; none after a danger sign.
+4. Actions it may offer, which happen only when she taps:
+   - log a sign she has today (cramps, headache, back pain, breast pain, joint pain, bloating, tiredness, poor sleep, acne, nausea,
+     heartburn, hot flushes, low mood, feeling anxious, irritable, unusual discharge, itching; never a danger sign);
+   - log that her period started today;
+   - add a question to her report for the doctor.
+5. A dose (mg, mcg, ml, IU, units) only when a guide it read gives that dose; otherwise the answer is held back.
+
+**New UI words (English, then Hindi):**
+- Ask Sakhi about this / इस बारे में Sakhi से पूछें; About: {guide} / विषय: {guide}.
+- Helpful / काम का; Not helpful / काम का नहीं; "Thank you. This helps Sakhi get better." / "धन्यवाद। इससे Sakhi बेहतर होती है।".
+- Ask next / आगे पूछें.
+- Log for today: {sign} / आज के लिए दर्ज करें: {sign}; "Log: my period started today" / "दर्ज करें: मेरा पीरियड आज शुरू हुआ".
+- "Add to my questions for the doctor" / "डॉक्टर से पूछने वाले सवालों में जोड़ें"; Done / हो गया.
+- "Saved in your diary for today" / "आज की डायरी में सेव हो गया"; "Added to the questions in your report for the doctor" / "डॉक्टर
+  के लिए आपकी रिपोर्ट के सवालों में जुड़ गया".
+6. A held-back answer ("safe days", or a dose no guide gives) gets one careful try, told why in a note: "Answer her again without
+   those words: say that no day is free of pregnancy risk…" / "Answer her again without any dose, and say 'ask a doctor or
+   chemist'." If that is held back too, she sees the guides.

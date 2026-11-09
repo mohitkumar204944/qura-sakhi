@@ -720,6 +720,10 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       `guides.js`, general knowledge marked, 20 questions a woman a day and 300 in all, nothing kept), apart from `sakhi-api`;
     - the `ask-sakhi` screen only in an ask-proto test app (`SAKHI_CHAT`; never Play), for a signed-in woman of 18 or more, never
       on a shared phone; her messages' text and the language only; Help's card for a danger sign; voice in and read-aloud out.
+    - Version 40.1: Ask is a tab (Today, My plan, Ask, Diary, Explore). Version 40.2 (phase 1 of
+      `docs/ask-sakhi-companion-advice-2026-11-09.md`): answers stream in, the phone's guide picks make most answers one call, short
+      answers with follow-up questions, actions she confirms (log a sign or her period, a doctor question), Helpful / Not helpful counts,
+      "Ask Sakhi about this" on guides, and a dose check.
     After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
     section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors

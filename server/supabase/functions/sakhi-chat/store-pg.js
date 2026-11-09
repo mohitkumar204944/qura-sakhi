@@ -3,7 +3,7 @@
 // It reads a session to check her token, counts her questions in sakhi.rate_hits (cleared by sakhi-api's daily clean-up after 2
 // days), and adds to the day's totals in sakhi.chat_daily. Column names in dynamic SQL only ever come from COLS.
 
-const COLS = new Set(['questions', 'answered', 'refusals', 'errors', 'cap_hits', 'in_tokens', 'out_tokens']);
+const COLS = new Set(['questions', 'answered', 'refusals', 'errors', 'cap_hits', 'in_tokens', 'out_tokens', 'thumbs_up', 'thumbs_down', 'actions_done', 'about_used']);   /* the last 4: Version 40.2 */
 
 export function chatStore(q) {
   const one = async (text, params) => (await q(text, params))[0] || null;
