@@ -8344,10 +8344,13 @@ test", no Firebase, file `QuraSakhi-ask-prototype.apk`. `build-apk.sh` refuses `
 another server than `SAKHI_API` (the page's CSP allows one address), and a Play config never carries it; the page also turns it off
 whenever `CFG.store` is play. Then: a signed-in woman (`stage` app) of 18 or more, not a sample woman, not on a shared phone.
 
-**Where.** Core route `ask-sakhi` (Explore's tab), drawn by `renderChat`. Explore's first screen shows it right under search
-(`chatEntry`, marked "Test"); a search with no results offers "Ask Sakhi" first, and results end with "Didn't find it? Ask Sakhi";
-both carry her words into the box (`data-chat-q`, `mem.chatDraft`). Discreet mode: the plain names "Ask" and "Type or speak a
-question", no example questions, and the page asks for her PIN again (`PIN_ROUTES`).
+**Where.** Core route `ask-sakhi`, drawn by `renderChat`. **Version 40.1** (Mohit, 9 Nov: "it should be accesible at a tap across
+app"): its own tab, in the middle of the tab bar (Today, My plan, **Ask**, Diary, Explore), so it is one tap from every main screen;
+its page is a tab's page (a title, no Back). The label is "Ask" ("पूछें"): "Ask Sakhi" wrapped onto two lines in a fifth of 360 px and
+made the bar taller; the page keeps the title "Ask Sakhi". Explore no longer repeats it as a card (one home for each fact). A search
+with no results offers "Ask Sakhi" first, and results end with "Didn't find it? Ask Sakhi"; both carry her words into the box
+(`data-chat-q`, `mem.chatDraft`). Discreet mode: the page title "Ask", no example questions, and the page asks for her PIN again
+(`PIN_ROUTES`).
 
 **The screen.** The prototype line ("Answers are written by AI and can be wrong. Sakhi is not a doctor.") always; before her first
 question a notice (her question goes to Sakhi's server and to Anthropic in the USA, nothing from her diary is sent, nothing is kept

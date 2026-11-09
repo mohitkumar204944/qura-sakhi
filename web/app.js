@@ -303,7 +303,7 @@
       chat_hearing: 'Listening…', chat_thinking: 'Sakhi is writing…', chat_say: 'Listen to this answer', chat_src_guides: 'From Sakhi’s doctor-checked guides', chat_src_general: 'General information, not from Sakhi’s checked guides',
       chat_guides_h: 'Read more', chat_err: 'Sakhi couldn’t answer this. Open the guides below, or see a doctor.', chat_resting: 'Ask Sakhi is resting for today. Open the guides below, or see a doctor.',
       chat_offline: 'No internet. Your question is saved here: try again when you’re online.', chat_retry: 'Try again', chat_clear: 'Clear chat', chat_cleared: 'Chat cleared', chat_try_h: 'You could ask',
-      chat_count: '{n} of 500', chat_you: 'You asked', chat_sakhi: 'Sakhi answered', chat_more: 'Didn’t find it? Ask Sakhi'
+      chat_count: '{n} of 500', chat_you: 'You asked', chat_sakhi: 'Sakhi answered', chat_more: 'Didn’t find it? Ask Sakhi', chat_tab: 'Ask', chat_tab_d: 'Ask'
     },
     hi: {
       tagline: 'मुफ़्त · हिंदी · English', home: 'आज', diary: 'डायरी', notes: 'नोट्स', learn: 'जानें', help: 'मदद', me: 'मैं', plans_tab: 'मेरा प्लान', cal_plan: 'आपका प्लान', slot_h: 'Sakhi कहती है', slot_more: 'Sakhi की और बातें ({n})', hs_112: 'अभी सबसे पास के अस्पताल जाएँ', hs_112_s: 'एम्बुलेंस: {n} पर कॉल करें', hs_other: 'दूसरी हेल्पलाइन', hs_other_s: 'सभी इमरजेंसी नंबर, एक टैप में', disc_urg_now: 'आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए', disc_urg_check: 'आपने जो दर्ज किया, उसकी जाँच ज़रूरी है', disc_urg_open: 'खोलें', today_plan_n: 'आपका प्लान: {n} क़दम', tab_keep_h: 'गोली का रिमाइंडर रखना है?', tab_keep_p: 'आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें।', tab_keep_y: 'रखें', tab_keep_n: 'बंद करें', npv_h: 'आपके फ़ोन पर क्या दिखता है', npv_lock: 'लॉक स्क्रीन पर: कुछ नहीं', npv_open: 'फ़ोन खुला होने पर आपका अगला रिमाइंडर ({w}) ऐसा दिखता है:', npv_open0: 'फ़ोन खुला होने पर रिमाइंडर ऐसा दिखता है:', notif_words: 'हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है', notif_words_d: 'बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं।', notif_n_med: 'आपकी गोली का समय', notif_n_care: 'Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ।', hs_doc: 'डॉक्टर को दिखाएँ', hs_guide: 'डॉक्टर को कब दिखाएँ', hs_guide_s: 'सुरक्षा गाइड, सबके लिए एक जैसी', today_hi_0: 'नमस्ते', today_hi_m: 'सुप्रभात', today_hi_a: 'नमस्ते', today_hi_e: 'शुभ संध्या', today_hi_n: '{g}, {name}', today_all: 'आज का सब हो गया।', feel_eb: 'आज · 10 सेकंड', feel_h: 'आज आप कैसा महसूस कर रही हैं?', feel_more: 'और', feel_why: 'रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है।', feel_ok: 'आज का नोट हो गया। बदलने के लिए फिर टैप करें।', meter_n: '{d} में से {n} दिन नोट किए', meter_fw: 'अगला: {n} और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_fw1: 'अगला: 1 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_pat: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_pat1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_rep: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', meter_rep1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', legend_dots: 'बिंदु: आपने जो नोट किया', legend_key: 'निशानों का मतलब', today_why: 'क्यों?', today_tick: 'हो गया पर टिक करें: {x}', today_untick: 'हो गया: {x}। हटाने के लिए टैप करें', today_fold: 'आपके {n} क़दम', today_fold1: 'आपका क़दम', feel_h_d: 'उस दिन कैसा लगा?', day_more: 'और लक्षण', day_less: 'कम लक्षण', fab_feel: 'मैं कैसी हूँ', noted_n: 'दर्ज · इस महीने {d} में से {n} दिन', pat_ready: 'आपके साथ क्या दोहराता है, अब तैयार है', pat_see: 'देखें', dy_d: 'दिन {n}', dy_grp: '{d} से पीरियड · {n} दिन का चक्र', dy_grp_now: '{d} से पीरियड · यह चक्र', dy_grp_x: '{d} से पीरियड', dy_grp_d: '{d} से', dy_grp_preg: 'आपकी गर्भावस्था में', dy_grp_old: 'पहले के दिन', wis_ci_pmos: 'त्वचा और बालों के लक्षण, महीने में एक बार', wis_ci_pmos_s: 'लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं।', wis_ci_mid: '40 के बाद के लक्षण, महीने में एक बार', wis_ci_mid_s: 'लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं।', wis_ci_preg: 'गर्भावस्था के लक्षण, महीने में एक बार', wis_ci_post: 'डिलीवरी के बाद के लक्षण, महीने में एक बार', wis_ci_ps: 'लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं।', cal_pw: 'गर्भावस्था का {n}वाँ हफ़्ता', pp_bleed: 'डिलीवरी के बाद ब्लीडिंग', pp_bleed_s: 'आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ',
@@ -581,7 +581,7 @@
       chat_hearing: 'सुन रही है…', chat_thinking: 'Sakhi लिख रही है…', chat_say: 'यह जवाब सुनें', chat_src_guides: 'Sakhi की डॉक्टरों से जाँची गाइड से', chat_src_general: 'आम जानकारी, Sakhi की जाँची गई गाइड से नहीं',
       chat_guides_h: 'और पढ़ें', chat_err: 'Sakhi इसका जवाब नहीं दे पाई। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।', chat_resting: 'आज के लिए Sakhi आराम कर रही है। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।',
       chat_offline: 'इंटरनेट नहीं है। आपका सवाल यहीं सेव है: ऑनलाइन होने पर फिर कोशिश करें।', chat_retry: 'फिर कोशिश करें', chat_clear: 'चैट मिटाएँ', chat_cleared: 'चैट मिट गई', chat_try_h: 'आप पूछ सकती हैं',
-      chat_count: '500 में से {n}', chat_you: 'आपने पूछा', chat_sakhi: 'Sakhi का जवाब', chat_more: 'नहीं मिला? Sakhi से पूछें'
+      chat_count: '500 में से {n}', chat_you: 'आपने पूछा', chat_sakhi: 'Sakhi का जवाब', chat_more: 'नहीं मिला? Sakhi से पूछें', chat_tab: 'पूछें', chat_tab_d: 'पूछें'
     }
   };
   /* Languages. Modules can add more; each names a fallback (Marathi falls back to Hindi, the rest to English). */
@@ -1169,14 +1169,15 @@
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */
     if (['help', 'tell', 'ask'].indexOf(r) >= 0) return state.stage === 'app' ? '' : 'help';
-    if (['care', 'library', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask-sakhi'].indexOf(r) >= 0 || modRoute(r)) return 'care';
+    if (r === 'ask-sakhi') return 'ask-sakhi';   /* Version 40.1: its own tab */
+    if (['care', 'library', 'pattern', 'fertile', 'midlife', 'pregnancy'].indexOf(r) >= 0 || modRoute(r)) return 'care';
     return r;
   }
   function renderTabbar() {
     const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !teenPlay() && !signupGate(route()) && ['your-sakhi', 'join-update'].indexOf(route()) < 0; navEl.hidden = !inApp; if (!inApp) return;
     const cur = tabOf(route());
     const tabs = state.stage === 'app'
-      ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])
+      ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat(chatOn() ? [['ask-sakhi', CHAT_ICO, t(state.settings.discreet ? 'chat_tab_d' : 'chat_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])   /* Version 40.1: Ask Sakhi, a tab of its own */
       : [['care', I.care, t('care')], ['help', I.help, t('help')]];
     navEl.innerHTML = tabs.map((x) => '<button type="button" data-go="' + x[0] + '" class="' + (cur === x[0] ? 'on' : '') + '">' + x[1] + esc(x[2]) + '</button>').join('');
     /* Version 39.2 (diet audit F13): a tab replaces the history entry, so the phone's Back doesn't walk through other tabs */
@@ -1685,7 +1686,6 @@
   const chatLocalGuides = (q) => { const terms = searchTerms(q); if (!terms.length) return []; const ranked = allArticles().map((a) => ({ a: a, n: score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) })).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a); return dangerFirst(q, ranked).slice(0, 3).map((a) => a.group + '.' + a.id); };
   const chatScreenRoute = (k) => { const r = CHAT_SCREENS[k]; return r && (CORE_ROUTES.indexOf(r) >= 0 || ROUTES[r]) && !retired(r) && !triageHidden(r) && !(r === 'report' && !canSave()) ? r : ''; };
   const chatScreenName = (r) => (r === 'help' ? t('help_h') : r === 'diary' ? t('diary') : r === 'plan' ? t('plans_tab') : routeTitle(r) || r);
-  const chatEntry = (disc) => '<div class="list chat-go"><button type="button" class="item" data-go="ask-sakhi"><span class="ico-sm hue hue-plum">' + CHAT_ICO + '</span><span class="body"><strong>' + esc(t(disc ? 'chat_h_d' : 'chat_h')) + '</strong><span>' + esc(t(disc ? 'chat_tile_s_d' : 'chat_tile_s')) + '</span></span><span class="pill">' + esc(t('chat_pill')) + '</span><span class="chev">' + I.chev + '</span></button></div>';
   /* the answer's text: paragraphs, and lines that start with "- " as a list; every word escaped */
   const chatText = (x) => String(x || '').split(/\n\s*\n/).map((blk) => {
     const ls = blk.split('\n').map((l) => l.trim()).filter(Boolean); let out = '', ul = '';
@@ -1719,7 +1719,7 @@
     const dk = iu >= 0 ? (msgs[iu].d || (msgs[iu + 1] && msgs[iu + 1].r === 'a' ? msgs[iu + 1].d : null)) : null;   /* her latest question, or its answer */
     const qOf = (i) => { for (let j = i - 1; j >= 0; j--) if (msgs[j].r === 'u') return msgs[j].x; return ''; };
     const n = (mem.chatDraft || '').length;
-    v.innerHTML = backRow(t(disc ? 'chat_h_d' : 'chat_h'), 'care', false) +
+    v.innerHTML = '<h1 class="chat-title">' + esc(t(disc ? 'chat_h_d' : 'chat_h')) + '</h1>' +
       '<div class="chat-top"><p class="chat-proto" role="note">' + esc(t('chat_proto')) + '</p>' + (msgs.length ? '<button type="button" class="btn sm ghost" id="chat-clear">' + esc(t('chat_clear')) + '</button>' : '') + '</div>' +
       (dk ? chatUrgCard(dk) : '') +
       (c.ok ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>') +
@@ -1824,7 +1824,6 @@
         '<div class="list care-lib">' + (top ? '<button type="button" class="item care-topic" data-go="topic-' + top + '"><span class="ico-sm hue hue-' + hueOf(top) + '">' + icon(SECTION_ICONS[top]) + '</span><span class="body"><strong>' + esc(t('sec_' + top)) + '</strong><span>' + esc(tf('topic_count', { n: topicN(all, top) })) + '</span></span><span class="chev">' + I.chev + '</span></button>' : '') +
         '<button type="button" class="item care-lib-go" data-go="library"><span class="ico-sm hue hue-sky">' + I.learn + '</span><span class="body"><strong>' + esc(t('lib_h')) + '</strong><span>' + esc(t('lib_s')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>';
     }
-    if (!q && chatOn()) body = chatEntry(disc) + body;   /* Version 40 (prototype): Ask Sakhi, right under search */
     if (!q) body += '<button type="button" class="item quiet" data-go="help"><span class="ico-sm hue hue-rose">' + I.help + '</span><span class="body"><strong>' + esc(t('help_h')) + '</strong><span>' + esc(t('hs_guide_s')) + '</span></span><span class="chev">' + I.chev + '</span></button>';
     /* Version 39.62: the line that says what Explore holds is for her first week (explanation she reads once folds after it) */
     v.innerHTML = '<h1>' + esc(t('care_h')) + '</h1>' + (state.stage !== 'app' || joinedDays() <= 7 ? '<p class="small care-p">' + esc(t('care_p')) + '</p>' : '') + searchBox('care-q', mem.careQ, true) + body;

@@ -92,7 +92,7 @@ const ask = async (a, q, ms) => {
 };
 const view = (page) => page.evaluate(() => {
   const v = document.querySelector('#view'); const last = [...v.querySelectorAll('.chat-msg.sakhi')].pop();
-  return { title: (v.querySelector('.backrow h1') || {}).innerText || '', proto: (v.querySelector('.chat-proto') || {}).innerText || '', note: !!v.querySelector('#chat-ok'), box: !!v.querySelector('#chat-q'),
+  return { title: (v.querySelector('h1') || {}).innerText || '', proto: (v.querySelector('.chat-proto') || {}).innerText || '', note: !!v.querySelector('#chat-ok'), box: !!v.querySelector('#chat-q'),
     ex: v.querySelectorAll('[data-chat-ex]').length, msgs: v.querySelectorAll('.chat-msg:not(.busy)').length, urg: (v.querySelector('.chat-urg') || { dataset: {} }).dataset.urg || '',
     urgFirst: !!v.querySelector('.chat-urg') && !!v.querySelector('.chat-list') && (v.querySelector('.chat-urg').compareDocumentPosition(v.querySelector('.chat-list')) & 4) > 0,
     tels: [...v.querySelectorAll('.chat-urg a[href^="tel:"]')].map((x) => x.getAttribute('href')),
@@ -104,7 +104,7 @@ const view = (page) => page.evaluate(() => {
 
 /* ---------- 1 who gets it ---------- */
 {
-  const entry = async (o) => { const a = await open(o); const e = !!(await a.page.$('#view .chat-go')); await go(a.page, 'ask-sakhi'); const h = await hash(a.page); const on = await a.page.evaluate(() => window.Saathi.chat.on()); await done(a); return { e, h, on }; };
+  const entry = async (o) => { const a = await open(o); const e = !!(await a.page.$('#tabbar [data-go="ask-sakhi"]')); await go(a.page, 'ask-sakhi'); const h = await hash(a.page); const on = await a.page.evaluate(() => window.Saathi.chat.on()); await done(a); return { e, h, on }; };
   let r = await entry({});
   check('1 a build with the chat address: the entry on Explore, and the screen opens', r.e && r.h === '#ask-sakhi' && r.on, r);
   r = await entry({ cfg: { chat: '' } });
@@ -134,12 +134,19 @@ const view = (page) => page.evaluate(() => {
   check('1 the test app has its own app ID and no Firebase', /applicationIdSuffix = idSuffix/.test(gr) && /firebase = file\("google-services.json"\)\.exists\(\) && idSuffix\.isEmpty\(\)/.test(gr));
 }
 
-/* ---------- 2 Explore, the screen, the notice ---------- */
+/* ---------- 2 the tab (Version 40.1: "accessible at a tap across app"), the screen, the notice ---------- */
 {
-  const a = await open({});
-  const first = await a.page.evaluate(() => { const box = document.querySelector('#view .searchbox'); let n = box.nextElementSibling; return n && n.classList.contains('chat-go'); });
-  check('2 Ask Sakhi sits right under Explore\'s search, marked Test', first && (await a.page.$eval('#view .chat-go', (e) => e.innerText)).includes(await t(a.page, 'chat_pill')));
-  await a.page.click('#view .chat-go [data-go="ask-sakhi"]'); await settle(a.page, 400);
+  const a = await open({ seed: { plan: undefined } });
+  const tabs = async () => a.page.evaluate(() => [...document.querySelectorAll('#tabbar [data-go]')].map((b) => b.dataset.go));
+  const onEvery = [];
+  for (const r of ['home', 'diary', 'care', 'me', 'help', 'library', 'a-cycle.usual-gap-between-periods']) { await go(a.page, r); onEvery.push(r + ':' + (await tabs()).includes('ask-sakhi')); }
+  check('2 Ask Sakhi is a tab, one tap from every main screen', onEvery.every((x) => /:true$/.test(x)), onEvery);
+  const order = await tabs();
+  check('2 its place: after Today (and My plan), before Diary and Explore', order[order.length - 3] === 'ask-sakhi' && order[0] === 'home' && order.slice(-2).join() === 'diary,care', order);
+  check('2 its label: Ask (one line in a fifth of 360 px; the page is titled Ask Sakhi)', await a.page.$eval('#tabbar [data-go="ask-sakhi"]', (b) => b.innerText.trim()) === 'Ask');
+  await go(a.page, 'care');
+  check('2 Explore no longer repeats it as a card (one home for each fact)', !(await a.page.$('#view [data-go="ask-sakhi"]')));
+  await a.page.click('#tabbar [data-go="ask-sakhi"]'); await settle(a.page, 400);
   let v = await view(a.page);
   check('2 the screen: its title and the prototype line', v.title === 'Ask Sakhi' && v.proto === await t(a.page, 'chat_proto') && /can be wrong/.test(v.proto) && /not a doctor/.test(v.proto), v);
   check('2 before her first question: the notice (Anthropic, the USA, no diary, no copy kept), and no box to type in yet', v.note && !v.box && /Anthropic/.test(await t(a.page, 'chat_note_p')) && /USA/.test(await t(a.page, 'chat_note_p')) && /Nothing from your diary/.test(await t(a.page, 'chat_note_p')));
@@ -147,7 +154,7 @@ const view = (page) => page.evaluate(() => {
   check('2 after "I understand": the box, and examples in English, Hinglish and Hindi', !v.note && v.box && v.ex === 3, v);
   await a.page.reload(); await settle(a.page, 500); await go(a.page, 'ask-sakhi');
   check('2 the notice stays answered', !(await view(a.page)).note);
-  check('2 Explore\'s tab is lit on the chat', await a.page.evaluate(() => !!document.querySelector('#tabbar [data-go="care"].on')));
+  check('2 its own tab is lit on the chat, and the page has no Back (a tab\'s page)', await a.page.evaluate(() => !!document.querySelector('#tabbar [data-go="ask-sakhi"].on') && !document.querySelector('#tabbar [data-go="care"].on') && !document.querySelector('#view .backrow')));
   await a.page.screenshot({ path: path.join(SHOTS, '2-empty.png') });
   await done(a);
 }
@@ -258,8 +265,8 @@ const view = (page) => page.evaluate(() => {
   check('7 Firebase never names or counts this screen', await a.page.evaluate(() => window.Saathi.fb.screen('ask-sakhi') === null && window.Saathi.fb.quiet('ask-sakhi') === true));
   await done(a);
   const d = await open({ at: 'care', seed: { settings: { discreet: true } } });
-  const e = await d.page.$eval('#view .chat-go', (x) => x.innerText);
-  check('7 discreet mode: a plain name on Explore', e.includes(await t(d.page, 'chat_h_d')) && !e.includes(await t(d.page, 'chat_tile_s')));
+  const e = await d.page.$eval('#tabbar [data-go="ask-sakhi"]', (x) => x.innerText.trim());
+  check('7 discreet mode: the tab\'s plain name', e === await t(d.page, 'chat_tab_d') && e === 'Ask', e);
   await go(d.page, 'ask-sakhi'); await accept(d.page);
   const dv = await view(d.page);
   check('7 discreet mode: the plain title, and no example questions', dv.title === await t(d.page, 'chat_h_d') && dv.ex === 0, dv);
@@ -329,6 +336,8 @@ const view = (page) => page.evaluate(() => {
   check('10 at 360 px: no sideways scroll, with a long question and an answer', !v.wide && v.msgs === 2, v);
   const box = await a.page.evaluate(() => { const c = document.querySelector('.chat-compose').getBoundingClientRect(); const tb = document.querySelector('#tabbar').getBoundingClientRect(); return { bottom: c.bottom, tabTop: tb.top }; });
   check('10 the box to type in sits above the tab bar', box.bottom <= box.tabTop + 1, box);
+  const tb = await a.page.evaluate(() => [...document.querySelectorAll('#tabbar button')].map((b) => { const r = b.getBoundingClientRect(); return { go: b.dataset.go, w: Math.round(r.width), fits: b.scrollWidth <= b.clientWidth + 1, h: Math.round(r.height), text: b.innerText.trim() }; }));
+  check('10 Hindi at 360 px: every tab\'s label fits on one line in its place, "पूछें" for Ask Sakhi', tb.length >= 4 && tb.every((x) => x.fits && x.h <= 60) && (tb.find((x) => x.go === 'ask-sakhi') || {}).text === 'पूछें', tb);
   await a.page.screenshot({ path: path.join(SHOTS, '10-hindi-360.png') });
   await done(a);
 }
