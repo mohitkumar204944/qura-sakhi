@@ -3893,6 +3893,7 @@ New lines (English, then Hindi):
 For the doctors' look: the six drawings (the womb, tubes and ovaries from the front; the lining thin, building, full, coming away;
 an egg leaving an ovary and the yellow body after it; PMOS's ring of paused follicles; a long cycle's follicles still growing), and
 whether a phase should show only with 6 regular gaps, as it does now.
+- Answered (Mohit, 9 Nov, before the 1.0 production submission): "doctors checked the drawings, fine to submit".
 
 ### 19.85 Version 39.85: articles in a better format (MODULE_API section 128)
 
