@@ -503,6 +503,11 @@ const view = (page) => page.evaluate(() => {
   const kept = await o.page.evaluate(() => JSON.parse(localStorage.getItem('qura-saathi-v1')).chat);
   check('17 accepting it again keeps the notice\'s version, and the box opens', kept.okv === 2 && !!kept.ok && !!(await o.page.$('#chat-q')) && !(await o.page.$('#chat-ok')), kept);
   await done(o);
+  /* with her chat on screen, the notice sits where the box will be, after the chat (the phone opens the chat at its end) */
+  const h = await open({ at: 'ask-sakhi', seed: { chat: { ok: '2026-11-01', msgs: [{ r: 'u', x: 'Is a 40 day gap normal?', at: 1 }, { r: 'a', x: 'Gaps of 21 to 35 days are usual.', at: 2, src: 'guides' }] } } });
+  const after = await h.page.evaluate(() => { const l = document.querySelector('#chat-list'), n = document.querySelector('.chat-note'); return !!(l && n && (l.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_FOLLOWING)); });
+  check('17 with a chat, the new notice comes after it, where the box will be', after && !(await h.page.$('#chat-q')));
+  await done(h);
 }
 
 check('no page errors', errsAll.length === 0, errsAll);

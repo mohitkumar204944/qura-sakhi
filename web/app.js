@@ -1831,7 +1831,6 @@
     v.innerHTML = '<h1 class="chat-title">' + esc(t(disc ? 'chat_h_d' : 'chat_h')) + '</h1>' +
       '<div class="chat-top"><p class="chat-proto" role="note">' + esc(t('chat_proto')) + '</p>' + (msgs.length ? '<button type="button" class="btn sm ghost" id="chat-clear">' + esc(t('chat_clear')) + '</button>' : '') + '</div>' +
       (dk ? chatUrgCard(dk) : '') +
-      (noted ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>') +
       '<div class="chat-list" id="chat-list" aria-live="polite">' + msgs.map((m, i) => chatMsgHtml(m, i, lastA, qOf(i))).join('') +
       (mem.chatHearing ? '<div class="chat-msg me busy" role="status"><p>' + esc(t('chat_hearing')) + '</p></div>' : '') +
       (mem.chatBusy ? (mem.chatLive ? '<div class="chat-msg sakhi live" aria-busy="true"><div class="chat-txt" id="chat-live">' + chatText(mem.chatLive) + '</div></div>' : '<div class="chat-msg sakhi busy" role="status"><p>' + esc(t('chat_thinking')) + '</p></div>') : '') + '</div>' +
@@ -1841,7 +1840,9 @@
       (noted ? '<div class="chat-compose"><textarea id="chat-q" rows="1" maxlength="' + CHAT_MAX + '" enterkeyhint="send" placeholder="' + esc(t('chat_ph')) + '" aria-label="' + esc(t('chat_ph')) + '">' + esc(mem.chatDraft || '') + '</textarea>' +
         (canListen() ? '<button type="button" class="iconbtn chat-mic" id="chat-mic" aria-label="' + esc(t('chat_mic')) + '">' + MIC + '</button>' : '') +
         '<button type="button" class="iconbtn chat-send" id="chat-send" aria-label="' + esc(t('chat_send')) + '"' + (mem.chatBusy ? ' disabled' : '') + '>' + CHAT_SEND_ICO + '</button></div>' +
-        '<p class="small chat-count" id="chat-count"' + (n > 400 ? '' : ' hidden') + '>' + esc(tf('chat_count', { n: n })) + '</p>' : '');
+        '<p class="small chat-count" id="chat-count"' + (n > 400 ? '' : ' hidden') + '>' + esc(tf('chat_count', { n: n })) + '</p>' : '') +
+      /* the notice sits where the box will be (Version 40.4: a woman with a chat opens at its end, so a notice at the top went unseen) */
+      (noted ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>');
     wire(v);
     const ok = $('#chat-ok', v); if (ok) ok.addEventListener('click', () => { chatData().ok = toISO(today()); chatData().okv = CHAT_NOTE_V; save(); render(); });
     v.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
