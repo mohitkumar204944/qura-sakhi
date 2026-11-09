@@ -13,7 +13,12 @@ export function memoryStore() {
       const k = key + '@' + bucket;
       const n = (db.rate.get(k) || 0) + 1;
       db.rate.set(k, n);
-      return { ok: n <= max, retryAfter: bucket + windowS - nowS };
+      return { ok: n <= max, hits: n, retryAfter: bucket + windowS - nowS };
+    },
+    async peek(key, windowS, nowMs) {
+      const nowS = Math.floor(nowMs / 1000);
+      const bucket = Math.floor(nowS / windowS) * windowS;
+      return { hits: db.rate.get(key + '@' + bucket) || 0, retryAfter: bucket + windowS - nowS };
     },
     async createChallenge(c) {
       db.challenges.set(c.id, { id: c.id, phone: c.phone, channel: c.channel, code_hash: c.codeHash, tries: 0, expires_at: c.expiresAt, used_at: null, created_at: Date.now() });

@@ -16,7 +16,14 @@ export function pgStore(q) {
       const nowS = Math.floor(nowMs / 1000);
       const bucket = Math.floor(nowS / windowS) * windowS;
       const r = await one('insert into sakhi.rate_hits (key, bucket, hits) values ($1, to_timestamp($2), 1) on conflict (key, bucket) do update set hits = sakhi.rate_hits.hits + 1 returning hits', [key, bucket]);
-      return { ok: r.hits <= max, retryAfter: bucket + windowS - nowS };
+      return { ok: r.hits <= max, hits: r.hits, retryAfter: bucket + windowS - nowS };
+    },
+    /* The same counter read without counting (D3 of the 9 Nov database audit): a full ceiling refuses before anything is written. */
+    async peek(key, windowS, nowMs) {
+      const nowS = Math.floor(nowMs / 1000);
+      const bucket = Math.floor(nowS / windowS) * windowS;
+      const r = await one('select hits from sakhi.rate_hits where key = $1 and bucket = to_timestamp($2)', [key, bucket]);
+      return { hits: r ? r.hits : 0, retryAfter: bucket + windowS - nowS };
     },
     async createChallenge(c) {
       await q('insert into sakhi.otp_challenges (id, phone, channel, code_hash, expires_at) values ($1::uuid, $2, $3, $4, $5::timestamptz)', [c.id, c.phone, c.channel, c.codeHash, c.expiresAt]);

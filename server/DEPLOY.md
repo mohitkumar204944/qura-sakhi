@@ -128,8 +128,13 @@ same day.
 
 6. **The code ceiling and the address header (7 Nov 2026, the security audit's S1), after the deploy.**
    - The ceiling needs no secret: at most 300 codes an hour and 3000 a day go out across all numbers. A woman who signs up past it
-     sees "Too many tries…" until the hour or day turns, and the function logs `otp_ceiling`. For a big campaign, raise it first:
-     `supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_OTP_HOUR_MAX=600 SAKHI_OTP_DAY_MAX=6000`.
+     sees "Too many tries…" until the hour or day turns. The function logs `otp_ceiling` once, when the ceiling fills. For a big
+     campaign, raise it first: `supabase secrets set --project-ref jovplellzaxebcdekpax SAKHI_OTP_HOUR_MAX=600 SAKHI_OTP_DAY_MAX=6000`
+     (`docs/database-audit-2026-11-09.md`, D2, suggests 1500 and 15000 for the Play launch).
+   - "What helps" reports have their own ceiling: 30,000 a day, changed with `SAKHI_USAGE_DAY_MAX`. Filling it logs
+     `usage_ceiling`.
+   - Since 9 Nov (D3 of the database audit), a request refused by a full ceiling writes nothing. A code check with a made-up
+     challenge writes nothing either, so the check below finds no `verify:ip` row. Read the `ip_headers` log lines, as it says.
    - Which header holds her address: send a wrong-code check with a made-up address, once on the office wifi and once on a phone's
      hotspot. No message goes out; each answers `{"error":"challenge_bad"}`.
 

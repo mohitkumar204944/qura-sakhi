@@ -203,7 +203,16 @@ are in a schema called `sakhi`, with RLS on and no policies:
    | `otp:phone:<phone>:<channel>` | 1 per 30 seconds (so switching to SMS works straight after a WhatsApp send) |
    | `otp:phone:<phone>` | 5 per hour, 10 per day |
    | `otp:ip:<ip>` | 20 per hour |
-   | `otp:all` | 300 per hour and 3000 per day across all numbers (7 Nov 2026, the security audit's S1; `SAKHI_OTP_HOUR_MAX` and `SAKHI_OTP_DAY_MAX` change them). The reviewer's number (5.1a) doesn't count. Reaching one logs `otp_ceiling`. |
+   | `otp:all` | 300 per hour and 3000 per day across all numbers (7 Nov 2026, the security audit's S1; `SAKHI_OTP_HOUR_MAX` and `SAKHI_OTP_DAY_MAX` change them). The reviewer's number (5.1a) doesn't count. Filling one logs `otp_ceiling`, once. |
+
+   **The order (9 Nov 2026, D3 of `docs/database-audit-2026-11-09.md`):** each limit counts its request in a row, and a new number
+   or address means a new row. So that made-up numbers and addresses can't fill the database:
+   1. a full `otp:all` refuses first, with nothing written (`store.peek` reads the counter without counting);
+   2. then `otp:ip`, so one address can't use up the ceiling for everyone;
+   3. then `otp:all` counts the request;
+   4. last, the number's own limits.
+
+   At most about 4 new rows per request the ceilings let through, and none past them.
 
    `<ip>` is the first `x-forwarded-for` entry, unless `SAKHI_IP_HEADER` names the header the platform writes
    (`cf-connecting-ip`, `x-real-ip`, or `x-forwarded-for:last`); a missing header falls back to the first entry. The `ip_headers`
@@ -244,13 +253,16 @@ at start-up and every number, the reviewer's too, gets a real code. Removing eit
   "lang": "en", "app": "0.21-demo", "platform": "android" }
 ```
 
-1. Limit `verify:ip:<ip>` to 60 per hour (`429 too_many`).
-2. Load the challenge.
+1. Load the challenge, before any limit writes a row (9 Nov 2026, D3 of the database audit), so a made-up, spent or expired
+   challenge adds nothing.
    - Missing or already used: `400 challenge_bad`.
    - Past `expires_at`: `410 code_expired`.
+2. Limit `verify:ip:<ip>` to 60 per hour (`429 too_many`).
 3. Compare HMACs in constant time.
    - Wrong code: add 1 to `tries` and return `400 code_wrong` with `tries_left`.
    - At 5 tries: mark the challenge used and return `429 too_many`.
+   - The answers in step 5 that keep the code usable (`birth_year_needed`, `under_18`, `notice_needed`) count as tries too, so
+     one code can't be asked about without end.
 4. Mark the challenge used.
 5. Find the account by phone.
    - **New account:**
@@ -344,11 +356,16 @@ From `docs/ux-value-audit-2026-10-22.md`, recommendation 10, and MODULE_API sect
 
 1. **No account.** A request with an `Authorization` header is refused (`400 no_token_here`), so a report can never be tied to
    her. The app sends it without her token.
-2. **Rate limit:** `usage:ip:<hash>`, 3 a day. The hash is an HMAC of the IP with the daily salt *and* the word `usage`, so it
-   matches no other limit's key (a report can't be paired with a code request from the same connection).
-3. `month` must be last month (India date), else `400 month_bad`.
-4. `counts` is an object of at least one tool from `USAGE_TOOLS` in `api.js` (the same list as `USAGE_KEYS` in `web/app.js`; the
+2. `month` must be last month (India date), else `400 month_bad`.
+3. `counts` is an object of at least one tool from `USAGE_TOOLS` in `api.js` (the same list as `USAGE_KEYS` in `web/app.js`; the
    tests check), each `"1"`, `"2-5"` or `"6+"` days. Anything else is `400 counts_bad`.
+4. **Rate limits**, only for a report that passed steps 2 and 3, in the same order as a code request (9 Nov 2026, D3 of the
+   database audit):
+   - `usage:all`: 30,000 reports a day (`SAKHI_USAGE_DAY_MAX` changes it). When it is full, the report is refused with nothing
+     written. Filling it logs `usage_ceiling`, once.
+   - `usage:ip:<hash>`: 3 a day. The hash is an HMAC of the IP with the daily salt *and* the word `usage`, so it matches no other
+     limit's key (a report can't be paired with a code request from the same connection).
+   - The app keeps a refused report (`429`) and tries again later.
 5. **Kept:** one more phone in `usage_counts` for each (month, tool, bucket), and one more in `usage_reports` for the month.
    Nothing else: no row per phone, no app version, no language.
 6. Return `204`.

@@ -114,15 +114,26 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
   const reviewOn = PHONE_RE.test(reviewPhone) && /^\d{6}$/.test(reviewCode) && !easyCode(reviewCode);
   if ((reviewPhone || reviewCode) && !reviewOn) log('review_off', { reason: 'SAKHI_REVIEW_PHONE must be +91 and a mobile number; SAKHI_REVIEW_CODE 6 digits, not an easy one' });
 
+  /* onFull runs once, when this request fills the counter (so a ceiling logs when it is reached, not on every refusal after). */
   const limit = async (key, windowS, max, t, onFull) => {
     const r = await store.hit(key, windowS, max, t);
-    if (!r.ok) { if (onFull) onFull(); fail(429, 'too_many', { retry_after: r.retryAfter }); }
+    if (onFull && r.hits === max) onFull();
+    if (!r.ok) fail(429, 'too_many', { retry_after: r.retryAfter });
+  };
+  /* D3 of the 9 Nov database audit: every unsigned route checks a shared ceiling before it writes a row keyed on something the
+     sender chooses (a number, an address). A full ceiling refuses with nothing written; below it, each request that may add a
+     row also counts against the ceiling. So made-up numbers and addresses can add only as many rows as the ceilings allow. */
+  const full = async (key, windowS, max, t) => {
+    const r = await store.peek(key, windowS, t);
+    if (r.hits >= max) fail(429, 'too_many', { retry_after: r.retryAfter });
   };
   /* S1: a ceiling on codes sent across all numbers, so no one can make Sakhi send codes to unlimited numbers (each one goes from
      Qura's WhatsApp number, or costs an SMS). Well above the busiest hour and day so far; SAKHI_OTP_HOUR_MAX and SAKHI_OTP_DAY_MAX
      change it without a redeploy. The reviewer's sign-in sends nothing and doesn't count. */
   const posInt = (v, d) => (/^[1-9]\d{0,6}$/.test(String(v || '')) ? +v : d);
   const otpHourMax = posInt(env.SAKHI_OTP_HOUR_MAX, 300), otpDayMax = posInt(env.SAKHI_OTP_DAY_MAX, 3000);
+  /* D3: the same kind of ceiling on "what helps" reports (5.9), which carry no account. One a month per phone that opted in. */
+  const usageDayMax = posInt(env.SAKHI_USAGE_DAY_MAX, 30000);
   const ipHeader = env.SAKHI_IP_HEADER || '';
   if (ipHeader && !IP_HEADERS.includes(ipHeader)) log('ip_header_bad', { allowed: IP_HEADERS });
   const clientIp = (req) => {
@@ -145,7 +156,8 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
       using: IP_HEADERS.includes(ipHeader) ? ipHeader : 'default' });
   };
   /* The IP only ever appears as a daily HMAC. With no IP header the IP limits are skipped rather than shared by everyone. */
-  const ipKey = async (req, t, kind) => { await ipShape(req, t); const ip = clientIp(req); return ip ? kind + ':ip:' + await hmacHex(ipSeed, indiaDay(t) + '|' + ip) : null; };
+  const ipHash = async (req, t, kind) => { const ip = clientIp(req); return ip ? kind + ':ip:' + await hmacHex(ipSeed, indiaDay(t) + '|' + ip) : null; };
+  const ipKey = async (req, t, kind) => { await ipShape(req, t); return ipHash(req, t, kind); };
 
   async function readBody(req, allow, path) {
     if (req.method === 'GET' || req.method === 'DELETE') return {};
@@ -181,17 +193,21 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
     const channel = b.channel === undefined ? 'auto' : b.channel;
     if (channel !== 'auto' && channel !== 'sms') fail(400, 'channel_bad');
     checkMeta(b);
-    await limit('otp:phone:' + b.phone + ':' + channel, RESEND_S, 1, t);
-    await limit('otp:phone:' + b.phone + ':h', 3600, 5, t);
-    await limit('otp:phone:' + b.phone + ':d', 86400, 10, t);
+    const review = reviewOn && b.phone === reviewPhone;
+    /* D3: the order matters. A full ceiling first (nothing written); then her address (one row per address, so one machine can't
+       use up the ceiling); then the ceilings count the request; only then the number's own limits, which add rows for a new
+       number. The reviewer's number skips the ceilings, as before. */
+    if (!review) { await full('otp:all:h', 3600, otpHourMax, t); await full('otp:all:d', 86400, otpDayMax, t); }
     const ik = await ipKey(req, t, 'otp');
     if (ik) await limit(ik, 3600, 20, t);
-    const id = crypto.randomUUID();
-    const review = reviewOn && b.phone === reviewPhone;
     if (!review) {
       await limit('otp:all:h', 3600, otpHourMax, t, () => log('otp_ceiling', { window: 'hour', max: otpHourMax }));
       await limit('otp:all:d', 86400, otpDayMax, t, () => log('otp_ceiling', { window: 'day', max: otpDayMax }));
     }
+    await limit('otp:phone:' + b.phone + ':' + channel, RESEND_S, 1, t);
+    await limit('otp:phone:' + b.phone + ':h', 3600, 5, t);
+    await limit('otp:phone:' + b.phone + ':d', 86400, 10, t);
+    const id = crypto.randomUUID();
     const code = review ? reviewCode : sixDigits();
     let used = review ? 'sms' : null;   /* the reviewer's code was never sent: the app shows the usual SMS screen */
     if (review) log('review_code', {});
@@ -205,28 +221,37 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
 
   /* 5.2 Check the code; sign up or sign in; one new session. */
   async function otpVerify(req, b, t) {
-    const ik = await ipKey(req, t, 'verify');
-    if (ik) await limit(ik, 3600, 60, t);
+    /* first, so DEPLOY.md's address check (an empty code check) still logs the headers' shape; it writes nothing */
+    await ipShape(req, t);
     if (!str(b.challenge, UUID_RE)) fail(400, 'challenge_bad');
     if (!str(b.code, /^\d{6}$/)) fail(400, 'code_bad');
     if (b.birth_year !== undefined && !(Number.isInteger(b.birth_year) && b.birth_year >= 1900 && b.birth_year <= 2100)) fail(400, 'birth_year_bad');
     if (b.notice !== undefined && !str(b.notice, NOTICE_RE)) fail(400, 'notice_bad');
     checkMeta(b);
+    /* D3: the address limit counts only checks against a live code, so a made-up or spent challenge adds no row. A live code
+       needs a code request, which the ceilings bound, and allows 5 tries. */
     const c = await store.getChallenge(b.challenge);
     if (!c || c.used_at) fail(400, 'challenge_bad');
     if (new Date(c.expires_at).getTime() <= t) fail(410, 'code_expired');
-    if (!sameHex(await hmacHex(pepper, b.challenge + ':' + b.code), c.code_hash)) {
+    const ik = await ipHash(req, t, 'verify');
+    if (ik) await limit(ik, 3600, 60, t);
+    /* one more try on this code; the last one spends it */
+    const spendTry = async () => {
       const tries = await store.bumpTries(b.challenge);
       if (tries === null) fail(400, 'challenge_bad');
       if (tries >= MAX_TRIES) { await store.useChallenge(b.challenge); fail(429, 'too_many', { retry_after: 0 }); }
+      return tries;
+    };
+    if (!sameHex(await hmacHex(pepper, b.challenge + ':' + b.code), c.code_hash)) {
+      const tries = await spendTry();
       fail(400, 'code_wrong', { tries_left: MAX_TRIES - tries });
     }
     let acct = await store.findAccountByPhone(c.phone);
-    /* A new account needs her birth year (18+) and the notice she agreed to; asking again keeps the code usable. */
+    /* A new account needs her birth year (18+) and the notice she agreed to; asking again keeps the code usable. Each of these
+       answers counts as a try (D3), so one code can't be asked about without end. */
     if (!acct) {
-      if (b.birth_year === undefined) fail(400, 'birth_year_needed');
-      if (b.birth_year > indiaYear(t) - 18) fail(403, 'under_18');
-      if (b.notice === undefined) fail(400, 'notice_needed');
+      const why = b.birth_year === undefined ? [400, 'birth_year_needed'] : b.birth_year > indiaYear(t) - 18 ? [403, 'under_18'] : b.notice === undefined ? [400, 'notice_needed'] : null;
+      if (why) { await spendTry(); fail(why[0], why[1]); }
     }
     if (!(await store.useChallenge(b.challenge))) fail(400, 'challenge_bad');   /* two taps at once: one wins */
     const day = indiaDay(t);
@@ -286,13 +311,16 @@ export function createApi({ store, send, env, now = () => Date.now(), log = () =
      row per phone. The IP limit uses its own daily hash, which matches no other limit's. */
   async function usage(req, b, t) {
     if (req.headers.get('authorization')) fail(400, 'no_token_here');
-    const ip = clientIp(req);
-    if (ip) await limit('usage:ip:' + await hmacHex(ipSeed, 'usage|' + indiaDay(t) + '|' + ip), 86400, 3, t);
     if (!str(b.month, MONTH_RE) || b.month !== prevMonth(indiaDay(t).slice(0, 7))) fail(400, 'month_bad');
     const c = b.counts;
     if (!c || typeof c !== 'object' || Array.isArray(c)) fail(400, 'counts_bad');
     const keys = Object.keys(c);
     if (!keys.length || keys.some((k) => !USAGE_TOOLS.includes(k) || !BUCKETS.includes(c[k]))) fail(400, 'counts_bad');
+    /* D3: a refused report writes nothing; the day's ceiling bounds the address rows, in the same order as a code request */
+    await full('usage:all:d', 86400, usageDayMax, t);
+    const ip = clientIp(req);
+    if (ip) await limit('usage:ip:' + await hmacHex(ipSeed, 'usage|' + indiaDay(t) + '|' + ip), 86400, 3, t);
+    await limit('usage:all:d', 86400, usageDayMax, t, () => log('usage_ceiling', { max: usageDayMax }));
     await store.addUsage(b.month, keys.map((k) => [k, c[k]]));
     return reply(204);
   }

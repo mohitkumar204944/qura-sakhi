@@ -180,6 +180,78 @@ for (const kind of ['memory', 'pglite']) {
     check('S1: an unknown SAKHI_IP_HEADER is logged and ignored', bad.logs.some((l) => l.event === 'ip_header_bad'));
   }
 
+  /* ---------- D3 (database audit, 9 Nov): a refused request writes nothing, and made-up numbers and addresses add only as many
+     rows as the ceilings allow ---------- */
+  {
+    const rateRows = async (c) => (c.kind === 'memory' ? c.store.db.rate.size : (await c.db.query('select count(*)::int as n from sakhi.rate_hits')).rows[0].n);
+    /* a sender who writes a new number and a new address on every request (no SAKHI_IP_HEADER, so the first entry is theirs) */
+    const fake = (i) => ({ ip: '10.' + Math.floor(i / 250) + '.' + (i % 250) + '.1, 203.0.113.99' });
+    const ctx = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_OTP_HOUR_MAX: '5', SAKHI_OTP_DAY_MAX: '8' }) });
+    for (let i = 0; i < 40; i++) await call(ctx.api, 'POST', 'otp/start', { phone: '+91970' + String(1000000 + i) }, fake(i));
+    const r1 = await rateRows(ctx);
+    check('D3: 40 code requests with made-up numbers and addresses write rows only for the 5 the ceiling lets through (4 each, plus the 2 ceilings)', ctx.send.outbox.length === 5 && r1 === 5 * 4 + 2, { sent: ctx.send.outbox.length, r1 });
+    for (let i = 40; i < 120; i++) await call(ctx.api, 'POST', 'otp/start', { phone: '+91970' + String(1000000 + i) }, fake(i));
+    check('D3: while the ceiling is full, a code request writes nothing at all', (await rateRows(ctx)) === r1, await rateRows(ctx));
+    check('D3: the ceiling is logged once, when it fills, not on every refusal', ctx.logs.filter((l) => l.event === 'otp_ceiling' && l.data.window === 'hour').length === 1, ctx.logs.filter((l) => l.event === 'otp_ceiling'));
+    ctx.clock.add(3600);
+    for (let i = 0; i < 40; i++) await call(ctx.api, 'POST', 'otp/start', { phone: '+91971' + String(1000000 + i) }, fake(500 + i));
+    check('D3: across the day the rows stop at the daily ceiling (8 codes)', ctx.send.outbox.length === 8 && (await rateRows(ctx)) <= 8 * 4 + 4, { sent: ctx.send.outbox.length, rows: await rateRows(ctx) });
+
+    /* one real address can't use up the ceiling for everyone */
+    const one = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_OTP_HOUR_MAX: '21' }) });
+    for (let i = 0; i < 30; i++) await call(one.api, 'POST', 'otp/start', { phone: '+91972' + String(1000000 + i) }, { ip: '198.51.100.30' });
+    const her = await call(one.api, 'POST', 'otp/start', { phone: '+919729999999' }, { ip: '198.51.100.31' });
+    check('D3: 30 requests from one address count 20 against the ceiling, so a woman elsewhere still gets her code', her.status === 200, her.json);
+
+    /* checking codes: only a live code counts against the address */
+    const v = await newCtx(kind);
+    const s = await sendCode(v, '+919733333333');
+    const code = v.send.lastCode();
+    const wrong = code === '000000' ? '111111' : '000000';
+    const r2 = await rateRows(v);
+    let bad = 0;
+    for (let i = 0; i < 30; i++) if ((await call(v.api, 'POST', 'otp/verify', { challenge: '00000000-0000-4000-8000-' + String(i).padStart(12, '0'), code }, fake(i))).json.error === 'challenge_bad') bad++;
+    check('D3: code checks with made-up challenges are 400 challenge_bad and write nothing', bad === 30 && (await rateRows(v)) === r2, { bad, rows: await rateRows(v) });
+    const chk = await newCtx(kind);
+    const empty = await call(chk.api, 'POST', 'otp/verify', {}, { ip: '192.0.2.10, 203.0.113.99' });
+    check('D3: DEPLOY.md\'s address check (an empty code check) still logs the headers\' shape, and writes nothing', empty.json.error === 'challenge_bad'
+      && chk.logs.some((l) => l.event === 'ip_headers' && l.data.xff_parts === 2) && (await rateRows(chk)) === 0, { empty: empty.json, logs: chk.logs });
+    for (let i = 0; i < 4; i++) await call(v.api, 'POST', 'otp/verify', { challenge: s.json.challenge, code: wrong }, fake(100 + i));
+    const fifth = await call(v.api, 'POST', 'otp/verify', { challenge: s.json.challenge, code: wrong }, fake(104));
+    const r3 = await rateRows(v);
+    check('D3: a live code counts each check against its address, 5 at most', fifth.status === 429 && r3 === r2 + 5, { fifth: fifth.json, r3, r2 });
+    for (let i = 0; i < 20; i++) await call(v.api, 'POST', 'otp/verify', { challenge: s.json.challenge, code }, fake(200 + i));
+    check('D3: a spent code writes nothing more', (await rateRows(v)) === r3, await rateRows(v));
+    v.clock.add(31);
+    const s2 = await sendCode(v, '+919733333334');
+    const c2 = v.send.lastCode();
+    v.clock.add(601);
+    const r4 = await rateRows(v);
+    let gone = 0;
+    for (let i = 0; i < 10; i++) if ((await call(v.api, 'POST', 'otp/verify', { challenge: s2.json.challenge, code: c2, birth_year: 1994, notice: '2026-10-20' }, fake(300 + i))).status === 410) gone++;
+    check('D3: checks on an expired code are 410 and write nothing', gone === 10 && (await rateRows(v)) === r4, { gone, rows: await rateRows(v) });
+    const s3 = await sendCode(v, '+919733333335');
+    const c3 = v.send.lastCode();
+    const asks = [];
+    for (let i = 0; i < 5; i++) asks.push((await call(v.api, 'POST', 'otp/verify', { challenge: s3.json.challenge, code: c3, notice: '2026-10-20' }, fake(400 + i))).json.error);
+    const late = await call(v.api, 'POST', 'otp/verify', { challenge: s3.json.challenge, code: c3, birth_year: 1994, notice: '2026-10-20' });
+    check('D3: the right code asked about without her birth year counts as a try: the 5th spends it', asks.join() === 'birth_year_needed,birth_year_needed,birth_year_needed,birth_year_needed,too_many' && late.json.error === 'challenge_bad', { asks, late: late.json });
+
+    /* "what helps" reports */
+    const u = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_USAGE_DAY_MAX: '4' }) });
+    for (let i = 0; i < 10; i++) await call(u.api, 'POST', 'usage', { month: '2026-09', counts: { pelvic: '1' } }, fake(i));
+    check('D3: reports that fail their checks write nothing', (await rateRows(u)) === 0, await rateRows(u));
+    let kept = 0;
+    for (let i = 0; i < 30; i++) if ((await call(u.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '1' } }, fake(i))).status === 204) kept++;
+    const reports = u.kind === 'memory' ? u.store.db.usageReports.get('2026-09') : (await u.db.query("select phones from sakhi.usage_reports where month = '2026-09'")).rows[0].phones;
+    check('D3: reports stop at the day\'s ceiling, and the rows with it (4 addresses plus the ceiling)', kept === 4 && reports === 4 && (await rateRows(u)) === 5, { kept, reports, rows: await rateRows(u) });
+    check('D3: the reports\' ceiling is logged once, when it fills', u.logs.filter((l) => l.event === 'usage_ceiling' && l.data.max === 4).length === 1);
+    const dflt = await newCtx(kind, { env: Object.assign({}, ENV, { SAKHI_USAGE_DAY_MAX: 'many' }) });
+    let okU = 0;
+    for (let i = 0; i < 10; i++) if ((await call(dflt.api, 'POST', 'usage', { month: '2026-09', counts: { iron: '1' } }, fake(i))).status === 204) okU++;
+    check('D3: a reports ceiling that isn\'t a positive number falls back to the default (30000 a day)', okU === 10, { okU });
+  }
+
   /* ---------- 5.1a Google Play's reviewer (29 Oct 2026): one number, a fixed code, nothing sent ---------- */
   {
     const REVIEW = { SAKHI_REVIEW_PHONE: '+919000000001', SAKHI_REVIEW_CODE: '480913' };
@@ -365,7 +437,7 @@ for (const kind of ['memory', 'pglite']) {
     if (ctx.kind === 'pglite') {
       const cols = (await ctx.db.query("select table_name || '.' || column_name as c from information_schema.columns where table_schema = 'sakhi' and table_name like 'usage%' order by 1")).rows.map((x) => x.c);
       check('usage: its tables hold months, tools, buckets and totals, nothing else', JSON.stringify(cols) === JSON.stringify(['usage_counts.bucket', 'usage_counts.month', 'usage_counts.phones', 'usage_counts.tool', 'usage_reports.month', 'usage_reports.phones']), cols);
-      const rl = (await ctx.db.query("select key from sakhi.rate_hits where key like 'usage:%'")).rows.map((x) => x.key.split(':ip:')[1]);
+      const rl = (await ctx.db.query("select key from sakhi.rate_hits where key like 'usage:ip:%'")).rows.map((x) => x.key.split(':ip:')[1]);
       const others = (await ctx.db.query("select key from sakhi.rate_hits where key like 'otp:ip:%' or key like 'verify:ip:%'")).rows.map((x) => x.key.split(':ip:')[1]);
       check('usage: its rate limit\'s IP hash matches no other limit\'s', rl.length > 0 && rl.every((h) => others.indexOf(h) < 0), { rl, others });
     }
