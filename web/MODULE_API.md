@@ -8417,3 +8417,7 @@ first words' time, the length, and the follow-ups and actions offered.
 - **Speed** (server only, SERVER_SPEC 12.3): the first try answers without the model's private thinking, a held-back answer gets one
   careful try, and the instructions are cached. In the 9 Nov eval the first words came after 1.1 s and the whole answer after 3.3 s
   (medians), at US$0.0006 a question.
+- **Version 40.2.1** (server only, SERVER_SPEC 12.4; Mohit, 9 Nov: "Yes, fix them"): the AI uses only the picked guides that answer her
+  question and never mentions the others; "From Sakhi's doctor-checked guides" only with a named guide, and every other answer she reads
+  carries "General information" (`none` is left for off-topic replies, which show no label); about 50 to 90 words, never more than 110;
+  follow-up questions in the language she writes in. The app is unchanged.

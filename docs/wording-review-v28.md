@@ -4007,3 +4007,12 @@ checked one by one in advance: the doctors check the rules below and a sample.
 6. A held-back answer ("safe days", or a dose no guide gives) gets one careful try, told why in a note: "Answer her again without
    those words: say that no day is free of pregnancy risk…" / "Answer her again without any dose, and say 'ask a doctor or
    chemist'." If that is held back too, she sees the guides.
+
+**Version 40.2.1 (9 Nov), the phase 1 eval's fixes, for the doctors** (server rules only, no new UI words):
+1. Item 1 above becomes: one short sentence (under 20 words) that answers her first, then 2 or 3 points of under 20 words each, about
+   50 to 90 words, never more than 110.
+2. The guides her phone finds by matching her words can be wrong: the AI uses only those that answer her question, answers as if the
+   others weren't there, reads the right guide when none fits, and never mentions a guide that doesn't fit.
+3. If no guide answers her question, it still helps from general knowledge, and the app says "General information, not from Sakhi's
+   checked guides". Every answer she reads now carries one of the two labels.
+4. Follow-up questions and the doctor question in the language and script she writes in.

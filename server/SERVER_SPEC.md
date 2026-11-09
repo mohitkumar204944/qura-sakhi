@@ -704,3 +704,22 @@ Tests: `server/test/chat.test.mjs` (96 checks, PGlite and a stand-in for Claude)
   - `SAKHI_CHAT_THINKING=on` keeps thinking on from the first try.
   - Result: all 30 answered, first words after a median 1.1 s, the whole answer 3.3 s, US$0.0006 a question. Thinking on: 5.0 s,
     6.5 s, US$0.0011. Before phase 1: no streaming, 5.8 s, US$0.0018.
+
+### 12.4 Version 40.2.1 (9 Nov): the phase 1 eval's fixes (server only)
+
+Mohit, 9 Nov: "Yes, fix them", after the phase 1 eval. The app is unchanged; one redeploy of `sakhi-chat` carries them.
+- **Guides that don't fit.** The phone's picks come inside `<guides note="…">`, as found by matching her words. The rules say to use
+  only the ones that answer her question, answer as if the others weren't there, read the right one from the list when none fits,
+  and never mention a guide that doesn't fit. In the eval, a Hindi question about pregnancy check-ups had opened with "this question
+  is different from the burning-urine guide".
+- **Honest labels.** `source: "guides"` needs a named guide (`guides_used`), or it becomes `general`. `none` is kept for off-topic
+  replies only, so every other answer she reads carries "From Sakhi's doctor-checked guides" or "General information".
+- **Length:** one sentence of under 20 words, then 2 or 3 points of under 20 words each, about 50 to 90 words and never more than 110.
+  The phase 1 eval's median was 94 words and the longest 137; now 73 and 112.
+- **Her language:** follow-up questions and doctor questions in the language and script of her latest message (English questions had
+  been getting Hinglish follow-ups).
+- If no guide answers her question, the model still helps from general knowledge, marked `general`.
+
+Eval (9 Nov, the 30 questions): all 30 answered and labelled (19 from the guides, 11 general), every danger sign to hospital first,
+US$0.0006 a question, first words after a median 1.2 s, the whole answer after 2.8 s, one call each. `server/test/chat.test.mjs`: 168
+checks.
