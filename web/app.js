@@ -298,7 +298,7 @@
       /* Version 40 (prototype): Ask Sakhi, the chat */
       chat_h: 'Ask Sakhi', chat_h_d: 'Ask', chat_tile_s: 'Ask about your health in your own words, by typing or speaking.', chat_tile_s_d: 'Type or speak a question.', chat_pill: 'Test',
       chat_proto: 'Prototype. Answers are written by AI and can be wrong. Sakhi is not a doctor.', chat_note_h: 'Before you ask',
-      chat_note_p: 'This is a test version. Your question goes to Sakhi’s server and to Anthropic, the company whose AI writes the answer, in the USA. Nothing from your diary is sent, and nothing you ask is kept on the server. Please don’t type your name, phone number or address.',
+      chat_note_p: 'This is a test version. Your question goes to Sakhi’s server and to Anthropic, the company whose AI writes the answer, in the USA, with one word on where you usually go for care (your own doctor, government care or nowhere yet), so the answer names the right place. Nothing from your diary is sent, and nothing you ask is kept on the server. Please don’t type your name, phone number or address.',
       chat_note_ok: 'I understand', chat_ph: 'Type your question', chat_send: 'Send', chat_mic: 'Speak your question', chat_talk: 'Talk with Sakhi', chat_talk_on: 'Stop talking', chat_talk_d: 'Speak, hear the answer, then speak again.',
       chat_hearing: 'Listening…', chat_thinking: 'Sakhi is writing…', chat_say: 'Listen to this answer', chat_src_guides: 'From Sakhi’s doctor-checked guides', chat_src_general: 'General information, not from Sakhi’s checked guides',
       chat_guides_h: 'Read more', chat_err: 'Sakhi couldn’t answer this. Open the guides below, or see a doctor.', chat_resting: 'Ask Sakhi is resting for today. Open the guides below, or see a doctor.',
@@ -580,7 +580,7 @@
       /* Version 40 (prototype): Ask Sakhi, the chat */
       chat_h: 'Sakhi से पूछें', chat_h_d: 'पूछें', chat_tile_s: 'अपनी सेहत के बारे में अपने शब्दों में पूछें, लिखकर या बोलकर।', chat_tile_s_d: 'लिखकर या बोलकर सवाल पूछें।', chat_pill: 'टेस्ट',
       chat_proto: 'प्रोटोटाइप। जवाब AI लिखता है और ग़लत हो सकते हैं। Sakhi डॉक्टर नहीं है।', chat_note_h: 'पूछने से पहले',
-      chat_note_p: 'यह टेस्ट वर्ज़न है। आपका सवाल Sakhi के सर्वर पर और अमेरिका की कंपनी Anthropic के पास जाता है, जिसका AI जवाब लिखता है। आपकी डायरी से कुछ नहीं भेजा जाता, और आपका कोई सवाल सर्वर पर नहीं रखा जाता। कृपया अपना नाम, फ़ोन नंबर या पता न लिखें।',
+      chat_note_p: 'यह टेस्ट वर्ज़न है। आपका सवाल Sakhi के सर्वर पर और अमेरिका की कंपनी Anthropic के पास जाता है, जिसका AI जवाब लिखता है। साथ में एक शब्द यह भी जाता है कि आप सेहत के लिए आमतौर पर कहाँ जाती हैं (अपने डॉक्टर, सरकारी जगह या अभी कहीं नहीं), ताकि जवाब सही जगह बताए। आपकी डायरी से कुछ नहीं भेजा जाता, और आपका कोई सवाल सर्वर पर नहीं रखा जाता। कृपया अपना नाम, फ़ोन नंबर या पता न लिखें।',
       chat_note_ok: 'मैं समझ गई', chat_ph: 'अपना सवाल लिखें', chat_send: 'भेजें', chat_mic: 'बोलकर पूछें', chat_talk: 'Sakhi से बात करें', chat_talk_on: 'बात बंद करें', chat_talk_d: 'बोलें, जवाब सुनें, फिर बोलें।',
       chat_hearing: 'सुन रही है…', chat_thinking: 'Sakhi लिख रही है…', chat_say: 'यह जवाब सुनें', chat_src_guides: 'Sakhi की डॉक्टरों से जाँची गाइड से', chat_src_general: 'आम जानकारी, Sakhi की जाँची गई गाइड से नहीं',
       chat_guides_h: 'और पढ़ें', chat_err: 'Sakhi इसका जवाब नहीं दे पाई। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।', chat_resting: 'आज के लिए Sakhi आराम कर रही है। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।',
@@ -1734,6 +1734,12 @@
       el.innerHTML = chatText(mem.chatLive || ''); if (!$('#view .chat-urg')) window.scrollTo(0, document.documentElement.scrollHeight); };
     chatLiveTm = typeof requestAnimationFrame === 'function' ? requestAnimationFrame(paint) : setTimeout(paint, 16);
   }
+  /* Version 40.4: the notice's version. A woman who accepted an earlier notice sees the new one once (it now names her care route) */
+  const CHAT_NOTE_V = 2;
+  const chatNoted = () => { const c = chatData(); return !!c.ok && c.okv === CHAT_NOTE_V; };
+  /* Version 40.4 (Mohit, 9 Nov: "Send her care route"): one word, so the answer names the right place (the Version 39.28 rule): her
+     own doctor (also when she hasn't said), government care (a government hospital or centre, or her ASHA or ANM), or nowhere yet */
+  const chatCare = () => (careGov() ? 'govt' : careRoute() === 'none' ? 'none' : 'own');
   const chatData = () => { if (!state.chat || typeof state.chat !== 'object') state.chat = { msgs: [] }; if (!Array.isArray(state.chat.msgs)) state.chat.msgs = []; return state.chat; };
   /* the same rule as the server's: ten digits or more is a phone number (a date stays), and anything shaped like an email */
   const scrubPii = (s) => String(s).replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]').replace(/\+?\d[\d\s().-]{8,}\d/g, (m) => (m.replace(/\D/g, '').length >= 10 ? '[number]' : m));
@@ -1816,7 +1822,7 @@
   }
   function renderChat(v) {
     if (!chatOn()) { safe(() => location.replace('#care')); return; }
-    const c = chatData(); const msgs = c.msgs; const disc = !!state.settings.discreet;
+    const c = chatData(); const msgs = c.msgs; const disc = !!state.settings.discreet; const noted = chatNoted();
     const lastOf = (r) => { for (let i = msgs.length - 1; i >= 0; i--) if (msgs[i].r === r) return i; return -1; };
     const iu = lastOf('u'); const lastA = lastOf('a');
     const dk = iu >= 0 ? (msgs[iu].d || (msgs[iu + 1] && msgs[iu + 1].r === 'a' ? msgs[iu + 1].d : null)) : null;   /* her latest question, or its answer */
@@ -1825,19 +1831,19 @@
     v.innerHTML = '<h1 class="chat-title">' + esc(t(disc ? 'chat_h_d' : 'chat_h')) + '</h1>' +
       '<div class="chat-top"><p class="chat-proto" role="note">' + esc(t('chat_proto')) + '</p>' + (msgs.length ? '<button type="button" class="btn sm ghost" id="chat-clear">' + esc(t('chat_clear')) + '</button>' : '') + '</div>' +
       (dk ? chatUrgCard(dk) : '') +
-      (c.ok ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>') +
+      (noted ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>') +
       '<div class="chat-list" id="chat-list" aria-live="polite">' + msgs.map((m, i) => chatMsgHtml(m, i, lastA, qOf(i))).join('') +
       (mem.chatHearing ? '<div class="chat-msg me busy" role="status"><p>' + esc(t('chat_hearing')) + '</p></div>' : '') +
       (mem.chatBusy ? (mem.chatLive ? '<div class="chat-msg sakhi live" aria-busy="true"><div class="chat-txt" id="chat-live">' + chatText(mem.chatLive) + '</div></div>' : '<div class="chat-msg sakhi busy" role="status"><p>' + esc(t('chat_thinking')) + '</p></div>') : '') + '</div>' +
-      (c.ok && !msgs.length && !disc ? '<section class="care-sec chat-ex"><h2>' + esc(t('chat_try_h')) + '</h2><div class="list">' + CHAT_EX.map((x) => '<button type="button" class="item quiet" data-chat-ex="' + esc(x) + '"><span class="body"><strong>' + esc(x) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></section>' : '') +
-      (c.ok && canListen() ? '<button type="button" class="btn block chat-talk' + (mem.chatTalk ? ' on' : '') + '" id="chat-talk">' + MIC + '<span>' + esc(t(mem.chatTalk ? 'chat_talk_on' : 'chat_talk')) + '</span></button>' + (mem.chatTalk || msgs.length ? '' : '<p class="small chat-talk-d">' + esc(t('chat_talk_d')) + '</p>') : '') +
-      ((ab) => (c.ok && ab ? '<div class="chat-about"><span>' + esc(tf('chat_about', { t: L(ab, 'title') })) + '</span><button type="button" class="iconbtn chat-about-x" id="chat-about-x" aria-label="' + esc(t('chat_about_x')) + '">×</button></div>' : ''))(mem.chatAbout ? findArticle(mem.chatAbout) : null) +
-      (c.ok ? '<div class="chat-compose"><textarea id="chat-q" rows="1" maxlength="' + CHAT_MAX + '" enterkeyhint="send" placeholder="' + esc(t('chat_ph')) + '" aria-label="' + esc(t('chat_ph')) + '">' + esc(mem.chatDraft || '') + '</textarea>' +
+      (noted && !msgs.length && !disc ? '<section class="care-sec chat-ex"><h2>' + esc(t('chat_try_h')) + '</h2><div class="list">' + CHAT_EX.map((x) => '<button type="button" class="item quiet" data-chat-ex="' + esc(x) + '"><span class="body"><strong>' + esc(x) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></section>' : '') +
+      (noted && canListen() ? '<button type="button" class="btn block chat-talk' + (mem.chatTalk ? ' on' : '') + '" id="chat-talk">' + MIC + '<span>' + esc(t(mem.chatTalk ? 'chat_talk_on' : 'chat_talk')) + '</span></button>' + (mem.chatTalk || msgs.length ? '' : '<p class="small chat-talk-d">' + esc(t('chat_talk_d')) + '</p>') : '') +
+      ((ab) => (noted && ab ? '<div class="chat-about"><span>' + esc(tf('chat_about', { t: L(ab, 'title') })) + '</span><button type="button" class="iconbtn chat-about-x" id="chat-about-x" aria-label="' + esc(t('chat_about_x')) + '">×</button></div>' : ''))(mem.chatAbout ? findArticle(mem.chatAbout) : null) +
+      (noted ? '<div class="chat-compose"><textarea id="chat-q" rows="1" maxlength="' + CHAT_MAX + '" enterkeyhint="send" placeholder="' + esc(t('chat_ph')) + '" aria-label="' + esc(t('chat_ph')) + '">' + esc(mem.chatDraft || '') + '</textarea>' +
         (canListen() ? '<button type="button" class="iconbtn chat-mic" id="chat-mic" aria-label="' + esc(t('chat_mic')) + '">' + MIC + '</button>' : '') +
         '<button type="button" class="iconbtn chat-send" id="chat-send" aria-label="' + esc(t('chat_send')) + '"' + (mem.chatBusy ? ' disabled' : '') + '>' + CHAT_SEND_ICO + '</button></div>' +
         '<p class="small chat-count" id="chat-count"' + (n > 400 ? '' : ' hidden') + '>' + esc(tf('chat_count', { n: n })) + '</p>' : '');
     wire(v);
-    const ok = $('#chat-ok', v); if (ok) ok.addEventListener('click', () => { chatData().ok = toISO(today()); save(); render(); });
+    const ok = $('#chat-ok', v); if (ok) ok.addEventListener('click', () => { chatData().ok = toISO(today()); chatData().okv = CHAT_NOTE_V; save(); render(); });
     v.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
     v.querySelectorAll('[data-chat-ex]').forEach((b) => b.addEventListener('click', () => chatSend(b.dataset.chatEx)));
     v.querySelectorAll('[data-chat-retry]').forEach((b) => b.addEventListener('click', () => chatRetry(+b.dataset.chatRetry)));
@@ -1860,7 +1866,7 @@
     if (msgs.length || mem.chatBusy) setTimeout(() => { if (route() !== 'ask-sakhi') return; const u = dk ? $('#view .chat-urg') : null; if (u) window.scrollTo(0, 0); else window.scrollTo(0, document.documentElement.scrollHeight); }, 0);
   }
   function chatSend(text) {
-    const x = String(text || '').trim().slice(0, CHAT_MAX); if (!x || mem.chatBusy || !chatOn() || !chatData().ok) return;
+    const x = String(text || '').trim().slice(0, CHAT_MAX); if (!x || mem.chatBusy || !chatOn() || !chatNoted()) return;
     const dk = chatDangerKey(x);
     chatData().msgs.push(Object.assign({ r: 'u', x: x, at: Date.now() }, dk ? { d: dk } : {}));
     mem.chatDraft = ''; chatAsk();
@@ -1877,7 +1883,7 @@
     const about = mem.chatAbout && findArticle(mem.chatAbout) ? mem.chatAbout : undefined;
     mem.chatLive = '';
     const onDelta = (piece) => { if (!mem.chatBusy) return; mem.chatLive = piece === null ? '' : (mem.chatLive || '') + piece; chatPaintLive(); };
-    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatLocalGuides(lastQ), about: about }, false, onDelta).then((j) => {
+    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatLocalGuides(lastQ), care: chatCare(), about: about }, false, onDelta).then((j) => {
       if (j && j.ok === true && typeof j.answer === 'string' && j.answer.trim()) {
         done(Object.assign({ r: 'a', x: j.answer.trim().slice(0, 2000), at: Date.now(), src: j.source === 'guides' || j.source === 'general' ? j.source : '',
           g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && !!findArticle(k)).slice(0, 4),
@@ -2566,7 +2572,7 @@
   /* Version 40 (prototype): Ask Sakhi's one call goes to its own function (CFG.chat, set only in an ask-proto build) with only her
      messages' text and the app's language. It mirrors ALLOW in server/supabase/functions/sakhi-chat/chat.js (server/test/chat.test.mjs
      checks the two agree). */
-  const CHAT_SEND = { 'POST chat': ['messages', 'lang', 'hints', 'about'], 'POST count': ['kind'] };   /* Version 40.2: guide ids, and counts */
+  const CHAT_SEND = { 'POST chat': ['messages', 'lang', 'hints', 'care', 'about'], 'POST count': ['kind'] };   /* Version 40.2: guide ids, and counts */
   /* Version 33, "Ask Qura to call me" (SERVER_SPEC 10.1): the report sections she may tick, by key. It mirrors SHARE_KEYS in
      the server's api.js (server/test/api.test.mjs checks the two agree). */
   const SHARE_KEYS = ['about', 'periods', 'symptoms', 'checkins', 'tools', 'questions', 'notes'];   /* sent without her account token: the server cannot tie it to her (SERVER_SPEC 5.9) */

@@ -4021,3 +4021,14 @@ checked one by one in advance: the doctors check the rules below and a sample.
 1. Every answer is one short sentence, then 2 or 3 short points (the server now requires the points).
 2. The answer, its points, the follow-up questions and the doctor question follow the language of her latest message, even in a chat
    that used another language before.
+
+**Version 40.4 (9 Nov), her care route.**
+- **For counsel**, the notice before her first question, new words in bold:
+  - English: "Your question goes to Sakhi's server and to Anthropic, the company whose AI writes the answer, in the USA, **with one word on
+    where you usually go for care (your own doctor, government care or nowhere yet), so the answer names the right place.**"
+  - Hindi: "**साथ में एक शब्द यह भी जाता है कि आप सेहत के लिए आमतौर पर कहाँ जाती हैं (अपने डॉक्टर, सरकारी जगह या अभी कहीं नहीं), ताकि
+    जवाब सही जगह बताए।**"
+- **For the doctors**, the server's three notes to the AI:
+  - her own doctor: "your doctor" or "a gynaecologist", and no ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani unless she asks;
+  - nowhere yet: a doctor, and free government care once as an option;
+  - government care: her ASHA, ANM or PHC named where they help, as the guides do.

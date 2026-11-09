@@ -178,7 +178,7 @@ const view = (page) => page.evaluate(() => {
   const s = a.sent[0]; const body = JSON.parse(s.body);
   check('3 one call, to the chat function\'s address, POST', a.sent.length === 1 && s.url === CHAT + '/v1/chat' && s.method === 'POST');
   check('3 with her sign-in token', s.headers.authorization === 'Bearer ' + TOKEN);
-  check('3 the body holds the messages, the language and guide ids only (Version 40.2: her phone\'s own picks)', JSON.stringify(Object.keys(body)) === JSON.stringify(['messages', 'lang', 'hints']) && body.lang === 'en' && Array.isArray(body.hints) && body.hints.length >= 1 && body.hints.length <= 3 && body.hints.every((h) => /^[a-z_]+\.[a-z0-9-]+$/.test(h)), body);
+  check('3 the body holds the messages, the language, guide ids and her care route only (Version 40.2: her phone\'s own picks; Version 40.4: one word for her care)', JSON.stringify(Object.keys(body)) === JSON.stringify(['messages', 'lang', 'hints', 'care']) && body.care === 'own' && body.lang === 'en' && Array.isArray(body.hints) && body.hints.length >= 1 && body.hints.length <= 3 && body.hints.every((h) => /^[a-z_]+\.[a-z0-9-]+$/.test(h)), body);
   check('3 it asks for the answer as it is written (Accept: text/event-stream)', /text\/event-stream/.test(s.headers.accept || ''));
   check('3 each message is a role and its text', body.messages.length === 1 && JSON.stringify(Object.keys(body.messages[0])) === JSON.stringify(['role', 'text']) && body.messages[0].role === 'user');
   check('3 phone numbers and emails are removed before it goes', body.messages[0].text === 'Is a 40 day gap normal? Call me on [number] or [email]', body.messages[0].text);
@@ -440,7 +440,7 @@ const view = (page) => page.evaluate(() => {
   check('15 the guide shows above the box', await a.page.$eval('.chat-about', (x) => x.innerText.includes('About: Painful periods')));
   await ask(a, 'Is it normal to need tablets every month?');
   const b1 = JSON.parse(a.sent[0].body);
-  check('15 the question goes with that guide\'s id (no text of hers beyond the question)', b1.about === 'cycle.painful-periods' && JSON.stringify(Object.keys(b1)) === JSON.stringify(['messages', 'lang', 'hints', 'about']), b1);
+  check('15 the question goes with that guide\'s id (no text of hers beyond the question)', b1.about === 'cycle.painful-periods' && JSON.stringify(Object.keys(b1)) === JSON.stringify(['messages', 'lang', 'hints', 'care', 'about']), b1);
   await a.page.click('#chat-about-x'); await settle(a.page, 200);
   await ask(a, 'And heat?');
   check('15 × takes the guide off the next question', !('about' in JSON.parse(a.sent[1].body)) && !(await a.page.$('.chat-about')));
@@ -484,6 +484,25 @@ const view = (page) => page.evaluate(() => {
   ]) { const got = await picks(q); check('16 "' + q.slice(0, 36) + '" picks ' + want + ' first', got[0] === want, got); }
   check('16 at most 3 picks, no repeats', (await picks('When should I take a pregnancy test after a missed period?')).length <= 3);
   await done(a);
+}
+
+/* ---------- 17 Version 40.4: her care route goes as one word, and the notice says so ---------- */
+{
+  for (const [care, want] of [['govt', 'govt'], ['asha', 'govt'], ['private', 'own'], ['none', 'none'], [undefined, 'own']]) {
+    const a = await open({ at: 'ask-sakhi', seed: { situation: care ? { care } : {} } });
+    await accept(a.page); await ask(a, 'Is a 40 day gap normal?');
+    const b = JSON.parse(a.sent[0].body);
+    check('17 her care route "' + (care || 'not chosen') + '" goes as "' + want + '", one word', b.care === want, b.care);
+    await done(a);
+  }
+  const src = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  check('17 the notice names the care word and why, in English and Hindi', /with one word on where you usually go for care \(your own doctor, government care or nowhere yet\), so the answer names the right place/.test(src) && /साथ में एक शब्द यह भी जाता है कि आप सेहत के लिए आमतौर पर कहाँ जाती हैं/.test(src));
+  const o = await open({ at: 'ask-sakhi', seed: { chat: { ok: '2026-11-01', msgs: [] } } });
+  check('17 a woman who accepted the earlier notice sees the new one once', !!(await o.page.$('#chat-ok')) && !(await o.page.$('#chat-q')));
+  await accept(o.page);
+  const kept = await o.page.evaluate(() => JSON.parse(localStorage.getItem('qura-saathi-v1')).chat);
+  check('17 accepting it again keeps the notice\'s version, and the box opens', kept.okv === 2 && !!kept.ok && !!(await o.page.$('#chat-q')) && !(await o.page.$('#chat-ok')), kept);
+  await done(o);
 }
 
 check('no page errors', errsAll.length === 0, errsAll);

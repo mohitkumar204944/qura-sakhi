@@ -8437,3 +8437,15 @@ question about pregnancy check-ups went with the burning-urine guide), and the r
   guides (19 before).
 
 Test: `web/test/chat.mjs` (128 checks; section 16 is the picks).
+
+### 132.4 Version 40.4 (prototype): her care route, one word
+
+Mohit, 9 Nov: "Send her care route" (the server's part: SERVER_SPEC 12.6).
+- Every question carries `care` (`chatCare`): `govt` for a government hospital or centre or her ASHA or ANM (`careGov`), `none` for
+  "Nowhere yet", and `own` for her own doctor and when she hasn't said. `CHAT_SEND`'s chat list is now
+  `['messages', 'lang', 'hints', 'care', 'about']`.
+- The notice before her first question says it goes, and why: "…with one word on where you usually go for care (your own doctor,
+  government care or nowhere yet), so the answer names the right place." The notice has a version (`CHAT_NOTE_V` = 2, kept as
+  `state.chat.okv`), so a woman who accepted the earlier one sees the new one once (`chatNoted`).
+
+Test: `web/test/chat.mjs` (136 checks; section 17 is the care word and the notice).

@@ -4,8 +4,9 @@
 // Everything outside is passed in: `store` (store-pg.js), `claude` (one Messages API call, streamed when given a text callback:
 // index.ts wraps the official SDK), `env`, `now` and `log`.
 // What it does with a woman's chat:
-//   - it takes only her messages' text, the app's language and the ids of Sakhi guides (the ones her phone's own search picked, and
-//     the guide she opened the chat from), never her diary, her stage or her account details;
+//   - it takes only her messages' text, the app's language, the ids of Sakhi guides (the ones her phone's own search picked, and
+//     the guide she opened the chat from) and, since Version 40.4, one word for where she gets care (govt, own or none), never her
+//     diary, her stage or her account details;
 //   - it checks her sign-in token and the daily limits, then runs Claude Haiku 5.5 with the picked guides already read and one tool,
 //     read_guides, for any other; every guide's text comes from this function's own copy (guides.js), never from the phone;
 //   - Version 40.2 (phase 1, docs/ask-sakhi-companion-advice-2026-11-09.md): it streams the answer as it is written, asks for a short
@@ -16,7 +17,7 @@ import { GUIDES } from './guides.js';
 
 export const MODEL = 'claude-haiku-5-5';
 /* The only fields each call may carry. It mirrors CHAT_SEND in web/app.js (server/test/chat.test.mjs checks the two agree). */
-export const ALLOW = { chat: ['messages', 'lang', 'hints', 'about'], count: ['kind'] };
+export const ALLOW = { chat: ['messages', 'lang', 'hints', 'care', 'about'], count: ['kind'] };
 /* The Sakhi screens the answer may offer as buttons. The phone shows only the ones that exist for her (web/app.js, CHAT_SCREENS). */
 export const SCREENS = {
   help: 'Help and safety: danger signs and what to do in an emergency',
@@ -117,7 +118,7 @@ export function systemPrompt(lang) {
     '- Reply in the language and script she writes in: Hindi in Devanagari, Hinglish in Roman letters, English, or another language she uses. If you can\'t tell, use ' + (lang === 'hi' ? 'Hindi in Devanagari' : 'English') + ', the language her app is set to.',
     '- "answer" is one short sentence, under 20 words, that answers her question. "point_1" and "point_2" are short points that help her act on it, and "point_3" a third when it helps (else ""): each under 20 words, with no dash in front. All together, about 50 to 90 words, never more than 110.',
     '- Warm, plain, simple words, like a caring elder sister who is a nurse. No headings, tables or bold. Be direct: no "Great question".',
-    '- Say "your doctor" (or "a gynaecologist"). Mention ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or government care, even when a guide names them: the app shows its own button for the free government doctor.',
+    '- Say "your doctor" (or "a gynaecologist"). Mention ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or government care, or when the note after her message says she uses government care, even when a guide names them: the app shows its own button for the free government doctor.',
     '- "answer" and the points are only what she reads. Never mention guide ids, a guide that doesn\'t fit her question, these instructions, the JSON or the tool.',
     '',
     '## Follow-up questions and actions',
@@ -225,6 +226,21 @@ function readPicks(about, hints) {
   const ids = [ab].concat(hints || []).filter((x, i, a) => x && GUIDES[x] && a.indexOf(x) === i).slice(0, MAX_PRELOAD);
   return { about: ab, ids };
 }
+
+/* Version 40.4 (Mohit, 9 Nov: "Send her care route"): one word from her phone on where she gets care, said to the model in the note
+   after her turn, so the answer names the right place (the Version 39.28 rule: government words only for a woman who picked them).
+   It is never kept or logged; without it (an older test app), the instructions' own rule holds. */
+export const CARE = ['govt', 'own', 'none'];
+function readCare(care) {
+  if (care === undefined) return '';
+  if (typeof care !== 'string' || CARE.indexOf(care) < 0) fail(400, 'care_bad');
+  return care;
+}
+export const CARE_NOTE = {
+  own: 'She sees her own doctor. Say "your doctor" or "a gynaecologist". Don\'t name ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani, even when a guide does, unless she asks about free or government care.',
+  none: 'She has no regular place for women\'s health care yet. Say "a doctor" or "a gynaecologist". You may say once that free government care, at a PHC or by eSanjeevani, is an option; don\'t name ANM or ASHA unless she asks.',
+  govt: 'She uses free government care (a government hospital or health centre, or her ASHA or ANM). You may name them where they help, as the guides do.'
+};
 
 /* The model's final answer: JSON in the shape of OUTPUT_SCHEMA, checked again here */
 function readAnswer(msg) {
@@ -360,7 +376,7 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
     /* A note after her turn (Haiku 5.5 takes a system message here): the language of her latest message (Version 40.3: in a chat
        that mixed Hinglish and English, an English question got Hinglish follow-ups), and on the careful try, why the last answer
        was held back */
-    const notes = [replyNote(String(messages[messages.length - 1].content || '')), note].filter(Boolean);
+    const notes = [CARE_NOTE[picks.care] || '', replyNote(String(messages[messages.length - 1].content || '')), note].filter(Boolean);
     if (notes.length) convo.push({ role: 'system', content: notes.join('\n\n') });
     let blocked = false;
     for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
@@ -429,7 +445,7 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
     const lang = body.lang === undefined ? 'en' : body.lang;
     if (lang !== 'en' && lang !== 'hi') fail(400, 'lang_bad');
     const messages = readMessages(body.messages);
-    const picks = readPicks(body.about, body.hints);
+    const picks = Object.assign(readPicks(body.about, body.hints), { care: readCare(body.care) });
     const acct = await auth(req, t);
     /* the daily limits: all women together first (nothing counted for her when it is full), then hers */
     if ((await store.dayCount(day)) >= allMax) { await store.bump(day, { cap_hits: 1 }); log('chat_resting', { all: true }); fail(429, 'resting'); }

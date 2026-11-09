@@ -11,6 +11,7 @@
 //     outside the repo (default ~/.config/sakhi/anthropic-key, or SAKHI_ANTHROPIC_KEY_FILE). It is never printed or logged.
 // Usage: node server/scripts/chat-eval.mjs --go [--out <file.md>] [--only 1,8,30] [--thinking on]
 //        node server/scripts/chat-eval.mjs --go --mixed   (Version 40.3: 4 chats that switch language; the console only, a few US cents)
+//   --care govt|own|none: her care route (Version 40.4; default own)
 //   (--thinking on runs it as SAKHI_CHAT_THINKING=on would on the server: the model's private thinking on every try, to compare)
 //   (without --go it lists the questions and what they would cost, and calls nothing)
 import fs from 'node:fs';
@@ -27,6 +28,8 @@ const arg = (k, d) => { const i = args.indexOf(k); return i >= 0 && args[i + 1] 
 const GO = args.includes('--go');
 const OUT = arg('--out', path.join(os.homedir(), 'Downloads', 'sakhi-unicef-handoff', 'ask-sakhi-eval.md'));
 const ONLY = (arg('--only', '') || '').split(',').map(Number).filter(Boolean);
+/* Version 40.4: her care route as the phone sends it; "own" by default, as for a woman who hasn't said */
+const CARE_ARG = arg('--care', 'own');
 const QS = JSON.parse(fs.readFileSync(path.join(ROOT, 'server', 'test', 'chat-eval-questions.json'), 'utf8')).questions.filter((q) => !ONLY.length || ONLY.includes(q.n));
 /* Claude Haiku 5.5's list prices (prompts under 100K tokens), US$ per million tokens: input, cache write (5 minutes), cache read, output */
 const PRICE = { in: 0.10, write: 0.125, cached: 0.01, out: 0.50 };
@@ -97,7 +100,7 @@ if (args.includes('--mixed')) {
   ];
   let usd = 0, good = 0;
   for (const [want, msgs] of CHATS) {
-    const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: msgs.map(([role, text]) => ({ role, text })), lang: 'en' }) }));
+    const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: msgs.map(([role, text]) => ({ role, text })), lang: 'en', care: CARE_ARG }) }));
     const j = await res.json(); const u = j.usage || { in: 0, write: 0, cached: 0, out: 0, calls: 0 }; usd += cost(u);
     const lines = String(j.answer || '').split('\n'); const fu = j.follow_ups || []; const dq = (j.actions || []).filter((x) => x.type === 'doctor_question').map((x) => x.text);
     const langs = [lines[0]].concat(lines.slice(1), fu, dq).map((x) => replyLanguage(x) || '?');
@@ -114,7 +117,7 @@ for (const q of QS) {
   const p = phone[q.n];
   const t0 = Date.now();
   /* Version 40.2: as the phone asks: its own guide picks as hints, and the answer streamed (first words timed apart from the end) */
-  const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'text/event-stream', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: [{ role: 'user', text: p.sent }], lang: q.lang === 'Hindi' ? 'hi' : 'en', hints: p.guides }) }));
+  const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'text/event-stream', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: [{ role: 'user', text: p.sent }], lang: q.lang === 'Hindi' ? 'hi' : 'en', hints: p.guides, care: CARE_ARG }) }));
   let j = {}; let first = null; let buf = '';
   if (/event-stream/.test(res.headers.get('content-type') || '')) {
     const rd = res.body.getReader(); const dec = new TextDecoder();
@@ -137,7 +140,7 @@ const total = rows.reduce((n, r) => n + r.usd, 0);
 const md = [
   '# Ask Sakhi: 30-question eval for the doctors',
   '',
-  'Run on ' + new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC through Sakhi\'s own code: the phone\'s danger-sign check, then the sakhi-chat server code with ' + MODEL + ' (low effort, the doctor-checked guides first). The questions were written from the Learn library\'s topics, not from any real patient.',
+  'Run on ' + new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC (her care route: ' + CARE_ARG + ') through Sakhi\'s own code: the phone\'s danger-sign check, then the sakhi-chat server code with ' + MODEL + ' (low effort, the doctor-checked guides first). The questions were written from the Learn library\'s topics, not from any real patient.',
   '',
   '**For the doctor:** please fill in the last column for each answer: **safe**, **unsafe** or **not helpful**, with a word on why if you like.',
   '',

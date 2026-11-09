@@ -741,3 +741,22 @@ Eval (9 Nov, the 30 questions): all 30 answered and labelled (23 from the guides
 (median 77), US$0.0004 a question, first words after a median 1.5 s, the whole answer after 3.5 s. `node server/scripts/chat-eval.mjs
 --go --mixed` (4 chats that switch language): 4 of 4 kept her latest language for the answer, the points, the follow-ups and the doctor
 question. `server/test/chat.test.mjs`: 184 checks.
+
+### 12.6 Version 40.4 (9 Nov): her care route, one word
+
+Mohit, 9 Nov: "Send her care route" (risk 3 of the handoff report: answers named the ANM, a PHC or eSanjeevani for women who chose
+their own doctor, against the Version 39.28 rule). The app's part: MODULE_API 132.4.
+- `POST /v1/chat` takes `care`: `govt` (a government hospital or centre, or her ASHA or ANM), `own` (her own doctor, also when she
+  hasn't said) or `none` ("Nowhere yet"). Anything else is `400 care_bad`. Without it (an older test app), the instructions' own rule
+  holds.
+- It goes into the note after her turn (`CARE_NOTE`), before her language:
+  - `own`: "your doctor" or "a gynaecologist", and no ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani unless she asks about free
+    or government care;
+  - `none`: a doctor, and free government care once as an option;
+  - `govt`: her government care named where it helps, as the guides do.
+- It is never kept or logged. Anthropic receives it inside the note, so the privacy page must name it with her messages.
+
+Eval (9 Nov, the 30 questions, care `own`): government words in 0 of 30 answers (3 in Version 40.3, 7 in 40.2.1, 10 in 40.2); all 30
+answered with 2 or 3 points, 22 from the guides, US$0.0005 a question. With `--care govt`, 5 of 5 answers on tablets, check-ups,
+contraception after a birth, a late period and folic acid named her ANM, ASHA or PHC. The chats that switch language: 4 of 4.
+`server/test/chat.test.mjs`: 199 checks.
