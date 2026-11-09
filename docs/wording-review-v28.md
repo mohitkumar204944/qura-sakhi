@@ -4048,3 +4048,25 @@ checked one by one in advance: the doctors check the rules below and a sample.
 - **For counsel**, before the chat goes to Play: it names medicines as information from Sakhi's reviewed pages, with no dose and
   never chosen for her. India's Telemedicine Practice Guidelines (2020) say an AI may assist a doctor but not counsel patients or
   prescribe.
+
+**Version 40.5.1 (10 Nov), the scenario suite's fixes** (MODULE_API 132.6, SERVER_SPEC 12.8).
+- **For the doctors, the AI's new safety lines** (instructions, not app screens):
+  - in pregnancy: no ibuprofen or mefenamic acid, and paracetamol only as her doctor advises;
+  - no pill to bring on a period (a pregnancy test first);
+  - the baby's sex: "finding out or choosing the baby's sex, or ending a pregnancy because of it, is a crime under the PCPNDT Act,
+    so no doctor or scan centre may tell it";
+  - an assault: not her fault, the nearest hospital today, the emergency pill works within 72 hours;
+  - a danger sign in a list always says hospital now;
+  - after unprotected sex: the emergency pill's facts from the contraception pages (within 72 hours, any chemist, not an abortion
+    pill).
+- **The Safe, legal abortion page is read by the chat.** It names mifepristone with misoprostol, only from a registered doctor after a
+  check-up, and the chat never gives a dose.
+- **Waiting for the doctors** (new wording, not built):
+  1. A "what doctors usually give" line for each problem that needs a doctor (PCOS, heavy bleeding, discharge, a urine infection,
+     irregular periods, thyroid). Without it, "which medicine is right?" gets "your doctor decides" in about 2 of 3 such follow-ups.
+  2. HRT and breast cancer: the HRT guide lists who shouldn't take it, but not the risk. The AI once said HRT "is not known to cause
+     cancer".
+  3. Papaya in pregnancy: ripe versus unripe isn't in any guide.
+  4. Fever after a birth: the after-birth guide says "your doctor or a hospital today" in one place and "the nearest hospital now" in
+     another.
+- **For counsel:** abortion law and the baby's sex are now answered from Sakhi's own reviewed page.

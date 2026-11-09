@@ -553,6 +553,32 @@ const view = (page) => page.evaluate(() => {
   check('18 the server\'s copy of the page matches the page as it is now (else: node server/scripts/make-chat-guides.mjs --pages)', JSON.stringify(live) === JSON.stringify(gen.readPages()));
 }
 
+/* ---------- 19 Version 40.5.1 (the scenario suite and the broad use cases, 10 Nov): a follow-up keeps the chat's subject, a
+   correction starts again, the abortion page goes with its words, and the words that sent questions to the wrong guide ---------- */
+{
+  const pain = ['cycle.painful-periods', 'page.periods-pain'];
+  const a = await open({ at: 'ask-sakhi', seed: { chat: { ok: '2026-11-01', okv: 2, msgs: [{ r: 'u', x: 'पीरियड में पेट दर्द कम कैसे करें?', at: 1 }, { r: 'a', x: 'हीट और हल्की हरकत से दर्द कम होता है।', at: 2, src: 'guides', g: pain }] } } });
+  const H = (q, about, prev) => a.page.evaluate(([x, y, z]) => window.Saathi.chat.hints(x, y || undefined, z || []), [q, about || '', prev || []]);
+  const P = async (q) => (await a.page.evaluate((x) => window.Saathi.chat.picks(x), q)).map((s) => s.split(' ')[0]);
+  check('19 a short follow-up goes with the last answer\'s guides first', JSON.stringify((await H('कौन सी दवा सही रहेगी?', '', pain)).slice(0, 2)) === JSON.stringify(pain));
+  const own = await H('I have PCOS and want to know which foods help my hormones the most');
+  const long = await H('I have PCOS and want to know which foods help my hormones the most', '', pain);
+  check('19 a longer question goes with its own picks first, then the last answer\'s', own.length > 0 && long[0] === own[0] && long.indexOf('cycle.painful-periods') > 0, { own, long });
+  const fix = await H('no i meant pain during sex not periods', '', pain);
+  check('19 a correction ("no, I meant ...") starts from her new words', fix[0] === 'intimate.pain-during-sex', fix);
+  check('19 abortion questions bring the Safe, legal abortion page, in English and Hinglish', (await H('is abortion legal in India?')).includes('page.pregtest-abortion') && (await H('kitne hafte tak abortion karwa sakte hai?')).includes('page.pregtest-abortion') && !(await H('How can I reduce period pain?')).includes('page.pregtest-abortion'));
+  for (const [q, bad] of [['कौन सी दवा सही रहेगी?', 'midlife.hot-flushes-night-sweats'], ['ठीक होने में कितना समय लगेगा?', 'intimate.pain-during-sex'], ['When should I see a doctor?', 'conceive.when-to-see-a-fertility-doctor'],
+    ['कल रात बिना प्रोटेक्शन के सेक्स हुआ, अब क्या करूँ?', 'pregnancy.danger-signs-call-112'], ['it hurts a lot when we have sex', 'mind_body.thyroid-and-anaemia-tests'], ['how many times should i go for checkup in pregnancy', 'pregnancy.danger-signs-call-112'],
+    ['i dont feel like having sex anymore, is something wrong with me', 'mind_body.weight-and-waist'], ['मैं 3 महीने की प्रेग्नेंट हूँ, कौन सी गोलियाँ लेनी हैं?', 'midlife.hormone-therapy-explained'], ['periods ke beech mein halka blood aa jata hai', 'pregnancy.sugar-test-blood-pressure-pmos']]) {
+    const got = await P(q); check('19 "' + q.slice(0, 34) + '" no longer picks ' + bad, got.indexOf(bad) < 0, got);
+  }
+  await accept(a.page).catch(() => {});
+  await ask(a, 'कौन सी दवा सही रहेगी?');
+  const b = a.sent.length ? JSON.parse(a.sent[a.sent.length - 1].body) : {};
+  check('19 on the chat screen, the follow-up is sent with the last answer\'s guides first', JSON.stringify((b.hints || []).slice(0, 2)) === JSON.stringify(pain), b.hints);
+  await done(a);
+}
+
 check('no page errors', errsAll.length === 0, errsAll);
 await browser.close();
 const pass = results.filter((r) => r.pass).length;

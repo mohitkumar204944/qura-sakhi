@@ -8480,3 +8480,24 @@ Mohit, 9 Nov: "Yes, build 1 to 4", after he asked the chat what medicine to take
 - `api.chat.hints`, `api.chat.medKind` and `api.chat.medText`, for the tests and the eval.
 
 Test: `web/test/chat.mjs` (148 checks; section 18 is the page, the line, and the server's copy of the page against the page as it is).
+
+### 132.6 Version 40.5.1 (prototype): follow-ups that keep their subject, and the broad use cases
+
+Mohit, 10 Nov: "similarly test and try all similar possible issues", after a Hindi follow-up drifted to hot flushes on his phone,
+then "test all kind of usecases not just medicine answers" (the server's part: SERVER_SPEC 12.8).
+- **A follow-up keeps its subject.** `chatHints(q, about, prev)` sends the guides of Sakhi's last answer in this chat (`prev`, 2 at
+  most, with their pages). They go first when her message is short (`CHAT_SHORT`, 8 words or fewer), and after her message's own
+  picks when it is longer. A correction ("no", "nahi", "नहीं", "I meant", "mera matlab", "मेरा मतलब") starts from her new words.
+  `chatAsk` takes `prev` from the last answer that isn't a failure.
+- **Picks that mislead less.** These words no longer count:
+  - Hindi question and time words (कौन, सी, समय, कल), verb forms (लेनी, है, हैं), and दवा;
+  - everyday words that each matched one title: see, lot, wrong, go, blood, low, दिन, खून, मन, पहली, सुरक्षित, माँ.
+
+  A group's name counts in its guides' titles (`CHAT_GROUP_WORDS`: PCOS for PMOS, conceive, menopause). A few plain words go with
+  generic titles (`CHAT_GUIDE_WORDS`: scan and ultrasound for the check-ups guide, hair and pimples for "Signs worth noticing").
+  Every guide's own question (183 of them): the right guide went from 78 to 87, and other guides only from 43 to 27.
+- **The Safe, legal abortion page is a chat guide too** (`CHAT_PAGES`). No Learn article pairs with it, so `CHAT_PAGE_KEYS` sends it
+  when her words are about abortion.
+- `api.chat.hints(q, about, prev)`.
+
+Test: `web/test/chat.mjs` (162 checks; section 19). The scenario suite behind it: SERVER_SPEC 12.8.

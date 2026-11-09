@@ -21,7 +21,10 @@ export const CONTENT = path.join(ROOT, 'web', 'content.json');
 export const OUT = path.join(here, '..', 'supabase', 'functions', 'sakhi-chat', 'guides.js');
 export const PAGES_FILE = path.join(here, 'chat-pages.json');
 /* The pages the chat reads, by their route. The phone sends one with the Learn article core pairs it with (web/app.js, CHAT_PAGES). */
-export const PAGES = [{ id: 'page.periods-pain', route: 'periods-pain', group: 'cycle' }];
+export const PAGES = [{ id: 'page.periods-pain', route: 'periods-pain', group: 'cycle' },
+  /* Version 40.5.1 (the broad use cases, 10 Nov): the law in plain words, her rights, free care, pills only from a doctor, and the
+     PCPNDT line on the baby's sex */
+  { id: 'page.pregtest-abortion', route: 'pregtest-abortion', group: 'pregnancy' }];
 
 /* An article's field with its `doc` overrides (index -> paragraph) applied, as core's L() does for the doctor route */
 const withDoc = (a, key) => {
@@ -37,13 +40,13 @@ const clean = (s) => String(s || '').replace(/^##\s+/, '').replace(/\s+/g, ' ').
 export function pageExtract() {
   const v = document.querySelector('#view');
   const txt = (el) => (el ? el.textContent : '').replace(/\s+/g, ' ').trim();
-  const SKIP = '.backrow, .med-line, .pl-for, .doc-qura, .art-min, button, svg, .eyebrow, script, style, [hidden]';
+  const SKIP = '.backrow, .med-line, .pl-for, .doc-qura, .art-min, button, svg, script, style, [hidden], input, select, label';
   const colon = (s) => (/[:：]$/.test(s) ? s : s + ':');
   const body = []; let summary = '';
   const walk = (el) => {
     for (const c of el.children) {
       if (c.matches(SKIP)) continue;
-      if (/^H[1-6]$/.test(c.tagName)) { if (c.tagName !== 'H1' && txt(c)) body.push(colon(txt(c))); continue; }
+      if (/^H[1-6]$/.test(c.tagName) || c.matches('.eyebrow')) { if (c.tagName !== 'H1' && txt(c)) body.push(colon(txt(c))); continue; }
       if (c.matches('.list')) {
         c.querySelectorAll('.item').forEach((it) => { if (it.closest(SKIP)) return; const s = it.querySelector('.body > strong'); const d = it.querySelector('.body > span:not(.eyebrow)'); const line = s && d ? txt(s) + ': ' + txt(d) : txt(it); if (line) body.push('- ' + line); });
         continue;
@@ -115,7 +118,7 @@ export function moduleText(content, pages) {
     'export const GUIDES = ' + JSON.stringify(guidesFrom(content, pages), null, 0) + ';\n';
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (process.argv.includes('--pages')) {
     const pages = await renderPages();
     fs.writeFileSync(PAGES_FILE, JSON.stringify(pages, null, 1) + '\n');

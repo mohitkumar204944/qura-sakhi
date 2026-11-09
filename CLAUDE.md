@@ -733,8 +733,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4"), medicine answers: the Period pain page is a chat guide, the medicines come
       first with their caution (a server check), and the doctors' medicine line sits under an answer that names one (MODULE_API 132.5,
       SERVER_SPEC 12.7).
-    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain page,
-    `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
+      Version 40.5.1 (Mohit, 10 Nov: "test all kind of usecases"): follow-ups keep their subject, the Safe, legal abortion page is a
+      chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8).
+    - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (584 answers, graded by Sonnet 5.5, about US$1.70;
+      without `--go`, the phone's picks only, free). Run it after a change to the instructions, the picks or the guides.
+    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain or
+    abortion page, `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
     section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors
     and counsel).

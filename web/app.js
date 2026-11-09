@@ -1766,6 +1766,15 @@
     'you your yours all bring mean means never ever feel feeling age gett tak com instruction quick plan plans ' +
     'liye kaunsi kaunsa konsi sakti sakte sakta hu hoon le lena leni theek thik karu karun kare karein raha rahi rahe chahiye kitna kitni ' +
     'kitne baar jaana jana pas paas wala wali tum ab jao batao bata bhool naam ' +
+    /* Version 40.5.1 (the scenario suite, 10 Nov): words that matched one title and sent a follow-up to the wrong guide: "see" ("When
+       to see a fertility doctor"), "कौन सी"/"दवा" (the hot-flushes guide), "समय" (also "during", in the sex guides' titles), "कल"
+       (the danger-signs guide's "कल नहीं") */
+    'see right long better कौन सी सा कब कल समय होने लगेगा रहेगी लूँ दवा दवाई दवाएँ ' +
+    /* and Hindi verb forms: "कौन सी गोलियाँ लेनी हैं?" (pregnancy tablets) matched HRT's "किसे नहीं लेनी चाहिए" */
+    'लेनी लेना लेने लें ली लिया है हैं हो ' +
+    /* and, from the broad use cases (every guide's own question, 10 Nov), words that sent a question to one unrelated title: "a lot"
+       ("two cheap tests that explain a lot"), "wrong" ("the 'normal' BMI number is wrong"), "go" ("Signs that mean go now"), "दिन" */
+    'lot wrong go times anymore something having happening blood low दिन दिनों खून मन पहली सुरक्षित माँ ' +
     'कितनी कितना कितने बार पास जाना जाएँ जाऊँ लिए चाहिए करें करूँ होता होती होते सकते सकती सकता गया गए गई रहा रही रहे बहुत पता ' +
     'करना कोई ठीक सही डॉक्टर तरह बाद पहले दौरान कम साल उम्र').split(' '));
   const CHAT_PICK_FLOOR = 3.5;   /* one idea alone must be in a single title; two ideas can share a few */
@@ -1782,9 +1791,14 @@
     });
     return ideas.map((fs) => fs.filter((f, j) => fs.indexOf(f) === j));
   };
+  /* Version 40.5.1: a group's own name counts in its guides' titles, so "Signs worth noticing" is a PCOS guide to the picks too */
+  const CHAT_GROUP_WORDS = { pmos: 'pcos pcod pmos पीसीओएस पीसीओडी', conceive: 'conceive', midlife: 'menopause मेनोपॉज़' };
+  /* and a few plain words for guides whose titles name none (the broad use cases: "free ultrasound kahan hota hai?" never reached
+     "Your four check-ups", and "hair on my chin, pimples" never reached "Signs worth noticing") */
+  const CHAT_GUIDE_WORDS = { 'pregnancy.four-antenatal-visits': 'checkup checkups check-up scan ultrasound sonography अल्ट्रासाउंड सोनोग्राफी', 'pmos.signs-to-notice': 'hair chin pimples acne बाल मुंहासे', 'pregnancy.iron-folic-acid-calcium-td': 'iron folic calcium आयरन फ़ोलिक कैल्शियम', 'cycle.how-to-keep-a-period-diary': 'dates तारीख तारीखें' };
   const chatPicks = (q) => {
     const ideas = chatIdeas(q); if (!ideas.length) return [];
-    const docs = allArticles().map((a) => ({ a: a, tit: norm([a.title_en, a.title_hi].join(' ')) }));
+    const docs = allArticles().map((a) => ({ a: a, tit: norm([a.title_en, a.title_hi, CHAT_GROUP_WORDS[a.group] || '', CHAT_GUIDE_WORDS[a.group + '.' + a.id] || ''].join(' ')) }));
     const has = (h, fs) => fs.some((f) => chatHit(h, f));
     const wt = ideas.map((fs) => { const df = docs.filter((d) => has(d.tit, fs)).length; return df ? Math.log((docs.length + 1) / df) : 0; });
     const scored = docs.map((d) => ({ a: d.a, n: ideas.reduce((n, fs, i) => n + (has(d.tit, fs) ? wt[i] : 0), 0) }));
@@ -1797,15 +1811,27 @@
      "Pain relief medicine" names ibuprofen or mefenamic acid, or paracetamol, with its caution. It goes with the Learn article core
      pairs it with (ART's "guide"), right after it, so the server reads it first; an older server drops an id it doesn't know.
      Under the answer it opens the page. */
-  const CHAT_PAGES = ['periods-pain'];
+  const CHAT_PAGES = ['periods-pain', 'pregtest-abortion'];
+  /* Version 40.5.1: a page no Learn article pairs with goes when her words are about it */
+  const CHAT_PAGE_KEYS = { 'pregtest-abortion': /abortion|abort|गर्भपात|अबॉर्शन|\bmtp\b|pregnancy (khatam|end|girana|hatana)|end (a|the|my|this) pregnancy|गर्भ (गिरा|ख़त्म|खत्म)|bachcha (girana|nahi chahiye)/i };
   const chatPageRoute = (id) => (typeof id === 'string' && id.indexOf('page.') === 0 ? id.slice(5) : '');
   const chatPageOk = (id) => { const r = chatPageRoute(id); return !!r && CHAT_PAGES.indexOf(r) >= 0 && !!ROUTES[r] && !retired(r) && !triageHidden(r); };
   const chatPageOf = (id) => { const l = ART[id]; const p = l && l.guide ? 'page.' + l.guide : ''; return p && chatPageOk(p) ? p : ''; };
-  const chatHints = (q, about) => {
+  /* Version 40.5.1 (the scenario suite, 10 Nov: 41 of 180 short follow-ups, such as "कौन सी दवा सही रहेगी?" after a period-pain
+     answer, went with a guide on another subject, and the answer followed it): the guides of Sakhi's last answer (`prev`, 2 at most,
+     with their pages) go with her next question too, first when it is short (8 words or fewer), after its own picks when it is longer */
+  const CHAT_SHORT = 8;
+  const chatHints = (q, about, prev) => {
     const out = []; const add = (x) => { if (x && x !== about && out.indexOf(x) < 0) out.push(x); };
+    const own = []; chatLocalGuides(q).forEach((id) => { own.push(id); const p = chatPageOf(id); if (p) own.push(p); });
+    const last = []; (Array.isArray(prev) ? prev : []).filter((x) => typeof x === 'string' && (!!findArticle(x) || chatPageOk(x))).slice(0, 2).forEach((id) => { last.push(id); const p = chatPageOf(id); if (p) last.push(p); });
+    /* a correction ("no, I meant ...") starts from her new words, not the last answer's guides */
+    const fix = /^\s*(no|nope|nahi|nahin|नहीं|na)\b|\bi meant\b|\bmera matlab\b|मेरा मतलब|\bnot (that|this)\b/i.test(String(q || ''));
+    const short = !fix && String(q || '').trim().split(/\s+/).filter(Boolean).length <= CHAT_SHORT;
     if (about) add(chatPageOf(about));
-    chatLocalGuides(q).forEach((id) => { add(id); add(chatPageOf(id)); });
-    return out.slice(0, 5);   /* the server takes 5 at most, and reads the first 3 with the guide she came from */
+    Object.keys(CHAT_PAGE_KEYS).forEach((r) => { if (CHAT_PAGE_KEYS[r].test(String(q || '')) && chatPageOk('page.' + r)) add('page.' + r); });
+    (short ? last.concat(own) : own.concat(last)).forEach(add);
+    return out.slice(0, 5);   /* the server takes 5 at most, and reads the first 4 with the guide she came from */
   };
   /* Version 40.5: the doctors' own medicine line (review 19.71, answer 6) under every answer that names a medicine, in their words,
      never the model's, and the emergency pill's own line for that pill. It sits in the answer's block, so "Listen" and Talk with Sakhi
@@ -1915,7 +1941,9 @@
     const about = mem.chatAbout && findArticle(mem.chatAbout) ? mem.chatAbout : undefined;
     mem.chatLive = '';
     const onDelta = (piece) => { if (!mem.chatBusy) return; mem.chatLive = piece === null ? '' : (mem.chatLive || '') + piece; chatPaintLive(); };
-    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatHints(lastQ, about), care: chatCare(), about: about }, false, onDelta).then((j) => {
+    /* Version 40.5.1: the guides of Sakhi's last answer in this chat, so a short follow-up keeps its subject */
+    const prevA = c.msgs.slice(0, -1).reverse().find((m) => m.r === 'a' && !m.fail && Array.isArray(m.g));
+    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatHints(lastQ, about, prevA ? prevA.g : []), care: chatCare(), about: about }, false, onDelta).then((j) => {
       if (j && j.ok === true && typeof j.answer === 'string' && j.answer.trim()) {
         done(Object.assign({ r: 'a', x: j.answer.trim().slice(0, 2000), at: Date.now(), src: j.source === 'guides' || j.source === 'general' ? j.source : '',
           g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && (!!findArticle(k) || chatPageOk(k))).slice(0, 4),
@@ -6210,7 +6238,7 @@
   window.Saathi = api;
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
   /* Version 39.79: for the tests, what Firebase would be told (MODULE_API section 122) */
-  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), hints: (q, about) => chatHints(q, about), medKind: (x) => chatMedKind(x), medText: (x) => ((chatMedLine(x) || {}).text || ''), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval (40.5: hints and medKind) */
+  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), hints: (q, about, prev) => chatHints(q, about, prev), medKind: (x) => chatMedKind(x), medText: (x) => ((chatMedLine(x) || {}).text || ''), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval (40.5: hints and medKind) */
   api.fb = { on: () => fbOn(), quiet: () => fbQuiet(), screen: (r) => fbScreen(r), keep: (n, p) => fbKeep(n, p), place: (el) => fbPlace(el), safe: (fn) => safe(fn) };
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),

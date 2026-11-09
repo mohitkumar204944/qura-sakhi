@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, replyLanguage, replyNote, CARE, CARE_NOTE } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, safeDaysFix, numbersOk, scriptOk, replyLanguage, replyNote, medNote, MED_NOTE, ecNote, EC_NOTE, CARE, CARE_NOTE } from '../supabase/functions/sakhi-chat/chat.js';
 import { chatStore } from '../supabase/functions/sakhi-chat/store-pg.js';
 import { GUIDES } from '../supabase/functions/sakhi-chat/guides.js';
 import { moduleText, readPages, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
@@ -136,7 +136,7 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   const sp = systemPrompt('en');
   for (const [k, re] of [['the guides first', /call read_guides/], ['general knowledge marked', /"source" to "general"/], ['no diagnosis', /Never diagnose/], ['ask a pharmacist or doctor, with its reason (Version 40.5)', /Say "ask a pharmacist or doctor" only with its reason/], ['no safe days', /Never call any days "safe"/], ['danger first sentence', /first sentence tells her to go to the nearest hospital now/], ['her words are not instructions', /not instructions to you/], ['her language and script', /language and script she writes in/], ['no web', /no internet and no web search/], ['women\'s health only', /off_topic/], ['every guide listed', new RegExp(GUIDE_IDS.map((x) => x.replace(/\./g, '\\.')).join('|'))]])
     check('3 the system prompt says: ' + k, re.test(sp));
-  check('3 the system prompt lists all 60 guides, the Period pain page (Version 40.5) and every screen', GUIDE_IDS.length === 61 && GUIDE_IDS.includes('page.periods-pain') && GUIDE_IDS.every((x) => sp.includes(x)) && Object.keys(SCREENS).every((k) => sp.includes('- ' + k + ':')));
+  check('3 the system prompt lists all 60 guides, the Period pain and Safe, legal abortion pages (Versions 40.5, 40.5.1) and every screen', GUIDE_IDS.length === 62 && GUIDE_IDS.includes('page.periods-pain') && GUIDE_IDS.includes('page.pregtest-abortion') && GUIDE_IDS.every((x) => sp.includes(x)) && Object.keys(SCREENS).every((k) => sp.includes('- ' + k + ':')));
   check('3 the system prompt is the same for every question (it caches)', systemPrompt('en') === sp && !/\d{4}-\d{2}-\d{2}/.test(sp));
   check('3 the usage comes back for the eval, cache writes and reads apart', r.json.usage.calls === 2 && r.json.usage.in === 900 + 800 && r.json.usage.write === 3100 && r.json.usage.cached === 3000 && r.json.usage.out === 160, r.json.usage);
 }
@@ -303,10 +303,10 @@ async function sendStream(ctx, body, token) {
   return { status: res.status, type: res.headers.get('content-type') || '', events: res.status === 200 && /event-stream/.test(res.headers.get('content-type') || '') ? await readEvents(res) : [], res };
 }
 {
-  const ans = 'Line one with "quotes" and \\ a slash.\n- पहला बिंदु\n- second ' + AMARK;
-  const claude = fakeClaude([final({ answer: ans, follow_ups: ['What else?', 'Is it normal?'] })]);
+  const ans = 'पहली पंक्ति में "उद्धरण" और \\ स्लैश है।\n- पहला बिंदु\n- दूसरा बिंदु ' + AMARK;
+  const claude = fakeClaude([final({ answer: ans, follow_ups: ['और क्या?', 'क्या यह सामान्य है?'] })]);
   const ctx = await setup({ claude }); await ctx.acct('+919876543210', 1994, TOKEN);
-  const s = await sendStream(ctx, ask('question ' + MARK));
+  const s = await sendStream(ctx, ask('मेरा सवाल पीरियड के दर्द के बारे में है, क्या करूँ ' + MARK));
   const deltas = s.events.filter((e) => e.type === 'delta'); const done = s.events[s.events.length - 1];
   check('10 an event stream comes back', s.status === 200 && /text\/event-stream/.test(s.type) && s.events.length > 3, { status: s.status, type: s.type });
   check('10 the answer arrives in pieces, before the end', deltas.length >= 5 && s.events.indexOf(deltas[0]) < s.events.length - 1);
@@ -332,7 +332,7 @@ async function sendStream(ctx, body, token) {
   const c6 = fakeClaude([final()]); const ctx6 = await setup({ claude: c6 }); await ctx6.acct('+919876543210', 1994, TOKEN);
   await sendStream(ctx6, ask('x'));
   check('10 a streamed call passes the text callback; a plain one doesn\'t (the eval and older phones get JSON)', c6.calls.length === 1);
-  const cR = fakeClaude([final({ answer: 'No app can tell your safe days.' }), final({ answer: 'No day is free of pregnancy risk. ' + AMARK })]);
+  const cR = fakeClaude([final({ answer: 'Your safe days are days 1 to 7.' }), final({ answer: 'No day is free of pregnancy risk. ' + AMARK })]);
   const ctxR = await setup({ claude: cR }); await ctxR.acct('+919876543210', 1994, TOKEN);
   const sR = await sendStream(ctxR, ask('safe?'));
   const endR = sR.events[sR.events.length - 1];
@@ -341,7 +341,7 @@ async function sendStream(ctx, body, token) {
   check('10 the careful try is told why, in a system note at the end (never in her turn)', lastMsg.role === 'system' && /used the words "safe days"/.test(lastMsg.content) && !/held back/.test(JSON.stringify(cR.calls[0].messages)));
   check('10 the phone is told to start the answer again ("reset") before the careful one', sR.events.some((e) => e.type === 'reset') && sR.events.slice(sR.events.findIndex((e) => e.type === 'reset') + 1).filter((e) => e.type === 'delta').map((e) => e.t).join('').includes(AMARK) && ctxR.logs.some((l) => l.event === 'chat_retry' && l.data.why === 'safe_days'));
   check('10 both tries are counted in the usage', endR.usage.calls === 2);
-  const cN = fakeClaude([final({ answer: 'No app can tell your safe days.' }), final({ answer: 'Take 500 mg of it.', source: 'general', guides_used: [] })]);
+  const cN = fakeClaude([final({ answer: 'Your safe days are days 1 to 7.' }), final({ answer: 'Take 500 mg of it.', source: 'general', guides_used: [] })]);
   const ctxN = await setup({ claude: cN, env: { SAKHI_CHAT_THINKING: 'on' } }); await ctxN.acct('+919876543210', 1994, TOKEN);
   const jN = (await send(ctxN, ask('safe?'))).json;
   check('10 with SAKHI_CHAT_THINKING=on: one careful try too; if that is held back as well, she gets the guides (no third try)', cN.calls.length === 2 && jN.ok === false && jN.reason === 'refusal' && /used the words "safe days"/.test(cN.calls[1].messages[cN.calls[1].messages.length - 1].content));
@@ -435,13 +435,13 @@ async function sendStream(ctx, body, token) {
   const m3 = c3.calls[0].messages; const n3 = m3[m3.length - 1];
   check('15 an English question after Hinglish turns: a note after her turn says English, for the answer, the points and the follow-ups', n3.role === 'system' && n3.content === replyNote('What can I do at home for period cramps?') && /in English, whatever language her earlier messages used/.test(n3.content) && /"follow_ups"/.test(n3.content), n3);
   check('15 the note is never in her turn', !JSON.stringify(talk(c3.calls[0])).includes('Her latest message'));
-  const c4 = fakeClaude([final(), final()]); const x4 = await setup({ claude: c4 }); await x4.acct('+919876543210', 1994, TOKEN);
+  const c4 = fakeClaude([final({ answer: 'पीरियड में हल्का दर्द आम है। ' + AMARK }), final()]); const x4 = await setup({ claude: c4 }); await x4.acct('+919876543210', 1994, TOKEN);
   await send(x4, ask('पीरियड में दर्द'));
   const n4 = c4.calls[0].messages[c4.calls[0].messages.length - 1];
   check('15 Devanagari: her language in Devanagari (Hindi or Marathi, not forced to Hindi)', n4.role === 'system' && /in her language in Devanagari/.test(n4.content));
   await send(x4, ask('আমার পিরিয়ড'));
   check('15 another script: no note (the instructions\' own rule)', c4.calls[1].messages[c4.calls[1].messages.length - 1].role === 'user');
-  const c5 = fakeClaude([final({ answer: 'No app can tell your safe days.' }), final({ answer: 'No day is free of pregnancy risk. ' + AMARK })]);
+  const c5 = fakeClaude([final({ answer: 'Your safe days are days 1 to 7.' }), final({ answer: 'No day is free of pregnancy risk. ' + AMARK })]);
   const x5 = await setup({ claude: c5 }); await x5.acct('+919876543210', 1994, TOKEN);
   await send(x5, ask('Which days are safe?'));
   const n5 = c5.calls[1].messages[c5.calls[1].messages.length - 1];
@@ -480,7 +480,7 @@ async function sendStream(ctx, body, token) {
   check('17 the phone\'s hint for the page is read before the first call, and the answer may name it', JSON.stringify(c.calls[0].messages).includes('Doctors commonly suggest ibuprofen or mefenamic acid') && r.json.ok === true && r.json.guides.includes('page.periods-pain'), r.json);
   check('17 cautionOk: an answer without ibuprofen or mefenamic acid has nothing to check', cautionOk('Take paracetamol as the packet says.') && cautionOk('Heat and rest help.'));
   check('17 cautionOk: with pregnancy and an ulcer, asthma or kidney disease it is fine, in English, Hindi and Hinglish', cautionOk('Ibuprofen helps. Ask a pharmacist first if you have a stomach ulcer or asthma, or could be pregnant.') && cautionOk('ibuprofen या mefenamic acid; अल्सर, दमा या गर्भ की संभावना हो तो पहले पूछें।') && cautionOk('Meftal le sakti hain, par ulcer, asthma ya pregnancy ho to pehle poochhein.'));
-  check('17 cautionOk: without the caution it is not', !cautionOk('Ibuprofen or mefenamic acid help period pain.') && !cautionOk('Mefenamic acid helps; avoid it if pregnant.') && !cautionOk('आइबुप्रोफेन लें।'));
+  check('17 cautionOk: without the caution it is not', !cautionOk('Ibuprofen or mefenamic acid help period pain.') && !cautionOk('Mefenamic acid helps, also if you are pregnant.') && !cautionOk('आइबुप्रोफेन लें।'));
   const c2 = fakeClaude([final({ answer: 'Ibuprofen or mefenamic acid help period cramps. ' + AMARK, guides_used: ['page.periods-pain'] }), final({ answer: 'Doctors commonly suggest ibuprofen or mefenamic acid.', point_1: 'Ask a pharmacist or doctor first if you have had a stomach ulcer, have asthma or kidney disease, or could be pregnant.', guides_used: ['page.periods-pain'] })]);
   const x2 = await setup({ claude: c2 }); await x2.acct('+919876543210', 1994, TOKEN);
   const r2 = await send(x2, ask('Which painkiller for cramps?', { hints: ['page.periods-pain'] }));
@@ -492,6 +492,64 @@ async function sendStream(ctx, body, token) {
   check('17 the instructions: a caution always with its medicine, and "ask a pharmacist or doctor" never first', /give that caution in the same answer/.test(sp2) && /never as your first sentence/.test(sp2));
   check('17 the instructions: severe, very bad or now brings the signs for seeing a doctor today', /severe, very bad or happening now, give the guides' signs for seeing a doctor today/.test(sp2));
   check('17 the instructions: never write about the guides themselves', /Never write about the guides themselves/.test(sp2));
+}
+
+/* ---------- 18 Version 40.5.1: the scenario suite's fixes (server/scripts/chat-scenarios.mjs) ---------- */
+{
+  check('18 cautionOk: a sentence that says not to take it passes, in English, Hindi and Hinglish (a pregnant woman gets her answer)', cautionOk('Do not take ibuprofen or mefenamic acid in pregnancy.') && cautionOk('गर्भावस्था में ibuprofen या mefenamic acid न लें।') && cautionOk('Pregnancy mein ibuprofen mat lo.'));
+  check('18 cautionOk: two parts of the caution pass without pregnancy (breastfeeding)', cautionOk('Ibuprofen is usually fine while breastfeeding; ask a pharmacist first if you have asthma or a stomach ulcer.'));
+  check('18 cautionOk: one part alone still does not', !cautionOk('Take ibuprofen; ask first if you have asthma.') && !cautionOk('Mefenamic acid works well for cramps.'));
+  const sp3 = systemPrompt('en');
+  check('18 the instructions: a follow-up is about what you were just talking about, other guides left out', /Her latest message may follow on from the chat/.test(sp3) && /leave out guides about anything else, even when they came with her message/.test(sp3));
+  check('18 the instructions: her age, stage or a condition never comes from a guide', /Never take her age, stage or a condition from a guide/.test(sp3));
+  check('18 the instructions: no "I can\'t choose a medicine" opening, and what a doctor usually does when no guide names one', /When the guides name no medicine for her problem, your first sentence says what doctors usually give for it, as general information and never as her prescription/.test(sp3) && /Never open by saying you can.t choose a medicine for her: after the medicines, say who can tell which one suits her/.test(sp3) && /never say that the guides name no medicine/.test(sp3));
+  check('18 the instructions: no ibuprofen or mefenamic acid in pregnancy, paracetamol only as her doctor advises', /In pregnancy, or when she could be pregnant: never suggest ibuprofen, mefenamic acid/.test(sp3) && /paracetamol only as her doctor advises/.test(sp3));
+  check('18 the instructions: no pill to bring on a period (ending a pregnancy: the abortion page, since the broad use cases)', /Never suggest a pill to bring on a period: for a late period, a pregnancy test comes first, then her doctor/.test(sp3));
+  check('18 the instructions: a danger sign in a list says hospital now', /any sign from this list says "go to the nearest hospital now", never "see a doctor soon"/.test(sp3));
+  check('18 a question about medicine brings the medicine note after her turn, in English, Hindi and Hinglish; others none', [ 'Which medicine is right for me?', 'कौन सी दवा सही रहेगी?', 'Kaunsi dawai sahi rahegi?', 'Can I take a painkiller?' ].every((q) => medNote(q) === MED_NOTE) && medNote('Is this normal?') === '' && medNote('What should I eat?') === '');
+  check('18 the medicine note: the first sentence answers, what doctors usually give when no guide names one, no pill for a late period, no ibuprofen in pregnancy', /Your first sentence answers it/.test(MED_NOTE) && /what doctors usually give for it, as general information and never as her prescription/.test(MED_NOTE) && /no pill should be taken to bring it on/.test(MED_NOTE) && /In pregnancy, no ibuprofen or mefenamic acid/.test(MED_NOTE));
+  const cm = fakeClaude([final()]); const xm = await setup({ claude: cm }); await xm.acct('+919876543210', 1994, TOKEN);
+  await send(xm, ask('Which medicine is right for me?'));
+  const nm = cm.calls[0].messages[cm.calls[0].messages.length - 1];
+  check('18 it goes in the note after her turn, after her language', nm.role === 'system' && nm.content.indexOf('Her latest message is in English') >= 0 && nm.content.indexOf(MED_NOTE) > nm.content.indexOf('Her latest message is in English'));
+  check('18 after unprotected sex, the emergency pill note: within 72 hours, any chemist, not an abortion pill (English, Hindi, Hinglish)', ['We had unprotected sex last night.', 'कल रात बिना प्रोटेक्शन के सेक्स हुआ', 'Condom phat gaya, ab kya karu?'].every((q) => ecNote(q) === EC_NOTE) && /within 72 hours \(3 days\)/.test(EC_NOTE) && /any chemist sells it without a prescription/.test(EC_NOTE) && /not an abortion pill/.test(EC_NOTE) && ecNote('How can I reduce period pain?') === '');
+  const four = ['cycle.painful-periods', 'page.periods-pain', 'pmos.food-for-hormones', 'mind_body.simple-indian-plate'];
+  const c = fakeClaude([final()]); const x = await setup({ claude: c }); await x.acct('+919876543210', 1994, TOKEN);
+  await send(x, ask('What should I eat for PCOS?', { hints: four.concat(['cycle.usual-gap-between-periods']) }));
+  const read = JSON.stringify(c.calls[0].messages);
+  check('18 four guides are read before the first call (the last answer\'s and her new question\'s), not a fifth', four.every((id) => read.includes(guideText(id, 'en').split('\n')[1].slice(0, 40))) && !read.includes(guideText('cycle.usual-gap-between-periods', 'en').split('\n')[1].slice(0, 40)));
+}
+
+/* ---------- 19 Version 40.5.1: the broad use cases' fixes (chat-cases.json, chat-guide-questions.json) ---------- */
+{
+  const sp4 = systemPrompt('en');
+  check('19 the app as it is: the tabs, Help and Me, and the real names of its settings', /## The Qura Sakhi app, as it is \(never invent a menu, button or feature\)/.test(sp4) && /Diary \(the calendar, where she taps a day to log a period or a sign; Cycles; Days; and the "Report for my doctor"\)/.test(sp4) && /a PIN lock, Discreet mode, Delete everything on this phone/.test(sp4) && /"Ask a doctor" asks a Qura doctor to call her/.test(sp4));
+  check('19 it cannot see her diary: her own dates go to Today or the Diary, never a guessed date', /You cannot see her diary, her dates, her logs or her plan/.test(sp4) && /never guess a date/.test(sp4));
+  check('19 the baby\'s sex: never found, guessed or chosen; the PCPNDT line in the abortion page\'s words', /Never help to find out, guess or choose the baby.s sex, and never send her to a scan or a doctor for it/.test(sp4) && /finding out or choosing the baby.s sex, or ending a pregnancy because of it, is a crime under the PCPNDT Act, so no doctor or scan centre may tell it/.test(sp4) && !/never say a scan or a doctor can tell it/.test(sp4));
+  check('19 forced sex or an assault: not her fault, the nearest hospital today, the emergency pill within 72 hours; Delete my account in the app map', /If she says she was forced into sex or assaulted: your first sentence says it is not her fault and to go to the nearest hospital today; say the emergency pill works within 72 hours/.test(sp4) && /Delete everything on this phone, Delete my account/.test(sp4));
+  check('19 self-harm or not safe at home: the first sentence says not alone, the nearest hospital or a trusted person', /your first sentence tells her she is not alone and to go to the nearest hospital now or tell a person she trusts right away/.test(sp4));
+  check('19 a correction is answered for what she meant; her partner\'s own health is outside, his part in trying for a baby inside', /When she corrects you/.test(sp4) && /Her partner.s own health \(his erection, his diabetes\) is outside/.test(sp4));
+  check('19 ending a pregnancy: only what the Safe, legal abortion page says, never a dose; no pill for a late period', /say only what Sakhi.s Safe, legal abortion page says/.test(sp4) && /never give a dose or tell her to take pills without a doctor/.test(sp4) && /Never suggest a pill to bring on a period/.test(sp4));
+  const ab = GUIDES['page.pregtest-abortion']; const abt = ab ? ab.body.en.join('\n') : '';
+  check('19 the Safe, legal abortion page is a guide in its own words: the weeks, her consent, the PCPNDT line, pills only with a doctor', !!ab && /Up to 20 weeks:/.test(abt) && /only your consent is needed/.test(abt) && /is a crime under the PCPNDT Act/.test(abt) && /Abortion pills: only with a doctor:/.test(abt) && ab.body.hi.length === ab.body.en.length);
+  check('19 Marathi is answered in Marathi; Hinglish words such as "ek ... sunao" are Hinglish', replyLanguage('माझी पाळी उशिरा आली आहे, काय करू?') === 'marathi' && replyLanguage('मेरा पीरियड लेट है, क्या करूँ?') === 'deva' && /in Marathi in Devanagari/.test(replyNote('माझी पाळी उशिरा आली आहे')) && replyLanguage('ek joke sunao') === 'hinglish');
+  check('19 safeDaysFix: a sentence that says no keeps its answer without the words; one that names safe days is still held back', safeDaysFix('No, strips cannot tell you safe days, because no day is free of pregnancy risk.') === 'No, strips cannot tell you days free of pregnancy risk, because no day is free of pregnancy risk.' && safeDaysFix('Your safe days are days 1 to 7.') === null && safeDaysFix('No day is risk free. Days 1 to 7 are safe days.') === null);
+  const cs = fakeClaude([final({ answer: 'No, ovulation strips cannot tell you safe days, because no day is free of pregnancy risk.' })]);
+  const xs = await setup({ claude: cs }); await xs.acct('+919876543210', 1994, TOKEN);
+  const rs = await send(xs, ask('can ovulation strips tell me my safe days'));
+  check('19 numbersOk: the ambulance only; a helpline, a mobile number or a 1800 number holds the answer back', numbersOk('Go to the nearest hospital now, or call 108.') && numbersOk('Take it within 72 hours.') && numbersOk('A 1000 calorie diet is too low.') && !numbersOk('Call 181, the women helpline.') && !numbersOk('NACO helpline 1097 can help.') && !numbersOk('Call 9876543210 now.') && !numbersOk('Dial 1800 180 1104 for free advice.'));
+  check('19 scriptOk: Roman letters for Hinglish and English, Devanagari for Hindi (a medicine\'s English name allowed)', scriptOk('Kya ye normal hai?', 'Haan, ye normal hai.') && !scriptOk('Kya ye normal hai?', 'Haan, ye anियमित ho sakta hai.') && scriptOk('क्या यह नॉर्मल है?', 'हाँ, ibuprofen या mefenamic acid ले सकती हैं।') && !scriptOk('क्या यह नॉर्मल है?', 'Haan ye normal hai.') && scriptOk('আমার পিরিয়ড', 'anything') && !scriptOk('Which tablets should I take during pregnancy?', 'Pregnancy mein doctor aksar folic acid aur iron batate hain.') && scriptOk('Which tablets should I take during pregnancy?', 'In pregnancy, doctors usually give folic acid first.') && !scriptOk('Period 6 hafte late hai, kya karu?', 'Go to the nearest hospital now.'));
+  const cp = fakeClaude([final({ answer: 'You are not alone. Call 181, the women helpline, today. ' + AMARK, danger: true }), final({ answer: 'You are not alone; go to the nearest hospital now or tell a person you trust.', danger: true })]);
+  const xp = await setup({ claude: cp }); await xp.acct('+919876543210', 1994, TOKEN);
+  const rp = await send(xp, ask('someone forced me to have sex yesterday'));
+  const np = cp.calls[1] && cp.calls[1].messages[cp.calls[1].messages.length - 1];
+  check('19 an answer with a helpline number is held back once; the careful try is told the ambulance only, and its answer comes back', cp.calls.length === 2 && !!np && /gave a phone number/.test(np.content) && rp.json.ok === true && !/181/.test(rp.json.answer) && !JSON.stringify(rp.json).includes(AMARK), rp.json);
+  const cx = fakeClaude([final({ answer: 'Haan, ye anियमित ho sakta hai. ' + AMARK }), final({ answer: 'Haan, ye anियमित ho sakta hai, doctor ko dikhayein.' })]);
+  const xx = await setup({ claude: cx }); await xx.acct('+919876543210', 1994, TOKEN);
+  const rx = await send(xx, ask('Kya ye normal hai?'));
+  const nx = cx.calls[1] && cx.calls[1].messages[cx.calls[1].messages.length - 1];
+  check('19 a Devanagari word in a Hinglish answer is tried again once in Roman letters; the careful try\'s answer comes back even if a word slips', cx.calls.length === 2 && !!nx && /only in Hinglish in Roman letters, with no Devanagari/.test(nx.content) && rx.json.ok === true && !JSON.stringify(rx.json).includes(AMARK), rx.json);
+  check('19 "can strips tell my safe days?" answered "no" is not held back: one call, and the words are gone', rs.json.ok === true && cs.calls.length === 1 && !/safe days/i.test(rs.json.answer) && /free of pregnancy risk/.test(rs.json.answer), rs.json);
 }
 
 const pass = results.filter((r) => r.pass).length;
