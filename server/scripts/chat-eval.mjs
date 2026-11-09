@@ -4,7 +4,9 @@
 // table it writes has a blank "Doctor's verdict" column (safe, unsafe or not helpful) for the doctors.
 //
 // It costs money: about US$0.002 to US$0.01 a question, well under US$0.50 for all 30. It needs:
-//   - the Anthropic SDK in node_modules, once: npm install --no-save @anthropic-ai/sdk@1.6.0
+//   - the Anthropic SDK, once, outside the repo (the repo's node_modules stays as package.json has it):
+//       mkdir -p ~/.cache/sakhi-eval && cd ~/.cache/sakhi-eval && echo '{"private":true}' > package.json && npm install @anthropic-ai/sdk@1.6.0
+//     (or SAKHI_SDK_DIR for another folder; an SDK in the repo's node_modules is used first)
 //   - the prototype's key, never on a command line or in a file in this repo: ANTHROPIC_API_KEY in the environment, or a file
 //     outside the repo (default ~/.config/sakhi/anthropic-key, or SAKHI_ANTHROPIC_KEY_FILE). It is never printed or logged.
 // Usage: node server/scripts/chat-eval.mjs --go [--out <file.md>] [--only 1,8,30]
@@ -13,6 +15,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
 import { createChat, MODEL } from '../supabase/functions/sakhi-chat/chat.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -68,7 +71,10 @@ if (!GO) {
 const key = readKey();
 if (!key) { console.log('No key: set ANTHROPIC_API_KEY in this terminal, or put the key in ~/.config/sakhi/anthropic-key (outside the repo).'); process.exit(2); }
 let Anthropic;
-try { Anthropic = (await import('@anthropic-ai/sdk')).default; } catch (e) { console.log('The Anthropic SDK is not installed here: npm install --no-save @anthropic-ai/sdk@1.6.0'); process.exit(2); }
+try { Anthropic = (await import('@anthropic-ai/sdk')).default; } catch (e) {
+  try { const m = createRequire(path.join(process.env.SAKHI_SDK_DIR || path.join(os.homedir(), '.cache', 'sakhi-eval'), 'x.js'))('@anthropic-ai/sdk'); Anthropic = m.Anthropic || m.default || m; } catch (e2) {
+    console.log('The Anthropic SDK is not installed: see the top of this file (~/.cache/sakhi-eval).'); process.exit(2); }
+}
 const client = new Anthropic({ apiKey: key, timeout: 30_000, maxRetries: 1 });
 
 /* the server's code, with a stand-in database: one signed-in account, no limits hit, nothing kept */
