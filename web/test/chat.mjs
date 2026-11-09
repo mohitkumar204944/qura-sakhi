@@ -304,6 +304,13 @@ const view = (page) => page.evaluate(() => {
   check('9 after the answer is read, it listens again by itself', a.sent.length === 2 && (await a.page.evaluate(() => window.__listens.length)) === 3);
   await a.page.evaluate(() => window.__sakhiHeard(null)); await settle(a.page, 300);
   check('9 silence ends talking', !(await a.page.$eval('#chat-talk', (b) => b.classList.contains('on'))));
+  /* Version 40, the phone test (9 Nov): voice typing closed with no words sends nothing; coming back ends "Listening…" and Talk */
+  await a.page.click('#chat-talk'); await settle(a.page, 200);
+  const before = await a.page.evaluate(() => !!document.querySelector('.chat-msg.me.busy'));
+  await a.page.evaluate(() => window.__sakhiResume && window.__sakhiResume()); await settle(a.page, 2000);
+  check('9 voice typing closed with no words: "Listening…" and Talk end when Sakhi is back in front', before && !(await a.page.$('.chat-msg.me.busy')) && !(await a.page.$eval('#chat-talk', (b) => b.classList.contains('on'))));
+  await a.page.click('#chat-mic'); await settle(a.page, 200); await go(a.page, 'care'); await go(a.page, 'ask-sakhi');
+  check('9 leaving the page ends "Listening…" too', !(await a.page.$('.chat-msg.me.busy')));
   await done(a);
   const w = await open({ at: 'ask-sakhi', listen: false });
   await accept(w.page);

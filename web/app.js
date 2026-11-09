@@ -1227,7 +1227,7 @@
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
     fbSync(r);   /* Version 39.79: Firebase on or off for this screen, and its name once it changes */
-    if (r !== 'ask-sakhi' && mem.chatTalk) { mem.chatTalk = false; if (api.stopSpeech) safe(() => api.stopSpeech()); }   /* Version 40: talking with Sakhi ends when she leaves */
+    if (r !== 'ask-sakhi' && (mem.chatTalk || mem.chatHearing)) { mem.chatTalk = false; mem.chatHearing = false; if (api.stopSpeech) safe(() => api.stopSpeech()); }   /* Version 40: talking with Sakhi ends when she leaves */
     if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; }   /* a sheet never follows her to another screen */
     if (r.indexOf('report') !== 0) mem.rpFirst = null;   /* Version 39.1: a card's question leads only the report it opened */
     const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced, chain: tour.chain } : null; renderFab(null); clearTour();
@@ -1781,11 +1781,18 @@
   /* her voice: the phone's own voice typing (Hindi or English, as the app is set), sent as she said it */
   function chatListen() {
     if (!canListen() || mem.chatBusy) return;
-    window.__sakhiHeard = (txt) => { mem.chatHearing = false; const s = String(txt || '').trim();
+    window.__sakhiHeard = (txt) => { mem.chatHearing = false; clearTimeout(mem.chatHearTm); const s = String(txt || '').trim();
       if (!s) { mem.chatTalk = false; toast(t('voice_none')); if (route() === 'ask-sakhi') render(); return; }
       chatSend(s); };
     mem.chatHearing = true; if (route() === 'ask-sakhi') render();
     safe(() => window.SakhiAndroid.listen(langMeta(state.lang).locale || 'en-IN', t('chat_ph')));
+  }
+  /* Version 40, the phone test (9 Nov): voice typing she closes (Back, or Google's mic shut) sends the page nothing, so "Listening…"
+     stayed. When Sakhi comes back to the front and no words came within a moment, listening (and talking) ends. */
+  function chatVoiceBack() {
+    if (!mem.chatHearing) return;
+    clearTimeout(mem.chatHearTm);
+    mem.chatHearTm = setTimeout(() => { if (!mem.chatHearing) return; mem.chatHearing = false; mem.chatTalk = false; if (route() === 'ask-sakhi') render(); }, 1500);
   }
   /* talking with Sakhi: the answer is read aloud, and once the phone has finished speaking she can speak again */
   function chatAfter(m) {
@@ -6078,6 +6085,7 @@
        Coming back also re-sends the alarm list so it never runs dry. */
     const wentAway = () => { if (!mem.hiddenAt) mem.hiddenAt = Date.now(); mem.healthOk = false; };   /* her health details ask for the PIN again */
     const cameBack = () => {
+      safe(chatVoiceBack);   /* Version 40: voice typing closed with no words */
       const away = mem.hiddenAt ? Date.now() - mem.hiddenAt : 0; mem.hiddenAt = 0;
       if ((state.settings.pinHash || (state.settings.shared && state.stage === 'app')) && away > 30000 && !mem.locked) { mem.locked = true; mem.bioAuto = false; closeSheet(); render(); }
       else if ((route() === 'me' || route() === 'me-reminders' || route() === 'plan-reveal' || shownDay !== dayKey()) && !sheetUp()) render();   /* back from a phone setting (exact alarms), or on a new day */
