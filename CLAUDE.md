@@ -737,6 +737,10 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8).
     - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (584 answers, graded by Sonnet 5.5, about US$1.70;
       without `--go`, the phone's picks only, free). Run it after a change to the instructions, the picks or the guides.
+    - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live
+      server, each answer read back from the screen reader's tree and checked by rule (34 checks; 33 on 10 Nov, vc 162). It clears
+      the chat first; the phone must be awake and unlocked. `input text` types Latin letters only, so the Hindi chat starts from the
+      empty chat's Hindi example and goes on with a Hindi follow-up the answer offers.
     After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain or
     abortion page, `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
