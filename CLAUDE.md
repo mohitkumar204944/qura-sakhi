@@ -38,7 +38,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     reminders, and the opt-in "what helps" counts)
   - `node test/insights.mjs` (Version 31: the countdown, today's chance, the calendar's estimates, Trends' verdict, My cycles,
     Days, and when fertile days stay hidden). The prediction maths is in `node test/maths.mjs`, sections 16 to 18.
-  - `node test/fieldtest.mjs` (Version 32: the field-test audit's fixes, `docs/field-test-readiness-2026-10-23.md`)
+  - `node test/fieldtest.mjs` (Version 32: the field-test audit's fixes, `docs/field-test-readiness-2026-10-23.md`; Version 39.90, section
+    12c: a second copy of her sign-in on Android, as the diary has)
   - `node test/handoff.mjs` (Version 33: "Ask Qura to call me", the doctor-call hand-off)
   - `node test/notify.mjs` (Version 34: phone notifications; the Android repeat maths: `npm run test:android`, needs Java 21)
   - `node test/pmosplan.mjs`:
