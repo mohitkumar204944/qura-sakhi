@@ -103,9 +103,11 @@ for (const [name, seed, want] of [['a late period', { events: LATE }, 'ring'], [
 /* ---------- 3. D5 ---------- */
 {
   const a = await open({ name: '3 Diary', seed: { events: REG }, hash: '#diary' });
-  const fab = () => a.page.evaluate(() => { const f = document.querySelector('#fab'); if (!f) return null; const r = f.getBoundingClientRect(); const cs = getComputedStyle(f);
+  /* the + fades in and out over 0.2 s (app.css .fab), in real time, which page.clock doesn't move: wait the fade out before reading it
+     (read mid-fade, the + that has come back can still be under half opacity: the check failed now and then) */
+  const fab = async () => { await sleep(350); return a.page.evaluate(() => { const f = document.querySelector('#fab'); if (!f) return null; const r = f.getBoundingClientRect(); const cs = getComputedStyle(f);
     const over = Array.from(document.querySelectorAll('#view .cal .day, #view .cal button')).filter((d) => { const b = d.getBoundingClientRect(); return b.width && !(b.right < r.left || b.left > r.right || b.bottom < r.top || b.top > r.bottom); }).length;
-    return { away: f.classList.contains('away'), shown: cs.visibility !== 'hidden' && +cs.opacity > 0.5, over: over }; });
+    return { away: f.classList.contains('away'), shown: cs.visibility !== 'hidden' && +cs.opacity > 0.5, over: over }; }); };
   await a.page.evaluate(() => { const b = document.querySelector('#view [data-tab="cal"]'); if (b) b.click(); }); await settle(a.page, 600);
   const f0 = await fab();
   check('3 the Diary\'s Calendar: the + waits while her "How do you feel today?" tiles are on screen, so it sits on no day', f0 && f0.away && !f0.shown && !!(await a.page.$('#view .cal-today')), f0);
