@@ -4867,6 +4867,20 @@ without sideways scroll; no page errors.
 
 **Wording:** none new (section 19.30 of the review notes where Help's lines now also appear).
 
+### 73.1 Version 39.89: two phrasings the danger check missed
+
+Found on 9 Nov by the Ask Sakhi eval's dry run (`server/scripts/chat-eval.mjs` on the branch `feat/ask-sakhi-prototype`): Explore's and
+Learn's search showed no card for "My period is very heavy, I'm soaking a pad every hour and I feel dizzy", and in pregnancy didn't lead
+with the danger guide for "बच्चे की हलचल बहुत कम है". The matchers now allow a word or two between, and no wording changes:
+- `URG_BLEED` (Help's bleeding sign, with dizziness or fainting, `s1b`): "soak… pad" in that order (up to 16 characters between), and
+  "my period(s) is/are/was (very, so, too, really, extremely) heavy" as "heavy period" already was.
+- `DANGER_MOVE` (pregnancy: the danger guide first): up to 20 characters between the movement word and kam, nahi, less, कम or नहीं
+  ("हलचल सुबह से बिल्कुल नहीं", "halchal aaj bahut kam", "kicks are much less"), and "moving much less".
+- Still no card: "soaking wet from the rain and I feel dizzy", "my period is very heavy" or "soaking a pad every hour" alone, "my
+  period pain is heavy and I feel dizzy", and in pregnancy "halchal kab mehsoos hoti hai" or "halchal ke baare mein mujhe kuch pata nahi".
+
+Test: `web/test/urgent.mjs` (60 checks; the new ones are marked Version 39.89). No new wording.
+
 ## 74. Version 39.31: the Cykel traps
 
 Mohit, 28 Oct, after walking a competitor tracker ("build the trap suite first"). That app showed "Fertile window" and a
