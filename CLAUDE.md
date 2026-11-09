@@ -203,7 +203,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     mockup claude.ai/artifact/Y4Kom9DHfyiw4buDUQRi8B): Help's "Call 112 now" signs in her words (bleeding with dizziness or
     fainting, a late period or positive test with one-sided pain, thoughts of harm) put one card above Explore's and Learn's
     results, at every stage, with Call 112 now (Tele-MANAS 14416 first for harm) and Help and safety. Help's own lines, no new
-    wording. Contract: MODULE_API section 73; review section 19.30.
+    wording. Contract: MODULE_API section 73; review section 19.30. Version 39.89 (9 Nov, from the Ask Sakhi eval's dry run): "soaking a pad
+    every hour and I feel dizzy" and, in pregnancy, "बच्चे की हलचल बहुत कम है" (a word or two between) now count too (MODULE_API 73.1).
   - `node test/traps.mjs` (Version 39.31, the Cykel traps; Mohit, 28 Oct): a competitor's failures replayed on Sakhi across
     Today, the Calendar, Days, Cycles, the fertile-days page and the booked reminders. It checks late by 3, 16 and 60 days, a
     positive strip on period day 1, hormones, pregnancy, after the birth, midlife, discreet mode, irregular and few gaps,

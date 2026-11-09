@@ -91,6 +91,16 @@ const search = async (page, q, id) => {
     const r = await search(a.page, q);
     check('2 "' + q + '": no card', !r.on, r);
   }
+  /* Version 39.89 (the Ask Sakhi eval's dry run, 9 Nov): soaking a pad, and "my period is very heavy", with dizziness */
+  for (const q of ['My period is very heavy, I\'m soaking a pad every hour and I feel dizzy', 'soaking through a pad every hour and dizzy', 'my periods are so heavy and I feel faint',
+    'har ghante pad bhig raha hai aur chakkar aa raha hai', 'हर घंटे पैड भीग रहा है और चक्कर आ रहे हैं']) {
+    const r = await search(a.page, q);
+    check('1 Version 39.89 "' + q + '": the card with the bleeding sign', r.on && r.k === 's1b' && r.first && r.sign === S1B && r.tels.join() === 'tel:108', r);
+  }
+  for (const q of ['soaking wet from the rain and I feel dizzy', 'my period is very heavy', 'soaking a pad every hour', 'my period pain is heavy and I feel dizzy', 'the bag is very heavy and I feel dizzy']) {
+    const r = await search(a.page, q);
+    check('2 Version 39.89 "' + q + '": no card', !r.on, r);
+  }
   /* 3 the buttons work: Help opens Help and safety; an empty box shows nothing */
   await search(a.page, 'heavy bleeding and dizzy');
   await a.page.$eval('#view .srch-urg [data-go="help"]', (b) => b.click()); await settle(a.page, 400);
@@ -109,6 +119,15 @@ const search = async (page, q, id) => {
   check('4 pregnancy: bleeding alone keeps today\'s quick answer (the danger guide) and no card', !r1.on && r1.qa === 'pregnancy.danger-signs-call-112', r1);
   const r2 = await search(a.page, 'bleeding aur chakkar aa raha hai');
   check('4 pregnancy: bleeding and dizziness, the card first, Call 102, and the danger guide still the quick answer under it', r2.on && r2.k === 's1b' && r2.first && r2.tels.join() === 'tel:102' && r2.qa === 'pregnancy.danger-signs-call-112', r2);
+  /* Version 39.89: the baby moving less, with a word or two between, leads with the danger guide */
+  for (const q of ['मैं 30 हफ़्ते की गर्भवती हूँ और सुबह से बच्चे की हलचल बहुत कम है', 'baby ki halchal aaj bahut kam hai', 'bachche ki harkat subah se bilkul nahi', 'बच्चे की हलचल सुबह से बिल्कुल नहीं है', 'the baby is moving much less today', 'baby movements are much less since morning']) {
+    const r = await search(a.page, q);
+    check('4 pregnancy, Version 39.89 "' + q + '": the danger guide first', r.qa === 'pregnancy.danger-signs-call-112', r);
+  }
+  for (const q of ['baby ki halchal kab mehsoos hoti hai', 'हलचल कब महसूस होती है', 'how many kicks are normal', 'halchal ke baare mein mujhe kuch pata nahi']) {
+    const r = await search(a.page, q);
+    check('4 pregnancy, Version 39.89 "' + q + '": not a danger sign', r.qa !== 'pregnancy.danger-signs-call-112' && !r.on, r);
+  }
   const r3 = await search(a.page, 'baby ko nuksan pahunchane ke khayal');
   check('4 pregnancy: thoughts of harming her baby show no card (Version 39.70)', !r3.on, r3);
   await done(a);

@@ -1437,7 +1437,8 @@
   const DANGER_BLEED = /aa raha|aa rahi|nikal|beh raha|beh rahi|bah raha|bah rahi|behna|bahna|आ रहा|आ रही|निकल|बह रहा|बह रही|बहना/;
   const DANGER_HEAD = /headache|sir ?dard|sar ?dard|sir me(in)? (bahut |tez |bohot )?dard|सिर ?दर्द|सिरदर्द|सिर में .{0,8}दर्द|सर ?दर्द/;
   const DANGER_SEVERE = /severe|bad |tez|तेज|bahut|bohot|bohat|बहुत|zyada|jyada|ज्यादा|ज़्यादा|aankh|आँख|आंख|blur|dhundh|धुंध/;
-  const DANGER_MOVE = /moving less|move less|not moving|less movement|fewer kicks|less kicks|kicks? (kam|less|nahi)|(kam|nahi|nahin) (hil|hal|harkat)|hil (nahi|nahin|kam)|halchal (kam|nahi)|harkat (kam|nahi)|movement (kam|nahi|less)|कम हिल|नहीं हिल|हिल नहीं|हिल रहा कम|हलचल कम|हलचल नहीं|कम हलचल|हरकत कम|हरकत नहीं|कम हरकत/;
+  /* Version 39.89 (the Ask Sakhi eval's dry run, 9 Nov): a word or two between ("हलचल बहुत कम", "halchal aaj bahut kam", "moving much less") */
+  const DANGER_MOVE = /moving (much |a lot |far |very |so )?less|move less|not moving|less movement|fewer kicks|less kicks|kicks? .{0,20}(kam|less|nahi)|(kam|nahi|nahin) (hil|hal|harkat)|hil (nahi|nahin|kam)|halchal .{0,20}(kam|nahi)|harkat .{0,20}(kam|nahi)|movements? .{0,20}(kam|nahi|less)|कम हिल|नहीं हिल|हिल नहीं|हिल रहा कम|हलचल .{0,20}(कम|नहीं)|कम हलचल|हरकत .{0,20}(कम|नहीं)|कम हरकत/;
   const dangerQ = (q) => {
     if (!isPregnant()) return false;
     const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
@@ -1451,7 +1452,8 @@
      a positive test with one-sided or shoulder-tip pain, dizziness or fainting (s1a). Version 39.70 (the doctors' answer 2): no
      card for thoughts of harm. A "faint line" on a pregnancy test, "khoon ki kami" and a blood test are not signs. In
      pregnancy the danger-signs guide still comes first among the articles, as before. */
-  const URG_BLEED = /bleed|ब्लीडिंग|रक्तस्राव|raktasrav|spotting|स्पॉटिंग|\bpads? .{0,12}(bhig|bheeg|soak|bhar|full)|पैड .{0,12}(भीग|भर)|heavy (period|flow|bleed)|(period|पीरियड|mahina|masik|मासिक).{0,16}(zyada|jyada|ज्यादा|bahut|bohot|बहुत)( zyada| jyada| ज्यादा)? (aa|ho|आ|हो) ?(raha|rahi|rahe|रहा|रही|रहे)/;
+  /* Version 39.89 (the Ask Sakhi eval's dry run, 9 Nov): "soaking a pad every hour" and "my period is very heavy" too */
+  const URG_BLEED = /bleed|ब्लीडिंग|रक्तस्राव|raktasrav|spotting|स्पॉटिंग|\bpads? .{0,12}(bhig|bheeg|soak|bhar|full)|\bsoak\w* .{0,16}\bpads?\b|पैड .{0,12}(भीग|भर)|heavy (period|flow|bleed)|\b(periods?|flow) (is|are|was|has been|have been) (very |so |too |really |extremely )?heavy|(period|पीरियड|mahina|masik|मासिक).{0,16}(zyada|jyada|ज्यादा|bahut|bohot|बहुत)( zyada| jyada| ज्यादा)? (aa|ho|आ|हो) ?(raha|rahi|rahe|रहा|रही|रहे)/;
   const URG_DIZZY = /dizz|chakk?ar|चक्कर|faint(?!\s*(t\s*)?(line|positive|लाइन))|behosh|बेहोश|unconscious|black ?out|pass(ed)? out|andhera|अँधेरा|अंधेरा|breathless|short of breath|saa?ns .{0,10}(phool|phul|nahi|ruk)|(साँस|सांस) .{0,10}(फूल|नहीं|रुक)/;
   const URG_LATE = /\blate\b|der se|der ho|देर|miss(ed)? (my )?period|period miss|period nahi(n)? aa|पीरियड नहीं आ|positive|पॉजिटिव|पोजिटिव/;
   const URG_SIDE = /one.?sided?|ek (taraf|tarf|side)|एक (तरफ|साइड)|shoulder|kandh|कंध/;
