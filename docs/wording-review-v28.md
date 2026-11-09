@@ -4016,3 +4016,8 @@ checked one by one in advance: the doctors check the rules below and a sample.
 3. If no guide answers her question, it still helps from general knowledge, and the app says "General information, not from Sakhi's
    checked guides". Every answer she reads now carries one of the two labels.
 4. Follow-up questions and the doctor question in the language and script she writes in.
+
+**Version 40.3 (9 Nov), for the doctors** (server rules, no new UI words):
+1. Every answer is one short sentence, then 2 or 3 short points (the server now requires the points).
+2. The answer, its points, the follow-up questions and the doctor question follow the language of her latest message, even in a chat
+   that used another language before.

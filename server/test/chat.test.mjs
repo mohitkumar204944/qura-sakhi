@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, replyLanguage, replyNote } from '../supabase/functions/sakhi-chat/chat.js';
 import { chatStore } from '../supabase/functions/sakhi-chat/store-pg.js';
 import { GUIDES } from '../supabase/functions/sakhi-chat/guides.js';
 import { moduleText, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
@@ -31,6 +31,8 @@ const AMARK = 'MARKER-ANSWER-5519';
 const final = (o) => ({ stop_reason: 'end_turn', content: [{ type: 'thinking', thinking: '', signature: 'sig' }, { type: 'text', text: JSON.stringify(Object.assign({ answer: 'Gaps of 21 to 35 days are usual. ' + AMARK, source: 'guides', guides_used: ['cycle.usual-gap-between-periods'], screens: ['diary'], danger: false, off_topic: false }, o || {})) }], usage: { input_tokens: 900, cache_read_input_tokens: 3000, cache_creation_input_tokens: 0, output_tokens: 120 } });
 const toolCall = (ids, lang, id) => ({ stop_reason: 'tool_use', content: [{ type: 'thinking', thinking: '', signature: 'sig' }, { type: 'tool_use', id: id || 'tu_1', name: 'read_guides', input: { ids, lang: lang || 'en' } }], usage: { input_tokens: 800, cache_read_input_tokens: 0, cache_creation_input_tokens: 3100, output_tokens: 40 } });
 /* With onText (a streamed call, Version 40.2) each text block goes out in pieces of 7 characters before the message is returned */
+/* the turns the model reads, without the notes after her turn (Version 40.3) */
+const talk = (call) => call.messages.filter((m) => m.role !== 'system');
 function fakeClaude(steps) {
   const calls = [];
   const fn = async (params, onText) => {
@@ -126,7 +128,7 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   check('3 effort low, structured output with the answer schema', p.output_config.effort === 'low' && p.output_config.format.type === 'json_schema' && JSON.stringify(p.output_config.format.schema) === JSON.stringify(OUTPUT_SCHEMA));
   check('3 no temperature, top_p or top_k; the first try without thinking (Version 40.2, the default)', !('temperature' in p) && !('top_p' in p) && !('top_k' in p) && JSON.stringify(p.thinking) === JSON.stringify({ type: 'disabled' }));
   check('3 max_tokens leaves room for thinking and a short answer', p.max_tokens >= 4000);
-  check('3 no prefill: every call ends with her turn', claude.calls.every((c) => c.messages[c.messages.length - 1].role === 'user'));
+  check('3 no prefill: her turn is the last turn (Version 40.3: a note may follow it), never an assistant turn', claude.calls.every((c) => talk(c)[talk(c).length - 1].role === 'user' && c.messages[c.messages.length - 1].role !== 'assistant'));
   check('3 one tool, read_guides, strict, choice auto; caching on', p.tools.length === 1 && p.tools[0].name === 'read_guides' && p.tools[0].strict === true && p.tool_choice.type === 'auto' && p.system[0].cache_control.type === 'ephemeral' && !('cache_control' in p));
   check('3 Version 40.2: the cache mark sits on the instructions (read again by the next question), not on her changing turn', Array.isArray(p.system) && p.system.length === 1 && p.system[0].type === 'text');
   check('3 no web search or other server tool', !JSON.stringify(p.tools).match(/web_search|web_fetch|code_execution/));
@@ -149,11 +151,11 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   check('4 the guide text is the server\'s own copy, in the language asked for', res.content.includes(GUIDES['cycle.usual-gap-between-periods'].summary.hi) && res.content.includes(guideText('pmos.what-pmos-is', 'hi')));
   check('4 the text the phone sent is never in the guide the model reads', !res.content.includes('FAKE GUIDE TEXT'));
   check('4 at most 3 guides, no repeats, unknown ids dropped', (res.content.match(/^Guide /gm) || []).length === 3 && !res.content.includes('nope.x'));
-  check('4 the assistant turn goes back whole, thinking block included', JSON.stringify(second.messages[1].content[0]) === JSON.stringify({ type: 'thinking', thinking: '', signature: 'sig' }));
+  check('4 the assistant turn goes back whole, thinking block included', JSON.stringify(talk(second)[1].content[0]) === JSON.stringify({ type: 'thinking', thinking: '', signature: 'sig' }));
   const c2 = fakeClaude([toolCall(['nope.y']), final({ source: 'general', guides_used: [] })]);
   const ctx2 = await setup({ claude: c2 }); await ctx2.acct('+919876543210', 1994, TOKEN);
   await send(ctx2, ask('hello'));
-  const res2 = c2.calls[1].messages[2].content[0];
+  const res2 = talk(c2.calls[1])[2].content[0];
   check('4 an unknown guide id is an error result the model can recover from', res2.is_error === true && /No guide/.test(res2.content));
   const loop = fakeClaude([toolCall(['cycle.painful-periods'], 'en', 'a'), toolCall(['cycle.painful-periods'], 'en', 'b'), toolCall(['cycle.painful-periods'], 'en', 'c'), final()]);
   const ctx3 = await setup({ claude: loop }); await ctx3.acct('+919876543210', 1994, TOKEN);
@@ -240,10 +242,10 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   const rl = await send(ctx2, { messages: longHist });
   check('7 a long chat: 41 messages refused', rl.status === 400);
   await send(ctx2, { messages: longHist.slice(-25) });
-  const sentN = c2.calls[0].messages;
+  const sentN = talk(c2.calls[0]);
   check('7 only the last 12 messages go to the model, starting with hers', sentN.length === 11 && sentN[0].role === 'user' && sentN[sentN.length - 1].content === 'latest', sentN.length);
   await send(ctx2, { messages: [{ role: 'user', text: 'one' }, { role: 'user', text: 'two' }] });
-  check('7 two of her messages in a row (an answer that failed) go as one turn', c2.calls[1].messages.length === 1 && c2.calls[1].messages[0].content === 'one\n\ntwo');
+  check('7 two of her messages in a row (an answer that failed) go as one turn', talk(c2.calls[1]).length === 1 && talk(c2.calls[1])[0].content === 'one\n\ntwo');
 }
 
 /* ---------- 8 the copy of the guides, and the app's fields ---------- */
@@ -269,7 +271,7 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   const claude = fakeClaude([final({ guides_used: ['cycle.painful-periods'] })]);
   const ctx = await setup({ claude }); await ctx.acct('+919876543210', 1994, TOKEN);
   const r = await send(ctx, { messages: [{ role: 'user', text: 'What helps? FAKE GUIDE TEXT ' + MARK }], lang: 'en', about: 'cycle.painful-periods', hints: ['cycle.period-dos-and-donts', 'cycle.painful-periods', 'nope.x'] });
-  const p = claude.calls[0]; const last = p.messages[p.messages.length - 1];
+  const p = claude.calls[0]; const last = talk(p)[talk(p).length - 1];
   check('9 one call when the picked guides answer her (no tool round)', claude.calls.length === 1 && r.json.ok === true && r.json.source === 'guides', r.json);
   check('9 her turn: the guide she came from, then the picked guides\' text, then her own words last', Array.isArray(last.content) && /opened this chat from the Sakhi guide "Painful periods/.test(last.content[0].text) && last.content[1].text.includes(guideText('cycle.painful-periods', 'en')) && last.content[1].text.includes(guideText('cycle.period-dos-and-donts', 'en')) && last.content[last.content.length - 1].text.includes(MARK), last.content.map((b) => b.text.slice(0, 60)));
   check('9 the guide text is the server\'s own copy; an unknown id is dropped; no repeats', !last.content[1].text.includes('FAKE GUIDE TEXT') && !last.content[1].text.includes('nope.x') && (last.content[1].text.match(/^Guide cycle\.painful-periods/gm) || []).length === 1);
@@ -336,7 +338,7 @@ async function sendStream(ctx, body, token) {
   const endR = sR.events[sR.events.length - 1];
   check('10 the fast first try (default): an answer a safety net holds back is tried again once with thinking on, and that answer comes back', cR.calls.length === 2 && JSON.stringify(cR.calls[0].thinking) === JSON.stringify({ type: 'disabled' }) && !('thinking' in cR.calls[1]) && endR.ok === true && endR.answer.includes(AMARK), { calls: cR.calls.length, endR });
   const lastMsg = cR.calls[1].messages[cR.calls[1].messages.length - 1];
-  check('10 the careful try is told why, in a system note at the end (never in her turn)', lastMsg.role === 'system' && /used the words "safe days"/.test(lastMsg.content) && !('role' in cR.calls[0].messages[cR.calls[0].messages.length - 1] && cR.calls[0].messages[cR.calls[0].messages.length - 1].role === 'system'));
+  check('10 the careful try is told why, in a system note at the end (never in her turn)', lastMsg.role === 'system' && /used the words "safe days"/.test(lastMsg.content) && !/held back/.test(JSON.stringify(cR.calls[0].messages)));
   check('10 the phone is told to start the answer again ("reset") before the careful one', sR.events.some((e) => e.type === 'reset') && sR.events.slice(sR.events.findIndex((e) => e.type === 'reset') + 1).filter((e) => e.type === 'delta').map((e) => e.t).join('').includes(AMARK) && ctxR.logs.some((l) => l.event === 'chat_retry' && l.data.why === 'safe_days'));
   check('10 both tries are counted in the usage', endR.usage.calls === 2);
   const cN = fakeClaude([final({ answer: 'No app can tell your safe days.' }), final({ answer: 'Take 500 mg of it.', source: 'general', guides_used: [] })]);
@@ -366,7 +368,7 @@ async function sendStream(ctx, body, token) {
   j = await run({ answer: 'I can\'t name a pill or a dose for that; please ask a doctor. ' + AMARK, source: 'none', guides_used: [] });
   check('11 Version 40.2.1: any other answer she reads is labelled: "none" becomes general', j.ok === true && j.source === 'general', j.source);
   const sp = systemPrompt('en');
-  for (const [k, re] of [['the short answer first', /Start with one short sentence, under 20 words/], ['the length', /Then 2 or 3 points that help her act on it, each on its own line starting with "- " and under 20 words\. Keep the whole answer to about 50 to 90 words, never more than 110/],
+  for (const [k, re] of [['the short answer first', /"answer" is one short sentence, under 20 words, that answers her question/], ['the points and the length (Version 40.3: in their own fields)', /"point_1" and "point_2" are short points that help her act on it, and "point_3" a third when it helps \(else ""\): each under 20 words, with no dash in front\. All together, about 50 to 90 words, never more than 110/],
     ['found guides may not fit: only those that answer her, else read the right one', /Matching words can find the wrong guides: use only the ones that answer her question, and answer as if the others weren't there\. If none does and a guide in the list does, call read_guides/],
     ['her question, never a wrong guide\'s subject; only the guides it used in guides_used', /Answer the question she asked, never the subject of a guide that doesn't fit it\. When guides answer it, base your answer on them, set "source" to "guides" and list only those in "guides_used"\. Never mention a guide that doesn't fit/],
     ['no guide: still help, marked general', /If no guide answers her question, still help her: use your general medical knowledge/], ['facts are never "none"', /An answer that gives her health facts is "guides" or "general", never "none"/], ['nor in the answer', /Never mention guide ids, a guide that doesn't fit her question/],
@@ -410,6 +412,40 @@ async function sendStream(ctx, body, token) {
   check('14 split anywhere, even inside the key and an escape', feed(['{"ans', 'wer"', ' : "a\\', 'nb', '\\u00', '41c"', ',"x":"no"}']) === 'a\nbAc');
   check('14 Hindi as \\u escapes split across pieces', feed(['{"answer":"\\u092', '6\\u0930\\u094D\\u0926"}']) === 'दर्द');
   check('14 nothing before "answer" appears; nothing after its closing quote', feed(['{"source":"guides","answer":"ok"', ',"follow_ups":["x"]}']) === 'ok');
+}
+
+/* ---------- 15 Version 40.3: the points in their own fields, and the language of her latest message ---------- */
+{
+  check('15 the schema: the first sentence, then point_1, point_2 and point_3, all required (so 2 points always come)', JSON.stringify(Object.keys(OUTPUT_SCHEMA.properties).slice(0, 4)) === JSON.stringify(['answer', 'point_1', 'point_2', 'point_3']) && ['point_1', 'point_2', 'point_3'].every((k) => OUTPUT_SCHEMA.required.includes(k)));
+  const pts = { answer: 'Heat and movement ease cramps. ' + AMARK, point_1: '- Use a hot water bag.', point_2: 'Walk a little.', point_3: '' };
+  const c1 = fakeClaude([final(pts)]); const x1 = await setup({ claude: c1 }); await x1.acct('+919876543210', 1994, TOKEN);
+  const r1 = await send(x1, ask('What helps cramps?'));
+  const want = 'Heat and movement ease cramps. ' + AMARK + '\n- Use a hot water bag.\n- Walk a little.';
+  check('15 the points join the answer as "- " lines (a dash of its own dropped, an empty one left out)', r1.json.answer === want, r1.json.answer);
+  const c2 = fakeClaude([final(pts)]); const x2 = await setup({ claude: c2 }); await x2.acct('+919876543210', 1994, TOKEN);
+  const s2 = await sendStream(x2, ask('What helps cramps?'));
+  const shown = s2.events.filter((e) => e.type === 'delta').map((e) => e.t).join(''); const end2 = s2.events[s2.events.length - 1];
+  check('15 streamed: the points come in as they are written, the same text as the end', shown === want && end2.answer === want, { shown, end: end2.answer });
+  const tap = answerTap();
+  check('15 the tap reads points split anywhere, with escapes', ['{"answer":"A.","point_1":"- B \\"c', '\\".","point_2":"\\u092', '6","point_3":"","source":"guides"}'].map((x) => tap(x)).join('') === 'A.\n- B "c".\n- द');
+  for (const [t, w] of [['What can I do at home for period cramps?', 'english'], ['PCOD mein kya khana chahiye', 'hinglish'], ['Pregnancy me papaya khana theek hai kya?', 'hinglish'], ['पीरियड में दर्द', 'deva'], ['Is it normal to bleed after sex?', 'english'], ['আমার পিরিয়ড', ''], ['12345', '']])
+    check('15 replyLanguage("' + t.slice(0, 30) + '") is ' + (w || 'nothing'), replyLanguage(t) === w, replyLanguage(t));
+  const c3 = fakeClaude([final()]); const x3 = await setup({ claude: c3 }); await x3.acct('+919876543210', 1994, TOKEN);
+  await send(x3, { messages: [{ role: 'user', text: 'PCOD mein kya khana chahiye' }, { role: 'assistant', text: 'Thali mein sabzi aur dal rakhein.' }, { role: 'user', text: 'What can I do at home for period cramps?' }], lang: 'en' });
+  const m3 = c3.calls[0].messages; const n3 = m3[m3.length - 1];
+  check('15 an English question after Hinglish turns: a note after her turn says English, for the answer, the points and the follow-ups', n3.role === 'system' && n3.content === replyNote('What can I do at home for period cramps?') && /in English, whatever language her earlier messages used/.test(n3.content) && /"follow_ups"/.test(n3.content), n3);
+  check('15 the note is never in her turn', !JSON.stringify(talk(c3.calls[0])).includes('Her latest message'));
+  const c4 = fakeClaude([final(), final()]); const x4 = await setup({ claude: c4 }); await x4.acct('+919876543210', 1994, TOKEN);
+  await send(x4, ask('पीरियड में दर्द'));
+  const n4 = c4.calls[0].messages[c4.calls[0].messages.length - 1];
+  check('15 Devanagari: her language in Devanagari (Hindi or Marathi, not forced to Hindi)', n4.role === 'system' && /in her language in Devanagari/.test(n4.content));
+  await send(x4, ask('আমার পিরিয়ড'));
+  check('15 another script: no note (the instructions\' own rule)', c4.calls[1].messages[c4.calls[1].messages.length - 1].role === 'user');
+  const c5 = fakeClaude([final({ answer: 'No app can tell your safe days.' }), final({ answer: 'No day is free of pregnancy risk. ' + AMARK })]);
+  const x5 = await setup({ claude: c5 }); await x5.acct('+919876543210', 1994, TOKEN);
+  await send(x5, ask('Which days are safe?'));
+  const n5 = c5.calls[1].messages[c5.calls[1].messages.length - 1];
+  check('15 the careful try gets one note: her language, then why the answer was held back', n5.role === 'system' && /^Her latest message is in English/.test(n5.content) && /used the words "safe days"/.test(n5.content) && c5.calls[1].messages.filter((m) => m.role === 'system').length === 1);
 }
 
 const pass = results.filter((r) => r.pass).length;

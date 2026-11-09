@@ -723,3 +723,21 @@ Mohit, 9 Nov: "Yes, fix them", after the phase 1 eval. The app is unchanged; one
 Eval (9 Nov, the 30 questions): all 30 answered and labelled (19 from the guides, 11 general), every danger sign to hospital first,
 US$0.0006 a question, first words after a median 1.2 s, the whole answer after 2.8 s, one call each. `server/test/chat.test.mjs`: 168
 checks.
+
+### 12.5 Version 40.3 (9 Nov): points in their own fields, and her latest message's language
+
+Mohit, 9 Nov: "Yes, all three", after the phone check of Version 40.2.1. One redeploy of `sakhi-chat`; the app's part is in MODULE_API
+132.3.
+- **Points every time.** The output's `answer` is now the first sentence alone, followed by `point_1`, `point_2` and `point_3` (all
+  required, so 2 points always come; `point_3` may be `""`). Structured output can't require a number of list items, so the points are
+  fields. The server joins them into the answer as "- " lines (a dash of the model's own dropped, an empty point left out): the phone
+  gets the same text as before. `answerTap` streams the sentence, then each point as it is written.
+- **Her latest message's language.** `replyLanguage()` reads the script of her latest message: Devanagari (her language, Hindi or
+  Marathi), Hinglish (Roman letters with a Hindi word that is never English: "hai", "kya", "nahi", …) or English; another Indian script
+  gets no note. The note goes after her turn, as a system message, with the careful try's note when there is one. On the phone, an
+  English question after Hinglish ones had got Hinglish follow-ups.
+
+Eval (9 Nov, the 30 questions): all 30 answered and labelled (23 from the guides), every answer with 2 or 3 points, 55 to 98 words
+(median 77), US$0.0004 a question, first words after a median 1.5 s, the whole answer after 3.5 s. `node server/scripts/chat-eval.mjs
+--go --mixed` (4 chats that switch language): 4 of 4 kept her latest language for the answer, the points, the follow-ups and the doctor
+question. `server/test/chat.test.mjs`: 184 checks.

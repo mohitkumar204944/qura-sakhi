@@ -1740,7 +1740,50 @@
   /* Help's signs as search reads them (Version 39.30), and in pregnancy the danger words too ('p') */
   const chatDangerKey = (q) => urgentQ(q) || (isPregnant() && dangerQ(q) ? 'p' : null);
   /* when Sakhi can't answer: the guides Explore's search would show for her words, best first */
-  const chatLocalGuides = (q) => { const terms = searchTerms(q); if (!terms.length) return []; const ranked = allArticles().map((a) => ({ a: a, n: score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) })).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a); return dangerFirst(q, ranked).slice(0, 3).map((a) => a.group + '.' + a.id); };
+  /* When Sakhi can't answer: the guides Explore's search would list for her words (any word that matches) */
+  const chatLooseGuides = (q) => { const terms = searchTerms(q); if (!terms.length) return []; const ranked = allArticles().map((a) => ({ a: a, n: score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) })).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a); return dangerFirst(q, ranked).slice(0, 3).map((a) => a.group + '.' + a.id); };
+  /* Version 40.3: the guides that go with her question, picked for precision (the 9 Nov eval and phone walk: a wrong pick led the
+     AI astray, and "गर्भावस्था में ... जाँच" picked the burning-urine guide). No pick beats a wrong one: without picks the AI finds
+     the guide from its own list. Filler words and numbers count for nothing; a word and its synonyms form one idea ("गर्भावस्था",
+     "गर्भ" and "pregnancy" count once); a Hindi word also matches by its stem ("जाँचें" by "जाँच"); a word must start a word in the
+     title, and one of 3 letters or fewer must be the whole word ("tum" never finds "tummy"). Only titles count: an idea weighs by
+     how few titles hold it, so "period", in a dozen, weighs little and "discharge", in one, a lot. A guide goes when its ideas weigh
+     enough and it is near the best. */
+  const HI_END = /(ावस्था|ियों|ियाँ|ाएँ|ाओं|ों|ें|ीं|ाँ|ता|ती|ते|ना|ने|नी|ी|े|ा)$/;
+  const chatForms = (tm) => { const st = /[\u0900-\u097f]/.test(tm) ? tm.replace(HI_END, '') : (tm.length >= 6 ? tm.replace(/e$/, '') : tm); return st !== tm && st.length >= 3 ? [tm, st] : [tm]; };   /* "ovulate" finds "ovulation" */
+  const chatHit = (hay, tm) => { for (let i = hay.indexOf(tm); i >= 0; i = hay.indexOf(tm, i + 1)) { if (i > 0 && WCH.test(hay.charAt(i - 1))) continue; if (tm.length <= 3 && WCH.test(hay.charAt(i + tm.length) || ' ')) continue; return true; } return false; };
+  const CHAT_FILLER = new Set(('come comes coming every normal day days week weeks month months year years time times take taking start starting ' +
+    'should much many often help home tell thing things way ways good best ok okay also still really get getting use using im ive its ' +
+    'can cannot could quickly exact instructions ignore now doctor doctors system prompt role pretend after before during ' +
+    'you your yours all bring mean means never ever feel feeling age gett tak com instruction quick plan plans ' +
+    'liye kaunsi kaunsa konsi sakti sakte sakta hu hoon le lena leni theek thik karu karun kare karein raha rahi rahe chahiye kitna kitni ' +
+    'kitne baar jaana jana pas paas wala wali tum ab jao batao bata bhool naam ' +
+    'कितनी कितना कितने बार पास जाना जाएँ जाऊँ लिए चाहिए करें करूँ होता होती होते सकते सकती सकता गया गए गई रहा रही रहे बहुत पता ' +
+    'करना कोई ठीक सही डॉक्टर तरह बाद पहले दौरान कम साल उम्र').split(' '));
+  const CHAT_PICK_FLOOR = 3.5;   /* one idea alone must be in a single title; two ideas can share a few */
+  const chatIdeas = (q) => {
+    const qq = unLoss(norm(q).trim()); if (!qq) return [];
+    const words = qWords(qq).filter((w) => !CHAT_FILLER.has(w) && !/^[0-9]+$/.test(w));
+    const ideas = words.map((w) => chatForms(w));
+    SYN.forEach((row) => {
+      const vs = row[0].map((v) => norm(v).trim());
+      const hit = vs.find((vv) => (/[\u0900-\u097f]/.test(vv) ? qq.indexOf(vv) >= 0 : (' ' + qq + ' ').indexOf(' ' + vv + ' ') >= 0 || (' ' + qq + ' ').indexOf(' ' + vv + 's ') >= 0) || words.some((w) => (w.length >= 3 && vv.indexOf(w) === 0) || (vv.length >= 4 && w.indexOf(vv) === 0)));
+      if (hit === undefined) return;
+      const i = words.findIndex((w) => w.indexOf(hit) >= 0 || (w.length >= 3 && hit.indexOf(w) === 0));
+      if (i >= 0) ideas[i] = ideas[i].concat(row[1]); else ideas.push([row[1]]);
+    });
+    return ideas.map((fs) => fs.filter((f, j) => fs.indexOf(f) === j));
+  };
+  const chatPicks = (q) => {
+    const ideas = chatIdeas(q); if (!ideas.length) return [];
+    const docs = allArticles().map((a) => ({ a: a, tit: norm([a.title_en, a.title_hi].join(' ')) }));
+    const has = (h, fs) => fs.some((f) => chatHit(h, f));
+    const wt = ideas.map((fs) => { const df = docs.filter((d) => has(d.tit, fs)).length; return df ? Math.log((docs.length + 1) / df) : 0; });
+    const scored = docs.map((d) => ({ a: d.a, n: ideas.reduce((n, fs, i) => n + (has(d.tit, fs) ? wt[i] : 0), 0) }));
+    const top = Math.max.apply(null, scored.map((r) => r.n).concat(0));
+    return scored.filter((r) => r.n >= CHAT_PICK_FLOOR && r.n >= top * 0.8).sort((x, y) => y.n - x.n).map((r) => ({ id: r.a.group + '.' + r.a.id, a: r.a, n: Math.round(r.n * 100) / 100 }));
+  };
+  const chatLocalGuides = (q) => { const picks = chatPicks(q); return dangerFirst(q, picks.map((r) => r.a)).filter((a) => dangerQ(q) || picks.some((r) => r.a === a)).slice(0, 3).map((a) => a.group + '.' + a.id); };
   const chatScreenRoute = (k) => { const r = CHAT_SCREENS[k]; return r && (CORE_ROUTES.indexOf(r) >= 0 || ROUTES[r]) && !retired(r) && !triageHidden(r) && !(r === 'report' && !canSave()) ? r : ''; };
   const chatScreenName = (r) => (r === 'help' ? t('help_h') : r === 'diary' ? t('diary') : r === 'plan' ? t('plans_tab') : routeTitle(r) || r);
   /* the answer's text: paragraphs, and lines that start with "- " as a list; every word escaped */
@@ -1840,8 +1883,8 @@
           g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && !!findArticle(k)).slice(0, 4),
           s: (Array.isArray(j.screens) ? j.screens : []).filter((k) => typeof k === 'string' && CHAT_SCREENS[k] !== undefined).slice(0, 3),
           fu: chatFollowUps(j), ac: chatActionsOf(j) }, j.danger === true ? { d: 's' } : {}));
-      } else done({ r: 'a', fail: 'error', at: Date.now(), g: chatLocalGuides(lastQ) });
-    }, (e) => done({ r: 'a', fail: (e && e.code) === 'resting' ? 'resting' : ((e && e.code) === 'offline' ? 'offline' : 'error'), at: Date.now(), g: chatLocalGuides(lastQ) }));
+      } else done({ r: 'a', fail: 'error', at: Date.now(), g: chatLooseGuides(lastQ) });
+    }, (e) => done({ r: 'a', fail: (e && e.code) === 'resting' ? 'resting' : ((e && e.code) === 'offline' ? 'offline' : 'error'), at: Date.now(), g: chatLooseGuides(lastQ) }));
   }
   function chatRetry(i) { const c = chatData(); if (!c.msgs[i] || !c.msgs[i].fail || mem.chatBusy) return; c.msgs.splice(i, 1); chatAsk(); }
   /* read an answer aloud in its own script's voice (a Hindi answer in the English app too) */
@@ -6113,7 +6156,7 @@
   window.Saathi = api;
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
   /* Version 39.79: for the tests, what Firebase would be told (MODULE_API section 122) */
-  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval */
+  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval */
   api.fb = { on: () => fbOn(), quiet: () => fbQuiet(), screen: (r) => fbScreen(r), keep: (n, p) => fbKeep(n, p), place: (el) => fbPlace(el), safe: (fn) => safe(fn) };
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),

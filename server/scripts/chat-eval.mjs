@@ -10,6 +10,7 @@
 //   - the prototype's key, never on a command line or in a file in this repo: ANTHROPIC_API_KEY in the environment, or a file
 //     outside the repo (default ~/.config/sakhi/anthropic-key, or SAKHI_ANTHROPIC_KEY_FILE). It is never printed or logged.
 // Usage: node server/scripts/chat-eval.mjs --go [--out <file.md>] [--only 1,8,30] [--thinking on]
+//        node server/scripts/chat-eval.mjs --go --mixed   (Version 40.3: 4 chats that switch language; the console only, a few US cents)
 //   (--thinking on runs it as SAKHI_CHAT_THINKING=on would on the server: the model's private thinking on every try, to compare)
 //   (without --go it lists the questions and what they would cost, and calls nothing)
 import fs from 'node:fs';
@@ -17,7 +18,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
-import { createChat, MODEL } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, MODEL, replyLanguage } from '../supabase/functions/sakhi-chat/chat.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, '..', '..');
@@ -46,7 +47,7 @@ async function phoneSide() {
     const page = await ctx.newPage();
     await page.goto(pathToFileURL(path.join(ROOT, 'web', 'index.html')).href + '#care');
     await page.waitForFunction(() => !!window.Saathi && !!window.Saathi.chat);
-    for (const q of QS.filter((x) => !!x.preg === preg)) out[q.n] = await page.evaluate((s) => ({ card: window.Saathi.chat.danger(s), guides: window.Saathi.chat.guides(s), sent: window.Saathi.chat.scrub(s) }), q.q);
+    for (const q of QS.filter((x) => !!x.preg === preg)) out[q.n] = await page.evaluate((s) => ({ card: window.Saathi.chat.danger(s), guides: window.Saathi.chat.guides(s), picks: window.Saathi.chat.picks ? window.Saathi.chat.picks(s) : [], sent: window.Saathi.chat.scrub(s) }), q.q);
     await ctx.close();
   }
   await browser.close();
@@ -65,7 +66,7 @@ const phoneCard = (k) => (k === 's1a' ? 'Yes (late period + pain or fainting)' :
 
 const phone = await phoneSide();
 if (!GO) {
-  QS.forEach((q) => console.log(q.n + '. [' + q.lang + ', ' + q.kind + '] ' + q.q + '  | phone card: ' + phoneCard(phone[q.n].card) + ' | guides if it fails: ' + phone[q.n].guides.join(', ')));
+  QS.forEach((q) => console.log(q.n + '. [' + q.lang + ', ' + q.kind + '] ' + q.q + '  | phone card: ' + phoneCard(phone[q.n].card) + ' | sent with it: ' + (phone[q.n].guides.join(', ') || '(none)') + (phone[q.n].picks.length ? ' | scores: ' + phone[q.n].picks.join(', ') : '')));
   console.log('\n' + QS.length + ' questions, about US$' + (QS.length * 0.004).toFixed(2) + ' (up to US$' + (QS.length * 0.012).toFixed(2) + '). Nothing was sent. Run again with --go to ask Claude.');
   process.exit(0);
 }
@@ -84,6 +85,29 @@ const logs = [];
 /* the same call as index.ts: streamed when the server streams, so the first words are timed as the phone would see them */
 const claude = async (p, onText) => { if (!onText) return client.messages.create(p); const st = client.messages.stream(p); st.on('text', (d) => onText(d)); return await st.finalMessage(); };
 const chat = createChat({ store, claude, env: { SAKHI_CHAT_ACCT_DAY_MAX: '1000', SAKHI_CHAT_DAY_MAX: '1000', SAKHI_CHAT_THINKING: arg('--thinking', '') }, log: (e, d) => logs.push({ e, d }) });
+
+/* Version 40.3: chats that switch language. Her latest message's language must hold for the answer, its points and the follow-ups
+   (on 9 Nov, on the phone, an English question after Hinglish ones got Hinglish follow-ups). The console only. */
+if (args.includes('--mixed')) {
+  const CHATS = [
+    ['english', [['user', 'PCOD mein kya khana chahiye'], ['assistant', 'PMOS mein thali mein aadhi sabzi, ek chauthai dal aur ek chauthai roti rakhein.\n- Meetha aur maida kam karein.\n- Roz thoda chalein.'], ['user', 'What can I do at home for period cramps?']]],
+    ['hinglish', [['user', 'What foods help with PCOS?'], ['assistant', 'A plate with half vegetables, a quarter dal and a quarter roti helps.\n- Cut sugar and maida.\n- Walk every day.'], ['user', 'Periods me pet dard ke liye kya karu?']]],
+    ['deva', [['user', 'Is a 40 day gap normal?'], ['assistant', 'A 40-day gap is longer than the usual 21 to 35 days.\n- Note your dates for 3 months.\n- See your doctor if it continues.'], ['user', 'पीरियड में दर्द कम कैसे करें?']]],
+    ['english', [['user', 'Mere period miss ho gaye hai'], ['assistant', 'Pehle pregnancy test karein.\n- Subah ke pehle peshab se test karein.\n- Negative ho to ek hafte baad dobara.'], ['user', 'Pregnancy me papaya khana theek hai kya?'], ['assistant', 'Pakka papaya thoda theek hai, kachcha na khayein.\n- Doctor se poochhein.\n- Zyada na khayein.'], ['user', 'Which tablets should I take during pregnancy?']]]
+  ];
+  let usd = 0, good = 0;
+  for (const [want, msgs] of CHATS) {
+    const res = await chat(new Request('https://eval.local/functions/v1/sakhi-chat/v1/chat', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer eval_' + 'x'.repeat(40) }, body: JSON.stringify({ messages: msgs.map(([role, text]) => ({ role, text })), lang: 'en' }) }));
+    const j = await res.json(); const u = j.usage || { in: 0, write: 0, cached: 0, out: 0, calls: 0 }; usd += cost(u);
+    const lines = String(j.answer || '').split('\n'); const fu = j.follow_ups || []; const dq = (j.actions || []).filter((x) => x.type === 'doctor_question').map((x) => x.text);
+    const langs = [lines[0]].concat(lines.slice(1), fu, dq).map((x) => replyLanguage(x) || '?');
+    const ok = j.ok && langs.every((l) => l === want || l === '?') && lines.length >= 3;
+    good += ok ? 1 : 0;
+    console.log((ok ? 'OK   ' : 'MISS ') + want.padEnd(9) + ' | ' + lines.length + ' lines | ' + String(lines[0] || j.reason).slice(0, 70) + '\n      follow-ups: ' + fu.join(' / ') + (dq.length ? '\n      doctor question: ' + dq.join(' / ') : '') + '\n      languages seen: ' + langs.join(' '));
+  }
+  console.log('\n' + good + ' of ' + CHATS.length + ' chats kept her latest language, with a sentence and at least 2 points · US$' + usd.toFixed(4));
+  process.exit(good === CHATS.length ? 0 : 1);
+}
 
 const rows = [];
 for (const q of QS) {

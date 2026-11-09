@@ -8421,3 +8421,19 @@ first words' time, the length, and the follow-ups and actions offered.
   question and never mentions the others; "From Sakhi's doctor-checked guides" only with a named guide, and every other answer she reads
   carries "General information" (`none` is left for off-topic replies, which show no label); about 50 to 90 words, never more than 110;
   follow-up questions in the language she writes in. The app is unchanged.
+
+### 132.3 Version 40.3 (prototype): the guides that go with her question
+
+Mohit, 9 Nov: "Yes, all three" (the server's two parts: SERVER_SPEC 12.5). In the 9 Nov eval a wrong pick misled the AI (a Hindi
+question about pregnancy check-ups went with the burning-urine guide), and the right guide was often missed in Hindi.
+- `chatLocalGuides` now picks for precision (`chatPicks`): no pick beats a wrong one, since without picks the AI finds the guide in
+  its own list. Only guides' titles count, and each idea weighs by how few titles hold it. Filler words and numbers count for nothing
+  (`CHAT_FILLER`), and a word and its synonyms form one idea (`chatIdeas`, from core's `SYN`). A Hindi word also matches by its stem
+  (`chatForms`). A word must start a word in the title, and one of 3 letters or fewer must be the whole word (`chatHit`). A guide goes
+  when its score reaches `CHAT_PICK_FLOOR` (3.5) and 80% of the best; at most 3, the danger-signs guide first as before.
+- When Sakhi can't answer, the guides under the message are still Explore's own (`chatLooseGuides`). Explore's search is unchanged.
+- `api.chat.picks(q)` gives the scores, for the tests and `node server/scripts/chat-eval.mjs` (it lists them free).
+- Eval: the three misleading picks are gone. 19 of the 30 questions get picks, every one on topic, and 23 answers now come from the
+  guides (19 before).
+
+Test: `web/test/chat.mjs` (128 checks; section 16 is the picks).

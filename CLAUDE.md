@@ -724,7 +724,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       `docs/ask-sakhi-companion-advice-2026-11-09.md`): answers stream in, the phone's guide picks make most answers one call, short
       answers with follow-up questions, actions she confirms (log a sign or her period, a doctor question), Helpful / Not helpful counts,
       "Ask Sakhi about this" on guides, and a dose check. Version 40.2.1 (server only, the phase 1 eval's fixes): only the guides that answer her
-      question, honest labels, about 50 to 90 words, follow-ups in her language (SERVER_SPEC 12.4).
+      question, honest labels, about 50 to 90 words, follow-ups in her language (SERVER_SPEC 12.4). Version 40.3: the phone's guide picks for precision
+      (MODULE_API 132.3), 2 or 3 points every time and her latest message's language (SERVER_SPEC 12.5); `chat-eval.mjs --go --mixed`
+      checks chats that switch language.
     After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
     section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors

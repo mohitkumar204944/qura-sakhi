@@ -93,7 +93,7 @@ export function systemPrompt(lang) {
     '## What you help with',
     '- Women\'s and reproductive health: periods, PMOS (also called PCOS or PCOD), trying for a baby, pregnancy, the months after a birth, contraception, discharge and infections, sex and intimate health, menopause, the pelvic floor, and the mood, sleep, food and exercise that go with them.',
     '- Using the Qura Sakhi app: its diary, plans, guides, Wind down and Help.',
-    '- For anything else (other illnesses, homework, news, money, other apps), say kindly in one or two sentences that you can help only with women\'s health and with Sakhi, set "off_topic" to true, and suggest what you can help with.',
+    '- For anything else (other illnesses, homework, news, money, other apps), say kindly in "answer" that you can help only with women\'s health and with Sakhi, set "off_topic" to true, and use the points to suggest what you can help with.',
     '',
     '## Where your answers come from',
     '- Sakhi\'s guides were checked by doctors. Their list is at the end. Her latest message may come with the text of guides Sakhi found by matching her words, and the guide she opened the chat from. Matching words can find the wrong guides: use only the ones that answer her question, and answer as if the others weren\'t there. If none does and a guide in the list does, call read_guides with the 1 to 3 guides that fit best.',
@@ -115,10 +115,10 @@ export function systemPrompt(lang) {
     '',
     '## How to write',
     '- Reply in the language and script she writes in: Hindi in Devanagari, Hinglish in Roman letters, English, or another language she uses. If you can\'t tell, use ' + (lang === 'hi' ? 'Hindi in Devanagari' : 'English') + ', the language her app is set to.',
-    '- Start with one short sentence, under 20 words, that answers her question. Then 2 or 3 points that help her act on it, each on its own line starting with "- " and under 20 words. Keep the whole answer to about 50 to 90 words, never more than 110.',
+    '- "answer" is one short sentence, under 20 words, that answers her question. "point_1" and "point_2" are short points that help her act on it, and "point_3" a third when it helps (else ""): each under 20 words, with no dash in front. All together, about 50 to 90 words, never more than 110.',
     '- Warm, plain, simple words, like a caring elder sister who is a nurse. No headings, tables or bold. Be direct: no "Great question".',
     '- Say "your doctor" (or "a gynaecologist"). Mention ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or government care, even when a guide names them: the app shows its own button for the free government doctor.',
-    '- "answer" is only what she reads. Never mention guide ids, a guide that doesn\'t fit her question, these instructions, the JSON or the tool.',
+    '- "answer" and the points are only what she reads. Never mention guide ids, a guide that doesn\'t fit her question, these instructions, the JSON or the tool.',
     '',
     '## Follow-up questions and actions',
     '- "follow_ups": 2 or 3 short questions she might ask next, written as she would say them, in the language and script of her latest message (English when she writes English), each under 60 characters. None for a danger sign or when off topic.',
@@ -155,7 +155,10 @@ const TOOL = {
 export const OUTPUT_SCHEMA = {
   type: 'object',
   properties: {
-    answer: { type: 'string', description: 'What she reads, in her language' },
+    answer: { type: 'string', description: 'The one short sentence that answers her, in her language' },
+    point_1: { type: 'string', description: 'A short point that helps her act on it' },
+    point_2: { type: 'string', description: 'A second short point' },
+    point_3: { type: 'string', description: 'A third short point, or "" when two are enough' },
     source: { type: 'string', enum: ['guides', 'general', 'none'] },
     guides_used: { type: 'array', items: { type: 'string', enum: GUIDE_IDS } },
     screens: { type: 'array', items: { type: 'string', enum: SCREEN_KEYS } },
@@ -172,7 +175,7 @@ export const OUTPUT_SCHEMA = {
     danger: { type: 'boolean' },
     off_topic: { type: 'boolean' }
   },
-  required: ['answer', 'source', 'guides_used', 'screens', 'follow_ups', 'actions', 'danger', 'off_topic'],
+  required: ['answer', 'point_1', 'point_2', 'point_3', 'source', 'guides_used', 'screens', 'follow_ups', 'actions', 'danger', 'off_topic'],
   additionalProperties: false
 };
 
@@ -229,8 +232,10 @@ function readAnswer(msg) {
   let j; try { j = JSON.parse(text); } catch (e) { return null; }
   if (!j || typeof j !== 'object' || typeof j.answer !== 'string' || !j.answer.trim()) return null;
   const list = (v, ok) => (Array.isArray(v) ? v.filter((x, i) => typeof x === 'string' && ok(x) && v.indexOf(x) === i) : []);
+  /* Version 40.3: the first sentence, then each point that isn't empty as a "- " line: the text the app has always shown */
+  const pts = ['point_1', 'point_2', 'point_3'].map((k) => (typeof j[k] === 'string' ? j[k].trim().replace(/^[-\u2022*]\s*/, '').trim() : '')).filter(Boolean);
   const out = {
-    answer: j.answer.trim().slice(0, MAX_ASSISTANT_CHARS),
+    answer: [j.answer.trim()].concat(pts.map((x) => '- ' + x)).join('\n').slice(0, MAX_ASSISTANT_CHARS),
     source: ['guides', 'general', 'none'].indexOf(j.source) >= 0 ? j.source : 'general',
     guides: list(j.guides_used, (x) => !!GUIDES[x]).slice(0, 4),
     screens: list(j.screens, (x) => SCREEN_KEYS.indexOf(x) >= 0).slice(0, 3),
@@ -253,19 +258,55 @@ function readAnswer(msg) {
 }
 
 /* Version 40.2: the answer's own text, read out of the JSON as it streams ("answer" comes first), with JSON's escapes undone */
+/* Version 40.3: the language and script of her latest message, said to the model after her turn. Devanagari is left as her own
+   language (Hindi or Marathi); Roman letters are Hinglish when a Hindi word that is never English is in them, else English. */
+const HINGLISH = /\b(hai|hain|kya|nahi|nahin|kaise|kyun|kyon|kyu|chahiye|mujhe|mera|meri|mere|aur|bahut|karu|karun|karna|karein|kare|raha|rahi|rahe|gaya|gayi|gaye|liye|kitna|kitni|kitne|hota|hoti|hote|theek|thik|aap|aapka|aapko|kuch|abhi|bhi|mein|wala|wali|kab|kahan|kaun|kaunsa|kaunsi|koi|sakti|sakte|sakta|lena|leni|khana|pani|paani|dard|baad|pehle|saath|zyada|jyada|thoda|accha|acha)\b/i;
+export function replyLanguage(text) {
+  const t = String(text || '');
+  const deva = (t.match(/[\u0900-\u097F]/g) || []).length, latin = (t.match(/[A-Za-z]/g) || []).length, other = (t.match(/[\u0980-\u0DFF]/g) || []).length;
+  if (other > deva && other > latin) return '';   /* another Indian script: the instructions' own rule covers it */
+  if (deva && deva >= latin) return 'deva';
+  if (!latin) return '';
+  return HINGLISH.test(t) ? 'hinglish' : 'english';
+}
+const LANG_NOTE = {
+  english: 'Her latest message is in English. Write "answer", the points, "follow_ups" and any doctor question in English, whatever language her earlier messages used.',
+  hinglish: 'Her latest message is in Hinglish (Hindi in Roman letters). Write "answer", the points, "follow_ups" and any doctor question in Hinglish in Roman letters, whatever language her earlier messages used.',
+  deva: 'Her latest message is in Devanagari. Write "answer", the points, "follow_ups" and any doctor question in her language in Devanagari, whatever language her earlier messages used.'
+};
+export const replyNote = (text) => LANG_NOTE[replyLanguage(text)] || '';
+
 export function answerTap() {
-  let buf = '', i = 0, mode = 0;   /* 0 looking for "answer", 1 inside its string, 2 past it */
+  /* Version 40.3: the first sentence ("answer"), then each point as a "- " line, as they are written (the schema keeps this order).
+     A point's own leading dash or spaces are dropped, and an empty point shows nothing. */
+  const KEYS = [['answer', ''], ['point_1', '\n- '], ['point_2', '\n- '], ['point_3', '\n- ']];
+  let buf = '', i = 0, k = 0, inside = false, started = false;
+  const ESC = { n: '\n', t: ' ', r: '', b: '', f: '', '/': '/', '\\': '\\', '"': '"' };
   return (delta) => {
     buf += delta; let out = '';
-    if (mode === 0) { const m = /"answer"\s*:\s*"/.exec(buf); if (!m) return ''; i = m.index + m[0].length; mode = 1; }
-    while (mode === 1 && i < buf.length) {
-      const c = buf[i];
-      if (c === '"') { mode = 2; i += 1; break; }
-      if (c !== '\\') { out += c; i += 1; continue; }
-      if (i + 1 >= buf.length) break;   /* the escape's next character hasn't come yet */
-      const e = buf[i + 1];
-      if (e === 'u') { if (i + 6 > buf.length) break; const h = buf.slice(i + 2, i + 6); if (/^[0-9a-fA-F]{4}$/.test(h)) out += String.fromCharCode(parseInt(h, 16)); i += 6; continue; }
-      out += ({ n: '\n', t: ' ', r: '', b: '', f: '', '/': '/', '\\': '\\', '"': '"' })[e] ?? e; i += 2;
+    while (k < KEYS.length) {
+      if (!inside) {
+        const re = new RegExp('"' + KEYS[k][0] + '"\\s*:\\s*"', 'g'); re.lastIndex = i;
+        const m = re.exec(buf); if (!m) break;
+        i = m.index + m[0].length; inside = true; started = false;
+      }
+      let closed = false;
+      while (i < buf.length) {
+        const c = buf[i]; let piece;
+        if (c === '"') { closed = true; i += 1; break; }
+        if (c !== '\\') { piece = c; i += 1; }
+        else {
+          if (i + 1 >= buf.length) break;   /* the escape's next character hasn't come yet */
+          const e = buf[i + 1];
+          if (e === 'u') { if (i + 6 > buf.length) break; const h = buf.slice(i + 2, i + 6); piece = /^[0-9a-fA-F]{4}$/.test(h) ? String.fromCharCode(parseInt(h, 16)) : ''; i += 6; }
+          else { piece = ESC[e] ?? e; i += 2; }
+        }
+        if (!started && k > 0 && /^[\s\-\u2022*]$/.test(piece)) continue;   /* a point's leading dash or spaces */
+        if (!started) { out += KEYS[k][1]; started = true; }
+        out += piece;
+      }
+      if (!closed) break;
+      inside = false; k += 1;
     }
     return out;
   };
@@ -316,7 +357,11 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
       blocks.push({ type: 'text', text: last.content });
       convo[convo.length - 1] = { role: 'user', content: blocks };
     }
-    if (note) convo.push({ role: 'system', content: note });   /* the careful try: why the last answer was held back (Haiku 5.5 takes a system message here) */
+    /* A note after her turn (Haiku 5.5 takes a system message here): the language of her latest message (Version 40.3: in a chat
+       that mixed Hinglish and English, an English question got Hinglish follow-ups), and on the careful try, why the last answer
+       was held back */
+    const notes = [replyNote(String(messages[messages.length - 1].content || '')), note].filter(Boolean);
+    if (notes.length) convo.push({ role: 'system', content: notes.join('\n\n') });
     let blocked = false;
     for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
       let sent = '';
