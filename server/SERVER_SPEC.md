@@ -760,3 +760,33 @@ Eval (9 Nov, the 30 questions, care `own`): government words in 0 of 30 answers 
 answered with 2 or 3 points, 22 from the guides, US$0.0005 a question. With `--care govt`, 5 of 5 answers on tablets, check-ups,
 contraception after a birth, a late period and folic acid named her ANM, ASHA or PHC. The chats that switch language: 4 of 4.
 `server/test/chat.test.mjs`: 199 checks.
+
+### 12.7 Version 40.5 (10 Nov): medicine answers
+
+Mohit, 9 Nov, after asking the chat what medicine to take for period pain: it named paracetamol (the Learn article's one medicine) but
+opened with "ask a doctor or chemist" in 13 of 18 answers, and never named the medicines Sakhi's own Period pain page names. Then
+"Yes, build 1 to 4". The app's part: MODULE_API 132.5.
+- `guides.js` holds the Period pain page too (`page.periods-pain`, so 61 guides): its rows, the caution note and its three warning
+  cards, word for word, rendered from the real app into `server/scripts/chat-pages.json` by
+  `node server/scripts/make-chat-guides.mjs --pages`. The doctors' medicine line, buttons and links stay out. `web/test/chat.mjs`
+  renders the page again and fails when it changed.
+- The instructions:
+  - when she asks which medicine to take, the first sentence gives the guides' medicines in their order, in her language and script,
+    keeping who suggests them ("Doctors commonly suggest ..."), and how to take them;
+  - a guide's caution comes with its medicine; "ask a pharmacist or doctor" only with its reason, never first;
+  - a brand she names is neither recommended nor said to be in a guide: a pharmacist can tell her what is in it;
+  - pain or bleeding that is severe, very bad or happening now brings the guides' signs for seeing a doctor today;
+  - never "the guides say".
+- A safety net, `cautionOk`: an answer that names ibuprofen or mefenamic acid (or Meftal, Brufen, Combiflam, naproxen) gives at least
+  pregnancy and one of an ulcer, asthma or kidney disease, in English, Hindi or Hinglish. Otherwise it is held back once (`caution`), as
+  a dose is.
+
+Eval (10 Nov):
+- 6 questions on period pain medicine, 3 runs each (English, Hindi, Hinglish, and "Meftal Spas or ibuprofen?"):
+  - the medicines in the first sentence in 18 of 18, ibuprofen or mefenamic acid with their caution in 18 of 18;
+  - no retries; the go-today signs for "very bad pain right now" in 3 of 3; each in her language;
+  - "the guide" in 1 of 18 (6 before).
+- The doctors' sheet, now 35 questions (5 new, 31 to 35; Q26 is the sixth): all answered, 28 from the guides, the same 3 danger flags,
+  US$0.0005 a question, the medicine line under 14 answers. The two longest answers are medicine answers (115 and 111 words): the
+  caution adds about 20 words. The chats that switch language: 4 of 4.
+- `server/test/chat.test.mjs`: 213 checks.

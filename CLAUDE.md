@@ -730,7 +730,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       (MODULE_API 132.3), 2 or 3 points every time and her latest message's language (SERVER_SPEC 12.5); `chat-eval.mjs --go --mixed`
       checks chats that switch language. Version 40.4: her care route goes as one word (`govt`, `own` or `none`), so answers
       name the government care only for a woman who uses it (MODULE_API 132.4, SERVER_SPEC 12.6; `chat-eval.mjs --care`).
-    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`. The paid eval for the doctors:
+      Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4"), medicine answers: the Period pain page is a chat guide, the medicines come
+      first with their caution (a server check), and the doctors' medicine line sits under an answer that names one (MODULE_API 132.5,
+      SERVER_SPEC 12.7).
+    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain page,
+    `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
     section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors
     and counsel).

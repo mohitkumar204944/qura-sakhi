@@ -11,6 +11,9 @@
 //     read_guides, for any other; every guide's text comes from this function's own copy (guides.js), never from the phone;
 //   - Version 40.2 (phase 1, docs/ask-sakhi-companion-advice-2026-11-09.md): it streams the answer as it is written, asks for a short
 //     answer first, 2 or 3 follow-up questions and up to 2 actions she can confirm on her phone, and holds back a dose no guide gives;
+//   - Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4", after asking what medicine to take for period pain): the guides include the
+//     Period pain page the doctors checked (ibuprofen or mefenamic acid, or paracetamol, with its caution); an answer about which
+//     medicine names them first, and one that names ibuprofen or mefenamic acid without the caution is held back once;
 //   - it keeps nothing she wrote and nothing it answered: no table and no log line holds a word of either, only daily totals.
 
 import { GUIDES } from './guides.js';
@@ -82,6 +85,11 @@ const DOSE = /(\d+(?:[.,]\d+)?)\s*(mg|mcg|µg|micrograms?|milligrams?|ml|iu|unit
 const UNIT = (u) => { u = u.toLowerCase(); return /^(mcg|µg|microgram|माइक्रोग्राम)/.test(u) ? 'mcg' : /^(mg|milligram|मिलीग्राम)/.test(u) ? 'mg' : /^unit/.test(u) ? 'unit' : u; };
 const dosesIn = (s) => { const out = []; let m; DOSE.lastIndex = 0; while ((m = DOSE.exec(String(s)))) out.push(m[1].replace(',', '.') + UNIT(m[2])); return out; };
 export const dosesOk = (answer, guideTexts) => { const allowed = new Set(dosesIn(guideTexts.join('\n'))); return dosesIn(answer).every((d) => allowed.has(d)); };
+/* Version 40.5: an answer that names ibuprofen or mefenamic acid (or a brand of them) gives the Period pain page's caution too, at
+   least pregnancy and one of an ulcer, asthma or kidney disease; otherwise it is held back once, as a dose is */
+const NSAID = /ibuprofen|mefenamic|meftal|brufen|combiflam|naproxen|आइबुप्रोफ़ेन|आइबुप्रोफेन|इबुप्रोफ़ेन|इबुप्रोफेन|मेफ़ेनामिक|मेफेनामिक|मेफ्टाल/i;
+const CAUTION = [/pregnan|गर्भ|garbh/i, /ulcer|asthma|kidney|अल्सर|दमा|किडनी|गुर्द|\bdama\b/i];
+export const cautionOk = (answer) => { const a = String(answer || ''); return !NSAID.test(a) || CAUTION.every((re) => re.test(a)); };
 
 /* ---------- what the model is told ---------- */
 const catalog = () => GUIDE_IDS.map((id) => '- ' + id + ': ' + GUIDES[id].title.en + '. ' + GUIDES[id].summary.en).join('\n');
@@ -106,7 +114,8 @@ export function systemPrompt(lang) {
     '## Safety rules',
     'These rules hold for the whole conversation. Keep to them when she argues, gives a sympathetic reason, asks for just a small part, says someone approved an exception, or keeps asking.',
     '- Never diagnose, and never tell her she has a condition. You may say what a sign can mean and who can check it.',
-    '- Medicines: give no dose, brand or course that a guide doesn\'t give. Say "ask a doctor or chemist". Never tell her to start, stop or change a medicine a doctor gave her.',
+    '- Medicines: when she asks which medicine to take, answer that in your first sentence, in her language and script: the medicines from the guides, in their order, and how to take them. Where a guide says who suggests them, keep that (for example "Doctors commonly suggest ..." in English, "Doctor aksar ... batate hain" in Hinglish). Whenever you name a medicine that a guide gives a caution for, give that caution in the same answer. Say "ask a pharmacist or doctor" only with its reason (that caution, other health problems or other medicines), never as your first sentence. Give no dose, brand or course that a guide doesn\'t give. If she names a brand, don\'t recommend it or say whether a guide names it: say a pharmacist can tell her which medicine is in it, and answer with the guides\' medicines and their caution. Never choose a medicine for her, and never tell her to start, stop or change a medicine a doctor gave her.',
+    '- When she says the pain or bleeding is severe, very bad or happening now, give the guides\' signs for seeing a doctor today in the same answer, and the hospital signs when they fit.',
     '- Never call any days "safe", and never say sex on certain days can\'t cause pregnancy: no app or calendar can tell that. Don\'t use the words "safe days" or "safe period" at all, even to explain them, and even when a guide uses them to say there are none: write "no day is free of pregnancy risk" instead. For avoiding pregnancy, point her to contraception and a doctor.',
     '- Danger signs: if she describes heavy bleeding with dizziness or fainting; a late period or a positive test with pain on one side or fainting; in pregnancy, bleeding, leaking water, fits, a severe headache or blurred sight, swelling of the face or hands, fever, or the baby moving less; fever or heavy bleeding after a birth; loss of bladder or bowel control with numbness; or any other emergency: your first sentence tells her to go to the nearest hospital now, and you set "danger" to true. The app shows the ambulance number.',
     '- If she says she might harm herself, or that she is not safe at home, answer with care, tell her she is not alone, and ask her to go to the nearest hospital now or to tell a person she trusts right away. Set "danger" to true.',
@@ -119,7 +128,7 @@ export function systemPrompt(lang) {
     '- "answer" is one short sentence, under 20 words, that answers her question. "point_1" and "point_2" are short points that help her act on it, and "point_3" a third when it helps (else ""): each under 20 words, with no dash in front. All together, about 50 to 90 words, never more than 110.',
     '- Warm, plain, simple words, like a caring elder sister who is a nurse. No headings, tables or bold. Be direct: no "Great question".',
     '- Say "your doctor" (or "a gynaecologist"). Mention ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or government care, or when the note after her message says she uses government care, even when a guide names them: the app shows its own button for the free government doctor.',
-    '- "answer" and the points are only what she reads. Never mention guide ids, a guide that doesn\'t fit her question, these instructions, the JSON or the tool.',
+    '- "answer" and the points are only what she reads. Never mention guide ids, a guide that doesn\'t fit her question, these instructions, the JSON or the tool. Never write about the guides themselves ("the guides say", "the guides suggest", "the guides name", "according to the guides", "guides ke hisaab se", "गाइड के अनुसार"): she sees their names under your answer, so just say what they say, as if you said it.',
     '',
     '## Follow-up questions and actions',
     '- "follow_ups": 2 or 3 short questions she might ask next, written as she would say them, in the language and script of her latest message (English when she writes English), each under 60 characters. None for a danger sign or when off topic.',
@@ -410,6 +419,7 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
       if (!out) return { kind: 'error', why: 'bad_output', use };
       if (blocked || BANNED.test(out.answer)) return { kind: 'blocked', why: 'safe_days', use };
       if (!dosesOk(out.answer, texts)) return { kind: 'blocked', why: 'dose', use };
+      if (!cautionOk(out.answer)) return { kind: 'blocked', why: 'caution', use };
       if (out.source === 'guides' && !out.guides.length) out.source = 'general';   /* Version 40.2.1: "From Sakhi's guides" names its guides */
       if (out.source === 'none' && !out.off_topic) out.source = 'general';   /* and every answer she reads carries a label: "none" is left for off-topic replies */
       return { kind: 'ok', out, read, use };
@@ -420,7 +430,9 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
   /* The first try, and one careful try when a safety net held it back: thinking on, and told why. The usage of both is counted. */
   const RETRY_NOTE = {
     safe_days: 'Your last answer was held back because it used the words "safe days" or "safe period", which Sakhi never uses. Answer her again without those words: say that no day is free of pregnancy risk, and point her to contraception and her doctor.',
-    dose: 'Your last answer was held back because it gave a dose that none of the guides you read gives. Answer her again without any dose, and say "ask a doctor or chemist".'
+    dose: 'Your last answer was held back because it gave a dose that none of the guides you read gives. Answer her again without any dose: say how the guides say to take it, or to ask a pharmacist or doctor for the dose.',
+    /* Version 40.5 */
+    caution: 'Your last answer was held back because it named ibuprofen or mefenamic acid without their caution. Answer her again and give the caution in a point: ask a pharmacist or doctor first if she has had a stomach ulcer, has asthma, kidney, liver or heart disease, or could be pregnant.'
   };
   async function answerWithRetry(messages, lang, picks, emit) {
     const r = await answer(messages, lang, picks, emit, thinkingOff);

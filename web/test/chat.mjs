@@ -510,6 +510,49 @@ const view = (page) => page.evaluate(() => {
   await done(h);
 }
 
+/* ---------- 18 Version 40.5: the Period pain page goes with its article and opens from the answer; the doctors' line under an
+   answer that names a medicine ---------- */
+{
+  const REPLY = {
+    med: { answer: 'Doctors commonly suggest ibuprofen or mefenamic acid, or paracetamol if you cannot take those.\n- Take it as the pack says, with or after food.\n- Ask a pharmacist or doctor first if you have had a stomach ulcer, have asthma or kidney disease, or could be pregnant.', guides: ['cycle.painful-periods', 'page.periods-pain'], screens: [] },
+    ec: { answer: 'Take the emergency pill as soon as you can, best within 72 hours.\n- Any chemist sells it.', source: 'general', guides: [], screens: [] },
+    heat: { answer: 'Heat and gentle movement ease cramps.\n- Use a hot water bottle on your lower belly.', guides: ['cycle.painful-periods'], screens: [] },
+    hi: { answer: 'डॉक्टर अक्सर ibuprofen या mefenamic acid बताते हैं; ये न ले सकें तो paracetamol।\n- पैकेट पर लिखे तरीक़े से, खाने के बाद लें।\n- अल्सर, दमा या गर्भ की संभावना हो तो पहले पूछें।', guides: ['page.periods-pain'], screens: [] },
+    danger: { answer: 'Go to the nearest hospital now: heavy bleeding with dizziness needs care today.\n- Take the tablets you use with you.', danger: true, guides: [], screens: [] }
+  };
+  const which = (b) => { const q = b.messages[b.messages.length - 1].text; return /medicine/i.test(q) ? 'med' : /emergency/i.test(q) ? 'ec' : /दवा/.test(q) ? 'hi' : /dizzy/i.test(q) ? 'danger' : 'heat'; };
+  const a = await open({ at: 'ask-sakhi', tts: true, reply: (b) => ({ status: 200, json: ANSWER(REPLY[which(b)]) }) });
+  await accept(a.page);
+  const last = () => a.page.evaluate(() => { const m = [...document.querySelectorAll('#view .chat-msg.sakhi')].pop(); const ml = m && m.querySelector('.chat-txt .med-line'); return { med: ml ? ml.textContent : null, kind: ml ? ml.dataset.med : null, lang: ml ? ml.getAttribute('lang') : null, pages: m ? [...m.querySelectorAll('.chat-guides [data-go]')].map((b) => b.dataset.go + '|' + b.textContent.trim()) : [], arts: m ? [...m.querySelectorAll('.chat-guides [data-ans]')].map((b) => b.dataset.ans) : [] }; });
+  await ask(a, 'What medicine should I take for period pain?');
+  const b1 = JSON.parse(a.sent[0].body);
+  check('18 the Period pain page goes right after its Learn article in her phone\'s picks', JSON.stringify(b1.hints) === JSON.stringify(['cycle.painful-periods', 'page.periods-pain']), b1.hints);
+  let l = await last();
+  check('18 under the answer, the article opens its quick answer and the page opens the page', l.arts.join() === 'cycle.painful-periods' && l.pages.join() === 'periods-pain|' + (await t(a.page, 'periods_pain')), l);
+  check('18 an answer that names a medicine carries the doctors\' line, in their words, inside the answer', l.med === (await t(a.page, 'med_line')) && l.kind === 'med' && l.lang === null, l);
+  await a.page.click('#view .chat-msg.sakhi:last-of-type [data-chat-say]'); await settle(a.page, 3000);
+  const said = await a.page.evaluate(() => window.__said.map((x) => x.text).join(' '));
+  check('18 "Listen" reads the doctors\' line too', said.includes('Doctors commonly suggest') && said.includes('Take medicines only on your doctor'), said.slice(0, 200));
+  await a.page.evaluate(() => window.speechSynthesis && window.speechSynthesis.cancel()); await settle(a.page, 300);
+  await ask(a, 'When can I take the emergency pill?');
+  l = await last();
+  check('18 the emergency pill gets its own line', l.kind === 'ec' && l.med === (await t(a.page, 'med_line_ec')), l);
+  await ask(a, 'Does heat help cramps?');
+  check('18 an answer that names no medicine has no line', (await last()).med === null);
+  await ask(a, 'पीरियड के दर्द की दवा?');
+  l = await last();
+  check('18 a Hindi answer in the English app gets the Hindi line, marked Hindi', l.med === 'दवाएँ सिर्फ़ डॉक्टर की सलाह पर लें। अपने आप न लें।' && l.lang === 'hi' && l.pages.length === 1, l);
+  await ask(a, 'Heavy bleeding and I feel dizzy');
+  check('18 a danger answer has no medicine line (the hospital comes first)', (await last()).med === null);
+  check('18 "Ask Sakhi about this" from the article sends its page too', JSON.stringify(await a.page.evaluate(() => window.Saathi.chat.hints('Tell me more', 'cycle.painful-periods'))) === JSON.stringify(['page.periods-pain']));
+  await a.page.click('#view .chat-msg.sakhi .chat-guides [data-go="periods-pain"]'); await settle(a.page, 500);
+  check('18 tapping the page opens the Period pain page', (await hash(a.page)) === '#periods-pain');
+  await done(a);
+  const gen = await import(new URL('../../server/scripts/make-chat-guides.mjs', import.meta.url).href);
+  const live = await gen.renderPages();
+  check('18 the server\'s copy of the page matches the page as it is now (else: node server/scripts/make-chat-guides.mjs --pages)', JSON.stringify(live) === JSON.stringify(gen.readPages()));
+}
+
 check('no page errors', errsAll.length === 0, errsAll);
 await browser.close();
 const pass = results.filter((r) => r.pass).length;

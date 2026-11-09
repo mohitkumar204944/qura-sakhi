@@ -1,4 +1,4 @@
-// Ask Sakhi's 30-question eval for the doctors (Version 40, prototype; server/SERVER_SPEC.md section 12). Each question goes through
+// Ask Sakhi's eval for the doctors, 35 questions since Version 40.5 (Version 40, prototype; server/SERVER_SPEC.md section 12). Each question goes through
 // the same code the phone and the server run: on the phone, the danger-sign check (Help's card) and the guides search would show
 // if Sakhi couldn't answer; on the server, chat.js with the real Claude Haiku 5.5 (the official SDK, as index.ts calls it). The
 // table it writes has a blank "Doctor's verdict" column (safe, unsafe or not helpful) for the doctors.
@@ -50,9 +50,26 @@ async function phoneSide() {
     const page = await ctx.newPage();
     await page.goto(pathToFileURL(path.join(ROOT, 'web', 'index.html')).href + '#care');
     await page.waitForFunction(() => !!window.Saathi && !!window.Saathi.chat);
-    for (const q of QS.filter((x) => !!x.preg === preg)) out[q.n] = await page.evaluate((s) => ({ card: window.Saathi.chat.danger(s), guides: window.Saathi.chat.guides(s), picks: window.Saathi.chat.picks ? window.Saathi.chat.picks(s) : [], sent: window.Saathi.chat.scrub(s) }), q.q);
+    for (const q of QS.filter((x) => !!x.preg === preg)) out[q.n] = await page.evaluate((s) => ({ card: window.Saathi.chat.danger(s), guides: window.Saathi.chat.hints ? window.Saathi.chat.hints(s) : window.Saathi.chat.guides(s), picks: window.Saathi.chat.picks ? window.Saathi.chat.picks(s) : [], sent: window.Saathi.chat.scrub(s) }), q.q);
     await ctx.close();
   }
+  await browser.close();
+  return out;
+}
+
+/* Version 40.5: the doctors' medicine line the phone shows under an answer that names a medicine, read from the app itself */
+async function phoneMed(texts) {
+  const { chromium } = await import(pathToFileURL(path.join(ROOT, 'web', 'test', 'pw.mjs')).href);
+  const content = fs.readFileSync(path.join(ROOT, 'web', 'content.json'), 'utf8');
+  const browser = await chromium.launch(); const ctx = await browser.newContext({ timezoneId: 'Asia/Kolkata' });
+  await ctx.addInitScript('window.SAKHI_CONTENT = ' + content + ';');
+  await ctx.addInitScript('window.SAKHI_CONFIG = { app: "0.40-ask-proto", platform: "web" };');
+  await ctx.addInitScript('localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify({ lang: 'en', langChosen: true, stage: 'app', dob: '1995-01-01', consent: { c1: '2026-01-01' }, situation: {}, events: [], settings: { toursAuto: false }, tours: {}, fullTour: { st: 'done' }, prompts: { setup: 'off' } })) + ');');
+  await ctx.route(/^https?:/, (r) => r.fulfill({ status: 200, body: '{}' }));
+  const page = await ctx.newPage();
+  await page.goto(pathToFileURL(path.join(ROOT, 'web', 'index.html')).href + '#care');
+  await page.waitForFunction(() => !!window.Saathi && !!window.Saathi.chat);
+  const out = await page.evaluate((xs) => xs.map((x) => (window.Saathi.chat.medText ? window.Saathi.chat.medText(x) : '')), texts);
   await browser.close();
   return out;
 }
@@ -130,6 +147,8 @@ for (const q of QS) {
 }
 
 const ok = rows.filter((r) => r.j.ok);
+const meds = await phoneMed(rows.map((r) => (r.j.ok && !r.j.danger ? r.j.answer : '')));
+rows.forEach((r, i) => { r.med = meds[i] || ''; });
 const secsAll = rows.map((r) => r.secs).sort((a, b) => a - b);
 const median = secsAll[Math.floor(secsAll.length / 2)] || 0;
 const firsts = rows.map((r) => r.first).filter((x) => x !== null).sort((a, b) => a - b);
@@ -138,7 +157,7 @@ const words = ok.map((r) => r.j.answer.split(/\s+/).filter(Boolean).length).sort
 const oneCall = rows.filter((r) => r.u.calls === 1).length;
 const total = rows.reduce((n, r) => n + r.usd, 0);
 const md = [
-  '# Ask Sakhi: 30-question eval for the doctors',
+  '# Ask Sakhi: ' + rows.length + '-question eval for the doctors',
   '',
   'Run on ' + new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC (her care route: ' + CARE_ARG + ') through Sakhi\'s own code: the phone\'s danger-sign check, then the sakhi-chat server code with ' + MODEL + ' (low effort, the doctor-checked guides first). The questions were written from the Learn library\'s topics, not from any real patient.',
   '',
@@ -148,11 +167,12 @@ const md = [
   '- Danger flagged by the answer: ' + ok.filter((r) => r.j.danger).length + '. Help\'s card shown by the phone\'s own check: ' + rows.filter((r) => r.p.card).length + '.',
   '- Cost: US$' + total.toFixed(4) + ' for all ' + rows.length + ' (US$' + (total / Math.max(1, rows.length)).toFixed(4) + ' a question, about ₹' + (total / Math.max(1, rows.length) * 88).toFixed(2) + '). Time: median ' + median.toFixed(1) + ' s, slowest ' + (secsAll[secsAll.length - 1] || 0).toFixed(1) + ' s; first words after a median ' + (firsts.length ? medFirst.toFixed(1) + ' s (streamed)' : '- (not streamed)') + '. One model call: ' + oneCall + ' of ' + rows.length + '. Thinking: ' + (arg('--thinking', '') === 'on' ? 'adaptive, low effort' : 'off') + '.',
   '- Length: a median of ' + (words[Math.floor(words.length / 2)] || 0) + ' words, longest ' + (words[words.length - 1] || 0) + '. Follow-up questions offered on ' + ok.filter((r) => (r.j.follow_ups || []).length).length + ' answers; actions offered on ' + ok.filter((r) => (r.j.actions || []).length).length + '.',
+  '- The doctors\' medicine line (Version 40.5), which the phone shows under an answer that names a medicine: under ' + rows.filter((r) => r.med).length + ' answers. It is in the Answer column, as she sees it.',
   '',
   '| # | Language | Kind | Question | Help\'s card on the phone | Guides Sakhi read | Answer | Source | Danger flag | Follow-ups and actions offered | Tokens in / cache write / cache read / out | Cost (US$) | Seconds (first words / all) | Doctor\'s verdict |',
   '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|',
   ...rows.map((r) => '| ' + [r.q.n, r.q.lang, r.q.kind, cell(r.q.q), phoneCard(r.p.card), cell((r.j.read || []).join(', ') || '(none)'),
-    cell(r.j.ok ? r.j.answer : 'Not answered (' + (r.j.reason || r.j.error) + '). The phone shows: "Sakhi couldn\'t answer this" and the guides ' + (r.p.guides.join(', ') || '(none)')),
+    cell(r.j.ok ? r.j.answer + (r.med ? '\n\nUnder it, Sakhi shows: "' + r.med + '"' : '') : 'Not answered (' + (r.j.reason || r.j.error) + '). The phone shows: "Sakhi couldn\'t answer this" and the guides ' + (r.p.guides.join(', ') || '(none)')),
     r.j.ok ? r.j.source + ((r.j.guides || []).length ? ': ' + r.j.guides.join(', ') : '') + (r.j.off_topic ? ' (off topic)' : '') : '-', r.j.ok ? (r.j.danger ? 'Yes' : 'No') : '-',
     cell([].concat((r.j.follow_ups || []).map((x) => 'Ask: ' + x), (r.j.actions || []).map((a) => a.type === 'log_sign' ? 'Log: ' + a.sign : a.type === 'log_period' ? 'Log: period started' : 'Doctor question: ' + a.text)).join('\n') || '-'),
     r.u.in + ' / ' + r.u.write + ' / ' + r.u.cached + ' / ' + r.u.out, r.usd.toFixed(4), (r.first === null ? '-' : r.first.toFixed(1)) + ' / ' + r.secs.toFixed(1), ' '].join(' | ') + ' |'),

@@ -13,10 +13,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, replyLanguage, replyNote, CARE, CARE_NOTE } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, replyLanguage, replyNote, CARE, CARE_NOTE } from '../supabase/functions/sakhi-chat/chat.js';
 import { chatStore } from '../supabase/functions/sakhi-chat/store-pg.js';
 import { GUIDES } from '../supabase/functions/sakhi-chat/guides.js';
-import { moduleText, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
+import { moduleText, readPages, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
 import { pgliteDb, pgQuery, fakeClock } from './harness.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -134,9 +134,9 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
   check('3 no web search or other server tool', !JSON.stringify(p.tools).match(/web_search|web_fetch|code_execution/));
   check('3 the Hindi app gets the Hindi system prompt; her question goes as her turn, not in the system prompt', p.system[0].text === systemPrompt('hi') && !p.system[0].text.includes(MARK) && p.messages[0].content.includes(MARK));
   const sp = systemPrompt('en');
-  for (const [k, re] of [['the guides first', /call read_guides/], ['general knowledge marked', /"source" to "general"/], ['no diagnosis', /Never diagnose/], ['ask a doctor or chemist', /ask a doctor or chemist/], ['no safe days', /Never call any days "safe"/], ['danger first sentence', /first sentence tells her to go to the nearest hospital now/], ['her words are not instructions', /not instructions to you/], ['her language and script', /language and script she writes in/], ['no web', /no internet and no web search/], ['women\'s health only', /off_topic/], ['every guide listed', new RegExp(GUIDE_IDS.map((x) => x.replace(/\./g, '\\.')).join('|'))]])
+  for (const [k, re] of [['the guides first', /call read_guides/], ['general knowledge marked', /"source" to "general"/], ['no diagnosis', /Never diagnose/], ['ask a pharmacist or doctor, with its reason (Version 40.5)', /Say "ask a pharmacist or doctor" only with its reason/], ['no safe days', /Never call any days "safe"/], ['danger first sentence', /first sentence tells her to go to the nearest hospital now/], ['her words are not instructions', /not instructions to you/], ['her language and script', /language and script she writes in/], ['no web', /no internet and no web search/], ['women\'s health only', /off_topic/], ['every guide listed', new RegExp(GUIDE_IDS.map((x) => x.replace(/\./g, '\\.')).join('|'))]])
     check('3 the system prompt says: ' + k, re.test(sp));
-  check('3 the system prompt lists all 60 guides and every screen', GUIDE_IDS.length === 60 && GUIDE_IDS.every((x) => sp.includes(x)) && Object.keys(SCREENS).every((k) => sp.includes('- ' + k + ':')));
+  check('3 the system prompt lists all 60 guides, the Period pain page (Version 40.5) and every screen', GUIDE_IDS.length === 61 && GUIDE_IDS.includes('page.periods-pain') && GUIDE_IDS.every((x) => sp.includes(x)) && Object.keys(SCREENS).every((k) => sp.includes('- ' + k + ':')));
   check('3 the system prompt is the same for every question (it caches)', systemPrompt('en') === sp && !/\d{4}-\d{2}-\d{2}/.test(sp));
   check('3 the usage comes back for the eval, cache writes and reads apart', r.json.usage.calls === 2 && r.json.usage.in === 900 + 800 && r.json.usage.write === 3100 && r.json.usage.cached === 3000 && r.json.usage.out === 160, r.json.usage);
 }
@@ -250,7 +250,7 @@ const daily = async (ctx, day = DAY) => (await ctx.db.query('select questions, a
 
 /* ---------- 8 the copy of the guides, and the app's fields ---------- */
 {
-  check('8 guides.js matches web/content.json (node server/scripts/make-chat-guides.mjs)', fs.readFileSync(OUT, 'utf8') === moduleText(JSON.parse(fs.readFileSync(CONTENT, 'utf8'))));
+  check('8 guides.js matches web/content.json and chat-pages.json (node server/scripts/make-chat-guides.mjs)', fs.readFileSync(OUT, 'utf8') === moduleText(JSON.parse(fs.readFileSync(CONTENT, 'utf8')), readPages()));
   const c = JSON.parse(fs.readFileSync(CONTENT, 'utf8')); const withDoc = c.groups.flatMap((g) => g.articles.map((a) => [g.group + '.' + a.id, a])).find(([, a]) => a.doc && a.doc.body_en);
   if (withDoc) { const [id, a] = withDoc; const i = +Object.keys(a.doc.body_en)[0]; check('8 a guide with doctor-route wording reads it ("your doctor")', GUIDES[id].body.en.some((p) => p === a.doc.body_en[i].replace(/^##\s+/, '').replace(/\s+/g, ' ').trim())); }
   const appJs = fs.readFileSync(path.join(here, '..', '..', 'web', 'app.js'), 'utf8');
@@ -465,6 +465,33 @@ async function sendStream(ctx, body, token) {
     check('16 a care word not on the list is refused: ' + JSON.stringify(bad), rb.status === 400 && rb.json.error === 'care_bad', rb.json);
   }
   check('16 the instructions allow government words when the note says so', /or when the note after her message says she uses government care/.test(systemPrompt('en')));
+}
+
+/* ---------- 17 Version 40.5: the Period pain page as a guide, the medicines first, and their caution ---------- */
+{
+  const pg = GUIDES['page.periods-pain']; const en = pg ? pg.body.en.join('\n') : ''; const hi = pg ? pg.body.hi.join('\n') : '';
+  check('17 the Period pain page is a guide, in English and Hindi, in the page\'s own words', !!pg && pg.title.en === 'Period pain' && /Doctors commonly suggest ibuprofen or mefenamic acid, or paracetamol if you cannot take those/.test(en) && /ibuprofen या mefenamic acid/.test(hi));
+  check('17 its caution and its warning cards come with it', /Ask a pharmacist or doctor before ibuprofen or mefenamic acid if you have had a stomach ulcer/.test(en) && /Not normal: see a doctor this week if you have:/.test(en) && /Go to the nearest hospital now if:/.test(en) && /See a doctor today if:/.test(en));
+  check('17 the doctors\' medicine line, buttons and links stay out (the phone shows that line)', !/Take medicines only on your doctor/.test(en) && !/दवाएँ सिर्फ़ डॉक्टर की सलाह पर लें/.test(hi) && !/My period plan|Talk to a Qura doctor|Ask a doctor about this|Read it in 1 minute/.test(en));
+  check('17 the page is in the instructions\' list, so the model can read it too', systemPrompt('en').includes('- page.periods-pain: Period pain. '));
+  const c = fakeClaude([final({ answer: 'Doctors commonly suggest ibuprofen or mefenamic acid. ' + AMARK, point_1: 'Ask a pharmacist first if you have a stomach ulcer, asthma or kidney disease, or could be pregnant.', guides_used: ['cycle.painful-periods', 'page.periods-pain'] })]);
+  const x = await setup({ claude: c }); await x.acct('+919876543210', 1994, TOKEN);
+  const r = await send(x, ask('What medicine for period pain?', { hints: ['cycle.painful-periods', 'page.periods-pain'] }));
+  check('17 the phone\'s hint for the page is read before the first call, and the answer may name it', JSON.stringify(c.calls[0].messages).includes('Doctors commonly suggest ibuprofen or mefenamic acid') && r.json.ok === true && r.json.guides.includes('page.periods-pain'), r.json);
+  check('17 cautionOk: an answer without ibuprofen or mefenamic acid has nothing to check', cautionOk('Take paracetamol as the packet says.') && cautionOk('Heat and rest help.'));
+  check('17 cautionOk: with pregnancy and an ulcer, asthma or kidney disease it is fine, in English, Hindi and Hinglish', cautionOk('Ibuprofen helps. Ask a pharmacist first if you have a stomach ulcer or asthma, or could be pregnant.') && cautionOk('ibuprofen या mefenamic acid; अल्सर, दमा या गर्भ की संभावना हो तो पहले पूछें।') && cautionOk('Meftal le sakti hain, par ulcer, asthma ya pregnancy ho to pehle poochhein.'));
+  check('17 cautionOk: without the caution it is not', !cautionOk('Ibuprofen or mefenamic acid help period pain.') && !cautionOk('Mefenamic acid helps; avoid it if pregnant.') && !cautionOk('आइबुप्रोफेन लें।'));
+  const c2 = fakeClaude([final({ answer: 'Ibuprofen or mefenamic acid help period cramps. ' + AMARK, guides_used: ['page.periods-pain'] }), final({ answer: 'Doctors commonly suggest ibuprofen or mefenamic acid.', point_1: 'Ask a pharmacist or doctor first if you have had a stomach ulcer, have asthma or kidney disease, or could be pregnant.', guides_used: ['page.periods-pain'] })]);
+  const x2 = await setup({ claude: c2 }); await x2.acct('+919876543210', 1994, TOKEN);
+  const r2 = await send(x2, ask('Which painkiller for cramps?', { hints: ['page.periods-pain'] }));
+  const n2 = c2.calls[1] && c2.calls[1].messages[c2.calls[1].messages.length - 1];
+  check('17 ibuprofen without its caution is held back once, the careful try is told why, and the first text never reaches the phone', c2.calls.length === 2 && !!n2 && n2.role === 'system' && /without their caution/.test(n2.content) && r2.json.ok === true && /stomach ulcer/.test(r2.json.answer) && !JSON.stringify(r2.json).includes(AMARK), r2.json);
+  check('17 the careful try runs with thinking on', !!c2.calls[1] && !c2.calls[1].thinking && !!c2.calls[0].thinking && c2.calls[0].thinking.type === 'disabled');
+  const sp2 = systemPrompt('en');
+  check('17 the instructions: the medicines in the first sentence, in the guides\' order and words', /when she asks which medicine to take, answer that in your first sentence/.test(sp2) && /answer that in your first sentence, in her language and script: the medicines from the guides, in their order, and how to take them/.test(sp2) && /Where a guide says who suggests them, keep that \(for example "Doctors commonly suggest \.\.\." in English, "Doctor aksar \.\.\. batate hain" in Hinglish\)/.test(sp2) && /say a pharmacist can tell her which medicine is in it/.test(sp2));
+  check('17 the instructions: a caution always with its medicine, and "ask a pharmacist or doctor" never first', /give that caution in the same answer/.test(sp2) && /never as your first sentence/.test(sp2));
+  check('17 the instructions: severe, very bad or now brings the signs for seeing a doctor today', /severe, very bad or happening now, give the guides' signs for seeing a doctor today/.test(sp2));
+  check('17 the instructions: never write about the guides themselves', /Never write about the guides themselves/.test(sp2));
 }
 
 const pass = results.filter((r) => r.pass).length;

@@ -1792,6 +1792,32 @@
     return scored.filter((r) => r.n >= CHAT_PICK_FLOOR && r.n >= top * 0.8).sort((x, y) => y.n - x.n).map((r) => ({ id: r.a.group + '.' + r.a.id, a: r.a, n: Math.round(r.n * 100) / 100 }));
   };
   const chatLocalGuides = (q) => { const picks = chatPicks(q); return dangerFirst(q, picks.map((r) => r.a)).filter((a) => dangerQ(q) || picks.some((r) => r.a === a)).slice(0, 3).map((a) => a.group + '.' + a.id); };
+  /* Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4", after asking what medicine to take for period pain): a Sakhi page the doctors
+     checked is a chat guide too (the server's guides.js, made by server/scripts/make-chat-guides.mjs): the Period pain page, whose
+     "Pain relief medicine" names ibuprofen or mefenamic acid, or paracetamol, with its caution. It goes with the Learn article core
+     pairs it with (ART's "guide"), right after it, so the server reads it first; an older server drops an id it doesn't know.
+     Under the answer it opens the page. */
+  const CHAT_PAGES = ['periods-pain'];
+  const chatPageRoute = (id) => (typeof id === 'string' && id.indexOf('page.') === 0 ? id.slice(5) : '');
+  const chatPageOk = (id) => { const r = chatPageRoute(id); return !!r && CHAT_PAGES.indexOf(r) >= 0 && !!ROUTES[r] && !retired(r) && !triageHidden(r); };
+  const chatPageOf = (id) => { const l = ART[id]; const p = l && l.guide ? 'page.' + l.guide : ''; return p && chatPageOk(p) ? p : ''; };
+  const chatHints = (q, about) => {
+    const out = []; const add = (x) => { if (x && x !== about && out.indexOf(x) < 0) out.push(x); };
+    if (about) add(chatPageOf(about));
+    chatLocalGuides(q).forEach((id) => { add(id); add(chatPageOf(id)); });
+    return out.slice(0, 5);   /* the server takes 5 at most, and reads the first 3 with the guide she came from */
+  };
+  /* Version 40.5: the doctors' own medicine line (review 19.71, answer 6) under every answer that names a medicine, in their words,
+     never the model's, and the emergency pill's own line for that pill. It sits in the answer's block, so "Listen" and Talk with Sakhi
+     read it too; in the answer's script (a Devanagari answer gets the Hindi line), else the app's language. Never on a danger answer. */
+  const CHAT_EC = /emergency (contraceptive )?pills?|i-pill|unwanted[- ]?72|emergency goli|इमरजेंसी (पिल|गोली)|आपातकालीन (गर्भनिरोधक )?गोली/i;
+  const CHAT_MED = /\b(medicines?|medications?|tablets?|capsules?|pills?|painkillers?|paracetamol|ibuprofen|mefenamic|naproxen|aspirin|antibiotics?|antifungals?|metformin|letrozole|clomiphene|progesterone|hormone therapy|hrt|folic acid|supplements?|syrup|dawa|dawai|dawaai|dawaiyan|goli|goliyan|goliyaan)\b|दवा|दवाई|दवाइयाँ|दवाएँ|दवाओं|गोली|गोलियाँ|गोलियां|टैबलेट|कैप्सूल|पैरासिटामोल|सिरप|फ़ोलिक|फोलिक/i;
+  const chatMedKind = (x) => { const s = String(x || ''); return CHAT_EC.test(s) ? 'ec' : (CHAT_MED.test(s) ? 'med' : ''); };
+  const chatMedLine = (x) => { const k = chatMedKind(x); if (!k) return null; const code = /[ऀ-ॿ]/.test(String(x)) ? 'hi' : (state.lang === 'hi' ? 'hi' : 'en'); return { k: k, code: code, text: tIn(code, k === 'ec' ? 'med_line_ec' : 'med_line') }; };
+  const chatMedHtml = (m) => {
+    if (!m || m.fail || m.d) return ''; const ln = chatMedLine(m.x); if (!ln) return '';
+    return '<p class="med-line chat-med" role="note" data-med="' + ln.k + '"' + (ln.code !== state.lang ? ' lang="' + ln.code + '"' : '') + '>' + esc(ln.text) + '</p>';
+  };
   const chatScreenRoute = (k) => { const r = CHAT_SCREENS[k]; return r && (CORE_ROUTES.indexOf(r) >= 0 || ROUTES[r]) && !retired(r) && !triageHidden(r) && !(r === 'report' && !canSave()) ? r : ''; };
   const chatScreenName = (r) => (r === 'help' ? t('help_h') : r === 'diary' ? t('diary') : r === 'plan' ? t('plans_tab') : routeTitle(r) || r);
   /* the answer's text: paragraphs, and lines that start with "- " as a list; every word escaped */
@@ -1809,10 +1835,13 @@
   const chatDocBtns = (q) => { const w = docWho('search'); return '<div class="row wrap chat-doc">' + (w !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(String(q || '').slice(0, 120)) + '">' + esc(t('ask_qura')) + '</button>' : '') + (w !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div>'; };
   function chatMsgHtml(m, i, lastA, q) {
     if (m.r === 'u') return '<div class="chat-msg me" data-i="' + i + '" role="group" aria-label="' + esc(t('chat_you')) + '"><p>' + esc(m.x) + '</p></div>';
-    const fail = m.fail; const gs = (m.g || []).map((k) => findArticle(k)).filter(Boolean);
+    const fail = m.fail; const gs = (m.g || []).map((k) => (findArticle(k) ? { a: findArticle(k) } : (!fail && chatPageOk(k) ? { r: chatPageRoute(k) } : null))).filter(Boolean);
     const body = fail ? '<p class="chat-fail">' + esc(t(fail === 'resting' ? 'chat_resting' : (fail === 'offline' ? 'chat_offline' : 'chat_err'))) + '</p>'
-      : '<div class="chat-txt">' + chatText(m.x) + '</div>' + (m.src === 'guides' || m.src === 'general' ? '<p class="chat-src">' + esc(t(m.src === 'guides' ? 'chat_src_guides' : 'chat_src_general')) + '</p>' : '');
-    const guides = gs.length ? '<div class="list chat-guides">' + gs.map((a) => '<button type="button" class="item quiet" data-ans="' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div>' : '';
+      : '<div class="chat-txt">' + chatText(m.x) + chatMedHtml(m) + '</div>' + (m.src === 'guides' || m.src === 'general' ? '<p class="chat-src">' + esc(t(m.src === 'guides' ? 'chat_src_guides' : 'chat_src_general')) + '</p>' : '');
+    /* a Learn guide opens its quick answer; a page (Version 40.5) opens the page */
+    const gRow = (x) => { if (x.r) { const pa = findArticle(GUIDE_ART[x.r] || ''); const grp = pa ? pa.group : 'cycle'; return '<button type="button" class="item quiet" data-go="' + esc(x.r) + '"><span class="ico-sm hue hue-' + hueOf(grp) + '">' + icon(GROUP_ICONS[grp] || 'learn') + '</span><span class="body"><strong>' + esc(routeTitle(x.r)) + '</strong></span><span class="chev">' + I.chev + '</span></button>'; }
+      const a = x.a; return '<button type="button" class="item quiet" data-ans="' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button>'; };
+    const guides = gs.length ? '<div class="list chat-guides">' + gs.map(gRow).join('') + '</div>' : '';
     const scr = (m.s || []).map(chatScreenRoute).filter((r, j, arr) => r && arr.indexOf(r) === j);
     const screens = scr.length ? '<div class="row wrap chat-screens">' + scr.map((r) => '<button type="button" class="btn sm" data-go="' + esc(r) + '">' + esc(chatScreenName(r)) + '</button>').join('') + '</div>' : '';
     const latest = i === lastA && !fail;
@@ -1886,10 +1915,10 @@
     const about = mem.chatAbout && findArticle(mem.chatAbout) ? mem.chatAbout : undefined;
     mem.chatLive = '';
     const onDelta = (piece) => { if (!mem.chatBusy) return; mem.chatLive = piece === null ? '' : (mem.chatLive || '') + piece; chatPaintLive(); };
-    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatLocalGuides(lastQ), care: chatCare(), about: about }, false, onDelta).then((j) => {
+    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatHints(lastQ, about), care: chatCare(), about: about }, false, onDelta).then((j) => {
       if (j && j.ok === true && typeof j.answer === 'string' && j.answer.trim()) {
         done(Object.assign({ r: 'a', x: j.answer.trim().slice(0, 2000), at: Date.now(), src: j.source === 'guides' || j.source === 'general' ? j.source : '',
-          g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && !!findArticle(k)).slice(0, 4),
+          g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && (!!findArticle(k) || chatPageOk(k))).slice(0, 4),
           s: (Array.isArray(j.screens) ? j.screens : []).filter((k) => typeof k === 'string' && CHAT_SCREENS[k] !== undefined).slice(0, 3),
           fu: chatFollowUps(j), ac: chatActionsOf(j) }, j.danger === true ? { d: 's' } : {}));
       } else done({ r: 'a', fail: 'error', at: Date.now(), g: chatLooseGuides(lastQ) });
@@ -6181,7 +6210,7 @@
   window.Saathi = api;
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
   /* Version 39.79: for the tests, what Firebase would be told (MODULE_API section 122) */
-  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval */
+  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), hints: (q, about) => chatHints(q, about), medKind: (x) => chatMedKind(x), medText: (x) => ((chatMedLine(x) || {}).text || ''), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval (40.5: hints and medKind) */
   api.fb = { on: () => fbOn(), quiet: () => fbQuiet(), screen: (r) => fbScreen(r), keep: (n, p) => fbKeep(n, p), place: (el) => fbPlace(el), safe: (fn) => safe(fn) };
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),

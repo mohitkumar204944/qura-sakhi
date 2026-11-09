@@ -1,0 +1,58 @@
+{
+ "page.periods-pain": {
+  "route": "periods-pain",
+  "group": "cycle",
+  "title": {
+   "en": "Period pain",
+   "hi": "पीरियड का दर्द"
+  },
+  "summary": {
+   "en": "Cramps in the lower belly, back or thighs usually start just before or with your period and last up to 3 days. Pain that stops your day is not something you have to put up with.",
+   "hi": "पेट के निचले हिस्से, कमर या जाँघों में ऐंठन अक्सर पीरियड से ठीक पहले या उसके साथ शुरू होती है और 3 दिन तक रहती है। जो दर्द आपका दिन रोक दे, उसे सहते रहना ज़रूरी नहीं।"
+  },
+  "body": {
+   "en": [
+    "What helps:",
+    "- Heat: A hot water bottle or heat pad on your lower belly or back, wrapped in a cloth so it does not burn. A warm bath or shower helps too.",
+    "- Movement: Walking, gentle yoga, stretching or cycling. Moving often eases cramps, even when you do not feel like it.",
+    "- Rest and massage: Lie on your side with your knees bent, or on your back with a pillow under your knees. Rub your belly and lower back gently in circles.",
+    "- Pain relief medicine: Doctors commonly suggest ibuprofen or mefenamic acid, or paracetamol if you cannot take those. Take it as the pack or your doctor says, with or after food. Jan Aushadhi Kendras sell generic medicines for much less.",
+    "Ask a pharmacist or doctor before ibuprofen or mefenamic acid if you have had a stomach ulcer, have asthma, kidney, liver or heart disease, or could be pregnant. If a painkiller gives you a rash, swelling or fever, stop it and see a doctor.",
+    "Not normal: see a doctor this week if you have:",
+    "- Pain that stops your work, school or housework, even after medicine",
+    "- Pain or bleeding between periods",
+    "- Fever or a bad-smelling discharge with the pain: go today, not this week",
+    "- Pain during or after sex, or when passing stool or urine",
+    "- Pain that has got worse over the years, or periods that became heavier or irregular",
+    "- A swollen belly, losing weight without trying, or changes in your stool or urine habits",
+    "Possible causes include endometriosis, adenomyosis, fibroids or an infection (PID). This list is not a diagnosis. See a gynaecologist, or the gynaecology OPD at a government hospital, where it costs little or nothing, and take your diary.",
+    "Go to the nearest hospital now if:",
+    "- Period late or a positive test, plus one-sided lower belly pain, shoulder-tip pain, dizziness or fainting",
+    "- Soaking a pad every 1–2 hours and feeling dizzy or breathless",
+    "See a doctor today if: Fever with heavy bleeding or severe belly pain. Or pain far worse than your usual period pain that medicine does not ease.",
+    "Log pain each time you log a period. Over a few months the diary shows your doctor how bad it gets and for how long."
+   ],
+   "hi": [
+    "किससे आराम मिलता है:",
+    "- सेंक: पेट के निचले हिस्से या कमर पर गर्म पानी की बोतल या heat pad, कपड़े में लपेटकर ताकि जले नहीं। गुनगुने पानी से नहाने से भी आराम मिलता है।",
+    "- हल्की कसरत: टहलना, हल्का योग, स्ट्रेचिंग या साइकिल। हिलने-डुलने से अक्सर ऐंठन कम होती है, मन न हो तब भी।",
+    "- आराम और मालिश: करवट लेकर घुटने मोड़कर लेटें, या पीठ के बल घुटनों के नीचे तकिया रखकर। पेट और कमर पर हल्के हाथ से गोल-गोल मालिश करें।",
+    "- दर्द की दवा: डॉक्टर अक्सर ibuprofen या mefenamic acid बताते हैं; ये न ले सकें तो paracetamol। पैकेट पर लिखे या डॉक्टर के बताए तरीक़े से, खाने के साथ या बाद में लें। जन औषधि केंद्र पर generic दवाएँ काफ़ी सस्ती मिलती हैं।",
+    "अगर कभी पेट में अल्सर हुआ हो, दमा (asthma), किडनी, लिवर या दिल की बीमारी हो, या गर्भ की संभावना हो, तो ibuprofen या mefenamic acid से पहले फ़ार्मासिस्ट या डॉक्टर से पूछें। दर्द की दवा से दाने, सूजन या बुख़ार हो तो दवा बंद करें और डॉक्टर को दिखाएँ।",
+    "यह सामान्य नहीं: इसी हफ़्ते डॉक्टर को दिखाएँ, अगर ये हों:",
+    "- ऐसा दर्द जो दवा के बाद भी आपका काम, स्कूल या घर का काम रोक दे",
+    "- दो पीरियड के बीच दर्द या ब्लीडिंग",
+    "- दर्द के साथ बुखार या बदबूदार सफ़ेद पानी: इस हफ़्ते नहीं, आज ही जाएँ",
+    "- संबंध के दौरान या बाद में दर्द, या शौच या पेशाब करते समय दर्द",
+    "- सालों में बढ़ता गया दर्द, या पीरियड जो ज़्यादा भारी या अनियमित हो गए",
+    "- पेट फूला रहना, बिना कोशिश वज़न घटना, या शौच या पेशाब की आदत में बदलाव",
+    "इसके कारण endometriosis, adenomyosis, fibroids या संक्रमण (PID) हो सकते हैं। यह सूची diagnosis नहीं है। स्त्री रोग विशेषज्ञ को दिखाएँ, या सरकारी अस्पताल की gynaecology OPD में, जहाँ ख़र्च बहुत कम या न के बराबर होता है, और अपनी डायरी साथ ले जाएँ।",
+    "अभी सबसे पास के अस्पताल जाएँ अगर:",
+    "- पीरियड देर से या test positive, साथ में पेट के निचले हिस्से में एक तरफ़ दर्द, कंधे की नोक में दर्द, चक्कर या बेहोशी",
+    "- हर 1–2 घंटे में pad भीगना और चक्कर या साँस फूलना",
+    "आज ही डॉक्टर को दिखाएँ अगर: भारी ब्लीडिंग या तेज़ पेट दर्द के साथ बुख़ार। या दर्द आपके आम पीरियड दर्द से बहुत ज़्यादा हो और दवा से भी कम न हो।",
+    "हर बार पीरियड दर्ज करते समय दर्द भी दर्ज करें। कुछ महीनों में डायरी डॉक्टर को दिखाती है कि दर्द कितना और कितने दिन रहता है।"
+   ]
+  }
+ }
+}

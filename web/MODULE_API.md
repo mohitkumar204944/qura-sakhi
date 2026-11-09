@@ -8466,3 +8466,17 @@ Mohit, 9 Nov: "Send her care route" (the server's part: SERVER_SPEC 12.6).
   `state.chat.okv`), so a woman who accepted the earlier one sees the new one once (`chatNoted`).
 
 Test: `web/test/chat.mjs` (136 checks; section 17 is the care word and the notice).
+
+### 132.5 Version 40.5 (prototype): medicine answers
+
+Mohit, 9 Nov: "Yes, build 1 to 4", after he asked the chat what medicine to take for period pain (the server's part: SERVER_SPEC 12.7).
+- A Sakhi page the doctors checked can be a chat guide: `CHAT_PAGES` (now `periods-pain`), id `page.<route>`. `chatHints` sends it
+  right after the Learn article that `ART` pairs it with (`guide`), and first after the guide she came from ("Ask Sakhi about this");
+  5 hints at most. An older server drops the id it doesn't know. Under the answer, the page's row (its title, `data-go`) opens the page.
+- Under an answer that names a medicine (`chatMedKind`: medicine words in English, Hindi and Hinglish), the doctors' medicine line
+  (review 19.71, answer 6): `med_line`, or `med_line_ec` for the emergency pill. It sits in the answer's block (`.chat-txt .med-line`),
+  so "Listen" and Talk with Sakhi read it too. A Devanagari answer gets the Hindi line (marked `lang="hi"` in the English app), any
+  other the app's language. Never on a danger answer or a failure. The words are the doctors': nothing new.
+- `api.chat.hints`, `api.chat.medKind` and `api.chat.medText`, for the tests and the eval.
+
+Test: `web/test/chat.mjs` (148 checks; section 18 is the page, the line, and the server's copy of the page against the page as it is).

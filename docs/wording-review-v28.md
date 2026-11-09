@@ -4032,3 +4032,19 @@ checked one by one in advance: the doctors check the rules below and a sample.
   - her own doctor: "your doctor" or "a gynaecologist", and no ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani unless she asks;
   - nowhere yet: a doctor, and free government care once as an option;
   - government care: her ASHA, ANM or PHC named where they help, as the guides do.
+
+**Version 40.5 (10 Nov), medicine answers** (MODULE_API 132.5, SERVER_SPEC 12.7).
+- **For the doctors**, no new wording:
+  - the chat now reads the Period pain page's reviewed lines (the "Pain relief medicine" row, the caution note, the three warning cards)
+    as well as the "Painful periods" article. Asked which medicine to take, it now starts: "Doctors commonly suggest ibuprofen or
+    mefenamic acid, or paracetamol if you cannot take those", with the page's caution in the same answer;
+  - under any answer that names a medicine, the phone shows their own medicine line (answer 6), or the emergency pill's line;
+  - questions 31 to 35 of `ask-sakhi-eval.md` are on period pain medicine, for grading.
+- **Waiting for the doctors** (new wording, so not built):
+  1. One first choice: the article names paracetamol only; the Period pain page puts ibuprofen or mefenamic acid first. Until they
+     choose one for both, the chat follows the page.
+  2. A fever line: with a fever (it could be dengue), paracetamol, not ibuprofen or mefenamic acid, and a doctor. The health-centre
+     medicine list (NHSRC) says ibuprofen is not for suspected dengue.
+- **For counsel**, before the chat goes to Play: it names medicines as information from Sakhi's reviewed pages, with no dose and
+  never chosen for her. India's Telemedicine Practice Guidelines (2020) say an AI may assist a doctor but not counsel patients or
+  prescribe.
