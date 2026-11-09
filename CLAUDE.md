@@ -734,7 +734,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       first with their caution (a server check), and the doctors' medicine line sits under an answer that names one (MODULE_API 132.5,
       SERVER_SPEC 12.7).
       Version 40.5.1 (Mohit, 10 Nov: "test all kind of usecases"): follow-ups keep their subject, the Safe, legal abortion page is a
-      chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8).
+      chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8). Version 40.5.2: the baby's sex is refused
+      with the law named (a note and a check, SERVER_SPEC 12.9).
     - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (584 answers, graded by Sonnet 5.5, about US$1.70;
       without `--go`, the phone's picks only, free). Run it after a change to the instructions, the picks or the guides.
     - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live

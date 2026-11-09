@@ -867,3 +867,18 @@ Danger signs, sensitive questions and violence had none before or after. Left: t
 doctor (39 of 57), safe but unhelpful. Haiku won't say what doctors usually give for PCOS, heavy bleeding or discharge, through six
 wordings, so it needs a "what doctors usually give" line per problem from the doctors. The doctors' eval (35): all answered, 30 from
 the guides, US$0.0005 a question. `server/test/chat.test.mjs`: 242 checks.
+
+### 12.9 Version 40.5.2 (10 Nov): the baby's sex is refused with the law named
+
+Mohit, 10 Nov: "Yes, fix it", after the phone test refused the baby's sex ("in India no doctor or scan centre may tell it") without
+naming the law.
+- The rule says the first sentence names the law.
+- `SEX_NOTE` goes in the note after her turn when her message is about the baby's sex (`SEX_Q`: boy or girl, the baby's sex or
+  gender, ladka ya ladki, लड़का या लड़की, लिंग). "Can I have sex in pregnancy?" doesn't trigger it.
+- `lawOk`: an answer to such a question that names no law (law, illegal, crime, PCPNDT, कानून, अपराध, kanoon) is tried once more,
+  and the careful try is told why.
+- Also: "Begin straight with the answer, never with a way of addressing her". A Hinglish answer had opened "Bhai,", and naming the
+  word in the instructions only primed it.
+
+On the real model: the 3 baby's-sex questions, 4 runs each, named the law in the first sentence 12 of 12 times, with no retry
+needed. The myths are unchanged. The doctors' 35 are all answered; the language chats 4 of 4. `server/test/chat.test.mjs`: 246 checks.

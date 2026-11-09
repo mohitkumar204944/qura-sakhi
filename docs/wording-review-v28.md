@@ -4070,3 +4070,6 @@ checked one by one in advance: the doctors check the rules below and a sample.
   4. Fever after a birth: the after-birth guide says "your doctor or a hospital today" in one place and "the nearest hospital now" in
      another.
 - **For counsel:** abortion law and the baby's sex are now answered from Sakhi's own reviewed page.
+- **Version 40.5.2 (10 Nov):** the baby's-sex answer now opens with the law, for example "In India, finding out or choosing a baby's
+  sex is against the law under the PCPNDT Act, so no doctor or scan centre may tell it." For the doctors and counsel: the line the
+  AI is given (SERVER_SPEC 12.9).
