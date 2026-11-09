@@ -8330,3 +8330,54 @@ inside may reach past radius 48.5 (30.5 px at 88 px).
 Test: `web/test/auditdecide.mjs` section 4 (the label's lines inside the ring and off the day dot, including cycle day 13 as on his
 phone); fieldtest 1 accepts "Period day".
 
+
+## 132. Version 40 (prototype): Ask Sakhi, the chat helper
+
+Mohit, 9 Nov: "I want to build an AI powered chatbot powered by anthropic to help women in english hinglish or any other language in
+qura sakhi app which will be able to address any query and concern user has inside qura sakhi app only with no web search … a proper
+chat agent with voice option", then "Yes, build it" with the defaults he was shown. The server's side: `server/SERVER_SPEC.md` section
+12. A prototype for team phones: it waits for the doctors' check of sample answers and a privacy page that names Anthropic.
+
+**Who sees it (core `chatOn()`).** Only a build with `CFG.chat`, an https address that `build-apk.sh` writes from `SAKHI_CHAT`. That build
+is an ask-proto test app: version name with "ask-proto", app ID `com.quranutrition.sakhi.ask` (beside the Play app), label "Sakhi Ask
+test", no Firebase, file `QuraSakhi-ask-prototype.apk`. `build-apk.sh` refuses `SAKHI_CHAT` with `PLAY=1`, without "ask-proto", or on
+another server than `SAKHI_API` (the page's CSP allows one address), and a Play config never carries it; the page also turns it off
+whenever `CFG.store` is play. Then: a signed-in woman (`stage` app) of 18 or more, not a sample woman, not on a shared phone.
+
+**Where.** Core route `ask-sakhi` (Explore's tab), drawn by `renderChat`. Explore's first screen shows it right under search
+(`chatEntry`, marked "Test"); a search with no results offers "Ask Sakhi" first, and results end with "Didn't find it? Ask Sakhi";
+both carry her words into the box (`data-chat-q`, `mem.chatDraft`). Discreet mode: the plain names "Ask" and "Type or speak a
+question", no example questions, and the page asks for her PIN again (`PIN_ROUTES`).
+
+**The screen.** The prototype line ("Answers are written by AI and can be wrong. Sakhi is not a doctor.") always; before her first
+question a notice (her question goes to Sakhi's server and to Anthropic in the USA, nothing from her diary is sent, nothing is kept
+on the server, don't type a name, number or address) with "I understand" (`state.chat.ok`); 3 example questions (English, Hinglish,
+Hindi); her messages and Sakhi's, each answer with where it came from ("From Sakhi's doctor-checked guides" or "General information,
+not from Sakhi's checked guides"), its guides (quick answers, `openAnswer`), the Sakhi screens it names (`CHAT_SCREENS`: Help, My plan,
+Diary, Wind down, My food, the report, Care near me, where they exist for her), Listen, and under the latest answer "See a doctor" as
+search offers it (`docWho('search')`). Clear chat, with Undo. Up to 500 characters a question (a count from 400).
+
+**What leaves the phone.** One call through core `net('POST', 'chat')`: `CHAT_SEND` = `messages` (role and text only: her questions,
+and Sakhi's earlier answers, the last 12) and `lang`, with her session token, to `CFG.chat + '/v1/chat'`, waiting up to 60 seconds.
+`scrubPii` removes phone numbers (10 digits or more) and emails from her questions first; her own copy keeps what she typed. Never
+her diary, stage, goals, birth date, name, PIN code or phone. A `401` from the chat never signs her out. Modules never call it.
+
+**Danger signs.** `chatDangerKey(q)`: Help's signs as search reads them (`urgentQ`, Version 39.30), and in pregnancy its danger words
+(`dangerQ`, 'p'). The card (`chatUrgCard`: "Go to the nearest hospital now if", her sign in Help's words, the ambulance button, Help,
+in pregnancy the danger-signs guide) sits above the chat from the moment she sends, while the answer is still coming, and an answer
+with `danger: true` shows it too ('s'). It stays while her latest question or its answer has a sign, and the screen opens on it.
+
+**When Sakhi can't answer.** "Ask Sakhi is resting for today" (a `429 resting`), "Sakhi couldn't answer this" (refused, an error or a
+bad answer) or "No internet" (offline), each with the guides Explore's search finds for her words (`chatLocalGuides`) and "See a
+doctor"; Try again, except when resting.
+
+**Her chat** stays in `state.chat` (`{ ok, msgs: [{ r: 'u'|'a', x, at, d?, src?, g?, s?, fail? }] }`, the last 60) on her phone, in
+her backups like the rest of her diary, gone with "Delete everything". Firebase is off on the screen (`FB_PRIVATE`).
+
+**Voice.** Where the Android app can listen (`SakhiAndroid.listen`): a mic beside the box (what she says is sent as she said it, in
+the app's language's voice typing), and "Talk with Sakhi": the answer is read aloud (`S.speakEl(el, code)`, in a Hindi voice for a
+Hindi answer in the English app; `mods/lang.js` takes the code since this version), then it listens again; silence, leaving the page
+or "Stop talking" ends it. Read-aloud is the phone's own voice: keep it muted in any pitch video.
+
+Test: `web/test/chat.mjs` (73 checks, a stand-in server); the server's `server/test/chat.test.mjs` (96). The eval for the doctors:
+`node server/scripts/chat-eval.mjs` (it lists the 30 questions free; `--go` asks Claude and costs well under US$0.50).

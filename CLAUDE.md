@@ -714,6 +714,16 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     bold, with every word unchanged, so the doctors' stamps hold; a "## " line is a subhead the doctors approved, added with
     `node web/tools/add-subhead.mjs` (it moves the doctor-route paragraphs too), then stamped again. Contract: MODULE_API section 131;
     review section 19.88 (no new wording; three proposed subheads for the doctors).
+  - `node test/chat.mjs` and `node server/test/chat.test.mjs` (Version 40, prototype, Ask Sakhi, the chat helper; Mohit, 9 Nov: "build an
+    AI powered chatbot powered by anthropic … with voice option", then "Yes, build it"; on the branch `feat/ask-sakhi-prototype`):
+    - its own function `sakhi-chat` (Claude Haiku 5.5 through the official SDK, the guides first from the function's own copy
+      `guides.js`, general knowledge marked, 20 questions a woman a day and 300 in all, nothing kept), apart from `sakhi-api`;
+    - the `ask-sakhi` screen only in an ask-proto test app (`SAKHI_CHAT`; never Play), for a signed-in woman of 18 or more, never
+      on a shared phone; her messages' text and the language only; Help's card for a danger sign; voice in and read-aloud out.
+    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`. The paid eval for the doctors:
+    `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
+    section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors
+    and counsel).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

@@ -3941,3 +3941,43 @@ long article with no lead-ins. Subheads from its own title, placed in its own or
 - "Your mood" (आपका मन), before "Tears and feeling flat in the first two weeks is common…".
 Once approved: `node web/tools/add-subhead.mjs pregnancy.after-birth-first-six-weeks 5 "Your mood" "आपका मन"`, then 3 "Your body",
 then 2 "Your ASHA" (the last paragraph first, so the numbers hold), and stamp the article again with the month of the check.
+
+### 19.89 Version 40 (prototype): Ask Sakhi, the chat helper (MODULE_API section 132; SERVER_SPEC section 12)
+
+A test app for team phones, never in Play, until the doctors have read this section and graded the 30 sample answers in
+`~/Downloads/sakhi-unicef-handoff/ask-sakhi-eval.md` (made by `node server/scripts/chat-eval.mjs --go`), and counsel has checked the
+notice below and the privacy page names Anthropic (USA). The answers themselves are written by AI for each question, so they can't be
+checked one by one in advance: the doctors check the rules below and a sample.
+
+**The rules the AI is given** (`systemPrompt()` in `server/supabase/functions/sakhi-chat/chat.js`), for the doctors to confirm:
+1. Only women's and reproductive health, and using Sakhi; anything else gets a polite "I can help only with women's health and Sakhi".
+2. It reads Sakhi's doctor-checked guides first and answers from them; when they don't cover a question it may use general medical
+   knowledge, and the app then says "General information, not from Sakhi's checked guides".
+3. It never diagnoses, never names a dose, brand or course a guide doesn't give ("ask a doctor or chemist"), and never tells her to
+   start or stop a medicine a doctor gave.
+4. It never calls any days "safe" (an answer that does is held back and she sees the guides instead).
+5. A danger sign: its first sentence tells her to go to the nearest hospital now (the app shows the ambulance number). The signs it
+   is given: heavy bleeding with dizziness or fainting; a late period or positive test with one-sided pain or fainting; in pregnancy,
+   bleeding, leaking water, fits, a severe headache or blurred sight, swelling of the face or hands, fever, the baby moving less;
+   fever or heavy bleeding after a birth; loss of bladder or bowel control with numbness. **For the doctors:** is this list right?
+6. **For the doctors and a psychologist:** if she says she might harm herself or is not safe at home, it answers with care, says she
+   is not alone, and asks her to go to the nearest hospital now or tell a person she trusts right away. (Version 39.70 removed
+   Tele-MANAS and the violence lines from the app; this line gives no number.) Is this what the doctors want?
+7. Her language and script (Hindi in Devanagari, Hinglish in Roman letters, English or another), warm and plain, 60 to 120 words.
+
+**New UI words (English, then Hindi):**
+- Ask Sakhi / Sakhi से पूछें; in discreet mode Ask / पूछें. "Ask about your health in your own words, by typing or speaking." / "अपनी
+  सेहत के बारे में अपने शब्दों में पूछें, लिखकर या बोलकर।" Test / टेस्ट.
+- "Prototype. Answers are written by AI and can be wrong. Sakhi is not a doctor." / "प्रोटोटाइप। जवाब AI लिखता है और ग़लत हो सकते हैं।
+  Sakhi डॉक्टर नहीं है।"
+- Before you ask / पूछने से पहले: "This is a test version. Your question goes to Sakhi’s server and to Anthropic, the company whose AI
+  writes the answer, in the USA. Nothing from your diary is sent, and nothing you ask is kept on the server. Please don’t type your
+  name, phone number or address." (Hindi in `web/app.js`, `chat_note_p`). **For counsel.** I understand / मैं समझ गई.
+- "From Sakhi’s doctor-checked guides" / "Sakhi की डॉक्टरों से जाँची गाइड से"; "General information, not from Sakhi’s checked guides" /
+  "आम जानकारी, Sakhi की जाँची गई गाइड से नहीं".
+- "Sakhi couldn’t answer this. Open the guides below, or see a doctor."; "Ask Sakhi is resting for today. …"; "No internet. Your
+  question is saved here: try again when you’re online."; Try again; Clear chat; Chat cleared; You could ask; Talk with Sakhi;
+  Stop talking; "Speak, hear the answer, then speak again."; Listening…; Sakhi is writing…; "Didn’t find it? Ask Sakhi" (Hindi for
+  each in `web/app.js`, keys `chat_*`).
+- Three example questions, shown as they are in both languages: "Is a 40-day gap between periods normal?", "PCOD mein kya khana
+  chahiye?", "पीरियड में पेट दर्द कम कैसे करें?".

@@ -384,3 +384,7 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # The Sakhi accounts API checks its own tokens (server/SERVER_SPEC.md section 3), so Supabase must not require a JWT.
 [functions.sakhi-api]
 verify_jwt = false
+
+# Ask Sakhi, the chat helper (Version 40, prototype; SERVER_SPEC.md section 12) checks the same session tokens itself.
+[functions.sakhi-chat]
+verify_jwt = false

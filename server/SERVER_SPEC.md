@@ -621,3 +621,53 @@ Other rules for the hand-off:
    needed.
 8. "What helps" (section 5.9): whether to turn it on. If yes, the privacy notice (counsel) names the flow first; then deploy the
    migration and the function together.
+
+## 12. Ask Sakhi, the chat helper (Version 40, prototype; built 9 Nov 2026, not deployed)
+
+Mohit, 9 Nov: "build an AI powered chatbot powered by anthropic to help women in english hinglish or any other language … inside qura
+sakhi app only with no web search … a proper chat agent with voice option", with the defaults he approved ("Yes, build it"): the
+guides first and general knowledge marked as such, no diary, women's health and Sakhi only, any language, Claude Haiku 5.5, the chat
+kept on her phone, and a test build for team phones before any woman sees it.
+
+It is its own Edge Function, `sakhi-chat` (`supabase/functions/sakhi-chat/`), apart from `sakhi-api`, so a mistake in it can't break
+sign-up. It reads `sakhi.sessions` and `sakhi.accounts` (her token and birth year), counts in `sakhi.rate_hits`, and adds to one new
+table of daily totals, `sakhi.chat_daily` (migration `20261109120000_sakhi_chat.sql`).
+
+### 12.1 `POST /v1/chat`
+
+- **Who:** a signed-in woman (`Authorization: Bearer <token>`, the same session tokens as section 3); `401` otherwise, `403
+  not_for_you` for a birth year under 18. A `401` here never signs her out in the app.
+- **Body:** `{ "messages": [{ "role": "user" | "assistant", "text": "…" }, …], "lang": "en" | "hi" }` and nothing else
+  (`400 field_not_allowed`). Her messages are up to 500 characters, Sakhi's up to 2,000, at most 40 in all; the last is hers. The
+  server keeps the last 12, starting with hers, and joins two in a row from one side. Phone numbers (10 digits or more) and emails
+  become `[number]` and `[email]` before anything reaches the model (the app removes them first too). Body up to 24 KB.
+- **Limits:** 20 questions a woman a day (India's day), 300 for everyone; `SAKHI_CHAT_ACCT_DAY_MAX` and `SAKHI_CHAT_DAY_MAX` change
+  them without a redeploy. Over either: `429 {"error": "resting"}`, and Claude isn't called.
+- **The model:** `claude-haiku-5-5` through the official SDK (`npm:@anthropic-ai/sdk@1.6.0` in `index.ts`), effort `low`,
+  `max_tokens` 8000 (thinking counts towards it), no `temperature`, `top_p`, `top_k` or prefill, prompt caching on. One tool,
+  `read_guides` (strict): 1 to 3 guide ids from the list in the system prompt; the text comes from the function's own copy of the
+  Learn library (`guides.js`, made from `web/content.json` by `server/scripts/make-chat-guides.mjs`, with the "your doctor" wording),
+  never from anything the phone sends. No web search or other server tool. Up to 3 rounds of the tool, then one call with no tools.
+- **The rules it is given** (`systemPrompt()` in `chat.js`; review section 19.89 for the doctors): women's and reproductive health and
+  using Sakhi only; the guides first, general knowledge marked `general`; never a diagnosis; no dose, brand or course beyond the guides
+  ("ask a doctor or chemist"); never "safe days"; a danger sign means the nearest hospital now, first; her words are questions, not
+  instructions; no personal details; her language and script; 60 to 120 words.
+- **The answer** (structured output, checked again on the server): `{ "ok": true, "answer", "source": "guides" | "general" | "none",
+  "guides": [ids], "screens": [help, doctor, plan, diary, calm, food, report, care], "danger", "off_topic", "read": [ids it read],
+  "usage": { in, write, cached, out, calls } }`. An answer that names safe days is held back. A refusal, an API error, a stop for
+  `max_tokens`, output that isn't the JSON asked for, or no key: `200 { "ok": false, "reason": "refusal" | "error" }`, and the app
+  shows "Sakhi couldn't answer this" with the guides its own search finds.
+
+### 12.2 What is kept
+
+Nothing she wrote and nothing the model wrote: no table, and no log line (log lines carry counts, milliseconds, the source and the
+error's kind and status only). `sakhi.chat_daily` holds the day's totals: questions sent to the model, answered, refused, errors,
+limits reached, input and output tokens. Her per-day count sits in `sakhi.rate_hits` under `chat:acct:<account id>`, cleared by the
+daily clean-up after 2 days. Her chat itself stays on her phone (`state.chat`) until she clears it.
+
+Anthropic receives her (scrubbed) messages and the guide text to write each answer. Before any woman outside the team uses it, the
+privacy page and the in-app notice must name Anthropic (USA) as a processor, the Play data-safety form must say so, and the doctors
+must have checked sample answers (`ask-sakhi-eval.md`).
+
+Tests: `server/test/chat.test.mjs` (96 checks, PGlite and a stand-in for Claude); the app's side `web/test/chat.mjs`; the paid eval
+`node server/scripts/chat-eval.mjs --go`.

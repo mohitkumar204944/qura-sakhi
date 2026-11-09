@@ -1438,3 +1438,36 @@ body::before { content: ""; position: fixed; top: 0; right: 0; bottom: 0; left: 
 .hl-row .ringc, .hero-row.cd-first .ringc { gap: 1px; }
 .hl-row .ringc b, .hero-row.cd-first .ringc b { font-size: 22px; }
 .hl-row .ringc span, .hero-row.cd-first .ringc span { font-size: 13px; max-width: 46px; line-height: 1.1; }
+
+/* Version 40 (prototype; MODULE_API section 132): Ask Sakhi, the chat. Her messages on the right in her pink, Sakhi's on the left on
+   a card; the box to type in stays above the tab bar (--tb-gap) while she scrolls. Text wraps inside each message at 360 px. */
+.chat-go { margin-bottom: 12px; }
+.chat-go .pill { margin-right: 4px; }
+.chat-top { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 10px; }
+.chat-proto { flex: 1; margin: 0; font-size: 13px; line-height: 1.4; color: var(--muted); background: var(--accent-soft); border-radius: 12px; padding: 8px 12px; }
+.chat-top .btn { min-height: 44px; flex-shrink: 0; }
+.chat-note { margin-bottom: 12px; }
+.chat-note .btn { align-self: flex-start; }
+.chat-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.chat-msg { max-width: 90%; border-radius: 18px; padding: 10px 14px; line-height: 1.5; overflow-wrap: anywhere; min-width: 0; }
+.chat-msg p { margin: 0; }
+.chat-msg.me { align-self: flex-end; background: var(--accent); color: #FFFFFF; border-bottom-right-radius: 6px; white-space: pre-wrap; }
+.chat-msg.sakhi { align-self: flex-start; background: var(--card); color: var(--fg); box-shadow: var(--shadow); border-bottom-left-radius: 6px; display: flex; flex-direction: column; gap: 8px; }
+.chat-msg.busy { opacity: 0.85; font-style: italic; }
+.chat-msg.me.busy { background: var(--accent-soft); color: var(--fg); }
+.chat-txt { display: flex; flex-direction: column; gap: 6px; }
+.chat-txt ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.chat-src { font-size: 13px; color: var(--muted); }
+.chat-guides .item { min-height: 48px; }
+.chat-acts, .chat-screens, .chat-doc { gap: 8px; }
+.chat-ex { margin-bottom: 12px; }
+.chat-talk { margin-bottom: 4px; }
+.chat-talk svg { width: 20px; height: 20px; }
+.chat-talk.on { background: var(--accent); color: #FFFFFF; border-color: var(--accent); }
+.chat-talk-d { text-align: center; margin: 0 0 8px; }
+.chat-compose { position: sticky; bottom: var(--tb-gap, 74px); z-index: 3; display: flex; align-items: flex-end; gap: 8px; padding: 8px 0; background: var(--bg); }
+.chat-compose textarea { flex: 1; min-width: 0; min-height: 48px; max-height: 140px; resize: none; border-radius: 18px; border: 1.5px solid var(--line); background: var(--card); color: var(--fg); padding: 12px 14px; font: inherit; line-height: 1.4; }
+.chat-compose .iconbtn { flex-shrink: 0; margin: 0; }
+.chat-send { background: var(--accent); color: #FFFFFF; }
+.chat-send[disabled] { opacity: 0.5; }
+.chat-count { text-align: right; margin: 0; }
