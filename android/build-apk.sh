@@ -20,6 +20,9 @@ if [ -n "$SAKHI_CHAT" ]; then
   [ "${SAKHI_CHAT%%/functions/*}" = "${SAKHI_API%%/functions/*}" ] || { echo "SAKHI_CHAT must be on the same server as SAKHI_API (the page may reach one address)."; exit 1; }
   PKG="com.quranutrition.sakhi.ask"; OUT_APK="QuraSakhi-ask-prototype.apk"
 fi
+# Version 40.2: SAKHI_DEBUGGABLE=1 makes the Ask Sakhi test app debuggable, so its WebView can be measured from the Mac
+# (web/test/adb-cdp.mjs). Never Play, never a build without SAKHI_CHAT.
+if [ "$SAKHI_DEBUGGABLE" = "1" ] && { [ "$PLAY" = "1" ] || [ -z "$SAKHI_CHAT" ]; }; then echo "SAKHI_DEBUGGABLE is only for the Ask Sakhi test app (SAKHI_CHAT), never Play."; exit 1; fi
 SDK="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}"
 [ -d "$SDK/platforms/android-36" ] || SDK="$HOME/Library/Android/sdk"
 # Target SDK 36 (Android 16): Google Play's floor for new apps and updates since 31 Aug 2026. MainActivity keeps the page
@@ -172,7 +175,7 @@ if [ -n "$SAKHI_CHAT" ]; then sed -i.bak 's/android:label="Qura Sakhi"/android:l
 # from the app.
 export ANDROID_HOME="$SDK"
 OUT=build-gradle/outputs
-gw() { ./gradlew --console=plain --quiet --warning-mode=summary -Psakhi.versionCode="$VERSION_CODE" -Psakhi.versionName="$VERSION_NAME" ${SAKHI_CHAT:+-Psakhi.idSuffix=.ask} "$@"; }
+gw() { ./gradlew --console=plain --quiet --warning-mode=summary -Psakhi.versionCode="$VERSION_CODE" -Psakhi.versionName="$VERSION_NAME" ${SAKHI_CHAT:+-Psakhi.idSuffix=.ask} ${SAKHI_DEBUGGABLE:+-Psakhi.debuggable=true} "$@"; }
 
 # 4 for Play (PLAY=1): the bundle, signed with the upload key (its password from the environment, never the command line),
 # then checked: its signature, bundletool's own validation, and the APK a phone would get, for its target SDK, its stored

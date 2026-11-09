@@ -134,10 +134,15 @@ const view = (page) => page.evaluate(() => {
   check('1 build-apk.sh refuses SAKHI_CHAT without "ask-proto" in the version name', b.status !== 0 && /ask-proto/.test(b.stdout + b.stderr));
   b = sh({ SAKHI_CHAT: 'https://other.supabase.co/functions/v1/sakhi-chat', SAKHI_API: API.replace('chat.test', 'x.supabase.co'), VERSION_NAME: '0.40-ask-proto' });
   check('1 build-apk.sh refuses a chat on another server than the accounts server', b.status !== 0 && /same server/.test(b.stdout + b.stderr));
+  b = sh({ SAKHI_DEBUGGABLE: '1', PLAY: '1', SAKHI_API: API.replace('chat.test', 'x.supabase.co'), VERSION_NAME: '1.0' });
+  check('1 build-apk.sh refuses a debuggable build for Play (Version 40.2)', b.status !== 0 && /only for the Ask Sakhi test app/.test(b.stdout + b.stderr));
+  b = sh({ SAKHI_DEBUGGABLE: '1', SAKHI_API: API.replace('chat.test', 'x.supabase.co'), VERSION_NAME: '0.40-pilot' });
+  check('1 build-apk.sh refuses a debuggable build that isn\'t the Ask Sakhi test app', b.status !== 0 && /only for the Ask Sakhi test app/.test(b.stdout + b.stderr));
   const bs = fs.readFileSync(path.join(root, '..', 'android', 'build-apk.sh'), 'utf8');
   check('1 the Play bundle\'s config never carries the chat address', /chat = sys\.argv\[11\] if play != '1' else ''/.test(bs));
   const gr = fs.readFileSync(path.join(root, '..', 'android', 'build.gradle.kts'), 'utf8');
   check('1 the test app has its own app ID and no Firebase', /applicationIdSuffix = idSuffix/.test(gr) && /firebase = file\("google-services.json"\)\.exists\(\) && idSuffix\.isEmpty\(\)/.test(gr));
+  check('1 only a test app can be debuggable (gradle checks the suffix too)', /isDebuggable = idSuffix\.isNotEmpty\(\) && findProperty\("sakhi\.debuggable"\) == "true"/.test(gr));
 }
 
 /* ---------- 2 the tab (Version 40.1: "accessible at a tap across app"), the screen, the notice ---------- */

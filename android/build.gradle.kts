@@ -54,6 +54,9 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName(if (findProperty("sakhi.signing") == "upload") "upload" else "proto")
+            // Version 40.2: an Ask Sakhi test app built with SAKHI_DEBUGGABLE=1 opens its WebView to the Mac's DevTools (web/test/adb-cdp.mjs),
+            // to measure the chat on a real phone; build-apk.sh refuses it for Play and for anything but an ask-proto test app
+            isDebuggable = idSuffix.isNotEmpty() && findProperty("sakhi.debuggable") == "true"
             vcsInfo { include = false }   // android/ isn't the repository's top folder, so there is nothing to record
         }
     }
