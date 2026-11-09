@@ -26,3 +26,8 @@ server/exports/
 *.sql.gz
 # The data.gov.in lists the Care data is rebuilt from (node web/tools/care-data.mjs --from web/tools/care-src)
 web/tools/care-src/
+# Google Play's graphics (marketing/play-store/make-play-graphics.mjs): its raw screens, the 6 Nov set it replaced, and the
+# full-size foreground-service recording (43 MB; the 540p copy beside it is in git)
+marketing/play-store/build/
+marketing/play-store/old-2026-11-06/
+marketing/play-store/winddown-foreground-service.mp4
