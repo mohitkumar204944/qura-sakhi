@@ -225,6 +225,11 @@ branch `feat/ask-sakhi-prototype` (its worktree is `~/Desktop/QuraSakhi/sakhi/.c
 1. **The key.** In the Anthropic Console, create a key just for this prototype, and keep auto-reload off on the credit so spending
    stops at what is there. In the Supabase dashboard: Edge Functions → Secrets → add `ANTHROPIC_API_KEY`. (The dashboard keeps it out
    of your shell history; `supabase secrets set ANTHROPIC_API_KEY=…` works too.) Never put the key in the app, git, a log or a chat.
+   **Check it is there:** `supabase secrets list --project-ref jovplellzaxebcdekpax` must list `ANTHROPIC_API_KEY`. On 9 Nov the dashboard
+   didn't save it, and every question got "Sakhi couldn't answer this". This sets it from a file outside the repo, without showing it:
+   `supabase secrets set --project-ref jovplellzaxebcdekpax ANTHROPIC_API_KEY="$(cat ~/.config/sakhi/anthropic-key)"`.
+   The app's Terminal panel can't read Desktop folders: run the commands below from a copy, e.g.
+   `rm -rf ~/sakhi-ask-deploy && mkdir ~/sakhi-ask-deploy && cp -R <worktree>/server ~/sakhi-ask-deploy/`, then `cd ~/sakhi-ask-deploy/server`.
 2. **The table** (daily totals only). Either paste `supabase/migrations/20261109120000_sakhi_chat.sql` into the dashboard's SQL editor
    and run it, or:
 
