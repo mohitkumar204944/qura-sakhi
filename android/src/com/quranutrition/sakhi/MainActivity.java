@@ -284,6 +284,35 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             } catch (Exception e) { return ""; }
         }
 
+        /* ---------- a second copy of her sign-in (Version 39.90) ----------
+           Like the diary's copy: the WebView writes localStorage to disk late, and once (9 Nov 2026, on the first start after an
+           update) the page came up without her sign-in and showed the sign-up screen, though the diary came back from its copy.
+           Written at once to the app's private storage, a temp file then a rename. Never backed up (allowBackup is false) and
+           never sent anywhere. An empty string deletes it (sign out, Delete everything). */
+        @JavascriptInterface
+        public boolean saveAccount(String json) {
+            File f = new File(getFilesDir(), "account.json");
+            if (json == null || json.length() == 0) { f.delete(); return true; }
+            File tmp = new File(getFilesDir(), "account.json.tmp");
+            try {
+                FileOutputStream out = new FileOutputStream(tmp);
+                try { out.write(json.getBytes("UTF-8")); } finally { out.close(); }
+                return tmp.renameTo(f);
+            } catch (Exception e) { return false; }
+        }
+
+        @JavascriptInterface
+        public String loadAccount() {
+            File f = new File(getFilesDir(), "account.json");
+            if (!f.exists() || f.length() > 64L * 1024) return "";
+            try {
+                byte[] b = new byte[(int) f.length()];
+                FileInputStream in = new FileInputStream(f);
+                try { int off = 0; while (off < b.length) { int n = in.read(b, off, b.length - off); if (n < 0) break; off += n; } } finally { in.close(); }
+                return new String(b, "UTF-8");
+            } catch (Exception e) { return ""; }
+        }
+
         /** A light tick on taps, like a native app. */
         @JavascriptInterface
         public void haptic() {

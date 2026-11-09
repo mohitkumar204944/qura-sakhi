@@ -1400,7 +1400,10 @@ audit's. Testers get a build without "demo" in its name (`0.32-test`).
   Stephen's. The source lists are kept in `web/tools/care-src/` (gitignored) for rebuilding with `--from`.
 - **A second copy of the diary.** On Android every save also goes through `SakhiAndroid.saveState(json)` to a private file,
   written at once. At start the newer copy wins (`savedAt`). A copy that can't be read is kept as `qura-saathi-v1-rescue`.
-  The WebView writes localStorage up to a minute late.
+  The WebView writes localStorage up to a minute late. Version 39.90 gives her sign-in a second copy too (`SakhiAndroid.saveAccount` / `loadAccount`,
+  `account.json`): the newer wins at start, a missing copy is written from the other, and signing out or Delete everything deletes
+  both. On 9 Nov 2026 the first start after an update came up without her sign-in and showed the sign-up screen, though the diary
+  came back from its copy. Test: `web/test/fieldtest.mjs` section 12c.
 - **Samples and "start from the welcome screen"** ask first in demo builds.
 - **Reminders on a locked phone show nothing** (`VISIBILITY_SECRET`); the details appear once she unlocks. Turning on the
   Notes icon also turns on discreet mode.

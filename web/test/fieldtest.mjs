@@ -25,7 +25,7 @@ const seedOf = (x) => Object.assign({ lang: 'en', langChosen: true, stage: 'app'
   tours: TOURS_DONE, fullTour: { st: 'done', d: ago(3) }, prompts: { setup: 'off' } }, x || {}, { settings: Object.assign({ toursAuto: false }, (x || {}).settings || {}) });
 const ACCT = { token: 'test', id: 'test', phone: '+919876543210', name: 'Asha', pincode: '560001', activeOn: TODAY };
 /* the Android bridge, recording what the page hands it; loadState gives back what saveState was given (or o.native) */
-const bridge = (o) => 'window.__calls = []; window.__native = ' + JSON.stringify(o.native || '') + '; window.SakhiAndroid = { schedule(j) { __calls.push(["schedule", j]); return 0; }, cancelAll() {}, canNotify() { return ' + (o.canNotify === true) + '; }, askNotify() { __calls.push(["askNotify"]); setTimeout(() => window.__sakhiNotify && window.__sakhiNotify(true), 30); }, speak() { return true; }, stop() {}, voices() { return "[]"; }, copy() { return true; }, haptic() {}, setSecure() {}, setDisguise(on) { __calls.push(["disguise", on]); }, isDisguised() { return false; }, canExactAlarms() { return true; }, saveState(j) { window.__native = j; __calls.push(["saveState", (j || "").length]); return true; }, loadState() { return window.__native || ""; } };';
+const bridge = (o) => 'window.__calls = []; window.__native = ' + JSON.stringify(o.native || '') + '; window.__nativeAcct = ' + JSON.stringify(o.nativeAcct || '') + '; window.SakhiAndroid = { schedule(j) { __calls.push(["schedule", j]); return 0; }, cancelAll() {}, canNotify() { return ' + (o.canNotify === true) + '; }, askNotify() { __calls.push(["askNotify"]); setTimeout(() => window.__sakhiNotify && window.__sakhiNotify(true), 30); }, speak() { return true; }, stop() {}, voices() { return "[]"; }, copy() { return true; }, haptic() {}, setSecure() {}, setDisguise(on) { __calls.push(["disguise", on]); }, isDisguised() { return false; }, canExactAlarms() { return true; }, saveState(j) { window.__native = j; __calls.push(["saveState", (j || "").length]); return true; }, loadState() { return window.__native || ""; }, saveAccount(j) { window.__nativeAcct = j; __calls.push(["saveAccount", (j || "").length]); return true; }, loadAccount() { return window.__nativeAcct || ""; } };';
 
 const browser = await chromium.launch();
 async function open(o = {}) {
@@ -33,7 +33,7 @@ async function open(o = {}) {
   await ctx.addInitScript('window.SAKHI_CONTENT = ' + CONTENT + ';');
   await ctx.addInitScript('window.SAKHI_CONFIG = ' + JSON.stringify(Object.assign({ api: 'https://api.test.invalid', app: o.app || 'test-0.32-demo', platform: o.android === false ? 'web' : 'android' }, o.cfg || {})) + ';');
   if (o.android !== false) await ctx.addInitScript(bridge(o));
-  if (!o.fresh) await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); ' + (o.rawState != null ? 'localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(o.rawState) + ');' : 'localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + ');') + (o.noAcct ? '' : ' localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(ACCT)) + ');') + ' }');
+  if (!o.fresh) await ctx.addInitScript('if (!sessionStorage.getItem("seeded")) { sessionStorage.setItem("seeded", "1"); ' + (o.rawState != null ? 'localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(o.rawState) + ');' : 'localStorage.setItem("qura-saathi-v1", ' + JSON.stringify(JSON.stringify(seedOf(o.seed))) + ');') + (o.noAcct ? '' : ' localStorage.setItem("qura-sakhi-account-v1", ' + JSON.stringify(JSON.stringify(o.acct || ACCT)) + ');') + ' }');
   const sent = [];
   await ctx.route(/^https?:/, (r) => { const req = r.request(); let b = {}; try { b = JSON.parse(req.postData() || '{}'); } catch (e) { b = {}; } sent.push({ url: req.url(), body: b }); const ans = o.server ? o.server(req.url(), b) : null; if (ans) r.fulfill({ status: ans[0], contentType: 'application/json', body: JSON.stringify(ans[1]) }); else r.fulfill({ status: 200, contentType: 'application/json', body: '{}' }); });
   const page = await ctx.newPage(); const errs = [];
@@ -279,8 +279,8 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const T = await open({ seed: { events: regular(10, 3), reminders: [{ id: 'r1', kind: 'custom', text: 'Iron tablet', time: '09:00', on: true, rep: 'daily', from: TODAY }], settings: { notify: true } } });
   const { page } = T;
   await go(page, '#me'); await tap(page, '#me-del'); await tap(page, '#del-yes');
-  const after = await page.evaluate(() => ({ acct: localStorage.getItem('qura-sakhi-account-v1'), diary: localStorage.getItem('qura-saathi-v1'), calls: window.__calls.slice(-6), native: window.__native }));
-  check('10 delete everything: signed out on this phone, alarms cleared, the second copy gone', !after.acct && after.calls.some((c) => c[0] === 'schedule' && c[1] === '[]') && !after.native, after);
+  const after = await page.evaluate(() => ({ acct: localStorage.getItem('qura-sakhi-account-v1'), diary: localStorage.getItem('qura-saathi-v1'), calls: window.__calls.slice(-8), native: window.__native, nativeAcct: window.__nativeAcct }));
+  check('10 delete everything: signed out on this phone, alarms cleared, the second copies gone (the diary\'s and, Version 39.90, the sign-in\'s)', !after.acct && after.calls.some((c) => c[0] === 'schedule' && c[1] === '[]') && !after.native && !after.nativeAcct, after);
   await cleanup(Object.assign(T, { name: '10a' }));
 }
 {
@@ -336,6 +336,30 @@ for (const [name, ans, want] of [['WhatsApp and SMS both down', [502, { error: '
   const T2 = await open({ rawState: '{"events": [broken', native: JSON.stringify(newer) });
   check('12 a damaged saved diary: the second copy is used and the damaged one kept aside', (await evs(T2.page)).length === 7 && (await T2.page.evaluate(() => localStorage.getItem('qura-saathi-v1-rescue'))) === '{"events": [broken');
   await cleanup(Object.assign(T2, { name: '12b' }));
+}
+/* ---------- 12c. Version 39.90: a second copy of her sign-in (9 Nov: once, after an update, the page came up without it) ---------- */
+{
+  const signed = (page) => page.evaluate(() => window.Saathi.account.signedIn());
+  const lsAcct = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('qura-sakhi-account-v1') || 'null'));
+  const nAcct = (page) => page.evaluate(() => JSON.parse(window.__nativeAcct || 'null'));
+  const A = await open({ noAcct: true, nativeAcct: JSON.stringify(Object.assign({}, ACCT, { savedAt: 5 })), hash: '#home' });
+  check('12c localStorage without her sign-in: it comes back from the second copy, and no sign-up screen', (await signed(A.page)) && !(await A.page.$('#su-phone, #su-code, #su-send')), await view(A.page).catch(() => ''));
+  check('12c ... and it is written back to localStorage', ((await lsAcct(A.page)) || {}).token === 'test');
+  await cleanup(Object.assign(A, { name: '12c-a' }));
+  const B = await open({});
+  check('12c a sign-in from before this version gets its second copy at start', ((await nAcct(B.page)) || {}).token === 'test' && (await signed(B.page)));
+  await go(B.page, '#account'); await tap(B.page, '#acc-out');
+  check('12c signing out deletes both copies', !(await signed(B.page)) && !(await lsAcct(B.page)) && !(await B.page.evaluate(() => window.__nativeAcct)));
+  await cleanup(Object.assign(B, { name: '12c-b' }));
+  const C = await open({ acct: Object.assign({}, ACCT, { token: 'older', savedAt: 1 }), nativeAcct: JSON.stringify(Object.assign({}, ACCT, { token: 'newer', savedAt: 2 })) });
+  check('12c the newer copy wins (a sign-in the WebView lost comes back)', (await C.page.evaluate(() => JSON.parse(localStorage.getItem('qura-sakhi-account-v1')).token)) === 'newer' && (await signed(C.page)));
+  await cleanup(Object.assign(C, { name: '12c-c' }));
+  const D = await open({ acct: Object.assign({}, ACCT, { savedAt: 3 }), nativeAcct: JSON.stringify(Object.assign({}, ACCT, { savedAt: 3 })) });
+  check('12c with both copies the same, nothing is written at start', !(await D.page.evaluate(() => window.__calls.some((c) => c[0] === 'saveAccount'))));
+  await cleanup(Object.assign(D, { name: '12c-d' }));
+  const E = await open({ noAcct: true, android: false });
+  check('12c the web app (no Android bridge) is as before: no sign-in, no error', !(await signed(E.page)));
+  await cleanup(Object.assign(E, { name: '12c-e' }));
 }
 
 /* ---------- 13. A tester's APK held back fertile days and the triage tools (decisions 1 and 3); since Version 39.82 (CDSCO and the

@@ -2581,8 +2581,24 @@
   const SHARE_KEYS = ['about', 'periods', 'symptoms', 'checkins', 'tools', 'questions', 'notes'];   /* sent without her account token: the server cannot tie it to her (SERVER_SPEC 5.9) */
   const ACC_FIELDS = ['id', 'phone', 'birth_year', 'name', 'pincode', 'email', 'heard', 'upd_sms', 'upd_wa'];
   let acct = {};
-  const loadAcct = () => { try { const a = JSON.parse(localStorage.getItem(ACC_KEY) || 'null'); acct = a && typeof a === 'object' && a.token ? a : {}; } catch (e) { acct = {}; } };
-  const saveAcct = () => { try { if (acct.token) localStorage.setItem(ACC_KEY, JSON.stringify(acct)); else localStorage.removeItem(ACC_KEY); } catch (e) { /* storage blocked: she signs in again next visit */ } };
+  /* Version 39.90: a second copy of her sign-in on Android, as the diary has (Version 32): the WebView writes localStorage to disk
+     late, and once, on the first start after an update, the page came up without her sign-in and showed the sign-up screen. At
+     start the newer copy wins (savedAt); one that's missing is written from the other. Signing out deletes both. */
+  const nativeAcct = () => { const B = window.SakhiAndroid; return B && B.saveAccount && B.loadAccount ? B : null; };
+  const loadAcct = () => {
+    let a = null; try { a = JSON.parse(localStorage.getItem(ACC_KEY) || 'null'); } catch (e) { a = null; }
+    if (!a || typeof a !== 'object' || !a.token) a = null;
+    const B = nativeAcct(); let n = null;
+    if (B) { try { n = JSON.parse(safe(() => B.loadAccount(), '') || 'null'); } catch (e) { n = null; } if (!n || typeof n !== 'object' || !n.token) n = null; }
+    acct = n && (!a || (+n.savedAt || 0) > (+a.savedAt || 0)) ? n : (a || {});
+    if (acct.token && B && (!n || n.token !== acct.token || (+n.savedAt || 0) < (+acct.savedAt || 0))) safe(() => B.saveAccount(JSON.stringify(acct)));   /* the copy that was missing or older */
+    if (acct.token && acct === n) { try { localStorage.setItem(ACC_KEY, JSON.stringify(acct)); } catch (e) { /* storage blocked */ } }
+  };
+  const saveAcct = () => {
+    if (acct.token) acct.savedAt = Date.now();
+    try { if (acct.token) localStorage.setItem(ACC_KEY, JSON.stringify(acct)); else localStorage.removeItem(ACC_KEY); } catch (e) { /* storage blocked: the second copy keeps her signed in */ }
+    const B = nativeAcct(); if (B) safe(() => B.saveAccount(acct.token ? JSON.stringify(acct) : ''));
+  };
   const takeAcct = (a) => { if (a && typeof a === 'object') ACC_FIELDS.forEach((k) => { if (a[k] !== undefined) acct[k] = a[k]; }); };
   const acctPublic = () => { const o = {}; ACC_FIELDS.forEach((k) => { if (acct[k] !== undefined) o[k] = acct[k]; }); return o; };
   const signedIn = () => !!acct.token;
