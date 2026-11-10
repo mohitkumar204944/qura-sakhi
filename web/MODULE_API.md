@@ -4936,6 +4936,41 @@ Test: `web/test/urgent.mjs`, section 6 (129 checks in all, 69 of them new). Sect
 - Hindi at 360 px.
 No new wording (review section 19.30.1).
 
+### 73.3 Version 39.92: a pregnancy in her words
+
+Mohit, 10 Nov: "Yes, build it", to the question the after-birth card left open: should a pregnancy danger sign described for someone
+else show the hospital card? Until now `dangerQ` (pregnancy's danger words) answered only while her diary said she was pregnant. So "my
+sister is 7 months pregnant and had a fit", "मेरी बहन 7 महीने की प्रेग्नेंट है, उसे दौरा पड़ा" or "I am pregnant and bleeding" from a woman not
+marked pregnant led with nothing. On the Ask branch, the chat's own hospital card stayed off for them too.
+
+**The change:** `dangerQ` counts a pregnancy now in her words (`pregNowQ`), hers or anyone's, as her diary does:
+- English: "I'm pregnant", "I am 30 weeks pregnant", "my sister/wife/daughter-in-law is (7 months) pregnant", "7 months pregnant",
+  "in my third trimester", "expecting a baby", "my due date", "pregnant with twins", "got pregnant".
+- Hinglish: "pregnant hai/hoon/hu", "garbhvati hai", "pet se hai", "7 mahine ki pregnant", "7va/satwa mahina chal raha hai", "meri/bahu ki
+  pregnancy", "pregnancy chal rahi hai", "delivery hone wali hai".
+- Hindi: "प्रेग्नेंट/गर्भवती है/हूँ", "7 महीने की प्रेग्नेंट", "सातवाँ महीना चल रहा है", "पेट से है", "मेरी प्रेग्नेंसी", "गर्भ में बच्चा", "डिलीवरी की तारीख".
+- Not a pregnancy now (`PREG_NOT`, taken out first): trying ("how to get pregnant", "chances of getting pregnant", "pregnant hone ke
+  liye"); asking ("am I pregnant", "is my wife pregnant", "kya main pregnant hoon", "pregnant hai ya nahi", "kaise pata", "क्या मैं प्रेग्नेंट
+  हूँ"); "not pregnant", "pregnant nahi", "प्रेग्नेंट नहीं"; a past pregnancy ("in my last pregnancy", "when I was pregnant", "pregnant thi",
+  "पिछली प्रेग्नेंसी"); and pregnant women in general ("is bleeding normal in pregnancy").
+
+**What she sees:** in Explore's and Learn's search, the danger-signs guide as the quick answer, as a pregnant woman does. Search still
+shows no card for pregnancy's signs (section 73). On the Ask branch, the chat's hospital card (`p`) shows for her as well, with the
+ambulance her own state gives (108, or 102 while her diary says pregnant).
+
+**Fits and fainting as words** (`DANGER_FITS`, `DANGER_FAINT`), for every pregnant woman too. "fits" and "faint" were matched inside
+other words, so "benefits of yoga", "how to stay fit in pregnancy" and a "faint line on my test" led with the danger guide in a
+pregnancy. Now "fits", "a fit", "had a fit", "fit aaya" or "fit pad" count, and "faint" except before "line" or "positive", as
+`URG_DIZZY` already had it.
+
+**Unchanged:** the danger words themselves, the guide, Help, and every result for a woman whose words don't say a pregnancy now.
+
+Test: `web/test/urgent.mjs`, section 7 (164 checks in all, 35 of them new). It covers:
+- 10 phrasings in three languages, and 14 that are not a pregnancy now;
+- the fits and fainting fixes in a pregnancy;
+- Hindi at 360 px.
+No new wording (review section 19.30.2).
+
 ## 74. Version 39.31: the Cykel traps
 
 Mohit, 28 Oct, after walking a competitor tracker ("build the trap suite first"). That app showed "Fertile window" and a

@@ -2480,6 +2480,18 @@ Three points for the doctors to glance at:
 3. For a woman marked after a birth, it shows for her first year while no period has come back, as the after-birth page does.
    Is a year right, or should it be 12 weeks?
 
+#### 19.30.2 Version 39.92: a pregnancy in her words (MODULE_API section 73.3)
+
+No new wording. The pregnancy danger guide ("If these signs, go now, not tomorrow") now leads search in more cases:
+- when her words say someone is pregnant now and name one of its danger signs, though her diary doesn't say she is pregnant;
+- for example "my sister is 7 months pregnant and had a fit", or "मैं गर्भवती हूँ और खून आ रहा है".
+
+On the Ask chat prototype, its hospital card shows for these too. Trying, asking whether she is pregnant, and past pregnancies don't
+count.
+
+Fewer false alarms in a pregnancy: "benefits", "stay fit" and a "faint line" on a test no longer count as the signs "fits" and
+"fainting".
+
 ### 19.32 Version 39.32: Getting ready for a baby, the full plan (MODULE_API section 75)
 
 Built on 28 Oct 2026 (Mohit: "Build this plan personalised to users who are planning for a baby"). Every line of the plan is in

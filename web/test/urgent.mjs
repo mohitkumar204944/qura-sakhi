@@ -10,6 +10,9 @@
 //   5 Hindi, and 360 px without sideways scroll; no page errors;
 //   6 Version 39.91 (10 Nov, the Ask Sakhi scenario suite): heavy bleeding after a birth, for a woman after a birth and for words
 //     that say a birth, in the after-birth page's own line (post_u_1) under the same heading; its near misses; Hindi at 360 px.
+//   7 Version 39.92 (Mohit, 10 Nov: "Yes, build it"): a pregnancy now in her words, hers or anyone's, leads with the danger guide as her
+//     diary does (no card in search, as in pregnancy); trying, asking, "not pregnant" and a past pregnancy don't; fits and fainting
+//     as words ("benefits", "stay fit" and a "faint line" are not signs).
 // Usage: node test/urgent.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -224,6 +227,48 @@ const BRIEF = ['I delivered 5 days ago and I\'m soaking a pad every hour', 'afte
   check('6 Hindi: Help\'s Hindi heading and the after-birth page\'s Hindi line', r.on && r.k === 'post_u_1' && r.h === await t(a.page, 'call_now') && r.sign === await t(a.page, 'post_u_1') && /^एक घंटे में पैड भीग जाए/.test(r.sign), r);
   check('6 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
   await a.page.screenshot({ path: path.join(SHOTS, '6-after-birth-hindi-360.png') });
+  await done(a);
+}
+
+/* ---------- 7 Version 39.92: a pregnancy in her words ---------- */
+const DG = 'pregnancy.danger-signs-call-112';
+{
+  /* not marked pregnant: her words say someone is pregnant now */
+  const a = await open({});
+  for (const q of ['my sister is 7 months pregnant and had a fit', 'मेरी बहन 7 महीने की प्रेग्नेंट है, उसे दौरा पड़ा', 'meri behen 7 mahine ki pregnant hai, use daura pada',
+    'I am pregnant and bleeding', 'main pregnant hoon aur bleeding ho rahi hai', 'मैं गर्भवती हूँ और खून आ रहा है', 'my wife is 8 months pregnant and the baby is moving less',
+    'satwa mahina chal raha hai, pani nikal raha hai', 'I\'m 30 weeks pregnant with a severe headache and blurred vision', 'pata chala ki main pregnant hoon, ab spotting ho rahi hai']) {
+    const r = await search(a.page, q);
+    check('7 her words say a pregnancy now "' + q + '": the danger guide leads, no card (as in pregnancy)', r.qa === DG && !r.on, r);
+  }
+  for (const q of ['how to get pregnant', 'can I get pregnant while bleeding', 'kya main pregnant hoon, bleeding ho rahi hai', 'pregnant hone ke liye kya karein, bleeding', 'I\'m not pregnant but bleeding',
+    'main pregnant nahi hoon, bleeding ho rahi hai', 'क्या मैं प्रेग्नेंट हूँ, खून आ रहा है', 'is bleeding normal in pregnancy', 'in my last pregnancy I had bleeding', 'when I was pregnant I had fits',
+    'pregnant women and fever', 'chances of getting pregnant with spotting', 'pregnancy test faint line, am I pregnant', 'bleeding ho rahi hai']) {
+    const r = await search(a.page, q);
+    check('7 not a pregnancy now "' + q + '": not the danger guide', r.qa !== DG, r);
+  }
+  await done(a);
+}
+{
+  /* marked pregnant: fits and fainting as words */
+  const a = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(200) } } });
+  for (const q of ['benefits of yoga', 'how to stay fit in pregnancy', 'I am pregnant, benefits of walking', 'faint line on my test']) {
+    const r = await search(a.page, q);
+    check('7 pregnancy "' + q + '": not a sign, so not the danger guide', r.qa !== DG, r);
+  }
+  for (const q of ['she had a fit', 'fits aa rahe hain', 'usko fit aaya', 'I fainted this morning', 'bleeding ho rahi hai']) {
+    const r = await search(a.page, q);
+    check('7 pregnancy "' + q + '": still the danger guide', r.qa === DG, r);
+  }
+  await done(a);
+}
+{
+  /* Hindi, 360 px */
+  const a = await open({ seed: { lang: 'hi' }, w: 360 });
+  const r = await search(a.page, 'मेरी बहन 7 महीने की प्रेग्नेंट है, उसे दौरा पड़ा');
+  check('7 Hindi: the danger guide leads for her sister\'s pregnancy', r.qa === DG, r);
+  check('7 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+  await a.page.screenshot({ path: path.join(SHOTS, '7-sister-hindi-360.png') });
   await done(a);
 }
 
