@@ -19,7 +19,9 @@
 //     period, a danger sign in a list says hospital now, and "don't take ibuprofen" passes the caution check;
 //   - Version 40.5.2: the baby's sex is refused with the law named first. Version 40.5.3: a guide written for pregnancy or the months
 //     after a birth, read while none of her messages says she is pregnant or has had a baby, is answered for any woman, with
-//     pregnancy's part said as that (a note after her turn, and a check that tries once more), and Sakhi's reminders are a yes;
+//     pregnancy's part said as that (a note after her turn, and a check that tries once more), and Sakhi's reminders are a yes.
+//     Version 40.5.4: a guide's PMOS advice only as "If you have PMOS" until she says she has it, her diary kept private with the
+//     PIN lock, and a careful try told the pregnancy and PMOS rules again;
 //   - it keeps nothing she wrote and nothing it answered: no table and no log line holds a word of either, only daily totals.
 
 import { GUIDES } from './guides.js';
@@ -157,6 +159,7 @@ export function systemPrompt(lang) {
     '- The tabs: Today (her day: her cycle, her next period\'s estimate, her plan\'s steps, "Period started"), My plan (her 12-week plan, and Wind down: slow breathing, yoga nidra, sleep sounds), Ask (this chat), Diary (the calendar, where she taps a day to log a period or a sign; Cycles; Days; and the "Report for my doctor"), Explore (the guides, search, tools, Care near me, Ask a doctor).',
     '- At the top: Help and safety (danger signs, the ambulance number) and Me (Reminders, where "My medicines" keeps her tablets, each with its reminder; the language; Where I get care; and privacy: a PIN lock, Discreet mode, Delete everything on this phone, Delete my account).',
     '- Sakhi reminds her on her phone: each tablet in "My medicines" rings at the time she sets, and her plan\'s steps and evening check-in ring too. Asked whether Sakhi can remind her, the answer is yes, and where to set it.',
+    '- When she worries that someone may read her diary, the answer is Sakhi\'s PIN lock and Discreet mode in Me: her diary stays, kept private. Delete everything on this phone is for when she wants her diary gone.',
     '- "Ask a doctor" asks a Qura doctor to call her. Care near me lists free government centres by PIN code. While she tries for a baby, Today shows a fertile days estimate.',
     '- Sakhi is free. Her diary stays on her phone and works without internet; this chat, signing up and the doctor request need it.',
     '- You cannot see her diary, her dates, her logs or her plan. For her own next period, fertile days or past logs, say so and point her to Today or the Diary; never guess a date. Only a test can tell her whether she is pregnant.',
@@ -431,6 +434,29 @@ export function stageOk(messages, read, about, answer, danger) {
   if (PREG_FRAME.test(sentences[0] || '')) return true;
   return !sentences.some((s) => PREG_FACT.test(s) && !PREG_FRAME.test(s));
 }
+/* Version 40.5.4 (Mohit, 10 Nov: "Yes, fix all three", after the test on this Mac): "what is the sugar test and do I need it?" got
+   "Tell your gynaecologist you had PMOS before pregnancy" in 3 runs of 3. The guide is titled "The sugar test and your blood
+   pressure, especially with PMOS". So a guide about PMOS (the PMOS group, or PMOS in its title), read while none of her messages
+   names PMOS, PCOS or PCOD, brings a note: its PMOS part only for a woman who has it, begun with "If you have PMOS,". It holds
+   in a pregnancy too, where the pregnancy note is quiet. */
+const PMOS_SAID = /\bpmos\b|\bp\.?c\.?o\.?(s|d)\b|polycystic|\bcysts?\b|पीसीओएस|पीसीओडी|पी\.?सी\.?ओ\.?(एस|डी)|पॉलीसिस्टिक|सिस्ट/i;
+const pmosGuide = (id) => !!(GUIDES[id] && (GUIDES[id].group === 'pmos' || /PMOS|PCOS|PCOD/.test(GUIDES[id].title.en)));
+export const pmosSaid = (messages) => (messages || []).some((m) => !!m && m.role === 'user' && typeof m.content === 'string' && PMOS_SAID.test(m.content));
+const IF_PMOS = 'begun with "If you have PMOS," (in Hindi "अगर आपको PMOS है", in Hinglish "PMOS ho to")';
+export const COND_NOTE = 'She has not said she has PMOS (also called PCOS or PCOD). Say what a guide gives for PMOS only as for a woman who has it, ' + IF_PMOS + '.';
+export function condNote(messages, ids, about) {
+  if (about && pmosGuide(about)) return '';
+  return (ids || []).some(pmosGuide) && !pmosSaid(messages) ? COND_NOTE : '';
+}
+/* Version 40.5.4: her diary is never deleted because someone may have read it; Sakhi's PIN lock and Discreet mode keep it private.
+   The instructions alone still left "If you think someone has read your diary, delete it and change your phone lock" in 2 of 6
+   answers about deleting her data, so such an answer is tried once more. */
+const DELETE_FOR_READ = /\b(read|reads|reading)\b[^.;।]*\b(delete|erase|wipe)\s+(it|your diary|the diary)\b|\b(delete|erase|wipe) it and change\b|(padh|पढ़)[^.;।]*(delete|डिलीट|मिटा|hata)/i;
+export const privacyOk = (answer) => !DELETE_FOR_READ.test(String(answer || ''));
+/* and a careful try that another net asked for (Version 40.5.4: the language net's, for a Hinglish iron answer that then gave
+   "chauthe mahine se" as hers) is told these two rules again, after the reason it was held back */
+export const STAGE_AGAIN = 'She has not said she is pregnant or has had a baby either: answer as for a woman who may or may not be pregnant, pregnancy\'s part ' + IN_PREG + '.';
+export const COND_AGAIN = 'She has not said she has PMOS either: its part comes ' + IF_PMOS + '.';
 
 export function answerTap() {
   /* Version 40.3: the first sentence ("answer"), then each point as a "- " line, as they are written (the schema keeps this order).
@@ -517,8 +543,9 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
        that mixed Hinglish and English, an English question got Hinglish follow-ups), and on the careful try, why the last answer
        was held back */
     const herLast = String(messages[messages.length - 1].content || '');
-    const notes = [CARE_NOTE[picks.care] || '', replyNote(herLast), medNote(herLast), ecNote(herLast), sexNote(herLast), stageNote(messages, picks.ids, picks.about), note].filter(Boolean);
-    const stageAfter = (ids) => stageNote(messages, ids.filter((x) => picks.ids.indexOf(x) < 0), picks.about);
+    const notes = [CARE_NOTE[picks.care] || '', replyNote(herLast), medNote(herLast), ecNote(herLast), sexNote(herLast), stageNote(messages, picks.ids, picks.about), condNote(messages, picks.ids, picks.about), note].filter(Boolean);
+    /* a guide the model reads itself carries the same notes as one the phone picked */
+    const stageAfter = (ids) => { const fresh = ids.filter((x) => picks.ids.indexOf(x) < 0); return [stageNote(messages, fresh, picks.about), condNote(messages, fresh, picks.about)].filter(Boolean).join('\n\n'); };
     if (notes.length) convo.push({ role: 'system', content: notes.join('\n\n') });
     let blocked = false;
     for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
@@ -557,6 +584,9 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
       if (!note && !lawOk(String(messages[messages.length - 1].content || ''), out.answer)) return { kind: 'blocked', why: 'law', use };
       /* Version 40.5.3: pregnancy's facts as hers, when she hasn't said she is pregnant; the careful try keeps its answer */
       if (!note && !stageOk(messages, read, picks.about, out.answer, out.danger)) return { kind: 'blocked', why: 'stage', use };
+      if (!note && !privacyOk(out.answer)) return { kind: 'blocked', why: 'privacy', use };
+      /* Version 40.5.4: a careful try keeps its answer, but a slip is counted, by name only */
+      if (note && !stageOk(messages, read, picks.about, out.answer, out.danger)) log('chat_stage_slip', {});
       /* the careful try keeps its answer even if a word slips into the other script: a mixed answer beats none */
       if (!note && !scriptOk(String(messages[messages.length - 1].content || ''), out.answer + '\n' + out.follow_ups.join('\n'))) return { kind: 'blocked', why: 'script', use };
       if (out.source === 'guides' && !out.guides.length) out.source = 'general';   /* Version 40.2.1: "From Sakhi's guides" names its guides */
@@ -568,6 +598,8 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
 
   /* The first try, and one careful try when a safety net held it back: thinking on, and told why. The usage of both is counted. */
   const RETRY_NOTE = {
+    /* Version 40.5.4 */
+    privacy: 'Your last answer was held back because it told her to delete her diary in case someone has read it. Answer her again: for that worry, Sakhi\'s PIN lock and Discreet mode in Me keep her diary private, and her diary stays.',
     /* Version 40.5.3 */
     stage: 'Your last answer was held back because it spoke as if she were pregnant, though she has not said she is pregnant or has had a baby. Answer her again as for a woman who may or may not be pregnant: your first sentence holds for any woman, and pregnancy\'s part comes after it, ' + IN_PREG + '.',
     safe_days: 'Your last answer was held back because it used the words "safe days" or "safe period", which Sakhi never uses. Answer her again without those words: say that no day is free of pregnancy risk, and point her to contraception and her doctor.',
@@ -584,7 +616,9 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
     log('chat_retry', { why: r.why || null });
     if (emit) emit({ type: 'reset' });
     const rn = RETRY_NOTE[r.why] || RETRY_NOTE.safe_days;
-    const r2 = await answer(messages, lang, picks, emit, false, typeof rn === 'function' ? rn(String(messages[messages.length - 1].content || '')) : rn);
+    /* Version 40.5.4: the pregnancy and PMOS rules that hold for her, again after the reason */
+    const again = [r.why !== 'stage' && stageNote(messages, picks.ids, picks.about) ? STAGE_AGAIN : '', condNote(messages, picks.ids, picks.about) ? COND_AGAIN : ''].filter(Boolean);
+    const r2 = await answer(messages, lang, picks, emit, false, [typeof rn === 'function' ? rn(String(messages[messages.length - 1].content || '')) : rn].concat(again).join(' '));
     Object.keys(r.use).forEach((k) => { r2.use[k] = (r2.use[k] || 0) + r.use[k]; });
     return r2;
   }

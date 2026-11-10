@@ -4080,3 +4080,6 @@ checked one by one in advance: the doctors check the rules below and a sample.
      answered for pregnancy, said as pregnancy's. There is no guide for a woman who isn't pregnant.
   2. "Free from your ANM", from the pregnancy tablets guide, sometimes reaches a woman who goes to her own doctor. In the full suite,
      6 of 597 answers named the ANM or ASHA outside the government care cases, two of them about free iron tablets.
+- **Version 40.5.4 (10 Nov):** for the doctors, the lines the AI is given (SERVER_SPEC 12.11):
+  - a guide's PMOS advice comes as "If you have PMOS, ..." until she says she has it;
+  - a worry that someone reads her diary gets Sakhi's PIN lock and Discreet mode, and never advice to delete her diary.

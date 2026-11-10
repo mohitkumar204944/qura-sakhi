@@ -2,13 +2,13 @@
 // thoroughly"). The real app (web/) in a browser signs up with a test number against the real server code: sakhi-api (api.js) and
 // sakhi-chat (chat.js, the file the live function runs), on a real Postgres (PGlite, every migration), served over https on
 // 127.0.0.1 at the live functions' own paths, with the real Claude Haiku 5.5. The sign-in code is the one this run's server makes,
-// captured instead of sent. Then it asks the phone test's 11 chats (ask-chats.mjs) and the scenario suite's stage-* cases through
-// the Ask tab, and checks each answer as the screen shows it.
+// captured instead of sent. Then it asks the phone test's 11 chats (ask-chats.mjs) and the scenario suite's stage-*, cond-* and priv-*
+// cases through the Ask tab, and checks each answer as the screen shows it.
 // It never touches the live server or a phone, and the test account lives only in this run's database. The certificate is made for
 // the run and thrown away; only this test's browser is told to accept it (the app turns Ask on for an https address only).
 // It costs a few cents (about US$0.0005 an answer). Needs, as server/scripts/chat-eval.mjs does, the SDK in ~/.cache/sakhi-eval and
 // the prototype's key outside the repo (~/.config/sakhi/anthropic-key); never printed.
-// Usage (from web/): node test/ask-local.mjs [only,ids]     (ids: the chats' ids, or "stage" for the stage cases)
+// Usage (from web/): node test/ask-local.mjs [only,ids]     (ids: the chats' ids, or stage, cond, priv for those cases)
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from './pw.mjs';
 import { join } from './join.mjs';
-import { CHATS, notAsHers, has, not } from './ask-chats.mjs';
+import { CHATS, notAsHers, pmosNotHers, PMOS_RE, DELETE_FOR_READ, has, not } from './ask-chats.mjs';
 import { createApi } from '../../server/supabase/functions/sakhi-api/api.js';
 import { pgStore } from '../../server/supabase/functions/sakhi-api/store-pg.js';
 import { createChat } from '../../server/supabase/functions/sakhi-chat/chat.js';
@@ -166,22 +166,27 @@ for (const c of CHATS) {
   }
 }
 
-/* 2. the scenario suite's stage cases (Version 40.5.3), typed as she would; Hindi in Devanagari, which a browser can type */
-const STAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'server', 'test', 'chat-cases.json'), 'utf8')).cases.filter((c) => /^stage-/.test(c.id));
+/* 2. the scenario suite's stage cases (Version 40.5.3) and its PMOS and diary-privacy cases (Version 40.5.4), typed as she would;
+   Hindi in Devanagari, which a browser can type */
+const STAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'server', 'test', 'chat-cases.json'), 'utf8')).cases.filter((c) => /^(stage|cond|priv)-/.test(c.id));
 const SAID = /preg-|afterbirth|twoturn/;
 const IRON = /iron|आयरन/i;
 const HEDGE = /if you are pregnant|if you're pregnant|agar (aap|ap) pregnant|अगर (आप )?गर्भवती/i;
-for (const c of (ONLY.length && ONLY.indexOf('stage') < 0) ? [] : STAGE) {
+for (const c of STAGE.filter((x) => !ONLY.length || ONLY.indexOf(x.id.split('-')[0]) >= 0)) {
   const cleared = await clearChat();
-  log.push('', '## ' + c.id + ' (' + c.lang + (SAID.test(c.id) ? ', she says she is pregnant or had a baby' : ', she never says she is pregnant') + ')' + (cleared ? '' : ' (the chat did not clear)'));
+  const kind = c.id.split('-')[0];
+  log.push('', '## ' + c.id + ' (' + c.lang + (kind !== 'stage' ? '' : SAID.test(c.id) ? ', she says she is pregnant or had a baby' : ', she never says she is pregnant') + ')' + (cleared ? '' : ' (the chat did not clear)'));
   for (const [i, q] of c.turns.entries()) {
     const r = await askTyped(q); show(r, q);
     const ok = (fn) => !r.timeout && !r.x.failed && fn(r.x);
     check(c.id, i + 1, 'answered', ok(() => true));
     check(c.id, i + 1, c.lang === 'hi' ? 'in Devanagari' : 'in Roman letters', ok(c.lang === 'hi' ? has(/[ऀ-ॿ]{4}/) : not(/[ऀ-ॿ]/)));
     const lastTurn = i === c.turns.length - 1;
-    if (!SAID.test(c.id)) check(c.id, i + 1, 'no pregnancy facts as hers', ok(notAsHers));
+    if (kind === 'cond') check(c.id, i + 1, /pmos/.test(c.id) ? 'PMOS advice for her (she said PCOS)' : 'no PMOS advice as hers', ok(/pmos/.test(c.id) ? has(PMOS_RE) : pmosNotHers));
+    else if (kind === 'priv') { check(c.id, i + 1, /delete/.test(c.id) ? 'Delete everything named' : 'the PIN lock or Discreet mode', ok(/delete/.test(c.id) ? has(/Delete everything/i) : has(/PIN|Discreet|पिन|डिस्क्रीट/i))); check(c.id, i + 1, 'never "delete it" because someone read it', ok(not(DELETE_FOR_READ))); }
+    else if (!SAID.test(c.id)) check(c.id, i + 1, 'no pregnancy facts as hers', ok(notAsHers));
     else if (lastTurn) { check(c.id, i + 1, 'her iron tablet answered for her', ok((x) => IRON.test(x.answer))); check(c.id, i + 1, 'no "if you are pregnant" (she said she is)', ok(not(HEDGE))); }
+    if (c.id === 'stage-sugar-en') check(c.id, i + 1, 'no PMOS advice as hers', ok(pmosNotHers));
     if (c.id === 'stage-iron-remind-en') { check(c.id, i + 1, 'yes, Reminders or My medicines', ok(has(/Reminders|My medicines/i))); check(c.id, i + 1, 'does not deny it', ok(not(/\b(can.?t|cannot|can not|doesn.?t|does not)\b[^.,;]{0,30}\bremind|no reminders/i))); }
   }
 }

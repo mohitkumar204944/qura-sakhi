@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, safeDaysFix, numbersOk, scriptOk, sexNote, SEX_NOTE, lawOk, replyLanguage, replyNote, medNote, MED_NOTE, ecNote, EC_NOTE, CARE, CARE_NOTE, pregSaid, stageNote, stageOk } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, safeDaysFix, numbersOk, scriptOk, sexNote, SEX_NOTE, lawOk, replyLanguage, replyNote, medNote, MED_NOTE, ecNote, EC_NOTE, CARE, CARE_NOTE, pregSaid, stageNote, stageOk, pmosSaid, condNote, COND_NOTE, STAGE_AGAIN, privacyOk } from '../supabase/functions/sakhi-chat/chat.js';
 import { chatStore } from '../supabase/functions/sakhi-chat/store-pg.js';
 import { GUIDES } from '../supabase/functions/sakhi-chat/guides.js';
 import { moduleText, readPages, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
@@ -601,6 +601,43 @@ async function sendStream(ctx, body, token) {
   const tr5 = c5.calls[1] && c5.calls[1].messages[c5.calls[1].messages.length - 1];
   const tr5Text = tr5 && Array.isArray(tr5.content) ? tr5.content.map((b) => String(b.content || '')).join('\n') : '';
   check('21 a pregnancy guide the model reads itself carries the same line, unless she said she is pregnant', r4.json.ok === true && /The red tablet/.test(trText) && /may or may not be pregnant/.test(trText) && /The red tablet/.test(tr5Text) && !/may or may not be pregnant/.test(tr5Text), { trText: trText.slice(-300) });
+}
+
+/* ---------- 22 Version 40.5.4: PMOS from a guide, her diary kept private, and the rules again on a careful try ---------- */
+{
+  const SUG = 'pregnancy.sugar-test-blood-pressure-pmos'; const IRON = 'pregnancy.iron-folic-acid-calcium-td';
+  const u = (t) => [{ role: 'user', content: t }];
+  const said = ['I have PCOS and I am 5 months pregnant', 'mujhe PCOD hai', 'मुझे पीसीओएस है', 'my doctor said polycystic ovaries', 'ovary mein cyst hai'];
+  const not = ['what is the sugar test and do I need it?', 'I am 5 months pregnant. Do I need the sugar test?', 'how much exercise should I do?', 'Mera naam Pragya hai'];
+  check('22 her words for PMOS (PMOS, PCOS, PCOD, पीसीओएस, polycystic, a cyst); the sugar test, a pregnancy and a name are not', said.every((t) => pmosSaid(u(t))) && not.every((t) => !pmosSaid(u(t))));
+  check('22 the PMOS note: a PMOS guide (the sugar test\'s, the PMOS group) and nothing about PMOS from her, pregnant or not; none when she said it, came from a PMOS guide, or read a cycle guide', condNote(u(not[0]), [SUG]) === COND_NOTE && condNote(u(not[1]), [SUG]) === COND_NOTE && condNote(u(not[2]), ['pmos.movement-sleep-stress']) === COND_NOTE && condNote(u(said[0]), [SUG]) === '' && condNote(u(not[2]), [SUG], SUG) === '' && condNote(u(not[2]), ['cycle.why-cycles-become-irregular']) === '' && /If you have PMOS,/.test(COND_NOTE));
+  check('22 the instructions: her diary kept private with the PIN lock and Discreet mode, never deleted for that', /When she worries that someone may read her diary, the answer is Sakhi's PIN lock and Discreet mode in Me: her diary stays, kept private/.test(systemPrompt('en')));
+  const c1 = fakeClaude([final({ answer: 'In pregnancy, the sugar test is a glucose drink and a blood test two hours later.', source: 'guides', guides_used: [SUG] })]);
+  const x1 = await setup({ claude: c1 }); await x1.acct('+919876543210', 1994, TOKEN);
+  const r1 = await send(x1, ask(not[1], { hints: [SUG] }));
+  const n1 = c1.calls[0].messages[c1.calls[0].messages.length - 1];
+  check('22 a pregnant woman who hasn\'t said PMOS: the PMOS note after her turn, and no pregnancy note', r1.json.ok === true && n1.role === 'system' && n1.content.includes(COND_NOTE) && !/may or may not be pregnant/.test(n1.content), n1.content);
+  const c2 = fakeClaude([final({ answer: 'Iron ki goli khane ke baad lein, आयरन ki goli. ' + AMARK, source: 'guides', guides_used: [IRON] }), final({ answer: 'Iron ki goli khane ke do ghante baad lein.\n- Pregnancy mein chauthe mahine se roz ek.', source: 'guides', guides_used: [IRON] })]);
+  const x2 = await setup({ claude: c2 }); await x2.acct('+919876543210', 1994, TOKEN);
+  const r2 = await send(x2, ask('iron ki goli kab aur kaise leni chahiye?', { hints: [IRON] }));
+  const n2 = c2.calls[1] && c2.calls[1].messages[c2.calls[1].messages.length - 1];
+  check('22 a careful try another net asked for (here the language) is told the pregnancy rule again, after the reason', c2.calls.length === 2 && !!n2 && /not all in her language/.test(n2.content) && n2.content.includes(STAGE_AGAIN) && n2.content.indexOf(STAGE_AGAIN) > n2.content.indexOf('not all in her language') && r2.json.ok === true && !JSON.stringify(r2.json).includes(AMARK), n2 && n2.content.slice(-400));
+  const c3 = fakeClaude([final({ answer: 'Iron ki goli khane ke baad lein, आयरन ki goli. ' + AMARK, source: 'guides', guides_used: [IRON] }), final({ answer: 'Iron ki goli chauthe mahine se shuru hoti hai, roz ek.', source: 'guides', guides_used: [IRON] })]);
+  const x3 = await setup({ claude: c3 }); await x3.acct('+919876543210', 1994, TOKEN);
+  const r3 = await send(x3, ask('iron ki goli kab aur kaise leni chahiye?', { hints: [IRON] }));
+  check('22 a careful try that still gives pregnancy\'s facts as hers keeps its answer, and the slip is counted by name only', r3.json.ok === true && c3.calls.length === 2 && x3.logs.some((l) => l.event === 'chat_stage_slip' && Object.keys(l.data || {}).length === 0) && !x2.logs.some((l) => l.event === 'chat_stage_slip'), x3.logs.map((l) => l.event));
+  const c4 = fakeClaude([toolCall(['pmos.movement-sleep-stress']), final({ answer: 'Walk 30 minutes on most days.', source: 'guides', guides_used: ['pmos.movement-sleep-stress'] })]);
+  const x4 = await setup({ claude: c4 }); await x4.acct('+919876543210', 1994, TOKEN);
+  await send(x4, ask('how much exercise should I do every week?'));
+  const tr = c4.calls[1] && c4.calls[1].messages[c4.calls[1].messages.length - 1];
+  const trText = tr && Array.isArray(tr.content) ? tr.content.map((b) => String(b.content || '')).join('\n') : '';
+  check('22 a PMOS guide the model reads itself carries the PMOS note', /Movement, sleep and stress with PMOS/.test(trText) && trText.includes(COND_NOTE), trText.slice(-300));
+  check('22 privacyOk: "delete it" because someone read her diary is held back; deleting her data, the PIN lock and "if you want it gone" pass', !privacyOk('If you think someone read your diary without permission, delete it and change your phone lock.') && !privacyOk('Agar koi padh le to diary delete kar dein.') && privacyOk('Go to Me and choose Delete everything on this phone.') && privacyOk('Your diary stays private: Sakhi\'s PIN lock and Discreet mode in Me keep it hidden.') && privacyOk('Delete everything on this phone is for when you want your diary gone; if someone may read it, use the PIN lock.'));
+  const c5 = fakeClaude([final({ answer: 'Go to Me and choose Delete everything on this phone.\n- If you think someone read your diary, delete it and change your phone lock. ' + AMARK, source: 'general', guides_used: [] }), final({ answer: 'Go to Me and choose Delete everything on this phone.\n- Worried someone may read it? Set Sakhi\'s PIN lock in Me.', source: 'general', guides_used: [] })]);
+  const x5 = await setup({ claude: c5 }); await x5.acct('+919876543210', 1994, TOKEN);
+  const r5 = await send(x5, ask('how do i delete all my data'));
+  const n5 = c5.calls[1] && c5.calls[1].messages[c5.calls[1].messages.length - 1];
+  check('22 an answer that says to delete her diary because someone read it is tried once more, told the PIN lock, and the careful answer comes back', c5.calls.length === 2 && !!n5 && /delete her diary in case someone has read it/.test(n5.content) && /PIN lock and Discreet mode/.test(n5.content) && r5.json.ok === true && !JSON.stringify(r5.json).includes(AMARK), r5.json);
 }
 
 const pass = results.filter((r) => r.pass).length;

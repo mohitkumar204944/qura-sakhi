@@ -930,3 +930,51 @@ before 39 and 39). Careful tries for this: 1 in 597. `server/test/chat.test.mjs`
 Deployed by Mohit at 15:04 IST on 10 Nov (function version 12). The live checks pass: CORS 204, a made-up token 401 (with `care`
 too), a `diary` field 400, a wrong care word 400. The phone test (`web/test/ask-phone.mjs`) now also checks that the iron-tablet
 reminder answer gives no pregnancy facts as hers, and that it never says Sakhi can't remind her.
+
+### 12.11 Version 40.5.4 (10 Nov): PMOS from a guide, her diary kept private, and the rules again on a careful try
+
+Mohit, 10 Nov: "Yes, fix all three". The test on this Mac (`web/test/ask-local.mjs`) had found three things, all from before
+Version 40.5.3.
+
+- **PMOS from a guide (`condNote`, `COND_NOTE`).**
+  - What it fixes: "what is the sugar test and do I need it?" got "Tell your gynaecologist you had PMOS before pregnancy" in 3
+    runs of 3. The guide is titled "The sugar test and your blood pressure, especially with PMOS".
+  - When it applies: a guide about PMOS is read (the PMOS group, or PMOS in its title), and none of her messages names PMOS,
+    PCOS, PCOD, polycystic ovaries or a cyst (`PMOS_SAID`, in English, Hinglish and Hindi).
+  - What the note says: give a guide's PMOS advice only as for a woman who has it, begun with "If you have PMOS," ("अगर आपको
+    PMOS है", "PMOS ho to").
+  - It holds in a pregnancy too, where the pregnancy note is quiet. It is on guides the model reads itself, and off when she
+    opened the chat from a PMOS guide.
+- **Her diary kept private.**
+  - What it fixes: the delete-data answer said "If you think someone has read your diary, delete it and change your phone lock".
+  - The instructions now say that a worry someone may read her diary is answered with Sakhi's PIN lock and Discreet mode in Me,
+    and her diary stays. That alone still left the line in 2 of 6 answers.
+  - So `privacyOk` holds back an answer that tells her to delete her diary because someone may have read it. It gets one
+    careful try, told the PIN lock.
+- **The rules again on a careful try.**
+  - What it fixes: a Hinglish iron answer whose first try the language net held back gave "chauthe mahine se" as hers.
+  - Now a careful try asked for by another net is told the pregnancy and PMOS rules that hold for her (`STAGE_AGAIN`,
+    `COND_AGAIN`), after the reason it was held back.
+  - A careful try that still gives pregnancy's facts as hers keeps its answer, and `chat_stage_slip` is logged, with no words.
+- **The tests.**
+  - The case bank has 8 more: 4 `cond-*` (the sugar test for pregnant women with and without PCOS, exercise) and 4 `priv-*`
+    (someone reading her diary, in English, Hinglish and Hindi, and deleting her data).
+  - The shared phone and Mac chats check "never delete it because someone read it" (36 checks).
+
+On the real model, through the real Ask tab on this Mac (three runs of 110 checks: 108, 110, 110):
+- The sugar answer gives PMOS only as "If you have PMOS, ...", and the pregnant woman without PMOS gets no PMOS line.
+- The privacy answers name the PIN lock and Discreet mode.
+- With the privacy net, three more runs of the delete-data and privacy questions passed 21 of 21 each, 18 answers in all, with no
+  "delete it". Run 1's two misses had come before the net.
+
+The full suite (605 answers, graded, before the privacy net): major 83, within the last runs' 76 to 85. The PMOS and privacy cases
+were 0 of 4 major each.
+
+An ungraded run with the privacy net (605 answers): its 2 careful tries were both on "is my data safe in this app, can I delete
+it", and their answers point to the PIN lock. `server/test/chat.test.mjs`: 262 checks.
+
+Found on the way, in the app, not the chat server: the phone's danger check shows no Help card for heavy bleeding after a birth
+("I delivered 5 days ago and I'm soaking a pad every hour", in English, Hinglish or Hindi) unless she also says she feels dizzy.
+`chatDangerKey` is Help's urgent signs, plus pregnancy's danger words while she is pregnant, with no after-birth branch. Search's
+card uses the same urgent signs. The chat's own rule does name "fever or heavy bleeding after a birth"; 1 answer in 5 said "a
+doctor today".

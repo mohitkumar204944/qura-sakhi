@@ -737,18 +737,21 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8). Version 40.5.2: the baby's sex is refused
       with the law named (a note and a check, SERVER_SPEC 12.9). Version 40.5.3: a pregnancy or after-birth guide is answered for any
       woman until her own messages say she is pregnant or has had a baby (a note and a check, SERVER_SPEC 12.10).
+      Version 40.5.4: a guide's PMOS advice is "If you have PMOS" until she says she has it, a worry that someone reads her diary
+      gets the PIN lock, and a careful try is told those rules again (SERVER_SPEC 12.11).
     - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (597 answers, graded by Sonnet 5.5, about US$1.70;
       without `--go`, the phone's picks only, free). It counts the careful tries by the net that asked for them. Run it after a change
       to the instructions, the picks or the guides.
     - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live
       server, each answer read back from the screen reader's tree and checked by rule.
-      - 35 checks since Version 40.5.3, which added "no pregnancy facts as hers" on the iron-tablet reminder; 34 of 34 on 10 Nov
-        (vc 162, function v11).
+      - 36 checks: Version 40.5.3 added "no pregnancy facts as hers" on the iron-tablet reminder, and Version 40.5.4 "never delete it
+        because someone read it" on deleting her data; 34 of 34 on 10 Nov (vc 162, function v11).
       - It clears the chat first; the phone must be awake, unlocked and signed in.
       - `input text` types Latin letters only, so the Hindi chat starts from the empty chat's Hindi example and goes on with a Hindi
         follow-up the answer offers.
     - On this Mac: `node test/ask-local.mjs` (from web/; Version 40.5.3; Mohit, 10 Nov: "you sign in using a seeded test account and
-      test thoroughly") asks the same chats (`test/ask-chats.mjs`) and the suite's stage cases through the real Ask tab in a browser.
+      test thoroughly") asks the same chats (`test/ask-chats.mjs`) and the suite's stage, cond and priv cases through the real Ask tab
+      in a browser.
       - It signs up with a test number on both functions served here over https: PGlite, with the code captured and never sent, and
         the real Haiku. A throwaway certificate is accepted by its browser only.
       - It never touches the live server or a phone. About US$0.02 a run.
