@@ -7,7 +7,9 @@
 //   2 words that are not a sign show no card: bleeding or dizziness alone, "khoon ki kami", a blood test, a faint test line;
 //   3 its buttons: tel: links and Help; Learn's search shows it too;
 //   4 every stage: after the birth, midlife, and pregnancy (the danger guide still the quick answer under it), discreet mode;
-//   5 Hindi, and 360 px without sideways scroll; no page errors.
+//   5 Hindi, and 360 px without sideways scroll; no page errors;
+//   6 Version 39.91 (10 Nov, the Ask Sakhi scenario suite): heavy bleeding after a birth, for a woman after a birth and for words
+//     that say a birth, in the after-birth page's own line (post_u_1) under the same heading; its near misses; Hindi at 360 px.
 // Usage: node test/urgent.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -160,6 +162,68 @@ const search = async (page, q, id) => {
   await a.page.screenshot({ path: path.join(SHOTS, '5-hindi-360.png') });
   const h = await search(a.page, 'मैं मर जाना चाहती हूँ');
   check('5 Hindi at 360 px: no card for words about harm, and no sideways scroll', !h.on && await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), h);
+  await done(a);
+}
+
+/* ---------- 6 Version 39.91: heavy bleeding after a birth ---------- */
+const BRIEF = ['I delivered 5 days ago and I\'m soaking a pad every hour', 'after delivery heavy bleeding, pad full every hour',
+  'delivery ke baad bahut bleeding ho rahi hai, har ghante pad bhar jata hai', 'डिलीवरी के बाद बहुत खून आ रहा है, हर घंटे पैड भर जाता है'];
+{
+  /* a woman marked after a birth, 5 days ago */
+  const a = await open({ seed: { situation: { deliveredOn: ago(5), breastfeeding: true }, events: regular(330) } });
+  const CALL = await t(a.page, 'call_now'), U1 = await t(a.page, 'post_u_1'), S1B = await t(a.page, 's1b');
+  check('6 the after-birth line is the page\'s own (post_u_1), under the same heading there', U1 === 'You soak a pad in an hour, or pass clots egg-sized or bigger' && await t(a.page, 'post_u_h') === CALL, [U1, CALL]);
+  for (const q of BRIEF.concat(['soaking a pad every hour', 'big clots', 'bahut bleeding ho rahi hai', 'heavy bleeding', 'bleeding is very heavy',
+    'pads are completely soaked within an hour', 'pad aadhe ghante mein bhar jata hai', 'एक घंटे में पैड भीग जाता है', 'बड़े-बड़े थक्के आ रहे हैं', 'खून बहुत ज़्यादा आ रहा है'])) {
+    const r = await search(a.page, q);
+    check('6 after a birth "' + q + '": the card first, Help\'s heading, the after-birth line, Call 108 and Help', r.on && r.k === 'post_u_1' && r.first && r.h === CALL && r.sign === U1 && r.tels.join() === 'tel:108' && r.help, r);
+  }
+  const rd = await search(a.page, BRIEF[0] + ' and I feel dizzy');
+  check('6 after a birth, with dizziness: Help\'s own bleeding line (s1b), as before', rd.on && rd.k === 's1b' && rd.sign === S1B && rd.first, rd);
+  for (const q of ['bleeding kitne din normal hai', 'how long does bleeding last after delivery', 'bleeding after delivery normal?', 'delivery ke baad khoon ki kami', 'blood test after delivery shows low hb',
+    'change pad every 4 hours after delivery', 'pad kitne ghante mein badalna chahiye', 'delivery ke baad pad har 4 ghante mein badalti hoon', 'breast pads soaked every hour', 'milk leaking, pads full every hour',
+    'bleeding zyada nahi hai', 'bleeding is not heavy', 'डिलीवरी के बाद ब्लीडिंग ज़्यादा नहीं है', 'clots after delivery', 'bleeding with clots after delivery normal?',
+    'fever after delivery', 'delivery ke baad bukhar', 'bahut dard hai aur bleeding bhi', 'bahut thakan hai delivery ke baad', 'my baby feeds every hour']) {
+    const r = await search(a.page, q);
+    check('6 after a birth, not this sign: "' + q + '": no card', !r.on, r);
+  }
+  await go(a.page, 'post');
+  check('6 the after-birth page shows the same line under the same heading', await a.page.evaluate(([h, u]) => { const f = document.querySelector('#view .flag.urgent'); return !!f && f.querySelector('strong').innerText === h && [...f.querySelectorAll('li')].some((li) => li.innerText === u); }, [CALL, U1]));
+  await go(a.page, 'learn'); const rl = await search(a.page, BRIEF[2], 'learn-q');
+  check('6 after a birth: Learn\'s search shows the card too', rl.on && rl.k === 'post_u_1' && rl.first, rl);
+  await done(a);
+}
+{
+  /* no birth in her diary: her words say the birth (hers, a sister's, a daughter-in-law's) */
+  const a = await open({});
+  for (const q of BRIEF.concat(['my sister delivered 3 days ago and is soaking a pad every hour', 'meri bahu ki delivery ke baad bade bade thakke aa rahe hain', 'डिलीवरी के बाद बड़े थक्के आ रहे हैं',
+    'gave birth last week, passing clots the size of an egg', 'postpartum bleeding soaking pads every 30 minutes', 'since my c-section, bleeding a lot', 'c section ke baad bleeding bahut hai',
+    'baby hone ke baad har ghante pad bhig jata hai', 'बच्चा होने के बाद एक घंटे में पैड भीग जाता है', 'प्रसव के बाद बहुत खून बह रहा है', 'I had a baby 2 weeks ago and the bleeding got heavy again',
+    'I am 25 years old, I delivered 5 days ago and I\'m soaking a pad every hour', 'meri umar 25 saal hai, delivery ke baad bahut bleeding ho rahi hai'])) {
+    const r = await search(a.page, q);
+    check('6 her words say a birth "' + q + '": the card with the after-birth line, Call 108', r.on && r.k === 'post_u_1' && r.first && r.tels.join() === 'tel:108', r);
+  }
+  for (const q of ['soaking a pad every hour', 'big clots', 'heavy bleeding', 'bahut bleeding ho rahi hai', 'heavy bleeding after starting birth control', 'after delivery 2 years ago, heavy bleeding with big clots in periods', 'delivery 2 saal pehle hui thi, ab periods mein bahut bleeding',
+    'my periods are heavy since I gave birth', 'after the birth of my baby there was some bleeding', 'how long does bleeding last after delivery', 'fever after delivery']) {
+    const r = await search(a.page, q);
+    check('6 no birth in her diary, not this sign: "' + q + '": no card', !r.on, r);
+  }
+  await done(a);
+}
+{
+  /* pregnant, asking about after the birth: the card with her ambulance, 102 */
+  const a = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(200) } } });
+  const r = await search(a.page, BRIEF[1]);
+  check('6 pregnant, words about after the birth: the card with Call 102', r.on && r.k === 'post_u_1' && r.tels.join() === 'tel:102', r);
+  await done(a);
+}
+{
+  /* Hindi, 360 px */
+  const a = await open({ seed: { lang: 'hi', situation: { deliveredOn: ago(5), breastfeeding: true }, events: regular(330) }, w: 360 });
+  const r = await search(a.page, BRIEF[3]);
+  check('6 Hindi: Help\'s Hindi heading and the after-birth page\'s Hindi line', r.on && r.k === 'post_u_1' && r.h === await t(a.page, 'call_now') && r.sign === await t(a.page, 'post_u_1') && /^एक घंटे में पैड भीग जाए/.test(r.sign), r);
+  check('6 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+  await a.page.screenshot({ path: path.join(SHOTS, '6-after-birth-hindi-360.png') });
   await done(a);
 }
 

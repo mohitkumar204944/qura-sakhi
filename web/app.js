@@ -1433,13 +1433,39 @@
   const URG_LOSS = /bladder|bowel|urine|\bpee\b|\bwee\b|stool|\bpoo|potty|पेशाब|peshab|pesab|शौच|shauch|latrine/;
   const URG_HOLD = /control|\bhold|qaa?bu|kaa?bu|क़ाबू|काबू|\brok|रोक/;
   const URG_NERVE = /numb|\bsunn|सुन्न|jhunjhun|झुनझुन|tingl|saddle|(weak|kamzor|kamjor|कमज़ोर|कमजोर) .{0,8}(legs?|pair|पैर|ta?ang|टांग|टाँग)|legs? .{0,8}(weak|kamzor|give way|gave way)|(pair|पैर) .{0,8}(kamzor|kamjor|sunn|कमज़ोर|कमजोर|सुन्न)|back pain|(kamar|कमर) .{0,10}(dard|दर्द)/;
+  /* Version 39.91 (10 Nov, the Ask Sakhi scenario suite: "I delivered 5 days ago and I'm soaking a pad every hour" showed no card):
+     heavy bleeding after a birth, with or without dizziness, for a woman after a birth (afterBirthNow) and for anyone whose words say
+     a birth ("after delivery", "delivered", "डिलीवरी के बाद", a sister's or a daughter-in-law's too). The card's line is the after-birth
+     page's own, under the same heading there (post_u_1: "You soak a pad in an hour, or pass clots egg-sized or bigger"). Her words: a
+     pad soaked or changed within an hour (or 1 to 2 hours, or minutes), clots called big or egg-sized, or bleeding called heavy (a
+     lot, bahut, zyada). Not this sign: bleeding after a birth alone, a pad every few hours, breast pads, "khoon ki kami", bleeding
+     that isn't heavy ("zyada nahi"), birth control, a birth years ago, and a fever after a birth, which stays "see a doctor today" (post_fl_fever). */
+  const URG_BIRTH = /\bafter (\w+ ){0,2}(child ?birth|birth(?! ?control)|delivery|c.?section|caesarean|cesarean)\b|\bafter (having|giving) (a |my |the )?(baby|birth)\b|\bdelivered\b|\bdelivery (was|happened)\b|\b(delivery|c.?section|caesarean|cesarean|birth(?! ?control)) (\w+ ){0,3}ago\b|\b(gave|given|giving) birth\b|\bhad (a |my |the |an )?(baby|delivery|normal delivery|c.?section|caesarean|cesarean)\b|\bsince (the |my )?(birth|delivery|c.?section)\b|\bpost.?(partum|natal)\b|\b(baby|son|daughter) (was|is) born\b|\bdelivery (\w+ ){0,3}(baad|bad|hui|huyi|hua|huwa|hue|ho gayi|ho gai|ho gyi|ho chuki)\b|\b(bachch?a|bacch?a|bacha|baby) (hone|paida hone) (ke |k )?(baad|bad)\b|\b(bachch?a|bacch?a|bacha|baby|beta|beti) (hua|huwa|hui|hue)\b|\b(janam|janm) (ke |k |dene ke )?(baad|bad)\b|\bprasav (ke |k )?(baad|bad)\b|\b(c.?section|cesarean|caesarean|sizerian|sijerian|siserian) (ke |k |se )?(baad|bad)\b|डिलीवरी .{0,20}(बाद|हुई|हुआ|हुए|हो गई|हो गयी|हो चुकी)|प्रसव (के )?बाद|प्रसव .{0,12}(हुआ|हुई)|(जन्म|जनम) (के|देने के) बाद|(बच्चा|बच्ची|बेटा|बेटी) (हुआ|हुई|पैदा)|(बच्चा|बच्चे) होने के बाद|(सिजेरियन|सीजेरियन) (के |से )?बाद|ऑपरेशन से (बच्चा|डिलीवरी)/;
+  const URG_YEARS = /\b(\d+|a|an|one|two|three|four|five|six|ek|do|teen|char|chaar|paanch|panch) (years?|yrs?|saal|sal) (ago|back|before|after|later|pehle|pahle|baad|bad|purani|purana)\b|\blast year\b|\b(pichhle|pichle|pichhla|pichla) (saal|sal)\b|(\d+|एक|दो|तीन|चार|पांच|पाँच|छह) साल (पहले|बाद|पुरान)|पिछले साल/;   /* a birth years ago is not "after a birth" (her age is no matter) */
+  const PAD_W = /\bpads?\b|पैड|\bnapkins?\b|नैपकिन/.source;
+  const HOUR_W = /\b(an|one|1|each|every|per|half( an?)?|1 ?(-|to|or|se) ?2) ?(hours?|hrs?)\b|\bhourly\b|\b(\d{1,2}|few|ten|fifteen|twenty|thirty|forty) ?(mins?|minutes?|minat)\b|\b(har|ek|1|aadhe|adhe|aadha) (ghante|ghanta|ghantey|ghnte)\b|\bghante bhar\b|(हर|एक|1|आधे|आधा) घंट|घंटे भर|(\d{1,2}|कुछ|दस|बीस|तीस) मिनट/.source;
+  const URG_PAD_HR = new RegExp('(' + PAD_W + ').{0,32}(' + HOUR_W + ')|(' + HOUR_W + ').{0,32}(' + PAD_W + ')');
+  const URG_SOAK = /soak|full|fill|wet|chang|through|bhig|bheeg|bhij|bhar|geel|gila|gile|badal|bdal|भीग|भिग|भर|बदल|गील/;
+  const URG_MILKPAD = /(breast|nursing|nipple|feeding|\bbra)\w* pads?|\bpads? .{0,12}(milk|doodh|dudh|दूध)|(milk|doodh|dudh|दूध) .{0,12}(\bpads?\b|पैड)|(स्तन|ब्रेस्ट|निप्पल) .{0,6}पैड/;
+  const URG_CLOTS = /\b(big|large|huge|giant|massive|egg|lemon|golf|plum|palm|fist|tennis)[\w -]{0,24}\bclots?\b|\bclots?\b.{0,28}\b(big|large|huge|egg|lemon|golf|plum|palm|fist|tennis)|\b(bade|bada|badi|bde|bda|bdi|ande|anda|nimbu)\b.{0,16}\b(thakk|clot)|\b(thakk\w*|clots?)\b.{0,24}\b(bade|bada|badi|bde|bda|ande|anda|nimbu)\b|(बडे|बडा|बडी|अंडे|अंडा|अण्डे|नींबू).{0,16}थक्क|थक्क.{0,24}(बडे|बडा|बडी|अंडे|अंडा|अण्डे|नींबू)/;
+  const HEAVY_W = /heavy|heavily|\ba lot\b|\blots\b|too much|so much|very much|excessive|profuse|\bbahut\b|\bbohot\b|\bbohat\b|\bbahot\b|\bzyada\b|\bjyada\b|\bjada\b|ज्यादा|बहुत/.source;
+  const BLEED_W = /bleed\w*|ब्लीडिंग|रक्तस्राव|raktasrav|\bblood\b|\bkhoon\b|\bkhun\b|खून/.source;
+  const URG_HEAVY = new RegExp('(' + HEAVY_W + ').{0,8}(' + BLEED_W + ')|(' + BLEED_W + ').{0,20}(' + HEAVY_W + ')');
+  const URG_NEG = /\b(not|isn.?t|is not|no|never) (too |so |very |that )?(heavy|much|a lot)\b|\b(zyada|jyada|bahut|bohot) (nahi|nahin|nhi)\b|(ज्यादा|बहुत) नहीं/g;
+  const birthBleedQ = (qq) => {
+    const blood = /bleed|ब्लीडिंग|रक्तस्राव|raktasrav/.test(qq) || (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq)));
+    if (URG_CLOTS.test(qq)) return true;
+    if (URG_PAD_HR.test(qq) && (blood || (URG_SOAK.test(qq) && !URG_MILKPAD.test(qq)))) return true;
+    return blood && URG_HEAVY.test(qq.replace(URG_NEG, ' '));
+  };
   const urgentQ = (q) => {
     const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
     if (URG_LOSS.test(qq) && URG_HOLD.test(qq) && URG_NERVE.test(qq)) return 's1d';
     const dizzy = URG_DIZZY.test(qq);
     if (URG_LATE.test(qq) && (dizzy || URG_SIDE.test(qq))) return 's1a';
     const bleed = URG_BLEED.test(qq) || (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq)));
-    return bleed && dizzy ? 's1b' : null;
+    if (bleed && dizzy) return 's1b';
+    return STR.en.post_u_1 && (afterBirthNow() || (URG_BIRTH.test(qq) && !URG_YEARS.test(qq))) && birthBleedQ(qq) ? 'post_u_1' : null;   /* Version 39.91 */
   };
   function urgentCard(q) {
     const k = urgentQ(q); if (!k) return '';   /* Version 39.70: Help's line, the ambulance under it (108, or 102 in pregnancy) */
