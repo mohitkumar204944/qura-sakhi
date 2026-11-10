@@ -209,6 +209,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Version 39.91 (10 Nov, from the Ask Sakhi scenario suite): heavy bleeding after a birth shows the after-birth page's own line (`post_u_1`)
     under Help's heading, with or without dizziness. The sign is a pad in an hour, big clots or bleeding called heavy. It shows for a woman
     after a birth, or when her words say a birth: "after delivery", "delivered", "डिलीवरी के बाद", her own or a sister's. MODULE_API 73.2.
+    Version 39.92 (Mohit, 10 Nov: "Yes, build it"): a pregnancy now in her words ("my sister is 7 months pregnant", "main pregnant hoon")
+    counts for the pregnancy danger check as her diary does. Trying, asking and past pregnancies don't count. Fits and fainting are now
+    matched as whole words, so "benefits", "stay fit" and a "faint line" aren't signs. MODULE_API 73.3.
   - `node test/traps.mjs` (Version 39.31, the Cykel traps; Mohit, 28 Oct): a competitor's failures replayed on Sakhi across
     Today, the Calendar, Days, Cycles, the fertile-days page and the booked reminders. It checks late by 3, 16 and 60 days, a
     positive strip on period day 1, hormones, pregnancy, after the birth, midlife, discreet mode, irregular and few gaps,
