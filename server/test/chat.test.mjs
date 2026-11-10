@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, safeDaysFix, numbersOk, scriptOk, sexNote, SEX_NOTE, lawOk, replyLanguage, replyNote, medNote, MED_NOTE, ecNote, EC_NOTE, CARE, CARE_NOTE } from '../supabase/functions/sakhi-chat/chat.js';
+import { createChat, ALLOW, MODEL, GUIDE_IDS, SCREENS, SIGNS, ACTIONS, OUTPUT_SCHEMA, systemPrompt, scrubPii, guideText, answerTap, dosesOk, cautionOk, safeDaysFix, numbersOk, scriptOk, sexNote, SEX_NOTE, lawOk, replyLanguage, replyNote, medNote, MED_NOTE, ecNote, EC_NOTE, CARE, CARE_NOTE, pregSaid, stageNote, stageOk } from '../supabase/functions/sakhi-chat/chat.js';
 import { chatStore } from '../supabase/functions/sakhi-chat/store-pg.js';
 import { GUIDES } from '../supabase/functions/sakhi-chat/guides.js';
 import { moduleText, readPages, CONTENT, OUT } from '../scripts/make-chat-guides.mjs';
@@ -563,6 +563,44 @@ async function sendStream(ctx, body, token) {
   const rl = await send(xl, ask(qs[0]));
   const n1 = cl.calls[0].messages[cl.calls[0].messages.length - 1]; const n2 = cl.calls[1] && cl.calls[1].messages[cl.calls[1].messages.length - 1];
   check('20 the note goes after her turn; an answer without the law is tried once more, told why, and the second comes back', n1.role === 'system' && n1.content.includes(SEX_NOTE) && cl.calls.length === 2 && !!n2 && /did not say that this is against the law/.test(n2.content) && rl.json.ok === true && /against the law/.test(rl.json.answer) && !JSON.stringify(rl.json).includes(AMARK), rl.json);
+}
+
+/* ---------- 21 Version 40.5.3: a pregnancy guide, while she hasn't said she is pregnant ---------- */
+{
+  const IRON = 'pregnancy.iron-folic-acid-calcium-td';
+  const u = (t) => [{ role: 'user', content: t }];
+  const said = ['I am 5 months pregnant', 'Main 4 mahine pregnant hoon', 'मैं 5 महीने की गर्भवती हूँ', 'im pregnent', 'I had my baby 3 weeks ago', 'main pet se hoon', 'बच्चे को दूध पिलाती हूँ', 'my c-section was last month', 'डिलीवरी के बाद कमज़ोरी है', 'baby is moving less today, should i worry', 'aaj baby kam hil raha hai, kya karu', 'आज बच्चा कम हिल रहा है, क्या चिंता की बात है'];
+  const not = ['can sakhi remind me to take my iron tablet', 'iron ki goli kab aur kaise leni chahiye?', 'आयरन की गोली कब और कैसे लेनी चाहिए?', 'गर्भनिरोधक गोली कैसे लें?', 'गर्भपात कानूनी है?', 'Mera naam Pragya hai, iron tablet kab lu?', 'I want to have a baby next year'];
+  check('21 her words for a pregnancy or a baby, in English, Hinglish and Hindi; contraception, abortion, a name and wanting a baby are not', said.every((t) => pregSaid(u(t))) && not.every((t) => !pregSaid(u(t))), { missed: said.filter((t) => !pregSaid(u(t))), caught: not.filter((t) => pregSaid(u(t))) });
+  const later = [{ role: 'user', content: said[0] }, { role: 'assistant', content: 'Tiredness is common.' }, { role: 'user', content: 'How do I take my iron tablet?' }];
+  check('21 the note: a pregnancy guide read and nothing in her messages; none when she said it (now or earlier), came from a pregnancy guide, or read other guides only', /may or may not be pregnant/.test(stageNote(u(not[0]), [IRON])) && stageNote(u(not[0]), [IRON]).includes('"The red tablet, the white tablet and two injections" is about pregnancy') && stageNote(u(said[0]), [IRON]) === '' && stageNote(later, [IRON]) === '' && stageNote(u(not[0]), [IRON], IRON) === '' && stageNote(u(not[0]), ['cycle.painful-periods']) === '');
+  check('21 stageOk holds back pregnancy\'s facts as hers ("4th mahine se", "चौथे महीने से", the antenatal visits, "your pregnancy"); an answer that says them as pregnancy\'s ("In pregnancy, ...", "Pregnancy mein ...", "pregnancy ke", "If you are pregnant, ...", "अगर आप गर्भवती हैं") passes, and so do her own "I am pregnant", a pregnancy guide she came from and a danger answer', !stageOk(u(not[1]), [IRON], '', 'Iron ki goli 4th mahine se roz ek lein.') && !stageOk(u(not[2]), [IRON], '', 'आयरन की गोली चौथे महीने से रोज़ एक लें।') && !stageOk(u('which check-ups do I need?'), [IRON], '', 'Four antenatal check-ups and two Td injections.') && !stageOk(u(not[0]), [IRON], '', 'Yes. From the fourth month of your pregnancy, one a day.') && !stageOk(u(not[1]), [IRON], '', 'Iron ki goli khane ke baad lein.\n- Aapki pregnancy ke chauthe mahine se roz ek.') && stageOk(u(not[0]), [IRON], '', 'Yes, Sakhi can remind you.\n- In pregnancy, one tablet a day from the fourth month.') && stageOk(u('which check-ups do I need?'), [IRON], '', 'In pregnancy, you need at least four check-ups.\n- Visit 1 is before 12 weeks, with the first Td injection.') && stageOk(u(not[1]), [IRON], '', 'Doctor aksar pregnancy ke chauthe mahine se roz ek goli batate hain.') && stageOk(u(not[1]), [IRON], '', 'Iron ki goli khane ke do ghante baad lein.\n- Pregnancy mein chauthe mahine se roz ek goli di jaati hai.') && stageOk(u('which check-ups do I need?'), [IRON], '', 'If you are pregnant, you need four check-ups and two Td injections.\n- Visit 1 is before 12 weeks.') && stageOk(u(not[2]), [IRON], '', 'अगर आप गर्भवती हैं, तो चौथे महीने से रोज़ एक गोली।') && stageOk(u(said[0]), [IRON], '', 'From the fourth month, one tablet a day.') && stageOk(u(not[1]), ['cycle.painful-periods'], '', 'from the fourth month') && stageOk(u(not[1]), [IRON], IRON, 'from the fourth month') && stageOk(u('heavy bleeding and I feel dizzy'), [IRON], '', 'Heavy bleeding with dizziness needs the nearest hospital now.\n- After the birth, soaking a pad an hour is a danger sign.', true) && !stageOk(u('heavy bleeding and I feel dizzy'), [IRON], '', 'Heavy bleeding with dizziness needs the nearest hospital now.\n- After the birth, soaking a pad an hour is a danger sign.', false));
+  check('21 the instructions say Sakhi reminds her (with a note after her turn, "can Sakhi remind me?" was answered "Sakhi can\'t send reminders")', /Asked whether Sakhi can remind her, the answer is yes/.test(systemPrompt('en')) && /each tablet in "My medicines" rings at the time she sets/.test(systemPrompt('hi')));
+  const c1 = fakeClaude([final({ answer: 'Take it two hours after a meal, with water, not with tea.', source: 'guides', guides_used: [IRON] })]);
+  const x1 = await setup({ claude: c1 }); await x1.acct('+919876543210', 1994, TOKEN);
+  const r1 = await send(x1, ask(not[0], { hints: [IRON] }));
+  const n1 = c1.calls[0].messages[c1.calls[0].messages.length - 1];
+  const c2 = fakeClaude([final({ answer: 'From the fourth month, one tablet a day, two hours after a meal.', source: 'guides', guides_used: [IRON] })]);
+  const x2 = await setup({ claude: c2 }); await x2.acct('+919876543210', 1994, TOKEN);
+  const r2 = await send(x2, ask(said[0] + '. How should I take my iron tablet?', { hints: [IRON] }));
+  const n2 = c2.calls[0].messages[c2.calls[0].messages.length - 1];
+  check('21 the note goes after her turn with the pregnancy guide the phone picked; when she says she is pregnant there is none, and pregnancy\'s facts come back in one call', n1.role === 'system' && /may or may not be pregnant/.test(n1.content) && r1.json.ok === true && c1.calls.length === 1 && !(n2.role === 'system' && /may or may not be pregnant/.test(n2.content)) && r2.json.ok === true && c2.calls.length === 1 && /fourth month/.test(r2.json.answer), { n1: n1.content, r2: r2.json });
+  const c3 = fakeClaude([final({ answer: 'Iron ki goli 4th mahine se roz ek lein. ' + AMARK, source: 'guides', guides_used: [IRON] }), final({ answer: 'Iron ki goli khane ke do ghante baad lein.\n- Pregnancy mein chauthe mahine se roz ek goli di jaati hai.', source: 'guides', guides_used: [IRON] })]);
+  const x3 = await setup({ claude: c3 }); await x3.acct('+919876543210', 1994, TOKEN);
+  const r3 = await send(x3, ask(not[1], { hints: [IRON] }));
+  const n3 = c3.calls[1] && c3.calls[1].messages[c3.calls[1].messages.length - 1];
+  check('21 an answer that gives pregnancy\'s facts as hers is tried once more, told why, and the careful answer comes back', c3.calls.length === 2 && !!n3 && /it spoke as if she were pregnant, though she has not said she is pregnant/.test(n3.content) && /Pregnancy mein/.test(n3.content) && r3.json.ok === true && !JSON.stringify(r3.json).includes(AMARK), r3.json);
+  const c4 = fakeClaude([toolCall([IRON]), final({ answer: 'Take it two hours after a meal, with water.', source: 'guides', guides_used: [IRON] })]);
+  const x4 = await setup({ claude: c4 }); await x4.acct('+919876543210', 1994, TOKEN);
+  const r4 = await send(x4, ask('which tablets should a woman take?'));
+  const tr = c4.calls[1] && c4.calls[1].messages[c4.calls[1].messages.length - 1];
+  const trText = tr && Array.isArray(tr.content) ? tr.content.map((b) => String(b.content || '')).join('\n') : '';
+  const c5 = fakeClaude([toolCall([IRON]), final({ answer: 'Take it two hours after a meal, with water.', source: 'guides', guides_used: [IRON] })]);
+  const x5 = await setup({ claude: c5 }); await x5.acct('+919876543210', 1994, TOKEN);
+  await send(x5, ask('I am pregnant. Which tablets should I take?'));
+  const tr5 = c5.calls[1] && c5.calls[1].messages[c5.calls[1].messages.length - 1];
+  const tr5Text = tr5 && Array.isArray(tr5.content) ? tr5.content.map((b) => String(b.content || '')).join('\n') : '';
+  check('21 a pregnancy guide the model reads itself carries the same line, unless she said she is pregnant', r4.json.ok === true && /The red tablet/.test(trText) && /may or may not be pregnant/.test(trText) && /The red tablet/.test(tr5Text) && !/may or may not be pregnant/.test(tr5Text), { trText: trText.slice(-300) });
 }
 
 const pass = results.filter((r) => r.pass).length;

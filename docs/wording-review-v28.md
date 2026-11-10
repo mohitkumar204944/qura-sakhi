@@ -4073,3 +4073,10 @@ checked one by one in advance: the doctors check the rules below and a sample.
 - **Version 40.5.2 (10 Nov):** the baby's-sex answer now opens with the law, for example "In India, finding out or choosing a baby's
   sex is against the law under the PCPNDT Act, so no doctor or scan centre may tell it." For the doctors and counsel: the line the
   AI is given (SERVER_SPEC 12.9).
+- **Version 40.5.3 (10 Nov):** a woman who hasn't said she is pregnant now gets a pregnancy guide's facts as pregnancy's ("In
+  pregnancy, one tablet a day from the fourth month"), not as hers. For the doctors, the line the AI is given (SERVER_SPEC 12.10) and
+  two things still open:
+  1. A question that only a pregnancy guide answers ("which check-ups and injections do I need?", "what is the sugar test?") is still
+     answered for pregnancy, said as pregnancy's. There is no guide for a woman who isn't pregnant.
+  2. "Free from your ANM", from the pregnancy tablets guide, sometimes reaches a woman who goes to her own doctor. In the full suite,
+     6 of 597 answers named the ANM or ASHA outside the government care cases, two of them about free iron tablets.

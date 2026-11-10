@@ -17,6 +17,9 @@
 //   - Version 40.5.1 (the scenario suite, server/scripts/chat-scenarios.mjs): a follow-up keeps the chat's subject (4 guides read first:
 //     the phone sends the last answer's), no "I can't choose a medicine" opening, no ibuprofen in pregnancy, no pill for a late
 //     period, a danger sign in a list says hospital now, and "don't take ibuprofen" passes the caution check;
+//   - Version 40.5.2: the baby's sex is refused with the law named first. Version 40.5.3: a guide written for pregnancy or the months
+//     after a birth, read while none of her messages says she is pregnant or has had a baby, is answered for any woman, with
+//     pregnancy's part said as that (a note after her turn, and a check that tries once more), and Sakhi's reminders are a yes;
 //   - it keeps nothing she wrote and nothing it answered: no table and no log line holds a word of either, only daily totals.
 
 import { GUIDES } from './guides.js';
@@ -153,6 +156,7 @@ export function systemPrompt(lang) {
     '## The Qura Sakhi app, as it is (never invent a menu, button or feature)',
     '- The tabs: Today (her day: her cycle, her next period\'s estimate, her plan\'s steps, "Period started"), My plan (her 12-week plan, and Wind down: slow breathing, yoga nidra, sleep sounds), Ask (this chat), Diary (the calendar, where she taps a day to log a period or a sign; Cycles; Days; and the "Report for my doctor"), Explore (the guides, search, tools, Care near me, Ask a doctor).',
     '- At the top: Help and safety (danger signs, the ambulance number) and Me (Reminders, where "My medicines" keeps her tablets, each with its reminder; the language; Where I get care; and privacy: a PIN lock, Discreet mode, Delete everything on this phone, Delete my account).',
+    '- Sakhi reminds her on her phone: each tablet in "My medicines" rings at the time she sets, and her plan\'s steps and evening check-in ring too. Asked whether Sakhi can remind her, the answer is yes, and where to set it.',
     '- "Ask a doctor" asks a Qura doctor to call her. Care near me lists free government centres by PIN code. While she tries for a baby, Today shows a fertile days estimate.',
     '- Sakhi is free. Her diary stays on her phone and works without internet; this chat, signing up and the doctor request need it.',
     '- You cannot see her diary, her dates, her logs or her plan. For her own next period, fertile days or past logs, say so and point her to Today or the Diary; never guess a date. Only a test can tell her whether she is pregnant.',
@@ -256,7 +260,7 @@ export function guideText(id, lang) {
   return ['Guide ' + id + ': ' + g.title[L], g.summary[L], ...g.body[L],
     (g.doctor[L].length ? (L === 'hi' ? 'डॉक्टर को कब दिखाएँ:' : 'When to see a doctor:') + '\n' + g.doctor[L].map((x) => '- ' + x).join('\n') : '')].filter(Boolean).join('\n');
 }
-function runTool(block, read, texts) {
+function runTool(block, read, texts, after) {
   const inp = block.input && typeof block.input === 'object' ? block.input : {};
   if (block.name !== 'read_guides') return { type: 'tool_result', tool_use_id: block.id, content: 'Unknown tool.', is_error: true };
   const ids = (Array.isArray(inp.ids) ? inp.ids : []).filter((x) => typeof x === 'string' && GUIDES[x]);
@@ -264,7 +268,9 @@ function runTool(block, read, texts) {
   if (!pick.length) return { type: 'tool_result', tool_use_id: block.id, content: 'No guide with that id. Use ids from the list in your instructions.', is_error: true };
   const out = pick.map((x) => guideText(x, inp.lang));
   pick.forEach((x, i) => { if (read.indexOf(x) < 0) read.push(x); texts.push(out[i]); });
-  return { type: 'tool_result', tool_use_id: block.id, content: out.join('\n\n---\n\n') };
+  /* Version 40.5.3: a pregnancy guide the model read itself carries the same note as one the phone picked */
+  const extra = after ? after(pick) : '';
+  return { type: 'tool_result', tool_use_id: block.id, content: out.join('\n\n---\n\n') + (extra ? '\n\n' + extra : '') };
 }
 
 /* Her conversation as the phone sends it: [{ role: 'user' | 'assistant', text }], oldest first. Anything else is refused; the
@@ -383,6 +389,48 @@ const LAW = /\b(law|laws|legal|illegal|crime|PCPNDT|kanoon|kanooni|kanuni|kanun|
 export const SEX_NOTE = 'She is asking about the baby\'s sex. Your first sentence says, in her language, that in India finding out or choosing the baby\'s sex is against the law (the PCPNDT Act), so no doctor or scan centre may tell it; then that no food, date or ritual decides it, and that what matters is a healthy pregnancy.';
 export const sexNote = (text) => (SEX_Q.test(String(text || '')) ? SEX_NOTE : '');
 export const lawOk = (her, answer) => !SEX_Q.test(String(her || '')) || LAW.test(String(answer || ''));
+/* Version 40.5.3 (Mohit, 10 Nov: "Yes, fix it", after the phone test: "can sakhi remind me to take my iron tablet" got pregnancy's
+   schedule, "once a day from the fourth month", though she had not said she was pregnant). The app never sends her stage, and the
+   phone picks guides by her words: "iron tablet" is the pregnancy tablets guide. Of the suite's 7 such questions, 6 were answered as
+   if she were pregnant ("which check-ups do I need?" got the four antenatal visits). So a guide written for pregnancy or the months
+   after a birth, read while none of her messages says she is pregnant or has had a baby, brings a note: answer for any woman, with
+   that guide's part said as pregnancy's. Her words for it in English, Hinglish and Hindi ("गर्भनिरोधक", contraception, and
+   "गर्भपात", abortion, are not). A name like Pragya is not either; a word it misses only means a note she didn't need. The baby
+   moving or kicking says it too ("baby is moving less today", "aaj baby kam hil raha hai", "आज बच्चा कम हिल रहा है": the suite's
+   first full run sent those the note). */
+const PREG_SAID = /\bpr[ae]ge?n|\bpr[ae]g\b|\bprego\b|\bexpecting\b|\btrimester|\bdue date\b|\bantenatal\b|\b(my|the|our) (baby|newborn|delivery)\b|\bbaby'?s\b|\bbaby('?s)? (is |was )?(not )?(mov|kick)|\bkick count|\bf(o|oe|e)tus|\bf(o|oe|e)tal\b|\b(baby|ba(cc?h?){1,2}a) (kam |nahi |nahin |zyada |bahut )?hil|\bpet (mein|me) (baby|ba(cc?h?){1,2}a)|\bhalchal\b|बच्चा[^।?]{0,12}हिल|बच्चे की (हलचल|हरकत)|हलचल|पेट में बच्चा|\bdeliver(ed|y)\b|\bgave birth\b|\bhad (a|my|the|our) baby\b|\bnew (mother|mom|mum)\b|\bc-?section\b|\bc(a|ae|e)sarean\b|\bpost-?partum\b|\bafter (the |my )?(birth|delivery)\b|\bbreast-?feed|\blactat|\bgarbh|\bpet se (hoon|hu|hun|hai|thi)\b|\b(baby|ba(cc?h?){1,2}a) (hone|hua|hui|paida)|\bprasav\b|\bdoodh pila|गर्भ(?!निरोध|पात)|प्रेग|प्रेंग|डिलीवरी|प्रसव|स्तनपान|दूध पिला|शिशु|बच्चे का जन्म|जन्म (के बाद|दिया|हुआ)|मेरा बच्चा|मेरे बच्चे/i;
+const pregGuide = (id) => !!(GUIDES[id] && GUIDES[id].group === 'pregnancy');
+export const pregSaid = (messages) => (messages || []).some((m) => !!m && m.role === 'user' && typeof m.content === 'string' && PREG_SAID.test(m.content));
+/* "a woman who may or may not be pregnant", said positively: "never as her own schedule" (the first wording) turned "can Sakhi
+   remind me?" into "Sakhi can't send reminders" in 2 of 3 runs */
+const IN_PREG = 'begun with "In pregnancy," (in Hindi "गर्भावस्था में", in Hinglish "Pregnancy mein")';
+/* (Tried and dropped: "one follow-up question lets her say she is pregnant" made the follow-ups "Am I pregnant? What next?", and "it
+   can say so" made one answer "Check-ups and injections are for pregnancy".) */
+export const STAGE_NOTE = 'She has not said she is pregnant or has had a baby. {t} about pregnancy and the months after a birth. Answer as for a woman who may or may not be pregnant: your first sentence holds for any woman, and pregnancy\'s part comes after it, ' + IN_PREG + '.';
+export function stageNote(messages, ids, about) {
+  if (about && pregGuide(about)) return '';
+  const g = (ids || []).filter(pregGuide);
+  if (!g.length || pregSaid(messages)) return '';
+  return STAGE_NOTE.replace('{t}', g.map((id) => '"' + GUIDES[id].title.en + '"').join(' and ') + (g.length > 1 ? ' are' : ' is'));
+}
+/* and the net under it (the note alone left Hindi copying "चौथे महीने से" from the Hindi guide in 3 runs of 3): with a pregnancy guide
+   read and nothing in her messages about a pregnancy or a baby, an answer that gives pregnancy's own facts (the fourth month, the
+   antenatal visits, the delivery, the 180 days after it) outside a sentence that says "in pregnancy" is tried once more, told why. A
+   first sentence that says it ("If you are pregnant, ...", "In pregnancy, ...") speaks for the points after it. A danger answer is
+   never held back for this: the hospital comes first.
+   Tried and dropped: also trying again a first sentence that opens with pregnancy, as the grader asked ("which check-ups do I
+   need?" got "In pregnancy, you need at least four check-ups"). Where a guide holds only pregnancy, the careful try then made up a
+   scope: "the sugar test ... is only needed if you are pregnant", "Check-ups and injections are for pregnancy". An answer framed as
+   pregnancy's is better than a wrong one. */
+const PREG_FACT = /\b(fourth|4th|fifth|5th) month|\b(4th|chauth[ae]|chautha) mahin|चौथे महीने|पाँचवें महीने|\bantenatal\b|\bafter the birth\b|\bdelivery\b|डिलीवरी|प्रसव|\btrimester|\bgestational\b|\bTd (injection|tetanus)|\b180 (days|din)\b|180 दिन/i;
+/* "pregnancy ke chauthe mahine se" (from pregnancy's fourth month) says it; "your pregnancy" and "aapki pregnancy" don't */
+const PREG_FRAME = /\bin pregnancy\b|\bduring pregnancy\b|\bof pregnancy\b|\bif you('re| are) pregnant\b|\bwhen (you('re| are) )?pregnant\b|\bpregnant wom[ae]n\b|(?<!(aapki|apni|tumhari|teri|your) )\bpregnancy (mein|me|ke|ki|ka)\b|\bpregnant ho\b|\bgarbhavastha (mein|me|ke)\b|(?<!(आपकी|अपनी|तुम्हारी) )गर्भावस्था (में|के|की)|गर्भवती (महिला|महिलाओं)|अगर (आप )?गर्भवती/i;
+export function stageOk(messages, read, about, answer, danger) {
+  if (danger || (about && pregGuide(about)) || !(read || []).some(pregGuide) || pregSaid(messages)) return true;
+  const sentences = String(answer || '').split(/\n+|(?<=[.!?।])\s+/).map((s) => s.replace(/^[-\s]+/, '')).filter(Boolean);
+  if (PREG_FRAME.test(sentences[0] || '')) return true;
+  return !sentences.some((s) => PREG_FACT.test(s) && !PREG_FRAME.test(s));
+}
 
 export function answerTap() {
   /* Version 40.3: the first sentence ("answer"), then each point as a "- " line, as they are written (the schema keeps this order).
@@ -469,7 +517,8 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
        that mixed Hinglish and English, an English question got Hinglish follow-ups), and on the careful try, why the last answer
        was held back */
     const herLast = String(messages[messages.length - 1].content || '');
-    const notes = [CARE_NOTE[picks.care] || '', replyNote(herLast), medNote(herLast), ecNote(herLast), sexNote(herLast), note].filter(Boolean);
+    const notes = [CARE_NOTE[picks.care] || '', replyNote(herLast), medNote(herLast), ecNote(herLast), sexNote(herLast), stageNote(messages, picks.ids, picks.about), note].filter(Boolean);
+    const stageAfter = (ids) => stageNote(messages, ids.filter((x) => picks.ids.indexOf(x) < 0), picks.about);
     if (notes.length) convo.push({ role: 'system', content: notes.join('\n\n') });
     let blocked = false;
     for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
@@ -495,7 +544,7 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
         if (!calls.length) return { kind: 'error', why: 'tool_use_empty', use };
         if (sent && emit) emit({ type: 'reset' });   /* text before a tool call was not the answer */
         convo.push({ role: 'assistant', content: msg.content });   /* the whole content, thinking blocks too, unchanged */
-        convo.push({ role: 'user', content: calls.map((b) => runTool(b, read, texts)) });
+        convo.push({ role: 'user', content: calls.map((b) => runTool(b, read, texts, stageAfter)) });
         continue;
       }
       if (stop !== 'end_turn') return { kind: 'error', why: String(stop || 'none'), use };
@@ -506,6 +555,8 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
       if (!cautionOk(out.answer)) return { kind: 'blocked', why: 'caution', use };
       if (!numbersOk(out.answer)) return { kind: 'blocked', why: 'phone', use };
       if (!note && !lawOk(String(messages[messages.length - 1].content || ''), out.answer)) return { kind: 'blocked', why: 'law', use };
+      /* Version 40.5.3: pregnancy's facts as hers, when she hasn't said she is pregnant; the careful try keeps its answer */
+      if (!note && !stageOk(messages, read, picks.about, out.answer, out.danger)) return { kind: 'blocked', why: 'stage', use };
       /* the careful try keeps its answer even if a word slips into the other script: a mixed answer beats none */
       if (!note && !scriptOk(String(messages[messages.length - 1].content || ''), out.answer + '\n' + out.follow_ups.join('\n'))) return { kind: 'blocked', why: 'script', use };
       if (out.source === 'guides' && !out.guides.length) out.source = 'general';   /* Version 40.2.1: "From Sakhi's guides" names its guides */
@@ -517,6 +568,8 @@ export function createChat({ store, claude, env, now = () => Date.now(), log = (
 
   /* The first try, and one careful try when a safety net held it back: thinking on, and told why. The usage of both is counted. */
   const RETRY_NOTE = {
+    /* Version 40.5.3 */
+    stage: 'Your last answer was held back because it spoke as if she were pregnant, though she has not said she is pregnant or has had a baby. Answer her again as for a woman who may or may not be pregnant: your first sentence holds for any woman, and pregnancy\'s part comes after it, ' + IN_PREG + '.',
     safe_days: 'Your last answer was held back because it used the words "safe days" or "safe period", which Sakhi never uses. Answer her again without those words: say that no day is free of pregnancy risk, and point her to contraception and her doctor.',
     dose: 'Your last answer was held back because it gave a dose that none of the guides you read gives. Answer her again without any dose: say how the guides say to take it, or to ask a pharmacist or doctor for the dose.',
     /* Version 40.5 */

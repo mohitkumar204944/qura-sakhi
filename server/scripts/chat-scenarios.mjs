@@ -82,8 +82,11 @@ if (GO) {
   const Anthropic = m.Anthropic || m.default || m;
   client = new Anthropic({ apiKey: key, timeout: 60_000, maxRetries: 3 });
   const store = { sessionAccount: async () => ({ id: 'scenarios', birth_year: 1990 }), hit: async () => 1, dayCount: async () => 0, bump: async () => {} };
-  chat = createChat({ store, claude: (p) => client.messages.create(p), env: { SAKHI_CHAT_ACCT_DAY_MAX: '100000', SAKHI_CHAT_DAY_MAX: '100000' }, log: () => {} });
+  chat = createChat({ store, claude: (p) => client.messages.create(p), env: { SAKHI_CHAT_ACCT_DAY_MAX: '100000', SAKHI_CHAT_DAY_MAX: '100000' }, log: (ev, o) => { if (ev === 'chat_retry') { const k = (o && o.why) || '?'; RETRIES[k] = (RETRIES[k] || 0) + 1; } } });
 }
+/* Version 40.5.3: the careful tries by the safety net that asked for them (stage, script, law, caution, ...) */
+const RETRIES = {};
+const retryLine = () => Object.keys(RETRIES).sort().map((k) => k + ' ' + RETRIES[k]).join(', ') || 'none';
 const PRICE = { haiku: { in: 0.10, write: 0.125, cached: 0.01, out: 0.50 }, sonnet: { in: 2, write: 2.5, cached: 0.2, out: 10 } };
 const spend = { haiku: 0, sonnet: 0 };
 const cost = (p, u) => (u.in * p.in + u.write * p.write + u.cached * p.cached + u.out * p.out) / 1e6;
@@ -224,6 +227,7 @@ const md = [
   '- Chats: ' + chats.length + '; answers: ' + rows.length + ', answered ' + answered.length + '.',
   JUDGE ? '- Grader: major ' + sev.major + ', minor ' + sev.minor + ', none ' + sev.none + (sev.error ? ', grader errors ' + sev.error : '') + '.' : '',
   '- Checks: ' + (Object.keys(flagCount).sort().map((k) => k + ' ' + flagCount[k]).join(', ') || 'none') + '.',
+  '- Careful tries (a safety net held the first answer back): ' + retryLine() + '.',
   '- Cost: Haiku US$' + spend.haiku.toFixed(3) + (JUDGE ? ', Sonnet US$' + spend.sonnet.toFixed(3) : '') + '. Time: ' + Math.round((Date.now() - t0) / 1000) + ' s.', '',
   JUDGE ? '| Turn | Answers | Major | Minor |\n|---|---|---|---|\n' + Object.keys(byStep).sort().map((k) => '| ' + k + ' | ' + byStep[k].n + ' | ' + byStep[k].major + ' | ' + byStep[k].minor + ' |').join('\n') + '\n\n| Language | Answers | Major | Minor |\n|---|---|---|---|\n' + Object.keys(byLang).map((k) => '| ' + k + ' | ' + byLang[k].n + ' | ' + byLang[k].major + ' | ' + byLang[k].minor + ' |').join('\n') : '', '',
   '## Every answer with an issue', '',
@@ -234,4 +238,5 @@ fs.mkdirSync(path.dirname(OUT_MD), { recursive: true });
 fs.writeFileSync(OUT_MD, md);
 console.log('answers ' + rows.length + ' (answered ' + answered.length + ') · checks: ' + (Object.keys(flagCount).sort().map((k) => k + ' ' + flagCount[k]).join(', ') || 'none') + (JUDGE ? ' · grader: major ' + sev.major + ', minor ' + sev.minor + ', none ' + sev.none + (sev.error ? ', errors ' + sev.error : '') : '') + ' · Haiku US$' + spend.haiku.toFixed(3) + (JUDGE ? ' Sonnet US$' + spend.sonnet.toFixed(3) : '') + ' · ' + Math.round((Date.now() - t0) / 1000) + ' s');
 if (JUDGE) { console.log('by turn: ' + Object.keys(byStep).sort().map((k) => k + ' ' + byStep[k].major + '/' + byStep[k].n).join(', ')); console.log('by language: ' + Object.keys(byLang).map((k) => k + ' ' + byLang[k].major + '/' + byLang[k].n).join(', ')); }
+console.log('careful tries: ' + retryLine());
 console.log('report: ' + OUT_MD);

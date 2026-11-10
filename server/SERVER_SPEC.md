@@ -882,3 +882,47 @@ naming the law.
 
 On the real model: the 3 baby's-sex questions, 4 runs each, named the law in the first sentence 12 of 12 times, with no retry
 needed. The myths are unchanged. The doctors' 35 are all answered; the language chats 4 of 4. `server/test/chat.test.mjs`: 246 checks.
+
+### 12.10 Version 40.5.3 (10 Nov): a pregnancy guide, while she hasn't said she is pregnant
+
+Mohit, 10 Nov: "Yes, fix it". On the phone, "can sakhi remind me to take my iron tablet" got pregnancy's schedule ("once a day from
+the fourth month"), though she hadn't said she was pregnant. The app never sends her stage. The phone picks guides by her words,
+and for "iron tablet" it picks the pregnancy tablets guide.
+
+- **`stageNote`, the note after her turn.** It is added when two things are true:
+  - a guide in the pregnancy group (pregnancy and the months after a birth) is read;
+  - none of her messages says she is pregnant or has had a baby. `PREG_SAID` lists her words for that in English, Hinglish and
+    Hindi: pregnant, garbh, गर्भवती, delivery, breastfeeding, the baby moving or kicking. It does not count गर्भनिरोधक
+    (contraception), गर्भपात (abortion) or a name like Pragya.
+
+  The note says to answer as for a woman who may or may not be pregnant: the first sentence holds for any woman, and pregnancy's
+  part comes after it, begun with "In pregnancy," ("गर्भावस्था में", "Pregnancy mein"). A pregnancy guide the model reads itself
+  through `read_guides` carries the same line. Nothing changes when she opened the chat from a pregnancy guide.
+- **`stageOk`, a check with one more try.** An answer that still gives pregnancy's own facts outside a sentence that says "in
+  pregnancy" is tried once more, and the careful try is told why. Those facts are the fourth month, the antenatal visits, the
+  delivery, and the 180 days after it. A first sentence that says it ("If you are pregnant, ...", "In pregnancy, ...") covers the
+  points after it. An answer marked as a danger sign is never held back for this, so the hospital comes first.
+- **Reminders.** The instructions now say Sakhi reminds her: each tablet in "My medicines" rings at the time she sets, and her
+  plan's steps and evening check-in ring too. With a note after her turn, "can Sakhi remind me?" had been answered "Sakhi can't send
+  reminders" 3 times out of 3.
+- **Tried and dropped:**
+  - "One follow-up question lets her say she is pregnant" made the follow-ups "Am I pregnant? What next?".
+  - Trying again any answer whose first sentence opens with pregnancy, as the grader asked, made things worse. Where a guide holds
+    only pregnancy, the careful try made up a scope: "the sugar test ... is only needed if you are pregnant", and "Check-ups and
+    injections are for pregnancy".
+- **The suite counts careful tries.** `chat-scenarios.mjs` now counts them by the net that asked for them. The case bank has 12
+  `stage-*` cases: 7 where she hasn't said she is pregnant, and 5 where she has (in English, Hinglish and Hindi, one after a birth,
+  and one said in an earlier turn).
+
+On the real model, the 7 cases where she hasn't said she is pregnant:
+- Before the change, 5 of 7 gave pregnancy's facts as hers. These were the Hindi and Hinglish iron answers ("चौथे महीने से", "4th
+  mahine se"), "which check-ups do I need?" (the four antenatal visits), the sugar test, and the reminder's "delivery".
+- With the final code, 0 of 21, across two runs of the 12 cases and the full suite. The 5 cases where she has said it keep
+  pregnancy's facts.
+- Every reminder answer says "Yes, Sakhi can remind you".
+
+The sugar test and "which check-ups" still lead with pregnancy, said as pregnancy's. No guide covers them for a woman who isn't
+pregnant (wording review 19.90, addendum 40.5.3).
+
+The full suite (597 answers, graded): major 84, within the last runs' 76 to 85. The medicine follow-ups are unchanged (40 of 57,
+before 39 and 39). Careful tries for this: 1 in 597. `server/test/chat.test.mjs`: 253 checks.
