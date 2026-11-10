@@ -978,3 +978,10 @@ Found on the way, in the app, not the chat server: the phone's danger check show
 `chatDangerKey` is Help's urgent signs, plus pregnancy's danger words while she is pregnant, with no after-birth branch. Search's
 card uses the same urgent signs. The chat's own rule does name "fever or heavy bleeding after a birth"; 1 answer in 5 said "a
 doctor today".
+It is being fixed in the main app as Version 39.91 (branch `fix/urgent-after-birth`, MODULE_API 73.2): `urgentQ` returns
+`post_u_1`, the after-birth page's own line. This branch takes it when Mohit says so; `chatUrgCard` then needs to show that line
+too, as it shows only `s1*` lines today.
+
+Deployed by Mohit at 20:52 IST on 10 Nov (function version 13), from a copy of commit 4e61c84 (all four files match). The live
+checks pass: CORS 204, a made-up token 401 (with `care` too), a `diary` field 400, a wrong care word 400. The phone test against
+it waits for the Ask test app to be signed in again.
