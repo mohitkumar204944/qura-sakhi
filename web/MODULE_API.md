@@ -4884,6 +4884,58 @@ with the danger guide for "बच्चे की हलचल बहुत क�
 
 Test: `web/test/urgent.mjs` (60 checks; the new ones are marked Version 39.89). No new wording.
 
+### 73.2 Version 39.91: heavy bleeding after a birth
+
+Found on 10 Nov by the Ask Sakhi scenario suite (`server/scripts/chat-scenarios.mjs` on the branch `feat/ask-sakhi-prototype`): "I delivered
+5 days ago and I'm soaking a pad every hour" showed no card in search unless she also said she felt dizzy. The chat reads the same check,
+so it showed none either. Help's own signs have no after-birth one, but the after-birth page (`post`) has it.
+
+**The card:** `urgentQ` returns `post_u_1`. This comes after `s1d`, `s1a` and `s1b`, so bleeding with dizziness still shows Help's `s1b`.
+`urgentCard` shows:
+- Help's heading (`call_now`);
+- the after-birth page's line, which sits under that same heading on the page (`post_u_1`: "You soak a pad in an hour, or pass clots
+  egg-sized or bigger", in English and Hindi from `mods/post.js`);
+- her ambulance (`ambBtn`: 108, or 102 in pregnancy) and Help and safety.
+It shows only once post.js has loaded (`STR.en.post_u_1`).
+
+**When:** either of two contexts, and the sign.
+- **She is after a birth:** `afterBirthNow()`, a birth in the last year with no period since. The after-birth page shows the line for
+  that year.
+- **Or her words say a birth** (`URG_BIRTH`), for her or for someone else (a sister, a daughter-in-law):
+  - English: "after delivery", "after the birth", "after my c-section", "delivered", "gave birth", "had a baby", "postpartum";
+  - Hinglish: "delivery ke baad", "delivery hui", "baby hone ke baad", "janam ke baad", "prasav ke baad";
+  - Hindi: "डिलीवरी के बाद", "डिलीवरी हुई", "प्रसव के बाद", "जन्म के बाद", "बच्चा हुआ", "सिजेरियन के बाद";
+  - not "birth control", and not a birth years ago ("2 years ago", "2 saal pehle", "last year", `URG_YEARS`). Her age ("25 saal")
+    doesn't matter.
+- **The sign, in her words** (`birthBleedQ`), one of:
+  - a pad soaked, full or changed within an hour (`URG_PAD_HR` with `URG_SOAK`): "every hour", "in an hour", "half an hour", "1 to 2
+    hours", "30 minutes", "har ghante", "ek ghante mein", "aadhe ghante", "हर घंटे", "एक घंटे में". A breast or nursing pad, or milk
+    beside the pad (`URG_MILKPAD`), doesn't count unless she names blood;
+  - clots called big or egg-sized (`URG_CLOTS`): "big clots", "clots the size of an egg", "bade bade thakke", "बड़े थक्के", "अंडे जितने";
+  - bleeding called heavy (`URG_HEAVY`): "heavy bleeding", "bleeding a lot", "bahut bleeding", "khoon bahut aa raha", "बहुत ज़्यादा
+    ब्लीडिंग". Not when she negates it ("zyada nahi", "not heavy", `URG_NEG`), and not for a blood test ("khoon ki kami", through
+    `DANGER_LAB` as before).
+- **Not this sign:**
+  - bleeding after a birth alone ("how long does bleeding last after delivery");
+  - clots not called big;
+  - a pad every 2 or 4 hours;
+  - heavy periods ("my periods are heavy since I gave birth");
+  - a fever after a birth. The after-birth page says "today" for it (`post_fl_fever`), not "now".
+
+**Unchanged:**
+- Help's page and its lines;
+- the pregnancy rules (`dangerQ`, the danger guide first);
+- the results and their order;
+- a pregnancy's bleeding without dizziness still shows no card. In pregnancy the danger guide leads, as in section 73.
+
+Test: `web/test/urgent.mjs`, section 6 (129 checks in all, 69 of them new). Section 6 covers:
+- the four phrasings that missed, and their near misses, for a woman after a birth and for words alone;
+- 102 in pregnancy;
+- the same line on the after-birth page;
+- Learn's search;
+- Hindi at 360 px.
+No new wording (review section 19.30.1).
+
 ## 74. Version 39.31: the Cykel traps
 
 Mohit, 28 Oct, after walking a competitor tracker ("build the trap suite first"). That app showed "Fertile window" and a

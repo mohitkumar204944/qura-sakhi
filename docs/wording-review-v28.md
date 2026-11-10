@@ -2455,6 +2455,31 @@ One question for the doctor: these two signs show a card only together with dizz
 late period, one-sided or shoulder pain). Bleeding alone, or dizziness alone, shows the normal results. Is that the right line,
 or should heavy bleeding alone ("a pad every 1–2 hours") show Help's "See a doctor today if" card as well?
 
+#### 19.30.1 Version 39.91: heavy bleeding after a birth (MODULE_API section 73.2)
+
+No new wording. A line already on the after-birth page now also appears above Explore's and Learn's search results. The line sits under
+the same heading on that page: "Go to the nearest hospital now if" with "You soak a pad in an hour, or pass clots egg-sized or bigger" /
+"अभी सबसे पास के अस्पताल जाएँ अगर" with "एक घंटे में पैड भीग जाए, या अंडे जितने या बड़े थक्के निकलें". It comes with her ambulance (108, or
+102 in pregnancy) and "Help and safety".
+
+When it shows:
+- She is after a birth, or her words say one (hers, a sister's or a daughter-in-law's).
+- Her words also give the sign:
+  - a pad soaked within an hour, 1 to 2 hours or minutes;
+  - clots called big or egg-sized;
+  - bleeding called heavy.
+- Bleeding with dizziness still shows Help's own line ("Soaking a pad every 1–2 hours and feeling dizzy or breathless").
+
+Three points for the doctors to glance at:
+1. Bleeding she calls heavy ("bahut bleeding ho rahi hai") shows the card even without "an hour". The card's line says when to go now, so
+   it reads as the threshold. The recovery check says "Bleeding heavier than a heavy period: see a doctor today. Soaking a pad in an hour:
+   go to the nearest hospital." Is the card right for heavy bleeding in her words?
+2. A fever after a birth shows no card, because the after-birth page says "Go to your PHC, CHC or hospital today". The Ask Sakhi chat
+   prototype's rule says "hospital now" for fever after a birth. Which should both follow? This is the same open point as the chat's
+   fever-after-birth wording.
+3. For a woman marked after a birth, it shows for her first year while no period has come back, as the after-birth page does.
+   Is a year right, or should it be 12 weeks?
+
 ### 19.32 Version 39.32: Getting ready for a baby, the full plan (MODULE_API section 75)
 
 Built on 28 Oct 2026 (Mohit: "Build this plan personalised to users who are planning for a baby"). Every line of the plan is in
