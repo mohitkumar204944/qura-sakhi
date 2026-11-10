@@ -926,3 +926,7 @@ pregnant (wording review 19.90, addendum 40.5.3).
 
 The full suite (597 answers, graded): major 84, within the last runs' 76 to 85. The medicine follow-ups are unchanged (40 of 57,
 before 39 and 39). Careful tries for this: 1 in 597. `server/test/chat.test.mjs`: 253 checks.
+
+Deployed by Mohit at 15:04 IST on 10 Nov (function version 12). The live checks pass: CORS 204, a made-up token 401 (with `care`
+too), a `diary` field 400, a wrong care word 400. The phone test (`web/test/ask-phone.mjs`) now also checks that the iron-tablet
+reminder answer gives no pregnancy facts as hers, and that it never says Sakhi can't remind her.

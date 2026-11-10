@@ -741,7 +741,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       without `--go`, the phone's picks only, free). It counts the careful tries by the net that asked for them. Run it after a change
       to the instructions, the picks or the guides.
     - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live
-      server, each answer read back from the screen reader's tree and checked by rule (34 checks; 34 of 34 on 10 Nov, vc 162, function v11). It clears
+      server, each answer read back from the screen reader's tree and checked by rule (35 checks since Version 40.5.3, which added "no pregnancy facts as hers" on the iron-tablet reminder; 34 of 34 on 10 Nov, vc 162,
+      function v11). It clears
       the chat first; the phone must be awake and unlocked. `input text` types Latin letters only, so the Hindi chat starts from the
       empty chat's Hindi example and goes on with a Hindi follow-up the answer offers.
     After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain or
