@@ -9,7 +9,7 @@
 //   4 the answer: its text (escaped, with its list), where it came from, the guides and Sakhi screens it names, Listen, and "See a
 //     doctor" under the latest answer;
 //   5 a danger sign she types: Help's hospital card above the chat while the answer is still coming, the right ambulance number;
-//     in pregnancy; and when Sakhi's answer finds one;
+//     in pregnancy; and when Sakhi's answer finds one; Versions 39.91 and 39.92: after a birth, and a pregnancy in her words;
 //   6 when Sakhi can't answer: resting (429), refused, offline, Try again; a 401 never signs her out;
 //   7 her chat on her phone: kept after a reload, Clear with Undo; discreet mode's plain title and PIN; Firebase off;
 //   8 search: "Ask Sakhi" when nothing matches, and "Didn't find it?" under results, carrying her words;
@@ -230,6 +230,21 @@ const view = (page) => page.evaluate(() => {
   v = await view(p.page);
   check('5 in pregnancy, its danger words: the card with 102 and the danger-signs guide', v.urg === 'p' && v.tels.join() === 'tel:102' && await p.page.evaluate(() => !!document.querySelector('.chat-urg [data-ans="pregnancy.danger-signs-call-112"]')), v);
   await done(p);
+  /* Versions 39.91 and 39.92 (10 Nov): heavy bleeding after a birth, and a pregnancy now in her words, hers or her sister's */
+  const w = await open({ at: 'ask-sakhi' });
+  await accept(w.page); await ask(w, 'I delivered 5 days ago and I am soaking a pad every hour');
+  v = await view(w.page);
+  check('5 after a birth, in her words: the card with the after-birth page\'s line and 108', v.urg === 'post_u_1' && v.tels.join() === 'tel:108' && await w.page.evaluate(([u]) => (document.querySelector('.chat-urg .su-sign') || {}).innerText === u, [await t(w.page, 'post_u_1')]), v);
+  await ask(w, 'my sister is 7 months pregnant and had a fit');
+  v = await view(w.page);
+  check('5 her sister\'s pregnancy, not hers: the pregnancy card with the danger-signs guide', v.urg === 'p' && v.tels.join() === 'tel:108' && await w.page.evaluate(() => !!document.querySelector('.chat-urg [data-ans="pregnancy.danger-signs-call-112"]')), v);
+  await ask(w, 'मेरी बहन 7 महीने की प्रेग्नेंट है, उसे दौरा पड़ा');
+  check('5 the same in Hindi', (await view(w.page)).urg === 'p');
+  for (const q of ['how to get pregnant, I have some spotting', 'kya main pregnant hoon, bleeding ho rahi hai', 'in my last pregnancy I had bleeding']) {
+    await ask(w, q);
+    check('5 not a pregnancy now ("' + q + '"): no card', (await view(w.page)).urg === '');
+  }
+  await done(w);
   const s = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ answer: 'Please go to the nearest hospital now.', danger: true, screens: ['help'] }) }) });
   await accept(s.page); await ask(s, 'my stomach hurts a lot and I feel cold and weak');
   v = await view(s.page);

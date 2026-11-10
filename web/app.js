@@ -1771,8 +1771,9 @@
   const chatData = () => { if (!state.chat || typeof state.chat !== 'object') state.chat = { msgs: [] }; if (!Array.isArray(state.chat.msgs)) state.chat.msgs = []; return state.chat; };
   /* the same rule as the server's: ten digits or more is a phone number (a date stays), and anything shaped like an email */
   const scrubPii = (s) => String(s).replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]').replace(/\+?\d[\d\s().-]{8,}\d/g, (m) => (m.replace(/\D/g, '').length >= 10 ? '[number]' : m));
-  /* Help's signs as search reads them (Version 39.30), and in pregnancy the danger words too ('p') */
-  const chatDangerKey = (q) => urgentQ(q) || (isPregnant() && dangerQ(q) ? 'p' : null);
+  /* Help's signs as search reads them (Version 39.30; Version 39.91: heavy bleeding after a birth, post_u_1), and pregnancy's danger
+     words ('p') while her diary says she is pregnant or her words say someone is pregnant now (Version 39.92, inside dangerQ) */
+  const chatDangerKey = (q) => urgentQ(q) || (dangerQ(q) ? 'p' : null);
   /* when Sakhi can't answer: the guides Explore's search would show for her words, best first */
   /* When Sakhi can't answer: the guides Explore's search would list for her words (any word that matches) */
   const chatLooseGuides = (q) => { const terms = searchTerms(q); if (!terms.length) return []; const ranked = allArticles().map((a) => ({ a: a, n: score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) })).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a); return dangerFirst(q, ranked).slice(0, 3).map((a) => a.group + '.' + a.id); };
@@ -1878,10 +1879,10 @@
     ls.forEach((l) => { const li = /^[-•*]\s+/.test(l); if (li) ul += '<li>' + esc(l.replace(/^[-•*]\s+/, '')) + '</li>'; else { if (ul) { out += '<ul>' + ul + '</ul>'; ul = ''; } out += '<p>' + esc(l) + '</p>'; } });
     return out + (ul ? '<ul>' + ul + '</ul>' : '');
   }).join('');
-  /* Help's hospital card, as search shows it: her sign in Help's words (s1a, s1b, s1d), or the heading alone for a pregnancy danger
-     word ('p', with the danger-signs guide) or a sign Sakhi's answer found ('s') */
+  /* Help's hospital card, as search shows it: her sign in Help's words (s1a, s1b, s1d) or the after-birth page's (post_u_1, Version
+     39.91), or the heading alone for a pregnancy danger word ('p', with the danger-signs guide) or a sign Sakhi's answer found ('s') */
   const chatUrgCard = (k) => { const da = k === 'p' ? findArticle(DANGER_ART) : null;
-    return '<section class="card srch-urg chat-urg" data-urg="' + esc(k) + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t('call_now')) + '</h2></div>' + (/^s1[a-z]$/.test(k) ? '<p class="su-sign">' + esc(t(k)) + '</p>' : '') +
+    return '<section class="card srch-urg chat-urg" data-urg="' + esc(k) + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t('call_now')) + '</h2></div>' + (/^(s1[a-z]|post_u_1)$/.test(k) ? '<p class="su-sign">' + esc(t(k)) + '</p>' : '') +
       '<div class="su-btns">' + ambBtn('primary') + '<button type="button" class="btn danger" data-go="help">' + esc(t('help_h')) + '</button>' + (da ? '<button type="button" class="btn" data-ans="' + esc(DANGER_ART) + '">' + esc(L(da, 'title')) + '</button>' : '') + '</div></section>'; };
   /* "See a doctor", as search offers it when nothing matches (Version 39.77: a Qura doctor, a free government doctor, or both) */
   const chatDocBtns = (q) => { const w = docWho('search'); return '<div class="row wrap chat-doc">' + (w !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(String(q || '').slice(0, 120)) + '">' + esc(t('ask_qura')) + '</button>' : '') + (w !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div>'; };

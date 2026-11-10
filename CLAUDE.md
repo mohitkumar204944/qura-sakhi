@@ -742,6 +742,8 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       woman until her own messages say she is pregnant or has had a baby (a note and a check, SERVER_SPEC 12.10).
       Version 40.5.4: a guide's PMOS advice is "If you have PMOS" until she says she has it, a worry that someone reads her diary
       gets the PIN lock, and a careful try is told those rules again (SERVER_SPEC 12.11).
+      Versions 39.91 and 39.92 in the chat: Help's card shows the after-birth page's line for heavy bleeding after a birth, and the
+      pregnancy card shows for a pregnancy now in her words, a sister's too (MODULE_API 132.7).
     - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (597 answers, graded by Sonnet 5.5, about US$1.70;
       without `--go`, the phone's picks only, free). It counts the careful tries by the net that asked for them. Run it after a change
       to the instructions, the picks or the guides.

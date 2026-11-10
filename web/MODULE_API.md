@@ -8553,3 +8553,17 @@ then "test all kind of usecases not just medicine answers" (the server's part: S
 - `api.chat.hints(q, about, prev)`.
 
 Test: `web/test/chat.mjs` (162 checks; section 19). The scenario suite behind it: SERVER_SPEC 12.8.
+
+### 132.7 Versions 39.91 and 39.92 in the chat (10 Nov): her card after a birth, and a pregnancy in her words
+
+The chat reads the same check as search (sections 73.2 and 73.3), so both reach it:
+- Heavy bleeding after a birth gives `post_u_1`. `chatUrgCard` shows its line under the heading, as it shows Help's `s1*` lines.
+- `chatDangerKey` gives the pregnancy card (`p`, with the danger-signs guide) whenever `dangerQ` holds. That is when her diary says she
+  is pregnant, or when her words say someone is pregnant now: "my sister is 7 months pregnant and had a fit".
+- The ambulance stays her own: 108, or 102 while her diary says she is pregnant.
+- Trying, asking whether she is pregnant, and a past pregnancy show no card.
+
+Test: `web/test/chat.mjs`, section 5. It checks:
+- the after-birth line with 108;
+- her sister's pregnancy in English and Hindi;
+- three questions that are not a pregnancy now, with no card.
