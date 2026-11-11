@@ -211,9 +211,14 @@ fi
 
 # 4. The APK, signed with the prototype key (made once and kept next to this script), then checked.
 if [ ! -f sakhi-prototype.keystore ]; then   # only with NEW_KEYSTORE=1 (checked above)
-  # a new key gets a random password, kept in the keychain first (a key whose password was lost would be no use)
-  SAKHI_PROTO_PASS="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"; export SAKHI_PROTO_PASS
-  security add-generic-password -U -s "Qura Sakhi prototype key" -a sakhi -j "Prototype signing key for Qura Sakhi testers' APKs (android/sakhi-prototype.keystore)" -w "$SAKHI_PROTO_PASS"
+  # a new key: SAKHI_PROTO_PASS if given (keep it safe), otherwise a random password kept in the Mac's keychain first
+  # (a key whose password was lost would be no use)
+  if [ -z "$SAKHI_PROTO_PASS" ]; then
+    SAKHI_PROTO_PASS="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"
+    security add-generic-password -U -s "Qura Sakhi prototype key" -a sakhi -j "Prototype signing key for Qura Sakhi testers' APKs (android/sakhi-prototype.keystore)" -w "$SAKHI_PROTO_PASS" \
+      || { echo "Couldn't keep the new password in the keychain: set SAKHI_PROTO_PASS yourself."; exit 1; }
+  fi
+  export SAKHI_PROTO_PASS
   keytool -genkeypair -keystore sakhi-prototype.keystore -storetype PKCS12 -storepass:env SAKHI_PROTO_PASS -keypass:env SAKHI_PROTO_PASS -alias sakhi \
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Qura Sakhi prototype, O=Trinaya Wellness LLP, C=IN" >/dev/null 2>&1
 fi
