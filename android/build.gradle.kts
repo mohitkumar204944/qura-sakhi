@@ -37,9 +37,11 @@ android {
         assets.setSrcDirs(listOf("build/assets"))
     }
     signingConfigs {
-        // the prototype key for testers' APKs; the upload key for Google Play (its password from the keychain, never a file)
+        // the prototype key for testers' APKs and the upload key for Google Play: both passwords from the environment, which
+        // build-apk.sh fills from the Mac's keychain, never from a file in git
         create("proto") {
-            storeFile = file("sakhi-prototype.keystore"); storePassword = "android"; keyAlias = "sakhi"; keyPassword = "android"
+            storeFile = file("sakhi-prototype.keystore"); keyAlias = "sakhi"
+            storePassword = System.getenv("SAKHI_PROTO_PASS"); keyPassword = System.getenv("SAKHI_PROTO_PASS")
             enableV2Signing = true; enableV3Signing = true; enableV4Signing = true   // as apksigner signed them before Version 39.79
         }
         create("upload") {

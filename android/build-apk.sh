@@ -93,6 +93,12 @@ if [ "$PLAY" = "1" ]; then
 elif [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
   echo "sakhi-prototype.keystore is missing. Every update for testers must be signed with the same key: restore it from your"
   echo "backup. Only for a first build that no phone has yet, run again with NEW_KEYSTORE=1."; exit 1
+elif [ -f sakhi-prototype.keystore ]; then
+  # The prototype key's password: SAKHI_PROTO_PASS, or the Mac's keychain item "Qura Sakhi prototype key" (as the upload key's).
+  # Never in git, never on the command line.
+  [ -n "$SAKHI_PROTO_PASS" ] || SAKHI_PROTO_PASS="$(security find-generic-password -s "Qura Sakhi prototype key" -a sakhi -w 2>/dev/null || true)"
+  [ -n "$SAKHI_PROTO_PASS" ] || { echo "No password for the prototype key: set SAKHI_PROTO_PASS, or unlock the keychain item \"Qura Sakhi prototype key\"."; exit 1; }
+  export SAKHI_PROTO_PASS
 fi
 # One count for both: the last APK built here, and the last bundle for Play (Play refuses a version code it already has).
 for LASTF in QuraSakhi-prototype.apk QuraSakhi-ask-prototype.apk build-play/last.apk; do
@@ -205,7 +211,10 @@ fi
 
 # 4. The APK, signed with the prototype key (made once and kept next to this script), then checked.
 if [ ! -f sakhi-prototype.keystore ]; then   # only with NEW_KEYSTORE=1 (checked above)
-  keytool -genkeypair -keystore sakhi-prototype.keystore -storepass android -keypass android -alias sakhi \
+  # a new key gets a random password, kept in the keychain first (a key whose password was lost would be no use)
+  SAKHI_PROTO_PASS="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"; export SAKHI_PROTO_PASS
+  security add-generic-password -U -s "Qura Sakhi prototype key" -a sakhi -j "Prototype signing key for Qura Sakhi testers' APKs (android/sakhi-prototype.keystore)" -w "$SAKHI_PROTO_PASS"
+  keytool -genkeypair -keystore sakhi-prototype.keystore -storetype PKCS12 -storepass:env SAKHI_PROTO_PASS -keypass:env SAKHI_PROTO_PASS -alias sakhi \
     -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Qura Sakhi prototype, O=Trinaya Wellness LLP, C=IN" >/dev/null 2>&1
 fi
 rm -rf "$OUT/apk"

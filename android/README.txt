@@ -38,9 +38,11 @@ What is in here
   res/                    Icon and light/dark themes. The icon is Sakhi's logo (Mohit, 6 Nov 2026), icon-src/sakhi-logo.webp:
                           the mark without the word, as an adaptive icon (white background, the mark inside the safe
                           circle), plus icon-512.png for Google Play. Remake all of them with: python3 make-icons.py
-  sakhi-prototype.keystore  Prototype signing key (password: android), not in git. Back it up off this Mac: every update for
-                          testers must be signed with it, and the build stops if it is missing (NEW_KEYSTORE=1 only for a
-                          first build that no phone has).
+  sakhi-prototype.keystore  Prototype signing key, not in git. Its password is in this Mac's keychain as "Qura Sakhi
+                          prototype key"; the build reads it from there (or from SAKHI_PROTO_PASS), never from a file.
+                          Back up the file and the password off this Mac: every update for testers must be signed with
+                          it, and the build stops if either is missing (NEW_KEYSTORE=1 only for a first build that no
+                          phone has; it makes a random password and keeps it in the keychain).
 
 "Share how I use Sakhi": Firebase Analytics (Version 39.79, 7 Nov 2026)
   The build has it when google-services.json is in this folder (not in git). Get it from the Firebase console: project "Qura Sakhi"
