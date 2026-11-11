@@ -184,7 +184,6 @@ A health guide adapted for another country should be reviewed by a doctor who pr
 ## Who made it
 
 Sakhi is made by Trinaya Wellness LLP (Qura), with Mohit Kumar leading the product and Qura's doctors reviewing its
-health content. The code was written with Claude Code, Anthropic's coding agent, under Mohit's direction; every commit
-carries its co-author line.
+health content. 
 
 Questions: hello@quranutrition.com. Security reports: see [SECURITY.md](SECURITY.md).
