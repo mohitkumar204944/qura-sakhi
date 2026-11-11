@@ -17,7 +17,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
   - An APK built without `SAKHI_API` still runs the stand-in server, whose code is always 123456.
   - Version 30's opt-in "what helps" route (SERVER_SPEC 5.9) and Version 33's "Ask Qura to call me" hand-off (SERVER_SPEC
     10.1) are deployed with their migrations (23 Oct, Mohit ran them). The hand-off is ON: both `SAKHI_QURA_*` secrets are set
-    and Qura's endpoint is live (`docs/qura-sakhi-integration-plan-2026-10-23.md`, section 0). Turning it off:
+    and Qura's endpoint is live (Qura's integration plan of 23 Oct, section 0, kept outside the repo in `../qura-internal-docs/`). Turning it off:
     `server/DEPLOY.md`, section 3.
   - The app's Terminal panel can't read Desktop folders, so Supabase commands that read files there fail ("operation not
     permitted"). Mohit runs them from a copy outside Desktop, or from the Mac's Terminal app. Production deploys from a Claude
