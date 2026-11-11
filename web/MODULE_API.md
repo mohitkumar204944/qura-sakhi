@@ -8434,3 +8434,171 @@ inside may reach past radius 48.5 (30.5 px at 88 px).
 Test: `web/test/auditdecide.mjs` section 4 (the label's lines inside the ring and off the day dot, including cycle day 13 as on his
 phone); fieldtest 1 accepts "Period day".
 
+
+## 132. Version 40 (prototype): Ask Sakhi, the chat helper
+
+Mohit, 9 Nov: "I want to build an AI powered chatbot powered by anthropic to help women in english hinglish or any other language in
+qura sakhi app which will be able to address any query and concern user has inside qura sakhi app only with no web search … a proper
+chat agent with voice option", then "Yes, build it" with the defaults he was shown. The server's side: `server/SERVER_SPEC.md` section
+12. A prototype for team phones: it waits for the doctors' check of sample answers and a privacy page that names Anthropic.
+
+**Who sees it (core `chatOn()`).** Only a build with `CFG.chat`, an https address that `build-apk.sh` writes from `SAKHI_CHAT`. That build
+is an ask-proto test app: version name with "ask-proto", app ID `com.quranutrition.sakhi.ask` (beside the Play app), label "Sakhi Ask
+test", no Firebase, file `QuraSakhi-ask-prototype.apk`. `build-apk.sh` refuses `SAKHI_CHAT` with `PLAY=1`, without "ask-proto", or on
+another server than `SAKHI_API` (the page's CSP allows one address), and a Play config never carries it; the page also turns it off
+whenever `CFG.store` is play. Then: a signed-in woman (`stage` app) of 18 or more, not a sample woman, not on a shared phone.
+
+**Where.** Core route `ask-sakhi`, drawn by `renderChat`. **Version 40.1** (Mohit, 9 Nov: "it should be accesible at a tap across
+app"): its own tab, in the middle of the tab bar (Today, My plan, **Ask**, Diary, Explore), so it is one tap from every main screen;
+its page is a tab's page (a title, no Back). The label is "Ask" ("पूछें"): "Ask Sakhi" wrapped onto two lines in a fifth of 360 px and
+made the bar taller; the page keeps the title "Ask Sakhi". Explore no longer repeats it as a card (one home for each fact). A search
+with no results offers "Ask Sakhi" first, and results end with "Didn't find it? Ask Sakhi"; both carry her words into the box
+(`data-chat-q`, `mem.chatDraft`). Discreet mode: the page title "Ask", no example questions, and the page asks for her PIN again
+(`PIN_ROUTES`).
+
+**The screen.** The prototype line ("Answers are written by AI and can be wrong. Sakhi is not a doctor.") always; before her first
+question a notice (her question goes to Sakhi's server and to Anthropic in the USA, nothing from her diary is sent, nothing is kept
+on the server, don't type a name, number or address) with "I understand" (`state.chat.ok`); 3 example questions (English, Hinglish,
+Hindi); her messages and Sakhi's, each answer with where it came from ("From Sakhi's doctor-checked guides" or "General information,
+not from Sakhi's checked guides"), its guides (quick answers, `openAnswer`), the Sakhi screens it names (`CHAT_SCREENS`: Help, My plan,
+Diary, Wind down, My food, the report, Care near me, where they exist for her), Listen, and under the latest answer "See a doctor" as
+search offers it (`docWho('search')`). Clear chat, with Undo. Up to 500 characters a question (a count from 400).
+
+**What leaves the phone.** One call through core `net('POST', 'chat')`: `CHAT_SEND` = `messages` (role and text only: her questions,
+and Sakhi's earlier answers, the last 12) and `lang`, with her session token, to `CFG.chat + '/v1/chat'`, waiting up to 60 seconds.
+`scrubPii` removes phone numbers (10 digits or more) and emails from her questions first; her own copy keeps what she typed. Never
+her diary, stage, goals, birth date, name, PIN code or phone. A `401` from the chat never signs her out. Modules never call it.
+
+**Danger signs.** `chatDangerKey(q)`: Help's signs as search reads them (`urgentQ`, Version 39.30), and in pregnancy its danger words
+(`dangerQ`, 'p'). The card (`chatUrgCard`: "Go to the nearest hospital now if", her sign in Help's words, the ambulance button, Help,
+in pregnancy the danger-signs guide) sits above the chat from the moment she sends, while the answer is still coming, and an answer
+with `danger: true` shows it too ('s'). It stays while her latest question or its answer has a sign, and the screen opens on it.
+
+**When Sakhi can't answer.** "Ask Sakhi is resting for today" (a `429 resting`), "Sakhi couldn't answer this" (refused, an error or a
+bad answer) or "No internet" (offline), each with the guides Explore's search finds for her words (`chatLocalGuides`) and "See a
+doctor"; Try again, except when resting.
+
+**Her chat** stays in `state.chat` (`{ ok, msgs: [{ r: 'u'|'a', x, at, d?, src?, g?, s?, fail? }] }`, the last 60) on her phone, in
+her backups like the rest of her diary, gone with "Delete everything". Firebase is off on the screen (`FB_PRIVATE`).
+
+**Voice.** Where the Android app can listen (`SakhiAndroid.listen`): a mic beside the box (what she says is sent as she said it, in
+the app's language's voice typing), and "Talk with Sakhi": the answer is read aloud (`S.speakEl(el, code)`, in a Hindi voice for a
+Hindi answer in the English app; `mods/lang.js` takes the code since this version), then it listens again; silence, leaving the page
+or "Stop talking" ends it. Read-aloud is the phone's own voice: keep it muted in any pitch video.
+
+Test: `web/test/chat.mjs` (73 checks, a stand-in server); the server's `server/test/chat.test.mjs` (96). The eval for the doctors:
+`node server/scripts/chat-eval.mjs` (it lists the 30 questions free; `--go` asks Claude and costs well under US$0.50).
+
+### 132.2 Version 40.2 (prototype): phase 1, a faster and more useful chat
+
+Mohit, 9 Nov: "Yes, start phase 1", after `docs/ask-sakhi-companion-advice-2026-11-09.md` (section 9). Nothing new leaves her phone
+except guide ids and counts.
+
+- **The answer as it is written.** `net(method, path, body, anon, onDelta)`: for Ask Sakhi with `onDelta`, the request asks for
+  `text/event-stream` and `readStream` hands each piece of the answer to the chat, which shows it in a live bubble (`#chat-live`, at most
+  one paint a frame); `null` (the server's "reset") starts it again; "done" carries everything the JSON answer has. A server that answers
+  in plain JSON still works. An answer held back at the end ("done" with `ok: false`) never stays on screen.
+- **One model call by default.** The request carries `hints`: the ids of up to 3 guides Explore's own search picks for her words
+  (`chatLocalGuides`), and `about` when she came from a guide. The server reads their text from its own copy. `CHAT_SEND` is now one list
+  a call: `'POST chat': ['messages', 'lang', 'hints', 'about']`, `'POST count': ['kind']`.
+- **Short answers, questions to ask next.** The AI writes one short sentence first, then up to 3 points, about 40 to 90 words. Under the
+  latest answer, up to 3 follow-up questions (`m.fu`); a tap asks it. None after a danger sign or off topic.
+- **Actions she confirms** (`m.ac`, at most 2, under the latest answer, never with a danger sign):
+  - "Log for today: Cramps" (`log_sign`, only signs in `CHAT_SIGNS`, never a danger sign) uses the diary's own `feelToggle`, with Undo;
+  - "Log: my period started today" (`log_period`, never in a pregnancy, after a birth or once periods stopped) uses `quickLog('start')`;
+  - "Add to my questions for the doctor" (`doctor_question`) joins `state.askTopics`, which her report for the doctor already lists first
+    (one home).
+  - Nothing happens until she taps. The server hears only that an action was done (`POST count {kind: 'action'}`), never which.
+- **Helpful / Not helpful** under the latest answer: one tap, a count (`kind: 'up' | 'down'`), then thanks.
+- **Ask Sakhi about this** on every guide page and on the quick-answer sheet (`data-chat-about`, wired in core's `wire`): it opens the
+  chat with "About: {guide}" above the box (× takes it off; Clear chat too), and her questions carry that guide's id.
+- **"Your doctor".** The AI says "your doctor", and names ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about
+  free or government care; the free government doctor stays a button.
+- **A dose check on the server:** a number with a unit (mg, mcg, ml, IU, units) must be one a guide it read gives, or the answer is held back.
+
+Tests: `web/test/chat.mjs` (107 checks), `server/test/chat.test.mjs` (149). The eval streams and sends the phone's picks, and records the
+first words' time, the length, and the follow-ups and actions offered.
+- **Speed** (server only, SERVER_SPEC 12.3): the first try answers without the model's private thinking, a held-back answer gets one
+  careful try, and the instructions are cached. In the 9 Nov eval the first words came after 1.1 s and the whole answer after 3.3 s
+  (medians), at US$0.0006 a question.
+- **Version 40.2.1** (server only, SERVER_SPEC 12.4; Mohit, 9 Nov: "Yes, fix them"): the AI uses only the picked guides that answer her
+  question and never mentions the others; "From Sakhi's doctor-checked guides" only with a named guide, and every other answer she reads
+  carries "General information" (`none` is left for off-topic replies, which show no label); about 50 to 90 words, never more than 110;
+  follow-up questions in the language she writes in. The app is unchanged.
+
+### 132.3 Version 40.3 (prototype): the guides that go with her question
+
+Mohit, 9 Nov: "Yes, all three" (the server's two parts: SERVER_SPEC 12.5). In the 9 Nov eval a wrong pick misled the AI (a Hindi
+question about pregnancy check-ups went with the burning-urine guide), and the right guide was often missed in Hindi.
+- `chatLocalGuides` now picks for precision (`chatPicks`): no pick beats a wrong one, since without picks the AI finds the guide in
+  its own list. Only guides' titles count, and each idea weighs by how few titles hold it. Filler words and numbers count for nothing
+  (`CHAT_FILLER`), and a word and its synonyms form one idea (`chatIdeas`, from core's `SYN`). A Hindi word also matches by its stem
+  (`chatForms`). A word must start a word in the title, and one of 3 letters or fewer must be the whole word (`chatHit`). A guide goes
+  when its score reaches `CHAT_PICK_FLOOR` (3.5) and 80% of the best; at most 3, the danger-signs guide first as before.
+- When Sakhi can't answer, the guides under the message are still Explore's own (`chatLooseGuides`). Explore's search is unchanged.
+- `api.chat.picks(q)` gives the scores, for the tests and `node server/scripts/chat-eval.mjs` (it lists them free).
+- Eval: the three misleading picks are gone. 19 of the 30 questions get picks, every one on topic, and 23 answers now come from the
+  guides (19 before).
+
+Test: `web/test/chat.mjs` (128 checks; section 16 is the picks).
+
+### 132.4 Version 40.4 (prototype): her care route, one word
+
+Mohit, 9 Nov: "Send her care route" (the server's part: SERVER_SPEC 12.6).
+- Every question carries `care` (`chatCare`): `govt` for a government hospital or centre or her ASHA or ANM (`careGov`), `none` for
+  "Nowhere yet", and `own` for her own doctor and when she hasn't said. `CHAT_SEND`'s chat list is now
+  `['messages', 'lang', 'hints', 'care', 'about']`.
+- The notice before her first question says it goes, and why: "…with one word on where you usually go for care (your own doctor,
+  government care or nowhere yet), so the answer names the right place." The notice has a version (`CHAT_NOTE_V` = 2, kept as
+  `state.chat.okv`), so a woman who accepted the earlier one sees the new one once (`chatNoted`).
+
+Test: `web/test/chat.mjs` (136 checks; section 17 is the care word and the notice).
+
+### 132.5 Version 40.5 (prototype): medicine answers
+
+Mohit, 9 Nov: "Yes, build 1 to 4", after he asked the chat what medicine to take for period pain (the server's part: SERVER_SPEC 12.7).
+- A Sakhi page the doctors checked can be a chat guide: `CHAT_PAGES` (now `periods-pain`), id `page.<route>`. `chatHints` sends it
+  right after the Learn article that `ART` pairs it with (`guide`), and first after the guide she came from ("Ask Sakhi about this");
+  5 hints at most. An older server drops the id it doesn't know. Under the answer, the page's row (its title, `data-go`) opens the page.
+- Under an answer that names a medicine (`chatMedKind`: medicine words in English, Hindi and Hinglish), the doctors' medicine line
+  (review 19.71, answer 6): `med_line`, or `med_line_ec` for the emergency pill. It sits in the answer's block (`.chat-txt .med-line`),
+  so "Listen" and Talk with Sakhi read it too. A Devanagari answer gets the Hindi line (marked `lang="hi"` in the English app), any
+  other the app's language. Never on a danger answer or a failure. The words are the doctors': nothing new.
+- `api.chat.hints`, `api.chat.medKind` and `api.chat.medText`, for the tests and the eval.
+
+Test: `web/test/chat.mjs` (148 checks; section 18 is the page, the line, and the server's copy of the page against the page as it is).
+
+### 132.6 Version 40.5.1 (prototype): follow-ups that keep their subject, and the broad use cases
+
+Mohit, 10 Nov: "similarly test and try all similar possible issues", after a Hindi follow-up drifted to hot flushes on his phone,
+then "test all kind of usecases not just medicine answers" (the server's part: SERVER_SPEC 12.8).
+- **A follow-up keeps its subject.** `chatHints(q, about, prev)` sends the guides of Sakhi's last answer in this chat (`prev`, 2 at
+  most, with their pages). They go first when her message is short (`CHAT_SHORT`, 8 words or fewer), and after her message's own
+  picks when it is longer. A correction ("no", "nahi", "नहीं", "I meant", "mera matlab", "मेरा मतलब") starts from her new words.
+  `chatAsk` takes `prev` from the last answer that isn't a failure.
+- **Picks that mislead less.** These words no longer count:
+  - Hindi question and time words (कौन, सी, समय, कल), verb forms (लेनी, है, हैं), and दवा;
+  - everyday words that each matched one title: see, lot, wrong, go, blood, low, दिन, खून, मन, पहली, सुरक्षित, माँ.
+
+  A group's name counts in its guides' titles (`CHAT_GROUP_WORDS`: PCOS for PMOS, conceive, menopause). A few plain words go with
+  generic titles (`CHAT_GUIDE_WORDS`: scan and ultrasound for the check-ups guide, hair and pimples for "Signs worth noticing").
+  Every guide's own question (183 of them): the right guide went from 78 to 87, and other guides only from 43 to 27.
+- **The Safe, legal abortion page is a chat guide too** (`CHAT_PAGES`). No Learn article pairs with it, so `CHAT_PAGE_KEYS` sends it
+  when her words are about abortion.
+- `api.chat.hints(q, about, prev)`.
+
+Test: `web/test/chat.mjs` (162 checks; section 19). The scenario suite behind it: SERVER_SPEC 12.8.
+
+### 132.7 Versions 39.91 and 39.92 in the chat (10 Nov): her card after a birth, and a pregnancy in her words
+
+The chat reads the same check as search (sections 73.2 and 73.3), so both reach it:
+- Heavy bleeding after a birth gives `post_u_1`. `chatUrgCard` shows its line under the heading, as it shows Help's `s1*` lines.
+- `chatDangerKey` gives the pregnancy card (`p`, with the danger-signs guide) whenever `dangerQ` holds. That is when her diary says she
+  is pregnant, or when her words say someone is pregnant now: "my sister is 7 months pregnant and had a fit".
+- The ambulance stays her own: 108, or 102 while her diary says she is pregnant.
+- Trying, asking whether she is pregnant, and a past pregnancy show no card.
+
+Test: `web/test/chat.mjs`, section 5. It checks:
+- the after-birth line with 108;
+- her sister's pregnancy in English and Hindi;
+- three questions that are not a pregnancy now, with no card.

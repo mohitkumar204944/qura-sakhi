@@ -641,11 +641,11 @@
     if (was) { const sy = synth(); if (sy) { try { sy.cancel(); } catch (e) { } } }
     paint();
   }
-  function speak(segs, hint) {
+  function speak(segs, hint, codeIn) {
     stop();
     const sy = synth();
     if (!sy) { S.toast(t('lang_no_tts')); return; }
-    const gen = sp.gen; const code = S.state.lang;
+    const gen = sp.gen; const code = codeIn || S.state.lang;   /* Version 40: Ask Sakhi reads a Hindi answer in a Hindi voice in the English app too */
     sp.on = true; paint();
     const go = (voices) => {
       sp.cancelWait = null;
@@ -684,7 +684,7 @@
   S.reading = () => !!sp.on;   /* V39.8 review PICTURES-08: for the card speakers' stop state */
   S.readAloud = (el) => { if (sp.on) { stop(); return; } if (el) speak(screenSegments(el, scriptOf(S.state.lang)), false); };
   /* For a guided routine: read this element now (stopping anything already being read), and stop. */
-  S.speakEl = (el) => { if (sp.on) stop(); if (el) speak(screenSegments(el, scriptOf(S.state.lang)), false); };
+  S.speakEl = (el, code) => { if (sp.on) stop(); if (el) speak(screenSegments(el, scriptOf(code || S.state.lang)), false, code); };
   S.stopSpeech = () => { if (sp.on) stop(); };
 
   /* Stop when the page is hidden (phone locked, tab switched, app closed). */

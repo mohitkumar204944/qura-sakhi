@@ -7,7 +7,10 @@ plugins {
 
 // Version 39.79: "Share how I use Sakhi" through Firebase Analytics, only when google-services.json (from the Firebase console,
 // not in git) is in this folder; without it the app has no Firebase code at all (usage/none).
-val firebase = file("google-services.json").exists()
+// Version 40 (prototype): the Ask Sakhi test app (SAKHI_CHAT in build-apk.sh) passes sakhi.idSuffix=.ask: its own app ID, beside the
+// Play app, and no Firebase (google-services.json names only com.quranutrition.sakhi, and the chat screen sends Firebase nothing).
+val idSuffix = (findProperty("sakhi.idSuffix") as String?).orEmpty()
+val firebase = file("google-services.json").exists() && idSuffix.isEmpty()
 
 // Gradle's output in build-gradle/ (build-apk.sh owns build/), set first so every path below is made inside it
 layout.buildDirectory.set(file("build-gradle"))
@@ -21,6 +24,7 @@ android {
     buildToolsVersion = "36.0.0"
     defaultConfig {
         applicationId = "com.quranutrition.sakhi"
+        if (idSuffix.isNotEmpty()) applicationIdSuffix = idSuffix
         minSdk = 29        // Android 10 and newer (Mohit, 25 Oct: newer phones)
         targetSdk = 36     // Google Play's floor since 31 Aug 2026
         versionCode = prop("sakhi.versionCode", "1").toInt()
@@ -50,6 +54,9 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName(if (findProperty("sakhi.signing") == "upload") "upload" else "proto")
+            // Version 40.2: an Ask Sakhi test app built with SAKHI_DEBUGGABLE=1 opens its WebView to the Mac's DevTools (web/test/adb-cdp.mjs),
+            // to measure the chat on a real phone; build-apk.sh refuses it for Play and for anything but an ask-proto test app
+            isDebuggable = idSuffix.isNotEmpty() && findProperty("sakhi.debuggable") == "true"
             vcsInfo { include = false }   // android/ isn't the repository's top folder, so there is nothing to record
         }
     }

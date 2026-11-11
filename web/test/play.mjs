@@ -67,7 +67,7 @@ check('4 the key script never makes a second key over the first, and keeps the p
 check('4 sounds stay uncompressed in the bundle and the APK, and the build checks both', /noCompress \+= listOf\("ogg"/.test(gk) && /\$2 != "Stored"/.test(play) &&
   (sh.match(/\$2 != "Stored"/g) || []).length === 2 && !fs.existsSync(path.join(android, 'bundle-config.json')));
 check('4 bundletool validates it, and the size ceiling applies', /bundletool" validate --bundle=build\/signed\.aab/.test(play.replace(/\$BUNDLETOOL/g, 'bundletool')) && /-gt \$\(\(MAX_APK_MB \* 1024 \* 1024\)\)/.test(play));
-check('4 one version count: the floor reads the last APK and the last bundle', /for LASTF in QuraSakhi-prototype\.apk build-play\/last\.apk; do/.test(sh));
+check('4 one version count: the floor reads the last APK and the last bundle (and, since Version 40, the Ask Sakhi test app)', /for LASTF in QuraSakhi-prototype\.apk (QuraSakhi-ask-prototype\.apk )?build-play\/last\.apk; do/.test(sh));
 check('4 no bundle, key, Play or Gradle output in git', /^android\/build-play\/$/m.test(gi) && /^\*\.aab$/m.test(gi) && /^\*\.keystore$/m.test(gi) &&
   /^android\/build-gradle\/$/m.test(gi) && /^android\/\.gradle\/$/m.test(gi));
 

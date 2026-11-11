@@ -3978,3 +3978,145 @@ long article with no lead-ins. Subheads from its own title, placed in its own or
 - "Your mood" (आपका मन), before "Tears and feeling flat in the first two weeks is common…".
 Once approved: `node web/tools/add-subhead.mjs pregnancy.after-birth-first-six-weeks 5 "Your mood" "आपका मन"`, then 3 "Your body",
 then 2 "Your ASHA" (the last paragraph first, so the numbers hold), and stamp the article again with the month of the check.
+
+### 19.89 Version 40 (prototype): Ask Sakhi, the chat helper (MODULE_API section 132; SERVER_SPEC section 12)
+
+A test app for team phones, never in Play, until the doctors have read this section and graded the 30 sample answers in
+`~/Downloads/sakhi-unicef-handoff/ask-sakhi-eval.md` (made by `node server/scripts/chat-eval.mjs --go`), and counsel has checked the
+notice below and the privacy page names Anthropic (USA). The answers themselves are written by AI for each question, so they can't be
+checked one by one in advance: the doctors check the rules below and a sample.
+
+**The rules the AI is given** (`systemPrompt()` in `server/supabase/functions/sakhi-chat/chat.js`), for the doctors to confirm:
+1. Only women's and reproductive health, and using Sakhi; anything else gets a polite "I can help only with women's health and Sakhi".
+2. It reads Sakhi's doctor-checked guides first and answers from them; when they don't cover a question it may use general medical
+   knowledge, and the app then says "General information, not from Sakhi's checked guides".
+3. It never diagnoses, never names a dose, brand or course a guide doesn't give ("ask a doctor or chemist"), and never tells her to
+   start or stop a medicine a doctor gave.
+4. It never calls any days "safe" (an answer that does is held back and she sees the guides instead).
+5. A danger sign: its first sentence tells her to go to the nearest hospital now (the app shows the ambulance number). The signs it
+   is given: heavy bleeding with dizziness or fainting; a late period or positive test with one-sided pain or fainting; in pregnancy,
+   bleeding, leaking water, fits, a severe headache or blurred sight, swelling of the face or hands, fever, the baby moving less;
+   fever or heavy bleeding after a birth; loss of bladder or bowel control with numbness. **For the doctors:** is this list right?
+6. **For the doctors and a psychologist:** if she says she might harm herself or is not safe at home, it answers with care, says she
+   is not alone, and asks her to go to the nearest hospital now or tell a person she trusts right away. (Version 39.70 removed
+   Tele-MANAS and the violence lines from the app; this line gives no number.) Is this what the doctors want?
+7. Her language and script (Hindi in Devanagari, Hinglish in Roman letters, English or another), warm and plain, 60 to 120 words.
+
+**New UI words (English, then Hindi):**
+- Ask Sakhi / Sakhi से पूछें; in discreet mode Ask / पूछें. "Ask about your health in your own words, by typing or speaking." / "अपनी
+  सेहत के बारे में अपने शब्दों में पूछें, लिखकर या बोलकर।" Test / टेस्ट.
+- "Prototype. Answers are written by AI and can be wrong. Sakhi is not a doctor." / "प्रोटोटाइप। जवाब AI लिखता है और ग़लत हो सकते हैं।
+  Sakhi डॉक्टर नहीं है।"
+- Before you ask / पूछने से पहले: "This is a test version. Your question goes to Sakhi’s server and to Anthropic, the company whose AI
+  writes the answer, in the USA. Nothing from your diary is sent, and nothing you ask is kept on the server. Please don’t type your
+  name, phone number or address." (Hindi in `web/app.js`, `chat_note_p`). **For counsel.** I understand / मैं समझ गई.
+- "From Sakhi’s doctor-checked guides" / "Sakhi की डॉक्टरों से जाँची गाइड से"; "General information, not from Sakhi’s checked guides" /
+  "आम जानकारी, Sakhi की जाँची गई गाइड से नहीं".
+- "Sakhi couldn’t answer this. Open the guides below, or see a doctor."; "Ask Sakhi is resting for today. …"; "No internet. Your
+  question is saved here: try again when you’re online."; Try again; Clear chat; Chat cleared; You could ask; Talk with Sakhi;
+  Stop talking; "Speak, hear the answer, then speak again."; Listening…; Sakhi is writing…; "Didn’t find it? Ask Sakhi" (Hindi for
+  each in `web/app.js`, keys `chat_*`).
+- Three example questions, shown as they are in both languages: "Is a 40-day gap between periods normal?", "PCOD mein kya khana
+  chahiye?", "पीरियड में पेट दर्द कम कैसे करें?".
+
+### 19.90 Version 40.2 (prototype): Ask Sakhi, phase 1 (MODULE_API section 132.2)
+
+**For the doctors, the AI's new rules** (`systemPrompt()` in `server/supabase/functions/sakhi-chat/chat.js`):
+1. One short sentence that answers her first, then up to 3 short points, about 40 to 90 words, never more than 120.
+2. "Your doctor" (or "a gynaecologist"). ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani only when she asks about free or
+   government care; the app's own button offers the free government doctor.
+3. Two or three follow-up questions she might ask next, in her words; none after a danger sign.
+4. Actions it may offer, which happen only when she taps:
+   - log a sign she has today (cramps, headache, back pain, breast pain, joint pain, bloating, tiredness, poor sleep, acne, nausea,
+     heartburn, hot flushes, low mood, feeling anxious, irritable, unusual discharge, itching; never a danger sign);
+   - log that her period started today;
+   - add a question to her report for the doctor.
+5. A dose (mg, mcg, ml, IU, units) only when a guide it read gives that dose; otherwise the answer is held back.
+
+**New UI words (English, then Hindi):**
+- Ask Sakhi about this / इस बारे में Sakhi से पूछें; About: {guide} / विषय: {guide}.
+- Helpful / काम का; Not helpful / काम का नहीं; "Thank you. This helps Sakhi get better." / "धन्यवाद। इससे Sakhi बेहतर होती है।".
+- Ask next / आगे पूछें.
+- Log for today: {sign} / आज के लिए दर्ज करें: {sign}; "Log: my period started today" / "दर्ज करें: मेरा पीरियड आज शुरू हुआ".
+- "Add to my questions for the doctor" / "डॉक्टर से पूछने वाले सवालों में जोड़ें"; Done / हो गया.
+- "Saved in your diary for today" / "आज की डायरी में सेव हो गया"; "Added to the questions in your report for the doctor" / "डॉक्टर
+  के लिए आपकी रिपोर्ट के सवालों में जुड़ गया".
+6. A held-back answer ("safe days", or a dose no guide gives) gets one careful try, told why in a note: "Answer her again without
+   those words: say that no day is free of pregnancy risk…" / "Answer her again without any dose, and say 'ask a doctor or
+   chemist'." If that is held back too, she sees the guides.
+
+**Version 40.2.1 (9 Nov), the phase 1 eval's fixes, for the doctors** (server rules only, no new UI words):
+1. Item 1 above becomes: one short sentence (under 20 words) that answers her first, then 2 or 3 points of under 20 words each, about
+   50 to 90 words, never more than 110.
+2. The guides her phone finds by matching her words can be wrong: the AI uses only those that answer her question, answers as if the
+   others weren't there, reads the right guide when none fits, and never mentions a guide that doesn't fit.
+3. If no guide answers her question, it still helps from general knowledge, and the app says "General information, not from Sakhi's
+   checked guides". Every answer she reads now carries one of the two labels.
+4. Follow-up questions and the doctor question in the language and script she writes in.
+
+**Version 40.3 (9 Nov), for the doctors** (server rules, no new UI words):
+1. Every answer is one short sentence, then 2 or 3 short points (the server now requires the points).
+2. The answer, its points, the follow-up questions and the doctor question follow the language of her latest message, even in a chat
+   that used another language before.
+
+**Version 40.4 (9 Nov), her care route.**
+- **For counsel**, the notice before her first question, new words in bold:
+  - English: "Your question goes to Sakhi's server and to Anthropic, the company whose AI writes the answer, in the USA, **with one word on
+    where you usually go for care (your own doctor, government care or nowhere yet), so the answer names the right place.**"
+  - Hindi: "**साथ में एक शब्द यह भी जाता है कि आप सेहत के लिए आमतौर पर कहाँ जाती हैं (अपने डॉक्टर, सरकारी जगह या अभी कहीं नहीं), ताकि
+    जवाब सही जगह बताए।**"
+- **For the doctors**, the server's three notes to the AI:
+  - her own doctor: "your doctor" or "a gynaecologist", and no ANM, ASHA, PHC, Ayushman Arogya Mandir or eSanjeevani unless she asks;
+  - nowhere yet: a doctor, and free government care once as an option;
+  - government care: her ASHA, ANM or PHC named where they help, as the guides do.
+
+**Version 40.5 (10 Nov), medicine answers** (MODULE_API 132.5, SERVER_SPEC 12.7).
+- **For the doctors**, no new wording:
+  - the chat now reads the Period pain page's reviewed lines (the "Pain relief medicine" row, the caution note, the three warning cards)
+    as well as the "Painful periods" article. Asked which medicine to take, it now starts: "Doctors commonly suggest ibuprofen or
+    mefenamic acid, or paracetamol if you cannot take those", with the page's caution in the same answer;
+  - under any answer that names a medicine, the phone shows their own medicine line (answer 6), or the emergency pill's line;
+  - questions 31 to 35 of `ask-sakhi-eval.md` are on period pain medicine, for grading.
+- **Waiting for the doctors** (new wording, so not built):
+  1. One first choice: the article names paracetamol only; the Period pain page puts ibuprofen or mefenamic acid first. Until they
+     choose one for both, the chat follows the page.
+  2. A fever line: with a fever (it could be dengue), paracetamol, not ibuprofen or mefenamic acid, and a doctor. The health-centre
+     medicine list (NHSRC) says ibuprofen is not for suspected dengue.
+- **For counsel**, before the chat goes to Play: it names medicines as information from Sakhi's reviewed pages, with no dose and
+  never chosen for her. India's Telemedicine Practice Guidelines (2020) say an AI may assist a doctor but not counsel patients or
+  prescribe.
+
+**Version 40.5.1 (10 Nov), the scenario suite's fixes** (MODULE_API 132.6, SERVER_SPEC 12.8).
+- **For the doctors, the AI's new safety lines** (instructions, not app screens):
+  - in pregnancy: no ibuprofen or mefenamic acid, and paracetamol only as her doctor advises;
+  - no pill to bring on a period (a pregnancy test first);
+  - the baby's sex: "finding out or choosing the baby's sex, or ending a pregnancy because of it, is a crime under the PCPNDT Act,
+    so no doctor or scan centre may tell it";
+  - an assault: not her fault, the nearest hospital today, the emergency pill works within 72 hours;
+  - a danger sign in a list always says hospital now;
+  - after unprotected sex: the emergency pill's facts from the contraception pages (within 72 hours, any chemist, not an abortion
+    pill).
+- **The Safe, legal abortion page is read by the chat.** It names mifepristone with misoprostol, only from a registered doctor after a
+  check-up, and the chat never gives a dose.
+- **Waiting for the doctors** (new wording, not built):
+  1. A "what doctors usually give" line for each problem that needs a doctor (PCOS, heavy bleeding, discharge, a urine infection,
+     irregular periods, thyroid). Without it, "which medicine is right?" gets "your doctor decides" in about 2 of 3 such follow-ups.
+  2. HRT and breast cancer: the HRT guide lists who shouldn't take it, but not the risk. The AI once said HRT "is not known to cause
+     cancer".
+  3. Papaya in pregnancy: ripe versus unripe isn't in any guide.
+  4. Fever after a birth: the after-birth guide says "your doctor or a hospital today" in one place and "the nearest hospital now" in
+     another.
+- **For counsel:** abortion law and the baby's sex are now answered from Sakhi's own reviewed page.
+- **Version 40.5.2 (10 Nov):** the baby's-sex answer now opens with the law, for example "In India, finding out or choosing a baby's
+  sex is against the law under the PCPNDT Act, so no doctor or scan centre may tell it." For the doctors and counsel: the line the
+  AI is given (SERVER_SPEC 12.9).
+- **Version 40.5.3 (10 Nov):** a woman who hasn't said she is pregnant now gets a pregnancy guide's facts as pregnancy's ("In
+  pregnancy, one tablet a day from the fourth month"), not as hers. For the doctors, the line the AI is given (SERVER_SPEC 12.10) and
+  two things still open:
+  1. A question that only a pregnancy guide answers ("which check-ups and injections do I need?", "what is the sugar test?") is still
+     answered for pregnancy, said as pregnancy's. There is no guide for a woman who isn't pregnant.
+  2. "Free from your ANM", from the pregnancy tablets guide, sometimes reaches a woman who goes to her own doctor. In the full suite,
+     6 of 597 answers named the ANM or ASHA outside the government care cases, two of them about free iron tablets.
+- **Version 40.5.4 (10 Nov):** for the doctors, the lines the AI is given (SERVER_SPEC 12.11):
+  - a guide's PMOS advice comes as "If you have PMOS, ..." until she says she has it;
+  - a worry that someone reads her diary gets Sakhi's PIN lock and Discreet mode, and never advice to delete her diary.

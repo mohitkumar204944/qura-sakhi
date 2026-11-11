@@ -6,6 +6,23 @@
 # Gradle and its Android plugin are downloaded once, on the first build, into ~/.gradle.
 set -e
 cd "$(dirname "$0")"
+# Version 40 (prototype): Ask Sakhi, the chat (../server/SERVER_SPEC.md section 12). SAKHI_CHAT is the sakhi-chat function's address,
+# e.g. https://jovplellzaxebcdekpax.supabase.co/functions/v1/sakhi-chat. It makes a test app for team phones only: never a Play
+# build, a version name with "ask-proto", the same server as SAKHI_API (one address in the page's CSP), its own app ID
+# (com.quranutrition.sakhi.ask, so it installs beside the Play app), no Firebase, the label "Sakhi Ask test", and its own file,
+# QuraSakhi-ask-prototype.apk. Never put it on the website or on Play.
+SAKHI_CHAT="${SAKHI_CHAT:-}"
+PKG="com.quranutrition.sakhi"; OUT_APK="QuraSakhi-prototype.apk"
+if [ -n "$SAKHI_CHAT" ]; then
+  [ "$PLAY" = "1" ] && { echo "Ask Sakhi is a prototype for team phones: SAKHI_CHAT is never in a Play build."; exit 1; }
+  case "$VERSION_NAME" in *ask-proto*) ;; *) echo "A build with SAKHI_CHAT needs a version name with \"ask-proto\", e.g. 0.40-ask-proto."; exit 1 ;; esac
+  case "$SAKHI_CHAT" in https://*/functions/v1/sakhi-chat) ;; *) echo "SAKHI_CHAT must be the sakhi-chat function's https address (…/functions/v1/sakhi-chat)."; exit 1 ;; esac
+  [ "${SAKHI_CHAT%%/functions/*}" = "${SAKHI_API%%/functions/*}" ] || { echo "SAKHI_CHAT must be on the same server as SAKHI_API (the page may reach one address)."; exit 1; }
+  PKG="com.quranutrition.sakhi.ask"; OUT_APK="QuraSakhi-ask-prototype.apk"
+fi
+# Version 40.2: SAKHI_DEBUGGABLE=1 makes the Ask Sakhi test app debuggable, so its WebView can be measured from the Mac
+# (web/test/adb-cdp.mjs). Never Play, never a build without SAKHI_CHAT.
+if [ "$SAKHI_DEBUGGABLE" = "1" ] && { [ "$PLAY" = "1" ] || [ -z "$SAKHI_CHAT" ]; }; then echo "SAKHI_DEBUGGABLE is only for the Ask Sakhi test app (SAKHI_CHAT), never Play."; exit 1; fi
 SDK="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}"
 [ -d "$SDK/platforms/android-36" ] || SDK="$HOME/Library/Android/sdk"
 # Target SDK 36 (Android 16): Google Play's floor for new apps and updates since 31 Aug 2026. MainActivity keeps the page
@@ -78,7 +95,7 @@ elif [ ! -f sakhi-prototype.keystore ] && [ "$NEW_KEYSTORE" != "1" ]; then
   echo "backup. Only for a first build that no phone has yet, run again with NEW_KEYSTORE=1."; exit 1
 fi
 # One count for both: the last APK built here, and the last bundle for Play (Play refuses a version code it already has).
-for LASTF in QuraSakhi-prototype.apk build-play/last.apk; do
+for LASTF in QuraSakhi-prototype.apk QuraSakhi-ask-prototype.apk build-play/last.apk; do
   [ -f "$LASTF" ] || continue
   LAST=$("$BT/aapt2" dump badging "$LASTF" 2>/dev/null | sed -n "s/.*versionCode='\([0-9]*\)'.*/\1/p" | head -1)
   if [ -n "$LAST" ] && [ "$VERSION_CODE" -lt "$LAST" ]; then echo "VERSION_CODE $VERSION_CODE is below the last build ($LAST, $LASTF): phones with $LAST won't take it."; exit 1; fi
@@ -121,15 +138,16 @@ if ls "$WEB"/audio/megha-welcome-*.mp3 >/dev/null 2>&1; then
   AUDIO="$(cd "$WEB/audio" && ls megha-welcome-*.mp3 | sed 's/\.mp3$//' | paste -sd, -)"
   echo "Dr. Megha's welcome bundled: $AUDIO"
 fi
-python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "${PLAY:-}" "$SAKHI_PRIVACY" <<'PY'
+python3 - "$WEB" build/assets/www "$SAKHI_API" "$VERSION_NAME" "$SAKHI_HELP_WA" "$CARE" "$SAKHI_GRIEVANCE" "$AUDIO" "${PLAY:-}" "$SAKHI_PRIVACY" "$SAKHI_CHAT" <<'PY'
 import sys, os, json, re, hashlib, base64
 from urllib.parse import urlsplit
 web, out, api, ver, wa, care, grv, audio = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]
 play, priv = sys.argv[9], sys.argv[10]   # Version 39.76: a Play build (no coordinator tools), the privacy policy's address
+chat = sys.argv[11] if play != '1' else ''   # Version 40 (prototype): Ask Sakhi's address, never in a Play build
 if priv and not priv.startswith('https://'): sys.exit('SAKHI_PRIVACY must be an https address: ' + priv)
 c = json.load(open(os.path.join(web, 'content.json'), encoding='utf-8'))
 open(os.path.join(out, 'content.js'), 'w', encoding='utf-8').write('window.SAKHI_CONTENT = ' + json.dumps(c, ensure_ascii=False, separators=(',', ':')) + ';\n')
-open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'store': 'play'} if play == '1' else {}), **({'privacy': priv} if priv else {})), ensure_ascii=False) + ';\n')
+open(os.path.join(out, 'config.js'), 'w', encoding='utf-8').write('window.SAKHI_CONFIG = ' + json.dumps(dict({'api': api, 'app': ver, 'platform': 'android', 'helpWa': wa}, **({'care': care} if care else {}), **({'grievance': grv} if grv else {}), **({'audio': audio.split(',')} if audio else {}), **({'store': 'play'} if play == '1' else {}), **({'privacy': priv} if priv else {}), **({'chat': chat} if chat else {})), ensure_ascii=False) + ';\n')
 html = open(os.path.join(web, 'index.html'), encoding='utf-8').read()
 html = html.replace('<script src="app.js"', '<script src="android-shim.js"></script>\n<script src="config.js"></script>\n<script src="content.js" charset="utf-8"></script>\n<script src="app.js"', 1)
 # Content-Security-Policy (audit fix 28): only the app's own files run, and the only server the page can reach is the
@@ -149,13 +167,15 @@ PY
 # in build.gradle.kts, the same com.quranutrition.sakhi).
 sed 's/ package="com\.quranutrition\.sakhi"//' AndroidManifest.xml > build/AndroidManifest.xml
 if grep -q 'package="' build/AndroidManifest.xml; then echo "AndroidManifest.xml's package line didn't come out (build-apk.sh, step 2)."; exit 1; fi
+# Version 40: the Ask Sakhi test app has its own name on the phone, so no one mistakes it for Sakhi from Play
+if [ -n "$SAKHI_CHAT" ]; then sed -i.bak 's/android:label="Qura Sakhi"/android:label="Sakhi Ask test"/g' build/AndroidManifest.xml && rm -f build/AndroidManifest.xml.bak; fi
 
 # 3. Gradle: resources, Java, dex, then the signed APK, or the signed bundle for Play, in build-gradle/outputs. The version
 # code and name come from here; the sounds stay uncompressed (noCompress in build.gradle.kts), so Android plays them straight
 # from the app.
 export ANDROID_HOME="$SDK"
 OUT=build-gradle/outputs
-gw() { ./gradlew --console=plain --quiet --warning-mode=summary -Psakhi.versionCode="$VERSION_CODE" -Psakhi.versionName="$VERSION_NAME" "$@"; }
+gw() { ./gradlew --console=plain --quiet --warning-mode=summary -Psakhi.versionCode="$VERSION_CODE" -Psakhi.versionName="$VERSION_NAME" ${SAKHI_CHAT:+-Psakhi.idSuffix=.ask} ${SAKHI_DEBUGGABLE:+-Psakhi.debuggable=true} "$@"; }
 
 # 4 for Play (PLAY=1): the bundle, signed with the upload key (its password from the environment, never the command line),
 # then checked: its signature, bundletool's own validation, and the APK a phone would get, for its target SDK, its stored
@@ -203,11 +223,11 @@ if [ "$APK_BYTES" -gt $((MAX_APK_MB * 1024 * 1024)) ]; then
   echo "The APK is $((APK_BYTES / 1024 / 1024)) MB, over the ${MAX_APK_MB} MB ceiling: shrink it, or raise MAX_APK_MB on purpose. The last good APK is kept." >&2
   exit 1
 fi
-mv -f build/signed.apk QuraSakhi-prototype.apk
-[ -f build/signed.apk.idsig ] && mv -f build/signed.apk.idsig QuraSakhi-prototype.apk.idsig
-echo "Built: $(pwd)/QuraSakhi-prototype.apk ($(du -h QuraSakhi-prototype.apk | cut -f1))"
+mv -f build/signed.apk "$OUT_APK"
+[ -f build/signed.apk.idsig ] && mv -f build/signed.apk.idsig "$OUT_APK.idsig"
+echo "Built: $(pwd)/$OUT_APK ($(du -h "$OUT_APK" | cut -f1))"
 
 # 5. Install on a phone connected by USB, if there is one.
 if command -v adb >/dev/null 2>&1 && adb get-state >/dev/null 2>&1; then
-  adb install -r QuraSakhi-prototype.apk && adb shell monkey -p com.quranutrition.sakhi -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1 && echo "Installed and opened on the phone."
+  adb install -r "$OUT_APK" && adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1 && echo "Installed and opened on the phone."
 fi

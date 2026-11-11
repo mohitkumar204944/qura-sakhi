@@ -722,6 +722,52 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     bold, with every word unchanged, so the doctors' stamps hold; a "## " line is a subhead the doctors approved, added with
     `node web/tools/add-subhead.mjs` (it moves the doctor-route paragraphs too), then stamped again. Contract: MODULE_API section 131;
     review section 19.88 (no new wording; three proposed subheads for the doctors).
+  - `node test/chat.mjs` and `node server/test/chat.test.mjs` (Version 40, prototype, Ask Sakhi, the chat helper; Mohit, 9 Nov: "build an
+    AI powered chatbot powered by anthropic … with voice option", then "Yes, build it"; on the branch `feat/ask-sakhi-prototype`):
+    - its own function `sakhi-chat` (Claude Haiku 5.5 through the official SDK, the guides first from the function's own copy
+      `guides.js`, general knowledge marked, 20 questions a woman a day and 300 in all, nothing kept), apart from `sakhi-api`;
+    - the `ask-sakhi` screen only in an ask-proto test app (`SAKHI_CHAT`; never Play), for a signed-in woman of 18 or more, never
+      on a shared phone; her messages' text and the language only; Help's card for a danger sign; voice in and read-aloud out.
+    - Version 40.1: Ask is a tab (Today, My plan, Ask, Diary, Explore). Version 40.2 (phase 1 of
+      `docs/ask-sakhi-companion-advice-2026-11-09.md`): answers stream in, the phone's guide picks make most answers one call, short
+      answers with follow-up questions, actions she confirms (log a sign or her period, a doctor question), Helpful / Not helpful counts,
+      "Ask Sakhi about this" on guides, and a dose check. Version 40.2.1 (server only, the phase 1 eval's fixes): only the guides that answer her
+      question, honest labels, about 50 to 90 words, follow-ups in her language (SERVER_SPEC 12.4). Version 40.3: the phone's guide picks for precision
+      (MODULE_API 132.3), 2 or 3 points every time and her latest message's language (SERVER_SPEC 12.5); `chat-eval.mjs --go --mixed`
+      checks chats that switch language. Version 40.4: her care route goes as one word (`govt`, `own` or `none`), so answers
+      name the government care only for a woman who uses it (MODULE_API 132.4, SERVER_SPEC 12.6; `chat-eval.mjs --care`).
+      Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4"), medicine answers: the Period pain page is a chat guide, the medicines come
+      first with their caution (a server check), and the doctors' medicine line sits under an answer that names one (MODULE_API 132.5,
+      SERVER_SPEC 12.7).
+      Version 40.5.1 (Mohit, 10 Nov: "test all kind of usecases"): follow-ups keep their subject, the Safe, legal abortion page is a
+      chat guide, and new safety rules and checks (MODULE_API 132.6, SERVER_SPEC 12.8). Version 40.5.2: the baby's sex is refused
+      with the law named (a note and a check, SERVER_SPEC 12.9). Version 40.5.3: a pregnancy or after-birth guide is answered for any
+      woman until her own messages say she is pregnant or has had a baby (a note and a check, SERVER_SPEC 12.10).
+      Version 40.5.4: a guide's PMOS advice is "If you have PMOS" until she says she has it, a worry that someone reads her diary
+      gets the PIN lock, and a careful try is told those rules again (SERVER_SPEC 12.11).
+      Versions 39.91 and 39.92 in the chat: Help's card shows the after-birth page's line for heavy bleeding after a birth, and the
+      pregnancy card shows for a pregnancy now in her words, a sister's too (MODULE_API 132.7).
+    - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (597 answers, graded by Sonnet 5.5, about US$1.70;
+      without `--go`, the phone's picks only, free). It counts the careful tries by the net that asked for them. Run it after a change
+      to the instructions, the picks or the guides.
+    - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live
+      server, each answer read back from the screen reader's tree and checked by rule.
+      - 36 checks: Version 40.5.3 added "no pregnancy facts as hers" on the iron-tablet reminder, and Version 40.5.4 "never delete it
+        because someone read it" on deleting her data; 34 of 34 on 10 Nov (vc 162, function v11).
+      - It clears the chat first; the phone must be awake, unlocked and signed in.
+      - `input text` types Latin letters only, so the Hindi chat starts from the empty chat's Hindi example and goes on with a Hindi
+        follow-up the answer offers.
+    - On this Mac: `node test/ask-local.mjs` (from web/; Version 40.5.3; Mohit, 10 Nov: "you sign in using a seeded test account and
+      test thoroughly") asks the same chats (`test/ask-chats.mjs`) and the suite's stage, cond and priv cases through the real Ask tab
+      in a browser.
+      - It signs up with a test number on both functions served here over https: PGlite, with the code captured and never sent, and
+        the real Haiku. A throwaway certificate is accepted by its browser only.
+      - It never touches the live server or a phone. About US$0.02 a run.
+    After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain or
+    abortion page, `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
+    `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
+    section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors
+    and counsel).
   - `node test/golden.mjs` replays 31 plans over 8 days against `web/test/golden/plans.json`; a change that means to alter
     a plan re-records it with `npm run golden:record` and says so.
   - `node test/progs.mjs` (Version 39.4, the plans as data in `web/progs/*.js`: pure data, the engine's vocabulary, Hindi,

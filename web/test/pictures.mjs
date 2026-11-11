@@ -351,7 +351,7 @@ for (const lang of ['en', 'hi']) {
   const gk = fs.readFileSync(path.join(root, '..', 'android', 'build.gradle.kts'), 'utf8');   // Version 39.79: one Gradle setting for both
   check('14 the APK needs Android 10 or later (min SDK 29, for the package and the code)', /minSdk = 29\b/.test(gk) && (gk.match(/minSdk = \d+/g) || []).length === 1);
   /* V39.8 review SAFETY-07: a whole number, checked first; and the size is checked before the new APK replaces the last good one */
-  const ceil = sh.indexOf('-gt $((MAX_APK_MB * 1024 * 1024))'), mv = sh.indexOf('mv -f build/signed.apk QuraSakhi-prototype.apk');
+  const ceil = sh.indexOf('-gt $((MAX_APK_MB * 1024 * 1024))'), mv = sh.indexOf('mv -f build/signed.apk "$OUT_APK"');   /* Version 40: QuraSakhi-prototype.apk, or the Ask Sakhi test app's own file */
   check('14 the APK build refuses an APK over its size ceiling (30 MB unless raised on purpose), keeping the last good one', /MAX_APK_MB="\$\{MAX_APK_MB:-30\}"/.test(sh) && /case "\$MAX_APK_MB" in ''\|\*\[!0-9\]\*\)/.test(sh) && ceil > 0 && mv > ceil && !/rm -f QuraSakhi-prototype\.apk/.test(sh), { ceil, mv });
 }
 

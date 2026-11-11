@@ -294,7 +294,20 @@
       pp_ring: 'days since birth', pp_ring_1: 'day since birth', pp_week: 'Week {n} of 6', pp_week_done: 'The first 6 weeks are done', pp_aria: 'Day {n} of the first 6 weeks after the birth',
       notif_sec: 'Reminders on this phone', notif_h: 'Phone notifications', notif_d: 'Your reminders, and a heads-up the day before your period may start. Discreet mode keeps the wording neutral.', notif_exact_p: 'Android may ring your reminders up to an hour late. Allow alarms and reminders for Sakhi so they come on time.', notif_refill: 'Open Sakhi so your reminders keep coming.', d_refill: 'Open the app so your reminders keep coming.', notif_batt_p: 'On some phones, battery saving stops reminders while Sakhi is closed. In Sakhi’s app settings, open Battery and choose “Unrestricted” or “No restrictions”. On Xiaomi, Redmi, Vivo, Oppo and Realme, also switch on “Autostart” (or “Auto-launch”), so reminders come back after the phone restarts.', notif_batt_b: 'Open Sakhi’s settings', notif_exact_b: 'Allow on-time reminders', notif_test_btn: 'Send a test notification', notif_test: 'This is how Sakhi reminders look. You can turn them off on the Me page.', notif_test_sent: 'A test notification arrives in about 5 seconds.', notif_on: 'Notifications are on', notif_denied: 'Notifications are off for this app in your phone settings.', notif_period: 'Your period may start in the next few days. Keep a pad handy.',
       bio_btn: 'Use fingerprint', bio_sw: 'Fingerprint unlock', bio_sw_d: 'Your fingerprint opens Sakhi too. The phone’s own PIN never does.', bio_sw_shared: 'Off while the phone is shared: anyone whose fingerprint is saved on it could open Sakhi.', bio_title: 'Unlock Qura Sakhi', bio_title_d: 'Unlock My notes',
-      demo_h: 'Demo', demo_p: 'Show the app as one of the sample women. Your settings stay; the sample entries replace what is on this phone.', demo_sure: 'This replaces the entries on this phone with the sample. To keep yours, make a backup code first (Me, then Move to a new phone).', demo_yes: 'Replace with the sample', demo_doc: "Doctor's view", demo_welcome: 'Clear the sample and start from the welcome screen', cal_a_spot: 'spotting', cal_a_range: 'likely period dates', bars_aria: 'Gaps between periods, in days: {list}'
+      demo_h: 'Demo', demo_p: 'Show the app as one of the sample women. Your settings stay; the sample entries replace what is on this phone.', demo_sure: 'This replaces the entries on this phone with the sample. To keep yours, make a backup code first (Me, then Move to a new phone).', demo_yes: 'Replace with the sample', demo_doc: "Doctor's view", demo_welcome: 'Clear the sample and start from the welcome screen', cal_a_spot: 'spotting', cal_a_range: 'likely period dates', bars_aria: 'Gaps between periods, in days: {list}',
+      /* Version 40 (prototype): Ask Sakhi, the chat */
+      chat_h: 'Ask Sakhi', chat_h_d: 'Ask', chat_tile_s: 'Ask about your health in your own words, by typing or speaking.', chat_tile_s_d: 'Type or speak a question.', chat_pill: 'Test',
+      chat_proto: 'Prototype. Answers are written by AI and can be wrong. Sakhi is not a doctor.', chat_note_h: 'Before you ask',
+      chat_note_p: 'This is a test version. Your question goes to Sakhi’s server and to Anthropic, the company whose AI writes the answer, in the USA, with one word on where you usually go for care (your own doctor, government care or nowhere yet), so the answer names the right place. Nothing from your diary is sent, and nothing you ask is kept on the server. Please don’t type your name, phone number or address.',
+      chat_note_ok: 'I understand', chat_ph: 'Type your question', chat_send: 'Send', chat_mic: 'Speak your question', chat_talk: 'Talk with Sakhi', chat_talk_on: 'Stop talking', chat_talk_d: 'Speak, hear the answer, then speak again.',
+      chat_hearing: 'Listening…', chat_thinking: 'Sakhi is writing…', chat_say: 'Listen to this answer', chat_src_guides: 'From Sakhi’s doctor-checked guides', chat_src_general: 'General information, not from Sakhi’s checked guides',
+      chat_guides_h: 'Read more', chat_err: 'Sakhi couldn’t answer this. Open the guides below, or see a doctor.', chat_resting: 'Ask Sakhi is resting for today. Open the guides below, or see a doctor.',
+      chat_offline: 'No internet. Your question is saved here: try again when you’re online.', chat_retry: 'Try again', chat_clear: 'Clear chat', chat_cleared: 'Chat cleared', chat_try_h: 'You could ask',
+      chat_count: '{n} of 500', chat_you: 'You asked', chat_sakhi: 'Sakhi answered', chat_more: 'Didn’t find it? Ask Sakhi', chat_tab: 'Ask', chat_tab_d: 'Ask',
+      /* Version 40.2 (phase 1) */
+      chat_about_b: 'Ask Sakhi about this', chat_about: 'About: {t}', chat_about_x: 'Remove this guide from your question', chat_up: 'Helpful', chat_down: 'Not helpful',
+      chat_thanks: 'Thank you. This helps Sakhi get better.', chat_fu_h: 'Ask next', chat_act_sign: 'Log for today: {s}', chat_act_period: 'Log: my period started today',
+      chat_act_q: 'Add to my questions for the doctor', chat_act_done: 'Done', chat_act_logged: 'Saved in your diary for today', chat_act_q_done: 'Added to the questions in your report for the doctor'
     },
     hi: {
       tagline: 'मुफ़्त · हिंदी · English', home: 'आज', diary: 'डायरी', notes: 'नोट्स', learn: 'जानें', help: 'मदद', me: 'मैं', plans_tab: 'मेरा प्लान', cal_plan: 'आपका प्लान', slot_h: 'Sakhi कहती है', slot_more: 'Sakhi की और बातें ({n})', hs_112: 'अभी सबसे पास के अस्पताल जाएँ', hs_112_s: 'एम्बुलेंस: {n} पर कॉल करें', hs_other: 'दूसरी हेल्पलाइन', hs_other_s: 'सभी इमरजेंसी नंबर, एक टैप में', disc_urg_now: 'आपने जो दर्ज किया, उसके लिए अभी मदद चाहिए', disc_urg_check: 'आपने जो दर्ज किया, उसकी जाँच ज़रूरी है', disc_urg_open: 'खोलें', today_plan_n: 'आपका प्लान: {n} क़दम', tab_keep_h: 'गोली का रिमाइंडर रखना है?', tab_keep_p: 'आपकी आयरन या कैल्शियम की गोली का रिमाइंडर अभी भी चालू है। अगर डॉक्टर या ASHA ने गोली जारी रखने को कहा है, तो इसे रखें।', tab_keep_y: 'रखें', tab_keep_n: 'बंद करें', npv_h: 'आपके फ़ोन पर क्या दिखता है', npv_lock: 'लॉक स्क्रीन पर: कुछ नहीं', npv_open: 'फ़ोन खुला होने पर आपका अगला रिमाइंडर ({w}) ऐसा दिखता है:', npv_open0: 'फ़ोन खुला होने पर रिमाइंडर ऐसा दिखता है:', notif_words: 'हर रिमाइंडर में लिखा दिखाएँ कि वह किस बारे में है', notif_words_d: 'बंद: Sakhi के रिमाइंडर में सिर्फ़ “Sakhi का रिमाइंडर” या “आपकी गोली का समय” दिखता है, ताकि कोई और आपकी स्क्रीन पर पढ़ न सके। आपके अपने लिखे रिमाइंडर में आपके शब्द रहते हैं।', notif_n_med: 'आपकी गोली का समय', notif_n_care: 'Sakhi का एक रिमाइंडर। देखने के लिए दबाएँ।', hs_doc: 'डॉक्टर को दिखाएँ', hs_guide: 'डॉक्टर को कब दिखाएँ', hs_guide_s: 'सुरक्षा गाइड, सबके लिए एक जैसी', today_hi_0: 'नमस्ते', today_hi_m: 'सुप्रभात', today_hi_a: 'नमस्ते', today_hi_e: 'शुभ संध्या', today_hi_n: '{g}, {name}', today_all: 'आज का सब हो गया।', feel_eb: 'आज · 10 सेकंड', feel_h: 'आज आप कैसा महसूस कर रही हैं?', feel_more: 'और', feel_why: 'रोज़ का एक नोट दिखाता है कि आपके चक्र में क्या दोहराता है।', feel_ok: 'आज का नोट हो गया। बदलने के लिए फिर टैप करें।', meter_n: '{d} में से {n} दिन नोट किए', meter_fw: 'अगला: {n} और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_fw1: 'अगला: 1 और पीरियड, फिर आपके फ़र्टाइल दिन दिखेंगे।', meter_pat: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_pat1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है।', meter_rep: 'अगला: नोट्स वाले {n} और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', meter_rep1: 'अगला: नोट्स वाला 1 और पीरियड, फिर Sakhi दिखाएगी कि आपके साथ क्या दोहराता है, और डॉक्टर के लिए आपकी रिपोर्ट भी पूरी होगी।', legend_dots: 'बिंदु: आपने जो नोट किया', legend_key: 'निशानों का मतलब', today_why: 'क्यों?', today_tick: 'हो गया पर टिक करें: {x}', today_untick: 'हो गया: {x}। हटाने के लिए टैप करें', today_fold: 'आपके {n} क़दम', today_fold1: 'आपका क़दम', feel_h_d: 'उस दिन कैसा लगा?', day_more: 'और लक्षण', day_less: 'कम लक्षण', fab_feel: 'मैं कैसी हूँ', noted_n: 'दर्ज · इस महीने {d} में से {n} दिन', pat_ready: 'आपके साथ क्या दोहराता है, अब तैयार है', pat_see: 'देखें', dy_d: 'दिन {n}', dy_grp: '{d} से पीरियड · {n} दिन का चक्र', dy_grp_now: '{d} से पीरियड · यह चक्र', dy_grp_x: '{d} से पीरियड', dy_grp_d: '{d} से', dy_grp_preg: 'आपकी गर्भावस्था में', dy_grp_old: 'पहले के दिन', wis_ci_pmos: 'त्वचा और बालों के लक्षण, महीने में एक बार', wis_ci_pmos_s: 'लगभग एक मिनट। PMOS में डॉक्टर जो लक्षण पूछते हैं।', wis_ci_mid: '40 के बाद के लक्षण, महीने में एक बार', wis_ci_mid_s: 'लगभग एक मिनट। 40 के बाद डॉक्टर जो लक्षण पूछते हैं।', wis_ci_preg: 'गर्भावस्था के लक्षण, महीने में एक बार', wis_ci_post: 'डिलीवरी के बाद के लक्षण, महीने में एक बार', wis_ci_ps: 'लगभग एक मिनट। जो लक्षण डॉक्टर को बताने हैं।', cal_pw: 'गर्भावस्था का {n}वाँ हफ़्ता', pp_bleed: 'डिलीवरी के बाद ब्लीडिंग', pp_bleed_s: 'आपकी रिकवरी जाँच खोलता है, ख़तरे के संकेतों के साथ',
@@ -563,7 +576,20 @@
       pp_ring: 'दिन जन्म के बाद', pp_ring_1: 'दिन जन्म के बाद', pp_week: 'हफ़्ता {n} (6 में से)', pp_week_done: 'पहले 6 हफ़्ते पूरे', pp_aria: 'डिलीवरी के बाद पहले 6 हफ़्तों का दिन {n}',
       notif_sec: 'इस फ़ोन पर रिमाइंडर', notif_h: 'फ़ोन नोटिफ़िकेशन', notif_d: 'आपके रिमाइंडर, और पीरियड आने से एक दिन पहले सूचना। गुप्त mode में शब्द सामान्य रहते हैं।', notif_exact_p: 'Android आपके रिमाइंडर एक घंटे तक देर से बजा सकता है। समय पर बजें, इसके लिए Sakhi को अलार्म और रिमाइंडर की अनुमति दें।', notif_refill: 'Sakhi खोलें, ताकि आपके रिमाइंडर आते रहें।', d_refill: 'ऐप खोलें, ताकि आपके रिमाइंडर आते रहें।', notif_batt_p: 'कुछ फ़ोन में बैटरी बचाने वाली सेटिंग, Sakhi बंद होने पर रिमाइंडर रोक देती है। Sakhi की ऐप सेटिंग में Battery खोलें और “Unrestricted” या “No restrictions” चुनें। Xiaomi, Redmi, Vivo, Oppo और Realme पर “Autostart” (या “Auto-launch”) भी चालू करें, ताकि फ़ोन दोबारा चालू होने के बाद भी रिमाइंडर आते रहें।', notif_batt_b: 'Sakhi की सेटिंग खोलें', notif_exact_b: 'समय पर रिमाइंडर की अनुमति दें', notif_test_btn: 'टेस्ट नोटिफ़िकेशन भेजें', notif_test: 'Sakhi के रिमाइंडर ऐसे दिखते हैं। “मैं” पन्ने पर इन्हें बंद कर सकती हैं।', notif_test_sent: 'लगभग 5 सेकंड में एक टेस्ट नोटिफ़िकेशन आएगा।', notif_on: 'नोटिफ़िकेशन चालू हैं', notif_denied: 'फ़ोन की settings में इस ऐप के नोटिफ़िकेशन बंद हैं।', notif_period: 'अगले कुछ दिनों में पीरियड शुरू हो सकता है। pad पास रखें।',
       bio_btn: 'फ़िंगरप्रिंट से खोलें', bio_sw: 'फ़िंगरप्रिंट से खोलना', bio_sw_d: 'आपका फ़िंगरप्रिंट भी Sakhi खोलेगा। फ़ोन का अपना PIN कभी नहीं।', bio_sw_shared: 'फ़ोन साझा है, इसलिए यह बंद है: जिसका भी फ़िंगरप्रिंट इस फ़ोन में सेव है, वह Sakhi खोल सकता है।', bio_title: 'Qura Sakhi खोलें', bio_title_d: 'मेरे नोट्स खोलें',
-      demo_h: 'Demo', demo_p: 'ऐप को किसी नमूना महिला की तरह दिखाएँ। आपकी settings बनी रहेंगी; इस फ़ोन की entries की जगह नमूने की entries आ जाएँगी।', demo_sure: 'इससे इस फ़ोन की आपकी entries की जगह sample आ जाएगा। अपनी entries रखनी हैं, तो पहले backup code बना लें (“मैं”, फिर “नए फ़ोन पर ले जाएँ”)।', demo_yes: 'sample से बदलें', demo_doc: 'डॉक्टर का view', demo_welcome: 'नमूना हटाकर welcome स्क्रीन से शुरू करें', cal_a_spot: 'स्पॉटिंग', cal_a_range: 'पीरियड की संभावित तारीख़ें', bars_aria: 'पीरियड के बीच के अंतर, दिनों में: {list}'
+      demo_h: 'Demo', demo_p: 'ऐप को किसी नमूना महिला की तरह दिखाएँ। आपकी settings बनी रहेंगी; इस फ़ोन की entries की जगह नमूने की entries आ जाएँगी।', demo_sure: 'इससे इस फ़ोन की आपकी entries की जगह sample आ जाएगा। अपनी entries रखनी हैं, तो पहले backup code बना लें (“मैं”, फिर “नए फ़ोन पर ले जाएँ”)।', demo_yes: 'sample से बदलें', demo_doc: 'डॉक्टर का view', demo_welcome: 'नमूना हटाकर welcome स्क्रीन से शुरू करें', cal_a_spot: 'स्पॉटिंग', cal_a_range: 'पीरियड की संभावित तारीख़ें', bars_aria: 'पीरियड के बीच के अंतर, दिनों में: {list}',
+      /* Version 40 (prototype): Ask Sakhi, the chat */
+      chat_h: 'Sakhi से पूछें', chat_h_d: 'पूछें', chat_tile_s: 'अपनी सेहत के बारे में अपने शब्दों में पूछें, लिखकर या बोलकर।', chat_tile_s_d: 'लिखकर या बोलकर सवाल पूछें।', chat_pill: 'टेस्ट',
+      chat_proto: 'प्रोटोटाइप। जवाब AI लिखता है और ग़लत हो सकते हैं। Sakhi डॉक्टर नहीं है।', chat_note_h: 'पूछने से पहले',
+      chat_note_p: 'यह टेस्ट वर्ज़न है। आपका सवाल Sakhi के सर्वर पर और अमेरिका की कंपनी Anthropic के पास जाता है, जिसका AI जवाब लिखता है। साथ में एक शब्द यह भी जाता है कि आप सेहत के लिए आमतौर पर कहाँ जाती हैं (अपने डॉक्टर, सरकारी जगह या अभी कहीं नहीं), ताकि जवाब सही जगह बताए। आपकी डायरी से कुछ नहीं भेजा जाता, और आपका कोई सवाल सर्वर पर नहीं रखा जाता। कृपया अपना नाम, फ़ोन नंबर या पता न लिखें।',
+      chat_note_ok: 'मैं समझ गई', chat_ph: 'अपना सवाल लिखें', chat_send: 'भेजें', chat_mic: 'बोलकर पूछें', chat_talk: 'Sakhi से बात करें', chat_talk_on: 'बात बंद करें', chat_talk_d: 'बोलें, जवाब सुनें, फिर बोलें।',
+      chat_hearing: 'सुन रही है…', chat_thinking: 'Sakhi लिख रही है…', chat_say: 'यह जवाब सुनें', chat_src_guides: 'Sakhi की डॉक्टरों से जाँची गाइड से', chat_src_general: 'आम जानकारी, Sakhi की जाँची गई गाइड से नहीं',
+      chat_guides_h: 'और पढ़ें', chat_err: 'Sakhi इसका जवाब नहीं दे पाई। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।', chat_resting: 'आज के लिए Sakhi आराम कर रही है। नीचे की गाइड खोलें, या डॉक्टर को दिखाएँ।',
+      chat_offline: 'इंटरनेट नहीं है। आपका सवाल यहीं सेव है: ऑनलाइन होने पर फिर कोशिश करें।', chat_retry: 'फिर कोशिश करें', chat_clear: 'चैट मिटाएँ', chat_cleared: 'चैट मिट गई', chat_try_h: 'आप पूछ सकती हैं',
+      chat_count: '500 में से {n}', chat_you: 'आपने पूछा', chat_sakhi: 'Sakhi का जवाब', chat_more: 'नहीं मिला? Sakhi से पूछें', chat_tab: 'पूछें', chat_tab_d: 'पूछें',
+      /* Version 40.2 (phase 1) */
+      chat_about_b: 'इस बारे में Sakhi से पूछें', chat_about: 'विषय: {t}', chat_about_x: 'इस गाइड को सवाल से हटाएँ', chat_up: 'काम का', chat_down: 'काम का नहीं',
+      chat_thanks: 'धन्यवाद। इससे Sakhi बेहतर होती है।', chat_fu_h: 'आगे पूछें', chat_act_sign: 'आज के लिए दर्ज करें: {s}', chat_act_period: 'दर्ज करें: मेरा पीरियड आज शुरू हुआ',
+      chat_act_q: 'डॉक्टर से पूछने वाले सवालों में जोड़ें', chat_act_done: 'हो गया', chat_act_logged: 'आज की डायरी में सेव हो गया', chat_act_q_done: 'डॉक्टर के लिए आपकी रिपोर्ट के सवालों में जुड़ गया'
     }
   };
   /* Languages. Modules can add more; each names a fallback (Marathi falls back to Hindi, the rest to English). */
@@ -1001,7 +1027,7 @@
     if (mem.teen || (age != null && age < 18)) l = ['teen'].concat(l.filter((x) => x !== 'teen'));   /* review PLACES-09: teen mode too */
     if (state.stage === 'app' && lossWeeks()) l = ['loss'].concat(l.filter((x) => ['contra', 'ttc', 'pregtest'].indexOf(x) < 0));   /* after a loss: its own topic, nothing about trying or preventing */
     return l; };
-  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'library', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check', 'body-now'];   /* body-now: Version 39.84 */
+  const CORE_ROUTES = ['home', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'midlife', 'pregnancy', 'ask', 'ask-call', 'tell', 'care', 'library', 'report', 'backup', 'account', 'me-privacy', 'me-health', 'me-reminders', 'me-data', 'me-look', 'me-help', 'me-about', 'pic-check', 'body-now', 'ask-sakhi'];   /* body-now: Version 39.84; ask-sakhi: Version 40 (prototype) */
   function register(m) {
     if (!m || !m.id) return;
     MODS.push(m);
@@ -1151,6 +1177,7 @@
     if (r.startsWith('topic-')) return 'care';
     if (['diary', 'checkin', 'calendar', 'explain'].indexOf(r) >= 0) return 'diary';   /* Version 39.1: What your diary shows is Diary's deep page */
     if (['help', 'tell', 'ask'].indexOf(r) >= 0) return state.stage === 'app' ? '' : 'help';
+    if (r === 'ask-sakhi') return 'ask-sakhi';   /* Version 40.1: its own tab */
     if (['care', 'library', 'pattern', 'fertile', 'midlife', 'pregnancy'].indexOf(r) >= 0 || modRoute(r)) return 'care';
     return r;
   }
@@ -1158,7 +1185,7 @@
     const navEl = $('#tabbar'); const inApp = (state.stage === 'app' || state.stage === 'browse') && !mem.locked && !teenPlay() && !signupGate(route()) && ['your-sakhi', 'join-update'].indexOf(route()) < 0; navEl.hidden = !inApp; if (!inApp) return;
     const cur = tabOf(route());
     const tabs = state.stage === 'app'
-      ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])
+      ? [['home', I.home, t('home')]].concat(planTab() ? [['plan', I.target, t('plans_tab')]] : []).concat(chatOn() ? [['ask-sakhi', CHAT_ICO, t(state.settings.discreet ? 'chat_tab_d' : 'chat_tab')]] : []).concat([['diary', I.diary, state.settings.discreet ? t('notes') : t('diary')], ['care', I.search, t('care')]])   /* Version 40.1: Ask Sakhi, a tab of its own */
       : [['care', I.care, t('care')], ['help', I.help, t('help')]];
     navEl.innerHTML = tabs.map((x) => '<button type="button" data-go="' + x[0] + '" class="' + (cur === x[0] ? 'on' : '') + '">' + x[1] + esc(x[2]) + '</button>').join('');
     /* Version 39.2 (diet audit F13): a tab replaces the history entry, so the phone's Back doesn't walk through other tabs */
@@ -1188,6 +1215,8 @@
     root.querySelectorAll('[data-start-diary]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { closeSheet(); state.stage = 'onboard'; mem.ob = { step: 1 }; save(); render(); }); });
     root.querySelectorAll('[data-ask]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => ask(b.dataset.ask)); });
     root.querySelectorAll('[data-mydoc]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => openMyDoc()); });   /* Version 39.40: her doctor's number */
+    root.querySelectorAll('[data-chat-about]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { mem.chatAbout = b.dataset.chatAbout; closeSheet(true); if (route() === 'ask-sakhi') render(); else setHash('ask-sakhi'); }); });   /* Version 40.2 */
+    root.querySelectorAll('[data-chat-q]').forEach((b) => { if (b._wired) return; b._wired = true; b.addEventListener('click', () => { mem.chatDraft = String(b.dataset.chatQ || '').slice(0, 500); setHash('ask-sakhi'); }); });   /* Version 40: what she searched, into Ask Sakhi */
   }
   const scrollMem = {}; let curRoute = null;
   /* When the diary changes hands (Delete everything, a sample woman, a restored backup) every screen forgets what the last
@@ -1208,6 +1237,7 @@
     if (location.hash === '#demo') { try { history.replaceState(null, '', location.pathname + location.search + (state.stage === 'app' ? '#home' : '')); } catch (e) { /* the hash stays; Home renders under the sheet */ } setTimeout(openDemo, 80); }
     const r = route(); const prevY = window.scrollY || 0;
     fbSync(r);   /* Version 39.79: Firebase on or off for this screen, and its name once it changes */
+    if (r !== 'ask-sakhi' && (mem.chatTalk || mem.chatHearing)) { mem.chatTalk = false; mem.chatHearing = false; if (api.stopSpeech) safe(() => api.stopSpeech()); }   /* Version 40: talking with Sakhi ends when she leaves */
     if (curRoute && curRoute !== r) { scrollMem[curRoute] = prevY; closeSheet(true); if (curRoute === 'checkin') mem.ciDraft = null; }   /* a sheet never follows her to another screen */
     if (r.indexOf('report') !== 0) mem.rpFirst = null;   /* Version 39.1: a card's question leads only the report it opened */
     const keepTour = tour && curRoute === r ? { id: tour.def.id, i: tour.i, forced: tour.forced, chain: tour.chain } : null; renderFab(null); clearTour();
@@ -1225,7 +1255,7 @@
     if (teenPlay() && TEEN_PLAY.indexOf(r) < 0) { safe(() => location.replace('#help')); return; }   /* Version 39.81: under 18 in a Play build, Help only */
     if (state.stage === 'welcome') { renderWelcome(v); safe(() => axNames(v)); mem.obTop = null; return; }   /* Version 39.78: joining again starts step 1 at its top */   /* Version 39.76: names Android keeps, joining too */
     if (state.stage === 'onboard') { renderOnboard(v); safe(() => axNames(v)); if (obStepNew()) window.scrollTo(0, 0); return; }   /* Version 39.78 (launch QA B6): a new step starts at its top */
-    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'body-now': renderBodyNow,'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
+    const map = { account: renderAccount, home: renderHome, 'your-sakhi': renderYourSakhi, 'join-update': renderJoinUpdate, diary: renderDiary, learn: renderLearn, help: renderHelp, me: renderMe, 'me-privacy': renderMePrivacy, 'me-health': renderMeHealth, 'me-reminders': renderMeReminders, 'body-now': renderBodyNow,'me-data': renderMeData, 'me-look': renderMeLook, 'me-help': renderMeHelp, 'me-about': renderMeAbout, 'pic-check': renderPicCheck, 'ask-sakhi': renderChat, checkin: renderCheckin, pattern: renderPattern, fertile: renderFertile, midlife: renderMidlife, pregnancy: renderPregnancy, ask: renderAsk, 'ask-call': renderAskCall, 'doc-free': renderDocFree, tell: renderTell, care: renderCare, library: renderLibrary, report: renderReport, 'report-show': renderReportShow, backup: renderBackup };
     if (r.startsWith('a-')) { if (artGone(r)) safe(() => location.replace('#learn')); else renderArticle(v, r.slice(2)); }   /* Version 39.68: an article the doctors removed opens Learn */
     else if (MOVED[r]) safe(() => location.replace('#' + MOVED[r]));
     else if (retired(r)) safe(() => location.replace('#care'));   /* Version 39.68: a retired page, however she reached it */
@@ -1667,15 +1697,331 @@
     const afHtml = afA ? '<div class="card soft ans-first"><span class="eyebrow">' + esc(t('ans_first')) + '</span><button type="button" class="item quiet" data-qa="' + esc(af) + '"><span class="ico-sm hue hue-' + hueOf(afA.group) + '">' + icon(GROUP_ICONS[afA.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(afA, 'title')) + '</strong><span>' + esc(L(afA, 'summary')) + '</span></span><span class="chev">' + I.chev + '</span></button></div>' : '';
     if (afA) hitA = hitA.filter((a) => a.group + '.' + a.id !== af);
     if (!hitT.length && !hitA.length && afHtml) return urg + afHtml;
-    if (!hitT.length && !hitA.length) return urg + '<div class="card"><p>' + esc(t('no_tools')) + '</p><div class="row wrap">' + (docWho('search') !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(q) + '">' + esc(t('ask_qura')) + '</button>' : '') + (docWho('search') !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div></div>';   /* Version 39.77 */
+    if (!hitT.length && !hitA.length) return urg + '<div class="card"><p>' + esc(t('no_tools')) + '</p><div class="row wrap">' + (chatOn() ? '<button type="button" class="btn sm primary" data-chat-q="' + esc(q) + '">' + esc(t('chat_h')) + '</button>' : '') + (docWho('search') !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(q) + '">' + esc(t('ask_qura')) + '</button>' : '') + (docWho('search') !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div></div>';   /* Version 39.77 */
     return urg + afHtml + (hitT.length ? '<section class="care-sec"><h2>' + esc(t('res_tools')) + '</h2><div class="list">' + hitT.slice(0, 24).map(tileHtml).join('') + '</div></section>' : '') +
-      (hitA.length ? '<section class="care-sec"><h2>' + esc(t('res_articles')) + '</h2><div class="list">' + hitA.slice(0, 24).map(artHtml).join('') + '</div></section>' : '');
+      (hitA.length ? '<section class="care-sec"><h2>' + esc(t('res_articles')) + '</h2><div class="list">' + hitA.slice(0, 24).map(artHtml).join('') + '</div></section>' : '') +
+      (chatOn() ? '<div class="list chat-more"><button type="button" class="item quiet" data-chat-q="' + esc(q) + '"><span class="ico-sm hue hue-plum">' + CHAT_ICO + '</span><span class="body"><strong>' + esc(t('chat_more')) + '</strong></span><span class="chev">' + I.chev + '</span></button></div>' : '');   /* Version 40 */
   }
   /* mic: a Speak button where the Android app can listen (Version 37: Explore's search took over from Home's ask box) */
   const canListen = () => !!(window.SakhiAndroid && window.SakhiAndroid.listen);
   const searchBox = (id, val, mic) => '<div class="searchbox' + (mic && canListen() ? ' has-mic' : '') + '">' + I.search + '<input id="' + id + '" type="search" enterkeyhint="search" placeholder="' + esc(t('search_all')) + '" value="' + esc(val || '') + '" aria-label="' + esc(t('search_all')) + '"><button type="button" class="sb-clear" id="' + id + '-clear" aria-label="' + esc(t('search_clear')) + '"' + (val ? '' : ' hidden') + '>×</button>' + (mic && canListen() ? '<button type="button" class="mic" id="' + id + '-mic" aria-label="' + esc(t('voice_b')) + '">' + MIC + '</button>' : '') + '</div>';
   const wireSearch = (v, id, key) => { const qi = $('#' + id, v); if (!qi) return; const cl = $('#' + id + '-clear', v); if (cl) cl.addEventListener('click', () => { mem[key] = ''; render(); const n = $('#' + id); if (n) n.focus(); });   /* Version 39.75 */
     qi.addEventListener('input', (e) => { mem[key] = e.target.value; if (e.target.value.trim().length >= 3) usageMark('search'); const pos = e.target.selectionStart; render(); const n = $('#' + id); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }); };
+  /* ---------- Version 40 (prototype): Ask Sakhi, the chat helper (MODULE_API section 132; server/SERVER_SPEC.md section 12) ----------
+     Mohit, 9 Nov: "build a proper chat agent with voice option", in her language, inside Sakhi only, with no web search. Claude
+     Haiku 5.5 answers on Sakhi's own server function (sakhi-chat) from the doctor-checked guides first, and says so when an answer
+     is general information instead. Only in a build made with SAKHI_CHAT (an ask-proto test build for team phones; build-apk.sh
+     refuses it for Play, and it is off whenever CFG.store is play), for a signed-in woman of 18 or more, never on a shared phone or
+     for a sample woman, with a plain title in discreet mode (and her PIN there). net() sends her messages' text and the app's
+     language only: no diary, stage or account details, and phone numbers and emails come out first. The server keeps nothing; her
+     chat stays on her phone (state.chat) until she clears it. A danger sign she types or says puts Help's hospital card above the
+     chat before any answer. Firebase is off on this screen (FB_PRIVATE). */
+  const chatAddr = () => (CFG.chat && /^https:\/\//.test(String(CFG.chat)) ? String(CFG.chat) : '');
+  const chatOn = () => !!chatAddr() && !playStore() && state.stage === 'app' && signedIn() && !state.sample && !mem.teen && !mem.under18 && !((ageYears() || 99) < 18) && !state.settings.shared;
+  const CHAT_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14a2 2 0 012 2v8a2 2 0 01-2 2h-7l-5 4v-4H5a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M8 10h8M8 13h5"/></svg>';
+  const CHAT_SEND_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/></svg>';
+  const CHAT_MAX = 500, CHAT_KEEP = 60;
+  /* questions in three ways of writing, so she sees any of them works */
+  const CHAT_EX = ['Is a 40-day gap between periods normal?', 'PCOD mein kya khana chahiye?', 'पीरियड में पेट दर्द कम कैसे करें?'];
+  /* the screens an answer may offer, by the server's names (SCREENS in chat.js); a doctor has its own buttons under the answer */
+  const CHAT_SCREENS = { help: 'help', doctor: '', plan: 'plan', diary: 'diary', calm: 'calm', food: 'food', report: 'report', care: 'access-care' };
+  /* Version 40.2: the signs an answer may offer to log for today; it mirrors SIGNS in the server's chat.js. Never a danger sign. */
+  const CHAT_SIGNS = ['d_cramps', 'd_headache', 'd_back', 'd_breast', 'd_joint', 'd_bloat', 'd_tired', 'd_sleep', 'd_acne', 'd_nausea', 'd_heartburn', 'd_hotflush', 'd_mood', 'd_anxious', 'd_irritable', 'd_disch_bad', 'd_itch'];
+  const THUMB_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.7 10H18a2 2 0 012 2.3l-1.2 6A2 2 0 0116.8 20H7"/></svg>';
+  const THUMB_DOWN = THUMB_UP.replace('<svg ', '<svg style="transform:rotate(180deg)" ');
+  /* an answer's actions as she may do them: a known type, a sign Sakhi can log, a short question; never with a danger sign */
+  const chatActionsOf = (j) => { if (!j || j.danger === true) return []; const out = [];
+    (Array.isArray(j.actions) ? j.actions : []).forEach((a) => { if (!a || out.length >= 2) return;
+      if (a.type === 'log_sign' && CHAT_SIGNS.indexOf(a.sign) >= 0) out.push({ type: 'log_sign', sign: a.sign });
+      else if (a.type === 'log_period') out.push({ type: 'log_period' });
+      else if (a.type === 'doctor_question' && typeof a.text === 'string' && a.text.trim().length >= 3) out.push({ type: 'doctor_question', text: a.text.trim().slice(0, 160) }); });
+    return out; };
+  const chatFollowUps = (j) => (!j || j.danger === true ? [] : (Array.isArray(j.follow_ups) ? j.follow_ups : []).filter((x) => typeof x === 'string' && x.trim().length > 1).map((x) => x.trim().slice(0, 80)).slice(0, 3));
+  const chatActKey = (a) => a.type + ':' + (a.sign || a.text || '');
+  /* "my period started today" only where the diary's own button says the same (not in a pregnancy, after a birth, or once they stopped) */
+  const chatActOk = (a) => a.type !== 'log_period' || (!isPregnant() && !afterBirthNow() && !stoppedNow());
+  const chatActLabel = (a) => (a.type === 'log_sign' ? tf('chat_act_sign', { s: t(a.sign) }) : a.type === 'log_period' ? t('chat_act_period') : t('chat_act_q'));
+  function chatActsHtml(m, i) {
+    const rows = (m.ac || []).map((a, j) => {
+      if (!chatActOk(a)) return ''; const done = !!(m.ad || {})[chatActKey(a)];
+      return '<button type="button" class="item chat-act' + (done ? ' done' : '') + '" data-chat-act="' + i + ':' + j + '"' + (done ? ' disabled' : '') + '><span class="ico-sm hue hue-plum">' + (done ? I.check : (a.type === 'doctor_question' ? I.steth : I.diary)) + '</span><span class="body"><strong>' + esc((done ? t('chat_act_done') + ' · ' : '') + chatActLabel(a)) + '</strong>' + (a.type === 'doctor_question' ? '<span>“' + esc(a.text) + '”</span>' : '') + '</span></button>';
+    }).join('');
+    return rows ? '<div class="list chat-acts-list">' + rows + '</div>' : '';
+  }
+  /* an action happens only on her tap, with Undo; the server hears only that one was done (a count) */
+  function chatDoAct(i, j) {
+    const c = chatData(); const m = c.msgs[i]; const a = m && (m.ac || [])[j]; if (!a || !chatActOk(a)) return;
+    const key = chatActKey(a); if ((m.ad || {})[key]) return;
+    const mark = () => { m.ad = Object.assign({}, m.ad || {}, { [key]: 1 }); save(); net('POST', 'count', { kind: 'action' }).catch(() => {}); };
+    const unmark = () => { if (m.ad) delete m.ad[key]; save(); render(); };
+    if (a.type === 'log_sign') {
+      const d = toISO(today()); const had = (state.daily[d] || []).indexOf(a.sign) >= 0;
+      if (!had) feelToggle(d, a.sign);
+      mark(); render();
+      toastAct(t('chat_act_logged'), [{ label: t('undo'), fn: () => { if (!had && (state.daily[d] || []).indexOf(a.sign) >= 0) feelToggle(d, a.sign); unmark(); } }]);
+    } else if (a.type === 'doctor_question') {
+      const before = (state.askTopics || []).slice();   /* her own questions for the doctor: the report shows them first (one home) */
+      state.askTopics = before.filter((x) => x !== a.text).concat([a.text]).slice(-8); mark(); render();
+      toastAct(t('chat_act_q_done'), [{ label: t('undo'), fn: () => { state.askTopics = before; unmark(); } }]);
+    } else if (a.type === 'log_period') { mark(); quickLog('start'); }
+  }
+  /* the answer as it is written: the live bubble's text, at most once a frame */
+  let chatLiveTm = 0;
+  function chatPaintLive() {
+    if (route() !== 'ask-sakhi' || chatLiveTm) return;
+    const paint = () => { chatLiveTm = 0; if (route() !== 'ask-sakhi') return; const el = $('#chat-live'); if (!el) { if (mem.chatLive) render(); return; }
+      el.innerHTML = chatText(mem.chatLive || ''); if (!$('#view .chat-urg')) window.scrollTo(0, document.documentElement.scrollHeight); };
+    chatLiveTm = typeof requestAnimationFrame === 'function' ? requestAnimationFrame(paint) : setTimeout(paint, 16);
+  }
+  /* Version 40.4: the notice's version. A woman who accepted an earlier notice sees the new one once (it now names her care route) */
+  const CHAT_NOTE_V = 2;
+  const chatNoted = () => { const c = chatData(); return !!c.ok && c.okv === CHAT_NOTE_V; };
+  /* Version 40.4 (Mohit, 9 Nov: "Send her care route"): one word, so the answer names the right place (the Version 39.28 rule): her
+     own doctor (also when she hasn't said), government care (a government hospital or centre, or her ASHA or ANM), or nowhere yet */
+  const chatCare = () => (careGov() ? 'govt' : careRoute() === 'none' ? 'none' : 'own');
+  const chatData = () => { if (!state.chat || typeof state.chat !== 'object') state.chat = { msgs: [] }; if (!Array.isArray(state.chat.msgs)) state.chat.msgs = []; return state.chat; };
+  /* the same rule as the server's: ten digits or more is a phone number (a date stays), and anything shaped like an email */
+  const scrubPii = (s) => String(s).replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]').replace(/\+?\d[\d\s().-]{8,}\d/g, (m) => (m.replace(/\D/g, '').length >= 10 ? '[number]' : m));
+  /* Help's signs as search reads them (Version 39.30; Version 39.91: heavy bleeding after a birth, post_u_1), and pregnancy's danger
+     words ('p') while her diary says she is pregnant or her words say someone is pregnant now (Version 39.92, inside dangerQ) */
+  const chatDangerKey = (q) => urgentQ(q) || (dangerQ(q) ? 'p' : null);
+  /* when Sakhi can't answer: the guides Explore's search would show for her words, best first */
+  /* When Sakhi can't answer: the guides Explore's search would list for her words (any word that matches) */
+  const chatLooseGuides = (q) => { const terms = searchTerms(q); if (!terms.length) return []; const ranked = allArticles().map((a) => ({ a: a, n: score(norm([a.title_en, a.title_hi, a.summary_en, a.summary_hi].join(' ')), terms) })).filter((r) => r.n > 0).sort((x, y) => y.n - x.n).map((r) => r.a); return dangerFirst(q, ranked).slice(0, 3).map((a) => a.group + '.' + a.id); };
+  /* Version 40.3: the guides that go with her question, picked for precision (the 9 Nov eval and phone walk: a wrong pick led the
+     AI astray, and "गर्भावस्था में ... जाँच" picked the burning-urine guide). No pick beats a wrong one: without picks the AI finds
+     the guide from its own list. Filler words and numbers count for nothing; a word and its synonyms form one idea ("गर्भावस्था",
+     "गर्भ" and "pregnancy" count once); a Hindi word also matches by its stem ("जाँचें" by "जाँच"); a word must start a word in the
+     title, and one of 3 letters or fewer must be the whole word ("tum" never finds "tummy"). Only titles count: an idea weighs by
+     how few titles hold it, so "period", in a dozen, weighs little and "discharge", in one, a lot. A guide goes when its ideas weigh
+     enough and it is near the best. */
+  const HI_END = /(ावस्था|ियों|ियाँ|ाएँ|ाओं|ों|ें|ीं|ाँ|ता|ती|ते|ना|ने|नी|ी|े|ा)$/;
+  const chatForms = (tm) => { const st = /[\u0900-\u097f]/.test(tm) ? tm.replace(HI_END, '') : (tm.length >= 6 ? tm.replace(/e$/, '') : tm); return st !== tm && st.length >= 3 ? [tm, st] : [tm]; };   /* "ovulate" finds "ovulation" */
+  const chatHit = (hay, tm) => { for (let i = hay.indexOf(tm); i >= 0; i = hay.indexOf(tm, i + 1)) { if (i > 0 && WCH.test(hay.charAt(i - 1))) continue; if (tm.length <= 3 && WCH.test(hay.charAt(i + tm.length) || ' ')) continue; return true; } return false; };
+  const CHAT_FILLER = new Set(('come comes coming every normal day days week weeks month months year years time times take taking start starting ' +
+    'should much many often help home tell thing things way ways good best ok okay also still really get getting use using im ive its ' +
+    'can cannot could quickly exact instructions ignore now doctor doctors system prompt role pretend after before during ' +
+    'you your yours all bring mean means never ever feel feeling age gett tak com instruction quick plan plans ' +
+    'liye kaunsi kaunsa konsi sakti sakte sakta hu hoon le lena leni theek thik karu karun kare karein raha rahi rahe chahiye kitna kitni ' +
+    'kitne baar jaana jana pas paas wala wali tum ab jao batao bata bhool naam ' +
+    /* Version 40.5.1 (the scenario suite, 10 Nov): words that matched one title and sent a follow-up to the wrong guide: "see" ("When
+       to see a fertility doctor"), "कौन सी"/"दवा" (the hot-flushes guide), "समय" (also "during", in the sex guides' titles), "कल"
+       (the danger-signs guide's "कल नहीं") */
+    'see right long better कौन सी सा कब कल समय होने लगेगा रहेगी लूँ दवा दवाई दवाएँ ' +
+    /* and Hindi verb forms: "कौन सी गोलियाँ लेनी हैं?" (pregnancy tablets) matched HRT's "किसे नहीं लेनी चाहिए" */
+    'लेनी लेना लेने लें ली लिया है हैं हो ' +
+    /* and, from the broad use cases (every guide's own question, 10 Nov), words that sent a question to one unrelated title: "a lot"
+       ("two cheap tests that explain a lot"), "wrong" ("the 'normal' BMI number is wrong"), "go" ("Signs that mean go now"), "दिन" */
+    'lot wrong go times anymore something having happening blood low दिन दिनों खून मन पहली सुरक्षित माँ ' +
+    'कितनी कितना कितने बार पास जाना जाएँ जाऊँ लिए चाहिए करें करूँ होता होती होते सकते सकती सकता गया गए गई रहा रही रहे बहुत पता ' +
+    'करना कोई ठीक सही डॉक्टर तरह बाद पहले दौरान कम साल उम्र').split(' '));
+  const CHAT_PICK_FLOOR = 3.5;   /* one idea alone must be in a single title; two ideas can share a few */
+  const chatIdeas = (q) => {
+    const qq = unLoss(norm(q).trim()); if (!qq) return [];
+    const words = qWords(qq).filter((w) => !CHAT_FILLER.has(w) && !/^[0-9]+$/.test(w));
+    const ideas = words.map((w) => chatForms(w));
+    SYN.forEach((row) => {
+      const vs = row[0].map((v) => norm(v).trim());
+      const hit = vs.find((vv) => (/[\u0900-\u097f]/.test(vv) ? qq.indexOf(vv) >= 0 : (' ' + qq + ' ').indexOf(' ' + vv + ' ') >= 0 || (' ' + qq + ' ').indexOf(' ' + vv + 's ') >= 0) || words.some((w) => (w.length >= 3 && vv.indexOf(w) === 0) || (vv.length >= 4 && w.indexOf(vv) === 0)));
+      if (hit === undefined) return;
+      const i = words.findIndex((w) => w.indexOf(hit) >= 0 || (w.length >= 3 && hit.indexOf(w) === 0));
+      if (i >= 0) ideas[i] = ideas[i].concat(row[1]); else ideas.push([row[1]]);
+    });
+    return ideas.map((fs) => fs.filter((f, j) => fs.indexOf(f) === j));
+  };
+  /* Version 40.5.1: a group's own name counts in its guides' titles, so "Signs worth noticing" is a PCOS guide to the picks too */
+  const CHAT_GROUP_WORDS = { pmos: 'pcos pcod pmos पीसीओएस पीसीओडी', conceive: 'conceive', midlife: 'menopause मेनोपॉज़' };
+  /* and a few plain words for guides whose titles name none (the broad use cases: "free ultrasound kahan hota hai?" never reached
+     "Your four check-ups", and "hair on my chin, pimples" never reached "Signs worth noticing") */
+  const CHAT_GUIDE_WORDS = { 'pregnancy.four-antenatal-visits': 'checkup checkups check-up scan ultrasound sonography अल्ट्रासाउंड सोनोग्राफी', 'pmos.signs-to-notice': 'hair chin pimples acne बाल मुंहासे', 'pregnancy.iron-folic-acid-calcium-td': 'iron folic calcium आयरन फ़ोलिक कैल्शियम', 'cycle.how-to-keep-a-period-diary': 'dates तारीख तारीखें' };
+  const chatPicks = (q) => {
+    const ideas = chatIdeas(q); if (!ideas.length) return [];
+    const docs = allArticles().map((a) => ({ a: a, tit: norm([a.title_en, a.title_hi, CHAT_GROUP_WORDS[a.group] || '', CHAT_GUIDE_WORDS[a.group + '.' + a.id] || ''].join(' ')) }));
+    const has = (h, fs) => fs.some((f) => chatHit(h, f));
+    const wt = ideas.map((fs) => { const df = docs.filter((d) => has(d.tit, fs)).length; return df ? Math.log((docs.length + 1) / df) : 0; });
+    const scored = docs.map((d) => ({ a: d.a, n: ideas.reduce((n, fs, i) => n + (has(d.tit, fs) ? wt[i] : 0), 0) }));
+    const top = Math.max.apply(null, scored.map((r) => r.n).concat(0));
+    return scored.filter((r) => r.n >= CHAT_PICK_FLOOR && r.n >= top * 0.8).sort((x, y) => y.n - x.n).map((r) => ({ id: r.a.group + '.' + r.a.id, a: r.a, n: Math.round(r.n * 100) / 100 }));
+  };
+  const chatLocalGuides = (q) => { const picks = chatPicks(q); return dangerFirst(q, picks.map((r) => r.a)).filter((a) => dangerQ(q) || picks.some((r) => r.a === a)).slice(0, 3).map((a) => a.group + '.' + a.id); };
+  /* Version 40.5 (Mohit, 9 Nov: "Yes, build 1 to 4", after asking what medicine to take for period pain): a Sakhi page the doctors
+     checked is a chat guide too (the server's guides.js, made by server/scripts/make-chat-guides.mjs): the Period pain page, whose
+     "Pain relief medicine" names ibuprofen or mefenamic acid, or paracetamol, with its caution. It goes with the Learn article core
+     pairs it with (ART's "guide"), right after it, so the server reads it first; an older server drops an id it doesn't know.
+     Under the answer it opens the page. */
+  const CHAT_PAGES = ['periods-pain', 'pregtest-abortion'];
+  /* Version 40.5.1: a page no Learn article pairs with goes when her words are about it */
+  const CHAT_PAGE_KEYS = { 'pregtest-abortion': /abortion|abort|गर्भपात|अबॉर्शन|\bmtp\b|pregnancy (khatam|end|girana|hatana)|end (a|the|my|this) pregnancy|गर्भ (गिरा|ख़त्म|खत्म)|bachcha (girana|nahi chahiye)/i };
+  const chatPageRoute = (id) => (typeof id === 'string' && id.indexOf('page.') === 0 ? id.slice(5) : '');
+  const chatPageOk = (id) => { const r = chatPageRoute(id); return !!r && CHAT_PAGES.indexOf(r) >= 0 && !!ROUTES[r] && !retired(r) && !triageHidden(r); };
+  const chatPageOf = (id) => { const l = ART[id]; const p = l && l.guide ? 'page.' + l.guide : ''; return p && chatPageOk(p) ? p : ''; };
+  /* Version 40.5.1 (the scenario suite, 10 Nov: 41 of 180 short follow-ups, such as "कौन सी दवा सही रहेगी?" after a period-pain
+     answer, went with a guide on another subject, and the answer followed it): the guides of Sakhi's last answer (`prev`, 2 at most,
+     with their pages) go with her next question too, first when it is short (8 words or fewer), after its own picks when it is longer */
+  const CHAT_SHORT = 8;
+  const chatHints = (q, about, prev) => {
+    const out = []; const add = (x) => { if (x && x !== about && out.indexOf(x) < 0) out.push(x); };
+    const own = []; chatLocalGuides(q).forEach((id) => { own.push(id); const p = chatPageOf(id); if (p) own.push(p); });
+    const last = []; (Array.isArray(prev) ? prev : []).filter((x) => typeof x === 'string' && (!!findArticle(x) || chatPageOk(x))).slice(0, 2).forEach((id) => { last.push(id); const p = chatPageOf(id); if (p) last.push(p); });
+    /* a correction ("no, I meant ...") starts from her new words, not the last answer's guides */
+    const fix = /^\s*(no|nope|nahi|nahin|नहीं|na)\b|\bi meant\b|\bmera matlab\b|मेरा मतलब|\bnot (that|this)\b/i.test(String(q || ''));
+    const short = !fix && String(q || '').trim().split(/\s+/).filter(Boolean).length <= CHAT_SHORT;
+    if (about) add(chatPageOf(about));
+    Object.keys(CHAT_PAGE_KEYS).forEach((r) => { if (CHAT_PAGE_KEYS[r].test(String(q || '')) && chatPageOk('page.' + r)) add('page.' + r); });
+    (short ? last.concat(own) : own.concat(last)).forEach(add);
+    return out.slice(0, 5);   /* the server takes 5 at most, and reads the first 4 with the guide she came from */
+  };
+  /* Version 40.5: the doctors' own medicine line (review 19.71, answer 6) under every answer that names a medicine, in their words,
+     never the model's, and the emergency pill's own line for that pill. It sits in the answer's block, so "Listen" and Talk with Sakhi
+     read it too; in the answer's script (a Devanagari answer gets the Hindi line), else the app's language. Never on a danger answer. */
+  const CHAT_EC = /emergency (contraceptive )?pills?|i-pill|unwanted[- ]?72|emergency goli|इमरजेंसी (पिल|गोली)|आपातकालीन (गर्भनिरोधक )?गोली/i;
+  const CHAT_MED = /\b(medicines?|medications?|tablets?|capsules?|pills?|painkillers?|paracetamol|ibuprofen|mefenamic|naproxen|aspirin|antibiotics?|antifungals?|metformin|letrozole|clomiphene|progesterone|hormone therapy|hrt|folic acid|supplements?|syrup|dawa|dawai|dawaai|dawaiyan|goli|goliyan|goliyaan)\b|दवा|दवाई|दवाइयाँ|दवाएँ|दवाओं|गोली|गोलियाँ|गोलियां|टैबलेट|कैप्सूल|पैरासिटामोल|सिरप|फ़ोलिक|फोलिक/i;
+  const chatMedKind = (x) => { const s = String(x || ''); return CHAT_EC.test(s) ? 'ec' : (CHAT_MED.test(s) ? 'med' : ''); };
+  const chatMedLine = (x) => { const k = chatMedKind(x); if (!k) return null; const code = /[ऀ-ॿ]/.test(String(x)) ? 'hi' : (state.lang === 'hi' ? 'hi' : 'en'); return { k: k, code: code, text: tIn(code, k === 'ec' ? 'med_line_ec' : 'med_line') }; };
+  const chatMedHtml = (m) => {
+    if (!m || m.fail || m.d) return ''; const ln = chatMedLine(m.x); if (!ln) return '';
+    return '<p class="med-line chat-med" role="note" data-med="' + ln.k + '"' + (ln.code !== state.lang ? ' lang="' + ln.code + '"' : '') + '>' + esc(ln.text) + '</p>';
+  };
+  const chatScreenRoute = (k) => { const r = CHAT_SCREENS[k]; return r && (CORE_ROUTES.indexOf(r) >= 0 || ROUTES[r]) && !retired(r) && !triageHidden(r) && !(r === 'report' && !canSave()) ? r : ''; };
+  const chatScreenName = (r) => (r === 'help' ? t('help_h') : r === 'diary' ? t('diary') : r === 'plan' ? t('plans_tab') : routeTitle(r) || r);
+  /* the answer's text: paragraphs, and lines that start with "- " as a list; every word escaped */
+  const chatText = (x) => String(x || '').split(/\n\s*\n/).map((blk) => {
+    const ls = blk.split('\n').map((l) => l.trim()).filter(Boolean); let out = '', ul = '';
+    ls.forEach((l) => { const li = /^[-•*]\s+/.test(l); if (li) ul += '<li>' + esc(l.replace(/^[-•*]\s+/, '')) + '</li>'; else { if (ul) { out += '<ul>' + ul + '</ul>'; ul = ''; } out += '<p>' + esc(l) + '</p>'; } });
+    return out + (ul ? '<ul>' + ul + '</ul>' : '');
+  }).join('');
+  /* Help's hospital card, as search shows it: her sign in Help's words (s1a, s1b, s1d) or the after-birth page's (post_u_1, Version
+     39.91), or the heading alone for a pregnancy danger word ('p', with the danger-signs guide) or a sign Sakhi's answer found ('s') */
+  const chatUrgCard = (k) => { const da = k === 'p' ? findArticle(DANGER_ART) : null;
+    return '<section class="card srch-urg chat-urg" data-urg="' + esc(k) + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t('call_now')) + '</h2></div>' + (/^(s1[a-z]|post_u_1)$/.test(k) ? '<p class="su-sign">' + esc(t(k)) + '</p>' : '') +
+      '<div class="su-btns">' + ambBtn('primary') + '<button type="button" class="btn danger" data-go="help">' + esc(t('help_h')) + '</button>' + (da ? '<button type="button" class="btn" data-ans="' + esc(DANGER_ART) + '">' + esc(L(da, 'title')) + '</button>' : '') + '</div></section>'; };
+  /* "See a doctor", as search offers it when nothing matches (Version 39.77: a Qura doctor, a free government doctor, or both) */
+  const chatDocBtns = (q) => { const w = docWho('search'); return '<div class="row wrap chat-doc">' + (w !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(String(q || '').slice(0, 120)) + '">' + esc(t('ask_qura')) + '</button>' : '') + (w !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div>'; };
+  function chatMsgHtml(m, i, lastA, q) {
+    if (m.r === 'u') return '<div class="chat-msg me" data-i="' + i + '" role="group" aria-label="' + esc(t('chat_you')) + '"><p>' + esc(m.x) + '</p></div>';
+    const fail = m.fail; const gs = (m.g || []).map((k) => (findArticle(k) ? { a: findArticle(k) } : (!fail && chatPageOk(k) ? { r: chatPageRoute(k) } : null))).filter(Boolean);
+    const body = fail ? '<p class="chat-fail">' + esc(t(fail === 'resting' ? 'chat_resting' : (fail === 'offline' ? 'chat_offline' : 'chat_err'))) + '</p>'
+      : '<div class="chat-txt">' + chatText(m.x) + chatMedHtml(m) + '</div>' + (m.src === 'guides' || m.src === 'general' ? '<p class="chat-src">' + esc(t(m.src === 'guides' ? 'chat_src_guides' : 'chat_src_general')) + '</p>' : '');
+    /* a Learn guide opens its quick answer; a page (Version 40.5) opens the page */
+    const gRow = (x) => { if (x.r) { const pa = findArticle(GUIDE_ART[x.r] || ''); const grp = pa ? pa.group : 'cycle'; return '<button type="button" class="item quiet" data-go="' + esc(x.r) + '"><span class="ico-sm hue hue-' + hueOf(grp) + '">' + icon(GROUP_ICONS[grp] || 'learn') + '</span><span class="body"><strong>' + esc(routeTitle(x.r)) + '</strong></span><span class="chev">' + I.chev + '</span></button>'; }
+      const a = x.a; return '<button type="button" class="item quiet" data-ans="' + esc(a.group + '.' + a.id) + '"><span class="ico-sm hue hue-' + hueOf(a.group) + '">' + icon(GROUP_ICONS[a.group] || 'learn') + '</span><span class="body"><strong>' + esc(L(a, 'title')) + '</strong></span><span class="chev">' + I.chev + '</span></button>'; };
+    const guides = gs.length ? '<div class="list chat-guides">' + gs.map(gRow).join('') + '</div>' : '';
+    const scr = (m.s || []).map(chatScreenRoute).filter((r, j, arr) => r && arr.indexOf(r) === j);
+    const screens = scr.length ? '<div class="row wrap chat-screens">' + scr.map((r) => '<button type="button" class="btn sm" data-go="' + esc(r) + '">' + esc(chatScreenName(r)) + '</button>').join('') + '</div>' : '';
+    const latest = i === lastA && !fail;
+    const thumbs = latest ? (m.fb ? '<span class="small chat-thanks">' + esc(t('chat_thanks')) + '</span>' : '<button type="button" class="iconbtn chat-fb-b" data-chat-fb="up" aria-label="' + esc(t('chat_up')) + '">' + THUMB_UP + '</button><button type="button" class="iconbtn chat-fb-b" data-chat-fb="down" aria-label="' + esc(t('chat_down')) + '">' + THUMB_DOWN + '</button>') : '';
+    const act = (fail ? (fail !== 'resting' ? '<button type="button" class="btn sm primary" data-chat-retry="' + i + '">' + esc(t('chat_retry')) + '</button>' : '')
+      : (api.speakEl ? '<button type="button" class="btn sm chat-say" data-chat-say="' + i + '" aria-label="' + esc(t('chat_say')) + '">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '')) + thumbs;
+    const fus = latest && (m.fu || []).length ? '<div class="chat-fu"><span class="eyebrow">' + esc(t('chat_fu_h')) + '</span>' + m.fu.map((x) => '<button type="button" class="btn sm chat-fu-b" data-chat-ex="' + esc(x) + '">' + esc(x) + '</button>').join('') + '</div>' : '';
+    return '<div class="chat-msg sakhi' + (fail ? ' fail' : '') + '" data-i="' + i + '" role="group" aria-label="' + esc(t('chat_sakhi')) + '">' + body + guides + (latest ? chatActsHtml(m, i) : '') + screens + (act ? '<div class="row wrap chat-acts">' + act + '</div>' : '') + fus + (i === lastA ? chatDocBtns(q) : '') + '</div>';
+  }
+  function renderChat(v) {
+    if (!chatOn()) { safe(() => location.replace('#care')); return; }
+    const c = chatData(); const msgs = c.msgs; const disc = !!state.settings.discreet; const noted = chatNoted();
+    const lastOf = (r) => { for (let i = msgs.length - 1; i >= 0; i--) if (msgs[i].r === r) return i; return -1; };
+    const iu = lastOf('u'); const lastA = lastOf('a');
+    const dk = iu >= 0 ? (msgs[iu].d || (msgs[iu + 1] && msgs[iu + 1].r === 'a' ? msgs[iu + 1].d : null)) : null;   /* her latest question, or its answer */
+    const qOf = (i) => { for (let j = i - 1; j >= 0; j--) if (msgs[j].r === 'u') return msgs[j].x; return ''; };
+    const n = (mem.chatDraft || '').length;
+    v.innerHTML = '<h1 class="chat-title">' + esc(t(disc ? 'chat_h_d' : 'chat_h')) + '</h1>' +
+      '<div class="chat-top"><p class="chat-proto" role="note">' + esc(t('chat_proto')) + '</p>' + (msgs.length ? '<button type="button" class="btn sm ghost" id="chat-clear">' + esc(t('chat_clear')) + '</button>' : '') + '</div>' +
+      (dk ? chatUrgCard(dk) : '') +
+      '<div class="chat-list" id="chat-list" aria-live="polite">' + msgs.map((m, i) => chatMsgHtml(m, i, lastA, qOf(i))).join('') +
+      (mem.chatHearing ? '<div class="chat-msg me busy" role="status"><p>' + esc(t('chat_hearing')) + '</p></div>' : '') +
+      (mem.chatBusy ? (mem.chatLive ? '<div class="chat-msg sakhi live" aria-busy="true"><div class="chat-txt" id="chat-live">' + chatText(mem.chatLive) + '</div></div>' : '<div class="chat-msg sakhi busy" role="status"><p>' + esc(t('chat_thinking')) + '</p></div>') : '') + '</div>' +
+      (noted && !msgs.length && !disc ? '<section class="care-sec chat-ex"><h2>' + esc(t('chat_try_h')) + '</h2><div class="list">' + CHAT_EX.map((x) => '<button type="button" class="item quiet" data-chat-ex="' + esc(x) + '"><span class="body"><strong>' + esc(x) + '</strong></span><span class="chev">' + I.chev + '</span></button>').join('') + '</div></section>' : '') +
+      (noted && canListen() ? '<button type="button" class="btn block chat-talk' + (mem.chatTalk ? ' on' : '') + '" id="chat-talk">' + MIC + '<span>' + esc(t(mem.chatTalk ? 'chat_talk_on' : 'chat_talk')) + '</span></button>' + (mem.chatTalk || msgs.length ? '' : '<p class="small chat-talk-d">' + esc(t('chat_talk_d')) + '</p>') : '') +
+      ((ab) => (noted && ab ? '<div class="chat-about"><span>' + esc(tf('chat_about', { t: L(ab, 'title') })) + '</span><button type="button" class="iconbtn chat-about-x" id="chat-about-x" aria-label="' + esc(t('chat_about_x')) + '">×</button></div>' : ''))(mem.chatAbout ? findArticle(mem.chatAbout) : null) +
+      (noted ? '<div class="chat-compose"><textarea id="chat-q" rows="1" maxlength="' + CHAT_MAX + '" enterkeyhint="send" placeholder="' + esc(t('chat_ph')) + '" aria-label="' + esc(t('chat_ph')) + '">' + esc(mem.chatDraft || '') + '</textarea>' +
+        (canListen() ? '<button type="button" class="iconbtn chat-mic" id="chat-mic" aria-label="' + esc(t('chat_mic')) + '">' + MIC + '</button>' : '') +
+        '<button type="button" class="iconbtn chat-send" id="chat-send" aria-label="' + esc(t('chat_send')) + '"' + (mem.chatBusy ? ' disabled' : '') + '>' + CHAT_SEND_ICO + '</button></div>' +
+        '<p class="small chat-count" id="chat-count"' + (n > 400 ? '' : ' hidden') + '>' + esc(tf('chat_count', { n: n })) + '</p>' : '') +
+      /* the notice sits where the box will be (Version 40.4: a woman with a chat opens at its end, so a notice at the top went unseen) */
+      (noted ? '' : '<div class="card chat-note"><h3>' + esc(t('chat_note_h')) + '</h3><p>' + esc(t('chat_note_p')) + '</p><button type="button" class="btn primary" id="chat-ok">' + esc(t('chat_note_ok')) + '</button></div>');
+    wire(v);
+    const ok = $('#chat-ok', v); if (ok) ok.addEventListener('click', () => { chatData().ok = toISO(today()); chatData().okv = CHAT_NOTE_V; save(); render(); });
+    v.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
+    v.querySelectorAll('[data-chat-ex]').forEach((b) => b.addEventListener('click', () => chatSend(b.dataset.chatEx)));
+    v.querySelectorAll('[data-chat-retry]').forEach((b) => b.addEventListener('click', () => chatRetry(+b.dataset.chatRetry)));
+    v.querySelectorAll('[data-chat-say]').forEach((b) => b.addEventListener('click', () => { if (api.reading && api.reading()) { safe(() => api.stopSpeech()); return; } chatSpeak(v.querySelector('.chat-msg[data-i="' + b.dataset.chatSay + '"] .chat-txt')); }));
+    const qi = $('#chat-q', v); const cnt = $('#chat-count', v);
+    const fit = () => { if (!qi) return; qi.style.height = 'auto'; qi.style.height = Math.min(140, Math.max(48, qi.scrollHeight)) + 'px'; };
+    if (qi) {
+      fit();
+      qi.addEventListener('input', () => { mem.chatDraft = qi.value.slice(0, CHAT_MAX); fit(); if (cnt) { cnt.hidden = qi.value.length <= 400; cnt.textContent = tf('chat_count', { n: qi.value.length }); } });
+      qi.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSend(qi.value); } });
+    }
+    const sb = $('#chat-send', v); if (sb) sb.addEventListener('click', () => chatSend(qi ? qi.value : ''));
+    const mb = $('#chat-mic', v); if (mb) mb.addEventListener('click', () => chatListen());
+    const tb = $('#chat-talk', v); if (tb) tb.addEventListener('click', () => { mem.chatTalk = !mem.chatTalk; if (mem.chatTalk) chatListen(); else { clearInterval(mem.chatPoll); if (api.stopSpeech) safe(() => api.stopSpeech()); render(); } });
+    v.querySelectorAll('[data-chat-act]').forEach((b) => b.addEventListener('click', () => { const p = b.dataset.chatAct.split(':'); chatDoAct(+p[0], +p[1]); }));
+    v.querySelectorAll('[data-chat-fb]').forEach((b) => b.addEventListener('click', () => { const m = msgs[lastA]; if (!m || m.fb) return; m.fb = b.dataset.chatFb === 'up' ? 'up' : 'down'; save(); net('POST', 'count', { kind: m.fb }).catch(() => {}); render(); }));
+    const ax = $('#chat-about-x', v); if (ax) ax.addEventListener('click', () => { mem.chatAbout = null; render(); });
+    const cb = $('#chat-clear', v); if (cb) cb.addEventListener('click', () => { const keep = chatData().msgs; chatData().msgs = []; mem.chatAbout = null; save(); render(); toastAct(t('chat_cleared'), [{ label: t('undo'), fn: () => { chatData().msgs = keep; save(); render(); } }]); });
+    /* the newest message in view, or Help's card when her latest question or its answer has a danger sign */
+    if (msgs.length || mem.chatBusy) setTimeout(() => { if (route() !== 'ask-sakhi') return; const u = dk ? $('#view .chat-urg') : null; if (u) window.scrollTo(0, 0); else window.scrollTo(0, document.documentElement.scrollHeight); }, 0);
+  }
+  function chatSend(text) {
+    const x = String(text || '').trim().slice(0, CHAT_MAX); if (!x || mem.chatBusy || !chatOn() || !chatNoted()) return;
+    const dk = chatDangerKey(x);
+    chatData().msgs.push(Object.assign({ r: 'u', x: x, at: Date.now() }, dk ? { d: dk } : {}));
+    mem.chatDraft = ''; chatAsk();
+  }
+  /* her conversation goes as text only: her questions without numbers or emails, and Sakhi's earlier answers */
+  function chatAsk() {
+    const c = chatData(); if (c.msgs.length > CHAT_KEEP) c.msgs = c.msgs.slice(-CHAT_KEEP);
+    save(); mem.chatBusy = true; if (route() === 'ask-sakhi') render();
+    const hist = c.msgs.filter((m) => m.r === 'u' || (m.r === 'a' && !m.fail && m.x)).slice(-12).map((m) => ({ role: m.r === 'u' ? 'user' : 'assistant', text: m.r === 'u' ? scrubPii(m.x) : String(m.x).slice(0, 2000) }));
+    while (hist.length && hist[0].role !== 'user') hist.shift();
+    const lastQ = (c.msgs.filter((m) => m.r === 'u').pop() || {}).x || '';
+    const done = (m) => { mem.chatBusy = false; mem.chatLive = null; const cc = chatData(); cc.msgs.push(m); if (cc.msgs.length > CHAT_KEEP) cc.msgs = cc.msgs.slice(-CHAT_KEEP); save(); if (route() === 'ask-sakhi') { render(); chatAfter(m); } };
+    /* Version 40.2: the guides her phone's own search picks for her words (ids only), so most answers need one call; the guide she came from */
+    const about = mem.chatAbout && findArticle(mem.chatAbout) ? mem.chatAbout : undefined;
+    mem.chatLive = '';
+    const onDelta = (piece) => { if (!mem.chatBusy) return; mem.chatLive = piece === null ? '' : (mem.chatLive || '') + piece; chatPaintLive(); };
+    /* Version 40.5.1: the guides of Sakhi's last answer in this chat, so a short follow-up keeps its subject */
+    const prevA = c.msgs.slice(0, -1).reverse().find((m) => m.r === 'a' && !m.fail && Array.isArray(m.g));
+    net('POST', 'chat', { messages: hist, lang: state.lang === 'hi' ? 'hi' : 'en', hints: chatHints(lastQ, about, prevA ? prevA.g : []), care: chatCare(), about: about }, false, onDelta).then((j) => {
+      if (j && j.ok === true && typeof j.answer === 'string' && j.answer.trim()) {
+        done(Object.assign({ r: 'a', x: j.answer.trim().slice(0, 2000), at: Date.now(), src: j.source === 'guides' || j.source === 'general' ? j.source : '',
+          g: (Array.isArray(j.guides) ? j.guides : []).filter((k) => typeof k === 'string' && (!!findArticle(k) || chatPageOk(k))).slice(0, 4),
+          s: (Array.isArray(j.screens) ? j.screens : []).filter((k) => typeof k === 'string' && CHAT_SCREENS[k] !== undefined).slice(0, 3),
+          fu: chatFollowUps(j), ac: chatActionsOf(j) }, j.danger === true ? { d: 's' } : {}));
+      } else done({ r: 'a', fail: 'error', at: Date.now(), g: chatLooseGuides(lastQ) });
+    }, (e) => done({ r: 'a', fail: (e && e.code) === 'resting' ? 'resting' : ((e && e.code) === 'offline' ? 'offline' : 'error'), at: Date.now(), g: chatLooseGuides(lastQ) }));
+  }
+  function chatRetry(i) { const c = chatData(); if (!c.msgs[i] || !c.msgs[i].fail || mem.chatBusy) return; c.msgs.splice(i, 1); chatAsk(); }
+  /* read an answer aloud in its own script's voice (a Hindi answer in the English app too) */
+  const chatCode = (x) => (/[ऀ-ॿ]/.test(String(x || '')) ? 'hi' : 'en');
+  function chatSpeak(el) { if (!el || !api.speakEl) return false; safe(() => api.speakEl(el, chatCode(el.textContent))); return true; }
+  /* her voice: the phone's own voice typing (Hindi or English, as the app is set), sent as she said it */
+  function chatListen() {
+    if (!canListen() || mem.chatBusy) return;
+    window.__sakhiHeard = (txt) => { mem.chatHearing = false; clearTimeout(mem.chatHearTm); const s = String(txt || '').trim();
+      if (!s) { mem.chatTalk = false; toast(t('voice_none')); if (route() === 'ask-sakhi') render(); return; }
+      chatSend(s); };
+    mem.chatHearing = true; if (route() === 'ask-sakhi') render();
+    safe(() => window.SakhiAndroid.listen(langMeta(state.lang).locale || 'en-IN', t('chat_ph')));
+  }
+  /* Version 40, the phone test (9 Nov): voice typing she closes (Back, or Google's mic shut) sends the page nothing, so "Listening…"
+     stayed. When Sakhi comes back to the front and no words came within a moment, listening (and talking) ends. */
+  function chatVoiceBack() {
+    if (!mem.chatHearing) return;
+    clearTimeout(mem.chatHearTm);
+    mem.chatHearTm = setTimeout(() => { if (!mem.chatHearing) return; mem.chatHearing = false; mem.chatTalk = false; if (route() === 'ask-sakhi') render(); }, 1500);
+  }
+  /* talking with Sakhi: the answer is read aloud, and once the phone has finished speaking she can speak again */
+  function chatAfter(m) {
+    if (!mem.chatTalk || route() !== 'ask-sakhi') return;
+    const el = document.querySelector('#view .chat-msg[data-i="' + (chatData().msgs.length - 1) + '"] ' + (m.fail ? '.chat-fail' : '.chat-txt'));
+    const spoke = chatSpeak(el); let seen = false, n = 0;
+    clearInterval(mem.chatPoll);
+    mem.chatPoll = setInterval(() => {
+      n += 1; const on = !!(api.reading && api.reading()); if (on) seen = true;
+      if (!mem.chatTalk || route() !== 'ask-sakhi') { clearInterval(mem.chatPoll); return; }
+      if (!spoke || (!on && (seen || n > 6))) { clearInterval(mem.chatPoll); if (!m.fail || m.fail === 'error') chatListen(); else { mem.chatTalk = false; render(); } }
+    }, 500);
+  }
   /* Version 39.62 (phase D, the advice's 4.6): Explore's first screen is search, For you (her first 3 tools, then her first 3
      questions by her day), her topic, and one row to the library. Her topics, her other questions, her stage's dos and don'ts and
      every guide (Contents) are a tap away there. The government's free care stays on this screen for the government route and for
@@ -2321,6 +2667,10 @@
     'GET requests': []
   };
   const ANON = { 'POST usage': true };
+  /* Version 40 (prototype): Ask Sakhi's one call goes to its own function (CFG.chat, set only in an ask-proto build) with only her
+     messages' text and the app's language. It mirrors ALLOW in server/supabase/functions/sakhi-chat/chat.js (server/test/chat.test.mjs
+     checks the two agree). */
+  const CHAT_SEND = { 'POST chat': ['messages', 'lang', 'hints', 'care', 'about'], 'POST count': ['kind'] };   /* Version 40.2: guide ids, and counts */
   /* Version 33, "Ask Qura to call me" (SERVER_SPEC 10.1): the report sections she may tick, by key. It mirrors SHARE_KEYS in
      the server's api.js (server/test/api.test.mjs checks the two agree). */
   const SHARE_KEYS = ['about', 'periods', 'symptoms', 'checkins', 'tools', 'questions', 'notes'];   /* sent without her account token: the server cannot tie it to her (SERVER_SPEC 5.9) */
@@ -2360,20 +2710,40 @@
   const normPhone = (s) => { let d = String(s || '').replace(/\D/g, ''); if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); else if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1); return /^[6-9]\d{9}$/.test(d) ? '+91' + d : null; };
   const netErr = (code, extra) => Object.assign(new Error(code), extra || {}, { code: code });
   /* anon: send this call without her account token (Version 33: whether "Ask Qura to call me" is on) */
-  function net(method, path, body, anon) {
-    const allow = SEND[method + ' ' + path]; if (!allow) return Promise.reject(netErr('not_allowed'));
+  /* onDelta (Version 40.2, Ask Sakhi only): the answer's text as it is written; null means start again */
+  function net(method, path, body, anon, onDelta) {
+    const chat = !!CHAT_SEND[method + ' ' + path];   /* Version 40: Ask Sakhi */
+    const allow = chat ? CHAT_SEND[method + ' ' + path] : SEND[method + ' ' + path]; if (!allow) return Promise.reject(netErr('not_allowed'));
     const clean = {}; allow.forEach((k) => { if (body && body[k] !== undefined && body[k] !== null) clean[k] = body[k]; });
-    if (!CFG.api) return demoServer(method + ' ' + path, clean);
+    if (chat && !chatAddr()) return Promise.reject(netErr('offline'));
+    if (!chat && !CFG.api) return demoServer(method + ' ' + path, clean);
     const withTok = !!acct.token && !ANON[method + ' ' + path] && !anon;
     const headers = { 'Content-Type': 'application/json' }; if (withTok) headers.Authorization = 'Bearer ' + acct.token;
-    const ctl = typeof AbortController === 'function' ? new AbortController() : null; const tm = ctl ? setTimeout(() => ctl.abort(), 15000) : 0;
-    return fetch(String(CFG.api).replace(/\/+$/, '') + '/v1/' + path, { method: method, headers: headers, body: method === 'DELETE' || method === 'GET' ? undefined : JSON.stringify(clean), cache: 'no-store', credentials: 'omit', signal: ctl ? ctl.signal : undefined })
-      .then((res) => res.text().catch(() => '').then((tx) => {
+    if (chat && onDelta) headers.Accept = 'text/event-stream';
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null; const tm = ctl ? setTimeout(() => ctl.abort(), chat ? 60000 : 15000) : 0;   /* an answer takes a few model calls */
+    return fetch(String(chat ? chatAddr() : CFG.api).replace(/\/+$/, '') + '/v1/' + path, { method: method, headers: headers, body: method === 'DELETE' || method === 'GET' ? undefined : JSON.stringify(clean), cache: 'no-store', credentials: 'omit', signal: ctl ? ctl.signal : undefined })
+      .then((res) => (chat && onDelta && res.ok && /text\/event-stream/.test(res.headers.get('content-type') || '') && res.body && res.body.getReader
+        ? readStream(res, onDelta).then((j) => { clearTimeout(tm); return j; }, (e) => { clearTimeout(tm); throw (e && e.code) ? e : netErr('offline'); })
+        : res.text().catch(() => '').then((tx) => {
         clearTimeout(tm); let j = {}; try { j = tx ? JSON.parse(tx) : {}; } catch (e) { j = {}; }
-        if (res.status === 401 && withTok) { acct = {}; saveAcct(); }   /* signed out on the server (expired or deleted): she signs in again */
+        if (res.status === 401 && withTok && !chat) { acct = {}; saveAcct(); }   /* Version 40: the chat's own function never signs her out */   /* signed out on the server (expired or deleted): she signs in again */
         if (!res.ok) throw netErr(j.error || 'http_' + res.status, Object.assign({}, j, { status: res.status }));
         return j;
-      }), () => { clearTimeout(tm); throw netErr('offline'); });
+      })), () => { clearTimeout(tm); throw netErr('offline'); });
+  }
+  /* Version 40.2: Ask Sakhi's event stream: "data: {json}" lines; deltas as they come, then "done" with the whole answer */
+  function readStream(res, onDelta) {
+    const rd = res.body.getReader(); const dec = new TextDecoder(); let buf = ''; let fin = null;
+    const line = (s) => { if (s.indexOf('data: ') !== 0) return; let e; try { e = JSON.parse(s.slice(6)); } catch (x) { return; }
+      if (e && e.type === 'delta' && typeof e.t === 'string') safe(() => onDelta(e.t)); else if (e && e.type === 'reset') safe(() => onDelta(null)); else if (e && e.type === 'done') fin = e; };
+    const pump = () => rd.read().then((r) => {
+      if (r.value) { buf += dec.decode(r.value, { stream: true }); let i; while ((i = buf.indexOf('\n\n')) >= 0) { line(buf.slice(0, i)); buf = buf.slice(i + 2); } }
+      if (!r.done) return pump();
+      if (buf.trim()) line(buf.trim());
+      if (!fin) throw netErr('offline');
+      const out = Object.assign({}, fin); delete out.type; return out;
+    });
+    return pump();
   }
   /* The stand-in server: the same answers as server/SERVER_SPEC.md, and nothing leaves the phone. */
   const demo = { phone: null, tries: 0, calls: [] };
@@ -2454,7 +2824,7 @@
      shared phone, for a girl under 18 or a sample woman (then not even Firebase's own session events go). What goes: a neutral
      screen name (Firebase counts the time on it), a tap as its place in the page and the neutral screen it opens, rage and dead
      taps, and an error as its type and place. Never words, a plan's or condition's name, a number, a route or her diary. */
-  const FB_PRIVATE = /^(loss|ttc-loss|pregtest-(options|abortion|after)|intimate|meno-intimate|contra-(ec|missed)|post-mood|teen|tell|backup|account|me-data|me-health|pic-check)/;
+  const FB_PRIVATE = /^(ask-sakhi|loss|ttc-loss|pregtest-(options|abortion|after)|intimate|meno-intimate|contra-(ec|missed)|post-mood|teen|tell|backup|account|me-data|me-health|pic-check)/;
   /* a screen that names a condition or a plan keeps only its kind; a screen nobody listed is "other", never its route */
   const FB_EXACT = ['home', 'your-sakhi', 'join-update', 'diary', 'learn', 'help', 'me', 'checkin', 'pattern', 'fertile', 'ask', 'ask-call', 'care', 'library', 'report', 'report-show',
     'calm', 'plan', 'plan-start', 'plan-goal', 'plan-reveal', 'plan-checkin', 'plan-end', 'plan-progress', 'plan-plate', 'plan-body', 'plan-moves', 'plan-calm', 'plan-wind',
@@ -2973,7 +3343,7 @@
   /* a private screen: behind her PIN when one is set (the same PIN as her health details) */
   function privateGo(route) { mem.pinNext = route; setHash(state.settings.pinHash && !mem.healthOk && PIN_ROUTES.indexOf(route) < 0 ? 'pin' : route); }
   /* review DP-2, DP-10: a private screen asks for the PIN on the page itself, however she reaches it: one title, and Back */
-  const PIN_ROUTES = ['explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge', 'plan-goal', 'plan-reveal', 'plan-start'];   /* Version 39.58: her plan's questions, cards and Start, now offered on a shared phone */   /* Version 39.51: the midlife plan's chapters; Version 39.56: the pelvic floor plan's */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
+  const PIN_ROUTES = ['ask-sakhi', 'explain', 'report', 'report-show', 'ttc-lesson', 'ttc-ready', 'mid-lesson', 'per-lesson', 'pf-lesson', 'pf-habit', 'pf-urge', 'plan-goal', 'plan-reveal', 'plan-start'];   /* Version 39.58: her plan's questions, cards and Start, now offered on a shared phone */   /* Version 39.51: the midlife plan's chapters; Version 39.56: the pelvic floor plan's */   /* review PRIVACY-03; Version 39.32: the Getting ready plan's lessons and ready check */
   const pinGated = (r) => state.stage === 'app' && !!state.settings.pinHash && !mem.healthOk && (r === 'pin' || (!!state.settings.discreet && PIN_ROUTES.indexOf(r) >= 0));
   function renderPinGate(v, r) {
     const next = r === 'pin' ? (mem.pinNext || 'home') : r;
@@ -3516,7 +3886,7 @@
       '<p class="lead">' + esc(L(a, 'summary')) + '</p>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') +
       '<div class="row wrap">' + (api.readAloud ? '<button type="button" class="btn sm" id="ans-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_b')) + '</button>' : '') + '<button type="button" class="btn sm" data-go="a-' + esc(key) + '">' + esc(t('full_guide')) + '</button></div>' +
       (sd.length ? '<div class="ans-doc"><b>' + esc(t('see_doctor')) + '</b><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
-      (urgent ? '' : artPlan(key)) + (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
+      (urgent ? '' : artPlan(key)) + (urgent ? '<button type="button" class="btn block" data-go="help">' + esc(t('sos_signs')) + '</button>' : ((tl) => (tl.tool ? '<button type="button" class="btn primary block" data-go="' + esc(tl.tool) + '">' + esc(routeTitle(tl.tool)) + '</button>' : '') + (chatOn() ? '<button type="button" class="btn block chat-about-b" data-chat-about="' + esc(key) + '">' + CHAT_ICO + esc(t('chat_about_b')) + '</button>' : '') + '<button type="button" class="btn' + (tl.tool ? '' : ' primary') + ' block" data-ask="' + esc(L(a, 'title')) + '">' + esc(t('ask_qura')) + '</button>')(artTools(key))) +
       relatedHtml(a) + '</div>', (sh) => {
       const ls = $('#ans-listen', sh); if (ls) ls.addEventListener('click', () => api.readAloud($('#ans', sh)));
       sh.querySelectorAll('[data-ans]').forEach((b) => b.addEventListener('click', () => openAnswer(b.dataset.ans)));
@@ -4955,7 +5325,7 @@
     v.innerHTML = '<div class="row">' + backBtn('learn') + (state.settings.proto ? '<span class="pill muted">' + esc(t('draft')) + '</span>' : '') + '</div><div class="article">' + (api.art ? '<div class="art-hero" data-noread="1">' + api.art.spot(a.group) + (api.readAloud ? '<button type="button" class="btn sm" id="art-listen">' + I.speaker.replace('<svg', '<svg style="width:18px;height:18px"') + ' ' + esc(t('listen_all')) + '</button>' : '') + '</div>' : '') + '<h1>' + esc(L(a, 'title')) + '</h1>' + reviewedLine(a) + '<div class="in-short"><span class="eyebrow">' + esc(t('in_short')) + '</span><p class="lead">' + esc(L(a, 'summary')) + '</p></div>' + medLine(MED_ARTS.indexOf(key) >= 0 ? 'med' : '') + '<div class="bodytext">' + body.map((p, i) => artPara(p, body[i + 1]) + (ART_PIC[key] && ART_PIC[key][1] === i ? artPic(key) : '')).join('') + '</div>' +
       (sd.length ? '<div class="card dark"><h3>' + esc(t('see_doctor')) + '</h3><ul>' + sd.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' : '') +
       (ql ? '<div class="card ok"><h3 style="color:var(--ok)">' + esc(t('qura_can')) + '</h3><p>' + esc(ql) + '</p></div>' : '') +
-      (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
+      (dw !== 'Q' && !u18 ? govCard() : '') + artPlan(key) + at.html + (chatOn() ? '<button type="button" class="btn block chat-about-b" data-chat-about="' + esc(key) + '">' + CHAT_ICO + esc(t('chat_about_b')) + '</button>' : '') + (dw !== 'G' ? '<button type="button" class="btn' + (at.tool ? '' : ' primary') + ' block" id="art-ask">' + esc(t('ask_qura')) + '</button>' : '') +
       (key === PRIVACY_ART ? grievanceHtml() : '') + relatedHtml(a) + (a.sources && a.sources.length ? '<details><summary>' + esc(t('sources')) + '</summary><p class="sources">' + a.sources.map(esc).join(' · ') + '</p></details>' : '') + '</div>';
     wire(v); const aa = $('#art-ask', v); if (aa) aa.addEventListener('click', () => ask(L(a, 'title')));
     const al = $('#art-listen', v); if (al) al.addEventListener('click', () => api.readAloud($('.article', v)));
@@ -5906,6 +6276,7 @@
   window.Saathi = api;
   /* Account, for the page and the tests. Modules never touch the network (MODULE_API section 24). */
   /* Version 39.79: for the tests, what Firebase would be told (MODULE_API section 122) */
+  api.chat = { on: () => chatOn(), danger: (q) => chatDangerKey(q), guides: (q) => chatLocalGuides(q), hints: (q, about, prev) => chatHints(q, about, prev), medKind: (x) => chatMedKind(x), medText: (x) => ((chatMedLine(x) || {}).text || ''), picks: (q) => chatPicks(q).map((r) => r.id + ' ' + r.n), scrub: (s) => scrubPii(s), msgs: () => JSON.parse(JSON.stringify(chatData().msgs)) };   /* Version 40: for the tests and the eval (40.5: hints and medKind) */
   api.fb = { on: () => fbOn(), quiet: () => fbQuiet(), screen: (r) => fbScreen(r), keep: (n, p) => fbKeep(n, p), place: (el) => fbPlace(el), safe: (fn) => safe(fn) };
   api.account = {
     signedIn: () => signedIn(), info: () => acctPublic(), config: () => Object.assign({}, CFG), allowed: () => JSON.parse(JSON.stringify(SEND)),
@@ -5963,6 +6334,7 @@
        Coming back also re-sends the alarm list so it never runs dry. */
     const wentAway = () => { if (!mem.hiddenAt) mem.hiddenAt = Date.now(); mem.healthOk = false; };   /* her health details ask for the PIN again */
     const cameBack = () => {
+      safe(chatVoiceBack);   /* Version 40: voice typing closed with no words */
       const away = mem.hiddenAt ? Date.now() - mem.hiddenAt : 0; mem.hiddenAt = 0;
       if ((state.settings.pinHash || (state.settings.shared && state.stage === 'app')) && away > 30000 && !mem.locked) { mem.locked = true; mem.bioAuto = false; closeSheet(); render(); }
       else if ((route() === 'me' || route() === 'me-reminders' || route() === 'plan-reveal' || shownDay !== dayKey()) && !sheetUp()) render();   /* back from a phone setting (exact alarms), or on a new day */
