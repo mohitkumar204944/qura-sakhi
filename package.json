@@ -1,7 +1,8 @@
 {
   "name": "qura-sakhi",
   "private": true,
-  "version": "0.21.0",
+  "version": "1.0.0",
+  "license": "MIT",
   "description": "Qura Sakhi: free women's reproductive-health companion app (prototype)",
   "type": "module",
   "scripts": {

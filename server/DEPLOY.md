@@ -266,6 +266,27 @@ branch `feat/ask-sakhi-prototype` (its worktree is `~/Desktop/QuraSakhi/sakhi/.c
 **Turning it off:** delete the `ANTHROPIC_API_KEY` secret (every question then gets "Sakhi couldn't answer this" and nothing is
 spent), or `supabase functions delete sakhi-chat`. The test app shows the guides instead.
 
+## The server's settings (names only)
+
+Every setting is a Supabase secret (Edge Functions → Secrets), read from the environment; none is in git. Values live only
+in Supabase and on Mohit's Mac.
+
+| Name | Function | What it is | Needed |
+|---|---|---|---|
+| `SUPABASE_DB_URL` | both | The database address (Supabase sets it) | Yes |
+| `SAKHI_OTP_PEPPER` | sakhi-api | Secret mixed into stored sign-in codes (32+ characters) | Yes |
+| `SAKHI_IP_SALT_SEED` | sakhi-api | Secret for hashing addresses in the rate limits (32+ characters) | Yes |
+| `SAKHI_META_TOKEN`, `SAKHI_WA_PHONE_ID` | sakhi-api | WhatsApp Cloud API token and sender number ID, for codes by WhatsApp | For WhatsApp |
+| `SAKHI_WA_TEMPLATE`, `SAKHI_WA_LANG`, `SAKHI_META_GRAPH_VERSION` | sakhi-api | The WhatsApp code template, its language and the Graph API version | No (defaults) |
+| `SAKHI_AUTHKEY_KEY`, `SAKHI_AUTHKEY_OTP_SID` | sakhi-api | AuthKey key and template, for codes by SMS | For SMS |
+| `SAKHI_OTP_HOUR_MAX`, `SAKHI_OTP_DAY_MAX` | sakhi-api | Sign-in code limits | No (defaults) |
+| `SAKHI_USAGE_DAY_MAX` | sakhi-api | Daily ceiling for the opt-in "What helps" counts | No (default 30,000) |
+| `SAKHI_IP_HEADER` | sakhi-api | Which request header carries the caller's address (section 3) | No |
+| `SAKHI_REVIEW_PHONE`, `SAKHI_REVIEW_CODE` | sakhi-api | Google Play reviewers' number and fixed code (section 3.5) | Only for Play review |
+| `SAKHI_QURA_HANDOFF_URL`, `SAKHI_QURA_KEY` | sakhi-api | Qura's endpoint and key for "Ask Qura to call me" (section 3) | For the hand-off |
+| `ANTHROPIC_API_KEY` | sakhi-chat | The Ask Sakhi prototype's Anthropic key (section 8) | For Ask Sakhi |
+| `SAKHI_CHAT_DAY_MAX`, `SAKHI_CHAT_ACCT_DAY_MAX`, `SAKHI_CHAT_THINKING` | sakhi-chat | Ask Sakhi's daily limits and its thinking switch | No (defaults) |
+
 ## Every week: export the accounts (the free plan has no reliable backups)
 
 The export holds phone numbers. Keep it in an encrypted folder, never in git.
