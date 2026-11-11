@@ -5,7 +5,7 @@ Qura Sakhi is a **free reproductive-health companion for Indian women**, run as 
 `localStorage`, nothing is sent anywhere. It is bilingual (English + Hindi) and must work at phone width (≈390px).
 
 Its jobs: (1) maximum self-serve help for Indian women across every life stage, (2) a trustworthy path to a Qura doctor
-("Book a free call" = the lead funnel). It is **not** a diagnostic device and sells nothing inside health content.
+("Book a free call", the free doctor-call hand-off). It is **not** a diagnostic device and sells nothing inside health content.
 
 The core (`app.js`, `app.css`, `index.html`) is finished. Each care area is a **module** in `mods/<id>.js`.
 **Never edit `app.js`, `app.css`, `index.html` or another module's file.** If the core lacks something, work around it

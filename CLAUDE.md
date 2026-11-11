@@ -636,7 +636,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Contract: MODULE_API section 119; wording: section 19.76 of the review (UI words only).
   - `node test/doctorchoice.mjs` (Version 39.77, Qura doctor or government doctor, place by place; Mohit, 6 Nov: his 96 choices on
     claude.ai/artifact/JbnFnzN9W5NC9tq7xQQRzL, the audit `docs/doctor-choice-audit-2026-11-06.md`):
-    - Qura collects the leads for PCOD/PCOS, conceiving naturally, menopause, after pregnancy and cycle concerns; everything else goes to
+    - Qura's doctors take the calls for PCOD/PCOS, conceiving naturally, menopause, after pregnancy and cycle concerns; everything else goes to
       her gynaecologist or a free government doctor (eSanjeevani, Care near me), on core's "See a doctor" page (`doc-free`);
     - one rule in core (`DOC_WHO`, `S.docWho`, `S.docCard`, `S.govCard`): Q, G, B, or H by her answer; Help's row is H, pregnancy is G;
     - Qura's doctors in his words everywhere: "Qura doctors are Ayurveda doctors (BAMS). They help you with natural and Ayurvedic
