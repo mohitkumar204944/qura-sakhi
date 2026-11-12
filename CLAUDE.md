@@ -747,9 +747,9 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       gets the PIN lock, and a careful try is told those rules again (SERVER_SPEC 12.11).
       Versions 39.91 and 39.92 in the chat: Help's card shows the after-birth page's line for heavy bleeding after a birth, and the
       pregnancy card shows for a pregnancy now in her words, a sister's too (MODULE_API 132.7).
-    - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (597 answers, graded by Sonnet 5.5, about US$1.70;
-      without `--go`, the phone's picks only, free). It counts the careful tries by the net that asked for them. Run it after a change
-      to the instructions, the picks or the guides.
+    - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (656 answers since the 12 Nov gap cases, SERVER_SPEC
+      12.12; graded by Sonnet 5.5, about US$2; without `--go`, the phone's picks only, free). It counts the careful tries by the net
+      that asked for them. Run it after a change to the instructions, the picks or the guides.
     - On the phone: `node test/ask-phone.mjs` (from web/) drives the Ask tab of "Sakhi Ask test" over adb: 11 chats against the live
       server, each answer read back from the screen reader's tree and checked by rule.
       - 36 checks: Version 40.5.3 added "no pregnancy facts as hers" on the iron-tablet reminder, and Version 40.5.4 "never delete it
