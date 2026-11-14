@@ -750,6 +750,12 @@ planned link between the two products is the doctor-call hand-off in `server/SER
       woman until her own messages say she is pregnant or has had a baby (a note and a check, SERVER_SPEC 12.10).
       Version 40.5.4: a guide's PMOS advice is "If you have PMOS" until she says she has it, a worry that someone reads her diary
       gets the PIN lock, and a careful try is told those rules again (SERVER_SPEC 12.11).
+      Version 40.5.5 (Mohit, 14 Nov: "Yes, fix them", the gap cases of SERVER_SPEC 12.12):
+      - the danger rule names the pregnancy and after-birth signs of the app's Help card;
+      - the Missed or late pill page is a chat guide (`page.contra-missed`) and goes with a missed pill;
+      - sores go to the infections guide; Urdu and other Indian scripts read the guides first and answer in her script;
+      - a herbs rule, and Qura's doctors as Ayurveda doctors;
+      - no 112 (SERVER_SPEC 12.13, MODULE_API 132.9).
       Versions 39.91 and 39.92 in the chat: Help's card shows the after-birth page's line for heavy bleeding after a birth, and the
       pregnancy card shows for a pregnancy now in her words, a sister's too (MODULE_API 132.7).
     - The scenario suite: `node server/scripts/chat-scenarios.mjs --go --judge` (656 answers since the 12 Nov gap cases, SERVER_SPEC
@@ -769,7 +775,7 @@ planned link between the two products is the doctor-call hand-off in `server/SER
         the real Haiku. A throwaway certificate is accepted by its browser only.
       - It never touches the live server or a phone. About US$0.02 a run.
     After a change to `web/content.json`, run `node server/scripts/make-chat-guides.mjs`; after a change to the Period pain or
-    abortion page, `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
+    abortion page or the Missed or late pill page, `node server/scripts/make-chat-guides.mjs --pages`. The paid eval for the doctors:
     `node server/scripts/chat-eval.mjs --go` (needs the SDK and the prototype's key, never in the repo). Deploy: `server/DEPLOY.md`,
     section 8. Contract: MODULE_API section 132; SERVER_SPEC section 12; wording: section 19.89 of the review (waits for the doctors
     and counsel).

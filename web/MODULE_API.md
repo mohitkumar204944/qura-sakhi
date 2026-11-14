@@ -8679,3 +8679,22 @@ Test: `web/test/chat.mjs`, section 5. It checks:
 - the two pregnancy ones, with the danger-signs guide;
 - the three questions with no card;
 - the after-birth line in Hindi at 360 px.
+
+### 132.9 Version 40.5.5 in the chat (14 Nov): the Missed or late pill page, and sores
+
+The phone's side of the gap cases' fixes (SERVER_SPEC 12.13).
+- **The Missed or late pill page** (`contra-missed`) is a chat page (`CHAT_PAGES`).
+  - It goes first with her question when her words are about a missed or late contraceptive pill or Antara injection (`chatMissedQ`,
+    the same words as the server's `missedQ`).
+  - A pill or "goli" counts unless another medicine is named (iron, BP, sugar, thyroid, letrozole); a missed period and the emergency
+    pill don't.
+  - Under the answer, the page opens Missed or late pill.
+- **Sores.** "chhaale", "छाले", sores, blisters and warts go with the Safe sex and infections guide (`SYN`, `CHAT_GUIDE_WORDS`). Before,
+  "neeche chhaale ... jalan" reached only the burning-urine guide.
+
+Test: `web/test/chat.mjs`, section 20 (189 checks in all). It covers:
+- four missed-pill phrasings, the page first;
+- four that are not about the pill: iron and BP tablets, a missed period, a question about the pill;
+- sores reaching the infections guide;
+- the page sent from the chat screen, and opening from the answer.
+The page's chat copy is checked against the page as it renders now (section 18).

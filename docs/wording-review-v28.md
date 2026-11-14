@@ -4035,6 +4035,24 @@ checked one by one in advance: the doctors check the rules below and a sample.
 - Three example questions, shown as they are in both languages: "Is a 40-day gap between periods normal?", "PCOD mein kya khana
   chahiye?", "पीरियड में पेट दर्द कम कैसे करें?".
 
+**Version 40.5.5 (14 Nov), the chat's new rules, for your read** (SERVER_SPEC 12.13). They are instructions to the AI, not
+lines she reads; the answers they shape are generated.
+- Go to the nearest hospital now, first sentence, never "wait and see" or "call your doctor instead":
+  - in pregnancy, also for vomiting that will not stop and pains that keep coming before 37 weeks;
+  - after a birth, for a severe headache, blurred sight or fits, chest pain, breathlessness, or a painful or swollen calf.
+  These are the danger guide's and the after-birth recovery check's own signs.
+- A missed or late pill or Antara injection is answered only from Sakhi's Missed or late pill page, with its own numbers. If her
+  method is unclear, it gives the page's line for when she isn't sure, and asks which pill she takes.
+- Ayurvedic or herbal products and home remedies:
+  - it says what is generally known, and gives no dose;
+  - she shows any product to her doctor, and checks with her doctor first in pregnancy, while trying or breastfeeding;
+  - for Qura's areas, "Ask a doctor", with Mohit's line "Qura doctors are Ayurveda doctors (BAMS); they help with natural and
+    Ayurvedic treatments".
+- Sores or blisters down below are answered from the Safe sex and infections guide, not as a urine infection.
+- The only number it gives is the ambulance, 108 or 102 in pregnancy (no 112).
+- **For the doctors to decide:** thoughts of hurting her baby (the gap case `pp-harmbaby-en`). Today the answer says "talk to a
+  doctor today", and the nearest hospital only if she might act on them. The rules name thoughts of harming herself only.
+
 ### 19.90 Version 40.2 (prototype): Ask Sakhi, phase 1 (MODULE_API section 132.2)
 
 **For the doctors, the AI's new rules** (`systemPrompt()` in `server/supabase/functions/sakhi-chat/chat.js`):

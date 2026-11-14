@@ -1423,6 +1423,9 @@
     [['hilna', 'hil nahi', 'hilta nahi', 'kick', 'not moving', 'moving less', 'baby moving', 'हलचल', 'हिल', 'लात'], 'kick'],
     [['khujli', 'itch', 'खुजली'], 'itch'],
     [['jalan', 'burning', 'जलन'], 'burning'],
+    /* Version 40.5.5 (the gap cases: "neeche chhaale" went to the burning-urine guide alone): sores and blisters, the Safe sex and
+       infections guide's "a sore or blister" */
+    [['chhaale', 'chhale', 'chaale', 'chhala', 'chhaala', 'छाले', 'छाला', 'फफोले', 'फफोला', 'phaphole', 'sores', 'blisters', 'warts', 'मस्से'], 'sore'],
     [['gaanth', 'ganth', 'lump', 'गाँठ', 'गांठ'], 'lump']
   ];
   const norm = (x) => { const s0 = String(x == null ? '' : x); return (s0.normalize ? s0.normalize('NFC') : s0).replace(/\u093C/g, '').toLowerCase(); };   /* फ़ and फ match, typed or stored either way (Version 32 drops the nukta) */
@@ -1880,7 +1883,7 @@
   const CHAT_GROUP_WORDS = { pmos: 'pcos pcod pmos पीसीओएस पीसीओडी', conceive: 'conceive', midlife: 'menopause मेनोपॉज़' };
   /* and a few plain words for guides whose titles name none (the broad use cases: "free ultrasound kahan hota hai?" never reached
      "Your four check-ups", and "hair on my chin, pimples" never reached "Signs worth noticing") */
-  const CHAT_GUIDE_WORDS = { 'pregnancy.four-antenatal-visits': 'checkup checkups check-up scan ultrasound sonography अल्ट्रासाउंड सोनोग्राफी', 'pmos.signs-to-notice': 'hair chin pimples acne बाल मुंहासे', 'pregnancy.iron-folic-acid-calcium-td': 'iron folic calcium आयरन फ़ोलिक कैल्शियम', 'cycle.how-to-keep-a-period-diary': 'dates तारीख तारीखें' };
+  const CHAT_GUIDE_WORDS = { 'pregnancy.four-antenatal-visits': 'checkup checkups check-up scan ultrasound sonography अल्ट्रासाउंड सोनोग्राफी', 'pmos.signs-to-notice': 'hair chin pimples acne बाल मुंहासे', 'pregnancy.iron-folic-acid-calcium-td': 'iron folic calcium आयरन फ़ोलिक कैल्शियम', 'cycle.how-to-keep-a-period-diary': 'dates तारीख तारीखें', 'intimate.safe-sex-infections-testing': 'sore sores blister blisters warts छाले' };
   const chatPicks = (q) => {
     const ideas = chatIdeas(q); if (!ideas.length) return [];
     const docs = allArticles().map((a) => ({ a: a, tit: norm([a.title_en, a.title_hi, CHAT_GROUP_WORDS[a.group] || '', CHAT_GUIDE_WORDS[a.group + '.' + a.id] || ''].join(' ')) }));
@@ -1896,9 +1899,17 @@
      "Pain relief medicine" names ibuprofen or mefenamic acid, or paracetamol, with its caution. It goes with the Learn article core
      pairs it with (ART's "guide"), right after it, so the server reads it first; an older server drops an id it doesn't know.
      Under the answer it opens the page. */
-  const CHAT_PAGES = ['periods-pain', 'pregtest-abortion'];
+  const CHAT_PAGES = ['periods-pain', 'pregtest-abortion', 'contra-missed'];
+  /* Version 40.5.5 (the gap cases, 12 Nov: "मैं कल माला-एन की गोली लेना भूल गई" went with the iron tablets guide, and the answer said not to
+     take two pills on the same day): the Missed or late pill page, as the server's missedQ reads her words. A pill or "goli" counts
+     unless another medicine is named; a missed period, the emergency pill and a fertility medicine don't. */
+  const CHAT_MISSED_METHOD = /\b(birth control|contraceptives?|contraception|mala[- ]?[nd]|chhaya|saheli|centchroman|pop|pills?|goli|goliyan|antara|injection)\b|माला|छाया|सहेली|गर्भनिरोधक|गोली|अंतरा|इंजेक्शन/i;
+  const CHAT_MISSED_ACT = /\b(forgot|forget\w*|missed|miss|skipped|skip|bhool\w*|bhul\w*|chhoot\w*|chhut\w*)\b|भूल|छूट/i;
+  const CHAT_MISSED_LATE = /\b(antara|injection)\b[^.?!।\n]{0,30}\b(late|der)\b|(अंतरा|इंजेक्शन)[^.?!।\n]{0,30}(देर|लेट)/i;
+  const CHAT_MISSED_NOT = /\b(iron|folic|calcium|vitamins?|thyroid|thyronorm|eltroxin|metformin|letrozole|clomiphene|bp|blood pressure|sugar|diabetes|painkillers?|antibiotics?|i-?pill|emergency)\b|आयरन|फोलिक|फ़ोलिक|कैल्शियम|विटामिन|थायरॉइड|शुगर|इमरजेंसी|\bmiss(ed|ing)? (my |a |the |her )?periods?\b|\bperiods? (miss|missed)\b|पीरियड (मिस|नहीं आ)/i;
+  const chatMissedQ = (q) => { const s = String(q || ''); return !CHAT_MISSED_NOT.test(s) && ((CHAT_MISSED_METHOD.test(s) && CHAT_MISSED_ACT.test(s)) || CHAT_MISSED_LATE.test(s)); };
   /* Version 40.5.1: a page no Learn article pairs with goes when her words are about it */
-  const CHAT_PAGE_KEYS = { 'pregtest-abortion': /abortion|abort|गर्भपात|अबॉर्शन|\bmtp\b|pregnancy (khatam|end|girana|hatana)|end (a|the|my|this) pregnancy|गर्भ (गिरा|ख़त्म|खत्म)|bachcha (girana|nahi chahiye)/i };
+  const CHAT_PAGE_KEYS = { 'pregtest-abortion': /abortion|abort|गर्भपात|अबॉर्शन|\bmtp\b|pregnancy (khatam|end|girana|hatana)|end (a|the|my|this) pregnancy|गर्भ (गिरा|ख़त्म|खत्म)|bachcha (girana|nahi chahiye)/i, 'contra-missed': { test: chatMissedQ } };
   const chatPageRoute = (id) => (typeof id === 'string' && id.indexOf('page.') === 0 ? id.slice(5) : '');
   const chatPageOk = (id) => { const r = chatPageRoute(id); return !!r && CHAT_PAGES.indexOf(r) >= 0 && !!ROUTES[r] && !retired(r) && !triageHidden(r); };
   const chatPageOf = (id) => { const l = ART[id]; const p = l && l.guide ? 'page.' + l.guide : ''; return p && chatPageOk(p) ? p : ''; };

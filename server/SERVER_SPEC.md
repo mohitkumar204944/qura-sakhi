@@ -1043,3 +1043,61 @@ fainting as "go to the nearest hospital now".
 Fixed in the app as Version 39.93 (MODULE_API 73.4 and 132.8): after a birth, Help's card shows the after-birth page's own lines
 for these signs except fainting; in a pregnancy, the card covers vomiting that will not stop and pains before 37 weeks. The chat
 server is unchanged.
+
+### 12.13 Version 40.5.5 (14 Nov): the gap cases' fixes
+
+Mohit, 14 Nov: "Yes, fix them", for the seven misses of 12.12 (thoughts of hurting the baby stays with the doctors). The changes are
+in `chat.js` unless another file is named.
+
+- **Danger signs.**
+  - The rule now names, in pregnancy, vomiting that will not stop and pains or tightening that keep coming before 37 weeks.
+  - After a birth it names a severe headache, blurred sight or fits, chest pain, breathlessness, and a painful or swollen calf.
+  - It adds: never wait and see, rest or drink water first, or call the doctor instead.
+  - These are the danger guide's and the after-birth recovery check's own signs, as the app's Help card has them since Version 39.93.
+- **A missed pill.**
+  - The Missed or late pill page (`web/mods/contra.js`) is a guide, `page.contra-missed`. `make-chat-guides.mjs --pages` taps each
+    method and what happened in the real app (`missedExtract`), as she would, so its steps are the page's own words, in English and
+    Hindi, with the doctor-route wording.
+  - The rules say to answer only from that page. `missedQ` adds a note after her turn, to read the page and keep its numbers exactly.
+    A pill or "goli" counts unless another medicine is named; a missed period, the emergency pill and a fertility medicine don't.
+  - That note replaces the medicine note for these questions.
+  - The phone sends the page with her question (MODULE_API 132.9).
+- **Sores.** Sores, blisters or warts down below add a note (`soreNote`) to answer from the Safe sex and infections guide, not as a
+  urine infection. Mouth ulcers and a stomach ulcer don't count. The phone's picks now reach that guide for "chhaale" and "sores".
+- **Urdu.** `replyLanguage` gives "urdu" for Arabic script, with its own note and script check.
+- **Another Indian script** (Telugu, Tamil, Kannada, Malayalam, Gujarati, Punjabi, Bengali).
+  - With no guide picked, the first call must read guides (`readFirst`, `tool_choice`). It can't on a careful try, which thinks.
+  - A note says to write in her language though the guides are in English (`OTHER_NOTE`).
+  - `scriptOk` holds back an answer with none of her script's letters.
+  - A note asking her to read first was tried and dropped: Telugu got an empty answer 3 times in 3.
+- **Herbs and home remedies.** A rule: what is generally known, no dose, her doctor first in pregnancy, while trying or
+  breastfeeding. For PCOD, trying for a baby, menopause, after a birth and her cycle, "Ask a doctor". The app's list adds Mohit's line:
+  "Qura doctors are Ayurveda doctors (BAMS); they help with natural and Ayurvedic treatments."
+- **Guide talk.** The rules add "the guides give no ..." and "koi guide nahi hai" to what is never said.
+- **112.**
+  - `numbersOk` no longer allows it.
+  - It now catches a call word after the number ("112 par call karein", "112 पर कॉल करें", "(108 ya 112) bulaiye"), or "ambulance" before it.
+  - The rules name the ambulance as 108, or 102 in pregnancy, never another number.
+- **The grader** (`chat-scenarios.mjs`):
+  - it knows the missed pill page's rule, that Qura's doctors are Ayurveda doctors, and that naming 102 and 108 is fine;
+  - its checks flag an answer with none of her script's letters (`language:other`).
+
+Tests:
+- `server/test/chat.test.mjs`: 277 checks (section 23, and checks 3, 15 and 19 updated for the new guide and the scripts).
+- `web/test/chat.mjs`: 189 checks (section 20).
+- `chat-guide-questions.json` gives the new guide its first question.
+
+On the real model (the same 28 answers as the first try, tag `fix2-40-5-5`): all 28 answered; grader major 2, minor 10, none 16.
+- The two majors:
+  - thoughts of hurting the baby, unchanged and for the doctors;
+  - the Hindi missed pill, where "2 or more" for condoms should have been "3 or more". The note now says to keep the page's numbers.
+- After that note, the missed-pill answers ran 3 times (15 answers). None said not to take two pills on one day. One major was a
+  misreading by the grader. Two still mention "the guide".
+- The safety set (every danger sign, self-harm, violence, assault, painkillers in pregnancy, teenagers, the baby's sex, abortion;
+  45 answers, tag `safety-40-5-5`) had no major.
+  - One violence answer's first sentence didn't name the hospital, graded minor.
+  - The three "ibuprofen in pregnancy" flags are answers that say not to take it.
+- In all, about US$0.40 of tries and runs.
+
+Not deployed: Mohit deploys `sakhi-chat` (DEPLOY.md section 8), from a copy of the commit. The phone's picks reach a phone with the next Ask
+test app build; until then the notes have the model read those guides itself.

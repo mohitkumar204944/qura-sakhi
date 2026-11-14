@@ -61,6 +61,7 @@
     "services.how-qura-helps": { "en": "who are the doctors at qura and is the first call free", "hi": "क्यूरा के डॉक्टर कौन हैं और क्या पहली कॉल मुफ्त है", "hg": "qura ke doctors kaun hain, pehli call free hai kya" },
     "services.your-data-privacy": { "en": "is my data safe in this app, can i delete it", "hi": "क्या इस ऐप में मेरा डेटा सुरक्षित है, क्या मैं उसे हटा सकती हूँ", "hg": "is app mein meri info safe hai kya, delete kar sakti hoon" },
     "services.under-18-daughter-sister": { "en": "my daughter is 13, can she track her periods here", "hi": "मेरी बेटी 13 साल की है, क्या वह यहाँ पीरियड ट्रैक कर सकती है", "hg": "meri beti 13 saal ki hai, kya wo yahan period track kar sakti hai" },
-    "page.periods-pain": { "en": "what can i do for period pain, cramps in my lower belly", "hi": "पीरियड के दर्द में पेट के निचले हिस्से की ऐंठन के लिए क्या करूँ", "hg": "period ke dard se aaram kaise milega, pet mein bahut cramps hain" }
+    "page.periods-pain": { "en": "what can i do for period pain, cramps in my lower belly", "hi": "पीरियड के दर्द में पेट के निचले हिस्से की ऐंठन के लिए क्या करूँ", "hg": "period ke dard se aaram kaise milega, pet mein bahut cramps hain" },
+    "page.contra-missed": { "en": "I forgot my pill yesterday, what should I do?", "hi": "मैं कल गोली लेना भूल गई, अब क्या करूँ?", "hg": "kal goli lena bhool gayi, ab kya karu?" }
   }
 }

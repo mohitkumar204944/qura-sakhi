@@ -617,6 +617,27 @@ const view = (page) => page.evaluate(() => {
   await done(a);
 }
 
+/* ---------- 20 Version 40.5.5 (the gap cases, 12 Nov): the Missed or late pill page goes with a missed pill and opens from the answer;
+   sores reach the Safe sex and infections guide ---------- */
+{
+  const a = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ answer: 'Take one pill now, as soon as you remember.', guides: ['page.contra-missed'], read: ['page.contra-missed'] }) }) });
+  const H = (q) => a.page.evaluate((x) => window.Saathi.chat.hints(x), q);
+  for (const q of ['I forgot my birth control pill for 2 days, what should I do?', 'मैं कल माला-एन की गोली लेना भूल गई, अब क्या करूँ?', 'kal goli lena bhool gayi', 'my Antara injection is 2 weeks late']) {
+    const h = await H(q); check('20 a missed pill or late Antara ("' + q.slice(0, 34) + '"): the Missed or late pill page goes first', h[0] === 'page.contra-missed', h);
+  }
+  for (const q of ['iron ki goli bhool gayi', 'BP ki goli bhool gayi', 'I missed my period, I am on the pill', 'how do I take the pill']) {
+    const h = await H(q); check('20 not a missed contraceptive ("' + q + '"): not the Missed or late pill page', h.indexOf('page.contra-missed') < 0, h);
+  }
+  const s = await H('Neeche chhaale ho gaye hai aur bahut jalan hai');
+  check('20 sores and burning down below: the Safe sex and infections guide goes too', s.indexOf('intimate.safe-sex-infections-testing') >= 0, s);
+  await accept(a.page); await ask(a, 'I forgot my pill yesterday, what should I do?');
+  const sent = a.sent.length ? JSON.parse(a.sent[a.sent.length - 1].body) : {};
+  check('20 on the chat screen, the page is sent with her question', (sent.hints || [])[0] === 'page.contra-missed', sent.hints);
+  await a.page.click('#view .chat-msg.sakhi .chat-guides [data-go="contra-missed"]'); await settle(a.page, 500);
+  check('20 tapping the page under the answer opens Missed or late pill', (await hash(a.page)) === '#contra-missed');
+  await done(a);
+}
+
 check('no page errors', errsAll.length === 0, errsAll);
 await browser.close();
 const pass = results.filter((r) => r.pass).length;

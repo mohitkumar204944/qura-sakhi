@@ -24,7 +24,10 @@ export const PAGES_FILE = path.join(here, 'chat-pages.json');
 export const PAGES = [{ id: 'page.periods-pain', route: 'periods-pain', group: 'cycle' },
   /* Version 40.5.1 (the broad use cases, 10 Nov): the law in plain words, her rights, free care, pills only from a doctor, and the
      PCPNDT line on the baby's sex */
-  { id: 'page.pregtest-abortion', route: 'pregtest-abortion', group: 'pregnancy' }];
+  { id: 'page.pregtest-abortion', route: 'pregtest-abortion', group: 'pregnancy' },
+  /* Version 40.5.5 (the gap cases, 12 Nov: a missed Mala-N pill got "don't take two pills on the same day", the opposite of this
+     page): the Missed or late pill page, its steps for each method and what happened (missedExtract) */
+  { id: 'page.contra-missed', route: 'contra-missed', group: 'intimate', taps: true }];
 
 /* An article's field with its `doc` overrides (index -> paragraph) applied, as core's L() does for the doctor route */
 const withDoc = (a, key) => {
@@ -61,6 +64,40 @@ export function pageExtract() {
   return { title: txt(v.querySelector('.backrow h1') || v.querySelector('h1')), summary, body };
 }
 
+/* Version 40.5.5: the Missed or late pill page shows its steps only after she taps her method and what happened, so each choice is
+   tapped in turn, as she would, and its steps follow a line that names it ("Combined pill (Mala-N), Missed 1 or 2 pills ...:"), then
+   its emergency pill line, then the page's lines for when she isn't sure and for vomiting. Buttons, the sources and the emergency
+   pill's own button stay out. Each tap draws the page again at once (the module's draw()). It runs in the page. */
+export function missedExtract() {
+  const v = document.querySelector('#view');
+  const txt = (el) => (el ? el.textContent : '').replace(/\s+/g, ' ').trim();
+  const q = (s) => v.querySelector(s); const qa = (s) => [...v.querySelectorAll(s)];
+  const title = txt(q('.backrow h1') || q('h1')); const summary = txt(q(':scope > p.small'));
+  const body = [];
+  const steps = () => { const o = q('#ms-out'); if (!o) return []; const out = [...o.querySelectorAll('ol.steps > li')].map((li) => '- ' + txt(li)); const f = o.querySelector('.flag'); if (f && txt(f)) out.push(txt(f)); return out; };
+  const unsure = () => { const c = q('.card.ok'); return c ? (txt(c.querySelector('h3')) + ' ' + txt(c.querySelector('p'))).trim() : ''; };
+  const methods = qa('[data-which]').map((b) => [b.dataset.which, txt(b)]);
+  const notSure = [];
+  for (const [w, wn] of methods) {
+    q('[data-which="' + w + '"]').click();
+    const as = qa('[data-ms="a"]').map((b) => [b.dataset.v, txt(b)]);
+    if (!as.length) { body.push(wn + ':'); qa('.card p.small').forEach((p) => { if (txt(p)) body.push(txt(p)); }); body.push(...steps()); }
+    for (const [a, an] of as) {
+      q('[data-ms="a"][data-v="' + a + '"]').click();
+      const bs = qa('[data-ms="b"]').map((b) => [b.dataset.v, txt(b)]);
+      if (!bs.length) { body.push(wn + ', ' + an + ':'); body.push(...steps()); }
+      for (const [b, bn] of bs) { q('[data-ms="b"][data-v="' + b + '"]').click(); body.push(wn + ', ' + an + ', ' + bn + ':'); body.push(...steps()); }
+    }
+    const u = unsure(); if (u && !notSure.some((x) => x[1] === u)) notSure.push([wn, u]);
+  }
+  /* the line for when she isn't sure: the pills' once, Antara's with its name */
+  notSure.forEach(([wn, u], i) => body.push(i === 0 ? u : wn + ': ' + u));
+  q('[data-which="' + methods[0][0] + '"]').click();
+  const vd = qa('details').find((d) => !d.querySelector('.sources'));
+  if (vd) body.push(txt(vd.querySelector('summary')) + ': ' + txt(vd.querySelector('p')));
+  return { title, summary, body };
+}
+
 /* Each page in English and Hindi, rendered in the real app for a woman who has joined (her care route unset, as for most women) */
 export async function renderPages() {
   const { chromium } = await import(pathToFileURL(path.join(ROOT, 'web', 'test', 'pw.mjs')).href);
@@ -80,7 +117,7 @@ export async function renderPages() {
         const page = await ctx.newPage();
         await page.goto(pathToFileURL(path.join(ROOT, 'web', 'index.html')).href + '#' + p.route);
         await page.waitForFunction(() => !!window.Saathi && !!document.querySelector('#view .backrow h1'));
-        one[lang] = await page.evaluate(pageExtract);
+        one[lang] = await page.evaluate(p.taps ? missedExtract : pageExtract);
         await ctx.close();
       }
       out[p.id] = { route: p.route, group: p.group, title: { en: one.en.title, hi: one.hi.title }, summary: { en: one.en.summary, hi: one.hi.summary }, body: { en: one.en.body, hi: one.hi.body } };
