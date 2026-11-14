@@ -219,8 +219,13 @@ The app built this way is still signed with the prototype key. Google Play gets 
 
 ## 8. Ask Sakhi, the chat helper (Version 40, prototype; SERVER_SPEC section 12)
 
-Only with Mohit's OK, after the tests pass. It is a separate function, so `sakhi-api` and sign-up are untouched. Run these from the
-branch `feat/ask-sakhi-prototype` (its worktree is `~/Desktop/QuraSakhi/sakhi/.claude/worktrees/ask-sakhi`), in the Mac's Terminal app.
+Only with Mohit's OK, after the tests pass. It is a separate function, so `sakhi-api` and sign-up are untouched. Ask Sakhi is in main
+since 11 Nov: deploy a commit of main, from a copy of its `server/` outside Desktop (the app's Terminal panel can't read Desktop
+folders; the Mac's Terminal app or a Claude session can make the copy):
+
+```bash
+rm -rf ~/sakhi-ask-deploy && mkdir ~/sakhi-ask-deploy && git -C ~/Desktop/QuraSakhi/sakhi archive HEAD server | tar -x -C ~/sakhi-ask-deploy
+```
 
 1. **The key.** In the Anthropic Console, create a key just for this prototype, and keep auto-reload off on the credit so spending
    stops at what is there. In the Supabase dashboard: Edge Functions → Secrets → add `ANTHROPIC_API_KEY`. (The dashboard keeps it out
@@ -228,19 +233,18 @@ branch `feat/ask-sakhi-prototype` (its worktree is `~/Desktop/QuraSakhi/sakhi/.c
    **Check it is there:** `supabase secrets list --project-ref jovplellzaxebcdekpax` must list `ANTHROPIC_API_KEY`. On 9 Nov the dashboard
    didn't save it, and every question got "Sakhi couldn't answer this". This sets it from a file outside the repo, without showing it:
    `supabase secrets set --project-ref jovplellzaxebcdekpax ANTHROPIC_API_KEY="$(cat ~/.config/sakhi/anthropic-key)"`.
-   The app's Terminal panel can't read Desktop folders: run the commands below from a copy, e.g.
-   `rm -rf ~/sakhi-ask-deploy && mkdir ~/sakhi-ask-deploy && cp -R <worktree>/server ~/sakhi-ask-deploy/`, then `cd ~/sakhi-ask-deploy/server`.
+   Run the commands below from the copy above (`cd ~/sakhi-ask-deploy/server`).
 2. **The table** (daily totals only). Either paste `supabase/migrations/20261109120000_sakhi_chat.sql` into the dashboard's SQL editor
    and run it, or:
 
    ```bash
-   cd ~/Desktop/QuraSakhi/sakhi/.claude/worktrees/ask-sakhi/server && supabase link --project-ref jovplellzaxebcdekpax && supabase db push
+   cd ~/sakhi-ask-deploy/server && supabase link --project-ref jovplellzaxebcdekpax && supabase db push
    ```
 
 3. **The function:**
 
    ```bash
-   cd ~/Desktop/QuraSakhi/sakhi/.claude/worktrees/ask-sakhi/server && supabase functions deploy sakhi-chat --no-verify-jwt --project-ref jovplellzaxebcdekpax
+   cd ~/sakhi-ask-deploy/server && supabase functions deploy sakhi-chat --no-verify-jwt --project-ref jovplellzaxebcdekpax
    ```
 
    `--no-verify-jwt` matters: the function checks Sakhi's own tokens, and Supabase's check would refuse every question.

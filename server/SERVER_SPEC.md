@@ -1099,5 +1099,6 @@ On the real model (the same 28 answers as the first try, tag `fix2-40-5-5`): all
   - The three "ibuprofen in pregnancy" flags are answers that say not to take it.
 - In all, about US$0.40 of tries and runs.
 
-Not deployed: Mohit deploys `sakhi-chat` (DEPLOY.md section 8), from a copy of the commit. The phone's picks reach a phone with the next Ask
-test app build; until then the notes have the model read those guides itself.
+Deployed by Mohit at 13:18 IST on 14 Nov (function version 14), from a copy of commit 69ef72d made with `git archive` outside Desktop
+(all four files match). The live checks pass: CORS 204, a made-up token 401 (with `care` too), a `diary` field 400, a wrong care word
+400. The phone's picks reach a phone with the next Ask test app build; until then the notes have the model read those guides itself.
