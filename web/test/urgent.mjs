@@ -13,6 +13,10 @@
 //   7 Version 39.92 (Mohit, 10 Nov: "Yes, build it"): a pregnancy now in her words, hers or anyone's, leads with the danger guide as her
 //     diary does (no card in search, as in pregnancy); trying, asking, "not pregnant" and a past pregnancy don't; fits and fainting
 //     as words ("benefits", "stay fit" and a "faint line" are not signs).
+//   8 Version 39.93 (12 Nov, the Ask Sakhi gap cases): after a birth, the after-birth page's other two lines (post_u_2: a severe
+//     headache, blurred sight or flashing lights, or fits; post_u_3: chest pain, breathlessness, or a painful or swollen calf), for the
+//     same women as post_u_1; in pregnancy, vomiting that will not stop and pains before 37 weeks lead with the danger guide; their
+//     near misses; Hindi at 360 px.
 // Usage: node test/urgent.mjs [dir]   (dir defaults to this app folder)
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -269,6 +273,104 @@ const DG = 'pregnancy.danger-signs-call-112';
   check('7 Hindi: the danger guide leads for her sister\'s pregnancy', r.qa === DG, r);
   check('7 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
   await a.page.screenshot({ path: path.join(SHOTS, '7-sister-hindi-360.png') });
+  await done(a);
+}
+
+/* ---------- 8 Version 39.93: the after-birth page's other two lines, and two more pregnancy signs ---------- */
+const HEAD_Q = ['I had my baby 10 days ago. Since morning I have a terrible headache and my vision is blurry.', 'Meri bhabhi ki delivery 2 hafte pehle hui thi, aaj use daura pada',
+  'delivery ke baad sir mein bahut tez dard hai', 'डिलीवरी के बाद सिर में बहुत तेज़ दर्द है और धुंधला दिख रहा है'];
+const CLOT_Q = ['डिलीवरी को 3 हफ़्ते हुए, सीने में दर्द है और साँस फूल रही है', '2 weeks after my c-section, my left calf is swollen and it hurts',
+  'delivery ke baad seene mein dard aur saans phool rahi hai', 'after delivery one leg is swollen and painful'];
+{
+  /* a woman marked after a birth, 10 days ago */
+  const a = await open({ seed: { situation: { deliveredOn: ago(10), breastfeeding: true }, events: regular(330) } });
+  const CALL = await t(a.page, 'call_now'), U2 = await t(a.page, 'post_u_2'), U3 = await t(a.page, 'post_u_3');
+  check('8 the after-birth lines are the page\'s own (post_u_2, post_u_3), under the same heading there', U2 === 'Severe headache, blurred vision or flashing lights, or fits' && U3 === 'Chest pain, breathlessness, or pain and swelling in one calf' && await t(a.page, 'post_u_h') === CALL, [U2, U3]);
+  for (const q of HEAD_Q.concat(['severe headache since morning', 'my head hurts terribly and painkillers don\'t help', 'blurred vision', 'I see flashing lights', 'aankhon ke aage chamak dikh rahi hai',
+    'सिर में बहुत तेज़ दर्द है', 'धुंधला दिख रहा है', 'she had a fit', 'mujhe jhatke aaye', 'उसे दौरा पड़ा'])) {
+    const r = await search(a.page, q);
+    check('8 after a birth "' + q + '": the card first, Help\'s heading, the headache and fits line, Call 108 and Help', r.on && r.k === 'post_u_2' && r.first && r.h === CALL && r.sign === U2 && r.tels.join() === 'tel:108' && r.help, r);
+  }
+  for (const q of CLOT_Q.concat(['chest pain', 'I am breathless', 'I can\'t breathe properly', 'saans lene mein dikkat ho rahi hai', 'साँस लेने में दिक्कत है', 'my calf hurts and is swollen',
+    'ek pair mein sujan aur dard hai', 'दाएँ पैर की पिंडली में दर्द और सूजन है', 'is this a blood clot in my leg'])) {
+    const r = await search(a.page, q);
+    check('8 after a birth "' + q + '": the card first, the chest, breath and calf line, Call 108', r.on && r.k === 'post_u_3' && r.first && r.h === CALL && r.sign === U3 && r.tels.join() === 'tel:108', r);
+  }
+  const rb = await search(a.page, 'I delivered 10 days ago, soaking a pad every hour and a bad headache');
+  check('8 after a birth, heavy bleeding with a headache: the bleeding line first (post_u_1)', rb.on && rb.k === 'post_u_1', rb);
+  for (const q of ['headache after delivery, is it normal', 'sir dard hai', 'mild headache', 'both feet are swollen after delivery', 'dono pairon mein sujan hai', 'my legs ache',
+    'breast pain while feeding', 'chest pain while breastfeeding, my breasts are full', 'seene mein jalan hai', 'baby ki saans tez chal rahi hai', 'my baby is breathing fast while sleeping',
+    'is it normal for a newborn to breathe fast', 'bachche ki saans mein awaaz aati hai', 'fever after delivery', 'thoughts of hurting my baby', 'baby ko nuksan pahunchane ke khayal',
+    'my eyes are tired from no sleep', 'calf muscle cramps at night']) {
+    const r = await search(a.page, q);
+    check('8 after a birth, not these signs: "' + q + '": no card', !r.on, r);
+  }
+  await done(a);
+}
+{
+  /* no birth in her diary: her words say the birth */
+  const a = await open({});
+  for (const q of HEAD_Q) {
+    const r = await search(a.page, q);
+    check('8 her words say a birth "' + q + '": the headache and fits line', r.on && r.k === 'post_u_2' && r.first && r.tels.join() === 'tel:108', r);
+  }
+  for (const q of CLOT_Q) {
+    const r = await search(a.page, q);
+    check('8 her words say a birth "' + q + '": the chest, breath and calf line', r.on && r.k === 'post_u_3' && r.first && r.tels.join() === 'tel:108', r);
+  }
+  for (const q of ['severe headache and blurred vision', 'chest pain and breathless', 'my calf hurts after running', 'I had a fit last night', 'delivery 2 saal pehle hui thi, ab sir mein bahut dard rehta hai',
+    'after my delivery 3 years ago I get chest pain', 'headache after starting birth control']) {
+    const r = await search(a.page, q);
+    check('8 no birth in her diary or her words, or one years ago: "' + q + '": no card', !r.on, r);
+  }
+  await done(a);
+}
+{
+  /* pregnant, 30 weeks: two more danger-guide signs; no card in search, as in pregnancy */
+  const a = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(210) } } });
+  for (const q of ['tightening pains every 10 minutes', 'har 10 minute mein dard aa raha hai', 'हर 5 मिनट में दर्द हो रहा है', 'contractions every 5 to 10 minutes', 'I think my contractions have started',
+    'labour pain shuru ho gaya', 'लेबर पेन शुरू हो गया', 'vomiting everything, even water', 'ulti ruk nahi rahi', '2 din se paani bhi ulti ho jata hai, kuch nahi tikta', 'उल्टी रुक नहीं रही']) {
+    const r = await search(a.page, q);
+    check('8 pregnancy, 30 weeks, "' + q + '": the danger guide leads, no card (as in pregnancy)', r.qa === DG && !r.on, r);
+  }
+  for (const q of ['I vomit every morning', 'subah ulti hoti hai', 'nausea in pregnancy', 'are braxton hicks contractions normal', 'when do contractions start', 'what does labour pain feel like',
+    'back pain while sitting', 'I feed every 2 hours']) {
+    const r = await search(a.page, q);
+    check('8 pregnancy, 30 weeks, not these signs: "' + q + '": not the danger guide', r.qa !== DG && !r.on, r);
+  }
+  await done(a);
+}
+{
+  /* at 38 weeks: regular pains are labour's time (the labour timer, Version 39.40), not this sign; vomiting still is */
+  const a = await open({ seed: { situation: { pregnant: true, pregnantSince: ago(266) } } });
+  const r1 = await search(a.page, 'contractions every 5 minutes');
+  check('8 pregnancy, 38 weeks: contractions every 5 minutes are not this sign', r1.qa !== DG, r1);
+  const r2 = await search(a.page, 'vomiting all day and nothing stays down');
+  check('8 pregnancy, 38 weeks: vomiting that will not stop still leads with the danger guide', r2.qa === DG, r2);
+  await done(a);
+}
+{
+  /* not marked pregnant: her words give the week */
+  const a = await open({});
+  for (const q of ['I\'m 30 weeks pregnant and I\'m getting tightening pains every 10 minutes', '8 mahine ki pregnant hu, har 10 minute mein dard', '9 hafte pregnant hu, 2 din se paani bhi ulti ho jata hai, kuch nahi tikta']) {
+    const r = await search(a.page, q);
+    check('8 her words say a pregnancy before 37 weeks "' + q + '": the danger guide leads', r.qa === DG, r);
+  }
+  for (const q of ['I\'m 38 weeks pregnant and having contractions every 5 minutes', '9 mahine ki pregnant hu, har 5 minute mein dard', 'nauva mahina chal raha hai, har 5 minute mein dard']) {
+    const r = await search(a.page, q);
+    check('8 her words say 37 weeks or more "' + q + '": not this sign', r.qa !== DG, r);
+  }
+  await done(a);
+}
+{
+  /* Hindi, 360 px */
+  const a = await open({ seed: { lang: 'hi', situation: { deliveredOn: ago(10), breastfeeding: true }, events: regular(330) }, w: 360 });
+  const r = await search(a.page, CLOT_Q[0]);
+  check('8 Hindi: Help\'s Hindi heading and the after-birth page\'s Hindi line', r.on && r.k === 'post_u_3' && r.h === await t(a.page, 'call_now') && r.sign === await t(a.page, 'post_u_3') && /^सीने में दर्द/.test(r.sign), r);
+  check('8 Hindi at 360 px: no sideways scroll', await a.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+  await a.page.screenshot({ path: path.join(SHOTS, '8-after-birth-chest-hindi-360.png') });
+  const r2 = await search(a.page, HEAD_Q[3]);
+  check('8 Hindi: the headache and fits line', r2.on && r2.k === 'post_u_2' && /^तेज़ सिरदर्द/.test(r2.sign), r2);
   await done(a);
 }
 

@@ -1446,15 +1446,39 @@
   const DANGER_BLOOD = /blood|khoon|khun|खून/;
   const DANGER_LAB = /kami|कमी| kam | कम |jaanch|janch|jach|जाँच|जांच|test|टेस्ट|group|ग्रुप|sugar|शुगर|pressure|प्रेशर|\bbp\b|report|रिपोर्ट|count|\bhb\b|h(a)?emoglobin|हीमोग्लोबिन|an(a)?emi|एनीमिया|badha|बढा|donat/;
   const DANGER_BLEED = /aa raha|aa rahi|nikal|beh raha|beh rahi|bah raha|bah rahi|behna|bahna|आ रहा|आ रही|निकल|बह रहा|बह रही|बहना/;
-  const DANGER_HEAD = /headache|sir ?dard|sar ?dard|sir me(in)? (bahut |tez |bohot )?dard|सिर ?दर्द|सिरदर्द|सिर में .{0,8}दर्द|सर ?दर्द/;
+  /* Version 39.93: up to three words between ("sir mein bahut tez dard", "सिर में बहुत तेज़ दर्द"), and "my head hurts"; a headache is a sign
+     only with a word that says it is severe (DANGER_SEVERE), as before */
+  const DANGER_HEAD = /headache|sir ?dard|sar ?dard|\bs[ia]r (me|mein|main) (\w+ ){0,3}dard|सिर ?दर्द|सिरदर्द|(सिर|सर) में .{0,16}दर्द|सर ?दर्द|\bhead (hurts|is hurting|is paining|pains?|aches?)\b|\bpain in (my |her |the )?head\b/;
   const DANGER_SEVERE = /severe|bad |tez|तेज|bahut|bohot|bohat|बहुत|zyada|jyada|ज्यादा|ज़्यादा|aankh|आँख|आंख|blur|dhundh|धुंध/;
   /* Version 39.89 (the Ask Sakhi eval's dry run, 9 Nov): a word or two between ("हलचल बहुत कम", "halchal aaj bahut kam", "moving much less") */
   const DANGER_MOVE = /moving (much |a lot |far |very |so )?less|move less|not moving|less movement|fewer kicks|less kicks|kicks? .{0,20}(kam|less|nahi)|(kam|nahi|nahin) (hil|hal|harkat)|hil (nahi|nahin|kam)|halchal .{0,20}(kam|nahi)|harkat .{0,20}(kam|nahi)|movements? .{0,20}(kam|nahi|less)|कम हिल|नहीं हिल|हिल नहीं|हिल रहा कम|हलचल .{0,20}(कम|नहीं)|कम हलचल|हरकत .{0,20}(कम|नहीं)|कम हरकत/;
+  /* Version 39.93 (12 Nov, the Ask Sakhi gap cases: "9 hafte pregnant hu, 2 din se paani bhi ulti ho jata hai, kuch nahi tikta" and
+     "I'm 30 weeks pregnant and I'm getting tightening pains every 10 minutes" led with nothing): two more of the danger guide's own
+     signs, "Vomiting that will not stop" ("उल्टी जो रुके नहीं") and "pains before 37 weeks". Vomiting counts when it doesn't stop or
+     nothing stays down (morning sickness alone is not this sign). Pains count when they come every few minutes, or she says labour or
+     contractions have started, unless her words or her diary put her at 37 weeks or more (the labour timer's time, Version 39.40). */
+  const DANGER_VOMIT = /vomit|\bthrow\w* up\b|\bthrew up\b|\bpuk(e|es|ed|ing)\b|\bulti\b|\bultee\b|\bultiyan\b|उल्टी|उलटी/;
+  const DANGER_NONSTOP = /(won.?t|will not|doesn.?t|does not|not|never|can.?t|cannot) stop|non.?stop|keeps? (on )?(vomit|throw)|constant|continuous|all (day|night)|whole day|every ?thing|even water|(can.?t|cannot|unable to|not able to) keep .{0,24}(down|in)|nothing (stays|stay|keeps|goes)|(nahi|nahin|na) (ruk|tik|pach)|\b(ruk|ruki|rukti|rukta|tik|tikta|tikti|pach|pachta|pachti) (nahi|nahin|na)\b|\b(paani|pani) bhi\b|\blagatar\b|\bdin bhar\b|पानी भी|लगातार|दिन भर|पूरे दिन|(रुक|टिक|पच)\S* (नहीं|ना)|(नहीं|ना) (रुक|टिक|पच)/;
+  const DANGER_PAIN_W = /contraction|tighten|\bpains?\b|\bdard\b|cramp|ऐंठन|दर्द|पीडा/;
+  const DANGER_EVERY = /\b(every|har) \d{1,2}( ?(-|to|se) ?\d{1,2})? ?(mins?|minutes?|minat)\b|हर \d{1,2}( ?(-|से) ?\d{1,2})? ?मिनट|\b\d{1,2} ?(mins?|minutes?) apart\b/;
+  const DANGER_LABOUR = /\b(i['’]?m|i am|im|she['’]?s|she is|getting|having|feeling) (\w+ ){0,3}(contractions|tightenings?|labou?r pains?)\b|\b(contractions?|tightenings?|labou?r pains?|labou?r dard|labou?r)\b (\S+ ){0,2}(started|starting|begun|shuru|ho rah\w*|aa rah\w*|hone lag\w*)|\bin labou?r\b|\bgoing into labou?r\b|(प्रसव (पीडा|का दर्द|दर्द)|लेबर (पेन|दर्द)) (\S+ ){0,2}(शुरू|हो रह|आ रह|होने लग)/;
+  const NUM_HI = { seven: 7, seventh: 7, eight: 8, eighth: 8, nine: 9, ninth: 9, saat: 7, saatva: 7, satva: 7, satwa: 7, saatwa: 7, aath: 8, aathva: 8, aathwa: 8, nau: 9, nauva: 9, nauwa: 9, 'सात': 7, 'सातवाँ': 7, 'सातवां': 7, 'सातवें': 7, 'आठ': 8, 'आठवाँ': 8, 'आठवां': 8, 'आठवें': 8, 'नौ': 9, 'नौवाँ': 9, 'नौवां': 9, 'नौवें': 9 };
+  /* her week in her words ("30 weeks", "32 hafte", "32 हफ्ते"), or her month ("8 months", "aathva mahina", "नौवाँ महीना"), the ninth
+     month counting as term */
+  const wordsWeeks = (qq) => {
+    const w = qq.match(/\s(\d{1,2}) ?(weeks?|wks?|hafte|hafta|हफ्ते|हफ्ता|सप्ताह)\s/); if (w) return +w[1];
+    const m = qq.match(/\s(\d|[a-z]+|[ऀ-ॿ]+)(st|nd|rd|th|va|wa|ve|we)? ?(months?|mahine|mahina|महीने|महीना)\s/);
+    const n = m ? (/^\d$/.test(m[1]) ? +m[1] : NUM_HI[m[1]]) : null;
+    return n ? (n >= 9 ? 38 : Math.round(n * 4.3)) : null;
+  };
+  const termNow = (qq) => { const w = wordsWeeks(qq); if (w != null) return w >= 37; const d = isPregnant() ? pregWeeks() : null; return d != null && d >= 37; };
+  const pretermQ = (qq) => ((DANGER_PAIN_W.test(qq) && DANGER_EVERY.test(qq)) || DANGER_LABOUR.test(qq)) && !termNow(qq);
   const dangerQ = (q) => {
     const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
     if (!isPregnant() && !pregNowQ(qq)) return false;   /* Version 39.92: her diary, or her words */
     if (DANGER_W.some((w) => qq.indexOf(norm(w)) >= 0) || DANGER_FITS.test(qq) || DANGER_FAINT.test(qq)) return true;
     if (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq))) return true;
+    if ((DANGER_VOMIT.test(qq) && DANGER_NONSTOP.test(qq)) || pretermQ(qq)) return true;   /* Version 39.93 */
     return DANGER_MOVE.test(qq) || (DANGER_HEAD.test(qq) && DANGER_SEVERE.test(qq));
   };
   const dangerFirst = (q, arts) => { if (!dangerQ(q)) return arts; const d = allArticles().find((a) => a.group + '.' + a.id === DANGER_ART); return d ? [d].concat(arts.filter((a) => a !== d)) : arts; };
@@ -1499,6 +1523,26 @@
     if (URG_PAD_HR.test(qq) && (blood || (URG_SOAK.test(qq) && !URG_MILKPAD.test(qq)))) return true;
     return blood && URG_HEAVY.test(qq.replace(URG_NEG, ' '));
   };
+  /* Version 39.93 (12 Nov, the Ask Sakhi gap cases: "I had my baby 10 days ago ... a terrible headache and my vision is blurry",
+     "bhabhi ki delivery 2 hafte pehle hui thi, aaj use daura pada", "डिलीवरी को 3 हफ़्ते हुए, सीने में दर्द है और साँस फूल रही है" and "2
+     weeks after my c-section, my left calf is swollen and it hurts" showed no card): the after-birth page's other two lines under
+     the same heading, for the same women as post_u_1. A severe headache, blurred sight or flashing lights, or fits (post_u_2); chest
+     pain, breathlessness, or pain or swelling in one leg's calf (post_u_3). Her recovery check already treats each as "go to the
+     nearest hospital now" (mods/post.js). Fits count whoever has them, the baby too. Not these signs: a headache not called severe,
+     both legs or feet swollen, the chest in a breastfeeding question, burning in the chest, the baby's breathing. */
+  const AB_SEVERE = new RegExp(DANGER_SEVERE.source + '|terribl|worst|unbearable|splitting|strong|intense|bhayank|भयंक|asahniy|असहनीय|won.?t go|not going away|doesn.?t go|nahi ja (raha|rahi)|ja(a)?t[ai] (hi )?nahi|नहीं जा (रहा|रही)|(painkillers?|paracetamol|medicines?|tablets?|dawa|dawai|goli)\\w* (don.?t|doesn.?t|didn.?t|do not|does not|not|nahi|nahin) (help|work|touch|kaam)');
+  const AB_EYES = /blur|dhundh|धुंध|\bflash(es|ing)?( of)? lights?\b|\blights? flash|seeing (stars|spots|flashes|lights)|spots (in|before) (my |her |the )?eyes|double vision|(can.?t|cannot|unable to) see (properly|clearly|well)|\bvision (is |has |went |got |getting |became |becomes )?(blur|dim|dark|bad|weird|double|cloudy|hazy|weak)|\bsaaf (nahi|nahin|na) dikh|साफ (नहीं|ना) दिख|\bchamak (dikh|aa|si)|चमक (दिख|आ|सी)|\b(aankhon|ankhon|aankho|ankho) (ke|ki|me|mein) ((aage|samne|saamne) )?(chamak|taare|tare)|(आँखों|आंखों) (के|की|में) ((आगे|सामने) )?(चमक|तारे)/;
+  const AB_FITS = /seizure|convuls|\bdaur[ae]\b|\bdora pad|दौरा|दौरे|\bjhatk|झटक|\bmirgi\b|मिर्गी|मिरगी/;
+  const AB_CHEST = /\bchest (pain|hurts?|hurting|tight|tightness|heavy|heaviness|pressure)|\bpain in (my |her |the )?chest|\bchest .{0,10}\b(dard|pain)\b|\bseen[ae] (mein|me|main|mai|par) (\w+ )?(dard|pain)\b|\bseene ka dard|(सीने|सीना|छाती) (में|मे|पर) (\S+ )?दर्द|\bchhati (mein|me|main) (\w+ )?dard/;
+  const AB_BREAST = /breast|nipple|\bmilk\b|\bfeed|doodh|dudh|दूध|स्तन|\bstan\b|निप्पल|engorg|\blatch/;
+  const AB_BREATH = /breathless|short of breath|(can.?t|cannot|unable to) breathe|(trouble|difficulty|problem|difficult) (in |with )?breathing|hard to breathe|breathing (is )?(fast|hard|difficult|heavy)|\bgasping|\bsaa?ns .{0,10}(phool|phul|ukhad|nahi aa|nahi le|ruk|chadh|lene mein)|(साँस|सांस) .{0,10}(फूल|उखड|नहीं आ|नहीं ले|रुक|चढ|लेने में)|\bdam ghut|दम घुट/;
+  const AB_BABY_BREATH = /\b(baby|babies|bachch?[aei]|bacch?[aei]|shishu|newborn|infant|beta|beti)\S* (\S+ ){0,2}(saa?ns|breath)|(बच्च\S*|शिशु|नवजात|बेटा|बेटी) (\S+ ){0,2}(साँस|सांस)/;
+  const AB_CALF = /\bcalf\b|\bcalves\b|\bpindl|पिंडली|पिण्डली/;
+  const AB_ONE_LEG = /\b(one|left|right|ek|baayen|bayen|baen|baye|daayen|dayen|daye|dahine|ulte|seedhe) (leg|pair|paer|taang|tang)\b|(एक|बाएँ|बाएं|बायें|दाएँ|दाएं|दायें|उल्टे|सीधे) (टांग|टाँग|पैर)/;
+  const AB_LEG_HURT = /pain|hurt|\bache|aching|\bsore|swell|swollen|tender|\bred\b|\bwarm\b|\bhot\b|\bdard\b|sujan|soojan|\bsooj|\bsuj|dukh|दर्द|सूज|सुज|लाल|गरम|गर्म/;
+  const AB_LEG_CLOT = /\bclots? .{0,20}\b(leg|calf|pair|taang)|\b(leg|calf|pair|taang) .{0,20}\bclots?\b|\bdvt\b|thrombo/;
+  const birthHeadQ = (qq) => (DANGER_HEAD.test(qq) && AB_SEVERE.test(qq)) || AB_EYES.test(qq) || AB_FITS.test(qq) || DANGER_FITS.test(qq);
+  const birthClotQ = (qq) => (AB_CHEST.test(qq) && !AB_BREAST.test(qq)) || (AB_BREATH.test(qq) && !AB_BABY_BREATH.test(qq)) || ((AB_CALF.test(qq) || AB_ONE_LEG.test(qq)) && AB_LEG_HURT.test(qq)) || AB_LEG_CLOT.test(qq);
   const urgentQ = (q) => {
     const qq = ' ' + norm(q).replace(/[?.!,।|/]/g, ' ').replace(/\s+/g, ' ') + ' ';
     if (URG_LOSS.test(qq) && URG_HOLD.test(qq) && URG_NERVE.test(qq)) return 's1d';
@@ -1506,7 +1550,10 @@
     if (URG_LATE.test(qq) && (dizzy || URG_SIDE.test(qq))) return 's1a';
     const bleed = URG_BLEED.test(qq) || (DANGER_BLOOD.test(qq) && (!DANGER_LAB.test(qq) || DANGER_BLEED.test(qq)));
     if (bleed && dizzy) return 's1b';
-    return STR.en.post_u_1 && (afterBirthNow() || (URG_BIRTH.test(qq) && !URG_YEARS.test(qq))) && birthBleedQ(qq) ? 'post_u_1' : null;   /* Version 39.91 */
+    if (!STR.en.post_u_1 || !(afterBirthNow() || (URG_BIRTH.test(qq) && !URG_YEARS.test(qq)))) return null;
+    if (birthBleedQ(qq)) return 'post_u_1';   /* Version 39.91 */
+    if (STR.en.post_u_2 && birthHeadQ(qq)) return 'post_u_2';   /* Version 39.93 */
+    return STR.en.post_u_3 && birthClotQ(qq) ? 'post_u_3' : null;
   };
   function urgentCard(q) {
     const k = urgentQ(q); if (!k) return '';   /* Version 39.70: Help's line, the ambulance under it (108, or 102 in pregnancy) */
@@ -1891,9 +1938,10 @@
     return out + (ul ? '<ul>' + ul + '</ul>' : '');
   }).join('');
   /* Help's hospital card, as search shows it: her sign in Help's words (s1a, s1b, s1d) or the after-birth page's (post_u_1, Version
-     39.91), or the heading alone for a pregnancy danger word ('p', with the danger-signs guide) or a sign Sakhi's answer found ('s') */
+     39.91; post_u_2 and post_u_3, Version 39.93), or the heading alone for a pregnancy danger word ('p', with the danger-signs guide)
+     or a sign Sakhi's answer found ('s') */
   const chatUrgCard = (k) => { const da = k === 'p' ? findArticle(DANGER_ART) : null;
-    return '<section class="card srch-urg chat-urg" data-urg="' + esc(k) + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t('call_now')) + '</h2></div>' + (/^(s1[a-z]|post_u_1)$/.test(k) ? '<p class="su-sign">' + esc(t(k)) + '</p>' : '') +
+    return '<section class="card srch-urg chat-urg" data-urg="' + esc(k) + '" data-say="1"><div class="su-head"><span class="su-ico">' + I.help + '</span><h2>' + esc(t('call_now')) + '</h2></div>' + (/^(s1[a-z]|post_u_[123])$/.test(k) ? '<p class="su-sign">' + esc(t(k)) + '</p>' : '') +
       '<div class="su-btns">' + ambBtn('primary') + '<button type="button" class="btn danger" data-go="help">' + esc(t('help_h')) + '</button>' + (da ? '<button type="button" class="btn" data-ans="' + esc(DANGER_ART) + '">' + esc(L(da, 'title')) + '</button>' : '') + '</div></section>'; };
   /* "See a doctor", as search offers it when nothing matches (Version 39.77: a Qura doctor, a free government doctor, or both) */
   const chatDocBtns = (q) => { const w = docWho('search'); return '<div class="row wrap chat-doc">' + (w !== 'G' ? '<button type="button" class="btn sm" data-ask="' + esc(String(q || '').slice(0, 120)) + '">' + esc(t('ask_qura')) + '</button>' : '') + (w !== 'Q' ? '<button type="button" class="btn sm" data-go="doc-free">' + esc(t('gov_tile')) + '</button>' : '') + '</div>'; };

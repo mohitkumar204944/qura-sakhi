@@ -2492,6 +2492,22 @@ count.
 Fewer false alarms in a pregnancy: "benefits", "stay fit" and a "faint line" on a test no longer count as the signs "fits" and
 "fainting".
 
+#### 19.30.3 Version 39.93: the after-birth page's other two lines, and two more pregnancy signs (MODULE_API section 73.4)
+
+No new wording. Help's hospital card, in search and in the Ask chat, now shows the after-birth page's own lines. It shows them for a
+woman after a birth, or one whose words say a birth:
+- "Severe headache, blurred vision or flashing lights, or fits";
+- "Chest pain, breathlessness, or pain and swelling in one calf".
+Her recovery check already says "Go to the nearest hospital now" for each.
+
+In a pregnancy, two more of the danger guide's own signs now lead search with that guide and show the chat's hospital card:
+"Vomiting that will not stop" and "pains before 37 weeks".
+
+For the doctor to glance at, two rules:
+- From 37 weeks, regular pains alone don't count, as that is the labour timer's time. Her week comes from her words or her diary,
+  and "9 months" counts as 37 weeks or more.
+- Fits count whoever has them, the baby too. The baby's breathing doesn't count.
+
 ### 19.32 Version 39.32: Getting ready for a baby, the full plan (MODULE_API section 75)
 
 Built on 28 Oct 2026 (Mohit: "Build this plan personalised to users who are planning for a baby"). Every line of the plan is in

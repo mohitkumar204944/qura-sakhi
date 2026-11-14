@@ -10,6 +10,7 @@
 //     doctor" under the latest answer;
 //   5 a danger sign she types: Help's hospital card above the chat while the answer is still coming, the right ambulance number;
 //     in pregnancy; and when Sakhi's answer finds one; Versions 39.91 and 39.92: after a birth, and a pregnancy in her words;
+//     Version 39.93: the after-birth page's other two lines, vomiting that will not stop and pains before 37 weeks (Hindi at 360 px);
 //   6 when Sakhi can't answer: resting (429), refused, offline, Try again; a 401 never signs her out;
 //   7 her chat on her phone: kept after a reload, Clear with Undo; discreet mode's plain title and PIN; Firebase off;
 //   8 search: "Ask Sakhi" when nothing matches, and "Didn't find it?" under results, carrying her words;
@@ -244,7 +245,29 @@ const view = (page) => page.evaluate(() => {
     await ask(w, q);
     check('5 not a pregnancy now ("' + q + '"): no card', (await view(w.page)).urg === '');
   }
+  /* Version 39.93 (12 Nov, the Ask Sakhi gap cases): the after-birth page's other two lines, and two more pregnancy signs */
+  for (const [q, k] of [['I had my baby 10 days ago. Since morning I have a terrible headache and my vision is blurry.', 'post_u_2'], ['Meri bhabhi ki delivery 2 hafte pehle hui thi, aaj use daura pada', 'post_u_2'],
+    ['डिलीवरी को 3 हफ़्ते हुए, सीने में दर्द है और साँस फूल रही है', 'post_u_3'], ['2 weeks after my c-section, my left calf is swollen and it hurts', 'post_u_3']]) {
+    await ask(w, q);
+    v = await view(w.page);
+    check('5 Version 39.93 after a birth "' + q + '": the card with the after-birth page\'s line and 108', v.urg === k && v.tels.join() === 'tel:108' && await w.page.evaluate(([u]) => (document.querySelector('.chat-urg .su-sign') || {}).innerText === u, [await t(w.page, k)]), v);
+  }
+  for (const q of ['9 hafte pregnant hu, 2 din se paani bhi ulti ho jata hai, kuch nahi tikta', 'I\'m 30 weeks pregnant and I\'m getting tightening pains every 10 minutes']) {
+    await ask(w, q);
+    v = await view(w.page);
+    check('5 Version 39.93 in pregnancy "' + q + '": the pregnancy card with the danger-signs guide', v.urg === 'p' && await w.page.evaluate(() => !!document.querySelector('.chat-urg [data-ans="pregnancy.danger-signs-call-112"]')), v);
+  }
+  for (const q of ['My baby is 3 weeks old and sometimes I get thoughts of hurting him. I\'m scared.', 'I\'m 38 weeks pregnant and having contractions every 5 minutes', 'I vomit every morning in my pregnancy']) {
+    await ask(w, q);
+    check('5 Version 39.93, no card ("' + q + '"): thoughts of harm (Version 39.70), term labour (the labour timer), morning sickness', (await view(w.page)).urg === '');
+  }
   await done(w);
+  const hw = await open({ at: 'ask-sakhi', seed: { lang: 'hi' }, w: 360 });
+  await accept(hw.page); await ask(hw, 'डिलीवरी के बाद सिर में बहुत तेज़ दर्द है और धुंधला दिख रहा है');
+  v = await view(hw.page);
+  check('5 Version 39.93, Hindi at 360 px: the card with the after-birth page\'s Hindi line, and no sideways scroll', v.urg === 'post_u_2' && await hw.page.evaluate(([u]) => (document.querySelector('.chat-urg .su-sign') || {}).innerText === u, [await t(hw.page, 'post_u_2')]) && await hw.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), v);
+  await hw.page.screenshot({ path: path.join(SHOTS, '5-after-birth-hindi-360.png') });
+  await done(hw);
   const s = await open({ at: 'ask-sakhi', reply: () => ({ status: 200, json: ANSWER({ answer: 'Please go to the nearest hospital now.', danger: true, screens: ['help'] }) }) });
   await accept(s.page); await ask(s, 'my stomach hurts a lot and I feel cold and weak');
   v = await view(s.page);

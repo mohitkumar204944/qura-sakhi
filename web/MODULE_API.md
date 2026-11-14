@@ -4971,6 +4971,67 @@ Test: `web/test/urgent.mjs`, section 7 (164 checks in all, 35 of them new). It c
 - Hindi at 360 px.
 No new wording (review section 19.30.2).
 
+### 73.4 Version 39.93: the after-birth page's other two lines, and two more pregnancy signs
+
+12 Nov, from the Ask Sakhi gap cases (`server/SERVER_SPEC.md` 12.12; Mohit: "Do this task here"). Sakhi's own pages call each of
+these a "go now" sign, but the phone's danger check showed no card for them:
+- After a birth:
+  - "I had my baby 10 days ago. Since morning I have a terrible headache and my vision is blurry."
+  - "Meri bhabhi ki delivery 2 hafte pehle hui thi, aaj use daura pada"
+  - "डिलीवरी को 3 हफ़्ते हुए, सीने में दर्द है और साँस फूल रही है"
+  - "2 weeks after my c-section, my left calf is swollen and it hurts"
+- In pregnancy:
+  - "9 hafte pregnant hu, 2 din se paani bhi ulti ho jata hai, kuch nahi tikta"
+  - "I'm 30 weeks pregnant and I'm getting tightening pains every 10 minutes"
+
+**After a birth** (`urgentQ`). These are the same women as `post_u_1`: marked after a birth, or her words say a birth that wasn't years
+ago. They now get the after-birth page's other two lines, under the same heading:
+- `post_u_2`, "Severe headache, blurred vision or flashing lights, or fits" (`birthHeadQ`). It counts:
+  - a headache with a word that says it is severe ("terrible", "bahut tez", "painkillers don't help");
+  - blurred sight or flashing lights ("dhundhla", "chamak dikh rahi", "धुंधला");
+  - fits ("daura", "jhatke", "दौरा"), whoever has them, the baby too.
+- `post_u_3`, "Chest pain, breathlessness, or pain and swelling in one calf" (`birthClotQ`). It counts:
+  - chest pain ("seene mein dard", "सीने में दर्द");
+  - breathlessness ("saans phool rahi", "साँस लेने में दिक्कत");
+  - a calf or one leg that is painful or swollen ("ek pair mein sujan", "पिंडली में दर्द");
+  - a clot in the leg.
+- Heavy bleeding still comes first (`post_u_1`), and bleeding with dizziness is still Help's own line (`s1b`).
+- These are not the signs:
+  - a headache not called severe;
+  - both legs or feet swollen, or calf cramps;
+  - the chest in a breastfeeding question ("chest pain while breastfeeding, my breasts are full"), or burning in the chest;
+  - the baby's breathing ("baby ki saans tez", "my baby is breathing fast");
+  - fever after a birth, which stays "see a doctor today" (73.2);
+  - thoughts of harm (Version 39.70).
+- Her recovery check already treats each of these signs as "go to the nearest hospital now" (`flagsOf` in `mods/post.js`).
+
+**In pregnancy** (`dangerQ`), two more of the danger guide's own signs. Each one leads search with the guide and shows the chat's `p`
+card:
+- "Vomiting that will not stop" ("उल्टी जो रुके नहीं"), from `DANGER_VOMIT` and `DANGER_NONSTOP`:
+  - vomiting that doesn't stop, all day, or with nothing staying down, even water;
+  - vomiting every morning is not this sign.
+- "Pains before 37 weeks" (`pretermQ`):
+  - pains every few minutes (`DANGER_EVERY`), or labour or contractions that have started (`DANGER_LABOUR`);
+  - not when her words ("38 weeks", "9 mahine", "nauva mahina") or her diary put her at 37 weeks or more (`termNow`, `wordsWeeks`).
+    That is the labour timer's time (Version 39.40).
+  - Questions don't count ("are Braxton Hicks contractions normal", "what does labour pain feel like").
+- The headache words (`DANGER_HEAD`, for both checks) now allow up to three words between ("sir mein bahut tez dard", "सिर में बहुत
+  तेज़ दर्द") and "my head hurts". A headache still counts only with a word that says it is severe.
+
+**What she sees:**
+- Search: the card first, with the after-birth line, Call 108 (102 while her diary says pregnant) and Help. In a pregnancy, the
+  danger guide is the quick answer and no card shows, as before.
+- The chat: the same card above Sakhi's answer (section 132.8), and the `p` card for the pregnancy signs.
+
+**Unchanged:** Help, the after-birth page, the chat server, and every other result.
+
+Test: `web/test/urgent.mjs`, section 8 (256 checks in all, 92 of them new). It covers:
+- the six phrasings, and 37 more in three languages;
+- near misses after a birth, with no birth, and in a pregnancy;
+- 38 weeks by her diary and by her words;
+- Hindi at 360 px.
+No new wording (review section 19.30.3).
+
 ## 74. Version 39.31: the Cykel traps
 
 Mohit, 28 Oct, after walking a competitor tracker ("build the trap suite first"). That app showed "Fertile window" and a
@@ -8602,3 +8663,19 @@ Test: `web/test/chat.mjs`, section 5. It checks:
 - the after-birth line with 108;
 - her sister's pregnancy in English and Hindi;
 - three questions that are not a pregnancy now, with no card.
+
+### 132.8 Version 39.93 in the chat (12 Nov): the after-birth page's other two lines, and two more pregnancy signs
+
+The chat reads the same check as search (section 73.4):
+- After a birth, `post_u_2` and `post_u_3` show their line under the heading. `chatUrgCard` shows `post_u_1` to `post_u_3`.
+- Vomiting that will not stop and pains before 37 weeks give the pregnancy card (`p`, with the danger-signs guide).
+- No card for:
+  - thoughts of hurting her baby (Version 39.70);
+  - contractions at 38 weeks (the labour timer's time);
+  - vomiting every morning.
+
+Test: `web/test/chat.mjs`, section 5. It checks:
+- the four after-birth questions, with their lines and 108;
+- the two pregnancy ones, with the danger-signs guide;
+- the three questions with no card;
+- the after-birth line in Hindi at 360 px.

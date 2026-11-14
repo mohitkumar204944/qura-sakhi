@@ -1039,3 +1039,7 @@ Found on the way, in the app: the phone's danger check shows no Help card for th
 stop or pains before 37 weeks (and none for thoughts of hurting the baby, as Version 39.70 left thoughts of harm). The after-birth
 recovery check (`web/mods/post.js`) already treats the headache, blurred sight, fits, chest pain, breathlessness, the calf and
 fainting as "go to the nearest hospital now".
+
+Fixed in the app as Version 39.93 (MODULE_API 73.4 and 132.8): after a birth, Help's card shows the after-birth page's own lines
+for these signs except fainting; in a pregnancy, the card covers vomiting that will not stop and pains before 37 weeks. The chat
+server is unchanged.

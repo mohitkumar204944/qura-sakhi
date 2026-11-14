@@ -212,6 +212,11 @@ planned link between the two products is the doctor-call hand-off in `server/SER
     Version 39.92 (Mohit, 10 Nov: "Yes, build it"): a pregnancy now in her words ("my sister is 7 months pregnant", "main pregnant hoon")
     counts for the pregnancy danger check as her diary does. Trying, asking and past pregnancies don't count. Fits and fainting are now
     matched as whole words, so "benefits", "stay fit" and a "faint line" aren't signs. MODULE_API 73.3.
+    Version 39.93 (12 Nov, from the Ask Sakhi gap cases; Mohit: "Do this task here"), section 8:
+    - after a birth, Help's card shows the after-birth page's other two lines: a severe headache, blurred sight or fits (`post_u_2`),
+      and chest pain, breathlessness or a painful calf (`post_u_3`);
+    - in a pregnancy, vomiting that will not stop and pains before 37 weeks count (from 37 weeks, the labour timer's time);
+    - the chat shows them too. MODULE_API 73.4 and 132.8.
   - `node test/traps.mjs` (Version 39.31, the Cykel traps; Mohit, 28 Oct): a competitor's failures replayed on Sakhi across
     Today, the Calendar, Days, Cycles, the fertile-days page and the booked reminders. It checks late by 3, 16 and 60 days, a
     positive strip on period day 1, hormones, pregnancy, after the birth, midlife, discreet mode, irregular and few gaps,
